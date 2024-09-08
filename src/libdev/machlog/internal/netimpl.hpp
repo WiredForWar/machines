@@ -56,7 +56,6 @@ private:
     CB_DEPIMPL_AUTO(remote_);                                                                                          \
     CB_DEPIMPL_AUTO(localRace_);                                                                                       \
     CB_DEPIMPL_AUTO(desiredProtocol_);                                                                                 \
-    CB_DEPIMPL_AUTO(sessionId_);                                                                                       \
     CB_DEPIMPL_AUTO(pNode_);                                                                                           \
     CB_DEPIMPL_AUTO(pBroker_);                                                                                         \
     CB_DEPIMPL_AUTO(readyStatus_);                                                                                     \

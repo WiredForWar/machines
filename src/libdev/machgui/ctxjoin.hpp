@@ -18,6 +18,7 @@ class MachGuiSingleSelectionListBox;
 class MachGuiNewGameName;
 class MachGuiNetworkProtocolMode;
 class MachGuiMenuButton;
+class NetSessionInfo;
 
 class MachGuiCtxJoin : public MachGui::GameMenuContext
 // Canonical form revoked
@@ -38,6 +39,9 @@ public:
 
     void editingGameName(bool);
     void joinGameSelected(bool);
+
+    void onNewGameItemSelected();
+    void onNetSessionSelected(const NetSessionInfo& info);
 
     void CLASS_INVARIANT;
 

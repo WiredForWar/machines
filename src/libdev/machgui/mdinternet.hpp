@@ -28,15 +28,13 @@ public:
     void CLASS_INVARIANT;
 
     void setNetworkDetails() override;
+    void readNetworkDetails() override;
 
     bool validNetworkDetails(bool isHost) override;
 
     void updateGUI() override;
 
     void charFocus() override;
-
-protected:
-    void readNetworkDetails() override;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t);

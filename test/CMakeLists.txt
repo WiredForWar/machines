@@ -52,6 +52,8 @@ append_test(DevEventQueueTests device/DevEventQueueTests.cpp)
 append_test(DevMouseTests device/DevMouseTests.cpp)
 #~:gui
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
+#~:network
+append_test(NetUtilsTest network/NetUtilsTests.cpp)
 #~:system
 append_test(SysPathNameTests system/SysPathNameTests.cpp)
 

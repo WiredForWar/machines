@@ -38,7 +38,6 @@ public:
     static MachLogNetwork& instance();
     ~MachLogNetwork();
 
-    void processNetworkIniSettings(const string& fileName);
     void terminateAndReset();
 
     MachPhys::Race localRace() const;
@@ -68,9 +67,8 @@ public:
     bool desiredProtocol(const std::string&, InitialiseConnection = INITIALISE_CONNECTION);
     void initialiseConnection();
 
-    const std::string& sessionId() const;
     bool hostWithSessionId(const std::string& gameName, const std::string& playerName);
-    bool joinWithSessionId(const std::string& gamename, const std::string& playerName);
+    bool joinSession(const std::string& address, const std::string& playerName);
     bool launchFromLobbyInfo();
     void setNodeCompoundStatus(bool);
 

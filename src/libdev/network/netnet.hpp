@@ -6,6 +6,7 @@
 
 #include "network/netdefs.hpp"
 #include "network/message.hpp"
+#include "network/NetSessionInfo.hpp"
 
 #include <vector>
 #include <memory>
@@ -50,7 +51,7 @@ public:
 
     using ProtocolSpec = std::pair<const std::string, NetworkProtocol>;
     using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
-    using Sessions = std::vector<std::unique_ptr<NetAppSessionUid>>;
+    using Sessions = std::vector<NetSessionInfo>;
     using Modems = ctl_vector<string>;
 
     ///////////////////////////////
@@ -88,9 +89,9 @@ public:
     void pollMessages();
     const Sessions& sessions() const;
     // If hosting conventional game then use createAppSession
-    NetAppSession* createAppSession(const NetAppSessionName&);
+    NetAppSession* createAppSession();
     // If joining a conventional game then use joinAppSession
-    NetAppSession* joinAppSession(const NetAppSessionUid&);
+    NetAppSession* joinAppSession(const std::string& addressStr);
     // if connecting via lobby then use connectAppSession (handles join and create)
     NetAppSession* connectAppSession();
     void systemMessageHandler(NetSystemMessageHandler*);

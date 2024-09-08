@@ -66,8 +66,8 @@ public:
 
     ///////////////////////////////
 
-    NetAppSession* createAppSession(const NetAppSessionName&);
-    NetAppSession* joinAppSession(const NetAppSessionUid&);
+    NetAppSession* createAppSession();
+    NetAppSession* joinAppSession(const std::string& addressStr);
     NetAppSession* connectAppSession();
 
     NetAppUid appUid() const;

@@ -1,5 +1,8 @@
 
 set(NETWORK_SOURCES
+    AddressUtils.cpp
+    AddressUtils.hpp
+    NetSessionInfo.hpp
     buffer.cpp
     buffer.hpp
     buffer.ipp

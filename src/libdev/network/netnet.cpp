@@ -12,6 +12,8 @@
 
 #include "network/internal/netinet.hpp"
 
+#include "system/registry.hpp"
+
 #define MAXNAMELEN 200
 
 #define INITGUID
@@ -24,6 +26,12 @@ NetNetwork::NetNetwork()
     PRE(isValidNoRecord());
     pNetINetwork_ = new NetINetwork();
     NETWORK_STREAM("pNetINetwork_ is " << (void*)pNetINetwork_ << std::endl);
+
+    std::string ipAddress = SysRegistry::instance().queryStringValue("Network", "IP Address");
+    if (ipAddress.empty())
+        ipAddress = "localhost";
+    pNetINetwork_->setIPAddress(ipAddress);
+
     POST(isValidNoRecord());
 }
 
@@ -120,12 +128,6 @@ bool NetNetwork::hasAppSession(NetAppSessionUid aUid) const
     return result;
 }
 
-/*NetAppSession& NetNetwork::session()
-{
-    PRE( isValidNoRecord() );
-    return pNetINetwork_->session();
-}*/
-
 void NetNetwork::update()
 {
     PRE(isValidNoRecord());
@@ -145,16 +147,16 @@ const NetNetwork::Sessions& NetNetwork::sessions() const
     return pNetINetwork_->sessions();
 }
 
-NetAppSession* NetNetwork::createAppSession(const NetAppSessionName& name)
+NetAppSession* NetNetwork::createAppSession()
 {
     PRE(isValidNoRecord());
-    return pNetINetwork_->createAppSession(name);
+    return pNetINetwork_->createAppSession();
 }
 
-NetAppSession* NetNetwork::joinAppSession(const NetAppSessionUid& uid)
+NetAppSession* NetNetwork::joinAppSession(const std::string& addressStr)
 {
     PRE(isValidNoRecord());
-    return pNetINetwork_->joinAppSession(uid);
+    return pNetINetwork_->joinAppSession(addressStr);
 }
 
 NetAppSession* NetNetwork::connectAppSession()
@@ -233,6 +235,8 @@ const std::string& NetNetwork::IPAddress() const
 
 void NetNetwork::setIPAddress(const std::string& newAddress)
 {
+    SysRegistry::instance().setStringValue("Network", "IP Address", newAddress);
+
     pNetINetwork_->setIPAddress(newAddress);
 }
 

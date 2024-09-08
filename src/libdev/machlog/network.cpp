@@ -92,90 +92,6 @@ void MachLogNetwork::terminateAndReset()
     DEBUG_STREAM(DIAG_NETWORK, "MachLogNetwork::terminateAndReset done\n");
 }
 
-void MachLogNetwork::processNetworkIniSettings(const string& fileName)
-{
-    CB_MachLogNetwork_DEPIMPL();
-
-    DEBUG_STREAM(DIAG_NETWORK, "MachLogNetwork::processNetworkIniSettings " << fileName << "\n");
-
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, fileName, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fileName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(fileName.c_str());
-        // pIstream = new ifstream( fileName.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fileName.c_str(), std::ios::in));
-    }
-
-    UtlLineTokeniser parser(*pIstream, fileName);
-
-    bool processingNetworkTokens = false;
-    string protocol;
-    string stringSessionId;
-    while (! parser.finished())
-    {
-        if (parser.tokens()[0] == "NETWORK")
-        {
-            isNetworkGame_ = true;
-            processingNetworkTokens = true;
-        }
-        if (parser.tokens()[0] == "END")
-        {
-            ASSERT(parser.tokens().size() > 1, "Out of tokens on an END line");
-            if (parser.tokens()[1] == "NETWORK")
-                processingNetworkTokens = false;
-        }
-        if (processingNetworkTokens)
-        {
-            if (parser.tokens()[0] == "PROTOCOL")
-            {
-                protocol = "";
-                for (std::size_t i = 1; i < parser.tokens().size(); ++i)
-                {
-                    protocol += parser.tokens()[i];
-                    if (i != (parser.tokens().size() - 1))
-                        protocol += " ";
-                }
-            }
-            if (parser.tokens()[0] == "RACE")
-                localRace_ = MachLogScenario::machPhysRace(parser.tokens()[1]);
-            if (parser.tokens()[0] == "HOST")
-                isNodeLogicalHost_ = true;
-            if (parser.tokens()[0] == "SESSION")
-                stringSessionId = parser.tokens()[1];
-            if (parser.tokens()[0] == "PLAYERS")
-                expectedPlayers_ = atol(parser.tokens()[1].c_str());
-            if (parser.tokens()[0] == "SET_READY")
-                readyStatus_[MachLogScenario::machPhysRace(parser.tokens()[1])] = true;
-            //          if( parser.tokens()[0] == "JOIN" )
-        }
-        parser.parseNextLine();
-    }
-
-    if (isNetworkGame_)
-    {
-        DEBUG_STREAM(DIAG_NETWORK, " isNetworkGame " << std::endl);
-        setAppUid();
-        if (desiredProtocol(protocol))
-        {
-            //          DWORD dwNameSize = 200;
-            char szSessionName[200];
-            //          GetComputerName(szSessionName, &dwNameSize);
-            if (isNodeLogicalHost_)
-                hostWithSessionId(stringSessionId, string(szSessionName));
-            else
-                joinWithSessionId(stringSessionId, string(szSessionName));
-        }
-    }
-}
-
 MachPhys::Race MachLogNetwork::localRace() const
 {
     CB_DEPIMPL(MachPhys::Race, localRace_);
@@ -369,13 +285,6 @@ void MachLogNetwork::initialiseConnection()
     NetNetwork::instance().initialiseConnection();
 }
 
-const std::string& MachLogNetwork::sessionId() const
-{
-    CB_DEPIMPL_AUTO(sessionId_);
-
-    return sessionId_;
-}
-
 bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();
@@ -383,8 +292,7 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     PRE(protocolChosen_);
     isNetworkGame_ = true;
     isNodeLogicalHost_ = true;
-    sessionId_ = gameName;
-    NetNetwork::instance().createAppSession(sessionId_);
+    NetNetwork::instance().createAppSession();
     //  DWORD dwNameSize = 200;
     //  char szSessionName[200];
     //  GetComputerName(szSessionName, &dwNameSize);
@@ -395,63 +303,15 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     return true;
 }
 
-bool MachLogNetwork::joinWithSessionId(const std::string& gameName, const std::string& playerName)
+bool MachLogNetwork::joinSession(const std::string& address, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();
 
-    PRE(protocolChosen_);
-    sessionId_ = gameName;
-    NetAppSessionUid* pSelectedSessionUid = nullptr;
-    PhysAbsoluteTime startTime = Phys::time();
-    std::cout << "\n";
-    PhysRelativeTime timeout = 30;
-    if (NetNetwork::instance().currentProtocol() == NetNetwork::NetworkProtocol::MODEM)
-        timeout = 1;
-    while (! pSelectedSessionUid && ((Phys::time() - startTime) < timeout))
-    {
-        std::cout << "TimeOut in : " << timeout - (Phys::time() - startTime) << " seconds.                 \r";
-        // issue an update to the network which will go and populate the sessions collection.
-        //       if( NetNetwork::instance().currentProtocol() != NetNetwork::MODEM )
-        //           NetNetwork::instance().update();
-        const NetNetwork::Sessions& availableSessions = NetNetwork::instance().sessions();
-        NetAppSessionName selectedSessionName(sessionId_);
-        NetNetwork::Sessions::const_iterator i = availableSessions.begin();
-        NetNetwork::Sessions::const_iterator j = availableSessions.end();
+    NetNetwork::instance().joinAppSession(address);
 
-        for (; i != j && ! pSelectedSessionUid; ++i)
-        {
-            if ((*i)->appSessionName() == selectedSessionName)
-            {
-                pSelectedSessionUid = i->get();
-            }
-        }
-        //      SysWindowsAPI::sleep( 1000 );
-    }
-    std::cout << std::endl;
-    std::cout << "Sessions " << NetNetwork::instance().sessions().size() << std::endl;
-
-    if (pSelectedSessionUid)
-    {
-        NetNetwork::instance().joinAppSession(*pSelectedSessionUid);
-
-        //      DWORD dwNameSize = 200;
-        //      char szSessionName[200];
-        //      GetComputerName(szSessionName, &dwNameSize);
-
-        // NetNodeName name(playerName);
-        NetNetwork::instance().setLocalPlayerName(playerName);
-        //      pNode_ = new NetNode(name);
-        //      pNode_->useCompoundMessaging( true );
-        isNetworkGame_ = true;
-        return true;
-    }
-    else
-    {
-        ASSERT_INFO(pImpl_->sessionId_);
-        ASSERT(pSelectedSessionUid, "Invalid session (for joining) ID");
-        isNetworkGame_ = false;
-    }
-    return false;
+    NetNetwork::instance().setLocalPlayerName(playerName);
+    isNetworkGame_ = true;
+    return true;
 }
 
 void MachLogNetwork::localRace(MachPhys::Race newLocalRace)

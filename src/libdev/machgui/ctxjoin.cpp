@@ -52,10 +52,11 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pListBox,
         size_t width,
-        const string& text,
+        const NetSessionInfo& info,
         MachGuiCtxJoin& joinContext)
-        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
+        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, info.serverName)
         , joinContext_(joinContext)
+        , sessionInfo_(info)
     {
     }
 
@@ -70,17 +71,13 @@ protected:
     void select() override
     {
         MachGuiSingleSelectionListBoxItem::select();
-
-        startupScreens()->startupData()->joinGame(text());
-
-        joinContext_.joinGameSelected(true);
+        joinContext_.onNetSessionSelected(sessionInfo_);
     }
 
     void unselect() override
     {
         MachGuiSingleSelectionListBoxItem::unselect();
-
-        joinContext_.joinGameSelected(false);
+        joinContext_.onNetSessionSelected({});
     }
 
 private:
@@ -89,6 +86,7 @@ private:
 
     // Data members...
     MachGuiCtxJoin& joinContext_;
+    NetSessionInfo sessionInfo_;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,8 +124,7 @@ protected:
 
         singleLineEditBox()->maxChars(MAX_GAMENAME_LEN);
         singleLineEditBox()->setText(startupScreens()->startupData()->newGameName());
-        startupScreens()->startupData()->joinGame("");
-        joinContext_.editingGameName(true);
+        joinContext_.onNewGameItemSelected();
     }
 
     void unselect() override
@@ -331,7 +328,7 @@ void MachGuiCtxJoin::showGames()
                 pStartupScreens_,
                 pGamesList_,
                 itemWidth,
-                (*iter)->appSessionName(),
+                *iter,
                 *this);
             NETWORK_STREAM("  item added.\n");
         }
@@ -398,8 +395,9 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     } // Was JOIN pressed...
     else if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::JOIN)
     {
+        std::string ipAddress = NetNetwork::instance().IPAddress();
         bool isHost = false;
-        if (pStartupScreens_->startupData()->joinGame() == "" || ! joinGameSelected_)
+        if (ipAddress.empty())
         {
             // Display message box. Must choose game to join.
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_SELECTGAMETOJOIN);
@@ -412,12 +410,8 @@ bool MachGuiCtxJoin::okayToSwitchContext()
         //      }
         else
         {
-            if (! MachLogNetwork::instance().joinWithSessionId(
-                    pStartupScreens_->startupData()->joinGame(),
-                    pStartupScreens_->startupData()->playerName()))
-                if (! MachLogNetwork::instance().joinWithSessionId(
-                        pStartupScreens_->startupData()->joinGame(),
-                        pStartupScreens_->startupData()->playerName()))
+            if (!MachLogNetwork::instance().joinSession(ipAddress, pStartupScreens_->startupData()->playerName()))
+                if (!MachLogNetwork::instance().joinSession(ipAddress, pStartupScreens_->startupData()->playerName()))
                 {
                     pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETSESSIONERROR);
                     NetNetwork::instance().resetStatus();
@@ -537,6 +531,22 @@ void MachGuiCtxJoin::joinGameSelected(bool jsg)
         pJoinBtn_->defaultControl(false);
         pCreateBtn_->defaultControl(false);
     }
+}
+
+void MachGuiCtxJoin::onNewGameItemSelected()
+{
+    pStartupScreens_->startupData()->joinGame("");
+    editingGameName(true);
+}
+
+void MachGuiCtxJoin::onNetSessionSelected(const NetSessionInfo& info)
+{
+    pStartupScreens_->startupData()->joinGame(info.serverName);
+    NetNetwork::instance().setIPAddress(info.address);
+
+    pNetworkProtocol_->readNetworkDetails();
+
+    joinGameSelected(!info.address.empty());
 }
 
 /* End CTXJOIN.CPP **************************************************/

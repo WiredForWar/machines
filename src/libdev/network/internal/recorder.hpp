@@ -18,6 +18,7 @@
 
 #include "base/base.hpp"
 
+#include "network/NetSessionInfo.hpp"
 #include "network/netdefs.hpp"
 #include "network/netnet.hpp"
 #include "network/session.hpp"
@@ -83,8 +84,8 @@ public:
     NetAppSession::NetSessionStatus playbackSessionStatus() const;
     void recordSessionStatus(const NetAppSession::NetSessionStatus&) const;
 
-    NetAppSessionUid playbackAppSessionUid() const;
-    void recordAppSessionUid(const NetAppSessionUid&) const;
+    NetSessionInfo playbackSessionInfo() const;
+    void recordSessionInfo(const NetSessionInfo& info) const;
 
     bool playbackHasMember() const;
     void recordHasMember(bool) const;

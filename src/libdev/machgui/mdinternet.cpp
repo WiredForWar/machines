@@ -18,7 +18,6 @@
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
-#include "system/registry.hpp"
 
 struct MachGuiInternetNetworkModeImpl
 {
@@ -29,10 +28,39 @@ struct MachGuiInternetNetworkModeImpl
     MachGuiSingleLineEditBox* pIPAddressEntryBox_;
 };
 
+#define INM_MINX 62
+#define INM_MINY 309
+#define INM_WIDTH 110
+#define INM_MAX_ADDRESS_NO 30
+
 MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
     pimpl_ = new MachGuiInternetNetworkModeImpl;
+
+    GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
+    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
+    const int textHeight = font.charHeight() + 2;
+
+    MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
+        &parent(),
+        Gui::Box(
+            Gui::Coord(INM_MINX, INM_MINY) * MachGui::menuScaleFactor(),
+            Gui::Size(font.textWidth(IPAddressHeading.asString()), textHeight)),
+        IDS_MENU_IPADDRESS,
+        MachGui::Menu::smallFontLight());
+
+    pimpl_->pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
+        &startupScreens(),
+        Gui::Box(
+            pIPAddressText->relativeBoundary().bottomLeft(),
+            Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4)),
+        font);
+    pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
+    pimpl_->pIPAddressEntryBox_->border(true);
+
+    pimpl_->pIPAddressEntryBox_->setTextChangedCallback(
+        [this](GuiSingleLineEditBox* pLineEdit) { setNetworkDetails(); });
 
     readNetworkDetails();
 
@@ -58,8 +86,6 @@ void MachGuiInternetNetworkMode::setNetworkDetails()
     string ipAddress = pimpl_->pIPAddressEntryBox_->text();
 
     NetNetwork::instance().setIPAddress(ipAddress);
-    SysRegistry::instance().setStringValue("Network", "IP Address", ipAddress);
-    NetNetwork::instance().initialiseConnection();
 }
 
 // virtual
@@ -81,37 +107,9 @@ void MachGuiInternetNetworkMode::charFocus()
     GuiManager::instance().charFocus(pimpl_->pIPAddressEntryBox_);
 }
 
-#define INM_MINX 62
-#define INM_MINY 309
-#define INM_WIDTH 110
-#define INM_MAX_ADDRESS_NO 30
-
 void MachGuiInternetNetworkMode::readNetworkDetails()
 {
-    GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    const int textHeight = font.charHeight() + 2;
-
-    MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
-        &parent(),
-        Gui::Box(
-            Gui::Coord(INM_MINX, INM_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(IPAddressHeading.asString()), textHeight)),
-        IDS_MENU_IPADDRESS,
-        MachGui::Menu::smallFontLight());
-
-    pimpl_->pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
-        &startupScreens(),
-        Gui::Box(
-            pIPAddressText->relativeBoundary().bottomLeft(),
-            Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4)),
-        font);
-    pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
-    pimpl_->pIPAddressEntryBox_->border(true);
-    std::string ipAddress = SysRegistry::instance().queryStringValue("Network", "IP Address");
-    if (ipAddress.empty())
-        ipAddress = "localhost";
-
+    std::string ipAddress = NetNetwork::instance().IPAddress();
     pimpl_->pIPAddressEntryBox_->setText(ipAddress);
 
     charFocus();

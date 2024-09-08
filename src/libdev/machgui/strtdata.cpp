@@ -352,15 +352,9 @@ void MachGuiStartupData::connectionType(const std::string& ct, InitialiseConnect
 
 void MachGuiStartupData::joinGame(const std::string& str)
 {
-    joinGame_ = str;
     includedInGame_ = false;
     terminalMultiPlayerGameProblem_ = false;
     MachGuiChatWindow::clearAllText();
-}
-
-const std::string& MachGuiStartupData::joinGame() const
-{
-    return joinGame_;
 }
 
 void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqueMachineNumber)

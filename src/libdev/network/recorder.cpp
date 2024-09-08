@@ -67,7 +67,7 @@ void NetIRecorder::playbackSessions(NetNetwork::Sessions* pSessions) const
 
     for (size_t i = 0; i < nSessions; ++i)
     {
-        pSessions->push_back(std::make_unique<NetAppSessionUid>(playbackAppSessionUid()));
+        pSessions->push_back(playbackSessionInfo());
     }
 }
 
@@ -77,7 +77,7 @@ void NetIRecorder::recordSessions(const NetNetwork::Sessions& sessions) const
 
     for (size_t i = 0; i < sessions.size(); ++i)
     {
-        recordAppSessionUid(*sessions[i]);
+        recordSessionInfo(sessions[i]);
     }
 }
 
@@ -280,28 +280,19 @@ void NetIRecorder::recordSessionStatus(const NetAppSession::NetSessionStatus& st
     RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &status), sizeof(status));
 }
 
-NetAppSessionUid NetIRecorder::playbackAppSessionUid() const
+NetSessionInfo NetIRecorder::playbackSessionInfo() const
 {
-    const uint bufferSize = RecRecorderPrivate::instance().playbackNetworkUint();
-    uint8* buffer = _NEW_ARRAY(uint8, bufferSize);
-    RecRecorderPrivate::instance().playbackNetworkData(buffer, bufferSize);
+    NetSessionInfo info;
+    info.address = RecRecorderPrivate::instance().playbackNetworkString();
+    info.serverName = RecRecorderPrivate::instance().playbackNetworkString();
 
-    NetAppSessionUid uid(buffer);
-    _DELETE_ARRAY(buffer);
-
-    return uid;
+    return info;
 }
 
-void NetIRecorder::recordAppSessionUid(const NetAppSessionUid& uid) const
+void NetIRecorder::recordSessionInfo(const NetSessionInfo& info) const
 {
-    const size_t bufferSize = uid.rawBufferSize();
-    uint8* buffer = _NEW_ARRAY(uint8, bufferSize);
-    uid.rawBuffer(buffer);
-
-    RecRecorderPrivate::instance().recordNetworkUint(bufferSize);
-    RecRecorderPrivate::instance().recordNetworkData(buffer, bufferSize);
-
-    _DELETE_ARRAY(buffer);
+    RecRecorderPrivate::instance().recordNetworkString(info.address);
+    RecRecorderPrivate::instance().recordNetworkString(info.serverName);
 }
 
 bool NetIRecorder::playbackHasMember() const

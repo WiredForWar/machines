@@ -287,7 +287,6 @@ private:
     std::string playerName_;
     MachGuiDbScenario* pScenario_;
     bool transitionFlicsOn_;
-    std::string joinGame_;
     bool host_;
     MachGuiCtxImReady* pCtxImReady_;
     ctl_vector<string> availablePlayers_;

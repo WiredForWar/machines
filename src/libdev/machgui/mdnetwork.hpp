@@ -29,6 +29,7 @@ public:
     void CLASS_INVARIANT;
 
     virtual void setNetworkDetails() = 0;
+    virtual void readNetworkDetails() = 0;
 
     virtual bool validNetworkDetails(bool isHost) = 0;
 
@@ -41,8 +42,6 @@ public:
     bool connectionSetNoRecord();
 
 protected:
-    virtual void readNetworkDetails() = 0;
-
     GuiDisplayable& parent();
     MachGuiStartupScreens& startupScreens();
 

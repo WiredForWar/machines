@@ -7,6 +7,7 @@
 #include "ctl/algorith.hpp"
 #include "utility/linetok.hpp"
 
+#include "network/AddressUtils.hpp"
 #include "network/nodeuid.hpp"
 #include "network/sessuid.hpp"
 #include "network/session.hpp"
@@ -102,11 +103,11 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionUid& aUid) const
 {
     PRE(isValidNoRecord());
 
-    const auto result
-        = std::find_if(sessions_.begin(), sessions_.end(), [&aUid](const std::unique_ptr<NetAppSessionUid>& session) {
-        return session && *session == aUid;
-    });
-    bool found = result != sessions_.end();
+    // const auto result
+    //     = std::find_if(sessions_.begin(), sessions_.end(), [&aUid](const std::unique_ptr<NetAppSessionUid>& session) {
+    //     return session && *session == aUid;
+    // });
+    bool found = false; // result != sessions_.end();
 
     POST(isValidNoRecord());
 
@@ -384,7 +385,7 @@ void NetINetwork::sendMessage(
 }
 
 // Host a game
-NetAppSession* NetINetwork::createAppSession(const NetAppSessionName& sessionName)
+NetAppSession* NetINetwork::createAppSession()
 {
     PRE(isValidNoRecord());
 
@@ -392,16 +393,19 @@ NetAppSession* NetINetwork::createAppSession(const NetAppSessionName& sessionNam
     return nullptr;
 }
 
-NetAppSession* NetINetwork::joinAppSession(const NetAppSessionUid& sessionUid)
+NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
 {
     PRE(isValidNoRecord());
 
     initHost();
 
+    std::string ipAddress = std::string(getIp(addressStr));
+    std::optional<uint16_t> port = getPort(addressStr);
+
     // c. Connect and user service
     ENetAddress address;
-    enet_address_set_host(&address, IPAddress().c_str());
-    address.port = GamePort;
+    enet_address_set_host(&address, ipAddress.c_str());
+    address.port = port.value_or(GamePort);
 
     ENetPeer* pPeer;
     pPeer = enet_host_connect(pHost_, &address, 2, 0);
@@ -471,7 +475,6 @@ void NetINetwork::updateSessions()
         NETWORK_STREAM("NetINetwork::updateSessions() sessions before call " << sessions_.size() << std::endl);
         PRE(isValidNoRecord());
         sessions_.clear();
-        sessions_.push_back(std::make_unique<NetAppSessionUid>("game"));
         RecRecorder::instance().recordingAllowed(true);
     }
 
@@ -672,12 +675,12 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionName& appSessionName)
     NetNetwork::Sessions::const_iterator i = sessions_.begin();
     NetNetwork::Sessions::const_iterator j = sessions_.end();
 
-    while (i != j && ! found)
-    {
-        if ((*i)->appSessionName() == appSessionName)
-            found = true;
-        ++i;
-    }
+    // while (i != j && ! found)
+    // {
+    //     if ((*i)->appSessionName() == appSessionName)
+    //         found = true;
+    //     ++i;
+    // }
 
     POST(isValidNoRecord());
 
