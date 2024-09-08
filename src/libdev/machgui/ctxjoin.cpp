@@ -420,12 +420,14 @@ bool MachGuiCtxJoin::okayToSwitchContext()
                         pStartupScreens_->startupData()->playerName()))
                 {
                     pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETSESSIONERROR);
+                    NetNetwork::instance().resetStatus();
                     return false;
                 }
 
             if (NetNetwork::currentStatus() != NetNetwork::NETNET_OK)
             {
                 pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(NetNetwork::currentStatus()));
+                NetNetwork::instance().resetStatus();
                 return false;
             }
             // Reset join game incase player cancels "I'm Ready" context and wants to join a different game.
