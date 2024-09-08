@@ -311,8 +311,13 @@ SysRegistry::setValue(SysRegistry::KeyHandle key, const std::string& valueName, 
             if (a->first_attribute()->value() == valueName)
             {
                 rapidxml::xml_node<>* real_thing = a->first_node();
-                if (real_thing != nullptr // these checks just demonstrate that
-                    && real_thing->next_sibling() == nullptr // it is there and how it is located
+                if (real_thing == nullptr)
+                {
+                    a->value(node_value);
+                }
+                else if (
+                    // these checks just demonstrate that
+                    real_thing->next_sibling() == nullptr // it is there and how it is located
                     && real_thing->type() == rapidxml::node_data) // when element does contain text data
                 {
                     real_thing->value(node_value);
