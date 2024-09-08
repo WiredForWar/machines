@@ -10,20 +10,16 @@ class NetIRecorder;
 class NetAppSessionUid
 {
 public:
-    NetAppUid appUid() const;
-    NetAppInstanceUid appInstanceUid() const;
     const NetAppSessionName& appSessionName() const;
 
     ///////////////////////////////
-    NetAppSessionUid operator=(const NetAppSessionUid&);
+    NetAppSessionUid& operator=(const NetAppSessionUid&) = default;
 
-    NetAppSessionUid(const NetAppSessionUid&);
+    NetAppSessionUid(const NetAppSessionUid&) = default;
 
-    NetAppSessionUid(NetAppUid, NetAppInstanceUid, const NetAppSessionName&);
+    NetAppSessionUid(const NetAppSessionName& name);
 
 private:
-    NetAppUid appUid_;
-    NetAppInstanceUid appInstanceUid_;
     NetAppSessionName appSessionName_;
 
     friend bool operator==(const NetAppSessionUid& lhs, const NetAppSessionUid& rhs);

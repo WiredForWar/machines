@@ -7,12 +7,10 @@ set(NETWORK_SOURCES
     comport.hpp
     compound.cpp
     internal/compound.hpp
-    internal/mapping.hpp
     internal/netinet.hpp
     internal/nodei.hpp
     internal/recorder.hpp
     internal/sessioni.hpp
-    mapping.cpp
     message.cpp
     message.hpp
     messbody.cpp

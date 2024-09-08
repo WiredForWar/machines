@@ -1,37 +1,14 @@
 #include "network/sessuid.hpp"
+
 #include <cstring>
-
-#include "network/internal/mapping.hpp"
-
-NetAppSessionUid::NetAppSessionUid(const NetAppSessionUid& copyMe)
-    : appUid_(copyMe.appUid_)
-    , appInstanceUid_(copyMe.appInstanceUid_)
-    , appSessionName_(copyMe.appSessionName_)
-{
-}
-
-NetAppUid NetAppSessionUid::appUid() const
-{
-    return appUid_;
-}
-
-NetAppInstanceUid NetAppSessionUid::appInstanceUid() const
-{
-    return appInstanceUid_;
-}
 
 const NetAppSessionName& NetAppSessionUid::appSessionName() const
 {
     return appSessionName_;
 }
 
-NetAppSessionUid::NetAppSessionUid(
-    NetAppUid appUid,
-    NetAppInstanceUid appInstanceUid,
-    const NetAppSessionName& appSessionName)
-    : appUid_(appUid)
-    , appInstanceUid_(appInstanceUid)
-    , appSessionName_(appSessionName)
+NetAppSessionUid::NetAppSessionUid(const NetAppSessionName& name)
+    : appSessionName_(name)
 {
 }
 
@@ -39,12 +16,6 @@ NetAppSessionUid::NetAppSessionUid(
 NetAppSessionUid::NetAppSessionUid(uint8* buffer)
 {
     size_t index = 0;
-
-    memcpy(&appUid_, &buffer[index], sizeof(appUid_));
-    index += sizeof(appUid_);
-
-    memcpy(&appInstanceUid_, &buffer[index], sizeof(appInstanceUid_));
-    index += sizeof(appInstanceUid_);
 
     size_t length;
     memcpy(&length, &buffer[index], sizeof(length));
@@ -60,32 +31,14 @@ NetAppSessionUid::NetAppSessionUid(uint8* buffer)
     POST(index == rawBufferSize());
 }
 
-NetAppSessionUid NetAppSessionUid::operator=(const NetAppSessionUid& rhs)
-{
-    if (&rhs != this)
-    {
-        appUid_ = rhs.appUid_;
-        appInstanceUid_ = rhs.appInstanceUid_;
-        appSessionName_ = rhs.appSessionName_;
-    }
-    return (*this);
-}
-
 bool operator==(const NetAppSessionUid& lhs, const NetAppSessionUid& rhs)
 {
-    if (NetMappings::mapUnsignedtoGUID(lhs.appUid_) == NetMappings::mapUnsignedtoGUID(rhs.appUid_) &&
-
-        NetMappings::mapUnsignedtoGUID(lhs.appInstanceUid_) == NetMappings::mapUnsignedtoGUID(rhs.appInstanceUid_) &&
-
-        lhs.appSessionName_ == rhs.appSessionName_)
-        return true;
-
-    return false;
+    return lhs.appSessionName_ == rhs.appSessionName_;
 }
 
 size_t NetAppSessionUid::rawBufferSize() const
 {
-    const size_t size = sizeof(appUid_) + sizeof(appInstanceUid_) + sizeof(size_t) + appSessionName_.length();
+    const size_t size = sizeof(std::size_t) + appSessionName_.length();
 
     return size;
 }
@@ -95,13 +48,7 @@ void NetAppSessionUid::rawBuffer(uint8* buffer) const
 {
     size_t index = 0;
 
-    memcpy(&buffer[index], &appUid_, sizeof(appUid_));
-    index += sizeof(appUid_);
-
-    memcpy(&buffer[index], &appInstanceUid_, sizeof(appInstanceUid_));
-    index += sizeof(appInstanceUid_);
-
-    const size_t length = appSessionName_.length();
+    const std::size_t length = appSessionName_.length();
     memcpy(&buffer[index], &length, sizeof(length));
     index += sizeof(length);
 

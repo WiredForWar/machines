@@ -10,7 +10,6 @@
 #include "network/session.hpp"
 #include "network/messbody.hpp"
 
-#include "network/internal/mapping.hpp"
 #include "network/internal/netinet.hpp"
 
 #define MAXNAMELEN 200

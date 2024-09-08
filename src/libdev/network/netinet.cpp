@@ -15,7 +15,6 @@
 #include "network/sysmess.hpp"
 
 #include "network/internal/sessioni.hpp"
-#include "network/internal/mapping.hpp"
 #include "network/internal/recorder.hpp"
 #include "network/internal/compound.hpp"
 
@@ -472,7 +471,7 @@ void NetINetwork::updateSessions()
         NETWORK_STREAM("NetINetwork::updateSessions() sessions before call " << sessions_.size() << std::endl);
         PRE(isValidNoRecord());
         sessions_.clear();
-        sessions_.push_back(std::make_unique<NetAppSessionUid>(0, 0, "game"));
+        sessions_.push_back(std::make_unique<NetAppSessionUid>("game"));
         RecRecorder::instance().recordingAllowed(true);
     }
 
