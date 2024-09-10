@@ -43,8 +43,6 @@ private:
     virtual bool activate();
     bool clientStartup() override;
 
-    void moveObject(W4dEntity* pObject);
-
     // Allow a derived class to override this and provide a window size.
     // This shouldn't be necessary when DevDisplay works with Win95 & D3D.
     virtual void getWindowSize(int& ox, int& oy, int& w, int& h);

@@ -46,8 +46,6 @@ private:
     void checkForCameraChange(const DevButtonEvent&);
     void checkForQuit(const DevButtonEvent&);
 
-    void moveObject(W4dEntity* pObject);
-
     SysPathName planetPath(const string& planetName, const string& texName, RenTexManager::PathNames* pSearchList);
     void readEnvironment(const string& planetName);
 

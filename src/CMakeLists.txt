@@ -19,7 +19,7 @@ set(MACHINES_SOURCES
     projects/machines/leaktrak.cpp
     projects/machines/leaktrak.hpp
     projects/machines/loadplan.cpp
-    projects/machines/motion.cpp
+
     projects/machines/scrndump.cpp
     projects/machines/scrndump.hpp
     projects/machines/sdlapp.cpp
@@ -71,7 +71,7 @@ set(PLANETED_SOURCES
     projects/planeted/leaktrak.hpp
     projects/planeted/mapbmp.cpp
     projects/planeted/mapbmp.hpp
-    projects/planeted/motion.cpp
+
     projects/planeted/mpreload.cpp
     projects/planeted/mpreload.hpp
     projects/planeted/obstacle.cpp
