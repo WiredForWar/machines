@@ -128,58 +128,27 @@ void MachGuiSingleSelectionListBoxItem::unselect()
 // virtual
 void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
-    if (isSelected())
+    const Gui::Coord textPos(
+        absoluteBoundary().minCorner().x(),
+        absoluteBoundary().minCorner().y());
+
+    GuiBmpFont textFont = isSelected() ? getUnderlineFont() : (isHighlighted() ? getHighlightFont() : getFont());
+
+    if (isSelected() || isHighlighted())
     {
+        const Gui::Box itemBox(0, 0, width(), height() - 1);
+
         if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
-            GuiPainter::instance().blit(
-                MachGui::longYellowGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
-                absoluteBoundary().minCorner());
+            GuiPainter::instance().blit(MachGui::longYellowGlowBmp(), itemBox, absoluteBoundary().minCorner());
         }
         else
         {
-            GuiPainter::instance().blit(
-                MachGui::longGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
-                absoluteBoundary().minCorner());
+            GuiPainter::instance().blit(MachGui::longGlowBmp(), itemBox, absoluteBoundary().minCorner());
         }
+    }
 
-        getUnderlineFont().drawText(
-            text_,
-            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
-            static_cast<int>(width()));
-    }
-    else if (isHighlighted())
-    {
-        if (pMyListBox_ && pMyListBox_->isFocusControl())
-        {
-            GuiPainter::instance().blit(
-                MachGui::longYellowGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
-                absoluteBoundary().minCorner());
-        }
-        else
-        {
-            GuiPainter::instance().blit(
-                MachGui::longGlowBmp(),
-                Gui::Box(0, 0, width(), height() - 1),
-                absoluteBoundary().minCorner());
-        }
-
-        getHighlightFont().drawText(
-            text_,
-            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
-            static_cast<int>(width()));
-    }
-    else
-    {
-        // Draw list box item text
-        getFont().drawText(
-            text_,
-            Gui::Coord(absoluteBoundary().minCorner().x() + 1, absoluteBoundary().minCorner().y() + 1),
-            static_cast<int>(width()));
-    }
+    textFont.drawText(text_, textPos, static_cast<int>(width()));
 }
 
 bool MachGuiSingleSelectionListBoxItem::isHighlighted() const
