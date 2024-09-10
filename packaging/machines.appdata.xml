@@ -33,6 +33,7 @@
     </content_rating>
     <releases>
         <release date="2024-02-21" version="1.7.0"/>
+        <release date="2024-09-10" version="1.7.1"/>
     </releases>
     <url type="homepage">https://wiredforwar.github.io/</url>
     <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
