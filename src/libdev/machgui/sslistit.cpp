@@ -129,14 +129,14 @@ void MachGuiSingleSelectionListBoxItem::unselect()
 void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
     const Gui::Coord textPos(
-        absoluteBoundary().minCorner().x(),
-        absoluteBoundary().minCorner().y());
+        absoluteBoundary().minCorner().x() + 1 * Gui::uiScaleFactor(),
+        absoluteBoundary().minCorner().y() + 1 * Gui::uiScaleFactor());
 
     GuiBmpFont textFont = isSelected() ? getUnderlineFont() : (isHighlighted() ? getHighlightFont() : getFont());
 
     if (isSelected() || isHighlighted())
     {
-        const Gui::Box itemBox(0, 0, width(), height() - 1);
+        const Gui::Box itemBox(0, 0, width(), height() - 1 * Gui::uiScaleFactor());
 
         if (pMyListBox_ && pMyListBox_->isFocusControl())
         {
