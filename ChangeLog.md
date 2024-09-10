@@ -15,6 +15,7 @@ Current dev build (to be released as v1.7.1):
 - Actor name in the panel description now respectes the HW level (e.g. now it names 'Scout' as 'Scout' rather than 'Grunt')
 - Increased the number of drawn tiles (fixes missing terrain textures)
 - Fixed interaction with the world on 4k screens
+- Fixed Windows-specific issue with DPI scaling enabled
 - Fixed Alt+A and Alt+S hotkeys
 - Fixed prompt message on a lab hovered
 - Fixed incorrect game resolution until the player opens the options menu for the first time
