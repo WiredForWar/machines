@@ -109,7 +109,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     GuiResourceString connectionType(IDS_MENULB_CONNECTIONTYPE);
 
     size_t startY = 123 * MachGui::menuScaleFactor();
-    int startX = 61 * MachGui::menuScaleFactor();
+    int startX = 62 * MachGui::menuScaleFactor();
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(

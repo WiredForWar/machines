@@ -188,7 +188,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     pCancelBtn->escapeControl(true);
 
     // Chat window...
-    pChatWindow_ = new MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(30, 113, 345, 322) * MachGui::menuScaleFactor());
+    pChatWindow_ = new MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(31, 113, 345, 322) * MachGui::menuScaleFactor());
 
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
 
