@@ -52,7 +52,10 @@ void AfxSdlApp::testPrint(const char*) const
 
 bool AfxSdlApp::OSStartup()
 {
-    initLogger();
+    if (loggingEnabled_)
+    {
+        initLogger();
+    }
 
     {
         SDL_version v;
@@ -98,8 +101,7 @@ bool AfxSdlApp::recreateWindow()
 
     if (pWindow_ == nullptr)
     {
-        std::cerr << "Error: can't create window: " << SDL_GetError() << std::endl;
-        std::cout << "Error: can't create window: " << SDL_GetError() << std::endl;
+        spdlog::error("Unable to create a window: {}", SDL_GetError());
         return false;
     }
 
@@ -198,6 +200,7 @@ void AfxSdlApp::initLogger()
     catch (const spdlog::spdlog_ex& ex)
     {
         std::cout << "Log init failed: " << ex.what() << std::endl;
+        loggingEnabled_ = false;
     }
 
     spdlog::set_default_logger(logger);

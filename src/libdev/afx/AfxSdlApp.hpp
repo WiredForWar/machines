@@ -20,6 +20,7 @@ public:
 
     void testPrint(const char*) const override;
 
+    bool isLoggingEnabled() const { return loggingEnabled_; }
     void setLoggingEnabled(bool enabled);
 
 protected:

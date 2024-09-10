@@ -2,6 +2,8 @@
 
 #include "MachinesVersion.hpp"
 
+#include "spdlog/spdlog.h"
+
 #include <SDL.h>
 
 int main(int argc, char* argv[])
@@ -20,6 +22,10 @@ int main(int argc, char* argv[])
     }
     catch (std::exception const& e)
     {
+        if (app.isLoggingEnabled())
+        {
+            spdlog::critical("Fatal error (unhandled exception). Message: {}", e.what());
+        }
         SDL_ShowSimpleMessageBox(
             SDL_MESSAGEBOX_ERROR,
             "Crash",
