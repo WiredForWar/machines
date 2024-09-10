@@ -569,7 +569,7 @@ const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(Update update)
         else
         {
             NetNetwork::ProtocolMap* pAvailableProtocols = &availableProtocols;
-            pAvailableProtocols->insert("UDP connection for IP v4", NetNetwork::NetworkProtocol::UDP);
+            pAvailableProtocols->insert("LAN Game (UDP connection for IP v4)", NetNetwork::NetworkProtocol::UDP);
 
             if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             {
