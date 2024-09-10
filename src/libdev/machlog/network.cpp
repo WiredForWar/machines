@@ -297,8 +297,6 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     CB_MachLogNetwork_DEPIMPL();
 
     PRE(protocolChosen_);
-    isNetworkGame_ = true;
-    isNodeLogicalHost_ = true;
     NetNetwork::instance().createAppSession(gameName);
     //  DWORD dwNameSize = 200;
     //  char szSessionName[200];
@@ -307,6 +305,11 @@ bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::s
     NetNetwork::instance().setLocalPlayerName(playerName);
     //  pNode_ = new NetNode(name);
     //  pNode_->useCompoundMessaging( true );
+    if (NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
+    {
+        isNetworkGame_ = true;
+        isNodeLogicalHost_ = true;
+    }
     return true;
 }
 

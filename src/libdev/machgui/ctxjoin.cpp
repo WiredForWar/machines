@@ -375,6 +375,14 @@ bool MachGuiCtxJoin::okayToSwitchContext()
             MachLogNetwork::instance().hostWithSessionId(
                 pStartupScreens_->startupData()->newGameName(),
                 pStartupScreens_->startupData()->playerName());
+
+            if (NetNetwork::currentStatus() != NetNetwork::NETNET_OK)
+            {
+                pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(NetNetwork::currentStatus()));
+                NetNetwork::instance().resetStatus();
+                return false;
+            }
+
             pStartupScreens_->startupData()->hostGame(true);
 
             return true;
