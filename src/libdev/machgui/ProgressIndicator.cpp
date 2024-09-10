@@ -33,18 +33,21 @@ size_t ProgressIndicator::report(size_t done, size_t maxDone)
     // For double buffering do it twice to prevent bar from blinking
     RenDevice::current()->frontSurface().filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
     // If the game session has come out prematurely then the network connection may have been reset.
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        MachLogNetwork::instance().update();
-        SysWindowsAPI::sleep(0);
-        SysWindowsAPI::peekMessage();
-        // network game _may_ have come out on update above.
-        /*              if( MachLogNetwork::instance().isNetworkGame() and
-        MachLogNetwork::instance().node().lastPingAllTime() > 1 )
-        {
-            MachLogNetwork::instance().node().pingAll();
-        }*/
-    }
+
+    // Incoming net message can reference something which is not-loaded-yet (e.g. a Race)
+    // Comment out the net updates for now.
+    // if (MachLogNetwork::instance().isNetworkGame())
+    // {
+    //     MachLogNetwork::instance().update();
+    //     SysWindowsAPI::sleep(0);
+    //     SysWindowsAPI::peekMessage();
+    //     // network game _may_ have come out on update above.
+    //     /*              if( MachLogNetwork::instance().isNetworkGame() and
+    //     MachLogNetwork::instance().node().lastPingAllTime() > 1 )
+    //     {
+    //         MachLogNetwork::instance().node().pingAll();
+    //     }*/
+    // }
     lastDone_ = done;
 
     return static_cast<double>(maxDone) / 50.0;
