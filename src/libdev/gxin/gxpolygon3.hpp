@@ -74,8 +74,8 @@ private:
     bool noVertexColored() const;
 
     ctl_vector<GXPolyVert3> vertices_;
-    UCHAR flag_;
-    USHORT flag2_;
+    UCHAR flag_{};
+    USHORT flag2_{};
 
     // color_ does not exist in file format,
     // but get it from vertices_ if they have same color

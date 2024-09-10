@@ -26,8 +26,6 @@
 
 PedArtefactEditor::PedArtefactEditor()
     : PedActorEditor("artefact")
-    , pSelectedArtefact_(nullptr)
-    , artefactIndex_(0)
 {
     initialiseActors();
     TEST_INVARIANT;
@@ -54,7 +52,7 @@ void PedArtefactEditor::CLASS_INVARIANT
 void PedArtefactEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     PedActorEditor::processInput(devButtonEvent);
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
         if (devButtonEvent.scanCode() == DevKey::KEY_L)
         {
@@ -64,25 +62,25 @@ void PedArtefactEditor::processInput(const DevButtonEvent& devButtonEvent)
         {
             processRotation(false);
         }
-        else if (devButtonEvent.scanCode() == DevKey::KEY_J and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == DevKey::KEY_J && !devButtonEvent.wasShiftPressed())
         {
             processHeightChange(1);
         }
-        else if (devButtonEvent.scanCode() == DevKey::KEY_J and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == DevKey::KEY_J && devButtonEvent.wasShiftPressed())
         {
             processHeightChange(10);
         }
-        else if (devButtonEvent.scanCode() == DevKey::KEY_N and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == DevKey::KEY_N && !devButtonEvent.wasShiftPressed())
         {
             processHeightChange(-1);
         }
-        else if (devButtonEvent.scanCode() == DevKey::KEY_N and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == DevKey::KEY_N && devButtonEvent.wasShiftPressed())
         {
             processHeightChange(-10);
         }
     }
-    if (devButtonEvent.scanCode() == DevKey::KEY_3 and not devButtonEvent.wasShiftPressed()
-        and devButtonEvent.wasCtrlPressed())
+    if (devButtonEvent.scanCode() == DevKey::KEY_3 && !devButtonEvent.wasShiftPressed()
+        && devButtonEvent.wasCtrlPressed())
     {
         processHide(hidden_);
     }
@@ -117,7 +115,7 @@ void PedArtefactEditor::displayKeyboardCtrls()
 // virtual
 void PedArtefactEditor::readScnFile(PedScenarioFile& scenarioFile)
 {
-    if ((scenarioFile.arfFilename().c_str() != "") and (scenarioFile.arfFilename().existsAsFile()))
+    if (!scenarioFile.arfFilename().pathname().empty() && scenarioFile.arfFilename().existsAsFile())
     {
         readArfFile(scenarioFile.arfFilename());
         PedScenarioFile::Artefacts artefacts = scenarioFile.artefacts();
@@ -230,8 +228,8 @@ void PedArtefactEditor::processSelection()
         {
             // If artefact is being selected for first time, or an artefact has been selected, but it is a different one
             // to the one now selected
-            if (((actor->id() == PedActorEditor::ARTEFACT) and (not alreadySelected_))
-                or ((actor->id() == PedActorEditor::ARTEFACT) and (alreadySelected_) and (actor != pSelectedArtefact_)))
+            if (((actor->id() == PedActorEditor::ARTEFACT) && (!alreadySelected_))
+                || ((actor->id() == PedActorEditor::ARTEFACT) && alreadySelected_ && (actor != pSelectedArtefact_)))
             {
                 // actor is a artefact of some sort
                 pSelectedArtefact_ = actor; // Safe since we know entity is a Artefact
@@ -242,7 +240,7 @@ void PedArtefactEditor::processSelection()
                 alreadySelected_ = true;
             }
             // if artefact is being selected for second time, signal ok to drag
-            else if ((actor->id() == PedActorEditor::ARTEFACT) and (alreadySelected_) and (actor == pSelectedArtefact_))
+            else if ((actor->id() == PedActorEditor::ARTEFACT) && alreadySelected_ && (actor == pSelectedArtefact_))
             {
                 pSelectedArtefact_->solid(W4dEntity::NOT_SOLID);
                 mouseDrag_ = true;
@@ -270,7 +268,7 @@ void PedArtefactEditor::processRotation(bool clockwise)
         MexDegrees orientation = (clockwise) ? -90 : 90;
         map.orientation_ += orientation;
         MATHEX_SCALAR result = map.orientation_.asScalar();
-        if ((result > 270) or (result < -270))
+        if ((result > 270) || (result < -270))
             map.orientation_ = 0;
         *(index.row_) = map;
         MexTransform3d rotateTransform = pSelectedArtefact_->localTransform();
@@ -311,7 +309,7 @@ void PedArtefactEditor::processHide(bool hidden)
 {
     for (ArtefactTable::iterator col = artefacts_.begin(); col != artefacts_.end(); col++)
         for (ArtefactGroup::iterator row = (*col).begin(); row != (*col).end(); row++)
-            (*row).artefact_->visible(not hidden);
+            (*row).artefact_->visible(!hidden);
     PedActorEditor::processHide(hidden);
 }
 
@@ -520,7 +518,7 @@ string PedArtefactEditor::tileToKey(const MachPhysTerrainTile& terrainTile)
     bool done = false;
     string returnKey = "";
 
-    while (not parser.finished() and not done)
+    while (!parser.finished() && !done)
     {
         ASSERT(parser.tokens().size() == 3, "");
         SysPathName artefactFile(parser.tokens()[1]);

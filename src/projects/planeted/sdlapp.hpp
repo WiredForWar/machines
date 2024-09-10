@@ -59,18 +59,20 @@ private:
 
     int winWidth_, winHeight_;
     double runTime_;
-    MachLogPlanet* pPlanet_;
-    RenDisplay* pDisplay_;
-    W4dRoot* pRoot_;
-    W4dSceneManager* manager_;
-    bool showPosition_, showCurrentMachine_, showMemory_;
-    bool aShowRace_[4];
-    bool initialised_;
+    MachLogPlanet* pPlanet_{};
+    RenDisplay* pDisplay_{};
+    W4dRoot* pRoot_{};
+    W4dSceneManager* manager_ {};
+    bool showPosition_{};
+    bool showCurrentMachine_{};
+    bool showMemory_{};
+    bool aShowRace_[4]{};
+    bool initialised_{};
     DevTimer keyTimer_;
     DevTimer finishTimer_;
     string loadScenario_;
     string loadArtefact_;
-    EnvPlanetEnvironment* pEnvironment_;
+    EnvPlanetEnvironment* pEnvironment_{};
 };
 
 #endif

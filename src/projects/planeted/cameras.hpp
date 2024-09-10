@@ -180,22 +180,22 @@ private:
     void restoreCamera(const CameraSave&);
 
     // Data members...
-    DevKeyToCommandTranslator* pKeyTranslator_;
-    PhysGroundFlyControl* pGroundControl_;
-    PhysFlyControl* pFreeControl_;
-    PhysFlyControl* pEyeControl_;
-    PhysZenithFlyControl* pZenithControl_;
-    PhysZenithFlyControl* pSuperHighZenithControl_;
-    MachLogCamera* pEyeCamera_;
-    MachLogCamera* pFreeCamera_;
-    MachLogCamera* pGroundCamera_;
-    MachLogCamera* pZenithCamera_;
-    MachLogCamera* pSuperHighZenithCamera_;
-    MachLogCamera* pCurrentCamera_;
-    W4dSceneManager* pSceneManager_;
-    W4dRoot* pRoot_;
-    size_t machineIndex_;
-    MachLogMachineThirdPerson* pThirdPerson_;
+    DevKeyToCommandTranslator* pKeyTranslator_{};
+    PhysGroundFlyControl* pGroundControl_{};
+    PhysFlyControl* pFreeControl_{};
+    PhysFlyControl* pEyeControl_{};
+    PhysZenithFlyControl* pZenithControl_{};
+    PhysZenithFlyControl* pSuperHighZenithControl_{};
+    MachLogCamera* pEyeCamera_{};
+    MachLogCamera* pFreeCamera_{};
+    MachLogCamera* pGroundCamera_{};
+    MachLogCamera* pZenithCamera_{};
+    MachLogCamera* pSuperHighZenithCamera_{};
+    MachLogCamera* pCurrentCamera_{};
+    W4dSceneManager* pSceneManager_{};
+    W4dRoot* pRoot_{};
+    std::size_t machineIndex_{};
+    MachLogMachineThirdPerson* pThirdPerson_{};
     CameraSave save1_;
     CameraSave save2_;
     CameraSave save3_;

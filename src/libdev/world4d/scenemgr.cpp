@@ -62,26 +62,27 @@ private:
     //  W4dRoot* const      root_;
     //  Changed to non-const to allow the root to be updated after construction.
     //  This is necessary for persistence.
-    W4dRoot* root_;
-    W4dCamera* currentCamera_;
-    W4dDomainAssignor* domainAssignor_;
+    W4dRoot* root_{};
+    W4dCamera* currentCamera_{};
+    W4dDomainAssignor* domainAssignor_{};
 
     // Scene background stuff.
     bool clearBg_;
-    W4dRoot* bgRoot_;
-    W4dEnvironment* environment_;
+    W4dRoot* bgRoot_{};
+    W4dEnvironment* environment_{};
 
     //  Storage for pushed background details. One day this might
     //  be done using a stack, for the time being we'll pretend it's
     //  a stack that can only have one item on it.
-    bool itemsStacked_;
+    bool itemsStacked_{};
     bool stackClearBg_;
-    W4dRoot* pStackBgRoot_;
+    W4dRoot* pStackBgRoot_{};
     RenColour stackBackgroundColour_;
     int maxDomainRenderDepth_ = 0;
 
     // Rendering statistics stuff.
-    uint totalEntities_, totalDomains_;
+    uint totalEntities_{};
+    uint totalDomains_{};
 
     // There are two lists of lights, one that contains all the lights and
     // another which contains only the dynamic ones.
@@ -92,7 +93,7 @@ private:
     uint nGlobalLights_, nLocalLights_, nDynamicLights_;
 
     std::unique_ptr<RenDevice> const device_;
-    W4dCameraShake* pCameraShake_;
+    W4dCameraShake* pCameraShake_{};
 
     // set this to true if we want the complexity of the scene
     // to be adjusted so as to guarantee an almost constant frame rate
@@ -141,16 +142,8 @@ MATHEX_SCALAR W4dSceneManagerImpl::highEnoughFrameRateInit_ = 30;
 //////////////////////////////////////////////////////////////////////////////
 W4dSceneManagerImpl::W4dSceneManagerImpl(std::unique_ptr<RenDevice> pDevice, W4dRoot* root)
     : root_(root)
-    , currentCamera_(nullptr)
-    , bgRoot_(nullptr)
     , clearBg_(true)
-    , environment_(nullptr)
-    , totalEntities_(0)
-    , totalDomains_(0)
     , device_(std::move(pDevice))
-    , itemsStacked_(false)
-    , domainAssignor_(nullptr)
-    , pCameraShake_(nullptr)
     , requestedMinFrameRate_(requestedMinFrameRateInit_)
     , highEnoughFrameRate_(highEnoughFrameRateInit_)
     , dynamicLightsEnabled_(true)

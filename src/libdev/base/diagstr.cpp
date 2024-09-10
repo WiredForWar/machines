@@ -13,16 +13,7 @@
 #include "base/diag.hpp"
 #include <cstring>
 
-DiagStream::DiagStream()
-    : pDependantStream_(nullptr)
-    , pNextStream_(nullptr)
-    , exists_(false)
-    , append_(false)
-    , name_(nullptr)
-    , cout_(false)
-    , pWindowStream_(nullptr) ///
-{
-}
+DiagStream::DiagStream() = default;
 
 DiagStream::~DiagStream()
 {

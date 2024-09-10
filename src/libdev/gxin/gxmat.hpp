@@ -58,13 +58,13 @@ public:
 
 private:
     // does the textureId_ refer to a valid texture name ?
-    bool hasValidTexture_;
+    bool hasValidTexture_{};
     GXIdPos textureId_;
 
-    short transparancy_;
+    short transparancy_{};
 
     // true if all vertices have same color
-    bool hasOneColor_;
+    bool hasOneColor_{};
     GXColor diffuseColor_;
 };
 

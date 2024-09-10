@@ -30,19 +30,7 @@
 
 #include "utility/linetok.hpp"
 
-PedPolygonEditor::PedPolygonEditor()
-    : pHighlightVertex_(nullptr)
-    , pSelectedVertex_(nullptr)
-    , pSelectedPolygon_(nullptr)
-    , pSelectedPoint_(nullptr)
-    , pPastePolygon_(nullptr)
-    , mouseDrag_(false)
-    , hidePolygons_(false)
-    , flattenPolygons_(false)
-{
-
-    TEST_INVARIANT;
-}
+PedPolygonEditor::PedPolygonEditor() = default;
 
 PedPolygonEditor::~PedPolygonEditor()
 {

@@ -22,12 +22,10 @@ RenIMatManager& RenIMatManager::instance()
 
 RenIMatManager::RenIMatManager()
     : bodies_(new Bodies)
-    , unusedBodies_(new Bodies)
     , defaultBody_(new RenIMatBody)
-    , nullSlots_(0)
+    , unusedBodies_(new Bodies)
     , minPriority_(SHRT_MAX)
     , maxPriority_(SHRT_MIN)
-    , globalMaterialXform_(nullptr)
 {
     PRE(Ren::initialised());
     ASSERT(bodies_, "Out of memory");

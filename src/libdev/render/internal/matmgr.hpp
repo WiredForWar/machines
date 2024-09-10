@@ -79,12 +79,12 @@ private:
 
     Bodies* bodies_;
     RenIMatBody* defaultBody_;
-    uint32_t nullSlots_;
+    uint32_t nullSlots_{};
     Bodies* unusedBodies_; // Temporary cache of unused bodies
     short minPriority_, maxPriority_;
 
     // If this is set, it will be applied to all materials before rendering.
-    const RenMaterialTransform* globalMaterialXform_;
+    const RenMaterialTransform* globalMaterialXform_{};
 
     // Operations deliberately revoked
     RenIMatManager();

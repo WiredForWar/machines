@@ -97,8 +97,8 @@ private:
         {
         }
 
-        ArtefactGroup::iterator row_;
         ArtefactTable::iterator col_;
+        ArtefactGroup::iterator row_;
     };
 
     PedArtefactEditor(const PedArtefactEditor&);
@@ -123,10 +123,10 @@ private:
 
     // Artefact artefactData_;
 
-    W4dEntity* pSelectedArtefact_;
+    W4dEntity* pSelectedArtefact_{};
     W4dGenericRepository artefactStore_;
     ArtefactTable artefacts_;
-    uint artefactIndex_;
+    uint artefactIndex_{};
 
     SysPathName arfFileName_;
 };

@@ -7,14 +7,7 @@
 
 #include "gxin/gxmat.hpp"
 
-GXMat::GXMat()
-    : hasOneColor_(false)
-    , transparancy_(0)
-    , hasValidTexture_(false)
-{
-
-    TEST_INVARIANT;
-}
+GXMat::GXMat() = default;
 
 GXMat::~GXMat()
 {

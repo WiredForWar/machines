@@ -106,15 +106,15 @@ protected:
 
     // Data..
     string actorType_;
-    MachPhys::Race race_;
-    MachPhysMarker* pMarker_;
-    UtlLineTokeniser* pParser_;
+    MachPhys::Race race_{};
+    MachPhysMarker* pMarker_{};
+    UtlLineTokeniser* pParser_{};
 
-    bool mouseDrag_;
-    bool hidden_;
-    bool alreadySelected_;
+    bool mouseDrag_{};
+    bool hidden_{};
+    bool alreadySelected_{};
 
-    wdebug* errors;
+    wdebug* errors{};
 
 private:
     void processDrop();
@@ -134,7 +134,7 @@ private:
     // PRE( pSceneManager_ != NULL )
 
     // Data...
-    PedVertexMarker* pVertexMarker_;
+    PedVertexMarker* pVertexMarker_{};
 };
 
 #endif

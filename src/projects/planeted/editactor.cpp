@@ -22,24 +22,14 @@
 #include "planeted/vetxmrkr.hpp"
 
 PedActorEditor::PedActorEditor(const string& actorType)
-    : pVertexMarker_(nullptr)
-    , actorType_(actorType)
-    , race_(MachPhys::RED)
-    , pMarker_(nullptr)
-    , pParser_(nullptr)
-    , mouseDrag_(false)
-    , hidden_(false)
-    , alreadySelected_(false)
-    , errors(nullptr)
+    : actorType_(actorType)
 {
-
     TEST_INVARIANT;
 }
 
 // virtual
 PedActorEditor::~PedActorEditor()
 {
-
     TEST_INVARIANT;
 }
 

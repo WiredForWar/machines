@@ -40,12 +40,8 @@ PedPlanetEditor& PedPlanetEditor::instance()
 }
 
 PedPlanetEditor::PedPlanetEditor()
-    : saved_(false)
-    , saveSuccessful_(false)
-    , dispKeyboardControls_(true)
+    : dispKeyboardControls_(true)
     , dispWarnings_(true)
-    , pPlanet_(nullptr)
-    , pSceneManager_(nullptr)
 {
     PedDomainEditor* pDomainMode = new PedDomainEditor();
     PedPortalEditor* pPortalMode = new PedPortalEditor();

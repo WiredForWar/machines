@@ -84,20 +84,22 @@ private:
 
     int winWidth_, winHeight_;
     double runTime_;
-    RenDisplay* pDisplay_;
-    W4dRoot* pRoot_;
-    W4dSceneManager* manager_;
-    MachKeyFocus* pKeyboardFocus_;
-    bool showPosition_, showCurrentMachine_, showMemory_;
-    bool aShowRace_[4];
-    bool initialised_;
+    RenDisplay* pDisplay_{};
+    W4dRoot* pRoot_{};
+    W4dSceneManager* manager_{};
+    MachKeyFocus* pKeyboardFocus_{};
+    bool showPosition_{};
+    bool showCurrentMachine_{};
+    bool showMemory_{};
+    bool aShowRace_[4]{};
+    bool initialised_{};
     DevTimer keyTimer_;
     DevTimer finishTimer_;
-    MachGuiStartupScreens* pStartupScreens_;
-    RenTextureSet* pTextureSet_;
+    MachGuiStartupScreens* pStartupScreens_{};
+    RenTextureSet* pTextureSet_{};
 
-    size_t savedSampleVolume_;
-    size_t savedCDVolume_;
+    size_t savedSampleVolume_{};
+    size_t savedCDVolume_{};
 };
 
 #endif

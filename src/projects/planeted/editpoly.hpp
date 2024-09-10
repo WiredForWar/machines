@@ -83,14 +83,14 @@ protected:
 
     // Data...
     Polygons polygons_;
-    PedVertexMarker* pHighlightVertex_;
-    PedVertexMarker* pSelectedVertex_;
-    PedPolygon* pSelectedPolygon_;
-    PedPolygon* pPastePolygon_;
-    MexPoint2d* pSelectedPoint_;
-    bool mouseDrag_;
-    bool hidePolygons_;
-    bool flattenPolygons_;
+    PedVertexMarker* pHighlightVertex_{};
+    PedVertexMarker* pSelectedVertex_{};
+    PedPolygon* pSelectedPolygon_{};
+    PedPolygon* pPastePolygon_{};
+    MexPoint2d* pSelectedPoint_{};
+    bool mouseDrag_{};
+    bool hidePolygons_{};
+    bool flattenPolygons_{};
     PolyVerticies copyVerticies_;
 
 private:

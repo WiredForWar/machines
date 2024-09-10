@@ -65,18 +65,7 @@ SDLApp::SDLApp(int argc, char* argv[])
     : AfxSdlApp(argc, argv)
     , winWidth_(400)
     , winHeight_(300)
-    , pDisplay_(nullptr)
-    , pRoot_(nullptr)
-    , pKeyboardFocus_(nullptr)
-    , manager_(nullptr)
-    , showMemory_(false)
-    , initialised_(false)
-    , pTextureSet_(nullptr)
-    , savedSampleVolume_(0)
-    , savedCDVolume_(0)
 {
-    for (int i = 0; i < 4; ++i)
-        aShowRace_[i] = false;
 }
 
 SDLApp::~SDLApp()

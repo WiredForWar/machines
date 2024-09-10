@@ -120,19 +120,9 @@ SDLApp::SDLApp(int argc, char* argv[])
     : AfxSdlApp(argc, argv)
     , winWidth_(400)
     , winHeight_(300)
-    , pPlanet_(nullptr)
-    , pDisplay_(nullptr)
-    , pRoot_(nullptr)
-    , manager_(nullptr)
     , loadScenario_("NONE")
     , loadArtefact_("")
-    , showMemory_(false)
-    , showCurrentMachine_(false)
-    , initialised_(false)
-    , pEnvironment_(nullptr)
 {
-    for (int i = 0; i < 4; ++i)
-        aShowRace_[i] = false;
 }
 
 SDLApp::~SDLApp()

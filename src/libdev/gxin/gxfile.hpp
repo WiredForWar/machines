@@ -223,11 +223,11 @@ private:
 
     static char numTypeChar_[8];
 
-    FILE* inFile_;
-    char currentLine_[LINESIZE]; // line buffer
-    ULONG sectionCount_;
-    short linePos_; // Current position in line buffer
-    uint32_t lineCount_;
+    FILE* inFile_{};
+    char currentLine_[LINESIZE]{}; // line buffer
+    ULONG sectionCount_{};
+    short linePos_{}; // Current position in line buffer
+    uint32_t lineCount_{};
 };
 
 #endif

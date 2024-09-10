@@ -8,10 +8,7 @@
 #include "gxin/gxpolygon3.hpp"
 
 GXPolygon3::GXPolygon3()
-    : flag_(0)
-    , flag2_(0)
 {
-
     mat_.hasOneColor(true);
 
     TEST_INVARIANT;
@@ -164,7 +161,7 @@ void GXPolygon3::setColorStatus()
         // the vertices are colored
 
         bool oneColorFound = true;
-        for (int i = 0; (i < vertices_.size() && oneColorFound); ++i)
+        for (std::size_t i = 0; (i < vertices_.size() && oneColorFound); ++i)
         {
             if (!(vertices_[i].color() == vertices_[0].color()))
             {
@@ -176,7 +173,7 @@ void GXPolygon3::setColorStatus()
         {
             // change the color status
             mat_.diffuseColor(vertices_[0].color());
-            for (int i = 0; i < vertices_.size(); i++)
+            for (std::size_t i = 0; i < vertices_.size(); i++)
             {
                 vertices_[i].hasColor(false);
             }

@@ -44,25 +44,7 @@ MachCameras& MachCameras::instance()
     return instance_;
 }
 
-MachCameras::MachCameras()
-    : machineIndex_(0)
-    , pThirdPerson_(nullptr)
-    , pCurrentCamera_(nullptr)
-    , pKeyTranslator_(nullptr)
-    , pGroundControl_(nullptr)
-    , pFreeControl_(nullptr)
-    , pZenithControl_(nullptr)
-    , pSuperHighZenithControl_(nullptr)
-    , pEyeControl_(nullptr)
-    , pGroundCamera_(nullptr)
-    , pFreeCamera_(nullptr)
-    , pZenithCamera_(nullptr)
-    , pSuperHighZenithCamera_(nullptr)
-    , pEyeCamera_(nullptr)
-    , pSceneManager_(nullptr)
-    , pRoot_(nullptr)
-{
-}
+MachCameras::MachCameras() = default;
 
 // NOTE This method must be called before any other public method
 void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)

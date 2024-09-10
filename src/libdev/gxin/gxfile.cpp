@@ -158,15 +158,7 @@ GXError GXFile::skipSection()
     return err;
 }
 
-GXFile::GXFile()
-    : sectionCount_(0)
-    , linePos_(0)
-    , lineCount_(0)
-    , inFile_(nullptr)
-{
-
-    TEST_INVARIANT;
-}
+GXFile::GXFile() = default;
 
 GXFile::~GXFile()
 {
@@ -232,7 +224,7 @@ GXError GXFile::readLine()
     void* temp = nullptr;
 
     PRE(isOpen());
-    POST_DATA(int oldLineCount = lineCount_);
+    POST_DATA(uint32_t oldLineCount = lineCount_);
 
     lineCount_++;
     temp = fgets(currentLine_, LINESIZE, inFile_);
@@ -290,7 +282,7 @@ GXError GXFile::skipSpaces()
                     return err;
                 }
             }
-        } while ((currentChar == '/'));
+        } while (currentChar == '/');
     } while (((currentChar == ' ') || (currentChar == 0x0A)) || (currentChar == 0x0D));
 
     linePos_--; // cannot be 0 because someone would enter with -1

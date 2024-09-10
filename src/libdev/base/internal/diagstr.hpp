@@ -77,15 +77,15 @@ private:
     std::ofstream ostr_;
     BaseAppendOstream appendOstr_;
 
-    bool exists_;
+    bool exists_{};
 
-    DiagStream* pDependantStream_;
-    DiagStream* pNextStream_;
-    bool append_;
-    bool cout_;
-    BaseWindowStream* pWindowStream_;
+    DiagStream* pDependantStream_{};
+    DiagStream* pNextStream_{};
+    bool append_{};
+    bool cout_{};
+    BaseWindowStream* pWindowStream_{};
 
-    char* name_;
+    char* name_{};
 
     DiagOstreamPrepend masterOstr_;
 };

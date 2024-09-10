@@ -95,8 +95,8 @@ MexPlane3d::MexPlane3d(const MexPlane3d& rhs)
     , b_(rhs.b_)
     , c_(rhs.c_)
     , d_(rhs.d_)
-    , normal_(rhs.normal_)
     , planeTransform_(rhs.planeTransform_)
+    , normal_(rhs.normal_)
 {
     // cout << endl << "mexplane3d const ctor  ";
     // cout << rhs << endl;

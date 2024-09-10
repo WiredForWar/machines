@@ -73,10 +73,10 @@ private:
     PedEditorMode* pCameraMode_;
 
     PedEditorMode* pCurrentMode_;
-    MachLogPlanet* pPlanet_;
-    W4dSceneManager* pSceneManager_;
-    bool saved_;
-    bool saveSuccessful_;
+    MachLogPlanet* pPlanet_{};
+    W4dSceneManager* pSceneManager_{};
+    bool saved_{};
+    bool saveSuccessful_{};
     bool dispKeyboardControls_;
     bool dispWarnings_;
     SysPathName cspFileName_;
