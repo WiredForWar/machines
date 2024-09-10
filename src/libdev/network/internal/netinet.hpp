@@ -157,7 +157,7 @@ private:
     void deinitServersDiscoverySocket();
     void sendLocalServersDiscoveryBroadcast();
     void acceptLocalServersReplies();
-    void initLocalServerDiscovery();
+    bool initLocalServerDiscovery();
     void deinitLocalServerDiscovery();
     void replyToServerDiscoveryRequests();
 

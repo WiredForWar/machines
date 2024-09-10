@@ -22,6 +22,7 @@
 
 #include "recorder/recorder.hpp"
 
+#include "system/Endian.hpp"
 #include "system/metafile.hpp"
 #include "system/metaistr.hpp"
 #include "system/registry.hpp"
@@ -34,15 +35,25 @@
 
 #define INITGUID
 
+static constexpr char DiscoveryMagic[4] = { 'W', 'F', 'W', '0' };
+static constexpr uint32_t DiscoveryVersion = 1;
 static constexpr uint16_t GamePort = 1234;
 // Port 30583 means Wired for War
 static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
 
 struct ServerReply
 {
-    char replyMagic[4]{};
+    char magic[sizeof(DiscoveryMagic)]{};
+    uint32_t version{};
     char serverName[64]{};
     uint16_t port{};
+};
+
+struct ClientRequest
+{
+    char magic[sizeof(DiscoveryMagic)]{};
+    uint32_t version{};
+    char message[16]{};
 };
 
 NetINetwork::~NetINetwork()
@@ -1276,14 +1287,25 @@ void NetINetwork::deinitServersDiscoverySocket()
 
 void NetINetwork::sendLocalServersDiscoveryBroadcast()
 {
+    if (lanDiscoveryClientSocket_ == ENET_SOCKET_NULL)
+        return;
+
+    ClientRequest request;
+    static_assert(sizeof(request.magic) == sizeof(DiscoveryMagic));
+    SDL_memcpy(request.magic, DiscoveryMagic, sizeof(DiscoveryMagic));
+    request.version = System::toBigEndian(DiscoveryVersion);
+    const char message[] = "DiscoverServers";
+    static_assert(sizeof(request.message) == sizeof(message));
+    SDL_memcpy(request.message, message, sizeof(message));
+
+    ENetBuffer sendbuf;
+    sendbuf.data = &request;
+    sendbuf.dataLength = sizeof(request);
+
     ENetAddress scanaddr;
     scanaddr.host = ENET_HOST_BROADCAST;
     scanaddr.port = LANServerDiscoveryPort;
-    // Send a dummy payload
-    char data[] = "WFW0.DiscoverServers";
-    ENetBuffer sendbuf;
-    sendbuf.data = data;
-    sendbuf.dataLength = std::size(data);
+
     if (enet_socket_send(lanDiscoveryClientSocket_, &scanaddr, &sendbuf, 1) != static_cast<int>(sendbuf.dataLength))
     {
         spdlog::warn("NetINetwork: Unable to send discovery broadcast");
@@ -1312,9 +1334,16 @@ void NetINetwork::acceptLocalServersReplies()
     char buf[256];
     enet_address_get_host_ip(&serverAddress, buf, sizeof buf);
 
-    if (recvlen != sizeof(reply))
+    if (recvlen != sizeof(ServerReply) || (SDL_memcmp(reply.magic, DiscoveryMagic, sizeof(DiscoveryMagic)) != 0))
     {
-        spdlog::warn("NetINetwork: Unexpected server reply from {}", buf);
+        spdlog::warn("NetINetwork: Unexpected reply from server {}", buf);
+        return;
+    }
+
+    const uint32_t replyVersion = System::fromBigEndian(reply.version);
+    if (replyVersion != DiscoveryVersion)
+    {
+        spdlog::warn("NetINetwork: Unexpected discovery reply version {}", replyVersion);
         return;
     }
 
@@ -1334,29 +1363,41 @@ void NetINetwork::acceptLocalServersReplies()
     });
 }
 
-void NetINetwork::initLocalServerDiscovery()
+bool NetINetwork::initLocalServerDiscovery()
 {
-    lanDiscoveryServerSocket_ = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
-    if (lanDiscoveryServerSocket_ == ENET_SOCKET_NULL)
+    if(lanDiscoveryServerSocket_ != ENET_SOCKET_NULL)
     {
-        spdlog::error("NetINetwork: Unable to create LAN server announce socket");
-        return;
+        spdlog::warn("NetINetwork: LAN discovery server socket already exists");
+        return false;
+    }
+
+    ENetSocket serverSocket = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
+    if (serverSocket == ENET_SOCKET_NULL)
+    {
+        spdlog::error("NetINetwork: Unable to create LAN discovery server socket");
+        return false;
     }
 
     ENetAddress listenaddr;
     listenaddr.host = ENET_HOST_ANY;
     listenaddr.port = LANServerDiscoveryPort;
-    if (enet_socket_bind(lanDiscoveryServerSocket_, &listenaddr) != 0)
+    if (enet_socket_bind(serverSocket, &listenaddr) != 0)
     {
-        fprintf(stderr, "Failed to bind listen socket\n");
-        return;
+        spdlog::error("NetINetwork: Unable to bind LAN discovery server socket");
+        enet_socket_destroy(serverSocket);
+        return false;
     }
-    if (enet_socket_get_address(lanDiscoveryServerSocket_, &listenaddr) != 0)
+    if (enet_socket_get_address(serverSocket, &listenaddr) != 0)
     {
-        fprintf(stderr, "Cannot get listen socket address\n");
-        return;
+        spdlog::error("NetINetwork: Unable to get LAN discovery server socket address");
+        enet_socket_shutdown(serverSocket, ENET_SOCKET_SHUTDOWN_READ_WRITE);
+        enet_socket_destroy(serverSocket);
+        return false;
     }
-    printf("Listening for scans on port %d\n", listenaddr.port);
+    spdlog::info("NetINetwork: Listening for scans on port {}", listenaddr.port);
+
+    lanDiscoveryServerSocket_ = serverSocket;
+    return true;
 }
 
 void NetINetwork::deinitLocalServerDiscovery()
@@ -1381,18 +1422,26 @@ void NetINetwork::replyToServerDiscoveryRequests()
     ENetAddress clientAddress;
 
     ENetBuffer recvbuf;
-    char recBuf[32];
-    recvbuf.data = &recBuf;
-    recvbuf.dataLength = sizeof(recBuf);
+    ClientRequest request;
+    recvbuf.data = &request;
+    recvbuf.dataLength = sizeof(request);
     const int recvlen = enet_socket_receive(lanDiscoveryServerSocket_, &clientAddress, &recvbuf, 1);
-    if (recvlen > 0)
+    if (recvlen != sizeof(ClientRequest) || (SDL_memcmp(request.magic, DiscoveryMagic, sizeof(DiscoveryMagic)) != 0))
     {
-        char buf[256];
-        enet_address_get_host_ip(&clientAddress, buf, sizeof buf);
-        printf("Replying to a client at %s:%d\n", recBuf, clientAddress.port);
+        spdlog::debug("NetINetwork: Invalid discovery request");
+        return;
+    }
+    const uint32_t reqVersion = System::fromBigEndian(request.version);
+    if (reqVersion != DiscoveryVersion)
+    {
+        spdlog::warn("NetINetwork: Unexpected discovery request version {}", reqVersion);
+        return;
     }
 
-    ServerReply reply { .replyMagic = { 'W', 'F', 'W', '0' } };
+    ServerReply reply;
+    static_assert(sizeof(reply.magic) == sizeof(DiscoveryMagic));
+    SDL_memcpy(reply.magic, DiscoveryMagic, sizeof(DiscoveryMagic));
+    reply.version = System::toBigEndian(DiscoveryVersion);
     gameName_.copy(reply.serverName, sizeof(reply.serverName) - 1);
     reply.port = pHost_->address.port;
 
