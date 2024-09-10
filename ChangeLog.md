@@ -3,6 +3,7 @@ Current dev build (to be released as v1.7.1):
 - Implemented recent events manager (to cycle through the positions of the last important events with SpaceBar key)
 - Implemented a following camera (click on the Actor in corral or double click the squadron key (<0-9>)
 - Implemented mouse grab (important for multi-display configurations)
+- Implemented LAN game discovery
 - Added Shift+<0-9> to add units to the squadron
 - Added the same type selection by Ctrl-click or double click
 - Shift+click now toggles selection
@@ -20,5 +21,6 @@ Current dev build (to be released as v1.7.1):
 - Fixed illumination on Desert map
 - Fixed the updating of the game load progress bar
 - Fixed Performance Options not loaded correctly
+- Fixed network desync which caused empty/invalid players list on join (client side)
 - Fixed a few crashes
 - A few more small fixes
