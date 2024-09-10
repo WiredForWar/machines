@@ -52,7 +52,6 @@ public:
     void setBroker(MachLogMessageBroker*);
     void update();
     int expectedPlayers() const;
-    bool syncSimCycles() const;
     bool simUpdateNeeded(MachPhys::Race) const;
     void simUpdateNeeded(MachPhys::Race, bool);
     bool simUpdateReceived(MachPhys::Race) const;

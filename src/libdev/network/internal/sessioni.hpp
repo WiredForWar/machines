@@ -9,8 +9,6 @@
 class NetIAppSession
 {
 public:
-    static NetAppSession::NetSessionStatus& currentStatus();
-
     const NetAppSessionUid& appSessionUid() const;
     const NetAppSessionName& appSessionName() const;
 

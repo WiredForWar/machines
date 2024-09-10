@@ -41,7 +41,6 @@ private:
     NetNode* pNode_;
     MachLogMessageBroker* pBroker_;
     bool readyStatus_[MachPhys::N_RACES];
-    bool syncSimCycles_;
     bool simUpdateReceived_[MachPhys::N_RACES];
     bool simUpdateNeeded_[MachPhys::N_RACES];
     int expectedPlayers_;
@@ -59,7 +58,6 @@ private:
     CB_DEPIMPL_AUTO(pNode_);                                                                                           \
     CB_DEPIMPL_AUTO(pBroker_);                                                                                         \
     CB_DEPIMPL_AUTO(readyStatus_);                                                                                     \
-    CB_DEPIMPL_AUTO(syncSimCycles_);                                                                                   \
     CB_DEPIMPL_AUTO(simUpdateReceived_);                                                                               \
     CB_DEPIMPL_AUTO(simUpdateNeeded_);                                                                                 \
     CB_DEPIMPL_AUTO(expectedPlayers_);                                                                                 \
