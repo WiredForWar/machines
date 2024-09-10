@@ -1,5 +1,6 @@
 
 set(SYSTEM_SOURCES
+    Endian.hpp
     SysInfo.cpp
     SysInfo.hpp
     filedata.cpp
