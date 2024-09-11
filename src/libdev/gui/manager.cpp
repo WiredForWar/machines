@@ -36,116 +36,108 @@ GuiManager& GuiManager::instance()
 
 //////////////////////////////////////////////////////////////////////
 
-using ScanCodes = ctl_list<DevEventQueue::ScanCode>;
-static ScanCodes& scanCodes()
-{
-    static ScanCodes s_;
-    if (s_.empty())
-    {
-        s_.push_back(DevKey::UP_ARROW_PAD);
-        s_.push_back(DevKey::DOWN_ARROW_PAD);
-        s_.push_back(DevKey::LEFT_ARROW_PAD);
-        s_.push_back(DevKey::RIGHT_ARROW_PAD);
-        s_.push_back(DevKey::ENTER_PAD);
-        s_.push_back(DevKey::INSERT_PAD);
-        s_.push_back(DevKey::DELETE_PAD);
-        s_.push_back(DevKey::HOME_PAD);
-        s_.push_back(DevKey::END_PAD);
-        s_.push_back(DevKey::PAGE_UP_PAD);
-        s_.push_back(DevKey::PAGE_DOWN_PAD);
-        s_.push_back(DevKey::FIVE_PAD);
-        s_.push_back(DevKey::ASTERISK_PAD);
-        s_.push_back(DevKey::FORWARD_SLASH_PAD);
-        s_.push_back(DevKey::PLUS_PAD);
-        s_.push_back(DevKey::MINUS_PAD);
-        s_.push_back(DevKey::PAD_0);
-        s_.push_back(DevKey::PAD_1);
-        s_.push_back(DevKey::PAD_2);
-        s_.push_back(DevKey::PAD_3);
-        s_.push_back(DevKey::PAD_4);
-        s_.push_back(DevKey::PAD_5);
-        s_.push_back(DevKey::PAD_6);
-        s_.push_back(DevKey::PAD_7);
-        s_.push_back(DevKey::PAD_8);
-        s_.push_back(DevKey::PAD_9);
-        s_.push_back(DevKey::SCROLL_LOCK);
-        s_.push_back(DevKey::BREAK);
-        s_.push_back(DevKey::RIGHT_CONTROL);
-        s_.push_back(DevKey::LEFT_CONTROL);
-        s_.push_back(DevKey::UP_ARROW);
-        s_.push_back(DevKey::DOWN_ARROW);
-        s_.push_back(DevKey::LEFT_ARROW);
-        s_.push_back(DevKey::RIGHT_ARROW);
-        s_.push_back(DevKey::INSERT);
-        s_.push_back(DevKey::KEY_DELETE);
-        s_.push_back(DevKey::HOME);
-        s_.push_back(DevKey::END);
-        s_.push_back(DevKey::PAGE_UP);
-        s_.push_back(DevKey::PAGE_DOWN);
-        s_.push_back(DevKey::ESCAPE);
-        s_.push_back(DevKey::ENTER);
-        s_.push_back(DevKey::SPACE);
-        s_.push_back(DevKey::BACK_SPACE);
-        s_.push_back(DevKey::TAB);
-        s_.push_back(DevKey::GRAVE);
-        s_.push_back(DevKey::LEFT_SHIFT);
-        s_.push_back(DevKey::RIGHT_SHIFT);
-        s_.push_back(DevKey::CAPS_LOCK);
-        s_.push_back(DevKey::NUM_LOCK);
-        s_.push_back(DevKey::F1);
-        s_.push_back(DevKey::F2);
-        s_.push_back(DevKey::F3);
-        s_.push_back(DevKey::F4);
-        s_.push_back(DevKey::F5);
-        s_.push_back(DevKey::F6);
-        s_.push_back(DevKey::F7);
-        s_.push_back(DevKey::F8);
-        s_.push_back(DevKey::F9);
-        s_.push_back(DevKey::F10);
-        s_.push_back(DevKey::F11);
-        s_.push_back(DevKey::F12);
-        s_.push_back(DevKey::KEY_A);
-        s_.push_back(DevKey::KEY_B);
-        s_.push_back(DevKey::KEY_C);
-        s_.push_back(DevKey::KEY_D);
-        s_.push_back(DevKey::KEY_E);
-        s_.push_back(DevKey::KEY_F);
-        s_.push_back(DevKey::KEY_G);
-        s_.push_back(DevKey::KEY_H);
-        s_.push_back(DevKey::KEY_I);
-        s_.push_back(DevKey::KEY_J);
-        s_.push_back(DevKey::KEY_K);
-        s_.push_back(DevKey::KEY_L);
-        s_.push_back(DevKey::KEY_M);
-        s_.push_back(DevKey::KEY_N);
-        s_.push_back(DevKey::KEY_O);
-        s_.push_back(DevKey::KEY_P);
-        s_.push_back(DevKey::KEY_Q);
-        s_.push_back(DevKey::KEY_R);
-        s_.push_back(DevKey::KEY_S);
-        s_.push_back(DevKey::KEY_T);
-        s_.push_back(DevKey::KEY_U);
-        s_.push_back(DevKey::KEY_V);
-        s_.push_back(DevKey::KEY_W);
-        s_.push_back(DevKey::KEY_X);
-        s_.push_back(DevKey::KEY_Y);
-        s_.push_back(DevKey::KEY_Z);
-        s_.push_back(DevKey::KEY_0);
-        s_.push_back(DevKey::KEY_1);
-        s_.push_back(DevKey::KEY_2);
-        s_.push_back(DevKey::KEY_3);
-        s_.push_back(DevKey::KEY_4);
-        s_.push_back(DevKey::KEY_5);
-        s_.push_back(DevKey::KEY_6);
-        s_.push_back(DevKey::KEY_7);
-        s_.push_back(DevKey::KEY_8);
-        s_.push_back(DevKey::KEY_9);
-        s_.push_back(DevKey::MOUSE_LEFT);
-        s_.push_back(DevKey::MOUSE_RIGHT);
-    }
-
-    return s_;
-}
+static constexpr DevEventQueue::ScanCode ScanCodes[] {
+    DevKey::UP_ARROW_PAD,
+    DevKey::DOWN_ARROW_PAD,
+    DevKey::LEFT_ARROW_PAD,
+    DevKey::RIGHT_ARROW_PAD,
+    DevKey::ENTER_PAD,
+    DevKey::INSERT_PAD,
+    DevKey::DELETE_PAD,
+    DevKey::HOME_PAD,
+    DevKey::END_PAD,
+    DevKey::PAGE_UP_PAD,
+    DevKey::PAGE_DOWN_PAD,
+    DevKey::FIVE_PAD,
+    DevKey::ASTERISK_PAD,
+    DevKey::FORWARD_SLASH_PAD,
+    DevKey::PLUS_PAD,
+    DevKey::MINUS_PAD,
+    DevKey::PAD_0,
+    DevKey::PAD_1,
+    DevKey::PAD_2,
+    DevKey::PAD_3,
+    DevKey::PAD_4,
+    DevKey::PAD_5,
+    DevKey::PAD_6,
+    DevKey::PAD_7,
+    DevKey::PAD_8,
+    DevKey::PAD_9,
+    DevKey::SCROLL_LOCK,
+    DevKey::BREAK,
+    DevKey::RIGHT_CONTROL,
+    DevKey::LEFT_CONTROL,
+    DevKey::UP_ARROW,
+    DevKey::DOWN_ARROW,
+    DevKey::LEFT_ARROW,
+    DevKey::RIGHT_ARROW,
+    DevKey::INSERT,
+    DevKey::KEY_DELETE,
+    DevKey::HOME,
+    DevKey::END,
+    DevKey::PAGE_UP,
+    DevKey::PAGE_DOWN,
+    DevKey::ESCAPE,
+    DevKey::ENTER,
+    DevKey::SPACE,
+    DevKey::BACK_SPACE,
+    DevKey::TAB,
+    DevKey::GRAVE,
+    DevKey::LEFT_SHIFT,
+    DevKey::RIGHT_SHIFT,
+    DevKey::CAPS_LOCK,
+    DevKey::NUM_LOCK,
+    DevKey::F1,
+    DevKey::F2,
+    DevKey::F3,
+    DevKey::F4,
+    DevKey::F5,
+    DevKey::F6,
+    DevKey::F7,
+    DevKey::F8,
+    DevKey::F9,
+    DevKey::F10,
+    DevKey::F11,
+    DevKey::F12,
+    DevKey::KEY_A,
+    DevKey::KEY_B,
+    DevKey::KEY_C,
+    DevKey::KEY_D,
+    DevKey::KEY_E,
+    DevKey::KEY_F,
+    DevKey::KEY_G,
+    DevKey::KEY_H,
+    DevKey::KEY_I,
+    DevKey::KEY_J,
+    DevKey::KEY_K,
+    DevKey::KEY_L,
+    DevKey::KEY_M,
+    DevKey::KEY_N,
+    DevKey::KEY_O,
+    DevKey::KEY_P,
+    DevKey::KEY_Q,
+    DevKey::KEY_R,
+    DevKey::KEY_S,
+    DevKey::KEY_T,
+    DevKey::KEY_U,
+    DevKey::KEY_V,
+    DevKey::KEY_W,
+    DevKey::KEY_X,
+    DevKey::KEY_Y,
+    DevKey::KEY_Z,
+    DevKey::KEY_0,
+    DevKey::KEY_1,
+    DevKey::KEY_2,
+    DevKey::KEY_3,
+    DevKey::KEY_4,
+    DevKey::KEY_5,
+    DevKey::KEY_6,
+    DevKey::KEY_7,
+    DevKey::KEY_8,
+    DevKey::KEY_9,
+    DevKey::MOUSE_LEFT,
+    DevKey::MOUSE_RIGHT,
+};
 
 //////////////////////////////////////////////////////////////////////
 
@@ -160,9 +152,10 @@ GuiManager::GuiManager()
     pKeyboardFocus_ = nullptr;
     pCharacterFocus_ = nullptr;
 
-    ScanCodes::const_iterator i = scanCodes().begin();
-    for (; i != scanCodes().end(); ++i)
-        DevEventQueue::instance().queueEvents(*i);
+    for (DevEventQueue::ScanCode code : ScanCodes)
+    {
+        DevEventQueue::instance().queueEvents(code);
+    }
 
     // Event Queue is explicity told to handle mouse wheel scrolling events
     DevEventQueue::instance().queueEvents(DevKey::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP);
