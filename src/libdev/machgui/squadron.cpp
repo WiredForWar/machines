@@ -5,7 +5,6 @@
 
 #include "mathex/point2d.hpp"
 #include "mathex/random.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machine.hpp"
 #include "machlog/races.hpp"
 #include "machlog/squad.hpp"
@@ -48,7 +47,7 @@ public:
     void update()
     {
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race race = races.pcController().race();
+        MachPhys::Race race = races.playerRace();
         MachLogSquadron* pSquadron = races.squadrons(race)[squadNum_];
         numInSquad_ = pSquadron->machines().size();
         noCommander_ = true;
@@ -441,7 +440,7 @@ bool MachGuiSquadronBank::processButtonEvent(const DevButtonEvent& buttonEvent)
 void MachGuiSquadronBank::createSquad(size_t squadIndex)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
 
     // Form the selected items into a squadron.
     // First clear the existing squadron.
@@ -477,7 +476,7 @@ void MachGuiSquadronBank::createSquad(size_t squadIndex)
 void MachGuiSquadronBank::addToSquad(size_t squadIndex)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
 
     // Add the selected items into a squadron.
     MachLogSquadron* pSquadron = races.squadrons(race)[squadIndex];
@@ -505,7 +504,7 @@ void MachGuiSquadronBank::addToSquad(size_t squadIndex)
 void MachGuiSquadronBank::selectSquad(size_t squadIndex)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
 
     if (selectedSquad_ == squadIndex)
     {
@@ -620,7 +619,7 @@ void MachGuiSquadronBankIcon::loadGame()
 {
     // Start observing squadron X (1 - 10).
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
     MachLogSquadron* pSquadron = races.squadrons(race)[squadronIndex_];
     pSquadron->attach(this);
 }
@@ -681,7 +680,7 @@ void MachGuiSquadronBankIcon::doBeReleased(const GuiMouseEvent&)
     // Check context for action
     MachGui::ControlPanelContext context = pInGameScreen_->currentContext();
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
 
     switch (context)
     {
@@ -790,7 +789,7 @@ void MachGuiSquadronBankIcon::doDisplayInteriorEnabled(const Gui::Coord& abs)
 void MachGuiSquadronBankIcon::update()
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
     MachLogSquadron* pSquadron = races.squadrons(race)[squadronIndex_];
     numInSquad_ = pSquadron->machines().size();
 

@@ -12,7 +12,6 @@
 #include "device/butevent.hpp"
 
 #include "machlog/actor.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
 #include "machlog/move.hpp"
@@ -59,7 +58,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiTransportCommand& t)
 // virtual
 void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
-    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
+    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
 
     // Check for a building or machine
     if ((pActor->objectType() == MachLog::MINE && pActor->asMine().worthVisiting())
@@ -160,7 +159,7 @@ MachGui::Cursor2dType MachGuiTransportCommand::cursorOnTerrain(const MexPoint3d&
 // virtual
 MachGui::Cursor2dType MachGuiTransportCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
-    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
+    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
 
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 

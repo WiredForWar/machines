@@ -12,7 +12,6 @@
 #include "machgui/command.hpp"
 #include "gui/restring.hpp"
 #include "machlog/machlog.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/consitem.hpp"
 #include "machphys/machphys.hpp"
@@ -31,7 +30,7 @@ MachConstructionSelectIcon::MachConstructionSelectIcon(
             consItem.subType(),
             consItem.hwLevel(),
             consItem.weaponCombo(),
-            MachLogRaces::instance().pcController().race())))
+            MachLogRaces::instance().playerRace())))
     , pInGameScreen_(pInGameScreen)
     , consItem_(consItem)
 {

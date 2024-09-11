@@ -13,7 +13,6 @@
 #include "machgui/ingame.hpp"
 #include "machgui/controlp.hpp"
 #include "machgui/prodbank.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/factory.hpp"
 #include "machlog/races.hpp"
 #include "machlog/restree.hpp"
@@ -33,7 +32,7 @@ MachBuildMenuIcons::MachBuildMenuIcons(
         MachBuildMachineIcon::reqWidth(),
         MachBuildMachineIcon::reqHeight(),
         3)
-    , MachLogNotifiable(MachLogRaces::instance().pcController().race())
+    , MachLogNotifiable(MachLogRaces::instance().playerRace())
     , // What race is the PC controller controlling?
     researchTree_(MachLogRaces::instance().researchTree())
     , pInGameScreen_(pInGameScreen_)

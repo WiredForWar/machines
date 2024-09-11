@@ -14,7 +14,6 @@
 #include "machgui/ingame.hpp"
 #include "system/pathname.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/squad.hpp"
 #include "ctl/pvector.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -115,7 +114,7 @@ void MachMachinesIcon::refresh()
 {
     // Get the values and update the dials
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     size_t newValue = races.nMachines(playerRace);
     setCounterValue(newValue);
@@ -184,7 +183,7 @@ void MachConstructionsIcon::forceUp()
 void MachConstructionsIcon::refresh()
 {
     const MachLogRaces& races = MachLogRaces::instance();
-    const MachPhys::Race playerRace = races.pcController().race();
+    const MachPhys::Race playerRace = races.playerRace();
     setCounterValue(races.nConstructions(playerRace));
 }
 
@@ -240,7 +239,7 @@ void MachSquadronIcon::doBeReleased(const GuiMouseEvent&)
 void MachSquadronIcon::update()
 {
     const MachLogRaces& races = MachLogRaces::instance();
-    const MachPhys::Race race = races.pcController().race();
+    const MachPhys::Race race = races.playerRace();
 
     size_t newValue = 0;
     for (MachLogSquadron* pSquadron : races.squadrons(race))
@@ -281,7 +280,7 @@ string MachGuiIconWithCounter::getRootDirectory() const
 
     if (MachLogRaces::instance().hasPCRace())
     {
-        switch (MachLogRaces::instance().pcController().race())
+        switch (MachLogRaces::instance().playerRace())
         {
             case MachPhys::RED:
                 break;
@@ -294,7 +293,7 @@ string MachGuiIconWithCounter::getRootDirectory() const
             case MachPhys::YELLOW:
                 retValue = "gui/navigate/yellow/";
                 break;
-                DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().pcController().race());
+                DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().playerRace());
         }
     }
 

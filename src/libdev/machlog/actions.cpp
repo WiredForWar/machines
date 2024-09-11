@@ -41,9 +41,9 @@
 #include "machlog/actflag.hpp"
 #include "machlog/acttasks.hpp"
 
+#include "machlog/cntrl.hpp"
 #include "machlog/vmman.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/network.hpp"
 #include "machlog/stats.hpp"
 
@@ -372,18 +372,18 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
     // create disabled in network games as we have to allow for the connection time before we start checking for
     // win/lost
     MachLogAllOtherRacesUnitsDeadCondition* pAllOthersDead
-        = new MachLogAllOtherRacesUnitsDeadCondition("dynamic_all_other_races_dead", races.pcController().race());
+        = new MachLogAllOtherRacesUnitsDeadCondition("dynamic_all_other_races_dead", races.playerRace());
     MachLogWinAction* pWin
-        = MachLogWinAction::newDynamic(pAllOthersDead, ! createEnableActions, races.pcController().race());
+        = MachLogWinAction::newDynamic(pAllOthersDead, ! createEnableActions, races.playerRace());
     SimManager::instance().addAction(pWin);
     pWin->enabled(! createEnableActions);
     // create an all dead condition and attach it to a lost action for the pcControlled race
     // create disabled in network games as we have to allow for the connection time before we start checking for
     // win/lost
     MachLogAllUnitsDeadCondition* pAllDead
-        = new MachLogAllUnitsDeadCondition("dynamic_all_dead", races.pcController().race());
+        = new MachLogAllUnitsDeadCondition("dynamic_all_dead", races.playerRace());
     MachLogLostAction* pLost
-        = MachLogLostAction::newDynamic(pAllDead, ! createEnableActions, races.pcController().race());
+        = MachLogLostAction::newDynamic(pAllDead, ! createEnableActions, races.playerRace());
     SimManager::instance().addAction(pLost);
     pLost->enabled(! createEnableActions);
 
@@ -408,12 +408,12 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                 // create a LOW_UNIT_COUNT on the POD and a LOST action to go with it.
                 MachLogLowUnitCountCondition* pLUC = new MachLogLowUnitCountCondition(
                     "dynamic_low_unit_count",
-                    races.pcController().race(),
+                    races.playerRace(),
                     MachLog::POD,
                     1,
                     0);
                 MachLogLostAction* pPodLost
-                    = MachLogLostAction::newDynamic(pLUC, ! createEnableActions, races.pcController().race());
+                    = MachLogLostAction::newDynamic(pLUC, ! createEnableActions, races.playerRace());
                 SimManager::instance().addAction(pPodLost);
                 pPodLost->enabled(! createEnableActions);
                 if (createEnableActions)
@@ -475,7 +475,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                 // gameData
                 MachLogTimerCondition* pTimer = new MachLogTimerCondition("dynamic_timer", timerFireDelay);
                 MachLogWinOrLoseAction* pWinOrLose
-                    = MachLogWinOrLoseAction::newDynamic(pTimer, ! createEnableActions, races.pcController().race());
+                    = MachLogWinOrLoseAction::newDynamic(pTimer, ! createEnableActions, races.playerRace());
                 SimManager::instance().addAction(pWinOrLose);
                 pWinOrLose->enabled(! createEnableActions);
                 if (createEnableActions)

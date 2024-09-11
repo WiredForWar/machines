@@ -2120,7 +2120,13 @@ bool MachLogRaces::hasPCRace() const
     return pDataImpl_->thePCController_ != nullptr;
 }
 
-MachLogPCController& MachLogRaces::pcController() const
+MachPhys::Race MachLogRaces::playerRace() const
+{
+    PRE(hasPCRace());
+    return pcController().race();
+}
+
+MachLogController& MachLogRaces::pcController() const
 {
     PRE(hasPCRace());
 

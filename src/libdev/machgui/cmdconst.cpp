@@ -37,7 +37,6 @@
 #include "machlog/administ.hpp"
 #include "machlog/races.hpp"
 #include "machlog/cntrl.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mcmotseq.hpp"
 #include "machlog/mine.hpp"
@@ -124,9 +123,9 @@ void MachGuiConstructCommand::pickOnTerrain(
         const MachLogRaces& races = MachLogRaces::instance();
 
         // If the location is valid we can place the construction
-        if (locationIsValid_ || races.nBuildingMaterialUnits(races.pcController().race()) < 5)
+        if (locationIsValid_ || races.nBuildingMaterialUnits(races.playerRace()) < 5)
         {
-            if (races.nBuildingMaterialUnits(races.pcController().race()) >= 5)
+            if (races.nBuildingMaterialUnits(races.playerRace()) >= 5)
             {
                 placeConstruction();
 
@@ -145,7 +144,7 @@ void MachGuiConstructCommand::pickOnTerrain(
                 // 'fraid ya don't have the dosh, darlin'.........
                 MachLogVoiceMailManager::instance().postNewMail(
                     VID_POD_INSUFFICIENT_BMUS,
-                    MachLogRaces::instance().pcController().race());
+                    MachLogRaces::instance().playerRace());
             }
         }
     }
@@ -325,7 +324,7 @@ MachGuiConstructCommand::cursorOnActor(MachActor* pActor, bool ctrlPressed, bool
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check for a pick on fristd::endly incomplete construction
     if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
@@ -350,8 +349,6 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
 
     // Get the race for the player
     MachLogRaces& races = MachLogRaces::instance();
-    MachLogPCController& controller = races.pcController();
-    MachPhys::Race playerRace = controller.race();
 
     // Delete any existing model
     delete pPhysConstruction_;
@@ -363,7 +360,7 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
         level,
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        playerRace);
+        races.playerRace());
 
     // save the pads original transforms
     pPhysConstruction_->savePadsTransforms();
@@ -406,14 +403,14 @@ bool MachGuiConstructCommand::isValidPosition()
     const MachLogRaces& races = MachLogRaces::instance();
 
     // Check to see if we have reached max units
-    if (races.maxUnitsExist(races.pcController().race()))
+    if (races.maxUnitsExist(races.playerRace()))
     {
         invalidPosReason_ = MAXUNITS;
         return false;
     }
 
     // Check that player has enough cash to place building
-    if (races.nBuildingMaterialUnits(races.pcController().race()) < 5)
+    if (races.nBuildingMaterialUnits(races.playerRace()) < 5)
     {
         invalidPosReason_ = NOTENOUGHCASH;
         return false;
@@ -512,11 +509,11 @@ bool MachGuiConstructCommand::isValidPosition()
 void MachGuiConstructCommand::placeConstruction()
 {
     PRE(locationIsValid_);
-    PRE(MachLogRaces::instance().nBuildingMaterialUnits(MachLogRaces::instance().pcController().race()) >= 5);
+    PRE(MachLogRaces::instance().nBuildingMaterialUnits(MachLogRaces::instance().playerRace()) >= 5);
 
     // Get the race and race process for the player
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
     MachLogRace& playerColony = races.race(playerRace);
 
     // Construct the logical building

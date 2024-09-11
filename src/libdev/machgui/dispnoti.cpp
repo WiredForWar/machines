@@ -11,8 +11,8 @@
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
 #include "machgui/chatmsgs.hpp"
+#include "machlog/cntrl.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machgui/internal/strings.hpp"
 
 MachGuiDispositionChangeNotifiable::MachGuiDispositionChangeNotifiable(MachGuiStartupScreens* pStartupScreens)
@@ -71,7 +71,7 @@ void MachGuiDispositionChangeNotifiable::doDisplay(GuiResourceString::Id id, Mac
 {
     if (pStartupScreens_->gameType() == MachGuiStartupScreens::MULTIGAME)
     {
-        MachPhys::Race pcsRace = MachLogRaces::instance().pcController().race();
+        MachPhys::Race pcsRace = MachLogRaces::instance().playerRace();
 
         bool bothRacesAreAI = MachLogRaces::instance().controller(race1).type() == MachLogController::AI_CONTROLLER
             && MachLogRaces::instance().controller(race2).type() == MachLogController::AI_CONTROLLER;

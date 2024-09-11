@@ -12,7 +12,6 @@
 #include "machphys/mphydata.hpp"
 
 #include "machlog/actor.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/ionweap.hpp"
 #include "machlog/ionbeam.hpp"
 #include "machlog/race.hpp"

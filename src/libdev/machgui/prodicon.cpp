@@ -97,7 +97,6 @@ Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary(
 //////
 
 #include "machlog/produnit.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
@@ -115,7 +114,7 @@ MachProductionIcon::MachProductionIcon(
             pProductionUnit->subType(),
             pProductionUnit->hwLevel(),
             pProductionUnit->weaponCombo(),
-            MachLogRaces::instance().pcController().race())),
+            MachLogRaces::instance().playerRace())),
         index)
     , pInGameScreen_(pInGameScreen)
     , subType_(pProductionUnit->subType())
@@ -241,7 +240,7 @@ void MachProductionIcon::displayCursorPromptText()
     prompt += ", " + percentCompleteText.asString();
 
     // Max units reached?
-    if (MachLogRaces::instance().maxUnitsExist(MachLogRaces::instance().pcController().race()))
+    if (MachLogRaces::instance().maxUnitsExist(MachLogRaces::instance().playerRace()))
     {
         GuiResourceString maxUnitsText(IDS_PRODUCTIONMAXUNITS);
         prompt += ". " + maxUnitsText.asString();

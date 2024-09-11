@@ -101,7 +101,6 @@ inline constexpr bool cDemoVersion =
 #include "machlog/network.hpp"
 #include "machlog/stats.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/creatdat.hpp"
 #include "machlog/p1remman.hpp"
 #include "machlog/score.hpp"
@@ -2440,7 +2439,7 @@ void MachGuiStartupScreens::contextVictory()
         MachGuiDbPlayer& player = MachGuiDatabase::instance().currentPlayer();
         MachGuiDbPlayerScenario& playerScenarioInfo = player.playerScenario(startupData()->scenario());
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
         int score = MachLogRaces::instance().score(playerRace).grossScore();
         playerScenarioInfo.upDate(true, score);
 
@@ -2490,7 +2489,7 @@ void MachGuiStartupScreens::contextDefeat()
         MachGuiDbPlayer& player = MachGuiDatabase::instance().currentPlayer();
         MachGuiDbPlayerScenario& playerScenarioInfo = player.playerScenario(startupData()->scenario());
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
         int score = MachLogRaces::instance().score(playerRace).grossScore();
         playerScenarioInfo.upDate(false, score);
         MachGuiDatabase::instance().writeDatabase();

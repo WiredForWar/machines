@@ -72,7 +72,6 @@
 
 #include "machlog/machlog.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/factory.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/hwlab.hpp"
@@ -936,7 +935,7 @@ void MachInGameScreen::highlightActor(MachActor* pHighlightActor)
 bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     if (pActor->objectIsMachine() && pActor->race() == playerRace)
     {
@@ -1048,7 +1047,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
 {
     bool processed = false;
     char buffer[20];
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Display incomplete construction info
     if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
@@ -1210,7 +1209,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     CB_DEPIMPL_AUTO(pPromptTextActor_);
 
     GuiResourceString::Id stringId = 0;
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
     GuiString weaponName;
 
     if (pActor->race() == playerRace && MachLogActorStringIdRestorer::isExceptionToRule(pActor, &stringId))
@@ -1357,7 +1356,7 @@ void MachInGameScreen::asynchronousUpdate()
         // be visible.
         MachLogRaces& races = MachLogRaces::instance();
         bool forceInvisible = selectedActors_.size() == 0 || ! races.hasPCRace()
-            || selectedActors_.front()->race() != races.pcController().race();
+            || selectedActors_.front()->race() != races.playerRace();
 
         for (const auto& pCommand : allCommands_)
         {
@@ -1795,7 +1794,7 @@ void MachInGameScreen::mainMenuOrSingleFactoryContext()
     MachLogRaces& races = MachLogRaces::instance();
     if (selectionSet.size() == 1 && // Only consider when one actor selected
         races.hasPCRace() && // PC race must exist
-        selectionSet.front()->race() == races.pcController().race()) // factory must belong to PC race
+        selectionSet.front()->race() == races.playerRace()) // factory must belong to PC race
     {
         if (selectionSet.front()->objectType() == MachLog::FACTORY) // actor is factory
         {
@@ -2190,7 +2189,7 @@ void MachInGameScreen::setupActorBank()
     CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Get the fristd::endly race id
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // check for a single selected actor, and get its pointer
     MachActor* pSelectedActor = (selectedActors_.size() == 1 ? selectedActors_.front() : nullptr);
@@ -2554,7 +2553,7 @@ void MachInGameScreen::updateGameState()
 
     if (gameState_ == PLAYING) // Only interested in switching the state if the game has not yet been won/lost
     {
-        MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+        MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
         if (MachLogRaces::instance().hasLost(playerRace))
         {
             // Keep host working on until ctrl is pressed TODO: another elegant solution?
@@ -3041,7 +3040,7 @@ void MachInGameScreen::updateCorralState()
         bool someFriendly = false;
         bool someEnemy = false;
 
-        MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+        MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
         if (selectedActors_.size() == 1)
         {

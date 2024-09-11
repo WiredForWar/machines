@@ -25,7 +25,6 @@
 #include "machlog/apc.hpp"
 #include "machlog/rescarr.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 
 #include "machgui/cmdmove.hpp"
 #include "machgui/ingame.hpp"
@@ -71,7 +70,7 @@ MachGui::Cursor2dType MachGuiIntelligentCursorOnActor::cursorType(
     pInGameScreen_ = pInGameScreen;
     pCursorActor_ = pActorUnderCursor;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     bool isActorPlayersRace
         = (MachLogRaces::instance().dispositionToRace(playerRace, pSelectedActor->race()) == MachLogRaces::OUR_RACE);
@@ -148,7 +147,7 @@ MachLogTypeRestorer::ProcessAsSubtype MachGuiIntelligentCursorOnActor::doDefault
 
     MachLogRaces& races = MachLogRaces::instance();
 
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
     bool isPlayersRace = playerRace == pCursorActor_->race();
 
     // Get the operand type

@@ -27,7 +27,6 @@
 #include "machlog/aggressr.hpp"
 #include "machlog/administ.hpp"
 #include "machlog/cntrl.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/missilem.hpp"
 #include "machlog/pod.hpp"
 #include "machlog/races.hpp"
@@ -268,7 +267,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
             if (! okayToAttack)
                 found = false;
         }
-        else if (pActor->insideBuilding() && pActor->race() == races.pcController().race())
+        else if (pActor->insideBuilding() && pActor->race() == races.playerRace())
         {
             // player race machines shouldn't leave buildings of their own volition to attack targets outside
             found = false;
@@ -1941,7 +1940,7 @@ bool MachLogCanAttack::recruitableToAttack(const MachActor& potentialTarget) con
 
     // pc race machines inside a building don't respond to SOS calls targetting enemies outside that building
     if (pMe_->objectIsMachine() && pMe_->asMachine().insideBuilding()
-        && pMe_->race() == MachLogRaces::instance().pcController().race()
+        && pMe_->race() == MachLogRaces::instance().playerRace()
         && !(
             potentialTarget.objectIsMachine() && potentialTarget.asMachine().insideBuilding()
             && potentialTarget.asMachine().insideWhichBuilding().id() == pMe_->asMachine().insideWhichBuilding().id()))

@@ -16,7 +16,6 @@
 #include "machlog/machine.hpp"
 #include "machlog/constron.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/rescarr.hpp"
 #include "machlog/technici.hpp"
@@ -101,7 +100,7 @@ public:
             }
 
             MachLogRaces& races = MachLogRaces::instance();
-            MachPhys::Race playerRace = races.pcController().race();
+            MachPhys::Race playerRace = races.playerRace();
 
             // Iterate through all machines inside building selecting fristd::endly machines
             const MachLogConstruction* pConstConstruction = pConstruction_;
@@ -305,7 +304,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
         string concat = iconInfo.asString();
         concat += "\n";
 
-        MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+        MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
         if (pActor_->objectIsConstruction() && ! pActor_->asConstruction().isComplete())
         {
@@ -598,7 +597,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                 else
                 {
                     MachLogRaces& races = MachLogRaces::instance();
-                    MachPhys::Race playerRace = races.pcController().race();
+                    MachPhys::Race playerRace = races.playerRace();
 
                     if ( pActor->race() == playerRace )
                     {
@@ -626,7 +625,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                 // Only make "select all inside building" button visible if there are fristd::endly
                 // machines in the building
                 bool friendlyMachineInside = false;
-                MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+                MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
                 for (MachLogConstruction::Machines::const_iterator iter = construction.machines().begin();
                      iter != construction.machines().end() && ! friendlyMachineInside;
@@ -646,7 +645,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
         }
         else if (pActor->objectIsMachine())
         {
-            MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+            MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
             pSelectInsideBuildingIcon_->isVisible(false);
 

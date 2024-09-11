@@ -22,24 +22,13 @@
 #include "machgui/machnav.hpp"
 
 #include "machlog/apc.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/aggressr.hpp"
-#include "machlog/beacon.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/construc.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/factory.hpp"
-#include "machlog/garrison.hpp"
-#include "machlog/geolocat.hpp"
-#include "machlog/hwlab.hpp"
 #include "machlog/machvman.hpp"
-#include "machlog/mine.hpp"
-#include "machlog/missilem.hpp"
 #include "machlog/races.hpp"
 #include "machlog/rescarr.hpp"
-#include "machlog/smelter.hpp"
 #include "machlog/spy.hpp"
-#include "machlog/technici.hpp"
 #include "machlog/vmman.hpp"
 #include "machlog/pod.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -321,7 +310,7 @@ void MachCorralIcons::add(MachActor* pActor)
     new MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_);
 
     // note that "selected" voicemail is only given in the case of the first actor put into the corral
-    if (pActor->objectIsMachine() && pActor->race() == MachLogRaces::instance().pcController().race()
+    if (pActor->objectIsMachine() && pActor->race() == MachLogRaces::instance().playerRace()
         && pCorral_->actors_.size() == 1)
     {
         // give voicemail
@@ -375,7 +364,7 @@ size_t MachCorralIcons::reqHeight(MachInGameScreen* pInGameScreen)
 
 MachPhys::Race MachGuiCorral::race() const
 {
-    return MachLogRaces::instance().pcController().race();
+    return MachLogRaces::instance().playerRace();
 }
 
 MachGuiCorral::Actors& MachGuiCorral::actors()

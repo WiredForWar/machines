@@ -34,7 +34,6 @@
 #include "machlog/missilem.hpp"
 #include "machlog/planet.hpp"
 #include "machlog/plandoms.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/p1remman.hpp"
 #include "machlog/stats.hpp"
 
@@ -924,7 +923,7 @@ void MachLogMessageBroker::sendReadyMessage()
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = READY_CODE;
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
-    pReadyMessage->race_ = MachLogRaces::instance().pcController().race();
+    pReadyMessage->race_ = MachLogRaces::instance().playerRace();
     doSend(pMessage);
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendReadyMessage DONE " << std::endl);
 }
@@ -1242,7 +1241,7 @@ void MachLogMessageBroker::sendStartGameMessage()
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = START_GAME_CODE;
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
-    pReadyMessage->race_ = MachLogRaces::instance().pcController().race();
+    pReadyMessage->race_ = MachLogRaces::instance().playerRace();
     doSend(pMessage);
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendReadyMessage DONE " << std::endl);
 }

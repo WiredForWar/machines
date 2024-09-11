@@ -2,7 +2,6 @@
 #include "machlog/MachLog1stPersonActiveSquad.hpp"
 
 #include "ctl/pvector.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/administ.hpp"
 #include "machphys/genedata.hpp"
@@ -116,7 +115,7 @@ void MachLog1stPersonActiveSquadron::issueMoveCommand(const MexPoint3d& destinat
 void MachLog1stPersonActiveSquadron::setActiveSquadron(size_t squadIndex)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race race = races.pcController().race();
+    MachPhys::Race race = races.playerRace();
 
     // Optionally set the squad so that empty ones may skipped over by player
     auto squad = races.squadrons(race)[squadIndex];

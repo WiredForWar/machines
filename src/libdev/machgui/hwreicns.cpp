@@ -11,7 +11,6 @@
 #include "machgui/gui.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/controlp.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/hwlab.hpp"
 #include "machlog/races.hpp"
 #include "machlog/resitem.hpp"
@@ -35,7 +34,7 @@ MachHWResearchIcons::MachHWResearchIcons(
         MachHWResearchIcon::reqWidth(),
         MachHWResearchIcon::reqHeight(),
         3)
-    , MachLogNotifiable(MachLogRaces::instance().pcController().race())
+    , MachLogNotifiable(MachLogRaces::instance().playerRace())
     , pHWResearchBank_(pHWResearchBank)
     , pHardwareLab_(pHardwareLab)
     , pInGameScreen_(pInGameScreen)

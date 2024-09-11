@@ -12,7 +12,6 @@
 #include "machgui/gui.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/controlp.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/constree.hpp"
 #include "machlog/consitem.hpp"
 #include "machlog/machlog.hpp"
@@ -30,7 +29,7 @@ MachConstructMenuIcons::MachConstructMenuIcons(
         MachConstructionSelectIcon::reqWidth(),
         MachConstructionSelectIcon::reqHeight(),
         3)
-    , MachLogNotifiable(MachLogRaces::instance().pcController().race())
+    , MachLogNotifiable(MachLogRaces::instance().playerRace())
     , // What race is the PC controller controlling?
     consTree_(MachLogRaces::instance().constructionTree())
     , pInGameScreen_(pInGameScreen)

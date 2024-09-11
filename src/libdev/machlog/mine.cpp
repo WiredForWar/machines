@@ -18,7 +18,6 @@
 #include "machphys/smeldata.hpp"
 #include "machphys/mphydata.hpp"
 
-// #include "machlog/cntrl_pc.hpp"
 #include "machlog/dyingent.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/messbrok.hpp"

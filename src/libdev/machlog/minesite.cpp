@@ -12,7 +12,6 @@
 #include "mathex/point2d.hpp"
 
 #include "machlog/actmaker.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/messbrok.hpp"
 #include "machlog/mine.hpp"
 #include "machlog/network.hpp"
@@ -151,13 +150,13 @@ void MachLogMineralSite::setOre(MachPhys::BuildingMaterialUnits amountOfOre)
                         {
                             // need to give voicemail if appropriate.
                             if (! pcPlayerHadMineUsingThis
-                                && mine.race() == MachLogRaces::instance().pcController().race())
+                                && mine.race() == MachLogRaces::instance().playerRace())
                             {
                                 pcPlayerHadMineUsingThis = true;
                                 MachLogVoiceMailManager::instance().postNewMail(
                                     VID_POD_MINERALS_EXHAUSTED,
                                     position_,
-                                    MachLogRaces::instance().pcController().race());
+                                    MachLogRaces::instance().playerRace());
                             }
                             mine.mineralSiteIsExhausted();
                         }

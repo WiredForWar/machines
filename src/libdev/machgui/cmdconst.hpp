@@ -144,7 +144,7 @@ private:
     // Place a new construction at specified location
     void placeConstruction();
     // PRE( locationIsValid_ );
-    // PRE( MachLogRaces::instance().nBuildingMaterialUnits( MachLogRaces::instance().pcController().race() ) >= 5 );
+    // PRE( MachLogRaces::instance().nBuildingMaterialUnits( MachLogRaces::instance().playerRace() ) >= 5 );
 
     // Determines which way it faces. Orientation is MexDegrees( 90 * orientation_ )
     static int& orientation();

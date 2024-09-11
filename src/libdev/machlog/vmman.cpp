@@ -14,14 +14,12 @@
 #include "machphys/random.hpp"
 
 #include "machlog/RecentEventsManager.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/vmdata.hpp"
 #include "machlog/internal/vminfo.hpp"
 #include "machlog/internal/vmail.hpp"
 #include "machlog/internal/vmmani.hpp"
 
-#include "sim/manager.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
 #include "utility/linetok.hpp"
@@ -323,7 +321,7 @@ bool MachLogVoiceMailManager::canPostMailForRace(MachPhys::Race targetRace) cons
     if (!voiceMailsActivated() || !acceptMailPostings_)
         return false;
 
-    if (!MachLogRaces::instance().hasPCRace() || targetRace != MachLogRaces::instance().pcController().race())
+    if (!MachLogRaces::instance().hasPCRace() || targetRace != MachLogRaces::instance().playerRace())
         return false;
 
     return true;
@@ -431,7 +429,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
     CB_MachLogVoiceMailManager_DEPIMPL();
 
     if (voiceMailsActivated() && acceptMailPostings_ && MachLogRaces::instance().hasPCRace()
-        && targetRace == MachLogRaces::instance().pcController().race())
+        && targetRace == MachLogRaces::instance().playerRace())
     {
 
         bool finished = false;

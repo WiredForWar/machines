@@ -21,7 +21,6 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -354,7 +353,7 @@ string MachGuiControlPanel::getDecalRootDirectory() const
 
     if (MachLogRaces::instance().hasPCRace())
     {
-        switch (MachLogRaces::instance().pcController().race())
+        switch (MachLogRaces::instance().playerRace())
         {
             case MachPhys::RED:
                 break;
@@ -367,7 +366,7 @@ string MachGuiControlPanel::getDecalRootDirectory() const
             case MachPhys::YELLOW:
                 retValue = "gui/misc/yellow/";
                 break;
-                DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().pcController().race());
+                DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().playerRace());
         }
     }
 

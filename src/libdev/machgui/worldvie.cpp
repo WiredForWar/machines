@@ -17,7 +17,6 @@
 #include "machlog/races.hpp"
 #include "machlog/plandoms.hpp"
 #include "machlog/actor.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "gui/event.hpp"
 #include "world4d/scenemgr.hpp"
 #include "world4d/camera.hpp"
@@ -571,7 +570,7 @@ void MachWorldViewWindow::updateActorsSelectedViaRubberBand(
     W4dBoundingBoxSelector::Entities entitiesInRubberBand = getActorsInRectangle(startRubberBand_, endRubberBand_);
 
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     // Actors which are going to be selected into the corral
     MachInGameScreen::Actors selectMachines_;

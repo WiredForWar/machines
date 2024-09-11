@@ -37,7 +37,6 @@
 #include "machlog/actmaker.hpp"
 #include "machlog/artfacts.hpp"
 #include "machlog/beebomex.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/constron.hpp"
 #include "machlog/construc.hpp"
@@ -365,11 +364,11 @@ void MachLogMessageBroker::processEchoLinearProjectileMessage(NetMessage* pNetMe
                         case MachPhys::NUCLEAR_MISSILE:
                             {
                                 // special event voicemail may be needed. Note that this drops through into following
-                                // cases. MachPhys::Race myRace = MachLogRaces::instance().pcController().race(); if(
+                                // cases. MachPhys::Race myRace = MachLogRaces::instance().playerRace(); if(
                                 // MachLogRaces::instance().beaconType( myRace ) == MachLog::LEVEL_3_BEACON )
                                 MachLogVoiceMailManager::instance().postNewMail(
                                     VID_POD_ENEMY_NUKE_LAUNCH,
-                                    MachLogRaces::instance().pcController().race());
+                                    MachLogRaces::instance().playerRace());
                             }
                         case MachPhys::HOMING_MISSILE:
                         case MachPhys::LARGE_MISSILE:
@@ -673,19 +672,19 @@ void MachLogMessageBroker::processWeaponInformationMessage(NetMessage* pNetMessa
         = _REINTERPRET_CAST(MachLogWeaponInformationMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processWeaponInformationMessage " << std::endl);
 
-    MachPhys::Race myRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race myRace = MachLogRaces::instance().playerRace();
 
     switch (pMessage->weaponInfoFlag_)
     {
         case ION_CANNON_FIRED:
             MachLogVoiceMailManager::instance().postNewMail(
                 VID_POD_ENEMY_ION_CANNON,
-                MachLogRaces::instance().pcController().race());
+                MachLogRaces::instance().playerRace());
             break;
         case NUKE_FIRED:
             MachLogVoiceMailManager::instance().postNewMail(
                 VID_POD_ENEMY_NUKE_LAUNCH,
-                MachLogRaces::instance().pcController().race());
+                MachLogRaces::instance().playerRace());
             break;
         case ION_CANNON_ONLINE:
             MachLogRaces::instance().builtIonCannon(pMessage->race_);

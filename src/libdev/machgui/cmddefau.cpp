@@ -30,7 +30,6 @@
 #include "machlog/actor.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/planet.hpp"
 #include "machlog/machine.hpp"
 
@@ -361,7 +360,7 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
     // Check for a legal move position with at least one fristd::endly machine selected
 
     // Get player race
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check for any selected actors
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();
@@ -435,7 +434,7 @@ MachGuiDefaultCommand::cursorOnActor(MachActor* pCursorActor, bool ctrlPressed, 
     MachGui::Cursor2dType cursor = MachGui::SELECT_CURSOR;
 
     // Get player race
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check for any selected actor
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();

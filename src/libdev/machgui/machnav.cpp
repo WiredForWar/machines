@@ -18,7 +18,6 @@
 #include "system/pathname.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machine.hpp"
 #include "machlog/apc.hpp"
 #include "machphys/machphys.hpp"
@@ -246,7 +245,7 @@ protected:
         const MachActor* pFirstActor = nullptr;
 
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
 
         MachLogRaces::Objects& allObjects = races.objects();
 
@@ -303,7 +302,7 @@ protected:
         border().isSelected(selected_);
 
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
 
         MachLogRaces::Objects& allObjects = races.objects();
 
@@ -415,7 +414,7 @@ protected:
         }
         else
         {
-            switch (MachLogRaces::instance().pcController().race())
+            switch (MachLogRaces::instance().playerRace())
             {
                 case MachPhys::RED:
                     retValue += "red/";
@@ -429,7 +428,7 @@ protected:
                 case MachPhys::YELLOW:
                     retValue += "yellow/";
                     break;
-                    DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().pcController().race());
+                    DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().playerRace());
             }
         }
 
@@ -643,7 +642,7 @@ protected:
         MachActor* pFirstActor = nullptr;
 
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
 
         MachLogRaces::Objects& allObjects = races.objects();
 
@@ -873,7 +872,7 @@ void MachGuiSelectAllNavButton::doBeReleased(const GuiMouseEvent& event)
         pNavRow_->selectAll();
 
         MachLogRaces& races = MachLogRaces::instance();
-        MachPhys::Race playerRace = races.pcController().race();
+        MachPhys::Race playerRace = races.playerRace();
 
         MachLogRaces::Objects& allObjects = races.objects();
 
@@ -967,7 +966,7 @@ void MachGuiConstructionNavigator::loadGame()
 {
     PRE(pConstructionTree_ == nullptr);
 
-    changeRace(MachLogRaces::instance().pcController().race());
+    changeRace(MachLogRaces::instance().playerRace());
 
     pConstructionTree_ = &MachLogRaces::instance().constructionTree();
     pConstructionTree_->addMe(this);
@@ -1169,7 +1168,7 @@ void MachGuiConstructionNavigator::update()
 
     // Iterate through all the machines counting the different types
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     MachLogRaces::Objects& allObjects = races.objects();
 
@@ -1373,7 +1372,7 @@ void MachGuiMachineNavigator::loadGame()
 {
     PRE(pResearchTree_ == nullptr);
 
-    changeRace(MachLogRaces::instance().pcController().race());
+    changeRace(MachLogRaces::instance().playerRace());
 
     pResearchTree_ = &MachLogRaces::instance().researchTree();
     pResearchTree_->addMe(this);
@@ -1600,7 +1599,7 @@ void MachGuiMachineNavigator::update()
 
     // Itterate through all the machines counting the different types
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     MachLogRaces::Machines& allMachines = races.machines();
 
@@ -1910,7 +1909,7 @@ void MachGuiNavigatorBase::selectAll(bool keepSelection)
     }
 
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     MachLogRaces::Objects& allObjects = races.raceObjects(playerRace);
 
@@ -1982,7 +1981,7 @@ void MachGuiNavigatorBase::viewNext()
     MachActor* pFirstActor = nullptr;
 
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     MachLogRaces::Objects& allObjects = races.raceObjects(playerRace);
 

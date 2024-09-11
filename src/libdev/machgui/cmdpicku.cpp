@@ -12,7 +12,6 @@
 #include "ctl/algorith.hpp"
 
 #include "machlog/actor.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
 #include "machlog/move.hpp"
@@ -173,7 +172,7 @@ MachGui::Cursor2dType MachGuiPickUpCommand::cursorOnActor(MachActor* pActor, boo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
+    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
 
     // Check for a building or machine
     if ((pActor->objectType() == MachLog::MINE && pActor->asMine().worthVisiting())

@@ -20,7 +20,6 @@
 #include "machphys/machphys.hpp"
 #include "machlog/score.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"
@@ -159,7 +158,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     if ((context == MachGuiStartupScreens::CTX_CASTATISTICS) || (context == MachGuiStartupScreens::CTX_SKSTATISTICS))
     {
-        playerRace = MachLogRaces::instance().pcController().race();
+        playerRace = MachLogRaces::instance().playerRace();
         if (context == MachGuiStartupScreens::CTX_CASTATISTICS)
         {
             playerName = MachGuiDatabase::instance().currentPlayer().name();
@@ -173,7 +172,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         {
             // Display string 'Computer' for every player in the game who is not user controlled
             if (MachLogRaces::instance().raceInGame(currentRace)
-                && (currentRace != MachLogRaces::instance().pcController().race())
+                && (currentRace != MachLogRaces::instance().playerRace())
                 && MachLogRaces::instance().score(currentRace).scoreShouldBeDisplayed())
             {
                 string computerString = GuiResourceString(IDS_MENU_STSCOMPUTER).asString();

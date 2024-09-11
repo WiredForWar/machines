@@ -25,7 +25,6 @@
 #include "machlog/camera.hpp"
 #include "machlog/machine.hpp"
 #include "machlog/constron.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machphys/plansurf.hpp"
 #include "machphys/machdata.hpp"
 #include "machgui/worldvie.hpp"
@@ -366,7 +365,7 @@ void MachContinentMap::loadGame(const string& planet)
         scannerRange_[i] = scannerRangeImage_[i].width() / 2.0;
     }
 
-    playerRace_ = MachLogRaces::instance().pcController().race();
+    playerRace_ = MachLogRaces::instance().playerRace();
 
     updateBeacon(true);
 

@@ -12,7 +12,6 @@
 #include "device/butevent.hpp"
 
 #include "machlog/actor.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/move.hpp"
 #include "machlog/opscav.hpp"
@@ -159,7 +158,7 @@ MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnActor(MachActor* pActor, b
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    bool myRace = (MachLogRaces::instance().pcController().race() == pActor->race());
+    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
 
     // Check for a building or machine
     if (pActor->objectType() == MachLog::DEBRIS)

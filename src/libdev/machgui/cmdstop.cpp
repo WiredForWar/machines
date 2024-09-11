@@ -16,7 +16,6 @@
 #include "machlog/administ.hpp"
 #include "machlog/races.hpp"
 #include "machlog/squad.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "device/butevent.hpp"
 
 MachGuiStopCommand::MachGuiStopCommand(MachInGameScreen* pInGameScreen)
@@ -49,7 +48,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiStopCommand& t)
 // virtual
 bool MachGuiStopCommand::canActorEverExecute(const MachActor& actor) const
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Machines/Missile emplacements can stop what they are doing, must be players machine
     return (actor.objectIsMachine() || actor.objectType() == MachLog::MISSILE_EMPLACEMENT)

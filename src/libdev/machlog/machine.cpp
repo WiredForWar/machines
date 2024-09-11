@@ -53,7 +53,6 @@
 #include "machlog/dyingent.hpp"
 #include "machlog/cntrl.hpp"
 #include "machlog/cntrl_ai.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/constron.hpp"
 #include "machlog/construc.hpp"
 #include "machlog/entrance.hpp"
@@ -1456,9 +1455,9 @@ void MachLogMachine::camouflaged(bool status)
                 network.messageBroker().sendCamouflageMachineMessage(id(), MachLogMessageBroker::BEGIN_CAMOUFLAGE);
         }
 
-        if (race() != MachLogRaces::instance().pcController().race())
-            physMachine().changeColour(MachLogRaces::instance().pcController().race());
-        // physMachine().convertMaterials( physMachine().machineData(), MachLogRaces::instance().pcController().race()
+        if (race() != MachLogRaces::instance().playerRace())
+            physMachine().changeColour(MachLogRaces::instance().playerRace());
+        // physMachine().convertMaterials( physMachine().machineData(), MachLogRaces::instance().playerRace()
         // );
 
         camouflaged_ = status;
@@ -1473,9 +1472,9 @@ void MachLogMachine::camouflaged(bool status)
                 network.messageBroker().sendCamouflageMachineMessage(id(), MachLogMessageBroker::STOP_CAMOUFLAGE);
         }
 
-        if (race() != MachLogRaces::instance().pcController().race())
-            physMachine().changeColour(MachLogRaces::instance().pcController().race());
-        // physMachine().convertMaterials( physMachine().machineData(), MachLogRaces::instance().pcController().race()
+        if (race() != MachLogRaces::instance().playerRace())
+            physMachine().changeColour(MachLogRaces::instance().playerRace());
+        // physMachine().convertMaterials( physMachine().machineData(), MachLogRaces::instance().playerRace()
         // );
 
         camouflaged_ = status;
@@ -2585,7 +2584,7 @@ void MachLogMachine::resetNextGlobalHitVoiceMailTime()
 
 void MachLogMachine::checkAndDoHitVoiceMail()
 {
-    if (race() == MachLogRaces::instance().pcController().race() && sufficientTimePassedSinceLastHit())
+    if (race() == MachLogRaces::instance().playerRace() && sufficientTimePassedSinceLastHit())
     {
         if (hpRatio() <= 0.35)
             // give voicemail to warn that damage is dangerously high

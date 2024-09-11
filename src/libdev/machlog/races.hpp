@@ -352,7 +352,8 @@ public:
     bool hasPCRace() const;
 
     // The player controlled race
-    MachLogPCController& pcController() const;
+    MachPhys::Race playerRace() const;
+    MachLogController& pcController() const;
     // PRE( hasPCRace() );
 
     ///////////////////////////////

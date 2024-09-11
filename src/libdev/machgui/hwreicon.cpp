@@ -14,7 +14,6 @@
 #include "machlog/actor.hpp"
 #include "machlog/hwlab.hpp"
 #include "machlog/resitem.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
@@ -36,7 +35,7 @@ MachHWResearchIcon::MachHWResearchIcon(
             pResearchItem->subType(),
             pResearchItem->hwLevel(),
             pResearchItem->weaponCombo(),
-            MachLogRaces::instance().pcController().race())))
+            MachLogRaces::instance().playerRace())))
     , pInGameScreen_(pInGameScreen)
     , pHWResearchBank_(pHWResearchBank)
     , pHardwareLab_(pHardwareLab)

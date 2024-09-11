@@ -17,7 +17,6 @@
 #include "machgui/ingame.hpp"
 #include "machlog/network.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/pod.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/weapon.hpp"
@@ -519,7 +518,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                 if (MachGuiInGameChatMessages::instance().opponentExists(newOpponentIndex))
                 {
                     MachPhys::Race targetRace = MachGuiInGameChatMessages::instance().opponentRace(newOpponentIndex);
-                    MachPhys::Race ourRace = MachLogRaces::instance().pcController().race();
+                    MachPhys::Race ourRace = MachLogRaces::instance().playerRace();
                     MachLogRaces::DispositionToRace disp
                         = MachLogRaces::instance().dispositionToRace(ourRace, targetRace);
                     MachLogRaces::DispositionToRace newDisp = MachLogRaces::ALLY;

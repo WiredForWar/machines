@@ -19,7 +19,6 @@
 
 #include "machlog/actor.hpp"
 #include "machlog/attack.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/missilem.hpp"
 #include "machlog/opnukeat.hpp"
 #include "machlog/races.hpp"
@@ -138,7 +137,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
         "A non-ICBM has somehow been allowed to initiate a nuclear attack.");
 
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
     MachPhys::BuildingMaterialUnits nukeLaunchCost = MachPhysData::instance().generalData().nukeLaunchCost();
 
     bool sufficientBMUsForLaunch = races.nBuildingMaterialUnits(playerRace) >= nukeLaunchCost;
@@ -181,7 +180,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
 bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, string*)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
     MachPhys::BuildingMaterialUnits nukeLaunchCost = MachPhysData::instance().generalData().nukeLaunchCost();
 
     bool sufficientBMUsForLaunch = races.nBuildingMaterialUnits(playerRace) >= nukeLaunchCost;
@@ -330,7 +329,7 @@ void MachGuiNukeAttackCommand::giveNotEnoughBMUsVoicemail() const
 {
     MachLogVoiceMailManager::instance().postNewMail(
         VID_POD_INSUFFICIENT_CASH_FOR_NUKE,
-        MachLogRaces::instance().pcController().race());
+        MachLogRaces::instance().playerRace());
 }
 
 bool MachGuiNukeAttackCommand::atLeastOneActorHasChargedNuke() const

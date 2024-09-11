@@ -156,9 +156,9 @@ void perWrite(PerOstream& ostr, const MachLogPersistence& per)
     bool raceExists[MachPhys::N_RACES];
 
     HAL_STREAM(
-        "MachLogPersistence::perWrite pcController.race " << MachLogRaces::instance().pcController().race()
+        "MachLogPersistence::perWrite pcController.race " << MachLogRaces::instance().playerRace()
                                                           << std::endl);
-    MachPhys::Race pcControllerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race pcControllerRace = MachLogRaces::instance().playerRace();
     // Use uint32_t for the sake of serialization compatibility
     uint32_t pc = pcControllerRace;
     PER_WRITE_RAW_OBJECT(ostr, pc);

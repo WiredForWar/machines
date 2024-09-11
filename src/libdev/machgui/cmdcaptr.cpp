@@ -21,7 +21,6 @@
 #include "machlog/opsupcon.hpp"
 #include "machlog/races.hpp"
 #include "machlog/squad.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machvman.hpp"
 
 MachGuiCaptureCommand::MachGuiCaptureCommand(MachInGameScreen* pInGameScreen)
@@ -61,7 +60,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCaptureCommand& t)
 // virtual
 void MachGuiCaptureCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check for a pick on an enemy construction
     if (pActor->objectIsConstruction() && pActor->race() != playerRace)
@@ -122,7 +121,7 @@ MachGui::Cursor2dType MachGuiCaptureCommand::cursorOnActor(MachActor* pActor, bo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     if (pActor->objectIsConstruction() && pActor->asConstruction().isComplete() && pActor->race() != playerRace)
     {

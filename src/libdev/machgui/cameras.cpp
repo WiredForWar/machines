@@ -25,7 +25,6 @@
 #include "machlog/mcmotseq.hpp"
 #include "machlog/motconst.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/planet.hpp"
 #include "machphys/machine.hpp"
 #include "machphys/machdata.hpp"
@@ -174,7 +173,7 @@ void MachCameras::CLASS_INVARIANT
 void MachCameras::loadGame()
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     MexTransform3d eyeTransform(MexEulerAngles(MexDegrees(45), 0.0, 0.0), MexPoint3d(0.0, 0.0, 2.0));
     MexTransform3d groundTransform(MexEulerAngles(MexDegrees(111), 0.0, 0.0), MexPoint3d(150.0, 150.0, 1.5));

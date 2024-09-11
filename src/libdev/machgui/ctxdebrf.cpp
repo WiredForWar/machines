@@ -18,7 +18,6 @@
 #include "machlog/races.hpp"
 #include "machlog/dbhandlr.hpp"
 #include "machlog/network.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machgui/internal/strings.hpp"
 #include "system/pathname.hpp"
 #include "gui/image.hpp"
@@ -218,7 +217,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         case MachInGameScreen::WON:
             if (pStartupScreens_->gameType() != MachGuiStartupScreens::CAMPAIGNGAME)
             {
-                switch (MachLogRaces::instance().pcController().race())
+                switch (MachLogRaces::instance().playerRace())
                 {
                     case MachPhys::RED:
                         debriefPath = "flics/gui/v&d/vicr.bmp";
@@ -242,7 +241,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         case MachInGameScreen::LOST:
             if (pStartupScreens_->gameType() != MachGuiStartupScreens::CAMPAIGNGAME)
             {
-                switch (MachLogRaces::instance().pcController().race())
+                switch (MachLogRaces::instance().playerRace())
                 {
                     case MachPhys::RED:
                         debriefPath = "flics/gui/v&d/defr.bmp";

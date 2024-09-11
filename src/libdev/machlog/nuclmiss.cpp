@@ -14,7 +14,6 @@
 #include "machlog/planet.hpp"
 #include "machlog/plandoms.hpp"
 
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/messbrok.hpp"
 #include "machlog/network.hpp"
 #include "machlog/nuclbomb.hpp"
@@ -41,10 +40,10 @@ MachLogNuclearMissile::MachLogNuclearMissile(
     , pLogRace_(pRace)
 {
     // send voicemail if it wasn't me initiating this launch
-    if (MachLogRaces::instance().pcController().race() != pOwner->race())
+    if (MachLogRaces::instance().playerRace() != pOwner->race())
         MachLogVoiceMailManager::instance().postNewMail(
             VID_POD_ENEMY_NUKE_LAUNCH,
-            MachLogRaces::instance().pcController().race());
+            MachLogRaces::instance().playerRace());
 
     TEST_INVARIANT;
 }

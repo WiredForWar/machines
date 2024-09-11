@@ -11,7 +11,6 @@
 #include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/administ.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/move.hpp"
 #include "machlog/optreach.hpp"
@@ -186,7 +185,7 @@ MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor(MachActor* pActor, 
 {
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check for a building or machine
     if (pActor->objectIsMachine() && pActor->race() != playerRace)

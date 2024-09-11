@@ -24,7 +24,6 @@
 #include "machphys/pod.hpp"
 
 #include "machlog/canattac.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/machine.hpp"
 #include "machlog/mcmotseq.hpp"
 #include "machlog/messbrok.hpp"
@@ -69,11 +68,11 @@ void MachLogPodAttackOperation::dealWithVoiceMails()
     // now for the voicemail alerts - on this node if this is an AI race
     // send voicemail if it wasn't me initiating this launch and I have the capability to detect it
 
-    if (MachLogRaces::instance().pcController().race() != pActor_->race())
+    if (MachLogRaces::instance().playerRace() != pActor_->race())
     {
         MachLogVoiceMailManager::instance().postNewMail(
             VID_POD_ENEMY_ION_CANNON,
-            MachLogRaces::instance().pcController().race());
+            MachLogRaces::instance().playerRace());
     }
 
     // ........and whizz the warning round the network if it's a network game.

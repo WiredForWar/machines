@@ -13,7 +13,6 @@
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machphys/machphys.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -39,7 +38,7 @@ void MachGuiBmuText::CLASS_INVARIANT
 void MachGuiBmuText::refresh()
 {
     MachLogRaces& races = MachLogRaces::instance();
-    MachPhys::Race playerRace = races.pcController().race();
+    MachPhys::Race playerRace = races.playerRace();
 
     curValue_ = races.nBuildingMaterialUnits(playerRace);
     maxValue_ = races.nMaxBuildingMaterialUnits(playerRace);

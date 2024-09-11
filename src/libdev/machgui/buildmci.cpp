@@ -13,7 +13,6 @@
 #include "machlog/actor.hpp"
 #include "machlog/factory.hpp"
 #include "machlog/resitem.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
@@ -33,7 +32,7 @@ MachBuildMachineIcon::MachBuildMachineIcon(
             item.subType(),
             item.hwLevel(),
             item.weaponCombo(),
-            MachLogRaces::instance().pcController().race())))
+            MachLogRaces::instance().playerRace())))
     , pInGameScreen_(pInGameScreen)
     , pProductionBank_(pProductionBank)
     , pFactory_(pFactory)

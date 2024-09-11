@@ -35,7 +35,6 @@
 #include "machlog/plandoms.hpp"
 #include "machlog/planet.hpp"
 #include "machlog/weapon.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/races.hpp"
 #include "machlog/network.hpp"
 #include "machlog/vmman.hpp"
@@ -541,7 +540,7 @@ void MachGuiFirstPerson::update()
     // Check to see if we should automatically leave 1st person
     if (! isDead_)
     {
-        MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+        MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
         // If the actor has been deleted or has changed race then exit the actor
         if (! pActor_ || pActor_->isDead() || pActor_->race() != playerRace)
@@ -1742,7 +1741,7 @@ bool MachGuiFirstPerson::okayToSwitchTo1stPerson()
         return false;
     }
 
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check that the actor can be entered.
     if (pActor_ && pActor_->objectIsMachine() && pActor_->race() == playerRace

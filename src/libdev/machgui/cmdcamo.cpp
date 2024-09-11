@@ -11,7 +11,6 @@
 #include "machlog/actor.hpp"
 #include "machlog/machine.hpp"
 #include "machlog/races.hpp"
-#include "machlog/cntrl_pc.hpp"
 #include "machlog/network.hpp"
 #include "world4d/domain.hpp"
 #include "device/butevent.hpp"
@@ -46,7 +45,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCamouflageCommand& t)
 // virtual
 bool MachGuiCamouflageCommand::canActorEverExecute(const MachActor& actor) const
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
+    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     return MachLogNetwork::instance().isNetworkGame() && actor.objectType() == MachLog::SPY_LOCATOR
         && actor.race() == playerRace;
