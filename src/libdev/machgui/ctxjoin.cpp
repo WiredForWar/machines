@@ -228,10 +228,7 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
     if (pGamesList_->currentItem() == pNewGameName_)
     {
         pNewGameName_->setText(pStartupScreens_->startupData()->newGameName());
-        editingGameName(true);
-
-        if (joinGameSelected_)
-            joinGameSelected(false);
+        editingGameName_ = true;
     }
     else
     {
@@ -240,27 +237,41 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
             pStartupScreens_->startupData()->newGameName(pNewGameName_->text());
 
             changeFocus();
-            editingGameName(false);
+            editingGameName_ = false;
         }
 
         if (pGamesList_->currentItem())
         {
             std::optional<std::size_t> currentIndex = pGamesList_->getCurrentItemIndex();
-            if (!currentIndex.has_value() && currentIndex.value() > 0)
-                return;
+            if (currentIndex.value_or(0) > 0)
+            {
+                std::size_t sessionIndex = currentIndex.value() - 1;
+                const NetNetwork::Sessions& sessions = NetNetwork::instance().sessions();
+                ASSERT(sessionIndex < sessions.size(), "Invalid game session list item");
+                if (sessionIndex < sessions.size())
+                {
+                    const NetSessionInfo& info = sessions.at(sessionIndex);
 
-            std::size_t sessionIndex = currentIndex.value() - 1;
-            const NetNetwork::Sessions& sessions = NetNetwork::instance().sessions();
-            ASSERT(sessionIndex < sessions.size(), "Invalid game session list item");
-            if (sessionIndex < sessions.size())
-                return;
-
-            const NetSessionInfo& info = sessions.at(sessionIndex);
-
-            NetNetwork::instance().setIPAddress(info.address);
-            pNetworkProtocol_->readNetworkDetails();
-            joinGameSelected(true);
+                    NetNetwork::instance().setIPAddress(info.address);
+                    pNetworkProtocol_->readNetworkDetails();
+                }
+            }
         }
+    }
+
+    // Update buttons
+    bool newGameSelected = pGamesList_->currentItem() == pNewGameName_;
+    bool anotherSessionSelected = !newGameSelected && pGamesList_->currentItem();
+
+    pCreateBtn_->defaultControl(newGameSelected);
+    pJoinBtn_->defaultControl(anotherSessionSelected);
+    pShowGamesBtn_->defaultControl(!newGameSelected && !anotherSessionSelected);
+
+    if(pCreateBtn_->hasFocusSet() || pJoinBtn_->hasFocusSet() || pShowGamesBtn_->hasFocusSet())
+    {
+        pCreateBtn_->hasFocus(pCreateBtn_->isDefaultControl());
+        pJoinBtn_->hasFocus(pJoinBtn_->isDefaultControl());
+        pShowGamesBtn_->hasFocus(pShowGamesBtn_->isDefaultControl());
     }
 }
 
@@ -416,52 +427,4 @@ bool MachGuiCtxJoin::validNetworkSettings(bool isHost)
         return false;
     }
     return true;
-}
-
-void MachGuiCtxJoin::editingGameName(bool egn)
-{
-    editingGameName_ = egn;
-
-    if (editingGameName_)
-    {
-        pShowGamesBtn_->defaultControl(false);
-        pJoinBtn_->defaultControl(false);
-        pCreateBtn_->defaultControl(true);
-
-        if (pJoinBtn_->hasFocusSet())
-        {
-            pJoinBtn_->hasFocus(false);
-            pCreateBtn_->hasFocus(true);
-        }
-    }
-    else
-    {
-        pShowGamesBtn_->defaultControl(true);
-        pJoinBtn_->defaultControl(false);
-        pCreateBtn_->defaultControl(false);
-    }
-}
-
-void MachGuiCtxJoin::joinGameSelected(bool jsg)
-{
-    joinGameSelected_ = jsg;
-
-    if (joinGameSelected_)
-    {
-        pShowGamesBtn_->defaultControl(false);
-        pJoinBtn_->defaultControl(true);
-        pCreateBtn_->defaultControl(false);
-
-        if (pCreateBtn_->hasFocusSet())
-        {
-            pCreateBtn_->hasFocus(false);
-            pJoinBtn_->hasFocus(true);
-        }
-    }
-    else
-    {
-        pShowGamesBtn_->defaultControl(true);
-        pJoinBtn_->defaultControl(false);
-        pCreateBtn_->defaultControl(false);
-    }
 }

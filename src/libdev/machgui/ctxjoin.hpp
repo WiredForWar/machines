@@ -43,9 +43,6 @@ protected:
 
     bool validNetworkSettings(bool isHost);
 
-    void editingGameName(bool);
-    void joinGameSelected(bool);
-
     void addNewGameListItem();
     void onGamesListSelectionChanged();
 
@@ -60,7 +57,6 @@ private:
     MachGuiEditBoxListBoxItem* pNewGameName_{};
     MachGuiNetworkProtocolMode* pNetworkProtocol_{};
     bool editingGameName_{};
-    bool joinGameSelected_{};
     MachGuiMenuButton* pJoinBtn_;
     MachGuiMenuButton* pCreateBtn_;
     MachGuiMenuButton* pShowGamesBtn_;
