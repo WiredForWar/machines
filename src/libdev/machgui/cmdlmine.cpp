@@ -148,9 +148,9 @@ void MachGuiDropLandMineCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiDropLandMineCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDropLandMineCommand::clone() const
 {
-    return new MachGuiDropLandMineCommand(&inGameScreen());
+    return std::make_unique<MachGuiDropLandMineCommand>(&inGameScreen());
 }
 
 // virtual

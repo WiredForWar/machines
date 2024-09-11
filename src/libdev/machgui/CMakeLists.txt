@@ -219,7 +219,6 @@ set(MACHGUI_SOURCES
     hwreicon.hpp
     hwremenu.cpp
     hwremenu.hpp
-    igameimp.cpp
     igcurs2d.cpp
     igcurs2d.hpp
     ingame.cpp

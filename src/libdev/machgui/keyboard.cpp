@@ -31,9 +31,9 @@
 
 bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
 {
-    CB_DEPIMPL(Commands, allCommands_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(PhysAbsoluteTime, gameStateTimer_);
+    CB_DEPIMPL_AUTO(allCommands_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(gameStateTimer_);
 
     NEIL_STREAM(
         "InGame button event : " << e.key() << " ctrl " << e.isCtrlPressed() << " shift " << e.isShiftPressed()

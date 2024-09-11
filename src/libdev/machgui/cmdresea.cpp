@@ -92,9 +92,9 @@ void MachGuiResearchCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiResearchCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiResearchCommand::clone() const
 {
-    return new MachGuiResearchCommand(&inGameScreen());
+    return std::make_unique<MachGuiResearchCommand>(&inGameScreen());
 }
 
 // virtual

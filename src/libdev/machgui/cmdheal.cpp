@@ -199,9 +199,9 @@ void MachGuiHealCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiHealCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiHealCommand::clone() const
 {
-    return new MachGuiHealCommand(&inGameScreen());
+    return std::make_unique<MachGuiHealCommand>(&inGameScreen());
 }
 
 // virtual

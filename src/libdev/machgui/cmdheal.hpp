@@ -35,7 +35,7 @@ public:
     // Inherited from MachGuiCommand
 
     // Return new instance of this command
-    MachGuiCommand* clone() const override;
+    std::unique_ptr<MachGuiCommand> clone() const override;
 
     // The resource file id of the prompt to be displayed when the cursor moves
     // over the command icon

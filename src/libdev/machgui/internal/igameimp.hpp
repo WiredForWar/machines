@@ -63,16 +63,16 @@ public:
 
     // Data members...
     using Actors = ctl_pvector<MachActor>;
-    using Commands = ctl_pvector<MachGuiCommand>;
+    using Commands = std::vector<std::unique_ptr<MachGuiCommand>>;
 
-    W4dSceneManager* pSceneManager_; // The 3d window scene maanger
-    W4dRoot* pRoot_;
-    MachWorldViewWindow* pWorldViewWindow_;
+    W4dSceneManager* pSceneManager_{}; // The 3d window scene maanger
+    W4dRoot* pRoot_{};
+    MachWorldViewWindow* pWorldViewWindow_{};
     MachGuiBmuButton* pBmuButton_;
     Actors selectedActors_; // The collection of currently selected actors
     Commands allCommands_; // The collection of all the potential commands
-    MachGuiCommand* pDefaultCommand_; // The command that is active when no other command is active
-    MachGuiCommand* pActiveCommand_; // The active command. Null => use pDefaultCommand_.
+    std::unique_ptr<MachGuiCommand> pDefaultCommand_; // The command that is active when no other command is active
+    std::unique_ptr<MachGuiCommand> pActiveCommand_; // The active command. Null => use pDefaultCommand_.
     W4dDomain::EntityFilter cursorFilter_; // The filter to be used for findNearerEntity
     bool commandBankNeedsUpdating_; // True when the visibility of command icons needs to be updated
     bool cancelActiveCommand_;
@@ -98,17 +98,17 @@ public:
     MachProductionBank* pProductionBank_; // A factory production bank
     MachHWResearchBank* pHWResearchBank_; // A hardware lab research bank
     MachGuiSquadronBank* pSquadronBank_; // The squadron bank
-    AfxResourceLib* pStringResourceLib_; // The lib containing the app's string table
-    MachCameras* pCameras_;
+    std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table
+    std::unique_ptr<MachCameras> pCameras_;
     MachGui::ControlPanelContext controlPanelContext_; // Menu context
-    MachInGameCursors2d* pCursors2d_; // The class enabling switching of cursor
+    std::unique_ptr<MachInGameCursors2d> pCursors2d_; // The class enabling switching of cursor
     MachInGameScreen::GameState gameState_;
     PhysAbsoluteTime gameStateTimer_;
     MachGuiDefconCommand* pDefconCommand_;
     MachGuiSelfDestructCommand* pSelfDestructCommand_;
     MachGuiIonAttackCommand* pIonAttackCommand_;
     MachGuiNukeAttackCommand* pNukeAttackCommand_;
-    MachGuiFirstPerson* pFirstPerson_;
+    std::unique_ptr<MachGuiFirstPerson> pFirstPerson_;
     Gui::Coord rightClickMousePos_; // When right click happens the coord is stored in this var.
     MachActor* pPromptTextActor_; // Actor whos info is on the prompt text
     MachGuiControlPanelAddOn* pControlPanelAddOn_;

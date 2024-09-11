@@ -194,9 +194,9 @@ void MachGuiPickUpCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiPickUpCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiPickUpCommand::clone() const
 {
-    return new MachGuiPickUpCommand(&inGameScreen());
+    return std::make_unique<MachGuiPickUpCommand>(&inGameScreen());
 }
 
 // virtual

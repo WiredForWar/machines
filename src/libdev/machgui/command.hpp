@@ -21,6 +21,8 @@
 #include "machgui/gui.hpp"
 #include "machlog/machlog.hpp"
 
+#include <memory>
+
 // Forward refs
 class MexPoint2d;
 class MexPoint3d;
@@ -45,7 +47,7 @@ public:
     virtual ~MachGuiCommand();
 
     // Return new instance of the command
-    virtual MachGuiCommand* clone() const = 0;
+    virtual std::unique_ptr<MachGuiCommand> clone() const = 0;
 
     // reference to the up and down bitmap names for this command
     virtual const std::pair<string, string>& iconNames() const = 0;

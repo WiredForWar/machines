@@ -138,9 +138,9 @@ void MachGuiDeployCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiDeployCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDeployCommand::clone() const
 {
-    return new MachGuiDeployCommand(&inGameScreen());
+    return std::make_unique<MachGuiDeployCommand>(&inGameScreen());
 }
 
 // virtual

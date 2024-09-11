@@ -99,9 +99,9 @@ bool MachGuiStopCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiStopCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiStopCommand::clone() const
 {
-    return new MachGuiStopCommand(&inGameScreen());
+    return std::make_unique<MachGuiStopCommand>(&inGameScreen());
 }
 
 // virtual

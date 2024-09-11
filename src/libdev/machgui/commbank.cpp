@@ -156,19 +156,19 @@ MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& re
 
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
-        if (commands[i] == pInGameScreen->defconCommand())
+        if (commands[i].get() == pInGameScreen->defconCommand())
         {
             new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->selfDestructCommand())
+        else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {
             new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->ionAttackCommand())
+        else if (commands[i].get() == pInGameScreen->ionAttackCommand())
         {
             new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->nukeAttackCommand())
+        else if (commands[i].get() == pInGameScreen->nukeAttackCommand())
         {
             new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
@@ -242,24 +242,23 @@ MachSmallCommandIcons::MachSmallCommandIcons(
     , pInGameScreen_(pInGameScreen)
 {
     // Construct an icon for every command available in the inGameScreen
-    int i = 0;
     const MachInGameScreen::Commands& commands = pInGameScreen->allCommands();
 
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
-        if (commands[i] == pInGameScreen->defconCommand())
+        if (commands[i].get() == pInGameScreen->defconCommand())
         {
             new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->selfDestructCommand())
+        else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {
             new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->ionAttackCommand())
+        else if (commands[i].get() == pInGameScreen->ionAttackCommand())
         {
             new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }
-        else if (commands[i] == pInGameScreen->nukeAttackCommand())
+        else if (commands[i].get() == pInGameScreen->nukeAttackCommand())
         {
             new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
         }

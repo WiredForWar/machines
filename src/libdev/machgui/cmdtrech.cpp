@@ -207,9 +207,9 @@ void MachGuiTreacheryCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiTreacheryCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiTreacheryCommand::clone() const
 {
-    return new MachGuiTreacheryCommand(&inGameScreen());
+    return std::make_unique<MachGuiTreacheryCommand>(&inGameScreen());
 }
 
 // virtual

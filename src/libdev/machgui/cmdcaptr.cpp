@@ -157,9 +157,9 @@ bool MachGuiCaptureCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiCaptureCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiCaptureCommand::clone() const
 {
-    return new MachGuiCaptureCommand(&inGameScreen());
+    return std::make_unique<MachGuiCaptureCommand>(&inGameScreen());
 }
 
 // virtual

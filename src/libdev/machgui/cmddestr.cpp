@@ -97,7 +97,7 @@ void MachGuiSelfDestructCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiSelfDestructCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiSelfDestructCommand::clone() const
 {
     if (buttonState() == BTN_SHOWN || buttonState() == BTN_ACTIVE)
     {
@@ -110,7 +110,7 @@ MachGuiCommand* MachGuiSelfDestructCommand::clone() const
         MachGuiSelfDestructCommandIcon::refreshAllIcons();
     }
 
-    return new MachGuiSelfDestructCommand(&inGameScreen());
+    return std::make_unique<MachGuiSelfDestructCommand>(&inGameScreen());
 }
 
 // virtual

@@ -85,9 +85,9 @@ void MachGuiDamageCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiDamageCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDamageCommand::clone() const
 {
-    return new MachGuiDamageCommand(&inGameScreen());
+    return std::make_unique<MachGuiDamageCommand>(&inGameScreen());
 }
 
 // virtual

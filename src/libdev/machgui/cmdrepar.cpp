@@ -164,9 +164,9 @@ bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiRepairCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiRepairCommand::clone() const
 {
-    return new MachGuiRepairCommand(&inGameScreen());
+    return std::make_unique<MachGuiRepairCommand>(&inGameScreen());
 }
 
 // virtual

@@ -111,6 +111,67 @@
 #include <algorithm>
 #include <stdio.h>
 
+MachInGameScreenImpl::MachInGameScreenImpl()
+    : pSceneManager_(nullptr)
+    , pRoot_(nullptr)
+    , pWorldViewWindow_(nullptr)
+    , pContinentMap_(nullptr)
+    , pMachinesIcon_(nullptr)
+    , pConstructionsIcon_(nullptr)
+    , pSquadronIcon_(nullptr)
+    , pMachineNavigation_(nullptr)
+    , pConstructionNavigation_(nullptr)
+    , pCorral_(nullptr)
+    , pPromptText_(nullptr)
+    , pCommandIcons_(nullptr)
+    , pConstructMenu_(nullptr)
+    , pBuildMenu_(nullptr)
+    , pProductionBank_(nullptr)
+    , pHWResearchMenu_(nullptr)
+    , pHWResearchBank_(nullptr)
+    , pSquadronBank_(nullptr)
+    , pHighlightedActor_(nullptr)
+    , pDefconCommand_(nullptr)
+    , pSelfDestructCommand_(nullptr)
+    , pIonAttackCommand_(nullptr)
+    , commandBankNeedsUpdating_(true)
+    , cancelActiveCommand_(false)
+    , switchToMenus_(false)
+    , switchGuiRoot_(false)
+    , inFirstPerson_(false)
+    , controlPanelContext_(MachGui::MAIN_MENU)
+    , cursorFilter_(W4dDomain::EXCLUDE_NOT_SOLID)
+    , pPromptTextActor_(nullptr)
+    , pControlPanelAddOn_(nullptr)
+    , controlPanelOn_(true)
+    , // Control panel should be out to start with
+    controlPanelXPos_(MachGui::controlPanelInXPos())
+    , // Control panel starts in hidden position ( slides out when you first enter the game )
+    pControlPanel_(nullptr)
+    , pMapArea_(nullptr)
+    , pTopCameraScrollArea_(nullptr)
+    , pBottomCameraScrollArea_(nullptr)
+    , pLeftCameraScrollArea_(nullptr)
+    , pRightCameraScrollArea_(nullptr)
+    , resolutionChanged_(true)
+    , renderingScreenShot_(false)
+    , corralState_(MachInGameScreen::CORRAL_EMPTY)
+    , pChatMessageDisplay_(nullptr)
+    , networkStuffedStartTime_(0)
+    , disableFirstPerson_(false)
+    , instantExit_(false)
+    ,
+#ifndef PRODUCTION
+    showCurrentMachine_(false)
+    , showNetworkPing_(false)
+    , showNetworkStuffed_(false)
+    ,
+#endif
+    redrawMapCounter_(0)
+{
+  // Intentionally empty
+}
+
 // MachInGameScreen GuiRoot is made very big (10000x10000) to cope with all possible screen resolutions.
 MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter* pReporter)
     : GuiRoot(Gui::Box(
@@ -120,33 +181,33 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
         10000 /*pSceneManager->pDevice()->windowHeight()*/))
     , pImpl_(new MachInGameScreenImpl())
 {
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(MachActor*, pPromptTextActor_);
-    CB_DEPIMPL(MachGuiControlPanelAddOn*, pControlPanelAddOn_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(MachGuiBmuButton*, pBmuButton_);
-    CB_DEPIMPL(GameState, gameState_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(W4dRoot*, pRoot_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(Commands, allCommands_);
-    CB_DEPIMPL(AfxResourceLib*, pStringResourceLib_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachSquadronIcon*, pSquadronIcon_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiCorral*, pCorral_);
-    CB_DEPIMPL(MachSmallCommandIcons*, pSmallCommandIcons_);
-    CB_DEPIMPL(MachCommandIcons*, pCommandIcons_);
-    CB_DEPIMPL(MachInGameCursors2d*, pCursors2d_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(MachGuiMapArea*, pMapArea_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(pPromptTextActor_);
+    CB_DEPIMPL_AUTO(pControlPanelAddOn_);
+    CB_DEPIMPL_AUTO(pCameras_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pBmuButton_);
+    CB_DEPIMPL_AUTO(gameState_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pRoot_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(allCommands_);
+    CB_DEPIMPL_AUTO(pStringResourceLib_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pSquadronIcon_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pCorral_);
+    CB_DEPIMPL_AUTO(pSmallCommandIcons_);
+    CB_DEPIMPL_AUTO(pCommandIcons_);
+    CB_DEPIMPL_AUTO(pCursors2d_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pMapArea_);
 #ifndef PRODUCTION
-    CB_DEPIMPL(bool, showCurrentMachine_);
-    CB_DEPIMPL(bool, showNetworkStuffed_);
+    CB_DEPIMPL_AUTO(showCurrentMachine_);
+    CB_DEPIMPL_AUTO(showNetworkStuffed_);
     string showStuffedString;
     showNetworkStuffed_ = (nullptr != getenv("CB_SHOW_NETWORK_STUFFED"));
 #endif
@@ -175,12 +236,12 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pReporter->report(15, 100); // 15% done
 
     // Create cameras
-    pCameras_ = new MachCameras(pSceneManager, pRoot);
+    pCameras_= std::make_unique<MachCameras>(pSceneManager, pRoot);
     pReporter->report(20, 100); // 20% done
 
     // Load the string table resource file
-    pStringResourceLib_ = new AfxResourceLib(SysPathName("machstrg.xml"));
-    GuiResourceString::resource(pStringResourceLib_);
+    pStringResourceLib_ = std::make_unique<AfxResourceLib>(SysPathName("machstrg.xml"));
+    GuiResourceString::resource(pStringResourceLib_.get());
     pReporter->report(25, 100); // 25% done
 
     // Construct the set of available commands
@@ -188,8 +249,14 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pReporter->report(28, 100); // 28% done
 
     // Create the world view window
-    pWorldViewWindow_
-        = new MachWorldViewWindow(this, Gui::Boundary(MachGui::controlPanelOutXPos(), 0, (w + MachGui::controlPanelOutXPos() - MachGui::controlPanelInXPos()), h), pCameras_);
+    pWorldViewWindow_ = new MachWorldViewWindow(
+        this,
+        Gui::Boundary(
+            MachGui::controlPanelOutXPos(),
+            0,
+            (w + MachGui::controlPanelOutXPos() - MachGui::controlPanelInXPos()),
+            h),
+        pCameras_.get());
     pReporter->report(30, 100); // 30% done
 
     // Construct add-on piece of control panel ( top-right )
@@ -197,7 +264,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pReporter->report(35, 100); // 35% done
 
     // Construct continent map
-    pContinentMap_ = new MachContinentMap(pMapArea_, Gui::Coord(2, 1), pCameras_, this);
+    pContinentMap_ = new MachContinentMap(pMapArea_, Gui::Coord(2, 1), pCameras_.get(), this);
     pReporter->report(40, 100); // 40% done
 
     // Construct buttons down side of continent map
@@ -238,11 +305,11 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     resetContext();
 
     // Load up the 2d cursors
-    pCursors2d_ = new MachInGameCursors2d(this);
+    pCursors2d_ = std::make_unique<MachInGameCursors2d>(this);
     pReporter->report(65, 100); // 65% done
 
     // Create first person interface
-    pFirstPerson_ = new MachGuiFirstPerson(pSceneManager, pRoot, this);
+    pFirstPerson_ = std::make_unique<MachGuiFirstPerson>(pSceneManager, pRoot, this);
     pReporter->report(70, 100); // 70% done
 
     useFastSecondDisplay(false);
@@ -256,32 +323,12 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 
 MachInGameScreen::~MachInGameScreen()
 {
-    CB_DEPIMPL(Commands, allCommands_);
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
-    CB_DEPIMPL(MachGuiCommand*, pDefaultCommand_);
-    CB_DEPIMPL(MachInGameCursors2d*, pCursors2d_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(AfxResourceLib*, pStringResourceLib_);
-
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::DTOR enter" << std::endl);
 
     // NB All the child GuiDisplayables are deleted automatically
 
-    // Delete the commands
-    for (Commands::iterator it = allCommands_.begin(); it != allCommands_.end(); ++it)
-        delete *it;
-
-    // Delete various bits and pieces
-    delete pActiveCommand_;
-    delete pDefaultCommand_;
-    delete pCursors2d_;
-    delete pCameras_;
-    delete pFirstPerson_;
-
     // Unload the string table resource file
     GuiResourceString::clearResource();
-    delete pStringResourceLib_;
 
     // Delete implementation class
     delete pImpl_;
@@ -291,15 +338,15 @@ MachInGameScreen::~MachInGameScreen()
 
 void MachInGameScreen::doBecomeRoot()
 {
-    CB_DEPIMPL(MachInGameCursors2d*, pCursors2d_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(bool, resolutionChanged_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(int, redrawMapCounter_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
+    CB_DEPIMPL_AUTO(pCursors2d_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(resolutionChanged_);
+    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(redrawMapCounter_);
+    CB_DEPIMPL_AUTO(pCameras_);
 
     // Reposition debug text
     pSceneManager_->pDevice()->debugTextCoords(204, 0);
@@ -358,7 +405,7 @@ void MachInGameScreen::doBecomeNotRoot()
 
 MachWorldViewWindow& MachInGameScreen::worldViewWindow()
 {
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
 
     PRE(pWorldViewWindow_ != nullptr);
 
@@ -367,14 +414,14 @@ MachWorldViewWindow& MachInGameScreen::worldViewWindow()
 
 MachGuiCorral& MachInGameScreen::corral()
 {
-    CB_DEPIMPL(MachGuiCorral*, pCorral_);
+    CB_DEPIMPL_AUTO(pCorral_);
 
     return *pCorral_;
 }
 
 const MachInGameScreen::Actors& MachInGameScreen::selectedActors() const
 {
-    CB_DEPIMPL(Actors, selectedActors_);
+    CB_DEPIMPL_AUTO(selectedActors_);
 
     return selectedActors_;
 }
@@ -391,10 +438,10 @@ void MachInGameScreen::select(MachActor* pActor)
 
 void MachInGameScreen::select(const Actors& actors)
 {
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::select( const Actors& actors )");
 
@@ -460,10 +507,10 @@ void MachInGameScreen::select(const Actors& actors)
 
 void MachInGameScreen::deselect(const Actors& actors)
 {
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
 
     removeHighlightedActor();
 
@@ -544,10 +591,10 @@ void MachInGameScreen::deselect(MachActor* pActor)
 
 void MachInGameScreen::unselect(MachActor* pActor)
 {
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
 
     removeHighlightedActor();
 
@@ -609,10 +656,10 @@ void MachInGameScreen::unselect(MachActor* pActor)
 
 void MachInGameScreen::checkDismissNavigator()
 {
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
 
     // Called when actor is selected/deselected.
 
@@ -635,10 +682,10 @@ void MachInGameScreen::checkDismissNavigator()
 
 void MachInGameScreen::deselectAll()
 {
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
 
     removeHighlightedActor();
 
@@ -710,36 +757,36 @@ MachInGameScreen::Actors MachInGameScreen::getVisibleActors() const
 
 W4dSceneManager& MachInGameScreen::sceneManager() const
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
 
     return *pSceneManager_;
 }
 
 MachGuiDefconCommand* MachInGameScreen::defconCommand()
 {
-    CB_DEPIMPL(MachGuiDefconCommand*, pDefconCommand_);
+    CB_DEPIMPL_AUTO(pDefconCommand_);
 
     return pDefconCommand_;
 }
 
 MachGuiSelfDestructCommand* MachInGameScreen::selfDestructCommand()
 {
-    CB_DEPIMPL(MachGuiSelfDestructCommand*, pSelfDestructCommand_);
+    CB_DEPIMPL_AUTO(pSelfDestructCommand_);
 
     return pSelfDestructCommand_;
 }
 
 void MachInGameScreen::initialiseAllCommands()
 {
-    CB_DEPIMPL(MachGuiCommand*, pDefaultCommand_);
-    CB_DEPIMPL(MachGuiDefconCommand*, pDefconCommand_);
-    CB_DEPIMPL(MachGuiSelfDestructCommand*, pSelfDestructCommand_);
-    CB_DEPIMPL(MachGuiIonAttackCommand*, pIonAttackCommand_);
-    CB_DEPIMPL(MachGuiNukeAttackCommand*, pNukeAttackCommand_);
-    CB_DEPIMPL(Commands, allCommands_);
+    CB_DEPIMPL_AUTO(pDefaultCommand_);
+    CB_DEPIMPL_AUTO(pDefconCommand_);
+    CB_DEPIMPL_AUTO(pSelfDestructCommand_);
+    CB_DEPIMPL_AUTO(pIonAttackCommand_);
+    CB_DEPIMPL_AUTO(pNukeAttackCommand_);
+    CB_DEPIMPL_AUTO(allCommands_);
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::initialiseAllCommands" << std::endl << std::flush);
-    pDefaultCommand_ = new MachGuiDefaultCommand(this);
+    pDefaultCommand_ = std::make_unique<MachGuiDefaultCommand>(this);
 
     // Commands with special icon processing
     pSelfDestructCommand_ = new MachGuiSelfDestructCommand(this);
@@ -747,46 +794,46 @@ void MachInGameScreen::initialiseAllCommands()
     pNukeAttackCommand_ = new MachGuiNukeAttackCommand(this);
     pDefconCommand_ = new MachGuiDefconCommand(this);
 
-    allCommands_.push_back(pSelfDestructCommand_);
-    allCommands_.push_back(new MachGuiMoveCommand(this));
-    allCommands_.push_back(new MachGuiStopCommand(this));
-    allCommands_.push_back(new MachGuiAttackCommand(this));
-    allCommands_.push_back(new MachGuiConstructCommand(this));
-    allCommands_.push_back(new MachGuiRepairCommand(this));
-    allCommands_.push_back(new MachGuiCaptureCommand(this));
-    allCommands_.push_back(new MachGuiDeconstructCommand(this));
-    allCommands_.push_back(new MachGuiRecycleCommand(this));
-    allCommands_.push_back(new MachGuiLocateToCommand(this));
-    allCommands_.push_back(new MachGuiDropLandMineCommand(this));
-    allCommands_.push_back(new MachGuiRefillLandMineCommand(this));
-    allCommands_.push_back(new MachGuiDeployCommand(this));
-    allCommands_.push_back(new MachGuiPatrolCommand(this));
-    allCommands_.push_back(new MachGuiTransportCommand(this));
-    allCommands_.push_back(new MachGuiPickUpCommand(this));
-    allCommands_.push_back(new MachGuiScavengeCommand(this));
-    allCommands_.push_back(new MachGuiTreacheryCommand(this));
-    allCommands_.push_back(new MachGuiFormSquadronCommand(this));
-    allCommands_.push_back(new MachGuiHealCommand(this));
-    allCommands_.push_back(new MachGuiStandGroundCommand(this));
-    allCommands_.push_back(new MachGuiAssemblyPointCommand(this));
-    allCommands_.push_back(pIonAttackCommand_);
-    allCommands_.push_back(pNukeAttackCommand_);
-    allCommands_.push_back(pDefconCommand_);
-    allCommands_.push_back(new MachGuiCamouflageCommand(this));
+    allCommands_.emplace_back(pSelfDestructCommand_);
+    allCommands_.emplace_back(std::make_unique<MachGuiMoveCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiStopCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiAttackCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiConstructCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiRepairCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiCaptureCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiDeconstructCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiRecycleCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiLocateToCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiDropLandMineCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiRefillLandMineCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiDeployCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiPatrolCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiTransportCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiPickUpCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiScavengeCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiTreacheryCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiFormSquadronCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiHealCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiStandGroundCommand>(this));
+    allCommands_.emplace_back(std::make_unique<MachGuiAssemblyPointCommand>(this));
+    allCommands_.emplace_back(pIonAttackCommand_);
+    allCommands_.emplace_back(pNukeAttackCommand_);
+    allCommands_.emplace_back(pDefconCommand_);
+    allCommands_.emplace_back(std::make_unique<MachGuiCamouflageCommand>(this));
 
     DEBUG_STREAM(DIAG_NEIL, "allcommands.size " << allCommands_.size() << std::endl << std::flush);
 }
 
 const MachInGameScreen::Commands& MachInGameScreen::allCommands() const
 {
-    CB_DEPIMPL(Commands, allCommands_);
+    CB_DEPIMPL_AUTO(allCommands_);
 
     return allCommands_;
 }
 
 MachGuiCommand& MachInGameScreen::defaultCommand() const
 {
-    CB_DEPIMPL(MachGuiCommand*, pDefaultCommand_);
+    CB_DEPIMPL_AUTO(pDefaultCommand_);
 
     PRE(pDefaultCommand_ != nullptr);
 
@@ -795,15 +842,14 @@ MachGuiCommand& MachInGameScreen::defaultCommand() const
 
 void MachInGameScreen::activateDefaultCommand()
 {
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
-    CB_DEPIMPL(bool, cancelActiveCommand_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
+    CB_DEPIMPL_AUTO(cancelActiveCommand_);
 
     // Cancel any existing command
     if (pActiveCommand_ != nullptr)
     {
         pActiveCommand_->finish();
-        delete pActiveCommand_;
-        pActiveCommand_ = nullptr;
+        pActiveCommand_.reset();
     }
 
     // Ensure the command prompt text is cleared
@@ -817,7 +863,7 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
 {
     PRE(command.isVisible());
 
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
 
     // Can't issue commands if game is paused or network is busy
     if (SimManager::instance().isSuspended() || isNetworkStuffed())
@@ -827,18 +873,16 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
     else
     {
         // Make a fresh copy of the required command
-        MachGuiCommand* pNewCommand = command.clone();
+        std::unique_ptr<MachGuiCommand> pNewCommand = command.clone();
 
         // Cancel any existing command
         if (pActiveCommand_ != nullptr)
         {
             pActiveCommand_->finish();
-            delete pActiveCommand_;
-            pActiveCommand_ = nullptr;
         }
 
         // Store copy of the required command
-        pActiveCommand_ = pNewCommand;
+        pActiveCommand_ = std::move(pNewCommand);
 
         // Load the string for the command
         GuiResourceString::Id id = pActiveCommand_->commandPromptStringid();
@@ -854,8 +898,8 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
 
 MachGuiCommand& MachInGameScreen::activeCommand() const
 {
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
-    CB_DEPIMPL(MachGuiCommand*, pDefaultCommand_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
+    CB_DEPIMPL_AUTO(pDefaultCommand_);
 
     PRE(pActiveCommand_ != nullptr || pDefaultCommand_ != nullptr);
     return (pActiveCommand_ != nullptr ? *pActiveCommand_ : *pDefaultCommand_);
@@ -878,9 +922,9 @@ int MachInGameScreen::cursorFilter() const
 
 void MachInGameScreen::highlightActor(MachActor* pHighlightActor)
 {
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachActor*, pHighlightedActor_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pHighlightedActor_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
 
     if (selectedActors_.empty())
     {
@@ -1163,7 +1207,7 @@ bool MachInGameScreen::addPromptTextOreHolographInfo(MachActor* pActor, GuiStrin
 
 void MachInGameScreen::displayActorPromptText(MachActor* pActor)
 {
-    CB_DEPIMPL(MachActor*, pPromptTextActor_);
+    CB_DEPIMPL_AUTO(pPromptTextActor_);
 
     GuiResourceString::Id stringId = 0;
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
@@ -1235,8 +1279,8 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
 
 void MachInGameScreen::removeHighlightedActor()
 {
-    CB_DEPIMPL(MachActor*, pHighlightedActor_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pHighlightedActor_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
 
     if (pHighlightedActor_)
     {
@@ -1247,34 +1291,34 @@ void MachInGameScreen::removeHighlightedActor()
 
 void MachInGameScreen::asynchronousUpdate()
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
-    CB_DEPIMPL(MachGuiControlPanelAddOn*, pControlPanelAddOn_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(bool, cancelActiveCommand_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(Commands, allCommands_);
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
-    CB_DEPIMPL(bool, controlPanelOn_);
-    CB_DEPIMPL(int, controlPanelXPos_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(MachGuiMapArea*, pMapArea_);
-    CB_DEPIMPL(int, redrawMapCounter_);
-    CB_DEPIMPL(double, networkStuffedStartTime_);
+    CB_DEPIMPL_AUTO(pPromptText_);
+    CB_DEPIMPL_AUTO(pControlPanelAddOn_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(cancelActiveCommand_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(allCommands_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
+    CB_DEPIMPL_AUTO(controlPanelOn_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pMapArea_);
+    CB_DEPIMPL_AUTO(redrawMapCounter_);
+    CB_DEPIMPL_AUTO(networkStuffedStartTime_);
 
 #ifndef PRODUCTION
-    CB_DEPIMPL(bool, showCurrentMachine_);
-    CB_DEPIMPL(bool, showNetworkPing_);
-    CB_DEPIMPL(bool, showNetworkStuffed_);
+    CB_DEPIMPL_AUTO(showCurrentMachine_);
+    CB_DEPIMPL_AUTO(showNetworkPing_);
+    CB_DEPIMPL_AUTO(showNetworkStuffed_);
 #endif
 
     if (actualGameState() != PLAYING)
@@ -1315,9 +1359,8 @@ void MachInGameScreen::asynchronousUpdate()
         bool forceInvisible = selectedActors_.size() == 0 || ! races.hasPCRace()
             || selectedActors_.front()->race() != races.pcController().race();
 
-        for (Commands::iterator it = allCommands_.begin(); it != allCommands_.end(); ++it)
+        for (const auto& pCommand : allCommands_)
         {
-            MachGuiCommand* pCommand = *it;
             pCommand->isVisible(forceInvisible ? false : pCommand->actorsCanExecute());
         }
 
@@ -1421,34 +1464,34 @@ void MachInGameScreen::asynchronousUpdate()
 // virtual
 void MachInGameScreen::update()
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
-    CB_DEPIMPL(MachGuiControlPanelAddOn*, pControlPanelAddOn_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(bool, cancelActiveCommand_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(Commands, allCommands_);
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiCommand*, pActiveCommand_);
-    CB_DEPIMPL(bool, controlPanelOn_);
-    CB_DEPIMPL(int, controlPanelXPos_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(MachGuiMapArea*, pMapArea_);
-    CB_DEPIMPL(int, redrawMapCounter_);
-    CB_DEPIMPL(double, networkStuffedStartTime_);
+    CB_DEPIMPL_AUTO(pPromptText_);
+    CB_DEPIMPL_AUTO(pControlPanelAddOn_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(cancelActiveCommand_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(allCommands_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
+    CB_DEPIMPL_AUTO(controlPanelOn_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pMapArea_);
+    CB_DEPIMPL_AUTO(redrawMapCounter_);
+    CB_DEPIMPL_AUTO(networkStuffedStartTime_);
 
 #ifndef PRODUCTION
-    CB_DEPIMPL(bool, showCurrentMachine_);
-    CB_DEPIMPL(bool, showNetworkPing_);
-    CB_DEPIMPL(bool, showNetworkStuffed_);
+    CB_DEPIMPL_AUTO(showCurrentMachine_);
+    CB_DEPIMPL_AUTO(showNetworkPing_);
+    CB_DEPIMPL_AUTO(showNetworkStuffed_);
 #endif
 
     bool controlPanelMoved = false;
@@ -1511,21 +1554,21 @@ void MachInGameScreen::update()
 
 MachCameras* MachInGameScreen::cameras()
 {
-    CB_DEPIMPL(MachCameras*, pCameras_);
+    CB_DEPIMPL_AUTO(pCameras_);
 
     PRE(pCameras_);
 
-    return pCameras_;
+    return pCameras_.get();
 }
 
 // virtual
 bool MachInGameScreen::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData)
 {
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiCorral*, pCorral_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pCorral_);
 
     bool cancelSelection = false;
 
@@ -1577,14 +1620,14 @@ bool MachInGameScreen::beNotified(W4dSubject* pSubject, W4dSubject::Notification
 
 bool MachInGameScreen::applyCommandToSquadron()
 {
-    CB_DEPIMPL(bool, applyCommandToSquadron_);
+    CB_DEPIMPL_AUTO(applyCommandToSquadron_);
 
     return applyCommandToSquadron_;
 }
 
 void MachInGameScreen::applyCommandToSquadron(bool apply)
 {
-    CB_DEPIMPL(bool, applyCommandToSquadron_);
+    CB_DEPIMPL_AUTO(applyCommandToSquadron_);
 
     applyCommandToSquadron_ = apply;
 }
@@ -1600,9 +1643,9 @@ bool MachInGameScreen::doHandleRightClickEvent(const GuiMouseEvent& event)
 {
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(Gui::Coord, rightClickMousePos_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
 
     static double pressReleaseTimer;
 
@@ -1655,49 +1698,49 @@ bool MachInGameScreen::doHandleRightClickEvent(const GuiMouseEvent& event)
 
 bool MachInGameScreen::isMainMenuContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::MAIN_MENU;
 }
 
 bool MachInGameScreen::isSquadronContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::SQUADRON_MENU;
 }
 
 bool MachInGameScreen::isConstructCommandContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::CONSTRUCT_COMMAND;
 }
 
 bool MachInGameScreen::isBuildCommandContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::BUILD_COMMAND;
 }
 
 bool MachInGameScreen::isHardwareResearchContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::HARDWARE_RESEARCH;
 }
 
 bool MachInGameScreen::isSoftwareResearchContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::SOFTWARE_RESEARCH;
 }
 
 bool MachInGameScreen::isSingleFactoryContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::SINGLE_FACTORY;
 }
@@ -1739,7 +1782,7 @@ void MachInGameScreen::singleFactoryContext()
 
 MachGui::ControlPanelContext MachInGameScreen::currentContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_;
 }
@@ -1775,18 +1818,18 @@ void MachInGameScreen::mainMenuOrSingleFactoryContext()
 
 void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, bool forceChange /*= false*/)
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(bool, commandBankNeedsUpdating_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachConstructMenu*, pConstructMenu_);
-    CB_DEPIMPL(MachBuildMenu*, pBuildMenu_);
-    CB_DEPIMPL(MachSmallCommandIcons*, pSmallCommandIcons_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(MachHWResearchMenu*, pHWResearchMenu_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(commandBankNeedsUpdating_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pConstructMenu_);
+    CB_DEPIMPL_AUTO(pBuildMenu_);
+    CB_DEPIMPL_AUTO(pSmallCommandIcons_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(pHWResearchMenu_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Check not already in it
     if (controlPanelContext_ != newContext || forceChange)
@@ -1855,10 +1898,10 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
 
 void MachInGameScreen::resetContext()
 {
-    CB_DEPIMPL(MachConstructMenu*, pConstructMenu_);
-    CB_DEPIMPL(MachBuildMenu*, pBuildMenu_);
-    CB_DEPIMPL(MachHWResearchMenu*, pHWResearchMenu_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pConstructMenu_);
+    CB_DEPIMPL_AUTO(pBuildMenu_);
+    CB_DEPIMPL_AUTO(pHWResearchMenu_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::resetContext");
 
@@ -1887,9 +1930,9 @@ void MachInGameScreen::resetContext()
 
 void MachInGameScreen::updateCommandIcons()
 {
-    CB_DEPIMPL(MachCommandIcons*, pCommandIcons_);
-    CB_DEPIMPL(MachSmallCommandIcons*, pSmallCommandIcons_);
-    CB_DEPIMPL(Actors, selectedActors_);
+    CB_DEPIMPL_AUTO(pCommandIcons_);
+    CB_DEPIMPL_AUTO(pSmallCommandIcons_);
+    CB_DEPIMPL_AUTO(selectedActors_);
 
     if (pCommandIcons_ != nullptr)
         pCommandIcons_->change();
@@ -1906,9 +1949,9 @@ void MachInGameScreen::updateCommandIcons()
 
 bool MachInGameScreen::isCorralVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible = controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SQUADRON_MENU
         || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
@@ -1926,10 +1969,10 @@ bool MachInGameScreen::isCorralVisible() const
 
 bool MachInGameScreen::isCorralSingleIconVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachActor*, pHighlightedActor_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pHighlightedActor_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible = controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SQUADRON_MENU
         || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
@@ -1947,8 +1990,8 @@ bool MachInGameScreen::isCorralSingleIconVisible() const
 
 bool MachInGameScreen::isCommandIconsVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible = controlPanelContext_ == MachGui::MAIN_MENU;
 
@@ -1960,8 +2003,8 @@ bool MachInGameScreen::isCommandIconsVisible() const
 
 bool MachInGameScreen::isSmallCommandIconsVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible
         = (controlPanelContext_ == MachGui::SINGLE_FACTORY || controlPanelContext_ == MachGui::HARDWARE_RESEARCH);
@@ -1974,8 +2017,8 @@ bool MachInGameScreen::isSmallCommandIconsVisible() const
 
 bool MachInGameScreen::isMachineNavigationVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible = controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU;
 
@@ -1987,8 +2030,8 @@ bool MachInGameScreen::isMachineNavigationVisible() const
 
 bool MachInGameScreen::isConstructionNavigationVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible = controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU;
 
@@ -2000,8 +2043,8 @@ bool MachInGameScreen::isConstructionNavigationVisible() const
 
 bool MachInGameScreen::isSquadronBankVisible() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     bool visible
         = controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND || controlPanelContext_ == MachGui::SQUADRON_MENU;
@@ -2019,13 +2062,13 @@ void MachInGameScreen::doDisplay()
 
 void MachInGameScreen::cancelActiveCommand()
 {
-    CB_DEPIMPL(bool, cancelActiveCommand_);
+    CB_DEPIMPL_AUTO(cancelActiveCommand_);
     cancelActiveCommand_ = true;
 }
 
 void MachInGameScreen::cursorPromptText(const string& prompt)
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
 
@@ -2034,7 +2077,7 @@ void MachInGameScreen::cursorPromptText(const string& prompt)
 
 void MachInGameScreen::cursorPromptText(const string& prompt, bool restartScroll)
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     pPromptText_->cursorPromptText(prompt, restartScroll);
@@ -2042,7 +2085,7 @@ void MachInGameScreen::cursorPromptText(const string& prompt, bool restartScroll
 
 const string& MachInGameScreen::cursorPromptText() const
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     return pPromptText_->cursorPromptText();
@@ -2050,7 +2093,7 @@ const string& MachInGameScreen::cursorPromptText() const
 
 void MachInGameScreen::clearCursorPromptText()
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     pPromptText_->clearCursorPromptText();
@@ -2058,7 +2101,7 @@ void MachInGameScreen::clearCursorPromptText()
 
 void MachInGameScreen::commandPromptText(const string& prompt)
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     pPromptText_->commandPromptText(prompt);
@@ -2066,7 +2109,7 @@ void MachInGameScreen::commandPromptText(const string& prompt)
 
 const string& MachInGameScreen::commandPromptText() const
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     return pPromptText_->commandPromptText();
@@ -2074,7 +2117,7 @@ const string& MachInGameScreen::commandPromptText() const
 
 void MachInGameScreen::clearCommandPromptText()
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     pPromptText_->clearCommandPromptText();
@@ -2082,7 +2125,7 @@ void MachInGameScreen::clearCommandPromptText()
 
 MachPromptText& MachInGameScreen::promptTextWindow()
 {
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
+    CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
     return *pPromptText_;
@@ -2095,7 +2138,7 @@ void MachInGameScreen::machineNavigationContext()
 
 bool MachInGameScreen::isMachineNavigationContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::MACHINE_NAVIGATION_MENU;
 }
@@ -2107,14 +2150,14 @@ void MachInGameScreen::constructionNavigationContext()
 
 bool MachInGameScreen::isConstructionNavigationContext() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     return controlPanelContext_ == MachGui::CONSTRUCTION_NAVIGATION_MENU;
 }
 
 void MachInGameScreen::cursor2d(MachGui::Cursor2dType type)
 {
-    CB_DEPIMPL(MachInGameCursors2d*, pCursors2d_);
+    CB_DEPIMPL_AUTO(pCursors2d_);
 
     PRE(pCursors2d_ != nullptr);
 
@@ -2127,7 +2170,7 @@ void MachInGameScreen::cursor2d(MachGui::Cursor2dType type)
 
 void MachInGameScreen::cursor2d(MachGui::Cursor2dType type, MachInGameCursors2d::CursorSize curSize)
 {
-    CB_DEPIMPL(MachInGameCursors2d*, pCursors2d_);
+    CB_DEPIMPL_AUTO(pCursors2d_);
 
     PRE(pCursors2d_ != nullptr);
 
@@ -2140,11 +2183,11 @@ void MachInGameScreen::cursor2d(MachGui::Cursor2dType type, MachInGameCursors2d:
 
 void MachInGameScreen::setupActorBank()
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
-    CB_DEPIMPL(Actors, selectedActors_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
+    CB_DEPIMPL_AUTO(selectedActors_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Get the fristd::endly race id
     MachPhys::Race playerRace = MachLogRaces::instance().pcController().race();
@@ -2226,26 +2269,26 @@ void MachInGameScreen::setupActorBank()
 
 void MachInGameScreen::updateCameras()
 {
-    CB_DEPIMPL(MachCameras*, pCameras_);
+    CB_DEPIMPL_AUTO(pCameras_);
     pCameras_->updateCameras();
 }
 
 void MachInGameScreen::updateChildVisible()
 {
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachGuiCorralSingleIcon*, pCorralSingleIcon_);
-    CB_DEPIMPL(MachGuiCorral*, pCorral_);
-    CB_DEPIMPL(MachGuiSquadronBank*, pSquadronBank_);
-    CB_DEPIMPL(MachCommandIcons*, pCommandIcons_);
-    CB_DEPIMPL(MachSmallCommandIcons*, pSmallCommandIcons_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(MachProductionBank*, pProductionBank_);
-    CB_DEPIMPL(MachHWResearchBank*, pHWResearchBank_);
-    CB_DEPIMPL(MachConstructMenu*, pConstructMenu_);
-    CB_DEPIMPL(MachBuildMenu*, pBuildMenu_);
-    CB_DEPIMPL(MachHWResearchMenu*, pHWResearchMenu_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pCorralSingleIcon_);
+    CB_DEPIMPL_AUTO(pCorral_);
+    CB_DEPIMPL_AUTO(pSquadronBank_);
+    CB_DEPIMPL_AUTO(pCommandIcons_);
+    CB_DEPIMPL_AUTO(pSmallCommandIcons_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pProductionBank_);
+    CB_DEPIMPL_AUTO(pHWResearchBank_);
+    CB_DEPIMPL_AUTO(pConstructMenu_);
+    CB_DEPIMPL_AUTO(pBuildMenu_);
+    CB_DEPIMPL_AUTO(pHWResearchMenu_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     // Make navigator visible/invisible
     if (! isMachineNavigationVisible() && pMachineNavigation_->isVisible())
@@ -2377,7 +2420,7 @@ void MachInGameScreen::doHandleContainsMouseEvent(const GuiMouseEvent& /*event*/
 
 void MachInGameScreen::setGuiViewport()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
 
     // Set the viewport boundary to the entire screen.
     RenDevice& device = *pSceneManager_->pDevice();
@@ -2388,10 +2431,10 @@ void MachInGameScreen::setGuiViewport()
 
 void MachInGameScreen::setWorldViewViewport()
 {
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     if (inFirstPerson_)
     {
@@ -2415,26 +2458,26 @@ void MachInGameScreen::setWorldViewViewport()
 
 bool MachInGameScreen::rubberBandSelectionHappening() const
 {
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
 
     return pWorldViewWindow_->rubberBandSelectionHappening();
 }
 
 void MachInGameScreen::loadGame(const string& planet)
 {
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(MachGuiSquadronBank*, pSquadronBank_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachGuiBmuButton*, pBmuButton_);
+    CB_DEPIMPL_AUTO(pCameras_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pSquadronBank_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pBmuButton_);
     CB_DEPIMPL(MachInGameScreen::GameState, gameState_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachSquadronIcon*, pSquadronIcon_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pSquadronIcon_);
+    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Don't allow any of the button setting below to trigger their sounds
     MachGuiSoundManager::instance().delaySounds();
@@ -2474,14 +2517,14 @@ void MachInGameScreen::loadGame(const string& planet)
 
 void MachInGameScreen::unloadGame()
 {
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(MachGuiSquadronBank*, pSquadronBank_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
+    CB_DEPIMPL_AUTO(pCameras_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pSquadronBank_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
 
     // Unselect any actors
     deselectAll();
@@ -2507,7 +2550,7 @@ void MachInGameScreen::unloadGame()
 void MachInGameScreen::updateGameState()
 {
     CB_DEPIMPL(MachInGameScreen::GameState, gameState_);
-    CB_DEPIMPL(PhysAbsoluteTime, gameStateTimer_);
+    CB_DEPIMPL_AUTO(gameStateTimer_);
 
     if (gameState_ == PLAYING) // Only interested in switching the state if the game has not yet been won/lost
     {
@@ -2534,7 +2577,7 @@ void MachInGameScreen::updateGameState()
 MachInGameScreen::GameState MachInGameScreen::gameState() const
 {
     CB_DEPIMPL(MachInGameScreen::GameState, gameState_);
-    CB_DEPIMPL(PhysAbsoluteTime, gameStateTimer_);
+    CB_DEPIMPL_AUTO(gameStateTimer_);
 
     GameState retVal = PLAYING;
 
@@ -2563,9 +2606,9 @@ MachInGameScreen::GameState MachInGameScreen::gameState() const
 void MachInGameScreen::activate()
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
 
     if (! inFirstPerson_)
     {
@@ -2580,7 +2623,7 @@ void MachInGameScreen::activate()
 
 void MachInGameScreen::fogOfWarOn(bool fog)
 {
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
 
     PRE(pContinentMap_);
 
@@ -2589,16 +2632,16 @@ void MachInGameScreen::fogOfWarOn(bool fog)
 
 bool MachInGameScreen::switchToMenus() const
 {
-    CB_DEPIMPL(bool, switchToMenus_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
+    CB_DEPIMPL_AUTO(switchToMenus_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
 
     return switchToMenus_ || pFirstPerson_->switchToMenus();
 }
 
 void MachInGameScreen::resetSwitchToMenus()
 {
-    CB_DEPIMPL(bool, switchToMenus_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
+    CB_DEPIMPL_AUTO(switchToMenus_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
 
     switchToMenus_ = false;
     pFirstPerson_->resetSwitchToMenus();
@@ -2606,18 +2649,18 @@ void MachInGameScreen::resetSwitchToMenus()
 
 void MachInGameScreen::switchToInHead()
 {
-    CB_DEPIMPL(bool, switchGuiRoot_);
+    CB_DEPIMPL_AUTO(switchGuiRoot_);
 
     switchGuiRoot_ = true;
 }
 
 void MachInGameScreen::checkSwitchGuiRoot()
 {
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(bool, switchGuiRoot_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(switchGuiRoot_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
 
     if (inFirstPerson_)
     {
@@ -2652,7 +2695,7 @@ void MachInGameScreen::checkSwitchGuiRoot()
                 pFirstPerson_->becomeRoot();
 
                 // Give 1st person the keyboard focus.
-                GuiManager::instance().keyboardFocus(pFirstPerson_);
+                GuiManager::instance().keyboardFocus(pFirstPerson_.get());
 
                 // Remove the menu cursor.
                 pSceneManager_->pDevice()->display()->useCursor(nullptr);
@@ -2680,9 +2723,9 @@ void MachInGameScreen::checkSwitchGuiRoot()
 
 void MachInGameScreen::switchBackToInGame()
 {
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
 
     // Were we in first person? Is it still valid to switch to first person?
     // In a multiplayer game the game continues whilst the user is in the menu
@@ -2694,7 +2737,7 @@ void MachInGameScreen::switchBackToInGame()
         pFirstPerson_->becomeRoot();
 
         // Give 1st person the keyboard focus.
-        GuiManager::instance().keyboardFocus(pFirstPerson_);
+        GuiManager::instance().keyboardFocus(pFirstPerson_.get());
 
         // Remove the menu cursor.
         pSceneManager_->pDevice()->display()->useCursor(nullptr);
@@ -2717,7 +2760,7 @@ void MachInGameScreen::switchBackToInGame()
 bool MachInGameScreen::inFirstPerson() const
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, inFirstPerson_);
+    CB_DEPIMPL_AUTO(inFirstPerson_);
 
     return inFirstPerson_;
 }
@@ -2733,8 +2776,8 @@ const Gui::Coord& MachInGameScreen::rightClickMousePos() const
 void MachInGameScreen::updateWhilstInFirstPerson()
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(double, networkStuffedStartTime_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(networkStuffedStartTime_);
 
     if (actualGameState() != PLAYING)
     {
@@ -2765,7 +2808,7 @@ void MachInGameScreen::updateWhilstInFirstPerson()
 void MachInGameScreen::switchToMenus(bool switchTo)
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, switchToMenus_);
+    CB_DEPIMPL_AUTO(switchToMenus_);
 
     switchToMenus_ = switchTo;
 }
@@ -2773,8 +2816,8 @@ void MachInGameScreen::switchToMenus(bool switchTo)
 void MachInGameScreen::saveGame(PerOstream& outStream)
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pCameras_);
 
     pCameras_->saveGame(outStream);
     pContinentMap_->saveGame(outStream);
@@ -2783,19 +2826,19 @@ void MachInGameScreen::saveGame(PerOstream& outStream)
 void MachInGameScreen::loadSavedGame(const string& planet, PerIstream& inStream)
 {
     // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachContinentMap*, pContinentMap_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachWorldViewWindow*, pWorldViewWindow_);
-    CB_DEPIMPL(MachGuiSquadronBank*, pSquadronBank_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachGuiBmuButton*, pBmuButton_);
-    CB_DEPIMPL(GameState, gameState_);
-    CB_DEPIMPL(MachMachinesIcon*, pMachinesIcon_);
-    CB_DEPIMPL(MachConstructionsIcon*, pConstructionsIcon_);
-    CB_DEPIMPL(MachSquadronIcon*, pSquadronIcon_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pContinentMap_);
+    CB_DEPIMPL_AUTO(pCameras_);
+    CB_DEPIMPL_AUTO(pWorldViewWindow_);
+    CB_DEPIMPL_AUTO(pSquadronBank_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pBmuButton_);
+    CB_DEPIMPL_AUTO(gameState_);
+    CB_DEPIMPL_AUTO(pMachinesIcon_);
+    CB_DEPIMPL_AUTO(pConstructionsIcon_);
+    CB_DEPIMPL_AUTO(pSquadronIcon_);
+    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Don't allow any of the button setting below to trigger their sounds
     MachGuiSoundManager::instance().delaySounds();
@@ -2827,7 +2870,7 @@ void MachInGameScreen::loadSavedGame(const string& planet, PerIstream& inStream)
 
 MachGuiControlPanel& MachInGameScreen::controlPanel()
 {
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     PRE(pControlPanel_);
 
@@ -2836,7 +2879,7 @@ MachGuiControlPanel& MachInGameScreen::controlPanel()
 
 bool MachInGameScreen::displayControlPanel() const
 {
-    CB_DEPIMPL(MachGui::ControlPanelContext, controlPanelContext_);
+    CB_DEPIMPL_AUTO(controlPanelContext_);
 
     bool returnVal = controlPanelContext_ == MachGui::SQUADRON_MENU
         || controlPanelContext_ == MachGui::FORM_SQUADRON_COMMAND
@@ -2859,12 +2902,12 @@ bool MachInGameScreen::displayControlPanel() const
 
 void MachInGameScreen::setupCameraScrollAreas()
 {
-    CB_DEPIMPL(MachGuiCameraScrollArea*, pTopCameraScrollArea_);
-    CB_DEPIMPL(MachGuiCameraScrollArea*, pBottomCameraScrollArea_);
-    CB_DEPIMPL(MachGuiCameraScrollArea*, pLeftCameraScrollArea_);
-    CB_DEPIMPL(MachGuiCameraScrollArea*, pRightCameraScrollArea_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
+    CB_DEPIMPL_AUTO(pTopCameraScrollArea_);
+    CB_DEPIMPL_AUTO(pBottomCameraScrollArea_);
+    CB_DEPIMPL_AUTO(pLeftCameraScrollArea_);
+    CB_DEPIMPL_AUTO(pRightCameraScrollArea_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pCameras_);
 
     delete pTopCameraScrollArea_;
     delete pBottomCameraScrollArea_;
@@ -2876,21 +2919,21 @@ void MachInGameScreen::setupCameraScrollAreas()
     const int h = device.windowHeight();
 
     pTopCameraScrollArea_
-        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, w, 1), MachGuiCameraScrollArea::Top, pCameras_, this);
+        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, w, 1), MachGuiCameraScrollArea::Top, pCameras_.get(), this);
     pBottomCameraScrollArea_ = new 
-        MachGuiCameraScrollArea(this, Gui::Box(0, h - 1, w, h), MachGuiCameraScrollArea::Bottom, pCameras_, this);
+        MachGuiCameraScrollArea(this, Gui::Box(0, h - 1, w, h), MachGuiCameraScrollArea::Bottom, pCameras_.get(), this);
     pLeftCameraScrollArea_
-        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, 1, h), MachGuiCameraScrollArea::Left, pCameras_, this);
+        = new MachGuiCameraScrollArea(this, Gui::Box(0, 0, 1, h), MachGuiCameraScrollArea::Left, pCameras_.get(), this);
     pRightCameraScrollArea_ = new 
-        MachGuiCameraScrollArea(this, Gui::Box(w - 1, 0, w, h), MachGuiCameraScrollArea::Right, pCameras_, this);
+        MachGuiCameraScrollArea(this, Gui::Box(w - 1, 0, w, h), MachGuiCameraScrollArea::Right, pCameras_.get(), this);
 }
 
 void MachInGameScreen::setupPromptText()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachPromptText*, pPromptText_);
-    CB_DEPIMPL(int, controlPanelXPos_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pCameras_);
+    CB_DEPIMPL_AUTO(pPromptText_);
+    CB_DEPIMPL_AUTO(controlPanelXPos_);
 
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
@@ -2902,7 +2945,7 @@ void MachInGameScreen::setupPromptText()
         pPromptText_ = new MachPromptText(
             this,
             Gui::Boundary(controlPanelXPos_, h + MachGui::promptTextYOffset(), w, h),
-            pCameras_,
+            pCameras_.get(),
             &worldViewWindow());
     }
 
@@ -2913,12 +2956,12 @@ void MachInGameScreen::setupPromptText()
 
 void MachInGameScreen::setupNavigators()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiMachineNavigator*, pMachineNavigation_);
-    CB_DEPIMPL(MachGuiConstructionNavigator*, pConstructionNavigation_);
-    CB_DEPIMPL(MachGuiSquadronBank*, pSquadronBank_);
-    CB_DEPIMPL(MachSquadronIcon*, pSquadronIcon_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pMachineNavigation_);
+    CB_DEPIMPL_AUTO(pConstructionNavigation_);
+    CB_DEPIMPL_AUTO(pSquadronBank_);
+    CB_DEPIMPL_AUTO(pSquadronIcon_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     if (! pMachineNavigation_)
     {
@@ -2942,10 +2985,10 @@ void MachInGameScreen::setupNavigators()
 
 void MachInGameScreen::setupCorralAndCommandIcons()
 {
-    CB_DEPIMPL(MachGuiCorral*, pCorral_);
-    CB_DEPIMPL(MachCommandIcons*, pCommandIcons_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
-    CB_DEPIMPL(Actors, selectedActors_);
+    CB_DEPIMPL_AUTO(pCorral_);
+    CB_DEPIMPL_AUTO(pCommandIcons_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(selectedActors_);
 
     delete pCorral_;
     delete pCommandIcons_;
@@ -2962,8 +3005,8 @@ void MachInGameScreen::setupCorralAndCommandIcons()
 
 void MachInGameScreen::resolutionChange()
 {
-    CB_DEPIMPL(bool, resolutionChanged_);
-    CB_DEPIMPL(MachGuiFirstPerson*, pFirstPerson_);
+    CB_DEPIMPL_AUTO(resolutionChanged_);
+    CB_DEPIMPL_AUTO(pFirstPerson_);
 
     resolutionChanged_ = true;
     pFirstPerson_->resolutionChange();
@@ -2971,15 +3014,15 @@ void MachInGameScreen::resolutionChange()
 
 MachInGameScreen::CorralStateBitfield MachInGameScreen::corralState() const
 {
-    CB_DEPIMPL(CorralStateBitfield, corralState_);
+    CB_DEPIMPL_AUTO(corralState_);
 
     return corralState_;
 }
 
 void MachInGameScreen::updateCorralState()
 {
-    CB_DEPIMPL(CorralStateBitfield, corralState_);
-    CB_DEPIMPL(Actors, selectedActors_);
+    CB_DEPIMPL_AUTO(corralState_);
+    CB_DEPIMPL_AUTO(selectedActors_);
 
     corralState_ = CORRAL_EMPTY;
 
@@ -3102,22 +3145,22 @@ void MachInGameScreen::updateCorralState()
 
 bool MachInGameScreen::controlPanelOn() const
 {
-    CB_DEPIMPL(bool, controlPanelOn_);
+    CB_DEPIMPL_AUTO(controlPanelOn_);
 
     return controlPanelOn_;
 }
 
 void MachInGameScreen::controlPanelOn(bool on)
 {
-    CB_DEPIMPL(bool, controlPanelOn_);
+    CB_DEPIMPL_AUTO(controlPanelOn_);
 
     controlPanelOn_ = on;
 }
 
 void MachInGameScreen::initiateScreenShot()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(bool, renderingScreenShot_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(renderingScreenShot_);
 
     RenDevice& device = *pSceneManager_->pDevice();
 
@@ -3142,8 +3185,8 @@ bool MachInGameScreen::isRenderingScreenShot() const
 void MachInGameScreen::finalizeScreenShot()
 {
     PRE(isRenderingScreenShot());
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(bool, renderingScreenShot_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(renderingScreenShot_);
 
     saveScreenShot();
 
@@ -3159,7 +3202,7 @@ void MachInGameScreen::finalizeScreenShot()
 // Can't use Gui::writeScreenAsBmp() because we need to save the front buffer.
 void MachInGameScreen::saveScreenShot()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
 
     bool gotPathName = false;
     SysPathName pathName;
@@ -3187,8 +3230,8 @@ void MachInGameScreen::saveScreenShot()
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiControlPanel*, pControlPanel_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(pControlPanel_);
 
     Gui::Coord topLeftCoord = pControlPanel_->relativeCoord();
 
@@ -3202,14 +3245,14 @@ Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const
 
 MachGuiIonAttackCommand* MachInGameScreen::ionAttackCommand()
 {
-    CB_DEPIMPL(MachGuiIonAttackCommand*, pIonAttackCommand_);
+    CB_DEPIMPL_AUTO(pIonAttackCommand_);
 
     return pIonAttackCommand_;
 }
 
 MachGuiNukeAttackCommand* MachInGameScreen::nukeAttackCommand()
 {
-    CB_DEPIMPL(MachGuiNukeAttackCommand*, pNukeAttackCommand_);
+    CB_DEPIMPL_AUTO(pNukeAttackCommand_);
 
     return pNukeAttackCommand_;
 }
@@ -3217,7 +3260,7 @@ MachGuiNukeAttackCommand* MachInGameScreen::nukeAttackCommand()
 MachInGameScreen::GameState MachInGameScreen::actualGameState() const
 {
     CB_DEPIMPL(MachInGameScreen::GameState, gameState_);
-    CB_DEPIMPL(PhysAbsoluteTime, gameStateTimer_);
+    CB_DEPIMPL_AUTO(gameStateTimer_);
 
     GameState retVal = PLAYING;
 
@@ -3237,7 +3280,7 @@ MachInGameScreen::GameState MachInGameScreen::actualGameState() const
 
 bool MachInGameScreen::isNetworkStuffed() const
 {
-    CB_DEPIMPL(double, networkStuffedStartTime_);
+    CB_DEPIMPL_AUTO(networkStuffedStartTime_);
 
     bool retValue = false;
 
@@ -3253,14 +3296,14 @@ bool MachInGameScreen::isNetworkStuffed() const
 
 void MachInGameScreen::disableFirstPerson(bool newValue)
 {
-    CB_DEPIMPL(bool, disableFirstPerson_);
+    CB_DEPIMPL_AUTO(disableFirstPerson_);
 
     disableFirstPerson_ = newValue;
 }
 
 bool MachInGameScreen::isFirstPersonDisabled() const
 {
-    CB_DEPIMPL(bool, disableFirstPerson_);
+    CB_DEPIMPL_AUTO(disableFirstPerson_);
 
     bool retValue = false;
 
@@ -3274,14 +3317,14 @@ bool MachInGameScreen::isFirstPersonDisabled() const
 
 void MachInGameScreen::instantExit(bool newValue)
 {
-    CB_DEPIMPL(bool, instantExit_);
+    CB_DEPIMPL_AUTO(instantExit_);
 
     instantExit_ = newValue;
 }
 
 bool MachInGameScreen::instantExit() const
 {
-    CB_DEPIMPL(bool, instantExit_);
+    CB_DEPIMPL_AUTO(instantExit_);
 
     return instantExit_;
 }

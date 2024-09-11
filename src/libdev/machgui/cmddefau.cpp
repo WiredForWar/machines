@@ -482,9 +482,9 @@ void MachGuiDefaultCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiDefaultCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDefaultCommand::clone() const
 {
-    return new MachGuiDefaultCommand(&inGameScreen());
+    return std::make_unique<MachGuiDefaultCommand>(&inGameScreen());
 }
 
 // virtual

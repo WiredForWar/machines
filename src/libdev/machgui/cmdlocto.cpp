@@ -146,9 +146,9 @@ void MachGuiLocateToCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiLocateToCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiLocateToCommand::clone() const
 {
-    return new MachGuiLocateToCommand(&inGameScreen());
+    return std::make_unique<MachGuiLocateToCommand>(&inGameScreen());
 }
 
 // virtual

@@ -117,9 +117,9 @@ bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiRecycleCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiRecycleCommand::clone() const
 {
-    return new MachGuiRecycleCommand(&inGameScreen());
+    return std::make_unique<MachGuiRecycleCommand>(&inGameScreen());
 }
 
 // virtual

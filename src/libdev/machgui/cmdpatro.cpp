@@ -165,9 +165,9 @@ void MachGuiPatrolCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiPatrolCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiPatrolCommand::clone() const
 {
-    return new MachGuiPatrolCommand(&inGameScreen());
+    return std::make_unique<MachGuiPatrolCommand>(&inGameScreen());
 }
 
 // virtual

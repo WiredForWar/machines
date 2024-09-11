@@ -103,9 +103,9 @@ void MachGuiRefillLandMineCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiRefillLandMineCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiRefillLandMineCommand::clone() const
 {
-    return new MachGuiRefillLandMineCommand(&inGameScreen());
+    return std::make_unique<MachGuiRefillLandMineCommand>(&inGameScreen());
 }
 
 // virtual

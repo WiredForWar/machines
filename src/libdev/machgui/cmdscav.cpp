@@ -179,9 +179,9 @@ void MachGuiScavengeCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiScavengeCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiScavengeCommand::clone() const
 {
-    return new MachGuiScavengeCommand(&inGameScreen());
+    return std::make_unique<MachGuiScavengeCommand>(&inGameScreen());
 }
 
 // virtual

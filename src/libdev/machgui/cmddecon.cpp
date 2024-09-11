@@ -166,9 +166,9 @@ bool MachGuiDeconstructCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiDeconstructCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDeconstructCommand::clone() const
 {
-    return new MachGuiDeconstructCommand(&inGameScreen());
+    return std::make_unique<MachGuiDeconstructCommand>(&inGameScreen());
 }
 
 // virtual

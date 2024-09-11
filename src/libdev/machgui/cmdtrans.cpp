@@ -184,9 +184,9 @@ void MachGuiTransportCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiTransportCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiTransportCommand::clone() const
 {
-    return new MachGuiTransportCommand(&inGameScreen());
+    return std::make_unique<MachGuiTransportCommand>(&inGameScreen());
 }
 
 // virtual

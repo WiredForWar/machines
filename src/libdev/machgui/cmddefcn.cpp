@@ -114,9 +114,9 @@ bool MachGuiDefconCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiDefconCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiDefconCommand::clone() const
 {
-    return new MachGuiDefconCommand(&inGameScreen());
+    return std::make_unique<MachGuiDefconCommand>(&inGameScreen());
 }
 
 // virtual

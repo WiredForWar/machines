@@ -104,9 +104,9 @@ bool MachGuiStandGroundCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiStandGroundCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiStandGroundCommand::clone() const
 {
-    return new MachGuiStandGroundCommand(&inGameScreen());
+    return std::make_unique<MachGuiStandGroundCommand>(&inGameScreen());
 }
 
 // virtual

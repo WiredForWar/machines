@@ -114,9 +114,9 @@ bool MachGuiAssemblyPointCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiAssemblyPointCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiAssemblyPointCommand::clone() const
 {
-    return new MachGuiAssemblyPointCommand(&inGameScreen());
+    return std::make_unique<MachGuiAssemblyPointCommand>(&inGameScreen());
 }
 
 // virtual

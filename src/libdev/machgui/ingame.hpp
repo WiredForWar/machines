@@ -18,6 +18,8 @@
 #include "machgui/gui.hpp"
 #include "machgui/igcurs2d.hpp"
 
+#include <memory>
+
 // Forward refs
 class IProgressReporter;
 class MachInGameScreenImpl;
@@ -74,7 +76,7 @@ public:
     bool isSquadronBankVisible() const;
 
     using Actors = ctl_pvector<MachActor>;
-    using Commands = ctl_pvector<MachGuiCommand>;
+    using Commands = std::vector<std::unique_ptr<MachGuiCommand>>;
 
     // The collection of selected actors
     const Actors& selectedActors() const;

@@ -96,9 +96,9 @@ bool MachGuiCamouflageCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiCamouflageCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiCamouflageCommand::clone() const
 {
-    return new MachGuiCamouflageCommand(&inGameScreen());
+    return std::make_unique<MachGuiCamouflageCommand>(&inGameScreen());
 }
 
 // virtual

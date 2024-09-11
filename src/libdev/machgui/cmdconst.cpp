@@ -568,11 +568,11 @@ bool MachGuiConstructCommand::doApply(MachActor* pActor, string*)
 }
 
 // virtual
-MachGuiCommand* MachGuiConstructCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiConstructCommand::clone() const
 {
     orientation() = 0;
 
-    return new MachGuiConstructCommand(&inGameScreen());
+    return std::make_unique<MachGuiConstructCommand>(&inGameScreen());
 }
 
 // virtual

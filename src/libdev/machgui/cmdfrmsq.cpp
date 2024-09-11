@@ -64,9 +64,9 @@ void MachGuiFormSquadronCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiFormSquadronCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiFormSquadronCommand::clone() const
 {
-    return new MachGuiFormSquadronCommand(&inGameScreen());
+    return std::make_unique<MachGuiFormSquadronCommand>(&inGameScreen());
 }
 
 // virtual

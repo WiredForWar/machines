@@ -444,9 +444,9 @@ void MachGuiMoveCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiMoveCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiMoveCommand::clone() const
 {
-    return new MachGuiMoveCommand(&inGameScreen());
+    return std::make_unique<MachGuiMoveCommand>(&inGameScreen());
 }
 
 // virtual

@@ -214,9 +214,9 @@ void MachGuiIonAttackCommand::typeData(MachLog::ObjectType, int, uint)
 }
 
 // virtual
-MachGuiCommand* MachGuiIonAttackCommand::clone() const
+std::unique_ptr<MachGuiCommand> MachGuiIonAttackCommand::clone() const
 {
-    return new MachGuiIonAttackCommand(&inGameScreen());
+    return std::make_unique<MachGuiIonAttackCommand>(&inGameScreen());
 }
 
 // virtual
