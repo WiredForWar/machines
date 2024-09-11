@@ -169,16 +169,6 @@ const std::pair<string, string>& MachGuiCaptureCommand::iconNames() const
 }
 
 // virtual
-void MachGuiCaptureCommand::start()
-{
-}
-
-// virtual
-void MachGuiCaptureCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiCaptureCommand::cursorPromptStringId() const
 {
     return IDS_CAPTURE_COMMAND;

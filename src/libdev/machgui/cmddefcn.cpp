@@ -127,16 +127,6 @@ const std::pair<string, string>& MachGuiDefconCommand::iconNames() const
 }
 
 // virtual
-void MachGuiDefconCommand::start()
-{
-}
-
-// virtual
-void MachGuiDefconCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiDefconCommand::cursorPromptStringId() const
 {
     if (defconLow_)

@@ -177,16 +177,6 @@ const std::pair<string, string>& MachGuiRepairCommand::iconNames() const
 }
 
 // virtual
-void MachGuiRepairCommand::start()
-{
-}
-
-// virtual
-void MachGuiRepairCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiRepairCommand::cursorPromptStringId() const
 {
     return IDS_REPAIR_COMMAND;

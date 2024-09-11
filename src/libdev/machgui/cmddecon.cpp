@@ -179,16 +179,6 @@ const std::pair<string, string>& MachGuiDeconstructCommand::iconNames() const
 }
 
 // virtual
-void MachGuiDeconstructCommand::start()
-{
-}
-
-// virtual
-void MachGuiDeconstructCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiDeconstructCommand::cursorPromptStringId() const
 {
     return IDS_DECONSTRUCT_COMMAND;

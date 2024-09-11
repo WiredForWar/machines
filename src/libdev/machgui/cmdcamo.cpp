@@ -108,16 +108,6 @@ const std::pair<string, string>& MachGuiCamouflageCommand::iconNames() const
 }
 
 // virtual
-void MachGuiCamouflageCommand::start()
-{
-}
-
-// virtual
-void MachGuiCamouflageCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiCamouflageCommand::cursorPromptStringId() const
 {
     return IDS_CAMOUFLAGE_COMMAND;

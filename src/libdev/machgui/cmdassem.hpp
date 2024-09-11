@@ -46,14 +46,6 @@ public:
     // reference to the up and down bitmap names for this command
     const std::pair<string, string>& iconNames() const override;
 
-    // Called when the command becomes active
-    // Default override does nothing
-    void start() override;
-
-    // Called when the command ceases to be active
-    // Default override does nothing
-    void finish() override;
-
     // Respond to pick at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
     void pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed) override;

@@ -117,16 +117,6 @@ const std::pair<string, string>& MachGuiStandGroundCommand::iconNames() const
 }
 
 // virtual
-void MachGuiStandGroundCommand::start()
-{
-}
-
-// virtual
-void MachGuiStandGroundCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiStandGroundCommand::cursorPromptStringId() const
 {
     return IDS_STANDGROUND_COMMAND;

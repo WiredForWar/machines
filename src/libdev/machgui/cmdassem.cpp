@@ -127,16 +127,6 @@ const std::pair<string, string>& MachGuiAssemblyPointCommand::iconNames() const
 }
 
 // virtual
-void MachGuiAssemblyPointCommand::start()
-{
-}
-
-// virtual
-void MachGuiAssemblyPointCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiAssemblyPointCommand::cursorPromptStringId() const
 {
     return IDS_ASSEMBLEAT_COMMAND;

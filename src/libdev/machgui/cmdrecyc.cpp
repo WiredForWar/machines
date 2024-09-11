@@ -130,16 +130,6 @@ const std::pair<string, string>& MachGuiRecycleCommand::iconNames() const
 }
 
 // virtual
-void MachGuiRecycleCommand::start()
-{
-}
-
-// virtual
-void MachGuiRecycleCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiRecycleCommand::cursorPromptStringId() const
 {
     return IDS_RECYCLE_COMMAND;

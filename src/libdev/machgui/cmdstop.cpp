@@ -111,16 +111,6 @@ const std::pair<string, string>& MachGuiStopCommand::iconNames() const
 }
 
 // virtual
-void MachGuiStopCommand::start()
-{
-}
-
-// virtual
-void MachGuiStopCommand::finish()
-{
-}
-
-// virtual
 uint MachGuiStopCommand::cursorPromptStringId() const
 {
     return IDS_STOP_COMMAND;

@@ -50,14 +50,6 @@ public:
     // reference to the up and down bitmap names for this command
     const std::pair<string, string>& iconNames() const override;
 
-    // Called when the command becomes active
-    // Default override does nothing
-    void start() override;
-
-    // Called when the command ceases to be active
-    // Default override does nothing
-    void finish() override;
-
     // respond to pick on pActor in the world view window.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
     void pickOnActor(MachActor* pActor, bool ctrlPressed, bool shiftPressed, bool altPressed) override;
