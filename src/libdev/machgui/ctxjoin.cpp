@@ -44,52 +44,6 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-class MachGuiCurGamesListBoxItem : public MachGuiSingleSelectionListBoxItem
-// Canonical form revoked
-{
-public:
-    MachGuiCurGamesListBoxItem(
-        MachGuiStartupScreens* pStartupScreens,
-        MachGuiSingleSelectionListBox* pListBox,
-        size_t width,
-        const NetSessionInfo& info,
-        MachGuiCtxJoin& joinContext)
-        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, info.serverName)
-        , joinContext_(joinContext)
-        , sessionInfo_(info)
-    {
-    }
-
-    ~MachGuiCurGamesListBoxItem() override
-    {
-        //      joinContext_.joinGameSelected( false ); // This produced some freed memory references
-    }
-
-    void CLASS_INVARIANT;
-
-protected:
-    void select() override
-    {
-        MachGuiSingleSelectionListBoxItem::select();
-        joinContext_.onNetSessionSelected(sessionInfo_);
-    }
-
-    void unselect() override
-    {
-        MachGuiSingleSelectionListBoxItem::unselect();
-        joinContext_.onNetSessionSelected({});
-    }
-
-private:
-    MachGuiCurGamesListBoxItem(const MachGuiCurGamesListBoxItem&);
-    MachGuiCurGamesListBoxItem& operator=(const MachGuiCurGamesListBoxItem&);
-
-    // Data members...
-    MachGuiCtxJoin& joinContext_;
-    NetSessionInfo sessionInfo_;
-};
-//////////////////////////////////////////////////////////////////////////////////////////////
-
 #define JOINGAME_LB_MINX 48
 #define JOINGAME_LB_MAXX 262
 #define JOINGAME_LB_MINY 56
@@ -275,6 +229,9 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
     {
         pNewGameName_->setText(pStartupScreens_->startupData()->newGameName());
         editingGameName(true);
+
+        if (joinGameSelected_)
+            joinGameSelected(false);
     }
     else
     {
@@ -284,6 +241,25 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
 
             changeFocus();
             editingGameName(false);
+        }
+
+        if (pGamesList_->currentItem())
+        {
+            std::optional<std::size_t> currentIndex = pGamesList_->getCurrentItemIndex();
+            if (!currentIndex.has_value() && currentIndex.value() > 0)
+                return;
+
+            std::size_t sessionIndex = currentIndex.value() - 1;
+            const NetNetwork::Sessions& sessions = NetNetwork::instance().sessions();
+            ASSERT(sessionIndex < sessions.size(), "Invalid game session list item");
+            if (sessionIndex < sessions.size())
+                return;
+
+            const NetSessionInfo& info = sessions.at(sessionIndex);
+
+            NetNetwork::instance().setIPAddress(info.address);
+            pNetworkProtocol_->readNetworkDetails();
+            joinGameSelected(true);
         }
     }
 }
@@ -405,12 +381,11 @@ void MachGuiCtxJoin::update()
         const int itemWidth = (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
         for (std::size_t sessionIndex = numGamesInList(); sessionIndex < sessions.size(); ++sessionIndex)
         {
-            new MachGuiCurGamesListBoxItem(
+            new MachGuiSingleSelectionListBoxItem(
                 pStartupScreens_,
                 pGamesList_,
                 itemWidth,
-                sessions.at(sessionIndex),
-                *this);
+                sessions.at(sessionIndex).serverName);
             NETWORK_STREAM("  item added.\n");
         }
         pGamesList_->childrenUpdated();
@@ -490,14 +465,3 @@ void MachGuiCtxJoin::joinGameSelected(bool jsg)
         pCreateBtn_->defaultControl(false);
     }
 }
-
-void MachGuiCtxJoin::onNetSessionSelected(const NetSessionInfo& info)
-{
-    NetNetwork::instance().setIPAddress(info.address);
-
-    pNetworkProtocol_->readNetworkDetails();
-
-    joinGameSelected(!info.address.empty());
-}
-
-/* End CTXJOIN.CPP **************************************************/

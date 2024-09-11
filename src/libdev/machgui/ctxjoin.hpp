@@ -35,18 +35,16 @@ public:
 
     void changeFocus();
 
-    bool validNetworkSettings(bool isHost);
-
-    void editingGameName(bool);
-    void joinGameSelected(bool);
-
-    void onNetSessionSelected(const NetSessionInfo& info);
-
     void CLASS_INVARIANT;
 
 protected:
     void showGames();
     std::size_t numGamesInList() const;
+
+    bool validNetworkSettings(bool isHost);
+
+    void editingGameName(bool);
+    void joinGameSelected(bool);
 
     void addNewGameListItem();
     void onGamesListSelectionChanged();
