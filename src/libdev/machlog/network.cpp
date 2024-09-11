@@ -70,11 +70,6 @@ MachLogNetwork::~MachLogNetwork()
     delete pImpl_;
 }
 
-void MachLogNetwork::markDisconnected()
-{
-    pImpl_->isNetworkGame_ = false;
-}
-
 void MachLogNetwork::terminateAndReset()
 {
     CB_MachLogNetwork_DEPIMPL();
@@ -322,6 +317,12 @@ bool MachLogNetwork::joinSession(const std::string& address, const std::string& 
     NetNetwork::instance().setLocalPlayerName(playerName);
     isNetworkGame_ = true;
     return true;
+}
+
+void MachLogNetwork::resetSession()
+{
+    NetNetwork::instance().resetAppSession();
+    pImpl_->isNetworkGame_ = false;
 }
 
 void MachLogNetwork::localRace(MachPhys::Race newLocalRace)

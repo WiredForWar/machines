@@ -211,7 +211,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         pGamesList_);
 
     // Clear join game info.
-    pStartupScreens->startupData()->joinGame("");
+    pStartupScreens->startupData()->resetData();
 
     // Setup edit box for new game name to be entered into...
     GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
@@ -223,7 +223,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         *this);
     pGamesList_->childrenUpdated();
 
-    NetNetwork::instance().resetAppSession();
+    MachLogNetwork::instance().resetSession();
     // Query network to find which protocol has been selected
     NetNetwork::NetworkProtocol protocol = NetNetwork::instance().currentProtocol();
 
@@ -420,7 +420,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
                 return false;
             }
             // Reset join game incase player cancels "I'm Ready" context and wants to join a different game.
-            pStartupScreens_->startupData()->joinGame("");
+            pStartupScreens_->startupData()->resetData();
             pStartupScreens_->startupData()->hostGame(false);
             // Send join message so that host can update availablePlayers list etc.
             pStartupScreens_->messageBroker().sendJoinMessage(
@@ -535,13 +535,13 @@ void MachGuiCtxJoin::joinGameSelected(bool jsg)
 
 void MachGuiCtxJoin::onNewGameItemSelected()
 {
-    pStartupScreens_->startupData()->joinGame("");
+    pStartupScreens_->startupData()->resetData();
     editingGameName(true);
 }
 
 void MachGuiCtxJoin::onNetSessionSelected(const NetSessionInfo& info)
 {
-    pStartupScreens_->startupData()->joinGame(info.serverName);
+    pStartupScreens_->startupData()->resetData();
     NetNetwork::instance().setIPAddress(info.address);
 
     pNetworkProtocol_->readNetworkDetails();

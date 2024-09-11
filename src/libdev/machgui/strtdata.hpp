@@ -123,10 +123,7 @@ public:
     const std::string& connectionType() const;
     void connectionType(const std::string&, InitialiseConnection = DO_NOT_INITIALISE_CONNECTION);
 
-    // Store the name of the game that will be joined if the Join button
-    // is pressed. Calling this method does NOT actually join that game.
-    const std::string& joinGame() const;
-    void joinGame(const std::string& gameName);
+    void resetData();
 
     // Name of new game if one is created
     const std::string& newGameName() const;

@@ -350,7 +350,7 @@ void MachGuiStartupData::connectionType(const std::string& ct, InitialiseConnect
     ASSERT(success, "failed to set protocol");
 }
 
-void MachGuiStartupData::joinGame(const std::string& str)
+void MachGuiStartupData::resetData()
 {
     includedInGame_ = false;
     terminalMultiPlayerGameProblem_ = false;

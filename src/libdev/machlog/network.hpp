@@ -38,7 +38,6 @@ public:
     static MachLogNetwork& instance();
     ~MachLogNetwork();
 
-    void markDisconnected();
     void terminateAndReset();
 
     MachPhys::Race localRace() const;
@@ -69,6 +68,7 @@ public:
 
     bool hostWithSessionId(const std::string& gameName, const std::string& playerName);
     bool joinSession(const std::string& address, const std::string& playerName);
+    void resetSession();
     bool launchFromLobbyInfo();
     void setNodeCompoundStatus(bool);
 

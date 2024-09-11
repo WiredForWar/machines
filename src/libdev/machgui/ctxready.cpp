@@ -600,8 +600,7 @@ bool MachGuiCtxImReady::okayToSwitchContext()
         // string ct = startupData().connectionType();
         // MachLogNetwork::instance().terminateAndReset();
         // startupData().connectionType( ct );
-        MachLogNetwork::instance().markDisconnected();
-        NetNetwork::instance().resetAppSession();
+        MachLogNetwork::instance().resetSession();
 
         // Initialise all data in player info slots.
         startupData().resetPlayers();
