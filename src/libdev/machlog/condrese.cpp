@@ -30,7 +30,7 @@ public:
     ~MachLogResearchCompleteConditionNotifiable() override { }
     void notifiableBeNotified() override
     {
-        if (pOwner_->pItem_->researched(pOwner_->race_))
+        if (pOwner_->pItem_->isResearched(pOwner_->race_))
             pOwner_->callBackTimeGap_ = 0;
     }
 };
@@ -55,7 +55,7 @@ MachLogResearchCompleteCondition::MachLogResearchCompleteCondition(
     , pNotifiable_(nullptr)
 {
     pItem_ = &MachLogRaces::instance().researchTree().researchItem(ot, subType, hwLevel, wc);
-    if (pItem_->researched(race_))
+    if (pItem_->isResearched(race_))
         callBackTimeGap_ = 0;
     else
     {
@@ -80,9 +80,9 @@ bool MachLogResearchCompleteCondition::doHasConditionBeenMet() const
 {
     HAL_STREAM(
         "MachLogResearchCompleteCondition::doHasConditionBeenMet checking condition of research item for researched\n");
-    HAL_STREAM(" researched? " << pItem_->researched(race_) << std::endl);
+    HAL_STREAM(" researched? " << pItem_->isResearched(race_) << std::endl);
     doOutputOperator(Diag::instance().halStream());
-    return pItem_->researched(race_);
+    return pItem_->isResearched(race_);
 }
 
 // static

@@ -236,7 +236,7 @@ void MachLogSpyLocator::executeTheft()
             pResItemCurrentlyStealing_->advanceResearch(race(), potentialResearchUnits);
 
             // Have I now finished stealing this research?
-            if (pResItemCurrentlyStealing_->researched(race()))
+            if (pResItemCurrentlyStealing_->isResearched(race()))
             {
                 HAL_STREAM("research item is now researched - set everything off\n");
                 pResItemCurrentlyStealing_ = nullptr;
@@ -346,8 +346,8 @@ bool MachLogSpyLocator::stealable(
     // allowing us to steal a tech for which we already have the parent tech researched
 
     return (
-        researchItem.researched(otherRace) && researchItem.hardwareLabSubType() == hardwareLabSubType
-        && researchItem.available(race()) && ! researchItem.researched(race()));
+        researchItem.isResearched(otherRace) && researchItem.hardwareLabSubType() == hardwareLabSubType
+        && researchItem.isAvailable(race()) && ! researchItem.isResearched(race()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

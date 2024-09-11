@@ -180,7 +180,7 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
         {
             MachLogResearchItem& mlri
                 = races.researchTree().researchItem(MachLog::POD, 0, 1, MachPhys::T_ION_ORBITAL_CANNON);
-            if (mlri.researched(myRace))
+            if (mlri.isResearched(myRace))
             {
                 ionCannonAcquiredForFirstTime();
             }
@@ -472,7 +472,7 @@ void MachLogPod::assignToDifferentRace(MachLogRace& newRace)
     {
         MachLogResearchItem& mlri
             = races.researchTree().researchItem(MachLog::POD, 0, 1, MachPhys::T_ION_ORBITAL_CANNON);
-        if (mlri.researched(race()))
+        if (mlri.isResearched(race()))
         {
             activateIonCannon();
         }

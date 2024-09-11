@@ -373,7 +373,7 @@ bool MachLogResearchTree::activated(
     ResearchItems::iterator i = researchItems_.begin();
     for (; i != researchItems_.end() && ! isActivated; ++i)
     {
-        if (objectType == (*i)->objectType() && (*i)->researched(r))
+        if (objectType == (*i)->objectType() && (*i)->isResearched(r))
         {
             if (subType == MachLog::DONTCARE)
             {

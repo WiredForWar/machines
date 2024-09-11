@@ -48,14 +48,14 @@ public:
     const MachPhys::ResearchUnits& researchCost() const;
     // The cost is overridable - this is to allow certain RSI files to manipulate research times.
     // Theres probably easier ways to do this but this is what they wanted - probably won't even get used
-    void researchCost(const MachPhys::ResearchUnits&);
+    void setResearchCost(const MachPhys::ResearchUnits& newCost);
     const MachPhys::BuildingMaterialUnits& buildingCost() const;
     // Both costs are overridable.
-    void buildingCost(const MachPhys::BuildingMaterialUnits&);
+    void setBuildingCost(const MachPhys::BuildingMaterialUnits& newCost);
     bool hasParentDependancy() const;
     MachLogResearchItem& parentDependancy() const;
-    bool available(MachPhys::Race) const;
-    bool researched(MachPhys::Race) const;
+    bool isAvailable(MachPhys::Race) const;
+    bool isResearched(MachPhys::Race) const;
 
     const MachPhys::ResearchUnits& swResearchCost(int level) const;
     const MachPhys::BuildingMaterialUnits& swBuildingCost(int level) const;
@@ -65,7 +65,7 @@ public:
 
     MachPhys::HardwareLabSubType hardwareLabSubType() const;
 
-    void available(MachPhys::Race, bool);
+    void isAvailable(MachPhys::Race, bool);
     void researched(MachPhys::Race, bool);
     void advanceResearch(MachPhys::Race, MachPhys::ResearchUnits);
     MachPhys::ResearchUnits amountResearched(MachPhys::Race) const;

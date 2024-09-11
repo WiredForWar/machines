@@ -36,11 +36,10 @@ MachHWResearchIcons::MachHWResearchIcons(
         MachHWResearchIcon::reqHeight(),
         3)
     , MachLogNotifiable(MachLogRaces::instance().pcController().race())
-    , // What race is the PC controller controlling?
-    researchTree_(MachLogRaces::instance().researchTree())
     , pHWResearchBank_(pHWResearchBank)
     , pHardwareLab_(pHardwareLab)
     , pInGameScreen_(pInGameScreen)
+    , researchTree_(MachLogRaces::instance().researchTree())
 {
     researchTree_.addMe(this);
 
@@ -111,11 +110,10 @@ void MachHWResearchIcons::addIcons(
     const MachLogResearchTree::ResearchItems& items = pHardwareLab->availableResearchItems();
 
     // Iterate through the items and add an icon for each one that hasn't been researched
-    for (MachLogResearchTree::ResearchItems::const_iterator it = items.begin(); it != items.end(); ++it)
+    for (const MachLogResearchItem* pResearchItem : items)
     {
         // Check not already researched
-        MachLogResearchItem* pResearchItem = (*it);
-        if (! pResearchItem->researched(pHardwareLab->race()))
+        if (!pResearchItem->isResearched(pHardwareLab->race()))
         {
             new MachHWResearchIcon(this, pInGameScreen, pHWResearchBank, pHardwareLab, pResearchItem);
         }

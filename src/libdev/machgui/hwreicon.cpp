@@ -27,7 +27,7 @@ MachHWResearchIcon::MachHWResearchIcon(
     MachInGameScreen* pInGameScreen,
     MachHWResearchBank* pHWResearchBank,
     MachLogHardwareLab* pHardwareLab,
-    MachLogResearchItem* pResearchItem)
+    const MachLogResearchItem* pResearchItem)
     : GuiIcon(
         pParent,
         Gui::Coord(0, 0), // Will be relocated by icon sequence parent
@@ -51,6 +51,41 @@ MachHWResearchIcon::MachHWResearchIcon(
 MachHWResearchIcon::~MachHWResearchIcon()
 {
     TEST_INVARIANT;
+}
+
+string MachHWResearchIcon::getPromptText() const
+{
+    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
+        pResearchItem_->objectType(),
+        pResearchItem_->subType(),
+        pResearchItem_->weaponCombo(),
+        pResearchItem_->hwLevel(),
+        IDS_RESEARCH_PROMPT,
+        IDS_RESEARCH_WITH_WEAPON_PROMPT);
+
+    // Add bmu cost and rp cost to end of prompt text
+    char bmuBuffer[20];
+    char rpBuffer[20];
+    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
+    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
+    sprintf(bmuBuffer, "%d", pResearchItem_->buildingCost());
+    sprintf(rpBuffer, "%d", pResearchItem_->researchCost());
+
+    if (pResearchItem_->buildingCost() != 0)
+    {
+        GuiStrings strings;
+        strings.push_back(GuiString(bmuBuffer));
+        strings.push_back(GuiString(rpBuffer));
+        GuiResourceString costText(IDS_COST_WITH_RP, strings);
+        prompt += "\n" + costText.asString();
+    }
+    else
+    {
+        GuiResourceString costText(IDS_COST_RP, GuiString(rpBuffer));
+        prompt += "\n" + costText.asString();
+    }
+
+    return prompt;
 }
 
 /* ////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -117,37 +152,7 @@ void MachHWResearchIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent
 {
     GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-    GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
-        pResearchItem_->objectType(),
-        pResearchItem_->subType(),
-        pResearchItem_->weaponCombo(),
-        pResearchItem_->hwLevel(),
-        IDS_RESEARCH_PROMPT,
-        IDS_RESEARCH_WITH_WEAPON_PROMPT);
-
-    // Add bmu cost and rp cost to end of prompt text
-    char bmuBuffer[20];
-    char rpBuffer[20];
-    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
-    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
-    sprintf(bmuBuffer, "%d", pResearchItem_->buildingCost());
-    sprintf(rpBuffer, "%d", pResearchItem_->researchCost());
-
-    if (pResearchItem_->buildingCost() != 0)
-    {
-        GuiStrings strings;
-        strings.push_back(GuiString(bmuBuffer));
-        strings.push_back(GuiString(rpBuffer));
-        GuiResourceString costText(IDS_COST_WITH_RP, strings);
-        prompt += "\n" + costText.asString();
-    }
-    else
-    {
-        GuiResourceString costText(IDS_COST_RP, GuiString(rpBuffer));
-        prompt += "\n" + costText.asString();
-    }
-
-    pInGameScreen_->cursorPromptText(prompt);
+    pInGameScreen_->cursorPromptText(getPromptText());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

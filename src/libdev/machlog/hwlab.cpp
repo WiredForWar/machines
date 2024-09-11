@@ -237,7 +237,7 @@ PhysRelativeTime MachLogHardwareLab::update(const PhysRelativeTime& alteredMaxCP
                     races.totalResearchScoreAdjust(myRace, availableResearchUnits);
 
                     // check for research now being complete - if so, issue voicemail and boot it off the queue
-                    if (pRi->researched(myRace))
+                    if (pRi->isResearched(myRace))
                     {
                         MachLogVoiceMailManager::instance().postNewMail(VID_TECHNICIAN_RESEARCH_COMPLETE, id(), myRace);
                         if (currentResearchQueue_.size() > 1)
@@ -271,7 +271,7 @@ PhysRelativeTime MachLogHardwareLab::update(const PhysRelativeTime& alteredMaxCP
                      i != currentResearchQueue_.end();
                      ++i)
                 {
-                    if ((*i)->researched(race()))
+                    if ((*i)->isResearched(race()))
                     {
                         iFound = i;
                         break;
@@ -397,12 +397,12 @@ void MachLogHardwareLab::initialiseResearchItems()
     for (MachLogResearchTree::ResearchItems::const_iterator i = items.begin(); i != items.end(); ++i)
     {
         MachLogResearchItem* pRi = *i;
-        if (pRi->available(race()) && ! pRi->researched(race()) && pRi->technologyLevel() <= highestTechLevel
+        if (pRi->isAvailable(race()) && ! pRi->isResearched(race()) && pRi->technologyLevel() <= highestTechLevel
             && subType_ == pRi->hardwareLabSubType())
         {
             if (pRi->hasParentDependancy())
             {
-                if (pRi->parentDependancy().researched(race()))
+                if (pRi->parentDependancy().isResearched(race()))
                     availableResearchItems_.push_back(pRi);
             }
             else

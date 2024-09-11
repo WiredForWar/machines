@@ -163,9 +163,9 @@ void MachLogFactory::doOutputOperator(std::ostream& o) const
     o << "Build Items " << buildItems().size() << std::endl;
     for (MachLogResearchTree::ResearchItems::const_iterator i = buildItems().begin(); i != buildItems().end(); ++i)
     {
-        if (!(*i)->researched(race()))
+        if (!(*i)->isResearched(race()))
             o << "(NR) ";
-        if (!(*i)->available(race()))
+        if (!(*i)->isAvailable(race()))
             o << "(NA) ";
         o << (*i)->objectType() << " sub " << (*i)->subType() << " hw " << (*i)->hwLevel() << " wc "
           << (*i)->weaponCombo() << std::endl;
@@ -690,7 +690,7 @@ bool MachLogFactory::isAllowedToBuild(MachLog::ObjectType type, int subType, int
     for (MachLogResearchTree::ResearchItems::const_iterator i = buildItems().begin();
          i != buildItems().end() && ! found;
          ++i)
-        if ((*i)->researched(race()) && (*i)->objectType() == type && (*i)->subType() == subType
+        if ((*i)->isResearched(race()) && (*i)->objectType() == type && (*i)->subType() == subType
             && (*i)->hwLevel() == hwLevel && (*i)->weaponCombo() == wc)
             found = true;
     return found;

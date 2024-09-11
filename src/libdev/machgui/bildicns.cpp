@@ -79,7 +79,7 @@ void MachBuildMenuIcons::addIcons()
     {
         // Check researched
         const MachLogResearchItem& item = *(*it);
-        if (item.researched(pFactory_->race()))
+        if (item.isResearched(pFactory_->race()))
         {
             new MachBuildMachineIcon(this, pInGameScreen_, pProductionBank_, pFactory_, item);
         }

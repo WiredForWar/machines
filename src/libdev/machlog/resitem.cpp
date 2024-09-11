@@ -222,7 +222,7 @@ const MachPhys::ResearchUnits& MachLogResearchItem::researchCost() const
     return researchCost_;
 }
 
-void MachLogResearchItem::researchCost(const MachPhys::ResearchUnits& newCost)
+void MachLogResearchItem::setResearchCost(const MachPhys::ResearchUnits& newCost)
 {
     CB_MachLogResearchItem_DEPIMPL();
 
@@ -236,28 +236,28 @@ const MachPhys::BuildingMaterialUnits& MachLogResearchItem::buildingCost() const
     return buildingCost_;
 }
 
-void MachLogResearchItem::buildingCost(const MachPhys::BuildingMaterialUnits& newCost)
+void MachLogResearchItem::setBuildingCost(const MachPhys::BuildingMaterialUnits& newCost)
 {
     CB_MachLogResearchItem_DEPIMPL();
 
     buildingCost_ = newCost;
 }
 
-bool MachLogResearchItem::available(MachPhys::Race race) const
+bool MachLogResearchItem::isAvailable(MachPhys::Race race) const
 {
     CB_MachLogResearchItem_DEPIMPL();
 
     return available_[race];
 }
 
-bool MachLogResearchItem::researched(MachPhys::Race race) const
+bool MachLogResearchItem::isResearched(MachPhys::Race race) const
 {
     CB_MachLogResearchItem_DEPIMPL();
 
     return researched_[race];
 }
 
-void MachLogResearchItem::available(MachPhys::Race race, bool value)
+void MachLogResearchItem::isAvailable(MachPhys::Race race, bool value)
 {
     CB_MachLogResearchItem_DEPIMPL();
 
@@ -502,8 +502,8 @@ std::ostream& operator<<(std::ostream& o, const MachLogResearchItem& t)
     for (int i = 0; i < MachLogResearchItem::N_RESEARCH_RACES; ++i)
     {
         o << " swLevel[" << i << "] " << t.swLevel((MachPhys::Race)i) << std::endl;
-        o << " researched[" << i << "] " << t.researched((MachPhys::Race)i) << std::endl;
-        o << " available[" << i << "] " << t.available((MachPhys::Race)i) << std::endl;
+        o << " researched[" << i << "] " << t.isResearched((MachPhys::Race)i) << std::endl;
+        o << " available[" << i << "] " << t.isAvailable((MachPhys::Race)i) << std::endl;
         o << " amount researched[" << i << "] " << t.amountResearched((MachPhys::Race)i) << std::endl;
         o << " amount built[" << i << "] " << t.amountBuilt((MachPhys::Race)i) << std::endl;
     }

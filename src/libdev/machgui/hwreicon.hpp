@@ -36,10 +36,12 @@ public:
         MachInGameScreen* pInGameScreen,
         MachHWResearchBank* pHWResearchBank,
         MachLogHardwareLab* pHardwareLab,
-        MachLogResearchItem* pResearchItem);
+        const MachLogResearchItem* pResearchItem);
 
     // dtor.
     ~MachHWResearchIcon() override;
+
+    string getPromptText() const;
 
     // inherited from GuiButton...
     void doBeDepressed(const GuiMouseEvent& rel) override;
@@ -63,10 +65,10 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachHWResearchIcon& t);
 
     // Data members
-    MachInGameScreen* pInGameScreen_; // The ingame screen
-    MachHWResearchBank* pHWResearchBank_; // Represents the production queue
-    MachLogHardwareLab* pHardwareLab_; // The factory being edited
-    MachLogResearchItem* pResearchItem_; // The research item represented
+    MachInGameScreen* pInGameScreen_{}; // The ingame screen
+    MachHWResearchBank* pHWResearchBank_{}; // Represents the production queue
+    MachLogHardwareLab* pHardwareLab_{}; // The factory being edited
+    const MachLogResearchItem* pResearchItem_{}; // The research item represented
 };
 
 #endif

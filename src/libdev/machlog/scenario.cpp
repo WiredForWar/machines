@@ -1069,7 +1069,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     }
                     if (doWork)
                     {
-                        ri.available(ridx, true);
+                        ri.isAvailable(ridx, true);
                         ri.researched(ridx, researched);
                         ri.swAvailable(ridx, 1, true);
                         ri.swResearched(ridx, 1, researched);
@@ -1078,9 +1078,9 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                                 ri.swAvailable(ridx, i, true);
                         // ri.swLevel( ridx, 1 );
                         if (overrideResearchCost)
-                            ri.researchCost(overrideResearchCost);
+                            ri.setResearchCost(overrideResearchCost);
                         if (overrideBuildingCost)
-                            ri.buildingCost(overrideBuildingCost);
+                            ri.setBuildingCost(overrideBuildingCost);
                         if (! researched)
                         {
                             ASSERT_INFO(riParser.line());
