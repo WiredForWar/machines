@@ -46,8 +46,9 @@ void PedAvailableTileLods::initialise(const SysPathName& lodDir)
 
     find();
 
-    POST(not isEmpty());
-    ALWAYS_ASSERT(not isEmpty(), ("No tile lods found for this planet: " + lodDir.pathname()).c_str())
+    // In fact LOD files are not strictly necessary (anymore)
+    // POST(!isEmpty());
+    // ALWAYS_ASSERT(!isEmpty(), ("No tile lods found for this planet: " + lodDir.pathname()).c_str())
 }
 
 const SysPathName& PedAvailableTileLods::next()
