@@ -21,6 +21,8 @@ class GuiSingleSelectionListBox : public GuiSimpleScrollableList
 // Canonical form revoked
 {
 public:
+    using Callback = std::function<void(GuiSingleSelectionListBox*)>;
+
     GuiSingleSelectionListBox(
         GuiDisplayable* pParent,
         const Gui::Box&,
@@ -28,6 +30,9 @@ public:
         size_t verticalSpacing,
         size_t scrollInc);
     ~GuiSingleSelectionListBox() override;
+
+    void setSelectionChangedCallback(Callback callback);
+    const GuiSingleSelectionListBoxItem* currentItem() const { return pCurrentSelection_; }
 
     void CLASS_INVARIANT;
 
@@ -44,7 +49,8 @@ private:
     GuiSingleSelectionListBox(const GuiSingleSelectionListBox&);
     GuiSingleSelectionListBox& operator=(const GuiSingleSelectionListBox&);
 
-    GuiSingleSelectionListBoxItem* pCurrentSelection_;
+    Callback selectionChangedCallback_;
+    GuiSingleSelectionListBoxItem* pCurrentSelection_{};
 };
 
 #endif

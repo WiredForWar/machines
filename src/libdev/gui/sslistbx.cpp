@@ -15,7 +15,6 @@ GuiSingleSelectionListBox::GuiSingleSelectionListBox(
     size_t verticalSpacing,
     size_t scrollInc)
     : GuiSimpleScrollableList(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
-    , pCurrentSelection_(nullptr)
 {
 
     TEST_INVARIANT;
@@ -24,6 +23,11 @@ GuiSingleSelectionListBox::GuiSingleSelectionListBox(
 GuiSingleSelectionListBox::~GuiSingleSelectionListBox()
 {
     TEST_INVARIANT;
+}
+
+void GuiSingleSelectionListBox::setSelectionChangedCallback(Callback callback)
+{
+    selectionChangedCallback_ = callback;
 }
 
 void GuiSingleSelectionListBox::CLASS_INVARIANT
@@ -54,6 +58,11 @@ void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBo
 
         pCurrentSelection_->setSelected(true);
         pCurrentSelection_->select();
+
+        if (selectionChangedCallback_)
+        {
+            selectionChangedCallback_(this);
+        }
     }
 }
 
@@ -61,6 +70,11 @@ void GuiSingleSelectionListBox::deleteAllItems()
 {
     deleteAllChildren();
     pCurrentSelection_ = nullptr;
+
+    if (selectionChangedCallback_)
+    {
+        selectionChangedCallback_(this);
+    }
 }
 
 /* End SSLISTBX.CPP *************************************************/
