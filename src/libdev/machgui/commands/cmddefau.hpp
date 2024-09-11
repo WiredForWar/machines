@@ -23,7 +23,7 @@ class MachGuiDefaultCommand : public MachGuiCommand
 {
 public:
     // ctor.
-    MachGuiDefaultCommand(MachInGameScreen* pInGameScreen);
+    MachGuiDefaultCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId = MachGui::NoBind);
 
     // dtor
     ~MachGuiDefaultCommand() override;

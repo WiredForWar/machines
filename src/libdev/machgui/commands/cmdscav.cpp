@@ -7,7 +7,6 @@
 
 #include "cmdscav.hpp"
 
-#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/move.hpp"
@@ -22,7 +21,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-scavenge-trigger"_bind)
     , hadFinalPick_(false)
     , action_(SCAVENGE)
 {
@@ -197,19 +196,6 @@ uint MachGuiScavengeCommand::cursorPromptStringId() const
 uint MachGuiScavengeCommand::commandPromptStringid() const
 {
     return IDS_SCAVENGE_START;
-}
-
-// virtual
-bool MachGuiScavengeCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_Y && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 bool MachGuiScavengeCommand::debrisIsDuplicate(const MachLogDebris* pCandidateDebris) const

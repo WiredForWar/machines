@@ -7,7 +7,6 @@
 
 #include "cmdrecyc.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
@@ -15,10 +14,9 @@
 #include "machlog/machvman.hpp"
 #include "machlog/smelter.hpp"
 #include "machlog/oprecycl.hpp"
-#include "device/butevent.hpp"
 
 MachGuiRecycleCommand::MachGuiRecycleCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-recycle-trigger"_bind)
     , hadFinalPick_(false)
     , pSmeltingBuilding_(nullptr)
 {
@@ -153,19 +151,6 @@ bool MachGuiRecycleCommand::canAdminApply() const
 bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     PRE(canAdminApply());
-
-    return false;
-}
-
-// virtual
-bool MachGuiRecycleCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_Q && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
 
     return false;
 }

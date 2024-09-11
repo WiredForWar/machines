@@ -7,10 +7,8 @@
 
 #include "cmdheal.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/administ.hpp"
 #include "machlog/move.hpp"
@@ -20,7 +18,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiHealCommand::MachGuiHealCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-heal-trigger"_bind)
     , action_(HEAL_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)
@@ -265,19 +263,6 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, std:
     }
 
     return canDo;
-}
-
-// virtual
-bool MachGuiHealCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_H && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 bool MachGuiHealCommand::atLeastOneCanHeal(const MachLogMachine* pTargetMachine) const

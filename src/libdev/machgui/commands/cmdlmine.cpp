@@ -7,12 +7,10 @@
 
 #include "cmdlmine.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
-#include "device/butevent.hpp"
 #include "system/pathname.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/oplmine.hpp"
@@ -25,7 +23,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiDropLandMineCommand::MachGuiDropLandMineCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-drop-land-mine-trigger"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable allocation size
@@ -220,20 +218,6 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
     }
 
     return true;
-}
-
-// virtual
-bool MachGuiDropLandMineCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS && be.wasShiftPressed()
-        && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDLOCTO.CPP **************************************************/

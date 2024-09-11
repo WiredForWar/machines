@@ -8,13 +8,12 @@
 
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machlog.hpp"
 #include "ctl/pvector.hpp"
 
 MachGuiResearchCommand::MachGuiResearchCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, MachGui::NoBind)
 {
     TEST_INVARIANT;
 }
@@ -144,15 +143,15 @@ uint MachGuiResearchCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiResearchCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    // if ( isVisible() and be.scanCode() == Device::KeyCode::BACK_SPACE and be.action() == DevButtonEvent::PRESS )
-    //{
-    //   inGameScreen().activeCommand( *this );
-    //   return true;
-    // }
+// bool MachGuiResearchCommand::processButtonEvent(const GuiKeyEvent& event)
+// {
+//     if (isVisible() and be.scanCode() == Device::KeyCode::BACK_SPACE and be.action() == DevButtonEvent::PRESS)
+//     {
+//         inGameScreen().activeCommand(*this);
+//         return true;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
 /* End  **************************************************/

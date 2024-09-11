@@ -7,7 +7,6 @@
 
 #include "cmdpicku.hpp"
 
-#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
@@ -22,7 +21,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiPickUpCommand::MachGuiPickUpCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-pick-up-trigger"_bind)
     , hadFinalPick_(false)
     , addingOrReplacing_(REPLACING)
     , action_(PICKUP)
@@ -212,19 +211,6 @@ uint MachGuiPickUpCommand::cursorPromptStringId() const
 uint MachGuiPickUpCommand::commandPromptStringid() const
 {
     return IDS_PICKUP_START;
-}
-
-// virtual
-bool MachGuiPickUpCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_K && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // virtual

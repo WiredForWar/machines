@@ -7,18 +7,16 @@
 
 #include "cmdrefil.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/oprefill.hpp"
 #include "machlog/administ.hpp"
 
 MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-refill-land-mine-trigger"_bind)
     , hadFinalPick_(true)
 {
     TEST_INVARIANT;
@@ -140,19 +138,6 @@ bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdminis
 {
     PRE(canAdminApply());
     ;
-    return false;
-}
-
-// virtual
-bool MachGuiRefillLandMineCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_G && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
     return false;
 }
 

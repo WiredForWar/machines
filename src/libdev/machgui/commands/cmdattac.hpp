@@ -80,10 +80,6 @@ public:
     // True if the interaction for the command is complete
     bool isInteractionComplete() const override;
 
-    /////////////////////////////////////////////////
-    // Hot key processing
-    bool processButtonEvent(const GuiKeyEvent& event) override;
-
     void CLASS_INVARIANT;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiAttackCommand& t);

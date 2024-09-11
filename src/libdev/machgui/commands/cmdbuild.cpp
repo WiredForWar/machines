@@ -7,16 +7,14 @@
 
 #include "cmdbuild.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machlog.hpp"
 #include "ctl/pvector.hpp"
 
 MachGuiBuildCommand::MachGuiBuildCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-build-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -150,19 +148,6 @@ uint MachGuiBuildCommand::cursorPromptStringId() const
 uint MachGuiBuildCommand::commandPromptStringid() const
 {
     return IDS_BUILD_START;
-}
-
-// virtual
-bool MachGuiBuildCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_B && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDBUILD.CPP **************************************************/

@@ -7,10 +7,8 @@
 
 #include "cmddeplo.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/apc.hpp"
 #include "machlog/opdapc.hpp"
@@ -19,7 +17,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiDeployCommand::MachGuiDeployCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-deploy-trigger"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;
@@ -162,19 +160,6 @@ uint MachGuiDeployCommand::cursorPromptStringId() const
 uint MachGuiDeployCommand::commandPromptStringid() const
 {
     return IDS_DEPLOY_START;
-}
-
-// virtual
-bool MachGuiDeployCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_E && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDDEPLO.CPP **************************************************/

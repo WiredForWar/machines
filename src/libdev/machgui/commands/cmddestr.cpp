@@ -7,16 +7,14 @@
 
 #include "cmddestr.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "device/time.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
-#include "device/butevent.hpp"
 
 MachGuiSelfDestructCommand::MachGuiSelfDestructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiDefaultCommand(pInGameScreen)
+    : MachGuiDefaultCommand(pInGameScreen, "commands-self-destruct-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -132,20 +130,6 @@ uint MachGuiSelfDestructCommand::cursorPromptStringId() const
 uint MachGuiSelfDestructCommand::commandPromptStringid() const
 {
     return IDS_SELF_DESTRUCT_START;
-}
-
-// virtual
-bool MachGuiSelfDestructCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::BACK_SPACE && be.wasCtrlPressed() && be.wasShiftPressed()
-        && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // static

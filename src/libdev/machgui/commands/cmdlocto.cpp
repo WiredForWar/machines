@@ -7,12 +7,10 @@
 
 #include "cmdlocto.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/oplocate.hpp"
 #include "machlog/opadloc.hpp"
@@ -23,7 +21,7 @@
 #include "system/pathname.hpp"
 
 MachGuiLocateToCommand::MachGuiLocateToCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-locate-trigger"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable allocation size
@@ -217,19 +215,6 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
     }
 
     return true;
-}
-
-// virtual
-bool MachGuiLocateToCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_L && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDLOCTO.CPP **************************************************/

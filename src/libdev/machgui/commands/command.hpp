@@ -44,7 +44,7 @@ class MachGuiCommand
 {
 public:
     // ctor.
-    MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId = MachGui::NoBind);
+    MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId);
 
     // dtor
     virtual ~MachGuiCommand();

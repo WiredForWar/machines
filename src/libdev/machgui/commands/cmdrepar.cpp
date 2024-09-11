@@ -7,7 +7,6 @@
 
 #include "cmdrepar.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
@@ -26,12 +25,10 @@
 #include "machlog/opsupcon.hpp"
 #include "machlog/squad.hpp"
 
-#include "device/butevent.hpp"
-
 #include "machphys/objdata.hpp"
 
 MachGuiRepairCommand::MachGuiRepairCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-repair-trigger"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;
@@ -227,19 +224,6 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
     MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     return true;
-}
-
-// virtual
-bool MachGuiRepairCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_R && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // virtual

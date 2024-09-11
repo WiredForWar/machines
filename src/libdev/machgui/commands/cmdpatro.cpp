@@ -7,19 +7,17 @@
 
 #include "cmdpatro.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/patrol.hpp"
-#include "device/butevent.hpp"
 #include "mathex/transf3d.hpp"
 #include "system/pathname.hpp"
 
 MachGuiPatrolCommand::MachGuiPatrolCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-patrol-trigger"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable vector size
@@ -189,19 +187,6 @@ uint MachGuiPatrolCommand::cursorPromptStringId() const
 uint MachGuiPatrolCommand::commandPromptStringid() const
 {
     return IDS_PATROL_START;
-}
-
-// virtual
-bool MachGuiPatrolCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_P && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDPATRO.CPP **************************************************/

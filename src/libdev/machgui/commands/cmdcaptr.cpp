@@ -7,7 +7,6 @@
 
 #include "cmdcaptr.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 
 #include "machgui/internal/mgsndman.hpp"
@@ -16,7 +15,6 @@
 #include "ctl/algorith.hpp"
 
 #include "world4d/domain.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/administ.hpp"
 #include "machlog/opadsupc.hpp"
@@ -26,7 +24,7 @@
 #include "machlog/machvman.hpp"
 
 MachGuiCaptureCommand::MachGuiCaptureCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-capture-trigger"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;
@@ -219,19 +217,6 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
     MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     return true;
-}
-
-// virtual
-bool MachGuiCaptureCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_U && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // virtual

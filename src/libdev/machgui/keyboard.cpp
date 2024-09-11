@@ -1,5 +1,6 @@
 #include "base/memwatch.hpp"
 #include "stdlib/string.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/prodbank.hpp"
 #include "machgui/hwrebank.hpp"
@@ -68,13 +69,16 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
                 processed = pImpl_->pCameras_->processButtonEvent(e);
 
+                static const auto & hidePanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-hide"_bind);
+                static const auto & showPanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-show"_bind);
+
                 // Dismiss control panel?
-                if (e.key() == Device::KeyCode::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                if (e.state() == Gui::PRESSED && hidePanelTrigger.matches(e.keyWithMods()))
                 {
                     pImpl_->controlPanelOn_ = false;
                     processed = true;
                 }
-                if (e.key() == Device::KeyCode::RIGHT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                else if (e.state() == Gui::PRESSED && showPanelTrigger.matches(e.keyWithMods()))
                 {
                     pImpl_->controlPanelOn_ = true;
                     processed = true;
@@ -149,11 +153,14 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 12: // Go inhead
-                if ((e.key() == Device::KeyCode::PAD_1 || e.key() == Device::KeyCode::GRAVE) && e.state() == Gui::PRESSED
-                    && pFirstPerson_->okayToSwitchTo1stPerson())
+                static const auto & toggleFpvTrigger = MachGui::inputRegistry()->getBinds("view-toggle-fpv"_bind);
+                if (e.state() == Gui::PRESSED && toggleFpvTrigger.matches(e.keyWithMods()))
                 {
-                    switchToInHead();
-                    processed = true;
+                    if (pFirstPerson_->okayToSwitchTo1stPerson())
+                    {
+                        switchToInHead();
+                        processed = true;
+                    }
                 }
                 break;
             case 13: // Pause game

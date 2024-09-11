@@ -7,20 +7,16 @@
 
 #include "cmdassem.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"
-#include "sound/sndparam.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/factory.hpp"
-#include "machphys/mcmovinf.hpp"
-#include "device/butevent.hpp"
 
 MachGuiAssemblyPointCommand::MachGuiAssemblyPointCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-assembly-point-trigger"_bind)
     , interactionComplete_(false)
 {
     TEST_INVARIANT;
@@ -152,19 +148,6 @@ bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdminist
     ASSERT(false, "no admin assembly point command");
 
     return true;
-}
-
-// virtual
-bool MachGuiAssemblyPointCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_B && be.action() == DevButtonEvent::PRESS)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDASSEM.CPP **************************************************/

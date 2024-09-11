@@ -7,15 +7,13 @@
 
 #include "cmdfrmsq.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machlog.hpp"
 
 MachGuiFormSquadronCommand::MachGuiFormSquadronCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiDefaultCommand(pInGameScreen)
+    : MachGuiDefaultCommand(pInGameScreen, "commands-form-squadron-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -106,19 +104,6 @@ uint MachGuiFormSquadronCommand::cursorPromptStringId() const
 uint MachGuiFormSquadronCommand::commandPromptStringid() const
 {
     return IDS_FORM_SQUADRON_START;
-}
-
-// virtual
-bool MachGuiFormSquadronCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_F && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // virtual

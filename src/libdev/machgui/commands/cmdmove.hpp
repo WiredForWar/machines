@@ -87,10 +87,6 @@ public:
     // True if the interaction for the command is complete
     bool isInteractionComplete() const override;
 
-    /////////////////////////////////////////////////
-    // Hot key processing
-    bool processButtonEvent(const GuiKeyEvent& event) override;
-
     static bool couldEnterAPC(const MachActor& actor, const MachLogAPC& apc);
 
     // at least one of corral actors is able to enter the building in question right now given the

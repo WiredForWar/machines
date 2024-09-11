@@ -7,7 +7,6 @@
 
 #include "cmdstand.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 
@@ -19,7 +18,7 @@
 #include "machlog/opstandg.hpp"
 
 MachGuiStandGroundCommand::MachGuiStandGroundCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-stand-ground-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -140,19 +139,6 @@ bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministra
     ASSERT(false, "There is no admin stand ground operation");
 
     return true;
-}
-
-// virtual
-bool MachGuiStandGroundCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_W && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDDECON.CPP **************************************************/

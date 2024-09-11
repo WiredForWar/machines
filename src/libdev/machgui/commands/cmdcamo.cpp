@@ -7,7 +7,6 @@
 
 #include "cmdcamo.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
@@ -15,10 +14,9 @@
 #include "machlog/races.hpp"
 #include "machlog/network.hpp"
 #include "world4d/domain.hpp"
-#include "device/butevent.hpp"
 
 MachGuiCamouflageCommand::MachGuiCamouflageCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-camouflage-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -131,19 +129,6 @@ bool MachGuiCamouflageCommand::canAdminApply() const
 bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, std::string*)
 {
     PRE(canAdminApply());
-
-    return false;
-}
-
-// virtual
-bool MachGuiCamouflageCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_O && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
 
     return false;
 }

@@ -37,8 +37,8 @@
 
 #include "phys/cspace2.hpp"
 
-MachGuiDefaultCommand::MachGuiDefaultCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+MachGuiDefaultCommand::MachGuiDefaultCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
+    : MachGuiCommand(pInGameScreen, triggerBindId)
     , pIntelligentCursorOnActor_(new MachGuiIntelligentCursorOnActor)
 {
     TEST_INVARIANT;

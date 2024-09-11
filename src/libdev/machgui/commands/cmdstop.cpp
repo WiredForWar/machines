@@ -7,7 +7,6 @@
 
 #include "cmdstop.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/commands/cmddestr.hpp"
 #include "machgui/internal/strings.hpp"
@@ -18,10 +17,9 @@
 #include "machlog/administ.hpp"
 #include "machlog/races.hpp"
 #include "machlog/squad.hpp"
-#include "device/butevent.hpp"
 
 MachGuiStopCommand::MachGuiStopCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-stop-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -141,19 +139,6 @@ bool MachGuiStopCommand::doAdminApply(MachLogAdministrator* pAdministrator, std:
     pAdministrator->squadron()->manualCommandIssuedToSquadron();
 
     return true;
-}
-
-// virtual
-bool MachGuiStopCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_S && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 /* End CMDSTOP.CPP **************************************************/

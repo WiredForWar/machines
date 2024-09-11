@@ -7,10 +7,8 @@
 
 #include "cmdtrech.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-#include "device/butevent.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/administ.hpp"
 #include "machlog/machvman.hpp"
@@ -20,7 +18,7 @@
 #include "machlog/races.hpp"
 
 MachGuiTreacheryCommand::MachGuiTreacheryCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-treachery-trigger"_bind)
     , action_(ATTACK_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)
@@ -241,19 +239,6 @@ bool MachGuiTreacheryCommand::canAdminApply() const
 // virtual
 bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
-    return false;
-}
-
-// virtual
-bool MachGuiTreacheryCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_J && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
     return false;
 }
 

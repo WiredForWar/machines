@@ -7,9 +7,7 @@
 
 #include "cmdionat.hpp"
 
-#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
-#include "device/butevent.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
@@ -22,7 +20,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiIonAttackCommand::MachGuiIonAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-ion-attack-trigger"_bind)
     , action_(DO_NOTHING)
     , // this default is for the case where no ion cannons are charged
     pDirectObject_(nullptr)
@@ -238,19 +236,6 @@ uint MachGuiIonAttackCommand::cursorPromptStringId() const
 uint MachGuiIonAttackCommand::commandPromptStringid() const
 {
     return IDS_ION_ATTACK_START;
-}
-
-// virtual
-bool MachGuiIonAttackCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_I && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // static

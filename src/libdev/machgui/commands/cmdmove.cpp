@@ -7,7 +7,6 @@
 
 #include "cmdmove.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/point2d.hpp"
 
 #include "phys/cspace2.hpp"
@@ -43,7 +42,7 @@
 #include "machgui/internal/mgsndman.hpp"
 
 MachGuiMoveCommand::MachGuiMoveCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-move-trigger"_bind)
     , action_(SIMPLE_MOVE)
     , hadFinalPick_(false)
     , pConstruction_(nullptr)
@@ -589,21 +588,6 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, std::string* pReason
     }
 
     return canApply;
-}
-
-// virtual
-bool MachGuiMoveCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS
-        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
-        && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // static

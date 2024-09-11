@@ -8,10 +8,7 @@
 #include "cmdnukat.hpp"
 
 #include "ctl/pvector.hpp"
-#include "gui/event.hpp"
 #include "mathex/transf3d.hpp"
-
-#include "device/butevent.hpp"
 
 #include "machphys/genedata.hpp"
 #include "machphys/machphys.hpp"
@@ -31,7 +28,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-nuke-attack-trigger"_bind)
     , action_(DO_NOTHING)
     , pDirectObject_(nullptr)
     , hadFinalPick_(! atLeastOneActorHasChargedNuke())
@@ -281,19 +278,6 @@ uint MachGuiNukeAttackCommand::cursorPromptStringId() const
 uint MachGuiNukeAttackCommand::commandPromptStringid() const
 {
     return IDS_NUKE_ATTACK_START;
-}
-
-// virtual
-bool MachGuiNukeAttackCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_N && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // static

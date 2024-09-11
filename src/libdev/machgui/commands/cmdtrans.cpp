@@ -7,7 +7,6 @@
 
 #include "cmdtrans.hpp"
 
-#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
@@ -23,7 +22,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiTransportCommand::MachGuiTransportCommand(MachInGameScreen* pInGameScreen, bool explicitOrder)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-transport-trigger"_bind)
     , pSmeltingBuilding_(nullptr)
     , explicitOrder_(explicitOrder)
     , hadFinalPick_(false)
@@ -202,19 +201,6 @@ uint MachGuiTransportCommand::cursorPromptStringId() const
 uint MachGuiTransportCommand::commandPromptStringid() const
 {
     return IDS_TRANSPORT_START;
-}
-
-// virtual
-bool MachGuiTransportCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_T && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 bool MachGuiTransportCommand::supplierIsDuplicate(const MachLogConstruction* pCandidateConstruction) const

@@ -83,10 +83,6 @@ public:
     // already have this construction in our vector
     bool constructionIsDuplicate(const MachLogConstruction* pCandidateConstruction) const;
 
-    /////////////////////////////////////////////////
-    // Hot key processing
-    bool processButtonEvent(const GuiKeyEvent& event) override;
-
     void CLASS_INVARIANT;
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;

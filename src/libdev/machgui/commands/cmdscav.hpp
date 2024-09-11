@@ -83,10 +83,6 @@ public:
 
     void domainDeleted(W4dDomain* pDomain) override;
 
-    /////////////////////////////////////////////////
-    // Hot key processing
-    bool processButtonEvent(const GuiKeyEvent& event) override;
-
     void CLASS_INVARIANT;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiScavengeCommand& t);

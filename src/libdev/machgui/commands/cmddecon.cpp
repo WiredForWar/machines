@@ -7,7 +7,6 @@
 
 #include "cmddecon.hpp"
 
-#include "gui/event.hpp"
 #include "gui/restring.hpp"
 
 #include "mathex/point3d.hpp"
@@ -30,7 +29,7 @@
 #include "machgui/ingame.hpp"
 
 MachGuiDeconstructCommand::MachGuiDeconstructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-deconstruct-trigger"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;
@@ -246,19 +245,6 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
     MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     return true;
-}
-
-// virtual
-bool MachGuiDeconstructCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_D && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 // virtual

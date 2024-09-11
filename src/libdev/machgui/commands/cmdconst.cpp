@@ -50,11 +50,12 @@
 #include "machlog/vmdata.hpp"
 #include "machlog/vmman.hpp"
 
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/mextemp.hpp"
 
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-construct-trigger"_bind)
 {
     allConstructions_.reserve(10);
     newConstructions_.reserve(10);
@@ -634,27 +635,26 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
 // virtual
 bool MachGuiConstructCommand::processButtonEvent(const GuiKeyEvent& event)
 {
-    const DevButtonEvent& be = event.buttonEvent();
-    bool returnVal = false;
+    if (MachGuiCommand::processButtonEvent(event))
+        return true;
 
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (inGameScreen().isConstructCommandContext() && isActive() && pPhysConstruction_)
     {
-        inGameScreen().activeCommand(*this);
-        returnVal = true;
-    }
-    else if (inGameScreen().isConstructCommandContext() && isActive() && pPhysConstruction_)
-    {
-        if (be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+        static const auto & rotateShortcut = MachGui::inputRegistry()->getBinds("commands-construct-rotate"_bind);
+
+        const DevButtonEvent& be = event.buttonEvent();
+        if (rotateShortcut.matches(event.keyWithMods()) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
         {
             orientation_++;
             NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation_ << std::endl);
             if (orientation_ > 3)
                 orientation_ = 0;
-            returnVal = true;
+
+            return true;
         }
     }
 
-    return returnVal;
+    return false;
 }
 
 // virtual

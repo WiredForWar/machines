@@ -28,7 +28,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiAttackCommand::MachGuiAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-attack-trigger"_bind)
     , action_(ATTACK_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)
@@ -345,21 +345,6 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
     }
 
     return canDo;
-}
-
-// virtual
-bool MachGuiAttackCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_A && be.action() == DevButtonEvent::PRESS
-        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
-        && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 bool MachGuiAttackCommand::atLeastOneCanFireAt(const MachActor& potentialTargetActor) const

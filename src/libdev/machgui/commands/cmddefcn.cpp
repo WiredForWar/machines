@@ -7,15 +7,12 @@
 
 #include "cmddefcn.hpp"
 
-#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machine.hpp"
-#include "system/pathname.hpp"
-#include "device/butevent.hpp"
 
 // Statics
 bool MachGuiDefconCommand::defconLow_ = false;
@@ -24,7 +21,7 @@ bool MachGuiDefconCommand::defconHigh_ = false;
 bool MachGuiDefconCommand::goHighFromNormal_ = true;
 
 MachGuiDefconCommand::MachGuiDefconCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen)
+    : MachGuiCommand(pInGameScreen, "commands-defcon-trigger"_bind)
 {
     TEST_INVARIANT;
 }
@@ -222,19 +219,6 @@ bool MachGuiDefconCommand::defconNormal()
 bool MachGuiDefconCommand::defconHigh()
 {
     return defconHigh_;
-}
-
-// virtual
-bool MachGuiDefconCommand::processButtonEvent(const GuiKeyEvent& event)
-{
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::TAB && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
-    {
-        inGameScreen().activeCommand(*this);
-        return true;
-    }
-
-    return false;
 }
 
 void MachGuiDefconCommand::resetDirectionFromDefConNormal()
