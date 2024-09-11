@@ -118,7 +118,7 @@ void MachBuildMachineIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEve
     prompt += "\n" + bmuCostText.asString();
 
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt);
+    pInGameScreen_->setCursorPromptText(prompt);
 }
 
 // virtual

@@ -75,7 +75,7 @@ public:
 
         GuiResourceString prompt(IDS_SELECTINSIDEBUILDING);
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
@@ -178,7 +178,7 @@ public:
 
         GuiResourceString prompt(IDS_INHEAD);
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

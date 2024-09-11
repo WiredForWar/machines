@@ -152,7 +152,7 @@ void MachHWResearchIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent
 {
     GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-    pInGameScreen_->cursorPromptText(getPromptText());
+    pInGameScreen_->setCursorPromptText(getPromptText());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

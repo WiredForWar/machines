@@ -131,7 +131,7 @@ public:
         GuiResourceString prompt(id);
 
         // Set the cursor prompt
-        pCommand()->inGameScreen().cursorPromptText(prompt.asString());
+        pCommand()->inGameScreen().setCursorPromptText(prompt.asString());
     }
 };
 
@@ -382,7 +382,7 @@ void MachCommandIcon::doHandleMouseEnterEvent(const GuiMouseEvent&)
     GuiResourceString prompt(id);
 
     // Set the cursor prompt
-    pCommand_->inGameScreen().cursorPromptText(prompt.asString());
+    pCommand_->inGameScreen().setCursorPromptText(prompt.asString());
 }
 
 // virtual

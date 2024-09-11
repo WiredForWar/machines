@@ -130,7 +130,7 @@ void MachMachinesIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
     GuiResourceString prompt(IDS_MACHINE_NAV);
 
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(prompt.asString());
 }
 
 // virtual
@@ -197,7 +197,7 @@ void MachConstructionsIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEv
     GuiResourceString prompt(IDS_CONSTRUCTION_NAV);
 
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(prompt.asString());
 }
 
 // virtual
@@ -263,7 +263,7 @@ void MachSquadronIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
     GuiResourceString prompt(IDS_SQUAD_NAV);
 
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(prompt.asString());
 }
 
 // virtual

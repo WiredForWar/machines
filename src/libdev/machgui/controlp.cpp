@@ -70,7 +70,7 @@ protected:
             GuiResourceString prompt(IDS_CONTROLPANELOFF);
 
             // Set the cursor prompt
-            pInGameScreen_->cursorPromptText(prompt.asString());
+            pInGameScreen_->setCursorPromptText(prompt.asString());
         }
         else
         {
@@ -78,7 +78,7 @@ protected:
             GuiResourceString prompt(IDS_CONTROLPANELON);
 
             // Set the cursor prompt
-            pInGameScreen_->cursorPromptText(prompt.asString());
+            pInGameScreen_->setCursorPromptText(prompt.asString());
         }
     }
 

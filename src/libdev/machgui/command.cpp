@@ -143,7 +143,7 @@ void MachGuiCommand::apply()
 
     // Display failure reason if found
     if (! succeeded)
-        pImpl_->pInGameScreen_->cursorPromptText(reason);
+        pImpl_->pInGameScreen_->setCursorPromptText(reason);
     else
         // now reset the voice mail played status to allow consecutive reissues of a command to give a voicemail
         // on each occasion

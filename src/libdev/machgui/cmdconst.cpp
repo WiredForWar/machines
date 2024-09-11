@@ -83,7 +83,7 @@ MachGuiConstructCommand::~MachGuiConstructCommand()
     TEST_INVARIANT;
 
     delete pPhysConstruction_;
-    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
+    inGameScreen().setCursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
     // note that as newConstructions_ is a subset of allConstructions_, we only have to call the detach for
     // all members of allConstructions_.
@@ -375,7 +375,7 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
     pPhysConstruction_->stationary(false);
 
     // Ensure moving objects are ignored for cursor hits
-    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID | W4dDomain::EXCLUDE_NOT_STATIONARY);
+    inGameScreen().setCursorFilter(W4dDomain::EXCLUDE_NOT_SOLID | W4dDomain::EXCLUDE_NOT_STATIONARY);
     // By resetting the old domain - we will ensure that the new physical model gets reattached and hence displayed.
     pOldDomain_ = nullptr;
 }

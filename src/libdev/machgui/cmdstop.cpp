@@ -29,7 +29,7 @@ MachGuiStopCommand::~MachGuiStopCommand()
 {
     TEST_INVARIANT;
 
-    inGameScreen().cursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
+    inGameScreen().setCursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 }
 
 void MachGuiStopCommand::CLASS_INVARIANT

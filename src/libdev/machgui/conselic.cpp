@@ -112,7 +112,7 @@ void MachConstructionSelectIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mo
 
     prompt += " " + bmuCostText.asString();
 
-    pInGameScreen_->cursorPromptText(prompt);
+    pInGameScreen_->setCursorPromptText(prompt);
 }
 
 // virtual

@@ -102,7 +102,7 @@ protected:
         GuiResourceString prompt(IDS_TERRAINONOFF);
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -195,7 +195,7 @@ protected:
         }
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(promptStr);
+        pInGameScreen_->setCursorPromptText(promptStr);
     }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override

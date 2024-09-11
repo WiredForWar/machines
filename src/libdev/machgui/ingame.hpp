@@ -123,8 +123,8 @@ public:
     void cancelActiveCommand();
 
     // Set/get the prompt text related to cursor position
-    void cursorPromptText(const string& prompt);
-    void cursorPromptText(const string& prompt, bool restartScroll);
+    void setCursorPromptText(const string& prompt);
+    void setCursorPromptText(const string& prompt, bool restartScroll);
     const string& cursorPromptText() const;
 
     // Clear any prompt text associated with the cursor position
@@ -181,7 +181,7 @@ public:
 
     // Set/get the cursor filter to be used in checking for objects under the cursor.
     // This filter has the same meaning as the filter argument to W4dDomain::findNearerEntity().
-    void cursorFilter(int filter);
+    void setCursorFilter(int filter);
     int cursorFilter() const;
 
     // Inherited from GuiRoot

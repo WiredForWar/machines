@@ -187,12 +187,12 @@ std::ostream& operator<<(std::ostream& o, const MachPromptText& t)
     return o;
 }
 
-void MachPromptText::cursorPromptText(const string& prompt)
+void MachPromptText::setCursorPromptText(const string& prompt)
 {
-    cursorPromptText(prompt, true);
+    setCursorPromptText(prompt, true);
 }
 
-void MachPromptText::cursorPromptText(const string& prompt, bool restartScroll)
+void MachPromptText::setCursorPromptText(const string& prompt, bool restartScroll)
 {
     CB_DEPIMPL(string, cursorPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
@@ -242,7 +242,7 @@ void MachPromptText::clearCursorPromptText()
     }
 }
 
-void MachPromptText::commandPromptText(const string& prompt)
+void MachPromptText::setCommandPromptText(const string& prompt)
 {
     CB_DEPIMPL(string, commandPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);

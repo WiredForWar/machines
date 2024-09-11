@@ -905,12 +905,12 @@ MachGuiCommand& MachInGameScreen::activeCommand() const
     return (pActiveCommand_ != nullptr ? *pActiveCommand_ : *pDefaultCommand_);
 }
 
-void MachInGameScreen::cursorFilter(int filter)
+void MachInGameScreen::setCursorFilter(int filter)
 {
     CB_DEPIMPL(W4dDomain::EntityFilter, cursorFilter_);
 
     // cursorFilter_ = filter;
-    cursorFilter_ = _STATIC_CAST(W4dDomain::EntityFilter, filter);
+    cursorFilter_ = static_cast<W4dDomain ::EntityFilter>(filter);
 }
 
 int MachInGameScreen::cursorFilter() const
@@ -1272,7 +1272,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     }
 
     // Set the cursor prompt
-    cursorPromptText(prompt, !(pPromptTextActor_ == pActor));
+    setCursorPromptText(prompt, !(pPromptTextActor_ == pActor));
 
     pPromptTextActor_ = pActor;
 }
@@ -2066,21 +2066,21 @@ void MachInGameScreen::cancelActiveCommand()
     cancelActiveCommand_ = true;
 }
 
-void MachInGameScreen::cursorPromptText(const string& prompt)
+void MachInGameScreen::setCursorPromptText(const string& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
 
-    pPromptText_->cursorPromptText(prompt);
+    pPromptText_->setCursorPromptText(prompt);
 }
 
-void MachInGameScreen::cursorPromptText(const string& prompt, bool restartScroll)
+void MachInGameScreen::setCursorPromptText(const string& prompt, bool restartScroll)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
-    pPromptText_->cursorPromptText(prompt, restartScroll);
+    pPromptText_->setCursorPromptText(prompt, restartScroll);
 }
 
 const string& MachInGameScreen::cursorPromptText() const
@@ -2104,7 +2104,7 @@ void MachInGameScreen::commandPromptText(const string& prompt)
     CB_DEPIMPL_AUTO(pPromptText_);
 
     PRE(pPromptText_ != nullptr);
-    pPromptText_->commandPromptText(prompt);
+    pPromptText_->setCommandPromptText(prompt);
 }
 
 const string& MachInGameScreen::commandPromptText() const

@@ -247,7 +247,7 @@ void MachProductionIcon::displayCursorPromptText()
         prompt += ". " + maxUnitsText.asString();
     }
 
-    pInGameScreen_->cursorPromptText(prompt, ! needsPromptUpdate_);
+    pInGameScreen_->setCursorPromptText(prompt, ! needsPromptUpdate_);
 
     needsPromptUpdate_ = false;
 }
@@ -351,7 +351,7 @@ void MachIncSWLevelIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent
 
     GuiResourceString prompt(IDS_INCREASE_SW_PROMPT, machName.asString());
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(prompt.asString());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

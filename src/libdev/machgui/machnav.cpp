@@ -64,7 +64,7 @@ public:
         GuiResourceString prompt(IDS_CLOSE_NAV);
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
@@ -368,7 +368,7 @@ protected:
         GuiResourceString selectAll(IDS_SELECT_ALL, prompt.asString());
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(selectAll.asString());
+        pInGameScreen_->setCursorPromptText(selectAll.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
@@ -706,7 +706,7 @@ protected:
         GuiResourceString selectAll(IDS_SELECT_ALL, prompt.asString());
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(selectAll.asString());
+        pInGameScreen_->setCursorPromptText(selectAll.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

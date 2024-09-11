@@ -240,7 +240,7 @@ void MachHWResearchBankIcon::displayCursorPromptText()
     GuiResourceString percentCompleteText(IDS_RESEARCHPERCENTAGECOMPLETE, GuiString(buffer));
     prompt += ", " + percentCompleteText.asString();
 
-    pInGameScreen_->cursorPromptText(prompt, ! needsPromptUpdate_);
+    pInGameScreen_->setCursorPromptText(prompt, ! needsPromptUpdate_);
 
     needsPromptUpdate_ = false;
 }

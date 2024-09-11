@@ -160,7 +160,7 @@ void MachGuiBmuButton::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
     GuiResourceString prompt(IDS_BMU_BUTTON);
 
     // Set the cursor prompt
-    pInGameScreen_->cursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(prompt.asString());
 }
 
 // virtual

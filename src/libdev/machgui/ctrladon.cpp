@@ -63,7 +63,7 @@ protected:
         GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
     const GuiBitmap& getBitmap() const override
@@ -96,7 +96,7 @@ protected:
             GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
 
             // Set the cursor prompt
-            pInGameScreen_->cursorPromptText(prompt.asString());
+            pInGameScreen_->setCursorPromptText(prompt.asString());
         }
     }
 
@@ -141,7 +141,7 @@ protected:
         GuiResourceString prompt(IDS_RETURNTOMENUS);
 
         // Set the cursor prompt
-        pInGameScreen_->cursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override
