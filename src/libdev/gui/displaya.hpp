@@ -177,8 +177,8 @@ public:
     bool empty() const;
 
     // Iterate through children until most derived child containing coord is found.
-    bool innermostContaining(const Gui::Coord& c, GuiDisplayable** ppResult);
-    bool innermostContainingCheckProcessesMouseEvents(const Gui::Coord& c, GuiDisplayable** ppResult);
+    GuiDisplayable* innermostContaining(const Gui::Coord& c);
+    GuiDisplayable* innermostContainingCheckProcessesMouseEvents(const Gui::Coord& c);
 
     // Change the layer that the gui displayable is in.
     void setLayer(Layer);

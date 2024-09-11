@@ -780,36 +780,32 @@ Gui::Box GuiDisplayable::translateBox(const Gui::Box& b, const Gui::Coord& c)
     return Gui::Box(minC, maxC);
 }
 
-bool GuiDisplayable::innermostContaining(const Gui::Coord& c, GuiDisplayable** ppResult)
+GuiDisplayable* GuiDisplayable::innermostContaining(const Gui::Coord& c)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 
-    bool found = false;
-
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
-    if (isVisible() && absoluteBoundary().contains(c))
+    if (!isVisible() || !absoluteBoundary().contains(c))
+        return nullptr;
+
+    for (int layer = NUMLAYERS; layer != LAYER1;)
     {
-        for (Layer layer = NUMLAYERS; layer != LAYER1 && ! found;)
-        {
-            --((int&)layer);
+        --layer;
 
-            // Check to see if any of the children contain the mouse pointer
-            for (Children::iterator i = children_[layer].begin(); ! found && i != children_[layer].end(); ++i)
+        // Check to see if any of the children contain the mouse pointer
+        for (GuiDisplayable* pChild : children_[layer])
+        {
+            GuiDisplayable* result = pChild->innermostContaining(c);
+            if (result)
             {
-                found = (*i)->innermostContaining(c, ppResult);
+                return result;
             }
-        }
-
-        // No children contain coord therefore we are most derived displayable containing coord.
-        if (! found)
-        {
-            *ppResult = this;
-            found = true;
         }
     }
 
-    return found;
+    // No children contain coord therefore we are most derived displayable containing coord.
+    return this;
 }
 
 void GuiDisplayable::changed()
@@ -861,36 +857,32 @@ const char* GuiDisplayable::description() const
 }
 #endif
 
-bool GuiDisplayable::innermostContainingCheckProcessesMouseEvents(const Gui::Coord& c, GuiDisplayable** ppResult)
+GuiDisplayable* GuiDisplayable::innermostContainingCheckProcessesMouseEvents(const Gui::Coord& c)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 
-    bool found = false;
-
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
-    if (isVisible() && absoluteBoundary().contains(c) && processesMouseEvents())
+    if (!isVisible() || !absoluteBoundary().contains(c) || !processesMouseEvents())
+        return nullptr;
+
+    for (int layer = NUMLAYERS; layer != LAYER1;)
     {
-        for (Layer layer = NUMLAYERS; layer != LAYER1 && ! found;)
-        {
-            --((int&)layer);
+        --layer;
 
-            // Check to see if any of the children contain the mouse pointer
-            for (Children::iterator i = children_[layer].begin(); ! found && i != children_[layer].end(); ++i)
+        // Check to see if any of the children contain the mouse pointer
+        for (GuiDisplayable* pChild : children_[layer])
+        {
+            GuiDisplayable* result = pChild->innermostContainingCheckProcessesMouseEvents(c);
+            if (result)
             {
-                found = (*i)->innermostContainingCheckProcessesMouseEvents(c, ppResult);
+                return result;
             }
-        }
-
-        // No children contain coord therefore we are most derived displayable containing coord.
-        if (! found)
-        {
-            *ppResult = this;
-            found = true;
         }
     }
 
-    return found;
+    // No children contain coord therefore we are most derived displayable containing coord.
+    return this;
 }
 
 // virtual

@@ -330,17 +330,13 @@ void GuiManager::updateMouseFocus()
     GuiDisplayable* pFocus = nullptr;
     const Gui::Coord& p = me.coord();
 
-    // Find out which displayable the mouse is over
-    bool gotFocus = false;
-
     // Note : This probably isn't that safe if we end up with multiple devices.
     RenDisplay* pDisplay = RenDevice::current()->display();
     // If there is a mouse cursor on screen then find out what it's pointing at
     if (pDisplay->currentCursor() != nullptr)
-        gotFocus = pRoot_->innermostContainingCheckProcessesMouseEvents(p, &pFocus);
+        pFocus = pRoot_->innermostContainingCheckProcessesMouseEvents(p);
 
-    ASSERT(implies(gotFocus, pFocus != nullptr), "logic error");
-    ASSERT(implies(gotFocus, pFocus->processesMouseEvents()), "logic error");
+    ASSERT(implies(pFocus, pFocus->processesMouseEvents()), "logic error");
 
 #ifndef PRODUCTION
     // ##NA include for useful debug info. Tells you what the mouse is pointing at
@@ -361,7 +357,7 @@ void GuiManager::updateMouseFocus()
             pMouseFocus_->doHandleMouseExitEvent(meTmp);
         }
 
-        if (gotFocus)
+        if (pFocus)
         {
             pMouseFocus_ = pFocus;
             me.translate(unaryMinus(pMouseFocus_->absoluteCoord()));
