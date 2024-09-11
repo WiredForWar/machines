@@ -67,6 +67,20 @@ void MachGuiSingleSelectionListBox::removeListItem(MachGuiSingleSelectionListBox
     listItems_.erase(i);
 }
 
+std::optional<std::size_t> MachGuiSingleSelectionListBox::getCurrentItemIndex() const
+{
+    if (!currentItem())
+        return {};
+
+    for (std::size_t index = 0; index < listItems_.size(); ++index)
+    {
+        if (listItems_.at(index) == currentItem())
+            return index;
+    }
+
+    return {};
+}
+
 // virtual
 void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
 {

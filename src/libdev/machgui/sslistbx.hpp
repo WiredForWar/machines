@@ -18,6 +18,8 @@
 #include "machgui/focusctl.hpp"
 #include "ctl/pvector.hpp"
 
+#include <optional>
+
 class MachGuiStartupScreens;
 class MachGuiSingleSelectionListBoxItem;
 
@@ -42,6 +44,7 @@ public:
 
     void addListItem(MachGuiSingleSelectionListBoxItem* pItem);
     void removeListItem(MachGuiSingleSelectionListBoxItem* pItem);
+    std::optional<std::size_t> getCurrentItemIndex() const;
 
     bool doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl) override;
     void hasFocus(bool newValue) override;
