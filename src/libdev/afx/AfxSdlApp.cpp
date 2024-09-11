@@ -229,11 +229,11 @@ void AfxSdlApp::dispatchEvent(SDL_Event* event)
             break;
 
         case SDL_MOUSEBUTTONUP:
-            dispatchMouseEvent(event, false);
+            dispatchMouseButtonEvent(event, false);
             break;
 
         case SDL_MOUSEBUTTONDOWN:
-            dispatchMouseEvent(event, true);
+            dispatchMouseButtonEvent(event, true);
             break;
 
         case SDL_MOUSEWHEEL:
@@ -267,7 +267,7 @@ void AfxSdlApp::dispatchEvent(SDL_Event* event)
     RecRecorder::instance().recordingAllowed(true);
 }
 
-void AfxSdlApp::dispatchMouseEvent(SDL_Event* event, bool pressed)
+void AfxSdlApp::dispatchMouseButtonEvent(SDL_Event* event, bool pressed)
 {
     uint8_t button = event->button.button;
 
