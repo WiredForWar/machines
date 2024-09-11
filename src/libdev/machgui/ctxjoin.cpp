@@ -6,8 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/diag.hpp"
-#include "world4d/manager.hpp"
-#include "device/time.hpp"
 #include "machgui/ctxjoin.hpp"
 #include "machgui/sslistit.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -18,7 +16,6 @@
 #include "machgui/sslistbx.hpp"
 #include "machgui/messbrok.hpp"
 #include "machgui/gui.hpp"
-#include "machgui/editbox.hpp"
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "machgui/editlist.hpp"
 #include "machgui/database.hpp"
@@ -32,15 +29,10 @@
 #include "machgui/mdinternet.hpp"
 #include "machgui/mdipx.hpp"
 #include "gui/font.hpp"
-#include "gui/scrolbut.hpp"
-#include "gui/scrolbar.hpp"
-#include "gui/painter.hpp"
 #include "gui/restring.hpp"
 #include "gui/manager.hpp"
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
-#include "network/sessuid.hpp"
-#include "network/session.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
