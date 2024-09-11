@@ -383,6 +383,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
                 return false;
             }
 
+            pStartupScreens_->startupData()->resetData();
             pStartupScreens_->startupData()->hostGame(true);
 
             return true;
@@ -535,13 +536,11 @@ void MachGuiCtxJoin::joinGameSelected(bool jsg)
 
 void MachGuiCtxJoin::onNewGameItemSelected()
 {
-    pStartupScreens_->startupData()->resetData();
     editingGameName(true);
 }
 
 void MachGuiCtxJoin::onNetSessionSelected(const NetSessionInfo& info)
 {
-    pStartupScreens_->startupData()->resetData();
     NetNetwork::instance().setIPAddress(info.address);
 
     pNetworkProtocol_->readNetworkDetails();
