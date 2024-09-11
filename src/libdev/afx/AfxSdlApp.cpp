@@ -269,11 +269,22 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
 
 void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
 {
-    uint8_t button = event->button.button;
+    const DevButtonEvent::ScanCode code = [](uint8_t button) {
+        switch (button)
+        {
+            case 1:
+                return DevKey::LEFT_MOUSE;
+            case 3:
+                return DevKey::RIGHT_MOUSE;
+            default:
+                break;
+        }
+        return DevKey::UNKNOWN;
+    }(event->button.button);
 
-    if (button < 1 || button > 3)
+    if (code == DevKey::UNKNOWN)
     {
-        std::cerr << "Unsupported mouse button " << button << std::endl;
+        std::cerr << "Unsupported mouse button " << static_cast<int>(event->button.button) << std::endl;
         return;
     }
 
@@ -296,7 +307,6 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
     const double time = DevTime::instance().resolution() * event->button.timestamp;
 
     // Decode wParam and lParam.
-    const DevButtonEvent::ScanCode code = (button == 1) ? DevKey::LEFT_MOUSE : DevKey::RIGHT_MOUSE;
     const bool previous = false;
     const size_t repeats = 1;
 
