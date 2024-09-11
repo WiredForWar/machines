@@ -649,6 +649,31 @@ void DevKey::printScanCode(std::ostream& o, Code code)
             o << "MOUSE_MIDDLE";
             break;
 
+        case DevKey::MOUSE_EXTRA1:
+            o << "MOUSE_EXTRA1";
+            break;
+        case DevKey::MOUSE_EXTRA2:
+            o << "MOUSE_EXTRA2";
+            break;
+        case DevKey::MOUSE_EXTRA3:
+            o << "MOUSE_EXTRA3";
+            break;
+        case DevKey::MOUSE_EXTRA4:
+            o << "MOUSE_EXTRA4";
+            break;
+        case DevKey::MOUSE_EXTRA5:
+            o << "MOUSE_EXTRA5";
+            break;
+        case DevKey::MOUSE_EXTRA6:
+            o << "MOUSE_EXTRA6";
+            break;
+        case DevKey::MOUSE_EXTRA7:
+            o << "MOUSE_EXTRA7";
+            break;
+        case DevKey::MOUSE_EXTRA8:
+            o << "MOUSE_EXTRA8";
+            break;
+
         // NB: don't use ASSERT_BAD_CASE because it is non-extensible.  New scan
         // codes can be added and will work even if this fn doesn't print them.
         default:

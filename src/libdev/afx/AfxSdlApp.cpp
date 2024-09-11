@@ -276,6 +276,24 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
                 return DevKey::MOUSE_LEFT;
             case 3:
                 return DevKey::MOUSE_RIGHT;
+            case 4:
+                return DevKey::MOUSE_EXTRA1;
+            case 5:
+                return DevKey::MOUSE_EXTRA2;
+            case 6:
+                return DevKey::MOUSE_EXTRA3;
+            case 7:
+                return DevKey::MOUSE_EXTRA4;
+            case 8:
+                return DevKey::MOUSE_EXTRA5;
+            case 9:
+                return DevKey::MOUSE_EXTRA6;
+            case 10:
+                return DevKey::MOUSE_EXTRA7;
+            case 11:
+                return DevKey::MOUSE_EXTRA8;
+
+            case 2:
             default:
                 break;
         }

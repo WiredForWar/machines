@@ -137,6 +137,15 @@ static constexpr DevEventQueue::ScanCode ScanCodes[] {
     DevKey::KEY_9,
     DevKey::MOUSE_LEFT,
     DevKey::MOUSE_RIGHT,
+    DevKey::MOUSE_MIDDLE,
+    DevKey::MOUSE_EXTRA1,
+    DevKey::MOUSE_EXTRA2,
+    DevKey::MOUSE_EXTRA3,
+    DevKey::MOUSE_EXTRA4,
+    DevKey::MOUSE_EXTRA5,
+    DevKey::MOUSE_EXTRA6,
+    DevKey::MOUSE_EXTRA7,
+    DevKey::MOUSE_EXTRA8,
 };
 
 //////////////////////////////////////////////////////////////////////

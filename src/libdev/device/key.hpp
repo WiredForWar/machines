@@ -128,6 +128,15 @@ public:
         MOUSE_RIGHT,
         MOUSE_MIDDLE,
 
+        MOUSE_EXTRA1,
+        MOUSE_EXTRA2,
+        MOUSE_EXTRA3,
+        MOUSE_EXTRA4,
+        MOUSE_EXTRA5,
+        MOUSE_EXTRA6,
+        MOUSE_EXTRA7,
+        MOUSE_EXTRA8,
+
         // This *must* be the highest code in this enumeration plus 1.
         MAX_CODE
     };
