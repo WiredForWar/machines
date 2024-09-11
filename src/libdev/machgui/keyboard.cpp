@@ -1,5 +1,6 @@
 #include "base/memwatch.hpp"
 #include "stdlib/string.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/prodbank.hpp"
 #include "machgui/hwrebank.hpp"
@@ -68,13 +69,16 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
                 processed = pImpl_->pCameras_->processButtonEvent(e.buttonEvent());
 
+                static const auto & hidePanelTrigger = MachGui::inputRegistry()->getShortcut("ui-controlpanel-hide");
+                static const auto & showPanelTrigger = MachGui::inputRegistry()->getShortcut("ui-controlpanel-show");
+
                 // Dismiss control panel?
-                if (e.key() == Device::KeyCode::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                if (e.state() == Gui::PRESSED && hidePanelTrigger.matches(e.keyWithMods()))
                 {
                     pImpl_->controlPanelOn_ = false;
                     processed = true;
                 }
-                if (e.key() == Device::KeyCode::RIGHT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                else if (e.state() == Gui::PRESSED && showPanelTrigger.matches(e.keyWithMods()))
                 {
                     pImpl_->controlPanelOn_ = true;
                     processed = true;
