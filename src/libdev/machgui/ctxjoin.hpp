@@ -14,8 +14,8 @@
 
 #include "machgui/GameMenuContext.hpp"
 
+class MachGuiEditBoxListBoxItem;
 class MachGuiSingleSelectionListBox;
-class MachGuiNewGameName;
 class MachGuiNetworkProtocolMode;
 class MachGuiMenuButton;
 class NetSessionInfo;
@@ -40,7 +40,6 @@ public:
     void editingGameName(bool);
     void joinGameSelected(bool);
 
-    void onNewGameItemSelected();
     void onNetSessionSelected(const NetSessionInfo& info);
 
     void CLASS_INVARIANT;
@@ -48,6 +47,9 @@ public:
 protected:
     void showGames();
     std::size_t numGamesInList() const;
+
+    void addNewGameListItem();
+    void onGamesListSelectionChanged();
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t);
@@ -57,7 +59,7 @@ private:
 
     // Data members...
     MachGuiSingleSelectionListBox* pGamesList_;
-    MachGuiNewGameName* pNewGameName_;
+    MachGuiEditBoxListBoxItem* pNewGameName_{};
     MachGuiNetworkProtocolMode* pNetworkProtocol_{};
     bool editingGameName_{};
     bool joinGameSelected_{};

@@ -90,58 +90,6 @@ private:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-class MachGuiNewGameName : public MachGuiEditBoxListBoxItem
-{
-public:
-    MachGuiNewGameName(
-        MachGuiStartupScreens* pStartupScreens,
-        MachGuiSingleSelectionListBox* pListBox,
-        size_t width,
-        const string& text,
-        MachGuiCtxJoin& joinContext)
-        : MachGuiEditBoxListBoxItem(pStartupScreens, pListBox, width, text)
-        , joinContext_(joinContext)
-    {
-    }
-
-    ~MachGuiNewGameName() override
-    {
-        updateNewGameName();
-
-        //      joinContext_.editingGameName( false ); // Why it was there?
-    }
-
-    void updateNewGameName()
-    {
-        if (text() != "")
-            startupScreens()->startupData()->newGameName(text());
-    }
-
-protected:
-    void select() override
-    {
-        MachGuiEditBoxListBoxItem::select();
-
-        singleLineEditBox()->maxChars(MAX_GAMENAME_LEN);
-        singleLineEditBox()->setText(startupScreens()->startupData()->newGameName());
-        joinContext_.onNewGameItemSelected();
-    }
-
-    void unselect() override
-    {
-        startupScreens()->startupData()->newGameName(singleLineEditBox()->text());
-
-        MachGuiEditBoxListBoxItem::unselect();
-        joinContext_.changeFocus();
-        joinContext_.editingGameName(false);
-    }
-
-private:
-    MachGuiCtxJoin& joinContext_;
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-
 #define JOINGAME_LB_MINX 48
 #define JOINGAME_LB_MAXX 262
 #define JOINGAME_LB_MINY 56
@@ -210,18 +158,14 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         (JOINGAME_LB_MAXY - JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
         pGamesList_);
 
+    pGamesList_->setSelectionChangedCallback([this](GuiSingleSelectionListBox* pBox) {
+        ASSERT(pBox == pGamesList_, "");
+        onGamesListSelectionChanged();
+    });
+
     // Clear join game info.
     pStartupScreens->startupData()->resetData();
-
-    // Setup edit box for new game name to be entered into...
-    GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
-    pNewGameName_ = new MachGuiNewGameName(
-        pStartupScreens_,
-        pGamesList_,
-        (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor(),
-        enterName.asString(),
-        *this);
-    pGamesList_->childrenUpdated();
+    addNewGameListItem();
 
     MachLogNetwork::instance().resetSession();
     // Query network to find which protocol has been selected
@@ -300,20 +244,7 @@ void MachGuiCtxJoin::showGames()
 
         // Clear games list box
         pGamesList_->deleteAllItems();
-
-        const int itemWidth = (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
-
-        // Set up special enter-name edit box
-        GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
-        pNewGameName_ = new MachGuiNewGameName(
-            pStartupScreens_,
-            pGamesList_,
-            itemWidth,
-            enterName.asString(),
-            *this);
-
-        // Call children updated here to clean network status before polling for new sessions.
-        pGamesList_->childrenUpdated();
+        addNewGameListItem();
 
         // Update network status
         NETWORK_STREAM("MachGuiCtxJoin::showGames() calling update to get most uptodate session list\n");
@@ -326,6 +257,35 @@ std::size_t MachGuiCtxJoin::numGamesInList() const
     // The list should always have at least the 'new game' item (which we exclude here)
     PRE(pGamesList_->numListItems() > 0);
     return pGamesList_->numListItems() - 1;
+}
+
+void MachGuiCtxJoin::addNewGameListItem()
+{
+    const int itemWidth = (JOINGAME_LB_MAXX - JOINGAME_LB_MINX - SCROLLBAR_WIDTH) * MachGui::menuScaleFactor();
+    // Setup edit box for new game name to be entered into...
+    GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
+    pNewGameName_ = new MachGuiEditBoxListBoxItem(pStartupScreens_, pGamesList_, itemWidth, enterName.asString());
+    pNewGameName_->maxChars(MAX_GAMENAME_LEN);
+    pGamesList_->childrenUpdated();
+}
+
+void MachGuiCtxJoin::onGamesListSelectionChanged()
+{
+    if (pGamesList_->currentItem() == pNewGameName_)
+    {
+        pNewGameName_->setText(pStartupScreens_->startupData()->newGameName());
+        editingGameName(true);
+    }
+    else
+    {
+        if (editingGameName_)
+        {
+            pStartupScreens_->startupData()->newGameName(pNewGameName_->text());
+
+            changeFocus();
+            editingGameName(false);
+        }
+    }
 }
 
 // virtual
@@ -351,15 +311,12 @@ bool MachGuiCtxJoin::okayToSwitchContext()
         }
     }
 
-    // Extract typed in new game name and store in startup data
-    pNewGameName_->updateNewGameName();
-
     // Was CREATE pressed...
     if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::CREATE)
     {
         bool isHost = true;
 
-        if (pStartupScreens_->startupData()->newGameName() == "" || ! editingGameName_ || pNewGameName_->text() == "")
+        if (pStartupScreens_->startupData()->newGameName() == "" || ! editingGameName_ || pNewGameName_->text().empty())
         {
             // Display message box. Type in game name to create game.
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERGAMENAME);
@@ -532,11 +489,6 @@ void MachGuiCtxJoin::joinGameSelected(bool jsg)
         pJoinBtn_->defaultControl(false);
         pCreateBtn_->defaultControl(false);
     }
-}
-
-void MachGuiCtxJoin::onNewGameItemSelected()
-{
-    editingGameName(true);
 }
 
 void MachGuiCtxJoin::onNetSessionSelected(const NetSessionInfo& info)
