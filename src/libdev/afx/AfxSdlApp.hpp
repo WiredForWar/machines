@@ -20,7 +20,7 @@ public:
 
     void testPrint(const char*) const override;
 
-    bool isLoggingEnabled() const { return loggingEnabled_; }
+    bool isLoggingEnabled() const { return logFileEnabled_; }
     void setLoggingEnabled(bool enabled);
 
 protected:
@@ -46,7 +46,7 @@ private:
     bool finished_ { false };
     SDL_Window* pWindow_ = nullptr;
 
-    bool loggingEnabled_ = false;
+    bool logFileEnabled_ = false;
 
     // Config values needed at startup
     AfxConfiguration configuration_;

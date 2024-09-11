@@ -14,6 +14,7 @@
 #include "system/SysInfo.hpp"
 
 #include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
 #include <SDL.h>
@@ -52,10 +53,7 @@ void AfxSdlApp::testPrint(const char*) const
 
 bool AfxSdlApp::OSStartup()
 {
-    if (loggingEnabled_)
-    {
-        initLogger();
-    }
+    initLogger();
 
     {
         SDL_version v;
@@ -117,7 +115,7 @@ void AfxSdlApp::OSShutdown()
 
 void AfxSdlApp::setLoggingEnabled(bool enabled)
 {
-    loggingEnabled_ = enabled;
+    logFileEnabled_ = enabled;
 }
 
 void AfxSdlApp::coreLoop()
@@ -186,21 +184,28 @@ void AfxSdlApp::coreLoop()
 void AfxSdlApp::initLogger()
 {
     std::shared_ptr<spdlog::logger> logger;
-    try
+    if (logFileEnabled_)
     {
-        constexpr int MaxSize = 1024 * 1024 * 5;
-        constexpr int MaxFiles = 2;
-        constexpr bool RotateOnOpen = true;
+        try
+        {
+            constexpr int MaxSize = 1024 * 1024 * 5;
+            constexpr int MaxFiles = 2;
+            constexpr bool RotateOnOpen = true;
 
-        spdlog::filename_t fileName = name();
-        std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
-        fileName = "logs/" + fileName + ".txt";
-        logger = spdlog::rotating_logger_mt("", fileName, MaxSize, MaxFiles, RotateOnOpen);
+            spdlog::filename_t fileName = name();
+            std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
+            fileName = "logs/" + fileName + ".txt";
+            logger = spdlog::rotating_logger_mt("", fileName, MaxSize, MaxFiles, RotateOnOpen);
+        }
+        catch (const spdlog::spdlog_ex& ex)
+        {
+            std::cout << "Log init failed: " << ex.what() << std::endl;
+            logFileEnabled_ = false;
+        }
     }
-    catch (const spdlog::spdlog_ex& ex)
+    if (logger.get() == nullptr)
     {
-        std::cout << "Log init failed: " << ex.what() << std::endl;
-        loggingEnabled_ = false;
+        logger = spdlog::stderr_color_mt({});
     }
 
     spdlog::set_default_logger(logger);
