@@ -29,9 +29,12 @@
 #include "render/surfmgr.hpp"
 #include "machlog/network.hpp"
 
+#include <optional>
+
 bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
 {
     CB_DEPIMPL_AUTO(allCommands_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
     CB_DEPIMPL_AUTO(pFirstPerson_);
     CB_DEPIMPL_AUTO(gameStateTimer_);
 
@@ -128,9 +131,19 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 break;
             case 11: // Command hot keys
                 {
-                    for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && ! processed;
+                    std::optional<uint> skipCommand;
+                    if (pActiveCommand_)
+                    {
+                        skipCommand = pActiveCommand_->cursorPromptStringId();
+                        processed = pActiveCommand_->processButtonEvent(e.buttonEvent());
+                    }
+                    for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && !processed;
                          ++iter)
                     {
+                        if (skipCommand.has_value() && ((*iter)->cursorPromptStringId() == skipCommand))
+                        {
+                            continue;
+                        }
                         processed = (*iter)->processButtonEvent(e.buttonEvent());
                     }
                 }
