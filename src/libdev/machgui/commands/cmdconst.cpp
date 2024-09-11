@@ -56,10 +56,6 @@
 
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen)
-    , hadFinalPick_(false)
-    , pPhysConstruction_(nullptr)
-    , pOldDomain_(nullptr)
-    , locationIsValid_(false)
 {
     allConstructions_.reserve(10);
     newConstructions_.reserve(10);
@@ -81,7 +77,6 @@ MachGuiConstructCommand::~MachGuiConstructCommand()
 {
     TEST_INVARIANT;
 
-    delete pPhysConstruction_;
     inGameScreen().setCursorFilter(W4dDomain::EXCLUDE_NOT_SOLID);
 
     // note that as newConstructions_ is a subset of allConstructions_, we only have to call the detach for
@@ -115,7 +110,7 @@ void MachGuiConstructCommand::pickOnTerrain(
     bool altPressed)
 {
     // Check we have a physical model
-    if (pPhysConstruction_ != nullptr)
+    if (pPhysConstruction_)
     {
         // Do normal processing
         cursorOnTerrain(location, ctrlPressed, shiftPressed, altPressed);
@@ -208,7 +203,7 @@ MachGui::Cursor2dType MachGuiConstructCommand::cursorOnTerrain(const MexPoint3d&
     MachGui::Cursor2dType cursor = MachGui::CHOOSE_CONST_CURSOR;
 
     // Check we have a physical model
-    if (pPhysConstruction_ != nullptr)
+    if (pPhysConstruction_)
     {
         // If ctrl is pressed, we are adjusting the orientation
         if (ctrlPressed)
@@ -350,17 +345,14 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
     // Get the race for the player
     MachLogRaces& races = MachLogRaces::instance();
 
-    // Delete any existing model
-    delete pPhysConstruction_;
-
     // Create a physical model to use for dragging.
-    pPhysConstruction_ = MachLogActorMaker::newPhysConstruction(
+    pPhysConstruction_ = std::unique_ptr<MachPhysConstruction>(MachLogActorMaker::newPhysConstruction(
         objectType,
         subType,
         level,
         &MachLogPlanet::instance().hiddenRoot(),
         MexTransform3d(),
-        races.playerRace());
+        races.playerRace()));
 
     // save the pads original transforms
     pPhysConstruction_->savePadsTransforms();
@@ -379,7 +371,7 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
 
 void MachGuiConstructCommand::markValidPosition(bool isValid)
 {
-    PRE(pPhysConstruction_ != nullptr);
+    PRE(pPhysConstruction_);
 
     // For now make it flash ( once every 1/4 sec )
     double time = DevTime::instance().time();
@@ -393,7 +385,7 @@ void MachGuiConstructCommand::markValidPosition(bool isValid)
 
 void MachGuiConstructCommand::computeBorder()
 {
-    PRE(pPhysConstruction_ != nullptr);
+    PRE(pPhysConstruction_);
 
     border_ = pPhysConstruction_->localLargestBoundary();
 }

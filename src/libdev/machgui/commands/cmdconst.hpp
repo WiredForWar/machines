@@ -23,6 +23,8 @@
 
 #include "machgui/gui.hpp"
 
+#include <memory>
+
 // Forward refs
 class MachPhysConstruction;
 class MachLogConstruction;
@@ -158,19 +160,19 @@ private:
     };
 
     // Data members
-    bool hadFinalPick_; // True when valid location for the mine has been picked
-    bool locationIsValid_; // True if current location is ok
-    int subType_; // Construction subtype - generic enumeration value
-    uint level_; // hardware level
-    W4dDomain* pOldDomain_; // The last domain in which the construction was drawn
+    bool hadFinalPick_{}; // True when valid location for the mine has been picked
+    bool locationIsValid_{}; // True if current location is ok
+    int subType_{}; // Construction subtype - generic enumeration value
+    uint level_{}; // hardware level
+    W4dDomain* pOldDomain_{}; // The last domain in which the construction was drawn
     MexPoint3d location_; // Location for the building
-    MexAlignedBox2d border_; // The space required around the construction
-    MachPhysConstruction* pPhysConstruction_; // The physical construction
-    MachLog::ObjectType objectType_; // Requested construction type
-    MachGui::ControlPanelContext previousMenuContext_; // The control panel context on entry to command
+    MexAlignedBox2d border_{}; // The space required around the construction
+    std::unique_ptr<MachPhysConstruction> pPhysConstruction_; // The physical construction
+    MachLog::ObjectType objectType_{}; // Requested construction type
+    MachGui::ControlPanelContext previousMenuContext_{}; // The control panel context on entry to command
     ctl_pvector<MachLogConstruction> allConstructions_;
     ctl_pvector<MachLogConstruction> newConstructions_; // Delete these if operation is aborted
-    InvalidPosReason invalidPosReason_; // Reason why a construction cannot be built
+    InvalidPosReason invalidPosReason_{}; // Reason why a construction cannot be built
     int orientation_{}; // Determines which way it faces. Orientation is MexDegrees( 90 * orientation_ )
 };
 
