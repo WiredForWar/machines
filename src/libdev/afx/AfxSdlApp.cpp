@@ -273,9 +273,9 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
         switch (button)
         {
             case 1:
-                return DevKey::LEFT_MOUSE;
+                return DevKey::MOUSE_LEFT;
             case 3:
-                return DevKey::RIGHT_MOUSE;
+                return DevKey::MOUSE_RIGHT;
             default:
                 break;
         }
@@ -347,7 +347,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const double time = DevTime::instance().resolution() * event->button.timestamp;
 
     // Button code & whatnot
-    const DevButtonEvent::ScanCode code = DevKey::MIDDLE_MOUSE;
+    const DevButtonEvent::ScanCode code = DevKey::MOUSE_MIDDLE;
     const bool previous = false;
     const size_t repeats = 1;
 
@@ -431,7 +431,7 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const double time = DevTime::instance().resolution() * event->tfinger.timestamp;
 
     // Decode wParam and lParam.
-    const DevButtonEvent::ScanCode code = DevKey::LEFT_MOUSE;
+    const DevButtonEvent::ScanCode code = DevKey::MOUSE_LEFT;
     const bool previous = false;
     const size_t repeats = 1;
 

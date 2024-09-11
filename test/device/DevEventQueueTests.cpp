@@ -219,13 +219,13 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_MouseScrollEvent)
     eventQueue.setMocks(&recorder, &privRecorder);
 
     auto scrollUpEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_UP, false, false, false, false, 1.0, 0, 0, 1, '\xBE' };
+            EventQueue_RealTime::DevButtonEventType{ DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP, false, false, false, false, 1.0, 0, 0, 1, '\xBE' };
     auto scrollDownEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_DOWN, false, false, false, false, 1.0, 0, 0, 1, '\xBF' };
+            EventQueue_RealTime::DevButtonEventType{ DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN, false, false, false, false, 1.0, 0, 0, 1, '\xBF' };
 
-    eventQueue.queueEvents(DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.queueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
     ASSERT_EQ(true, eventQueue.getScrollUpFilter());
-    eventQueue.queueEvents(DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.queueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
     ASSERT_EQ(true, eventQueue.getScrollDownFilter());
 
     eventQueue.queueEvent(scrollUpEvent);
@@ -237,8 +237,8 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_MouseScrollEvent)
     ASSERT_EQ('\xBE', upEvent.getChar());
     ASSERT_EQ('\xBF', downEvent.getChar());
 
-    eventQueue.dontQueueEvents(DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.dontQueueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
     ASSERT_EQ(false, eventQueue.getScrollUpFilter());
-    eventQueue.dontQueueEvents(DevKey::MIDDLE_MOUSE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.dontQueueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
     ASSERT_EQ(false, eventQueue.getScrollDownFilter());
 }

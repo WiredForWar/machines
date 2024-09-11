@@ -140,8 +140,8 @@ static ScanCodes& scanCodes()
         s_.push_back(DevKey::KEY_7);
         s_.push_back(DevKey::KEY_8);
         s_.push_back(DevKey::KEY_9);
-        s_.push_back(DevKey::LEFT_MOUSE);
-        s_.push_back(DevKey::RIGHT_MOUSE);
+        s_.push_back(DevKey::MOUSE_LEFT);
+        s_.push_back(DevKey::MOUSE_RIGHT);
     }
 
     return s_;
@@ -165,8 +165,8 @@ GuiManager::GuiManager()
         DevEventQueue::instance().queueEvents(*i);
 
     // Event Queue is explicity told to handle mouse wheel scrolling events
-    DevEventQueue::instance().queueEvents(DevKey::MIDDLE_MOUSE, DevButtonEvent::SCROLL_UP);
-    DevEventQueue::instance().queueEvents(DevKey::MIDDLE_MOUSE, DevButtonEvent::SCROLL_DOWN);
+    DevEventQueue::instance().queueEvents(DevKey::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP);
+    DevEventQueue::instance().queueEvents(DevKey::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN);
 }
 
 GuiManager::~GuiManager()
@@ -444,17 +444,17 @@ void GuiManager::processEvents()
         DevButtonEvent be = DevEventQueue::instance().oldestEvent();
         GuiEventBase::ModifierKeys mKeys = modifierKeys(be);
 
-        if (be.scanCode() == DevKey::LEFT_MOUSE)
+        if (be.scanCode() == DevKey::MOUSE_LEFT)
         {
             GuiMouseEvent e(be.cursorCoords(), buttonState(be.action()), Gui::NO_CHANGE, mKeys);
             processMouseEvent(e);
         }
-        else if (be.scanCode() == DevKey::RIGHT_MOUSE)
+        else if (be.scanCode() == DevKey::MOUSE_RIGHT)
         {
             GuiMouseEvent e(be.cursorCoords(), Gui::NO_CHANGE, buttonState(be.action()), mKeys);
             processMouseEvent(e);
         }
-        else if (be.scanCode() == DevKey::MIDDLE_MOUSE)
+        else if (be.scanCode() == DevKey::MOUSE_MIDDLE)
         {
             GuiMouseEvent e(be.cursorCoords(), Gui::NO_CHANGE, Gui::NO_CHANGE, getScrollDirection(be.action()), mKeys);
             processMouseEvent(e);

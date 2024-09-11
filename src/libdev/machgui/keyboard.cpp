@@ -217,8 +217,8 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
     // *** Todo : This stuff needs sorting out. It's been taken from the Machines app and needs a serious tidy...
     // mouse events are handled seperately...
-    PRE(e.key() != DevKey::LEFT_MOUSE);
-    PRE(e.key() != DevKey::RIGHT_MOUSE);
+    PRE(e.key() != DevKey::MOUSE_LEFT);
+    PRE(e.key() != DevKey::MOUSE_RIGHT);
 
     PhysMotionControl::processButtonEvent(e.buttonEvent());
 

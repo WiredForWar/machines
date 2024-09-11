@@ -153,19 +153,19 @@ DEV_MOUSE_CLASS::deltaRightButton() const
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 void DEV_MOUSE_CLASS::wm_button(const DevButtonEventType& ev)
 {
-    PRE(ev.scanCode() == DevKey::LEFT_MOUSE || ev.scanCode() == DevKey::RIGHT_MOUSE
-        || ev.scanCode() == DevKey::MIDDLE_MOUSE);
+    PRE(ev.scanCode() == DevKey::MOUSE_LEFT || ev.scanCode() == DevKey::MOUSE_RIGHT
+        || ev.scanCode() == DevKey::MOUSE_MIDDLE);
 
     // Decode the message and set this object's internal state.
     switch (ev.scanCode())
     {
-        case DevKey::LEFT_MOUSE:
+        case DevKey::MOUSE_LEFT:
             lButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
             break;
-        case DevKey::RIGHT_MOUSE:
+        case DevKey::MOUSE_RIGHT:
             rButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
             break;
-        case DevKey::MIDDLE_MOUSE:
+        case DevKey::MOUSE_MIDDLE:
             scrolledUp_ = ev.action() == DevButtonEventType::SCROLL_UP;
             scrolledDown_ = ev.action() == DevButtonEventType::SCROLL_DOWN;
             break;

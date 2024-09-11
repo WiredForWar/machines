@@ -62,13 +62,13 @@ TEST(DevButtonEventTests, GetPrintableCharOfButtonEvent_WhenInvalid)
 TEST(DevButtonEventTests, GetActionOfButtonEvent)
 {
     auto eventPress =
-            ButtonEvent{ ButtonEvent::ScanCode::MIDDLE_MOUSE, ButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
+            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
     auto eventRelease =
-            ButtonEvent{ ButtonEvent::ScanCode::MIDDLE_MOUSE, ButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
+            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
     auto eventScrollUp =
-            ButtonEvent{ ButtonEvent::ScanCode::MIDDLE_MOUSE, ButtonEvent::SCROLL_UP, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
+            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::SCROLL_UP, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
     auto eventScrollDown =
-            ButtonEvent{ ButtonEvent::ScanCode::MIDDLE_MOUSE, ButtonEvent::SCROLL_DOWN, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
+            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::SCROLL_DOWN, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
 
     ASSERT_EQ(ButtonEvent::PRESS, eventPress.action());
     ASSERT_EQ(ButtonEvent::RELEASE, eventRelease.action());

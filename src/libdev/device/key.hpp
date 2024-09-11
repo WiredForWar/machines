@@ -122,13 +122,11 @@ public:
         RIGHT_ALT,
 
         // These codes represent the mouse buttons, numbered left-to-right.
-        // They allow the mouse to be processed in the saame manner as
+        // They allow the mouse to be processed in the same manner as
         // keyboard keys.
-        LEFT_MOUSE,
-        RIGHT_MOUSE,
-
-        // Not trusting that these guys didn't go LEFT_MOUSE+1 or something janky somewhere
-        MIDDLE_MOUSE,
+        MOUSE_LEFT,
+        MOUSE_RIGHT,
+        MOUSE_MIDDLE,
 
         // This *must* be the highest code in this enumeration plus 1.
         MAX_CODE

@@ -639,11 +639,11 @@ void DevKey::printScanCode(std::ostream& o, Code code)
         case DevKey::KEY_9:
             o << "KEY_9";
             break;
-        case DevKey::LEFT_MOUSE:
-            o << "LEFT_MOUSE";
+        case DevKey::MOUSE_LEFT:
+            o << "MOUSE_LEFT";
             break;
-        case DevKey::RIGHT_MOUSE:
-            o << "RIGHT_MOUSE";
+        case DevKey::MOUSE_RIGHT:
+            o << "MOUSE_RIGHT";
             break;
 
         // NB: don't use ASSERT_BAD_CASE because it is non-extensible.  New scan
