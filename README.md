@@ -1,21 +1,26 @@
-# Machines: Wired For War
+# Machines: Wired For War (community fork)
 
 **3D Real Time Strategy video game GL port source code**
 Released as a [free software](https://en.wikipedia.org/wiki/Free_software) under a permission of [Night Dive Studios](https://www.nightdivestudios.com/) who owns the rights to the game.
 
-#### Followed conventions
-- file names use a DOS convention (8 chars + 3 for extension), not strictly followed any more,
-- macros are all UPPER_CASE in code, sometimes it may be enum cases, 
-- classes are named WithUpperCaseLetter on the beginning and between words,
-- class private members are named with dash on the end someVar_ and with lower case on the beginning,
-- pointer names start from p pPointerVar_,
-- some class members are "seamleslly" declared from implClass with CB_DEPIMPL macro, 
-- use _NEW, _NEW_ARRAY, _DELETE, _DELETE_ARRAY, _STATIC_CAST, _CONST_CAST macros instead,
-- comments added now to cut out the code starts from the beginning of the line// (no spaces before),
-- std::string and string are different classes - the second one is added to support persistence (dump to/load from binfile),
-- old watcom compiler did not support namespaces,
-- templates were instantiated explicitly in separate sources, this was commented out in most of the cases (not sure if it was reasonable),
+## Community fork
 
+This version of the game is a community fork. It is purposely different from the original source code, which is available [here](https://github.com/markol/machines).
+
+## Changes
+
+The most notable changes are:
+- Added support for 2X UI scaling
+- Added keyboard shortcuts
+- Fixed various LAN game issues
+- Fixed tens of bugs
+- Fixed a dozen of crashes
+
+Windows builds are now done automatically by GitHub.
+
+### Development
+
+#### Followed conventions
 **The main code is spilt into a set of libraries:**
 - afx - SDL app window creation, string resources handling,
 - ani - smacker animations,
