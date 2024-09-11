@@ -100,11 +100,11 @@ private:
 
     void updateHealthBar();
 
-    MachCorralIcons* pParent_;
-    MachActor* pActor_;
-    MachGuiHealthBar* pHealthBar_;
-    bool isObservingActor_;
-    MachInGameScreen* pInGameScreen_;
+    MachCorralIcons* pParent_{};
+    MachActor* pActor_{};
+    MachGuiHealthBar* pHealthBar_{};
+    bool isObservingActor_{};
+    MachInGameScreen* pInGameScreen_{};
 };
 
 //////////////////////////////////////////////////////////////////////

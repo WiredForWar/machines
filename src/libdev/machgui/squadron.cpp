@@ -21,7 +21,7 @@
 #include "device/keytrans.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-SysPathName MachGuiCorralResource_hack(MachActor* pActor); // Defined in corral.cpp
+SysPathName MachGuiCorralResource_hack(const MachActor* pActor); // Defined in corral.cpp
 
 class MachGuiSquadronAdminIcon : public GuiDisplayable
 {

@@ -44,7 +44,7 @@
 #include "machlog/pod.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
-SysPathName MachGuiCorralResource_hack(MachActor* pActor)
+SysPathName MachGuiCorralResource_hack(const MachActor* pActor)
 {
     MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS;
     size_t level = 0;
@@ -90,11 +90,9 @@ MachGuiCorralResource::MachGuiCorralResource(
     const Gui::Coord& rel,
     MachActor* pActor,
     MachInGameScreen* pInGameScreen)
-    : pActor_(pActor)
-    , pHealthBar_(nullptr)
-    , isObservingActor_(false)
+    : MachGuiNewCorralIcon(pParent, rel, MachGui::getScaledImage(MachGuiCorralResource_hack(pActor).pathname()))
+    , pActor_(pActor)
     , pInGameScreen_(pInGameScreen)
-    , MachGuiNewCorralIcon(pParent, rel, MachGui::getScaledImage(MachGuiCorralResource_hack(pActor).c_str()))
 {
     const MachPhysObjectData& objData = pActor->objectData();
 
