@@ -112,9 +112,9 @@ bool MachGuiResearchCommand::actorsCanExecute() const
     return selectionSet.size() == 1 && selectionSet.front()->objectType() == MachLog::HARDWARE_LAB;
 }
 
-// virtual
 void MachGuiResearchCommand::start()
 {
+    MachGuiCommand::start();
     // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
@@ -122,9 +122,9 @@ void MachGuiResearchCommand::start()
     inGameScreen().hardwareResearchContext();
 }
 
-// virtual
 void MachGuiResearchCommand::finish()
 {
+    MachGuiCommand::finish();
     // If still in the build command context, restore the cached context
     if (inGameScreen().isHardwareResearchContext())
         inGameScreen().currentContext(previousMenuContext_);

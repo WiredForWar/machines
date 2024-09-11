@@ -43,12 +43,7 @@ public:
     // The resource file id of the prompt to be displayed when the command is clicked
     uint commandPromptStringid() const override;
 
-    // Called when the command becomes active
-    // Default override does nothing
     void start() override;
-
-    // Called when the command ceases to be active
-    // Default override does nothing
     void finish() override;
 
     // reference to the up and down bitmap names for this command

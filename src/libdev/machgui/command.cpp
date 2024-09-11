@@ -180,6 +180,11 @@ void MachGuiCommand::isVisible(bool visible)
     isVisible_ = visible;
 }
 
+bool MachGuiCommand::isActive() const
+{
+    return isActive_;
+}
+
 // virtual
 bool MachGuiCommand::actorsCanExecute() const
 {
@@ -206,13 +211,13 @@ bool MachGuiCommand::actorsCanExecute() const
 // virtual
 void MachGuiCommand::start()
 {
-    // Do nothing
+    isActive_ = true;
 }
 
 // virtual
 void MachGuiCommand::finish()
 {
-    // Do nothing
+    isActive_ = false;
 }
 
 void MachGuiCommand::pickOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed)

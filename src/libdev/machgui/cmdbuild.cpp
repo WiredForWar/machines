@@ -122,6 +122,7 @@ bool MachGuiBuildCommand::actorsCanExecute() const
 
 void MachGuiBuildCommand::start()
 {
+    MachGuiCommand::start();
     // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
@@ -131,6 +132,7 @@ void MachGuiBuildCommand::start()
 
 void MachGuiBuildCommand::finish()
 {
+    MachGuiCommand::finish();
     // If still in the build command context, restore the cached context
     if (inGameScreen().isBuildCommandContext())
         inGameScreen().currentContext(previousMenuContext_);

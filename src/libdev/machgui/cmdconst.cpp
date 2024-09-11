@@ -579,9 +579,9 @@ const std::pair<string, string>& MachGuiConstructCommand::iconNames() const
     return names;
 }
 
-// virtual
 void MachGuiConstructCommand::start()
 {
+    MachGuiCommand::start();
     // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
@@ -589,9 +589,9 @@ void MachGuiConstructCommand::start()
     inGameScreen().constructCommandContext();
 }
 
-// virtual
 void MachGuiConstructCommand::finish()
 {
+    MachGuiCommand::finish();
     // If still in the construct command context, restore the cached context
     if (inGameScreen().isConstructCommandContext())
         inGameScreen().currentContext(previousMenuContext_);

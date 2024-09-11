@@ -60,11 +60,9 @@ public:
     virtual uint commandPromptStringid() const = 0;
 
     // Called when the command becomes active
-    // Default override does nothing
     virtual void start();
 
     // Called when the command ceases to be active
-    // Default override does nothing
     virtual void finish();
 
     // Respond to pick at location on the terrain.
@@ -117,6 +115,9 @@ public:
 
     // Set flag indicating whether command currently can be rightfully executed
     void isVisible(bool visible);
+
+    // true if the command is already started but not finished yet
+    bool isActive() const;
 
     // The top level in-game component
     MachInGameScreen& inGameScreen() const;
@@ -240,6 +241,7 @@ private:
     // Data members
     bool isExecuted_; // True when the command has been executed
     bool isVisible_; // True if currently deemed available for display and interaction
+    bool isActive_; // True if already started but not finished yet
     bool isSquadronContext_; // True if the command was given in the context of squadron
     bool hasPlayedVoiceMail_; // initially false - becomes true once any voicemail assoc'd with the command has played
 

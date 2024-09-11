@@ -76,9 +76,9 @@ const std::pair<string, string>& MachGuiFormSquadronCommand::iconNames() const
     return names;
 }
 
-// virtual
 void MachGuiFormSquadronCommand::start()
 {
+    MachGuiCommand::start();
     // Cache the current control panel context
     previousMenuContext_ = inGameScreen().currentContext();
 
@@ -86,9 +86,9 @@ void MachGuiFormSquadronCommand::start()
     inGameScreen().currentContext(MachGui::FORM_SQUADRON_COMMAND);
 }
 
-// virtual
 void MachGuiFormSquadronCommand::finish()
 {
+    MachGuiCommand::finish();
     // If still in the form squadron command context, restore the cached context
     if (inGameScreen().currentContext() == MachGui::FORM_SQUADRON_COMMAND)
         inGameScreen().currentContext(previousMenuContext_);
