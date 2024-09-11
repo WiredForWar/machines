@@ -2,6 +2,8 @@
 set(MACHGUI_SOURCES
     GameMenuContext.cpp
     GameMenuContext.hpp
+    IInputRegistry.hpp
+    InputRegistry.cpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
     ProgressIndicator.cpp
