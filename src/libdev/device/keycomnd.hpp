@@ -51,6 +51,7 @@ public:
 
     // Old constructor. Kept in for now so that client code doesn't have to change.
     DevKeyToCommand(ScanCode, CommandId, Modifier ctrl, Modifier shift, Modifier alt);
+    DevKeyToCommand(CommandId command, KeyBind bind);
 
     DevKeyToCommand(
         ScanCode,

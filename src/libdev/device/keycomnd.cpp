@@ -7,6 +7,12 @@
 
 #include "device/keycomnd.hpp"
 
+DevKeyToCommand::DevKeyToCommand(CommandId command, KeyBind bind) :
+    commandId_(command),
+    bind_(bind)
+{
+}
+
 DevKeyToCommand::DevKeyToCommand(
     DevKeyToCommand::ScanCode sc,
     DevKeyToCommand::CommandId comId,
