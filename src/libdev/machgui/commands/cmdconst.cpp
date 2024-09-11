@@ -216,9 +216,9 @@ MachGui::Cursor2dType MachGuiConstructCommand::cursorOnTerrain(const MexPoint3d&
             // Compute the difference vector from the location to current cursor position
             MexVec2 diff(location_, location);
             if (fabs(diff.x()) >= fabs(diff.y()))
-                orientation() = (diff.x() >= 0.0 ? 0 : 2);
+                orientation_ = (diff.x() >= 0.0 ? 0 : 2);
             else
-                orientation() = (diff.y() >= 0.0 ? 1 : 3);
+                orientation_ = (diff.y() >= 0.0 ? 1 : 3);
         }
         else
         {
@@ -226,9 +226,9 @@ MachGui::Cursor2dType MachGuiConstructCommand::cursorOnTerrain(const MexPoint3d&
             location_ = location;
         }
 
-        NEIL_STREAM("MachGuiConstructCommand::cursorOnTerrain orientation " << orientation() << std::endl);
+        NEIL_STREAM("MachGuiConstructCommand::cursorOnTerrain orientation " << orientation_ << std::endl);
 
-        const MexDegrees azimuth = orientation() * 90.0;
+        const MexDegrees azimuth = orientation_ * 90.0;
 
         MexTransform3d transform(MexEulerAngles(azimuth, 0.0, 0.0), location_);
 
@@ -425,7 +425,7 @@ bool MachGuiConstructCommand::isValidPosition()
 
     // get the global boundary of the construction in its current position
     MexAlignedBox2d localBorder = border_;
-    MexTemp::quarterRotate(&localBorder, orientation());
+    MexTemp::quarterRotate(&localBorder, orientation_);
 
     MATHEX_SCALAR xMin = localBorder.minCorner().x() + location_.x();
     MATHEX_SCALAR xMax = localBorder.maxCorner().x() + location_.x();
@@ -474,7 +474,7 @@ bool MachGuiConstructCommand::isValidPosition()
     {
         const MATHEX_SCALAR maxUnevenness = MachPhysData::instance().generalData().maxTerrainUnevenness();
 
-        const MexDegrees azimuth = orientation() * 90.0;
+        const MexDegrees azimuth = orientation_ * 90.0;
 
         MexTransform3d transform(MexEulerAngles(azimuth, 0.0, 0.0), location_);
 
@@ -522,7 +522,7 @@ void MachGuiConstructCommand::placeConstruction()
         subType_,
         level_,
         location_,
-        MexDegrees(90.0 * orientation()),
+        MexDegrees(90.0 * orientation_),
         playerRace);
     allConstructions_.push_back(pConstruction);
     newConstructions_.push_back(pConstruction);
@@ -567,8 +567,6 @@ bool MachGuiConstructCommand::doApply(MachActor* pActor, string*)
 // virtual
 std::unique_ptr<MachGuiCommand> MachGuiConstructCommand::clone() const
 {
-    orientation() = 0;
-
     return std::make_unique<MachGuiConstructCommand>(&inGameScreen());
 }
 
@@ -677,23 +675,15 @@ bool MachGuiConstructCommand::processButtonEvent(const DevButtonEvent& be)
     {
         if (be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
         {
-            orientation()++;
-            NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation() << std::endl);
-            if (orientation() > 3)
-                orientation() = 0;
+            orientation_++;
+            NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation_ << std::endl);
+            if (orientation_ > 3)
+                orientation_ = 0;
             returnVal = true;
         }
     }
 
     return returnVal;
-}
-
-// static
-int& MachGuiConstructCommand::orientation()
-{
-    static int orientationPos = 0;
-
-    return orientationPos;
 }
 
 // virtual

@@ -140,9 +140,6 @@ private:
     // PRE( locationIsValid_ );
     // PRE( MachLogRaces::instance().nBuildingMaterialUnits( MachLogRaces::instance().playerRace() ) >= 5 );
 
-    // Determines which way it faces. Orientation is MexDegrees( 90 * orientation_ )
-    static int& orientation();
-
     // already have this construction in our vector
     bool constructionIsDuplicate(const MachLogConstruction* pCandidateConstruction) const;
 
@@ -174,6 +171,7 @@ private:
     ctl_pvector<MachLogConstruction> allConstructions_;
     ctl_pvector<MachLogConstruction> newConstructions_; // Delete these if operation is aborted
     InvalidPosReason invalidPosReason_; // Reason why a construction cannot be built
+    int orientation_{}; // Determines which way it faces. Orientation is MexDegrees( 90 * orientation_ )
 };
 
 #endif
