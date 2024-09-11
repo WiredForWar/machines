@@ -445,7 +445,12 @@ bool SDLApp::clientStartup()
     // Load model data for constructions/machines
     if (!getenv("CB_NOPRELOAD"))
     {
-        MachPhysPreload::persistentFileName("pemodels.bin");
+        std::string modelsFile("pemodels.bin");
+        if (!SysPathName(modelsFile).existsAsFile()) {
+            modelsFile = "models.bin";
+        }
+
+        MachPhysPreload::persistentFileName(modelsFile);
         if (MachPhysPreload::persistentFileName().existsAsFile())
         {
             MachPhysPreload::persistentPreload(MachPhysPreload::ECHO_PROGRESS, &progressIndicator);
