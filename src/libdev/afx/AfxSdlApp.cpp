@@ -214,7 +214,7 @@ void AfxSdlApp::initLogger()
     spdlog::info("Starting {} {} ({})", name(), version(), buildVersion());
 }
 
-void AfxSdlApp::dispatchEvent(SDL_Event* event)
+void AfxSdlApp::dispatchEvent(const SDL_Event* event)
 {
     RecRecorder::instance().recordingAllowed(false);
     switch (event->type)
@@ -241,11 +241,11 @@ void AfxSdlApp::dispatchEvent(SDL_Event* event)
             break;
 
         case SDL_KEYUP:
-            dispatchKeybrdEvent(event, false);
+            dispatchKeyboardEvent(event, false);
             break;
 
         case SDL_KEYDOWN:
-            dispatchKeybrdEvent(event, true);
+            dispatchKeyboardEvent(event, true);
             break;
 
         case SDL_TEXTINPUT:
@@ -267,7 +267,7 @@ void AfxSdlApp::dispatchEvent(SDL_Event* event)
     RecRecorder::instance().recordingAllowed(true);
 }
 
-void AfxSdlApp::dispatchMouseButtonEvent(SDL_Event* event, bool pressed)
+void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
 {
     uint8_t button = event->button.button;
 
@@ -304,13 +304,13 @@ void AfxSdlApp::dispatchMouseButtonEvent(SDL_Event* event, bool pressed)
     DevMouse::instance().wm_button(ev);
 }
 
-void AfxSdlApp::dispatchMouseScrollEvent(SDL_Event* event)
+void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
 {
     PRE(event->wheel.x || event->wheel.y);
 
     // If direction is SDL_MOUSEWHEEL_FLIPPED the values in x and y will be opposite.
     //  Multiply by -1 to change them back.
-    const DevButtonEvent::Action act = [](SDL_Event* event) {
+    const DevButtonEvent::Action act = [](const SDL_Event* event) {
         const int multiplier = (event->wheel.direction == SDL_MOUSEWHEEL_NORMAL) ? 1 : -1;
         if (event->wheel.x)
         {
@@ -346,7 +346,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(SDL_Event* event)
     DevMouse::instance().wm_button(ev);
 }
 
-void AfxSdlApp::dispatchKeybrdEvent(SDL_Event* event, bool pressed)
+void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
 {
     // The argument is a bool so that we don't need the definition of
     // DevButtonEvent in this class's header file.  Decode the bool.
@@ -374,7 +374,7 @@ void AfxSdlApp::dispatchKeybrdEvent(SDL_Event* event, bool pressed)
     DevSdlKeyboard::sdlInstance().wm_key(ev);
 }
 
-void AfxSdlApp::dispatchCharEvent(SDL_Event* event)
+void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
 {
     // Just default these values. We're not interested in them when it's a char event.
     const bool shift = false;
@@ -400,7 +400,7 @@ void AfxSdlApp::dispatchCharEvent(SDL_Event* event)
     DevSdlKeyboard::sdlInstance().wm_char(ev);
 }
 
-void AfxSdlApp::dispatchTouchEvent(SDL_Event* event, bool pressed)
+void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
 {
     // The argument is a bool so that we don't need the definition of
     // DevButtonEvent in this class's header file.  Decode the bool.

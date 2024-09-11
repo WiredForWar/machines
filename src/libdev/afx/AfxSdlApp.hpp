@@ -35,12 +35,12 @@ private:
 
     void initLogger();
 
-    void dispatchEvent(SDL_Event*);
-    void dispatchMouseButtonEvent(SDL_Event*, bool);
-    void dispatchMouseScrollEvent(SDL_Event*);
-    void dispatchKeybrdEvent(SDL_Event*, bool);
-    void dispatchCharEvent(SDL_Event*);
-    void dispatchTouchEvent(SDL_Event*, bool);
+    void dispatchEvent(const SDL_Event* event);
+    void dispatchMouseButtonEvent(const SDL_Event* event, bool pressed);
+    void dispatchMouseScrollEvent(const SDL_Event* event);
+    void dispatchKeyboardEvent(const SDL_Event* event, bool pressed);
+    void dispatchCharEvent(const SDL_Event* event);
+    void dispatchTouchEvent(const SDL_Event* event, bool pressed);
 
     bool finishing_ { false };
     bool finished_ { false };
