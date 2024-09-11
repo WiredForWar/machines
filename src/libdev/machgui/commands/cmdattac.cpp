@@ -8,6 +8,7 @@
 #include "cmdattac.hpp"
 
 #include "gui/event.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/internal/strings.hpp"
@@ -351,8 +352,8 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
 bool MachGuiAttackCommand::processButtonEvent(const GuiKeyEvent& event)
 {
     const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_A && be.action() == DevButtonEvent::PRESS
-        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
+    static const auto & trigger = MachGui::inputRegistry()->getShortcut("commands-attack-trigger");
+    if (isVisible() && trigger.matches(event.keyWithMods()) && be.action() == DevButtonEvent::PRESS
         && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

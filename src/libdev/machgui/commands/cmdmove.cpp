@@ -36,6 +36,7 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/cameras.hpp"
 
@@ -594,10 +595,8 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
 // virtual
 bool MachGuiMoveCommand::processButtonEvent(const GuiKeyEvent& event)
 {
-    const DevButtonEvent& be = event.buttonEvent();
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS
-        && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
-        && be.previous() == 0)
+    static const auto & trigger = MachGui::inputRegistry()->getShortcut("commands-move-trigger");
+    if (isVisible() && trigger.matches(event.keyWithMods()) && event.buttonEvent().previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

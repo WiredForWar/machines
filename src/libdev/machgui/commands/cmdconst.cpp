@@ -50,6 +50,7 @@
 #include "machlog/vmdata.hpp"
 #include "machlog/vmman.hpp"
 
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/mextemp.hpp"
 
@@ -660,14 +661,17 @@ bool MachGuiConstructCommand::processButtonEvent(const GuiKeyEvent& event)
     const DevButtonEvent& be = event.buttonEvent();
     bool returnVal = false;
 
-    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    static const auto & trigger = MachGui::inputRegistry()->getShortcut("commands-construct-trigger");
+    if (isVisible() && trigger.matches(be) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         returnVal = true;
     }
     else if (inGameScreen().isConstructCommandContext() && isActive() && pPhysConstruction_)
     {
-        if (be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+        static const auto & rotateShortcut = MachGui::inputRegistry()->getShortcut("commands-construct-rotate");
+
+        if (rotateShortcut.matches(be) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
         {
             orientation_++;
             NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation_ << std::endl);
