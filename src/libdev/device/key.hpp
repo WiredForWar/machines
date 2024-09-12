@@ -8,10 +8,11 @@ namespace Device
 
 namespace detail
 {
-
     using KeyCodeUnderlying = uint8_t;
     constexpr int ModifiersBitsShift = sizeof(KeyCodeUnderlying) * 8;
+    constexpr int KeyCodeMask = 0xff;
 
+    static_assert(KeyCodeMask < (1 << ModifiersBitsShift));
 } // namespace detail
 
 enum class KeyModifier
@@ -20,6 +21,7 @@ enum class KeyModifier
     Alt = 0x1 << detail::ModifiersBitsShift,
     Ctrl = 0x2 << detail::ModifiersBitsShift,
     Shift = 0x4 << detail::ModifiersBitsShift,
+    All = Ctrl|Alt|Shift,
 };
 
 enum class KeyCode : detail::KeyCodeUnderlying
@@ -160,5 +162,10 @@ inline constexpr bool isValidCode(KeyCode code)
 }
 
 void printScanCode(std::ostream&, KeyCode code);
+
+inline constexpr KeyCode getKeyWithoutModifiers(int value)
+{
+    return static_cast<KeyCode>(value & Device::detail::KeyCodeMask);
+}
 
 } // namespace Device
