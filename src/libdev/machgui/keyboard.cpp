@@ -66,7 +66,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 break;
             case 1:
                 ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
-                processed = pImpl_->pCameras_->processButtonEvent(e.buttonEvent());
+                processed = pImpl_->pCameras_->processButtonEvent(e);
 
                 // Dismiss control panel?
                 if (e.key() == Device::KeyCode::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
