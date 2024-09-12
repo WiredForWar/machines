@@ -673,14 +673,16 @@ bool MachGuiConstructCommand::processButtonEvent(const DevButtonEvent& be)
         inGameScreen().activeCommand(*this);
         returnVal = true;
     }
-    else if (
-        isVisible() && be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    else if (inGameScreen().isConstructCommandContext() && isActive() && pPhysConstruction_)
     {
-        orientation()++;
-        NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation() << std::endl);
-        if (orientation() > 3)
-            orientation() = 0;
-        returnVal = true;
+        if (be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+        {
+            orientation()++;
+            NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation() << std::endl);
+            if (orientation() > 3)
+                orientation() = 0;
+            returnVal = true;
+        }
     }
 
     return returnVal;
