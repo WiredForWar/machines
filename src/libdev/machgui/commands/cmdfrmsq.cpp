@@ -7,6 +7,7 @@
 
 #include "cmdfrmsq.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "device/butevent.hpp"
@@ -108,8 +109,9 @@ uint MachGuiFormSquadronCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiFormSquadronCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiFormSquadronCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_F && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

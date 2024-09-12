@@ -7,6 +7,8 @@
 
 #include "cmddamag.hpp"
 
+#include "gui/event.hpp"
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"

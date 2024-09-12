@@ -26,6 +26,7 @@
 // Forward refs
 class MexPoint2d;
 class MexPoint3d;
+class GuiKeyEvent;
 class MachInGameScreen;
 class MachActor;
 class MachLogOperation;
@@ -130,7 +131,7 @@ public:
     void hasPlayedVoiceMail(bool);
 
     // Hot key processing
-    virtual bool processButtonEvent(const DevButtonEvent&);
+    virtual bool processButtonEvent(const GuiKeyEvent& event);
 
     // Indicate if the command is being executed in a FOW area
     static bool cursorInFogOfWar();
