@@ -54,13 +54,12 @@ void MachLogTaskStateAction::doAction()
 }
 
 // static
-MachLogTaskStateAction*
+std::unique_ptr<MachLogTaskStateAction>
 MachLogTaskStateAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     ASSERT_INFO(pParser->line());
 
-    MachLogTaskStateAction* pResult = nullptr;
-    pResult = new MachLogTaskStateAction(pCondition, enabled);
+    std::unique_ptr<MachLogTaskStateAction> pResult(new MachLogTaskStateAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
@@ -122,16 +121,14 @@ MachLogTaskStateAction::MachLogTaskStateAction(PerConstructor con)
 {
 }
 
-// static
-MachLogTaskStateAction* MachLogTaskStateAction::newDynamic(
+std::unique_ptr<MachLogTaskStateAction> MachLogTaskStateAction::newDynamic(
     SimCondition* pCondition,
     bool enabled,
     uint taskIndex,
     bool isAvailable,
     bool isComplete)
 {
-    MachLogTaskStateAction* pResult = nullptr;
-    pResult = new MachLogTaskStateAction(pCondition, enabled);
+    std::unique_ptr<MachLogTaskStateAction> pResult(new MachLogTaskStateAction(pCondition, enabled));
     pResult->taskIndex_ = taskIndex;
     pResult->isAvailable_ = isAvailable;
     pResult->isComplete_ = isComplete;

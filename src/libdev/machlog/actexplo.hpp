@@ -16,6 +16,8 @@
 #include "sim/action.hpp"
 #include "mathex/point2d.hpp"
 
+#include <memory>
+
 class UtlLineTokeniser;
 class SimCondition;
 
@@ -24,7 +26,7 @@ class MachLogExplosionAction : public SimAction
 {
 public:
     ~MachLogExplosionAction() override;
-    static MachLogExplosionAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static std::unique_ptr<MachLogExplosionAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 

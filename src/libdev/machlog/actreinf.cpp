@@ -122,13 +122,12 @@ void MachLogReinforcementsAction::doAction()
 }
 
 // static
-MachLogReinforcementsAction*
+std::unique_ptr<MachLogReinforcementsAction>
 MachLogReinforcementsAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
     HAL_STREAM("MachLogReinforcementsAction::newFromParser\n");
     HAL_INDENT(2);
-    MachLogReinforcementsAction* pResult = nullptr;
-    pResult = new MachLogReinforcementsAction(pCondition, enabled);
+    std::unique_ptr<MachLogReinforcementsAction> pResult(new MachLogReinforcementsAction(pCondition, enabled));
     bool finished = false;
     // read initial line for race.
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)

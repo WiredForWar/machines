@@ -132,7 +132,7 @@ void MachLogOtherPersistence::setUpLocalVectorFromViews() const
     nonConstPer.actions_.erase(nonConstPer.actions_.begin(), nonConstPer.actions_.end());
     const SimConditionsManager::Actions& actions = SimManager::instance().conditionsManager().actions();
     for (SimConditionsManager::Actions::const_iterator i = actions.begin(); i != actions.end(); ++i)
-        nonConstPer.actions_.push_back(*i);
+        nonConstPer.actions_.push_back(i->get());
     //  nonConstPer.conditions_.erase( nonConstPer.conditions_.begin(), nonConstPer.conditions_.end() );
 }
 
@@ -162,7 +162,7 @@ void MachLogOtherPersistence::setUpViewsFromLocalVector()
         MachLogRaces::instance().constructionTree().constructionItems().push_back((*i));
 
     for (Actions::iterator i = actions_.begin(); i != actions_.end(); ++i)
-        SimManager::instance().addAction(*i);
+        SimManager::instance().addAction(std::unique_ptr<SimAction>(*i));
 }
 
 void perWrite(PerOstream& ostr, const MachLogOtherPersistence& per)

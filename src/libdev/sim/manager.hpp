@@ -27,6 +27,8 @@
 
 #include "stdlib/string.hpp"
 
+#include <memory>
+
 class DevTimer;
 class SimActor;
 class SimConditionsManager;
@@ -82,7 +84,7 @@ public:
     //  Clear all events out of the diary without executing them
     void clearDiary();
 
-    void addAction(SimAction*);
+    void addAction(std::unique_ptr<SimAction> pAction);
     void enableAction(const string&);
 
     SimConditionsManager& conditionsManager() const;

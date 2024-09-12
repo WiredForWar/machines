@@ -20,15 +20,6 @@ class SimConditionsManagerImpl
     {
         actions_.reserve(64);
     }
-
-    ~SimConditionsManagerImpl()
-    {
-        while (actions_.size() > 0)
-        {
-            delete actions_.front();
-            actions_.erase(actions_.begin());
-        }
-    }
 };
 
 SimConditionsManager::SimConditionsManager()
@@ -69,7 +60,7 @@ void SimConditionsManager::update()
         HAL_STREAM(" time now: " << now << std::endl);
         while (i < actions.size())
         {
-            SimAction* pAction = actions[i];
+            std::unique_ptr<SimAction>& pAction = actions[i];
 
             HAL_STREAM(
                 "action.enabled " << pAction->enabled() << " " << pAction->conditionKeyName() << " nextCallBackTime "
@@ -79,7 +70,6 @@ void SimConditionsManager::update()
             {
                 if (pAction->nextCallBackTime() < now && pAction->checkConditionAndDoAction())
                 {
-                    delete pAction;
                     actions.erase(actions.begin() + i);
                     actionDeleted = true;
                 }
@@ -91,16 +81,16 @@ void SimConditionsManager::update()
                 }
             }
 
-            if (! actionDeleted)
+            if (!actionDeleted)
                 ++i;
         }
     }
 }
 
-void SimConditionsManager::addAction(SimAction* pNewAction)
+void SimConditionsManager::addAction(std::unique_ptr<SimAction> pNewAction)
 {
     HAL_STREAM("SimConditionsManager:;addAction\n");
-    pImpl_->actions_.push_back(pNewAction);
+    pImpl_->actions_.emplace_back(std::move(pNewAction));
 }
 
 void SimConditionsManager::enableAction(const string& keyName)

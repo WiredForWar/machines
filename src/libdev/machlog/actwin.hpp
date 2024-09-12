@@ -16,6 +16,8 @@
 #include "sim/action.hpp"
 #include "machphys/machphys.hpp"
 
+#include <memory>
+
 class UtlLineTokeniser;
 class SimCondition;
 
@@ -24,8 +26,8 @@ class MachLogWinAction : public SimAction
 {
 public:
     ~MachLogWinAction() override;
-    static MachLogWinAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
-    static MachLogWinAction* newDynamic(SimCondition*, bool enabled, MachPhys::Race race);
+    static std::unique_ptr<MachLogWinAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static std::unique_ptr<MachLogWinAction> newDynamic(SimCondition*, bool enabled, MachPhys::Race race);
 
     void CLASS_INVARIANT;
 

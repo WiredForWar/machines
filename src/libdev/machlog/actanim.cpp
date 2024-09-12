@@ -137,12 +137,9 @@ void MachLogPlayAnimationAction::doAction()
     }
 }
 
-// static
-MachLogPlayAnimationAction*
-MachLogPlayAnimationAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
+std::unique_ptr<MachLogPlayAnimationAction> MachLogPlayAnimationAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogPlayAnimationAction* pResult = nullptr;
-    pResult = new MachLogPlayAnimationAction(pCondition, enabled);
+    std::unique_ptr<MachLogPlayAnimationAction> pResult(new MachLogPlayAnimationAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

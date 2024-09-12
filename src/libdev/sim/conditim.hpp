@@ -4,7 +4,9 @@
 
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
-#include "ctl/pvector.hpp"
+
+#include <memory>
+#include <vector>
 
 class SimManager;
 class SimCondition;
@@ -18,7 +20,7 @@ public:
     friend class Simcondition;
 
     ~SimConditionsManager();
-    using Actions = ctl_pvector<SimAction>;
+    using Actions = std::vector<std::unique_ptr<SimAction>>;
     const Actions& actions() const;
 
     // Ensure the action conditions are checked on next update call, as opposed to the
@@ -33,7 +35,7 @@ private:
     SimConditionsManager();
 
     // add action.
-    void addAction(SimAction*);
+    void addAction(std::unique_ptr<SimAction> pNewAction);
 
     // enable action.
     void enableAction(const string& keyName);

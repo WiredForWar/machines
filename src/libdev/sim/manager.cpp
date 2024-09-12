@@ -12,6 +12,7 @@
 
 #include "phys/phys.hpp"
 
+#include "sim/action.hpp"
 #include "sim/actor.hpp"
 #include "sim/manager.hpp"
 #include "sim/process.hpp"
@@ -362,11 +363,11 @@ void SimManager::recomputePriorities()
     }
 }
 
-void SimManager::addAction(SimAction* pAction)
+void SimManager::addAction(std::unique_ptr<SimAction> pAction)
 {
     CB_DEPIMPL(SimConditionsManager*, pConditionsManager_);
 
-    pConditionsManager_->addAction(pAction);
+    pConditionsManager_->addAction(std::move(pAction));
 }
 
 void SimManager::enableAction(const string& keyName)
