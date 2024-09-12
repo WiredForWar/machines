@@ -7,9 +7,7 @@
 
 #include "cmddecon.hpp"
 
-#include "ctl/algorith.hpp"
-
-#include "device/butevent.hpp"
+#include "gui/event.hpp"
 
 #include "mathex/point3d.hpp"
 
@@ -231,8 +229,9 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
 }
 
 // virtual
-bool MachGuiDeconstructCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiDeconstructCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_D && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

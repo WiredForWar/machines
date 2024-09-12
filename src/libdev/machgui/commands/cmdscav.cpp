@@ -7,10 +7,7 @@
 
 #include "cmdscav.hpp"
 
-#include "ctl/algorith.hpp"
-
-#include "device/butevent.hpp"
-
+#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/move.hpp"
@@ -203,8 +200,9 @@ uint MachGuiScavengeCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiScavengeCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiScavengeCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_Y && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

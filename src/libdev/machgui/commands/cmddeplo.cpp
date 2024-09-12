@@ -7,6 +7,7 @@
 
 #include "cmddeplo.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "device/butevent.hpp"
@@ -164,8 +165,9 @@ uint MachGuiDeployCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiDeployCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiDeployCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_E && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

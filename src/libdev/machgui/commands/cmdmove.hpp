@@ -89,7 +89,7 @@ public:
 
     /////////////////////////////////////////////////
     // Hot key processing
-    bool processButtonEvent(const DevButtonEvent&) override;
+    bool processButtonEvent(const GuiKeyEvent& event) override;
 
     static bool couldEnterAPC(const MachActor& actor, const MachLogAPC& apc);
 

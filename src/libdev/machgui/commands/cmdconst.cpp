@@ -7,6 +7,7 @@
 
 #include "cmdconst.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 
@@ -654,8 +655,9 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
 }
 
 // virtual
-bool MachGuiConstructCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiConstructCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     bool returnVal = false;
 
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)

@@ -7,6 +7,7 @@
 
 #include "cmdtrech.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "device/butevent.hpp"
@@ -244,8 +245,9 @@ bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrato
 }
 
 // virtual
-bool MachGuiTreacheryCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiTreacheryCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_J && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

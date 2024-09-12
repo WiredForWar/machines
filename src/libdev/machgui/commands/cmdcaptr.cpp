@@ -7,6 +7,7 @@
 
 #include "cmdcaptr.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 
 #include "machgui/internal/mgsndman.hpp"
@@ -221,8 +222,9 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
 }
 
 // virtual
-bool MachGuiCaptureCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiCaptureCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_U && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

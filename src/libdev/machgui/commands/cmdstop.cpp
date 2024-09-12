@@ -7,6 +7,7 @@
 
 #include "cmdstop.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/commands/cmddestr.hpp"
 #include "machgui/internal/strings.hpp"
@@ -143,8 +144,9 @@ bool MachGuiStopCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
 }
 
 // virtual
-bool MachGuiStopCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiStopCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_S && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

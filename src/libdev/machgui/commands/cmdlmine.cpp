@@ -7,6 +7,7 @@
 
 #include "cmdlmine.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
@@ -222,8 +223,9 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
 }
 
 // virtual
-bool MachGuiDropLandMineCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiDropLandMineCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS && be.wasShiftPressed()
         && be.previous() == 0)
     {

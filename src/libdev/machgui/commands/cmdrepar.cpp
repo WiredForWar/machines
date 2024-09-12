@@ -7,6 +7,7 @@
 
 #include "cmdrepar.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
@@ -229,8 +230,9 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
 }
 
 // virtual
-bool MachGuiRepairCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiRepairCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_R && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

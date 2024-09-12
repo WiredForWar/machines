@@ -7,11 +7,7 @@
 
 #include "cmdmove.hpp"
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
-
-#include "device/butevent.hpp"
-
+#include "gui/event.hpp"
 #include "mathex/point2d.hpp"
 
 #include "phys/cspace2.hpp"
@@ -596,8 +592,9 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
 }
 
 // virtual
-bool MachGuiMoveCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiMoveCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS
         && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
         && be.previous() == 0)

@@ -7,6 +7,7 @@
 
 #include "cmddefau.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/intcurac.hpp"
 #include "machgui/commands/cmdattac.hpp"

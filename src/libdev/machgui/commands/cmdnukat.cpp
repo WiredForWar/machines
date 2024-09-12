@@ -8,7 +8,7 @@
 #include "cmdnukat.hpp"
 
 #include "ctl/pvector.hpp"
-
+#include "gui/event.hpp"
 #include "mathex/transf3d.hpp"
 
 #include "device/butevent.hpp"
@@ -284,8 +284,9 @@ uint MachGuiNukeAttackCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiNukeAttackCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiNukeAttackCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_N && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
