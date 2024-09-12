@@ -135,7 +135,7 @@ uint MachGuiSelfDestructCommand::commandPromptStringid() const
 // virtual
 bool MachGuiSelfDestructCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::BACK_SPACE && be.wasCtrlPressed() && be.wasShiftPressed()
+    if (isVisible() && be.scanCode() == Device::KeyCode::BACK_SPACE && be.wasCtrlPressed() && be.wasShiftPressed()
         && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

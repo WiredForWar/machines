@@ -225,7 +225,7 @@ bool MachGuiDefconCommand::defconHigh()
 // virtual
 bool MachGuiDefconCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::TAB && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::TAB && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

@@ -192,7 +192,7 @@ uint MachGuiPatrolCommand::commandPromptStringid() const
 // virtual
 bool MachGuiPatrolCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_P && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_P && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

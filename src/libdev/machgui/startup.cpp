@@ -1782,7 +1782,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     if (e.state() == Gui::PRESSED)
     {
         // Save menu screen shot
-        if (e.key() == DevKey::F12 && e.isShiftPressed() && e.isCtrlPressed())
+        if (e.key() == Device::KeyCode::F12 && e.isShiftPressed() && e.isCtrlPressed())
         {
             Gui::writeScreenAsFile("menu");
         }
@@ -1795,7 +1795,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         {
             processed = true;
 
-            if (e.key() == DevKey::ESCAPE || e.key() == DevKey::ENTER)
+            if (e.key() == Device::KeyCode::ESCAPE || e.key() == Device::KeyCode::ENTER)
             {
                 // Restore character focus
                 if (pCharFocus_)
@@ -1808,7 +1808,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
                 // Do we need to tell a message box responder about the key press?
                 if (pMsgBoxResponder_)
                 {
-                    if (e.key() == DevKey::ENTER)
+                    if (e.key() == Device::KeyCode::ENTER)
                         deleteMsgBox = pMsgBoxResponder_->okPressed();
                     else
                         deleteMsgBox = pMsgBoxResponder_->cancelPressed();
@@ -1834,7 +1834,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         size_t loop = 0;
 
         // General processing for flics. Space and Escape cause flic to abort ( forced timeout!! )
-        if ((isContextFlic() && e.key() == DevKey::ESCAPE) || (isContextFlic() && e.key() == DevKey::SPACE))
+        if ((isContextFlic() && e.key() == Device::KeyCode::ESCAPE) || (isContextFlic() && e.key() == Device::KeyCode::SPACE))
         {
             while (! processed && getContextTimeoutInfo()[loop].curContext_ != CTX_FINISH)
             {
@@ -3207,50 +3207,50 @@ const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getCont
     if constexpr (cDemoVersion)
     {
         static constexpr ContextKeypressInfo cki[] = {
-            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, false, ButtonEvent::JOIN },
-            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
-            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, false, ButtonEvent::OK },
-            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
-            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, false, ButtonEvent::EXIT },
-            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, false, ButtonEvent::EXIT },
-            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, false, ButtonEvent::OK },
-            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
-            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
-            { CTX_SCENARIO, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
-            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, false, ButtonEvent::OK },
-            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
-            { CTX_BRIEFING, DevKey::ENTER, CTX_GAME, false, ButtonEvent::STARTGAME },
-            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
-            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
-            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
-            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, false, ButtonEvent::CONTINUE },
-            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, false, ButtonEvent::CONTINUE },
-            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, false, ButtonEvent::CONTINUE },
-            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
-            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_CAINGAMEOPTIONS, DevKey::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
-            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_SKINGAMEOPTIONS, DevKey::ESCAPE, CTX_SKIRMISH, false, ButtonEvent::EXIT },
-            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_MPINGAMEOPTIONS, DevKey::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
-            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
-            { CTX_SPLASH1, DevKey::ESCAPE, CTX_SPLASH2, false, ButtonEvent::EXIT },
-            { CTX_SPLASH1, DevKey::SPACE, CTX_SPLASH2, false, ButtonEvent::EXIT },
-            { CTX_SPLASH1, DevKey::ENTER, CTX_SPLASH2, false, ButtonEvent::EXIT },
-            { CTX_SPLASH2, DevKey::ESCAPE, CTX_FINISH, false, ButtonEvent::EXIT },
-            { CTX_SPLASH2, DevKey::ENTER, CTX_FINISH, false, ButtonEvent::EXIT },
-            { CTX_SPLASH2, DevKey::SPACE, CTX_FINISH, false, ButtonEvent::EXIT },
+            { CTX_PROBEACCLAIMLOGO, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, Device::KeyCode::SPACE, CTX_MAINMENU, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, Device::KeyCode::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, Device::KeyCode::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_MULTIPLAYER, Device::KeyCode::ENTER, CTX_JOIN, false, ButtonEvent::JOIN },
+            { CTX_MULTIPLAYER, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_IGOPTIONS, Device::KeyCode::ENTER, CTX_INGAMEOP, false, ButtonEvent::OK },
+            { CTX_IGOPTIONS, Device::KeyCode::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
+            { CTX_JOIN, Device::KeyCode::ESCAPE, CTX_MULTIPLAYER, false, ButtonEvent::EXIT },
+            { CTX_SETTINGS, Device::KeyCode::ESCAPE, CTX_IMREADY, false, ButtonEvent::EXIT },
+            { CTX_SETTINGS, Device::KeyCode::ENTER, CTX_IMREADY, false, ButtonEvent::OK },
+            { CTX_SKIRMISH, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_SKIRMISH, Device::KeyCode::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
+            { CTX_SCENARIO, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::EXIT },
+            { CTX_SCENARIO, Device::KeyCode::ENTER, CTX_BRIEFING, false, ButtonEvent::OK },
+            { CTX_BRIEFING, Device::KeyCode::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
+            { CTX_BRIEFING, Device::KeyCode::ENTER, CTX_GAME, false, ButtonEvent::STARTGAME },
+            { CTX_IGBRIEFING, Device::KeyCode::ESCAPE, CTX_INGAMEOP, false, ButtonEvent::EXIT },
+            { CTX_IGBRIEFING, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
+            { CTX_IMREADY, Device::KeyCode::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
+            { CTX_CADEBRIEFING, Device::KeyCode::ENTER, CTX_SCENARIO, false, ButtonEvent::CONTINUE },
+            { CTX_SKDEBRIEFING, Device::KeyCode::ENTER, CTX_SKIRMISH, false, ButtonEvent::CONTINUE },
+            { CTX_MPDEBRIEFING, Device::KeyCode::ENTER, CTX_JOIN, false, ButtonEvent::CONTINUE },
+            { CTX_CASTATISTICS, Device::KeyCode::ENTER, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_CASTATISTICS, Device::KeyCode::ESCAPE, CTX_CADEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, Device::KeyCode::ENTER, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, Device::KeyCode::ESCAPE, CTX_SKDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, Device::KeyCode::ENTER, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, Device::KeyCode::ESCAPE, CTX_MPDEBRIEFING, false, ButtonEvent::EXIT },
+            { CTX_CAINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_CAINGAMEOPTIONS, Device::KeyCode::ESCAPE, CTX_SCENARIO, false, ButtonEvent::EXIT },
+            { CTX_SKINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_SKINGAMEOPTIONS, Device::KeyCode::ESCAPE, CTX_SKIRMISH, false, ButtonEvent::EXIT },
+            { CTX_MPINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_MPINGAMEOPTIONS, Device::KeyCode::ESCAPE, CTX_JOIN, false, ButtonEvent::EXIT },
+            { CTX_MAINMENU, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
+            { CTX_SPLASH1, Device::KeyCode::ESCAPE, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH1, Device::KeyCode::SPACE, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH1, Device::KeyCode::ENTER, CTX_SPLASH2, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, Device::KeyCode::ESCAPE, CTX_FINISH, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, Device::KeyCode::ENTER, CTX_FINISH, false, ButtonEvent::EXIT },
+            { CTX_SPLASH2, Device::KeyCode::SPACE, CTX_FINISH, false, ButtonEvent::EXIT },
             /*This line must come last*/
-            { CTX_FINISH, DevKey::SPACE, CTX_FINISH, false, ButtonEvent::NO_IMP },
+            { CTX_FINISH, Device::KeyCode::SPACE, CTX_FINISH, false, ButtonEvent::NO_IMP },
         };
 
         return cki;
@@ -3258,60 +3258,60 @@ const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getCont
     else
     {
         static constexpr ContextKeypressInfo cki[] = {
-            { CTX_DEFEAT, DevKey::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
-            { CTX_VICTORY, DevKey::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_LEGALSCREEN, DevKey::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::ESCAPE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_CHARYBDISLOGO, DevKey::ESCAPE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
-            { CTX_DEFEAT, DevKey::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
-            { CTX_VICTORY, DevKey::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
-            { CTX_PROBEACCLAIMLOGO, DevKey::SPACE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
-            { CTX_CHARYBDISLOGO, DevKey::SPACE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
-            { CTX_MULTIPLAYER, DevKey::ENTER, CTX_JOIN, true, ButtonEvent::JOIN },
-            { CTX_MULTIPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
-            { CTX_OPTIONS, DevKey::ENTER, CTX_MAINMENU, true, ButtonEvent::OK },
-            { CTX_OPTIONS, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
-            { CTX_IGOPTIONS, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
-            { CTX_IGOPTIONS, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_SINGLEPLAYER, DevKey::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
-            { CTX_JOIN, DevKey::ESCAPE, CTX_MULTIPLAYER, true, ButtonEvent::EXIT },
-            { CTX_SETTINGS, DevKey::ESCAPE, CTX_IMREADY, true, ButtonEvent::EXIT },
-            { CTX_SETTINGS, DevKey::ENTER, CTX_IMREADY, true, ButtonEvent::OK },
-            { CTX_SKIRMISH, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
-            { CTX_SKIRMISH, DevKey::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
-            { CTX_CAMPAIGN, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
-            { CTX_CAMPAIGN, DevKey::ENTER, CTX_SCENARIO, true, ButtonEvent::OK },
-            { CTX_SCENARIO, DevKey::ESCAPE, CTX_CAMPAIGN, true, ButtonEvent::EXIT },
-            { CTX_SCENARIO, DevKey::ENTER, CTX_BRIEFING, true, ButtonEvent::OK },
-            { CTX_BRIEFING, DevKey::ESCAPE, CTX_SCENARIO, true, ButtonEvent::EXIT },
-            { CTX_BRIEFING, DevKey::ENTER, CTX_ENTRYFLIC, false, ButtonEvent::STARTGAME },
-            { CTX_IGBRIEFING, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_IGBRIEFING, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
-            { CTX_IMREADY, DevKey::ESCAPE, CTX_JOIN, true, ButtonEvent::EXIT },
-            { CTX_IGLOAD, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_IGLOAD, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
-            { CTX_LOAD, DevKey::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
-            { CTX_LOAD, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
-            { CTX_SAVE, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_SAVE, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
-            { CTX_CADEBRIEFING, DevKey::ENTER, CTX_SCENARIO, true, ButtonEvent::CONTINUE },
-            { CTX_SKDEBRIEFING, DevKey::ENTER, CTX_SKIRMISH, true, ButtonEvent::CONTINUE },
-            { CTX_MPDEBRIEFING, DevKey::ENTER, CTX_JOIN, true, ButtonEvent::CONTINUE },
-            { CTX_CASTATISTICS, DevKey::ENTER, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_CASTATISTICS, DevKey::ESCAPE, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_SKSTATISTICS, DevKey::ENTER, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_SKSTATISTICS, DevKey::ESCAPE, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_MPSTATISTICS, DevKey::ENTER, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_MPSTATISTICS, DevKey::ESCAPE, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
-            { CTX_CAINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_SKINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_MPINGAMEOPTIONS, DevKey::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
-            { CTX_HOTKEYS, DevKey::ENTER, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_HOTKEYS, DevKey::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
-            { CTX_MAINMENU, DevKey::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
+            { CTX_DEFEAT, Device::KeyCode::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_VICTORY, Device::KeyCode::ESCAPE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, Device::KeyCode::ESCAPE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_LEGALSCREEN, Device::KeyCode::SPACE, CTX_PROBEACCLAIMLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, Device::KeyCode::ESCAPE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_CHARYBDISLOGO, Device::KeyCode::ESCAPE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
+            { CTX_DEFEAT, Device::KeyCode::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_VICTORY, Device::KeyCode::SPACE, CTX_DEBRIEFING, false, ButtonEvent::NO_IMP },
+            { CTX_PROBEACCLAIMLOGO, Device::KeyCode::SPACE, CTX_CHARYBDISLOGO, false, ButtonEvent::NO_IMP },
+            { CTX_CHARYBDISLOGO, Device::KeyCode::SPACE, CTX_INTROANIMATION, false, ButtonEvent::NO_IMP },
+            { CTX_MULTIPLAYER, Device::KeyCode::ENTER, CTX_JOIN, true, ButtonEvent::JOIN },
+            { CTX_MULTIPLAYER, Device::KeyCode::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_OPTIONS, Device::KeyCode::ENTER, CTX_MAINMENU, true, ButtonEvent::OK },
+            { CTX_OPTIONS, Device::KeyCode::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_IGOPTIONS, Device::KeyCode::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
+            { CTX_IGOPTIONS, Device::KeyCode::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_SINGLEPLAYER, Device::KeyCode::ESCAPE, CTX_MAINMENU, true, ButtonEvent::EXIT },
+            { CTX_JOIN, Device::KeyCode::ESCAPE, CTX_MULTIPLAYER, true, ButtonEvent::EXIT },
+            { CTX_SETTINGS, Device::KeyCode::ESCAPE, CTX_IMREADY, true, ButtonEvent::EXIT },
+            { CTX_SETTINGS, Device::KeyCode::ENTER, CTX_IMREADY, true, ButtonEvent::OK },
+            { CTX_SKIRMISH, Device::KeyCode::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_SKIRMISH, Device::KeyCode::ENTER, CTX_SKIRMISH_GAME, false, ButtonEvent::OK },
+            { CTX_CAMPAIGN, Device::KeyCode::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_CAMPAIGN, Device::KeyCode::ENTER, CTX_SCENARIO, true, ButtonEvent::OK },
+            { CTX_SCENARIO, Device::KeyCode::ESCAPE, CTX_CAMPAIGN, true, ButtonEvent::EXIT },
+            { CTX_SCENARIO, Device::KeyCode::ENTER, CTX_BRIEFING, true, ButtonEvent::OK },
+            { CTX_BRIEFING, Device::KeyCode::ESCAPE, CTX_SCENARIO, true, ButtonEvent::EXIT },
+            { CTX_BRIEFING, Device::KeyCode::ENTER, CTX_ENTRYFLIC, false, ButtonEvent::STARTGAME },
+            { CTX_IGBRIEFING, Device::KeyCode::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_IGBRIEFING, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::STARTGAME },
+            { CTX_IMREADY, Device::KeyCode::ESCAPE, CTX_JOIN, true, ButtonEvent::EXIT },
+            { CTX_IGLOAD, Device::KeyCode::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_IGLOAD, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
+            { CTX_LOAD, Device::KeyCode::ESCAPE, CTX_SINGLEPLAYER, true, ButtonEvent::EXIT },
+            { CTX_LOAD, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::OK },
+            { CTX_SAVE, Device::KeyCode::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_SAVE, Device::KeyCode::ENTER, CTX_INGAMEOP, true, ButtonEvent::OK },
+            { CTX_CADEBRIEFING, Device::KeyCode::ENTER, CTX_SCENARIO, true, ButtonEvent::CONTINUE },
+            { CTX_SKDEBRIEFING, Device::KeyCode::ENTER, CTX_SKIRMISH, true, ButtonEvent::CONTINUE },
+            { CTX_MPDEBRIEFING, Device::KeyCode::ENTER, CTX_JOIN, true, ButtonEvent::CONTINUE },
+            { CTX_CASTATISTICS, Device::KeyCode::ENTER, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_CASTATISTICS, Device::KeyCode::ESCAPE, CTX_CADEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, Device::KeyCode::ENTER, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_SKSTATISTICS, Device::KeyCode::ESCAPE, CTX_SKDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, Device::KeyCode::ENTER, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_MPSTATISTICS, Device::KeyCode::ESCAPE, CTX_MPDEBRIEFING, true, ButtonEvent::EXIT },
+            { CTX_CAINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_SKINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_MPINGAMEOPTIONS, Device::KeyCode::ENTER, CTX_BACKTOGAME, false, ButtonEvent::CONTINUE },
+            { CTX_HOTKEYS, Device::KeyCode::ENTER, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_HOTKEYS, Device::KeyCode::ESCAPE, CTX_INGAMEOP, true, ButtonEvent::EXIT },
+            { CTX_MAINMENU, Device::KeyCode::ESCAPE, CTX_MAINMENU, false, ButtonEvent::DUMMY_OK },
             /*This line must come last*/
-            { CTX_FINISH, DevKey::ESCAPE, CTX_FINISH, false, ButtonEvent::NO_IMP },
+            { CTX_FINISH, Device::KeyCode::ESCAPE, CTX_FINISH, false, ButtonEvent::NO_IMP },
         };
 
         return cki;
@@ -3509,7 +3509,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
     bool processed = false;
 
-    if (e.key() == DevKey::LEFT_ARROW || e.key() == DevKey::RIGHT_ARROW)
+    if (e.key() == Device::KeyCode::LEFT_ARROW || e.key() == Device::KeyCode::RIGHT_ARROW)
     {
         if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() != this)
         {
@@ -3520,9 +3520,9 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
     }
 
     // Do we have a control with focus that can respond to the key press?
-    if (e.key() == DevKey::TAB || e.key() == DevKey::UP_ARROW || e.key() == DevKey::DOWN_ARROW
-        || e.key() == DevKey::LEFT_ARROW || e.key() == DevKey::RIGHT_ARROW || e.key() == DevKey::ENTER
-        || e.key() == DevKey::ESCAPE)
+    if (e.key() == Device::KeyCode::TAB || e.key() == Device::KeyCode::UP_ARROW || e.key() == Device::KeyCode::DOWN_ARROW
+        || e.key() == Device::KeyCode::LEFT_ARROW || e.key() == Device::KeyCode::RIGHT_ARROW || e.key() == Device::KeyCode::ENTER
+        || e.key() == Device::KeyCode::ESCAPE)
     {
         MachGuiFocusCapableControl* pFocusControl = nullptr;
         MachGuiFocusCapableControl* pNextFocusControl = nullptr;
@@ -3611,7 +3611,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         }
 
         // Escape key pressed?
-        if (e.key() == DevKey::ESCAPE)
+        if (e.key() == Device::KeyCode::ESCAPE)
         {
             // Do we have a control with escape focus?
             if (pEscapeFocusControl && pEscapeFocusControl->isFocusEnabled())
@@ -3624,7 +3624,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
             ASSERT(pNextFocusControl, "We found a focus control so we should have found a next focus control");
             ASSERT(pPreviousFocusControl, "We found a focus control so we should have found a previous focus control");
 
-            if (e.key() == DevKey::ENTER)
+            if (e.key() == Device::KeyCode::ENTER)
             {
                 // Enter key executes focus control
                 if (pFocusControl->isFocusEnabled())
@@ -3645,19 +3645,19 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 MachGuiFocusCapableControl::NavKey navKey = MachGuiFocusCapableControl::DOWN_ARROW;
                 switch (e.key())
                 {
-                    case DevKey::UP_ARROW:
+                    case Device::KeyCode::UP_ARROW:
                         navKey = MachGuiFocusCapableControl::UP_ARROW;
                         break;
-                    case DevKey::DOWN_ARROW:
+                    case Device::KeyCode::DOWN_ARROW:
                         navKey = MachGuiFocusCapableControl::DOWN_ARROW;
                         break;
-                    case DevKey::RIGHT_ARROW:
+                    case Device::KeyCode::RIGHT_ARROW:
                         navKey = MachGuiFocusCapableControl::RIGHT_ARROW;
                         break;
-                    case DevKey::LEFT_ARROW:
+                    case Device::KeyCode::LEFT_ARROW:
                         navKey = MachGuiFocusCapableControl::LEFT_ARROW;
                         break;
-                    case DevKey::TAB:
+                    case Device::KeyCode::TAB:
                         if (e.isShiftPressed())
                         {
                             navKey = MachGuiFocusCapableControl::TAB_BACKWARD;

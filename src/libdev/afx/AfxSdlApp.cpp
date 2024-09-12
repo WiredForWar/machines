@@ -273,34 +273,34 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
         switch (button)
         {
             case 1:
-                return DevKey::MOUSE_LEFT;
+                return Device::KeyCode::MOUSE_LEFT;
             case 3:
-                return DevKey::MOUSE_RIGHT;
+                return Device::KeyCode::MOUSE_RIGHT;
             case 4:
-                return DevKey::MOUSE_EXTRA1;
+                return Device::KeyCode::MOUSE_EXTRA1;
             case 5:
-                return DevKey::MOUSE_EXTRA2;
+                return Device::KeyCode::MOUSE_EXTRA2;
             case 6:
-                return DevKey::MOUSE_EXTRA3;
+                return Device::KeyCode::MOUSE_EXTRA3;
             case 7:
-                return DevKey::MOUSE_EXTRA4;
+                return Device::KeyCode::MOUSE_EXTRA4;
             case 8:
-                return DevKey::MOUSE_EXTRA5;
+                return Device::KeyCode::MOUSE_EXTRA5;
             case 9:
-                return DevKey::MOUSE_EXTRA6;
+                return Device::KeyCode::MOUSE_EXTRA6;
             case 10:
-                return DevKey::MOUSE_EXTRA7;
+                return Device::KeyCode::MOUSE_EXTRA7;
             case 11:
-                return DevKey::MOUSE_EXTRA8;
+                return Device::KeyCode::MOUSE_EXTRA8;
 
             case 2:
             default:
                 break;
         }
-        return DevKey::UNKNOWN;
+        return Device::KeyCode::UNKNOWN;
     }(event->button.button);
 
-    if (code == DevKey::UNKNOWN)
+    if (code == Device::KeyCode::UNKNOWN)
     {
         std::cerr << "Unsupported mouse button " << static_cast<int>(event->button.button) << std::endl;
         return;
@@ -365,7 +365,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const double time = DevTime::instance().resolution() * event->button.timestamp;
 
     // Button code & whatnot
-    const DevButtonEvent::ScanCode code = DevKey::MOUSE_MIDDLE;
+    const DevButtonEvent::ScanCode code = Device::KeyCode::MOUSE_MIDDLE;
     const bool previous = false;
     const size_t repeats = 1;
 
@@ -410,7 +410,7 @@ void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
     const bool alt = false;
     const bool previous = false;
     const uint16_t rpt = 1;
-    const DevButtonEvent::ScanCode code = DevKey::KEY_A;
+    const DevButtonEvent::ScanCode code = Device::KeyCode::KEY_A;
     const DevButtonEvent::Action act = DevButtonEvent::PRESS;
 
     // Get the position of the cursor at the time of the event.
@@ -449,7 +449,7 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const double time = DevTime::instance().resolution() * event->tfinger.timestamp;
 
     // Decode wParam and lParam.
-    const DevButtonEvent::ScanCode code = DevKey::MOUSE_LEFT;
+    const DevButtonEvent::ScanCode code = Device::KeyCode::MOUSE_LEFT;
     const bool previous = false;
     const size_t repeats = 1;
 

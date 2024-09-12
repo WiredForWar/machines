@@ -145,7 +145,7 @@ bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministra
 // virtual
 bool MachGuiStandGroundCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_W && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_W && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

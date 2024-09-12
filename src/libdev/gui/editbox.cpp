@@ -131,22 +131,22 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
         processed = true;
         switch (e.buttonEvent().scanCode())
         {
-            case DevKey::LEFT_ARROW:
+            case Device::KeyCode::LEFT_ARROW:
                 leftArrowEvent();
                 break;
-            case DevKey::RIGHT_ARROW:
+            case Device::KeyCode::RIGHT_ARROW:
                 rightArrowEvent();
                 break;
-            case DevKey::BACK_SPACE:
+            case Device::KeyCode::BACK_SPACE:
                 backspaceEvent();
                 break;
-            case DevKey::KEY_DELETE:
+            case Device::KeyCode::KEY_DELETE:
                 deleteEvent();
                 break;
-            case DevKey::HOME:
+            case Device::KeyCode::HOME:
                 homeEvent();
                 break;
-            case DevKey::END:
+            case Device::KeyCode::END:
                 endEvent();
                 break;
             default:

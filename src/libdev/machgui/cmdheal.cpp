@@ -268,7 +268,7 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, stri
 // virtual
 bool MachGuiHealCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_H && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_H && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

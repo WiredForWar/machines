@@ -10,7 +10,7 @@
     Indicates what key presses are required to turn a command on. For example, you
     might want Ctrl+Alt+Delete to indicate a Delete command. To do this construct
     using :
-    DevKeyToCommand( DevKey::KEY_DELETE, MYDELETECOMMANDID, Modifier::PRESSED, Modifier::EITHER, Modifier::PRESSED );
+    DevKeyToCommand( Device::KeyCode::KEY_DELETE, MYDELETECOMMANDID, Modifier::PRESSED, Modifier::EITHER, Modifier::PRESSED );
 */
 
 #ifndef _DEV_KEYCOMND_HPP
@@ -24,7 +24,7 @@ class DevKeyToCommand
 // Canonical form
 {
 public:
-    using ScanCode = DevKey::Code;
+    using ScanCode = Device::KeyCode;
     using CommandId = size_t;
 
     enum Modifier

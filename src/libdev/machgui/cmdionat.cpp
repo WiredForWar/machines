@@ -241,7 +241,7 @@ uint MachGuiIonAttackCommand::commandPromptStringid() const
 // virtual
 bool MachGuiIonAttackCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_I && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_I && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

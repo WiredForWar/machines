@@ -430,20 +430,20 @@ void PhysPlanControl::readKeyboard()
     {
         const DevKeyboard& keyboard = DevKeyboard::instance();
 
-        if (keyboard.keyCode(DevKey::PAD_0) || keyboard.keyCode(DevKey::PAD_5))
+        if (keyboard.keyCode(Device::KeyCode::PAD_0) || keyboard.keyCode(Device::KeyCode::PAD_5))
         {
             dx_ = 0;
             dy_ = 0;
         }
 
-        if (keyboard.keyCode(DevKey::RIGHT_ARROW_PAD))
+        if (keyboard.keyCode(Device::KeyCode::RIGHT_ARROW_PAD))
             dx_ += metersPerSecond();
-        if (keyboard.keyCode(DevKey::LEFT_ARROW_PAD))
+        if (keyboard.keyCode(Device::KeyCode::LEFT_ARROW_PAD))
             dx_ -= metersPerSecond();
 
-        if (keyboard.keyCode(DevKey::UP_ARROW_PAD))
+        if (keyboard.keyCode(Device::KeyCode::UP_ARROW_PAD))
             dy_ += metersPerSecond();
-        if (keyboard.keyCode(DevKey::DOWN_ARROW_PAD))
+        if (keyboard.keyCode(Device::KeyCode::DOWN_ARROW_PAD))
             dy_ -= metersPerSecond();
 
         // If any key is pressed, begin timing the next keyboard repeat.

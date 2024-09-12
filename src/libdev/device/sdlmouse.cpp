@@ -156,13 +156,13 @@ void DEV_MOUSE_CLASS::wm_button(const DevButtonEventType& ev)
     // Decode the message and set this object's internal state.
     switch (ev.scanCode())
     {
-        case DevKey::MOUSE_LEFT:
+        case Device::KeyCode::MOUSE_LEFT:
             lButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
             break;
-        case DevKey::MOUSE_RIGHT:
+        case Device::KeyCode::MOUSE_RIGHT:
             rButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
             break;
-        case DevKey::MOUSE_MIDDLE:
+        case Device::KeyCode::MOUSE_MIDDLE:
             scrolledUp_ = ev.action() == DevButtonEventType::SCROLL_UP;
             scrolledDown_ = ev.action() == DevButtonEventType::SCROLL_DOWN;
             break;

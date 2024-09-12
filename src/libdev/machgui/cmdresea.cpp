@@ -145,7 +145,7 @@ uint MachGuiResearchCommand::commandPromptStringid() const
 // virtual
 bool MachGuiResearchCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    // if ( isVisible() and be.scanCode() == DevKey::BACK_SPACE and be.action() == DevButtonEvent::PRESS )
+    // if ( isVisible() and be.scanCode() == Device::KeyCode::BACK_SPACE and be.action() == DevButtonEvent::PRESS )
     //{
     //   inGameScreen().activeCommand( *this );
     //   return true;

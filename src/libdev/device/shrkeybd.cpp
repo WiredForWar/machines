@@ -31,7 +31,7 @@ DevKeyboard::~DevKeyboard()
 
 bool DevKeyboard::keyCode(ScanCode sCode) const
 {
-    PRE(sCode < N_KEYS);
+    PRE(Device::isValidCode(sCode));
     TEST_INVARIANT;
 
     bool result;
@@ -50,7 +50,7 @@ bool DevKeyboard::keyCode(ScanCode sCode) const
 
 DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
 {
-    PRE(sCode < N_KEYS);
+    PRE(static_cast<int>(sCode) < N_KEYS);
     TEST_INVARIANT;
 
     DevKeyboard::KeyState result;
@@ -69,7 +69,6 @@ DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
 
 bool DevKeyboard::key(unsigned char character) const
 {
-    PRE(character < N_KEYS);
     TEST_INVARIANT;
 
     bool result;
@@ -88,7 +87,6 @@ bool DevKeyboard::key(unsigned char character) const
 
 DevKeyboard::KeyState DevKeyboard::deltaKey(unsigned char character) const
 {
-    PRE(character < N_KEYS);
     TEST_INVARIANT;
     return deltaKeyCode(getCharacterIndex(character));
 }
@@ -129,8 +127,9 @@ DevKeyboard::ScanCode DevKeyboard::getCharacterIndex(unsigned char c) const
                                             /* 232 */ 0,  0,  0,  0,  0,  0,  0,  0,
                                             /* 240 */ 0,  0,  0,  0,  0,  0,  0,  0,
                                             /* 248 */ 0,  0,  0,  0,  0,  0,  0,  0 };
+    static_assert(std::size(characterMap) == 256);
 
-    return (ScanCode)characterMap[c];
+    return static_cast<ScanCode>(characterMap[c]);
 }
 
 bool DevKeyboard::anyKey() const
@@ -211,20 +210,21 @@ void DevKeyboard::pressed(ScanCode code)
     // aware that it can be called from within a DOS interrupt
     // handler.  It appears that we are quite limited in the system
     // calls that can be made here.  Hence, no TEST_INVARIANT.
-    PRE(code < N_KEYS);
+    PRE(static_cast<int>(code) < N_KEYS);
 
-    if (!keyMap_[code])
+    if (!keyMap(code))
     {
         // An interrupt between the next two statements could cause this
         // object's state to become inconsistent.  We rely on the caller
         // having disabled interrupts under DOS!!
-        keyMap_[code] = true;
+        keyMap(code) = true;
         ++pressedCount_;
     }
 }
 
-void DevKeyboard::released(ScanCode code)
+void DevKeyboard::released(ScanCode scanCode)
 {
+    const auto code = static_cast<std::size_t>(scanCode);
     // Don't test invariant, see DevKeyboard::pressed.
     PRE(code < N_KEYS);
 
@@ -265,12 +265,12 @@ void DevKeyboard::allKeysReleased()
 
 bool DevKeyboard::keyNoRecord(unsigned char character) const
 {
-    return keyMap_[getCharacterIndex(character)];
+    return keyMap(getCharacterIndex(character));
 }
 
 bool DevKeyboard::keyCodeNoRecord(ScanCode code) const
 {
-    return keyMap_[code];
+    return keyMap(code);
 }
 
 bool DevKeyboard::anyKeyNoRecord() const
@@ -280,17 +280,17 @@ bool DevKeyboard::anyKeyNoRecord() const
 
 bool DevKeyboard::shiftPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_SHIFT] || keyMap_[DevKey::LEFT_SHIFT];
+    return keyMap(Device::KeyCode::RIGHT_SHIFT) || keyMap(Device::KeyCode::LEFT_SHIFT);
 }
 
 bool DevKeyboard::ctrlPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_CONTROL] || keyMap_[DevKey::LEFT_CONTROL];
+    return keyMap(Device::KeyCode::RIGHT_CONTROL) || keyMap(Device::KeyCode::LEFT_CONTROL);
 }
 
 bool DevKeyboard::altPressedNoRecord() const
 {
-    return keyMap_[DevKey::RIGHT_ALT] || keyMap_[DevKey::LEFT_ALT];
+    return keyMap(Device::KeyCode::RIGHT_ALT) || keyMap(Device::KeyCode::LEFT_ALT);
 }
 
 DevKeyboard::KeyState DevKeyboard::deltaKeyCodeNoRecord(ScanCode code) const
@@ -303,13 +303,13 @@ DevKeyboard::KeyState DevKeyboard::deltaKeyCodeNoRecord(ScanCode code) const
     // tests, so that the second one could see a different value for the same
     // expression.  By sampling to a local variable, each if statement sees the
     // same value.
-    const bool current = keyMap_[code];
-    const bool last = lastKeyMap_[code];
+    const bool current = keyMap(code);
+    const bool last = lastKeyMap(code);
 
     // keyMap_[sCode] may have changed since the last evaluation, so we must
     // use current.
-    DevKeyboard* crufty = _CONST_CAST(DevKeyboard*, this);
-    crufty->lastKeyMap_[code] = current;
+    DevKeyboard* crufty = const_cast<DevKeyboard*>(this);
+    crufty->lastKeyMap(code) = current;
 
     if (current == last)
         result = NO_CHANGE;
@@ -380,304 +380,304 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
 }
 
 // static
-void DevKey::printScanCode(std::ostream& o, Code code)
+void Device::printScanCode(std::ostream& o, KeyCode code)
 {
     switch (code)
     {
-        case DevKey::ENTER_PAD:
+        case Device::KeyCode::ENTER_PAD:
             o << "ENTER_PAD";
             break;
-        case DevKey::ASTERISK_PAD:
+        case Device::KeyCode::ASTERISK_PAD:
             o << "ASTERISK_PAD";
             break;
-        case DevKey::FORWARD_SLASH_PAD:
+        case Device::KeyCode::FORWARD_SLASH_PAD:
             o << "FORWARD_SLASH_PAD";
             break;
-        case DevKey::PLUS_PAD:
+        case Device::KeyCode::PLUS_PAD:
             o << "PLUS_PAD";
             break;
-        case DevKey::MINUS_PAD:
+        case Device::KeyCode::MINUS_PAD:
             o << "MINUS_PAD";
             break;
-        case DevKey::PAD_0:
+        case Device::KeyCode::PAD_0:
             o << "PAD_0";
             break;
-        case DevKey::PAD_1:
+        case Device::KeyCode::PAD_1:
             o << "PAD_1";
             break;
-        case DevKey::PAD_2:
+        case Device::KeyCode::PAD_2:
             o << "PAD_2";
             break;
-        case DevKey::PAD_3:
+        case Device::KeyCode::PAD_3:
             o << "PAD_3";
             break;
-        case DevKey::PAD_4:
+        case Device::KeyCode::PAD_4:
             o << "PAD_4";
             break;
-        case DevKey::PAD_5:
+        case Device::KeyCode::PAD_5:
             o << "PAD_5";
             break;
-        case DevKey::PAD_6:
+        case Device::KeyCode::PAD_6:
             o << "PAD_6";
             break;
-        case DevKey::PAD_7:
+        case Device::KeyCode::PAD_7:
             o << "PAD_7";
             break;
-        case DevKey::PAD_8:
+        case Device::KeyCode::PAD_8:
             o << "PAD_8";
             break;
-        case DevKey::PAD_9:
+        case Device::KeyCode::PAD_9:
             o << "PAD_9";
             break;
-        case DevKey::SCROLL_LOCK:
+        case Device::KeyCode::SCROLL_LOCK:
             o << "SCROLL_LOCK";
             break;
-        case DevKey::RIGHT_CONTROL:
+        case Device::KeyCode::RIGHT_CONTROL:
             o << "RIGHT_CONTROL";
             break;
-        case DevKey::LEFT_CONTROL:
+        case Device::KeyCode::LEFT_CONTROL:
             o << "LEFT_CONTROL";
             break;
-        case DevKey::UP_ARROW:
+        case Device::KeyCode::UP_ARROW:
             o << "UP_ARROW";
             break;
-        case DevKey::DOWN_ARROW:
+        case Device::KeyCode::DOWN_ARROW:
             o << "DOWN_ARROW";
             break;
-        case DevKey::LEFT_ARROW:
+        case Device::KeyCode::LEFT_ARROW:
             o << "LEFT_ARROW";
             break;
-        case DevKey::RIGHT_ARROW:
+        case Device::KeyCode::RIGHT_ARROW:
             o << "RIGHT_ARROW";
             break;
-        case DevKey::INSERT:
+        case Device::KeyCode::INSERT:
             o << "INSERT";
             break;
-        case DevKey::KEY_DELETE:
+        case Device::KeyCode::KEY_DELETE:
             o << "KEY_DELETE";
             break;
-        case DevKey::HOME:
+        case Device::KeyCode::HOME:
             o << "HOME";
             break;
-        case DevKey::END:
+        case Device::KeyCode::END:
             o << "END";
             break;
-        case DevKey::BREAK:
+        case Device::KeyCode::BREAK:
             o << "BREAK";
             break;
-        case DevKey::PAGE_UP:
+        case Device::KeyCode::PAGE_UP:
             o << "PAGE_UP";
             break;
-        case DevKey::PAGE_DOWN:
+        case Device::KeyCode::PAGE_DOWN:
             o << "PAGE_DOWN";
             break;
-        case DevKey::ESCAPE:
+        case Device::KeyCode::ESCAPE:
             o << "ESCAPE";
             break;
-        case DevKey::ENTER:
+        case Device::KeyCode::ENTER:
             o << "ENTER";
             break;
-        case DevKey::SPACE:
+        case Device::KeyCode::SPACE:
             o << "SPACE";
             break;
-        case DevKey::BACK_SPACE:
+        case Device::KeyCode::BACK_SPACE:
             o << "BACK_SPACE";
             break;
-        case DevKey::TAB:
+        case Device::KeyCode::TAB:
             o << "TAB";
             break;
-        case DevKey::LEFT_SHIFT:
+        case Device::KeyCode::LEFT_SHIFT:
             o << "LEFT_SHIFT";
             break;
-        case DevKey::RIGHT_SHIFT:
+        case Device::KeyCode::RIGHT_SHIFT:
             o << "RIGHT_SHIFT";
             break;
-        case DevKey::CAPS_LOCK:
+        case Device::KeyCode::CAPS_LOCK:
             o << "CAPS_LOCK";
             break;
-        case DevKey::F1:
+        case Device::KeyCode::F1:
             o << "F1";
             break;
-        case DevKey::F2:
+        case Device::KeyCode::F2:
             o << "F2";
             break;
-        case DevKey::F3:
+        case Device::KeyCode::F3:
             o << "F3";
             break;
-        case DevKey::F4:
+        case Device::KeyCode::F4:
             o << "F4";
             break;
-        case DevKey::F5:
+        case Device::KeyCode::F5:
             o << "F5";
             break;
-        case DevKey::F6:
+        case Device::KeyCode::F6:
             o << "F6";
             break;
-        case DevKey::F7:
+        case Device::KeyCode::F7:
             o << "F7";
             break;
-        case DevKey::F8:
+        case Device::KeyCode::F8:
             o << "F8";
             break;
-        case DevKey::F9:
+        case Device::KeyCode::F9:
             o << "F9";
             break;
-        case DevKey::F10:
+        case Device::KeyCode::F10:
             o << "F10";
             break;
-        case DevKey::F11:
+        case Device::KeyCode::F11:
             o << "F11";
             break;
-        case DevKey::F12:
+        case Device::KeyCode::F12:
             o << "F12";
             break;
-        case DevKey::KEY_A:
+        case Device::KeyCode::KEY_A:
             o << "KEY_A";
             break;
-        case DevKey::KEY_B:
+        case Device::KeyCode::KEY_B:
             o << "KEY_B";
             break;
-        case DevKey::KEY_C:
+        case Device::KeyCode::KEY_C:
             o << "KEY_C";
             break;
-        case DevKey::KEY_D:
+        case Device::KeyCode::KEY_D:
             o << "KEY_D";
             break;
-        case DevKey::KEY_E:
+        case Device::KeyCode::KEY_E:
             o << "KEY_E";
             break;
-        case DevKey::KEY_F:
+        case Device::KeyCode::KEY_F:
             o << "KEY_F";
             break;
-        case DevKey::KEY_G:
+        case Device::KeyCode::KEY_G:
             o << "KEY_G";
             break;
-        case DevKey::KEY_H:
+        case Device::KeyCode::KEY_H:
             o << "KEY_H";
             break;
-        case DevKey::KEY_I:
+        case Device::KeyCode::KEY_I:
             o << "KEY_I";
             break;
-        case DevKey::KEY_J:
+        case Device::KeyCode::KEY_J:
             o << "KEY_J";
             break;
-        case DevKey::KEY_K:
+        case Device::KeyCode::KEY_K:
             o << "KEY_K";
             break;
-        case DevKey::KEY_L:
+        case Device::KeyCode::KEY_L:
             o << "KEY_L";
             break;
-        case DevKey::KEY_M:
+        case Device::KeyCode::KEY_M:
             o << "KEY_M";
             break;
-        case DevKey::KEY_N:
+        case Device::KeyCode::KEY_N:
             o << "KEY_N";
             break;
-        case DevKey::KEY_O:
+        case Device::KeyCode::KEY_O:
             o << "KEY_O";
             break;
-        case DevKey::KEY_P:
+        case Device::KeyCode::KEY_P:
             o << "KEY_P";
             break;
-        case DevKey::KEY_Q:
+        case Device::KeyCode::KEY_Q:
             o << "KEY_Q";
             break;
-        case DevKey::KEY_R:
+        case Device::KeyCode::KEY_R:
             o << "KEY_R";
             break;
-        case DevKey::KEY_S:
+        case Device::KeyCode::KEY_S:
             o << "KEY_S";
             break;
-        case DevKey::KEY_T:
+        case Device::KeyCode::KEY_T:
             o << "KEY_T";
             break;
-        case DevKey::KEY_U:
+        case Device::KeyCode::KEY_U:
             o << "KEY_U";
             break;
-        case DevKey::KEY_V:
+        case Device::KeyCode::KEY_V:
             o << "KEY_V";
             break;
-        case DevKey::KEY_W:
+        case Device::KeyCode::KEY_W:
             o << "KEY_W";
             break;
-        case DevKey::KEY_X:
+        case Device::KeyCode::KEY_X:
             o << "KEY_X";
             break;
-        case DevKey::KEY_Y:
+        case Device::KeyCode::KEY_Y:
             o << "KEY_Y";
             break;
-        case DevKey::KEY_Z:
+        case Device::KeyCode::KEY_Z:
             o << "KEY_Z";
             break;
-        case DevKey::KEY_0:
+        case Device::KeyCode::KEY_0:
             o << "KEY_0";
             break;
-        case DevKey::KEY_1:
+        case Device::KeyCode::KEY_1:
             o << "KEY_1";
             break;
-        case DevKey::KEY_2:
+        case Device::KeyCode::KEY_2:
             o << "KEY_2";
             break;
-        case DevKey::KEY_3:
+        case Device::KeyCode::KEY_3:
             o << "KEY_3";
             break;
-        case DevKey::KEY_4:
+        case Device::KeyCode::KEY_4:
             o << "KEY_4";
             break;
-        case DevKey::KEY_5:
+        case Device::KeyCode::KEY_5:
             o << "KEY_5";
             break;
-        case DevKey::KEY_6:
+        case Device::KeyCode::KEY_6:
             o << "KEY_6";
             break;
-        case DevKey::KEY_7:
+        case Device::KeyCode::KEY_7:
             o << "KEY_7";
             break;
-        case DevKey::KEY_8:
+        case Device::KeyCode::KEY_8:
             o << "KEY_8";
             break;
-        case DevKey::KEY_9:
+        case Device::KeyCode::KEY_9:
             o << "KEY_9";
             break;
-        case DevKey::MOUSE_LEFT:
+        case Device::KeyCode::MOUSE_LEFT:
             o << "MOUSE_LEFT";
             break;
-        case DevKey::MOUSE_RIGHT:
+        case Device::KeyCode::MOUSE_RIGHT:
             o << "MOUSE_RIGHT";
             break;
-        case DevKey::MOUSE_MIDDLE:
+        case Device::KeyCode::MOUSE_MIDDLE:
             o << "MOUSE_MIDDLE";
             break;
 
-        case DevKey::MOUSE_EXTRA1:
+        case Device::KeyCode::MOUSE_EXTRA1:
             o << "MOUSE_EXTRA1";
             break;
-        case DevKey::MOUSE_EXTRA2:
+        case Device::KeyCode::MOUSE_EXTRA2:
             o << "MOUSE_EXTRA2";
             break;
-        case DevKey::MOUSE_EXTRA3:
+        case Device::KeyCode::MOUSE_EXTRA3:
             o << "MOUSE_EXTRA3";
             break;
-        case DevKey::MOUSE_EXTRA4:
+        case Device::KeyCode::MOUSE_EXTRA4:
             o << "MOUSE_EXTRA4";
             break;
-        case DevKey::MOUSE_EXTRA5:
+        case Device::KeyCode::MOUSE_EXTRA5:
             o << "MOUSE_EXTRA5";
             break;
-        case DevKey::MOUSE_EXTRA6:
+        case Device::KeyCode::MOUSE_EXTRA6:
             o << "MOUSE_EXTRA6";
             break;
-        case DevKey::MOUSE_EXTRA7:
+        case Device::KeyCode::MOUSE_EXTRA7:
             o << "MOUSE_EXTRA7";
             break;
-        case DevKey::MOUSE_EXTRA8:
+        case Device::KeyCode::MOUSE_EXTRA8:
             o << "MOUSE_EXTRA8";
             break;
 
         // NB: don't use ASSERT_BAD_CASE because it is non-extensible.  New scan
         // codes can be added and will work even if this fn doesn't print them.
         default:
-            o << "Unknown scan code, numeric value=" << code;
+            o << "Unknown scan code, numeric value=" << static_cast<int>(code);
             break;
     }
 }

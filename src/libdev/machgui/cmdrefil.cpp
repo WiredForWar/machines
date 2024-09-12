@@ -144,7 +144,7 @@ bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdminis
 // virtual
 bool MachGuiRefillLandMineCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_G && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_G && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

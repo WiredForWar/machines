@@ -223,7 +223,7 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
 // virtual
 bool MachGuiDropLandMineCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_M && be.action() == DevButtonEvent::PRESS && be.wasShiftPressed()
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS && be.wasShiftPressed()
         && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

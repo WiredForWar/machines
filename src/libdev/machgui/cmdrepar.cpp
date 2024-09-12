@@ -230,7 +230,7 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
 // virtual
 bool MachGuiRepairCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_R && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_R && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

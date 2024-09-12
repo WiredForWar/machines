@@ -21,7 +21,7 @@
 template <typename DevTimeDep = DevTime> class DevButtonEventT
 {
 public:
-    using ScanCode = DevKey::Code;
+    using ScanCode = Device::KeyCode;
     enum Action
     {
         PRESS,
@@ -116,7 +116,7 @@ protected:
 
 private:
     Coord coords_;
-    ScanCode code_ = DevKey::MAX_CODE;
+    ScanCode code_ = ScanCode::INVALID;
     Action action_ = PRESS;
 
     // Space is at a premium because these objects are copied by value.  Hence,
@@ -141,7 +141,7 @@ template <> inline std::ostream& operator<<(std::ostream& o, const DevButtonEven
 {
     o << "Button event: " << std::setprecision(4) << " age=" << t.age() << " s=" << t.wasShiftPressed()
       << " c=" << t.wasCtrlPressed() << " a=" << t.wasAltPressed() << " rpt=" << t.repeatCount() << " ";
-    DevKey::printScanCode(o, t.scanCode());
+    Device::printScanCode(o, t.scanCode());
     o << ((t.action() == DevButtonEvent::PRESS) ? " down" : " up  ");
     o << " coords=" << t.cursorCoords();
     return o;

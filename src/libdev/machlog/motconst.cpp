@@ -832,43 +832,43 @@ DevKeyToCommandTranslator& MachLogMachineThirdPerson::keyTranslator()
         first = false;
 
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::PLUS_PAD,
+            Device::KeyCode::PLUS_PAD,
             ZOOMOUT,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::MINUS_PAD,
+            Device::KeyCode::MINUS_PAD,
             ZOOMIN,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::PAGE_UP,
+            Device::KeyCode::PAGE_UP,
             UP,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::PAGE_DOWN,
+            Device::KeyCode::PAGE_DOWN,
             DOWN,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::LEFT_ARROW,
+            Device::KeyCode::LEFT_ARROW,
             LEFT,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::RIGHT_ARROW,
+            Device::KeyCode::RIGHT_ARROW,
             RIGHT,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER));
         keyTranslator_.addTranslation(DevKeyToCommand(
-            DevKey::KEY_R,
+            Device::KeyCode::KEY_R,
             RESET,
             DevKeyToCommand::EITHER,
             DevKeyToCommand::EITHER,

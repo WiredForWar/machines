@@ -104,7 +104,7 @@ bool MachLogRecentEventsManager::doHandleKeyEvent(const GuiKeyEvent& event)
 {
     PRE(pCameras_);
 
-    if (event.key() == DevKey::SPACE && event.state() == Gui::PRESSED)
+    if (event.key() == Device::KeyCode::SPACE && event.state() == Gui::PRESSED)
     {
         if (hasEvents())
         {

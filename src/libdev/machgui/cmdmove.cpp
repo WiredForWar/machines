@@ -598,7 +598,7 @@ bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
 // virtual
 bool MachGuiMoveCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_M && be.action() == DevButtonEvent::PRESS
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_M && be.action() == DevButtonEvent::PRESS
         && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
         && be.previous() == 0)
     {

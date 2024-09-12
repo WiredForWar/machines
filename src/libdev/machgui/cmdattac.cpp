@@ -348,7 +348,7 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
 // virtual
 bool MachGuiAttackCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_A && be.action() == DevButtonEvent::PRESS
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_A && be.action() == DevButtonEvent::PRESS
         && be.wasAltPressed() == false && be.wasCtrlPressed() == false && be.wasShiftPressed() == false
         && be.previous() == 0)
     {

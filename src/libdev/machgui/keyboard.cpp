@@ -51,7 +51,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     {
         processed = true;
 
-        if ((e.key() == DevKey::ESCAPE || e.key() == DevKey::SPACE) && e.state() == Gui::PRESSED)
+        if ((e.key() == Device::KeyCode::ESCAPE || e.key() == Device::KeyCode::SPACE) && e.state() == Gui::PRESSED)
         {
             gameStateTimer_ = 0;
         }
@@ -69,12 +69,12 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 processed = pImpl_->pCameras_->processButtonEvent(e.buttonEvent());
 
                 // Dismiss control panel?
-                if (e.key() == DevKey::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::LEFT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
                 {
                     pImpl_->controlPanelOn_ = false;
                     processed = true;
                 }
-                if (e.key() == DevKey::RIGHT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::RIGHT_ARROW && e.isAltPressed() && e.state() == Gui::PRESSED)
                 {
                     pImpl_->controlPanelOn_ = true;
                     processed = true;
@@ -101,7 +101,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             case 7:
                 break;
             case 8:
-                if (e.key() == DevKey::ESCAPE && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::ESCAPE && e.state() == Gui::PRESSED)
                 {
                     if (isMachineNavigationContext() || isConstructionNavigationContext())
                     {
@@ -116,14 +116,14 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 9: // F10 gets you into menus
-                if (e.key() == DevKey::F10 && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::F10 && e.state() == Gui::PRESSED)
                 {
                     pImpl_->switchToMenus_ = true;
                     processed = true;
                 }
                 break;
             case 10: // Screen shot
-                if (e.key() == DevKey::F12 && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::F12 && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
                 {
                     initiateScreenShot();
                     processed = true;
@@ -149,7 +149,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 12: // Go inhead
-                if ((e.key() == DevKey::PAD_1 || e.key() == DevKey::GRAVE) && e.state() == Gui::PRESSED
+                if ((e.key() == Device::KeyCode::PAD_1 || e.key() == Device::KeyCode::GRAVE) && e.state() == Gui::PRESSED
                     && pFirstPerson_->okayToSwitchTo1stPerson())
                 {
                     switchToInHead();
@@ -157,7 +157,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 13: // Pause game
-                if (e.key() == DevKey::BREAK && e.state() == Gui::PRESSED)
+                if (e.key() == Device::KeyCode::BREAK && e.state() == Gui::PRESSED)
                 {
                     // Can't pause game in multiplayer games
                     if (! MachLogNetwork::instance().isNetworkGame() && actualGameState() == PLAYING)
@@ -208,7 +208,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
     NEIL_STREAM("MachInGameScreen::doHandleKeyEventHacks " << std::endl);
 
     // Quick hack to switch "fog of war" on/off
-    if (e.key() == DevKey::KEY_M && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
+    if (e.key() == Device::KeyCode::KEY_M && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
     {
         static bool fogOfWarOn = true;
         fogOfWarOn = ! fogOfWarOn;
@@ -217,14 +217,14 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
     // *** Todo : This stuff needs sorting out. It's been taken from the Machines app and needs a serious tidy...
     // mouse events are handled seperately...
-    PRE(e.key() != DevKey::MOUSE_LEFT);
-    PRE(e.key() != DevKey::MOUSE_RIGHT);
+    PRE(e.key() != Device::KeyCode::MOUSE_LEFT);
+    PRE(e.key() != Device::KeyCode::MOUSE_RIGHT);
 
     PhysMotionControl::processButtonEvent(e.buttonEvent());
 
     if (e.state() == Gui::PRESSED)
     {
-        if (e.key() == DevKey::KEY_U)
+        if (e.key() == Device::KeyCode::KEY_U)
         {
             if (e.isShiftPressed())
                 pImpl_->pSceneManager_->autoAdjustFrameRate(false);
@@ -232,7 +232,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 pImpl_->pSceneManager_->autoAdjustFrameRate(true);
         }
 
-        if (e.key() == DevKey::F4 && e.isShiftPressed())
+        if (e.key() == Device::KeyCode::F4 && e.isShiftPressed())
         {
             if (e.isCtrlPressed())
                 ProProfiler::instance().disableProfiling();
@@ -240,7 +240,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 ProProfiler::instance().enableProfiling();
         }
 
-        if (e.key() == DevKey::F5 && e.isShiftPressed())
+        if (e.key() == Device::KeyCode::F5 && e.isShiftPressed())
         {
             if (e.isCtrlPressed())
             {
@@ -252,7 +252,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 MemChkMemoryWatchingOn(true);
         }
 
-        if (e.key() == DevKey::F7 && e.isShiftPressed() && e.isCtrlPressed())
+        if (e.key() == Device::KeyCode::F7 && e.isShiftPressed() && e.isCtrlPressed())
         {
             static bool showStats = false;
 
@@ -264,7 +264,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             showStats = ! showStats;
         }
 
-        if (e.key() == DevKey::F8 && e.isShiftPressed() && e.isCtrlPressed())
+        if (e.key() == Device::KeyCode::F8 && e.isShiftPressed() && e.isCtrlPressed())
         {
             for (MachInGameScreenImpl::Actors::iterator i = pImpl_->selectedActors_.begin();
                  i != pImpl_->selectedActors_.end();
@@ -280,21 +280,21 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             }
         }
 
-        if (e.key() == DevKey::F9 && e.isShiftPressed() && e.isCtrlPressed())
+        if (e.key() == Device::KeyCode::F9 && e.isShiftPressed() && e.isCtrlPressed())
         {
             pImpl_->showCurrentMachine_ = ! pImpl_->showCurrentMachine_;
         }
 
-        if (e.key() == DevKey::F11)
+        if (e.key() == Device::KeyCode::F11)
         {
             RENDER_STREAM(RenSurfaceManager::instance());
         }
 
-        if (e.key() == DevKey::KEY_N && e.isShiftPressed())
+        if (e.key() == Device::KeyCode::KEY_N && e.isShiftPressed())
         {
             pImpl_->showNetworkPing_ = e.isCtrlPressed();
         }
-        if (e.key() == DevKey::ASTERISK_PAD)
+        if (e.key() == Device::KeyCode::ASTERISK_PAD)
         {
             if (e.isShiftPressed())
             {

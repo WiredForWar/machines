@@ -197,183 +197,183 @@ MachGuiSquadronBank::MachGuiSquadronBank(
 
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_1,
+        Device::KeyCode::KEY_1,
         CREATE_SQUAD1,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_2,
+        Device::KeyCode::KEY_2,
         CREATE_SQUAD2,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_3,
+        Device::KeyCode::KEY_3,
         CREATE_SQUAD3,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_4,
+        Device::KeyCode::KEY_4,
         CREATE_SQUAD4,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_5,
+        Device::KeyCode::KEY_5,
         CREATE_SQUAD5,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_6,
+        Device::KeyCode::KEY_6,
         CREATE_SQUAD6,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_7,
+        Device::KeyCode::KEY_7,
         CREATE_SQUAD7,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_8,
+        Device::KeyCode::KEY_8,
         CREATE_SQUAD8,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_9,
+        Device::KeyCode::KEY_9,
         CREATE_SQUAD9,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_0,
+        Device::KeyCode::KEY_0,
         CREATE_SQUAD0,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
 
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_1,
+        Device::KeyCode::KEY_1,
         ADD_TO_SQUAD1,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_2,
+        Device::KeyCode::KEY_2,
         ADD_TO_SQUAD2,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_3,
+        Device::KeyCode::KEY_3,
         ADD_TO_SQUAD3,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_4,
+        Device::KeyCode::KEY_4,
         ADD_TO_SQUAD4,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_5,
+        Device::KeyCode::KEY_5,
         ADD_TO_SQUAD5,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_6,
+        Device::KeyCode::KEY_6,
         ADD_TO_SQUAD6,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_7,
+        Device::KeyCode::KEY_7,
         ADD_TO_SQUAD7,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_8,
+        Device::KeyCode::KEY_8,
         ADD_TO_SQUAD8,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_9,
+        Device::KeyCode::KEY_9,
         ADD_TO_SQUAD9,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_0,
+        Device::KeyCode::KEY_0,
         ADD_TO_SQUAD0,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED,
         DevKeyToCommand::ALTKEY_RELEASED));
 
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_1,
+        Device::KeyCode::KEY_1,
         SELECT_SQUAD1,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_2,
+        Device::KeyCode::KEY_2,
         SELECT_SQUAD2,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_3,
+        Device::KeyCode::KEY_3,
         SELECT_SQUAD3,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_4,
+        Device::KeyCode::KEY_4,
         SELECT_SQUAD4,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_5,
+        Device::KeyCode::KEY_5,
         SELECT_SQUAD5,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_6,
+        Device::KeyCode::KEY_6,
         SELECT_SQUAD6,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_7,
+        Device::KeyCode::KEY_7,
         SELECT_SQUAD7,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_8,
+        Device::KeyCode::KEY_8,
         SELECT_SQUAD8,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_9,
+        Device::KeyCode::KEY_9,
         SELECT_SQUAD9,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_0,
+        Device::KeyCode::KEY_0,
         SELECT_SQUAD0,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,

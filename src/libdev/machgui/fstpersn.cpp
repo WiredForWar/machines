@@ -243,155 +243,155 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
     // Setup keyboard translator
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     // Keyboard shoot handler
-    pKeyTranslator_->addTranslation(DevKeyToCommand(DevKey::SPACE, FIRE));
+    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::SPACE, FIRE));
     // Keboard centre head handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(DevKey::PAD_5, CENTREHEAD));
+    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::PAD_5, CENTREHEAD));
     // Keboard weapon select handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(DevKey::TAB, WEAPONSELECT));
+    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::TAB, WEAPONSELECT));
     // Keboard move foward/backward handlers
     pKeyTranslator_->addTranslation(
-        DevKeyToCommand(DevKey::UP_ARROW, FOWARD, DevKeyToCommand::CTRLKEY_EITHER, DevKeyToCommand::SHIFTKEY_RELEASED));
+        DevKeyToCommand(Device::KeyCode::UP_ARROW, FOWARD, DevKeyToCommand::CTRLKEY_EITHER, DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         BACKWARD,
         DevKeyToCommand::CTRLKEY_EITHER,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW_PAD,
+        Device::KeyCode::UP_ARROW_PAD,
         FOWARD,
         DevKeyToCommand::CTRLKEY_EITHER,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     // Removed by NA 3/2/99 so that switch to zenith works. obviously you can no longer reverse the machine using the
     // pad down arrow key.
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::DOWN_ARROW_PAD, BACKWARD,
+    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::DOWN_ARROW_PAD, BACKWARD,
     // DevKeyToCommand::CTRLKEY_EITHER, DevKeyToCommand::SHIFTKEY_RELEASED ) );
 
     // Keyboard head up/down handlers
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW,
+        Device::KeyCode::UP_ARROW,
         LOOKDOWNFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         LOOKUPFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW,
+        Device::KeyCode::UP_ARROW,
         LOOKDOWN,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         LOOKUP,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     // Keyboard turn left/right handlers
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         TURNLEFT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         TURNRIGHT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         TURNLEFTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         TURNRIGHTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW_PAD,
+        Device::KeyCode::LEFT_ARROW_PAD,
         TURNLEFT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW_PAD,
+        Device::KeyCode::RIGHT_ARROW_PAD,
         TURNRIGHT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW_PAD,
+        Device::KeyCode::LEFT_ARROW_PAD,
         TURNLEFTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW_PAD,
+        Device::KeyCode::RIGHT_ARROW_PAD,
         TURNRIGHTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     // Keyboard turn head left/right handlers
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         TURNHEADLEFT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         TURNHEADRIGHT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         TURNHEADLEFTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         TURNHEADRIGHTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW_PAD,
+        Device::KeyCode::LEFT_ARROW_PAD,
         TURNHEADLEFT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW_PAD,
+        Device::KeyCode::RIGHT_ARROW_PAD,
         TURNHEADRIGHT,
         DevKeyToCommand::CTRLKEY_PRESSED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW_PAD,
+        Device::KeyCode::LEFT_ARROW_PAD,
         TURNHEADLEFTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW_PAD,
+        Device::KeyCode::RIGHT_ARROW_PAD,
         TURNHEADRIGHTFAST,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_PRESSED));
     // Keyboard commands for first person command
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::HOME,
+        Device::KeyCode::HOME,
         COMMAND_SELECT_NEXT,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::END,
+        Device::KeyCode::END,
         COMMAND_SELECT_PREV,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_DELETE,
+        Device::KeyCode::KEY_DELETE,
         COMMAND_ORDER_ATTACK,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_DOWN,
+        Device::KeyCode::PAGE_DOWN,
         COMMAND_ORDER_MOVE,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::INSERT,
+        Device::KeyCode::INSERT,
         COMMAND_ORDER_FOLLOW,
         DevKeyToCommand::CTRLKEY_RELEASED,
         DevKeyToCommand::SHIFTKEY_RELEASED));
@@ -1471,7 +1471,7 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
     {
         processed = true;
 
-        if ((event.key() == DevKey::ESCAPE || event.key() == DevKey::SPACE) && event.state() == Gui::PRESSED)
+        if ((event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::SPACE) && event.state() == Gui::PRESSED)
         {
             switchToInGame();
         }
@@ -1497,19 +1497,19 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                 processed = pKeyTranslator_->translate(event.buttonEvent(), &commandList_);
                 break;
             case 2: // Exit first person
-                if (((event.key() == DevKey::ESCAPE) || (event.key() == DevKey::GRAVE))
+                if (((event.key() == Device::KeyCode::ESCAPE) || (event.key() == Device::KeyCode::GRAVE))
                     && event.state() == Gui::PRESSED)
                 {
                     switchToInGame();
                     processed = true;
                 }
-                else if (event.key() == DevKey::PAD_0 && event.state() == Gui::PRESSED)
+                else if (event.key() == Device::KeyCode::PAD_0 && event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = true;
                     switchToInGame();
                     processed = true;
                 }
-                else if (event.key() == DevKey::PAD_2 && event.state() == Gui::PRESSED)
+                else if (event.key() == Device::KeyCode::PAD_2 && event.state() == Gui::PRESSED)
                 {
                     switchBackToGroundCamera_ = false;
                     switchToInGame();
@@ -1517,20 +1517,20 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                 }
                 break;
             case 3: // Switch to ingame menus
-                if (event.key() == DevKey::F10 && event.state() == Gui::PRESSED)
+                if (event.key() == Device::KeyCode::F10 && event.state() == Gui::PRESSED)
                 {
                     switchToMenus_ = true;
                     processed = true;
                 }
             case 4: // Screen shot
-                if (event.key() == DevKey::F12 && event.isShiftPressed() && event.isCtrlPressed()
+                if (event.key() == Device::KeyCode::F12 && event.isShiftPressed() && event.isCtrlPressed()
                     && event.state() == Gui::PRESSED)
                 {
                     pInGameScreen_->initiateScreenShot();
                     processed = true;
                 }
             case 5:
-                if (event.key() == DevKey::KEY_N && event.state() == Gui::PRESSED && pActor_)
+                if (event.key() == Device::KeyCode::KEY_N && event.state() == Gui::PRESSED && pActor_)
                 {
                     if (pActor_->objectIsMachine() && ! pActor_->asMachine().hasNVG())
                     {
@@ -1555,7 +1555,7 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                     processed = true;
                 }
             case 6: // Pause game
-                if (event.key() == DevKey::BREAK && event.state() == Gui::PRESSED)
+                if (event.key() == Device::KeyCode::BREAK && event.state() == Gui::PRESSED)
                 {
                     // Can't pause game in multiplayer games
                     if (! MachLogNetwork::instance().isNetworkGame())

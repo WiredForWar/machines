@@ -35,7 +35,7 @@ void DevSdlKeyboard::wm_key(const DevButtonEvent& ev)
     // For state changes, we are only interested in key-press transitions and
     // can ignore all auto-repeat events, i.e. when we receive a keydown
     // message and previous state was also down.
-    // DevKey::printScanCode(std::cout, ev.scanCode()); std::cout << ": "< ev.action() <<" "<<ev.scanCode()<< std::endl;
+    // Device::KeyCode::printScanCode(std::cout, ev.scanCode()); std::cout << ": "< ev.action() <<" "<<ev.scanCode()<< std::endl;
     switch (ev.action())
     {
         case DevButtonEvent::PRESS:
@@ -68,9 +68,9 @@ void DevSdlKeyboard::wm_char(const DevButtonEvent& ev)
     DevEventQueue::instance().queueEvent(ev);
 }
 
-DevKey::Code DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
+Device::KeyCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
 {
-    static const std::unordered_map<SDL_Scancode, DevKey::Code> map = {
+    static const std::unordered_map<SDL_Scancode, Device::KeyCode> map = {
         /* clang-format off */
         // Trick clang-format to keep one pair per line
         {SDL_SCANCODE_UNKNOWN, ScanCode::UNKNOWN},
@@ -181,7 +181,7 @@ DevKey::Code DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
     if (it != map.cend())
         return it->second;
 
-    return DevKey::Code::UNKNOWN;
+    return Device::KeyCode::UNKNOWN;
 }
 
 ///////////////////////////////////

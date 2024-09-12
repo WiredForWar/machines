@@ -502,15 +502,15 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 
     if (event.state() == Gui::PRESSED)
     {
-        if ((event.key() == DevKey::F1 || event.key() == DevKey::F2 || event.key() == DevKey::F3)
+        if ((event.key() == Device::KeyCode::F1 || event.key() == Device::KeyCode::F2 || event.key() == Device::KeyCode::F3)
             && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
             // Work out who we are going to send the message to
             int newOpponentIndex = 0;
 
-            if (event.key() == DevKey::F2)
+            if (event.key() == Device::KeyCode::F2)
                 newOpponentIndex = 1;
-            else if (event.key() == DevKey::F3)
+            else if (event.key() == Device::KeyCode::F3)
                 newOpponentIndex = 2;
 
             if (event.isCtrlPressed())
@@ -586,7 +586,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             }
         }
         else if (
-            event.key() == DevKey::F4 && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
+            event.key() == Device::KeyCode::F4 && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
             int newOpponentIndex = 3;
 
@@ -619,7 +619,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             }
         }
         else if (
-            event.key() == DevKey::F11 && event.isShiftPressed() && event.isCtrlPressed() && event.isAltPressed())
+            event.key() == Device::KeyCode::F11 && event.isShiftPressed() && event.isCtrlPressed() && event.isAltPressed())
         {
             opponentIndex_ = SYSTEM_MESSAGE;
             enteringChatMessage_ = true;
@@ -630,12 +630,12 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             chatMessageIntendedForStr_ = sendToSystemStr.asString();
             beginningTextWidth_ = shadowFont_.textWidth(chatMessageIntendedForStr_);
         }
-        else if (event.key() == DevKey::ESCAPE || event.key() == DevKey::ENTER || event.key() == DevKey::F10)
+        else if (event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::ENTER || event.key() == Device::KeyCode::F10)
         {
             if (enteringChatMessage_)
             {
                 // Send a chat message
-                if (event.key() == DevKey::ENTER)
+                if (event.key() == Device::KeyCode::ENTER)
                 {
                     if (opponentIndex_ != SYSTEM_MESSAGE)
                     {

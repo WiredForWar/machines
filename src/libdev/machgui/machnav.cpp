@@ -929,19 +929,19 @@ MachGuiConstructionNavigator::MachGuiConstructionNavigator(
     pConstructionTree_(nullptr)
 {
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_S,
+        Device::KeyCode::KEY_S,
         SELECT_ALL,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_S,
+        Device::KeyCode::KEY_S,
         SELECT_ALL_KEEP_SELECTION,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_S,
+        Device::KeyCode::KEY_S,
         VIEW_NEXT,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
@@ -1335,19 +1335,19 @@ MachGuiMachineNavigator::MachGuiMachineNavigator(
     pResearchTree_(nullptr)
 {
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_A,
+        Device::KeyCode::KEY_A,
         SELECT_ALL,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_A,
+        Device::KeyCode::KEY_A,
         SELECT_ALL_KEEP_SELECTION,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_A,
+        Device::KeyCode::KEY_A,
         VIEW_NEXT,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,

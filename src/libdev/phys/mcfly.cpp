@@ -65,97 +65,97 @@ void PhysFlyControl::useDefaultKeyboardMapping()
 {
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::ENTER_PAD,
+        Device::KeyCode::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_DELETE,
+        Device::KeyCode::KEY_DELETE,
         PhysMotionControlWithTrans::BACKWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::END,
+        Device::KeyCode::END,
         PhysMotionControlWithTrans::SLIDE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PLUS_PAD,
+        Device::KeyCode::PLUS_PAD,
         PhysMotionControlWithTrans::UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::MINUS_PAD,
+        Device::KeyCode::MINUS_PAD,
         PhysMotionControlWithTrans::DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::HOME,
+        Device::KeyCode::HOME,
         PhysMotionControlWithTrans::ROLL_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::INSERT,
+        Device::KeyCode::INSERT,
         STOP_MOVING,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAD_5,
+        Device::KeyCode::PAD_5,
         STOP_ROTATING,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_R,
+        Device::KeyCode::KEY_R,
         PhysMotionControlWithTrans::RESET_POS,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_R,
+        Device::KeyCode::KEY_R,
         PhysMotionControlWithTrans::RESET_ORIENTATION,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         PhysMotionControlWithTrans::ROTATE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         PhysMotionControlWithTrans::ROTATE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         PhysMotionControlWithTrans::PITCH_UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW,
+        Device::KeyCode::UP_ARROW,
         PhysMotionControlWithTrans::PITCH_DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_UP,
+        Device::KeyCode::PAGE_UP,
         PhysMotionControlWithTrans::ROLL_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_DOWN,
+        Device::KeyCode::PAGE_DOWN,
         PhysMotionControlWithTrans::SLIDE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
@@ -166,133 +166,133 @@ void PhysFlyControl::useKeypadMapping()
 {
     DevKeyToCommandTranslator* pKeyTranslator = new DevKeyToCommandTranslator();
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::ENTER_PAD,
+        Device::KeyCode::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::DELETE_PAD,
+        Device::KeyCode::DELETE_PAD,
         PhysMotionControlWithTrans::BACKWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_1,
+        Device::KeyCode::PAD_1,
         PhysMotionControlWithTrans::SLIDE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_3,
+        Device::KeyCode::PAD_3,
         PhysMotionControlWithTrans::SLIDE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_4,
+        Device::KeyCode::PAD_4,
         PhysMotionControlWithTrans::ROTATE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_6,
+        Device::KeyCode::PAD_6,
         PhysMotionControlWithTrans::ROTATE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PLUS_PAD,
+        Device::KeyCode::PLUS_PAD,
         PhysMotionControlWithTrans::UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::MINUS_PAD,
+        Device::KeyCode::MINUS_PAD,
         PhysMotionControlWithTrans::DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_2,
+        Device::KeyCode::PAD_2,
         PhysMotionControlWithTrans::PITCH_UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_8,
+        Device::KeyCode::PAD_8,
         PhysMotionControlWithTrans::PITCH_DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_7,
+        Device::KeyCode::PAD_7,
         PhysMotionControlWithTrans::ROLL_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_9,
+        Device::KeyCode::PAD_9,
         PhysMotionControlWithTrans::ROLL_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_0,
+        Device::KeyCode::PAD_0,
         PhysFlyControl::STOP_MOVING,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAD_5,
+        Device::KeyCode::PAD_5,
         PhysFlyControl::STOP_ROTATING,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::KEY_R,
+        Device::KeyCode::KEY_R,
         PhysMotionControlWithTrans::RESET_POS,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::KEY_R,
+        Device::KeyCode::KEY_R,
         PhysMotionControlWithTrans::RESET_ORIENTATION,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         PhysMotionControlWithTrans::ROTATE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         PhysMotionControlWithTrans::ROTATE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         PhysMotionControlWithTrans::PITCH_UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW,
+        Device::KeyCode::UP_ARROW,
         PhysMotionControlWithTrans::PITCH_DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_UP,
+        Device::KeyCode::PAGE_UP,
         PhysMotionControlWithTrans::ROLL_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_DOWN,
+        Device::KeyCode::PAGE_DOWN,
         PhysMotionControlWithTrans::SLIDE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,

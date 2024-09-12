@@ -155,7 +155,7 @@ bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdminist
 // virtual
 bool MachGuiAssemblyPointCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_B && be.action() == DevButtonEvent::PRESS)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_B && be.action() == DevButtonEvent::PRESS)
     {
         inGameScreen().activeCommand(*this);
         return true;

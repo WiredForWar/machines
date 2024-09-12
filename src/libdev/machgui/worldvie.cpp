@@ -54,25 +54,25 @@ MachWorldViewWindow::MachWorldViewWindow(
 {
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_Z,
+        Device::KeyCode::KEY_Z,
         SELECT_ONSCREEN_MACHINES,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_X,
+        Device::KeyCode::KEY_X,
         SELECT_ONSCREEN_CONSTRUCTIONS,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_Z,
+        Device::KeyCode::KEY_Z,
         SELECT_ONSCREEN_MACHINES_KEEP_SEL,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_X,
+        Device::KeyCode::KEY_X,
         SELECT_ONSCREEN_CONSTRUCTIONS_KEEP_SEL,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::PRESSED,

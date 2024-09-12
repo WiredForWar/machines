@@ -29,7 +29,7 @@ class DevKeyboard
 public:
     static DevKeyboard& instance();
 
-    using ScanCode = DevKey::Code;
+    using ScanCode = Device::KeyCode;
 
     // Is the key corresponding to a given character or key code pressed?
     bool key(unsigned char) const;
@@ -83,11 +83,13 @@ protected:
 
 private:
     ScanCode getCharacterIndex(unsigned char) const;
+    bool& keyMap(ScanCode code) { return keyMap_[static_cast<int>(code)]; }
+    bool keyMap(ScanCode code) const { return keyMap_[static_cast<int>(code)]; }
+    bool& lastKeyMap(ScanCode code) { return lastKeyMap_[static_cast<int>(code)]; }
+    bool lastKeyMap(ScanCode code) const { return lastKeyMap_[static_cast<int>(code)]; }
 
-    enum
-    {
-        N_KEYS = 256
-    };
+    static constexpr std::size_t N_KEYS = 256;
+    static_assert(N_KEYS >= Device::MAX_CODE);
     bool keyMap_[N_KEYS];
     bool lastKeyMap_[N_KEYS];
 

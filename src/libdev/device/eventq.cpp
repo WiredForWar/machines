@@ -20,12 +20,7 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevEventQueueT()
 {
     ASSERT(list_, "Failed to allocate device event queue.");
 
-    // By default we don't queue anything until asked.  Reset the filters.
-    for (int i = 0; i != DevKey::MAX_CODE; ++i)
-    {
-        pressFilter_[i] = releaseFilter_[i] = false;
-    }
-
+    // By default we don't queue anything until asked.
     // The middle mouse wheel is the only button that would receive these.
     // Explicity ask for these using queueEvents w/ middle mouse wheel scan code.
 
@@ -72,7 +67,7 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::oldestEvent()
     }
 
     POST(result.repeatCount() == 1);
-    POST(result.scanCode() < DevKey::MAX_CODE);
+    POST(Device::isValidCode(result.scanCode()));
     return result;
 }
 
@@ -80,7 +75,7 @@ template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTime
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvent(
     const typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType& event)
 {
-    PRE(event.scanCode() < DevKey::MAX_CODE);
+    PRE(Device::isValidCode(event.scanCode()));
 
     if (filterEvent(event))
     {
@@ -107,22 +102,22 @@ bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent
     const typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType& event) const
 {
     using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-    PRE(event.scanCode() < DevKey::MAX_CODE);
+    PRE(Device::isValidCode(event.scanCode()));
 
     switch (event.action())
     {
         case ButtonEvent::RELEASE:
-            return releaseFilter_[event.scanCode()];
+            return getReleaseFilterFor(event.scanCode());
         case ButtonEvent::PRESS:
-            return pressFilter_[event.scanCode()];
+            return getPressFilterFor(event.scanCode());
         case ButtonEvent::SCROLL_UP:
-            return (event.scanCode() == DevKey::MOUSE_MIDDLE && scrollUpFilter_);
+            return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollUpFilter_);
         case ButtonEvent::SCROLL_DOWN:
-            return (event.scanCode() == DevKey::MOUSE_MIDDLE && scrollDownFilter_);
+            return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollDownFilter_);
         case ButtonEvent::SCROLL_LEFT:
-            return (event.scanCode() == DevKey::MOUSE_MIDDLE && scrollLeftFilter_);
+            return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollLeftFilter_);
         case ButtonEvent::SCROLL_RIGHT:
-            return (event.scanCode() == DevKey::MOUSE_MIDDLE && scrollRightFilter_);
+            return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollRightFilter_);
         default:
             ASSERT_BAD_CASE;
             break;
@@ -134,46 +129,48 @@ bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents(ScanCode code)
 {
-    PRE(code < DevKey::MAX_CODE);
-    releaseFilter_[code] = pressFilter_[code] = true;
+    PRE(Device::isValidCode(code));
+    setReleaseFilterFor(code, true);
+    setPressFilterFor(code, true);
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEvents(ScanCode code)
 {
-    PRE(code < DevKey::MAX_CODE);
-    releaseFilter_[code] = pressFilter_[code] = false;
+    PRE(Device::isValidCode(code));
+    setReleaseFilterFor(code, false);
+    setPressFilterFor(code, false);
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents(ScanCode code, Action action)
 {
     using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-    PRE(code < DevKey::MAX_CODE);
+    PRE(Device::isValidCode(code));
 
     switch (action)
     {
         case ButtonEvent::RELEASE:
-            releaseFilter_[code] = true;
+            setReleaseFilterFor(code, true);
             break;
         case ButtonEvent::PRESS:
-            pressFilter_[code] = true;
+            setPressFilterFor(code, true);
             break;
         case ButtonEvent::SCROLL_UP:
             // only set for middle mouse
-            scrollUpFilter_ = code == DevKey::MOUSE_MIDDLE;
+            scrollUpFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
         case ButtonEvent::SCROLL_DOWN:
             // only set for middle mouse
-            scrollDownFilter_ = code == DevKey::MOUSE_MIDDLE;
+            scrollDownFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
         case ButtonEvent::SCROLL_LEFT:
             // only set for middle mouse
-            scrollLeftFilter_ = code == DevKey::MOUSE_MIDDLE;
+            scrollLeftFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
         case ButtonEvent::SCROLL_RIGHT:
             // only set for middle mouse
-            scrollRightFilter_ = code == DevKey::MOUSE_MIDDLE;
+            scrollRightFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
         default:
             ASSERT_BAD_CASE;
@@ -185,31 +182,31 @@ template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTime
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEvents(ScanCode code, Action action)
 {
     using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-    PRE(code < DevKey::MAX_CODE);
+    PRE(Device::isValidCode(code));
 
     switch (action)
     {
         case ButtonEvent::RELEASE:
-            releaseFilter_[code] = false;
+            setReleaseFilterFor(code, false);
             break;
         case ButtonEvent::PRESS:
-            pressFilter_[code] = false;
+            setPressFilterFor(code, false);
             break;
         case ButtonEvent::SCROLL_UP:
             // only set for middle mouse
-            scrollUpFilter_ = (code == DevKey::MOUSE_MIDDLE) ? false : scrollUpFilter_;
+            scrollUpFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollUpFilter_;
             break;
         case ButtonEvent::SCROLL_DOWN:
             // only set for middle mouse
-            scrollDownFilter_ = (code == DevKey::MOUSE_MIDDLE) ? false : scrollDownFilter_;
+            scrollDownFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollDownFilter_;
             break;
         case ButtonEvent::SCROLL_LEFT:
             // only set for middle mouse
-            scrollLeftFilter_ = (code == DevKey::MOUSE_MIDDLE) ? false : scrollLeftFilter_;
+            scrollLeftFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollLeftFilter_;
             break;
         case ButtonEvent::SCROLL_RIGHT:
             // only set for middle mouse
-            scrollRightFilter_ = (code == DevKey::MOUSE_MIDDLE) ? false : scrollRightFilter_;
+            scrollRightFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollRightFilter_;
             break;
         default:
             ASSERT_BAD_CASE;
@@ -259,7 +256,7 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::CLASS_INVAR
     while (it != list_->end())
     {
         const ButtonEvent& ev = *it;
-        INVARIANT(ev.scanCode() < DevKey::MAX_CODE);
+        INVARIANT(Device::isValidCode(ev.scanCode()));
         ++it;
     }
 }

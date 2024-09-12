@@ -241,12 +241,12 @@ void DevKeyToCommandTranslator::initEventQueue()
         DevKeyToCommand* pEvent = commandTranslations_[i];
         DevEventQueue::instance().queueEvents(pEvent->scanCode());
     }
-    DevEventQueue::instance().queueEvents(DevKey::LEFT_SHIFT);
-    DevEventQueue::instance().queueEvents(DevKey::RIGHT_SHIFT);
-    DevEventQueue::instance().queueEvents(DevKey::LEFT_CONTROL);
-    DevEventQueue::instance().queueEvents(DevKey::RIGHT_CONTROL);
-    DevEventQueue::instance().queueEvents(DevKey::LEFT_ALT);
-    DevEventQueue::instance().queueEvents(DevKey::RIGHT_ALT);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::LEFT_SHIFT);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::RIGHT_SHIFT);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::LEFT_CONTROL);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::RIGHT_CONTROL);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::LEFT_ALT);
+    DevEventQueue::instance().queueEvents(Device::KeyCode::RIGHT_ALT);
 }
 
 void DevKeyToCommandTranslator::resetCommands(CommandList* pCommandList, bool forceReset /* = false*/)

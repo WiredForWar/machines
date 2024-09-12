@@ -222,7 +222,7 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
 // virtual
 bool MachGuiCaptureCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_U && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_U && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

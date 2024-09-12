@@ -668,13 +668,13 @@ bool MachGuiConstructCommand::processButtonEvent(const DevButtonEvent& be)
 {
     bool returnVal = false;
 
-    if (isVisible() && be.scanCode() == DevKey::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_C && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         returnVal = true;
     }
     else if (
-        isVisible() && be.scanCode() == DevKey::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+        isVisible() && be.scanCode() == Device::KeyCode::SPACE && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         orientation()++;
         NEIL_STREAM("MachGuiConstructCommand::processButtonEvent orientation " << orientation() << std::endl);

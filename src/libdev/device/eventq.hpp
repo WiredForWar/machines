@@ -42,7 +42,7 @@ public:
     // won't be added to the queue.  You can request both press and release
     // events, using the first form; or you can request just one or the other.
     // By default no events are stored in the queue.
-    // PRE(code < DevKey::MAX_CODE);  applies to all ScanCode args
+    // PRE(code < Device::KeyCode::MAX_CODE);  applies to all ScanCode args
     void queueEvents(ScanCode);
     void dontQueueEvents(ScanCode);
 
@@ -69,15 +69,18 @@ protected:
     DependencyProvider<RecRecorderDep> recorderDependency_;
     DependencyProvider<RecRecorderPrivDep> recorderPrivDependency_;
 
-    constexpr inline uchar getReleaseFilterFor(ScanCode code) const { return releaseFilter_[code]; }
-    constexpr inline uchar getPressFilterFor(ScanCode code) const { return pressFilter_[code]; }
-    constexpr inline bool getScrollUpFilter() const { return scrollUpFilter_; }
-    constexpr inline bool getScrollDownFilter() const { return scrollDownFilter_; }
+    constexpr uchar getReleaseFilterFor(ScanCode code) const { return releaseFilter_[static_cast<int>(code)]; }
+    constexpr uchar getPressFilterFor(ScanCode code) const { return pressFilter_[static_cast<int>(code)]; }
+    constexpr bool getScrollUpFilter() const { return scrollUpFilter_; }
+    constexpr bool getScrollDownFilter() const { return scrollDownFilter_; }
 
-    // PRE(event.scanCode() < DevKey::MAX_CODE);
+    // PRE(event.scanCode() < Device::KeyCode::MAX_CODE);
     void queueEvent(const DevButtonEventType&);
 
 private:
+    void setReleaseFilterFor(ScanCode code, bool value) { releaseFilter_[static_cast<int>(code)] = value; }
+    void setPressFilterFor(ScanCode code, bool value) { pressFilter_[static_cast<int>(code)] = value; }
+
     // Only these classes can add events to the back of the queue.
     friend class DevWin95Keyboard;
     friend class DevSdlKeyboard;
@@ -90,8 +93,8 @@ private:
     ctl_list<DevButtonEventType>* list_;
 
     // These tables determine which events are queued.
-    uchar releaseFilter_[DevKey::MAX_CODE];
-    uchar pressFilter_[DevKey::MAX_CODE];
+    uchar releaseFilter_[Device::MAX_CODE]{};
+    uchar pressFilter_[Device::MAX_CODE]{};
 
     bool scrollUpFilter_ = false;
     bool scrollDownFilter_ = false;
@@ -124,7 +127,7 @@ public:
 
         o << "Filter tables:    (press)     (release)\n";
 
-        for (int i = 0; i != DevKey::MAX_CODE; ++i)
+        for (int i = 0; i != Device::MAX_CODE; ++i)
         {
             o << i << "\t\t\t\t   " << static_cast<int>(t.pressFilter_[i]) << "\t\t   "
               << static_cast<int>(t.releaseFilter_[i]) << "\n";

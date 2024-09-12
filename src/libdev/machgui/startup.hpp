@@ -374,7 +374,7 @@ private:
     struct ContextKeypressInfo
     {
         Context curContext_;
-        DevKey::Code scanCode_;
+        Device::KeyCode scanCode_;
         Context newContext_;
         bool playTransition_;
         MachGui::ButtonEvent simButtonEvent_;

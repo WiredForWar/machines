@@ -84,18 +84,18 @@ TEST(DevEventQueueTests, QueueEvents_ScanCode)
 {
     EventQueue eventQueue;
 
-    eventQueue.queueEvents(DevKey::HOME_PAD);
-    ASSERT_EQ(true, eventQueue.getPressFilterFor(DevKey::HOME_PAD));
-    ASSERT_EQ(true, eventQueue.getReleaseFilterFor(DevKey::HOME_PAD));
+    eventQueue.queueEvents(Device::KeyCode::HOME_PAD);
+    ASSERT_EQ(true, eventQueue.getPressFilterFor(Device::KeyCode::HOME_PAD));
+    ASSERT_EQ(true, eventQueue.getReleaseFilterFor(Device::KeyCode::HOME_PAD));
 }
 
 TEST(DevEventQueueTests, DontQueueEvents_ScanCode)
 {
     EventQueue eventQueue;
 
-    eventQueue.dontQueueEvents(DevKey::HOME_PAD);
-    ASSERT_EQ(false, eventQueue.getPressFilterFor(DevKey::HOME_PAD));
-    ASSERT_EQ(false, eventQueue.getReleaseFilterFor(DevKey::HOME_PAD));
+    eventQueue.dontQueueEvents(Device::KeyCode::HOME_PAD);
+    ASSERT_EQ(false, eventQueue.getPressFilterFor(Device::KeyCode::HOME_PAD));
+    ASSERT_EQ(false, eventQueue.getReleaseFilterFor(Device::KeyCode::HOME_PAD));
 }
 
 TEST(DevEventQueueTests, QueueEvents_ScanCodeAndAction)
@@ -109,8 +109,7 @@ TEST(DevEventQueueTests, QueueEvents_ScanCodeAndAction)
     auto action = EventQueue::Action::PRESS;
     bool wantPress = true;
     bool wantRelease = false;
-    // ESCAPE = 1
-    for (int c = DevKey::ESCAPE; c < DevKey::MAX_CODE; ++c)
+    for (int c = 1; c < Device::MAX_CODE; ++c)
     {
         eventQueue.queueEvents(static_cast<EventQueue::ScanCode>(c), action);
 
@@ -132,8 +131,7 @@ TEST(DevEventQueueTests, DontQueueEvents_ScanCodeAndAction)
 
 
     auto action = EventQueue::Action::PRESS;
-    // ESCAPE = 1
-    for (int c = DevKey::ESCAPE; c < DevKey::MAX_CODE; ++c)
+    for (int c = 1; c < Device::MAX_CODE; ++c)
     {
         eventQueue.dontQueueEvents(static_cast<EventQueue::ScanCode>(c), action);
 
@@ -157,11 +155,11 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_SingleEvent)
 
     // You can always count on your HomePad ;p
     auto homePadEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
+            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
 
     // Tell the DEQ to filter this key
-    eventQueue.queueEvents(DevKey::HOME_PAD);
-    ASSERT_EQ(true, eventQueue.getPressFilterFor(DevKey::HOME_PAD));
+    eventQueue.queueEvents(Device::KeyCode::HOME_PAD);
+    ASSERT_EQ(true, eventQueue.getPressFilterFor(Device::KeyCode::HOME_PAD));
 
     // filterEvent() is covered by this call
     eventQueue.queueEvent(homePadEvent);
@@ -184,15 +182,15 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_RepeatEvents)
 
     // You can always count on your HomePad ;p
     auto homePadEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
+            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
     auto homePadEvent2 =
             homePadEvent;
     auto homePadEvent3 =
             homePadEvent;
 
     // Tell the DEQ to filter this key
-    eventQueue.queueEvents(DevKey::HOME_PAD);
-    ASSERT_EQ(true, eventQueue.getPressFilterFor(DevKey::HOME_PAD));
+    eventQueue.queueEvents(Device::KeyCode::HOME_PAD);
+    ASSERT_EQ(true, eventQueue.getPressFilterFor(Device::KeyCode::HOME_PAD));
 
     // Repeated mashings!
     eventQueue.queueEvent(homePadEvent);
@@ -219,13 +217,13 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_MouseScrollEvent)
     eventQueue.setMocks(&recorder, &privRecorder);
 
     auto scrollUpEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP, false, false, false, false, 1.0, 0, 0, 1, '\xBE' };
+            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP, false, false, false, false, 1.0, 0, 0, 1, '\xBE' };
     auto scrollDownEvent =
-            EventQueue_RealTime::DevButtonEventType{ DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN, false, false, false, false, 1.0, 0, 0, 1, '\xBF' };
+            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN, false, false, false, false, 1.0, 0, 0, 1, '\xBF' };
 
-    eventQueue.queueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
     ASSERT_EQ(true, eventQueue.getScrollUpFilter());
-    eventQueue.queueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
     ASSERT_EQ(true, eventQueue.getScrollDownFilter());
 
     eventQueue.queueEvent(scrollUpEvent);
@@ -237,8 +235,8 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_MouseScrollEvent)
     ASSERT_EQ('\xBE', upEvent.getChar());
     ASSERT_EQ('\xBF', downEvent.getChar());
 
-    eventQueue.dontQueueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
     ASSERT_EQ(false, eventQueue.getScrollUpFilter());
-    eventQueue.dontQueueEvents(DevKey::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
     ASSERT_EQ(false, eventQueue.getScrollDownFilter());
 }

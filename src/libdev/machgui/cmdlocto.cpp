@@ -220,7 +220,7 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
 // virtual
 bool MachGuiLocateToCommand::processButtonEvent(const DevButtonEvent& be)
 {
-    if (isVisible() && be.scanCode() == DevKey::KEY_L && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    if (isVisible() && be.scanCode() == Device::KeyCode::KEY_L && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
         return true;

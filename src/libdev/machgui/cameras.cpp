@@ -68,73 +68,73 @@ MachCameras::MachCameras(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
 {
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAD_2,
+        Device::KeyCode::PAD_2,
         ZENITHVIEW,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAD_0,
+        Device::KeyCode::PAD_0,
         GROUNDVIEW,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::EITHER));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F5,
+        Device::KeyCode::F5,
         SAVEVIEW1,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F6,
+        Device::KeyCode::F6,
         SAVEVIEW2,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F7,
+        Device::KeyCode::F7,
         SAVEVIEW3,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F8,
+        Device::KeyCode::F8,
         SAVEVIEW4,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F5,
+        Device::KeyCode::F5,
         RESTOREVIEW1,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F6,
+        Device::KeyCode::F6,
         RESTOREVIEW2,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F7,
+        Device::KeyCode::F7,
         RESTOREVIEW3,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::F8,
+        Device::KeyCode::F8,
         RESTOREVIEW4,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_H,
+        Device::KeyCode::KEY_H,
         RESTOREDEFAULTCAMERAPOS,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::KEY_H,
+        Device::KeyCode::KEY_H,
         RESTORELASTCAMERAPOS,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::PRESSED,

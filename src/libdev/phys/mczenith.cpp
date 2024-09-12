@@ -124,66 +124,66 @@ void PhysZenithFlyControl::update()
 void PhysZenithFlyControl::setupDefaultKeyboardMapping()
 {
     pKeyTranslator_ = new DevKeyToCommandTranslator();
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_R, PhysMotionControlWithTrans::RESET_POS,
+    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::KEY_R, PhysMotionControlWithTrans::RESET_POS,
     // DevKeyToCommand::EITHER, DevKeyToCommand::PRESSED,  DevKeyToCommand::RELEASED  ) );
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( DevKey::KEY_R, PhysMotionControlWithTrans::RESET_ORIENTATION,
+    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::KEY_R, PhysMotionControlWithTrans::RESET_ORIENTATION,
     // DevKeyToCommand::EITHER, DevKeyToCommand::RELEASED, DevKeyToCommand::RELEASED  ) );
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::UP_ARROW,
+        Device::KeyCode::UP_ARROW,
         PhysMotionControlWithTrans::FOWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::DOWN_ARROW,
+        Device::KeyCode::DOWN_ARROW,
         PhysMotionControlWithTrans::BACKWARD,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         PhysMotionControlWithTrans::SLIDE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         PhysMotionControlWithTrans::SLIDE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::LEFT_ARROW,
+        Device::KeyCode::LEFT_ARROW,
         PhysMotionControlWithTrans::ROTATE_LEFT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::RIGHT_ARROW,
+        Device::KeyCode::RIGHT_ARROW,
         PhysMotionControlWithTrans::ROTATE_RIGHT,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::PRESSED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_UP,
+        Device::KeyCode::PAGE_UP,
         PhysMotionControlWithTrans::UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PAGE_DOWN,
+        Device::KeyCode::PAGE_DOWN,
         PhysMotionControlWithTrans::DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::PLUS_PAD,
+        Device::KeyCode::PLUS_PAD,
         PhysMotionControlWithTrans::UP,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,
         DevKeyToCommand::RELEASED));
     pKeyTranslator_->addTranslation(DevKeyToCommand(
-        DevKey::MINUS_PAD,
+        Device::KeyCode::MINUS_PAD,
         PhysMotionControlWithTrans::DOWN,
         DevKeyToCommand::EITHER,
         DevKeyToCommand::RELEASED,

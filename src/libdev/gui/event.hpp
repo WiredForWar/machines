@@ -119,7 +119,7 @@ private:
 
 /* //////////////////////////////////////////////////////////////// */
 
-using GuiKey = DevKey::Code;
+using GuiKey = Device::KeyCode;
 
 class GuiKeyEvent : private GuiEventBase
 // memberwise cannonical

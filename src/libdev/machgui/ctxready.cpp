@@ -269,7 +269,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t)
 // virtual
 bool MachGuiCtxImReady::doHandleKeyEvent(const GuiKeyEvent& e)
 {
-    if (e.key() == DevKey::ENTER && e.state() == Gui::PRESSED)
+    if (e.key() == Device::KeyCode::ENTER && e.state() == Gui::PRESSED)
     {
         // Make sure there is a chat message worth sending ( i.e. not empty )
         if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
