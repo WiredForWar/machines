@@ -135,7 +135,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                     if (pActiveCommand_)
                     {
                         skipCommand = pActiveCommand_->cursorPromptStringId();
-                        processed = pActiveCommand_->processButtonEvent(e.buttonEvent());
+                        processed = pActiveCommand_->processButtonEvent(e);
                     }
                     for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && !processed;
                          ++iter)
@@ -144,7 +144,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                         {
                             continue;
                         }
-                        processed = (*iter)->processButtonEvent(e.buttonEvent());
+                        processed = (*iter)->processButtonEvent(e);
                     }
                 }
                 break;

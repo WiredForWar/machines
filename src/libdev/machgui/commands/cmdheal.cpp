@@ -7,6 +7,7 @@
 
 #include "cmdheal.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "device/butevent.hpp"
@@ -267,8 +268,9 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, std:
 }
 
 // virtual
-bool MachGuiHealCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiHealCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_H && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

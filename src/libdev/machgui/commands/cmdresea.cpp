@@ -144,7 +144,7 @@ uint MachGuiResearchCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiResearchCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiResearchCommand::processButtonEvent(const GuiKeyEvent& event)
 {
     // if ( isVisible() and be.scanCode() == Device::KeyCode::BACK_SPACE and be.action() == DevButtonEvent::PRESS )
     //{

@@ -7,6 +7,7 @@
 
 #include "cmdpatro.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
@@ -191,8 +192,9 @@ uint MachGuiPatrolCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiPatrolCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiPatrolCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_P && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

@@ -538,7 +538,7 @@ MachGuiCommand::ObstacleFlags MachGuiCommand::selectedActorObstacleFlags() const
 }
 
 // virtual
-bool MachGuiCommand::processButtonEvent(const DevButtonEvent&)
+bool MachGuiCommand::processButtonEvent(const GuiKeyEvent&)
 {
     return false;
 }

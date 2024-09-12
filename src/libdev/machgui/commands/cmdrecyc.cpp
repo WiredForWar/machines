@@ -7,6 +7,7 @@
 
 #include "cmdrecyc.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
@@ -157,8 +158,9 @@ bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*
 }
 
 // virtual
-bool MachGuiRecycleCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiRecycleCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_Q && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);
