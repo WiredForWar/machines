@@ -39,8 +39,8 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     CB_DEPIMPL_AUTO(gameStateTimer_);
 
     NEIL_STREAM(
-        "InGame button event : " << e.key() << " ctrl " << e.isCtrlPressed() << " shift " << e.isShiftPressed()
-                                 << " alt " << e.isAltPressed() << std::endl);
+        "InGame button event : " << static_cast<int>(e.key()) << " ctrl " << e.isCtrlPressed() << " shift "
+                                 << e.isShiftPressed() << " alt " << e.isAltPressed() << std::endl);
 
     bool processed = false;
     bool finished = false;

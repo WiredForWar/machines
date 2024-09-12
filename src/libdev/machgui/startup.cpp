@@ -3667,7 +3667,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                             navKey = MachGuiFocusCapableControl::TAB_FOWARD;
                         }
                         break;
-                        DEFAULT_ASSERT_BAD_CASE(e.key());
+                        DEFAULT_ASSERT_BAD_CASE(static_cast<int>(e.key()));
                 }
 
                 // Allow current focus control to control the navigation otherwise dropback to
