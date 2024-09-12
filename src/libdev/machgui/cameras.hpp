@@ -16,7 +16,6 @@
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
 #include "device/timer.hpp"
-#include "device/butevent.hpp"
 #include "gui/gui.hpp"
 
 #include "world4d/observer.hpp"
@@ -32,6 +31,7 @@ class MachLogCamera;
 class MachActor;
 class W4dSceneManager;
 class W4dRoot;
+class GuiKeyEvent;
 class GuiMouseEvent;
 
 class MachCameras : public W4dObserver
@@ -52,9 +52,9 @@ public:
     // Delete the game's cameras and controls
     void unloadGame();
 
-    // Called every time there is a buttonEvent. Returns true if the buttonEvent was
-    // processed (e.g. buttonEvent caused camera rotation).
-    bool processButtonEvent(const DevButtonEvent& buttonEvent);
+    // Called every time there is a GuiKeyEvent. Returns true if the event was
+    // processed (e.g. event caused camera rotation).
+    bool processButtonEvent(const GuiKeyEvent& event);
 
     // Called every frame before rendering to ensure that cameras are in the correct
     // domain etc.
