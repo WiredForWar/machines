@@ -10,9 +10,6 @@
 #include "device/butevent.hpp"
 #include "device/eventq.hpp"
 
-const size_t LEFT_ALT = 56;
-const size_t RIGHT_ALT = 29;
-
 bool DevKeyToCommandTranslator::Command::on() const
 {
     return on_;
@@ -248,8 +245,8 @@ void DevKeyToCommandTranslator::initEventQueue()
     DevEventQueue::instance().queueEvents(DevKey::RIGHT_SHIFT);
     DevEventQueue::instance().queueEvents(DevKey::LEFT_CONTROL);
     DevEventQueue::instance().queueEvents(DevKey::RIGHT_CONTROL);
-    DevEventQueue::instance().queueEvents((DevKey::Code)LEFT_ALT);
-    DevEventQueue::instance().queueEvents((DevKey::Code)RIGHT_ALT);
+    DevEventQueue::instance().queueEvents(DevKey::LEFT_ALT);
+    DevEventQueue::instance().queueEvents(DevKey::RIGHT_ALT);
 }
 
 void DevKeyToCommandTranslator::resetCommands(CommandList* pCommandList, bool forceReset /* = false*/)
