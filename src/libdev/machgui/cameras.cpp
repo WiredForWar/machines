@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/cameras.hpp"
-#include "device/butevent.hpp"
 #include "device/keytrans.hpp"
 #include "mathex/poly2d.hpp"
 #include "phys/motchunk.hpp"
@@ -404,8 +403,9 @@ MachLogCamera* MachCameras::currentCamera()
     return pCurrentCamera_;
 }
 
-bool MachCameras::processButtonEvent(const DevButtonEvent& buttonEvent)
+bool MachCameras::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& buttonEvent = event.buttonEvent();
     typedef DevKeyToCommand::CommandId CommandId;
 
     // Give motion control chance to accept buttonEvent
