@@ -1,6 +1,7 @@
 
 set(BASE_SOURCES
     IProgressReporter.hpp
+    PersistenceHackyPacker.hpp
     appbuff.cpp
     append.cpp
     base.cpp

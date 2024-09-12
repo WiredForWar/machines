@@ -24,5 +24,6 @@ Current dev build (to be released as v1.7.1):
 - Fixed Performance Options not loaded correctly
 - Fixed network desync which caused empty/invalid players list on join (client side)
 - Fixed a crash on processing a net message referencing object which is not loaded yet
+- Fixed Reinforcements had no voice mails after loading a saved game
 - Fixed a few crashes
 - A few more small fixes
