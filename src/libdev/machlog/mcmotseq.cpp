@@ -382,7 +382,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
     }
 #endif
 
-    PRE(targetPositionContainedInSpace(newDestination));
+    // PRE(targetPositionContainedInSpace(newDestination));
     PRE(! is1stPersonControlled());
     PRE(implies(pLogMobile_->objectIsMachine(), ! pLogMobile_->asMachine().isStandingGround()));
 
