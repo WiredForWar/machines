@@ -7,6 +7,7 @@
 
 #include "cmdionat.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "device/butevent.hpp"
 #include "machphys/machphys.hpp"
@@ -240,8 +241,9 @@ uint MachGuiIonAttackCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiIonAttackCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiIonAttackCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_I && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

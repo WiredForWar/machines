@@ -7,6 +7,7 @@
 
 #include "cmddefcn.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
@@ -224,8 +225,9 @@ bool MachGuiDefconCommand::defconHigh()
 }
 
 // virtual
-bool MachGuiDefconCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiDefconCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::TAB && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

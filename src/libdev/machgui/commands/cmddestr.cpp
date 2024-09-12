@@ -7,6 +7,7 @@
 
 #include "cmddestr.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "device/time.hpp"
 #include "machgui/internal/strings.hpp"
@@ -134,8 +135,9 @@ uint MachGuiSelfDestructCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiSelfDestructCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiSelfDestructCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::BACK_SPACE && be.wasCtrlPressed() && be.wasShiftPressed()
         && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {

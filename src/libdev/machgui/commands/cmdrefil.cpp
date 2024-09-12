@@ -7,6 +7,7 @@
 
 #include "cmdrefil.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
@@ -143,8 +144,9 @@ bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdminis
 }
 
 // virtual
-bool MachGuiRefillLandMineCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiRefillLandMineCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_G && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

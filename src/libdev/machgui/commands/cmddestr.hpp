@@ -76,7 +76,7 @@ public:
     bool isInteractionComplete() const override;
 
     // Hot key processing
-    bool processButtonEvent(const DevButtonEvent&) override;
+    bool processButtonEvent(const GuiKeyEvent& event) override;
 
     /////////////////////////////////////////////////
 

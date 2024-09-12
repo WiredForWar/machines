@@ -7,10 +7,7 @@
 
 #include "cmdpicku.hpp"
 
-#include "device/butevent.hpp"
-
-#include "ctl/algorith.hpp"
-
+#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
@@ -218,8 +215,9 @@ uint MachGuiPickUpCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiPickUpCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiPickUpCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_K && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

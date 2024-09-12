@@ -7,6 +7,7 @@
 
 #include "cmdassem.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"
 #include "sound/sndparam.hpp"
@@ -154,8 +155,9 @@ bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdminist
 }
 
 // virtual
-bool MachGuiAssemblyPointCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiAssemblyPointCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_B && be.action() == DevButtonEvent::PRESS)
     {
         inGameScreen().activeCommand(*this);

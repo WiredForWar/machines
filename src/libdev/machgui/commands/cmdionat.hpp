@@ -82,7 +82,7 @@ public:
 
     /////////////////////////////////////////////////
     // Hot key processing
-    bool processButtonEvent(const DevButtonEvent&) override;
+    bool processButtonEvent(const GuiKeyEvent& event) override;
 
     using Actors = ctl_pvector<MachActor>;
 

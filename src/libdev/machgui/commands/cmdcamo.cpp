@@ -7,6 +7,7 @@
 
 #include "cmdcamo.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
@@ -135,8 +136,9 @@ bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, std::string*)
 }
 
 // virtual
-bool MachGuiCamouflageCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiCamouflageCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_O && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

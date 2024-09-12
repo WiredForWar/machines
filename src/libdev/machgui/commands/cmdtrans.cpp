@@ -7,10 +7,7 @@
 
 #include "cmdtrans.hpp"
 
-#include "ctl/algorith.hpp"
-
-#include "device/butevent.hpp"
-
+#include "gui/event.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"
 #include "machlog/mine.hpp"
@@ -208,8 +205,9 @@ uint MachGuiTransportCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiTransportCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiTransportCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_T && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

@@ -7,6 +7,7 @@
 
 #include "cmdlocto.hpp"
 
+#include "gui/event.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -219,8 +220,9 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
 }
 
 // virtual
-bool MachGuiLocateToCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiLocateToCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_L && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

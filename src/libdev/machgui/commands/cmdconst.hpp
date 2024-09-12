@@ -98,7 +98,7 @@ public:
 
     /////////////////////////////////////////////////
     // Hot key processing
-    bool processButtonEvent(const DevButtonEvent&) override;
+    bool processButtonEvent(const GuiKeyEvent& event) override;
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 

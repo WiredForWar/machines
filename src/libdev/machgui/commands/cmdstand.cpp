@@ -7,10 +7,9 @@
 
 #include "cmdstand.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
-
-#include "device/butevent.hpp"
 
 #include "world4d/domain.hpp"
 
@@ -144,8 +143,9 @@ bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministra
 }
 
 // virtual
-bool MachGuiStandGroundCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiStandGroundCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_W && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

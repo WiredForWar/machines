@@ -7,6 +7,7 @@
 
 #include "cmdbuild.hpp"
 
+#include "gui/event.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"
 #include "device/butevent.hpp"
@@ -152,8 +153,9 @@ uint MachGuiBuildCommand::commandPromptStringid() const
 }
 
 // virtual
-bool MachGuiBuildCommand::processButtonEvent(const DevButtonEvent& be)
+bool MachGuiBuildCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && be.scanCode() == Device::KeyCode::KEY_B && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
         inGameScreen().activeCommand(*this);

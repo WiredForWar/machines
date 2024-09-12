@@ -83,7 +83,7 @@ public:
     bool isInteractionComplete() const override;
 
     // Hot key processing
-    bool processButtonEvent(const DevButtonEvent&) override;
+    bool processButtonEvent(const GuiKeyEvent& event) override;
 
     // ensures that the defcon moves from NORMAL to HIGH rather than to LOW
     void resetDirectionFromDefConNormal();
