@@ -26,7 +26,7 @@ UtlAsciiPictureImpl::UtlAsciiPictureImpl(
 
     const uint nRows = nColumns * (maxY - minY) / (maxX - minX);
 
-    const std::string row(' ', nColumns);
+    const std::string row(nColumns, ' ');
     picture_.reserve(nRows);
 
     for (size_t i = 0; i < nRows; ++i)
