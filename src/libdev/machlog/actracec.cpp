@@ -67,11 +67,9 @@ void MachLogChangeRaceAction::doAction()
 }
 
 // static
-MachLogChangeRaceAction*
-MachLogChangeRaceAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
+std::unique_ptr<MachLogChangeRaceAction> MachLogChangeRaceAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogChangeRaceAction* pResult = nullptr;
-    pResult = new MachLogChangeRaceAction(pCondition, enabled);
+    std::unique_ptr<MachLogChangeRaceAction> pResult(new MachLogChangeRaceAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

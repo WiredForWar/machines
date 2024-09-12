@@ -66,11 +66,9 @@ void MachLogExplosionAction::doAction()
 }
 
 // static
-MachLogExplosionAction*
-MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
+std::unique_ptr<MachLogExplosionAction> MachLogExplosionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogExplosionAction* pResult = nullptr;
-    pResult = new MachLogExplosionAction(pCondition, enabled);
+    std::unique_ptr<MachLogExplosionAction> pResult(new MachLogExplosionAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

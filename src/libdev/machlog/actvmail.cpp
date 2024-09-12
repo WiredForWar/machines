@@ -48,11 +48,9 @@ void MachLogVoiceMailAction::doAction()
 }
 
 // static
-MachLogVoiceMailAction*
-MachLogVoiceMailAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
+std::unique_ptr<MachLogVoiceMailAction> MachLogVoiceMailAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogVoiceMailAction* pResult = nullptr;
-    pResult = new MachLogVoiceMailAction(pCondition, enabled);
+    std::unique_ptr<MachLogVoiceMailAction> pResult(new MachLogVoiceMailAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

@@ -17,6 +17,8 @@
 #include "machlog/vmdata.hpp"
 #include "machphys/machphys.hpp"
 
+#include <memory>
+
 class UtlLineTokeniser;
 class SimCondition;
 
@@ -25,7 +27,7 @@ class MachLogVoiceMailAction : public SimAction
 {
 public:
     ~MachLogVoiceMailAction() override;
-    static MachLogVoiceMailAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static std::unique_ptr<MachLogVoiceMailAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 

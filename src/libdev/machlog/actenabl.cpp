@@ -45,12 +45,10 @@ void MachLogEnableActionAction::doAction()
     SimManager::instance().enableAction(actionConditionKeyName_);
 }
 
-// static
-MachLogEnableActionAction*
+std::unique_ptr<MachLogEnableActionAction>
 MachLogEnableActionAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogEnableActionAction* pResult = nullptr;
-    pResult = new MachLogEnableActionAction(pCondition, enabled);
+    std::unique_ptr<MachLogEnableActionAction> pResult(new MachLogEnableActionAction(pCondition, enabled));
     pResult->actionConditionKeyName_ = pParser->tokens()[3];
     return pResult;
 }
@@ -83,12 +81,10 @@ MachLogEnableActionAction::MachLogEnableActionAction(PerConstructor con)
 {
 }
 
-// static
-MachLogEnableActionAction*
+std::unique_ptr<MachLogEnableActionAction>
 MachLogEnableActionAction::newDynamic(SimCondition* pCondition, bool enabled, const string& enableToken)
 {
-    MachLogEnableActionAction* pResult = nullptr;
-    pResult = new MachLogEnableActionAction(pCondition, enabled);
+    std::unique_ptr<MachLogEnableActionAction> pResult(new MachLogEnableActionAction(pCondition, enabled));
     pResult->actionConditionKeyName_ = enableToken;
     return pResult;
 }

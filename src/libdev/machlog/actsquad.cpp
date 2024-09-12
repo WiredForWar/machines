@@ -69,12 +69,10 @@ void MachLogActivateSquadronsAction::doAction()
     }
 }
 
-// static
-MachLogActivateSquadronsAction*
+std::unique_ptr<MachLogActivateSquadronsAction>
 MachLogActivateSquadronsAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogActivateSquadronsAction* pResult = nullptr;
-    pResult = new MachLogActivateSquadronsAction(pCondition, enabled);
+    std::unique_ptr<MachLogActivateSquadronsAction> pResult(new MachLogActivateSquadronsAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];

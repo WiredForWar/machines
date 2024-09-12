@@ -65,12 +65,10 @@ void MachLogWinOrLoseAction::doAction()
         races.hasLost(race_, true);
 }
 
-// static
-MachLogWinOrLoseAction*
+std::unique_ptr<MachLogWinOrLoseAction>
 MachLogWinOrLoseAction::newFromParser(SimCondition* pCondition, bool enabled, UtlLineTokeniser* pParser)
 {
-    MachLogWinOrLoseAction* pResult = nullptr;
-    pResult = new MachLogWinOrLoseAction(pCondition, enabled);
+    std::unique_ptr<MachLogWinOrLoseAction> pResult(new MachLogWinOrLoseAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
         const string& token = pParser->tokens()[i];
@@ -108,11 +106,9 @@ MachLogWinOrLoseAction::MachLogWinOrLoseAction(PerConstructor con)
 {
 }
 
-// static
-MachLogWinOrLoseAction* MachLogWinOrLoseAction::newDynamic(SimCondition* pCondition, bool enabled, MachPhys::Race race)
+std::unique_ptr<MachLogWinOrLoseAction> MachLogWinOrLoseAction::newDynamic(SimCondition* pCondition, bool enabled, MachPhys::Race race)
 {
-    MachLogWinOrLoseAction* pResult = nullptr;
-    pResult = new MachLogWinOrLoseAction(pCondition, enabled);
+    std::unique_ptr<MachLogWinOrLoseAction> pResult(new MachLogWinOrLoseAction(pCondition, enabled));
     pResult->race_ = race;
     return pResult;
 }

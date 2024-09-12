@@ -18,6 +18,8 @@
 #include "mathex/point2d.hpp"
 #include "machphys/machphys.hpp"
 
+#include <memory>
+
 class UtlLineTokeniser;
 class SimCondition;
 class MachLogProductionUnit;
@@ -29,7 +31,7 @@ public:
     using ProductionList = ctl_pvector<MachLogProductionUnit>;
 
     ~MachLogReinforcementsAction() override;
-    static MachLogReinforcementsAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static std::unique_ptr<MachLogReinforcementsAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     const MexPoint2d& destination() const;
     MachPhys::Race race() const;

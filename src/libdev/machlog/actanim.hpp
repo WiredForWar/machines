@@ -19,6 +19,8 @@
 #include "machphys/machphys.hpp"
 #include "machlog/machlog.hpp"
 
+#include <memory>
+
 class UtlLineTokeniser;
 class SimCondition;
 
@@ -27,7 +29,7 @@ class MachLogPlayAnimationAction : public SimAction
 {
 public:
     ~MachLogPlayAnimationAction() override;
-    static MachLogPlayAnimationAction* newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
+    static std::unique_ptr<MachLogPlayAnimationAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
 
     void CLASS_INVARIANT;
 
