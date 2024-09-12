@@ -38,69 +38,70 @@ set(MACHGUI_SOURCES
     chatmsgs.hpp
     chatwind.cpp
     chatwind.hpp
-    cmdassem.cpp
-    cmdassem.hpp
-    cmdattac.cpp
-    cmdattac.hpp
-    cmdbuild.cpp
-    cmdbuild.hpp
-    cmdcamo.cpp
-    cmdcamo.hpp
-    cmdcaptr.cpp
-    cmdcaptr.hpp
-    cmdconst.cpp
-    cmdconst.hpp
-    cmddamag.cpp
-    cmddamag.hpp
-    cmddecon.cpp
-    cmddecon.hpp
-    cmddefau.cpp
-    cmddefau.hpp
-    cmddefcn.cpp
-    cmddefcn.hpp
-    cmddeplo.cpp
-    cmddeplo.hpp
-    cmddestr.cpp
-    cmddestr.hpp
-    cmdfrmsq.cpp
-    cmdfrmsq.hpp
-    cmdheal.cpp
-    cmdheal.hpp
-    cmdionat.cpp
-    cmdionat.hpp
-    cmdlmine.cpp
-    cmdlmine.hpp
-    cmdlocto.cpp
-    cmdlocto.hpp
-    cmdmove.cpp
-    cmdmove.hpp
-    cmdnukat.cpp
-    cmdnukat.hpp
-    cmdpatro.cpp
-    cmdpatro.hpp
-    cmdpicku.cpp
-    cmdpicku.hpp
-    cmdrecyc.cpp
-    cmdrecyc.hpp
-    cmdrefil.cpp
-    cmdrefil.hpp
-    cmdrepar.cpp
-    cmdrepar.hpp
-    cmdresea.cpp
-    cmdresea.hpp
-    cmdscav.cpp
-    cmdscav.hpp
-    cmdstand.cpp
-    cmdstand.hpp
-    cmdstop.cpp
-    cmdstop.hpp
-    cmdtrans.cpp
-    cmdtrans.hpp
-    cmdtrech.cpp
-    cmdtrech.hpp
-    command.cpp
-    command.hpp
-    commandi.cpp
+    commands/cmdassem.cpp
+    commands/cmdassem.hpp
+    commands/cmdattac.cpp
+    commands/cmdattac.hpp
+    commands/cmdbuild.cpp
+    commands/cmdbuild.hpp
+    commands/cmdcamo.cpp
+    commands/cmdcamo.hpp
+    commands/cmdcaptr.cpp
+    commands/cmdcaptr.hpp
+    commands/cmdconst.cpp
+    commands/cmdconst.hpp
+    commands/cmddamag.cpp
+    commands/cmddamag.hpp
+    commands/cmddecon.cpp
+    commands/cmddecon.hpp
+    commands/cmddefau.cpp
+    commands/cmddefau.hpp
+    commands/cmddefcn.cpp
+    commands/cmddefcn.hpp
+    commands/cmddeplo.cpp
+    commands/cmddeplo.hpp
+    commands/cmddestr.cpp
+    commands/cmddestr.hpp
+    commands/cmdfrmsq.cpp
+    commands/cmdfrmsq.hpp
+    commands/cmdheal.cpp
+    commands/cmdheal.hpp
+    commands/cmdionat.cpp
+    commands/cmdionat.hpp
+    commands/cmdlmine.cpp
+    commands/cmdlmine.hpp
+    commands/cmdlocto.cpp
+    commands/cmdlocto.hpp
+    commands/cmdmove.cpp
+    commands/cmdmove.hpp
+    commands/cmdnukat.cpp
+    commands/cmdnukat.hpp
+    commands/cmdpatro.cpp
+    commands/cmdpatro.hpp
+    commands/cmdpicku.cpp
+    commands/cmdpicku.hpp
+    commands/cmdrecyc.cpp
+    commands/cmdrecyc.hpp
+    commands/cmdrefil.cpp
+    commands/cmdrefil.hpp
+    commands/cmdrepar.cpp
+    commands/cmdrepar.hpp
+    commands/cmdresea.cpp
+    commands/cmdresea.hpp
+    commands/cmdscav.cpp
+    commands/cmdscav.hpp
+    commands/cmdstand.cpp
+    commands/cmdstand.hpp
+    commands/cmdstop.cpp
+    commands/cmdstop.hpp
+    commands/cmdtrans.cpp
+    commands/cmdtrans.hpp
+    commands/cmdtrech.cpp
+    commands/cmdtrech.hpp
+    commands/command.cpp
+    commands/command.hpp
+    commands/commandi.cpp
+    commands/commandi.hpp
     commbank.cpp
     commbank.hpp
     conselic.cpp
@@ -225,7 +226,6 @@ set(MACHGUI_SOURCES
     ingame.hpp
     intcurac.cpp
     intcurac.hpp
-    internal/commandi.hpp
     internal/controli.hpp
     internal/databasi.hpp
     internal/dbelemei.hpp

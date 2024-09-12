@@ -26,7 +26,7 @@
 #include "machlog/rescarr.hpp"
 #include "machlog/races.hpp"
 
-#include "machgui/cmdmove.hpp"
+#include "machgui/commands/cmdmove.hpp"
 #include "machgui/ingame.hpp"
 
 MachGuiIntelligentCursorOnActor::MachGuiIntelligentCursorOnActor()

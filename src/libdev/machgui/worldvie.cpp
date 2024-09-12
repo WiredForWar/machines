@@ -8,7 +8,7 @@
 #include "machgui/worldvie.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/gui.hpp"
-#include "machgui/command.hpp"
+#include "machgui/commands/command.hpp"
 #include "machgui/cameras.hpp"
 #include "machgui/ctrladon.hpp"
 #include "machgui/database.hpp"

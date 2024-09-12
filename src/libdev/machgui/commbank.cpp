@@ -3,17 +3,18 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
+#include "commbank.hpp"
+
 #include "stdlib/string.hpp"
 #include "mathex/point3d.hpp"
-#include "machgui/commbank.hpp"
-#include "machgui/command.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/guictrl.hpp"
 #include "machgui/ingame.hpp"
-#include "machgui/cmddefcn.hpp"
-#include "machgui/cmddestr.hpp"
-#include "machgui/cmdionat.hpp"
-#include "machgui/cmdnukat.hpp"
+#include "machgui/commands/command.hpp"
+#include "machgui/commands/cmddefcn.hpp"
+#include "machgui/commands/cmddestr.hpp"
+#include "machgui/commands/cmdionat.hpp"
+#include "machgui/commands/cmdnukat.hpp"
 #include "machgui/controlp.hpp"
 #include "gui/restring.hpp"
 #include "gui/painter.hpp"

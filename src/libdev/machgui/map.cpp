@@ -32,7 +32,7 @@
 #include "machgui/ingame.hpp"
 #include "machgui/bmutext.hpp"
 #include "machgui/cameras.hpp"
-#include "machgui/command.hpp"
+#include "machgui/commands/command.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"

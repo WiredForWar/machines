@@ -8,7 +8,7 @@
 #include "machgui/map.hpp"
 #include "machgui/machnav.hpp"
 #include "machgui/worldvie.hpp"
-#include "machgui/command.hpp"
+#include "machgui/commands/command.hpp"
 #include "machgui/fstpersn.hpp"
 #include "machgui/promtext.hpp"
 #include "world4d/scenemgr.hpp"

@@ -5,11 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/conselic.hpp"
+#include "conselic.hpp"
+
 #include "machgui/actbmpnm.hpp"
 #include "machgui/actnamid.hpp"
 #include "machgui/ingame.hpp"
-#include "machgui/command.hpp"
+#include "machgui/commands/command.hpp"
 #include "gui/restring.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/races.hpp"
