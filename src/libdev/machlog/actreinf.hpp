@@ -61,8 +61,8 @@ private:
     MachPhys::Race race_;
     MachPhys::Race displayAsRace_;
     int assignToSquadronIndex_;
-    bool assignToSquadron_;
-    bool giveVoiceMail_;
+    bool assignToSquadron_{false};
+    bool giveVoiceMail_{true};
 };
 
 PER_DECLARE_PERSISTENT(MachLogReinforcementsAction);

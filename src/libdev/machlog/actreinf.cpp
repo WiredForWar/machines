@@ -28,10 +28,8 @@ PER_DEFINE_PERSISTENT(MachLogReinforcementsAction);
 
 MachLogReinforcementsAction::MachLogReinforcementsAction(SimCondition* pCondition, bool enabled)
     : SimAction(pCondition, enabled)
-    , assignToSquadron_(false)
-    , assignToSquadronIndex_(1)
-    , giveVoiceMail_(true)
     , displayAsRace_(MachPhys::N_RACES)
+    , assignToSquadronIndex_(1)
 {
     TEST_INVARIANT;
 }
