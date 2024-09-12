@@ -10,6 +10,7 @@
 #include "device/keyboard.hpp"
 #include "device/mouse.hpp"
 #include "gui/gui.hpp"
+#include "gui/KeyWithModifiers.hpp"
 
 // class DevButtonEvent;
 
@@ -132,6 +133,7 @@ public:
     const GuiKey& key() const;
     Gui::ButtonState state() const;
     const DevButtonEvent& buttonEvent() const;
+    const KeyWithModifiers& keyWithMods() const { return keyWithMods_; }
 
     ///////////////////////////////
 
@@ -145,6 +147,7 @@ private:
     GuiKey key_;
     Gui::ButtonState state_;
     const DevButtonEvent& buttonEvent_;
+    const KeyWithModifiers keyWithMods_;
 
     friend bool operator<(const GuiKeyEvent& a, const GuiKeyEvent& b);
     friend bool operator==(const GuiKeyEvent& a, const GuiKeyEvent& b);

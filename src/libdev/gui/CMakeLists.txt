@@ -1,5 +1,6 @@
 
 set(GUI_SOURCES
+    KeyWithModifiers.hpp
     border.cpp
     border.hpp
     button.cpp
