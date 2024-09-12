@@ -91,6 +91,12 @@ GuiKeyEvent::GuiKeyEvent(const GuiKey& k, Gui::ButtonState s, ModifierKeys keys,
     , key_(k)
     , state_(s)
     , buttonEvent_(buttonEvent)
+    , keyWithMods_(
+          buttonEvent.scanCode(),
+          KeyModifierFlags::fromAltCtrlShiftState(
+              buttonEvent.wasAltPressed(),
+              buttonEvent.wasCtrlPressed(),
+              buttonEvent.wasShiftPressed()))
 {
     // Intentionally Empty
 }
