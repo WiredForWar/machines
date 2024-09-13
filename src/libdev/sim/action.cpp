@@ -115,11 +115,4 @@ SimAction::SimAction(PerConstructor)
 void SimAction::becomeEnabled()
 {
     pCondition_->doBecomeEnabled();
-    doBecomeEnabled();
-}
-
-// virtual
-void SimAction::doBecomeEnabled()
-{
-    // default implementation does nothing.
 }

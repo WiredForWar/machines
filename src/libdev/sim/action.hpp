@@ -44,7 +44,6 @@ protected:
     virtual void doAction() = 0;
     void nextCallBackTime(const PhysRelativeTime&);
     // A base class implementation is provided
-    virtual void doBecomeEnabled();
 
 private:
     string conditionKeyName_;
