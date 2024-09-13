@@ -1,25 +1,22 @@
 #include "stdlib/string.hpp"
 
+static constexpr char stringPersistenceName[] = "basic_stringchar";
+
 void writeAllocatedStringFromPointer(PerOstream& ostr, const std::string* pOb)
 {
     PRE(pOb != nullptr);
-    if (Persistence::instance().writePointerPre(
-            ostr,
-            (static_cast<const void*>(pOb)),
-            "basic_stringchar",
-            (static_cast<const void*>(pOb)),
-            "basic_stringchar")
+    if (Persistence::instance().writePointerPre(ostr, pOb, stringPersistenceName, pOb, stringPersistenceName)
         == Persistence::WRITE_OBJECT)
     {
         ostr << *pOb;
     }
-    Persistence ::instance().writePointerPost(ostr, (static_cast<const void*>(pOb)), "basic_stringchar", pOb);
+    Persistence ::instance().writePointerPost(ostr, pOb, stringPersistenceName, pOb);
 }
 
 void readAllocatedStringFromPointer(PerIstream& istr, std::string* pOb)
 {
     PRE(pOb != nullptr);
-    if (Persistence::instance().readPointerPre(istr, (reinterpret_cast<void**>(&pOb)), "basic_stringchar")
+    if (Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), stringPersistenceName)
         == Persistence::READ_OBJECT)
     {
         istr >> *pOb;
@@ -28,7 +25,7 @@ void readAllocatedStringFromPointer(PerIstream& istr, std::string* pOb)
     {
         pOb->clear();
     }
-    Persistence::instance().readPointerPost(istr, (reinterpret_cast<void**>(&pOb)), "basic_stringchar");
+    Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), stringPersistenceName);
 }
 
 void perWrite(PerOstream& ostr, const std::string& ob)
