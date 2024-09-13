@@ -56,6 +56,11 @@ public:
 private:
 };
 
+using string = basic_string<char>;
+
+void writeAllocatedStringFromPointer(PerOstream& ostr, const string* pOb);
+void readAllocatedStringFromPointer(PerIstream& istr, string* pOb);
+
 PER_DECLARE_PERSISTENT_T1(basic_string);
 // PER_DEFINE_PERSISTENT_INLINE_T1( basic_string );
 
@@ -88,7 +93,6 @@ PER_DECLARE_PERSISTENT_T1(basic_string);
 
 //////////////////////////////////////////////////////////////////////
 
-using string = basic_string<char>;
 // typedef basic_string_iter< char > stringIter;
 
 //////////////////////////////////////////////////////////////////////

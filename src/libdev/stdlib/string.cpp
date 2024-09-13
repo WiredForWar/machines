@@ -38,4 +38,35 @@ template <class T> void perRead(PerIstream& i, basic_string<T>& str)
 template void perRead<char>(PerIstream&, basic_string<char>&);
 template void perWrite<char>(PerOstream&, const basic_string<char>&);
 
+void writeAllocatedStringFromPointer(PerOstream& ostr, const string* pOb)
+{
+    PRE(pOb != nullptr);
+    if (Persistence::instance().writePointerPre(
+            ostr,
+            (static_cast<const void*>(pOb)),
+            "basic_stringchar",
+            (static_cast<const void*>(pOb)),
+            "basic_stringchar")
+        == Persistence::WRITE_OBJECT)
+    {
+        ostr << *pOb;
+    }
+    Persistence ::instance().writePointerPost(ostr, (static_cast<const void*>(pOb)), "basic_stringchar", pOb);
+}
+
+void readAllocatedStringFromPointer(PerIstream& istr, string* pOb)
+{
+    PRE(pOb != nullptr);
+    if (Persistence::instance().readPointerPre(istr, (reinterpret_cast<void**>(&pOb)), "basic_stringchar")
+        == Persistence::READ_OBJECT)
+    {
+        istr >> *pOb;
+    }
+    else
+    {
+        pOb->clear();
+    }
+    Persistence::instance().readPointerPost(istr, (reinterpret_cast<void**>(&pOb)), "basic_stringchar");
+}
+
 /* End STRING.CPP ***************************************************/

@@ -74,7 +74,7 @@ EXISTS(W4dEntity);
     CB_DEPIMPL(W4dId, id_);                                                                                            \
     CB_DEPIMPL(MexAlignedBox3d*, boundingVolume_);                                                                     \
     CB_DEPIMPL(W4dLocalLightList*, pLocalLightList_);                                                                  \
-    CB_DEPIMPL(string*, name_);                                                                                        \
+    CB_DEPIMPL(string, name_);                                                                                        \
     CB_DEPIMPL(RenColour*, pFilterColour_);                                                                            \
     CB_DEPIMPL(int, nLinkedSounds_);
 
@@ -1361,7 +1361,6 @@ void W4dEntity::parseMesh(const SysPathName& directoryname, UtlLineTokeniser* pP
         pMesh = RenMeshInstance::createShared(meshPathname, meshName);
 
         if (pMesh)
-            //*name_ = meshName;
             name(meshName);
     }
     else if (pParser->tokens()[0] == "EMPTY_MESH")
@@ -1425,7 +1424,6 @@ void W4dEntity::name(const string& n)
 {
     TEST_INVARIANT;
     CB_W4dEntity_DEPIMPL();
-    //*name_ = n;
     pImpl_->name(n);
 }
 

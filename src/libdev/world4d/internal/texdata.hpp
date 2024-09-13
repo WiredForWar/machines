@@ -47,7 +47,7 @@ private:
 
     ctl_vector<RenTexture> keyTextures() const;
 
-    string* textureName_;
+    string textureName_;
     size_t startTexture_;
     size_t endTexture_;
     size_t nRepetations_;

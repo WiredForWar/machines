@@ -11,7 +11,7 @@
 PER_DEFINE_PERSISTENT_ABSTRACT(W4dAnimationData);
 
 W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
-    : textureName_(new string(name))
+    : textureName_(name)
     , maxLod_(maxLod)
 {
 
@@ -20,7 +20,6 @@ W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
 
 W4dAnimationData::~W4dAnimationData()
 {
-    delete textureName_;
     TEST_INVARIANT;
 }
 
@@ -40,12 +39,12 @@ std::ostream& operator<<(std::ostream& o, const W4dAnimationData& t)
 
 void W4dAnimationData::name(const string& name)
 {
-    *textureName_ = name;
+    textureName_ = name;
 }
 
 const string& W4dAnimationData::name() const
 {
-    return *textureName_;
+    return textureName_;
 }
 
 const W4dLOD& W4dAnimationData::maxLod() const
@@ -61,19 +60,20 @@ const PhysRelativeTime& W4dAnimationData::forever()
 }
 
 W4dAnimationData::W4dAnimationData(PerConstructor)
-    : textureName_(nullptr)
 {
 }
 
 void perWrite(PerOstream& ostr, const W4dAnimationData& t)
 {
-    ostr << t.textureName_;
+    writeAllocatedStringFromPointer(ostr, &t.textureName_);
     ostr << t.maxLod_;
 }
 
 void perRead(PerIstream& istr, W4dAnimationData& t)
 {
-    istr >> t.textureName_;
+    // t.textureName_ used to be a heap-allocated string. Use special read function
+    // to load PerDataType::PER_OBJECT_POINTER into a stack-allocated object
+    readAllocatedStringFromPointer(istr, &t.textureName_);
     istr >> t.maxLod_;
 }
 

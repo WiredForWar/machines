@@ -70,7 +70,6 @@ W4dEntityImpl::W4dEntityImpl(W4dEntity* pParent, const W4dTransform3d& newLocalT
     , isOwnedByCountedPtr_(false)
     , hasMesh_(false)
     , pLocalLightList_(nullptr)
-    , name_(nullptr)
     , pFilterColour_(nullptr)
     , pAnimationDataPtrs_(nullptr)
     , pAnimationLightDataPtrs_(nullptr)
@@ -113,7 +112,7 @@ W4dEntityImpl::W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, co
     , isOwnedByCountedPtr_(false)
     , hasMesh_(false)
     , pLocalLightList_(nullptr)
-    , name_(nullptr)
+    , name_(copyMe.name_)
     , pAnimationDataPtrs_(nullptr)
     , pAnimationLightDataPtrs_(nullptr)
     , pFilterColour_(nullptr)
@@ -129,9 +128,6 @@ W4dEntityImpl::W4dEntityImpl(const W4dEntityImpl& copyMe, W4dEntity* pParent, co
 
     if (copyMe.pAnimationLightDataPtrs_ != nullptr)
         pAnimationLightDataPtrs_ = new AnimationDataPtrs(*copyMe.pAnimationLightDataPtrs_);
-
-    if (copyMe.name_ != nullptr)
-        name_ = new string(*copyMe.name_);
 
     TEST_INVARIANT;
 }
@@ -162,7 +158,6 @@ W4dEntityImpl::W4dEntityImpl()
     , isStationary_(true)
     , notScaled_(true)
     , pLocalLightList_(nullptr)
-    , name_(nullptr)
     , pFilterColour_(nullptr)
     , pAnimationDataPtrs_(nullptr)
     , pAnimationLightDataPtrs_(nullptr)
@@ -204,7 +199,6 @@ W4dEntityImpl::W4dEntityImpl(
     , isStationary_(true)
     , notScaled_(true)
     , pLocalLightList_(nullptr)
-    , name_(nullptr)
     , pFilterColour_(nullptr)
     , pAnimationDataPtrs_(nullptr)
     , pAnimationLightDataPtrs_(nullptr)
@@ -230,7 +224,6 @@ W4dEntityImpl::~W4dEntityImpl()
     delete boundingVolume_;
 
     delete pLocalLightList_;
-    delete name_;
     delete pFilterColour_;
     delete pAnimationDataPtrs_;
     delete pAnimationLightDataPtrs_;
@@ -249,15 +242,12 @@ void W4dEntityImpl::CLASS_INVARIANT
 
 void W4dEntityImpl::name(const string& name)
 {
-    if (name_ == nullptr)
-        name_ = new string(name);
-    else
-        *name_ = name;
+    name_ = name;
 }
 
 const string& W4dEntityImpl::name() const
 {
-    return (name_ == nullptr ? dummyName() : *name_);
+    return name_;
 }
 
 void W4dEntityImpl::updateHasMeshFlag()
@@ -370,7 +360,8 @@ void perWrite(PerOstream& ostr, const W4dEntityImpl& t)
     PER_WRITE_RAW_OBJECT(ostr, bTemp);
 
     ostr << t.pLocalLightList_;
-    ostr << t.name_;
+
+    writeAllocatedStringFromPointer(ostr, &t.name_);
     ostr << t.pAnimationDataPtrs_;
     ostr << t.pAnimationLightDataPtrs_;
     ostr << t.pFilterColour_;
@@ -424,7 +415,11 @@ void perRead(PerIstream& istr, W4dEntityImpl& t)
 
     //  This call must be made here to make sure that the entity plan
     //  update times are properly set up
-    istr >> t.name_;
+
+    // t.name used to be a heap-allocated string. Use special read function
+    // to load PerDataType::PER_OBJECT_POINTER into a stack-allocated object
+    readAllocatedStringFromPointer(istr, &t.name_);
+
     istr >> t.pAnimationDataPtrs_;
     istr >> t.pAnimationLightDataPtrs_;
     istr >> t.pFilterColour_;
@@ -530,7 +525,6 @@ W4dEntityImpl::W4dEntityImpl(PerConstructor)
     , isStationary_(true)
     , notScaled_(true)
     , pLocalLightList_(nullptr)
-    , name_(nullptr)
     , pFilterColour_(nullptr)
     , pAnimationDataPtrs_(nullptr)
     , pAnimationLightDataPtrs_(nullptr)

@@ -227,7 +227,7 @@ private:
     // This entity's local light list
     W4dLocalLightList* pLocalLightList_;
 
-    string* name_;
+    string name_;
     AnimationDataPtrs* pAnimationDataPtrs_;
     AnimationDataPtrs* pAnimationLightDataPtrs_;
     RenColour* pFilterColour_;

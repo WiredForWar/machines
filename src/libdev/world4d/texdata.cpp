@@ -18,7 +18,7 @@ W4dCycleTextureData::W4dCycleTextureData(
     const size_t& startTexture,
     const size_t& endTexture,
     const size_t& nRepetations)
-    : textureName_(new string(textureName))
+    : textureName_(textureName)
     , startTexture_(startTexture)
     , endTexture_(endTexture)
     , nRepetations_(nRepetations)
@@ -29,7 +29,6 @@ W4dCycleTextureData::W4dCycleTextureData(
 
 W4dCycleTextureData::~W4dCycleTextureData()
 {
-    delete textureName_;
     TEST_INVARIANT;
 }
 
@@ -51,24 +50,24 @@ ctl_vector<RenTexture> W4dCycleTextureData::keyTextures() const
 {
     PRE(endTexture_ > startTexture_);
 
-    size_t nameLength = textureName_->length();
+    size_t nameLength = textureName_.length();
 
     string nameRoot;
     string extension;
 
-    if (textureName_->substr(nameLength - 2, 2) == "_b")
+    if (textureName_.substr(nameLength - 2, 2) == "_b")
     {
-        nameRoot = textureName_->substr(0, nameLength - 2);
+        nameRoot = textureName_.substr(0, nameLength - 2);
         extension = "_b.bmp";
     }
-    else if (textureName_->substr(nameLength - 3, 3) == "_bt")
+    else if (textureName_.substr(nameLength - 3, 3) == "_bt")
     {
-        nameRoot = textureName_->substr(0, nameLength - 3);
+        nameRoot = textureName_.substr(0, nameLength - 3);
         extension = "_bt.bmp";
     }
     else
     {
-        nameRoot = *textureName_;
+        nameRoot = textureName_;
         extension = ".bmp";
     }
 
@@ -100,13 +99,12 @@ ctl_vector<RenTexture> W4dCycleTextureData::keyTextures() const
 }
 
 W4dCycleTextureData::W4dCycleTextureData(PerConstructor)
-    : textureName_(nullptr)
 {
 }
 
 void perWrite(PerOstream& str, const W4dCycleTextureData& t)
 {
-    str << t.textureName_;
+    writeAllocatedStringFromPointer(str, &t.textureName_);
     str << t.startTexture_;
     str << t.endTexture_;
     str << t.nRepetations_;
@@ -114,8 +112,9 @@ void perWrite(PerOstream& str, const W4dCycleTextureData& t)
 
 void perRead(PerIstream& str, W4dCycleTextureData& t)
 {
-    delete t.textureName_;
-    str >> t.textureName_;
+    // t.textureName_ used to be a heap-allocated string. Use special read function
+    // to load PerDataType::PER_OBJECT_POINTER into a stack-allocated object
+    readAllocatedStringFromPointer(str, &t.textureName_);
     str >> t.startTexture_;
     str >> t.endTexture_;
     str >> t.nRepetations_;

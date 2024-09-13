@@ -15,8 +15,7 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "phys/phys.hpp"
-// #include "stdlib/string.hpp"
-#include "stdlib/strfwd.hpp"
+#include "stdlib/string.hpp"
 #include "world4d/world4d.hpp"
 
 class W4dEntity;
@@ -49,7 +48,7 @@ private:
     W4dAnimationData(const W4dAnimationData&);
     W4dAnimationData& operator=(const W4dAnimationData&);
 
-    string* textureName_;
+    string textureName_;
     W4dLOD maxLod_;
 };
 
