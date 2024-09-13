@@ -13,6 +13,8 @@
 #include "mathex/vec3.hpp"
 #include "mathex/point2d.hpp"
 
+#include <memory>
+
 class MexPoint3d;
 class MexPoint2d;
 class RenIVertexIntensities;
@@ -126,7 +128,6 @@ public:
     // Calling the default ctor will reserve space for 20 vertices.  The vector
     // persistence read method handles the space allocation more efficiently.
 
-    static RenIVertexData& perCreate();
     RenIVertexData(PerConstructor);
     static const char* perClassName();
     const char* perMostDerivedClassName() const override;
@@ -141,9 +142,9 @@ private:
 };
 
 PerOstream& operator<<(PerOstream& ostr, const RenIVertexData& ob);
-PerIstream& operator>>(PerIstream& istr, RenIVertexData& ob);
+PerIstream& operator>>(PerIstream& istr, std::unique_ptr<RenIVertexData>& ob);
 PerOstream& operator<<(PerOstream& ostr, const RenIVertexData* pOb);
-PerIstream& operator>>(PerIstream& istr, RenIVertexData*& pOb);
+PerIstream& operator>>(PerIstream& istr, std::unique_ptr<RenIVertexData>*& pOb);
 void perReadRenIVertexData(PerIstream&);
 void perWriteRenIVertexData(PerOstream&, const void* pVoid);
 

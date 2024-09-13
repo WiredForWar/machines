@@ -78,23 +78,19 @@ PerOstream& operator<<(PerOstream& ostr, const RenIVertexData* pOb)
     return ostr;
 }
 
-PerIstream& operator>>(PerIstream& istr, RenIVertexData*& pOb)
+PerIstream& operator>>(PerIstream& istr, std::unique_ptr<RenIVertexData>& pOb)
 {
     auto const result = Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), "RenIVertexData");
 
     if (result == Persistence::READ_OBJECT)
     {
-        istr >> RenIVertexData::perCreate();
+        pOb = std::make_unique<RenIVertexData>(PERSISTENCE_CONSTRUCTOR);
+        istr >> *pOb.get();
     }
 
     Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), "RenIVertexData");
 
     return istr;
-}
-
-RenIVertexData& RenIVertexData::perCreate()
-{
-    return *(new RenIVertexData(PERSISTENCE_CONSTRUCTOR));
 }
 
 RenIVertexData::RenIVertexData(size_t nVertices)

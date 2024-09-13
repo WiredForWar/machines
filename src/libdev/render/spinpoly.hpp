@@ -17,6 +17,8 @@
 #include "mathex/transf3d.hpp"
 #include "render/material.hpp"
 
+#include <memory>
+
 // class ostream;
 class MexTransform3d;
 class RenScale;
@@ -127,7 +129,7 @@ private:
 
     void applyUVTransform(const RenUVTransform*, const RenMaterial&) const;
 
-    RenIVertexData* vertices_;
+    std::unique_ptr<RenIVertexData> vertices_;
     Vertices uv_;
     RenMaterial material_;
     SpinAxis spinAxis_;

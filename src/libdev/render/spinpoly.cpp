@@ -149,7 +149,6 @@ RenSpinTFPolygon::RenSpinTFPolygon(
 RenSpinTFPolygon::~RenSpinTFPolygon()
 {
     TEST_INVARIANT;
-    delete vertices_;
 }
 
 void RenSpinTFPolygon::CLASS_INVARIANT
@@ -162,16 +161,14 @@ void RenSpinTFPolygon::applyUVTransform(const RenUVTransform* anim, const RenMat
 {
     TEST_INVARIANT;
 
-    RenIVertexData* nonConstVertices_ = _CONST_CAST(RenIVertexData*, vertices_);
-
     if (anim && anim->appliesTo(mat.texture()))
     {
         for (size_t i = 0; i < vertices_->size(); ++i)
             anim->transform(
                 (*vertices_)[i].tu,
                 (*vertices_)[i].tv,
-                &((*nonConstVertices_)[i].tu),
-                &((*nonConstVertices_)[i].tv));
+                &((*vertices_)[i].tu),
+                &((*vertices_)[i].tv));
     }
 
     TEST_INVARIANT;
@@ -461,7 +458,7 @@ void RenSpinTFPolygon::copyVertices(const Vertices& pts)
 const RenIVertexData* RenSpinTFPolygon::vertices() const
 {
     TEST_INVARIANT;
-    return vertices_;
+    return vertices_.get();
 }
 
 void RenSpinTFPolygon::vertices(const Vertices& verts)
@@ -514,7 +511,7 @@ void perRead(PerIstream& istr, RenSpinTFPolygon::SpinAxis& axis)
 
 void perWrite(PerOstream& ostr, const RenSpinTFPolygon& polygon)
 {
-    ostr << polygon.vertices_;
+    ostr << polygon.vertices_.get();
     ostr << polygon.uv_;
     ostr << polygon.material_;
     ostr << polygon.spinAxis_;

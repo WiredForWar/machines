@@ -23,6 +23,8 @@
 #include "render/matvec.hpp"
 #include "render/texture.hpp"
 
+#include <memory>
+
 class IDirect3DRMMeshBuilder;
 class MexTransform3d;
 class GXMesh;
@@ -195,7 +197,7 @@ public:
     static void startFrame();
     static ushort meshId();
 
-    const RenIVertexData* vertices() const { return vertices_; }
+    const RenIVertexData* vertices() const { return vertices_.get(); }
 
     void CLASS_INVARIANT;
 
@@ -211,14 +213,14 @@ private:
     // that it can modify vertices.  Other internal clients only have const
     // access to the same vector.
     friend class RenVertex;
-    RenIVertexData* vertices() { return vertices_; }
+    RenIVertexData* vertices() { return vertices_.get(); }
 
     SysPathName pathName_;
     string meshName_;
-    RenIVertexData* vertices_;
-    RenIVertexData* uvAnimated_;
+    std::unique_ptr<RenIVertexData> vertices_;
+    mutable std::unique_ptr<RenIVertexData> uvAnimated_;
     MexAlignedBox3d boundingVolume_;
-    bool isDirty_; // Indicates the mesh data has changed
+    bool isDirty_{}; // Indicates the mesh data has changed
 
     ctl_min_memory_vector<RenITriangleGroup*> triangles_;
     ctl_min_memory_vector<RenTTFPolygon*> ttfs_;
@@ -229,7 +231,7 @@ private:
     static uint32_t meshCount_, maxVertices_;
 
     // typedef ctl_vector< RenTexture > Textures;
-    Textures* pVertexTexture_;
+    Textures* pVertexTexture_ {};
 
     bool read(const SysPathName& path, const string& mesh, double scale = 1.0);
     bool copyFromMeshBuilder(IDirect3DRMMeshBuilder*);

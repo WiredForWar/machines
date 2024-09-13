@@ -150,10 +150,6 @@ Ren::MeshPtr RenMesh::createEmpty()
 }
 
 RenMesh::RenMesh()
-    : vertices_(nullptr)
-    , uvAnimated_(nullptr)
-    , isDirty_(false)
-    , pVertexTexture_(nullptr)
 {
     PRE(Ren::initialised());
     PRE(RenIDeviceImpl::current());
@@ -197,9 +193,6 @@ RenMesh::~RenMesh()
         ++lIt;
     }
 
-    delete vertices_;
-    delete uvAnimated_;
-
     delete pVertexTexture_;
 
     --meshCount_;
@@ -228,14 +221,14 @@ inline void setWorldMatrix(const MexTransform3d& world, glm::mat4& World, const 
 
 inline void animateVertices(
     const RenIVertexData* in,
-    RenIVertexData*& out,
+    std::unique_ptr<RenIVertexData>& out,
     const RenUVTransform& anim,
     const RenMesh::Textures& vertexTexture)
 {
     if (in)
     {
         if (!out)
-            out = new RenIVertexData(*in);
+            out = std::unique_ptr<RenIVertexData>(new RenIVertexData(*in));
 
         RenIVertexData::const_iterator from = in->begin();
         RenIVertexData::iterator to = out->begin();
@@ -510,7 +503,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
         _CONST_CAST(RenMesh*, this)->createTextures();
     }
 
-    animateVertices(vertices_, _CONST_CAST(RenMesh*, this)->uvAnimated_, anim, *pVertexTexture_);
+    animateVertices(vertices_.get(), uvAnimated_, anim, *pVertexTexture_);
 
     if (uvAnimated_)
         devImpl->illuminator()->lightVertices(*uvAnimated_);
@@ -574,7 +567,7 @@ void RenMesh::render(
         _CONST_CAST(RenMesh*, this)->createTextures();
     }
 
-    animateVertices(vertices_, _CONST_CAST(RenMesh*, this)->uvAnimated_, anim, *pVertexTexture_);
+    animateVertices(vertices_.get(), uvAnimated_, anim, *pVertexTexture_);
 
     if (uvAnimated_)
         devImpl->illuminator()->lightVertices(*uvAnimated_);
@@ -731,7 +724,7 @@ Ren::VertexIdx RenMesh::addOrFindVertex(const MexPoint3d& pt, double epsilon)
     PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
 
     if (!vertices_)
-        vertices_ = new RenIVertexData(20);
+        vertices_ = std::make_unique<RenIVertexData>(20);
 
     const double epSqr = epsilon * epsilon;
 
@@ -751,7 +744,7 @@ Ren::VertexIdx RenMesh::addOrFindVertex(const MexPoint3d& pt, double epsilon)
     static const MexVec3 newNormal(0, 0, 1);
     static const MexPoint2d newUV(0, 0);
     vertices_->addVertex(pt, newNormal, newUV);
-    checkMaxVertices(vertices_, maxVertices_);
+    checkMaxVertices(vertices_.get(), maxVertices_);
     isDirty_ = true;
     return result;
 }
@@ -1636,7 +1629,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     }
 
     // Create an array of vertices with exactly the required amount of space.
-    vertices_ = new RenIVertexData(totalVertices);
+    vertices_ = std::make_unique<RenIVertexData>(totalVertices);
 
     // Visit each group and create a list of triangles for each one.
     size_t nVertices = 0;
@@ -2046,7 +2039,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     // We traverse the groups twice and compute a total number of vertices
     // separately each time.  They should, of course, be the same.
     ASSERT(nVertices == totalVertices, logic_error(""));
-    checkMaxVertices(vertices_, maxVertices_);
+    checkMaxVertices(vertices_.get(), maxVertices_);
 
     // Sort the distinct polygon groups for correct coplanar ordering.
     PRE_INFO(triangles_.size());
@@ -2076,7 +2069,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
     PRE(mesh->mPosFaces.size() == mesh->mFaceMaterials.size());
 
     Ren::VertexIdx renVertexIndex;
-    vertices_ = new RenIVertexData(mesh->mPositions.size());
+    vertices_ = std::make_unique<RenIVertexData>(mesh->mPositions.size());
 
     for (uint i = 0; i < mesh->mPositions.size(); ++i)
     {
@@ -2207,7 +2200,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
             (Ren::VertexIdx)mesh->mPosFaces[i].mIndices[2]);
     }
 
-    checkMaxVertices(vertices_, maxVertices_);
+    checkMaxVertices(vertices_.get(), maxVertices_);
 
     // Sort the distinct polygon groups for correct coplanar ordering.
     PRE_INFO(triangles_.size());
@@ -2382,7 +2375,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
     // to the information gathered
 
     DBG_LOAD0("--Creation of the vertices_ structure--" << std::endl);
-    vertices_ = new RenIVertexData(renNumVertices);
+    vertices_ = std::make_unique<RenIVertexData>(renNumVertices);
     // perform a sweep of the renIndexesMap and record the vertices coordinates in vertices_
     // update the correspondance table between the points indexes in gxmesh and vertices_
     DBG_LOAD3(std::endl << "Indexes correspondance table" << std::endl);
@@ -2541,7 +2534,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
         DBG_LOAD3("End creation group of polygons" << std::endl);
     } // for (gxPSetMapIt=gxPSetMap.begin()...
 
-    checkMaxVertices(vertices_, maxVertices_);
+    checkMaxVertices(vertices_.get(), maxVertices_);
 
     DBG_LOAD0("Conversion succeded" << std::endl);
     return true;
@@ -2681,8 +2674,8 @@ void perWrite(PerOstream& ostr, const RenMesh& mesh)
 {
     ostr << mesh.pathName_;
     ostr << mesh.meshName_;
-    ostr << mesh.vertices_;
-    ostr << mesh.uvAnimated_;
+    ostr << mesh.vertices_.get();
+    ostr << mesh.uvAnimated_.get();
     ostr << mesh.boundingVolume_;
     ostr << mesh.isDirty_;
     ostr << mesh.triangles_;
@@ -2706,7 +2699,7 @@ void perRead(PerIstream& istr, RenMesh& mesh)
     istr >> mesh.lines_;
     istr >> mesh.pVertexTexture_;
 
-    checkMaxVertices(mesh.vertices_, RenMesh::maxVertices_);
+    checkMaxVertices(mesh.vertices_.get(), RenMesh::maxVertices_);
 }
 
 void RenMesh::CLASS_INVARIANT
