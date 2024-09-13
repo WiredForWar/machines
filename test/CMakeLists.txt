@@ -47,6 +47,7 @@ if(USE_SWSCALE)
     append_test(FrameScalerTests ani/FrameScalerTests.cpp)
 endif()
 #~:device
+append_test(BasePersistenceTests base/PersistenceTests.cpp)
 append_test(DevButtonEventTests device/DevButtonEventTests.cpp)
 append_test(DevEventQueueTests device/DevEventQueueTests.cpp)
 append_test(DevMouseTests device/DevMouseTests.cpp)
