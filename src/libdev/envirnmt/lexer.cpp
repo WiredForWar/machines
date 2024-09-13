@@ -133,7 +133,7 @@ union YYSTYPE
 {
     int intVal;
     float floatVal;
-    string* pString;
+    std::string* pString;
     RenColour* pColour;
     EnvElevationColourTable* pClut;
     EnvElevationColourTable::Entry* pClutEntry;
@@ -511,8 +511,8 @@ do_action:
                 // # line 71 "d:\libdev\envirnmt\source\lexer.l"
                 {
                     // The regex string is quoted.  Drop the first and last chars.
-                    yylval.pString = new string(yytextChar() + 1, strlen(yytextChar()) - 2);
-                    const string& str = *(yylval.pString);
+                    yylval.pString = new std::string(yytextChar() + 1, strlen(yytextChar()) - 2);
+                    const std::string& str = *(yylval.pString);
                     IAIN_STREAM("Lexed string \"" << str << "\"" << std::endl);
                     return STRING;
                 }

@@ -18,7 +18,7 @@
 PER_DEFINE_PERSISTENT(MachLogHighUnitCountCondition);
 
 MachLogHighUnitCountCondition::MachLogHighUnitCountCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race,
     MachLog::ObjectType ot,
     size_t number,

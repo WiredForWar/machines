@@ -23,7 +23,8 @@
 // #include "machlog/pod.hpp"
 
 #include "machlog/cntrl.hpp"
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 /* //////////////////////////////////////////////////////////////// */
 class MachLogFactory;
@@ -47,7 +48,7 @@ class MachLogAIController : public MachLogController
 public:
     using ProductionList = ctl_list<MachLogProductionUnit*>;
 
-    MachLogAIController(MachLogRace* logRace, W4dEntity* pPhysObject, const string& AIStrategicRules);
+    MachLogAIController(MachLogRace* logRace, W4dEntity* pPhysObject, const std::string& AIStrategicRules);
 
     ~MachLogAIController() override;
 

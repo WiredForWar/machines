@@ -93,7 +93,7 @@ void SimConditionsManager::addAction(std::unique_ptr<SimAction> pNewAction)
     pImpl_->actions_.emplace_back(std::move(pNewAction));
 }
 
-void SimConditionsManager::enableAction(const string& keyName)
+void SimConditionsManager::enableAction(const std::string& keyName)
 {
     HAL_STREAM("SimConditionsManager:;enableAction " << keyName << std::endl);
     Actions& actions = pImpl_->actions_;

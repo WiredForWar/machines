@@ -14,7 +14,7 @@
 PER_DEFINE_PERSISTENT(MachLogAnyAllCondition);
 
 MachLogAnyAllCondition::MachLogAnyAllCondition(
-    const string& keyName,
+    const std::string& keyName,
     const ctl_pvector<SimCondition>& subConditions,
     BooleanOperator booleanOperator)
     : SimCondition(keyName, subConditions, booleanOperator)

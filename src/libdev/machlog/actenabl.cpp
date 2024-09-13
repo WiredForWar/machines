@@ -82,7 +82,7 @@ MachLogEnableActionAction::MachLogEnableActionAction(PerConstructor con)
 }
 
 std::unique_ptr<MachLogEnableActionAction>
-MachLogEnableActionAction::newDynamic(SimCondition* pCondition, bool enabled, const string& enableToken)
+MachLogEnableActionAction::newDynamic(SimCondition* pCondition, bool enabled, const std::string& enableToken)
 {
     std::unique_ptr<MachLogEnableActionAction> pResult(new MachLogEnableActionAction(pCondition, enabled));
     pResult->actionConditionKeyName_ = enableToken;

@@ -11,7 +11,7 @@
 
 PER_DEFINE_PERSISTENT(MachGuiDbSystem);
 
-MachGuiDbSystem::MachGuiDbSystem(const string& systemName, uint menuStringId)
+MachGuiDbSystem::MachGuiDbSystem(const std::string& systemName, uint menuStringId)
     : MachGuiDbElement(menuStringId)
 {
     pData_ = new MachGuiDbISystem;
@@ -49,12 +49,12 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbSystem& t)
     return o;
 }
 
-void MachGuiDbSystem::campaignPicture(const string& filename)
+void MachGuiDbSystem::campaignPicture(const std::string& filename)
 {
     pData_->campaignPicture_ = filename;
 }
 
-const string& MachGuiDbSystem::campaignPicture() const
+const std::string& MachGuiDbSystem::campaignPicture() const
 {
     return pData_->campaignPicture_;
 }

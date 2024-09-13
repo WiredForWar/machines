@@ -18,24 +18,24 @@ class EnvElevationColourTable;
 class EnvISatelliteParams
 {
 public:
-    EnvISatelliteParams(const string* name); // PRE(name);
+    EnvISatelliteParams(const std::string* name); // PRE(name);
     ~EnvISatelliteParams();
 
-    const string& name() const { return name_; }
+    const std::string& name() const { return name_; }
 
-    void orbit(const string* name);
-    void dirLightClut(const string* name);
-    void ambLightClut(const string* name);
-    void mesh(const string* name);
-    void meshColourClut(const string* name);
+    void orbit(const std::string* name);
+    void dirLightClut(const std::string* name);
+    void ambLightClut(const std::string* name);
+    void mesh(const std::string* name);
+    void meshColourClut(const std::string* name);
 
     EnvSatellite* createSatellite(W4dSceneManager*);
 
     void CLASS_INVARIANT;
 
 private:
-    const string name_;
-    string meshName_;
+    const std::string name_;
+    std::string meshName_;
     EnvOrbit* orbit_;
     EnvElevationColourTable* dirClut_;
     EnvElevationColourTable* ambClut_;

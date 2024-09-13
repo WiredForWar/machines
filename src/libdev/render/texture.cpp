@@ -47,18 +47,18 @@ void perWrite(PerOstream& ostr, const RenTexture& texture)
     //  mechanism.
 
     // SysPathName pathName = texture.name();
-    SysPathName pathName = string(texture.name());
+    SysPathName pathName = std::string(texture.name());
 
     if (pathName.existsAsFile())
         PER_WRITE_RAW_OBJECT(ostr, pathName.filename());
     else
         // PER_WRITE_RAW_OBJECT( ostr, texture.name() );
-        PER_WRITE_RAW_OBJECT(ostr, string(texture.name()));
+        PER_WRITE_RAW_OBJECT(ostr, std::string(texture.name()));
 }
 
 void perRead(PerIstream& istr, RenTexture& texture)
 {
-    string name;
+    std::string name;
     //  Because we are simply using the name as a label we must
     //  bypass the normal persistence mechanism.
 

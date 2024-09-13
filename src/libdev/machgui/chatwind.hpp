@@ -26,7 +26,7 @@ public:
     MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box);
     ~MachGuiChatWindow() override;
 
-    static void addText(const string& text);
+    static void addText(const std::string& text);
 
     static void clearAllText();
 

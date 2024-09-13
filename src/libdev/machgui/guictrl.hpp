@@ -28,7 +28,7 @@ public:
 protected:
     void doDisplayInteriorEnabled(const Gui::Coord& abs) override;
 
-    string getRootDirectory() const;
+    std::string getRootDirectory() const;
 
     MachInGameScreen* pInGameScreen_ = nullptr;
 

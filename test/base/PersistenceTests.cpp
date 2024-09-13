@@ -9,7 +9,7 @@ TEST(PersistenceTests, ReadWriteString)
     std::ostringstream ofstr(std::ios::binary);
     PerOstream ostr(ofstr);
 
-    string str = "my_text";
+    std::string str = "my_text";
     ostr << str;
 
     constexpr PerIdentifier initialId = 100;

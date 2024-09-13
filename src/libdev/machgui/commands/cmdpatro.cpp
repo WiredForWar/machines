@@ -105,7 +105,7 @@ bool MachGuiPatrolCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiPatrolCommand::doApply(MachActor* pActor, string*)
+bool MachGuiPatrolCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(path_.size() != 0);
 
@@ -172,9 +172,9 @@ std::unique_ptr<MachGuiCommand> MachGuiPatrolCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiPatrolCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiPatrolCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/patrol.bmp", "gui/commands/patrol.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/patrol.bmp", "gui/commands/patrol.bmp");
     return names;
 }
 

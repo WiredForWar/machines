@@ -82,7 +82,7 @@ public:
     void setGuiViewport();
 
     void buttonAction(MachGui::ButtonEvent);
-    void buttonAction(MachGui::ButtonEvent, const string& wavFile);
+    void buttonAction(MachGui::ButtonEvent, const std::string& wavFile);
 
     void updateGui();
     void displayGui();
@@ -256,7 +256,7 @@ public:
     // these will be called if there is a MachGuiSystemMessageHandler and the appropriate
     // network system message is isssued.
     bool handleHostMessage();
-    bool handleDestroyPlayerMessage(const string&);
+    bool handleDestroyPlayerMessage(const std::string&);
     bool handleSessionLostMessage();
 
     void contextFinish();

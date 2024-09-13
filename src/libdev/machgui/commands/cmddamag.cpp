@@ -52,7 +52,7 @@ bool MachGuiDamageCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiDamageCommand::doApply(MachActor* pActor, string* /*pReason*/)
+bool MachGuiDamageCommand::doApply(MachActor* pActor, std::string* /*pReason*/)
 {
     PRE(pActor->objectIsMachine() || pActor->objectIsConstruction());
 
@@ -92,9 +92,9 @@ std::unique_ptr<MachGuiCommand> MachGuiDamageCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiDamageCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiDamageCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/damage.bmp", "gui/commands/damage.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/damage.bmp", "gui/commands/damage.bmp");
     return names;
 }
 

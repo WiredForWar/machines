@@ -78,7 +78,7 @@ void MachGuiStandGroundCommand::typeData(MachLog::ObjectType /*objectType*/, int
 }
 
 // virtual
-bool MachGuiStandGroundCommand::doApply(MachActor* pActor, string*)
+bool MachGuiStandGroundCommand::doApply(MachActor* pActor, std::string*)
 {
     ASSERT(pActor->objectIsMachine(), "Tried to give stand ground operation to non-machine actor!");
 
@@ -111,9 +111,9 @@ std::unique_ptr<MachGuiCommand> MachGuiStandGroundCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiStandGroundCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiStandGroundCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/stand.bmp", "gui/commands/stand.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/stand.bmp", "gui/commands/stand.bmp");
     return names;
 }
 
@@ -136,7 +136,7 @@ bool MachGuiStandGroundCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiStandGroundCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     ASSERT(false, "There is no admin stand ground operation");
 

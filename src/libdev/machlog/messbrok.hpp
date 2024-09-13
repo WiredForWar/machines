@@ -259,7 +259,7 @@ public:
     // pLocalBoundary is allowed to be NULL as DUMB artefacts do not have any data associated with them.
     void sendAddNewArtefactSubTypeMessage(
         int subType,
-        const string& name,
+        const std::string& name,
         MachPhys::BuildingMaterialUnits cost,
         MachPhys::ArmourUnits armour,
         MachPhys::HitPointUnits hitPoints,

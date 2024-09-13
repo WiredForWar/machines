@@ -42,7 +42,7 @@ protected:
 
 private:
     MachLogResearchCompleteCondition(
-        const string& keyName,
+        const std::string& keyName,
         MachPhys::Race,
         MachLog::ObjectType,
         int hwLevel,

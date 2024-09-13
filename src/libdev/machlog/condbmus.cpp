@@ -16,7 +16,7 @@
 PER_DEFINE_PERSISTENT(MachLogBMUCountCondition);
 
 MachLogBMUCountCondition::MachLogBMUCountCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race,
     MachPhys::BuildingMaterialUnits number,
     MachLogBMUCountCondition::CheckType checkType)

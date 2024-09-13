@@ -66,8 +66,8 @@ public:
     // RenDevice::useDevice() must be called before any of the creation methods.
     // PRE(Ren::initialised());
     // PRE(RenDevice::current());
-    static Ren::ConstMeshPtr createShared(const SysPathName& path, const string& mesh, double scale = 1.0);
-    static Ren::MeshPtr createUnique(const SysPathName& path, const string& mesh, double scale = 1.0);
+    static Ren::ConstMeshPtr createShared(const SysPathName& path, const std::string& mesh, double scale = 1.0);
+    static Ren::MeshPtr createUnique(const SysPathName& path, const std::string& mesh, double scale = 1.0);
     static Ren::MeshPtr createEmpty();
 
     virtual ~RenMesh();
@@ -177,8 +177,8 @@ public:
 
     // Returns the name of the file that this was loaded from.  For debugging.
     const SysPathName& pathName() const { return pathName_; }
-    const string& meshName() const { return meshName_; }
-    void meshName(const string&);
+    const std::string& meshName() const { return meshName_; }
+    void meshName(const std::string&);
 
     // These are forwared to the internal class RenIMeshFactory.
     // These methods don't actually destroy the mesh instances, they just
@@ -216,7 +216,7 @@ private:
     RenIVertexData* vertices() { return vertices_.get(); }
 
     SysPathName pathName_;
-    string meshName_;
+    std::string meshName_;
     std::unique_ptr<RenIVertexData> vertices_;
     mutable std::unique_ptr<RenIVertexData> uvAnimated_;
     MexAlignedBox3d boundingVolume_;
@@ -233,7 +233,7 @@ private:
     // typedef ctl_vector< RenTexture > Textures;
     Textures* pVertexTexture_ {};
 
-    bool read(const SysPathName& path, const string& mesh, double scale = 1.0);
+    bool read(const SysPathName& path, const std::string& mesh, double scale = 1.0);
     bool copyFromMeshBuilder(IDirect3DRMMeshBuilder*);
     Ren::VertexIdx addOrFindVertex(const MexPoint3d&, double epsilon);
     bool buildFromXMesh(XFile::Scene*, XFile::Mesh*);

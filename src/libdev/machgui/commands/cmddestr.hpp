@@ -64,7 +64,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     // Set the type data associated with the command.
     void typeData(MachLog::ObjectType objectType, int subType, uint level) override;
@@ -120,7 +120,7 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 };
 
 #endif

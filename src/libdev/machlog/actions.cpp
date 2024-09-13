@@ -82,7 +82,7 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
     bool parsingConditions = true;
     bool parsingActions = false;
 
-    typedef ctl_map<string, SimCondition*, std::less<string>> ConditionNameMap;
+    typedef ctl_map<std::string, SimCondition*, std::less<std::string>> ConditionNameMap;
     ConditionNameMap conditionMap;
 
     while (! finished)
@@ -223,7 +223,7 @@ void MachLogActions::parseActionsSection(UtlLineTokeniser* pParser)
             size_t tokensSize = pParser->tokens().size();
             ASSERT(tokensSize >= 3, "There must be at least three tokens on an actions line <type> ON <keyname>\n");
             SimCondition* pCondition = nullptr;
-            string conditionKeyName = pParser->tokens()[2];
+            std::string conditionKeyName = pParser->tokens()[2];
             ASSERT_INFO("ConditionKeyName " << conditionKeyName << std::endl);
             pCondition = conditionMap[conditionKeyName];
             bool enabled = true;
@@ -448,8 +448,8 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                     if (doWork)
                     {
                         // create a LOW_UNIT_COUNT on the POD and a LOST action to go with it.
-                        string raceExtensions[] = { "_RED", "_BLUE", "_GREEN", "_YELLOW" };
-                        string nameLow = "dynamic_low_unit_count";
+                        std::string raceExtensions[] = { "_RED", "_BLUE", "_GREEN", "_YELLOW" };
+                        std::string nameLow = "dynamic_low_unit_count";
                         nameLow += raceExtensions[i];
                         MachLogLowUnitCountCondition* pLUCr
                             = new MachLogLowUnitCountCondition(nameLow, i, MachLog::POD, 1, 0);
@@ -458,7 +458,7 @@ void MachLogActions::createDynamically(MachLog::VictoryCondition vc, const PhysR
                         SimManager::instance().addAction(std::move(pPodLostr));
                         if (createEnableActions)
                         {
-                            string nameTimer = "dynamic_timer_for_pod_lost";
+                            std::string nameTimer = "dynamic_timer_for_pod_lost";
                             nameTimer += raceExtensions[i];
                             MachLogTimerCondition* pTimerForPodLostr = new MachLogTimerCondition(nameTimer, 10);
                             std::unique_ptr<MachLogEnableActionAction> pEnablePodLostr

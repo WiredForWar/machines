@@ -31,7 +31,7 @@ public:
     // this constructor will not normally be called directly but may be called for the dynamic creation of these
     // objects.
     MachLogLowUnitCountCondition(
-        const string& keyName,
+        const std::string& keyName,
         MachPhys::Race,
         MachLog::ObjectType,
         size_t number,

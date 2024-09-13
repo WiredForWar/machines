@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDatabaseHandler& t)
 
 // virtual
 const MachLogDatabaseHandler::Units&
-MachGuiDatabaseHandler::survivingUnits(MachPhys::Race race, const string& scenarioName) const
+MachGuiDatabaseHandler::survivingUnits(MachPhys::Race race, const std::string& scenarioName) const
 {
     // Use an empty static collection to return if we don't find what we are looking for below
     static MachLogDatabaseHandler::Units dummyUnits;
@@ -67,7 +67,7 @@ MachGuiDatabaseHandler::survivingUnits(MachPhys::Race race, const string& scenar
 }
 
 // virtual
-bool MachGuiDatabaseHandler::isFlagSet(const string& flag, const string& scenarioName) const
+bool MachGuiDatabaseHandler::isFlagSet(const std::string& flag, const std::string& scenarioName) const
 {
     bool isSet = false;
 

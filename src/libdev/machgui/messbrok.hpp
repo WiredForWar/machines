@@ -63,17 +63,17 @@ public:
 
     void processMessage(NetMessage*) override;
 
-    void sendChatMessage(const string& chat);
+    void sendChatMessage(const std::string& chat);
 
-    void sendJoinMessage(const string& playerName, int uniqueMachineNumber);
+    void sendJoinMessage(const std::string& playerName, int uniqueMachineNumber);
 
     void sendUpdatePlayersMessage();
 
     void sendUpdateGameSettingsMessage();
 
-    void sendRaceChangeRequest(const string& playerName, size_t playerIndex, MachPhys::Race newRace);
+    void sendRaceChangeRequest(const std::string& playerName, size_t playerIndex, MachPhys::Race newRace);
 
-    void sendImReadyMessage(const string& playerName, bool ready);
+    void sendImReadyMessage(const std::string& playerName, bool ready);
 
     // When all players have sent an "ImReady" message then the host can start the game. This message
     // will instruct all players to switch into game mode.
@@ -81,15 +81,15 @@ public:
 
     void sendHostCancelMessage();
 
-    void sendClientCancelMessage(const string& playerName);
+    void sendClientCancelMessage(const std::string& playerName);
 
-    void sendInGameChatMessage(const string& message, MachPhys::Race intendedForRace);
+    void sendInGameChatMessage(const std::string& message, MachPhys::Race intendedForRace);
 
-    void sendHasMachinesCDMessage(const string& playerName, bool hasMachinesCD);
+    void sendHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD);
 
-    void sendIveLostMessage(const string& message);
+    void sendIveLostMessage(const std::string& message);
 
-    void sendNameChangeMessage(const string& newPlayerName, int uniqueMachineNumber);
+    void sendNameChangeMessage(const std::string& newPlayerName, int uniqueMachineNumber);
 
 protected:
     void processMachGuiMessage(NetMessage* pMessage);

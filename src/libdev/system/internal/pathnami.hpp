@@ -24,11 +24,11 @@ class SysPathNameImpl
 public:
     friend class SysPathName;
 
-    string pathname_;
+    std::string pathname_;
 
     // If this is a relative pathname this includes the root directory.
-    string fullPathname_;
-    ctl_vector<string> components_;
+    std::string fullPathname_;
+    ctl_vector<std::string> components_;
 
     // True iff the pathname has been explicitly set.
     bool set_;

@@ -17,7 +17,7 @@
 
 struct MachLogDatabaseHandlerImpl
 {
-    using Strings = ctl_vector<string>;
+    using Strings = ctl_vector<std::string>;
     Strings setFlags_;
 
     using TaskFlags = ctl_vector<bool>;
@@ -83,7 +83,7 @@ void MachLogDatabaseHandler::raceUnits(MachPhys::Race race, Units* pUnits) const
     }
 }
 
-void MachLogDatabaseHandler::setScenarioFlag(const string& flag)
+void MachLogDatabaseHandler::setScenarioFlag(const std::string& flag)
 {
     CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
     setFlags_.push_back(flag);
@@ -95,7 +95,7 @@ uint MachLogDatabaseHandler::nSetFlags() const
     return setFlags_.size();
 }
 
-const string& MachLogDatabaseHandler::setFlag(uint index) const
+const std::string& MachLogDatabaseHandler::setFlag(uint index) const
 {
     PRE(index < nSetFlags());
     CB_DEPIMPL(MachLogDatabaseHandlerImpl::Strings, setFlags_);
@@ -165,7 +165,7 @@ void MachLogDatabaseHandler::writePersistenceData(PerOstream& ostr)
 
     for (uint i = 0; i != nFlags; ++i)
     {
-        string tempString = setFlag(i);
+        std::string tempString = setFlag(i);
         PER_WRITE_RAW_OBJECT(ostr, tempString);
     }
 
@@ -190,7 +190,7 @@ void MachLogDatabaseHandler::readPersistenceData(PerIstream& istr)
     PER_READ_RAW_OBJECT(istr, nFlags);
     for (uint i = 0; i != nFlags; ++i)
     {
-        string tempString;
+        std::string tempString;
         PER_READ_RAW_OBJECT(istr, tempString);
         setScenarioFlag(tempString);
     }

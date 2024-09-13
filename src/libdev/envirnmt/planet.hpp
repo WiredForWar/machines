@@ -54,7 +54,7 @@ public:
     void enable() override;
     void disable() override;
     bool enabled() const override;
-    virtual void lightConfiguration(const string& c, PhysRelativeTime);
+    virtual void lightConfiguration(const std::string& c, PhysRelativeTime);
     // The mean r, g and b of all satellites and the ambient light.
     MATHEX_SCALAR averageIllumination() const override;
     void nvgOn(bool yesNo) override;

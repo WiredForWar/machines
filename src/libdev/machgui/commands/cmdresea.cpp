@@ -64,7 +64,7 @@ bool MachGuiResearchCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiResearchCommand::doApply(MachActor*, string*)
+bool MachGuiResearchCommand::doApply(MachActor*, std::string*)
 {
     // This command interaction is all via the menu icons, so this function is not called
     return true;
@@ -99,9 +99,9 @@ std::unique_ptr<MachGuiCommand> MachGuiResearchCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiResearchCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiResearchCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/research.bmp", "gui/commands/research.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/research.bmp", "gui/commands/research.bmp");
     return names;
 }
 

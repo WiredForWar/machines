@@ -835,13 +835,13 @@ void NetINetwork::setAppUid()
         NETWORK_STREAM(" open line tokeniser with appguid.ini\n");
         UtlLineTokeniser parser(*pGuidStream2, pathName.c_str());
 
-        static string appName = "";
-        static string fileName = "";
-        static string commandLine = "";
-        static string description = "";
+        static std::string appName = "";
+        static std::string fileName = "";
+        static std::string commandLine = "";
+        static std::string description = "";
         while (! parser.finished())
         {
-            const string& token = parser.tokens()[0];
+            const std::string& token = parser.tokens()[0];
             if (token == "application")
             {
                 appName = "";
@@ -960,7 +960,7 @@ void NetINetwork::systemMessageHandler(NetSystemMessageHandler* pMessageHandler)
     pSystemMessageHandler_ = pMessageHandler;
 }
 
-void NetINetwork::doAbort(const string& reason)
+void NetINetwork::doAbort(const std::string& reason)
 {
     NETWORK_STREAM("NetINetwork::doAbort " << reason << std::endl);
 }
@@ -1188,7 +1188,7 @@ size_t NetINetwork::maxSentMessagesPerSecond() const
     {
         NetINetwork* pMe = _CONST_CAST(NetINetwork*, this);
         bool fromLan = (currentProtocol() == NetNetwork::NetworkProtocol::IPX);
-        string keyValue = "Max packets per second";
+        std::string keyValue = "Max packets per second";
 
         if (fromLan)
             keyValue += " (IPX)";

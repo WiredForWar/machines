@@ -96,7 +96,7 @@ MachPhysHardwareLab::MachPhysHardwareLab(W4dEntity* pParent, Id id)
         char textN[4];
         //      itoa(i, textN, 10 );
         sprintf(textN, "%d", i);
-        string neonLinkName = "neon" + string(textN);
+        std::string neonLinkName = "neon" + std::string(textN);
         W4dLink* pLink = nullptr;
         if (findLink(neonLinkName, &pLink))
         {

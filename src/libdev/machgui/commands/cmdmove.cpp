@@ -140,7 +140,7 @@ bool MachGuiMoveCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiMoveCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiMoveCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsMachine());
 
@@ -171,7 +171,7 @@ bool MachGuiMoveCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, string*)
+bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, std::string*)
 {
     PRE(points_.size() != 0);
     PRE(pActor->objectIsMachine());
@@ -202,7 +202,7 @@ bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, string*)
     return true;
 }
 
-bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
+bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, std::string* pReason)
 {
     // ! this method has multiple exit points !
 
@@ -280,7 +280,7 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, string* pReason)
     return result;
 }
 
-bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, string*)
+bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, std::string*)
 {
     PRE(pAPC_ != nullptr);
     PRE(pActor->objectIsMachine());
@@ -311,7 +311,7 @@ bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, string*)
     return canEnter;
 }
 
-bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, string*)
+bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, std::string*)
 {
     bool result = false;
 
@@ -450,9 +450,9 @@ std::unique_ptr<MachGuiCommand> MachGuiMoveCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiMoveCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiMoveCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/move.bmp", "gui/commands/move.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/move.bmp", "gui/commands/move.bmp");
     return names;
 }
 
@@ -509,7 +509,7 @@ int& MachGuiMoveCommand::lowestMinimumAccessSize()
 }
 
 // virtual
-bool MachGuiMoveCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiMoveCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
     ;
@@ -544,7 +544,7 @@ bool MachGuiMoveCommand::canApplyToGroup() const
 }
 
 // virtual
-bool MachGuiMoveCommand::doGroupApply(const Actors& actors, string* pReason)
+bool MachGuiMoveCommand::doGroupApply(const Actors& actors, std::string* pReason)
 {
     PRE(canApplyToGroup());
     PRE(points_.size() != 0);

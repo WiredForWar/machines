@@ -47,7 +47,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     // Respond to pick at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
@@ -113,12 +113,12 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 
     // Execute the command as a sqaudron whose most intelligent administrator
     // is pAdministrator. If successful return true. Otherwise false, with
-    // a prompt string indicating reason for failure in pReason.
-    bool doAdminApply(MachLogAdministrator* pAdministrator, string* pReason) override;
+    // a prompt std::string indicating reason for failure in pReason.
+    bool doAdminApply(MachLogAdministrator* pAdministrator, std::string* pReason) override;
     // PRE( canAdminApply() );
 
     //  True iff this command can be applied to a group of actors at once
@@ -127,9 +127,9 @@ private:
     using Actors = ctl_pvector<MachActor>;
 
     // Execute the command for all actors in actors, returning true if done so,
-    // or false if not possible. If the latter, a prompt string explaining
+    // or false if not possible. If the latter, a prompt std::string explaining
     // the reason is returned in pReason.
-    bool doGroupApply(const Actors& actors, string* pReason) override;
+    bool doGroupApply(const Actors& actors, std::string* pReason) override;
     // PRE( isInteractionComplete() )
 
     /////////////////////////////////////////////////
@@ -146,10 +146,10 @@ private:
     };
 
     // Implement various flavours of command
-    bool applySimpleMove(MachActor* pActor, string* pReason);
-    bool applyEnterBuilding(MachActor* pActor, string* pReason);
-    bool applyEnterAPC(MachActor* pActor, string* pReason);
-    bool applyFollowMachine(MachActor* pActor, string* pReason);
+    bool applySimpleMove(MachActor* pActor, std::string* pReason);
+    bool applyEnterBuilding(MachActor* pActor, std::string* pReason);
+    bool applyEnterAPC(MachActor* pActor, std::string* pReason);
+    bool applyFollowMachine(MachActor* pActor, std::string* pReason);
 
     // Data members
     Action action_; // Denotes the action selected by the move command

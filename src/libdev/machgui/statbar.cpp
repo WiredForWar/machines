@@ -20,7 +20,7 @@
 MachGuiStatisticsBar::MachGuiStatisticsBar(
     GuiDisplayable* pParent,
     const Gui::Coord& topLeft,
-    const string& bitmapPathname,
+    const std::string& bitmapPathname,
     uint range)
 {
     SysPathName barBmpFilename(bitmapPathname);
@@ -118,7 +118,7 @@ void MachGuiStatisticsBar::showStatistic()
 
     int yOffset = (statsBarBmp_.height() - font.charHeight()) / 2;
 
-    string newStatistic = testForOverflow(string(statistic));
+    std::string newStatistic = testForOverflow(std::string(statistic));
     delete statsText_;
     statsText_ = nullptr;
 
@@ -135,9 +135,9 @@ void MachGuiStatisticsBar::showStatistic()
 }
 
 // static
-string MachGuiStatisticsBar::testForOverflow(const string& score)
+std::string MachGuiStatisticsBar::testForOverflow(const std::string& score)
 {
-    string overflowScore = score;
+    std::string overflowScore = score;
 
     if (score.length() > 6)
     {

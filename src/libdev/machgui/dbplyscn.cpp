@@ -130,7 +130,7 @@ const MachGuiDbPlayerScenario::Units& MachGuiDbPlayerScenario::raceSurvivingUnit
     return pData_->raceUnits_[race];
 }
 
-void MachGuiDbPlayerScenario::setFlag(const string& flag, bool doSet)
+void MachGuiDbPlayerScenario::setFlag(const std::string& flag, bool doSet)
 {
     // See if the flag is already entered
     MachGuiDbIPlayerScenario::Strings& setFlags = pData_->setFlags_;
@@ -149,7 +149,7 @@ void MachGuiDbPlayerScenario::setFlag(const string& flag, bool doSet)
     }
 }
 
-bool MachGuiDbPlayerScenario::isFlagSet(const string& flag)
+bool MachGuiDbPlayerScenario::isFlagSet(const std::string& flag)
 {
     MachGuiDbIPlayerScenario::Strings& setFlags = pData_->setFlags_;
 

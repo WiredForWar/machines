@@ -74,7 +74,7 @@ EXISTS(W4dEntity);
     CB_DEPIMPL(W4dId, id_);                                                                                            \
     CB_DEPIMPL(MexAlignedBox3d*, boundingVolume_);                                                                     \
     CB_DEPIMPL(W4dLocalLightList*, pLocalLightList_);                                                                  \
-    CB_DEPIMPL(string, name_);                                                                                        \
+    CB_DEPIMPL(std::string, name_);                                                                                    \
     CB_DEPIMPL(RenColour*, pFilterColour_);                                                                            \
     CB_DEPIMPL(int, nLinkedSounds_);
 
@@ -1356,7 +1356,7 @@ void W4dEntity::parseMesh(const SysPathName& directoryname, UtlLineTokeniser* pP
 
         ASSERT_INFO(meshPathname);
 
-        const string& meshName = pParser->tokens()[2];
+        const std::string& meshName = pParser->tokens()[2];
 
         pMesh = RenMeshInstance::createShared(meshPathname, meshName);
 
@@ -1420,14 +1420,14 @@ uint32_t W4dEntity::latestRenderPassId() const
     return passId_;
 }
 
-void W4dEntity::name(const string& n)
+void W4dEntity::name(const std::string& n)
 {
     TEST_INVARIANT;
     CB_W4dEntity_DEPIMPL();
     pImpl_->name(n);
 }
 
-const string& W4dEntity::name() const
+const std::string& W4dEntity::name() const
 {
     TEST_INVARIANT;
     return pImpl_->name();
@@ -2365,7 +2365,7 @@ void W4dEntity::parseCycleTexture(UtlLineTokeniser* pParser)
         ASSERT(pParser->tokens()[3] == "FRAMES", "");
         ASSERT(pParser->tokens()[5] == "MAX_LOD", "");
 
-        string textureName = pParser->tokens()[0];
+        std::string textureName = pParser->tokens()[0];
         size_t startTexture = atoi(pParser->tokens()[1].c_str());
         size_t endTexture = atoi(pParser->tokens()[2].c_str());
         size_t nrepetations = atoi(pParser->tokens()[4].c_str());
@@ -2390,7 +2390,7 @@ void W4dEntity::parseUVTranslate(UtlLineTokeniser* pParser)
     ASSERT(pParser->tokens()[4] == "MAX_LOD", "");
     ASSERT(pParser->tokens().size() == 6, "");
 
-    string textureName = pParser->tokens()[1];
+    std::string textureName = pParser->tokens()[1];
     MATHEX_SCALAR xSpeed = atof(pParser->tokens()[2].c_str());
     MATHEX_SCALAR ySpeed = atof(pParser->tokens()[3].c_str());
     W4dLOD maxLod = atoi(pParser->tokens()[5].c_str());
@@ -2425,7 +2425,7 @@ void W4dEntity::parseColourPulse(UtlLineTokeniser* pParser)
         ASSERT(pParser->tokens()[11] == "MAX_LOD", "");
         ASSERT(pParser->tokens().size() == 13, "");
 
-        string textureName = pParser->tokens()[0];
+        std::string textureName = pParser->tokens()[0];
 
         MATHEX_SCALAR rFrom = atof(pParser->tokens()[2].c_str());
         MATHEX_SCALAR gFrom = atof(pParser->tokens()[3].c_str());
@@ -2558,7 +2558,7 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
             dummyMesh = true;
 
             ASSERT(pParser->tokens().size() == 2, "");
-            string dummyMeshName = pParser->tokens()[1];
+            std::string dummyMeshName = pParser->tokens()[1];
 
             pLightData->name(dummyMeshName);
             pLightData->composite(&(this->asComposite()));
@@ -2581,7 +2581,7 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
 
             ASSERT(pParser->tokens().size() == 2, "");
 
-            string lightType = pParser->tokens()[1];
+            std::string lightType = pParser->tokens()[1];
             ASSERT(
                 lightType == "DIRECTIONAL" || lightType == "POINT" || lightType == "UNIFORM",
                 "illigal type specified");
@@ -2607,7 +2607,7 @@ void W4dEntity::parseGenericLight(UtlLineTokeniser* pParser)
 
             ASSERT(pParser->tokens().size() == 2, "");
 
-            string lightScope = pParser->tokens()[1];
+            std::string lightScope = pParser->tokens()[1];
             ASSERT(
                 lightScope == "LOCAL_LIGHT" || lightScope == "GLOBAL_LIGHT" || lightScope == "DOMAIN_LIGHT"
                     || lightScope == "DOMAIN_COMPOSITE" || lightScope == "DYNAMIC_LIGHT",

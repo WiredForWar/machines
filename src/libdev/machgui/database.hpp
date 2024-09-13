@@ -64,7 +64,7 @@ public:
 
     // Search for a campaign scenario identified by name, returning true if found, and its pointer
     // in pDbScenario.
-    bool campaignScenario(const string& name, MachGuiDbScenario** pDbScenario);
+    bool campaignScenario(const std::string& name, MachGuiDbScenario** pDbScenario);
 
     // The system object for skirmishes of specified size
     MachGuiDbSystem& skirmishSystem(TerrainSize size);
@@ -85,7 +85,7 @@ public:
     void sortPlayersByTime();
 
     // Add a new player using name, returning the player object ref
-    MachGuiDbPlayer& addPlayer(const string& name);
+    MachGuiDbPlayer& addPlayer(const std::string& name);
 
     // remove pDbPlayer from the database. Any saved games referencing this player
     // will have the player field set to null.

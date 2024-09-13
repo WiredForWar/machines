@@ -4,8 +4,6 @@
 
 #include <string>
 
-using string = std::string;
-
 void writeAllocatedStringFromPointer(PerOstream& ostr, const std::string* pOb);
 void readAllocatedStringFromPointer(PerIstream& istr, std::string* pOb);
 

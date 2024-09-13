@@ -61,7 +61,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     // Create First Person Actions text below First Person Control heading
     //
     uint noLines;
-    string hotKey1stPersonActions;
+    std::string hotKey1stPersonActions;
     readHotkeyData("gui/menu/hk1pAction.dat", hotKey1stPersonActions, noLines);
 
     MachGuiMenuText* firstPersonContent = new MachGuiMenuText(
@@ -78,7 +78,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     // Create First Person Keys text next to First Person Action text
     //
-    string hotKey1stPersonKeys;
+    std::string hotKey1stPersonKeys;
     readHotkeyData("gui/menu/hk1pKeys.dat", hotKey1stPersonKeys, noLines);
     new MachGuiMenuText(
         pStartupScreens,
@@ -110,7 +110,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / smallFontHeight;
 
-    string hotKeyGeneralActions;
+    std::string hotKeyGeneralActions;
 
     readHotkeyData("gui/menu/hkGenActions.dat", hotKeyGeneralActions, noLines);
 
@@ -123,7 +123,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     WAYNE_STREAM(" noDisplayableLines " << noDisplayableLines << std::endl);
     WAYNE_STREAM(" noRemainingLines - " << noRemainingLines << std::endl);
 
-    string headString, remainderString;
+    std::string headString, remainderString;
 
     // Create new strings to be displayed
     for (uint i = 0; i < noDisplayableLines; i++)
@@ -173,7 +173,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         MachGui::Menu::smallFontLight(),
         Gui::AlignLeft|Gui::AlignTop);
 
-    string hotKeyGeneralKeys;
+    std::string hotKeyGeneralKeys;
     readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
 
     strings choppedupText;
@@ -222,7 +222,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
                 DevCD::instance().stopPlaying();
             }
 
-            string cdRomDrive;
+            std::string cdRomDrive;
 
             if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/gui/hotkeys.smk"))
             {
@@ -291,10 +291,10 @@ void MachGuiCtxHotKeys::update()
     animations_.update();
 }
 
-void MachGuiCtxHotKeys::readHotkeyData(const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString)
+void MachGuiCtxHotKeys::readHotkeyData(const std::string& hotKeyDataFileName, std::string& hotkeyString, uint& linesInString)
 {
     SysPathName hotKeyFilePath = SysPathName(hotKeyDataFileName);
-    string path = string(hotKeyDataFileName.c_str());
+    std::string path = std::string(hotKeyDataFileName.c_str());
 
     if (hotKeyFilePath.containsCapitals() && !hotKeyFilePath.existsAsFile())
     {

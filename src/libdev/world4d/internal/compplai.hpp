@@ -50,7 +50,7 @@ private:
     W4dCompositePlan::Entries entries_; // The collection of link id, link plan pairs
     void* pad1_;
     void* pad2_;
-    string name_;
+    std::string name_;
     PhysRelativeTime cachedFinishTime_; // Expensive to compute. -1 indicates needs re-evaluation.
 };
 

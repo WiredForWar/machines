@@ -182,16 +182,16 @@ public:
 
     //  Return the name used to reference this particular type / subtype
     //  as part of the filename for models, icons etc.
-    string name(MachPhys::MachineType type) const;
-    string name(MachPhys::AdministratorSubType subType) const;
-    string name(MachPhys::AggressorSubType subType) const;
-    string name(MachPhys::ConstructorSubType subType) const;
-    string name(MachPhys::TechnicianSubType subType) const;
+    std::string name(MachPhys::MachineType type) const;
+    std::string name(MachPhys::AdministratorSubType subType) const;
+    std::string name(MachPhys::AggressorSubType subType) const;
+    std::string name(MachPhys::ConstructorSubType subType) const;
+    std::string name(MachPhys::TechnicianSubType subType) const;
 
-    string name(MachPhys::ConstructionType type) const;
-    string name(MachPhys::FactorySubType subType) const;
-    string name(MachPhys::HardwareLabSubType subType) const;
-    string name(MachPhys::MissileEmplacementSubType subType) const;
+    std::string name(MachPhys::ConstructionType type) const;
+    std::string name(MachPhys::FactorySubType subType) const;
+    std::string name(MachPhys::HardwareLabSubType subType) const;
+    std::string name(MachPhys::MissileEmplacementSubType subType) const;
 
     void CLASS_INVARIANT;
 

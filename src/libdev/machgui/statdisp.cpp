@@ -33,7 +33,7 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
 
     backgroundBmp_ = Gui::requestScaledImage(backgroundBmpFile.pathname(), MachGui::menuScaleFactor());
 
-    string bar1, bar2, bar3, bar4;
+    std::string bar1, bar2, bar3, bar4;
     switch (race)
     {
         case MachPhys::N_RACES:

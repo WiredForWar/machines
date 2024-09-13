@@ -93,12 +93,12 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBoxCreator& t
     return o;
 }
 
-const string& MachGuiDropDownListBoxCreator::text() const
+const std::string& MachGuiDropDownListBoxCreator::text() const
 {
     return text_;
 }
 
-void MachGuiDropDownListBoxCreator::text(const string& newText)
+void MachGuiDropDownListBoxCreator::text(const std::string& newText)
 {
     text_ = newText;
     changed();
@@ -286,7 +286,7 @@ MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
     size_t verticalSpacing,
     size_t scrollInc,
     size_t itemWidth,
-    const ctl_vector<string>& itemText,
+    const ctl_vector<std::string>& itemText,
     MachGuiDropDownListBoxCreator* listBoxCreator)
 {
     return new MachGuiDropDownList(
@@ -332,7 +332,7 @@ MachGuiDropDownList::MachGuiDropDownList(
     size_t verticalSpacing,
     size_t scrollInc,
     size_t itemWidth,
-    const ctl_vector<string>& itemText,
+    const ctl_vector<std::string>& itemText,
     MachGuiDropDownListBoxCreator* pCreator)
     : MachGuiDropDownListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText)
     , pCreator_(pCreator)
@@ -346,7 +346,7 @@ MachGuiDropDownList::MachGuiDropDownList(
     size_t verticalSpacing,
     size_t scrollInc,
     size_t itemWidth,
-    const ctl_vector<string>& itemText,
+    const ctl_vector<std::string>& itemText,
     MachGuiDropDownListBoxCreator* pCreator,
     bool whiteFont)
     : MachGuiDropDownListBox(
@@ -363,7 +363,7 @@ MachGuiDropDownList::MachGuiDropDownList(
 }
 
 // virtual
-void MachGuiDropDownList::itemSelected(const string& text)
+void MachGuiDropDownList::itemSelected(const std::string& text)
 {
     pCreator_->text(text);
 
@@ -387,8 +387,8 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
 
     if (navKey == MachGuiFocusCapableControl::UP_ARROW)
     {
-        string previousItem;
-        string currentItem;
+        std::string previousItem;
+        std::string currentItem;
         bool itemSelected = false;
 
         // Find item before one selected
@@ -416,7 +416,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
     }
     else if (navKey == MachGuiFocusCapableControl::DOWN_ARROW)
     {
-        string nextItem;
+        std::string nextItem;
         bool itemSelected = false;
 
         // Find item after one selected

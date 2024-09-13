@@ -118,12 +118,12 @@ void EnvElevationColourTable::name(const char* n)
     name_ = n;
 }
 
-void EnvElevationColourTable::name(const string& n)
+void EnvElevationColourTable::name(const std::string& n)
 {
     name_ = n;
 }
 
-const string& EnvElevationColourTable::name() const
+const std::string& EnvElevationColourTable::name() const
 {
     return name_;
 }

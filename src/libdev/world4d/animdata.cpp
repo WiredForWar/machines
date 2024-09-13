@@ -10,7 +10,7 @@
 
 PER_DEFINE_PERSISTENT_ABSTRACT(W4dAnimationData);
 
-W4dAnimationData::W4dAnimationData(const string& name, W4dLOD maxLod)
+W4dAnimationData::W4dAnimationData(const std::string& name, W4dLOD maxLod)
     : textureName_(name)
     , maxLod_(maxLod)
 {
@@ -37,12 +37,12 @@ std::ostream& operator<<(std::ostream& o, const W4dAnimationData& t)
     return o;
 }
 
-void W4dAnimationData::name(const string& name)
+void W4dAnimationData::name(const std::string& name)
 {
     textureName_ = name;
 }
 
-const string& W4dAnimationData::name() const
+const std::string& W4dAnimationData::name() const
 {
     return textureName_;
 }

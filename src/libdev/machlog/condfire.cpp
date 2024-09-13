@@ -16,7 +16,7 @@
 PER_DEFINE_PERSISTENT(MachLogFiredAtCondition);
 
 MachLogFiredAtCondition::MachLogFiredAtCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race firingRace,
     MachPhys::Race firedAtRace)
     : SimCondition(keyName)

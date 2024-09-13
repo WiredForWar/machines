@@ -163,7 +163,7 @@ void MachGuiMenuButton::doDisplay()
     GuiBmpFont focusfont(GuiBmpFont::getFont(Menu::largeFontFocus()));
 
     GuiResourceString str(stringId_);
-    string text = str.asString();
+    std::string text = str.asString();
 
     size_t textWidth = darkfont.textWidth(text);
     size_t textHeight = darkfont.charHeight();
@@ -256,7 +256,7 @@ bool MachGuiMenuButton::executeControl()
     GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
 
     GuiResourceString str(stringId_);
-    string text = str.asString();
+    std::string text = str.asString();
 
     size_t textWidth = darkfont.textWidth(text);
     size_t textHeight = darkfont.charHeight();

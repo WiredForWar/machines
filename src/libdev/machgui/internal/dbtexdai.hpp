@@ -36,20 +36,20 @@ private:
     MachGuiDbITextData(const MachGuiDbITextData&);
     MachGuiDbITextData& operator=(const MachGuiDbITextData&);
 
-    using Strings = ctl_vector<string>;
+    using Strings = ctl_vector<std::string>;
     using TaskFlags = ctl_vector<bool>;
 
     // data members
-    string campaignText_; // Appears in campaign menu
+    std::string campaignText_; // Appears in campaign menu
     Strings objectives_; // Used in briefing menu
     Strings objectiveVoicemails_; // Used in briefing menu
-    string hintText_; // Used in briefing menu
-    string winText_; // used in debriefing menu
-    string loseText_; // used in debriefing menu
+    std::string hintText_; // Used in briefing menu
+    std::string winText_; // used in debriefing menu
+    std::string loseText_; // used in debriefing menu
     Strings tasks_; // used in debriefing menu when tasks not completed
     TaskFlags tasksStartAvailable_; // True if task starts in available state
-    string winVoicemail_;
-    string loseVoicemail_;
+    std::string winVoicemail_;
+    std::string loseVoicemail_;
 };
 
 PER_DECLARE_PERSISTENT(MachGuiDbITextData);

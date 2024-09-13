@@ -66,7 +66,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pListBox,
         size_t width,
-        const string& text)
+        const std::string& text)
         : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
     {
     }
@@ -158,9 +158,9 @@ protected:
         pScenarioCtx_->updateDisplayedInfo(planet_.textData().campaignText(), SysPathName(planet_.campaignPicture()));
     }
 
-    static string displayString(MachGuiDbPlanet& planet)
+    static std::string displayString(MachGuiDbPlanet& planet)
     {
-        string retValue;
+        std::string retValue;
 
         if (allScenariosCompleted(planet))
         {
@@ -214,9 +214,9 @@ protected:
         pScenarioCtx_->updateDisplayedInfo(system_.textData().campaignText(), SysPathName(system_.campaignPicture()));
     }
 
-    static string displayString(MachGuiDbSystem& system)
+    static std::string displayString(MachGuiDbSystem& system)
     {
-        string retValue;
+        std::string retValue;
 
         if (allPlanetsCompleted(system))
         {
@@ -275,9 +275,9 @@ public:
     ~MachGuiScenarioListBoxItem() override { }
 
 protected:
-    static string displayString(MachGuiDbScenario& scenario)
+    static std::string displayString(MachGuiDbScenario& scenario)
     {
-        string retValue;
+        std::string retValue;
         MachGuiDbPlayerScenario* pPlayerScenario = nullptr;
 
         if (MachGuiDatabase::instance().hasCurrentPlayer()
@@ -679,7 +679,7 @@ void MachGuiCtxScenario::updateSelectedScenario(MachGuiDbScenario& scenario)
     MachGuiDatabase::instance().currentPlayer().lastSelectedScenario(&scenario);
 }
 
-void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName animation)
+void MachGuiCtxScenario::updateDisplayedInfo(const std::string& text, SysPathName animation)
 {
     if (pImage_)
     {
@@ -698,7 +698,7 @@ void MachGuiCtxScenario::updateDisplayedInfo(const string& text, SysPathName ani
             DevCD::instance().stopPlaying();
         }
 
-        string cdRomDrive;
+        std::string cdRomDrive;
 
         if (MachGui::getCDRomDriveContainingFile(cdRomDrive, animation.c_str()))
         {

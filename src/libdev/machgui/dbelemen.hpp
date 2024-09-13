@@ -33,20 +33,20 @@ public:
 
     // Set/get the name of the element as defined in the database definition file.
     // This name is used to generate eg scenario and planet file names.
-    void name(const string& name);
-    const string& name() const;
+    void name(const std::string& name);
+    const std::string& name() const;
 
     // Get at the stringId used as a lookup into the string table resource. This string
     // is displayed in list boxes etc.
     uint menuStringId() const;
-    string menuString() const;
-    void menuString(const string& name);
+    std::string menuString() const;
+    void menuString(const std::string& name);
 
     // Set/get the text data object source file relative path.
     // The source version path is relative to the data directory.
     // A persistent version gets created in pdata.
-    void textDataFileName(const string& filename);
-    const string& textDataFileName() const;
+    void textDataFileName(const std::string& filename);
+    const std::string& textDataFileName() const;
 
     // The text data object associated with this element
     const MachGuiDbTextData& textData() const;

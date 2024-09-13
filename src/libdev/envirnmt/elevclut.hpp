@@ -38,8 +38,8 @@ public:
     MexDegrees maxElevation() const;
 
     void name(const char*);
-    void name(const string&);
-    const string& name() const;
+    void name(const std::string&);
+    const std::string& name() const;
 
     int nEntries() const;
 
@@ -60,7 +60,7 @@ private:
 
     ColourVec colours_;
     MexDegrees min_, max_;
-    string name_;
+    std::string name_;
 
     EnvElevationColourTable(const EnvElevationColourTable&);
     EnvElevationColourTable& operator=(const EnvElevationColourTable&);

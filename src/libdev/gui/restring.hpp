@@ -21,7 +21,7 @@ template <class T> class ctl_vector;
 
 // TBD: support for extended character sets, double-byte character sets, Unicode etc.
 
-using GuiString = string;
+using GuiString = std::string;
 using GuiStrings = ctl_vector<GuiString>;
 
 class GuiResourceString

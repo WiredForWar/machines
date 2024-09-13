@@ -16,7 +16,7 @@
 #include "mathex/point3d.hpp"
 #include "system/pathname.hpp"
 
-EnvSatellite::EnvSatellite(const string& n, EnvOrbit* orb)
+EnvSatellite::EnvSatellite(const std::string& n, EnvOrbit* orb)
     : matTable_(nullptr)
     , ambTable_(nullptr)
     , lightTable_(nullptr)

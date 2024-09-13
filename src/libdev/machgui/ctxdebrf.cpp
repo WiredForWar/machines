@@ -85,7 +85,7 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
         160 * MachGui::menuScaleFactor(),
         pTextInfo);
 
-    string winLoseText;
+    std::string winLoseText;
     // Display win/lose text...
     switch (pStartupScreens_->inGameScreen().gameState())
     {
@@ -209,7 +209,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         pDebriefImage_ = nullptr;
     }
     pStartupScreens_->clearAllSmackerAnimations();
-    string debriefPath;
+    std::string debriefPath;
 
     // get either win or lose debrief picture
     switch (pStartupScreens_->inGameScreen().gameState())
@@ -277,7 +277,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
             DevCD::instance().stopPlaying();
         }
 
-        string cdRomDrive;
+        std::string cdRomDrive;
 
         if (MachGui::getCDRomDriveContainingFile(cdRomDrive, debriefPath))
         {

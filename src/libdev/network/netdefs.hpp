@@ -6,10 +6,10 @@
 #include "ctl/utility.hpp"
 
 #include "stdlib/string.hpp"
-// #include <string.hpp>
+// #include <std::string.hpp>
 
-using NetProcessorUid = string;
-using NetAppSessionName = string;
+using NetProcessorUid = std::string;
+using NetAppSessionName = std::string;
 using NetNodeName = std::string;
 using NetMessageUid = unsigned int;
 using NetAppUid = unsigned int;

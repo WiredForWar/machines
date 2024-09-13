@@ -277,7 +277,7 @@ size_t GuiBmpFont::maxCharWidth() const
 }
 
 void GuiBmpFont::drawText(
-    const string& text,
+    const std::string& text,
     const Gui::Coord& startPos,
     int maxWidth,
     Justification justification /*= LEFT_JUSTIFY*/) const
@@ -296,7 +296,7 @@ void GuiBmpFont::drawText(
 
 void GuiBmpFont::drawText(
     GuiBitmap* pBmp,
-    const string& text,
+    const std::string& text,
     const Gui::Coord& startPos,
     int maxWidth,
     Justification justification /*= LEFT_JUSTIFY*/) const
@@ -313,7 +313,7 @@ void GuiBmpFont::drawText(
     }
 }
 
-void GuiBmpFont::drawTextLeftJustify(const string& text, const Gui::Coord& startPos, int maxWidth) const
+void GuiBmpFont::drawTextLeftJustify(const std::string& text, const Gui::Coord& startPos, int maxWidth) const
 {
     Gui::Coord absPos = startPos;
     Gui::XCoord endAbsPos = absPos.x() + maxWidth;
@@ -360,7 +360,7 @@ void GuiBmpFont::drawTextLeftJustify(const string& text, const Gui::Coord& start
     }
 }
 
-void GuiBmpFont::drawTextRightJustify(const string& text, const Gui::Coord& startPos, int maxWidth) const
+void GuiBmpFont::drawTextRightJustify(const std::string& text, const Gui::Coord& startPos, int maxWidth) const
 {
     Gui::Coord absPos = startPos;
     Gui::XCoord endAbsPos = absPos.x() - maxWidth;
@@ -409,7 +409,7 @@ void GuiBmpFont::drawTextRightJustify(const string& text, const Gui::Coord& star
     }
 }
 
-void GuiBmpFont::drawTextLeftJustify(GuiBitmap* pBmp, const string& text, const Gui::Coord& startPos, int maxWidth)
+void GuiBmpFont::drawTextLeftJustify(GuiBitmap* pBmp, const std::string& text, const Gui::Coord& startPos, int maxWidth)
     const
 {
     Gui::Coord absPos = startPos;
@@ -458,7 +458,7 @@ void GuiBmpFont::drawTextLeftJustify(GuiBitmap* pBmp, const string& text, const 
     //}
 }
 
-void GuiBmpFont::drawTextRightJustify(GuiBitmap* pBmp, const string& text, const Gui::Coord& startPos, int maxWidth)
+void GuiBmpFont::drawTextRightJustify(GuiBitmap* pBmp, const std::string& text, const Gui::Coord& startPos, int maxWidth)
     const
 {
     Gui::Coord absPos = startPos;
@@ -554,7 +554,7 @@ void GuiBmpFont::underlineColour(const GuiColour& colour)
     underlineColour_ = colour;
 }
 
-int GuiBmpFont::textWidth(const string& text) const
+int GuiBmpFont::textWidth(const std::string& text) const
 {
     Gui::Coord absPos(0, 0);
 

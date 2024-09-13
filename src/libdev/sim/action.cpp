@@ -78,7 +78,7 @@ std::ostream& operator<<(std::ostream& o, const SimAction& t)
     return o;
 }
 
-const string& SimAction::conditionKeyName() const
+const std::string& SimAction::conditionKeyName() const
 {
     return conditionKeyName_;
 }

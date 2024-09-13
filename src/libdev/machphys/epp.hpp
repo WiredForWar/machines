@@ -22,11 +22,11 @@
 class MachPhysEvasionPriorityPlan
 {
 public:
-    MachPhysEvasionPriorityPlan(string EPPName);
+    MachPhysEvasionPriorityPlan(std::string EPPName);
 
     ~MachPhysEvasionPriorityPlan() {};
 
-    string name();
+    std::string name();
 
     void garrisonPriority(int priority);
     void aggressivesPriority(int priority);
@@ -41,7 +41,7 @@ public:
     ////////////////////////////////////////////////////////////////
 
 private:
-    string EPPName_;
+    std::string EPPName_;
     int garrisonPriority_;
     int aggressivesPriority_;
     int podPriority_;

@@ -134,7 +134,7 @@ void NetIRecorder::playbackAvailableProtocols(NetNetwork::ProtocolMap* pMap) con
 
     for (size_t i = 0; i < size; ++i)
     {
-        string str = RecRecorderPrivate::instance().playbackNetworkString();
+        std::string str = RecRecorderPrivate::instance().playbackNetworkString();
         int ii = RecRecorderPrivate::instance().playbackNetworkInt();
 
         map.insert(str, static_cast<NetNetwork::NetworkProtocol>(ii));
@@ -212,22 +212,22 @@ void NetIRecorder::recordIPAddress(const std::string& str) const
     RecRecorderPrivate::instance().recordNetworkString(str);
 }
 
-string NetIRecorder::playbackModem() const
+std::string NetIRecorder::playbackModem() const
 {
     return RecRecorderPrivate::instance().playbackNetworkString();
 }
 
-void NetIRecorder::recordModem(const string& str) const
+void NetIRecorder::recordModem(const std::string& str) const
 {
     RecRecorderPrivate::instance().recordNetworkString(str);
 }
 
-string NetIRecorder::playbackPhone() const
+std::string NetIRecorder::playbackPhone() const
 {
     return RecRecorderPrivate::instance().playbackNetworkString();
 }
 
-void NetIRecorder::recordPhone(const string& str) const
+void NetIRecorder::recordPhone(const std::string& str) const
 {
     RecRecorderPrivate::instance().recordNetworkString(str);
 }
@@ -376,7 +376,7 @@ NetNodeUid NetIRecorder::playbackNodeUid() const
     RecRecorderPrivate::instance().playbackNetworkData(
         _REINTERPRET_CAST(uint8*, &interprocessUid),
         sizeof(NetInterProcessUid));
-    const string nodeName = RecRecorderPrivate::instance().playbackNetworkString();
+    const std::string nodeName = RecRecorderPrivate::instance().playbackNetworkString();
 
     const NetNodeUid uid(processorUid, threadUid, interprocessUid, nodeName);
 

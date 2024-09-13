@@ -16,7 +16,7 @@
 PER_DEFINE_PERSISTENT(MachLogCameraViewCondition);
 
 MachLogCameraViewCondition::MachLogCameraViewCondition(
-    const string& keyName,
+    const std::string& keyName,
     const MexPoint3d& location,
     const MexRadians& angle)
     : SimCondition(keyName)

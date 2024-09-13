@@ -26,7 +26,7 @@ public:
     MachGuiStatisticsBar(
         GuiDisplayable* pParent,
         const Gui::Coord& topLeft,
-        const string& bitmapPathname,
+        const std::string& bitmapPathname,
         uint range = 100);
     ~MachGuiStatisticsBar();
 
@@ -52,9 +52,9 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    // test for stat if it will not fit in bounding box - will return the string 'limit' if it
+    // test for stat if it will not fit in bounding box - will return the std::string 'limit' if it
     // it wont, else returns score
-    static string testForOverflow(const string& score);
+    static std::string testForOverflow(const std::string& score);
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsBar& t);
 

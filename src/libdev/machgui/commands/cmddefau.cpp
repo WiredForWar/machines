@@ -348,7 +348,7 @@ bool MachGuiDefaultCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiDefaultCommand::doApply(MachActor*, string*)
+bool MachGuiDefaultCommand::doApply(MachActor*, std::string*)
 {
     return true;
 }
@@ -488,9 +488,9 @@ std::unique_ptr<MachGuiCommand> MachGuiDefaultCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiDefaultCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiDefaultCommand::iconNames() const
 {
-    static std::pair<string, string> names("", "");
+    static std::pair<std::string, std::string> names("", "");
     return names;
 }
 

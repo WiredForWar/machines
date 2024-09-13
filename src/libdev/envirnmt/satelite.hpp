@@ -28,13 +28,13 @@ class EnvSatellite
 public:
     // TBD: add colour tables args for light colour and satellite colour.
     // There are two ctors: with and without a visual representation.
-    EnvSatellite(const string& name, EnvOrbit*);
+    EnvSatellite(const std::string& name, EnvOrbit*);
     ~EnvSatellite();
 
     void update();
 
     void visible(bool setVisible);
-    const string& name() const;
+    const std::string& name() const;
 
     EnvOrbit& orbit();
     const EnvOrbit& orbit() const;
@@ -58,7 +58,7 @@ public:
 
 private:
     EnvOrbit* const orbit_;
-    const string name_;
+    const std::string name_;
     W4dDirectionalLight* light_;
     EnvElevationColourTable* lightTable_;
     EnvElevationColourTable* ambTable_;

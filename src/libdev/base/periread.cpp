@@ -226,8 +226,8 @@ void PersistenceImplementationRead::clear()
 
 std::string PersistenceImplementationRead::readName(PerIstream& istr)
 {
-    // this is ctl stdlib string
-    string name;
+    // this is ctl stdlib std::string
+    std::string name;
 
     PER_READ_RAW_OBJECT(istr, name);
 
@@ -504,7 +504,7 @@ std::ostream& operator<<(std::ostream& o, const PersistenceImplementationRead& t
 #include "ctl/utility.hpp"
 // #include "ctl/algorith.hpp"
 
-CTL_QUAD(Data, string, name, double, time, size_t, count, size_t, recursionCount);
+CTL_QUAD(Data, std::string, name, double, time, size_t, count, size_t, recursionCount);
 
 using TimeMap = ctl_map<std::string, Data, std::less<std::string>>;
 static TimeMap timeMap;

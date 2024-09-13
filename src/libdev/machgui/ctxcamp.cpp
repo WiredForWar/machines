@@ -424,10 +424,10 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         GuiResourceString lastScenarioGuiStr(IDS_MENU_STATUSNOTPLAYED);
 
         // Default text
-        string lastScenarioStr(lastScenarioGuiStr.asString());
-        string lastScoreStr("0");
-        string numScenariosPlayed("0");
-        string totalScore("0");
+        std::string lastScenarioStr(lastScenarioGuiStr.asString());
+        std::string lastScoreStr("0");
+        std::string numScenariosPlayed("0");
+        std::string totalScore("0");
 
         if (pSelectedPlayer_->nPlayerScenarios() != 0)
         {

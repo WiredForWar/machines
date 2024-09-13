@@ -21,11 +21,11 @@ class MachGuiPlayerNameList : public GuiDisplayable
 // Canonical form revoked
 {
 public:
-    MachGuiPlayerNameList(GuiDisplayable* pParent, const Gui::Coord& topLeft, const string& fontName, uint title);
+    MachGuiPlayerNameList(GuiDisplayable* pParent, const Gui::Coord& topLeft, const std::string& fontName, uint title);
     MachGuiPlayerNameList(
         GuiDisplayable* pParent,
         const Gui::Boundary& boundary,
-        const string& fontName,
+        const std::string& fontName,
         uint title,
         bool isWhite);
     ~MachGuiPlayerNameList() override;
@@ -34,11 +34,11 @@ public:
 
     void doDisplay() override;
 
-    void names(const string& player1, const string& player2, const string& player3, const string& player4);
+    void names(const std::string& player1, const std::string& player2, const std::string& player3, const std::string& player4);
 
 private:
     // Truncate player's name if it will not fit in bounding box.
-    static string truncate(const string& name, uint maxWidth);
+    static std::string truncate(const std::string& name, uint maxWidth);
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerNameList& t);
 

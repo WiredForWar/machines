@@ -98,7 +98,7 @@ void MachGuiRecycleCommand::typeData(MachLog::ObjectType /*objectType*/, int /*s
 }
 
 // virtual
-bool MachGuiRecycleCommand::doApply(MachActor* pActor, string*)
+bool MachGuiRecycleCommand::doApply(MachActor* pActor, std::string*)
 {
     ASSERT(
         pSmeltingBuilding_ != nullptr,
@@ -124,9 +124,9 @@ std::unique_ptr<MachGuiCommand> MachGuiRecycleCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiRecycleCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiRecycleCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/recycle.bmp", "gui/commands/recycle.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/recycle.bmp", "gui/commands/recycle.bmp");
     return names;
 }
 
@@ -149,7 +149,7 @@ bool MachGuiRecycleCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiRecycleCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     PRE(canAdminApply());
 

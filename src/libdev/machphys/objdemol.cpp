@@ -28,31 +28,31 @@
 #include "mathex/transf3d.hpp"
 #include "system/pathname.hpp"
 
-const string genericDemolitionFileName = "models/destroy/demolish/demolish.cdf";
+const std::string genericDemolitionFileName = "models/destroy/demolish/demolish.cdf";
 
-const string civilianHardwareLabDemolitionFileName = "models/hardlab/civilian";
-const string militaryHardwareLabDemolitionFileName = "models/hardlab/military";
+const std::string civilianHardwareLabDemolitionFileName = "models/hardlab/civilian";
+const std::string militaryHardwareLabDemolitionFileName = "models/hardlab/military";
 
-const string smelterDemolitionFileName = "models/smelter";
+const std::string smelterDemolitionFileName = "models/smelter";
 
-const string civilianFactoryDemolitionFileName = "models/factory/civilian";
-const string militaryFactoryDemolitionFileName = "models/factory/military";
+const std::string civilianFactoryDemolitionFileName = "models/factory/civilian";
+const std::string militaryFactoryDemolitionFileName = "models/factory/military";
 
-const string turretMissileEmplacementDemolitionFileName = "models/missilee/turret";
-const string sentryMissileEmplacementDemolitionFileName = "models/missilee/sentry";
-const string launcherMissileEmplacementDemolitionFileName = "models/missilee/launcher";
-const string icbmMissileEmplacementDemolitionFileName = "models/missilee/icbm";
+const std::string turretMissileEmplacementDemolitionFileName = "models/missilee/turret";
+const std::string sentryMissileEmplacementDemolitionFileName = "models/missilee/sentry";
+const std::string launcherMissileEmplacementDemolitionFileName = "models/missilee/launcher";
+const std::string icbmMissileEmplacementDemolitionFileName = "models/missilee/icbm";
 
-const string garrisonDemolitionFileName = "models/garrison";
+const std::string garrisonDemolitionFileName = "models/garrison";
 
-const string mineDemolitionFileName = "models/mine";
+const std::string mineDemolitionFileName = "models/mine";
 
-const string beaconDemolitionFileName = "models/beacon";
+const std::string beaconDemolitionFileName = "models/beacon";
 
-const string podDemolitionFileName = "models/pod";
+const std::string podDemolitionFileName = "models/pod";
 
-const string demolishName = "demolish/demolish.cdf";
-const string levelName = "level";
+const std::string demolishName = "demolish/demolish.cdf";
+const std::string levelName = "level";
 
 PER_DEFINE_PERSISTENT(MachPhysObjDemolish);
 
@@ -247,7 +247,7 @@ bool MachPhysObjDemolish::useGenericDemolition(MachPhys::DemolitionType type)
                 DEFAULT_ASSERT_BAD_CASE(type.constructionType);
         }
         // add the hardware level
-        string level = levelName;
+        std::string level = levelName;
         char buffer[20];
         //  level+=itoa(type.level, buffer, 10);
         sprintf(buffer, "%d", type.level);
@@ -333,7 +333,7 @@ SysPathName MachPhysObjDemolish::compositeFileName(MachPhys::DemolitionType type
                 DEFAULT_ASSERT_BAD_CASE(type.constructionType);
         }
         // add the hardware level
-        string level = levelName;
+        std::string level = levelName;
         char buffer[20];
         //  level+=itoa(type.level, buffer, 10);
         sprintf(buffer, "%d", type.level);

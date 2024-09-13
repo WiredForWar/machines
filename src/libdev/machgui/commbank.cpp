@@ -351,7 +351,7 @@ const MachInGameScreen& MachCommandIcon::inGameScreen() const
 
 std::pair<std::string, std::string> MachCommandIcon::bitmapPaths(const MachGuiCommand& command) const
 {
-    const std::pair<string, string> strings = command.iconNames();
+    const std::pair<std::string, std::string> strings = command.iconNames();
     return { strings.first, strings.first };
 }
 

@@ -22,19 +22,19 @@ public:
     MachPhysSymbolParser() {};
     ~MachPhysSymbolParser();
 
-    static MachPhys::ConstructionType constructionType(const string& token);
-    static MachPhys::AggressorSubType aggressorSubType(const string&);
-    static MachPhys::AdministratorSubType administratorSubType(const string&);
-    static MachPhys::ConstructorSubType constructorSubType(const string&);
-    static MachPhys::TechnicianSubType technicianSubType(const string&);
-    static MachPhys::FactorySubType factorySubType(const string&);
-    static MachPhys::HardwareLabSubType hardwareLabSubType(const string&);
-    static MachPhys::MissileEmplacementSubType missileEmplacementSubType(const string&);
-    static int voidSubType(const string& token);
+    static MachPhys::ConstructionType constructionType(const std::string& token);
+    static MachPhys::AggressorSubType aggressorSubType(const std::string&);
+    static MachPhys::AdministratorSubType administratorSubType(const std::string&);
+    static MachPhys::ConstructorSubType constructorSubType(const std::string&);
+    static MachPhys::TechnicianSubType technicianSubType(const std::string&);
+    static MachPhys::FactorySubType factorySubType(const std::string&);
+    static MachPhys::HardwareLabSubType hardwareLabSubType(const std::string&);
+    static MachPhys::MissileEmplacementSubType missileEmplacementSubType(const std::string&);
+    static int voidSubType(const std::string& token);
 
-    static int constructionSubType(MachPhys::ConstructionType type, const string& subType);
+    static int constructionSubType(MachPhys::ConstructionType type, const std::string& subType);
 
-    static size_t parseConstructionLevel(const string& token);
+    static size_t parseConstructionLevel(const std::string& token);
 
 private:
     // Operation deliberately revoked

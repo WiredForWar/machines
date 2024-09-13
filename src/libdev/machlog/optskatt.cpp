@@ -600,7 +600,7 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
     points.reserve(1);
     points.push_back(destinationPoint);
 
-    string dummyReason;
+    std::string dummyReason;
     ctl_pvector<MachActor> actors;
     actors.reserve(pActor_->machines().size() + 1);
     for (MachLogSquadron::Machines::iterator i = pActor_->machines().begin(); i != pActor_->machines().end(); ++i)

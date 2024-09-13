@@ -31,7 +31,7 @@ private:
     MachGuiCtxHotKeys(const MachGuiCtxHotKeys&);
     MachGuiCtxHotKeys& operator=(const MachGuiCtxHotKeys&);
 
-    void readHotkeyData(const string& hotKeyDataFileName, string& hotkeyString, uint& linesInString);
+    void readHotkeyData(const std::string& hotKeyDataFileName, std::string& hotkeyString, uint& linesInString);
 };
 
 #endif

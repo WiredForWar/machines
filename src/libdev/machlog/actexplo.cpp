@@ -71,7 +71,7 @@ std::unique_ptr<MachLogExplosionAction> MachLogExplosionAction::newFromParser(Si
     std::unique_ptr<MachLogExplosionAction> pResult(new MachLogExplosionAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "AT")
             pResult->point_
                 = MexPoint2d(atof(pParser->tokens()[i + 1].c_str()), atof(pParser->tokens()[i + 2].c_str()));

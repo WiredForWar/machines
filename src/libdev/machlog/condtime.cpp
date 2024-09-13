@@ -13,7 +13,7 @@
 
 PER_DEFINE_PERSISTENT(MachLogTimerCondition);
 
-MachLogTimerCondition::MachLogTimerCondition(const string& keyName, const PhysAbsoluteTime& fireAtTime)
+MachLogTimerCondition::MachLogTimerCondition(const std::string& keyName, const PhysAbsoluteTime& fireAtTime)
     : SimCondition(keyName)
     , fireAtTime_(fireAtTime)
     , originalFireAtTime_(fireAtTime)

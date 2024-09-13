@@ -42,14 +42,14 @@ private:
 
     // data members
     MachGuiDbPlanet* pPlanet_; // The planet on which it occurs
-    string planetFile_; // relative path of the planet files (psf, pob etc)
-    string campaignPicture_; // Flic or bmp displayed in campaign menu
-    string briefingPicture_; // Flic or bmp displayed in briefing menu
-    string debriefingPicture_; // Flic or bmp displayed in debriefing menu (when you win)
-    string debriefingLosePicture_; // Flic or bmp displayed in debriefing menu (when you lose)
-    string entryFlic_; // Fullscreen flic displayed before strating the scenario
-    string winFlic_; // Fullscreen flic displayed upon winning the scenario
-    string loseFlic_; // Fullscreen flic displayed upon losing the scenario
+    std::string planetFile_; // relative path of the planet files (psf, pob etc)
+    std::string campaignPicture_; // Flic or bmp displayed in campaign menu
+    std::string briefingPicture_; // Flic or bmp displayed in briefing menu
+    std::string debriefingPicture_; // Flic or bmp displayed in debriefing menu (when you win)
+    std::string debriefingLosePicture_; // Flic or bmp displayed in debriefing menu (when you lose)
+    std::string entryFlic_; // Fullscreen flic displayed before strating the scenario
+    std::string winFlic_; // Fullscreen flic displayed upon winning the scenario
+    std::string loseFlic_; // Fullscreen flic displayed upon losing the scenario
     uint maxPlayers_; // Maximun number of players
     uint musicTrack_; // CD music Track to be played
     ctl_nb_vector<MachPhys::Race> saveMachineRaces_; // List of races needing surviving machines to be saved

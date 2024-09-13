@@ -102,7 +102,7 @@ bool MachGuiScavengeCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiScavengeCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiScavengeCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsMachine());
     PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isScavenger());
@@ -122,7 +122,7 @@ bool MachGuiScavengeCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, string*)
+bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, std::string*)
 {
     // Construct appropriate type of operation
     MachLogOperation* pOp;
@@ -184,9 +184,9 @@ std::unique_ptr<MachGuiCommand> MachGuiScavengeCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiScavengeCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiScavengeCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/scavenge.bmp", "gui/commands/scavenge.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/scavenge.bmp", "gui/commands/scavenge.bmp");
     return names;
 }
 

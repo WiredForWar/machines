@@ -252,7 +252,7 @@ void MachPhysMachineData::locomotionParameter(MATHEX_SCALAR v)
     locomotionParameter_ = v;
 }
 
-void MachPhysMachineData::setEPP(const string& EPPName)
+void MachPhysMachineData::setEPP(const std::string& EPPName)
 {
     const MachPhysEvasionPriorityPlans& cEPPs
         = _CONST_CAST(const MachPhysEvasionPriorityPlans&, MachPhysEvasionPriorityPlans::instance());
@@ -267,7 +267,7 @@ const MachPhysEvasionPriorityPlan& MachPhysMachineData::EPP() const
     return *pEPP_;
 }
 
-const string& MachPhysMachineData::upperBodyTurnLinkName() const
+const std::string& MachPhysMachineData::upperBodyTurnLinkName() const
 {
     return upperBodyTurnLinkName_;
 }
@@ -277,7 +277,7 @@ const MexRadians& MachPhysMachineData::upperBodyTurnRate() const
     return upperBodyTurnRate_;
 }
 
-void MachPhysMachineData::upperBodyTurnLinkName(const string& name)
+void MachPhysMachineData::upperBodyTurnLinkName(const std::string& name)
 {
     upperBodyTurnLinkName_ = name;
 }

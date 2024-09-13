@@ -46,12 +46,12 @@
 
 using strings = std::vector<std::string>;
 
-bool checkEnteredText(const unsigned char* pEncryptedText, const unsigned char* pDecryptKey, const string& enteredText)
+bool checkEnteredText(const unsigned char* pEncryptedText, const unsigned char* pDecryptKey, const std::string& enteredText)
 {
     //  int sizeOfEncryptedText = _mbslen( pEncryptedText );
     int sizeOfEncryptedText = 10; // Magic codes, have a fun decrypting them - martin.
 
-    string decryptedText;
+    std::string decryptedText;
 
     if (sizeOfEncryptedText != enteredText.length())
     {
@@ -77,8 +77,8 @@ public:
         size_t spacing);
 
     GuiBitmap promptBmp_;
-    string cursorPromptText_; // The prompt displayed for mouse moves
-    string commandPromptText_; // The prompt displayed for current command
+    std::string cursorPromptText_; // The prompt displayed for mouse moves
+    std::string commandPromptText_; // The prompt displayed for current command
     strings cursorPromptTextLines_;
     strings commandPromptTextLines_;
     MachCameras* pCameras_;
@@ -93,8 +93,8 @@ public:
     GuiBitmap lightOff_;
     bool enteringChatMessage_;
     MachPhys::Race chatMessageIntendedForRace_;
-    string chatMessageIntendedForStr_;
-    string lastDisplayedChatMessage_;
+    std::string chatMessageIntendedForStr_;
+    std::string lastDisplayedChatMessage_;
     int beginningTextWidth_;
     GuiDisplayable* pPassEventsTo_;
     int standardMessageIndex_;
@@ -186,14 +186,14 @@ std::ostream& operator<<(std::ostream& o, const MachPromptText& t)
     return o;
 }
 
-void MachPromptText::setCursorPromptText(const string& prompt)
+void MachPromptText::setCursorPromptText(const std::string& prompt)
 {
     setCursorPromptText(prompt, true);
 }
 
-void MachPromptText::setCursorPromptText(const string& prompt, bool restartScroll)
+void MachPromptText::setCursorPromptText(const std::string& prompt, bool restartScroll)
 {
-    CB_DEPIMPL(string, cursorPromptText_);
+    CB_DEPIMPL(std::string, cursorPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
     CB_DEPIMPL(bool, refresh_);
     CB_DEPIMPL(bool, restartScroll_);
@@ -220,16 +220,16 @@ void MachPromptText::setCursorPromptText(const string& prompt, bool restartScrol
     }
 }
 
-const string& MachPromptText::cursorPromptText() const
+const std::string& MachPromptText::cursorPromptText() const
 {
-    CB_DEPIMPL(string, cursorPromptText_);
+    CB_DEPIMPL(std::string, cursorPromptText_);
 
     return cursorPromptText_;
 }
 
 void MachPromptText::clearCursorPromptText()
 {
-    CB_DEPIMPL(string, cursorPromptText_);
+    CB_DEPIMPL(std::string, cursorPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
     CB_DEPIMPL(bool, refresh_);
     CB_DEPIMPL(bool, restartScroll_);
@@ -241,9 +241,9 @@ void MachPromptText::clearCursorPromptText()
     }
 }
 
-void MachPromptText::setCommandPromptText(const string& prompt)
+void MachPromptText::setCommandPromptText(const std::string& prompt)
 {
-    CB_DEPIMPL(string, commandPromptText_);
+    CB_DEPIMPL(std::string, commandPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
     CB_DEPIMPL(bool, refresh_);
     CB_DEPIMPL(bool, restartScroll_);
@@ -265,16 +265,16 @@ void MachPromptText::setCommandPromptText(const string& prompt)
     }
 }
 
-const string& MachPromptText::commandPromptText() const
+const std::string& MachPromptText::commandPromptText() const
 {
-    CB_DEPIMPL(string, commandPromptText_);
+    CB_DEPIMPL(std::string, commandPromptText_);
 
     return commandPromptText_;
 }
 
 void MachPromptText::clearCommandPromptText()
 {
-    CB_DEPIMPL(string, commandPromptText_);
+    CB_DEPIMPL(std::string, commandPromptText_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
     CB_DEPIMPL(bool, refresh_);
     CB_DEPIMPL(bool, restartScroll_);
@@ -292,8 +292,8 @@ void MachPromptText::clearCommandPromptText()
 
 void MachPromptText::doDisplay()
 {
-    CB_DEPIMPL(string, commandPromptText_);
-    CB_DEPIMPL(string, cursorPromptText_);
+    CB_DEPIMPL(std::string, commandPromptText_);
+    CB_DEPIMPL(std::string, cursorPromptText_);
     CB_DEPIMPL(strings, cursorPromptTextLines_);
     CB_DEPIMPL(strings, commandPromptTextLines_);
     CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
@@ -361,14 +361,14 @@ void MachPromptText::displayChatMessage()
     CB_DEPIMPL(GuiBitmap, lightOn_);
     CB_DEPIMPL(GuiBmpFont, font_);
     CB_DEPIMPL(GuiBmpFont, shadowFont_);
-    CB_DEPIMPL(string, chatMessageIntendedForStr_);
-    CB_DEPIMPL(string, lastDisplayedChatMessage_);
+    CB_DEPIMPL(std::string, chatMessageIntendedForStr_);
+    CB_DEPIMPL(std::string, lastDisplayedChatMessage_);
     CB_DEPIMPL(int, beginningTextWidth_);
 
     // Update the caret
     update();
 
-    string displayChatMessageStr = chatMessageIntendedForStr_ + text();
+    std::string displayChatMessageStr = chatMessageIntendedForStr_ + text();
     int caretPosition = caretPos() + beginningTextWidth_;
     int startY = shadowFont_.charHeight() / 2;
 
@@ -491,7 +491,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
     CB_DEPIMPL(bool, refresh_);
     CB_DEPIMPL(bool, restartScroll_);
     CB_DEPIMPL(MachPhys::Race, chatMessageIntendedForRace_);
-    CB_DEPIMPL(string, chatMessageIntendedForStr_);
+    CB_DEPIMPL(std::string, chatMessageIntendedForStr_);
     CB_DEPIMPL(int, beginningTextWidth_);
     CB_DEPIMPL(GuiBmpFont, shadowFont_);
     CB_DEPIMPL(int, opponentIndex_);
@@ -639,7 +639,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                 {
                     if (opponentIndex_ != SYSTEM_MESSAGE)
                     {
-                        string chatMessageStr;
+                        std::string chatMessageStr;
 
                         // Add coloured token to beginning of message
                         switch (MachGuiInGameChatMessages::instance().playerRace())

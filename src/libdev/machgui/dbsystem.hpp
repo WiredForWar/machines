@@ -25,15 +25,15 @@ class MachGuiDbSystem : public MachGuiDbElement
 {
 public:
     // The system is known by identifier systemName.
-    // The id of the string used in the menu list boxes is menuStringId.
-    MachGuiDbSystem(const string& systemName, uint menuStringId);
+    // The id of the std::string used in the menu list boxes is menuStringId.
+    MachGuiDbSystem(const std::string& systemName, uint menuStringId);
 
     ~MachGuiDbSystem() override;
 
     // set/get the flic or bmp filename displayed in the campaign menu.
-    // string is empty if undefined.
-    void campaignPicture(const string& filename);
-    const string& campaignPicture() const;
+    // std::string is empty if undefined.
+    void campaignPicture(const std::string& filename);
+    const std::string& campaignPicture() const;
 
     // The number of planets in this system
     uint nPlanets() const;

@@ -61,11 +61,11 @@ GuiBitmap& slideBtnBmp();
 GuiBitmap& controlPanelBmp();
 GuiBitmap& inTransitBmp();
 
-const string& closedText();
-const string& openText();
-const string& computerText();
-const string& unavailableText();
-const string& wonSymbolText();
+const std::string& closedText();
+const std::string& openText();
+const std::string& computerText();
+const std::string& unavailableText();
+const std::string& wonSymbolText();
 
 MATHEX_SCALAR menuScaleFactor();
 void setUiScaleFactor(MATHEX_SCALAR scale);
@@ -165,9 +165,9 @@ int convertNetworkError(int);
 void releaseInGameBmpMemory();
 
 // Funtions that check for existance of CD
-bool getCDRomDriveContainingFile(string& cdRomDrive, const string& fileToCheckFor);
+bool getCDRomDriveContainingFile(std::string& cdRomDrive, const std::string& fileToCheckFor);
 
-bool getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber);
+bool getCDRomDriveContainingMachinesCD(std::string& cdRomDrive, int CDNumber);
 // PRE( CDNumber > and 0 CDNumber < 3 );
 
 bool machinesCDIsAvailable(int CDNumber);

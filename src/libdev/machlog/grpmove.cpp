@@ -12,7 +12,7 @@ MachLogGroupSimpleMove::MachLogGroupSimpleMove(
     const Actors& actors,
     const Points& points,
     size_t commandId,
-    string* pReason,
+    std::string* pReason,
     PhysPathFindingPriority pathFindingPriority)
     : pImpl_(new MachLogGroupSimpleMoveImplementation(actors, points, commandId, pReason, pathFindingPriority))
 {

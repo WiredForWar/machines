@@ -14,7 +14,7 @@
 PER_DEFINE_PERSISTENT(W4dColourPulseData);
 
 W4dColourPulseData::W4dColourPulseData(
-    const string& textureName,
+    const std::string& textureName,
     const RenColour& fromCol,
     const RenColour& toCol,
     const PhysRelativeTime& duration)
@@ -30,7 +30,7 @@ W4dColourPulseData::W4dColourPulseData(
     }
     else
     {
-        string name = textureName;
+        std::string name = textureName;
 
         if (nameLength <= 4
             || (nameLength > 4

@@ -117,7 +117,7 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 // static
-Ren::ConstMeshPtr RenMesh::createShared(const SysPathName& path, const string& meshName, double scale)
+Ren::ConstMeshPtr RenMesh::createShared(const SysPathName& path, const std::string& meshName, double scale)
 {
     // Pre-conditions are in RenMesh::RenMesh().
     RenIMeshID id(path, meshName, scale);
@@ -125,7 +125,7 @@ Ren::ConstMeshPtr RenMesh::createShared(const SysPathName& path, const string& m
 }
 
 // static
-Ren::MeshPtr RenMesh::createUnique(const SysPathName& path, const string& meshName, double scale)
+Ren::MeshPtr RenMesh::createUnique(const SysPathName& path, const std::string& meshName, double scale)
 {
     // Pre-conditions are in RenMesh::RenMesh().
     PRE_INFO(path);
@@ -1106,7 +1106,7 @@ struct RenStreamIndenter
 };
 
 // Load a named mesh from a file.
-bool RenMesh::read(const SysPathName& pathName, const string& meshName, double scale)
+bool RenMesh::read(const SysPathName& pathName, const std::string& meshName, double scale)
 {
     PRE_INFO(pathName);
     PRE_INFO(meshName);
@@ -2123,7 +2123,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
 
         if (material->mTextures.size() > 0 && material->mTextures[0].mName.size() > 4)
         {
-            string txName = material->mTextures[0].mName;
+            std::string txName = material->mTextures[0].mName;
             RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);
             renMat.texture(renTex);
         }
@@ -2455,7 +2455,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
 
             GXIdPos gxTxId = gxMat.textureId();
             GXTexture gxTx = gxmesh->texture(gxTxId);
-            string txName = gxTx.name().str();
+            std::string txName = gxTx.name().str();
             RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);
             renMat.texture(renTex);
         }
@@ -2665,7 +2665,7 @@ size_t RenMesh::faces(size_t* nVertices, ctl_vector<MexPoint3d>* vertices, ctl_v
     return nFaces;
 }
 
-void RenMesh::meshName(const string& n)
+void RenMesh::meshName(const std::string& n)
 {
     meshName_ = n;
 }

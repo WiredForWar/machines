@@ -107,7 +107,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     // Read definitions until finished
     bool doneRace[MachPhys::N_RACES] = { false, false, false, false };
     bool doneMineralSites = false;
-    string researchItemsPath[MachLog::TECH_LEVEL_HIGH + 1];
+    std::string researchItemsPath[MachLog::TECH_LEVEL_HIGH + 1];
     NETWORK_STREAM("MLScenario::load\nGame creation data\n" << gameData << std::endl);
     // Construct a non-race for the artefacts etc
     races.race(MachPhys::NORACE, new MachLogRace(MachPhys::NORACE), MachLogRaces::CREATE_SQUADRONS);
@@ -177,11 +177,11 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     bool racesFinished = false;
     while (!(parser.tokens()[0] == "ENDRACES_DEFAULT"))
     {
-        const string& token = parser.tokens()[0];
+        const std::string& token = parser.tokens()[0];
         if (token == "RED" || token == "BLUE" || token == "GREEN" || token == "YELLOW")
         {
             MachPhys::Race r = machPhysRace(token);
-            const string& typeToken = parser.tokens()[1];
+            const std::string& typeToken = parser.tokens()[1];
             if (typeToken == "PC_LOCAL" || typeToken == "PC")
                 defaultData[r].type_ = MachLog::PC_LOCAL;
             else if (typeToken == "AI_LOCAL" || typeToken == "AI")
@@ -554,7 +554,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 if (instantiateObjects)
                 {
                     // Parse machine details
-                    string machineType = parser.tokens()[0];
+                    std::string machineType = parser.tokens()[0];
                     size_t hwLevel = atoi(parser.tokens()[1].c_str());
                     size_t swLevel = atoi(parser.tokens()[2].c_str());
                     ASSERT(hwLevel <= 10, runtime_error());
@@ -658,7 +658,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 size_t buildingLevel;
 
                 // Parse building details
-                string buildingType = parser.tokens()[0];
+                std::string buildingType = parser.tokens()[0];
                 if (buildingType == "ALTERNATIVE_SITE")
                 {
                     ASSERT(lineSize == 5, "Incorrect number of tokens for ALTERNATIVE_SITE line.");
@@ -1112,7 +1112,7 @@ void MachLogScenario::CLASS_INVARIANT
 }
 
 // static
-MachLog::ObjectType MachLogScenario::objectType(const string& type)
+MachLog::ObjectType MachLogScenario::objectType(const std::string& type)
 {
     // Check for machine types
     if (type == "ADMINISTRATOR")
@@ -1171,7 +1171,7 @@ MachLog::ObjectType MachLogScenario::objectType(const string& type)
     return MachLog::ADMINISTRATOR;
 }
 // static
-int MachLogScenario::objectSubType(MachLog::ObjectType type, const string& subType)
+int MachLogScenario::objectSubType(MachLog::ObjectType type, const std::string& subType)
 {
     switch (type)
     {
@@ -1198,7 +1198,7 @@ int MachLogScenario::objectSubType(MachLog::ObjectType type, const string& subTy
     return 0;
 }
 // static
-MachPhys::TechnicianSubType MachLogScenario::technicianSubType(const string& subType)
+MachPhys::TechnicianSubType MachLogScenario::technicianSubType(const std::string& subType)
 {
     if (subType == "LAB_TECH")
         return MachPhys::LAB_TECH;
@@ -1211,7 +1211,7 @@ MachPhys::TechnicianSubType MachLogScenario::technicianSubType(const string& sub
     return MachPhys::LAB_TECH;
 }
 // static
-MachPhys::ConstructorSubType MachLogScenario::constructorSubType(const string& subType)
+MachPhys::ConstructorSubType MachLogScenario::constructorSubType(const std::string& subType)
 {
     if (subType == "DOZER")
         return MachPhys::DOZER;
@@ -1224,7 +1224,7 @@ MachPhys::ConstructorSubType MachLogScenario::constructorSubType(const string& s
     return MachPhys::DOZER;
 }
 // static
-MachPhys::AggressorSubType MachLogScenario::aggressorSubType(const string& subType)
+MachPhys::AggressorSubType MachLogScenario::aggressorSubType(const std::string& subType)
 {
     if (subType == "GRUNT")
         return MachPhys::GRUNT;
@@ -1241,7 +1241,7 @@ MachPhys::AggressorSubType MachLogScenario::aggressorSubType(const string& subTy
     return MachPhys::GRUNT;
 }
 // static
-MachPhys::AdministratorSubType MachLogScenario::administratorSubType(const string& subType)
+MachPhys::AdministratorSubType MachLogScenario::administratorSubType(const std::string& subType)
 {
     if (subType == "BOSS")
         return MachPhys::BOSS;
@@ -1254,7 +1254,7 @@ MachPhys::AdministratorSubType MachLogScenario::administratorSubType(const strin
     return MachPhys::BOSS;
 }
 // static
-MachPhys::FactorySubType MachLogScenario::factorySubType(const string& subType)
+MachPhys::FactorySubType MachLogScenario::factorySubType(const std::string& subType)
 {
     if (subType == "CIVILIAN")
         return MachPhys::CIVILIAN;
@@ -1265,7 +1265,7 @@ MachPhys::FactorySubType MachLogScenario::factorySubType(const string& subType)
     return MachPhys::CIVILIAN;
 }
 // static
-MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const string& subType)
+MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const std::string& subType)
 {
     if (subType == "CIVILIAN")
         return MachPhys::LAB_CIVILIAN;
@@ -1280,7 +1280,7 @@ MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const string& s
     return MachPhys::LAB_CIVILIAN;
 }
 // static
-MachPhys::MissileEmplacementSubType MachLogScenario::missileEmplacementSubType(const string& subType)
+MachPhys::MissileEmplacementSubType MachLogScenario::missileEmplacementSubType(const std::string& subType)
 {
     if (subType == "TURRET")
         return MachPhys::TURRET;
@@ -1296,7 +1296,7 @@ MachPhys::MissileEmplacementSubType MachLogScenario::missileEmplacementSubType(c
 }
 
 // static
-MachPhys::WeaponCombo MachLogScenario::weaponCombo(const string& weaponCombo)
+MachPhys::WeaponCombo MachLogScenario::weaponCombo(const std::string& weaponCombo)
 {
     if (weaponCombo == "L_BOLTER")
         return MachPhys::L_BOLTER;
@@ -1380,7 +1380,7 @@ MachPhys::WeaponCombo MachLogScenario::weaponCombo(const string& weaponCombo)
 }
 
 // static
-MachPhys::Race MachLogScenario::machPhysRace(const string& race)
+MachPhys::Race MachLogScenario::machPhysRace(const std::string& race)
 {
     if (race == "RED")
         return MachPhys::RED;
@@ -1426,7 +1426,7 @@ MachLog::ObjectType MachLogScenario::physConstructionToLogObject(MachPhys::Const
 }
 
 // static
-MachLogCamera::Type MachLogScenario::cameraType(const string& cameraType)
+MachLogCamera::Type MachLogScenario::cameraType(const std::string& cameraType)
 {
     if (cameraType == "ZENITH")
         return MachLogCamera::ZENITH;
@@ -1442,7 +1442,7 @@ MachLogCamera::Type MachLogScenario::cameraType(const string& cameraType)
 }
 
 // static
-MachLog::BeaconType MachLogScenario::virtualBeaconType(const string& beaconType)
+MachLog::BeaconType MachLogScenario::virtualBeaconType(const std::string& beaconType)
 {
     if (beaconType == "NO_BEACON")
         return MachLog::NO_BEACON;
@@ -1456,7 +1456,7 @@ MachLog::BeaconType MachLogScenario::virtualBeaconType(const string& beaconType)
 }
 
 // static
-MachLog::ResourcesAvailable MachLogScenario::resourceAvailable(const string& resourceType)
+MachLog::ResourcesAvailable MachLogScenario::resourceAvailable(const std::string& resourceType)
 {
     if (resourceType == "RES_DEFAULT")
         return MachLog::RES_DEFAULT;
@@ -1510,7 +1510,7 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
     MachLogRaces& races = MachLogRaces::instance();
 
     MachPhys::Race race;
-    string raceString = parser.tokens()[2];
+    std::string raceString = parser.tokens()[2];
     bool doAI = true;
     if (raceString == "RED")
         race = MachPhys::RED;

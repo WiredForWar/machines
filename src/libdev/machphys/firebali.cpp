@@ -32,7 +32,7 @@ MachPhysFireballImpl::~MachPhysFireballImpl()
     // Empty
 }
 
-void MachPhysFireballImpl::addMaterial(Materials* pMaterials, const string& textureFileName)
+void MachPhysFireballImpl::addMaterial(Materials* pMaterials, const std::string& textureFileName)
 {
     // Create the texture
     RenTexture texture = RenTexManager::instance().createTexture(textureFileName);

@@ -19,7 +19,7 @@ MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     MachGuiSingleSelectionListBox* pParentListBox,
     size_t width,
-    const string& text)
+    const std::string& text)
     : GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight())
     , text_(text)
     , highlighted_(false)
@@ -38,7 +38,7 @@ MachGuiSingleSelectionListBoxItem::MachGuiSingleSelectionListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     GuiSingleSelectionListBox* pParentListBox,
     size_t width,
-    const string& text)
+    const std::string& text)
     : GuiSingleSelectionListBoxItem(pParentListBox, width, reqHeight())
     , text_(text)
     , highlighted_(false)
@@ -177,7 +177,7 @@ void MachGuiSingleSelectionListBoxItem::doHandleMouseExitEvent(const GuiMouseEve
         changed();
 }
 
-const string& MachGuiSingleSelectionListBoxItem::text() const
+const std::string& MachGuiSingleSelectionListBoxItem::text() const
 {
     return text_;
 }

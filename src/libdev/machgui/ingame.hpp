@@ -50,13 +50,13 @@ public:
     ~MachInGameScreen() override;
 
     // Create the cameras, initialises button display values and map
-    void loadGame(const string& planet);
+    void loadGame(const std::string& planet);
 
     // Save info
     void saveGame(PerOstream& outStream);
 
     // Load saved game. There is no need to call "loadGame" as well!
-    void loadSavedGame(const string& planet, PerIstream& inStream);
+    void loadSavedGame(const std::string& planet, PerIstream& inStream);
 
     // Delete the game's cameras
     void unloadGame();
@@ -123,16 +123,16 @@ public:
     void cancelActiveCommand();
 
     // Set/get the prompt text related to cursor position
-    void setCursorPromptText(const string& prompt);
-    void setCursorPromptText(const string& prompt, bool restartScroll);
-    const string& cursorPromptText() const;
+    void setCursorPromptText(const std::string& prompt);
+    void setCursorPromptText(const std::string& prompt, bool restartScroll);
+    const std::string& cursorPromptText() const;
 
     // Clear any prompt text associated with the cursor position
     void clearCursorPromptText();
 
     // Set/get the prompt text related to current command state
-    void commandPromptText(const string& prompt);
-    const string& commandPromptText() const;
+    void commandPromptText(const std::string& prompt);
+    const std::string& commandPromptText() const;
 
     // Clear any prompt text associated with the current command state
     void clearCommandPromptText();
@@ -359,11 +359,11 @@ protected:
     void domainDeleted(W4dDomain* pDomain) override;
 
     // Helper methods for actor prompt text
-    bool addPromptTextMachineInfo(MachActor* pActor, string& prompt);
-    bool addPromptTextConstructionInfo(MachActor* pActor, string& prompt);
-    bool addPromptTextArtefactInfo(MachActor* pActor, string& prompt);
-    bool addPromptTextDebrisInfo(MachActor* pActor, string& prompt);
-    bool addPromptTextOreHolographInfo(MachActor* pActor, string& prompt);
+    bool addPromptTextMachineInfo(MachActor* pActor, std::string& prompt);
+    bool addPromptTextConstructionInfo(MachActor* pActor, std::string& prompt);
+    bool addPromptTextArtefactInfo(MachActor* pActor, std::string& prompt);
+    bool addPromptTextDebrisInfo(MachActor* pActor, std::string& prompt);
+    bool addPromptTextOreHolographInfo(MachActor* pActor, std::string& prompt);
 
     // Should control panel be displayed ( certain modes require the control panel to be
     // revealed, i.e. construction menu ).

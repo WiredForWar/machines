@@ -41,7 +41,6 @@
 #define _GUI_DISPLAYA_HPP
 
 #include "device/butevent.hpp"
-#include "stdlib/strfwd.hpp"
 #include "gui/gui.hpp"
 
 class GuiDisplayableImpl;

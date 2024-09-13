@@ -25,7 +25,7 @@ MachLogGroupSimpleMoveImplementation::MachLogGroupSimpleMoveImplementation(
     const Actors& actors,
     const Points& points,
     size_t commandId,
-    string* pReason,
+    std::string* pReason,
     PhysPathFindingPriority pathFindingPriority)
     : points_(points)
     , configSpace_(MachLogPlanet::instance().configSpace())
@@ -67,7 +67,7 @@ void MachLogGroupSimpleMoveImplementation::complexMove(
     const Machines& machines,
     const Points& points,
     size_t commandId,
-    string* /* pReason */)
+    std::string* /* pReason */)
 {
     PRE(points.size() != 0);
     PRE(machines.size() != 0);

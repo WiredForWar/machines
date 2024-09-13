@@ -13,9 +13,11 @@
 #define _MACHLOG_CONDANYA_HPP
 
 #include "base/base.hpp"
+#include "ctl/map.hpp"
 #include "phys/phys.hpp"
 #include "sim/conditio.hpp"
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 class UtlLineTokeniser;
 
@@ -23,7 +25,7 @@ class MachLogAnyAllCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-    using ConditionMap = ctl_map<string, SimCondition*, std::less<string>>;
+    using ConditionMap = ctl_map<std::string, SimCondition*, std::less<std::string>>;
 
     static MachLogAnyAllCondition*
     newFromParser(UtlLineTokeniser*, ConditionMap*, SimCondition::BooleanOperator booleanOperator);
@@ -43,7 +45,7 @@ protected:
 
 private:
     MachLogAnyAllCondition(
-        const string& keyName,
+        const std::string& keyName,
         const ctl_pvector<SimCondition>&,
         SimCondition::BooleanOperator booleanOperator);
 

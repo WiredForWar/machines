@@ -29,7 +29,7 @@ public:
     // library should terminate.
 
     bool handleHostMessage() override;
-    bool handleDestroyPlayerMessage(const string&) override;
+    bool handleDestroyPlayerMessage(const std::string&) override;
     bool handleSessionLostMessage() override;
 
     void CLASS_INVARIANT;

@@ -13,10 +13,11 @@
 #define _MACHLOG_ARTFACTS_HPP
 
 #include "base/base.hpp"
-#include "stdlib/strfwd.hpp"
 #include "utility/id.hpp"
 #include "mathex/mathex.hpp"
 #include "machphys/machphys.hpp"
+
+#include <string>
 
 // forward refs
 template <class T> class ctl_vector;
@@ -62,7 +63,7 @@ public:
     // a 2.5d boundary defined by localBoundary and height
     void addSubType(
         int subType,
-        const string& name,
+        const std::string& name,
         MachPhys::BuildingMaterialUnits cost,
         MachPhys::ArmourUnits armour,
         MachPhys::HitPointUnits hitPoints,
@@ -72,7 +73,7 @@ public:
     // PRE( nSubTypes() == subType );
 
     // Add a new dumb artefact subType associated with the physical model in the repository which has key name.
-    void addSubType(int subType, const string& name);
+    void addSubType(int subType, const std::string& name);
     // PRE( nSubTypes() == subType );
 
     // Add a damage link such that when the artefact actor with id dyingArtefactId is destroyed,

@@ -50,7 +50,7 @@ public:
     virtual std::unique_ptr<MachGuiCommand> clone() const = 0;
 
     // reference to the up and down bitmap names for this command
-    virtual const std::pair<string, string>& iconNames() const = 0;
+    virtual const std::pair<std::string, std::string>& iconNames() const = 0;
 
     // The resource file id of the prompt to be displayed when the cursor moves
     // over the command icon
@@ -208,15 +208,15 @@ private:
     bool operator==(const MachGuiCommand&);
 
     // Execute the command for pActor, returning true if done so,
-    // or false if not possible. If the latter, a prompt string explaining
+    // or false if not possible. If the latter, a prompt std::string explaining
     // the reason is returned in pReason.
-    virtual bool doApply(MachActor* pActor, string* pReason) = 0;
+    virtual bool doApply(MachActor* pActor, std::string* pReason) = 0;
     // PRE( isInteractionComplete() )
 
     // Execute the command as a sqaudron whose most intelligent administrator
     // is pAdministrator. If successful return true. Otherwise false, with
-    // a prompt string indicating reason for failure in pReason.
-    virtual bool doAdminApply(MachLogAdministrator* pAdministrator, string* pReason);
+    // a prompt std::string indicating reason for failure in pReason.
+    virtual bool doAdminApply(MachLogAdministrator* pAdministrator, std::string* pReason);
     // PRE( canAdminApply() );
 
     //  True iff this command can be applied to a group of actors at once
@@ -225,9 +225,9 @@ private:
     // typedef ctl_pvector< MachActor > Actors;
 
     // Execute the command for all actors in actors, returning true if done so,
-    // or false if not possible. If the latter, a prompt string explaining
+    // or false if not possible. If the latter, a prompt std::string explaining
     // the reason is returned in pReason.
-    virtual bool doGroupApply(const Actors& actors, string* pReason);
+    virtual bool doGroupApply(const Actors& actors, std::string* pReason);
     // PRE( isInteractionComplete() )
 
     using ObstacleFlags = uint32;

@@ -39,7 +39,7 @@ private:
     MachGuiMessageDisplay();
     struct DisplayMessage
     {
-        string messageText_;
+        std::string messageText_;
         PhysAbsoluteTime startTime_;
         PhysRelativeTime duration_;
         DisplayMessage& operator=(const DisplayMessage& rhs)

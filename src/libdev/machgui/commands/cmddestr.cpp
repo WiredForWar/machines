@@ -53,7 +53,7 @@ bool MachGuiSelfDestructCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiSelfDestructCommand::doApply(MachActor* pActor, string*)
+bool MachGuiSelfDestructCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(pActor->objectIsMachine() || pActor->objectIsConstruction());
 
@@ -115,9 +115,9 @@ std::unique_ptr<MachGuiCommand> MachGuiSelfDestructCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiSelfDestructCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiSelfDestructCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/selfdes1.bmp", "gui/commands/selfdes1.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/selfdes1.bmp", "gui/commands/selfdes1.bmp");
     return names;
 }
 

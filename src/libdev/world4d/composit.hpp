@@ -117,14 +117,14 @@ public:
     void CLASS_INVARIANT;
 
     // Moved from protected area
-    bool findCompositePlan(const string& id, W4dCompositePlanPtr* pPlanPtr) const;
+    bool findCompositePlan(const std::string& id, W4dCompositePlanPtr* pPlanPtr) const;
 
     // Cycles through animation sequences
     bool cycleAnims(W4dCompositePlanPtr* pPlanPtr) const;
 
     // Returns a list of composite plan names
     // Not implemented yet!
-    size_t listCompositePlans(ctl_list<string>* planList) const;
+    size_t listCompositePlans(ctl_list<std::string>* planList) const;
 
     //////////////////////////////////////////////////////
     // Links. WARNING these methods are public so that subclasses of W4dComposite can
@@ -133,7 +133,7 @@ public:
 
     // True if a link named id exists, in which case it's pointer is
     // returned in ppLink.
-    bool findLink(const string& id, W4dLink** ppLink) const;
+    bool findLink(const std::string& id, W4dLink** ppLink) const;
 
     using W4dLinks = ctl_vector<W4dLink*>;
 
@@ -212,12 +212,12 @@ protected:
     // True if successfully reads an animation called animationName from xanFileName ,
     // Updating pCompositePlan with corresponding animations
     // bool readXANAnimation( const SysPathName& xanFileName,
-    //                        const string& animationName,
+    //                        const std::string& animationName,
     //                        W4dCompositePlan* pCompositePlan ) const;
 
     bool readAnimation(
         const SysPathName& fileName,
-        const string& animationName,
+        const std::string& animationName,
         W4dCompositePlan* pCompositePlan,
         MATHEX_SCALAR framesPerSecond) const;
 

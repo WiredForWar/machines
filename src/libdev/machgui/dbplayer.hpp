@@ -26,14 +26,14 @@ class MachGuiDbPlayer
 {
 public:
     // Every player has a unique id and name
-    MachGuiDbPlayer(uint id, const string& name);
+    MachGuiDbPlayer(uint id, const std::string& name);
 
     ~MachGuiDbPlayer();
 
     // Set/get id/name
     uint id() const;
-    const string& name() const;
-    void name(const string& newName);
+    const std::string& name() const;
+    void name(const std::string& newName);
 
     // true iff this player has played scenario. In this case returns the corresponding record
     // in ppPlayerScenario.

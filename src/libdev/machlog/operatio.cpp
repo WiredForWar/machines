@@ -162,9 +162,9 @@ void MachLogOperation::domainDeleted(W4dDomain*)
     // inentionally empty...override as necessary
 }
 
-const string& MachLogOperation::operationTypeAsString() const
+const std::string& MachLogOperation::operationTypeAsString() const
 {
-    CB_DEPIMPL(string, operationTypeAsString_);
+    CB_DEPIMPL(std::string, operationTypeAsString_);
     TEST_INVARIANT;
 
     return operationTypeAsString_;

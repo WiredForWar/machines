@@ -44,14 +44,14 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t)
 }
 
 // static
-MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const string& filename)
+MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const std::string& filename)
 {
 
     // Construct an empty object
     MachGuiDbTextData* pTextData = new MachGuiDbTextData;
 
     // Construct the persistent file name
-    string work = "pdata/" + filename;
+    std::string work = "pdata/" + filename;
     SysPathName persistentPath(work);
     persistentPath.extension("bin");
 
@@ -67,7 +67,7 @@ MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const string& filename)
     else
     {
         // Construct the source path
-        string work = "data/" + filename;
+        std::string work = "data/" + filename;
         SysPathName sourcePath(work);
         ASSERT_FILE_EXISTS(sourcePath.c_str());
 
@@ -83,37 +83,37 @@ MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const string& filename)
     return pTextData;
 }
 
-const string& MachGuiDbTextData::campaignText() const
+const std::string& MachGuiDbTextData::campaignText() const
 {
     TEST_INVARIANT;
     return pData_->campaignText_;
 }
 
-const string& MachGuiDbTextData::hintText() const
+const std::string& MachGuiDbTextData::hintText() const
 {
     TEST_INVARIANT;
     return pData_->hintText_;
 }
 
-const string& MachGuiDbTextData::winText() const
+const std::string& MachGuiDbTextData::winText() const
 {
     TEST_INVARIANT;
     return pData_->winText_;
 }
 
-const string& MachGuiDbTextData::loseText() const
+const std::string& MachGuiDbTextData::loseText() const
 {
     TEST_INVARIANT;
     return pData_->loseText_;
 }
 
-const string& MachGuiDbTextData::winVoicemail() const
+const std::string& MachGuiDbTextData::winVoicemail() const
 {
     TEST_INVARIANT;
     return pData_->winVoicemail_;
 }
 
-const string& MachGuiDbTextData::loseVoicemail() const
+const std::string& MachGuiDbTextData::loseVoicemail() const
 {
     TEST_INVARIANT;
     return pData_->loseVoicemail_;
@@ -125,14 +125,14 @@ uint MachGuiDbTextData::nObjectives() const
     return pData_->objectives_.size();
 }
 
-const string& MachGuiDbTextData::objectiveText(uint index) const
+const std::string& MachGuiDbTextData::objectiveText(uint index) const
 {
     TEST_INVARIANT;
     PRE(index < nObjectives());
     return pData_->objectives_[index];
 }
 
-const string& MachGuiDbTextData::objectiveVoicemail(uint index) const
+const std::string& MachGuiDbTextData::objectiveVoicemail(uint index) const
 {
     TEST_INVARIANT;
     PRE(index < nObjectives());
@@ -145,7 +145,7 @@ uint MachGuiDbTextData::nTasks() const
     return pData_->tasks_.size();
 }
 
-const string& MachGuiDbTextData::taskText(uint index) const
+const std::string& MachGuiDbTextData::taskText(uint index) const
 {
     TEST_INVARIANT;
     PRE(index < nTasks());
@@ -159,9 +159,9 @@ void MachGuiDbTextData::parseFile(const SysPathName& filename)
     UtlLineTokeniser parser(filename);
 
     // Read successive line
-    string* pOutputString = nullptr;
-    string objectiveText, taskText;
-    string voicemail;
+    std::string* pOutputString = nullptr;
+    std::string objectiveText, taskText;
+    std::string voicemail;
 
     while (! parser.finished())
     {

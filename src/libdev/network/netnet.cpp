@@ -212,7 +212,7 @@ void NetNetwork::systemMessageHandler(NetSystemMessageHandler* pMessageHandler)
     pNetINetwork_->systemMessageHandler(pMessageHandler);
 }
 
-void NetNetwork::doAbort(const string& reason)
+void NetNetwork::doAbort(const std::string& reason)
 {
     pNetINetwork_->doAbort(reason);
 }

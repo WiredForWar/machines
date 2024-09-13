@@ -90,7 +90,7 @@ bool MachGuiLocateToCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiLocateToCommand::doApply(MachActor* pActor, string*)
+bool MachGuiLocateToCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(pActor->objectIsMachine());
     PRE(path_.size() != 0);
@@ -153,9 +153,9 @@ std::unique_ptr<MachGuiCommand> MachGuiLocateToCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiLocateToCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiLocateToCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/locate.bmp", "gui/commands/locate.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/locate.bmp", "gui/commands/locate.bmp");
     return names;
 }
 
@@ -178,7 +178,7 @@ bool MachGuiLocateToCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
     ;

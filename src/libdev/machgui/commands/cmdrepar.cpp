@@ -143,7 +143,7 @@ void MachGuiRepairCommand::typeData(MachLog::ObjectType /*objectType*/, int /*su
 }
 
 // virtual
-bool MachGuiRepairCommand::doApply(MachActor* pActor, string*)
+bool MachGuiRepairCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(hadFinalPick_);
 
@@ -171,9 +171,9 @@ std::unique_ptr<MachGuiCommand> MachGuiRepairCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiRepairCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiRepairCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/repair.bmp", "gui/commands/repair.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/repair.bmp", "gui/commands/repair.bmp");
     return names;
 }
 
@@ -196,7 +196,7 @@ bool MachGuiRepairCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
 

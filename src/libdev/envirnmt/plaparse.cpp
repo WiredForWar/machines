@@ -91,7 +91,7 @@ void EnvIPlanetParser::parse(const SysPathName& envFile, EnvPlanetEnvironment* p
     planet_ = nullptr;
 }
 
-void EnvIPlanetParser::startOrbit(const string* name)
+void EnvIPlanetParser::startOrbit(const std::string* name)
 {
     orbParams_ = new EnvIOrbitParams(name);
     POST(orbitInConstruction());
@@ -108,7 +108,7 @@ void EnvIPlanetParser::orbitComplete()
     PRE(orbitInConstruction());
 
     EnvOrbit* orbit = planet_->createOrbit(orbParams_);
-    std::pair<const string, EnvOrbit*> value(orbParams_->name(), orbit);
+    std::pair<const std::string, EnvOrbit*> value(orbParams_->name(), orbit);
     orbits_.insert(value);
 
     delete orbParams_;
@@ -117,7 +117,7 @@ void EnvIPlanetParser::orbitComplete()
     POST(!orbitInConstruction());
 }
 
-EnvOrbit* EnvIPlanetParser::lookUpOrbit(const string* name)
+EnvOrbit* EnvIPlanetParser::lookUpOrbit(const std::string* name)
 {
     PRE(name);
     OrbitMap::const_iterator it = orbits_.find(*name);
@@ -128,7 +128,7 @@ EnvOrbit* EnvIPlanetParser::lookUpOrbit(const string* name)
         return (*it).second;
 }
 
-void EnvIPlanetParser::startSatellite(const string* name)
+void EnvIPlanetParser::startSatellite(const std::string* name)
 {
     satParams_ = new EnvISatelliteParams(name);
     POST(satelliteInConstruction());
@@ -145,7 +145,7 @@ void EnvIPlanetParser::satelliteComplete()
     PRE(satelliteInConstruction());
 
     EnvSatellite* satellite = planet_->createSatellite(satParams_);
-    std::pair<const string, EnvSatellite*> value(satParams_->name(), satellite);
+    std::pair<const std::string, EnvSatellite*> value(satParams_->name(), satellite);
     satellites_.insert(value);
 
     delete satParams_;
@@ -156,7 +156,7 @@ void EnvIPlanetParser::satelliteComplete()
     POST(!satelliteInConstruction());
 }
 
-EnvSatellite* EnvIPlanetParser::lookUpSatellite(const string* name)
+EnvSatellite* EnvIPlanetParser::lookUpSatellite(const std::string* name)
 {
     PRE(name);
     SatelliteMap::const_iterator it = satellites_.find(*name);
@@ -188,11 +188,11 @@ void EnvIPlanetParser::addClut(EnvElevationColourTable* clut)
     PRE(clut);
     PRE(clut->name().length() > 0);
 
-    std::pair<const string, EnvElevationColourTable*> value(clut->name(), clut);
+    std::pair<const std::string, EnvElevationColourTable*> value(clut->name(), clut);
     cluts_.insert(value);
 }
 
-EnvElevationColourTable* EnvIPlanetParser::lookUpClut(const string* name)
+EnvElevationColourTable* EnvIPlanetParser::lookUpClut(const std::string* name)
 {
     PRE(name);
     ClutMap::const_iterator it = cluts_.find(*name);
@@ -295,14 +295,14 @@ void EnvIPlanetParser::completeSkyline()
     POST(!contructingSkyline_);
 }
 
-void EnvIPlanetParser::skylineMeshFile(const string* m)
+void EnvIPlanetParser::skylineMeshFile(const std::string* m)
 {
     PRE(m);
     PRE(contructingSkyline_);
     skylineMesh_ = *m;
 }
 
-void EnvIPlanetParser::skylineController(const string* s)
+void EnvIPlanetParser::skylineController(const std::string* s)
 {
     PRE(s);
     PRE(contructingSkyline_);
@@ -310,7 +310,7 @@ void EnvIPlanetParser::skylineController(const string* s)
     POST(skylineController_);
 }
 
-void EnvIPlanetParser::skylineColourTable(const string* c)
+void EnvIPlanetParser::skylineColourTable(const std::string* c)
 {
     PRE(c);
     PRE(contructingSkyline_);

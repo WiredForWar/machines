@@ -581,10 +581,10 @@ int MachLogMessageBroker::maximumMotionChunks()
 void MachLogMessageBroker::nodeConnectionLost()
 {
     NETWORK_STREAM("MachLogMessageBroker::nodeConnectionLost node has lost connection\n");
-    //              string reason;
+    //              std::string reason;
     //              reason = ". The connection has been lost in the message broker.\n";
     //              NetNetwork::instance().doAbort( reason );
-    ctl_vector<string> nodeNames;
+    ctl_vector<std::string> nodeNames;
     /*  NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
     NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
     for( ; i != j; ++i )
@@ -598,7 +598,7 @@ void MachLogMessageBroker::nodeConnectionLost()
 
     //  NetNetwork::instance().session().updateNodes();
     //  NETWORK_STREAM(" nodes after loss size " << NetNetwork::instance().session().nodes().size() << std::endl );
-    ctl_vector<string> nodeNamesAfterUpdate;
+    ctl_vector<std::string> nodeNamesAfterUpdate;
     /*  i = NetNetwork::instance().session().nodes().begin();
     j = NetNetwork::instance().session().nodes().end();
     for( ; i != j; ++i )
@@ -614,7 +614,7 @@ void MachLogMessageBroker::nodeConnectionLost()
     //  }
     //  else
     {
-        for (ctl_vector<string>::const_iterator i = nodeNames.begin(); i != nodeNames.end(); ++i)
+        for (ctl_vector<std::string>::const_iterator i = nodeNames.begin(); i != nodeNames.end(); ++i)
         {
             if (find(nodeNamesAfterUpdate.begin(), nodeNamesAfterUpdate.end(), (*i)) == nodeNamesAfterUpdate.end())
             {

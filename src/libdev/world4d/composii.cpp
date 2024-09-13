@@ -127,7 +127,7 @@ void W4dCompositeImpl::parseMeshRanges(const SysPathName& /* directoryName */, U
     PRE(pParser->tokens()[0] == "MESH_RANGES");
     PRE(pParser->tokens().size() >= 2);
 
-    string meshName = pParser->tokens()[1];
+    std::string meshName = pParser->tokens()[1];
 
     W4dLink* pLink;
 
@@ -187,13 +187,13 @@ void W4dCompositeImpl::parseAnimation(const SysPathName& directoryName, UtlLineT
     PRE(pParser->tokens()[0] == "ANIMATION");
     PRE(pParser->tokens().size() == 5);
 
-    string planName = pParser->tokens()[1];
+    std::string planName = pParser->tokens()[1];
 
     SysPathName fileName(directoryName);
     fileName.combine(pParser->tokens()[2]);
     fileName.extension("x");
 
-    string animationName = pParser->tokens()[3];
+    std::string animationName = pParser->tokens()[3];
 
     MATHEX_SCALAR framesPerSecond = atof(pParser->tokens()[4].c_str());
 
@@ -213,7 +213,7 @@ void W4dCompositeImpl::parseAnimation(const SysPathName& directoryName, UtlLineT
 //  .x to a .xan file.
 bool W4dCompositeImpl::readAnimation(
     const SysPathName& fileName,
-    const string& animationName,
+    const std::string& animationName,
     W4dCompositePlan* pCompositePlan,
     MATHEX_SCALAR framesPerSecond) const
 {
@@ -252,7 +252,7 @@ bool W4dCompositeImpl::readAnimation(
                     // The current line contains the link name. Map to link id.
                     POST(parser.tokens().size() == 3);
 
-                    string linkName = parser.tokens()[1];
+                    std::string linkName = parser.tokens()[1];
 
                     //  3D studio puts "x3ds_" in front of names sometimes - remove
                     //  this if necessary.
@@ -318,7 +318,7 @@ bool W4dCompositeImpl::readAnimation(
 bool W4dCompositeImpl::parseLinkAnimation(
     UtlLineTokeniser* pParser,
     MATHEX_SCALAR framesPerSecond,
-    const string& linkName,
+    const std::string& linkName,
     PhysMotionPlanPtr* pPlanPtr) const
 {
     PRE(pParser != nullptr)
@@ -543,7 +543,7 @@ void W4dCompositeImpl::addEmptyMeshes(double distance, W4dLOD id)
 //  kick out a lot of unnecessary animations so we need to check for them.
 
 bool W4dCompositeImpl::animationValid(
-    const string& linkName,
+    const std::string& linkName,
     const KeyFrameOrientations& orientations,
     const KeyFrameLocations& locations) const
 {
@@ -599,7 +599,7 @@ bool W4dCompositeImpl::animationValid(
     return valid;
 }
 
-bool W4dCompositeImpl::findLink(const string& name, W4dLink** ppLink) const
+bool W4dCompositeImpl::findLink(const std::string& name, W4dLink** ppLink) const
 {
     *ppLink = nullptr;
 

@@ -5,7 +5,7 @@
 
 #include "machphys/epp.hpp"
 
-MachPhysEvasionPriorityPlan::MachPhysEvasionPriorityPlan(string EPPName)
+MachPhysEvasionPriorityPlan::MachPhysEvasionPriorityPlan(std::string EPPName)
     : EPPName_(EPPName)
     , garrisonPriority_(-1)
     , aggressivesPriority_(-1)
@@ -17,7 +17,7 @@ MachPhysEvasionPriorityPlan::MachPhysEvasionPriorityPlan(string EPPName)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-string MachPhysEvasionPriorityPlan::name()
+std::string MachPhysEvasionPriorityPlan::name()
 {
     return EPPName_;
 }

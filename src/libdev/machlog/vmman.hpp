@@ -16,7 +16,8 @@
 #include "machlog/vmdata.hpp"
 #include "machphys/machphys.hpp"
 #include "utility/id.hpp"
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 class MexPoint3d;
 class MachLogVoiceMail;
@@ -30,8 +31,8 @@ template <class X> class ctl_vector;
 // Warnings about foward references of template classes
 #ifndef CB_NOWARNINGS // Are Charybdis warnings turned on?
 #ifndef _STD_STRING_HPP
-#pragma message(__FILE__ "(13): Warning : std::less< string > foward referenced")
-#pragma message(__FILE__ "(13): Warning : ctl_map< string, VoiceMailID, std::less< string > > foward referenced")
+#pragma message(__FILE__ "(13): Warning : std::less< std::string > foward referenced")
+#pragma message(__FILE__ "(13): Warning : ctl_map< std::string, VoiceMailID, std::less< std::string > > foward referenced")
 #endif
 #endif
 
@@ -87,7 +88,7 @@ public:
     // Return the local transform of the actor associated with a mail
     const MexPoint3d currentMailPosition() const;
 
-    using VEmailIDMap = ctl_map<string, VoiceMailID, std::less<string>>;
+    using VEmailIDMap = ctl_map<std::string, VoiceMailID, std::less<std::string>>;
     const VEmailIDMap& veMailIDMap() const;
 
     static bool voiceMailsActivated();
@@ -98,7 +99,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    using VEmailTypeMap = ctl_map<string, VoiceMailType, std::less<string>>;
+    using VEmailTypeMap = ctl_map<std::string, VoiceMailType, std::less<std::string>>;
     using MailInfoVector = ctl_pvector<MachLogVoiceMailInfo>;
     using MailVector = ctl_pvector<MachLogVoiceMail>;
 

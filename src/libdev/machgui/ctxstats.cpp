@@ -64,7 +64,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
             DevCD::instance().stopPlaying();
         }
 
-        string cdRomDrive;
+        std::string cdRomDrive;
 
         if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/gui/statist.smk"))
         {
@@ -150,11 +150,11 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
 
     // Determine type of game
     const MachGuiStartupScreens::Context context = pStartupScreens->currentContext();
-    string redName, blueName, greenName, yellowName;
+    std::string redName, blueName, greenName, yellowName;
     redName = blueName = greenName = yellowName = GuiResourceString(IDS_MENU_STSNA).asString();
 
     MachPhys::Race playerRace;
-    string playerName;
+    std::string playerName;
 
     if ((context == MachGuiStartupScreens::CTX_CASTATISTICS) || (context == MachGuiStartupScreens::CTX_SKSTATISTICS))
     {
@@ -175,7 +175,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
                 && (currentRace != MachLogRaces::instance().playerRace())
                 && MachLogRaces::instance().score(currentRace).scoreShouldBeDisplayed())
             {
-                string computerString = GuiResourceString(IDS_MENU_STSCOMPUTER).asString();
+                std::string computerString = GuiResourceString(IDS_MENU_STSCOMPUTER).asString();
 
                 switch (currentRace)
                 {
@@ -224,7 +224,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         const MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens->startupData()->players();
         for (uint i = 0; i < 4; ++i)
         {
-            string* name = nullptr;
+            std::string* name = nullptr;
             switch (playerInfo[i].race_)
             {
                 case MachPhys::RED:

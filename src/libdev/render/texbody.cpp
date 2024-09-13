@@ -206,7 +206,7 @@ static SysPathName alphaMapName(const SysPathName& pathname)
 {
     PRE(isTransparent(pathname));
 
-    string retval = pathname.pathname();
+    std::string retval = pathname.pathname();
     retval[retval.length() - 5] = 'a';
     return retval;
 }
@@ -219,7 +219,7 @@ static SysPathName colourMapName(const SysPathName& pathname)
 {
     PRE(isTransparent(pathname));
 
-    string retval = pathname.pathname();
+    std::string retval = pathname.pathname();
     retval[retval.length() - 5] = 'c';
     return retval;
 }

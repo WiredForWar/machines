@@ -267,7 +267,7 @@ bool W4dShadowProjected2d::loadLODFile(const SysPathName& filename)
     return retval;
 }
 
-bool W4dShadowProjected2d::loadSingleMesh(const SysPathName& filename, const string& meshName, double scale)
+bool W4dShadowProjected2d::loadSingleMesh(const SysPathName& filename, const std::string& meshName, double scale)
 {
     bool retval = shadowEntity_->loadSingleMesh(filename, meshName, scale);
 

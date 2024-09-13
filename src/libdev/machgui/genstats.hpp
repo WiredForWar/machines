@@ -31,7 +31,7 @@ public:
         Gui::Coord topLeft,
         uint titleString,
         MachPhys::Race race,
-        const string& player);
+        const std::string& player);
     ~MachGuiGeneralStatistics() override;
 
     void CLASS_INVARIANT;
@@ -44,7 +44,7 @@ public:
 
 private:
     // Truncate player's name if it will not fit in bounding box.
-    static string truncate(const string& name);
+    static std::string truncate(const std::string& name);
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiGeneralStatistics& t);
 

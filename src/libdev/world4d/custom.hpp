@@ -46,7 +46,7 @@ public:
     void emptyMesh(W4dDistance distance, W4dLOD LODid = 0);
 
     // Load a unique, modifiable mesh at the specified LOD.
-    bool loadUniqueMesh(const SysPathName&, const string& meshName, W4dDistance, W4dLOD = 0);
+    bool loadUniqueMesh(const SysPathName&, const std::string& meshName, W4dDistance, W4dLOD = 0);
 
     ~W4dCustom() override;
 

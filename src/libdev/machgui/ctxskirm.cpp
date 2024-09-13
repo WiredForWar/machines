@@ -80,9 +80,9 @@ protected:
         pSkirmishCtx_->updateScenarioList(planet_);
     }
 
-    static string displayString(MachGuiDbPlanet& planet)
+    static std::string displayString(MachGuiDbPlanet& planet)
     {
-        string retValue;
+        std::string retValue;
 
         if (allScenariosCompleted(planet))
         {
@@ -131,9 +131,9 @@ protected:
         pSkirmishCtx_->updateTerrainTypeList(system_);
     }
 
-    static string displayString(MachGuiDbSystem& system)
+    static std::string displayString(MachGuiDbSystem& system)
     {
-        string retValue;
+        std::string retValue;
 
         if (allPlanetsCompleted(system))
         {
@@ -199,9 +199,9 @@ protected:
         pSkirmishCtx_->updateSelectedScenario(scenario_);
     }
 
-    static string displayString(MachGuiDbScenario& scenario)
+    static std::string displayString(MachGuiDbScenario& scenario)
     {
-        string retValue;
+        std::string retValue;
 
         if (scenario.hasBeenWon())
         {

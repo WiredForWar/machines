@@ -33,9 +33,9 @@ MachGuiStartupData::PlayerInfo::PlayerInfo()
     reset();
 }
 
-string MachGuiStartupData::PlayerInfo::getDisplayName() const
+std::string MachGuiStartupData::PlayerInfo::getDisplayName() const
 {
-    string retVal;
+    std::string retVal;
 
     switch (status_)
     {
@@ -62,7 +62,7 @@ string MachGuiStartupData::PlayerInfo::getDisplayName() const
     return retVal;
 }
 
-void MachGuiStartupData::PlayerInfo::setPlayerName(const string& playerName)
+void MachGuiStartupData::PlayerInfo::setPlayerName(const std::string& playerName)
 {
     ASSERT(playerName.length() <= MAX_PLAYERNAME_LEN, "players name too long")
 
@@ -357,7 +357,7 @@ void MachGuiStartupData::resetData()
     MachGuiChatWindow::clearAllText();
 }
 
-void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqueMachineNumber)
+void MachGuiStartupData::receivedJoinMessage(const std::string& playerName, int uniqueMachineNumber)
 {
     NETWORK_STREAM("MachGuiStartupData::receivedJoinMessage " << playerName << std::endl);
     NETWORK_INDENT(2);
@@ -366,7 +366,7 @@ void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqu
         bool nameChanged = false;
         bool uniqueName = false;
         int nameChangeNumber = 2;
-        string newPlayerName = playerName;
+        std::string newPlayerName = playerName;
 
         // Check to see if name is unique. If not then add a number on the end.
         while (! uniqueName)
@@ -386,7 +386,7 @@ void MachGuiStartupData::receivedJoinMessage(const string& playerName, int uniqu
             }
             else // Check against other players
             {
-                for (ctl_vector<string>::iterator iter = availablePlayers_.begin(); iter != availablePlayers_.end();
+                for (ctl_vector<std::string>::iterator iter = availablePlayers_.begin(); iter != availablePlayers_.end();
                      ++iter)
                 {
                     if (strcasecmp((*iter).c_str(), newPlayerName.c_str()) == 0)
@@ -549,7 +549,7 @@ void MachGuiStartupData::removeCtxImReady()
     NETWORK_STREAM("MachGuiStartupData::removeCtxImReady DONE\n");
 }
 
-ctl_vector<string>& MachGuiStartupData::availablePlayers()
+ctl_vector<std::string>& MachGuiStartupData::availablePlayers()
 {
     return availablePlayers_;
 }
@@ -621,7 +621,7 @@ bool MachGuiStartupData::isRaceAvailable(MachPhys::Race race) const
     return free;
 }
 
-void MachGuiStartupData::receivedRaceChangeRequest(const string& playerName, size_t playerIndex, MachPhys::Race race)
+void MachGuiStartupData::receivedRaceChangeRequest(const std::string& playerName, size_t playerIndex, MachPhys::Race race)
 {
     if (isHost())
     {
@@ -654,7 +654,7 @@ void MachGuiStartupData::sendUpdatePlayersMessage()
     pStartupScreens_->messageBroker().sendUpdatePlayersMessage();
 }
 
-void MachGuiStartupData::receivedImReadyMessage(const string& playerName, bool ready)
+void MachGuiStartupData::receivedImReadyMessage(const std::string& playerName, bool ready)
 {
     if (isHost())
     {
@@ -669,7 +669,7 @@ void MachGuiStartupData::receivedImReadyMessage(const string& playerName, bool r
     }
 }
 
-bool MachGuiStartupData::isReady(const string& playerName)
+bool MachGuiStartupData::isReady(const std::string& playerName)
 {
     for (size_t loop = 0; loop < 4; ++loop)
     {
@@ -768,17 +768,17 @@ bool MachGuiStartupData::terminalMultiPlayerGameProblem() const
     return terminalMultiPlayerGameProblem_;
 }
 
-void MachGuiStartupData::receivedClientCancelMessage(const string& playerName)
+void MachGuiStartupData::receivedClientCancelMessage(const std::string& playerName)
 {
     if (isHost())
     {
-        string replacePlayerName = MachGui::openText();
+        std::string replacePlayerName = MachGui::openText();
 
         // Find player not currently included in game and replace slot left empty by client with
         // this new player
-        for (ctl_vector<string>::iterator iter = availablePlayers_.begin(); iter != availablePlayers_.end(); ++iter)
+        for (ctl_vector<std::string>::iterator iter = availablePlayers_.begin(); iter != availablePlayers_.end(); ++iter)
         {
-            string iterPlayerName = *iter;
+            std::string iterPlayerName = *iter;
             bool included = false;
 
             for (size_t loop = 0; loop < 4; ++loop)
@@ -816,7 +816,7 @@ void MachGuiStartupData::receivedClientCancelMessage(const string& playerName)
         }
 
         // Remove name from available players list
-        ctl_vector<string>::iterator iter = find(availablePlayers_.begin(), availablePlayers_.end(), playerName);
+        ctl_vector<std::string>::iterator iter = find(availablePlayers_.begin(), availablePlayers_.end(), playerName);
         if (iter != availablePlayers_.end())
             availablePlayers_.erase(iter);
 
@@ -883,9 +883,9 @@ void MachGuiStartupData::receivedStartMessage()
     }
 }
 
-string MachGuiStartupData::getHostName() const
+std::string MachGuiStartupData::getHostName() const
 {
-    string retVal;
+    std::string retVal;
 
     for (size_t loop = 0; loop < 4; ++loop)
     {
@@ -989,7 +989,7 @@ void MachGuiStartupData::resources(MachLog::ResourcesAvailable res)
     gameSettings()->resources_ = res;
 }
 
-void MachGuiStartupData::resources(const string& str)
+void MachGuiStartupData::resources(const std::string& str)
 {
     GuiResourceString highStr(IDS_MENU_HIGH);
     GuiResourceString mediumStr(IDS_MENU_MEDIUM);
@@ -1019,7 +1019,7 @@ MachLog::ResourcesAvailable MachGuiStartupData::resources() const
     return gameSettings_.resources_;
 }
 
-string MachGuiStartupData::resourcesStr() const
+std::string MachGuiStartupData::resourcesStr() const
 {
     GuiResourceString highStr(IDS_MENU_HIGH);
     GuiResourceString mediumStr(IDS_MENU_MEDIUM);
@@ -1046,7 +1046,7 @@ void MachGuiStartupData::fogOfWar(bool fog)
     gameSettings()->fogOfWar_ = fog;
 }
 
-void MachGuiStartupData::fogOfWar(const string& str)
+void MachGuiStartupData::fogOfWar(const std::string& str)
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1071,7 +1071,7 @@ bool MachGuiStartupData::fogOfWar() const
     return gameSettings_.fogOfWar_;
 }
 
-string MachGuiStartupData::fogOfWarStr() const
+std::string MachGuiStartupData::fogOfWarStr() const
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1091,7 +1091,7 @@ void MachGuiStartupData::startingResources(MachLog::StartingResources startRes)
     gameSettings()->startingResources_ = startRes;
 }
 
-void MachGuiStartupData::startingResources(const string& str)
+void MachGuiStartupData::startingResources(const std::string& str)
 {
     GuiResourceString defaultStr(IDS_MENU_DEFAULT);
     GuiResourceString level1Str(IDS_MENU_RESOURCESLEVEL1);
@@ -1136,7 +1136,7 @@ MachLog::StartingResources MachGuiStartupData::startingResources() const
     return gameSettings_.startingResources_;
 }
 
-string MachGuiStartupData::startingResourcesStr() const
+std::string MachGuiStartupData::startingResourcesStr() const
 {
     switch (startingResources())
     {
@@ -1183,7 +1183,7 @@ void MachGuiStartupData::startingPosition(MachLog::RandomStarts sp)
     gameSettings()->startingPosition_ = sp;
 }
 
-void MachGuiStartupData::startingPosition(const string& str)
+void MachGuiStartupData::startingPosition(const std::string& str)
 {
     GuiResourceString fixedStr(IDS_MENU_STARTFIXED);
     GuiResourceString randomStr(IDS_MENU_STARTRANDOM);
@@ -1208,7 +1208,7 @@ MachLog::RandomStarts MachGuiStartupData::startingPosition() const
     return gameSettings_.startingPosition_;
 }
 
-string MachGuiStartupData::startingPositionStr() const
+std::string MachGuiStartupData::startingPositionStr() const
 {
     switch (startingPosition())
     {
@@ -1235,7 +1235,7 @@ void MachGuiStartupData::victoryCondition(VictoryCondition vc)
     gameSettings()->victoryCondition_ = vc;
 }
 
-void MachGuiStartupData::victoryCondition(const string& str)
+void MachGuiStartupData::victoryCondition(const std::string& str)
 {
     GuiResourceString defaultStr(IDS_MENU_DEFAULT);
     GuiResourceString taStr(IDS_MENU_VICTORYTANNIHILATION);
@@ -1310,7 +1310,7 @@ MachGuiStartupData::VictoryCondition MachGuiStartupData::victoryCondition() cons
     return gameSettings_.victoryCondition_;
 }
 
-string MachGuiStartupData::victoryConditionStr() const
+std::string MachGuiStartupData::victoryConditionStr() const
 {
     switch (victoryCondition())
     {
@@ -1389,7 +1389,7 @@ void MachGuiStartupData::numPlayers(int numPlayers)
     gameSettings()->numPlayers_ = numPlayers;
 }
 
-void MachGuiStartupData::numPlayers(const string& str)
+void MachGuiStartupData::numPlayers(const std::string& str)
 {
     GuiResourceString two(IDS_MENU_NUMPLAYERS2);
     GuiResourceString three(IDS_MENU_NUMPLAYERS3);
@@ -1419,7 +1419,7 @@ int MachGuiStartupData::numPlayers() const
     return gameSettings_.numPlayers_;
 }
 
-string MachGuiStartupData::numPlayersStr() const
+std::string MachGuiStartupData::numPlayersStr() const
 {
     switch (numPlayers())
     {
@@ -1451,7 +1451,7 @@ void MachGuiStartupData::techLevel(MachLog::TechnologyLevel tl)
     gameSettings()->techLevel_ = tl;
 }
 
-void MachGuiStartupData::techLevel(const string& str)
+void MachGuiStartupData::techLevel(const std::string& str)
 {
     GuiResourceString defaultStr(IDS_MENU_DEFAULT);
     GuiResourceString lowStr(IDS_MENU_TECHLEVELLOW);
@@ -1486,7 +1486,7 @@ MachLog::TechnologyLevel MachGuiStartupData::techLevel() const
     return gameSettings_.techLevel_;
 }
 
-string MachGuiStartupData::techLevelStr() const
+std::string MachGuiStartupData::techLevelStr() const
 {
     switch (techLevel())
     {
@@ -1526,7 +1526,7 @@ void MachGuiStartupData::playerRace(MachPhys::Race race)
     SysRegistry::instance().setIntegerValue("Game Settings\\Player Race", "Value", playerRace_);
 }
 
-void MachGuiStartupData::playerRace(const string& str)
+void MachGuiStartupData::playerRace(const std::string& str)
 {
     GuiResourceString red(IDS_MENU_PLAYERCOLOURRED);
     GuiResourceString green(IDS_MENU_PLAYERCOLOURGREEN);
@@ -1561,7 +1561,7 @@ MachPhys::Race MachGuiStartupData::playerRace() const
     return playerRace_;
 }
 
-string MachGuiStartupData::playerRaceStr() const
+std::string MachGuiStartupData::playerRaceStr() const
 {
     switch (playerRace())
     {
@@ -1596,7 +1596,7 @@ int MachGuiStartupData::randomStartSeed() const
     return gameSettings_.randomStartsSeed_;
 }
 
-void MachGuiStartupData::receivedInGameChatMessage(const string& message, MachPhys::Race intendedRace)
+void MachGuiStartupData::receivedInGameChatMessage(const std::string& message, MachPhys::Race intendedRace)
 {
     bool displayMessage = false;
 
@@ -1644,7 +1644,7 @@ bool MachGuiStartupData::doesAtLeastOnePlayerHaveMachinesCD() const
     return retVal;
 }
 
-void MachGuiStartupData::receivedHasMachinesCDMessage(const string& playerName, bool hasMachinesCD)
+void MachGuiStartupData::receivedHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD)
 {
     if (isHost())
     {
@@ -1721,7 +1721,7 @@ void MachGuiStartupData::broadcastAlliances(bool newValue)
     gameSettings()->broadcastAlliances_ = newValue;
 }
 
-void MachGuiStartupData::broadcastAlliances(const string& str)
+void MachGuiStartupData::broadcastAlliances(const std::string& str)
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1746,7 +1746,7 @@ bool MachGuiStartupData::broadcastAlliances() const
     return gameSettings_.broadcastAlliances_;
 }
 
-string MachGuiStartupData::broadcastAlliancesStr() const
+std::string MachGuiStartupData::broadcastAlliancesStr() const
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1766,7 +1766,7 @@ void MachGuiStartupData::disableFirstPerson(bool newValue)
     gameSettings()->disableFirstPerson_ = newValue;
 }
 
-void MachGuiStartupData::disableFirstPerson(const string& str)
+void MachGuiStartupData::disableFirstPerson(const std::string& str)
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1791,7 +1791,7 @@ bool MachGuiStartupData::disableFirstPerson() const
     return gameSettings_.disableFirstPerson_;
 }
 
-string MachGuiStartupData::disableFirstPersonStr() const
+std::string MachGuiStartupData::disableFirstPersonStr() const
 {
     GuiResourceString onStr(IDS_MENU_ON);
     GuiResourceString offStr(IDS_MENU_OFF);
@@ -1804,7 +1804,7 @@ string MachGuiStartupData::disableFirstPersonStr() const
     return offStr.asString();
 }
 
-void MachGuiStartupData::receivedNameChangeMessage(const string& newPlayerName, int uniqueMachineNum)
+void MachGuiStartupData::receivedNameChangeMessage(const std::string& newPlayerName, int uniqueMachineNum)
 {
     if (uniqueMachineNum == uniqueMachineNumber())
     {

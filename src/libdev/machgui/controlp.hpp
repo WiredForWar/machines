@@ -71,7 +71,7 @@ private:
     MachGuiControlPanel(const MachGuiControlPanel&);
     MachGuiControlPanel& operator=(const MachGuiControlPanel&);
 
-    string getDecalRootDirectory() const;
+    std::string getDecalRootDirectory() const;
 
     // Data members
     MachGuiControlPanelImpl* pImpl_;

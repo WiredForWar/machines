@@ -40,7 +40,7 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDispositionChangeNotifiable& t);
 
     void doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2);
-    string getDisplayName(MachPhys::Race race);
+    std::string getDisplayName(MachPhys::Race race);
 
     MachGuiDispositionChangeNotifiable(const MachGuiDispositionChangeNotifiable&);
     MachGuiDispositionChangeNotifiable& operator=(const MachGuiDispositionChangeNotifiable&);

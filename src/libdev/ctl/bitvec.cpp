@@ -57,7 +57,7 @@ ctl_bit_vector::ctl_bit_vector(size_type sz)
     TEST_INVARIANT;
 }
 
-ctl_bit_vector::ctl_bit_vector(const string& s)
+ctl_bit_vector::ctl_bit_vector(const std::string& s)
     : size_(s.length())
 {
     PRE(size() == s.length());

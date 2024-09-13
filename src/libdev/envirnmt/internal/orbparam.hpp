@@ -21,10 +21,10 @@ class W4dEntity;
 class EnvIOrbitParams
 {
 public:
-    EnvIOrbitParams(const string* name); // PRE(name);
+    EnvIOrbitParams(const std::string* name); // PRE(name);
     ~EnvIOrbitParams();
 
-    const string& name() const { return name_; }
+    const std::string& name() const { return name_; }
 
     void radius(MATHEX_SCALAR);
     void period(MATHEX_SCALAR);
@@ -38,7 +38,7 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    const string name_;
+    const std::string name_;
     MATHEX_SCALAR radius_, period_, start_;
     MexDegrees min_, max_, heading_;
     bool radiusSet_, periodSet_, startSet_, minSet_, maxSet_, headingSet_;

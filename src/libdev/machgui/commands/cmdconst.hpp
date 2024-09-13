@@ -58,7 +58,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     void start() override;
     void finish() override;
@@ -118,12 +118,12 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 
     // Execute the command as a sqaudron whose most intelligent administrator
     // is pAdministrator. If successful return true. Otherwise false, with
-    // a prompt string indicating reason for failure in pReason.
-    bool doAdminApply(MachLogAdministrator* pAdministrator, string* pReason) override;
+    // a prompt std::string indicating reason for failure in pReason.
+    bool doAdminApply(MachLogAdministrator* pAdministrator, std::string* pReason) override;
     // PRE( canAdminApply() );
 
     /////////////////////////////////////////////////

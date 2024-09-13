@@ -7,7 +7,8 @@
 #define _RENDER_SURFMGR_HPP
 
 #include "base/base.hpp"
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 // class ostream;
 class AfxResourceLib;

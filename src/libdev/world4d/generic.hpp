@@ -30,7 +30,7 @@ public:
     // You can scale a single mesh when you load it.  You can't at present
     // scale the meshes in an LOD file because that would probably invalidate
     // the transition ranges.
-    bool loadSingleMesh(const SysPathName& filename, const string& meshName, double scale = 1.0);
+    bool loadSingleMesh(const SysPathName& filename, const std::string& meshName, double scale = 1.0);
     bool loadLODFile(const SysPathName& filename);
 
     // Inherited from W4dEntity

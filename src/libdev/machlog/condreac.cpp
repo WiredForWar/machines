@@ -22,7 +22,7 @@
 PER_DEFINE_PERSISTENT(MachLogReachedLocationCondition);
 
 MachLogReachedLocationCondition::MachLogReachedLocationCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race,
     size_t number,
     const MexPoint2d& point,

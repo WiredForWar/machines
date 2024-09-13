@@ -413,12 +413,12 @@ void W4dComposite::plan(
     }
 }
 
-bool W4dComposite::findLink(const string& name, W4dLink** ppLink) const
+bool W4dComposite::findLink(const std::string& name, W4dLink** ppLink) const
 {
     return compositeImpl().findLink(name, ppLink);
 }
 
-bool W4dComposite::findCompositePlan(const string& name, W4dCompositePlanPtr* pPlanPtr) const
+bool W4dComposite::findCompositePlan(const std::string& name, W4dCompositePlanPtr* pPlanPtr) const
 {
     CB_W4dComposite_DEPIMPL();
     bool planFound = false;
@@ -437,7 +437,7 @@ bool W4dComposite::findCompositePlan(const string& name, W4dCompositePlanPtr* pP
 
 bool W4dComposite::readAnimation(
     const SysPathName& fileName,
-    const string& animationName,
+    const std::string& animationName,
     W4dCompositePlan* pCompositePlan,
     MATHEX_SCALAR framesPerSecond) const
 {

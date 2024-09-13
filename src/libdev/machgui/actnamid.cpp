@@ -415,7 +415,7 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, uint* pS
 }
 
 // static
-string MachLogActorStringIdRestorer::getActorPromptText(MachActor* pActor, uint actorId, uint actorWithWeaponId)
+std::string MachLogActorStringIdRestorer::getActorPromptText(MachActor* pActor, uint actorId, uint actorWithWeaponId)
 {
     // Extract hw level from actor
     int level = 0;
@@ -452,7 +452,7 @@ string MachLogActorStringIdRestorer::getActorPromptText(MachActor* pActor, uint 
 }
 
 // static
-string MachLogActorStringIdRestorer::getActorPromptText(
+std::string MachLogActorStringIdRestorer::getActorPromptText(
     MachLog::ObjectType objType,
     size_t subType,
     MachPhys::WeaponCombo wc,
@@ -461,8 +461,8 @@ string MachLogActorStringIdRestorer::getActorPromptText(
     uint actorWithWeaponStrId)
 {
     GuiResourceString::Id stringId;
-    string machName;
-    string weaponName;
+    std::string machName;
+    std::string weaponName;
 
     if (MachLogActorStringIdRestorer::isExceptionToRule(objType, subType, wc, level, &stringId))
     {

@@ -1019,7 +1019,7 @@ void MachLogMessageBroker::processLoadArtefactModelsMessage(NetMessage* pNetMess
 
 void MachLogMessageBroker::sendAddNewArtefactSubTypeMessage(
     int subType,
-    const string& name,
+    const std::string& name,
     MachPhys::BuildingMaterialUnits cost,
     MachPhys::ArmourUnits armour,
     MachPhys::HitPointUnits hitPoints,
@@ -1080,8 +1080,8 @@ void MachLogMessageBroker::processAddNewArtefactSubTypeMessage(NetMessage* pNetM
         memcpy((void*)&tmp, (void*)(&pMessage->arrayData_[0] + i * sizeof(MexPoint2d)), sizeof(MexPoint2d));
         localBoundary.push_back(tmp);
     }
-    // recreate name string.
-    string name(&pMessage->arrayData_[pMessage->boundaryPoints_ * sizeof(MexPoint2d)]);
+    // recreate name std::string.
+    std::string name(&pMessage->arrayData_[pMessage->boundaryPoints_ * sizeof(MexPoint2d)]);
     DEBUG_STREAM(
         DIAG_NETWORK,
         "subType " << pMessage->subType_ << " name " << name << " boundaryPoints " << pMessage->boundaryPoints_

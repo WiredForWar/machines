@@ -15,7 +15,7 @@
 
 PER_DEFINE_PERSISTENT(MachLogVortexHasBeenFiredCondition);
 
-MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition(const string& keyName, MachPhys::Race race)
+MachLogVortexHasBeenFiredCondition::MachLogVortexHasBeenFiredCondition(const std::string& keyName, MachPhys::Race race)
     : SimCondition(keyName)
     , race_(race)
 {

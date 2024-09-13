@@ -546,9 +546,9 @@ GuiBitmap& MachGui::inTransitBmp()
 }
 
 // static
-const string& MachGui::closedText()
+const std::string& MachGui::closedText()
 {
-    static string text;
+    static std::string text;
     if (text.length() == 0)
     {
         GuiResourceString str(IDS_MENU_CLOSED);
@@ -559,9 +559,9 @@ const string& MachGui::closedText()
 }
 
 // static
-const string& MachGui::openText()
+const std::string& MachGui::openText()
 {
-    static string text;
+    static std::string text;
     if (text.length() == 0)
     {
         GuiResourceString str(IDS_MENU_OPEN);
@@ -572,9 +572,9 @@ const string& MachGui::openText()
 }
 
 // static
-const string& MachGui::computerText()
+const std::string& MachGui::computerText()
 {
-    static string text;
+    static std::string text;
     if (text.length() == 0)
     {
         GuiResourceString str(IDS_MENU_COMPUTER);
@@ -585,9 +585,9 @@ const string& MachGui::computerText()
 }
 
 // static
-const string& MachGui::unavailableText()
+const std::string& MachGui::unavailableText()
 {
-    static string text;
+    static std::string text;
     if (text.length() == 0)
     {
         GuiResourceString str(IDS_MENU_UNAVAILABLE);
@@ -774,7 +774,7 @@ void MachGui::releaseInGameBmpMemory()
 }
 
 // static
-bool MachGui::getCDRomDriveContainingMachinesCD(string& cdRomDrive, int CDNumber)
+bool MachGui::getCDRomDriveContainingMachinesCD(std::string& cdRomDrive, int CDNumber)
 {
     PRE(CDNumber > 0 && CDNumber < 3);
 
@@ -790,13 +790,13 @@ bool MachGui::machinesCDIsAvailable(int CDNumber)
 {
     PRE(CDNumber > 0 && CDNumber < 3);
 
-    string cdRomDrive;
+    std::string cdRomDrive;
 
     return getCDRomDriveContainingMachinesCD(cdRomDrive, CDNumber);
 }
 
 // static
-bool MachGui::getCDRomDriveContainingFile(string& cdRomDrive, const string& fileToCheckFor)
+bool MachGui::getCDRomDriveContainingFile(std::string& cdRomDrive, const std::string& fileToCheckFor)
 {
     char buffer[255];
 
@@ -854,11 +854,11 @@ bool MachGui::getCDRomDriveContainingFile(string& cdRomDrive, const string& file
 }
 
 // static
-const string& MachGui::wonSymbolText()
+const std::string& MachGui::wonSymbolText()
 {
     static const char wonChar[2] = { (char)127, 0 };
-    // static string wonSymbol( (char)127 );
-    static string wonSymbol(wonChar);
+    // static std::string wonSymbol( (char)127 );
+    static std::string wonSymbol(wonChar);
 
     return wonSymbol;
 }

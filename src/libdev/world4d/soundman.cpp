@@ -642,7 +642,7 @@ void W4dSoundManager::updateCycle()
     }
 }
 
-void W4dSoundManager::registerSoundID(const string& id, uint soundId)
+void W4dSoundManager::registerSoundID(const std::string& id, uint soundId)
 {
     CB_DEPIMPL(W4dSoundManagerImpl::SoundIDMap, registeredSounds_);
     CB_DEPIMPL(bool, definitionFileRead_);

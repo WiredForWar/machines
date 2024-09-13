@@ -92,7 +92,7 @@ public:
     };
 
     using EntitySounds = ctl_list<EntitySound>;
-    using SoundIDMap = ctl_map<string, uint, std::less<string>>;
+    using SoundIDMap = ctl_map<std::string, uint, std::less<std::string>>;
     using SoundDataVector = ctl_pvector<W4dSoundData>;
 
     double computeVolume(const EntitySound& entitySound);

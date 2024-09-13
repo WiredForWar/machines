@@ -13,7 +13,6 @@
 #define _SYSTEM_REGISTRY_HPP
 
 #include "base/base.hpp"
-// #include "stdlib/strfwd.hpp"
 
 class SysRegistryImpl;
 

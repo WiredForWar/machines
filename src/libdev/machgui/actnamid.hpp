@@ -36,8 +36,8 @@ public:
         uint* pStringId);
     static bool isExceptionToRule(MachActor*, uint* pStringId);
 
-    static string getActorPromptText(MachActor*, uint actorStrId, uint actorWithWeaponStrId);
-    static string getActorPromptText(
+    static std::string getActorPromptText(MachActor*, uint actorStrId, uint actorWithWeaponStrId);
+    static std::string getActorPromptText(
         MachLog::ObjectType objType,
         size_t subType,
         MachPhys::WeaponCombo wc,

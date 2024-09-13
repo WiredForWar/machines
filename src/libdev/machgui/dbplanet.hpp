@@ -28,15 +28,15 @@ class MachGuiDbPlanet : public MachGuiDbElement
 public:
     // The planet is known by identifier planetName which is used to construct the planet surface
     // filename.
-    // The id of the string used in the menu list boxes is menuStringId.
-    MachGuiDbPlanet(const string& planetName, uint menuStringId);
+    // The id of the std::string used in the menu list boxes is menuStringId.
+    MachGuiDbPlanet(const std::string& planetName, uint menuStringId);
 
     ~MachGuiDbPlanet() override;
 
     // set/get the flic or bmp filename displayed in the campaign menu.
-    // string is empty if undefined.
-    void campaignPicture(const string& filename);
-    const string& campaignPicture() const;
+    // std::string is empty if undefined.
+    void campaignPicture(const std::string& filename);
+    const std::string& campaignPicture() const;
 
     // set/get the system/terrain type of which the planet is a member
     void system(MachGuiDbSystem* pSystem);

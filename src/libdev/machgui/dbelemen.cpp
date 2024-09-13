@@ -62,12 +62,12 @@ bool MachGuiDbElement::isAvailable() const
     return result;
 }
 
-void MachGuiDbElement::name(const string& name)
+void MachGuiDbElement::name(const std::string& name)
 {
     pData_->name_ = name;
 }
 
-const string& MachGuiDbElement::name() const
+const std::string& MachGuiDbElement::name() const
 {
     return pData_->name_;
 }
@@ -92,12 +92,12 @@ bool MachGuiDbElement::isCustom() const
     return pData_->isCustom_;
 }
 
-void MachGuiDbElement::textDataFileName(const string& filename)
+void MachGuiDbElement::textDataFileName(const std::string& filename)
 {
     pData_->textDataFileName_ = filename;
 }
 
-const string& MachGuiDbElement::textDataFileName() const
+const std::string& MachGuiDbElement::textDataFileName() const
 {
     return pData_->textDataFileName_;
 }
@@ -140,14 +140,14 @@ uint MachGuiDbElement::menuStringId() const
     return pData_->menuStringId_;
 }
 
-void MachGuiDbElement::menuString(const string& name)
+void MachGuiDbElement::menuString(const std::string& name)
 {
     pData_->menuName_ = name;
     // Use spacebars instead of underscores
     std::replace(pData_->menuName_.begin(), pData_->menuName_.end(), '_', ' ');
 }
 
-string MachGuiDbElement::menuString() const
+std::string MachGuiDbElement::menuString() const
 {
     if (!menuStringId())
         return pData_->menuName_;

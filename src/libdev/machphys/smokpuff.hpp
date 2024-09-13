@@ -62,7 +62,7 @@ private:
 
     static RenMaterial puff(const RenColour& colour);
 
-    static RenMaterial material(const string& textureFileName);
+    static RenMaterial material(const std::string& textureFileName);
 };
 
 PER_DECLARE_PERSISTENT(MachPhysSmokePuff);

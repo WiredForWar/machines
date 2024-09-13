@@ -71,7 +71,7 @@ public:
         if (ready_)
         {
             GuiResourceString resString(stringId());
-            string text = resString.asString();
+            std::string text = resString.asString();
 
             GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
             size_t textWidth = font.textWidth(text);
@@ -275,7 +275,7 @@ bool MachGuiCtxImReady::doHandleKeyEvent(const GuiKeyEvent& e)
         if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
         {
             // Add players name onto chat message
-            string chatMessage(startupData().playerName());
+            std::string chatMessage(startupData().playerName());
             chatMessage += " : ";
             chatMessage += pSingleLineEditBox_->text();
 
@@ -522,7 +522,7 @@ void MachGuiCtxImReady::buttonEvent(MachGui::ButtonEvent buttonEvent)
         if (pSingleLineEditBox_->text() != "" && ! pSingleLineEditBox_->clearTextOnNextChar())
         {
             // Add players name onto chat message
-            string chatMessage(startupData().playerName());
+            std::string chatMessage(startupData().playerName());
             chatMessage += " : ";
             chatMessage += pSingleLineEditBox_->text();
 
@@ -636,7 +636,7 @@ void MachGuiCtxImReady::updateGameSettings()
     GuiResourceString techLevelStr(IDS_MENU_STARTINGTECHLEVEL);
     GuiResourceString broadcastAlliancesStr(IDS_MENU_BROADCAST_ALLIANCE);
     GuiResourceString disableFirstPersonStr(IDS_MENU_DISABLE_FIRST_PERSON);
-    string whiteFont(MachGui::Menu::smallFontWhite());
+    std::string whiteFont(MachGui::Menu::smallFontWhite());
 
     // Show read only game settings...
     new MachGuiText(pReadOnlySettings_, textWidth, fogOfWarStr.asString());

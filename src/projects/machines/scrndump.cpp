@@ -60,14 +60,14 @@ void MachScreenDumper::dump()
     }
 }
 
-string MachScreenDumper::filename() const
+std::string MachScreenDumper::filename() const
 {
     // Mac is for Machines **not** Ronald MacDonald.
-    string result("Dmp");
+    std::string result("Dmp");
 
     result += majorVersion_;
 
-    string minor = utlToString(minorVersion_);
+    std::string minor = utlToString(minorVersion_);
 
     ASSERT(minor.length() <= 4, "The filename for this screen dump will invalidate the 8.3 filename regime.");
 

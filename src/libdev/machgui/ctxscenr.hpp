@@ -36,7 +36,7 @@ public:
     void updateScenarioList(MachGuiDbPlanet&);
     void updateSelectedScenario(MachGuiDbScenario&);
 
-    void updateDisplayedInfo(const string& text, SysPathName animation);
+    void updateDisplayedInfo(const std::string& text, SysPathName animation);
 
     bool okayToSwitchContext() override;
 

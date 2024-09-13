@@ -29,7 +29,7 @@ class MachLogAllOtherRacesUnitsDeadCondition : public SimCondition
 public:
     static MachLogAllOtherRacesUnitsDeadCondition* newFromParser(UtlLineTokeniser*);
 
-    MachLogAllOtherRacesUnitsDeadCondition(const string& keyName, MachPhys::Race);
+    MachLogAllOtherRacesUnitsDeadCondition(const std::string& keyName, MachPhys::Race);
 
     bool doHasConditionBeenMet() const override;
 

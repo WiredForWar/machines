@@ -43,7 +43,7 @@ public:
 protected:
     void updateSaveGameList();
 
-    bool saveGame(const string& saveDisplayName);
+    bool saveGame(const std::string& saveDisplayName);
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSave& t);

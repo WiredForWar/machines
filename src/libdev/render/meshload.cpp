@@ -241,7 +241,7 @@ RenID3DMeshLoader::MeshData
 RenID3DMeshLoader::searchForMesh(const SysPathName& pathName, const std::string& meshName, const MeshMap* meshes)
 {
     // Convert the meshname to lower case
-    string lcMeshName(meshName);
+    std::string lcMeshName(meshName);
     lowerString(&lcMeshName);
 
     MeshMap::const_iterator meshIt = meshes->find(lcMeshName);
@@ -303,7 +303,7 @@ void RenID3DMeshLoader::traverseFrame(XFile::Node* frame)
     //  Get the mesh ( if any ) associated with this frame
 
     size_t nVisuals = 0;
-    string meshName;
+    std::string meshName;
     /*    COMPTR(IDirect3DRMMeshBuilder) meshBuilder;
 
     COMPTR(IDirect3DRMVisualArray) visuals;
@@ -385,7 +385,7 @@ void RenID3DMeshLoader::objectLoaded(XFile::Scene* object)
         if (object->mGlobalMeshes.size())
         {
 
-            string meshName = object->mGlobalMeshes[0]->mName;
+            std::string meshName = object->mGlobalMeshes[0]->mName;
 
             ASSERT_INFO(fileBeingLoaded_);
             ASSERT_INFO(meshName);
@@ -419,7 +419,7 @@ void RenID3DMeshLoader::addMesh(XFile::Mesh* mesh)
     //  something is going wrong there.
 
     std::string name = mesh->mName;
-    string fullName = fileBeingLoaded_.pathname() + name;
+    std::string fullName = fileBeingLoaded_.pathname() + name;
     mesh->mName = fullName;
 
     if (loadMeshes_)

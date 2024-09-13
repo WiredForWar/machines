@@ -64,7 +64,7 @@ SysPathName MachGuiCorralResource_hack(const MachActor* pActor)
     if (pActor->objectType() == MachLog::SPY_LOCATOR && pActor->asSpyLocator().camouflaged())
     {
         pathName.extension("");
-        string strPathName = pathName.c_str();
+        std::string strPathName = pathName.c_str();
         strPathName += "camo.bmp";
         pathName = strPathName;
     }

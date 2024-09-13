@@ -102,7 +102,7 @@ bool MachGuiNukeAttackCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiNukeAttackCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiNukeAttackCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsCanAttack());
 
@@ -129,7 +129,7 @@ bool MachGuiNukeAttackCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
+bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, std::string*)
 {
     ASSERT_INFO(*pActor);
     ASSERT(
@@ -177,7 +177,7 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, string*)
     return canDo;
 }
 
-bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, string*)
+bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
 {
     MachLogRaces& races = MachLogRaces::instance();
     MachPhys::Race playerRace = races.playerRace();
@@ -265,9 +265,9 @@ std::unique_ptr<MachGuiCommand> MachGuiNukeAttackCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiNukeAttackCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiNukeAttackCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/nukeattk.bmp", "gui/commands/nukeattk.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/nukeattk.bmp", "gui/commands/nukeattk.bmp");
     return names;
 }
 

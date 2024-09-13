@@ -110,8 +110,8 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
 
     if (trailOn() && trailTextureKey_ != "")
     {
-        string nameRoot;
-        string extension;
+        std::string nameRoot;
+        std::string extension;
         size_t nameLength = trailTextureKey_.length();
 
         if (trailTextureKey_.substr(nameLength - 2, 2) == "_b")
@@ -135,7 +135,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
             ctl_vector<RenTexture> trailTextures;
             trailTextures.reserve(1);
 
-            string textureName = nameRoot + extension;
+            std::string textureName = nameRoot + extension;
             trailTextures.push_back(RenTexManager::instance().createTexture(textureName));
 
             textures = trailTextures;
@@ -152,7 +152,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
 
             for (int i = trailStartTextureIndex_; i < trailEndTextureIndex_ + 1; ++i)
             {
-                string textureName = nameRoot;
+                std::string textureName = nameRoot;
 
                 if (i < 10)
                 {
@@ -162,7 +162,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
                 char textN[4];
                 //              itoa(i, textN, 10 );
                 sprintf(textN, "%d", i);
-                textureName += string(textN);
+                textureName += std::string(textN);
 
                 textureName += extension;
                 trailTextures.push_back(RenTexManager::instance().createTexture(textureName));
@@ -209,7 +209,7 @@ void MachPhysWeaponData::trailColour(const RenColour& col)
     trailColour_ = col;
 }
 
-void MachPhysWeaponData::trailTextureKey(const string& key)
+void MachPhysWeaponData::trailTextureKey(const std::string& key)
 {
     trailTextureKey_ = key;
 }

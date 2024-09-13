@@ -20,8 +20,8 @@
 #include "render/fwmatmap.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/fwrdplan.hpp"
-// #include <strfwd.hpp>
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 template <class T> class ctl_vector;
 template <class T> class ctl_list;
@@ -251,8 +251,8 @@ public:
     /////////////////////////////////////////////////////////////////
 
     // For debugging: perhaps these should be compiled out of the release version.
-    void name(const string&);
-    const string& name() const;
+    void name(const std::string&);
+    const std::string& name() const;
 
     //    const W4dD3DEntity& d3dEntity() const;
 

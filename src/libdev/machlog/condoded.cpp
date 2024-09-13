@@ -16,7 +16,7 @@
 PER_DEFINE_PERSISTENT(MachLogAllOtherRacesUnitsDeadCondition);
 
 MachLogAllOtherRacesUnitsDeadCondition::MachLogAllOtherRacesUnitsDeadCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race)
     : SimCondition(keyName)
     , race_(race)

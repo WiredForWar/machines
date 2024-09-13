@@ -44,7 +44,7 @@ private:
 
     // data members
     uint id_; // The player's unique id
-    string name_; // The name s/he's known by in the list boxes
+    std::string name_; // The name s/he's known by in the list boxes
     uint useSequenceId_; // Stores sequence number of lst use of the player.
                          // This is the field for time order sorting
     uint nextUpdateId_; // Next number to use in update sequence for the player scenarios

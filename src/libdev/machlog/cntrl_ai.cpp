@@ -68,7 +68,7 @@
 #define CB_MachLogAIController_DEPIMPL()                                                                               \
     PRE(pImpl_)                                                                                                        \
     CB_DEPIMPL(MachLogAIController::ResearchInterest, researchInterest_)                                               \
-    CB_DEPIMPL(string, rules_)                                                                                         \
+    CB_DEPIMPL(std::string, rules_)                                                                                    \
     CB_DEPIMPL(MachLogAIController::StrategicProductionList, strategicProductionList_)                                 \
     CB_DEPIMPL(MachLogAIController::ProductionList, constructionProductionList_)                                       \
     CB_DEPIMPL(MachLogAIController::DesiredMachineList, desiredMachineList_)                                           \
@@ -78,7 +78,7 @@
 PER_DEFINE_PERSISTENT(MachLogAIController);
 PER_DEFINE_PERSISTENT(DesiredMachineData);
 
-MachLogAIController::MachLogAIController(MachLogRace* logRace, W4dEntity* pPhysObject, const string& AIStrategicRules)
+MachLogAIController::MachLogAIController(MachLogRace* logRace, W4dEntity* pPhysObject, const std::string& AIStrategicRules)
     : MachLogController(logRace, pPhysObject, MachLogController::AI_CONTROLLER)
     , pImpl_(new MachLogAIControllerImpl(AIStrategicRules))
 {
@@ -700,7 +700,7 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                     races.addExtraSquadron(myRace);
                 pSquad = races.squadrons(myRace)[currentSquad];
                 bool finishedSquad = false;
-                string taskType;
+                std::string taskType;
                 HAL_STREAM(" found a free squadron " << currentSquad << std::endl);
                 while (! finishedSquad)
                 {

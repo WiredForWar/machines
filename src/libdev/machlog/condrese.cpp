@@ -38,7 +38,7 @@ public:
 PER_DEFINE_PERSISTENT(MachLogResearchCompleteCondition);
 
 MachLogResearchCompleteCondition::MachLogResearchCompleteCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race,
     MachLog::ObjectType ot,
     int hwLevel,

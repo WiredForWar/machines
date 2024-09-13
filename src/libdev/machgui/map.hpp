@@ -51,7 +51,7 @@ public:
     void forceUpdate();
 
     // Setup map with correct background bitmap, update map to world metrics etc.
-    void loadGame(const string& planet);
+    void loadGame(const std::string& planet);
 
     void unloadGame();
 
@@ -70,7 +70,7 @@ public:
 
     // Load/Save map info ( i.e. FOW bitmap )
     void saveGame(PerOstream& outStream);
-    void loadSavedGame(const string& planet, PerIstream& inStream);
+    void loadSavedGame(const std::string& planet, PerIstream& inStream);
 
 protected:
     // inherited from GuiDisplayable...

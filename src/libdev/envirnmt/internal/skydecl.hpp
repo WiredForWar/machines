@@ -37,8 +37,8 @@ public:
     class UniformSky
     {
     public:
-        void controller(const string& name);
-        void colourTable(const string& name);
+        void controller(const std::string& name);
+        void colourTable(const std::string& name);
 
         void completeSky();
 
@@ -59,7 +59,7 @@ public:
     class StaticSky
     {
     public:
-        void meshFile(const string& pathname);
+        void meshFile(const std::string& pathname);
         void backgroundColour(const RenColour&);
 
         void completeSky();
@@ -81,9 +81,9 @@ public:
     class DynamicSky
     {
     public:
-        void meshFile(const string& pathname);
-        void controller(const string& name);
-        void colourTable(MexDegrees at, const string& clutName);
+        void meshFile(const std::string& pathname);
+        void controller(const std::string& name);
+        void colourTable(MexDegrees at, const std::string& clutName);
 
         void completeSky();
 

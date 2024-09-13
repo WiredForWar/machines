@@ -301,7 +301,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
         GuiResourceString::Id id = infoStringId.stringId(pActor_);
         GuiResourceString iconInfo(id);
-        string concat = iconInfo.asString();
+        std::string concat = iconInfo.asString();
         concat += "\n";
 
         MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
@@ -335,7 +335,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             if (pActor_->race() == playerRace)
             {
                 // Display actor specific info
-                string actorSpecificInfoStr;
+                std::string actorSpecificInfoStr;
 
                 // Can attack info
                 if (pActor_->objectIsCanAttack())

@@ -37,7 +37,7 @@ void W4dGeneric::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-bool W4dGeneric::loadSingleMesh(const SysPathName& fileName, const string& meshName, double scale)
+bool W4dGeneric::loadSingleMesh(const SysPathName& fileName, const std::string& meshName, double scale)
 {
     RenMeshInstance* pMesh = RenMeshInstance::createShared(fileName, meshName, scale);
     ASSERT_INFO(fileName);

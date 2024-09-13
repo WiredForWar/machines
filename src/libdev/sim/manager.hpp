@@ -85,7 +85,7 @@ public:
     void clearDiary();
 
     void addAction(std::unique_ptr<SimAction> pAction);
-    void enableAction(const string&);
+    void enableAction(const std::string&);
 
     SimConditionsManager& conditionsManager() const;
 

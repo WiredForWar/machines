@@ -14,9 +14,10 @@
 #define _MACHLOG_GRPMOVE_HPP
 
 #include "base/base.hpp"
-#include "stdlib/strfwd.hpp"
 #include "mathex/point3d.hpp"
 #include "machlog/actor.hpp"
+
+#include <string>
 
 class MachLogGroupSimpleMoveImplementation;
 template <class T> class ctl_pvector;
@@ -33,7 +34,7 @@ public:
         const Actors&,
         const Points&,
         size_t commandId,
-        string* pReason,
+        std::string* pReason,
         PhysPathFindingPriority pathFindingPriority);
 
     ~MachLogGroupSimpleMove();

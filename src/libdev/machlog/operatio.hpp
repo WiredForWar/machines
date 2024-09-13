@@ -16,7 +16,7 @@
 #include "mathex/point2d.hpp"
 #include "mathex/point3d.hpp"
 
-#include "stdlib/strfwd.hpp"
+#include <string>
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -120,7 +120,7 @@ public:
 
     void domainDeleted(W4dDomain* pDomain) override;
 
-    const string& operationTypeAsString() const;
+    const std::string& operationTypeAsString() const;
     OperationType operationType() const;
 
     // get/set for the priority. The priority may be reclassified.

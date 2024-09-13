@@ -61,7 +61,7 @@ private:
     bool weaponComboSet_;
     MachPhys::WeaponCombo weaponCombo_;
     bool anyTypeWillDo_;
-    string animation_;
+    std::string animation_;
     int repetitions_;
 };
 

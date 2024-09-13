@@ -41,21 +41,21 @@ public:
 
     ///////////////////////////////
 
-    void addNewEPP(const string& EPPName);
+    void addNewEPP(const std::string& EPPName);
 
-    void garrisonPriority(const string& EPPName, int priority);
-    void aggressivesPriority(const string& EPPName, int priority);
-    void podPriority(const string& EPPName, int priority);
-    void turretsPriority(const string& EPPName, int priority);
+    void garrisonPriority(const std::string& EPPName, int priority);
+    void aggressivesPriority(const std::string& EPPName, int priority);
+    void podPriority(const std::string& EPPName, int priority);
+    void turretsPriority(const std::string& EPPName, int priority);
 
-    int garrisonPriority(const string& EPPName) const;
-    int aggressivesPriority(const string& EPPName) const;
-    int podPriority(const string& EPPName) const;
-    int turretsPriority(const string& EPPName) const;
+    int garrisonPriority(const std::string& EPPName) const;
+    int aggressivesPriority(const std::string& EPPName) const;
+    int podPriority(const std::string& EPPName) const;
+    int turretsPriority(const std::string& EPPName) const;
 
-    const MachPhysEvasionPriorityPlan& EPP(const string& EPPName) const;
+    const MachPhysEvasionPriorityPlan& EPP(const std::string& EPPName) const;
 
-    bool EPPExists(const string& EPPName) const;
+    bool EPPExists(const std::string& EPPName) const;
 
 private:
     MachPhysEvasionPriorityPlans();
@@ -69,7 +69,7 @@ private:
     // Operation deliberately revoked
     bool operator==(const MachPhysEvasionPriorityPlans&);
 
-    MachPhysEvasionPriorityPlan& EPP(const string& EPPName);
+    MachPhysEvasionPriorityPlan& EPP(const std::string& EPPName);
 
     int nEPPs_;
     EPPs EPPs_;

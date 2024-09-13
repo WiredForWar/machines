@@ -11,7 +11,7 @@
 
 PER_DEFINE_PERSISTENT(MachGuiDbPlanet);
 
-MachGuiDbPlanet::MachGuiDbPlanet(const string& planetName, uint menuStringId)
+MachGuiDbPlanet::MachGuiDbPlanet(const std::string& planetName, uint menuStringId)
     : MachGuiDbElement(menuStringId)
 {
     pData_ = new MachGuiDbIPlanet;
@@ -48,12 +48,12 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t)
     return o;
 }
 
-void MachGuiDbPlanet::campaignPicture(const string& filename)
+void MachGuiDbPlanet::campaignPicture(const std::string& filename)
 {
     pData_->campaignPicture_ = filename;
 }
 
-const string& MachGuiDbPlanet::campaignPicture() const
+const std::string& MachGuiDbPlanet::campaignPicture() const
 {
     return pData_->campaignPicture_;
 }

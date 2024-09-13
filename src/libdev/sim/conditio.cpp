@@ -4,13 +4,13 @@
 
 PER_DEFINE_PERSISTENT_ABSTRACT(SimCondition);
 
-SimCondition::SimCondition(const string& keyName)
+SimCondition::SimCondition(const std::string& keyName)
     : keyName_(keyName)
 {
 }
 
 SimCondition::SimCondition(
-    const string& keyName,
+    const std::string& keyName,
     const ctl_pvector<SimCondition>& subConditions,
     SimCondition::BooleanOperator booleanOperator)
     : keyName_(keyName)
@@ -70,7 +70,7 @@ bool SimCondition::hasConditionBeenMet()
     return result;
 }
 
-const string& SimCondition::keyName() const
+const std::string& SimCondition::keyName() const
 {
     return keyName_;
 }

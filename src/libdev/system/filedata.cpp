@@ -26,7 +26,7 @@ SysFileData::SysFileData(
     , time_(time)
     , size_(size)
 {
-    string pathName(baseDirectory.pathname());
+    std::string pathName(baseDirectory.pathname());
     if (pathName[pathName.length() - 1] != '/')
         pathName += "/";
     pathName += relativePathName.pathname();
@@ -46,7 +46,7 @@ SysFileData::SysFileData(
     , size_(UNKNOWN_SIZE)
 {
 
-    string pathName(baseDirectory.pathname());
+    std::string pathName(baseDirectory.pathname());
     if (pathName[pathName.length() - 1] != '/')
         pathName += "/";
     pathName += relativePathName.pathname();

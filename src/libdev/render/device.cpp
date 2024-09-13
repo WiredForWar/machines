@@ -785,7 +785,7 @@ inline bool isWhiteChar(char c)
     return c == ' ' || c == '\n' || c == '\t';
 }
 
-static bool isWhiteString(const string& str)
+static bool isWhiteString(const std::string& str)
 {
     for (int i = 0; i != str.length(); ++i)
         if (!isWhiteChar(str[i]))
@@ -900,12 +900,12 @@ void RenDevice::commonEndFrame()
     // Print the statistics (which may be empty) followed by the debug stream.
     // Use the top-most coord of the 3D viewport as the top-most coord for text.
     // (Other areas of the display is not the responsibility of this class.)
-    const string empty;
+    const std::string empty;
     auto const& statsStr = (pImpl_->stats_) ? pImpl_->stats_->statsText() : empty;
-    const string debugStr = pImpl_->extOut_.dataAsString();
+    const std::string debugStr = pImpl_->extOut_.dataAsString();
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
-    const string concat = statsStr + debugStr;
+    const std::string concat = statsStr + debugStr;
 
     if (concat.length() > 0 && ! isWhiteString(concat) && pImpl_->shouldBeginScene_)
     {

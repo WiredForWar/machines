@@ -144,7 +144,7 @@ void MachGuiCtxBriefing::displayObjectives()
         }
     }
 
-    string objectiveAndTaskText;
+    std::string objectiveAndTaskText;
     // Display of objective info.
     const MachGuiDbTextData& textData = pStartupScreens_->startupData()->scenario()->textData();
     if (textData.nObjectives())
@@ -285,7 +285,7 @@ void MachGuiCtxBriefing::displayBriefingImage()
         pBriefImage_ = nullptr;
     }
     pStartupScreens_->clearAllSmackerAnimations();
-    const string& briefPath = pStartupScreens_->startupData()->scenario()->briefingPicture();
+    const std::string& briefPath = pStartupScreens_->startupData()->scenario()->briefingPicture();
     SysPathName briefPicture(briefPath);
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario brief filename: " << briefPicture << std::endl);
 
@@ -298,7 +298,7 @@ void MachGuiCtxBriefing::displayBriefingImage()
             DevCD::instance().stopPlaying();
         }
 
-        string cdRomDrive;
+        std::string cdRomDrive;
 
         if (MachGui::getCDRomDriveContainingFile(cdRomDrive, briefPath))
         {
@@ -351,7 +351,7 @@ void MachGuiCtxBriefing::playBriefingVoicemail()
         if (textData.hasobjectiveVoicemail(0))
         {
             Snd::LoopCount loopCount = 0; // infinite loop
-            string voicemail = textData.objectiveVoicemail(0);
+            std::string voicemail = textData.objectiveVoicemail(0);
             std::transform(voicemail.begin(), voicemail.end(), voicemail.begin(), ::tolower);
             SndSampleParameters voicemailParameters(SndWaveformId(voicemail), loopCount);
 

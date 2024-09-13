@@ -4,7 +4,6 @@ set(STDLIB_SOURCES
     exceptio.hpp
     function.hpp
     memory.hpp
-    strfwd.hpp
     string.cpp
     string.hpp
     utility.hpp

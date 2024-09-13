@@ -1464,11 +1464,11 @@ size_t MachPhysLevels::nSoftwareIndices() const
     return result;
 }
 
-string MachPhysLevels::name(MachPhys::MachineType type) const
+std::string MachPhysLevels::name(MachPhys::MachineType type) const
 {
     PRE(! subTyped(type));
 
-    string result;
+    std::string result;
 
     switch (type)
     {
@@ -1489,9 +1489,9 @@ string MachPhysLevels::name(MachPhys::MachineType type) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::AdministratorSubType subType) const
+std::string MachPhysLevels::name(MachPhys::AdministratorSubType subType) const
 {
-    string result = "ad";
+    std::string result = "ad";
 
     switch (subType)
     {
@@ -1509,9 +1509,9 @@ string MachPhysLevels::name(MachPhys::AdministratorSubType subType) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::AggressorSubType subType) const
+std::string MachPhysLevels::name(MachPhys::AggressorSubType subType) const
 {
-    string result = "ag";
+    std::string result = "ag";
 
     switch (subType)
     {
@@ -1535,9 +1535,9 @@ string MachPhysLevels::name(MachPhys::AggressorSubType subType) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::ConstructorSubType subType) const
+std::string MachPhysLevels::name(MachPhys::ConstructorSubType subType) const
 {
-    string result = "co";
+    std::string result = "co";
 
     switch (subType)
     {
@@ -1555,9 +1555,9 @@ string MachPhysLevels::name(MachPhys::ConstructorSubType subType) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::TechnicianSubType subType) const
+std::string MachPhysLevels::name(MachPhys::TechnicianSubType subType) const
 {
-    string result = "te";
+    std::string result = "te";
 
     switch (subType)
     {
@@ -1576,11 +1576,11 @@ string MachPhysLevels::name(MachPhys::TechnicianSubType subType) const
     return result;
 }
 
-string MachPhysLevels::name(MachPhys::ConstructionType type) const
+std::string MachPhysLevels::name(MachPhys::ConstructionType type) const
 {
     PRE(! subTyped(type));
 
-    string result;
+    std::string result;
 
     switch (type)
     {
@@ -1603,9 +1603,9 @@ string MachPhysLevels::name(MachPhys::ConstructionType type) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::FactorySubType subType) const
+std::string MachPhysLevels::name(MachPhys::FactorySubType subType) const
 {
-    string result = "fa";
+    std::string result = "fa";
 
     switch (subType)
     {
@@ -1620,9 +1620,9 @@ string MachPhysLevels::name(MachPhys::FactorySubType subType) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::HardwareLabSubType subType) const
+std::string MachPhysLevels::name(MachPhys::HardwareLabSubType subType) const
 {
-    string result = "hw";
+    std::string result = "hw";
 
     switch (subType)
     {
@@ -1637,9 +1637,9 @@ string MachPhysLevels::name(MachPhys::HardwareLabSubType subType) const
 
     return result;
 }
-string MachPhysLevels::name(MachPhys::MissileEmplacementSubType subType) const
+std::string MachPhysLevels::name(MachPhys::MissileEmplacementSubType subType) const
 {
-    string result = "me";
+    std::string result = "me";
 
     switch (subType)
     {

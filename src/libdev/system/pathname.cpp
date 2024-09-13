@@ -18,9 +18,9 @@
 #include <cctype>
 
 #define CB_SYS_PATHNAME_DEPIMPL                                                                                        \
-    CB_DEPIMPL(string, pathname_);                                                                                     \
-    CB_DEPIMPL(string, fullPathname_);                                                                                 \
-    CB_DEPIMPL(ctl_vector<string>, components_);                                                                       \
+    CB_DEPIMPL(std::string, pathname_);                                                                                     \
+    CB_DEPIMPL(std::string, fullPathname_);                                                                                 \
+    CB_DEPIMPL(ctl_vector<std::string>, components_);                                                                       \
     CB_DEPIMPL(bool, set_);                                                                                            \
     CB_DEPIMPL(size_t, rootId_);                                                                                       \
     CB_DEPIMPL(bool, fullPathnameSet_);                                                                                \
@@ -70,7 +70,7 @@ SysPathName::SysPathName(const char* path)
     fullPathnameSet_ = false;
     componentsSet_ = false;
     rootId_ = 0;
-    containsCapitals_ = checkForCapitals(string(path));
+    containsCapitals_ = checkForCapitals(std::string(path));
 
     createComponents();
 
@@ -169,13 +169,13 @@ void SysPathName::createPathnameFromComponents()
     POST(set());
 }
 
-const string& SysPathName::pathname() const
+const std::string& SysPathName::pathname() const
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
     PRE(set());
 
-    const string* pResult;
+    const std::string* pResult;
 
     if (internalRootDirectorySet() && isRelative())
     {
@@ -261,7 +261,7 @@ bool SysPathName::existsAsFile(const std::string& path)
     return f.good();
 }
 
-bool SysPathName::checkForCapitals(const string& path) const
+bool SysPathName::checkForCapitals(const std::string& path) const
 {
     if (path.length() <= 0)
     {
@@ -299,7 +299,7 @@ bool SysPathName::insensitiveExistsAsFile() const
         return existsAsFile();
     }
 
-    string path = string(pathname());
+    std::string path = std::string(pathname());
     std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c) { return std::tolower(c); });
 
     std::ifstream f(path.c_str());
@@ -434,9 +434,9 @@ void SysPathName::createComponents() const
 }
 
 //  static
-string SysPathName::separator()
+std::string SysPathName::separator()
 {
-    static string separator_ = "/";
+    static std::string separator_ = "/";
 
     return separator_;
 }
@@ -466,7 +466,7 @@ bool SysPathName::hasExtension() const
     return result;
 }
 
-string SysPathName::extension() const
+std::string SysPathName::extension() const
 {
     PRE(set());
 
@@ -474,10 +474,10 @@ string SysPathName::extension() const
 
     const char* pExtension = strchr(components().back().c_str(), extensionCharacter());
 
-    return string(pExtension + 1);
+    return std::string(pExtension + 1);
 }
 
-void SysPathName::extension(const string& newExtension)
+void SysPathName::extension(const std::string& newExtension)
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -509,7 +509,7 @@ void SysPathName::extension(const string& newExtension)
     POST(implies(newExtension != "", hasExtension()));
 }
 
-string SysPathName::directory() const
+std::string SysPathName::directory() const
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -524,7 +524,7 @@ string SysPathName::directory() const
     //  Make sure that the lazy evaluation is updated
     components();
 
-    string result;
+    std::string result;
     bool finished = false;
 
     for (Components::const_iterator i = components_.begin(); ! finished; ++i)
@@ -552,7 +552,7 @@ string SysPathName::directory() const
     return result;
 }
 
-const string& SysPathName::filename() const
+const std::string& SysPathName::filename() const
 {
     PRE(set());
 
@@ -577,7 +577,7 @@ SysPathName& SysPathName::operator=(const SysPathName& rhs)
     return *this;
 }
 
-SysPathName& SysPathName::operator=(const string& rhs)
+SysPathName& SysPathName::operator=(const std::string& rhs)
 {
     CB_SYS_PATHNAME_DEPIMPL;
 
@@ -643,7 +643,7 @@ void SysPathName::rootDirectory(const SysPathName& directory)
 
 //  Set the root directory from the given environment variable
 // static
-void SysPathName::rootEnvironmentVariable(const string& environmentVariable)
+void SysPathName::rootEnvironmentVariable(const std::string& environmentVariable)
 {
     char* value = getenv(environmentVariable.c_str());
 
@@ -664,9 +664,9 @@ SysPathName SysPathName::rootDirectory()
 }
 
 // static
-string& SysPathName::internalRootDirectory()
+std::string& SysPathName::internalRootDirectory()
 {
-    static string rootDirectory_;
+    static std::string rootDirectory_;
 
     return rootDirectory_;
 }
@@ -721,7 +721,7 @@ void perRead(PerIstream& istr, SysPathName& name)
         //  This is just to make sure that all of the internal stuff
         //  gets properly set for this pathname.
 
-        string n1 = name.pathname();
+        std::string n1 = name.pathname();
         name = n1;
     }
     else

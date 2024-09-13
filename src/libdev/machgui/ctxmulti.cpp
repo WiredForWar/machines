@@ -33,7 +33,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pListBox,
         size_t width,
-        const string& text)
+        const std::string& text)
         : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
     {
     }
@@ -162,7 +162,7 @@ MachGuiCtxMultiplayer::~MachGuiCtxMultiplayer()
 bool MachGuiCtxMultiplayer::okayToSwitchContext()
 {
     // Trim spaces off beginning of name
-    string playerName = pSingleLineEditBox_->text();
+    std::string playerName = pSingleLineEditBox_->text();
     while (playerName.length() > 0 && playerName[0] == ' ')
     {
         playerName = &playerName[1];

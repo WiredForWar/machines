@@ -28,23 +28,23 @@ public:
 
     static void load(const SysPathName& scenarioFilePath, const MachLogGameCreationData&);
 
-    static MachLog::ObjectType objectType(const string& type);
-    static int objectSubType(MachLog::ObjectType, const string& type);
-    static MachPhys::TechnicianSubType technicianSubType(const string& subType);
-    static MachPhys::ConstructorSubType constructorSubType(const string& subType);
-    static MachPhys::AggressorSubType aggressorSubType(const string& subType);
-    static MachPhys::AdministratorSubType administratorSubType(const string& subType);
+    static MachLog::ObjectType objectType(const std::string& type);
+    static int objectSubType(MachLog::ObjectType, const std::string& type);
+    static MachPhys::TechnicianSubType technicianSubType(const std::string& subType);
+    static MachPhys::ConstructorSubType constructorSubType(const std::string& subType);
+    static MachPhys::AggressorSubType aggressorSubType(const std::string& subType);
+    static MachPhys::AdministratorSubType administratorSubType(const std::string& subType);
 
-    static MachPhys::FactorySubType factorySubType(const string& subType);
-    static MachPhys::HardwareLabSubType hardwareLabSubType(const string& subType);
-    static MachPhys::MissileEmplacementSubType missileEmplacementSubType(const string& subType);
+    static MachPhys::FactorySubType factorySubType(const std::string& subType);
+    static MachPhys::HardwareLabSubType hardwareLabSubType(const std::string& subType);
+    static MachPhys::MissileEmplacementSubType missileEmplacementSubType(const std::string& subType);
 
-    static MachPhys::WeaponCombo weaponCombo(const string& weaponCombo);
-    static MachPhys::Race machPhysRace(const string& race);
+    static MachPhys::WeaponCombo weaponCombo(const std::string& weaponCombo);
+    static MachPhys::Race machPhysRace(const std::string& race);
     static MachLog::ObjectType physConstructionToLogObject(MachPhys::ConstructionType);
-    static MachLogCamera::Type cameraType(const string& cameraType);
-    static MachLog::BeaconType virtualBeaconType(const string& beaconType);
-    static MachLog::ResourcesAvailable resourceAvailable(const string& resourceAvailableToken);
+    static MachLogCamera::Type cameraType(const std::string& cameraType);
+    static MachLog::BeaconType virtualBeaconType(const std::string& beaconType);
+    static MachLog::ResourcesAvailable resourceAvailable(const std::string& resourceAvailableToken);
     static int startingResourcesToInt(MachLog::StartingResources);
     static void parseRestrictConstruction(const UtlLineTokeniser&);
 

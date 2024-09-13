@@ -25,7 +25,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pListBox,
         size_t width,
-        const string& text);
+        const std::string& text);
     ~MachGuiEditBoxListBoxItem() override;
 
     void CLASS_INVARIANT;
@@ -34,10 +34,10 @@ public:
     void update();
 
     // Get the last text that was entered into the edit box.
-    string text() const;
+    std::string text() const;
 
     // Set the setText displayed in the edit box.
-    void setText(const string& str);
+    void setText(const std::string& str);
 
     // Set max chars that can be entered into edit box. zero = no limit
     size_t maxChars() const;
@@ -57,7 +57,7 @@ private:
 
     // Data members...
     GuiSingleLineEditBox* pSingleLineEditBox_{};
-    string text_;
+    std::string text_;
     size_t maxChars_;
 };
 

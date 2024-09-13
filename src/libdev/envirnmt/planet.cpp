@@ -624,7 +624,7 @@ bool EnvPlanetEnvironment::enabled() const
 }
 
 // virtual
-void EnvPlanetEnvironment::lightConfiguration(const string&, PhysRelativeTime)
+void EnvPlanetEnvironment::lightConfiguration(const std::string&, PhysRelativeTime)
 {
 }
 

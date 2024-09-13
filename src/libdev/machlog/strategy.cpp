@@ -326,11 +326,11 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
     return result;
 }
 
-const string& MachLogStrategy::currentOperationTypeAsString() const
+const std::string& MachLogStrategy::currentOperationTypeAsString() const
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    static string none("NONE");
+    static std::string none("NONE");
     if (queue_.size() == 0)
         return none;
     return queue_[0]->operationTypeAsString();

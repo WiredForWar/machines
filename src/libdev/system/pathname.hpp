@@ -32,8 +32,8 @@ class SysPathName
 // Memberwise cannonical.
 {
 public:
-    // This forces client files to include string and ctl_vector.
-    using Components = ctl_vector<string>;
+    // This forces client files to include std::string and ctl_vector.
+    using Components = ctl_vector<std::string>;
 
     SysPathName();
     // POST( not set() );
@@ -50,11 +50,11 @@ public:
     static void rootDirectory(const SysPathName& directory);
 
     //  Set the root directory from the given environment variable
-    static void rootEnvironmentVariable(const string& environmentVariable);
+    static void rootEnvironmentVariable(const std::string& environmentVariable);
 
     static SysPathName rootDirectory();
 
-    const string& pathname() const;
+    const std::string& pathname() const;
     // PRE( set() )
 
     const char* c_str() const;
@@ -90,21 +90,21 @@ public:
 
     // Return the extension of the pathname without the '.'
     // PRE( hasExtension() );
-    string extension() const;
+    std::string extension() const;
     // PRE( set() )
 
     // Set the extension of the pathname
-    void extension(const string& newExtension);
+    void extension(const std::string& newExtension);
     // PRE( set() )
     // POST( hasExtension() );
 
     // Return the directory part of the pathname
-    string directory() const;
+    std::string directory() const;
     // PRE( set() )
     // PRE( exists() );
 
     // Return the filename part of the pathname
-    const string& filename() const;
+    const std::string& filename() const;
     // PRE( set() )
     // PRE( existsAsFile() );
 
@@ -135,7 +135,7 @@ public:
 
     SysPathName& operator=(const char*);
     // POST( set() );
-    SysPathName& operator=(const string&);
+    SysPathName& operator=(const std::string&);
     // POST( set() );
     SysPathName& operator=(const SysPathName& rhs);
     // POST( set() = rhs.set() );
@@ -154,18 +154,18 @@ public:
 private:
     SysPathNameImpl* pImpl_;
 
-    static string& internalRootDirectory();
+    static std::string& internalRootDirectory();
     static bool& internalRootDirectorySet();
     static size_t& currentRootId();
 
-    static string separator();
+    static std::string separator();
     static char extensionCharacter();
 
     void createComponents() const;
 
     void createPathnameFromComponents();
 
-    bool checkForCapitals(const string& path) const;
+    bool checkForCapitals(const std::string& path) const;
 
     PER_FRIEND_READ_WRITE(SysPathName)
     OBJECT_TRACKER(SysPathName);

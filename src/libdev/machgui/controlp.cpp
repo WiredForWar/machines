@@ -347,9 +347,9 @@ void MachGuiControlPanel::repositionNavigators(
     positionChildRelative(pSquadNav, navTopLeft);
 }
 
-string MachGuiControlPanel::getDecalRootDirectory() const
+std::string MachGuiControlPanel::getDecalRootDirectory() const
 {
-    string retValue = "gui/misc/red/";
+    std::string retValue = "gui/misc/red/";
 
     if (MachLogRaces::instance().hasPCRace())
     {

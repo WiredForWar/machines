@@ -22,8 +22,8 @@ class MachActorBitmaps
 {
 public:
     // The bitmap name
-    static string name(MachLog::ObjectType objectType, int subType, int hwLevel, MachPhys::WeaponCombo, MachPhys::Race);
-    static string name(
+    static std::string name(MachLog::ObjectType objectType, int subType, int hwLevel, MachPhys::WeaponCombo, MachPhys::Race);
+    static std::string name(
         MachLog::ObjectType objectType,
         int subType,
         int hwLevel,
@@ -57,8 +57,8 @@ private:
     static const char* missileEmplacementName(MachPhys::MissileEmplacementSubType subType);
     static const char* garrisonName();
     static const char* mineName();
-    static void appendHwLevel(string&, int hwLevel);
-    static void appendWeaponCombo(string&, MachPhys::WeaponCombo);
+    static void appendHwLevel(std::string&, int hwLevel);
+    static void appendWeaponCombo(std::string&, MachPhys::WeaponCombo);
 };
 
 #endif

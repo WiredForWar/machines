@@ -81,7 +81,7 @@ void MachGuiDefconCommand::typeData(MachLog::ObjectType /*objectType*/, int /*su
 }
 
 // virtual
-bool MachGuiDefconCommand::doApply(MachActor* pActor, string*)
+bool MachGuiDefconCommand::doApply(MachActor* pActor, std::string*)
 {
     MachLog::DefCon newDefcon = MachLog::DEFCON_NORMAL;
 
@@ -121,9 +121,9 @@ std::unique_ptr<MachGuiCommand> MachGuiDefconCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiDefconCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiDefconCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/defco1.bmp", "gui/commands/defco1.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/defco1.bmp", "gui/commands/defco1.bmp");
     return names;
 }
 
@@ -156,7 +156,7 @@ bool MachGuiDefconCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiDefconCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiDefconCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     PRE(canAdminApply());
 

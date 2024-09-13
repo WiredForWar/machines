@@ -47,7 +47,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    MachLogBMUCountCondition(const string& keyName, MachPhys::Race, MachPhys::BuildingMaterialUnits, CheckType);
+    MachLogBMUCountCondition(const std::string& keyName, MachPhys::Race, MachPhys::BuildingMaterialUnits, CheckType);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogBMUCountCondition& t);
 

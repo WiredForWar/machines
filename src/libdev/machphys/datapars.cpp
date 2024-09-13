@@ -1352,7 +1352,7 @@ void MachPhysDataParser::parseEPPBlock(UtlLineTokeniser* pParser)
         pParser->tokens().size() == 2 && pParser->tokens()[0] == "NAME",
         "First line of an EPP data block must be of the format NAME [EPPNAME]");
 
-    string EPPName = pParser->tokens()[1];
+    std::string EPPName = pParser->tokens()[1];
     MachPhysEvasionPriorityPlans::instance().addNewEPP(EPPName);
 
     pParser->parseNextLine();
@@ -2225,7 +2225,7 @@ bool MachPhysDataParser::parseCommonConstructionToken(
         MexPoint2d internalPoint(atof(pParser->tokens()[4].c_str()), atof(pParser->tokens()[5].c_str()));
         MexPoint2d doorPoint(atof(pParser->tokens()[6].c_str()), atof(pParser->tokens()[7].c_str()));
 
-        string doorEntityName = pParser->tokens()[8];
+        std::string doorEntityName = pParser->tokens()[8];
 
         MachPhys::DoorType doorType = MachPhys::SMALL_DOOR;
         if (pParser->tokens()[9] == "SMALL_DOOR")
@@ -2356,7 +2356,7 @@ void MachPhysDataParser::parseWeaponBlock(UtlLineTokeniser* pParser, MachPhys::W
         // See which data item is defined
         ASSERT_INFO(pParser->tokens()[0]);
         ASSERT_INFO(pParser->tokens()[1]);
-        const string& firstToken = pParser->tokens()[0];
+        const std::string& firstToken = pParser->tokens()[0];
 
         if (firstToken == "DAMAGE")
         {
@@ -2387,7 +2387,7 @@ void MachPhysDataParser::parseWeaponBlock(UtlLineTokeniser* pParser, MachPhys::W
             {
                 ASSERT(pParser->tokens().size() == 4, "Bursts of >1 round MUST have a FIXED or VARIABLE qualifier.");
 
-                const string& burstTypeToken = pParser->tokens()[3];
+                const std::string& burstTypeToken = pParser->tokens()[3];
 
                 ASSERT(
                     burstTypeToken == "FIXED" || burstTypeToken == "VARIABLE",
@@ -2539,7 +2539,7 @@ void MachPhysDataParser::parseWeaponBlock(UtlLineTokeniser* pParser, MachPhys::W
     weaponData.launchOffsets(launchOffsets);
 }
 
-MachPhys::LocomotionType MachPhysDataParser::parseLocomotionType(const string& token)
+MachPhys::LocomotionType MachPhysDataParser::parseLocomotionType(const std::string& token)
 {
     MachPhys::LocomotionType result = MachPhys::WHEELS;
 
@@ -2562,7 +2562,7 @@ MachPhys::LocomotionType MachPhysDataParser::parseLocomotionType(const string& t
     return result;
 }
 
-bool MachPhysDataParser::parseNVGStatus(const string& token)
+bool MachPhysDataParser::parseNVGStatus(const std::string& token)
 {
     bool result = false;
 
