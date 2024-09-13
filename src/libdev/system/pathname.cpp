@@ -78,13 +78,6 @@ SysPathName::SysPathName(const char* path)
 }
 
 SysPathName::SysPathName(const std::string& path)
-    : SysPathName(string(path))
-{
-    POST(set());
-}
-
-SysPathName::SysPathName(const string& path)
-
     : pImpl_(new SysPathNameImpl())
 {
     CB_SYS_PATHNAME_DEPIMPL;

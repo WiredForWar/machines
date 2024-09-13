@@ -4,7 +4,8 @@
 #ifndef _STDLIB_STRFWD_HPP
 #define _STDLIB_STRFWD_HPP
 
-template <class T> class basic_string;
-using string = basic_string<char>;
+#include <string>
+
+using string = std::string;
 
 #endif //_STDLIB_STRFWD_HPP

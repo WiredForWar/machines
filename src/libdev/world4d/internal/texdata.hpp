@@ -20,8 +20,6 @@
 #include "render/texture.hpp"
 #include "stdlib/string.hpp"
 
-using string = basic_string<char>;
-
 class W4dCycleTextureData
 // Canonical form revoked
 {

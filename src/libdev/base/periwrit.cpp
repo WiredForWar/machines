@@ -93,7 +93,7 @@ void PersistenceImplementationWrite::clear()
 
 void PersistenceImplementationWrite::writeName(PerOstream& ostr, const char* name)
 {
-    PER_WRITE_RAW_OBJECT(ostr, string(name));
+    PER_WRITE_RAW_OBJECT(ostr, std::string(name));
 }
 
 //  Do all preparetory work necessary for writing out an object

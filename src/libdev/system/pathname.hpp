@@ -39,7 +39,6 @@ public:
     // POST( not set() );
     SysPathName(const char* path);
     // POST( set() );
-    SysPathName(const string& path);
     SysPathName(const std::string& path);
     // POST( set() );
     SysPathName(const SysPathName& path);
