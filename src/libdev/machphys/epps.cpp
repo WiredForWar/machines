@@ -36,7 +36,7 @@ MachPhysEvasionPriorityPlans::~MachPhysEvasionPriorityPlans()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEvasionPriorityPlans::addNewEPP(const string& EPPName)
+void MachPhysEvasionPriorityPlans::addNewEPP(const std::string& EPPName)
 {
     PRE(! EPPExists(EPPName));
 
@@ -49,7 +49,7 @@ void MachPhysEvasionPriorityPlans::addNewEPP(const string& EPPName)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName, int priority)
+void MachPhysEvasionPriorityPlans::garrisonPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
     // Special value of -2 allowed for garrisons which will indicate that NO evasion is ever to be
@@ -62,7 +62,7 @@ void MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName, int p
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName, int priority)
+void MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
     PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
@@ -73,7 +73,7 @@ void MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName, in
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEvasionPriorityPlans::podPriority(const string& EPPName, int priority)
+void MachPhysEvasionPriorityPlans::podPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
     PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
@@ -84,7 +84,7 @@ void MachPhysEvasionPriorityPlans::podPriority(const string& EPPName, int priori
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void MachPhysEvasionPriorityPlans::turretsPriority(const string& EPPName, int priority)
+void MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
     PRE(priority < N_PRIORITY_LEVELS && priority >= -1);
@@ -95,7 +95,7 @@ void MachPhysEvasionPriorityPlans::turretsPriority(const string& EPPName, int pr
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName) const
+int MachPhysEvasionPriorityPlans::garrisonPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
@@ -104,7 +104,7 @@ int MachPhysEvasionPriorityPlans::garrisonPriority(const string& EPPName) const
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName) const
+int MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
@@ -113,7 +113,7 @@ int MachPhysEvasionPriorityPlans::aggressivesPriority(const string& EPPName) con
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int MachPhysEvasionPriorityPlans::podPriority(const string& EPPName) const
+int MachPhysEvasionPriorityPlans::podPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
@@ -122,7 +122,7 @@ int MachPhysEvasionPriorityPlans::podPriority(const string& EPPName) const
 
 //////////////////////////////////////////////////////////////////////////////////
 
-int MachPhysEvasionPriorityPlans::turretsPriority(const string& EPPName) const
+int MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
@@ -131,7 +131,7 @@ int MachPhysEvasionPriorityPlans::turretsPriority(const string& EPPName) const
 
 //////////////////////////////////////////////////////////////////////////////////
 
-bool MachPhysEvasionPriorityPlans::EPPExists(const string& EPPName) const
+bool MachPhysEvasionPriorityPlans::EPPExists(const std::string& EPPName) const
 {
     bool found = false;
 
@@ -146,7 +146,7 @@ bool MachPhysEvasionPriorityPlans::EPPExists(const string& EPPName) const
 
 //////////////////////////////////////////////////////////////////////////////////
 
-const MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const string& EPPName) const
+const MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
@@ -167,7 +167,7 @@ const MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const strin
 
 //////////////////////////////////////////////////////////////////////////////////
 
-MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const string& EPPName)
+MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const std::string& EPPName)
 {
     PRE(EPPExists(EPPName));
 

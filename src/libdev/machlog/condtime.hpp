@@ -24,7 +24,7 @@ class MachLogTimerCondition : public SimCondition
 public:
     static MachLogTimerCondition* newFromParser(UtlLineTokeniser*);
 
-    MachLogTimerCondition(const string& keyName, const PhysAbsoluteTime&);
+    MachLogTimerCondition(const std::string& keyName, const PhysAbsoluteTime&);
 
     bool doHasConditionBeenMet() const override;
 

@@ -274,9 +274,9 @@ void MachSquadronIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
     MachGuiIconWithCounter::doHandleMouseExitEvent(mouseEvent);
 }
 
-string MachGuiIconWithCounter::getRootDirectory() const
+std::string MachGuiIconWithCounter::getRootDirectory() const
 {
-    string retValue = "gui/navigate/red/";
+    std::string retValue = "gui/navigate/red/";
 
     if (MachLogRaces::instance().hasPCRace())
     {

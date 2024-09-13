@@ -80,7 +80,7 @@ public:
     void updateCycle();
 
     // Register a sound id with the matching enummed type in W4dSoundData
-    void registerSoundID(const string& id, uint soundId);
+    void registerSoundID(const std::string& id, uint soundId);
     // Read in the sound definition file and create the W4dSoundData members
     void readSoundDefinitionFile(const SysPathName& definitionFileName);
     // PRE(definitionFileName.existsAsFile());

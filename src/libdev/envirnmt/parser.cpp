@@ -25,7 +25,7 @@ union YYSTYPE
 {
     int intVal;
     float floatVal;
-    string* pString;
+    std::string* pString;
     RenColour* pColour;
     EnvElevationColourTable* pClut;
     EnvElevationColourTable::Entry* pClutEntry;

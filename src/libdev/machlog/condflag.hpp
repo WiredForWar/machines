@@ -26,7 +26,7 @@ class MachLogScenarioFlagCondition : public SimCondition
 public:
     static MachLogScenarioFlagCondition* newFromParser(UtlLineTokeniser*);
 
-    MachLogScenarioFlagCondition(const string& keyName, bool isSet);
+    MachLogScenarioFlagCondition(const std::string& keyName, bool isSet);
 
     bool doHasConditionBeenMet() const override;
 

@@ -29,7 +29,7 @@ public:
     MOCK_METHOD(
         void,
         drawText,
-        (const Gui::Coord& c, const string& text, const Gui::TextOptions& options, int),
+        (const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int),
         (const, override));
     MOCK_METHOD(void, filledBorder, ( const Gui::Coord& absCoord, const GuiBorderDimensions&, const GuiFilledBorderColours&, const GuiBorderMetrics&), (const, override));
 };

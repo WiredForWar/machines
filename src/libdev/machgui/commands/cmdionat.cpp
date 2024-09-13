@@ -90,7 +90,7 @@ bool MachGuiIonAttackCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiIonAttackCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiIonAttackCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsCanAttack());
 
@@ -117,7 +117,7 @@ bool MachGuiIonAttackCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, string*)
+bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, std::string*)
 {
     ASSERT_INFO(*pActor);
     ASSERT(
@@ -146,7 +146,7 @@ bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, string*)
     return true;
 }
 
-bool MachGuiIonAttackCommand::applyAttackObject(MachActor* pActor, string*)
+bool MachGuiIonAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
 {
     ASSERT_INFO(*pActor);
     ASSERT(
@@ -221,9 +221,9 @@ std::unique_ptr<MachGuiCommand> MachGuiIonAttackCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiIonAttackCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiIonAttackCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/ionattk.bmp", "gui/commands/ionattk.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/ionattk.bmp", "gui/commands/ionattk.bmp");
     return names;
 }
 

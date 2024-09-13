@@ -70,7 +70,7 @@ void MachGuiCommand::apply()
 
     // Get the selected set of actors
     const MachInGameScreen::Actors& selectedActors = pImpl_->pInGameScreen_->selectedActors();
-    string reason;
+    std::string reason;
     bool succeeded = false;
 
     pImpl_->clearMachineOperations();
@@ -236,7 +236,7 @@ bool MachGuiCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiCommand::doAdminApply(MachLogAdministrator*, string*)
+bool MachGuiCommand::doAdminApply(MachLogAdministrator*, std::string*)
 {
     PRE(canAdminApply());
     return false;
@@ -509,7 +509,7 @@ bool MachGuiCommand::canApplyToGroup() const
 }
 
 // virtual
-bool MachGuiCommand::doGroupApply(const Actors&, string*)
+bool MachGuiCommand::doGroupApply(const Actors&, std::string*)
 {
     PRE(canApplyToGroup());
 

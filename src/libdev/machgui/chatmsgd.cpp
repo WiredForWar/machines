@@ -119,7 +119,7 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
         int fontHeight = shadowFont_.charHeight() + 1;
         int index = 0;
 
-        for (ctl_list<string>::const_iterator iter = MachGuiInGameChatMessages::instance().messages().begin();
+        for (ctl_list<std::string>::const_iterator iter = MachGuiInGameChatMessages::instance().messages().begin();
              iter != MachGuiInGameChatMessages::instance().messages().end();
              ++iter)
         {

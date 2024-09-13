@@ -25,7 +25,7 @@ class W4dUVTranslateData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dUVTranslateData(const string& textureName, const MexVec2& speedVec, W4dLOD maxLod);
+    W4dUVTranslateData(const std::string& textureName, const MexVec2& speedVec, W4dLOD maxLod);
     ~W4dUVTranslateData() override;
 
     // apply the uv animation to pEntity  start at statTime

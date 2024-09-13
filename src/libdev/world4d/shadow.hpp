@@ -91,7 +91,7 @@ public:
     void cast(MATHEX_SCALAR zs) override;
     void copy(W4dEntity* parent) override;
     bool loadLODFile(const SysPathName& filename);
-    bool loadSingleMesh(const SysPathName& filename, const string& meshName, double scale = 1.0);
+    bool loadSingleMesh(const SysPathName& filename, const std::string& meshName, double scale = 1.0);
 
     // Set the projection plane for all shadows to be z=zs.  Default=0.
     static void shadowPlaneZ(MATHEX_SCALAR zs);

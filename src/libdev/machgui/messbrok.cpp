@@ -308,7 +308,7 @@ MachGuiMessageBroker::MessageType MachGuiMessageBroker::getMessageType(NetMessag
     return (MessageType)((MachLogMessageHeader*)pMessage->body().body())->messageCode_;
 }
 
-void MachGuiMessageBroker::sendChatMessage(const string& chat)
+void MachGuiMessageBroker::sendChatMessage(const std::string& chat)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiChatMessage* pMessage = _REINTERPRET_CAST(MachGuiChatMessage*, pLogMessage);
@@ -323,7 +323,7 @@ void MachGuiMessageBroker::sendChatMessage(const string& chat)
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendJoinMessage(const string& playerName, int uniqueMachineNumber)
+void MachGuiMessageBroker::sendJoinMessage(const std::string& playerName, int uniqueMachineNumber)
 {
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);
@@ -370,7 +370,7 @@ void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendRaceChangeRequest(const string& playerName, size_t playerIndex, MachPhys::Race newRace)
+void MachGuiMessageBroker::sendRaceChangeRequest(const std::string& playerName, size_t playerIndex, MachPhys::Race newRace)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiRaceChangeRequestMessage* pMessage = _REINTERPRET_CAST(MachGuiRaceChangeRequestMessage*, pLogMessage);
@@ -388,7 +388,7 @@ void MachGuiMessageBroker::sendRaceChangeRequest(const string& playerName, size_
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendImReadyMessage(const string& playerName, bool ready)
+void MachGuiMessageBroker::sendImReadyMessage(const std::string& playerName, bool ready)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiImReadyMessage* pMessage = _REINTERPRET_CAST(MachGuiImReadyMessage*, pLogMessage);
@@ -427,7 +427,7 @@ void MachGuiMessageBroker::sendHostCancelMessage()
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendClientCancelMessage(const string& playerName)
+void MachGuiMessageBroker::sendClientCancelMessage(const std::string& playerName)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiClientCancelMessage* pMessage = _REINTERPRET_CAST(MachGuiClientCancelMessage*, pLogMessage);
@@ -442,7 +442,7 @@ void MachGuiMessageBroker::sendClientCancelMessage(const string& playerName)
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendInGameChatMessage(const string& message, MachPhys::Race intendedForRace)
+void MachGuiMessageBroker::sendInGameChatMessage(const std::string& message, MachPhys::Race intendedForRace)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiInGameChatMessage* pMessage = _REINTERPRET_CAST(MachGuiInGameChatMessage*, pLogMessage);
@@ -518,7 +518,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker::MessageTyp
     return o;
 }
 
-void MachGuiMessageBroker::sendHasMachinesCDMessage(const string& playerName, bool hasMachinesCD)
+void MachGuiMessageBroker::sendHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiHasMachinesCDMessage* pMessage = _REINTERPRET_CAST(MachGuiHasMachinesCDMessage*, pLogMessage);
@@ -542,7 +542,7 @@ void MachGuiMessageBroker::processHasMachinesCDMessage(MachGuiHasMachinesCDMessa
     pStartupData_->receivedHasMachinesCDMessage(pMessage->playerName_, pMessage->hasMachinesCD_);
 }
 
-void MachGuiMessageBroker::sendIveLostMessage(const string& playerName)
+void MachGuiMessageBroker::sendIveLostMessage(const std::string& playerName)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
     MachGuiIveLostMessage* pMessage = _REINTERPRET_CAST(MachGuiIveLostMessage*, pLogMessage);
@@ -555,7 +555,7 @@ void MachGuiMessageBroker::sendIveLostMessage(const string& playerName)
     doSend(pLogMessage);
 }
 
-void MachGuiMessageBroker::sendNameChangeMessage(const string& newPlayerName, int uniqueMachineNumber)
+void MachGuiMessageBroker::sendNameChangeMessage(const std::string& newPlayerName, int uniqueMachineNumber)
 {
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);

@@ -118,11 +118,11 @@ protected:
     // The base class maintains a list of configuration names.  Derived
     // classes are responsible for creating and implementing the
     // corresponding lighting states.
-    void addLightConfiguration(const string&); // PRE(!isValidConfiguration(c));
-    void removeLightConfiguration(const string&); // PRE(isValidConfiguration(c));
+    void addLightConfiguration(const std::string&); // PRE(!isValidConfiguration(c));
+    void removeLightConfiguration(const std::string&); // PRE(isValidConfiguration(c));
 
 private:
-    ctl_vector<string> lightConfigurations_;
+    ctl_vector<std::string> lightConfigurations_;
     MATHEX_SCALAR lowerTransitionBound_;
     MATHEX_SCALAR upperTransitionBound_;
 

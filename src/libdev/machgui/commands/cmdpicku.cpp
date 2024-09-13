@@ -105,7 +105,7 @@ bool MachGuiPickUpCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiPickUpCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiPickUpCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsMachine());
     PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier());
@@ -125,7 +125,7 @@ bool MachGuiPickUpCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiPickUpCommand::applyPickUpObject(MachActor* pActor, string*)
+bool MachGuiPickUpCommand::applyPickUpObject(MachActor* pActor, std::string*)
 {
     ASSERT_INFO(pActor->objectType());
     ASSERT(pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type.");
@@ -199,9 +199,9 @@ std::unique_ptr<MachGuiCommand> MachGuiPickUpCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiPickUpCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiPickUpCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/pickup.bmp", "gui/commands/pickup.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/pickup.bmp", "gui/commands/pickup.bmp");
     return names;
 }
 

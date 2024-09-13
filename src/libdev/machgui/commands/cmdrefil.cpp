@@ -57,7 +57,7 @@ bool MachGuiRefillLandMineCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, string* /*pReason*/)
+bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, std::string* /*pReason*/)
 {
     PRE(pActor->objectIsMachine());
 
@@ -110,9 +110,9 @@ std::unique_ptr<MachGuiCommand> MachGuiRefillLandMineCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiRefillLandMineCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiRefillLandMineCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/refill.bmp", "gui/commands/refill.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/refill.bmp", "gui/commands/refill.bmp");
     return names;
 }
 
@@ -135,7 +135,7 @@ bool MachGuiRefillLandMineCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiRefillLandMineCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     PRE(canAdminApply());
     ;

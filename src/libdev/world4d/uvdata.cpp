@@ -17,7 +17,7 @@
 
 PER_DEFINE_PERSISTENT(W4dUVTranslateData);
 
-W4dUVTranslateData::W4dUVTranslateData(const string& textureName, const MexVec2& speedVec, W4dLOD maxLod)
+W4dUVTranslateData::W4dUVTranslateData(const std::string& textureName, const MexVec2& speedVec, W4dLOD maxLod)
     : W4dAnimationData(textureName, maxLod)
     , speedVec_(speedVec)
 {
@@ -51,7 +51,7 @@ void W4dUVTranslateData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& start
     PRE(pEntity->hasMesh());
 
     size_t nameLength = name().length();
-    string textureName = name();
+    std::string textureName = name();
 
     if (textureName.substr(nameLength - 4, 4) != ".bmp")
     {

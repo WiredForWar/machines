@@ -54,7 +54,7 @@ public:
         MexLine2d doorLine; // ground level line conecting the two points
         MATHEX_SCALAR height; // simple height
 
-        string doorEntityName;
+        std::string doorEntityName;
 
     private:
         enum InteriorExterior
@@ -116,7 +116,7 @@ private:
         const MexPoint2d& externalPoint,
         const MexPoint2d& internalPoint,
         const MexPoint2d& doorPoint,
-        const string& doorEntityName,
+        const std::string& doorEntityName,
         const MachPhys::DoorType doorType);
 
     void addPickUpPoint(const MexPoint2d& point);

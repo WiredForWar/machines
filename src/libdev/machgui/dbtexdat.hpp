@@ -29,25 +29,25 @@ public:
     // This looks first in pdata/... for a .bin persistent version. If not found
     // reads the source file from data/... and creates the persistent file.
     // Client must delete the returned object.
-    static MachGuiDbTextData* pNewTextData(const string& filename);
+    static MachGuiDbTextData* pNewTextData(const std::string& filename);
 
     // The various strings of text
-    const string& campaignText() const; // Campaign screen description
-    const string& hintText() const; // Briefing screen hints
-    const string& winText() const; // DeBriefing screen win text
-    const string& loseText() const; // DeBriefing screen lose text
+    const std::string& campaignText() const; // Campaign screen description
+    const std::string& hintText() const; // Briefing screen hints
+    const std::string& winText() const; // DeBriefing screen win text
+    const std::string& loseText() const; // DeBriefing screen lose text
 
-    const string& winVoicemail() const; // DeBriefing screen win voicemail filename
-    const string& loseVoicemail() const; // DeBriefing screen lose voicemail filename
+    const std::string& winVoicemail() const; // DeBriefing screen win voicemail filename
+    const std::string& loseVoicemail() const; // DeBriefing screen lose voicemail filename
 
     uint nObjectives() const; // Number of objectives
-    const string& objectiveText(uint index) const; // Briefing text for index'th objective
+    const std::string& objectiveText(uint index) const; // Briefing text for index'th objective
     // PRE( index < nObjectives() );
 
-    const string& objectiveVoicemail(uint index) const; // Briefing voicemail for index'th objective
+    const std::string& objectiveVoicemail(uint index) const; // Briefing voicemail for index'th objective
     uint nTasks() const; // Number of tasks
 
-    const string& taskText(uint index) const; // DeBriefing lose text for index'th task
+    const std::string& taskText(uint index) const; // DeBriefing lose text for index'th task
     // PRE( index < nTasks() );
 
     // True iff the task beings in the OPEN state at start of scenario

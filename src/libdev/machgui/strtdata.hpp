@@ -76,8 +76,8 @@ public:
             CONNECTION_LOST
         };
 
-        string getDisplayName() const;
-        void setPlayerName(const string&);
+        std::string getDisplayName() const;
+        void setPlayerName(const std::string&);
 
         void reset();
 
@@ -130,17 +130,17 @@ public:
     void newGameName(const std::string& gameName);
 
     // Network message handling
-    void receivedJoinMessage(const string& playerName, int uniqueMachineNumber);
-    void receivedImReadyMessage(const string& playerName, bool ready);
+    void receivedJoinMessage(const std::string& playerName, int uniqueMachineNumber);
+    void receivedImReadyMessage(const std::string& playerName, bool ready);
     void receivedUpdatePlayersMessage();
-    void receivedRaceChangeRequest(const string& playerName, size_t playerIndex, MachPhys::Race);
+    void receivedRaceChangeRequest(const std::string& playerName, size_t playerIndex, MachPhys::Race);
     void receivedHostCancelMessage();
-    void receivedClientCancelMessage(const string& playerName);
+    void receivedClientCancelMessage(const std::string& playerName);
     void receivedStartMessage();
     void receivedUpdateGameSettingsMessage();
-    void receivedInGameChatMessage(const string& message, MachPhys::Race intendedRace);
-    void receivedHasMachinesCDMessage(const string& playerName, bool hasMachinesCD);
-    void receivedNameChangeMessage(const string& newPlayerName, int uniqueMachineNumber);
+    void receivedInGameChatMessage(const std::string& message, MachPhys::Race intendedRace);
+    void receivedHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD);
+    void receivedNameChangeMessage(const std::string& newPlayerName, int uniqueMachineNumber);
 
     // Set nework message telling all nodes to update their player information.
     void sendUpdatePlayersMessage();
@@ -153,7 +153,7 @@ public:
     // Get/Set host, host name etc.
     void hostGame(bool);
     bool isHost() const;
-    string getHostName() const;
+    std::string getHostName() const;
 
     // When certain network messages are received the Ready context needs to be
     // refreshed to ensure that the correct information is displayed.
@@ -161,7 +161,7 @@ public:
     void removeCtxImReady();
 
     // Returns list of available players ( NOT including host playerName )
-    ctl_vector<string>& availablePlayers();
+    ctl_vector<std::string>& availablePlayers();
 
     // Get player information. 4 slots.
     PlayerInfo* players();
@@ -174,7 +174,7 @@ public:
     bool isRaceAvailable(MachPhys::Race) const;
 
     // Has a network player pressed the "I'm Ready" button?
-    bool isReady(const string& playerName);
+    bool isReady(const std::string& playerName);
 
     // Can the host start the game ( i.e. has everyone pressed the "I'm Ready" button )
     bool canStartMultiPlayerGame() const;
@@ -198,64 +198,64 @@ public:
 
     // Get/set number of resources ( high, normal, low ).
     void resources(MachLog::ResourcesAvailable);
-    void resources(const string&);
+    void resources(const std::string&);
     MachLog::ResourcesAvailable resources() const;
-    string resourcesStr() const;
+    std::string resourcesStr() const;
 
     // Get/set number of starting resources.
     void startingResources(MachLog::StartingResources);
-    void startingResources(const string&);
+    void startingResources(const std::string&);
     MachLog::StartingResources startingResources() const;
-    string startingResourcesStr() const;
+    std::string startingResourcesStr() const;
 
     // Get/set broadcast alliances on/off for multi player games.
     void broadcastAlliances(bool);
-    void broadcastAlliances(const string&);
+    void broadcastAlliances(const std::string&);
     bool broadcastAlliances() const;
-    string broadcastAlliancesStr() const;
+    std::string broadcastAlliancesStr() const;
 
     // Get/set 1st person on/off for multi player games.
     void disableFirstPerson(bool);
-    void disableFirstPerson(const string&);
+    void disableFirstPerson(const std::string&);
     bool disableFirstPerson() const;
-    string disableFirstPersonStr() const;
+    std::string disableFirstPersonStr() const;
 
     // Get/set fogOfWar on/off for skirmish and multi player games.
     void fogOfWar(bool);
-    void fogOfWar(const string&);
+    void fogOfWar(const std::string&);
     bool fogOfWar() const;
-    string fogOfWarStr() const;
+    std::string fogOfWarStr() const;
 
     // Get/set starting position ( fixed/random ).
     void startingPosition(MachLog::RandomStarts);
-    void startingPosition(const string&);
+    void startingPosition(const std::string&);
     MachLog::RandomStarts startingPosition() const;
-    string startingPositionStr() const;
+    std::string startingPositionStr() const;
 
     // Get/set victory condition for a multiplayer/skirmish game.
     void victoryCondition(VictoryCondition);
-    void victoryCondition(const string&);
+    void victoryCondition(const std::string&);
     VictoryCondition victoryCondition() const;
-    string victoryConditionStr() const;
+    std::string victoryConditionStr() const;
 
     // Get/set number of players for a multiplayer/skirmish game.
     void numPlayers(int);
     // PRE( numPlayers >= 2 and numPlayers <= 4 );
-    void numPlayers(const string&);
+    void numPlayers(const std::string&);
     int numPlayers() const;
-    string numPlayersStr() const;
+    std::string numPlayersStr() const;
 
     // Get/set tech level for a multiplayer/skirmish game.
     void techLevel(MachLog::TechnologyLevel);
-    void techLevel(const string&);
+    void techLevel(const std::string&);
     MachLog::TechnologyLevel techLevel() const;
-    string techLevelStr() const;
+    std::string techLevelStr() const;
 
     // Get/set player race for a skirmish game.
     void playerRace(MachPhys::Race);
-    void playerRace(const string&);
+    void playerRace(const std::string&);
     MachPhys::Race playerRace() const;
-    string playerRaceStr() const;
+    std::string playerRaceStr() const;
 
     // get the random starts seed such that all nodes on the network are looking at the same thing.
     int randomStartSeed() const;
@@ -286,7 +286,7 @@ private:
     bool transitionFlicsOn_;
     bool host_;
     MachGuiCtxImReady* pCtxImReady_;
-    ctl_vector<string> availablePlayers_;
+    ctl_vector<std::string> availablePlayers_;
     PlayerInfo players_[4]; // Four available slots for players
     MachGuiStartupScreens* pStartupScreens_;
     bool includedInGame_;

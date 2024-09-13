@@ -13,8 +13,8 @@
 PER_DEFINE_PERSISTENT(MachGuiDbSavedGame);
 
 MachGuiDbSavedGame::MachGuiDbSavedGame(
-    const string& userFileName,
-    const string& fileName,
+    const std::string& userFileName,
+    const std::string& fileName,
     MachGuiDbScenario* pDbScenario)
 {
     pData_ = new MachGuiDbISavedGame;
@@ -61,22 +61,22 @@ MachGuiDbSavedGame::MachGuiDbSavedGame(PerConstructor)
 {
 }
 
-const string& MachGuiDbSavedGame::userFileName() const
+const std::string& MachGuiDbSavedGame::userFileName() const
 {
     return pData_->userFileName_;
 }
 
-void MachGuiDbSavedGame::userFileName(const string& name)
+void MachGuiDbSavedGame::userFileName(const std::string& name)
 {
     pData_->userFileName_ = name;
 }
 
-const string& MachGuiDbSavedGame::externalFileName() const
+const std::string& MachGuiDbSavedGame::externalFileName() const
 {
     return pData_->fileName_;
 }
 
-void MachGuiDbSavedGame::externalFileName(const string& name)
+void MachGuiDbSavedGame::externalFileName(const std::string& name)
 {
     pData_->fileName_ = name;
 }

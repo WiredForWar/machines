@@ -117,8 +117,8 @@ private:
         const ConstructionDataStore& store,
         const MachPhysLevelIndexMap& levelIndexMap);
 
-    MachPhys::LocomotionType parseLocomotionType(const string& token);
-    bool parseNVGStatus(const string& token);
+    MachPhys::LocomotionType parseLocomotionType(const std::string& token);
+    bool parseNVGStatus(const std::string& token);
 
     MachineDataStore machineDataStore(const AggressorDataStore&) const;
     MachineDataStore machineDataStore(const AdministratorDataStore&) const;

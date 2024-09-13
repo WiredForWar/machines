@@ -21,7 +21,7 @@ void MachGuiAnimations::init(GuiDisplayable* pParent, const SysPathName& pathNam
 
     int numAnimations;
     in >> numAnimations;
-    string animPath;
+    std::string animPath;
 
     animations_.reserve(numAnimations);
     bool colorKey{};
@@ -59,11 +59,11 @@ MachGuiAnimation* MachGuiAnimation::createAnimation(
     std::istream& tmpIn = in;
 
     int x, y, numCells, loopBack;
-    string path;
+    std::string path;
     double duration, minT, maxT;
     MachGuiAnimation::Cell::CellTime cellTimeType;
     bool hasSound;
-    string wavFile;
+    std::string wavFile;
 
     in >> x >> y >> numCells >> loopBack;
 

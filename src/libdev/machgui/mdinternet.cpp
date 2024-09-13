@@ -83,7 +83,7 @@ void MachGuiInternetNetworkMode::CLASS_INVARIANT
 void MachGuiInternetNetworkMode::setNetworkDetails()
 {
     // This function will use the settings from the drop downs to configure network settings
-    string ipAddress = pimpl_->pIPAddressEntryBox_->text();
+    std::string ipAddress = pimpl_->pIPAddressEntryBox_->text();
 
     NetNetwork::instance().setIPAddress(ipAddress);
 }

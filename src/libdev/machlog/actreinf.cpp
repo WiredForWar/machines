@@ -272,7 +272,7 @@ void MachLogReinforcementsAction::parseFromScenario(MachPhys::Race race, UtlLine
     // Get a copy of the list of units surviving from the scenario
     MachLogDatabaseHandler::Units units;
     units.reserve(20);
-    const string& scenarioName = pParser->tokens()[1];
+    const std::string& scenarioName = pParser->tokens()[1];
     units = MachLogRaces::instance().databaseHandler().survivingUnits(race, scenarioName);
 
     if (! units.empty())

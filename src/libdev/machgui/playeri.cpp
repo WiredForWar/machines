@@ -19,7 +19,7 @@ constexpr int PNL_INDENT = 6;
 MachGuiPlayerNameList::MachGuiPlayerNameList(
     GuiDisplayable* pParent,
     const Gui::Coord& topLeft,
-    const string& fontName,
+    const std::string& fontName,
     uint title)
     : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(PNL_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
     , isWhite_(false)
@@ -38,7 +38,7 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
 MachGuiPlayerNameList::MachGuiPlayerNameList(
     GuiDisplayable* pParent,
     const Gui::Boundary& boundary,
-    const string& fontName,
+    const std::string& fontName,
     uint title,
     bool isWhite)
     : GuiDisplayable(pParent, boundary)
@@ -64,10 +64,10 @@ MachGuiPlayerNameList::~MachGuiPlayerNameList()
 }
 
 void MachGuiPlayerNameList::names(
-    const string& player1,
-    const string& player2,
-    const string& player3,
-    const string& player4)
+    const std::string& player1,
+    const std::string& player2,
+    const std::string& player3,
+    const std::string& player4)
 {
 
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
@@ -75,10 +75,10 @@ void MachGuiPlayerNameList::names(
     uint spacing = font.charHeight() + 2 * MachGui::menuScaleFactor();
     const uint maxWidth = (PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10) * MachGui::menuScaleFactor();
 
-    string newPlayer1 = truncate(player1, maxWidth);
-    string newPlayer2 = truncate(player2, maxWidth);
-    string newPlayer3 = truncate(player3, maxWidth);
-    string newPlayer4 = truncate(player4, maxWidth);
+    std::string newPlayer1 = truncate(player1, maxWidth);
+    std::string newPlayer2 = truncate(player2, maxWidth);
+    std::string newPlayer3 = truncate(player3, maxWidth);
+    std::string newPlayer4 = truncate(player4, maxWidth);
 
     const int PosX = 38 * MachGui::menuScaleFactor();
 
@@ -145,10 +145,10 @@ void MachGuiPlayerNameList::CLASS_INVARIANT
 }
 
 // static
-string MachGuiPlayerNameList::truncate(const string& name, uint maxWidth)
+std::string MachGuiPlayerNameList::truncate(const std::string& name, uint maxWidth)
 {
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    string truncatedName = name;
+    std::string truncatedName = name;
 
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();
 

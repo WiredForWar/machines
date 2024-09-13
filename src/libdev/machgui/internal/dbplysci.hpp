@@ -43,7 +43,7 @@ private:
 
     using Units = ctl_vector<MachLogProductionUnit>;
     using RaceUnits = ctl_vector<Units>;
-    using Strings = ctl_vector<string>;
+    using Strings = ctl_vector<std::string>;
 
     // data members
     MachGuiDbScenario* pDbScenario_; // The campaign scenario this relates to

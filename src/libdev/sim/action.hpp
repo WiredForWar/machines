@@ -26,7 +26,7 @@ public:
     void enabled(bool);
 
     PhysAbsoluteTime nextCallBackTime() const;
-    const string& conditionKeyName() const;
+    const std::string& conditionKeyName() const;
 
     void CLASS_INVARIANT;
 
@@ -46,7 +46,7 @@ protected:
     // A base class implementation is provided
 
 private:
-    string conditionKeyName_;
+    std::string conditionKeyName_;
     SimCondition* pCondition_;
     PhysAbsoluteTime nextCallBackTime_;
     bool enabled_;

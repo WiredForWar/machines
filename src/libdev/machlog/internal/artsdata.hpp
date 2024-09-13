@@ -25,7 +25,7 @@ class W4dEntity;
 class MachLogArtefactSubType
 {
 public:
-    MachLogArtefactSubType(int subType, const W4dEntity* pExemplar, const string& name)
+    MachLogArtefactSubType(int subType, const W4dEntity* pExemplar, const std::string& name)
         : subType_(subType)
         , pExemplar_(pExemplar)
         , name_(name) {};
@@ -51,7 +51,7 @@ public:
     // data members
     int subType_; // The subtype value
     const W4dEntity* pExemplar_; // The exemplar for this subtype
-    string name_; // Name as referenced in the artefacts repository
+    std::string name_; // Name as referenced in the artefacts repository
 };
 
 class MachLogArtefactsData

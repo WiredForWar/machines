@@ -79,7 +79,7 @@ inline double degToRad(double degs)
 
 static void usage()
 {
-    static string usage = "";
+    static std::string usage = "";
     usage += "Command line parameters are:\n";
     usage += "\t-?\tDisplay this help.\n";
     usage += "or\n";
@@ -155,7 +155,7 @@ bool SDLApp::clientStartup()
 
     for (size_t i = 0; i < invokeArgs().size(); ++i)
     {
-        const string& token = invokeArgs()[i];
+        const std::string& token = invokeArgs()[i];
 
         if (token == "-lobby")
             lobbyFlag = true;
@@ -700,7 +700,7 @@ void SDLApp::getWindowSize(int&, int&, int& w, int& h)
 {
     if (invokeArgs().size() > 1)
     {
-        const string flag = invokeArgs()[0];
+        const std::string flag = invokeArgs()[0];
         if (flag == "-w" && invokeArgs().size() == 3)
         {
             winWidth_ = atoi(invokeArgs()[1].c_str());

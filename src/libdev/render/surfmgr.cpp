@@ -5,8 +5,6 @@
 
 #include "render/surfmgr.hpp"
 
-#include <string>
-
 #include "render/internal/surfmgri.hpp"
 
 #include "base/diag.hpp"

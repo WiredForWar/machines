@@ -36,10 +36,10 @@ public:
     using Entries = ctl_list<W4dCompositePlanEntry*>;
 
     // ctor,dtor
-    W4dCompositePlan(const string& name);
+    W4dCompositePlan(const std::string& name);
     ~W4dCompositePlan();
 
-    const string& name() const;
+    const std::string& name() const;
 
     // Set the plan for the composite itself
     void compositePlan(const W4dEntityPlan& plan);

@@ -75,7 +75,7 @@ MachLogActivateSquadronsAction::newFromParser(SimCondition* pCondition, bool ena
     std::unique_ptr<MachLogActivateSquadronsAction> pResult(new MachLogActivateSquadronsAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "RACE")
             pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
         else if (token == "SQUADRONS")

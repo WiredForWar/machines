@@ -50,9 +50,9 @@ public:
     };
 
     using ProtocolSpec = std::pair<const std::string, NetworkProtocol>;
-    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<string>>;
+    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<std::string>>;
     using Sessions = std::vector<NetSessionInfo>;
-    using Modems = ctl_vector<string>;
+    using Modems = ctl_vector<std::string>;
 
     ///////////////////////////////
 
@@ -102,7 +102,7 @@ public:
     bool hasSystemMessageHandler() const;
     NetSystemMessageHandler& systemMessageHandler();
 
-    void doAbort(const string& reason);
+    void doAbort(const std::string& reason);
     NetINetwork& netINetwork() const;
 
     bool isLobbiedGame() const;

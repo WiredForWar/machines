@@ -51,7 +51,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     // respond to pick on pActor in the world view window.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
@@ -106,7 +106,7 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 
     /////////////////////////////////////////////////
 

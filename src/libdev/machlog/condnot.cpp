@@ -13,7 +13,7 @@
 
 PER_DEFINE_PERSISTENT(MachLogNotCondition);
 
-MachLogNotCondition::MachLogNotCondition(const string& keyName, SimCondition* pNotCondition)
+MachLogNotCondition::MachLogNotCondition(const std::string& keyName, SimCondition* pNotCondition)
     : SimCondition(keyName)
     , pNotCondition_(pNotCondition)
 {

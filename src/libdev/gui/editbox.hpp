@@ -39,9 +39,9 @@ public:
     void caretColour(const GuiColour& colour);
 
     // Set text that is displayed in edit box
-    void setText(const string&);
-    // PRE( string.length() <= maxChars_ );
-    string text() const;
+    void setText(const std::string&);
+    // PRE( std::string.length() <= maxChars_ );
+    std::string text() const;
     void setTextChangedCallback(Callback callback);
 
     // Turn edit box border on.
@@ -70,8 +70,8 @@ protected:
 
     virtual void drawBackground();
 
-    const string& leftText() const;
-    const string& rightText() const;
+    const std::string& leftText() const;
+    const std::string& rightText() const;
     Gui::XCoord caretPos() const;
     bool showCaret() const;
     const GuiColour& caretColour() const;
@@ -87,8 +87,8 @@ protected:
     Callback textChangedCallback_{};
 
     // Data members...
-    string rightText_;
-    string leftText_;
+    std::string rightText_;
+    std::string leftText_;
     Gui::XCoord caretPos_ = 0;
     GuiBmpFont font_;
     bool showCaret_;

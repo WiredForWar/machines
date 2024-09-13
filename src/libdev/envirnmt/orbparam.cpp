@@ -6,7 +6,7 @@
 #include "envirnmt/internal/orbparam.hpp"
 #include "envirnmt/orbit.hpp"
 
-EnvIOrbitParams::EnvIOrbitParams(const string* name)
+EnvIOrbitParams::EnvIOrbitParams(const std::string* name)
     : name_(*name)
     , period_(-1)
     , radius_(100000)

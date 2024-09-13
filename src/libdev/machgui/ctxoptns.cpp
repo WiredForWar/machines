@@ -266,7 +266,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             //          string resolutionStr = itoa( mode.width(), buffer, 10 );
             //          resolutionStr += itoa( mode.height(), buffer, 10 );
             sprintf(buffer, "%dx%d %d hz", mode.width(), mode.height(), mode.refreshRate());
-            string resolutionStr = buffer;
+            std::string resolutionStr = buffer;
 
             // If this mode is the current mode for ingame then make sure it appears first in the
             // drop down list box
@@ -395,7 +395,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             for (uint ch = 0; ch < nch; ++ch)
             {
                 GuiResourceString choice(ch + id + 1);
-                string choiceString = choice.asString();
+                std::string choiceString = choice.asString();
                 choices.push_back(choiceString);
                 choiceIds.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem)(ch + 1));
             }

@@ -86,7 +86,7 @@ void MachLogArtefacts::load(const SysPathName& pathname)
         network.messageBroker().sendLoadArtefactModelsMessage(pathname);
 
     // Set the filename for the persistent version
-    string path = "pdata\\" + pathname.components().back();
+    std::string path = "pdata\\" + pathname.components().back();
     SysPathName persistentPathname(path);
     persistentPathname.extension("arb");
 
@@ -136,7 +136,7 @@ int MachLogArtefacts::nSubTypes() const
 
 void MachLogArtefacts::addSubType(
     int subType,
-    const string& name,
+    const std::string& name,
     MachPhys::BuildingMaterialUnits cost,
     MachPhys::ArmourUnits armour,
     MachPhys::HitPointUnits hitPoints,
@@ -176,7 +176,7 @@ void MachLogArtefacts::addSubType(
             .sendAddNewArtefactSubTypeMessage(subType, name, cost, armour, hitPoints, stringId, height, &localBoundary);
 }
 
-void MachLogArtefacts::addSubType(int subType, const string& name)
+void MachLogArtefacts::addSubType(int subType, const std::string& name)
 {
     CB_MachLogArtefacts_DEPIMPL();
     HAL_STREAM("MLArtefacts::adding dumb sub type " << subType << " " << name << std::endl);
@@ -229,7 +229,7 @@ W4dEntity* MachLogArtefacts::newPhysArtefact(int subType, const MexPoint3d& loca
     MachLogPlanetDomains::addIntersectRelations(pResult);
 
     // Add any sound which should be associated with this model
-    const string& artefactName = artefactSubType.name_;
+    const std::string& artefactName = artefactSubType.name_;
     uint soundId = 0;
     if (artefactName == "cmain")
         soundId = SID_CMAIN;
@@ -275,7 +275,7 @@ void MachLogArtefacts::parseArtefactsSection(
     bool done = false;
     int currentSubType = -1;
     bool currentSubTypeIsDumb = false;
-    string currentArtefactTypeName;
+    std::string currentArtefactTypeName;
 
     // Get the planet surface
     const MachPhysPlanetSurface& planetSurface = *(MachLogPlanet::instance().surface());

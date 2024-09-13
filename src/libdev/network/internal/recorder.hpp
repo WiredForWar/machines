@@ -69,11 +69,11 @@ public:
     std::string playbackIPAddress() const;
     void recordIPAddress(const std::string&) const;
 
-    string playbackModem() const;
-    void recordModem(const string&) const;
+    std::string playbackModem() const;
+    void recordModem(const std::string&) const;
 
-    string playbackPhone() const;
-    void recordPhone(const string&) const;
+    std::string playbackPhone() const;
+    void recordPhone(const std::string&) const;
 
     NetNetwork::Modems playbackModems() const;
     void recordModems(const NetNetwork::Modems&) const;

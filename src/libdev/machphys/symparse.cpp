@@ -8,7 +8,7 @@
 #include "machphys/symparse.hpp"
 
 // static
-size_t MachPhysSymbolParser::parseConstructionLevel(const string& token)
+size_t MachPhysSymbolParser::parseConstructionLevel(const std::string& token)
 {
     size_t result = 0;
 
@@ -36,7 +36,7 @@ size_t MachPhysSymbolParser::parseConstructionLevel(const string& token)
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::ConstructionType MachPhysSymbolParser::constructionType(const string& token)
+MachPhys::ConstructionType MachPhysSymbolParser::constructionType(const std::string& token)
 {
     MachPhys::ConstructionType result = MachPhys::BEACON;
 
@@ -68,7 +68,7 @@ MachPhys::ConstructionType MachPhysSymbolParser::constructionType(const string& 
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::AggressorSubType MachPhysSymbolParser::aggressorSubType(const string& token)
+MachPhys::AggressorSubType MachPhysSymbolParser::aggressorSubType(const std::string& token)
 {
     MachPhys::AggressorSubType result = MachPhys::GRUNT;
 
@@ -94,7 +94,7 @@ MachPhys::AggressorSubType MachPhysSymbolParser::aggressorSubType(const string& 
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::AdministratorSubType MachPhysSymbolParser::administratorSubType(const string& token)
+MachPhys::AdministratorSubType MachPhysSymbolParser::administratorSubType(const std::string& token)
 {
     MachPhys::AdministratorSubType result = MachPhys::COMMANDER;
 
@@ -116,7 +116,7 @@ MachPhys::AdministratorSubType MachPhysSymbolParser::administratorSubType(const 
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::ConstructorSubType MachPhysSymbolParser::constructorSubType(const string& token)
+MachPhys::ConstructorSubType MachPhysSymbolParser::constructorSubType(const std::string& token)
 {
     MachPhys::ConstructorSubType result = MachPhys::DOZER;
 
@@ -138,7 +138,7 @@ MachPhys::ConstructorSubType MachPhysSymbolParser::constructorSubType(const stri
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::TechnicianSubType MachPhysSymbolParser::technicianSubType(const string& token)
+MachPhys::TechnicianSubType MachPhysSymbolParser::technicianSubType(const std::string& token)
 {
     MachPhys::TechnicianSubType result = MachPhys::LAB_TECH;
 
@@ -160,7 +160,7 @@ MachPhys::TechnicianSubType MachPhysSymbolParser::technicianSubType(const string
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::FactorySubType MachPhysSymbolParser::factorySubType(const string& token)
+MachPhys::FactorySubType MachPhysSymbolParser::factorySubType(const std::string& token)
 {
     MachPhys::FactorySubType result = MachPhys::CIVILIAN;
 
@@ -180,7 +180,7 @@ MachPhys::FactorySubType MachPhysSymbolParser::factorySubType(const string& toke
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::HardwareLabSubType MachPhysSymbolParser::hardwareLabSubType(const string& token)
+MachPhys::HardwareLabSubType MachPhysSymbolParser::hardwareLabSubType(const std::string& token)
 {
     MachPhys::HardwareLabSubType result = MachPhys::LAB_CIVILIAN;
 
@@ -200,7 +200,7 @@ MachPhys::HardwareLabSubType MachPhysSymbolParser::hardwareLabSubType(const stri
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-MachPhys::MissileEmplacementSubType MachPhysSymbolParser::missileEmplacementSubType(const string& token)
+MachPhys::MissileEmplacementSubType MachPhysSymbolParser::missileEmplacementSubType(const std::string& token)
 {
     MachPhys::MissileEmplacementSubType result = MachPhys::TURRET;
 
@@ -224,7 +224,7 @@ MachPhys::MissileEmplacementSubType MachPhysSymbolParser::missileEmplacementSubT
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-int MachPhysSymbolParser::voidSubType(const string& token)
+int MachPhysSymbolParser::voidSubType(const std::string& token)
 {
     if (token == "VOID")
         return 0;
@@ -239,7 +239,7 @@ int MachPhysSymbolParser::voidSubType(const string& token)
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // static
-int MachPhysSymbolParser::constructionSubType(MachPhys::ConstructionType type, const string& subType)
+int MachPhysSymbolParser::constructionSubType(MachPhys::ConstructionType type, const std::string& subType)
 {
     switch (type)
     {

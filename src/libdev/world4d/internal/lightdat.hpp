@@ -29,7 +29,7 @@ class W4dLightData : public W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dLightData(const string& DummyMeshName, W4dLOD maxLod);
+    W4dLightData(const std::string& DummyMeshName, W4dLOD maxLod);
     ~W4dLightData() override;
 
     enum Scope : unsigned char

@@ -69,8 +69,8 @@ public:
     void CLASS_INVARIANT;
 
     // Get and set the text shown in the control.
-    const string& text() const;
-    void text(const string&);
+    const std::string& text() const;
+    void text(const std::string&);
 
     // Get ptr to item associated with currently highlighted text
     const DropDownListBoxItem item() const;
@@ -110,7 +110,7 @@ protected:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*);
 
 private:
@@ -146,7 +146,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*);
 
     MachGuiDropDownList(
@@ -156,11 +156,11 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*,
         bool whiteFont);
 
-    void itemSelected(const string& text) override;
+    void itemSelected(const std::string& text) override;
 
 private:
     MachGuiDropDownListBoxCreator* pCreator_;

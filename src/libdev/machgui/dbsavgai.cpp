@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/internal/dbsavgai.hpp"
+
+#include "stdlib/string.hpp"
 #include "machgui/dbplayer.hpp"
 #include "machgui/dbscenar.hpp"
 

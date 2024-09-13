@@ -84,7 +84,7 @@ void MachGuiCamouflageCommand::typeData(MachLog::ObjectType /*objectType*/, int 
 }
 
 // virtual
-bool MachGuiCamouflageCommand::doApply(MachActor* pActor, string*)
+bool MachGuiCamouflageCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(pActor->objectIsMachine());
     PRE(pActor->objectType() == MachLog::SPY_LOCATOR);
@@ -102,9 +102,9 @@ std::unique_ptr<MachGuiCommand> MachGuiCamouflageCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiCamouflageCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiCamouflageCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/camo.bmp", "gui/commands/camo.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/camo.bmp", "gui/commands/camo.bmp");
     return names;
 }
 
@@ -127,7 +127,7 @@ bool MachGuiCamouflageCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, string*)
+bool MachGuiCamouflageCommand::doAdminApply(MachLogAdministrator*, std::string*)
 {
     PRE(canAdminApply());
 

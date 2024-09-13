@@ -588,7 +588,7 @@ template <class CONTAINER, class T> void ctl_erase(CONTAINER* cPtr, const T& t)
 
 std::ostream& operator<<(std::ostream& o, const MachPhys::MachineType& t)
 {
-    string s;
+    std::string s;
     switch (t)
     {
         case MachPhys::ADMINISTRATOR:
@@ -627,7 +627,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhys::MachineType& t)
 
 std::ostream& operator<<(std::ostream& o, const MachLogMachine::State& s)
 {
-    string state;
+    std::string state;
     switch (s)
     {
         case MachLogMachine::NOT_EXPLODING:

@@ -52,7 +52,7 @@ MachHWResearchIcon::~MachHWResearchIcon()
     TEST_INVARIANT;
 }
 
-string MachHWResearchIcon::getPromptText() const
+std::string MachHWResearchIcon::getPromptText() const
 {
     GuiString prompt = MachLogActorStringIdRestorer::getActorPromptText(
         pResearchItem_->objectType(),

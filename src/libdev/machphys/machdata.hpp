@@ -42,10 +42,10 @@ public:
     uint swLevel() const;
     MachPhys::LocomotionType locomotionType() const;
     MATHEX_SCALAR locomotionParameter() const;
-    void setEPP(const string& EPPName);
+    void setEPP(const std::string& EPPName);
     const MachPhysEvasionPriorityPlan& EPP() const;
     int minAccessSizeIndex() const;
-    const string& upperBodyTurnLinkName() const;
+    const std::string& upperBodyTurnLinkName() const;
     const MexRadians& upperBodyTurnRate() const;
     MATHEX_SCALAR highClearance() const;
     MATHEX_SCALAR lowClearance() const;
@@ -91,7 +91,7 @@ private:
     void locomotionType(MachPhys::LocomotionType type);
     void locomotionParameter(MATHEX_SCALAR v);
     void minAccessSizeIndex(int size);
-    void upperBodyTurnLinkName(const string& name);
+    void upperBodyTurnLinkName(const std::string& name);
     void upperBodyTurnRate(const MexRadians& rate);
     void highClearance(MATHEX_SCALAR clearance);
     void lowClearance(MATHEX_SCALAR clearance);
@@ -117,7 +117,7 @@ private:
     MATHEX_SCALAR locomotionParameter_; // Associated value (eg wheel radius)
     MachPhysEvasionPriorityPlan* pEPP_; // cached pointer to assoc'd Evasion Priority Plan within EPPs singleton.
     int minAccessSizeIndex_;
-    string upperBodyTurnLinkName_;
+    std::string upperBodyTurnLinkName_;
     MexRadians upperBodyTurnRate_;
     MATHEX_SCALAR highClearance_; // Pathfinding clearance higher value
     MATHEX_SCALAR lowClearance_; // Pathfinding clearance lower value

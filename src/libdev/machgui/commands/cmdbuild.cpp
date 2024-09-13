@@ -73,7 +73,7 @@ bool MachGuiBuildCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiBuildCommand::doApply(MachActor*, string*)
+bool MachGuiBuildCommand::doApply(MachActor*, std::string*)
 {
     // This command interaction is all via the menu icons, so this function is not called
     return true;
@@ -108,9 +108,9 @@ std::unique_ptr<MachGuiCommand> MachGuiBuildCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiBuildCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiBuildCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/const.bmp", "gui/commands/const.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/const.bmp", "gui/commands/const.bmp");
     return names;
 }
 

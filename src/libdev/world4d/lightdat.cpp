@@ -23,7 +23,7 @@
 
 PER_DEFINE_PERSISTENT(W4dLightData);
 
-W4dLightData::W4dLightData(const string& dummyMeshName, W4dLOD maxLod)
+W4dLightData::W4dLightData(const std::string& dummyMeshName, W4dLOD maxLod)
     : W4dAnimationData(dummyMeshName, maxLod)
     , type_(UNIFORM)
     , scope_(LOCAL_LIGHT)

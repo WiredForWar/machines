@@ -107,7 +107,7 @@ void MachGuiAssemblyPointCommand::typeData(MachLog::ObjectType /*objectType*/, i
 }
 
 // virtual
-bool MachGuiAssemblyPointCommand::doApply(MachActor* pActor, string*)
+bool MachGuiAssemblyPointCommand::doApply(MachActor* pActor, std::string*)
 {
     pActor->asFactory().specifiedDeployPoint(assemblyPoint_);
 
@@ -121,9 +121,9 @@ std::unique_ptr<MachGuiCommand> MachGuiAssemblyPointCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiAssemblyPointCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiAssemblyPointCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/assemble.bmp", "gui/commands/assemble.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/assemble.bmp", "gui/commands/assemble.bmp");
     return names;
 }
 
@@ -146,7 +146,7 @@ bool MachGuiAssemblyPointCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiAssemblyPointCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     ASSERT(false, "no admin assembly point command");
 

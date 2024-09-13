@@ -14,8 +14,9 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "stdlib/strfwd.hpp"
 #include "machlog/produnit.hpp" //Fairly cheap to include - avoids clients defining ctl_vector having to
+
+#include <string>
 
 // forward ref
 class MachGuiDbPlayer;
@@ -52,10 +53,10 @@ public:
     // PRE( hasWon() );
 
     // Add/remove the named flag to/from the list set for this player/scenario
-    void setFlag(const string& flag, bool isSet);
+    void setFlag(const std::string& flag, bool isSet);
 
     // true if the named flag has been set
-    bool isFlagSet(const string& flag);
+    bool isFlagSet(const std::string& flag);
 
     // Clear all set flags
     void clearSetFlags();

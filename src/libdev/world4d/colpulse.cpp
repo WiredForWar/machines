@@ -279,9 +279,9 @@ void W4dColourPulsePlan::changeAllColour(
 
         for (size_t i = 0; i < nMat; ++i)
         {
-            const string& texturePathName = (*pAnimMaterialVec)[i].texture().name();
+            const std::string& texturePathName = (*pAnimMaterialVec)[i].texture().name();
             SysPathName pathName(texturePathName);
-            const string& textureName = pathName.filename();
+            const std::string& textureName = pathName.filename();
             W4dColourPulseData* pPulseData = new W4dColourPulseData(textureName, fromColour, toColour, period);
             dataVec.push_back(pPulseData);
         }

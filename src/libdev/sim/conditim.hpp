@@ -38,10 +38,10 @@ private:
     void addAction(std::unique_ptr<SimAction> pNewAction);
 
     // enable action.
-    void enableAction(const string& keyName);
+    void enableAction(const std::string& keyName);
 
     // remove condition.
-    void remove(const string& keyName);
+    void remove(const std::string& keyName);
 
     void update();
 

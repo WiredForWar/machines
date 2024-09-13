@@ -38,7 +38,7 @@ private:
 
     PhysAbsoluteTime nextCallBackTime_;
     MachLogOperation* pSubOperation_;
-    string operationTypeAsString_;
+    std::string operationTypeAsString_;
     MachLogGroupMoveInfo groupMoveInfo_;
     PhysPathFindingPriority pathFindingPriority_;
 };

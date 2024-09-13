@@ -25,7 +25,7 @@ class W4dCycleTextureData
 {
 public:
     W4dCycleTextureData(
-        const string& textureName,
+        const std::string& textureName,
         const size_t& startTexture,
         const size_t& endTexture,
         const size_t& nRepetations);
@@ -45,7 +45,7 @@ private:
 
     ctl_vector<RenTexture> keyTextures() const;
 
-    string textureName_;
+    std::string textureName_;
     size_t startTexture_;
     size_t endTexture_;
     size_t nRepetations_;

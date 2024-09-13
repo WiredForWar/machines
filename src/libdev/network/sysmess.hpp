@@ -23,11 +23,11 @@ public:
     NetSystemMessageHandler();
     virtual ~NetSystemMessageHandler() = 0;
     virtual bool handleHostMessage() = 0;
-    virtual bool handleDestroyPlayerMessage(const string&) = 0;
+    virtual bool handleDestroyPlayerMessage(const std::string&) = 0;
     virtual bool handleSessionLostMessage() = 0;
 
     void CLASS_INVARIANT;
-    void playerHasBeenLost(const string&);
+    void playerHasBeenLost(const std::string&);
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const NetSystemMessageHandler& t);

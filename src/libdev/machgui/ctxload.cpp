@@ -44,9 +44,9 @@ public:
 
     ~MachGuiLoadGameListBoxItem() override { }
 
-    static string displayText(MachGuiDbSavedGame& savedGame)
+    static std::string displayText(MachGuiDbSavedGame& savedGame)
     {
-        string retVal;
+        std::string retVal;
         retVal = savedGame.userFileName();
 
         if (savedGame.hasPlayer())

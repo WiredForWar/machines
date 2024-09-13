@@ -54,7 +54,7 @@ private:
 
     bool acceptingPing_;
 
-    const string pingString_;
+    const std::string pingString_;
 
     NetNode::Ping ping_;
     double lastPingAllTime_;

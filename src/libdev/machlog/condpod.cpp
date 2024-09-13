@@ -15,7 +15,7 @@
 
 PER_DEFINE_PERSISTENT(MachLogPodCapturedCondition);
 
-MachLogPodCapturedCondition::MachLogPodCapturedCondition(const string& keyName, MachPhys::Race race)
+MachLogPodCapturedCondition::MachLogPodCapturedCondition(const std::string& keyName, MachPhys::Race race)
     : SimCondition(keyName)
     , race_(race)
 {

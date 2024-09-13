@@ -98,7 +98,7 @@ bool MachGuiAttackCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiAttackCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiAttackCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsCanAttack());
 
@@ -121,7 +121,7 @@ bool MachGuiAttackCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiAttackCommand::applyMove(MachActor* pActor, string*)
+bool MachGuiAttackCommand::applyMove(MachActor* pActor, std::string*)
 {
     // Construct a move operation
     bool valid = false;
@@ -157,7 +157,7 @@ bool MachGuiAttackCommand::applyMove(MachActor* pActor, string*)
     return valid;
 }
 
-bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, string*)
+bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
 {
     bool canDo = pActor != pDirectObject_ // Check not trying to attack oneself
         && pActor->objectIsCanAttack() && pActor->asCanAttack().canFireAt(*pDirectObject_);
@@ -275,9 +275,9 @@ std::unique_ptr<MachGuiCommand> MachGuiAttackCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiAttackCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiAttackCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/attack.bmp", "gui/commands/attack.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/attack.bmp", "gui/commands/attack.bmp");
     return names;
 }
 
@@ -300,7 +300,7 @@ bool MachGuiAttackCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiAttackCommand::doAdminApply(MachLogAdministrator* pAdministrator, string* pReason)
+bool MachGuiAttackCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string* pReason)
 {
     PRE(canAdminApply());
 
@@ -323,7 +323,7 @@ bool MachGuiAttackCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
     return canDo;
 }
 
-bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdministrator, std::string*)
 {
     // Check not trying to attack oneself
     bool canDo = pAdministrator != pDirectObject_;
@@ -380,7 +380,7 @@ bool MachGuiAttackCommand::atLeastOneCanFireAt(const MachActor& potentialTargetA
     return !(noneCanFireAt);
 }
 
-bool MachGuiAttackCommand::applyAdminMove(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiAttackCommand::applyAdminMove(MachLogAdministrator* pAdministrator, std::string*)
 {
     MexPoint2d validPoint;
 

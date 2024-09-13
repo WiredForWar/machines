@@ -40,7 +40,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    MachLogPodCapturedCondition(const string& keyName, MachPhys::Race);
+    MachLogPodCapturedCondition(const std::string& keyName, MachPhys::Race);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogPodCapturedCondition& t);
 

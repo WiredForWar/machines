@@ -38,7 +38,7 @@ public:
 
     // This produces filenames from the major and minor version members. The names it produces
     // are of the form : MacX0000.bmp, where X is the major version letter and 0000 is the dump number.
-    string filename() const;
+    std::string filename() const;
 
     void CLASS_INVARIANT;
 

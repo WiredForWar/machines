@@ -28,10 +28,10 @@ public:
 
     // Return a production unit list for the machines surviving for the specified arc at the
     // end of the named scenario (for current player)
-    const Units& survivingUnits(MachPhys::Race race, const string& scenarioName) const override;
+    const Units& survivingUnits(MachPhys::Race race, const std::string& scenarioName) const override;
 
     // true if the named flag was set by the current player during the named scenario
-    bool isFlagSet(const string& flag, const string& scenarioName) const override;
+    bool isFlagSet(const std::string& flag, const std::string& scenarioName) const override;
 
     // The number of sub-tasks if any defined in the current scenario
     uint nTasksInCurrentScenario() const override;

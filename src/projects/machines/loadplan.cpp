@@ -38,7 +38,7 @@ static void loading(MachGuiDbSystem& system, W4dSceneManager* pSceneManager)
         const uint nScenarios = planet.nScenarios();
         for (uint kSce = 0; kSce < nScenarios; ++kSce)
         {
-            const string& planetName = planet.scenario(kSce).planetFile();
+            const std::string& planetName = planet.scenario(kSce).planetFile();
             MachLogRaces::instance().loadPlanet(pSceneManager, planetName, &reporter);
             MachLogRaces::instance().unloadGame();
 
@@ -71,7 +71,7 @@ void SDLApp::loadPlanets()
         DANIEL_INSPECT(arfPath);
 
         // Preload the textures for this planet (2MB versions will do)
-        string textureDirectory = arfPath.directory();
+        std::string textureDirectory = arfPath.directory();
         textureDirectory += "/texture2";
         RenTextureSet textureSet(textureDirectory);
 

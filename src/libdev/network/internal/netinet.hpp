@@ -122,7 +122,7 @@ private:
     //  Use the no record version in assertions
     bool hasAppSessionNoRecord(const NetAppSessionName&) const;
     void enterAppSession(NetNode*, NetAppSessionUid);
-    void doAbort(const string& reasonCode);
+    void doAbort(const std::string& reasonCode);
     void initHost(bool asServer = false);
     void resetHost();
     NetMessage* getMessage();
@@ -182,12 +182,12 @@ private:
     bool lobbyAware_{};
 
     // lobby description fields
-    string descAppName_;
-    string descFileName_;
-    string descCommandLine_;
-    string descPath_;
-    string descCurrentDirectory_;
-    string descDescription_;
+    std::string descAppName_;
+    std::string descFileName_;
+    std::string descCommandLine_;
+    std::string descPath_;
+    std::string descCurrentDirectory_;
+    std::string descDescription_;
 
     bool isLobbiedGame_{};
     bool isLogicalHost_{};

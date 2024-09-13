@@ -65,7 +65,7 @@ private:
 
     bool readAnimation(
         const SysPathName& fileName,
-        const string& animationName,
+        const std::string& animationName,
         W4dCompositePlan* pCompositePlan,
         MATHEX_SCALAR framesPerSecond) const;
 
@@ -80,17 +80,17 @@ private:
     bool parseLinkAnimation(
         UtlLineTokeniser* pParser,
         MATHEX_SCALAR framesPerSecond,
-        const string& linkName,
+        const std::string& linkName,
         PhysMotionPlanPtr* pPlanPtr) const;
 
     bool animationValid(
-        const string& linkName,
+        const std::string& linkName,
         const KeyFrameOrientations& orientations,
         const KeyFrameLocations& locations) const;
 
     // True if a link named id exists, in which case it's pointer is
     // returned in ppLink.
-    bool findLink(const string& id, W4dLink** ppLink) const;
+    bool findLink(const std::string& id, W4dLink** ppLink) const;
 
     PhysMotionPlanPtr makeAnimationPlan(
         const KeyFrameOrientations& orientations,

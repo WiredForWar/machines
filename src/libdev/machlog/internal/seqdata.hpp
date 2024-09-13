@@ -12,8 +12,6 @@
 #ifndef _MACHLOG_SEQDATA_HPP
 #define _MACHLOG_SEQDATA_HPP
 
-#include <string>
-
 #include "base/base.hpp"
 #include "base/logbuff.hpp"
 #include "phys/motchunk.hpp"
@@ -27,6 +25,8 @@
 #include "machlog/grpmvinf.hpp"
 #include "utility/indent.hpp"
 #include "system/pathname.hpp"
+
+#include <string>
 
 class MachLogMobile;
 class MachLogMachineConvoy;
@@ -59,7 +59,7 @@ public:
     void calculateOffset(const MexVec2& directionOfTravel);
 
 #ifndef PRODUCTION
-    void reasonForStateChange(const string&);
+    void reasonForStateChange(const std::string&);
 #endif
 
     void toggleLogging();
@@ -167,7 +167,7 @@ private:
     PhysAbsoluteTime shuffleEndTime_;
 
 #ifndef PRODUCTION
-    string reasonForStateChange_;
+    std::string reasonForStateChange_;
 #endif
 };
 
@@ -206,7 +206,7 @@ private:
     CB_DEPIMPL(PhysAbsoluteTime, arrivalTime_);                                                                        \
     CB_DEPIMPL(PolygonId, blockingObstacleId_);                                                                        \
     CB_DEPIMPL(PhysConfigSpace2d::PolygonIds, ignoreObstacleIds_);                                                     \
-    CB_DEPIMPL(string, reasonForStateChange_);                                                                         \
+    CB_DEPIMPL(std::string, reasonForStateChange_);                                                                    \
     CB_DEPIMPL(bool, allowMoveOutOfWay_);                                                                              \
     CB_DEPIMPL(MATHEX_SCALAR, destinationTolerance_);                                                                  \
     CB_DEPIMPL(PhysAbsoluteTime, lastClearMovingChunksTimeMessage_);                                                   \

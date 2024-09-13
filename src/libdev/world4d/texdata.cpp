@@ -14,7 +14,7 @@
 PER_DEFINE_PERSISTENT(W4dCycleTextureData);
 
 W4dCycleTextureData::W4dCycleTextureData(
-    const string& textureName,
+    const std::string& textureName,
     const size_t& startTexture,
     const size_t& endTexture,
     const size_t& nRepetations)
@@ -52,8 +52,8 @@ ctl_vector<RenTexture> W4dCycleTextureData::keyTextures() const
 
     size_t nameLength = textureName_.length();
 
-    string nameRoot;
-    string extension;
+    std::string nameRoot;
+    std::string extension;
 
     if (textureName_.substr(nameLength - 2, 2) == "_b")
     {
@@ -78,7 +78,7 @@ ctl_vector<RenTexture> W4dCycleTextureData::keyTextures() const
 
     for (int i = startTexture_; i < endTexture_ + 1; ++i)
     {
-        string textureName = nameRoot;
+        std::string textureName = nameRoot;
 
         if (i < 10)
         {
@@ -88,7 +88,7 @@ ctl_vector<RenTexture> W4dCycleTextureData::keyTextures() const
         char textN[4];
         //      itoa(i, textN, 10 );
         sprintf(textN, "%d", i);
-        textureName += string(textN);
+        textureName += std::string(textN);
 
         textureName += extension;
 

@@ -25,7 +25,7 @@ class W4dColourPulseData
 {
 public:
     W4dColourPulseData(
-        const string& textureName,
+        const std::string& textureName,
         const RenColour& fromCol,
         const RenColour& toCol,
         const PhysRelativeTime& duration);

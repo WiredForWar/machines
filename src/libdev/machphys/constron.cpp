@@ -884,9 +884,9 @@ void MachPhysConstruction::damageSmoke2Type(const MachPhysPuffType& type2)
     }
 }
 
-static bool isPadName(const string& name)
+static bool isPadName(const std::string& name)
 {
-    const string str = name.substr(0, 3);
+    const std::string str = name.substr(0, 3);
     return (name == "fpad") || (str == "pad");
 }
 

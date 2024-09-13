@@ -92,10 +92,10 @@ void MachGuiDispositionChangeNotifiable::doDisplay(GuiResourceString::Id id, Mac
     }
 }
 
-string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race race)
+std::string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race race)
 {
     MachGuiStartupData::PlayerInfo* playerInfo = pStartupScreens_->startupData()->players();
-    string name;
+    std::string name;
     // find a match with race
     switch (race)
     {

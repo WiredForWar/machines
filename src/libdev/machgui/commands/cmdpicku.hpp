@@ -56,7 +56,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     // respond to pick on pActor in the world view window.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
@@ -111,7 +111,7 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 
     /////////////////////////////////////////////////
 
@@ -122,7 +122,7 @@ private:
     };
 
     // Apply the actions
-    bool applyPickUpObject(MachActor* pActor, string* pReason);
+    bool applyPickUpObject(MachActor* pActor, std::string* pReason);
 
     // Data members
     Action action_; // What to do

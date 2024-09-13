@@ -16,7 +16,7 @@
 PER_DEFINE_PERSISTENT(MachLogTechniciansTreacheriedCondition);
 
 MachLogTechniciansTreacheriedCondition::MachLogTechniciansTreacheriedCondition(
-    const string& keyName,
+    const std::string& keyName,
     MachPhys::Race race,
     int number)
     : SimCondition(keyName)

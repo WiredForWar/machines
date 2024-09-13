@@ -290,13 +290,13 @@ void MachGuiDatabase::parseCampaignSystem(UtlLineTokeniser& parser)
     size_t index = 2;
     size_t nTokens = parser.tokens().size();
     uint menuStringId = 0;
-    string textFile;
-    string systemPicture;
+    std::string textFile;
+    std::string systemPicture;
     bool hadAfter = false;
 
     while (! hadAfter && index + 1 < nTokens)
     {
-        const string& token = parser.tokens()[index++];
+        const std::string& token = parser.tokens()[index++];
         if (token == "IDS")
             menuStringId = atol(parser.tokens()[index++].c_str());
         else if (token == "TEXT")
@@ -333,7 +333,7 @@ void MachGuiDatabase::parseCampaignSystem(UtlLineTokeniser& parser)
         while (index < nTokens)
         {
             // Look this one up in the map and add to the list of antecedents
-            const string& antecedentName = parser.tokens()[index++];
+            const std::string& antecedentName = parser.tokens()[index++];
             pSystem->addDependency((*pData_->pElementMap_)[antecedentName]);
         }
     }
@@ -376,17 +376,17 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
     // Get the planet data
     size_t index = 2;
     size_t nTokens = parser.tokens().size();
-    const string& planetName = parser.tokens()[1];
+    const std::string& planetName = parser.tokens()[1];
     uint menuStringId = 0;
-    string textFile;
-    string planetPicture;
-    string planetNameMenu;
+    std::string textFile;
+    std::string planetPicture;
+    std::string planetNameMenu;
     bool hadAfter = false;
     bool campaignContext = context == CAMPAIGNS;
 
     while (! hadAfter && index + 1 < nTokens)
     {
-        const string& token = parser.tokens()[index++];
+        const std::string& token = parser.tokens()[index++];
         if (token == "IDS")
             menuStringId = atol(parser.tokens()[index++].c_str());
         else if (token == "NAME")
@@ -431,7 +431,7 @@ void MachGuiDatabase::parsePlanet(UtlLineTokeniser& parser, MachGuiDbSystem* pSy
         while (index < nTokens)
         {
             // Look this one up in the map and add to the list of antecedents
-            const string& antecedentName = parser.tokens()[index++];
+            const std::string& antecedentName = parser.tokens()[index++];
             pPlanet->addDependency((*pData_->pElementMap_)[antecedentName]);
         }
     }
@@ -460,11 +460,11 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
     // Get the scenario basic data
     size_t index = 2;
     size_t nTokens = parser.tokens().size();
-    const string& scenarioName = parser.tokens()[1];
+    const std::string& scenarioName = parser.tokens()[1];
     uint menuStringId = 0;
-    string textFile;
-    string planetFile;
-    string planetName;
+    std::string textFile;
+    std::string planetFile;
+    std::string planetName;
     bool hadAfter = false;
     bool campaignContext = context == CAMPAIGNS;
     uint maxPlayers = 4;
@@ -472,7 +472,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
 
     while (! hadAfter && index + 1 < nTokens)
     {
-        const string& token = parser.tokens()[index++];
+        const std::string& token = parser.tokens()[index++];
         if (token == "IDS")
             menuStringId = atol(parser.tokens()[index++].c_str());
         else if (token == "NAME")
@@ -519,7 +519,7 @@ void MachGuiDatabase::parseScenario(UtlLineTokeniser& parser, MachGuiDbPlanet* p
         while (index < nTokens)
         {
             // Look this one up in the map and add to the list of antecedents
-            const string& antecedentName = parser.tokens()[index++];
+            const std::string& antecedentName = parser.tokens()[index++];
             pScenario->addDependency((*pData_->pElementMap_)[antecedentName]);
         }
     }
@@ -661,7 +661,7 @@ void MachGuiDatabase::sortPlayersByTime()
     // sort( players, MachGuiIDatabase::PlayerTimeComparator() );
 }
 
-MachGuiDbPlayer& MachGuiDatabase::addPlayer(const string& name)
+MachGuiDbPlayer& MachGuiDatabase::addPlayer(const std::string& name)
 {
     // Create a new player and add to collection
     MachGuiDbPlayer* pDbPlayer = new MachGuiDbPlayer(pData_->nextPlayerId_++, name);
@@ -882,7 +882,7 @@ void MachGuiDatabase::removePlayer(MachGuiDbPlayer* pDbPlayer)
     delete pDbPlayer;
 }
 
-bool MachGuiDatabase::campaignScenario(const string& name, MachGuiDbScenario** pDbScenario)
+bool MachGuiDatabase::campaignScenario(const std::string& name, MachGuiDbScenario** pDbScenario)
 {
     bool foundIt = false;
 

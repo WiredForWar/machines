@@ -98,7 +98,7 @@ MachPhysMachine::MachPhysMachine(
     initialiseShakeLinks();
 
     // Set up the turning link if defined
-    const string& turnLinkName = data.upperBodyTurnLinkName();
+    const std::string& turnLinkName = data.upperBodyTurnLinkName();
     if (turnLinkName.length() != 0 && turnLinkName != "NONE")
     {
         linkFound = findLink(turnLinkName, &pUpperBodyTurnLink_);
@@ -1355,12 +1355,12 @@ void MachPhysMachine::initialiseShakeLinks()
     for (size_t i = 0; n != 2; ++i)
     {
         // Check current name
-        string id(shakeNames[i]);
+        std::string id(shakeNames[i]);
         if (id.length() == 0)
             break;
 
         W4dLink* pLink;
-        if (findLink(string(shakeNames[i]), &pLink))
+        if (findLink(std::string(shakeNames[i]), &pLink))
         {
             // Add this link pointer
             ++n;

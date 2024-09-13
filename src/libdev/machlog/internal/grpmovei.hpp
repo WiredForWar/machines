@@ -41,7 +41,7 @@ public:
         const Actors&,
         const Points&,
         size_t commandId,
-        string* pReason,
+        std::string* pReason,
         PhysPathFindingPriority pathFindingPriority);
     ~MachLogGroupSimpleMoveImplementation();
 
@@ -59,7 +59,7 @@ private:
     //  Perform the movement in a more sophisticated manner - each
     //  actor will get given a different destination to try and
     //  avoid too many snarl ups.
-    void complexMove(const Machines& machines, const Points& points, size_t commandId, string* pReason);
+    void complexMove(const Machines& machines, const Points& points, size_t commandId, std::string* pReason);
 
     using Clump = MachLogGroupMoverUtility::Clump;
 

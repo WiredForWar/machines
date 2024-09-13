@@ -55,7 +55,7 @@ MachLogSetFlagAction::newFromParser(SimCondition* pCondition, bool enabled, UtlL
     std::unique_ptr<MachLogSetFlagAction> pResult(new MachLogSetFlagAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "NAME")
             pResult->flagName_ = pParser->tokens()[i + 1];
     }
@@ -91,7 +91,7 @@ MachLogSetFlagAction::MachLogSetFlagAction(PerConstructor con)
 }
 
 // static
-std::unique_ptr<MachLogSetFlagAction> MachLogSetFlagAction::newDynamic(SimCondition* pCondition, bool enabled, const string& flagName)
+std::unique_ptr<MachLogSetFlagAction> MachLogSetFlagAction::newDynamic(SimCondition* pCondition, bool enabled, const std::string& flagName)
 {
     std::unique_ptr<MachLogSetFlagAction> pResult(new MachLogSetFlagAction(pCondition, enabled));
     pResult->flagName_ = flagName;

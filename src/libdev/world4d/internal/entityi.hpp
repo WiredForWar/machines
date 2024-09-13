@@ -141,8 +141,8 @@ private:
         W4dEntity::Solidity,
         W4dEntity::NotAChild);
 
-    void name(const string&);
-    const string& name() const;
+    void name(const std::string&);
+    const std::string& name() const;
 
     using AnimationDataPtr = CtlCountedPtr<W4dAnimationData>;
     using AnimationDataPtrs = ctl_vector<AnimationDataPtr>;
@@ -156,7 +156,7 @@ private:
 
     void updateHasMeshFlag();
 
-    static const string& dummyName();
+    static const std::string& dummyName();
 
     void CLASS_INVARIANT;
 
@@ -227,7 +227,7 @@ private:
     // This entity's local light list
     W4dLocalLightList* pLocalLightList_;
 
-    string name_;
+    std::string name_;
     AnimationDataPtrs* pAnimationDataPtrs_;
     AnimationDataPtrs* pAnimationLightDataPtrs_;
     RenColour* pFilterColour_;

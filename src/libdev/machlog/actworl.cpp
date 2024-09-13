@@ -71,7 +71,7 @@ MachLogWinOrLoseAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
     std::unique_ptr<MachLogWinOrLoseAction> pResult(new MachLogWinOrLoseAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "RACE")
             pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
     }

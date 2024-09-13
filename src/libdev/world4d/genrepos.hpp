@@ -46,23 +46,23 @@ public:
     };
     using KeyType = KEY_TYPE;
 
-    KeyType type(const string& key) const;
+    KeyType type(const std::string& key) const;
 
     // The generic mapped from key
-    const W4dGeneric& simpleEntity(const string& key);
+    const W4dGeneric& simpleEntity(const std::string& key);
     // PRE( type( key ) == SIMPLE_ENTITY );
 
     // The generic composite mapped from key
-    const W4dGenericComposite& compositeEntity(const string& key);
+    const W4dGenericComposite& compositeEntity(const std::string& key);
     // PRE( type( key ) == COMPOSITE );
 
     // The base class view of the entity mapped from key
-    const W4dEntity& entity(const string& key);
+    const W4dEntity& entity(const std::string& key);
     // PRE( type( key ) != UNKNOWN );
 
     // Construct and return a new entity copy of the appropriate kind (W4dGeneric or W4dComposite)
     // from the mapped key. Created at locaTransform owned by pParent.
-    W4dEntity* cloneEntity(const string& key, W4dEntity* pParent, const MexTransform3d& localTransform);
+    W4dEntity* cloneEntity(const std::string& key, W4dEntity* pParent, const MexTransform3d& localTransform);
     // PRE( type( key ) != UNKNOWN );
 
     // Reads a text file containing pairs of string and lod/cdf pathnames, one per line as shown below.
@@ -79,17 +79,17 @@ public:
         SOLID,
         NOT_SOLID
     };
-    void add(const string& key, const SysPathName& fileName, Solidity solidity);
+    void add(const std::string& key, const SysPathName& fileName, Solidity solidity);
     // PRE( fileName.extensions() == "lod" or fileName.extensions() == "cdf" );
     // PRE( type( key ) == UNKNOWN )
 
     // Adds pGeneric to the repository, becoming the owner thereof (also detaching it from
     // any tree of which it is a member), under the specified key.
-    void add(const string& key, W4dGeneric* pGeneric);
+    void add(const std::string& key, W4dGeneric* pGeneric);
 
     // Adds pGeneric to the repository, becoming the owner thereof (also detaching it from
     // any tree of which it is a member), under the specified key.
-    void add(const string& key, W4dGenericComposite* pGeneric);
+    void add(const std::string& key, W4dGenericComposite* pGeneric);
 
     // Takes all the entries from pRepository and adds them to this repository.
     // Leaves pRepository empty.
@@ -101,9 +101,9 @@ public:
     // Returns the total number of W4dGeneric and W4dGenericComposite objects.
     uint nGenerics() const;
 
-    // Returns the key string associated with the Generic object at index
+    // Returns the key std::string associated with the Generic object at index
     //( treating both lists as one continous list )
-    const string& key(uint index) const;
+    const std::string& key(uint index) const;
     // PRE( index < nGenerics() )
 
     void CLASS_INVARIANT;
@@ -117,16 +117,16 @@ private:
     W4dGenericRepository(const W4dGenericRepository&);
     W4dGenericRepository& operator=(const W4dGenericRepository&);
 
-    using SimpleEntry = std::pair<string, W4dGeneric*>;
-    using CompositeEntry = std::pair<string, W4dGenericComposite*>;
+    using SimpleEntry = std::pair<std::string, W4dGeneric*>;
+    using CompositeEntry = std::pair<std::string, W4dGenericComposite*>;
 
     using SimpleEntries = ctl_vector<SimpleEntry>;
     using CompositeEntries = ctl_vector<CompositeEntry>;
 
     // True iff the list of appropriate type contains an entry for key, and if so
     // returns its index in pIndex.
-    bool findSimple(const string& key, size_t* pIndex) const;
-    bool findComposite(const string& key, size_t* pIndex) const;
+    bool findSimple(const std::string& key, size_t* pIndex) const;
+    bool findComposite(const std::string& key, size_t* pIndex) const;
 
     // data members
     W4dRoot* pRoot_; // root used to own all the generics

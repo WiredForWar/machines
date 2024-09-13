@@ -8,7 +8,7 @@
 #include "envirnmt/internal/plaparse.hpp"
 #include "system/pathname.hpp"
 
-EnvISatelliteParams::EnvISatelliteParams(const string* n)
+EnvISatelliteParams::EnvISatelliteParams(const std::string* n)
     : name_(*n)
     , orbit_(nullptr)
     , meshClut_(nullptr)
@@ -24,7 +24,7 @@ EnvISatelliteParams::~EnvISatelliteParams()
     TEST_INVARIANT;
 }
 
-void EnvISatelliteParams::orbit(const string* name)
+void EnvISatelliteParams::orbit(const std::string* name)
 {
     PRE(name);
     orbit_ = EnvIPlanetParser::instance().lookUpOrbit(name);
@@ -33,7 +33,7 @@ void EnvISatelliteParams::orbit(const string* name)
     ASSERT(orbit_, "Orbit not found");
 }
 
-void EnvISatelliteParams::dirLightClut(const string* name)
+void EnvISatelliteParams::dirLightClut(const std::string* name)
 {
     PRE(name);
     dirClut_ = EnvIPlanetParser::instance().lookUpClut(name);
@@ -42,7 +42,7 @@ void EnvISatelliteParams::dirLightClut(const string* name)
     ASSERT(dirClut_, "Directional light colour table not found");
 }
 
-void EnvISatelliteParams::ambLightClut(const string* name)
+void EnvISatelliteParams::ambLightClut(const std::string* name)
 {
     PRE(name);
     ambClut_ = EnvIPlanetParser::instance().lookUpClut(name);
@@ -51,7 +51,7 @@ void EnvISatelliteParams::ambLightClut(const string* name)
     ASSERT(ambClut_, "Ambient light colour table not found");
 }
 
-void EnvISatelliteParams::meshColourClut(const string* name)
+void EnvISatelliteParams::meshColourClut(const std::string* name)
 {
     PRE(name);
     meshClut_ = EnvIPlanetParser::instance().lookUpClut(name);
@@ -60,7 +60,7 @@ void EnvISatelliteParams::meshColourClut(const string* name)
     ASSERT(meshClut_, "Mesh colour table not found");
 }
 
-void EnvISatelliteParams::mesh(const string* name)
+void EnvISatelliteParams::mesh(const std::string* name)
 {
     PRE(name);
     meshName_ = *name;

@@ -73,7 +73,7 @@ bool MachGuiDeployCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiDeployCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiDeployCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsMachine());
 
@@ -145,9 +145,9 @@ std::unique_ptr<MachGuiCommand> MachGuiDeployCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiDeployCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiDeployCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/deploy.bmp", "gui/commands/deploy.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/deploy.bmp", "gui/commands/deploy.bmp");
     return names;
 }
 

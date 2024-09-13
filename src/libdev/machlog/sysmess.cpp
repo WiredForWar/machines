@@ -43,7 +43,7 @@ bool MachLogSystemMessageHandler::handleHostMessage()
 }
 
 // virtual
-bool MachLogSystemMessageHandler::handleDestroyPlayerMessage(const string& /*playerString*/)
+bool MachLogSystemMessageHandler::handleDestroyPlayerMessage(const std::string& /*playerString*/)
 {
     return false;
 }

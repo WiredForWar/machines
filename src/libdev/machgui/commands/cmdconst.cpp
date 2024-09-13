@@ -525,7 +525,7 @@ void MachGuiConstructCommand::placeConstruction()
 }
 
 // virtual
-bool MachGuiConstructCommand::doApply(MachActor* pActor, string*)
+bool MachGuiConstructCommand::doApply(MachActor* pActor, std::string*)
 {
     // Create a superconstruct operation for the constructor
     MachLogSuperConstructOperation* pOp = new MachLogSuperConstructOperation(
@@ -563,9 +563,9 @@ std::unique_ptr<MachGuiCommand> MachGuiConstructCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiConstructCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiConstructCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/const.bmp", "gui/commands/const.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/const.bmp", "gui/commands/const.bmp");
     return names;
 }
 
@@ -613,7 +613,7 @@ bool MachGuiConstructCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
 

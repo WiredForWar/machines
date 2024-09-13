@@ -45,7 +45,7 @@ public:
     uint commandPromptStringid() const override;
 
     // reference to the up and down bitmap names for this command
-    const std::pair<string, string>& iconNames() const override;
+    const std::pair<std::string, std::string>& iconNames() const override;
 
     // Respond to pick at location on the terrain.
     // ctrl/shift/altPressed indicate which modifier keys were pressed at the time.
@@ -98,12 +98,12 @@ private:
     // Inherited from MachGuiCommand
 
     // Execute the command for pActor
-    bool doApply(MachActor* pActor, string* pReason) override;
+    bool doApply(MachActor* pActor, std::string* pReason) override;
 
     // Execute the command as a sqaudron whose most intelligent administrator
     // is pAdministrator. If successful return true. Otherwise false, with
-    // a prompt string indicating reason for failure in pReason.
-    bool doAdminApply(MachLogAdministrator* pAdministrator, string* pReason) override;
+    // a prompt std::string indicating reason for failure in pReason.
+    bool doAdminApply(MachLogAdministrator* pAdministrator, std::string* pReason) override;
     // PRE( canAdminApply() );
     /////////////////////////////////////////////////
 
@@ -114,11 +114,11 @@ private:
     };
 
     // Apply the actions
-    bool applyMove(MachActor* pActor, string* pReason);
-    bool applyAttackObject(MachActor* pActor, string* pReason);
+    bool applyMove(MachActor* pActor, std::string* pReason);
+    bool applyAttackObject(MachActor* pActor, std::string* pReason);
 
-    bool applyAdminMove(MachLogAdministrator* pAdministrator, string*);
-    bool applyAdminAttackObject(MachLogAdministrator* pAdministrator, string*);
+    bool applyAdminMove(MachLogAdministrator* pAdministrator, std::string*);
+    bool applyAdminAttackObject(MachLogAdministrator* pAdministrator, std::string*);
 
     // at least one actor in the corral can fire at the specified target actor
     bool atLeastOneCanFireAt(const MachActor& potentialTargetActor) const;

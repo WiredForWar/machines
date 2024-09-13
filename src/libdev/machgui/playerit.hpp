@@ -27,7 +27,7 @@ class MachGuiDropDownListBox;
 
 struct MachGuiSharedPlayerInfo
 {
-    string name_;
+    std::string name_;
     size_t index_;
     MachPhys::Race race_;
     bool ready_;
@@ -85,7 +85,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         GuiSimpleScrollableList* pParentList,
         size_t width,
-        const string& playerName,
+        const std::string& playerName,
         MachPhys::Race playerRace,
         size_t playerIndex,
         bool playerReady,
@@ -99,7 +99,7 @@ public:
     static size_t reqHeight();
 
     void updateInfo(
-        const string& playerName,
+        const std::string& playerName,
         MachPhys::Race playerRace,
         bool playerReady,
         bool playerIsHost,

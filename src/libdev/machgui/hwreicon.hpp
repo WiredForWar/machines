@@ -41,7 +41,7 @@ public:
     // dtor.
     ~MachHWResearchIcon() override;
 
-    string getPromptText() const;
+    std::string getPromptText() const;
 
     // inherited from GuiButton...
     void doBeDepressed(const GuiMouseEvent& rel) override;

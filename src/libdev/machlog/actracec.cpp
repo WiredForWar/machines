@@ -72,7 +72,7 @@ std::unique_ptr<MachLogChangeRaceAction> MachLogChangeRaceAction::newFromParser(
     std::unique_ptr<MachLogChangeRaceAction> pResult(new MachLogChangeRaceAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "ORIGINAL_RACE")
             pResult->originalRace_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
         else if (token == "TARGET_RACE")

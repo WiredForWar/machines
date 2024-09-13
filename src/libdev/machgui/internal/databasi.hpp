@@ -54,7 +54,7 @@ private:
         bool operator()(const MachGuiDbPlayer_ptr& pLhs, const MachGuiDbPlayer_ptr& pRhs) const;
     };
 
-    using ElementMap = ctl_map<string, MachGuiDbElement*, std::less<string>>;
+    using ElementMap = ctl_map<std::string, MachGuiDbElement*, std::less<std::string>>;
     using Players = ctl_vector<MachGuiDbPlayer*>;
     using Systems = ctl_vector<MachGuiDbSystem*>;
     using SavedGames = ctl_vector<MachGuiDbSavedGame*>;

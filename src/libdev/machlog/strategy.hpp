@@ -48,7 +48,7 @@ public:
     bool addOperationAsSubOperationToFollowOperation(MachLogOperation* pNewOperation);
 
     // these return the current "boss" operation at the front of the queue
-    const string& currentOperationTypeAsString() const;
+    const std::string& currentOperationTypeAsString() const;
     MachLogOperation::OperationType currentOperationType() const;
 
     // this returns to potential "slave" operation executing right now

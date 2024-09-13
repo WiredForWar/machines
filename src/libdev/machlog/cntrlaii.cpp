@@ -11,7 +11,7 @@
 PER_DEFINE_PERSISTENT(MachLogAIStrategicProductionUnit);
 PER_DEFINE_PERSISTENT(MachLogAIControllerImpl);
 
-MachLogAIControllerImpl::MachLogAIControllerImpl(const string& AIStrategicRules)
+MachLogAIControllerImpl::MachLogAIControllerImpl(const std::string& AIStrategicRules)
     : rules_(AIStrategicRules)
     , researchInterest_(MachLogAIController::HARDWARE)
 {

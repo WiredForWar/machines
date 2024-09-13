@@ -24,11 +24,11 @@ class W4dAnimationData
 // Canonical form revoked
 {
 public:
-    W4dAnimationData(const string& textureName, W4dLOD maxLod);
+    W4dAnimationData(const std::string& textureName, W4dLOD maxLod);
     virtual ~W4dAnimationData();
 
-    const string& name() const;
-    void name(const string& name);
+    const std::string& name() const;
+    void name(const std::string& name);
     const W4dLOD& maxLod() const;
 
     // apply the animation to entity
@@ -48,7 +48,7 @@ private:
     W4dAnimationData(const W4dAnimationData&);
     W4dAnimationData& operator=(const W4dAnimationData&);
 
-    string textureName_;
+    std::string textureName_;
     W4dLOD maxLod_;
 };
 

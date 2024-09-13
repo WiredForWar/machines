@@ -26,17 +26,17 @@ class MachGuiDbSavedGame
 {
 public:
     // Create with menu name userFileName, and external path fileName for the specfiied scenario
-    MachGuiDbSavedGame(const string& userFileName, const string& fileName, MachGuiDbScenario* pDbScenario);
+    MachGuiDbSavedGame(const std::string& userFileName, const std::string& fileName, MachGuiDbScenario* pDbScenario);
 
     ~MachGuiDbSavedGame();
 
     // Set/get the user filename
-    const string& userFileName() const;
-    void userFileName(const string& name);
+    const std::string& userFileName() const;
+    void userFileName(const std::string& name);
 
     // Set/get the external file name
-    const string& externalFileName() const;
-    void externalFileName(const string& name);
+    const std::string& externalFileName() const;
+    void externalFileName(const std::string& name);
 
     // true iff a player is associated with the saved game
     bool hasPlayer() const;

@@ -60,7 +60,7 @@
 PER_DEFINE_PERSISTENT(MachPhysPlanetSurface);
 
 // I can't believe Iain had to write this ! (see meshload.cpp)
-static void lowerString(string* pString)
+static void lowerString(std::string* pString)
 {
     if (!pString || pString->length() == 0)
         return;
@@ -89,7 +89,7 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
 
     SysPathName tempPath(pathname);
     tempPath.pop_back();
-    string textureDirectory = tempPath.pathname();
+    std::string textureDirectory = tempPath.pathname();
 
     // hack: we check whether the actual list is set for a 2 or a
     // 4 Mbytes card and update the list accordingly
@@ -107,7 +107,7 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
              itComponents != components.end() && directory4MbNotFound && directory2MbNotFound;
              ++itComponents)
         {
-            string componentAsLowerCase = (*itComponents);
+            std::string componentAsLowerCase = (*itComponents);
             lowerString(&componentAsLowerCase);
             if (componentAsLowerCase == "texture4")
                 directory4MbNotFound = false;
@@ -263,7 +263,7 @@ void MachPhysPlanetSurface::readPlanetSurfaceFile(const SysPathName& pathname)
             char domainName[9] = "domainxy";
             domainName[6] = char('0' + (char)x);
             domainName[7] = char('0' + (char)y);
-            pDomain->name(string(domainName));
+            pDomain->name(std::string(domainName));
         }
     }
 
@@ -1298,7 +1298,7 @@ void perRead(PerIstream& istr, MachPhysPlanetSurface& t)
 void MachPhysPlanetSurface::loadPlanet(const SysPathName& pathname)
 {
     // Check for the existence of a persisted file for the planet
-    string path = "pdata\\" + pathname.components().back();
+    std::string path = "pdata\\" + pathname.components().back();
     SysPathName persistentPathname(path);
     persistentPathname.extension("psb");
 

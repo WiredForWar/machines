@@ -39,7 +39,7 @@ PER_DEFINE_PERSISTENT(MachPhysTerrainTile);
 // static const ctl_vector<RenTexture>& waterAnimationTextures();
 
 // A map used to facilitate loading terrain tile models only once.
-using TerrainExemplarMap = ctl_map<string, MachPhysTerrainTile*, std::less<string>>;
+using TerrainExemplarMap = ctl_map<std::string, MachPhysTerrainTile*, std::less<std::string>>;
 static TerrainExemplarMap& exemplarTileMap();
 
 #include "profiler/stktrace.hpp"

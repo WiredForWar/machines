@@ -37,16 +37,16 @@ public:
     ~MachPromptText() override;
 
     // Set/get the prompt text related to cursor position
-    void setCursorPromptText(const string& prompt);
-    void setCursorPromptText(const string& prompt, bool restartScroll);
-    const string& cursorPromptText() const;
+    void setCursorPromptText(const std::string& prompt);
+    void setCursorPromptText(const std::string& prompt, bool restartScroll);
+    const std::string& cursorPromptText() const;
 
     // Clear any prompt text associated with the cursor position
     void clearCursorPromptText();
 
     // Set/get the prompt text related to current command state
-    void setCommandPromptText(const string& prompt);
-    const string& commandPromptText() const;
+    void setCommandPromptText(const std::string& prompt);
+    const std::string& commandPromptText() const;
 
     // Clear any prompt text associated with the current command state
     void clearCommandPromptText();

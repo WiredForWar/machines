@@ -138,7 +138,7 @@ void MachGuiCaptureCommand::typeData(MachLog::ObjectType /*objectType*/, int /*s
 }
 
 // virtual
-bool MachGuiCaptureCommand::doApply(MachActor* pActor, string*)
+bool MachGuiCaptureCommand::doApply(MachActor* pActor, std::string*)
 {
     MachLogSuperConstructOperation* pOp = new 
         MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::CAPTURE_OPERATION);
@@ -163,9 +163,9 @@ std::unique_ptr<MachGuiCommand> MachGuiCaptureCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiCaptureCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiCaptureCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/capture.bmp", "gui/commands/capture.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/capture.bmp", "gui/commands/capture.bmp");
     return names;
 }
 
@@ -188,7 +188,7 @@ bool MachGuiCaptureCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
 

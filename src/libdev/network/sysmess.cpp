@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& o, const NetSystemMessageHandler& t)
     return o;
 }
 
-void NetSystemMessageHandler::playerHasBeenLost(const string& name)
+void NetSystemMessageHandler::playerHasBeenLost(const std::string& name)
 {
     NETWORK_STREAM("NetSystemMessageHandler::playerHasBeenLost " << name << std::endl);
     NETWORK_INDENT(2);

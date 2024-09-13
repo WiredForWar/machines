@@ -91,7 +91,7 @@ bool MachLogAdminAttackOperation::doStart()
             HAL_STREAM(" issuing group move\n");
             MachLogGroupSimpleMove::Points points;
             points.push_back(pDirectObject_->position());
-            string reason;
+            std::string reason;
             ctl_pvector<MachActor> actors;
             for (MachLogSquadron::Machines::iterator i = pActor_->squadron()->machines().begin();
                  i != pActor_->squadron()->machines().end();
@@ -158,7 +158,7 @@ PhysRelativeTime MachLogAdminAttackOperation::doUpdate()
         ctl_pvector<MachActor> actors;
         MachLogGroupSimpleMove::Points points;
         points.push_back(targetPositionNow);
-        string dummyReasonString;
+        std::string dummyReasonString;
 
         // the suitable target is greater than maximum wepaon range of each individual?
         // those in range fire now - leave the rest alone

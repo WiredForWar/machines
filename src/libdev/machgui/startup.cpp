@@ -492,8 +492,8 @@ void MachGuiStartupScreens::switchGuiRootToGame()
 
     progressIndicator.report(12, 100);
 
-    string planet = startupData()->scenario()->planetFile();
-    string scenario = startupData()->scenario()->name() + ".scn";
+    std::string planet = startupData()->scenario()->planetFile();
+    std::string scenario = startupData()->scenario()->name() + ".scn";
 
     DEBUG_STREAM(DIAG_NEIL, "load planet " << planet << std::endl);
     DEBUG_STREAM(DIAG_NEIL, "load scenario " << scenario << std::endl);
@@ -569,8 +569,8 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
 
     ASSERT(startupData()->scenario(), "no scenario has been selected for loading");
 
-    string planet = startupData()->scenario()->planetFile();
-    string scenario = startupData()->scenario()->name() + ".scn";
+    std::string planet = startupData()->scenario()->planetFile();
+    std::string scenario = startupData()->scenario()->name() + ".scn";
 
     DEBUG_STREAM(DIAG_NEIL, "load planet " << planet << std::endl);
     DEBUG_STREAM(DIAG_NEIL, "load scenario " << scenario << std::endl);
@@ -728,8 +728,8 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     SimManager::instance().suspend();
     SimManager::instance().resetTime();
 
-    string planet = startupData()->scenario()->planetFile();
-    string scenario = startupData()->scenario()->name() + ".scn";
+    std::string planet = startupData()->scenario()->planetFile();
+    std::string scenario = startupData()->scenario()->name() + ".scn";
 
     // Clear the list of set flags in the database handler
     MachGuiDatabase::instance().handler().clearSetFlags();
@@ -1063,7 +1063,7 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be)
     }
 }
 
-void MachGuiStartupScreens::buttonAction(ButtonEvent be, const string& wavFile)
+void MachGuiStartupScreens::buttonAction(ButtonEvent be, const std::string& wavFile)
 {
     CB_MachGuiStartupScreens_DEPIMPL();
 
@@ -2265,7 +2265,7 @@ void MachGuiStartupScreens::contextAnimation()
     else if (context_ == CTX_INTROANIMATION)
     {
         SysPathName sysFlicName("flics/animatic.smk");
-        string cdRomDrive;
+        std::string cdRomDrive;
         bool flicExists = false;
         Gui::Coord animationPos = Gui::Coord(5, 104);
 
@@ -2303,7 +2303,7 @@ void MachGuiStartupScreens::contextAnimation()
     else if (context_ == CTX_POSTLOADINGANIMATION)
     {
         SysPathName sysFlicName("flics/postload.smk");
-        string cdRomDrive;
+        std::string cdRomDrive;
         bool flicExists = false;
         Gui::Coord animationPos = Gui::Coord(32, 129);
 
@@ -2339,7 +2339,7 @@ void MachGuiStartupScreens::contextAnimation()
     }
     else if (context_ == CTX_ENTRYFLIC || context_ == CTX_VICTORYFLIC || context_ == CTX_DEFEATFLIC)
     {
-        string flicName;
+        std::string flicName;
 
         // Get relevant flic
         if (context_ == CTX_ENTRYFLIC)
@@ -2358,7 +2358,7 @@ void MachGuiStartupScreens::contextAnimation()
         }
 
         SysPathName sysFlicName(flicName);
-        string cdRomDrive;
+        std::string cdRomDrive;
         bool flicExists = false;
         Gui::Coord animationPos = Gui::Coord(5, 104);
 
@@ -2824,7 +2824,7 @@ void MachGuiStartupScreens::unloadGame()
             NetNetwork::instance().messageThrottlingActive(false);
             // Disconnect from network ( keep protocol!! )
             // Store connection type because terminateAndReset sets it to "".
-            string ct = startupData()->connectionType();
+            std::string ct = startupData()->connectionType();
             MachLogNetwork::instance().terminateAndReset();
             startupData()->connectionType(ct);
         }
@@ -2885,8 +2885,8 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     progressIndicator.setLimits(0.1, 1.0);
 
     // Extract the planet name
-    const string& planetName = pSavedGame->scenario().planetFile();
-    string scenarioFileName = pSavedGame->scenario().name() + ".scn";
+    const std::string& planetName = pSavedGame->scenario().planetFile();
+    std::string scenarioFileName = pSavedGame->scenario().name() + ".scn";
 
     MachGuiLoadSaveGameExtras lsgExtras(&inGameScreen());
     MachLogRaces::instance().loadSavedGame(
@@ -3343,7 +3343,7 @@ bool MachGuiStartupScreens::handleHostMessage()
     return false;
 }
 
-bool MachGuiStartupScreens::handleDestroyPlayerMessage(const string& name)
+bool MachGuiStartupScreens::handleDestroyPlayerMessage(const std::string& name)
 {
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);

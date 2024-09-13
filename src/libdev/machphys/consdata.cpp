@@ -139,7 +139,7 @@ void MachPhysConstructionData::addEntrance(
     const MexPoint2d& externalPoint,
     const MexPoint2d& internalPoint,
     const MexPoint2d& doorPoint,
-    const string& doorEntityName,
+    const std::string& doorEntityName,
     const MachPhys::DoorType doorType)
 {
     static const MATHEX_SCALAR DOOR_HEIGHT_0 = 4.6;

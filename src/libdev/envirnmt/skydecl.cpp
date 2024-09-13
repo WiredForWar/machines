@@ -22,7 +22,7 @@
 
 class EnvSatellite;
 
-void EnvISkyDeclaration::UniformSky::controller(const string& name)
+void EnvISkyDeclaration::UniformSky::controller(const std::string& name)
 {
     PRE(! controllerSet_);
 
@@ -33,7 +33,7 @@ void EnvISkyDeclaration::UniformSky::controller(const string& name)
     controllerSet_ = true;
 }
 
-void EnvISkyDeclaration::UniformSky::colourTable(const string& name)
+void EnvISkyDeclaration::UniformSky::colourTable(const std::string& name)
 {
     PRE(! colourTableSet_);
 
@@ -64,7 +64,7 @@ EnvISkyDeclaration::UniformSky::UniformSky(EnvUniformSky* const pSky)
 
 ////////////////////////////////////////////////////////////
 
-void EnvISkyDeclaration::StaticSky::meshFile(const string& pathname)
+void EnvISkyDeclaration::StaticSky::meshFile(const std::string& pathname)
 {
     PRE(! meshFileSet_);
 
@@ -99,7 +99,7 @@ EnvISkyDeclaration::StaticSky::StaticSky(EnvStaticSky* const pSky)
 
 ////////////////////////////////////////////////////////////
 
-void EnvISkyDeclaration::DynamicSky::meshFile(const string& pathname)
+void EnvISkyDeclaration::DynamicSky::meshFile(const std::string& pathname)
 {
     PRE(! meshFileSet_);
 
@@ -107,7 +107,7 @@ void EnvISkyDeclaration::DynamicSky::meshFile(const string& pathname)
     meshFileSet_ = true;
 }
 
-void EnvISkyDeclaration::DynamicSky::controller(const string& name)
+void EnvISkyDeclaration::DynamicSky::controller(const std::string& name)
 {
     PRE(! controllerSet_);
 
@@ -118,7 +118,7 @@ void EnvISkyDeclaration::DynamicSky::controller(const string& name)
     controllerSet_ = true;
 }
 
-void EnvISkyDeclaration::DynamicSky::colourTable(MexDegrees at, const string& name)
+void EnvISkyDeclaration::DynamicSky::colourTable(MexDegrees at, const std::string& name)
 {
     EnvElevationColourTable* pElevationClut = EnvIPlanetParser::instance().lookUpClut(&name);
     ASSERT(pElevationClut, "An invalid elevation clut name was parsed.");

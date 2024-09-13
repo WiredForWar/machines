@@ -40,7 +40,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     Gui::Coord topLeft,
     uint titleString,
     MachPhys::Race race,
-    const string& player)
+    const std::string& player)
     : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(GS_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
     , statDisplay_(pParent, topLeft + Gui::Coord(1, 35) * MachGui::menuScaleFactor(), race)
 {
@@ -57,7 +57,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         MachGui::Menu::smallFontLight(),
         Gui::AlignCenter);
 
-    string newPlayer = truncate(player);
+    std::string newPlayer = truncate(player);
     // Create player name text
     new MachGuiMenuText(
         pParent,
@@ -116,12 +116,12 @@ void MachGuiGeneralStatistics::CLASS_INVARIANT
 }
 
 // static
-string MachGuiGeneralStatistics::truncate(const string& name)
+std::string MachGuiGeneralStatistics::truncate(const std::string& name)
 {
     constexpr int GS_INDENT = 6;
 
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    string truncatedName = name;
+    std::string truncatedName = name;
 
     const uint maxWidth = (GS_BOX_WIDTH - (GS_INDENT * 2) - 10) * MachGui::menuScaleFactor();
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();

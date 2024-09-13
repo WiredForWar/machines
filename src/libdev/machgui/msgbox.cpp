@@ -77,7 +77,7 @@ MachGuiMessageBox::MachGuiMessageBox(
     pStartupScreens->messageBoxHasFocus(true);
 
     GuiResourceString str(stringResId, strs);
-    string wholeStr = str.asString();
+    std::string wholeStr = str.asString();
 
     new MachGuiMenuText(
         this,

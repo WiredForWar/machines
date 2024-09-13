@@ -288,7 +288,7 @@ void GuiSingleLineEditBox::forceRedraw()
     changed();
 }
 
-void GuiSingleLineEditBox::setText(const string& newText)
+void GuiSingleLineEditBox::setText(const std::string& newText)
 {
     PRE(maxChars_ ? newText.length() <= maxChars_ : true);
 
@@ -300,9 +300,9 @@ void GuiSingleLineEditBox::setText(const string& newText)
     onTextChanged();
 }
 
-string GuiSingleLineEditBox::text() const
+std::string GuiSingleLineEditBox::text() const
 {
-    string retVal;
+    std::string retVal;
     retVal = leftText_ + rightText_;
 
     return retVal;
@@ -350,12 +350,12 @@ void GuiSingleLineEditBox::doHandleMouseClickEvent(const GuiMouseEvent&)
     GuiManager::instance().charFocus(this);
 }
 
-const string& GuiSingleLineEditBox::leftText() const
+const std::string& GuiSingleLineEditBox::leftText() const
 {
     return leftText_;
 }
 
-const string& GuiSingleLineEditBox::rightText() const
+const std::string& GuiSingleLineEditBox::rightText() const
 {
     return rightText_;
 }

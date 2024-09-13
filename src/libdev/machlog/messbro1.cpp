@@ -185,7 +185,7 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
         }
     }
     if (pMoveMessage->nMoveInfos_ > maximumMotionChunks())
-        NetNetwork::instance().doAbort(string(". move infos outside maximum allowed range\n"));
+        NetNetwork::instance().doAbort(std::string(". move infos outside maximum allowed range\n"));
 }
 
 void MachLogMessageBroker::sendMachineSetDomainMessage(UtlId whichId, const MexTransform3d& transform)

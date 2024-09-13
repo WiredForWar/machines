@@ -22,7 +22,7 @@ class MachLogAIControllerImpl
 // Canonical form revoked
 {
 public:
-    MachLogAIControllerImpl(const string& rules);
+    MachLogAIControllerImpl(const std::string& rules);
     ~MachLogAIControllerImpl();
 
     void CLASS_INVARIANT;
@@ -38,8 +38,8 @@ private:
     MachLogAIControllerImpl& operator=(const MachLogAIControllerImpl&);
     MachLogAIController::ResearchInterest researchInterest_;
 
-    // rules conatins the string variable which contains the strategic rules.
-    string rules_;
+    // rules conatins the std::string variable which contains the strategic rules.
+    std::string rules_;
     MachLogAIController::StrategicProductionList strategicProductionList_;
     MachLogAIController::ProductionList constructionProductionList_;
     MachLogAIController::DesiredMachineList desiredMachineList_;
@@ -50,21 +50,21 @@ private:
 class MachLogAIStrategicProductionUnit
 {
 public:
-    MachLogAIStrategicProductionUnit(const string& type, int number, int priority)
+    MachLogAIStrategicProductionUnit(const std::string& type, int number, int priority)
         : type_(type)
         , number_(number)
         , priority_(priority)
     {
         ;
     }
-    string type() { return type_; }
+    std::string type() { return type_; }
     int number() { return number_; }
     int priority() { return priority_; }
     PER_MEMBER_PERSISTENT(MachLogAIStrategicProductionUnit);
     PER_FRIEND_READ_WRITE(MachLogAIStrategicProductionUnit);
 
 private:
-    string type_;
+    std::string type_;
     int number_;
     int priority_;
 };

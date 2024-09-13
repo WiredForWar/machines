@@ -15,9 +15,10 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "stdlib/strfwd.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/produnit.hpp" //Cheap, and saves clients with ctl_vector defined including it
+
+#include <string>
 
 template <class T> class ctl_vector;
 class MachLogDatabaseHandlerImpl;
@@ -36,25 +37,25 @@ public:
     void raceUnits(MachPhys::Race race, Units* pUnits) const;
 
     // Get the surviving units of specified race at end of the named scenario
-    virtual const Units& survivingUnits(MachPhys::Race race, const string& scenarioName) const = 0;
+    virtual const Units& survivingUnits(MachPhys::Race race, const std::string& scenarioName) const = 0;
 
     //////////////////////////////////////////
 
     // Store the named flag as having been set
-    void setScenarioFlag(const string& flag);
+    void setScenarioFlag(const std::string& flag);
 
     // The number of set flags
     uint nSetFlags() const;
 
     // The index'th set flag
-    const string& setFlag(uint index) const;
+    const std::string& setFlag(uint index) const;
     // PRE( index < nSetFlags() );
 
     // Empty the list of set flags
     void clearSetFlags();
 
     // true if the named flag was set by the current player during the named scenario
-    virtual bool isFlagSet(const string& flag, const string& scenarioName) const = 0;
+    virtual bool isFlagSet(const std::string& flag, const std::string& scenarioName) const = 0;
 
     //////////////////////////////////////////
 

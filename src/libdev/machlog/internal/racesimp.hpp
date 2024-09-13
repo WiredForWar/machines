@@ -106,7 +106,7 @@ private:
     MachLogRaces::CameraInfo cameraInfo_[MachPhys::N_RACES];
     MachLog::BeaconType beaconType_[MachPhys::N_RACES];
     MachLog::BeaconType virtualBeacon_[MachPhys::N_RACES];
-    string currentPlanet_;
+    std::string currentPlanet_;
     MachLogRaces::Scores scores_;
     bool vortexHasBeenFired_[MachPhys::N_RACES];
     int techniciansTreacheried_[MachPhys::N_RACES];
@@ -116,7 +116,7 @@ private:
     bool builtIonCannon_[MachPhys::N_RACES];
     bool builtNuclearWeapon_[MachPhys::N_RACES];
     bool raceInGame_[MachPhys::N_RACES];
-    string endingFlic_;
+    std::string endingFlic_;
     bool podCaptured_[MachPhys::N_RACES];
     size_t AICommandId_;
     MachLogGameCreationData* pGameCreationData_;

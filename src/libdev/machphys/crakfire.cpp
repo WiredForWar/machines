@@ -84,12 +84,12 @@ MachPhysCrackFire::MachPhysCrackFire(const ChasmType& type)
         char textN[256];
         //      itoa(i, textN, 10 );
         sprintf(textN, "%d", i);
-        string debrisLinkName;
+        std::string debrisLinkName;
 
         if (i < 10)
-            debrisLinkName = "debris0" + string(textN);
+            debrisLinkName = "debris0" + std::string(textN);
         else
-            debrisLinkName = "debris" + string(textN);
+            debrisLinkName = "debris" + std::string(textN);
         W4dLink* pLink;
         if (findLink(debrisLinkName, &pLink))
         {

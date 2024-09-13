@@ -81,7 +81,7 @@ void MachGuiStopCommand::typeData(MachLog::ObjectType /*objectType*/, int /*subT
 }
 
 // virtual
-bool MachGuiStopCommand::doApply(MachActor* pActor, string*)
+bool MachGuiStopCommand::doApply(MachActor* pActor, std::string*)
 {
     // Stop what machine is currently doing
     pActor->strategy().tryToRemoveAllOperations();
@@ -105,9 +105,9 @@ std::unique_ptr<MachGuiCommand> MachGuiStopCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiStopCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiStopCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/stop.bmp", "gui/commands/stop.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/stop.bmp", "gui/commands/stop.bmp");
     return names;
 }
 
@@ -130,7 +130,7 @@ bool MachGuiStopCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiStopCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiStopCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
 

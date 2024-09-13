@@ -41,7 +41,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    MachLogCameraViewCondition(const string& keyName, const MexPoint3d&, const MexRadians&);
+    MachLogCameraViewCondition(const std::string& keyName, const MexPoint3d&, const MexRadians&);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogCameraViewCondition& t);
 

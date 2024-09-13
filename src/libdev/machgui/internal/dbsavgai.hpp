@@ -14,7 +14,8 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "stdlib/string.hpp"
+
+#include <string>
 
 // forward refs
 class MachGuiDbPlayer;
@@ -40,8 +41,8 @@ private:
     MachGuiDbISavedGame& operator=(const MachGuiDbISavedGame&);
 
     // data members
-    string userFileName_; // The filename the user sees in the menus
-    string fileName_; // The actual filename
+    std::string userFileName_; // The filename the user sees in the menus
+    std::string fileName_; // The actual filename
     MachGuiDbPlayer* pDbPlayer_; // The current player when game was saved (may be NULL)
     bool isCampaign_; // True if a campaign scenario
     MachGuiDbScenario* pDbScenario_; // The original scenario

@@ -51,7 +51,7 @@ protected:
 
 private:
     MachLogReachedLocationCondition(
-        const string& keyName,
+        const std::string& keyName,
         MachPhys::Race,
         size_t number,
         const MexPoint2d& point,

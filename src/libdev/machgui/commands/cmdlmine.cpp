@@ -92,7 +92,7 @@ bool MachGuiDropLandMineCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiDropLandMineCommand::doApply(MachActor* pActor, string* /*pReason*/)
+bool MachGuiDropLandMineCommand::doApply(MachActor* pActor, std::string* /*pReason*/)
 {
     PRE(pActor->objectIsMachine());
     PRE(path_.size() != 0);
@@ -155,9 +155,9 @@ std::unique_ptr<MachGuiCommand> MachGuiDropLandMineCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiDropLandMineCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiDropLandMineCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/dropmine.bmp", "gui/commands/dropmine.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/dropmine.bmp", "gui/commands/dropmine.bmp");
     return names;
 }
 
@@ -181,7 +181,7 @@ bool MachGuiDropLandMineCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
     ;

@@ -198,7 +198,7 @@ const Gui::Colour& Gui::GREY()
 GuiBitmap Gui::bitmap(const SysPathName& path)
 {
     // LO's assets don't keep case. :(
-    string pathName(path.pathname());
+    std::string pathName(path.pathname());
 
     if (path.containsCapitals() && ! path.existsAsFile())
     {
@@ -243,7 +243,7 @@ void Gui::writeScreenAsFile(const char* startFilename)
         sprintf(buffer, "%04ld", count);
 
         // bmpPathName = string( startFilename ) + buffer + ".png";
-        bmpPathName = SysPathName(string(startFilename) + buffer + ".png");
+        bmpPathName = SysPathName(std::string(startFilename) + buffer + ".png");
 
         if (! bmpPathName.existsAsFile())
             gotBmpPathName = true;

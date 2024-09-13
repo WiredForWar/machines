@@ -207,7 +207,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 #ifndef PRODUCTION
     CB_DEPIMPL_AUTO(showCurrentMachine_);
     CB_DEPIMPL_AUTO(showNetworkStuffed_);
-    string showStuffedString;
+    std::string showStuffedString;
     showNetworkStuffed_ = (nullptr != getenv("CB_SHOW_NETWORK_STUFFED"));
 #endif
 
@@ -2065,7 +2065,7 @@ void MachInGameScreen::cancelActiveCommand()
     cancelActiveCommand_ = true;
 }
 
-void MachInGameScreen::setCursorPromptText(const string& prompt)
+void MachInGameScreen::setCursorPromptText(const std::string& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2074,7 +2074,7 @@ void MachInGameScreen::setCursorPromptText(const string& prompt)
     pPromptText_->setCursorPromptText(prompt);
 }
 
-void MachInGameScreen::setCursorPromptText(const string& prompt, bool restartScroll)
+void MachInGameScreen::setCursorPromptText(const std::string& prompt, bool restartScroll)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2082,7 +2082,7 @@ void MachInGameScreen::setCursorPromptText(const string& prompt, bool restartScr
     pPromptText_->setCursorPromptText(prompt, restartScroll);
 }
 
-const string& MachInGameScreen::cursorPromptText() const
+const std::string& MachInGameScreen::cursorPromptText() const
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2098,7 +2098,7 @@ void MachInGameScreen::clearCursorPromptText()
     pPromptText_->clearCursorPromptText();
 }
 
-void MachInGameScreen::commandPromptText(const string& prompt)
+void MachInGameScreen::commandPromptText(const std::string& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2106,7 +2106,7 @@ void MachInGameScreen::commandPromptText(const string& prompt)
     pPromptText_->setCommandPromptText(prompt);
 }
 
-const string& MachInGameScreen::commandPromptText() const
+const std::string& MachInGameScreen::commandPromptText() const
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2462,7 +2462,7 @@ bool MachInGameScreen::rubberBandSelectionHappening() const
     return pWorldViewWindow_->rubberBandSelectionHappening();
 }
 
-void MachInGameScreen::loadGame(const string& planet)
+void MachInGameScreen::loadGame(const std::string& planet)
 {
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pContinentMap_);
@@ -2822,7 +2822,7 @@ void MachInGameScreen::saveGame(PerOstream& outStream)
     pContinentMap_->saveGame(outStream);
 }
 
-void MachInGameScreen::loadSavedGame(const string& planet, PerIstream& inStream)
+void MachInGameScreen::loadSavedGame(const std::string& planet, PerIstream& inStream)
 {
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL_AUTO(pContinentMap_);
@@ -3214,7 +3214,7 @@ void MachInGameScreen::saveScreenShot()
 
         sprintf(buffer, "%04ld", count);
 
-        pathName = SysPathName(string("mach") + buffer + ".png");
+        pathName = SysPathName(std::string("mach") + buffer + ".png");
 
         if (! pathName.existsAsFile())
             gotPathName = true;

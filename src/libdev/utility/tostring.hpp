@@ -14,21 +14,21 @@
 
 UTL_INT_SUBRANGE(2, 35, UtlRadix);
 
-string utlToString(int i);
-string utlToString(std::pair<int, UtlRadix> p);
+std::string utlToString(int i);
+std::string utlToString(std::pair<int, UtlRadix> p);
 
-string utlToString(unsigned i);
-string utlToString(std::pair<unsigned, UtlRadix> p);
+std::string utlToString(unsigned i);
+std::string utlToString(std::pair<unsigned, UtlRadix> p);
 
-string utlToString(long i);
-string utlToString(std::pair<long, UtlRadix> p);
+std::string utlToString(long i);
+std::string utlToString(std::pair<long, UtlRadix> p);
 
-string utlToString(unsigned long i);
-string utlToString(std::pair<unsigned long, UtlRadix> p);
+std::string utlToString(unsigned long i);
+std::string utlToString(std::pair<unsigned long, UtlRadix> p);
 
-string utlToString(float);
-string utlToString(double);
-string utlToString(long double);
+std::string utlToString(float);
+std::string utlToString(double);
+std::string utlToString(long double);
 
 //////////////////////////////////////////////////////////////////////
 

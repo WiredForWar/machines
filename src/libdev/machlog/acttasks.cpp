@@ -62,7 +62,7 @@ MachLogTaskStateAction::newFromParser(SimCondition* pCondition, bool enabled, Ut
     std::unique_ptr<MachLogTaskStateAction> pResult(new MachLogTaskStateAction(pCondition, enabled));
     for (std::size_t i = 0; i < pParser->tokens().size(); ++i)
     {
-        const string& token = pParser->tokens()[i];
+        const std::string& token = pParser->tokens()[i];
         if (token == "NUMBER")
         {
             ASSERT(pParser->tokens().size() >= i + 3, "Missing tokens");

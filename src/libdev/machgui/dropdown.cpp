@@ -18,7 +18,7 @@ MachGuiDropDownListBoxItem::MachGuiDropDownListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     MachGuiDropDownListBox* pListBox,
     size_t width,
-    const string& text)
+    const std::string& text)
     : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
     , pListBox_(pListBox)
     , whiteFont_(false)
@@ -30,7 +30,7 @@ MachGuiDropDownListBoxItem::MachGuiDropDownListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     MachGuiDropDownListBox* pListBox,
     size_t width,
-    const string& text,
+    const std::string& text,
     bool whiteFont)
     : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
     , pListBox_(pListBox)
@@ -114,7 +114,7 @@ MachGuiDropDownListBox::MachGuiDropDownListBox(
     size_t verticalSpacing,
     size_t scrollInc,
     size_t itemWidth,
-    const ctl_vector<string>& itemText)
+    const ctl_vector<std::string>& itemText)
     : GuiSingleSelectionListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
     , MachGuiAutoDeleteDisplayable(pParent)
     , itemText_(itemText)
@@ -137,7 +137,7 @@ MachGuiDropDownListBox::MachGuiDropDownListBox(
     size_t verticalSpacing,
     size_t scrollInc,
     size_t itemWidth,
-    const ctl_vector<string>& itemText,
+    const ctl_vector<std::string>& itemText,
     bool whiteFont)
     : GuiSingleSelectionListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
     , MachGuiAutoDeleteDisplayable(pParent)
@@ -159,7 +159,7 @@ MachGuiDropDownListBox::~MachGuiDropDownListBox()
 }
 
 // virtual
-void MachGuiDropDownListBox::itemSelected(const string& /*itemText*/)
+void MachGuiDropDownListBox::itemSelected(const std::string& /*itemText*/)
 {
     // You are forced to derive from this class and supply an implementation for this function.
     // This base class function should be called from the derived class!
@@ -203,7 +203,7 @@ MachGuiDropDownListBoxItem* MachGuiDropDownListBox::createListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     MachGuiDropDownListBox* pListBox,
     size_t width,
-    const string& text,
+    const std::string& text,
     bool whiteFont)
 {
     return new MachGuiDropDownListBoxItem(pStartupScreens, pListBox, width, text, whiteFont);

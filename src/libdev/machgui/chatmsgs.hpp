@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
-#include "stdlib/strfwd.hpp"
 
+#include <string>
 #include <vector>
 
 template <class T> class ctl_list;
@@ -40,20 +40,20 @@ public:
     // Call every frame. Returns true if it has been updated.
     bool update();
 
-    void addMessage(const string&);
+    void addMessage(const std::string&);
 
     void clearAllMessages();
 
-    const ctl_list<string>& messages() const;
+    const ctl_list<std::string>& messages() const;
 
-    void sendMessage(const string& message, MachPhys::Race intendedRace);
+    void sendMessage(const std::string& message, MachPhys::Race intendedRace);
     // PRE( pMessageBroker_ );
 
-    const string& playerName() const;
+    const std::string& playerName() const;
     MachPhys::Race playerRace() const;
 
     bool opponentExists(int index) const;
-    string opponentName(int index) const;
+    std::string opponentName(int index) const;
     MachPhys::Race opponentRace(int index) const;
 
     static int reqWidth();

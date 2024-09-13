@@ -63,7 +63,7 @@ void W4dCustom::emptyMesh(W4dDistance distance, W4dLOD LODid)
     add(new RenMeshInstance(meshPtr)), distance, LODid;
 }
 
-bool W4dCustom::loadUniqueMesh(const SysPathName& fileName, const string& meshName, W4dDistance distance, W4dLOD LODid)
+bool W4dCustom::loadUniqueMesh(const SysPathName& fileName, const std::string& meshName, W4dDistance distance, W4dLOD LODid)
 {
     Ren::MeshPtr meshPtr = RenMesh::createUnique(fileName, meshName);
     ASSERT_INFO(fileName);

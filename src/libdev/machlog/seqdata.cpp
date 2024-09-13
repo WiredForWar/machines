@@ -38,11 +38,11 @@ MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
     char str[200];
     sprintf(str, "ms%06d", id);
     // logFilePathName_ = str + string( ".log" );
-    logFilePathName_ = SysPathName(str + string(".log"));
+    logFilePathName_ = SysPathName(str + std::string(".log"));
 
     remove(logFilePathName_.c_str());
 
-    string environmentVariable = "cb_";
+    std::string environmentVariable = "cb_";
     environmentVariable += str;
     environmentVariable += "_log";
 
@@ -92,7 +92,7 @@ void MachLogMachineMotionSequencerData::indent(int n)
 
 #ifndef PRODUCTION
 
-void MachLogMachineMotionSequencerData::reasonForStateChange(const string& reason)
+void MachLogMachineMotionSequencerData::reasonForStateChange(const std::string& reason)
 {
     reasonForStateChange_ = reason;
 }

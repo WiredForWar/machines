@@ -2217,8 +2217,8 @@ const MachLogStats& MachLogRaces::stats() const
 
 bool MachLogRaces::loadGame(
     W4dSceneManager* pSceneManager,
-    const string& planetName,
-    const string& scenarioName,
+    const std::string& planetName,
+    const std::string& scenarioName,
     IProgressReporter* pReporter)
 {
     MachLogGameCreationData gameData;
@@ -2227,8 +2227,8 @@ bool MachLogRaces::loadGame(
 
 bool MachLogRaces::loadGame(
     W4dSceneManager* pSceneManager,
-    const string& planetName,
-    const string& scenarioName,
+    const std::string& planetName,
+    const std::string& scenarioName,
     const MachLogGameCreationData& gameData,
     IProgressReporter* pReporter)
 {
@@ -2274,7 +2274,7 @@ bool MachLogRaces::loadGame(
     return true;
 }
 
-bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, IProgressReporter* pReporter)
+bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const std::string& planetName, IProgressReporter* pReporter)
 {
     // Reset the simulation time before we start, since current time is used during setup
     SimManager::instance().resetTime();
@@ -2289,7 +2289,7 @@ bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const string& plan
     }
 
     // Construct the pathname for the planet surface file
-    string psfPath = "models/planet/";
+    std::string psfPath = "models/planet/";
     psfPath += planetName;
     psfPath += "/";
     psfPath += planetName;
@@ -2352,8 +2352,8 @@ void MachLogRaces::unloadGame()
 
 bool MachLogRaces::loadSavedGame(
     W4dSceneManager* pSceneManager,
-    const string& planetName,
-    const string& scenarioFileName,
+    const std::string& planetName,
+    const std::string& scenarioFileName,
     const SysPathName& pathname,
     MachLogLoadSaveGameExtras* pExtras,
     IProgressReporter* pReporter)
@@ -2379,7 +2379,7 @@ bool MachLogRaces::loadSavedGame(
     {
         // Load the artefact data from the scenario file
         // Construct the scenario pathname and create a parser to parse the file
-        string scenarioPath = "data\\" + scenarioFileName;
+        std::string scenarioPath = "data\\" + scenarioFileName;
         const SysPathName scenarioPathName(scenarioPath);
 
         SysMetaFile metaFile("mach1.met");
@@ -2669,7 +2669,7 @@ MachLogArtefacts& MachLogRaces::artefacts()
     return *(pDataImpl_->pArtefacts_);
 }
 
-const string& MachLogRaces::currentPlanet() const
+const std::string& MachLogRaces::currentPlanet() const
 {
     return pDataImpl_->currentPlanet_;
 }
@@ -2749,14 +2749,14 @@ void MachLogRaces::persistenceWriteNumbers(PerOstream& ostr)
 {
     MachLogRacesDataImpl& dataImpl = *pDataImpl_;
     PER_WRITE_RAW_OBJECT(ostr, dataImpl);
-    string endingFlicName(endingFlic());
+    std::string endingFlicName(endingFlic());
     PER_WRITE_RAW_OBJECT(ostr, endingFlicName);
 }
 void MachLogRaces::persistenceReadNumbers(PerIstream& istr)
 {
     MachLogRacesDataImpl& dataImpl = *pDataImpl_;
     PER_READ_RAW_OBJECT(istr, dataImpl);
-    string endingFlicName;
+    std::string endingFlicName;
     PER_READ_RAW_OBJECT(istr, endingFlicName);
     endingFlic(endingFlicName);
 }
@@ -2827,11 +2827,11 @@ void MachLogRaces::hasLost(MachPhys::Race race, bool newValue)
     }
 }
 
-void MachLogRaces::endingFlic(const string& newValue)
+void MachLogRaces::endingFlic(const std::string& newValue)
 {
     pDataImpl_->endingFlic_ = newValue;
 }
-const string& MachLogRaces::endingFlic() const
+const std::string& MachLogRaces::endingFlic() const
 {
     return pDataImpl_->endingFlic_;
 }

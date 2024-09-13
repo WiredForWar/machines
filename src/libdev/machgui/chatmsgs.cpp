@@ -29,7 +29,7 @@ struct MachGuiInGameChatMessagesImpl
     {
     }
 
-    ctl_list<string> chatMessages_;
+    ctl_list<std::string> chatMessages_;
     PhysAbsoluteTime lastUpdateTime_;
     bool messageAdded_;
     MachGuiMessageBroker* pMessageBroker_;
@@ -39,7 +39,7 @@ struct MachGuiInGameChatMessagesImpl
 
 #define CB_MachGuiInGameChatMessagesImpl_DEPIMPL()                                                                     \
     PRE(pImpl_)                                                                                                        \
-    CB_DEPIMPL(ctl_list<string>, chatMessages_)                                                                        \
+    CB_DEPIMPL(ctl_list<std::string>, chatMessages_)                                                                   \
     CB_DEPIMPL(PhysAbsoluteTime, lastUpdateTime_)                                                                      \
     CB_DEPIMPL(bool, messageAdded_)                                                                                    \
     CB_DEPIMPL(MachGuiMessageBroker*, pMessageBroker_)                                                                 \
@@ -119,7 +119,7 @@ bool MachGuiInGameChatMessages::update()
     return returnVal;
 }
 
-void MachGuiInGameChatMessages::addMessage(const string& message)
+void MachGuiInGameChatMessages::addMessage(const std::string& message)
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 
@@ -151,7 +151,7 @@ void MachGuiInGameChatMessages::clearAllMessages()
     chatMessages_.erase(chatMessages_.begin(), chatMessages_.end());
 }
 
-const ctl_list<string>& MachGuiInGameChatMessages::messages() const
+const ctl_list<std::string>& MachGuiInGameChatMessages::messages() const
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 
@@ -166,7 +166,7 @@ void MachGuiInGameChatMessages::initialise(MachGuiMessageBroker* pMessageBroker,
     pStartupScreens_ = pStartupScreens;
 }
 
-void MachGuiInGameChatMessages::sendMessage(const string& message, MachPhys::Race intendedRace)
+void MachGuiInGameChatMessages::sendMessage(const std::string& message, MachPhys::Race intendedRace)
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 
@@ -175,7 +175,7 @@ void MachGuiInGameChatMessages::sendMessage(const string& message, MachPhys::Rac
     pMessageBroker_->sendInGameChatMessage(message, intendedRace);
 }
 
-const string& MachGuiInGameChatMessages::playerName() const
+const std::string& MachGuiInGameChatMessages::playerName() const
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 
@@ -222,13 +222,13 @@ bool MachGuiInGameChatMessages::opponentExists(int index) const
     return returnVal;
 }
 
-string MachGuiInGameChatMessages::opponentName(int index) const
+std::string MachGuiInGameChatMessages::opponentName(int index) const
 {
     CB_MachGuiInGameChatMessagesImpl_DEPIMPL();
 
     PRE(opponentExists(index));
 
-    string returnVal;
+    std::string returnVal;
     bool opponentFound = false;
     int opponentIndex = 0;
 

@@ -105,7 +105,7 @@ bool MachGuiTransportCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiTransportCommand::doApply(MachActor* pActor, string*)
+bool MachGuiTransportCommand::doApply(MachActor* pActor, std::string*)
 {
     PRE(pActor->objectIsMachine());
     PRE(pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier());
@@ -189,9 +189,9 @@ std::unique_ptr<MachGuiCommand> MachGuiTransportCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiTransportCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiTransportCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/transprt.bmp", "gui/commands/transprt.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/transprt.bmp", "gui/commands/transprt.bmp");
     return names;
 }
 

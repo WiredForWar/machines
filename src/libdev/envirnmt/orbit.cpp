@@ -130,7 +130,7 @@ static PhysTimedAnglePlan* createOrbitTransition(MexRadians startEl, MexRadians 
 }
 
 EnvOrbit::EnvOrbit(
-    const string& n,
+    const std::string& n,
     MexRadians minEl,
     MexRadians maxEl,
     MATHEX_SCALAR radius,
@@ -307,7 +307,7 @@ MATHEX_SCALAR EnvOrbit::radius() const
     return radius_;
 }
 
-const string& EnvOrbit::name() const
+const std::string& EnvOrbit::name() const
 {
     return name_;
 }

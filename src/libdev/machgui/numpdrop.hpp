@@ -53,7 +53,7 @@ protected:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*) override;
 
     bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
@@ -75,7 +75,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*);
 
     MachGuiNumPlayersDropDownList(
@@ -85,7 +85,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*,
         bool whiteFont);
 
@@ -94,7 +94,7 @@ protected:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiDropDownListBox* pListBox,
         size_t width,
-        const string& text,
+        const std::string& text,
         bool whiteFont) override;
 };
 
@@ -105,7 +105,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiDropDownListBox* pListBox,
         size_t width,
-        const string& text,
+        const std::string& text,
         bool whiteFont);
 
 protected:

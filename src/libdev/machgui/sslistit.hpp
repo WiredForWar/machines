@@ -31,7 +31,7 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pParentListBox,
         size_t width,
-        const string& text);
+        const std::string& text);
 
     ~MachGuiSingleSelectionListBoxItem() override;
 
@@ -40,7 +40,7 @@ public:
     static size_t reqHeight();
 
     bool isHighlighted() const;
-    const string& text() const;
+    const std::string& text() const;
 
 protected:
     // This variant utilized by MachGuiDropDownListBoxItem to initialize it. Hence, pMyListBox_ is null
@@ -50,7 +50,7 @@ protected:
         MachGuiStartupScreens* pStartupScreens,
         GuiSingleSelectionListBox* pParentListBox,
         size_t width,
-        const string& text);
+        const std::string& text);
 
     void select() override;
     void unselect() override;
@@ -74,7 +74,7 @@ private:
     MachGuiSingleSelectionListBoxItem(const MachGuiSingleSelectionListBoxItem&);
     MachGuiSingleSelectionListBoxItem& operator=(const MachGuiSingleSelectionListBoxItem&);
 
-    string text_;
+    std::string text_;
     bool highlighted_;
     // TODO: Eliminate this. Subclasses in declared in ctxjoin.cpp and ctxmulti.cpp use this to join & name the MP game.
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;

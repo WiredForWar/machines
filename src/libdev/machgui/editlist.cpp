@@ -53,7 +53,7 @@ MachGuiEditBoxListBoxItem::MachGuiEditBoxListBoxItem(
     MachGuiStartupScreens* pStartupScreens,
     MachGuiSingleSelectionListBox* pListBox,
     size_t width,
-    const string& text)
+    const std::string& text)
     : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
     , pSingleLineEditBox_(nullptr)
     , maxChars_(0)
@@ -121,12 +121,12 @@ GuiSingleLineEditBox* MachGuiEditBoxListBoxItem::singleLineEditBox()
     return pSingleLineEditBox_;
 }
 
-string MachGuiEditBoxListBoxItem::text() const
+std::string MachGuiEditBoxListBoxItem::text() const
 {
     return text_;
 }
 
-void MachGuiEditBoxListBoxItem::setText(const string& str)
+void MachGuiEditBoxListBoxItem::setText(const std::string& str)
 {
     if (singleLineEditBox())
     {

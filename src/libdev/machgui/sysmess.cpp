@@ -120,7 +120,7 @@ bool MachGuiSystemMessageHandler::handleHostMessage()
 }
 
 // virtual
-bool MachGuiSystemMessageHandler::handleDestroyPlayerMessage(const string& name)
+bool MachGuiSystemMessageHandler::handleDestroyPlayerMessage(const std::string& name)
 {
     NETWORK_STREAM("MachGuiSystemMessageHandler::handleDestroyPlayerMessage " << name << std::endl);
     NETWORK_INDENT(2);
@@ -131,7 +131,7 @@ bool MachGuiSystemMessageHandler::handleDestroyPlayerMessage(const string& name)
         bool foundPlayer = false;
         for (int i = 0; i < 4; ++i)
         {
-            const string& playerName = pStartupScreens_->startupData()->players()[i].getDisplayName();
+            const std::string& playerName = pStartupScreens_->startupData()->players()[i].getDisplayName();
             NETWORK_STREAM("Checking against " << playerName << std::endl);
             if (playerName == name
                 && pStartupScreens_->startupData()->players()[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN)

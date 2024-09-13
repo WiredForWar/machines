@@ -2502,7 +2502,7 @@ void MachGuiFirstPerson::loadBitmaps()
 
     for (int loop = 0; loop < WEAPON_DROPDOWN_FRAMES; ++loop)
     {
-        string framePath("gui/fstpersn/weapon/weap");
+        std::string framePath("gui/fstpersn/weapon/weap");
         char buffer[3];
 
         //      framePath += itoa( loop, buffer, 10 );

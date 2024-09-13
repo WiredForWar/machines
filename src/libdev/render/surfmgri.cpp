@@ -123,7 +123,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
     {
         PathNames texturePathNames = directorySearchList_;
         for (PathNames::iterator i = texturePathNames.begin(); i != texturePathNames.end(); ++i)
-            (*i).combine(string(name));
+            (*i).combine(std::string(name));
         //(*i).combine(name);
 
         newBody = loadSurface(texturePathNames, createTex, surf);

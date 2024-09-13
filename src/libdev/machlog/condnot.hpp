@@ -15,7 +15,8 @@
 #include "base/base.hpp"
 #include "phys/phys.hpp"
 #include "sim/conditio.hpp"
-#include "stdlib/strfwd.hpp"
+
+#include <string>
 
 class UtlLineTokeniser;
 template <class X, class Y, class Z> class ctl_map;
@@ -25,7 +26,7 @@ class MachLogNotCondition : public SimCondition
 // Canonical form revoked
 {
 public:
-    using ConditionMap = ctl_map<string, SimCondition*, std::less<string>>;
+    using ConditionMap = ctl_map<std::string, SimCondition*, std::less<std::string>>;
 
     static MachLogNotCondition* newFromParser(UtlLineTokeniser*, ConditionMap*);
 
@@ -43,7 +44,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    MachLogNotCondition(const string& keyName, SimCondition*);
+    MachLogNotCondition(const std::string& keyName, SimCondition*);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogNotCondition& t);
 

@@ -40,7 +40,7 @@ private:
     MachGuiDbISystem& operator=(const MachGuiDbISystem&);
 
     // data members
-    string campaignPicture_; // Flic or bmp displayed in campaign menu
+    std::string campaignPicture_; // Flic or bmp displayed in campaign menu
     ctl_vector<MachGuiDbPlanet*> planets_; // Collection of planets in the system or size group
 };
 

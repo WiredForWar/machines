@@ -168,7 +168,7 @@ protected:
     {
         PRE(pMap_);
 
-        string promptStr;
+        std::string promptStr;
 
         switch (pMap_->mapMode())
         {
@@ -283,7 +283,7 @@ MachContinentMap::MachContinentMap(
     useFastSecondDisplay(false);
 }
 
-void MachContinentMap::loadGame(const string& planet)
+void MachContinentMap::loadGame(const std::string& planet)
 {
     std::string mapPath = "models/planet/";
     mapPath += planet;
@@ -1924,7 +1924,7 @@ void MachContinentMap::saveGame(PerOstream& outStream)
     }
 }
 
-void MachContinentMap::loadSavedGame(const string& planet, PerIstream& inStream)
+void MachContinentMap::loadSavedGame(const std::string& planet, PerIstream& inStream)
 {
     inStream >> fogOfWarOn_;
 

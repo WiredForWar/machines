@@ -26,12 +26,12 @@ public:
         ALL
     };
 
-    SimCondition(const string& keyName);
-    SimCondition(const string& keyName, const ctl_pvector<SimCondition>& subConditions, BooleanOperator);
+    SimCondition(const std::string& keyName);
+    SimCondition(const std::string& keyName, const ctl_pvector<SimCondition>& subConditions, BooleanOperator);
 
     virtual ~SimCondition();
 
-    const string& keyName() const;
+    const std::string& keyName() const;
 
     // Current number of actions depending on this condition
     uint nLinkedActions() const;
@@ -70,7 +70,7 @@ protected:
 private:
     friend class SimAction;
 
-    string keyName_;
+    std::string keyName_;
     // conditions can have sub conditions which must be met before the parent condition
     // is met.
     Conditions conditions_;

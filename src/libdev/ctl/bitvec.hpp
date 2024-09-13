@@ -48,7 +48,7 @@ public:
     ctl_bit_vector(size_type sz);
     // PRE( sz != 0 );
 
-    ctl_bit_vector(const string& s);
+    ctl_bit_vector(const std::string& s);
     // PRE( s[] == '1' or s[] == '0' );
     // POST( s.length() == size() )
 

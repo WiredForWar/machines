@@ -52,7 +52,7 @@ bool MachGuiFormSquadronCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiFormSquadronCommand::doApply(MachActor*, string*)
+bool MachGuiFormSquadronCommand::doApply(MachActor*, std::string*)
 {
     // This command interaction is all via the menu icons, so this function is not called
     return true;
@@ -71,9 +71,9 @@ std::unique_ptr<MachGuiCommand> MachGuiFormSquadronCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiFormSquadronCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiFormSquadronCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/formsqad.bmp", "gui/commands/formsqad.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/formsqad.bmp", "gui/commands/formsqad.bmp");
     return names;
 }
 

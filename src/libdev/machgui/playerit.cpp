@@ -248,7 +248,7 @@ MachGuiPlayerListItem::MachGuiPlayerListItem(
     MachGuiStartupScreens* pStartupScreens,
     GuiSimpleScrollableList* pParentList,
     size_t width,
-    const string& playerName,
+    const std::string& playerName,
     MachPhys::Race playerRace,
     size_t playerIndex,
     bool playerReady,
@@ -495,7 +495,7 @@ bool MachGuiPlayerListItem::canInteract() const
 }
 
 void MachGuiPlayerListItem::updateInfo(
-    const string& playerName,
+    const std::string& playerName,
     MachPhys::Race playerRace,
     bool playerReady,
     bool playerIsHost,
@@ -716,7 +716,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         MachGuiPlayerListItem* pCreator,
         size_t playerIndex)
         : MachGuiDropDownListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc, itemWidth, itemText)
@@ -728,7 +728,7 @@ public:
 
     ~MachGuiPlayerSelectionListBox() override { pCreator_->dropDownListDisplayed(nullptr); }
 
-    void itemSelected(const string& text) override
+    void itemSelected(const std::string& text) override
     {
         DEBUG_STREAM(DIAG_NEIL, "MachGuiPlayerSelectionListBox::itemSelected " << text << std::endl);
 
@@ -843,7 +843,7 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
         size_t dropDownWidth
             = width() - 3 * MachGui::menuScaleFactor() - MachGui::tickBmp().width() - MachGuiPlayerColour::reqWidth();
 
-        ctl_vector<string> strings;
+        ctl_vector<std::string> strings;
 
         strings.push_back(playerInfo_.name_); // What ever text is in this item should come first in the drop down
 
@@ -862,7 +862,7 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
         }
 
         // Add all available players names into drop down list
-        ctl_vector<string>& availPlayers = pStartupScreens_->startupData()->availablePlayers();
+        ctl_vector<std::string>& availPlayers = pStartupScreens_->startupData()->availablePlayers();
 
         for (auto iter = availPlayers.begin(); iter != availPlayers.end(); ++iter)
         {

@@ -407,7 +407,7 @@ RenMaterial MachPhysSmokePuff::puff(const RenColour& colour)
 }
 
 // static
-RenMaterial MachPhysSmokePuff::material(const string& textureFileName)
+RenMaterial MachPhysSmokePuff::material(const std::string& textureFileName)
 {
     RenTexture texture = RenTexManager::instance().createTexture(textureFileName);
 

@@ -240,12 +240,12 @@ void W4dEntityImpl::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-void W4dEntityImpl::name(const string& name)
+void W4dEntityImpl::name(const std::string& name)
 {
     name_ = name;
 }
 
-const string& W4dEntityImpl::name() const
+const std::string& W4dEntityImpl::name() const
 {
     return name_;
 }
@@ -485,9 +485,9 @@ bool W4dEntityImpl::filterColourIsSet() const
 }
 
 // static
-const string& W4dEntityImpl::dummyName()
+const std::string& W4dEntityImpl::dummyName()
 {
-    static string emptyString;
+    static std::string emptyString;
     return emptyString;
 }
 

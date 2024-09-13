@@ -85,7 +85,7 @@ bool MachGuiTreacheryCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiTreacheryCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiTreacheryCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsCanAttack());
 
@@ -108,7 +108,7 @@ bool MachGuiTreacheryCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, string*)
+bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, std::string*)
 {
     // Construct a move operation
     bool result = false;
@@ -140,7 +140,7 @@ bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, string*)
     return result;
 }
 
-bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, string*)
+bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, std::string*)
 {
     // Check not trying to Treachery actor of same race (note that this trivially includes oneself).
     bool canDo = pActor->race() != pDirectObject_->race();
@@ -213,9 +213,9 @@ std::unique_ptr<MachGuiCommand> MachGuiTreacheryCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiTreacheryCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiTreacheryCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/treach.bmp", "gui/commands/treach.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/treach.bmp", "gui/commands/treach.bmp");
     return names;
 }
 
@@ -238,7 +238,7 @@ bool MachGuiTreacheryCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, string*)
+bool MachGuiTreacheryCommand::doAdminApply(MachLogAdministrator* /*pAdministrator*/, std::string*)
 {
     return false;
 }

@@ -126,7 +126,7 @@ PhysRelativeTime MachLogAdminMoveToOperation::doUpdate()
     MachLogGroupSimpleMove::Points points;
     for (MachLogAdminMoveToOperation::Path::iterator i = path_.begin(); i != path_.end(); ++i)
         points.push_back(*i);
-    string reason;
+    std::string reason;
     ctl_pvector<MachActor> actors;
     for (MachLogSquadron::Machines::iterator i = pActor_->squadron()->machines().begin();
          i != pActor_->squadron()->machines().end();

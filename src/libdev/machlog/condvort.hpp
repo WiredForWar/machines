@@ -41,7 +41,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    MachLogVortexHasBeenFiredCondition(const string& keyName, MachPhys::Race);
+    MachLogVortexHasBeenFiredCondition(const std::string& keyName, MachPhys::Race);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogVortexHasBeenFiredCondition& t);
 

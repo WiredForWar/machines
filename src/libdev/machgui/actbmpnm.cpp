@@ -13,7 +13,7 @@
 #include <algorithm>
 
 // static
-string MachActorBitmaps::name(
+std::string MachActorBitmaps::name(
     MachLog::ObjectType objectType,
     int subType,
     int hwLevel,
@@ -24,7 +24,7 @@ string MachActorBitmaps::name(
 }
 
 // static
-string MachActorBitmaps::name(
+std::string MachActorBitmaps::name(
     MachLog::ObjectType objectType,
     int subType,
     int hwLevel,
@@ -36,7 +36,7 @@ string MachActorBitmaps::name(
         "MachActorBitmaps::name " << objectType << " " << subType << " " << hwLevel << " " << inFirstPerson
                                   << std::endl);
 
-    string retVal;
+    std::string retVal;
 
     ASSERT_INFO(objectType);
 
@@ -348,7 +348,7 @@ const char* MachActorBitmaps::smelterName()
 }
 
 // static
-void MachActorBitmaps::appendHwLevel(string& str, int hwLevel)
+void MachActorBitmaps::appendHwLevel(std::string& str, int hwLevel)
 {
     char buffer[20];
     //  itoa( hwLevel, buffer, 10 );
@@ -357,7 +357,7 @@ void MachActorBitmaps::appendHwLevel(string& str, int hwLevel)
 }
 
 // static
-void MachActorBitmaps::appendWeaponCombo(string& s, MachPhys::WeaponCombo wc)
+void MachActorBitmaps::appendWeaponCombo(std::string& s, MachPhys::WeaponCombo wc)
 {
     ASSERT_INFO(wc);
 

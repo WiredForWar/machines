@@ -370,7 +370,7 @@ void SimManager::addAction(std::unique_ptr<SimAction> pAction)
     pConditionsManager_->addAction(std::move(pAction));
 }
 
-void SimManager::enableAction(const string& keyName)
+void SimManager::enableAction(const std::string& keyName)
 {
     CB_DEPIMPL(SimConditionsManager*, pConditionsManager_);
 

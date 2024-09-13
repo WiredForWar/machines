@@ -192,7 +192,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
     ASSERT(per.pSceneManager_, "The scene manager has not been set on a load saved game.\n");
 
     // stack data to read holding data into.
-    string planetName(MachLogRaces::instance().currentPlanet());
+    std::string planetName(MachLogRaces::instance().currentPlanet());
 
     bool raceExists[MachPhys::N_RACES];
 

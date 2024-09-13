@@ -15,7 +15,7 @@
 
 PER_DEFINE_PERSISTENT(MachLogScenarioFlagCondition);
 
-MachLogScenarioFlagCondition::MachLogScenarioFlagCondition(const string& keyName, bool isSet)
+MachLogScenarioFlagCondition::MachLogScenarioFlagCondition(const std::string& keyName, bool isSet)
     : SimCondition(keyName)
     , flagSet_(isSet)
 {

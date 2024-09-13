@@ -42,7 +42,7 @@ private:
 
     // data members
     MachGuiDbSystem* pSystem_; // Owning system/terrain type
-    string campaignPicture_; // Flic or bmp displayed in campaign menu
+    std::string campaignPicture_; // Flic or bmp displayed in campaign menu
     ctl_vector<MachGuiDbScenario*> scenarios_; // Collection of scenarios
 };
 

@@ -11,7 +11,7 @@
 
 PER_DEFINE_PERSISTENT(MachGuiDbPlayer);
 
-MachGuiDbPlayer::MachGuiDbPlayer(uint id, const string& name)
+MachGuiDbPlayer::MachGuiDbPlayer(uint id, const std::string& name)
 {
     pData_ = new MachGuiDbIPlayer;
 
@@ -69,12 +69,12 @@ uint MachGuiDbPlayer::id() const
     return pData_->id_;
 }
 
-const string& MachGuiDbPlayer::name() const
+const std::string& MachGuiDbPlayer::name() const
 {
     return pData_->name_;
 }
 
-void MachGuiDbPlayer::name(const string& newName)
+void MachGuiDbPlayer::name(const std::string& newName)
 {
     pData_->name_ = newName;
 }

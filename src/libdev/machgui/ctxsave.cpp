@@ -66,9 +66,9 @@ public:
 
     ~MachGuiSaveGameListBoxItem() override { }
 
-    static string displayText(MachGuiDbSavedGame& savedGame)
+    static std::string displayText(MachGuiDbSavedGame& savedGame)
     {
-        string retVal;
+        std::string retVal;
         retVal = savedGame.userFileName();
 
         if (savedGame.hasPlayer())
@@ -346,7 +346,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
             }
             else
             {
-                string saveDisplayName = pSelectedSaveGame_->userFileName();
+                std::string saveDisplayName = pSelectedSaveGame_->userFileName();
                 deleteSavedGame();
                 saveGame(saveDisplayName);
                 return true;
@@ -400,7 +400,7 @@ void MachGuiCtxSave::deleteSavedGame()
     updateSaveGameList();
 }
 
-bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
+bool MachGuiCtxSave::saveGame(const std::string& saveDisplayName)
 {
     // Display saving bmp
     GuiBitmap savingBmp = Gui::requestScaledImage("gui/menu/saving.bmp", MachGui::menuScaleFactor());
@@ -431,7 +431,7 @@ bool MachGuiCtxSave::saveGame(const string& saveDisplayName)
         sprintf(buffer, "%04ld", count);
 
         // savePathName = string( "savegame/save" ) + buffer + ".sav";
-        savePathName = SysPathName(string("savegame/save") + buffer + ".sav");
+        savePathName = SysPathName(std::string("savegame/save") + buffer + ".sav");
 
         if (! savePathName.existsAsFile())
             gotSavePathName = true;

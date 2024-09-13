@@ -28,7 +28,7 @@ class MachLogSetFlagAction : public SimAction
 public:
     ~MachLogSetFlagAction() override;
     static std::unique_ptr<MachLogSetFlagAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
-    static std::unique_ptr<MachLogSetFlagAction> newDynamic(SimCondition*, bool enabled, const string& flag);
+    static std::unique_ptr<MachLogSetFlagAction> newDynamic(SimCondition*, bool enabled, const std::string& flag);
 
     void CLASS_INVARIANT;
 
@@ -46,7 +46,7 @@ private:
     MachLogSetFlagAction(const MachLogSetFlagAction&);
     MachLogSetFlagAction& operator=(const MachLogSetFlagAction&);
 
-    string flagName_; // Name of the flag to be set
+    std::string flagName_; // Name of the flag to be set
 };
 
 PER_DECLARE_PERSISTENT(MachLogSetFlagAction);

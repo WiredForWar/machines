@@ -415,7 +415,7 @@ void UtlLineTokeniser::foundInclude()
 
     fileDataStack_.push_back(data);
 
-    currentFileName_ = string(newFileName);
+    currentFileName_ = std::string(newFileName);
     pCurrentStream_ = new std::ifstream(newFileName.c_str());
     lineNumber_ = 0;
 }

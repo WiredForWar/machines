@@ -26,7 +26,7 @@ public:
 
     using Materials = ctl_vector<Ren::MaterialVecPtr>;
 
-    static void addMaterial(Materials* pMaterials, const string& textureFileName);
+    static void addMaterial(Materials* pMaterials, const std::string& textureFileName);
 
     static const Materials& materials(MachPhysFireballType fireballType);
     static const Materials& materials1();

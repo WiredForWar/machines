@@ -51,7 +51,7 @@ bool W4dReadBackground(
     bool readingSun = false;
     while (is)
     {
-        string tmp;
+        std::string tmp;
         is >> tmp;
 
         if (tmp == "clouds")
@@ -83,7 +83,7 @@ bool W4dReadBackground(
             else
             {
                 // Some file types require a model name.
-                string modelName;
+                std::string modelName;
                 if (!meshFile.hasExtension() || meshFile.extension() == "x")
                     is >> modelName;
 

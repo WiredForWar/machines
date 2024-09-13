@@ -32,7 +32,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText);
+        const ctl_vector<std::string>& itemText);
 
     MachGuiDropDownListBox(
         MachGuiStartupScreens* pParent,
@@ -41,7 +41,7 @@ public:
         size_t verticalSpacing,
         size_t scrollInc,
         size_t itemWidth,
-        const ctl_vector<string>& itemText,
+        const ctl_vector<std::string>& itemText,
         bool whiteFont);
 
     ~MachGuiDropDownListBox() override;
@@ -52,13 +52,13 @@ public:
 protected:
     void doDisplay() override;
 
-    virtual void itemSelected(const string& text) = 0;
+    virtual void itemSelected(const std::string& text) = 0;
 
     virtual MachGuiDropDownListBoxItem* createListBoxItem(
         MachGuiStartupScreens* pStartupScreens,
         MachGuiDropDownListBox* pListBox,
         size_t width,
-        const string& text,
+        const std::string& text,
         bool whiteFont);
     friend class MachGuiDropDownListBoxItem;
 
@@ -67,7 +67,7 @@ private:
     void CLASS_INVARIANT;
 
     // Data members...
-    ctl_vector<string> itemText_;
+    ctl_vector<std::string> itemText_;
     size_t itemWidth_;
     double timeInterval_;
     double timeStart_;
@@ -82,13 +82,13 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiDropDownListBox* pListBox,
         size_t width,
-        const string& text);
+        const std::string& text);
 
     MachGuiDropDownListBoxItem(
         MachGuiStartupScreens* pStartupScreens,
         MachGuiDropDownListBox* pListBox,
         size_t width,
-        const string& text,
+        const std::string& text,
         bool whiteFont);
 
 protected:

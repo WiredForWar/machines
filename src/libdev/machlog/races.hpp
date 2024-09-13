@@ -102,20 +102,20 @@ public:
     // True iff successful.
     bool loadGame(
         W4dSceneManager* pSceneManager,
-        const string& planetName,
-        const string& scenarioName,
+        const std::string& planetName,
+        const std::string& scenarioName,
         IProgressReporter*);
 
     // different flavour of load game designed for skirmish and multi-player
     bool loadGame(
         W4dSceneManager* pSceneManager,
-        const string& planetName,
-        const string& scenarioName,
+        const std::string& planetName,
+        const std::string& scenarioName,
         const MachLogGameCreationData&,
         IProgressReporter*);
 
     // loads the planet surface file and config spaces - independantly of any scenario file loading
-    bool loadPlanet(W4dSceneManager* pSceneManager, const string& planetName, IProgressReporter*);
+    bool loadPlanet(W4dSceneManager* pSceneManager, const std::string& planetName, IProgressReporter*);
 
     // Loads up saved game using data found in file savedGameName
     // The scene manager for the 3d view is pSceneManager.
@@ -126,8 +126,8 @@ public:
     // True iff successful.
     bool loadSavedGame(
         W4dSceneManager* pSceneManager,
-        const string& planetName,
-        const string& scenarioFileName,
+        const std::string& planetName,
+        const std::string& scenarioFileName,
         const SysPathName& savedGameName,
         MachLogLoadSaveGameExtras*,
         IProgressReporter*);
@@ -505,7 +505,7 @@ public:
     MachLog::BeaconType beaconType(MachPhys::Race);
     void virtualBeacon(MachPhys::Race, MachLog::BeaconType);
 
-    const string& currentPlanet() const;
+    const std::string& currentPlanet() const;
 
     using Scores = ctl_pvector<MachLogScore>;
     void totalResearchScoreAdjust(MachPhys::Race researchingRace, int value);
@@ -538,8 +538,8 @@ public:
     // has lost can be independantly set to hasWon in a multiplayer situation.
     bool hasLost(MachPhys::Race) const;
     void hasLost(MachPhys::Race, bool);
-    void endingFlic(const string&);
-    const string& endingFlic() const;
+    void endingFlic(const std::string&);
+    const std::string& endingFlic() const;
     // certain scenarios win on capturing the pod - note how specific this is note good in the general sense
     // but the amount of work required in making this generic is prohibitive (need to check arrays
     // at run time etc)

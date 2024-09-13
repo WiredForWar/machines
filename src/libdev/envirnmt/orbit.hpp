@@ -32,7 +32,7 @@ public:
     // the heading at which the satellite will attain minimum elevation.
     // PRE(parent); POST(movingEntity());
     EnvOrbit(
-        const string& name,
+        const std::string& name,
         MexRadians minEl,
         MexRadians maxEl,
         MATHEX_SCALAR radius,
@@ -60,7 +60,7 @@ public:
     MexRadians velocity() const;
     PhysRelativeTime period() const;
     MATHEX_SCALAR radius() const;
-    const string& name() const;
+    const std::string& name() const;
 
     // This is the angle of elevation subtended by the satellite's physical
     // representation.  It only affects the isSet method.  Defaults to zero.
@@ -76,7 +76,7 @@ public:
 
 private:
     const MATHEX_SCALAR radius_;
-    const string name_;
+    const std::string name_;
     const MexRadians velocity_; // 1/period_
     const PhysRelativeTime period_;
     MexRadians minElevation_, maxElevation_;

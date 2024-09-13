@@ -41,7 +41,7 @@ void W4dGenericRepository::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-W4dGenericRepository::KeyType W4dGenericRepository::type(const string& key) const
+W4dGenericRepository::KeyType W4dGenericRepository::type(const std::string& key) const
 {
     KeyType keyType;
     size_t index;
@@ -56,7 +56,7 @@ W4dGenericRepository::KeyType W4dGenericRepository::type(const string& key) cons
     return keyType;
 }
 
-const W4dGeneric& W4dGenericRepository::simpleEntity(const string& key)
+const W4dGeneric& W4dGenericRepository::simpleEntity(const std::string& key)
 {
     size_t index;
     bool found = findSimple(key, &index);
@@ -65,7 +65,7 @@ const W4dGeneric& W4dGenericRepository::simpleEntity(const string& key)
     return *(simpleEntries_[index].second);
 }
 
-const W4dGenericComposite& W4dGenericRepository::compositeEntity(const string& key)
+const W4dGenericComposite& W4dGenericRepository::compositeEntity(const std::string& key)
 {
     size_t index;
     bool found = findComposite(key, &index);
@@ -74,7 +74,7 @@ const W4dGenericComposite& W4dGenericRepository::compositeEntity(const string& k
     return *(compositeEntries_[index].second);
 }
 
-const W4dEntity& W4dGenericRepository::entity(const string& key)
+const W4dEntity& W4dGenericRepository::entity(const std::string& key)
 {
     PRE(type(key) != UNKNOWN);
 
@@ -108,9 +108,9 @@ void W4dGenericRepository::readGenericFile(const SysPathName& listFile)
     }
 }
 
-void W4dGenericRepository::add(const string& key, const SysPathName& fileName, Solidity solidity)
+void W4dGenericRepository::add(const std::string& key, const SysPathName& fileName, Solidity solidity)
 {
-    string extension = fileName.extension();
+    std::string extension = fileName.extension();
     PRE(extension == "lod" || extension == "cdf");
     PRE(type(key) == UNKNOWN);
 
@@ -172,13 +172,13 @@ void W4dGenericRepository::clear()
     }
 }
 
-void W4dGenericRepository::add(const string& key, W4dGeneric* pGeneric)
+void W4dGenericRepository::add(const std::string& key, W4dGeneric* pGeneric)
 {
     pGeneric->attachTo(pRoot_);
     simpleEntries_.push_back(SimpleEntry(key, pGeneric));
 }
 
-void W4dGenericRepository::add(const string& key, W4dGenericComposite* pGeneric)
+void W4dGenericRepository::add(const std::string& key, W4dGenericComposite* pGeneric)
 {
     pGeneric->attachTo(pRoot_);
     compositeEntries_.push_back(CompositeEntry(key, pGeneric));
@@ -189,7 +189,7 @@ uint W4dGenericRepository::nGenerics() const
     return simpleEntries_.size() + compositeEntries_.size();
 }
 
-const string& W4dGenericRepository::key(uint index) const
+const std::string& W4dGenericRepository::key(uint index) const
 {
     PRE(index < nGenerics());
     uint nSimples = simpleEntries_.size();
@@ -209,7 +209,7 @@ std::ostream& operator<<(std::ostream& o, const W4dGenericRepository& t)
 }
 
 W4dEntity*
-W4dGenericRepository::cloneEntity(const string& key, W4dEntity* pParent, const MexTransform3d& localTransform)
+W4dGenericRepository::cloneEntity(const std::string& key, W4dEntity* pParent, const MexTransform3d& localTransform)
 {
     size_t index;
     W4dEntity* pResult = nullptr;
@@ -224,7 +224,7 @@ W4dGenericRepository::cloneEntity(const string& key, W4dEntity* pParent, const M
     return pResult;
 }
 
-bool W4dGenericRepository::findSimple(const string& key, size_t* pIndex) const
+bool W4dGenericRepository::findSimple(const std::string& key, size_t* pIndex) const
 {
     size_t size = simpleEntries_.size();
     bool found = false;
@@ -240,7 +240,7 @@ bool W4dGenericRepository::findSimple(const string& key, size_t* pIndex) const
     return found;
 }
 
-bool W4dGenericRepository::findComposite(const string& key, size_t* pIndex) const
+bool W4dGenericRepository::findComposite(const std::string& key, size_t* pIndex) const
 {
     size_t size = compositeEntries_.size();
     bool found = false;

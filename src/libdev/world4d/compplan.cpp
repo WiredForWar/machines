@@ -15,14 +15,14 @@
     CB_DEPIMPL(Entries, entries_);                                                                                     \
     CB_DEPIMPL(void*, pad1_);                                                                                          \
     CB_DEPIMPL(void*, pad2_);                                                                                          \
-    CB_DEPIMPL(string, name_);                                                                                         \
+    CB_DEPIMPL(std::string, name_);                                                                                         \
     CB_DEPIMPL(PhysRelativeTime, cachedFinishTime_);
 
 PER_DEFINE_PERSISTENT(W4dCompositePlan);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-W4dCompositePlan::W4dCompositePlan(const string& name)
+W4dCompositePlan::W4dCompositePlan(const std::string& name)
     : pImpl_(new W4dCompositePlanImpl())
 {
     CB_W4dCompositePlan_DEPIMPL();
@@ -115,7 +115,7 @@ PhysRelativeTime W4dCompositePlan::finishTime() const
     return cachedFinishTime_;
 }
 
-const string& W4dCompositePlan::name() const
+const std::string& W4dCompositePlan::name() const
 {
     CB_W4dCompositePlan_DEPIMPL();
     return name_;

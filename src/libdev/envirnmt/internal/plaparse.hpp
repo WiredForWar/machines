@@ -45,19 +45,19 @@ public:
     // Clear out any stored data following a parse. This leaves the maps etc in virgin state.
     void clear();
 
-    void startOrbit(const string*);
+    void startOrbit(const std::string*);
     EnvIOrbitParams* orbitInConstruction();
     void orbitComplete();
-    EnvOrbit* lookUpOrbit(const string*);
+    EnvOrbit* lookUpOrbit(const std::string*);
 
-    void startSatellite(const string*);
+    void startSatellite(const std::string*);
     EnvISatelliteParams* satelliteInConstruction();
     void satelliteComplete();
-    EnvSatellite* lookUpSatellite(const string*);
+    EnvSatellite* lookUpSatellite(const std::string*);
     void copySatellites(ctl_pvector<EnvSatellite>* vec); // PRE(vec);
 
     void addClut(EnvElevationColourTable*);
-    EnvElevationColourTable* lookUpClut(const string*);
+    EnvElevationColourTable* lookUpClut(const std::string*);
 
     EnvISkyDeclaration& skyDeclaration();
     EnvUniformSky* createUniformSky();
@@ -66,9 +66,9 @@ public:
 
     void startSkyline();
     void completeSkyline();
-    void skylineMeshFile(const string*);
-    void skylineController(const string*);
-    void skylineColourTable(const string*);
+    void skylineMeshFile(const std::string*);
+    void skylineController(const std::string*);
+    void skylineColourTable(const std::string*);
 
     W4dStars* pStars() const;
     void createStars(RenStars::Configuration, MATHEX_SCALAR radius, int nStars);
@@ -88,13 +88,13 @@ private:
 
     // Sky-line parameters.
     bool contructingSkyline_;
-    string skylineMesh_;
+    std::string skylineMesh_;
     EnvElevationColourTable* skylineClut_;
     EnvSatellite* skylineController_;
 
-    using ClutMap = ctl_map<string, EnvElevationColourTable*, std::less<string>>;
-    using SatelliteMap = ctl_map<string, EnvSatellite*, std::less<string>>;
-    using OrbitMap = ctl_map<string, EnvOrbit*, std::less<string>>;
+    using ClutMap = ctl_map<std::string, EnvElevationColourTable*, std::less<std::string>>;
+    using SatelliteMap = ctl_map<std::string, EnvSatellite*, std::less<std::string>>;
+    using OrbitMap = ctl_map<std::string, EnvOrbit*, std::less<std::string>>;
 
     ClutMap cluts_;
     OrbitMap orbits_;

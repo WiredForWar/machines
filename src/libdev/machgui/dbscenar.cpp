@@ -14,8 +14,8 @@
 PER_DEFINE_PERSISTENT(MachGuiDbScenario);
 
 MachGuiDbScenario::MachGuiDbScenario(
-    const string& scenarioName,
-    const string& planetName,
+    const std::string& scenarioName,
+    const std::string& planetName,
     uint menuStringId,
     uint maxPlayers)
     : MachGuiDbElement(menuStringId)
@@ -26,7 +26,7 @@ MachGuiDbScenario::MachGuiDbScenario(
     TEST_INVARIANT;
 }
 
-void MachGuiDbScenario::initialise(const string& scenarioName, const string& planetName)
+void MachGuiDbScenario::initialise(const std::string& scenarioName, const std::string& planetName)
 {
     pData_ = new MachGuiDbIScenario;
     name(scenarioName);
@@ -56,62 +56,62 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbScenario& t)
     return o;
 }
 
-void MachGuiDbScenario::campaignPicture(const string& filename)
+void MachGuiDbScenario::campaignPicture(const std::string& filename)
 {
     pData_->campaignPicture_ = filename;
 }
 
-const string& MachGuiDbScenario::campaignPicture() const
+const std::string& MachGuiDbScenario::campaignPicture() const
 {
     return pData_->campaignPicture_;
 }
 
-void MachGuiDbScenario::briefingPicture(const string& filename)
+void MachGuiDbScenario::briefingPicture(const std::string& filename)
 {
     pData_->briefingPicture_ = filename;
 }
 
-const string& MachGuiDbScenario::briefingPicture() const
+const std::string& MachGuiDbScenario::briefingPicture() const
 {
     return pData_->briefingPicture_;
 }
 
-void MachGuiDbScenario::debriefingPicture(const string& filename)
+void MachGuiDbScenario::debriefingPicture(const std::string& filename)
 {
     pData_->debriefingPicture_ = filename;
 }
 
-const string& MachGuiDbScenario::debriefingPicture() const
+const std::string& MachGuiDbScenario::debriefingPicture() const
 {
     return pData_->debriefingPicture_;
 }
 
-void MachGuiDbScenario::entryFlic(const string& filename)
+void MachGuiDbScenario::entryFlic(const std::string& filename)
 {
     pData_->entryFlic_ = filename;
 }
 
-const string& MachGuiDbScenario::entryFlic() const
+const std::string& MachGuiDbScenario::entryFlic() const
 {
     return pData_->entryFlic_;
 }
 
-void MachGuiDbScenario::winFlic(const string& filename)
+void MachGuiDbScenario::winFlic(const std::string& filename)
 {
     pData_->winFlic_ = filename;
 }
 
-const string& MachGuiDbScenario::winFlic() const
+const std::string& MachGuiDbScenario::winFlic() const
 {
     return pData_->winFlic_;
 }
 
-void MachGuiDbScenario::loseFlic(const string& filename)
+void MachGuiDbScenario::loseFlic(const std::string& filename)
 {
     pData_->loseFlic_ = filename;
 }
 
-const string& MachGuiDbScenario::loseFlic() const
+const std::string& MachGuiDbScenario::loseFlic() const
 {
     return pData_->loseFlic_;
 }
@@ -156,12 +156,12 @@ MachGuiDbScenario::MachGuiDbScenario(PerConstructor con)
 {
 }
 
-void MachGuiDbScenario::planetFile(const string& filename)
+void MachGuiDbScenario::planetFile(const std::string& filename)
 {
     pData_->planetFile_ = filename;
 }
 
-const string& MachGuiDbScenario::planetFile() const
+const std::string& MachGuiDbScenario::planetFile() const
 {
     return pData_->planetFile_;
 }
@@ -204,12 +204,12 @@ bool MachGuiDbScenario::isTrainingScenario() const
     return retVal;
 }
 
-void MachGuiDbScenario::debriefingLosePicture(const string& filename)
+void MachGuiDbScenario::debriefingLosePicture(const std::string& filename)
 {
     pData_->debriefingLosePicture_ = filename;
 }
 
-const string& MachGuiDbScenario::debriefingLosePicture() const
+const std::string& MachGuiDbScenario::debriefingLosePicture() const
 {
     return pData_->debriefingLosePicture_;
 }

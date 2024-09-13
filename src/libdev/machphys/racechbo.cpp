@@ -391,14 +391,14 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
         while (! parser.finished())
         {
-            string logoName = parser.tokens()[0];
+            std::string logoName = parser.tokens()[0];
 
             size_t nameLength = logoName.length();
 
             ASSERT(nameLength > 6, " shortest name is X1.bmt");
 
-            string nameRoot;
-            string extension;
+            std::string nameRoot;
+            std::string extension;
 
             if (logoName.substr(nameLength - 6, 6) == "_b.bmp")
             {
@@ -428,12 +428,12 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
             for (int i = 1; i <= nTextures; ++i)
             {
-                string textureName = nameRoot;
+                std::string textureName = nameRoot;
 
                 char textN[4];
                 //              itoa(i, textN, 10 );
                 sprintf(textN, "%d", i);
-                textureName += string(textN);
+                textureName += std::string(textN);
 
                 textureName += extension;
 

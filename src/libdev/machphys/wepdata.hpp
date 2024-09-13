@@ -100,7 +100,7 @@ private:
 
     void trailOn(bool);
     void trailColour(const RenColour& col);
-    void trailTextureKey(const string& key);
+    void trailTextureKey(const std::string& key);
     void trailStartTextureIndex(size_t startIndex);
     void trailEndTextureIndex(size_t endIndex);
 
@@ -137,7 +137,7 @@ private:
 
     bool trailOn_; // if true then use the colou and textures. if not use smoke
     RenColour trailColour_;
-    string trailTextureKey_;
+    std::string trailTextureKey_;
     size_t trailStartTextureIndex_;
     size_t trailEndTextureIndex_;
 };

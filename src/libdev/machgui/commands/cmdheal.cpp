@@ -87,7 +87,7 @@ bool MachGuiHealCommand::isInteractionComplete() const
 }
 
 // virtual
-bool MachGuiHealCommand::doApply(MachActor* pActor, string* pReason)
+bool MachGuiHealCommand::doApply(MachActor* pActor, std::string* pReason)
 {
     PRE(pActor->objectIsMachine());
 
@@ -110,7 +110,7 @@ bool MachGuiHealCommand::doApply(MachActor* pActor, string* pReason)
     return canDo;
 }
 
-bool MachGuiHealCommand::applyMove(MachActor* pActor, string*)
+bool MachGuiHealCommand::applyMove(MachActor* pActor, std::string*)
 {
     PRE(pActor->objectIsMachine());
 
@@ -137,7 +137,7 @@ bool MachGuiHealCommand::applyMove(MachActor* pActor, string*)
     return true;
 }
 
-bool MachGuiHealCommand::applyHealObject(MachActor* pActor, string*)
+bool MachGuiHealCommand::applyHealObject(MachActor* pActor, std::string*)
 {
     // Check not trying to Heal oneself
     bool canDo = pActor != pDirectObject_;
@@ -206,9 +206,9 @@ std::unique_ptr<MachGuiCommand> MachGuiHealCommand::clone() const
 }
 
 // virtual
-const std::pair<string, string>& MachGuiHealCommand::iconNames() const
+const std::pair<std::string, std::string>& MachGuiHealCommand::iconNames() const
 {
-    static std::pair<string, string> names("gui/commands/heal.bmp", "gui/commands/heal.bmp");
+    static std::pair<std::string, std::string> names("gui/commands/heal.bmp", "gui/commands/heal.bmp");
     return names;
 }
 
@@ -231,7 +231,7 @@ bool MachGuiHealCommand::canAdminApply() const
 }
 
 // virtual
-bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, string*)
+bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, std::string*)
 {
     PRE(canAdminApply());
 

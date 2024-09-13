@@ -28,7 +28,7 @@ public:
     ~MachLogEnableActionAction() override;
     static std::unique_ptr<MachLogEnableActionAction> newFromParser(SimCondition*, bool enabled, UtlLineTokeniser*);
     static std::unique_ptr<MachLogEnableActionAction>
-    newDynamic(SimCondition*, bool enabled, const string& enableToken);
+    newDynamic(SimCondition*, bool enabled, const std::string& enableToken);
 
     void CLASS_INVARIANT;
 
@@ -46,7 +46,7 @@ private:
     MachLogEnableActionAction(const MachLogEnableActionAction&);
     MachLogEnableActionAction& operator=(const MachLogEnableActionAction&);
 
-    string actionConditionKeyName_;
+    std::string actionConditionKeyName_;
 };
 
 PER_DECLARE_PERSISTENT(MachLogEnableActionAction);
