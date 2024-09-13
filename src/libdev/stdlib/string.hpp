@@ -68,6 +68,9 @@ PER_DECLARE_PERSISTENT_T1(basic_string);
 
 //////////////////////////////////////////////////////////////////////
 
+PerOstream& operator<<(PerOstream&, const std::string&);
+PerIstream& operator>>(PerIstream&, std::string&);
+
 //////////////////////////////////////////////////////////////////////
 
 // template< class T > size_t ntcs_length( T *str );
