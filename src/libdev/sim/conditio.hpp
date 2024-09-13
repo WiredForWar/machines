@@ -76,11 +76,11 @@ private:
     Conditions conditions_;
     // the boolean operator is only important if there are sub conditions (the operator describes how they are
     // combined).
-    BooleanOperator booleanOperator_;
+    BooleanOperator booleanOperator_{};
 
-    uint nLinkedActions_; // Number of actions referencing this condition
-    PhysAbsoluteTime timeConditionLastEvaluated_; // When we last checked the result
-    bool lastResult_; // The answer at that time
+    uint nLinkedActions_{}; // Number of actions referencing this condition
+    PhysAbsoluteTime timeConditionLastEvaluated_{}; // When we last checked the result
+    bool lastResult_{}; // The answer at that time
 };
 
 PER_DECLARE_PERSISTENT(SimCondition);

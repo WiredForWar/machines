@@ -6,9 +6,6 @@ PER_DEFINE_PERSISTENT_ABSTRACT(SimCondition);
 
 SimCondition::SimCondition(const string& keyName)
     : keyName_(keyName)
-    , nLinkedActions_(0)
-    , timeConditionLastEvaluated_(0)
-    , lastResult_(false)
 {
 }
 
@@ -19,9 +16,6 @@ SimCondition::SimCondition(
     : keyName_(keyName)
     , conditions_(subConditions)
     , booleanOperator_(booleanOperator)
-    , nLinkedActions_(0)
-    , timeConditionLastEvaluated_(0)
-    , lastResult_(false)
 {
     for (ctl_pvector<SimCondition>::iterator it = conditions_.begin(); it != conditions_.end(); ++it)
         (*it)->incrementLinkedActionCount();

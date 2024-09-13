@@ -78,7 +78,7 @@ private:
     PhysAbsoluteTime lastStrengthEstimateTime_;
 
     // used in lazy evaluation of local strength
-    PhysAbsoluteTime nextTrueDefConTime_;
+    PhysAbsoluteTime nextTrueDefConTime_{};
 
     // used in lazy evaluation of safest nearby machine and turret to run to
     PhysAbsoluteTime lastSafestMachineEstimateTime_;

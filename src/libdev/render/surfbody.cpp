@@ -62,18 +62,12 @@ private:
 
 RenISurfBody::RenISurfBody()
     : displayType_(RenI::NOT_DISPLAY)
-    , refCount_(0)
-    , textureID_(0)
     , width_(0)
     , height_(0)
-    , loaded_(false)
+    , name_("") // NB: look at precondition on name set method.
+    , sharedLeaf_(true)
     , readOnly_(true)
     , sharable_(true)
-    , currentHeight_(0)
-    , device_(nullptr)
-    , name_("")
-    , // NB: look at precondition on name set method.
-    sharedLeaf_(true)
 {
     POST(width() == 0 && height() == 0);
     POST(sharable() && readOnly());
@@ -82,18 +76,10 @@ RenISurfBody::RenISurfBody()
 
 RenISurfBody::RenISurfBody(size_t rqWidth, size_t rqHeight, const RenIPixelFormat& format, Residence residence)
     : displayType_(RenI::NOT_DISPLAY)
-    , refCount_(0)
-    , textureID_(0)
     , width_(0)
     , height_(0)
-    , loaded_(false)
-    , readOnly_(false)
-    , sharable_(false)
-    , currentHeight_(0)
-    , device_(nullptr)
-    , name_("")
-    , // NB: look at precondition on name set method.
-    sharedLeaf_(true)
+    , name_("") // NB: look at precondition on name set method.
+    , sharedLeaf_(true)
 {
     // Initialise UltProperties.
     keyingOn(false);
@@ -110,18 +96,10 @@ RenISurfBody::RenISurfBody(size_t rqWidth, size_t rqHeight, const RenIPixelForma
 RenISurfBody::RenISurfBody(const RenIPixelFormat& format)
     : displayType_(RenI::NOT_DISPLAY)
     , pixelFormat_(format)
-    , refCount_(0)
-    , textureID_(0)
     , width_(0)
     , height_(0)
-    , loaded_(false)
-    , readOnly_(false)
-    , sharable_(false)
-    , currentHeight_(0)
-    , device_(nullptr)
-    , name_("")
-    , // NB: look at precondition on name set method.
-    sharedLeaf_(true)
+    , name_("") // NB: look at precondition on name set method.
+    , sharedLeaf_(true)
 {
     // Initialise UltProperties.
     keyingOn(false);
@@ -140,14 +118,8 @@ RenISurfBody::RenISurfBody(const RenIPixelFormat& format)
 RenISurfBody::RenISurfBody(const RenDevice* dev, RenI::DisplayType type)
     : displayType_(type)
     , device_(dev)
-    , refCount_(0)
-    , loaded_(false)
-    , readOnly_(false)
-    , sharable_(false)
-    , currentHeight_(0)
-    , name_("")
-    , // NB: look at precondition on name set method.
-    sharedLeaf_(true)
+    , name_("") // NB: look at precondition on name set method.
+    , sharedLeaf_(true)
 {
     PRE(dev);
     PRE(type != RenI::NOT_DISPLAY); // i.e. back or front
@@ -241,13 +213,6 @@ void RenISurfBody::setDDColourKey()
     if (keyingOn())
     {
     }
-}
-
-static char* formatMsg()
-{
-    char* msgBuf = nullptr;
-
-    return msgBuf;
 }
 
 void RenISurfBody::unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY)

@@ -200,17 +200,19 @@ private:
     // after the RenDevice is destroyed and releasing a COM pointer to the
     // D3D device then appears to make Direct3D fall over.
     RenI::DisplayType displayType_;
-    const RenDevice* device_;
+    const RenDevice* device_{};
     RenIPixelFormat pixelFormat_;
-    GLuint textureID_;
+    GLuint textureID_{};
     uint width_, height_;
 
-    uint refCount_;
+    uint refCount_{};
     std::string name_, leafName_;
     Ren::Size requestedSize_{};
     bool sharedLeaf_;
-    bool loaded_, readOnly_, sharable_;
-    size_t currentHeight_;
+    bool loaded_{};
+    bool readOnly_{};
+    bool sharable_{};
+    size_t currentHeight_{};
     static size_t defaultHeight();
 
     const Render::Font* pCurrentFont_ = nullptr;
