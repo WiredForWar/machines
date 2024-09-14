@@ -616,6 +616,13 @@ void MachLogConstruction::addObstaclePolygon(const MexAlignedBox2d& boundary)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
+MachPhys::BuildingMaterialUnits MachLogConstruction::bmuValueOfHitPoints(MachPhys::HitPointUnits HPs) const
+{
+    MATHEX_SCALAR proportionOfTotalConstruction = static_cast<double>(HPs) / constructionData().hitPoints();
+
+    return proportionOfTotalConstruction * constructionData().cost();
+}
+
 MachPhys::HitPointUnits MachLogConstruction::hitPointValueOfBMUs(MachPhys::BuildingMaterialUnits BMUs) const
 {
     MATHEX_SCALAR proportionOfTotalConstruction = static_cast<double>(BMUs) / constructionData().cost();
