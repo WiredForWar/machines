@@ -46,6 +46,11 @@ MachGuiCommand::~MachGuiCommand()
     delete pImpl_;
 }
 
+bool MachGuiCommand::addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const
+{
+    return false;
+}
+
 void MachGuiCommand::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);

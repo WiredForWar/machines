@@ -1207,6 +1207,7 @@ bool MachInGameScreen::addPromptTextOreHolographInfo(MachActor* pActor, GuiStrin
 void MachInGameScreen::displayActorPromptText(MachActor* pActor)
 {
     CB_DEPIMPL_AUTO(pPromptTextActor_);
+    CB_DEPIMPL_AUTO(pActiveCommand_);
 
     GuiResourceString::Id stringId = 0;
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
@@ -1255,6 +1256,9 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
 
     // Add aditional prompt text info based on actor type
     if (addPromptTextMachineInfo(pActor, prompt))
+    {
+    }
+    else if (pActiveCommand_ && pActiveCommand_->addPromptTextCommandInfo(pActor, prompt))
     {
     }
     else if (addPromptTextConstructionInfo(pActor, prompt))
