@@ -259,7 +259,7 @@ public:
     void usedPickupPoint(size_t whichPoint);
     bool pickupPointUsedRecently(size_t whichPoint);
 
-    MachPhys::HitPointUnits hitPointValueOfBMUs(MachPhys::BuildingMaterialUnits BMUs);
+    MachPhys::HitPointUnits hitPointValueOfBMUs(MachPhys::BuildingMaterialUnits BMUs) const;
 
     // both adds HPs and ensures physical structure's visible damage is updated
     void addRepairPoints(MachPhys::HitPointUnits hpsAdded);
