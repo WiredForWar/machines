@@ -8,6 +8,7 @@
 #include "cmddecon.hpp"
 
 #include "gui/event.hpp"
+#include "gui/restring.hpp"
 
 #include "mathex/point3d.hpp"
 
@@ -20,7 +21,9 @@
 #include "machlog/machvman.hpp"
 #include "machlog/opadsupc.hpp"
 #include "machlog/opsupcon.hpp"
+#include "machlog/races.hpp"
 #include "machlog/squad.hpp"
+#include "machlog/stats.hpp"
 
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/internal/strings.hpp"
@@ -187,6 +190,23 @@ uint MachGuiDeconstructCommand::cursorPromptStringId() const
 uint MachGuiDeconstructCommand::commandPromptStringid() const
 {
     return IDS_DECONSTRUCT_START;
+}
+
+bool MachGuiDeconstructCommand::addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const
+{
+    if (pActor->objectIsConstruction())
+    {
+        const MachLogConstruction &construction = pActor->asConstruction();
+        MachPhys::BuildingMaterialUnits totalBMUs = construction.bmuValueOfHitPoints(construction.hp());
+        MachPhys::BuildingMaterialUnits secondHandBMUs
+            = totalBMUs * MachLogRaces::instance().stats().secondhandRefundablePercentage();
+
+        GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(std::to_string(secondHandBMUs)));
+        prompt += " " + bmuText.asString();
+        return true;
+    }
+
+    return false;
 }
 
 // virtual
