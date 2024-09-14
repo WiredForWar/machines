@@ -56,6 +56,8 @@ public:
     // The resource file id of the prompt to be displayed when the command is clicked
     uint commandPromptStringid() const override;
 
+    bool addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const override;
+
     // reference to the up and down bitmap names for this command
     const std::pair<std::string, std::string>& iconNames() const override;
 
