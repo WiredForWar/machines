@@ -100,30 +100,8 @@ MachLogMachine::MachLogMachine(
     Level swLevel,
     MachLogRace* pRace,
     MachPhysMachine* pPhysMachine,
-    MachLog::ObjectType ot)
-    : MachLogMobile(
-        pRace,
-        pPhysMachine,
-        ot,
-        pPhysMachine->machineData().highClearance(),
-        pPhysMachine->machineData().lowClearance())
-    , pImpl_(new MachLogMachineImpl(t, hwLevel, swLevel, pRace->race()))
-{
-    machineCreated();
-
-    TEST_INVARIANT;
-}
-
-/* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
-
-MachLogMachine::MachLogMachine(
-    MachPhys::MachineType t,
-    Level hwLevel,
-    Level swLevel,
-    MachLogRace* pRace,
-    MachPhysMachine* pPhysMachine,
     MachLog::ObjectType ot,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMobile(
         pRace,
         pPhysMachine,

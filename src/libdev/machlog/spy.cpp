@@ -44,30 +44,8 @@ MachLogSpyLocator::MachLogSpyLocator(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::SPY_LOCATOR,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysSpyLocator(hwLevel, swLevel, pRace, location),
-        MachLog::SPY_LOCATOR)
-    , lastUpdateTime_(SimManager::instance().currentTime())
-    , pResItemCurrentlyStealing_(nullptr)
-    , isDownloading_(false)
-    , nMines_(MachPhysData::instance().spyLocatorData(hwLevel, swLevel).mineCapacity())
-{
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().spyLocators(pRace->race()), this);
-}
-
-MachLogSpyLocator::MachLogSpyLocator(
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::SPY_LOCATOR,
         hwLevel,
@@ -77,8 +55,6 @@ MachLogSpyLocator::MachLogSpyLocator(
         MachLog::SPY_LOCATOR,
         withId)
     , lastUpdateTime_(SimManager::instance().currentTime())
-    , pResItemCurrentlyStealing_(nullptr)
-    , isDownloading_(false)
     , nMines_(MachPhysData::instance().spyLocatorData(hwLevel, swLevel).mineCapacity())
 {
     hp(data().hitPoints());

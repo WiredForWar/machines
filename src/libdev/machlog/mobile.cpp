@@ -95,25 +95,8 @@ MachLogMobile::MachLogMobile(
     MachPhysMobile* pPhysMobile,
     MachLog::ObjectType ot,
     MATHEX_SCALAR highClearence,
-    MATHEX_SCALAR lowClearence)
-    : MachActor(pRace, pPhysMobile, ot)
-    , pMotionSeq_(new MachLogMachineMotionSequencer(
-          this,
-          pPhysMobile,
-          MexPoint2d(position().x(), position().y()),
-          highClearence,
-          lowClearence))
-{
-    PRE(pRace != nullptr);
-}
-
-MachLogMobile::MachLogMobile(
-    MachLogRace* pRace,
-    MachPhysMobile* pPhysMobile,
-    MachLog::ObjectType ot,
-    MATHEX_SCALAR highClearence,
     MATHEX_SCALAR lowClearence,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachActor(pRace, pPhysMobile, ot, withId)
     , pMotionSeq_(new MachLogMachineMotionSequencer(
           this,

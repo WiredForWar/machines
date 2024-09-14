@@ -32,27 +32,8 @@ MachLogGeoLocator::MachLogGeoLocator(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::GEO_LOCATOR,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysGeoLocator(hwLevel, swLevel, pRace, location),
-        MachLog::GEO_LOCATOR)
-{
-    //  objectType( MachLog::GEO_LOCATOR);
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().geoLocators(pRace->race()), this);
-}
-
-MachLogGeoLocator::MachLogGeoLocator(
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::GEO_LOCATOR,
         hwLevel,

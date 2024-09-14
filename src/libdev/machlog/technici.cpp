@@ -33,31 +33,8 @@ MachLogTechnician::MachLogTechnician(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::TECHNICIAN,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysTechnician(subType, hwLevel, swLevel, pRace, location),
-        MachLog::TECHNICIAN)
-    , subType_(subType)
-{
-    HAL_STREAM("MLTech::CTOR\n");
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().technicians(pRace->race()), this);
-    MachLogRaces::instance().cascadeUpdateForResearch(pRace->race());
-    HAL_STREAM("MLTech::CTOR exit\n");
-}
-
-MachLogTechnician::MachLogTechnician(
-    const MachPhys::TechnicianSubType& subType,
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::TECHNICIAN,
         hwLevel,

@@ -66,7 +66,7 @@
 /* //////////////////////////////////////////////////////////////// */
 PER_DEFINE_PERSISTENT_ABSTRACT(MachActor);
 
-MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::ObjectType ot)
+MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::ObjectType ot, std::optional<UtlId> withId)
     : SimActor(pRace, pPhysEntity)
     , pImpl_(new MachActorImpl(this, pRace, ot))
 {
@@ -79,80 +79,61 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
     actorsThreateningMe_.reserve(10);
 
     ASSERT(pRace != nullptr, "Race in machActor Ctor was NULL\n");
-    HAL_STREAM("MachActor::CTOR ");
-    // Set the id
-    if (MachLogNetwork::instance().isNetworkGame())
+    if (withId.has_value())
     {
-        // Ids are unique between races. Set the range depending on race
-        UtlId minId, maxId;
-        if (ot == MachLog::ARTEFACT)
-        {
-            minId = 1001;
-            maxId = MachLogRaces::ID_UPPER_BOUND - 1;
-        }
-        else
-        {
-            minId = pRace->race() * 250 + 1;
-            maxId = minId + 250;
-        }
+        HAL_STREAM("MachActor::CTOR " << ot << " withId " << withId.value() << std::endl);
+        // Set the id
+        ASSERT_INFO(withId.value());
+#ifndef NDEBUG
+        if (races.actorExists(withId.value()))
+            ASSERT_INFO(races.actor(withId.value()).objectType());
+#endif
+        ASSERT(! races.actorExists(withId.value()), "Actor already exists\n");
 
-        id(MachLogRaces::idGenerator().nextId(minId, maxId));
+        if (withId.value() != 0)
+            MachLogRaces::idGenerator().allocateId(withId.value());
+
+        id(withId.value());
     }
     else
     {
-        id(MachLogRaces::idGenerator().nextId());
+        HAL_STREAM("MachActor::CTOR ");
+        // Set the id
+        if (MachLogNetwork::instance().isNetworkGame())
+        {
+            // Ids are unique between races. Set the range depending on race
+            UtlId minId, maxId;
+            if (ot == MachLog::ARTEFACT)
+            {
+                minId = 1001;
+                maxId = MachLogRaces::ID_UPPER_BOUND - 1;
+            }
+            else
+            {
+                minId = pRace->race() * 250 + 1;
+                maxId = minId + 250;
+            }
+
+            id(MachLogRaces::idGenerator().nextId(minId, maxId));
+        }
+        else
+        {
+            id(MachLogRaces::idGenerator().nextId());
+        }
     }
     HAL_STREAM(
-        " id " << id() << " " << ot << " race " << (int)pRace->race() << " static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl);
-    NETWORK_ERRORS_STREAM(
-        "MachActor::MachActor (" << id() << ") local race, " << pRace->race() << " " << ot << std::endl);
-
-    // Add the actor to the races collection
-    races.add(this);
-    /*  if( ot == MachLog::ORE_HOLOGRAPH or
-        ot == MachLog::DEBRIS or
-        ot == MachLog::SQUADRON or
-        ot == MachLog::LAND_MINE )
-            races.remove( this );*/
-    if (ot == MachLog::SQUADRON)
-        races.remove(this);
-
-    // caches basic centroid offset to prevent the need for wasteful future recalculation
-    setupBasicTargetOffset();
-
-    HAL_STREAM("MachActor::CTOR done\n");
-}
-
-MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::ObjectType ot, UtlId withId)
-    : SimActor(pRace, pPhysEntity)
-    , pImpl_(new MachActorImpl(this, pRace, ot))
-{
-    CB_DEPIMPL(Actors, actorsThreateningMe_);
-    CB_DEPIMPL(MachPhys::Race, displayMapAndIconRace_);
-
-    MachLogRaces& races = MachLogRaces::instance();
-
-    displayMapAndIconRace_ = pRace->race();
-    actorsThreateningMe_.reserve(10);
-
-    ASSERT(pRace != nullptr, "Race in machActor Ctor was NULL\n");
-    HAL_STREAM("MachActor::CTOR " << ot << " withId " << withId << std::endl);
-    // Set the id
-    ASSERT_INFO(withId);
-#ifndef NDEBUG
-    if (races.actorExists(withId))
-        ASSERT_INFO(races.actor(withId).objectType());
-#endif
-    ASSERT(! races.actorExists(withId), "Actor already exists\n");
-
-    if (withId != 0)
-        MachLogRaces::idGenerator().allocateId(withId);
-
-    id(withId);
-    HAL_STREAM(
-        " id " << id() << " " << ot << " race " << (int)pRace->race() << " static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl);
-    NETWORK_ERRORS_STREAM(
-        "MachActor::MachActor (" << id() << ") probably remote race, " << pRace->race() << " " << ot << std::endl);
+        " id " << id() << " " << ot << " race " << (int)pRace->race() << " static_cast<const void*>(this) "
+               << static_cast<const void*>(this) << std::endl);
+    if (withId.has_value())
+    {
+        NETWORK_ERRORS_STREAM(
+            "MachActor::MachActor (" << id() << ") probably remote race, " << pRace->race() << " " << ot << std::endl);
+    }
+    else
+    {
+        NETWORK_ERRORS_STREAM(
+            "MachActor::MachActor (" << id() << ") local race, " << pRace->race() << " " << ot << std::endl);
+    }
 
     // Add the actor to the races collection
     HAL_STREAM("MachActor::CTOR add to races" << std::endl);
@@ -171,7 +152,6 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
     // caches basic centroid offset to prevent the need for wasteful future recalculation
     setupBasicTargetOffset();
 
-    HAL_STREAM("MachActor::CTOR done" << std::endl);
     HAL_STREAM("MachActor::CTOR done\n");
 }
 

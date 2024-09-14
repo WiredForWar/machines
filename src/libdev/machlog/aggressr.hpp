@@ -33,16 +33,8 @@ public:
         Level swLevel,
         MachLogRace* pRace,
         const MexPoint3d& location,
-        MachPhys::WeaponCombo);
-
-    MachLogAggressor(
-        const MachPhys::AggressorSubType& subType,
-        Level hwLevel,
-        Level swLevel,
-        MachLogRace* pRace,
-        const MexPoint3d& location,
         MachPhys::WeaponCombo,
-        UtlId withId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogAggressor() override {};
 

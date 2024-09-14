@@ -23,14 +23,8 @@ public:
         MachLogMachine::Level hwLevel,
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
-        const MexPoint3d& location);
-
-    MachLogGeoLocator(
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
         const MexPoint3d& location,
-        UtlId);
+        std::optional<UtlId> = std::nullopt);
 
     ~MachLogGeoLocator() override;
 

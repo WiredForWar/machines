@@ -31,15 +31,8 @@ public:
         MachPhysMobile*,
         MachLog::ObjectType,
         MATHEX_SCALAR highClearence,
-        MATHEX_SCALAR lowClearence);
-
-    MachLogMobile(
-        MachLogRace* pRace,
-        MachPhysMobile*,
-        MachLog::ObjectType,
-        MATHEX_SCALAR highClearence,
         MATHEX_SCALAR lowClearence,
-        UtlId withId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogMobile() override;
 

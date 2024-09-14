@@ -11,7 +11,9 @@
 #include "machphys/machphys.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/destroy.hpp"
+
 #include <iostream>
+#include <optional>
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -67,8 +69,7 @@ public:
     using Actors = ctl_vector<UtlId>;
     using Machines = ctl_pvector<MachLogMachine>;
 
-    MachActor(MachLogRace* pRace, W4dEntity*, MachLog::ObjectType);
-    MachActor(MachLogRace* pRace, W4dEntity*, MachLog::ObjectType, UtlId withId);
+    MachActor(MachLogRace* pRace, W4dEntity*, MachLog::ObjectType, std::optional<UtlId> withId = std::nullopt);
 
     ~MachActor() override;
 

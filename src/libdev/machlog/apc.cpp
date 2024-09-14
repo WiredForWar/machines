@@ -58,27 +58,8 @@ MachLogAPC::MachLogAPC(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::APC,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysAPC(hwLevel, swLevel, pRace, location),
-        MachLog::APC)
-    , pImpl_(new MachLogAPCImpl)
-{
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().apcs(pRace->race()), this);
-}
-
-MachLogAPC::MachLogAPC(
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::APC,
         hwLevel,

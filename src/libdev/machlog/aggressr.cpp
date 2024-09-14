@@ -37,34 +37,8 @@ MachLogAggressor::MachLogAggressor(
     Level swLevel,
     MachLogRace* pRace,
     const MexPoint3d& location,
-    MachPhys::WeaponCombo wc)
-    : MachLogMachine(
-        MachPhys::AGGRESSOR,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysAggressor(subType, hwLevel, swLevel, pRace, location, wc),
-        MachLog::AGGRESSOR)
-    , MachLogCanAttack(this, &physAggressor(), wc)
-    , subType_(subType)
-{
-    // HAL_STREAM("MLAggressor::CTOR static_cast<const void*>(this) " << static_cast<const void*>(this) << std::endl );
-    currentTarget(nullptr);
-    //  objectType( MachLog::AGGRESSOR );
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().aggressors(pRace->race()), this);
-    MachLogArmourer::arm(this);
-}
-
-MachLogAggressor::MachLogAggressor(
-    const MachPhys::AggressorSubType& subType,
-    Level hwLevel,
-    Level swLevel,
-    MachLogRace* pRace,
-    const MexPoint3d& location,
     MachPhys::WeaponCombo wc,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::AGGRESSOR,
         hwLevel,

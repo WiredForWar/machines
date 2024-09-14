@@ -318,16 +318,8 @@ protected:
         Level swLevel,
         MachLogRace* pRace,
         MachPhysMachine*,
-        MachLog::ObjectType);
-
-    MachLogMachine(
-        MachPhys::MachineType type,
-        Level hwLevel,
-        Level swLevel,
-        MachLogRace* pRace,
-        MachPhysMachine*,
         MachLog::ObjectType,
-        UtlId withId);
+        std::optional<UtlId> withId);
     ///////////////////////////////
 
     void doOutputOperator(std::ostream&) const override;

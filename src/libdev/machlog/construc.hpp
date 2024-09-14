@@ -26,15 +26,8 @@ public:
         MachLogMachine::Level hwLevel,
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
-        const MexPoint3d& location);
-
-    MachLogConstructor(
-        const MachPhys::ConstructorSubType& subType,
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
         const MexPoint3d& location,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogConstructor() override;
 
@@ -86,9 +79,9 @@ private:
 
     MachPhys::ConstructorSubType subType_;
 
-    bool isConstructing_; // actually engaged in construction, rather than merely en route to a construction site etc.
+    bool isConstructing_{}; // actually engaged in construction, rather than merely en route to a construction site etc.
 
-    bool isDoingSuperConstruct_; // if true, means it has at least one more construction to deal with after the
+    bool isDoingSuperConstruct_{}; // if true, means it has at least one more construction to deal with after the
                                  // current op its doing
 };
 

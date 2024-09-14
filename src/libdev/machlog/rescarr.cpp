@@ -67,27 +67,8 @@ MachLogResourceCarrier::MachLogResourceCarrier(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::RESOURCE_CARRIER,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysResourceCarrier(hwLevel, swLevel, pRace, location),
-        MachLog::RESOURCE_CARRIER)
-    , pImpl_(new MachLogResourceCarrierImpl())
-{
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().resourceCarriers(pRace->race()), this);
-}
-
-MachLogResourceCarrier::MachLogResourceCarrier(
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::RESOURCE_CARRIER,
         hwLevel,

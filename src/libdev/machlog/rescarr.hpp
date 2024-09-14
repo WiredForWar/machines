@@ -35,18 +35,13 @@ public:
         START_WITH_PUTDOWN,
         START_WITH_PICKUP
     };
-    MachLogResourceCarrier(
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
-        const MexPoint3d& location);
 
     MachLogResourceCarrier(
         MachLogMachine::Level hwLevel,
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
         const MexPoint3d& location,
-        UtlId);
+        std::optional<UtlId> = std::nullopt);
 
     ~MachLogResourceCarrier() override;
 

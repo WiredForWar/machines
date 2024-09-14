@@ -42,36 +42,8 @@ MachLogConstructor::MachLogConstructor(
     MachLogMachine::Level hwLevel,
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
-    const MexPoint3d& location)
-    : MachLogMachine(
-        MachPhys::CONSTRUCTOR,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysConstructor(subType, hwLevel, swLevel, pRace, location),
-        MachLog::CONSTRUCTOR)
-    , subType_(subType)
-    , isDoingSuperConstruct_(false)
-    , isConstructing_(false)
-{
-    hp(data().hitPoints());
-    armour(data().armour());
-    MachLogRaces& races = MachLogRaces::instance();
-    ctl_append(&races.constructors(pRace->race()), this);
-    races.constructionTree().updateAvailableConstructions(
-        pRace->race(),
-        data().mostAdvancedConstructionType(),
-        data().mostAdvancedSubType(),
-        data().mostAdvancedConstructionLevel());
-}
-
-MachLogConstructor::MachLogConstructor(
-    const MachPhys::ConstructorSubType& subType,
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
     const MexPoint3d& location,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::CONSTRUCTOR,
         hwLevel,
@@ -81,8 +53,6 @@ MachLogConstructor::MachLogConstructor(
         MachLog::CONSTRUCTOR,
         withId)
     , subType_(subType)
-    , isDoingSuperConstruct_(false)
-    , isConstructing_(false)
 {
     hp(data().hitPoints());
     armour(data().armour());

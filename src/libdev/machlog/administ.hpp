@@ -33,16 +33,8 @@ public:
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
         const MexPoint3d& location,
-        MachPhys::WeaponCombo wc);
-
-    MachLogAdministrator(
-        const MachPhys::AdministratorSubType& subType,
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
-        const MexPoint3d& location,
         MachPhys::WeaponCombo wc,
-        UtlId);
+        std::optional<UtlId> = std::nullopt);
 
     ~MachLogAdministrator() override;
 

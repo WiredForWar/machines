@@ -41,32 +41,8 @@ MachLogAdministrator::MachLogAdministrator(
     MachLogMachine::Level swLevel,
     MachLogRace* pRace,
     const MexPoint3d& location,
-    MachPhys::WeaponCombo wc)
-    : MachLogMachine(
-        MachPhys::ADMINISTRATOR,
-        hwLevel,
-        swLevel,
-        pRace,
-        pNewPhysAdministrator(subType, hwLevel, swLevel, pRace, location, wc),
-        MachLog::ADMINISTRATOR)
-    , MachLogCanAdminister(pRace->race())
-    , MachLogCanAttack(this, &physAdministrator(), wc)
-    , subType_(subType)
-{
-    hp(data().hitPoints());
-    armour(data().armour());
-    ctl_append(&MachLogRaces::instance().administrators(pRace->race()), this);
-    MachLogArmourer::arm(this);
-}
-
-MachLogAdministrator::MachLogAdministrator(
-    const MachPhys::AdministratorSubType& subType,
-    MachLogMachine::Level hwLevel,
-    MachLogMachine::Level swLevel,
-    MachLogRace* pRace,
-    const MexPoint3d& location,
     MachPhys::WeaponCombo wc,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogMachine(
         MachPhys::ADMINISTRATOR,
         hwLevel,

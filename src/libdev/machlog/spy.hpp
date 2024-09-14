@@ -24,14 +24,8 @@ public:
         MachLogMachine::Level hwLevel,
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
-        const MexPoint3d& location);
-
-    MachLogSpyLocator(
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
         const MexPoint3d& location,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogSpyLocator() override;
 
@@ -91,8 +85,8 @@ private:
 
     int nMines_;
     PhysAbsoluteTime lastUpdateTime_;
-    MachLogResearchItem* pResItemCurrentlyStealing_;
-    bool isDownloading_; // Whether or not the spy is actively downloading an enemy's research item
+    MachLogResearchItem* pResItemCurrentlyStealing_{};
+    bool isDownloading_{}; // Whether or not the spy is actively downloading an enemy's research item
 };
 
 PER_DECLARE_PERSISTENT(MachLogSpyLocator);

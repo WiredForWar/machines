@@ -24,15 +24,8 @@ public:
         MachLogMachine::Level hwLevel,
         MachLogMachine::Level swLevel,
         MachLogRace* pRace,
-        const MexPoint3d& location);
-
-    MachLogTechnician(
-        const MachPhys::TechnicianSubType& subType,
-        MachLogMachine::Level hwLevel,
-        MachLogMachine::Level swLevel,
-        MachLogRace* pRace,
         const MexPoint3d& location,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogTechnician() override;
 
