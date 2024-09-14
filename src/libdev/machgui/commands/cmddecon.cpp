@@ -201,7 +201,7 @@ bool MachGuiDeconstructCommand::addPromptTextCommandInfo(const MachActor* pActor
         MachPhys::BuildingMaterialUnits secondHandBMUs
             = totalBMUs * MachLogRaces::instance().stats().secondhandRefundablePercentage();
 
-        GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(std::to_string(secondHandBMUs)));
+        GuiResourceString bmuText(IDS_BMUPOINTS_ON_DECONSTRUCTION, GuiString(std::to_string(secondHandBMUs)));
         prompt += " " + bmuText.asString();
         return true;
     }
