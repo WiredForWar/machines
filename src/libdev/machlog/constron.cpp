@@ -1526,6 +1526,12 @@ void MachLogConstruction::constructionCreated(MachPhysConstruction* pConstructio
     {
         displayAsRace(displayMapAndIconRace());
     }
+
+    if (hp() != maximumhp())
+    {
+        double damagePercent = (maximumhp() - hp()) * 100.0 / maximumhp();
+        physConstruction().damageLevel(damagePercent);
+    }
 }
 
 void perWrite(PerOstream& ostr, const MachLogConstruction& actor)
