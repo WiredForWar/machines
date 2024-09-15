@@ -284,6 +284,10 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
 
     delete pImpl_->pMessageBroker_;
 
+    // Explicitly delete children before pImpl is gone to let them gracefully unregister
+    // (e.g. call removeFocusCapableControl(), which uses pImpl_->focusCapableControls_)
+    deleteAllChildren();
+
     delete pImpl_;
 }
 
