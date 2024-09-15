@@ -320,6 +320,9 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
                 interval = moveToSide();
                 break;
             }
+        case WAIT_FOR_INTERVAL:
+        case FIRE:
+            break;
     }
 
     // store the action
