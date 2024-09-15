@@ -37,9 +37,9 @@ public:
         MachLogRace* pRace,
         MachPhysMobile*,
         MachLog::ObjectType,
-        UtlId withId,
         MATHEX_SCALAR highClearence,
-        MATHEX_SCALAR lowClearence);
+        MATHEX_SCALAR lowClearence,
+        UtlId withId);
 
     ~MachLogMobile() override;
 

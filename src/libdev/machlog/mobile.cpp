@@ -111,9 +111,9 @@ MachLogMobile::MachLogMobile(
     MachLogRace* pRace,
     MachPhysMobile* pPhysMobile,
     MachLog::ObjectType ot,
-    UtlId withId,
     MATHEX_SCALAR highClearence,
-    MATHEX_SCALAR lowClearence)
+    MATHEX_SCALAR lowClearence,
+    UtlId withId)
     : MachActor(pRace, pPhysMobile, ot, withId)
     , pMotionSeq_(new MachLogMachineMotionSequencer(
           this,

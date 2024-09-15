@@ -128,9 +128,9 @@ MachLogMachine::MachLogMachine(
         pRace,
         pPhysMachine,
         ot,
-        withId,
         pPhysMachine->machineData().highClearance(),
-        pPhysMachine->machineData().lowClearance())
+        pPhysMachine->machineData().lowClearance(),
+        withId)
     , pImpl_(new MachLogMachineImpl(t, hwLevel, swLevel, pRace->race()))
 {
     machineCreated();
