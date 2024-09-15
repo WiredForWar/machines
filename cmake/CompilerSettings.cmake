@@ -25,8 +25,11 @@ else()
     message(FATAL_ERROR "Your C++ compiler doesn't seem to be supported.")
 endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-type")
+endif()
+
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-declarations")
     if(BUILD_32)
         set(MACHINES_COMPILER_BIT_MODE -m32)
     else()
