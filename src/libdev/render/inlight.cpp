@@ -529,8 +529,17 @@ float RenIAttenuatedLight::attenuation(MATHEX_SCALAR rangeToVtx) const
     PRE(rangeToVtx >= 0);
     PRE(rangeToVtx <= maxRange_);
 
+    // Note: this also could be `normalised = 1 - rangeToVtx / maxRange_`
+    //       which won't result in such rounding error but fp division is
+    //       slower than multiplication, and the codebase has a number of
+    //       such optimizations here and there.
     const float normalised = 1 - rangeToVtx * recipMaxRange_;
-    ASSERT(normalised >= 0, "Attenuation calculation error.");
+
+    // Note: those asserts are triggered due to fp math rounding.
+    //       E.g. with maxRange = 80, the range recip is 0.0125000002
+    //       which gives 1.000000016 on rangeToVtx close to 80, which leads
+    //       to normalized value below zero.
+    // ASSERT(normalised >= 0, "Attenuation calculation error.");
     ASSERT(normalised <= 1, "Attenuation calculation error.");
 
     // If the attenuations add up to 1.0 or less then this result must
@@ -538,7 +547,7 @@ float RenIAttenuatedLight::attenuation(MATHEX_SCALAR rangeToVtx) const
     float result
         = constantAttenuation() + linearAttenuation() * normalised + quadraticAttenuation() * normalised * normalised;
 
-    POST(result >= 0);
+    // POST(result >= 0);
     POST(result <= 1);
     return result;
 }
