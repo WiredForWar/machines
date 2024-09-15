@@ -152,7 +152,6 @@ protected:
     // This uses the same maths as Direct3D's D3DLIGHT2.
     // PRE(rangeToVtxSquared >= 0);
     float attenuation(MATHEX_SCALAR rangeToVtx) const;
-    RenIFixPtU0_8 attenuationFixPt(MATHEX_SCALAR rangeToVtx) const;
 
     // Calculate the attenuation given the position of a light and a vertex.
     float

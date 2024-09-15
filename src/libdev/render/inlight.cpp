@@ -552,26 +552,6 @@ float RenIAttenuatedLight::attenuation(MATHEX_SCALAR rangeToVtx) const
     return result;
 }
 
-RenIFixPtU0_8 RenIAttenuatedLight::attenuationFixPt(MATHEX_SCALAR rangeToVtx) const
-{
-    PRE(rangeToVtx >= 0);
-    PRE(rangeToVtx <= maxRange_);
-
-    const float normalised = 1 - rangeToVtx * recipMaxRange_;
-    ASSERT(normalised >= 0, "Attenuation calculation error.");
-    ASSERT(normalised <= 1, "Attenuation calculation error.");
-
-    // If the attenuations add up to 1.0 or less then this result must
-    // also be in the range [0,1].  See startFrame method.
-    float result
-        = constantAttenuation() + linearAttenuation() * normalised + quadraticAttenuation() * normalised * normalised;
-
-    ASSERT(result >= 0, "Attenuation calculation error.");
-    ASSERT(result <= 1, "Attenuation calculation error.");
-
-    return _STATIC_CAST(RenIFixPtU0_8, 255 * result + 0.5);
-}
-
 // Calculate the attenuation given the position of a light and a vertex.
 float RenIAttenuatedLight::attenuation(
     MATHEX_SCALAR x,
