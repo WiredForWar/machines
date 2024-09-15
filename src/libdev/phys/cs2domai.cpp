@@ -17,8 +17,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 PhysCS2dDomain::PhysCS2dDomain(const DomainId& id, const MexAlignedBox2d& boundary)
-    : boundary_(boundary)
-    , id_(id)
+    : id_(id)
+    , boundary_(boundary)
     , pPolygon_(nullptr)
 {
     // Set up allocation size for portals vector
@@ -32,8 +32,8 @@ PhysCS2dDomain::PhysCS2dDomain(
     const DomainId& id,
     const MexAlignedBox2d& boundary,
     std::unique_ptr<MexPolygon2d>& polygonUPtr)
-    : boundary_(boundary)
-    , id_(id)
+    : id_(id)
+    , boundary_(boundary)
     , pPolygon_(polygonUPtr.release())
 {
 

@@ -64,7 +64,7 @@ private:
 
     // Cached transform data
 
-    bool cacheValid_; // true iff the cache data exists
+    bool cacheValid_{}; // true iff the cache data exists
     size_t cacheSegment_; // Segment number of the cached data
     MexPoint3d cacheTranslation_; // Translation component of modifying transform
     MexVec3 cacheRotationAxis_; // Unit direction vector for axis of rotation change

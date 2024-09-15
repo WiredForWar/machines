@@ -24,10 +24,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 PhysCS2dFindPath::PhysCS2dFindPath()
-    : pConfigSpace_(nullptr)
-    , state_(UNDEFINED)
-    , pIgnorePolygons_(nullptr)
-    , flags_(0)
 {
     // Should never be used
     TEST_INVARIANT;
@@ -42,12 +38,11 @@ PhysCS2dFindPath::PhysCS2dFindPath(
     ObstacleFlags flags,
     PhysPathFindingPriority priority)
 
-    : pConfigSpace_(pSpace)
+    : state_(NOT_STARTED)
     , startPoint_(startPoint)
     , endPoint_(endPoint)
     , clearance_(clearance)
-    , state_(NOT_STARTED)
-    , pIgnorePolygons_(nullptr)
+    , pConfigSpace_(pSpace)
     , flags_(flags)
     , priority_(priority)
 {

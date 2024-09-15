@@ -142,17 +142,17 @@ private:
         const;
 
     // Data members
-    State state_; // Indicates where at
+    State state_{}; // Indicates where at
     MexPoint2d startPoint_; // Start position
     MexPoint2d endPoint_; // End position
     MATHEX_SCALAR clearance_; // The clearance needed all round the path
     MATHEX_SCALAR expansionDistance_; // Expansion distance used around obstacles during
                                       // subpath collision avoidance
-    PhysConfigSpace2d* pConfigSpace_; // The config space through which we try to find the path
+    PhysConfigSpace2d* pConfigSpace_{}; // The config space through which we try to find the path
     Path fullPath_; // Full path for getting from start to end
-    const PolygonIds* pIgnorePolygons_; // Pointer to polygons to be ignored. This does not own it.
+    const PolygonIds* pIgnorePolygons_{}; // Pointer to polygons to be ignored. This does not own it.
 
-    ObstacleFlags flags_; // The obstacles that can be ignored for this find path
+    ObstacleFlags flags_{}; // The obstacles that can be ignored for this find path
     PhysPathFindingPriority priority_;
 };
 

@@ -49,8 +49,8 @@ private:
 
     struct Entry
     {
-        PhysRelativeTime time; // Time at which the transform defines position
         MexTransform3d transform; // The transform
+        PhysRelativeTime time; // Time at which the transform defines position
         Entry(const MexTransform3d& _transform, const PhysRelativeTime _time)
             : transform(_transform)
             , time(_time) {};

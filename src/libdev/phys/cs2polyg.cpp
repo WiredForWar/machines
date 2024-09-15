@@ -26,9 +26,9 @@ PhysCS2dPolygon::PhysCS2dPolygon(
     : id_(id)
     , polygon_(*(polygonUPtr.release()))
     , height_(height)
+    , flags_(flags)
     , longevity_(longevity)
     , enabled_(true)
-    , flags_(flags)
 {
     // Construct the bounding volume
     polygon_.boundary(&boundary_);

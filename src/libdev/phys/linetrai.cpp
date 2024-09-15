@@ -12,7 +12,6 @@ PER_DEFINE_PERSISTENT(PhysLinearTravelPlanImpl);
 PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(const PhysMotionPlan::TransformsPtr& transformsPtr)
     : transformsPtr_(transformsPtr)
     , rampAccelerationsPtr_(new PhysMotionPlan::RampAccelerations())
-    , cacheValid_(false)
     , segmentTimesPtr_(new(PhysMotionPlan::Times))
     , startRotationDistance_(2.0)
 {
@@ -24,7 +23,6 @@ PhysLinearTravelPlanImpl::PhysLinearTravelPlanImpl(
     const PhysMotionPlan::RampAccelerationsPtr& rampAccelerationsPtr)
     : transformsPtr_(transformsPtr)
     , rampAccelerationsPtr_(rampAccelerationsPtr)
-    , cacheValid_(false)
     , segmentTimesPtr_(new PhysMotionPlan::Times)
     , startRotationDistance_(2.0)
 {

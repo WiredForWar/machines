@@ -14,8 +14,8 @@ Brake::Brake(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brake
     : minValue_(minValue)
     , maxValue_(maxValue)
     , brakeBandWidth_(brakeBandFraction * (maxValue - minValue))
-    , maxBandValue_(maxValue - brakeBandFraction * (maxValue - minValue))
     , minBandValue_(minValue + brakeBandFraction * (maxValue - minValue))
+    , maxBandValue_(maxValue - brakeBandFraction * (maxValue - minValue))
 {
     PRE(maxValue >= minValue);
     PRE(0.0 <= brakeBandFraction && brakeBandFraction <= 1.0);

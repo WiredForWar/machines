@@ -259,7 +259,7 @@ private:
     //   xxxyyyzzzt
     // where each of xxx, yyy, zzz is an AxisAlignment value for the 3 basis vectors,
     // and t is a HasTranslation value indicating whether any translation is defined.
-    uint flags_;
+    uint flags_{};
 };
 
 PER_DECLARE_PERSISTENT(MexTransform3d);

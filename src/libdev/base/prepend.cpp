@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <sstream>
 #include <ctime>
 #include <cstdio>
 #include <cstring>
@@ -19,13 +18,8 @@
 
 DiagOstreamPrepend::DiagOstreamPrepend(std::ostream* pOstr)
     : std::ostream(&dummyStreamBuf(this))
-    , pOstr_(pOstr)
-    , prependNow_(true)
-    , date_(false)
-    , clock_(false)
     , buffer_(this)
-    , prependString_(nullptr)
-    , nCharsAllocated_(0)
+    , pOstr_(pOstr)
 {
     // ostream& thisAsOStream = *this;
     //  this again
@@ -35,13 +29,8 @@ DiagOstreamPrepend::DiagOstreamPrepend(std::ostream* pOstr)
 
 DiagOstreamPrepend::DiagOstreamPrepend()
     : std::ostream(&dummyStreamBuf(this))
-    , pOstr_(nullptr)
-    , prependNow_(true)
-    , date_(false)
-    , clock_(false)
     , buffer_(this)
-    , prependString_(nullptr)
-    , nCharsAllocated_(0)
+    , pOstr_(nullptr)
 {
     // ostream& thisAsOStream = *this;
     // thisAsOStream = &buffer_;

@@ -51,8 +51,8 @@ MachLogAdministrator::MachLogAdministrator(
         pNewPhysAdministrator(subType, hwLevel, swLevel, pRace, location, wc),
         MachLog::ADMINISTRATOR,
         withId)
-    , MachLogCanAdminister(pRace->race())
     , MachLogCanAttack(this, &physAdministrator(), wc)
+    , MachLogCanAdminister(pRace->race())
     , subType_(subType)
 {
     hp(data().hitPoints());

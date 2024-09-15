@@ -61,15 +61,15 @@ private:
     void doPrepend();
 
     DiagPrependBuffer buffer_;
-    std::ostream* pOstr_;
+    std::ostream* pOstr_{};
 
-    bool date_;
-    bool clock_;
+    bool date_{};
+    bool clock_{};
 
-    bool prependNow_;
+    bool prependNow_{true};
 
-    char* prependString_;
-    size_t nCharsAllocated_;
+    char* prependString_{};
+    size_t nCharsAllocated_{};
 
     static std::streambuf& dummyStreamBuf(DiagOstreamPrepend* pOwner);
 };

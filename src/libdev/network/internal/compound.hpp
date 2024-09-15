@@ -64,10 +64,10 @@ private:
 
     NetCompoundMessageHeader header_;
 
-    size_t currentOffset_;
-    size_t maxBufferSize_;
-
     uint8* pBuffer_;
+
+    size_t maxBufferSize_;
+    size_t currentOffset_;
 };
 
 #endif

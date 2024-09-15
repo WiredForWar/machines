@@ -50,9 +50,9 @@ private:
     bool operator==(const PhysCS2dMotionChunk&);
 
     // Data members
-    PhysMotionChunk motionChunk_; // Defines the motion in space and time
-    ObjectId objectId_; // Id of the related object
     MotionChunkId id_; // Config space allocated id for this chunk
+    ObjectId objectId_; // Id of the related object
+    PhysMotionChunk motionChunk_; // Defines the motion in space and time
 };
 
 #ifdef _INLINE

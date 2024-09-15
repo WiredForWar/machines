@@ -62,8 +62,8 @@ MexTransform3d::MexTransform3d()
 }
 
 MexTransform3d::MexTransform3d(const MexTransform3d& t)
-    : flags_(t.flags_)
-    , tkey_(t.tkey_)
+    : tkey_(t.tkey_)
+    , flags_(t.flags_)
 {
 
     forward_[0][0] = t.forward_[0][0];
