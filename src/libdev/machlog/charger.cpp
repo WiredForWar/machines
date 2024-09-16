@@ -68,7 +68,7 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
 
     if (pTarget->objectIsMachine())
     {
-        if (! healing_)
+        if (!healing_)
         {
             // initiate healing; start off by activating the beam animation and adding a heal aura reference
 
@@ -77,13 +77,8 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
             // set up observer relationship
             pTarget->attach(this);
             currentlyAttached(true);
-            const MachLogMachine& cmlm = pTarget->asMachine();
             MachLogMachine& mlm = pTarget->asMachine();
-            // pPhysSuperCharger_->startHealing( cmlm.physMachine(), SimManager::instance().currentTime(), 2000 );
-            pPhysSuperCharger_->startHealing(
-                _CONST_CAST(MachPhysMachine&, cmlm.physMachine()),
-                SimManager::instance().currentTime(),
-                2000);
+            pPhysSuperCharger_->startHealing(mlm.physMachine(), SimManager::instance().currentTime(), 2000);
             mlm.addHealingAuraReference();
             healing_ = true;
             lastUpdateTime_ = SimManager::instance().currentTime();
