@@ -22,18 +22,17 @@ AfxConfigurationData* AfxConfigurationLoader::load()
     constexpr char msaaBuffers[] = "Options\\MSAA\\Buffers";
     constexpr char msaaSamples[] = "Options\\MSAA\\Samples";
     auto configValue = std::string {};
-    auto dummy = SysRegistry::KeyHandle {};
 
     // defaults for when not present in config
     int buffers = 1;
     int samples = 2;
 
-    if (SysRegistry::SUCCESS == SysRegistry::instance().queryValueNoRecord(dummy, msaaBuffers, configValue))
+    if (SysRegistry::SUCCESS == SysRegistry::instance().queryValueNoRecord(msaaBuffers, configValue))
     {
         buffers = std::atoi(configValue.c_str());
         configValue.clear();
     }
-    if (SysRegistry::SUCCESS == SysRegistry::instance().queryValueNoRecord(dummy, msaaSamples, configValue))
+    if (SysRegistry::SUCCESS == SysRegistry::instance().queryValueNoRecord(msaaSamples, configValue))
     {
         samples = std::atoi(configValue.c_str());
         configValue.clear();

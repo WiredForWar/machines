@@ -14,6 +14,8 @@
 
 #include "base/base.hpp"
 
+#include <memory>
+
 class SysRegistryImpl;
 
 class SysRegistry
@@ -39,7 +41,6 @@ public:
         MULTI_STRINGS,
         STRING
     };
-    using KeyHandle = uint;
 
     // Most systems will have a default stub for example machines is:
     //"SOFTWARE\Acclaim Entertainment\Machines"
@@ -47,15 +48,11 @@ public:
     const std::string& currentStubKey() const;
     void currentStubKey(const std::string&);
 
-    // Opens a key value but only if it is present in registry
-    ReturnValue onlyOpenKey(const std::string& keyName, KeyHandle* pOpenedKey);
     // This is the same as above but will create the key if necessary - this is normal use
-    ReturnValue openKey(const std::string& keyName, KeyHandle* pOpenedKey);
     ReturnValue deleteKey(const std::string& keyName);
-    ReturnValue queryValue(KeyHandle, const std::string& valueName, DataType, void* pBuffer, int* pBufferSize);
-    ReturnValue setValue(KeyHandle, const std::string& valueName, const std::string& value);
-    ReturnValue deleteValue(KeyHandle, const std::string& valueName);
-    ReturnValue closeKey(KeyHandle);
+    ReturnValue queryValue(const std::string& valueName, DataType, void* pBuffer, int* pBufferSize);
+    ReturnValue setValue(const std::string& valueName, const std::string& value);
+    ReturnValue deleteValue(const std::string& valueName);
 
     // more simple interface but less efficient as it will open and close keys and each call
     std::string queryStringValue(
@@ -68,7 +65,7 @@ public:
     void setStringValue(const std::string& keyName, const std::string& valueName, const std::string& value);
     void setIntegerValue(const std::string& keyName, const std::string& valueName, int value);
 
-    ReturnValue queryValueNoRecord(KeyHandle, const std::string& valueName, std::string&);
+    ReturnValue queryValueNoRecord(const std::string& valueName, std::string&);
 
     void CLASS_INVARIANT;
 
@@ -78,15 +75,8 @@ private:
     SysRegistry(const SysRegistry&);
     SysRegistry& operator=(const SysRegistry&);
 
-    //  The NoRecord versions of these functions do not do any recording. They
-    //  are for use within functions which are already doing their own recording
-    //  - e.g. queryStringValue and queryIntegerValue.
-    ReturnValue onlyOpenKeyNoRecord(const std::string& keyName, KeyHandle* pOpenedKey);
-    // Query is now public. F the recorder. =)
-    ReturnValue closeKeyNoRecord(KeyHandle);
-
     SysRegistry();
-    SysRegistryImpl* pImpl_;
+    std::unique_ptr<SysRegistryImpl> pImpl_;
 };
 
 #endif
