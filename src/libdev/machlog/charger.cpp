@@ -63,7 +63,7 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
     HAL_STREAM(
         "MLSuperCharger::doFire currentlyAttached " << currentlyAttached() << " healing " << healing_ << std::endl);
 
-    // it is possible to be calling this code while targettign a non-machine actor in first person. If this
+    // it is possible to be calling this code while targetting a non-machine actor in first person. If this
     // is the case, simply do nothing.
 
     if (pTarget->objectIsMachine())

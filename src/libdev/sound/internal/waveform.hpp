@@ -18,7 +18,7 @@
   I/O scheme.
 
   isWaveFile is provided as static so you do not
-  need to incur any intialisation overhead.
+  need to incur any initialisation overhead.
 
 */
 

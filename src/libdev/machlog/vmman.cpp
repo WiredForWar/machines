@@ -332,7 +332,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 
         // if the actor is currently playing a mail, make him stop, and replace it with static.
         // note that the mail MAY have actually finished by now in the interrim period since we last checked,
-        // and if this is the case we will simply deal with the finished mail as in the update mthod, and not bother
+        // and if this is the case we will simply deal with the finished mail as in the update method, and not bother
         // with static bursts.
         if (voiceMailPlaying_[actorId])
         {
