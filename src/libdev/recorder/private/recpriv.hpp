@@ -73,7 +73,6 @@ public:
     void recordAniSmackerFinished(bool);
 
     void recordRegistryReturnValue(SysRegistry::ReturnValue);
-    void recordRegistryKey(SysRegistry::KeyHandle);
     void recordRegistryBuffer(const void* pBuffer, int bufferSize);
     void recordRegistryStringValue(const std::string&);
     void recordRegistryIntegerValue(int);
@@ -117,7 +116,6 @@ public:
     bool playbackAniSmackerFinished() const;
 
     SysRegistry::ReturnValue playbackRegistryReturnValue() const;
-    SysRegistry::KeyHandle playbackRegistryKey() const;
     int playbackRegistryBuffer(void* pBuffer) const;
     std::string playbackRegistryStringValue() const;
     int playbackRegistryIntegerValue() const;

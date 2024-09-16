@@ -119,13 +119,8 @@ bool RenIDDrawDriverImpl::isBetterChoiceThan(const RenIDDrawDriverImpl& than) co
 
 void RenIDDrawDriverImpl::writeToRegistry()
 {
-    SysRegistry::KeyHandle handle;
     SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Automatic", isAutomatic());
     SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\DirectDraw", "Primary Driver", ! hasGuid());
-    if (hasGuid())
-    {
-        SysRegistry::instance().closeKey(handle);
-    }
 }
 
 RenID3dDeviceImpl::RenID3dDeviceImpl(const RenID3dDeviceImpl& copy)
@@ -157,13 +152,7 @@ bool RenID3dDeviceImpl::isBetterChoiceThan(const RenID3dDeviceImpl& than) const
 
 void RenID3dDeviceImpl::writeToRegistry()
 {
-    SysRegistry::KeyHandle handle;
     SysRegistry::instance().setIntegerValue("Options\\Video Drivers\\Direct3d", "Automatic", isAutomatic());
-    if (hasGuid())
-    {
-        SysRegistry::instance().openKey("Options\\Video Drivers\\Direct3d", &handle);
-        SysRegistry::instance().closeKey(handle);
-    }
 }
 
 int RenID3dDeviceImpl::zBufferBitDepth() const

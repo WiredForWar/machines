@@ -219,13 +219,6 @@ void RecRecorderPrivate::recordRegistryReturnValue(SysRegistry::ReturnValue valu
         _STATIC_CAST(const void*, &value));
 }
 
-void RecRecorderPrivate::recordRegistryKey(SysRegistry::KeyHandle key)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putData(RecRecorderImplementation::REGISTRY_KEY, sizeof(key), _STATIC_CAST(const void*, &key));
-}
-
 void RecRecorderPrivate::recordRegistryBuffer(const void* pBuffer, int bufferSize)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
@@ -523,17 +516,6 @@ SysRegistry::ReturnValue RecRecorderPrivate::playbackRegistryReturnValue() const
     SysRegistry::ReturnValue result;
 
     recorder.getData(RecRecorderImplementation::REGISTRY_RETURN_VALUE, sizeof(result), _STATIC_CAST(void*, &result));
-
-    return result;
-}
-
-SysRegistry::KeyHandle RecRecorderPrivate::playbackRegistryKey() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    SysRegistry::KeyHandle result;
-
-    recorder.getData(RecRecorderImplementation::REGISTRY_KEY, sizeof(result), _STATIC_CAST(void*, &result));
 
     return result;
 }
