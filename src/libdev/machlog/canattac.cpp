@@ -38,6 +38,7 @@
 #include "machlog/spacial.hpp"
 #include "machlog/charger.hpp"
 #include "machlog/network.hpp"
+#include "machlog/machvman.hpp"
 #include "machlog/messbrok.hpp"
 #include "machlog/mcmotseq.hpp"
 #include "machlog/attafilt.hpp"
@@ -879,6 +880,19 @@ PhysRelativeTime MachLogCanAttack::heal(MachActor* pTarget)
             PhysRelativeTime wft = (*i)->fire(pTarget);
             if (wft > rt)
                 rt = wft;
+
+            if (pTarget->hp() >= pTarget->objectData().hitPoints())
+            {
+                // Healing complete
+                if (pMe_->race() == MachLogRaces::instance().playerRace())
+                {
+                    // give voicemail
+                    MachLogMachineVoiceMailManager::instance().postNewMail(
+                        *pMe_,
+                        MachineVoiceMailEventID::HEALING_COMPLETE);
+                }
+            }
+
             if (MachLogNetwork::instance().isNetworkGame()
                 && MachLogNetwork::instance().remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
                 MachLogNetwork::instance().messageBroker().sendHealMessage(
