@@ -7,7 +7,7 @@
 
   SndMixerParameters
 
-  Simple class that is used to intialise DevSoundMixer
+  Simple class that is used to initialise DevSoundMixer
 
 */
 

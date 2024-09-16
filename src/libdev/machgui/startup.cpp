@@ -3448,7 +3448,7 @@ void MachGuiStartupScreens::initializeVolumes()
     // If there is key in the registry for the sound volume
     if (SysRegistry::instance().onlyOpenKey("Options\\Sound", &handle) == SysRegistry::SUCCESS)
     {
-        // Set the intial volume to the registry value
+        // Set the initial volume to the registry value
         initialVolume = SysRegistry::instance().queryIntegerValue("Options\\Sound", "Volume");
         SndMixer::instance().masterSampleVolume(initialVolume);
         SOUND_STREAM("Setting sound initialVolume to " << initialVolume << std::endl);
@@ -3461,7 +3461,7 @@ void MachGuiStartupScreens::initializeVolumes()
     // If there is key in the registry for the CD volume
     if (SysRegistry::instance().onlyOpenKey("Options\\CD", &handle) == SysRegistry::SUCCESS)
     {
-        // Set the intial CD volume to the registry value
+        // Set the initial CD volume to the registry value
         initialVolume = SysRegistry::instance().queryIntegerValue("Options\\CD", "Volume");
         DevCD::instance().volume(initialVolume);
         SOUND_STREAM("Setting CD initialVolume to " << initialVolume << std::endl);

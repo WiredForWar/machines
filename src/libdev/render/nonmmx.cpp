@@ -201,7 +201,7 @@ const RenIVertex* RenINonMMXIlluminator::applyMaterial(
         // and material.  If per-vertex materials are in use, this can throw the
         // overflowPossible function because the per-vertex materials can be brighter
         // than the material referred to by body.  If so, use a white body for the
-        // calculation.  (TBD: this still doens't account for emissive bodies; is
+        // calculation.  (TBD: this still doesn't account for emissive bodies; is
         // this good enough?)
         static RenMaterial white(RenColour::white());
 

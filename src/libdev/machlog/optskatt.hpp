@@ -46,7 +46,7 @@ public:
     void nMinimumMachines(int);
     void assemblyPoint(int);
     void doCount(int);
-    // the intial delay may be overridden by MLActiveSquadronsAction
+    // the initial delay may be overridden by MLActiveSquadronsAction
     void initialDelay(const PhysRelativeTime&);
     // If this is true then the check for a group near the assmebly point will be supressed.
     void supressProximityCheck();
