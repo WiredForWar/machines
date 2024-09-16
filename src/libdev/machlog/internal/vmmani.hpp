@@ -55,7 +55,6 @@ private:
     CB_DEPIMPL(MachLogVoiceMailManager::BoolVec, voiceMailPlaying_);                                                   \
     CB_DEPIMPL(MailInfoVector*, pAvailableVEMails_);                                                                   \
     CB_DEPIMPL(VEmailIDMap, registeredIds_);                                                                           \
-    CB_DEPIMPL(VEmailTypeMap, registeredTypes_);                                                                       \
     CB_DEPIMPL(MailVector, incomingMailQueue_);                                                                        \
     CB_DEPIMPL(size_t, currentMailMessage_);                                                                           \
     CB_DEPIMPL(size_t, lastMessage_);                                                                                  \

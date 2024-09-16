@@ -523,11 +523,13 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
     // ********************************* REGISTERED VOICEMAIL TYPES ********************************************
 
-    registeredTypes_.insert("VM_FULL_FUNCTION", VM_FULL_FUNCTION);
-    registeredTypes_.insert("VM_PART_FUNCTION", VM_PART_FUNCTION);
-    registeredTypes_.insert("VM_TASK_AFFIRMATION", VM_TASK_AFFIRMATION);
-    registeredTypes_.insert("VM_SELECTION_AFFIRMATION", VM_SELECTION_AFFIRMATION);
-    registeredTypes_.insert("VM_WAIT_UNTIL_NOTHING_PLAYING", VM_WAIT_UNTIL_NOTHING_PLAYING);
+    static const std::map<std::string, VoiceMailType> registeredTypes = {
+        { "VM_FULL_FUNCTION", VM_FULL_FUNCTION },
+        { "VM_PART_FUNCTION", VM_PART_FUNCTION },
+        { "VM_TASK_AFFIRMATION", VM_TASK_AFFIRMATION },
+        { "VM_SELECTION_AFFIRMATION", VM_SELECTION_AFFIRMATION },
+        { "VM_WAIT_UNTIL_NOTHING_PLAYING", VM_WAIT_UNTIL_NOTHING_PLAYING },
+    };
 
     pAvailableVEMails_ = new MailInfoVector(VID_N_MAIL_IDS, nullptr);
     MailInfoVector& availableVEMails_ = *pAvailableVEMails_;
@@ -571,7 +573,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
         ASSERT(id < VID_N_MAIL_IDS, "What the hell? An id larger than the size of the ids collection?");
         ASSERT(availableVEMails_[id] == nullptr, "Duplicate VEMail id");
 
-        VoiceMailType type = registeredTypes_[tokens[2]];
+        VoiceMailType type = registeredTypes.at(tokens[2]);
 
         std::string fileName(tokens[1]);
         std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
