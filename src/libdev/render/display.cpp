@@ -650,7 +650,7 @@ static void setGammaRamp(double gamma, GammaRamp* pGammaRamp)
         const double clampG = (newG > 1.0) ? 1.0 : newG;
         const double clampB = (newB > 1.0) ? 1.0 : newB;
 
-        gammaRamp.red[i] = (65535 * clampG + 0.5);
+        gammaRamp.red[i] = (65535 * clampR + 0.5);
         gammaRamp.green[i] = (65535 * clampG + 0.5);
         gammaRamp.blue[i] = (65535 * clampB + 0.5);
     }
