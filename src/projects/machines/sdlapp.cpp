@@ -103,15 +103,6 @@ void SDLApp::initMusic()
 {
     if (DevCD::instance().isAudioCDPresent())
     {
-        // This is not a particularly nice place to do this initialisation
-        // but if we want the music to start playing at the right volume
-        // this is where it's going to happen
-        SysRegistry::KeyHandle handle;
-        if (SysRegistry::instance().onlyOpenKey("Options\\CD", &handle) == SysRegistry::SUCCESS)
-        {
-            size_t theVol = SysRegistry::instance().queryIntegerValue("Options\\CD", "Volume");
-            DevCD::instance().volume(theVol);
-        }
         // Play loading music. It's in a different position depending upon which CD is in.
         if (MachGui::machinesCDIsAvailable(1))
         {
@@ -420,6 +411,7 @@ bool SDLApp::clientStartup()
     progressIndicator.setLimits(0.18, 0.20);
 
     initSound();
+    pStartupScreens_->initializeVolumes();
 
     // Start to play a CD to give the poor user something to listen to whilst
     // the models load...
@@ -430,7 +422,6 @@ bool SDLApp::clientStartup()
 
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.35, 0.37);
-    pStartupScreens_->initializeVolumes();
     pStartupScreens_->initializeCursorOptions();
 
     MachPhysData::instance();
