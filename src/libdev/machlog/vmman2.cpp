@@ -6,8 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/vmman.hpp"
-#include "machlog/internal/vminfo.hpp"
-#include "machlog/internal/vmail.hpp"
 #include "machlog/internal/vmmani.hpp"
 #include "machlog/vmdata.hpp"
 

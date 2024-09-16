@@ -19,6 +19,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class MexPoint3d;
 class MachLogVoiceMail;
@@ -80,7 +81,6 @@ public:
 
     using VEmailTypeMap = ctl_map<std::string, VoiceMailType, std::less<std::string>>;
     using MailInfoVector = ctl_pvector<MachLogVoiceMailInfo>;
-    using MailVector = ctl_pvector<MachLogVoiceMail>;
 
 private:
     // Read voice mail definition file and register the available VID's
@@ -90,7 +90,7 @@ private:
     void assignMappingGroup2();
 
     bool canPostMailForRace(MachPhys::Race targetRace) const;
-    void queueMail(MachLogVoiceMail* pNewMail);
+    void queueMail(std::unique_ptr<MachLogVoiceMail> pNewMail);
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManager& t);
 

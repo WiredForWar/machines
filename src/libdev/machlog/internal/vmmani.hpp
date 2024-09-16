@@ -19,29 +19,19 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 
+#include <memory>
+
 class MachLogVoiceMailManagerImpl
 // Canonical form revoked
 {
 public:
-    MachLogVoiceMailManagerImpl();
-    ~MachLogVoiceMailManagerImpl();
-
-    void CLASS_INVARIANT;
-
-private:
     friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManagerImpl& t);
-
-    MachLogVoiceMailManagerImpl(const MachLogVoiceMailManagerImpl&);
-    MachLogVoiceMailManagerImpl& operator=(const MachLogVoiceMailManagerImpl&);
-
-    friend class MachLogVoiceMailManager;
 
     MachLogVoiceMailManager::BoolVec voiceMailPlaying_; // a 'true' value means this actor has a voice mail associated
                                                         // with it that is currently playing.
     MachLogVoiceMailManager::MailInfoVector* pAvailableVEMails_;
     MachLogVoiceMailManager::VEmailIDMap registeredIds_;
-    MachLogVoiceMailManager::VEmailTypeMap registeredTypes_;
-    MachLogVoiceMailManager::MailVector incomingMailQueue_;
+    std::vector<std::unique_ptr<MachLogVoiceMail>> incomingMailQueue_;
     size_t currentMailMessage_;
     size_t lastMessage_;
     size_t savedMailslots_;
@@ -52,18 +42,18 @@ private:
 };
 
 #define CB_MachLogVoiceMailManager_DEPIMPL()                                                                           \
-    CB_DEPIMPL(MachLogVoiceMailManager::BoolVec, voiceMailPlaying_);                                                   \
-    CB_DEPIMPL(MailInfoVector*, pAvailableVEMails_);                                                                   \
-    CB_DEPIMPL(VEmailIDMap, registeredIds_);                                                                           \
-    CB_DEPIMPL(MailVector, incomingMailQueue_);                                                                        \
-    CB_DEPIMPL(size_t, currentMailMessage_);                                                                           \
-    CB_DEPIMPL(size_t, lastMessage_);                                                                                  \
-    CB_DEPIMPL(size_t, savedMailslots_);                                                                               \
-    CB_DEPIMPL(bool, definitionFileRead_);                                                                             \
-    CB_DEPIMPL(bool, podMailPlaying_);                                                                                 \
-    CB_DEPIMPL(int, noOfMailsPlaying_);                                                                                \
+    CB_DEPIMPL_AUTO(voiceMailPlaying_);                                                                                \
+    CB_DEPIMPL_AUTO(pAvailableVEMails_);                                                                               \
+    CB_DEPIMPL_AUTO(registeredIds_);                                                                                   \
+    CB_DEPIMPL_AUTO(incomingMailQueue_);                                                                               \
+    CB_DEPIMPL_AUTO(currentMailMessage_);                                                                              \
+    CB_DEPIMPL_AUTO(lastMessage_);                                                                                     \
+    CB_DEPIMPL_AUTO(savedMailslots_);                                                                                  \
+    CB_DEPIMPL_AUTO(definitionFileRead_);                                                                              \
+    CB_DEPIMPL_AUTO(podMailPlaying_);                                                                                  \
+    CB_DEPIMPL_AUTO(noOfMailsPlaying_);                                                                                \
                                                                                                                        \
-    CB_DEPIMPL(bool, acceptMailPostings_);
+    CB_DEPIMPL_AUTO(acceptMailPostings_);
 
 #endif
 

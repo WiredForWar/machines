@@ -80,19 +80,19 @@ void MachLogVoiceMailManager::update()
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    if (! voiceMailsActivated())
+    if (!voiceMailsActivated())
         return;
 
-    if (!(incomingMailQueue_.empty()))
+    if (!incomingMailQueue_.empty())
     {
         bool finished = false;
         int queueSize = incomingMailQueue_.size();
         int indexPos = 0;
 
         // we have already confirmed that the queue is of at least size one, so we're safe first time around.
-        while (! finished)
+        while (!finished)
         {
-            MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
+            const std::unique_ptr<MachLogVoiceMail>& pMail = incomingMailQueue_[indexPos];
             ASSERT(pMail, "Invalid mail");
             // If the mail has been previously played
             if (pMail->hasStarted())
@@ -122,11 +122,6 @@ void MachLogVoiceMailManager::update()
                     --noOfMailsPlaying_;
 
                     ASSERT(noOfMailsPlaying_ >= 0, "noOfMailsPlaying_ should never be less than 0.");
-
-                    {
-                        delete pMail;
-                    }
-
                     incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                     --queueSize;
@@ -160,7 +155,6 @@ void MachLogVoiceMailManager::update()
                     // It's tough luck. We're too busy.
                     if (!(mailType == VM_FULL_FUNCTION || mailType == VM_WAIT_UNTIL_NOTHING_PLAYING))
                     {
-                        delete pMail;
                         incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                         --queueSize;
@@ -200,7 +194,7 @@ void MachLogVoiceMailManager::update()
                     else
                     {
                         // must be a pod mail. Only play if we're not already playing a pod mail.
-                        if (! podMailPlaying_)
+                        if (!podMailPlaying_)
                         {
                             pMail->play();
                             podMailPlaying_ = true;
@@ -230,15 +224,15 @@ bool MachLogVoiceMailManager::canPostMailForRace(MachPhys::Race targetRace) cons
     return true;
 }
 
-void MachLogVoiceMailManager::queueMail(MachLogVoiceMail* pNewMail)
+void MachLogVoiceMailManager::queueMail(std::unique_ptr<MachLogVoiceMail> pNewMail)
 {
-    CB_DEPIMPL(MailVector, incomingMailQueue_);
-    incomingMailQueue_.push_back(pNewMail);
+    CB_DEPIMPL_AUTO(incomingMailQueue_);
+    if (pNewMail->hasPosition())
+    {
+        MachLogRecentEventsManager::instance().onVoiceMailPosted(pNewMail->position(), pNewMail->id());
+    }
 
-    if (!pNewMail->hasPosition())
-        return;
-
-    MachLogRecentEventsManager::instance().onVoiceMailPosted(pNewMail->position(), pNewMail->id());
+    incomingMailQueue_.emplace_back(std::move(pNewMail));
 }
 
 bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetRace)
@@ -253,8 +247,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetR
     if (podMailPlaying_ && (((*pAvailableVEMails_)[id])->mailType_ != VM_SELECTION_AFFIRMATION))
         return false;
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pAvailableVEMails_->at(id));
-    queueMail(pNewMail);
+    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id)));
 
     return true;
 }
@@ -289,19 +282,18 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         // more, don't accept this one.
         int nActorMailsInQueue = 0;
 
-        for (MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
-             nActorMailsInQueue <= 1 && i != incomingMailQueue_.end();
-             ++i)
+        for (const std::unique_ptr<MachLogVoiceMail>& pMail : incomingMailQueue_)
         {
-            MachLogVoiceMail* pMail = (*i);
-
             if (pMail->hasActorId() && pMail->actorId() == actorId)
             {
                 ++nActorMailsInQueue;
+                if (nActorMailsInQueue > 1)
+                {
+                    acceptMail = false;
+                    break;
+                }
             }
         }
-
-        acceptMail = (nActorMailsInQueue <= 1);
     }
 
     if (!acceptMail)
@@ -309,8 +301,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         return false;
     }
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pAvailableVEMails_->at(id), actorId);
-    queueMail(pNewMail);
+    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id), actorId));
     update();
 
     return true;
@@ -318,11 +309,11 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
 
 bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace)
 {
+    CB_DEPIMPL_AUTO(pAvailableVEMails_);
     if (!canPostMailForRace(targetRace))
         return false;
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pImpl_->pAvailableVEMails_->at(id), position);
-    queueMail(pNewMail);
+    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id), position));
 
     return true;
 }
@@ -339,8 +330,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
         int queueSize = incomingMailQueue_.size();
         int indexPos = 0;
 
-        MachLogVoiceMail* pStaticMail = nullptr; // may or may not actually get used
-
         // if the actor is currently playing a mail, make him stop, and replace it with static.
         // note that the mail MAY have actually finished by now in the interrim period since we last checked,
         // and if this is the case we will simply deal with the finished mail as in the update mthod, and not bother
@@ -356,7 +345,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                     "Didn't find a mail for the actor on the queue even though that actor was marked as playing a "
                     "mail!");
 
-                MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
+                std::unique_ptr<MachLogVoiceMail>& pMail = incomingMailQueue_[indexPos];
                 if (pMail->hasActorId() && pMail->actorId() == actorId && pMail->hasStarted())
                 {
                     // that's the one
@@ -382,11 +371,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                         --noOfMailsPlaying_;
 
                         ASSERT(noOfMailsPlaying_ >= 0, "noOfMailsPlaying_ should never be less than 0.");
-
-                        {
-                            delete pMail;
-                        }
-
                         incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                         --queueSize;
@@ -426,8 +410,10 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                                 staticId = VID_INTERFERENCE_5;
                         }
 
-                        pStaticMail = new MachLogVoiceMail(*pAvailableVEMails_->at(staticId), actorId);
-                        pStaticMail->play();
+                        // okay, now have to dispose of the old mail and replace the queue pointer
+                        // of the interrupted mail to that of the newly-created static burst sample
+                        pMail.reset(new MachLogVoiceMail(*pAvailableVEMails_->at(staticId), actorId));
+                        pMail->play();
 
                         ASSERT_INFO(actorId);
                         ASSERT(
@@ -435,16 +421,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                             "SHRIEK! We have an actor ID larger than the expected actor size (and our "
                             "voiceMailPlaying_ array)");
                         // voiceMailPlaying_[ actorId ] = false;
-
-                        // okay, now have to dispose of the old mail.
-
-                        {
-                            delete pMail;
-                        }
-
-                        // now replace the queue pointer of the interrupted mail to that of the newly-created static
-                        // burst sample
-                        incomingMailQueue_[indexPos] = pStaticMail;
 
                         // as the queue has not reduced in size under our feet, have to move on to the next entry
                         // ourselves
@@ -465,15 +441,15 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
         indexPos = 0;
         finished = (indexPos >= queueSize);
 
-        while (! finished)
+        while (!finished)
         {
             ASSERT(indexPos < queueSize, "indexPos exceeded queue bounds!");
 
-            MachLogVoiceMail* pMail = incomingMailQueue_[indexPos];
-            if (pMail->hasActorId() && pMail->actorId() == actorId && pMail != pStaticMail)
+            std::unique_ptr<MachLogVoiceMail>& pMail = incomingMailQueue_[indexPos];
+            // Skip our newly-created static burst mail which is in a 'playing' state
+            if (pMail->hasActorId() && pMail->actorId() == actorId && !pMail->isPlaying())
             {
                 // that's one of ours - just boot it off the queue
-                delete pMail;
                 incomingMailQueue_.erase(incomingMailQueue_.begin() + indexPos);
 
                 --queueSize;
@@ -642,11 +618,8 @@ void MachLogVoiceMailManager::clearMailQueue()
 {
     CB_MachLogVoiceMailManager_DEPIMPL();
 
-    while (! incomingMailQueue_.empty())
+    for (const auto &pMail : incomingMailQueue_)
     {
-        MachLogVoiceMailManager::MailVector::iterator i = incomingMailQueue_.begin();
-        MachLogVoiceMail* pMail = *i;
-
         if (pMail->hasStarted())
         {
             if (pMail->isPlaying())
@@ -654,16 +627,9 @@ void MachLogVoiceMailManager::clearMailQueue()
                 // stop it (will automatically deallocate resources)
                 pMail->stop();
             }
-            else
-            {
-                // finished playing - need to deallocate its resources anyway.
-                pMail->invalidateSample();
-            }
         }
-
-        delete pMail;
-        incomingMailQueue_.erase(i);
     }
+    incomingMailQueue_.clear();
 
     // and ensure that all actors are registered as not playing any voicemails
     int totalPossibleActors = MachLogRaces::instance().maxActors();

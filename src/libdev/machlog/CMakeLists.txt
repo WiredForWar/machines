@@ -545,7 +545,6 @@ set(MACHLOG_SOURCES
     vmman.cpp
     vmman.hpp
     vmman2.cpp
-    vmmani.cpp
     vortbomb.cpp
     vortbomb.hpp
     vortbomi.cpp
