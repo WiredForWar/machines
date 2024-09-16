@@ -713,15 +713,8 @@ void MachGuiCtxOptions::writeToConfig()
 void MachGuiCtxOptions::readFromConfig()
 {
     // Used to set gui items to reflect current game settings
-    SysRegistry::KeyHandle handle;
-    if (SysRegistry::instance().onlyOpenKey("Options\\3DSound", &handle) == SysRegistry::SUCCESS)
-    {
-        pSound3d_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\3DSound", "on"));
-    }
-    else
-    {
-        pSound3d_->setChecked(SndMixer::instance().is3dMixer());
-    }
+    pSound3d_->setChecked(
+        SysRegistry::instance().queryBooleanValue("Options\\3DSound", "on", SndMixer::instance().is3dMixer()));
 
     musicVolume_ = DevCD::instance().volume();
     soundVolume_ = SndMixer::instance().masterSampleVolume();
@@ -730,18 +723,10 @@ void MachGuiCtxOptions::readFromConfig()
     pSoundVolume_->setValue(soundVolume_);
 
     // Set resolution lock on if it the first time the game is being run
-    SysRegistry::KeyHandle resolutionHandle;
-
-    if (SysRegistry::instance().onlyOpenKey("Screen Resolution\\Lock Resolution", &resolutionHandle)
-        != SysRegistry::SUCCESS)
-    {
-        SysRegistry::instance().setIntegerValue(
-            "Screen Resolution",
-            "Lock Resolution",
-            MachGuiStartupScreens::getDefaultLockScreenResolutionValue());
-    }
-
-    pScreenResolutionLock_->setChecked(SysRegistry::instance().queryIntegerValue("Screen Resolution", "Lock Resolution"));
+    pScreenResolutionLock_->setChecked(SysRegistry::instance().queryBooleanValue(
+        "Screen Resolution",
+        "Lock Resolution",
+        MachGuiStartupScreens::getDefaultLockScreenResolutionValue()));
     pCursorType_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));

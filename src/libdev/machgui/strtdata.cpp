@@ -138,93 +138,34 @@ MachGuiStartupData::GameSettings::GameSettings()
     , playerRace_(MachPhys::Race::RED)
 {
     // Read game settings from registry (or default to initial values)
-    SysRegistry::KeyHandle handle;
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Resources", &handle) == SysRegistry::SUCCESS)
-    {
-        resources_ = (MachLog::ResourcesAvailable)SysRegistry::instance().queryIntegerValue(
-            "Game Settings\\Resources",
-            "Value");
-    }
-    else
-    {
-        resources_ = MachLog::RES_HIGH;
-    }
+    resources_ = (MachLog::ResourcesAvailable)SysRegistry::instance().queryIntegerValue(
+        "Game Settings\\Resources",
+        "Value",
+        MachLog::RES_HIGH);
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Starting Resources", &handle) == SysRegistry::SUCCESS)
-    {
-        startingResources_ = (MachLog::StartingResources)SysRegistry::instance().queryIntegerValue(
-            "Game Settings\\Starting Resources",
-            "Value");
-    }
-    else
-    {
-        startingResources_ = MachLog::STARTING_RESOURCES_DEFAULT;
-    }
+    startingResources_ = static_cast<MachLog::StartingResources>(SysRegistry::instance().queryIntegerValue(
+        "Game Settings\\Starting Resources",
+        "Value",
+        MachLog::STARTING_RESOURCES_DEFAULT));
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Starting Positions", &handle) == SysRegistry::SUCCESS)
-    {
-        startingPosition_ = (MachLog::RandomStarts)SysRegistry::instance().queryIntegerValue(
-            "Game Settings\\Starting Positions",
-            "Value");
-    }
-    else
-    {
-        startingPosition_ = MachLog::RANDOM_START_LOCATIONS;
-    }
+    startingPosition_ = (MachLog::RandomStarts)SysRegistry::instance().queryIntegerValue(
+        "Game Settings\\Starting Positions",
+        "Value",
+        MachLog::RANDOM_START_LOCATIONS);
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Victory Condition", &handle) == SysRegistry::SUCCESS)
-    {
-        // victoryCondition_ = (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue( "Game
-        // Settings\\Victory Condition", "Value");
-        victoryCondition_ = _STATIC_CAST(
-            VictoryCondition,
-            (MachLog::VictoryCondition)SysRegistry::instance().queryIntegerValue(
-                "Game Settings\\Victory Condition",
-                "Value"));
-    }
-    else
-    {
-        victoryCondition_ = VC_DEFAULT;
-    }
+    victoryCondition_ = static_cast<VictoryCondition>(
+        SysRegistry ::instance().queryIntegerValue("Game Settings\\Victory Condition", "Value", VC_DEFAULT));
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Tech Level", &handle) == SysRegistry::SUCCESS)
-    {
-        techLevel_
-            = (MachLog::TechnologyLevel)SysRegistry::instance().queryIntegerValue("Game Settings\\Tech Level", "Value");
-    }
-    else
-    {
-        techLevel_ = MachLog::TECH_LEVEL_DEFAULT;
-    }
+    techLevel_ = static_cast<MachLog::TechnologyLevel>(
+        SysRegistry::instance().queryIntegerValue("Game Settings\\Tech Level", "Value", MachLog::TECH_LEVEL_DEFAULT));
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Fog Of War", &handle) == SysRegistry::SUCCESS)
-    {
-        fogOfWar_ = (bool)SysRegistry::instance().queryIntegerValue("Game Settings\\Fog Of War", "Value");
-    }
-    else
-    {
-        fogOfWar_ = true;
-    }
+    fogOfWar_ = SysRegistry::instance().queryBooleanValue("Game Settings\\Fog Of War", "Value", true);
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Broadcast Alliances", &handle) == SysRegistry::SUCCESS)
-    {
-        broadcastAlliances_
-            = (bool)SysRegistry::instance().queryIntegerValue("Game Settings\\Broadcast Alliances", "Value");
-    }
-    else
-    {
-        broadcastAlliances_ = false;
-    }
+    broadcastAlliances_
+        = SysRegistry::instance().queryBooleanValue("Game Settings\\Broadcast Alliances", "Value", false);
 
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Disable First Person", &handle) == SysRegistry::SUCCESS)
-    {
-        disableFirstPerson_
-            = (bool)SysRegistry::instance().queryIntegerValue("Game Settings\\Disable First Person", "Value");
-    }
-    else
-    {
-        disableFirstPerson_ = false;
-    }
+    disableFirstPerson_
+        = SysRegistry::instance().queryBooleanValue("Game Settings\\Disable First Person", "Value", false);
 
     numPlayers_ = 4;
 
@@ -257,22 +198,12 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
     , includedInGame_(false)
 {
     NETWORK_STREAM("MachGuiStartupData::MachGuiStartupData " << static_cast<const void*>(this) << std::endl);
-    SysRegistry::KeyHandle handle;
     // Get default for menu transitions (on/off)
-    if (SysRegistry::instance().onlyOpenKey("Options\\transitions", &handle) == SysRegistry::SUCCESS)
-    {
-        transitionFlicsOn_ = SysRegistry::instance().queryIntegerValue("Options\\transitions", "on");
-    }
-    else
-    {
-        transitionFlicsOn_ = true;
-    }
+    transitionFlicsOn_ = SysRegistry::instance().queryIntegerValue("Options\\transitions", "on", true);
 
     // Get default player race for skirmish games
-    if (SysRegistry::instance().onlyOpenKey("Game Settings\\Player Race", &handle) == SysRegistry::SUCCESS)
-    {
-        playerRace_ = (MachPhys::Race)SysRegistry::instance().queryIntegerValue("Game Settings\\Player Race", "Value");
-    }
+    playerRace_ = static_cast<MachPhys::Race>(
+        SysRegistry::instance().queryIntegerValue("Game Settings\\Player Race", "Value", MachPhys::RED));
 
     newGameName_ = SysRegistry::instance().queryStringValue("Misc", "New Game Name");
     playerName_ = SysRegistry::instance().queryStringValue("Misc", "Players Name");
