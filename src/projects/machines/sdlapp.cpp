@@ -321,14 +321,12 @@ bool SDLApp::clientStartup()
     // Restore users gamma correction setting
     if (pDisplay_->supportsGammaCorrection())
     {
-        SysRegistry::KeyHandle handle;
-        if (SysRegistry::instance().onlyOpenKey("Options\\Gamma Correction", &handle) == SysRegistry::SUCCESS)
-        {
-            double gammaValue = SysRegistry::instance().queryIntegerValue("Options\\Gamma Correction", "Value");
-            gammaValue /= GAMMA_REG_MULTIPLIER;
-            gammaValue = mexClamp(gammaValue, GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT);
-            pDisplay_->gammaCorrection(gammaValue);
-        }
+        int DefaultGamma = 1.0 * GAMMA_REG_MULTIPLIER;
+        double gammaValue
+            = SysRegistry::instance().queryIntegerValue("Options\\Gamma Correction", "Value", DefaultGamma);
+        gammaValue /= GAMMA_REG_MULTIPLIER;
+        gammaValue = mexClamp(gammaValue, GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT);
+        pDisplay_->gammaCorrection(gammaValue);
     }
 
     // Get top left offset for images
