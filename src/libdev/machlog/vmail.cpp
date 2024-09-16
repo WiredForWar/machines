@@ -6,10 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/vector.hpp"
-#include "ctl/map.hpp"
 #include "system/pathname.hpp"
 #include "machlog/internal/vmail.hpp"
 #include "machlog/internal/vmaili.hpp"

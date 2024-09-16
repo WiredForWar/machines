@@ -18,6 +18,7 @@
 #include "utility/id.hpp"
 
 #include <string>
+#include <vector>
 
 class MexPoint3d;
 class MachLogVoiceMail;
@@ -40,7 +41,7 @@ class MachLogVoiceMailManager
 // Canonical form revoked
 {
 public:
-    using BoolVec = ctl_vector<bool>;
+    using BoolVec = std::vector<bool>;
 
     //  Singleton class
     static MachLogVoiceMailManager& instance();
