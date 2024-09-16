@@ -9,16 +9,13 @@
 
 #include "mathex/transf3d.hpp"
 #include "sim/manager.hpp"
-#include "machphys/objdata.hpp"
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/machine.hpp"
-#include "machlog/machvman.hpp"
 #include "machlog/charger.hpp"
 #include "machlog/network.hpp"
-#include "machlog/messbrok.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 PER_DEFINE_PERSISTENT(MachLogSuperCharger);
@@ -107,14 +104,6 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
                 }
                 else
                     pTarget->addHitPoints(addAmount);
-
-                if (pTarget->hp() >= pTarget->objectData().hitPoints())
-                {
-                    // give voicemail
-                    MachLogMachineVoiceMailManager::instance().postNewMail(
-                        owner(),
-                        MachineVoiceMailEventID::HEALING_COMPLETE);
-                }
 
                 lastUpdateTime_ = SimManager::instance().currentTime();
             }
