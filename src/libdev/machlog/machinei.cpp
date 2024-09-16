@@ -178,7 +178,7 @@ void perRead(PerIstream& istr, MachLogMachineImpl& actorImpl)
     istr >> actorImpl.teleportFinishTime_;
     istr >> actorImpl.rampaging_;
 
-    // restore any locked entrance. has to be doen indirectly via the temporary
+    // restore any locked entrance. has to be done indirectly via the temporary
     // construction pointer
     int hasLockedEntrance;
     PER_READ_RAW_OBJECT(istr, hasLockedEntrance);
