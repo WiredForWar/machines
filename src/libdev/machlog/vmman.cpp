@@ -350,7 +350,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetR
     if (podMailPlaying_ && (((*pAvailableVEMails_)[id])->mailType_ != VM_SELECTION_AFFIRMATION))
         return false;
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id);
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pAvailableVEMails_->at(id));
     queueMail(pNewMail);
 
     return true;
@@ -406,7 +406,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         return false;
     }
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id, actorId);
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pAvailableVEMails_->at(id), actorId);
     queueMail(pNewMail);
     update();
 
@@ -418,7 +418,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, M
     if (!canPostMailForRace(targetRace))
         return false;
 
-    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(id, position);
+    MachLogVoiceMail* pNewMail = new MachLogVoiceMail(*pImpl_->pAvailableVEMails_->at(id), position);
     queueMail(pNewMail);
 
     return true;
@@ -535,7 +535,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
                                 staticId = VID_INTERFERENCE_5;
                         }
 
-                        pStaticMail = new MachLogVoiceMail(staticId, actorId);
+                        pStaticMail = new MachLogVoiceMail(*pAvailableVEMails_->at(staticId), actorId);
                         pStaticMail->play();
 
                         ASSERT_INFO(actorId);
@@ -774,13 +774,6 @@ const MachLogVoiceMailManager::VEmailIDMap& MachLogVoiceMailManager::veMailIDMap
     CB_MachLogVoiceMailManager_DEPIMPL();
 
     return registeredIds_;
-}
-
-MachLogVoiceMailManager::MailInfoVector* MachLogVoiceMailManager::pAvailableVEMails()
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    return pAvailableVEMails_;
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailManager& t)

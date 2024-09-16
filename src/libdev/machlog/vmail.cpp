@@ -12,7 +12,6 @@
 #include "machlog/internal/vmail.hpp"
 #include "machlog/internal/vmaili.hpp"
 #include "machlog/internal/vminfo.hpp"
-#include "machlog/vmman.hpp"
 #include "mathex/point3d.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
@@ -30,40 +29,34 @@ MachLogVoiceMail::~MachLogVoiceMail()
     delete pImpl_;
 }
 
-MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id)
-    : pImpl_(new MachLogVoiceMailImpl())
+MachLogVoiceMail::MachLogVoiceMail(const MachLogVoiceMailInfo &info)
+    : pImpl_(new MachLogVoiceMailImpl(info))
 {
-    CB_MachLogVoiceMail_DEPIMPL();
-
-    id_ = id;
 }
 
-MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId)
-    : pImpl_(new MachLogVoiceMailImpl())
+MachLogVoiceMail::MachLogVoiceMail(const MachLogVoiceMailInfo &info, UtlId actorId)
+    : pImpl_(new MachLogVoiceMailImpl(info))
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
     // Calculate position from actorId_
-    id_ = id;
     actorId_ = actorId;
 }
 
-MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, UtlId actorId, MexPoint3d& position)
-    : pImpl_(new MachLogVoiceMailImpl())
+MachLogVoiceMail::MachLogVoiceMail(const MachLogVoiceMailInfo &info, UtlId actorId, MexPoint3d& position)
+    : pImpl_(new MachLogVoiceMailImpl(info))
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    id_ = id;
     actorId_ = actorId;
     position_ = position;
 }
 
-MachLogVoiceMail::MachLogVoiceMail(VoiceMailID id, MexPoint3d& position)
-    : pImpl_(new MachLogVoiceMailImpl())
+MachLogVoiceMail::MachLogVoiceMail(const MachLogVoiceMailInfo &info, MexPoint3d& position)
+    : pImpl_(new MachLogVoiceMailImpl(info))
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    id_ = id;
     position_ = position;
 }
 
@@ -71,7 +64,7 @@ VoiceMailID MachLogVoiceMail::id() const
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    return id_;
+    return info_.id_;
 }
 
 bool MachLogVoiceMail::hasActorId() const
@@ -108,12 +101,9 @@ void MachLogVoiceMail::play()
     CB_MachLogVoiceMail_DEPIMPL();
     PRE(!isSampleValid())
 
-    MachLogVoiceMailManager::MailInfoVector& availableMail = *MachLogVoiceMailManager::instance().pAvailableVEMails();
-    MachLogVoiceMailInfo* info = availableMail[id_];
-    SOUND_STREAM("Playing voicemail with id " << uint(id_) << std::endl);
-    ASSERT(info, "Invalid info ptr");
+    SOUND_STREAM("Playing voicemail with id " << uint(info_.id_) << std::endl);
 
-    SndWaveformId param(info->wavName_);
+    SndWaveformId param(info_.wavName_);
     sampleHandle_ = SndMixer::instance().playSample(param);
     sampleHandleValid_ = true;
     bool internalSampleHandleIsValid = SndMixer::instance().isAllocated(sampleHandle_);

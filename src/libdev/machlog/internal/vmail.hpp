@@ -17,24 +17,24 @@
 #include "machlog/vmdata.hpp"
 #include "phys/phys.hpp"
 
-class MachLogVoiceMailManager;
 class MachLogVoiceMailImpl;
+class MachLogVoiceMailInfo;
 class MexPoint3d;
 
 class MachLogVoiceMail
 // Canonical form revoked
 {
-private:
-    ~MachLogVoiceMail();
-
+public:
     // Construct with VoiceMailID
-    MachLogVoiceMail(VoiceMailID);
+    MachLogVoiceMail(const MachLogVoiceMailInfo &info);
     // Construct with VoiceMailID and actor Id
-    MachLogVoiceMail(VoiceMailID, UtlId actorId);
+    MachLogVoiceMail(const MachLogVoiceMailInfo &info, UtlId actorId);
     // Construct with VoiceMailID, actor Id, and position
-    MachLogVoiceMail(VoiceMailID, UtlId actorId, MexPoint3d& position);
+    MachLogVoiceMail(const MachLogVoiceMailInfo &info, UtlId actorId, MexPoint3d& position);
     // Construct with VoiceMailID, and position
-    MachLogVoiceMail(VoiceMailID, MexPoint3d& position);
+    MachLogVoiceMail(const MachLogVoiceMailInfo &info, MexPoint3d& position);
+
+    ~MachLogVoiceMail();
 
     // Return VEMail Id
     VoiceMailID id() const;
@@ -90,8 +90,6 @@ private:
     MachLogVoiceMail& operator=(const MachLogVoiceMail&);
 
     MachLogVoiceMailImpl* pImpl_;
-
-    friend class MachLogVoiceMailManager;
 };
 
 #endif

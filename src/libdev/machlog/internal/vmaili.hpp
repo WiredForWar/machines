@@ -17,35 +17,35 @@
 #include "mathex/point3d.hpp"
 #include "sound/smphandl.hpp"
 #include "machlog/vmdata.hpp"
+#include "machlog/internal/vminfo.hpp"
 
 #include <optional>
 
 class MachLogVoiceMailImpl
 // Canonical form revoked
 {
-public:
-    MachLogVoiceMailImpl() = default;
-
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachLogVoiceMailImpl& t);
 
-    MachLogVoiceMailImpl(const MachLogVoiceMailImpl&);
-    MachLogVoiceMailImpl& operator=(const MachLogVoiceMailImpl&);
+    MachLogVoiceMailImpl(const MachLogVoiceMailInfo& info)
+        : info_(info)
+    {
+    }
 
     friend class MachLogVoiceMail;
 
-    PhysAbsoluteTime timeStamp_{};
-    VoiceMailID id_{};
+    PhysAbsoluteTime timeStamp_ {};
+    const MachLogVoiceMailInfo& info_;
     std::optional<MexPoint3d> position_;
-    UtlId actorId_{};
-    SndSampleHandle sampleHandle_{};
-    bool hasStarted_{};
-    bool sampleHandleValid_{};
+    UtlId actorId_ {};
+    SndSampleHandle sampleHandle_ {};
+    bool hasStarted_ {};
+    bool sampleHandleValid_ {};
 };
 
 #define CB_MachLogVoiceMail_DEPIMPL()                                                                                  \
     CB_DEPIMPL_AUTO(timeStamp_);                                                                                       \
-    CB_DEPIMPL_AUTO(id_);                                                                                              \
+    CB_DEPIMPL_AUTO(info_);                                                                                              \
     CB_DEPIMPL_AUTO(position_);                                                                                        \
     CB_DEPIMPL_AUTO(actorId_);                                                                                         \
     CB_DEPIMPL_AUTO(sampleHandle_);                                                                                    \

@@ -125,11 +125,7 @@ private:
     // typedef ctl_pvector< MachLogVoiceMailInfo > MailInfoVector;
     // typedef ctl_pvector< MachLogVoiceMail > MailVector;
 
-    MailInfoVector* pAvailableVEMails();
-
     MachLogVoiceMailManagerImpl* pImpl_;
-
-    friend class MachLogVoiceMail;
 };
 
 #endif
