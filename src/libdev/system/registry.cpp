@@ -10,8 +10,6 @@
 
 #include "recorder/recorder.hpp"
 #include "recorder/private/recpriv.hpp"
-#include "ctl/map.hpp"
-#include "ctl/list.hpp"
 
 #include "utility/rapidxml_utils.hpp"
 #include "utility/rapidxml_ext.hpp"
@@ -22,7 +20,7 @@
 
 class SysRegistryImpl
 {
-private:
+public:
     SysRegistryImpl(std::string fileName = "config.xml")
         : regFile_(fileName)
         , xmlFile_(nullptr)
@@ -65,10 +63,6 @@ private:
     }
 
     friend class SysRegistry;
-    using KeyHandleMap = ctl_map<std::string, SysRegistry::KeyHandle, std::less<std::string>>;
-    KeyHandleMap keyHandleMap_;
-    using OpenKeys = ctl_list<SysRegistry::KeyHandle>;
-    OpenKeys openKeys_;
     std::string currentStubKey_;
 
     rapidxml::xml_document<> doc_;
@@ -78,8 +72,6 @@ private:
 
 #define CB_SysRegistry_DEPIMPL()                                                                                       \
     PRE(pImpl_)                                                                                                        \
-    CB_DEPIMPL(SysRegistryImpl::KeyHandleMap, keyHandleMap_)                                                           \
-    CB_DEPIMPL(SysRegistryImpl::OpenKeys, openKeys_)                                                                   \
     CB_DEPIMPL(std::string, currentStubKey_)                                                                           \
     CB_DEPIMPL(rapidxml::xml_document<>, doc_)
 
@@ -91,7 +83,7 @@ SysRegistry& SysRegistry::instance()
 }
 
 SysRegistry::SysRegistry()
-    : pImpl_(new SysRegistryImpl)
+    : pImpl_(std::make_unique<SysRegistryImpl>())
 {
 
     TEST_INVARIANT;
@@ -101,18 +93,11 @@ SysRegistry::~SysRegistry()
 {
     CB_SysRegistry_DEPIMPL();
     TEST_INVARIANT;
-    while (openKeys_.size())
-        closeKey(openKeys_.front());
-    delete pImpl_;
 }
 
 void SysRegistry::reload()
 {
-    while (pImpl_->openKeys_.size())
-        closeKey(pImpl_->openKeys_.front());
-    delete pImpl_;
-
-    pImpl_ = new SysRegistryImpl;
+    pImpl_ = std::make_unique<SysRegistryImpl>();
 }
 
 void SysRegistry::CLASS_INVARIANT
@@ -127,87 +112,6 @@ std::ostream& operator<<(std::ostream& o, const SysRegistry& t)
     o << "SysRegistry " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
-}
-
-SysRegistry::ReturnValue SysRegistry::onlyOpenKey(const std::string& keyName, SysRegistry::KeyHandle* pOpenedKey)
-{
-    ReturnValue result = SUCCESS;
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        result = RecRecorderPrivate::instance().playbackRegistryReturnValue();
-        *pOpenedKey = RecRecorderPrivate::instance().playbackRegistryKey();
-    }
-    else
-    {
-        result = onlyOpenKeyNoRecord(keyName, pOpenedKey);
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-        {
-            RecRecorderPrivate::instance().recordRegistryReturnValue(result);
-            RecRecorderPrivate::instance().recordRegistryKey(*pOpenedKey);
-        }
-    }
-
-    return result;
-}
-
-SysRegistry::ReturnValue
-SysRegistry::onlyOpenKeyNoRecord(const std::string& keyName, SysRegistry::KeyHandle* pOpenedKey)
-{
-    ReturnValue result = SUCCESS;
-
-    CB_SysRegistry_DEPIMPL();
-    std::string actualKeyName = currentStubKey_;
-    actualKeyName += "\\";
-    actualKeyName += keyName;
-
-    rapidxml::xml_node<>* root_node = doc_.first_node();
-    for (rapidxml::xml_node<>* a = root_node->first_node(); a; a = a->next_sibling())
-    {
-        std::string currentVal(a->first_attribute()->value());
-        if (currentVal.find(keyName) != std::string::npos)
-            return SUCCESS;
-    }
-    return FAILED;
-}
-
-SysRegistry::ReturnValue SysRegistry::openKey(const std::string& keyName, SysRegistry::KeyHandle* pOpenedKey)
-{
-    ReturnValue result = SUCCESS;
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        result = RecRecorderPrivate::instance().playbackRegistryReturnValue();
-        *pOpenedKey = RecRecorderPrivate::instance().playbackRegistryKey();
-    }
-    else
-    {
-        CB_SysRegistry_DEPIMPL();
-        std::string actualKeyName = currentStubKey_;
-        actualKeyName += "\\";
-        actualKeyName += keyName;
-
-        result = FAILED;
-        rapidxml::xml_node<>* root = doc_.first_node();
-        for (rapidxml::xml_node<>* a = root->first_node(); a; a = a->next_sibling())
-        {
-            std::string currentVal(a->first_attribute()->value());
-            if (currentVal.find(keyName) != std::string::npos)
-            {
-                result = SUCCESS;
-                break;
-            }
-        }
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-        {
-            RecRecorderPrivate::instance().recordRegistryReturnValue(result);
-            RecRecorderPrivate::instance().recordRegistryKey(*pOpenedKey);
-        }
-    }
-
-    return result;
 }
 
 SysRegistry::ReturnValue SysRegistry::deleteKey(const std::string& keyName)
@@ -243,7 +147,6 @@ SysRegistry::ReturnValue SysRegistry::deleteKey(const std::string& keyName)
 }
 
 SysRegistry::ReturnValue SysRegistry::queryValue(
-    SysRegistry::KeyHandle key,
     const std::string& valueName,
     SysRegistry::DataType dataType,
     void* pBuffer,
@@ -259,7 +162,7 @@ SysRegistry::ReturnValue SysRegistry::queryValue(
     else
     {
         std::string value;
-        result = queryValueNoRecord(key, valueName, value);
+        result = queryValueNoRecord(valueName, value);
         strncpy((char*)pBuffer, value.c_str(), value.length());
 
         if (RecRecorder::instance().state() == RecRecorder::RECORDING)
@@ -273,7 +176,7 @@ SysRegistry::ReturnValue SysRegistry::queryValue(
 }
 
 SysRegistry::ReturnValue
-SysRegistry::queryValueNoRecord(SysRegistry::KeyHandle key, const std::string& valueName, std::string& target)
+SysRegistry::queryValueNoRecord(const std::string& valueName, std::string& target)
 {
     ReturnValue result = SUCCESS;
 
@@ -292,7 +195,7 @@ SysRegistry::queryValueNoRecord(SysRegistry::KeyHandle key, const std::string& v
 }
 
 SysRegistry::ReturnValue
-SysRegistry::setValue(SysRegistry::KeyHandle key, const std::string& valueName, const std::string& value)
+SysRegistry::setValue(const std::string& valueName, const std::string& value)
 {
     ReturnValue result = SUCCESS;
 
@@ -346,7 +249,7 @@ SysRegistry::setValue(SysRegistry::KeyHandle key, const std::string& valueName, 
     return result;
 }
 
-SysRegistry::ReturnValue SysRegistry::deleteValue(SysRegistry::KeyHandle key, const std::string& valueName)
+SysRegistry::ReturnValue SysRegistry::deleteValue(const std::string& valueName)
 {
     ReturnValue result = SUCCESS;
 
@@ -377,41 +280,6 @@ SysRegistry::ReturnValue SysRegistry::deleteValue(SysRegistry::KeyHandle key, co
     return result;
 }
 
-SysRegistry::ReturnValue SysRegistry::closeKey(KeyHandle key)
-{
-    ReturnValue result = SUCCESS;
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        result = RecRecorderPrivate::instance().playbackRegistryReturnValue();
-    }
-    else
-    {
-        result = closeKeyNoRecord(key);
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordRegistryReturnValue(result);
-    }
-
-    return result;
-}
-
-SysRegistry::ReturnValue SysRegistry::closeKeyNoRecord(KeyHandle key)
-{
-    ReturnValue result = SUCCESS;
-
-    //  If we're playing back it is entirely possible we might fail the pre condition
-    //  because the openKeys_ map is not properly maintained. We therefore only run
-    //  this section of code if we're not playing back.
-
-    if (RecRecorder::instance().state() != RecRecorder::PLAYING)
-    {
-        CB_SysRegistry_DEPIMPL();
-    }
-
-    return result;
-}
-
 std::string
 SysRegistry::queryStringValue(const std::string& keyName, const std::string& valueName, const std::string& defaultValue)
 {
@@ -424,26 +292,12 @@ SysRegistry::queryStringValue(const std::string& keyName, const std::string& val
     else
     {
         CB_SysRegistry_DEPIMPL();
-        SysRegistry::KeyHandle handle = 0;
 
-        bool doCloseKey = true;
         std::string actualKeyName = keyName;
         actualKeyName += "\\";
         actualKeyName += valueName;
-        if (keyHandleMap_.end() != keyHandleMap_.find(actualKeyName))
-        {
-            doCloseKey = false;
-        }
 
-        //      if( SUCCESS == onlyOpenKeyNoRecord( keyName, &handle, root ) )
-        {
-            //          if( SUCCESS == queryValueNoRecord( handle, valueName, result) )
-            //              result = std::string ( array );
-            queryValueNoRecord(handle, actualKeyName, result);
-
-            if (doCloseKey)
-                closeKeyNoRecord(handle);
-        }
+        queryValueNoRecord(actualKeyName, result);
 
         if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             RecRecorderPrivate::instance().recordRegistryStringValue(result);
@@ -463,25 +317,13 @@ int SysRegistry::queryIntegerValue(const std::string& keyName, const std::string
     else
     {
         CB_SysRegistry_DEPIMPL();
-        SysRegistry::KeyHandle handle;
 
-        bool doCloseKey = true;
         std::string actualKeyName = keyName;
         actualKeyName += "\\";
         actualKeyName += valueName;
-        if (keyHandleMap_.end() != keyHandleMap_.find(actualKeyName))
-        {
-            doCloseKey = false;
-        }
-
-        //      if( SUCCESS == onlyOpenKeyNoRecord( keyName, &handle ) )
-        {
-            std::string value;
-            if (SUCCESS == queryValueNoRecord(handle, actualKeyName, value))
-                result = atoi(value.c_str());
-            if (doCloseKey)
-                closeKeyNoRecord(handle);
-        }
+        std::string value;
+        if (SUCCESS == queryValueNoRecord(actualKeyName, value))
+            result = atoi(value.c_str());
 
         if (RecRecorder::instance().state() == RecRecorder::RECORDING)
         {
@@ -500,47 +342,21 @@ bool SysRegistry::queryBooleanValue(const std::string& keyName, const std::strin
 // The set functions will create the key if it isn't present
 void SysRegistry::setStringValue(const std::string& keyName, const std::string& valueName, const std::string& value)
 {
-    CB_SysRegistry_DEPIMPL();
-    SysRegistry::KeyHandle handle;
-    bool doCloseKey = true;
-
     std::string actualKeyName = keyName;
     actualKeyName += "\\";
     actualKeyName += valueName;
-    if (keyHandleMap_.end() != keyHandleMap_.find(actualKeyName))
-    {
-        doCloseKey = false;
-    }
 
-    //  if( SUCCESS == openKey( keyName, &handle, root ) )
-    {
-        setValue(handle, actualKeyName, value);
-        if (doCloseKey)
-            closeKeyNoRecord(handle);
-    }
+    setValue(actualKeyName, value);
 }
 
 void SysRegistry::setIntegerValue(const std::string& keyName, const std::string& valueName, int value)
 {
-    CB_SysRegistry_DEPIMPL();
-    SysRegistry::KeyHandle handle;
-
-    bool doCloseKey = true;
     std::string actualKeyName = keyName;
     actualKeyName += "\\";
     actualKeyName += valueName;
-    if (keyHandleMap_.end() != keyHandleMap_.find(actualKeyName))
-    {
-        doCloseKey = false;
-    }
 
-    //  if( SUCCESS == openKey( keyName, &handle, root ) )
-    {
-        std::string valueStr = std::to_string(value);
-        setValue(handle, actualKeyName, valueStr);
-        if (doCloseKey)
-            closeKeyNoRecord(handle);
-    }
+    std::string valueStr = std::to_string(value);
+    setValue(actualKeyName, valueStr);
 }
 
 const std::string& SysRegistry::currentStubKey() const
