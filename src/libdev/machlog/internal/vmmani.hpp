@@ -42,7 +42,6 @@ private:
     MachLogVoiceMailManager::VEmailIDMap registeredIds_;
     MachLogVoiceMailManager::VEmailTypeMap registeredTypes_;
     MachLogVoiceMailManager::MailVector incomingMailQueue_;
-    MachLogVoiceMailManager::MailVector savedMail_;
     size_t currentMailMessage_;
     size_t lastMessage_;
     size_t savedMailslots_;
@@ -58,7 +57,6 @@ private:
     CB_DEPIMPL(VEmailIDMap, registeredIds_);                                                                           \
     CB_DEPIMPL(VEmailTypeMap, registeredTypes_);                                                                       \
     CB_DEPIMPL(MailVector, incomingMailQueue_);                                                                        \
-    CB_DEPIMPL(MailVector, savedMail_);                                                                                \
     CB_DEPIMPL(size_t, currentMailMessage_);                                                                           \
     CB_DEPIMPL(size_t, lastMessage_);                                                                                  \
     CB_DEPIMPL(size_t, savedMailslots_);                                                                               \

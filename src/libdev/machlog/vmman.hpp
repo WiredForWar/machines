@@ -53,18 +53,6 @@ public:
     // flush everything out of the voicemail queue
     void clearMailQueue();
 
-    // At default setting decCurrentMail will play the most recent saved mail,
-    // and incCurrentMail will return false, otherwise the current mail
-    // is where it was left at by the last call to inc/dec.
-    // The current mail is set to default when a new mail of type
-    // VM_FULL_FUNCTION is saved.
-    // Increment current mail - move to next most recent mail and play
-    // returns false and doesn't play if at newest mail
-    bool incCurrentMail();
-    // Decrement current mail - move to next less recent mail and play
-    // returns false and doesn't play if at oldest mail
-    bool decCurrentMail();
-
     // Post verbal mail onto queue
     bool postNewMail(VoiceMailID id, MachPhys::Race targetRace);
     bool postNewMail(VoiceMailID, UtlId actorId, MachPhys::Race targetRace);
@@ -78,16 +66,6 @@ public:
     void nMailSlots(size_t newNoOfSlots);
     // Get total number of possible stored mails
     size_t nMailSlots() const;
-
-    // Is an actor id associated with current mail
-    bool currentMailHasActorId() const;
-    // Is an actor id associated with current mail
-    UtlId currentMailActorId() const;
-
-    // Has the current mail an associated position
-    bool currentMailHasPosition() const;
-    // Return the local transform of the actor associated with a mail
-    const MexPoint3d currentMailPosition() const;
 
     using VEmailIDMap = ctl_map<std::string, VoiceMailID, std::less<std::string>>;
     const VEmailIDMap& veMailIDMap() const;

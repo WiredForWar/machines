@@ -123,18 +123,6 @@ void MachLogVoiceMailManager::update()
 
                     ASSERT(noOfMailsPlaying_ >= 0, "noOfMailsPlaying_ should never be less than 0.");
 
-                    // revoked saved mail queue 10/2/99 CPS
-                    /*
-                    // now deal with possibly putting onto the savedmail queue, or deleting it outright.
-                    if(((*pAvailableVEMails_)[pMail->id()])->mailType_ == VM_FULL_FUNCTION)
-                    {
-                        //Time stamp the message for the save buffer
-                        pMail->timeStamp( SimManager::instance().currentTime() );
-                        savedMail_.push_back(pMail);
-                        currentMailMessage_ = savedMail_.size();
-                    }
-                    else
-                    */
                     {
                         delete pMail;
                     }
@@ -227,91 +215,6 @@ void MachLogVoiceMailManager::update()
             finished = (indexPos >= queueSize);
         }
     }
-    // revoked saved mail functionality 10/2/99 CPS
-    /*
-    if(!savedMail_.empty())
-    {
-        int indexPos = savedMail_.size();
-        PhysAbsoluteTime now = SimManager::instance().currentTime();
-        while(indexPos--)
-        {
-            MachLogVoiceMail* pSavedMail = savedMail_[indexPos];
-            PhysAbsoluteTime bestBefore =  pSavedMail->timeStamp() +
-                (((*pAvailableVEMails_)[pSavedMail->id()])->maxSaveTime_);
-            if(now > bestBefore)
-            {
-                if(pSavedMail->isPlaying())
-                    pSavedMail->stop();
-                delete pSavedMail;
-                savedMail_.erase(savedMail_.begin() + indexPos);
-            }
-        }
-    }
-    */
-}
-
-bool MachLogVoiceMailManager::incCurrentMail()
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    bool increment = true;
-
-    if (!savedMail_.empty())
-    {
-        if (currentMailMessage_ >= savedMail_.size() - 1)
-        {
-            currentMailMessage_ = 0;
-            increment = false;
-        }
-        if (lastMessage_ > savedMail_.size() - 1)
-        {
-            lastMessage_ = currentMailMessage_;
-        }
-
-        if (savedMail_[lastMessage_]->isPlaying())
-        {
-            savedMail_[lastMessage_]->stop();
-        }
-        if (increment)
-        {
-            currentMailMessage_++;
-        }
-        lastMessage_ = currentMailMessage_;
-        savedMail_[lastMessage_]->play();
-    }
-
-    return true;
-}
-
-bool MachLogVoiceMailManager::decCurrentMail()
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    // If current mail message is outwith the bounds
-    // of the saved mail buffer then something has changed
-    // so reset the current mail message.
-
-    if (!savedMail_.empty())
-    {
-        if (currentMailMessage_ > savedMail_.size() || currentMailMessage_ == 0)
-        {
-            currentMailMessage_ = savedMail_.size();
-        }
-
-        if (lastMessage_ > savedMail_.size() - 1)
-        {
-            lastMessage_ = savedMail_.size() - 1;
-        }
-
-        if (savedMail_[lastMessage_]->isPlaying())
-            savedMail_[lastMessage_]->stop();
-
-        currentMailMessage_--;
-        lastMessage_ = currentMailMessage_;
-        savedMail_[currentMailMessage_]->play();
-    }
-
-    return true;
 }
 
 bool MachLogVoiceMailManager::canPostMailForRace(MachPhys::Race targetRace) const
@@ -480,18 +383,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 
                         ASSERT(noOfMailsPlaying_ >= 0, "noOfMailsPlaying_ should never be less than 0.");
 
-                        // revoked saved mail queue functionality 10/2/99 CPS
-                        /*
-                        // now deal with possibly putting onto the savedmail queue, or deleting it outright.
-                        if(((*pAvailableVEMails_)[pMail->id()])->mailType_ == VM_FULL_FUNCTION)
-                        {
-                            //Time stamp the message for the save buffer
-                            pMail->timeStamp( SimManager::instance().currentTime() );
-                            savedMail_.push_back(pMail);
-                            currentMailMessage_ = savedMail_.size();
-                        }
-                        else
-                        */
                         {
                             delete pMail;
                         }
@@ -547,18 +438,6 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 
                         // okay, now have to dispose of the old mail.
 
-                        // revoked saved mail queue functionality 10/2/99 CPS
-                        /*
-                        // now deal with possibly putting onto the savedmail queue, or deleting it outright.
-                        if(((*pAvailableVEMails_)[pMail->id()])->mailType_ == VM_FULL_FUNCTION)
-                        {
-                            //Time stamp the message for the save buffer
-                            pMail->timeStamp( SimManager::instance().currentTime() );
-                            savedMail_.push_back(pMail);
-                            currentMailMessage_ = savedMail_.size();
-                        }
-                        else
-                        */
                         {
                             delete pMail;
                         }
@@ -623,48 +502,6 @@ size_t MachLogVoiceMailManager::nMailSlots() const
     CB_MachLogVoiceMailManager_DEPIMPL();
 
     return savedMailslots_;
-}
-
-bool MachLogVoiceMailManager::currentMailHasActorId() const
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    if (!savedMail_.empty())
-    {
-        ASSERT(currentMailMessage_ < savedMail_.size(), "Mail Error1");
-        return (savedMail_[currentMailMessage_]->actorId());
-    }
-
-    return false;
-}
-
-UtlId MachLogVoiceMailManager::currentMailActorId() const
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    ASSERT(currentMailMessage_ < savedMail_.size(), "Mail Error2");
-    return (savedMail_[currentMailMessage_]->actorId());
-}
-
-bool MachLogVoiceMailManager::currentMailHasPosition() const
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    if (!savedMail_.empty())
-    {
-        ASSERT(currentMailMessage_ < savedMail_.size(), "Mail Error3");
-        return (savedMail_[currentMailMessage_]->hasPosition());
-    }
-
-    return false;
-}
-
-const MexPoint3d MachLogVoiceMailManager::currentMailPosition() const
-{
-    CB_MachLogVoiceMailManager_DEPIMPL();
-
-    ASSERT(currentMailMessage_ < savedMail_.size(), "Mail Error4");
-    return (savedMail_[currentMailMessage_]->position());
 }
 
 // static
