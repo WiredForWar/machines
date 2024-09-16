@@ -662,6 +662,9 @@ void RenDisplay::gammaCorrection(const double& gamma)
     PRE(supportsGammaCorrection());
     PRE(gamma > 0);
 
+    if (gammaCorrection_ == gamma)
+        return;
+
     // create a gamma ramp
     GammaRamp gammaRamp;
     setGammaRamp(gamma, &gammaRamp);
