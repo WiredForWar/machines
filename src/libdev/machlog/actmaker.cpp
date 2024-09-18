@@ -168,157 +168,18 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
     int hwLevel,
     const MexPoint3d& inLocation,
     const MexRadians& angle,
-    MachPhys::Race race)
-{
-    // Get the colony race pointer
-    MachLogRace* pLogRace = &MachLogRaces::instance().race(race);
-    MachLogConstruction* result = nullptr;
-
-    // Adjust the height for the terrain
-
-    //    MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation( inLocation );
-
-    const MexTransform3d transform(MexEulerAngles(angle, 0.0, 0.0), inLocation);
-    MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(type, subType, hwLevel, transform);
-
-    // Depends on type
-    switch (type)
-    {
-        case MachLog::BEACON:
-            result = new MachLogBeacon(pLogRace, hwLevel, location, angle);
-            break;
-
-        case MachLog::FACTORY:
-            result = new MachLogFactory((MachPhys::FactorySubType)subType, pLogRace, hwLevel, location, angle);
-            break;
-
-        case MachLog::GARRISON:
-            result = new MachLogGarrison(pLogRace, hwLevel, location, angle);
-            break;
-
-        case MachLog::HARDWARE_LAB:
-            result
-                = new MachLogHardwareLab((MachPhys::HardwareLabSubType)subType, pLogRace, hwLevel, location, angle);
-            break;
-
-        case MachLog::POD:
-            result = new MachLogPod(pLogRace, hwLevel, location, angle, MachPhys::T_ION_ORBITAL_CANNON);
-            break;
-
-        case MachLog::MINE:
-            result = new MachLogMine(pLogRace, hwLevel, location, angle, MachLogMine::IGNORE_DISCOVERED_FLAG);
-            break;
-
-        case MachLog::MISSILE_EMPLACEMENT:
-            {
-                MachPhys::WeaponCombo wc = MachPhys::T_FLAME_THROWER1;
-                switch (subType)
-                {
-                    case MachPhys::TURRET:
-                        {
-                            switch (hwLevel)
-                            {
-                                case 1:
-                                    wc = MachPhys::T_FLAME_THROWER1;
-                                    break;
-                                case 2:
-                                    wc = MachPhys::LR_AUTO_CANNON_X2;
-                                    break;
-                                case 3:
-                                    wc = MachPhys::LR_PULSE_RIFLE_X2;
-                                    break;
-                            }
-                        }
-                        break;
-                    case MachPhys::SENTRY:
-                        {
-                            switch (hwLevel)
-                            {
-                                case 3:
-                                    wc = MachPhys::LR_MULTI_LAUNCHER5_X2;
-                                    break;
-                                case 4:
-                                    wc = MachPhys::LR_MULTI_LAUNCHER6_X2;
-                                    break;
-                            }
-                        }
-                        break;
-                    case MachPhys::LAUNCHER:
-                        {
-                            switch (hwLevel)
-                            {
-                                case 4:
-                                    wc = MachPhys::LR_LARGE_MISSILE_X2;
-                                    break;
-                            }
-                        }
-                        break;
-                    case MachPhys::ICBM:
-                        {
-                            switch (hwLevel)
-                            {
-                                case 5:
-                                    wc = MachPhys::T_NUCLEAR_MISSILE;
-                                    break;
-                            }
-                        }
-                        break;
-                        DEFAULT_ASSERT_BAD_CASE(subType);
-                }
-                result = new MachLogMissileEmplacement(
-                    (MachPhys::MissileEmplacementSubType)subType,
-                    pLogRace,
-                    hwLevel,
-                    location,
-                    angle,
-                    wc);
-                break;
-            }
-
-        case MachLog::SMELTER:
-            result = new MachLogSmelter(pLogRace, hwLevel, location, angle);
-            break;
-
-            DEFAULT_ASSERT_BAD_CASE(type);
-    }
-
-    // lay pads on terrain
-    result->physConstruction().layPadsOnTerrain(*MachLogPlanet::instance().surface());
-
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
-            race,
-            type,
-            subType,
-            hwLevel,
-            0,
-            location,
-            angle,
-            MachPhys::N_WEAPON_COMBOS,
-            result->id());
-    }
-    return result;
-}
-
-// static
-MachLogConstruction* MachLogActorMaker::newLogConstruction(
-    MachLog::ObjectType type,
-    int subType,
-    int hwLevel,
-    const MexPoint3d& inLocation,
-    const MexRadians& angle,
     MachPhys::Race race,
-    UtlId withId)
+    std::optional<UtlId> withId)
 {
-    DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogConstruction " << type << " withId " << withId << std::endl);
+    if(withId.has_value())
+    {
+        DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogConstruction " << type << " withId " << withId.value() << std::endl);
+    }
     // Get the colony race pointer
     MachLogRace* pLogRace = &MachLogRaces::instance().race(race);
     MachLogConstruction* result = nullptr;
 
     // Adjust the height for the terrain
-    //     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation( inLocation );
-
     const MexTransform3d transform(MexEulerAngles(angle, 0.0, 0.0), inLocation);
     MexPoint3d location = MachLogSpacialManipulation::heightAdjustedLocation(type, subType, hwLevel, transform);
 
@@ -428,7 +289,28 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
     // lay pads on terrain
     result->physConstruction().layPadsOnTerrain(*MachLogPlanet::instance().surface());
 
-    DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogConstruction DONE " << type << " withId " << withId << std::endl);
+    if (withId.has_value())
+    {
+        DEBUG_STREAM(
+            DIAG_NETWORK,
+            "MLActorMaker::newLogConstruction DONE " << type << " withId " << withId.value() << std::endl);
+    }
+    else
+    {
+        if (MachLogNetwork::instance().isNetworkGame())
+        {
+            MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
+                race,
+                type,
+                subType,
+                hwLevel,
+                0,
+                location,
+                angle,
+                MachPhys::N_WEAPON_COMBOS,
+                result->id());
+        }
+    }
 
     return result;
 }

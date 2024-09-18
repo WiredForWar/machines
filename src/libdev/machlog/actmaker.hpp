@@ -56,17 +56,8 @@ public:
         int hwLevel,
         const MexPoint3d& location,
         const MexRadians& angle,
-        MachPhys::Race race);
-
-    // Return a new instance of a logical construction using type, subType and hwLevel.
-    static MachLogConstruction* newLogConstruction(
-        MachLog::ObjectType type,
-        int subType,
-        int hwLevel,
-        const MexPoint3d& location,
-        const MexRadians& angle,
         MachPhys::Race race,
-        UtlId withId);
+        std::optional<UtlId> withId = std::nullopt);
 
     // return a new machine instance.
     static MachLogMachine* newLogMachine(
