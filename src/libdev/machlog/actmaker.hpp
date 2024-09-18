@@ -18,6 +18,8 @@
 #include "machlog/machlog.hpp"
 #include "utility/id.hpp"
 
+#include <optional>
+
 // Forward refs
 class MachPhysConstruction;
 class W4dEntity;
@@ -74,18 +76,8 @@ public:
         int swLevel,
         MachPhys::Race race,
         const MexPoint3d& location,
-        MachPhys::WeaponCombo wc);
-
-    // as above but with predefined id.
-    static MachLogMachine* newLogMachine(
-        MachLog::ObjectType type,
-        int subType,
-        int hwLevel,
-        int swLevel,
-        MachPhys::Race race,
-        const MexPoint3d& location,
         MachPhys::WeaponCombo wc,
-        UtlId withId);
+        std::optional<UtlId> withId = std::nullopt);
 
     // Return a new instance of a logical oreholo
     static MachLogOreHolograph*

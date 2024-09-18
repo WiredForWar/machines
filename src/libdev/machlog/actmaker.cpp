@@ -441,98 +441,13 @@ MachLogMachine* MachLogActorMaker::newLogMachine(
     int swLevel,
     MachPhys::Race race,
     const MexPoint3d& inLocation,
-    MachPhys::WeaponCombo wc)
-{
-    // Get the colony race pointer
-    MachLogRace* pLogRace = &MachLogRaces::instance().race(race);
-    MachLogMachine* result = nullptr;
-
-    // Adjust the height for the terrain
-
-    MexVec3 normal;
-    const MATHEX_SCALAR height
-        = MachLogPlanet::instance().surface()->terrainHeight(inLocation.x(), inLocation.y(), &normal);
-    const MexPoint3d location(inLocation.x(), inLocation.y(), height);
-
-    // Depends on type
-    switch (type)
-    {
-        case MachLog::AGGRESSOR:
-            result
-                = new MachLogAggressor((MachPhys::AggressorSubType)subType, hwLevel, swLevel, pLogRace, location, wc);
-            break;
-
-        case MachLog::ADMINISTRATOR:
-            result = new MachLogAdministrator(
-                (MachPhys::AdministratorSubType)subType,
-                hwLevel,
-                swLevel,
-                pLogRace,
-                location,
-                wc);
-            break;
-
-        case MachLog::APC:
-            result = new MachLogAPC(hwLevel, swLevel, pLogRace, location);
-            break;
-
-        case MachLog::CONSTRUCTOR:
-            result
-                = new MachLogConstructor((MachPhys::ConstructorSubType)subType, hwLevel, swLevel, pLogRace, location);
-            break;
-
-        case MachLog::GEO_LOCATOR:
-            result = new MachLogGeoLocator(hwLevel, swLevel, pLogRace, location);
-            break;
-
-        case MachLog::RESOURCE_CARRIER:
-            result = new MachLogResourceCarrier(hwLevel, swLevel, pLogRace, location);
-            break;
-
-        case MachLog::SPY_LOCATOR:
-            result = new MachLogSpyLocator(hwLevel, swLevel, pLogRace, location);
-            break;
-
-        case MachLog::TECHNICIAN:
-            result
-                = new MachLogTechnician((MachPhys::TechnicianSubType)subType, hwLevel, swLevel, pLogRace, location);
-            break;
-
-            DEFAULT_ASSERT_BAD_CASE(type);
-    }
-
-    //  Adjust the transform so that the machine sits correctly on the surface of the planet.
-    const MexTransform3d& globalTransform = result->physMachine().globalTransform();
-    const MexTransform3d newTransform(
-        MexTransform3d::Z_ZX,
-        normal,
-        globalTransform.xBasis(),
-        globalTransform.position());
-
-    result->physMachine().globalTransform(newTransform);
-
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        MachLogNetwork::instance()
-            .messageBroker()
-            .sendCreateActorMessage(race, type, subType, hwLevel, swLevel, location, 0, wc, result->id());
-    }
-
-    return result;
-}
-
-// static
-MachLogMachine* MachLogActorMaker::newLogMachine(
-    MachLog::ObjectType type,
-    int subType,
-    int hwLevel,
-    int swLevel,
-    MachPhys::Race race,
-    const MexPoint3d& inLocation,
     MachPhys::WeaponCombo wc,
-    UtlId withId)
+    std::optional<UtlId> withId)
 {
-    DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogMachine " << type << " withId " << withId << std::endl);
+    if (withId.has_value())
+    {
+        DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogMachine " << type << " withId " << withId.value() << std::endl);
+    }
     // Get the colony race pointer
     MachLogRace* pLogRace = &MachLogRaces::instance().race(race);
     MachLogMachine* result = nullptr;
@@ -612,7 +527,23 @@ MachLogMachine* MachLogActorMaker::newLogMachine(
 
     result->physMachine().globalTransform(newTransform);
 
-    DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogMachine DONE " << type << " withId " << withId << std::endl);
+    if (!withId.has_value())
+    {
+        // Locally created
+        if (MachLogNetwork::instance().isNetworkGame())
+        {
+            MachLogNetwork::instance()
+                .messageBroker()
+                .sendCreateActorMessage(race, type, subType, hwLevel, swLevel, location, 0, wc, result->id());
+        }
+    }
+
+    if (withId.has_value())
+    {
+        DEBUG_STREAM(
+            DIAG_NETWORK,
+            "MLActorMaker::newLogMachine DONE " << type << " withId " << withId.value() << std::endl);
+    }
     return result;
 }
 
