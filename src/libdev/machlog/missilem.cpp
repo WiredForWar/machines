@@ -91,8 +91,8 @@ MachLogMissileEmplacement::MachLogMissileEmplacement(
         pRace,
         pNewPhysMissileEmplacement(subType, pRace, level, location, angle, wc),
         MachLog::MISSILE_EMPLACEMENT,
-        withId,
-        MachPhysData::instance().missileEmplacementData(subType, level))
+        MachPhysData::instance().missileEmplacementData(subType, level),
+        withId)
     , MachLogCanAttack(this, pPhysMissileEmplacement(), wc)
     , subType_(subType)
     , inTransition_(false)

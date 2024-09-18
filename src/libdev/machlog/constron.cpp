@@ -114,9 +114,8 @@ MachLogConstruction::MachLogConstruction(
     MachLogRace* pRace,
     MachPhysConstruction* pConstruction,
     MachLog::ObjectType ot,
-    UtlId withId,
-    const MachPhysConstructionData& /* data */
-    )
+    const MachPhysConstructionData& /* data */,
+    UtlId withId)
     : MachActor(pRace, pConstruction, ot, withId)
     , pImpl_(new MachLogConstructionImpl)
 {

@@ -93,8 +93,8 @@ MachLogHardwareLab::MachLogHardwareLab(
         pRace,
         pNewPhysHardwareLab(subType, pRace, level, location, angle),
         MachLog::HARDWARE_LAB,
-        withId,
-        MachPhysData::instance().hardwareLabData(subType, level))
+        MachPhysData::instance().hardwareLabData(subType, level),
+        withId)
     , pImpl_(new MachLogHardwareLabImpl(subType))
 {
     CB_MachLogHardwareLab_DEPIMPL();

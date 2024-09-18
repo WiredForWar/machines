@@ -55,8 +55,8 @@ MachLogBeacon::MachLogBeacon(
         pRace,
         pNewPhysBeacon(pRace, level, location, angle),
         MachLog::BEACON,
-        withId,
-        MachPhysData::instance().beaconData(level))
+        MachPhysData::instance().beaconData(level),
+        withId)
 {
 
     TEST_INVARIANT;

@@ -103,8 +103,8 @@ MachLogFactory::MachLogFactory(
         pRace,
         pNewPhysFactory(subType, pRace, level, location, angle),
         MachLog::FACTORY,
-        withId,
-        MachPhysData::instance().factoryData(subType, level))
+        MachPhysData::instance().factoryData(subType, level),
+        withId)
     , pImpl_(new MachLogFactoryImpl(subType))
 {
 

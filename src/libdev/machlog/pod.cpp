@@ -89,8 +89,8 @@ MachLogPod::MachLogPod(
         pRace,
         pNewPhysPod(pRace, level, location, angle),
         MachLog::POD,
-        withId,
-        MachPhysData::instance().podData(level))
+        MachPhysData::instance().podData(level),
+        withId)
     , MachLogCanAttack(this, pPhysPod(), wc)
     , pImpl_(new MachLogPodImpl)
 {

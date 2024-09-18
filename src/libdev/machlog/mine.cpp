@@ -89,8 +89,8 @@ MachLogMine::MachLogMine(
         pRace,
         pNewPhysMine(pRace, level, location, angle),
         MachLog::MINE,
-        withId,
-        MachPhysData::instance().mineData(level))
+        MachPhysData::instance().mineData(level),
+        withId)
     , ore_(0)
     , lastUpdateTime_(SimManager::instance().currentTime())
     , pSite_(nullptr)

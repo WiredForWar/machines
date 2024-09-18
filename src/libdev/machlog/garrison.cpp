@@ -71,8 +71,8 @@ MachLogGarrison::MachLogGarrison(
         pRace,
         pNewPhysGarrison(pRace, level, location, angle),
         MachLog::GARRISON,
-        withId,
-        MachPhysData::instance().garrisonData(level))
+        MachPhysData::instance().garrisonData(level),
+        withId)
     , pImpl_(new MachLogGarrisonImpl)
 {
     CB_MachLogGarrison_DEPIMPL();

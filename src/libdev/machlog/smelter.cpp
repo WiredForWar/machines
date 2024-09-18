@@ -61,8 +61,8 @@ MachLogSmelter::MachLogSmelter(
         pRace,
         pNewPhysSmelter(pRace, level, location, angle),
         MachLog::SMELTER,
-        withId,
-        MachPhysData::instance().smelterData(level))
+        MachPhysData::instance().smelterData(level),
+        withId)
     , inStorage_(0)
     , droppedOffOreTime_(0)
     , addedBMUStorageToRace_(false)
