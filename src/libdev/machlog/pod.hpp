@@ -31,7 +31,7 @@ class MachLogPod
     , public MachLogCanAttack
 {
 public:
-    // Construct smelter of deisgnated race and level at location, rotated thru angle about
+    // Construct smelter of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogPod(
         MachLogRace* pRace,

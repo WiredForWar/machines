@@ -30,7 +30,7 @@ class MachPhysSmelterData;
 class MachLogSmelter : public MachLogConstruction
 {
 public:
-    // Construct smelter of deisgnated race and level at location, rotated thru angle about
+    // Construct smelter of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogSmelter(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
 

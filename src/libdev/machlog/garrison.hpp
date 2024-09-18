@@ -28,7 +28,7 @@ class MachLogGarrisonImpl;
 class MachLogGarrison : public MachLogConstruction
 {
 public:
-    // Construct Garrison of deisgnated race and level at location, rotated thru angle about
+    // Construct Garrison of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
 

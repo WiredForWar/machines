@@ -42,7 +42,7 @@ public:
     };
 
     using ProductionLine = ctl_list<MachLogProductionUnit*>;
-    // Construct factory of deisgnated race and level at location, rotated thru angle about
+    // Construct factory of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogFactory(
         MachPhys::FactorySubType subType,

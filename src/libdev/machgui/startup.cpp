@@ -445,7 +445,7 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
             becomeRoot();
             GuiManager::instance().keyboardFocus(this);
 
-            // Don't suspend if playing multiplayer game otherwise your gona get your ass
+            // Don't suspend if playing multiplayer game otherwise your gonna get your ass
             // kicked whilst your changing settings etc.
             if (gameType_ != MULTIGAME)
             {

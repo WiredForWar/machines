@@ -34,7 +34,7 @@ public:
         IGNORE_DISCOVERED_FLAG,
         CHECK_DISCOVERED_FLAG
     };
-    // Construct smelter of deisgnated race and level at location, rotated thru angle about
+    // Construct smelter of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogMine(
         MachLogRace* pRace,

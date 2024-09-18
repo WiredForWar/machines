@@ -29,7 +29,7 @@ class MachPhysHardwareLabData;
 class MachLogHardwareLab : public MachLogConstruction
 {
 public:
-    // Construct hwlab of deisgnated race and level at location, rotated thru angle about
+    // Construct hwlab of designated race and level at location, rotated thru angle about
     // z axis.
     MachLogHardwareLab(
         MachPhys::HardwareLabSubType subType,

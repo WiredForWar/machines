@@ -116,7 +116,7 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
             choppedUpText = "";
             curWidth = 0;
         }
-        // Is text gona be too wide if we add this character?
+        // Is text gonna be too wide if we add this character?
         else if (curWidth + font.charWidth(text[charPos]) + font.spacing() > maxWidth)
         {
             // Get pointer to character ten position from end of string.
