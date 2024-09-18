@@ -78,27 +78,8 @@ MachLogFactory::MachLogFactory(
     MachLogRace* pRace,
     uint level,
     const MexPoint3d& location,
-    const MexRadians& angle)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysFactory(subType, pRace, level, location, angle),
-        MachLog::FACTORY,
-        MachPhysData::instance().factoryData(subType, level))
-    , pImpl_(new MachLogFactoryImpl(subType))
-{
-
-    TEST_INVARIANT;
-    armour(data().armour());
-    MachLogRaces::instance().factories(pRace->race()).push_back(this);
-}
-
-MachLogFactory::MachLogFactory(
-    MachPhys::FactorySubType subType,
-    MachLogRace* pRace,
-    uint level,
-    const MexPoint3d& location,
     const MexRadians& angle,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysFactory(subType, pRace, level, location, angle),

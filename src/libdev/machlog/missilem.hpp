@@ -32,16 +32,7 @@ class MachLogMissileEmplacement
     , public MachLogCanTurn
 {
 public:
-    // Construct smelter of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogMissileEmplacement(
-        const MachPhys::MissileEmplacementSubType&,
-        MachLogRace* pRace,
-        uint level,
-        const MexPoint3d& location,
-        const MexRadians& angle,
-        MachPhys::WeaponCombo);
-
+    // Construct smelter of designated race and level at location, rotated thru angle about z axis.
     MachLogMissileEmplacement(
         const MachPhys::MissileEmplacementSubType&,
         MachLogRace* pRace,
@@ -49,7 +40,7 @@ public:
         const MexPoint3d& location,
         const MexRadians& angle,
         MachPhys::WeaponCombo,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogMissileEmplacement() override;
 
@@ -146,8 +137,8 @@ private:
     // Data members
     MachPhys::MissileEmplacementSubType subType_;
 
-    bool domeOpen_; // only used by some types of emplacement
-    bool inTransition_; // only used by some types of emplacement
+    bool domeOpen_{}; // only used by some types of emplacement
+    bool inTransition_{}; // only used by some types of emplacement
                         // means dome is neither open nor closed.
     // used in lazy evaluation of local strength
     PhysAbsoluteTime lastStrengthEstimateTime_;

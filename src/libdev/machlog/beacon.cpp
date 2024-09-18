@@ -32,25 +32,12 @@
 PER_DEFINE_PERSISTENT(MachLogBeacon);
 //////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogBeacon::MachLogBeacon(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysBeacon(pRace, level, location, angle),
-        MachLog::BEACON,
-        MachPhysData::instance().beaconData(level))
-{
-
-    TEST_INVARIANT;
-    armour(data().armour());
-    MachLogRaces::instance().beacons(pRace->race()).push_back(this);
-}
-
 MachLogBeacon::MachLogBeacon(
     MachLogRace* pRace,
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysBeacon(pRace, level, location, angle),

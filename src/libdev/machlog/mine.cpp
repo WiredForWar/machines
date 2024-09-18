@@ -45,55 +45,15 @@ MachLogMine::MachLogMine(
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    const CheckDiscoveredFlag check)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysMine(pRace, level, location, angle),
-        MachLog::MINE,
-        MachPhysData::instance().mineData(level))
-    , ore_(0)
-    , lastUpdateTime_(SimManager::instance().currentTime())
-    , pSite_(nullptr)
-{
-    // hp( data().hitPoints() );
-    armour(data().armour());
-    MachLogRaces::instance().mines(pRace->race()).push_back(this);
-    MachLogRaces::instance().nMaxOre(pRace->race()) += MachPhysData::instance().mineData(level).capacity();
-
-    if (check == IGNORE_DISCOVERED_FLAG)
-    {
-        // mark this mineral site as ours if it hasn't previously been discovered
-        // this will stop locators trying to "discover" it later.
-        discoverAndAssignToNearestMineralSite(pRace);
-        ASSERT(hasMineralSite(), "discoverAndAssignToNearestMineralSite failed to find valid site in constructor!");
-    }
-    else
-    {
-        assignToNearestMineralSite();
-        ASSERT(hasMineralSite(), "assignToNearestMineralSite failed to find valid site in constructor!");
-        // if( not mineralSite().hasBeenDiscovered() )
-        // mineralSite().beDiscoveredBy( pRace->race() );
-    }
-
-    TEST_INVARIANT;
-}
-
-MachLogMine::MachLogMine(
-    MachLogRace* pRace,
-    uint level,
-    const MexPoint3d& location,
-    const MexRadians& angle,
     const CheckDiscoveredFlag check,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysMine(pRace, level, location, angle),
         MachLog::MINE,
         MachPhysData::instance().mineData(level),
         withId)
-    , ore_(0)
     , lastUpdateTime_(SimManager::instance().currentTime())
-    , pSite_(nullptr)
 {
     // hp( data().hitPoints() );
     armour(data().armour());
@@ -115,9 +75,12 @@ MachLogMine::MachLogMine(
         //   mineralSite().beDiscoveredBy( pRace->race() );
     }
 
-    // override any scenario specification to rebuild a mine - it's meaningless. The location of mineral sites
-    // will determine if and when mines are built
-    needRebuild(false);
+    if (withId.has_value())
+    {
+        // override any scenario specification to rebuild a mine - it's meaningless. The location of mineral sites
+        // will determine if and when mines are built
+        needRebuild(false);
+    }
 
     TEST_INVARIANT;
 }

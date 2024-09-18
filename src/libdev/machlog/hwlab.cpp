@@ -64,31 +64,8 @@ MachLogHardwareLab::MachLogHardwareLab(
     MachLogRace* pRace,
     uint level,
     const MexPoint3d& location,
-    const MexRadians& angle)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysHardwareLab(subType, pRace, level, location, angle),
-        MachLog::HARDWARE_LAB,
-        MachPhysData::instance().hardwareLabData(subType, level))
-    , pImpl_(new MachLogHardwareLabImpl(subType))
-{
-    TEST_INVARIANT;
-    CB_MachLogHardwareLab_DEPIMPL();
-    availableResearchItems_.reserve(10);
-
-    // do not set the hp here
-    // hp( data().hitPoints() );
-    armour(data().armour());
-    MachLogRaces::instance().hardwareLabs(pRace->race()).push_back(this);
-}
-
-MachLogHardwareLab::MachLogHardwareLab(
-    MachPhys::HardwareLabSubType subType,
-    MachLogRace* pRace,
-    uint level,
-    const MexPoint3d& location,
     const MexRadians& angle,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysHardwareLab(subType, pRace, level, location, angle),

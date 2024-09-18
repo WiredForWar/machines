@@ -42,22 +42,14 @@ public:
     };
 
     using ProductionLine = ctl_list<MachLogProductionUnit*>;
-    // Construct factory of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogFactory(
-        MachPhys::FactorySubType subType,
-        MachLogRace* pRace,
-        uint level,
-        const MexPoint3d& location,
-        const MexRadians& angle);
-
+    // Construct factory of designated race and level at location, rotated thru angle about z axis.
     MachLogFactory(
         MachPhys::FactorySubType subType,
         MachLogRace* pRace,
         uint level,
         const MexPoint3d& location,
         const MexRadians& angle,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogFactory() override;
 

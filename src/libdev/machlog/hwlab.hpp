@@ -29,22 +29,14 @@ class MachPhysHardwareLabData;
 class MachLogHardwareLab : public MachLogConstruction
 {
 public:
-    // Construct hwlab of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogHardwareLab(
-        MachPhys::HardwareLabSubType subType,
-        MachLogRace* pRace,
-        uint level,
-        const MexPoint3d& location,
-        const MexRadians& angle);
-
+    // Construct hwlab of designated race and level at location, rotated thru angle about z axis.
     MachLogHardwareLab(
         MachPhys::HardwareLabSubType subType,
         MachLogRace* pRace,
         uint level,
         const MexPoint3d& location,
         const MexRadians& angle,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogHardwareLab() override;
 

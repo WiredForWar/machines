@@ -30,11 +30,13 @@ class MachPhysSmelterData;
 class MachLogSmelter : public MachLogConstruction
 {
 public:
-    // Construct smelter of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogSmelter(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
-
-    MachLogSmelter(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle, UtlId);
+    // Construct smelter of designated race and level at location, rotated thru angle about z axis.
+    MachLogSmelter(
+        MachLogRace* pRace,
+        uint level,
+        const MexPoint3d& location,
+        const MexRadians& angle,
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogSmelter() override;
 
@@ -90,9 +92,9 @@ private:
     const MachPhysSmelter* pPhysSmelter() const;
 
     // Data members
-    MachPhys::BuildingMaterialUnits inStorage_;
-    PhysAbsoluteTime droppedOffOreTime_;
-    bool addedBMUStorageToRace_;
+    MachPhys::BuildingMaterialUnits inStorage_{};
+    PhysAbsoluteTime droppedOffOreTime_{};
+    bool addedBMUStorageToRace_{};
 };
 
 PER_DECLARE_PERSISTENT(MachLogSmelter);

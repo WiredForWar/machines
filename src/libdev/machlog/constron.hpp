@@ -281,13 +281,8 @@ protected:
         MachLogRace* pRace,
         MachPhysConstruction* pConstruction,
         MachLog::ObjectType,
-        const MachPhysConstructionData& data);
-    MachLogConstruction(
-        MachLogRace* pRace,
-        MachPhysConstruction* pConstruction,
-        MachLog::ObjectType,
         const MachPhysConstructionData& data,
-        UtlId withId);
+        std::optional<UtlId> withId = std::nullopt);
     // Updates the animation of construction for current state.
     // Needs to be called from the derived class update() method.
     // True when visualisation is up-to-date

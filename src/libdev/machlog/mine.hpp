@@ -34,22 +34,14 @@ public:
         IGNORE_DISCOVERED_FLAG,
         CHECK_DISCOVERED_FLAG
     };
-    // Construct smelter of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogMine(
-        MachLogRace* pRace,
-        uint level,
-        const MexPoint3d& location,
-        const MexRadians& angle,
-        const CheckDiscoveredFlag check);
-
+    // Construct smelter of designated race and level at location, rotated thru angle about z axis.
     MachLogMine(
         MachLogRace* pRace,
         uint level,
         const MexPoint3d& location,
         const MexRadians& angle,
         const CheckDiscoveredFlag check,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogMine() override;
 
@@ -123,8 +115,8 @@ private:
     static MATHEX_SCALAR sqrMaxMineralDistance(uint hwLevel);
 
     // Data members
-    MachPhys::BuildingMaterialUnits ore_;
-    MachLogMineralSite* pSite_;
+    MachPhys::BuildingMaterialUnits ore_{};
+    MachLogMineralSite* pSite_{};
     PhysAbsoluteTime lastUpdateTime_;
 };
 

@@ -62,29 +62,8 @@ MachLogPod::MachLogPod(
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    MachPhys::WeaponCombo wc)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysPod(pRace, level, location, angle),
-        MachLog::POD,
-        MachPhysData::instance().podData(level))
-    , MachLogCanAttack(this, pPhysPod(), wc)
-    , pImpl_(new MachLogPodImpl())
-{
-    TEST_INVARIANT;
-    armour(data().armour());
-    MachLogRaces::instance().pods(pRace->race()).push_back(this);
-}
-
-/* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
-
-MachLogPod::MachLogPod(
-    MachLogRace* pRace,
-    uint level,
-    const MexPoint3d& location,
-    const MexRadians& angle,
     MachPhys::WeaponCombo wc,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysPod(pRace, level, location, angle),

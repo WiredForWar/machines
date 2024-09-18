@@ -60,33 +60,8 @@ MachLogMissileEmplacement::MachLogMissileEmplacement(
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    MachPhys::WeaponCombo wc)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysMissileEmplacement(subType, pRace, level, location, angle, wc),
-        MachLog::MISSILE_EMPLACEMENT,
-        MachPhysData::instance().missileEmplacementData(subType, level))
-    , MachLogCanAttack(this, pPhysMissileEmplacement(), wc)
-    , subType_(subType)
-    , inTransition_(false)
-    , domeOpen_(false)
-    , lastStrengthEstimateTime_(SimManager::instance().currentTime())
-{
-
-    TEST_INVARIANT;
-    armour(data().armour());
-    MachLogRaces::instance().missileEmplacements(pRace->race()).push_back(this);
-    MachLogArmourer::arm(this);
-}
-
-MachLogMissileEmplacement::MachLogMissileEmplacement(
-    const MachPhys::MissileEmplacementSubType& subType,
-    MachLogRace* pRace,
-    uint level,
-    const MexPoint3d& location,
-    const MexRadians& angle,
     MachPhys::WeaponCombo wc,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysMissileEmplacement(subType, pRace, level, location, angle, wc),
@@ -95,8 +70,6 @@ MachLogMissileEmplacement::MachLogMissileEmplacement(
         withId)
     , MachLogCanAttack(this, pPhysMissileEmplacement(), wc)
     , subType_(subType)
-    , inTransition_(false)
-    , domeOpen_(false)
     , lastStrengthEstimateTime_(SimManager::instance().currentTime())
 {
 

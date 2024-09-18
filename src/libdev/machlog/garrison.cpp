@@ -44,29 +44,12 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 PER_DEFINE_PERSISTENT(MachLogGarrison);
 
-MachLogGarrison::MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysGarrison(pRace, level, location, angle),
-        MachLog::GARRISON,
-        MachPhysData::instance().garrisonData(level))
-    , pImpl_(new MachLogGarrisonImpl)
-{
-    CB_MachLogGarrison_DEPIMPL();
-    TEST_INVARIANT;
-
-    // do not set hp here
-    // hp( data().hitPoints() );
-    armour(data().armour());
-    MachLogRaces::instance().garrisons(pRace->race()).push_back(this);
-}
-
 MachLogGarrison::MachLogGarrison(
     MachLogRace* pRace,
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysGarrison(pRace, level, location, angle),

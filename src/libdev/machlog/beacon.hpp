@@ -27,11 +27,13 @@ class MachPhysBeaconData;
 class MachLogBeacon : public MachLogConstruction
 {
 public:
-    // Construct smelter of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogBeacon(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
-
-    MachLogBeacon(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle, UtlId);
+    // Construct smelter of designated race and level at location, rotated thru angle about z axis.
+    MachLogBeacon(
+        MachLogRace* pRace,
+        uint level,
+        const MexPoint3d& location,
+        const MexRadians& angle,
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogBeacon() override;
 

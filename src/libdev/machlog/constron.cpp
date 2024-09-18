@@ -92,30 +92,8 @@ MachLogConstruction::MachLogConstruction(
     MachLogRace* pRace,
     MachPhysConstruction* pConstruction,
     MachLog::ObjectType ot,
-    const MachPhysConstructionData& /* data */
-    )
-    : MachActor(pRace, pConstruction, ot)
-    , pImpl_(new MachLogConstructionImpl)
-{
-    CB_MachLogConstruction_DEPIMPL();
-    PRE(pRace != nullptr);
-    PRE(pConstruction != nullptr);
-
-    // Set the model to not been built yet...like so:
-    pConstruction->percentageComplete(0.1);
-    MachLogRaces::instance().nConstructions(pRace->race())++;
-    initialiseFromConstructionData(pConstruction);
-    hp(1);
-
-    TEST_INVARIANT;
-}
-
-MachLogConstruction::MachLogConstruction(
-    MachLogRace* pRace,
-    MachPhysConstruction* pConstruction,
-    MachLog::ObjectType ot,
     const MachPhysConstructionData& /* data */,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachActor(pRace, pConstruction, ot, withId)
     , pImpl_(new MachLogConstructionImpl)
 {
@@ -125,12 +103,8 @@ MachLogConstruction::MachLogConstruction(
 
     // Set the model to not been built yet...like so:
     pConstruction->percentageComplete(0.1);
-
     MachLogRaces::instance().nConstructions(pRace->race())++;
-
     initialiseFromConstructionData(pConstruction);
-    // Set the model to not been built yet...like so:
-    pConstruction->percentageComplete(0.1);
     hp(1);
 
     TEST_INVARIANT;

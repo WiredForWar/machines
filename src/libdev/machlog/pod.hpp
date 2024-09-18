@@ -31,22 +31,14 @@ class MachLogPod
     , public MachLogCanAttack
 {
 public:
-    // Construct smelter of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogPod(
-        MachLogRace* pRace,
-        uint level,
-        const MexPoint3d& location,
-        const MexRadians& angle,
-        MachPhys::WeaponCombo wc);
-
+    // Construct smelter of designated race and level at location, rotated thru angle about z axis.
     MachLogPod(
         MachLogRace* pRace,
         uint level,
         const MexPoint3d& location,
         const MexRadians& angle,
         MachPhys::WeaponCombo wc,
-        UtlId);
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogPod() override;
 

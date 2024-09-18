@@ -35,37 +35,18 @@
 PER_DEFINE_PERSISTENT(MachLogSmelter);
 //////////////////////////////////////////////////////////////////////////////////////////
 
-MachLogSmelter::MachLogSmelter(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle)
-    : MachLogConstruction(
-        pRace,
-        pNewPhysSmelter(pRace, level, location, angle),
-        MachLog::SMELTER,
-        MachPhysData::instance().smelterData(level))
-    , inStorage_(0)
-    , droppedOffOreTime_(0)
-    , addedBMUStorageToRace_(false)
-{
-    MachLogRaces::instance().smelters(pRace->race()).push_back(this);
-    armour(data().armour());
-
-    TEST_INVARIANT;
-}
-
 MachLogSmelter::MachLogSmelter(
     MachLogRace* pRace,
     uint level,
     const MexPoint3d& location,
     const MexRadians& angle,
-    UtlId withId)
+    std::optional<UtlId> withId)
     : MachLogConstruction(
         pRace,
         pNewPhysSmelter(pRace, level, location, angle),
         MachLog::SMELTER,
         MachPhysData::instance().smelterData(level),
         withId)
-    , inStorage_(0)
-    , droppedOffOreTime_(0)
-    , addedBMUStorageToRace_(false)
 {
     MachLogRaces::instance().smelters(pRace->race()).push_back(this);
     armour(data().armour());

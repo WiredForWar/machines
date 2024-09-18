@@ -28,11 +28,13 @@ class MachLogGarrisonImpl;
 class MachLogGarrison : public MachLogConstruction
 {
 public:
-    // Construct Garrison of designated race and level at location, rotated thru angle about
-    // z axis.
-    MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle);
-
-    MachLogGarrison(MachLogRace* pRace, uint level, const MexPoint3d& location, const MexRadians& angle, UtlId);
+    // Construct Garrison of designated race and level at location, rotated thru angle about z axis.
+    MachLogGarrison(
+        MachLogRace* pRace,
+        uint level,
+        const MexPoint3d& location,
+        const MexRadians& angle,
+        std::optional<UtlId> withId = std::nullopt);
 
     ~MachLogGarrison() override;
 
