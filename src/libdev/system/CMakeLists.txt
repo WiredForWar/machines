@@ -34,6 +34,7 @@ add_library(LibDev::system ALIAS system)
 
 target_link_libraries(system PUBLIC
     LibDev::recorder
+    SDL2::SDL2
 )
 
 if(PLATFORM_WINDOWS)

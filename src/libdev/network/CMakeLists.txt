@@ -48,6 +48,7 @@ add_library(LibDev::network ALIAS network)
 
 target_link_libraries(network PRIVATE
     LibDev::base
+    LibDev::system
 
     enet::enet
 )
