@@ -371,6 +371,8 @@ void MachPromptText::displayChatMessage()
     std::string displayChatMessageStr = chatMessageIntendedForStr_ + text();
     int caretPosition = caretPos() + beginningTextWidth_;
     int startY = shadowFont_.charHeight() / 2;
+    if (Gui::uiScaleFactor() > 1)
+        startY += 1;
 
     // Make sure we only update when the text has changed
     if (lastDisplayedChatMessage_ != displayChatMessageStr)
@@ -441,6 +443,8 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
         if (textLines.size() == 1)
         {
             startY += pImpl_->shadowFont_.charHeight() / 2;
+            if (Gui::uiScaleFactor() > 1)
+                startY += 1;
         }
 
         for (const std::string& line : textLines)
