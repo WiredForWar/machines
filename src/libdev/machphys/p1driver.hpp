@@ -32,8 +32,9 @@ class MachPhysPlanetSurface;
 class MachPhys1stPersonDriverImpl;
 
 // Memberwise canonical state info for use in network transmission
-struct MachPhysFirstPersonStateVector
+class MachPhysFirstPersonStateVector
 {
+public:
     MexCompressedTransform3d transform_; // Current position
     PhysCompressedAbsoluteTime lastUpdateTime_; // Time of last position update
     float lastSpeed_; // Last forward/backward speed (signed)

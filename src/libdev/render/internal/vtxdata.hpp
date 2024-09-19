@@ -26,8 +26,9 @@ template <class T> class ctl_vector;
 // D3D struct.  This allows us to memcpy from RenIVertexData to a D3DLVERTEX
 // array.  It *could* break under future versions of DirectX.
 
-struct RenIVertex
+class RenIVertex
 {
+public:
     float x, y, z;
     // DWORD dwReserved;
 
