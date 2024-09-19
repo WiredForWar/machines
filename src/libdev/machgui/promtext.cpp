@@ -383,9 +383,9 @@ void MachPromptText::displayChatMessage()
 
         // Work out starting position for text
         Gui::Coord startBeginningText = Gui::Coord(0, startY);
-        Gui::Coord shadowStartBeginningText = Gui::Coord(1, startY + 1);
+        Gui::Coord shadowStartBeginningText = startBeginningText + Gui::Vec(1, 1) * Gui::uiScaleFactor();
         Gui::Coord startText = Gui::Coord(caretPosition, startY);
-        Gui::Coord shadowStartText = Gui::Coord(caretPosition + 1, startY + 1);
+        Gui::Coord shadowStartText = startText + Gui::Vec(1, 1) * Gui::uiScaleFactor();
 
         // Draw shadow and normal text
         shadowFont_.drawText(&promptBmp_, chatMessageIntendedForStr_, shadowStartBeginningText, promptBmp_.width());
