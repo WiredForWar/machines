@@ -13,7 +13,6 @@ set(PHYS_SOURCES
     cmotchun.hpp
     crampacc.cpp
     crampacc.hpp
-    cs2data1.cpp
     cs2dmarc.cpp
     cs2dmcac.cpp
     cs2dmfnd.cpp
@@ -102,8 +101,6 @@ set(PHYS_SOURCES
     rampacce.hpp
     sclplan.cpp
     sclplan.hpp
-    ti2.cpp
-    ti_motn.cpp
     timeangi.cpp
     timeangl.cpp
     timeangl.hpp
