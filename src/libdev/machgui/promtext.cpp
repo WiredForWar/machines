@@ -136,7 +136,7 @@ MachPromptText::MachPromptText(
     std::string normalFont = MachGui::getScaledImagePath("gui/menu/promtfnt");
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
     GuiBmpFont::FontType fontType = GuiBmpFont::PROPORTIONAL;
-    size_t spaceCharWidth = 7 * Gui::uiScaleFactor();
+    size_t spaceCharWidth = (Gui::uiScaleFactor() > 1 ? 5 : 7) * Gui::uiScaleFactor();
     size_t spacing = 1 * Gui::uiScaleFactor();
 
     font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing);
