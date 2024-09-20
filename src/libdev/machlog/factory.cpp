@@ -497,14 +497,6 @@ void MachLogFactory::clearProductionLine()
         productionLine_.pop_front();
     }
 }
-/*
-template< class CONTAINER, class T >
-void
-factory_ctl_erase( CONTAINER *cPtr, const T& t )
-{
-    cPtr->erase( remove( cPtr->begin(), cPtr->end(), t ), cPtr->end() );
-}
-*/
 
 void MachLogFactory::removeMachine(const MachLog::ObjectType)
 {
