@@ -6,8 +6,6 @@
 #include "network/sessuid.hpp"
 #include "network/nodeuid.hpp"
 
-#include "ctl/queue.hpp"
-#include "ctl/deque.hpp"
 #include "ctl/map.hpp"
 
 class NetAppSessionUid;
@@ -101,7 +99,6 @@ public:
     // time in ms since last ping all call.
     double lastPingAllTime() const;
 
-    //      typedef ctl_queue< ctl_deque< NetMessage* > >NetMessageBuffer;
     using NetMessageBuffer = ctl_pvector<NetMessage>;
 
     // To use compound messaging call this with true or false.

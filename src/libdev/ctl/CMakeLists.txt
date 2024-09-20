@@ -15,7 +15,6 @@ file(GLOB CTL_SOURCES
     mmvector.hpp
     nbvector.hpp
     pvector.hpp
-    queue.hpp
     set.hpp
     utility.hpp
     vector.hpp
