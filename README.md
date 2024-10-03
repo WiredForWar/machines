@@ -18,6 +18,47 @@ The most notable changes are:
 
 Windows builds are now done automatically by GitHub.
 
+## Installation
+
+### Windows
+
+1. Download https://download.wiredforwar.org/Game/Community-Build-1.5/machines-assets.7z. The archive has `machines` directory inside.
+2. Extract the archive (`machines-assets.7z`) to the wanted installation directory.
+3. Open https://github.com/WiredForWar/machines/releases and download `machines-win64-wfw-%releasedate%.7z` from the assets of the latest release. E.g. release [v1.7.1](https://github.com/WiredForWar/machines/releases/tag/v1.7.1) has [machines-win64-wfw-20240910.7z](https://github.com/WiredForWar/machines/releases/download/v1.7.1/machines-win64-wfw-20240910.7z) in its Assets. The downloaded win64 archive also has `machines` directory inside.
+4. Extract the archive (`machines-win64-wfw-%releasedate%.7z`) *to the same* installation directory and *overwrite* the existing files (the win64 archive has new version of some assets).
+
+Note: if you don't have `machines.exe` inside the extracted `machines` then maybe you've extracted the second archive into the first, which resulted in `machines/machines/machines.exe`. In order to get a correct installation, try to redo the steps from `#2`, this time make sure that you've extracted both archives into the same directory.
+
+### GNU/Linux
+
+#### Flatpak
+
+Use Flatpak to install the client (only amd64 for now):
+```
+flatpak install --user https://wiredforwar.github.io/flatpak/wiredforwar-machines.flatpakref
+```
+or just open the linked file https://wiredforwar.github.io/flatpak/wiredforwar-machines.flatpakref with default Flatpak frontend.
+Flatpak (the manager) installation howto: https://flatpak.org/setup
+
+After the installation but *before* the first run, download the assets from https://lordovervolt.com/machines (e.g. http://markol.usermd.net/machines/machines-assets.7z) and extract them to `~/.var/app/io.github.wiredforwar.machines/data/`, so there are `sounds` and other assets inside the `~/.var/app/io.github.wiredforwar.machines/data/machines/data/machines` directory.
+Personally I also use the "Enlarged textures" (http://markol.usermd.net/machines/machines-models.7z). Those should be extracted to the `machines` directory so the `models/planet` from the archive overwrite the files at `~/.var/app/io.github.wiredforwar.machines/data/machines/models/`.
+Here is a short script doing that for you:
+```
+mkdir -p ~/.var/app/io.github.wiredforwar.machines/downloads
+cd ~/.var/app/io.github.wiredforwar.machines/downloads
+wget https://download.wiredforwar.org/Game/Community-Build-1.5/machines-assets.7z
+7z x machines-assets.7z -o../data
+```
+Then you can run the game normally (e.g. via desktop menu). Flatpak command to run the game is:
+```
+flatpak run io.github.wiredforwar.machines
+```
+On an update released you can use your preferred Flatpak frontend or install the update via console:
+```
+flatpak update io.github.wiredforwar.machines
+```
+The logs are in `~/.var/app/io.github.wiredforwar.machines/logs`, and the save files are in `~/.var/app/io.github.wiredforwar.machines/savegame`.
+
 ### Development
 
 #### Followed conventions
