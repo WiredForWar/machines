@@ -46,7 +46,7 @@ public:
     const CharData* getChar(char c) const;
 
 protected:
-    CharData charData_[128]; // character information
+    CharData charData_[256]; // character information
 };
 
 } // Render namespace

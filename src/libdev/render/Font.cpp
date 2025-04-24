@@ -4,6 +4,7 @@
 #include "system/pathname.hpp"
 
 #include <algorithm>
+#include <limits>
 #include <ostream>
 #include <vector>
 
@@ -49,10 +50,14 @@ void FontImpl::prepareTexture()
     unsigned int roww = 0;
     unsigned int rowh = 0;
 
+    // Include as many characters as can fit 1 byte to give a chance for more (pre UTF-8 of cource) translations
+    // E.g. German translation which needs characters up to 252.
+    constexpr uint32_t maxCharacter = std::numeric_limits<uint8_t>::max();
+
     memset(charData_, 0, sizeof(charData_));
 
-    /* Find minimum size for a texture holding all visible ASCII characters */
-    for (int i = 32; i < 128; i++)
+    /* Find minimum size for a texture holding all required characters */
+    for (uint32_t i = 32; i <= maxCharacter; i++)
     {
         if (FT_Load_Char(face, i, FT_LOAD_RENDER))
         {
@@ -73,7 +78,7 @@ void FontImpl::prepareTexture()
     w = std::max(w, roww);
     h += rowh;
 
-    /* Create a texture that will be used to hold all ASCII glyphs */
+    /* Create a texture that will be used to hold all required glyphs */
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -96,7 +101,7 @@ void FontImpl::prepareTexture()
     GLuint* rgbaBitmap = _NEW_ARRAY(GLuint, pixelSize * pixelSize);
     rowh = 0;
 
-    for (int i = 32; i < 128; i++)
+    for (uint32_t i = 32; i <= maxCharacter; i++)
     {
         if (FT_Load_Char(face, i, FT_LOAD_RENDER))
         {
@@ -155,7 +160,7 @@ const FontImpl* FontImpl::get(const Font* parent)
 
 const FontImpl::CharData* FontImpl::getChar(char c) const
 {
-    int index = c;
+    uint8_t index = c;
     return &charData_[index];
 }
 
