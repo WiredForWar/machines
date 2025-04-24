@@ -419,7 +419,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
     x = originX;
     for (int i = 0; i < text.size(); ++i)
     {
-        uint character = text[i];
+        char character = text[i];
         if (character == '\n')
         {
             x = originX;
