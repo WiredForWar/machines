@@ -400,8 +400,8 @@ static const W4dMaterialPlanPtr& bandPlanPtr(CompletionBand band)
         case MachPhysConstructionImpl::BAND10:
             {
                 static W4dSolidFadedAlphaPlan* pThePlan = new W4dSolidFadedAlphaPlan(
-                    2, // nFadedFrames
-                    2, // nSolidFrames
+                    15, // nFadedFrames
+                    15, // nSolidFrames
                     nMaterialsInVector,
                     solidGreen,
                     10,
