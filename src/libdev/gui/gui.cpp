@@ -37,6 +37,7 @@ void Gui::backBuffer(const RenSurface& pNewBuffer)
 }
 
 static thread_local char s_ScaledTextureSuffix[] = "_2x.png";
+static constexpr char s_PngTextureSuffix[] = ".png";
 static constexpr char s_BmpTextureSuffix[] = ".bmp";
 constexpr auto s_BmpSuffixSize = sizeof(s_BmpTextureSuffix) - 1;
 
@@ -71,9 +72,23 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
 
     if (scale == 1)
     {
-        if (!hasBmpExtention)
+        std::string pngImagePath;
+        if (hasBmpExtention)
         {
+            pngImagePath = path;
+            const auto from = pngImagePath.end() - s_BmpSuffixSize;
+            pngImagePath.replace(from, pngImagePath.end(), s_PngTextureSuffix);
+        }
+        else
+        {
+            pngImagePath = path + s_PngTextureSuffix;
             path += s_BmpTextureSuffix;
+        }
+
+        // Prefer (try first) png images
+        if (SysPathName::existsAsFile(pngImagePath))
+        {
+            return Gui::bitmap(pngImagePath);
         }
         return Gui::bitmap(path);
     }
