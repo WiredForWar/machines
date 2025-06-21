@@ -431,7 +431,7 @@ bool MachGuiCtxSave::saveGame(const std::string& saveDisplayName)
     {
         char buffer[20];
 
-        sprintf(buffer, "%04ld", count);
+        sprintf(buffer, "%04zu", count);
 
         // savePathName = string( "savegame/save" ) + buffer + ".sav";
         savePathName = SysPathName(std::string("savegame/save") + buffer + ".sav");
