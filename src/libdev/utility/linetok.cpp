@@ -346,7 +346,7 @@ void UtlLineTokeniser::addWhiteSpace(char c)
     PRE(! isWhiteSpace(c));
     PRE(! isTokenDelimiter(c));
 
-    tokenDelimiterCharacters_ += c;
+    whiteSpaceCharacters_ += c;
 
     POST(isWhiteSpace(c));
 }
