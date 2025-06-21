@@ -82,7 +82,7 @@ YYSTYPE yylval, yyval;
 // #include <strstrea.h>
 #include <sstream>
 
-void yyerror(char* msg)
+void yyerror(const char* msg)
 {
     extern int yylineno;
     std::ostringstream ostr;
