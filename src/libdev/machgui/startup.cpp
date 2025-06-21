@@ -2105,6 +2105,14 @@ bool MachGuiStartupScreens::animationFinished()
     return pPlayingSmacker_ == nullptr || pPlayingSmacker_->isFinished();
 }
 
+void MachGuiStartupScreens::prepareForAnimation()
+{
+    desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
+
+    // Clear the entire screen to stop previous screen from showing through black borders.
+    RenDevice::current()->clearAllSurfaces(RenColour::black());
+}
+
 void MachGuiStartupScreens::updateCdAudio()
 {
     CB_DEPIMPL(MachGuiStartupScreens::Music, playingCdTrack_);
@@ -2298,10 +2306,7 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (flicExists)
         {
-            desiredCdTrack(DONT_PLAY_CD);
-
-            // Clear the entire screen to stop previous screen from showing through black borders.
-            RenDevice::current()->clearAllSurfaces(RenColour::black());
+            prepareForAnimation();
         }
     }
     else if (context_ == CTX_POSTLOADINGANIMATION)
@@ -2330,15 +2335,13 @@ void MachGuiStartupScreens::contextAnimation()
             {
                 SysPathName sysCDFlicName(cdRomDrive + "flics/postload.smk");
                 startPlayingAnimation(sysCDFlicName, false, true, animationPos);
-                desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
                 flicExists = true;
             }
         }
 
         if (flicExists)
         {
-            // Clear the entire screen to stop previous screen from showing through black borders.
-            RenDevice::current()->clearAllSurfaces(RenColour::black());
+            prepareForAnimation();
         }
     }
     else if (context_ == CTX_ENTRYFLIC || context_ == CTX_VICTORYFLIC || context_ == CTX_DEFEATFLIC)
@@ -2391,10 +2394,7 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (flicExists)
         {
-            desiredCdTrack(DONT_PLAY_CD); // Don't play music
-
-            // Clear the entire screen to stop previous screen from showing through black borders.
-            RenDevice::current()->clearAllSurfaces(RenColour::black());
+            prepareForAnimation();
         }
     }
 }

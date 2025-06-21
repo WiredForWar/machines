@@ -325,6 +325,8 @@ protected:
     // True if not playing an animation, or it has finished
     bool animationFinished();
 
+    void prepareForAnimation();
+
     bool doHandleKeyEvent(const GuiKeyEvent& e) override;
     bool doHandleCharEvent(const DevButtonEvent& e) override;
 
