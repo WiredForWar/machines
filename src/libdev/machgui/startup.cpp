@@ -2107,7 +2107,15 @@ bool MachGuiStartupScreens::animationFinished()
 
 void MachGuiStartupScreens::prepareForAnimation()
 {
+    CB_DEPIMPL_AUTO(pSceneManager_);
+
     desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
+
+    // Remove menu screen before app ends to stop it from flashing up momentarily
+    const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
+    RenDevice::current()->backSurface().filledRectangle(
+        Ren::Rect(0, 0, mode.width(), mode.height()),
+        RenColour::black());
 
     // Clear the entire screen to stop previous screen from showing through black borders.
     RenDevice::current()->clearAllSurfaces(RenColour::black());
