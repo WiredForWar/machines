@@ -134,13 +134,13 @@ private:
     std::istream* pCurrentStream_;
 
     SysPathName currentFileName_;
-    bool streamExhausted_;
+    bool streamExhausted_{};
     std::string line_;
     Tokens tokens_;
-    size_t lineNumber_;
+    size_t lineNumber_{};
     std::string whiteSpaceCharacters_;
     std::string tokenDelimiterCharacters_;
-    bool repeatCurrentLine_;
+    bool repeatCurrentLine_{};
 
     friend void utlDummyFunction1();
 

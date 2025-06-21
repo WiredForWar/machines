@@ -15,11 +15,8 @@
 UtlLineTokeniser::UtlLineTokeniser(std::istream& istr, const SysPathName& fileName)
     : istr_(istr)
     , pCurrentStream_(&istr_)
-    , streamExhausted_(false)
-    , lineNumber_(0)
-    , whiteSpaceCharacters_(" \t\n")
-    , repeatCurrentLine_(false)
     , currentFileName_(fileName)
+    , whiteSpaceCharacters_(" \t\n")
 {
     fileDataStack_.reserve(32);
     fixedTokens_.reserve(64);
@@ -33,12 +30,9 @@ UtlLineTokeniser::UtlLineTokeniser(std::istream& istr, const SysPathName& fileNa
 UtlLineTokeniser::UtlLineTokeniser(std::istream& istr, const SysPathName& fileName, const std::string& delimiters)
     : istr_(istr)
     , pCurrentStream_(&istr_)
-    , streamExhausted_(false)
-    , lineNumber_(0)
+    , currentFileName_(fileName)
     , whiteSpaceCharacters_(" \t\n")
     , tokenDelimiterCharacters_(delimiters)
-    , repeatCurrentLine_(false)
-    , currentFileName_(fileName)
 {
     fileDataStack_.reserve(32);
     fixedTokens_.reserve(64);
@@ -53,11 +47,8 @@ UtlLineTokeniser::UtlLineTokeniser(const SysPathName& fileName)
     : ifstr_(fileName.pathname().c_str())
     , istr_(ifstr_)
     , pCurrentStream_(&ifstr_)
-    , streamExhausted_(false)
-    , lineNumber_(0)
-    , whiteSpaceCharacters_(" \t\n")
     , currentFileName_(fileName)
-    , repeatCurrentLine_(false)
+    , whiteSpaceCharacters_(" \t\n")
 {
     PRE(fileName.existsAsFile());
 
@@ -70,12 +61,9 @@ UtlLineTokeniser::UtlLineTokeniser(const SysPathName& fileName, const std::strin
     : ifstr_(fileName.pathname().c_str())
     , istr_(ifstr_)
     , pCurrentStream_(&ifstr_)
-    , streamExhausted_(false)
-    , lineNumber_(0)
     , whiteSpaceCharacters_(" \t\n")
     , currentFileName_(fileName)
     , tokenDelimiterCharacters_(delimiters)
-    , repeatCurrentLine_(false)
 {
     PRE(fileName.existsAsFile());
 
