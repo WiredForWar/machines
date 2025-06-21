@@ -7,8 +7,6 @@
 
 #include "base/persist.hpp"
 #include "base/error.hpp"
-#include "stdlib/string.hpp"
-#include <algorithm>
 #include "utility/linetok.hpp"
 
 #include "machlog/scenario.hpp"
@@ -22,6 +20,9 @@
 #include "machgui/dbplyscn.hpp"
 #include "machgui/dbsavgam.hpp"
 #include "machgui/startup.hpp"
+
+#include <algorithm>
+#include <filesystem>
 
 MachGuiDatabase::MachGuiDatabase()
     : pData_(nullptr)
@@ -172,6 +173,8 @@ void MachGuiDatabase::readDatabase()
 
 void MachGuiDatabase::writeDatabase() const
 {
+    std::filesystem::create_directory("savegame");
+
     std::ofstream ofstr(playerDatabasePath().c_str(), std::ios::binary);
     PerOstream ostr(ofstr);
 

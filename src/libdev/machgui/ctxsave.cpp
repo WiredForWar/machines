@@ -30,9 +30,11 @@
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
-#include <stdio.h>
 
 #include "spdlog/spdlog.h"
+
+#include <filesystem>
+#include <stdio.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -418,6 +420,7 @@ bool MachGuiCtxSave::saveGame(const std::string& saveDisplayName)
         GuiPainter::instance().stretch(savingBmp, Gui::Box(coord, backgroundSize));
     }
     W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
+    std::filesystem::create_directory("savegame");
 
     // Create next filename...
     bool gotSavePathName = false;
