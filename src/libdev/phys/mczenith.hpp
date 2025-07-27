@@ -30,13 +30,7 @@ public:
     // PRE( pMotionControlled );
     // POST( metresPerSecond() == 10.0 );
     // POST( degreesPerSecond() == 5.0 );
-    PhysZenithFlyControl(PhysMotionControlled*);
-    PhysZenithFlyControl(PhysMotionControlled*, const MexVec2& forwards);
-
-    // PRE( pMotionConstraint );
-    PhysZenithFlyControl(PhysMotionControlled*, PhysMotionConstraint*);
-    // PRE( pMotionConstraint );
-    PhysZenithFlyControl(PhysMotionControlled*, PhysMotionConstraint*, const MexVec2& forwards);
+    PhysZenithFlyControl(PhysMotionControlled*, const MexVec2& forwards = defaultForwards());
 
     ~PhysZenithFlyControl() override;
 

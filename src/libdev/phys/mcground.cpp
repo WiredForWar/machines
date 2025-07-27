@@ -18,38 +18,10 @@
 #include "device/keytrans.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////
-PhysGroundFlyControl::PhysGroundFlyControl(PhysMotionControlled* pMotionControlled)
-    : PhysMotionControlWithTrans(pMotionControlled, defaultForwards())
-{
-    PRE(pMotionControlled);
-    ctor();
-}
-
-PhysGroundFlyControl::PhysGroundFlyControl(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, defaultForwards())
-{
-    PRE(pMotionControlled);
-    PRE(pMotionConstraint);
-    ctor();
-}
-
 PhysGroundFlyControl::PhysGroundFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
     : PhysMotionControlWithTrans(pMotionControlled, forwards)
 {
     PRE(pMotionControlled);
-    ctor();
-}
-
-PhysGroundFlyControl::PhysGroundFlyControl(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint,
-    const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, forwards)
-{
-    PRE(pMotionControlled);
-    PRE(pMotionConstraint);
     ctor();
 }
 

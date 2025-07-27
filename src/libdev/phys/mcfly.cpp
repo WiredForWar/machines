@@ -17,29 +17,8 @@
 #include "device/keyboard.hpp"
 #include "phys/mcfly.hpp"
 
-PhysFlyControl::PhysFlyControl(PhysMotionControlled* pMotionControlled)
-    : PhysMotionControlWithTrans(pMotionControlled, defaultForwards())
-{
-    ctor();
-}
-
-PhysFlyControl::PhysFlyControl(PhysMotionControlled* pMotionControlled, PhysMotionConstraint* pMotionConstraint)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, defaultForwards())
-{
-    ctor();
-}
-
 PhysFlyControl::PhysFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
     : PhysMotionControlWithTrans(pMotionControlled, forwards)
-{
-    ctor();
-}
-
-PhysFlyControl::PhysFlyControl(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint,
-    const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, forwards)
 {
     ctor();
 }

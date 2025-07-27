@@ -9,38 +9,10 @@
 #include "device/keyboard.hpp"
 #include "phys/mczenith.hpp"
 
-PhysZenithFlyControl::PhysZenithFlyControl(PhysMotionControlled* pMotionControlled)
-    : PhysMotionControlWithTrans(pMotionControlled, defaultForwards())
-{
-    PRE(pMotionControlled);
-    ctor(pMotionControlled);
-}
-
-PhysZenithFlyControl::PhysZenithFlyControl(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, defaultForwards())
-{
-    PRE(pMotionControlled);
-    PRE(pMotionConstraint);
-    ctor(pMotionControlled);
-}
-
 PhysZenithFlyControl::PhysZenithFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
     : PhysMotionControlWithTrans(pMotionControlled, forwards)
 {
     PRE(pMotionControlled);
-    ctor(pMotionControlled);
-}
-
-PhysZenithFlyControl::PhysZenithFlyControl(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint,
-    const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, pMotionConstraint, forwards)
-{
-    PRE(pMotionControlled);
-    PRE(pMotionConstraint);
     ctor(pMotionControlled);
 }
 

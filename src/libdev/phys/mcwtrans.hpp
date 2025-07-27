@@ -70,10 +70,6 @@ protected:
     PhysMotionControlWithTrans(PhysMotionControlled*, const MexVec2& forwards);
     // PRE( pMotionControlled );
 
-    PhysMotionControlWithTrans(PhysMotionControlled*, PhysMotionConstraint*, const MexVec2& forwards);
-    // PRE( pMotionControlled );
-    // PRE( pMotionConstraint );
-
     bool doProcessButtonEvent(const DevButtonEvent&) override;
 
     void resetCommands();

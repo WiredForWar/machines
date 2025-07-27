@@ -40,28 +40,6 @@ PhysMotionControlWithTrans::PhysMotionControlWithTrans(PhysMotionControlled* pMo
     TEST_INVARIANT;
 }
 
-PhysMotionControlWithTrans::PhysMotionControlWithTrans(
-    PhysMotionControlled* pMotionControlled,
-    PhysMotionConstraint* pMotionConstraint,
-    const MexVec2& forwards)
-    : PhysMotionControl(pMotionControlled)
-    , pKeyTranslator_(nullptr)
-    , pMotionConstraint_(pMotionConstraint)
-    , motion_(forwards)
-{
-    PRE(pMotionControlled);
-    PRE(pMotionConstraint);
-
-    commandList_.reserve(NUM_COMMANDS);
-
-    for (size_t i = 0; i < NUM_COMMANDS; ++i)
-    {
-        commandList_.push_back(DevKeyToCommandTranslator::Command());
-    }
-
-    TEST_INVARIANT;
-}
-
 PhysMotionControlWithTrans::~PhysMotionControlWithTrans()
 {
     TEST_INVARIANT;
