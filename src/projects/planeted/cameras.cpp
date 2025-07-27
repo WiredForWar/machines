@@ -171,6 +171,7 @@ MachCameras::~MachCameras()
     delete pZenithControl_;
     delete pSuperHighZenithControl_;
     delete pEyeControl_;
+    delete pThirdPersonConstraint_;
     delete pGroundCamera_;
     delete pFreeCamera_;
     delete pZenithCamera_;
@@ -371,10 +372,10 @@ void MachCameras::switchThirdPerson(MachLogMachine* pNewMachine)
     // Set up a motion constraint for the camera to sit in 3rd person over the
     // next machine in the race
     pThirdPerson_ = new MachLogMachineThirdPerson(pNewMachine); // Last pThirdPerson_ will be deleted by constraint
-    PhysThirdPersonCameraConstraint* p3rdConstraint
-        = new MachLogThirdPersonCameraConstraint(pThirdPerson_, pEyeCamera_);
+    delete pThirdPersonConstraint_;
+    pThirdPersonConstraint_ = new MachLogThirdPersonCameraConstraint(pThirdPerson_, pEyeCamera_);
     // pNewMachine->isIn3rdPersonView( true );
-    pEyeControl_->imposeConstraint(p3rdConstraint);
+    pEyeControl_->setConstraint(pThirdPersonConstraint_);
     pEyeControl_->enableInput();
     pEyeControl_->update();
     useCamera(pEyeCamera_);

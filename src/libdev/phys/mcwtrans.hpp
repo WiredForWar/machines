@@ -47,7 +47,7 @@ public:
     // Supply an abstract object which will limit the object's movement.
     // The control will delete the constraint when finished with it.
     // Don't share constraints amongst controls.
-    void imposeConstraint(PhysMotionConstraint*);
+    void setConstraint(PhysMotionConstraint*);
     // PRE( pMotionConstraint );
 
     // Snap the motionControlled object to location. Retain old angles.

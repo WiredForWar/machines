@@ -10,12 +10,22 @@
 #include "mathex/vec2.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/eulerang.hpp"
-#include "profiler/stktrace.hpp"
+
+namespace
+{
+
+PhysMotionConstraint* GetUnconstrainedMotion()
+{
+    static PhysUnconstrainedMotion motion;
+    return &motion;
+}
+
+} // namespace
 
 PhysMotionControlWithTrans::PhysMotionControlWithTrans(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
     : PhysMotionControl(pMotionControlled)
     , pKeyTranslator_(nullptr)
-    , pMotionConstraint_(new PhysUnconstrainedMotion)
+    , pMotionConstraint_(GetUnconstrainedMotion())
     , motion_(forwards)
 {
     PRE(pMotionControlled);
@@ -56,7 +66,6 @@ PhysMotionControlWithTrans::~PhysMotionControlWithTrans()
 {
     TEST_INVARIANT;
 
-    delete pMotionConstraint_;
     delete pKeyTranslator_;
 }
 
@@ -112,11 +121,9 @@ void PhysMotionControlWithTrans::setKeyTranslator(DevKeyToCommandTranslator* pTr
     pKeyTranslator_ = pTranslator;
 }
 
-void PhysMotionControlWithTrans::imposeConstraint(PhysMotionConstraint* pMotionConstraint)
+void PhysMotionControlWithTrans::setConstraint(PhysMotionConstraint* pMotionConstraint)
 {
     PRE(pMotionConstraint);
-
-    delete pMotionConstraint_;
 
     pMotionConstraint_ = pMotionConstraint;
 }

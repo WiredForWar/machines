@@ -26,6 +26,7 @@ class DevKeyToCommandTranslator;
 class PhysFlyControl;
 class PhysZenithFlyControl;
 class PhysGroundFlyControl;
+class PhysThirdPersonCameraConstraint;
 class MachLogCamera;
 class MachLogMachine;
 class MachLogMachineThirdPerson;
@@ -196,6 +197,7 @@ private:
     W4dRoot* pRoot_{};
     std::size_t machineIndex_{};
     MachLogMachineThirdPerson* pThirdPerson_{};
+    PhysThirdPersonCameraConstraint* pThirdPersonConstraint_{};
     CameraSave save1_;
     CameraSave save2_;
     CameraSave save3_;
