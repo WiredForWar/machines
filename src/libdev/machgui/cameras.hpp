@@ -199,18 +199,18 @@ private:
     void restoreCamera(const CameraSave&);
 
     // Data members...
-    DevKeyToCommandTranslator* pKeyTranslator_;
-    PhysGroundFlyControl* pGroundControl_;
-    PhysFlyControl* pFreeControl_;
-    PhysFlyControl* pFirstPersonControl_;
-    PhysZenithFlyControl* pZenithControl_;
-    MachLogZenithCameraMotionConstraint* pZenithConstraint_;
-    MachLogGroundCameraMotionConstraint* pGroundConstraint_;
-    PhysMotionConstraint* pPlanetConstraint_;
-    MachLogCamera* pFirstPersonCamera_;
-    MachLogCamera* pFreeCamera_;
-    MachLogCamera* pGroundCamera_;
-    MachLogCamera* pZenithCamera_;
+    std::unique_ptr<DevKeyToCommandTranslator> pKeyTranslator_;
+    std::unique_ptr<PhysGroundFlyControl> pGroundControl_;
+    std::unique_ptr<PhysFlyControl> pFreeControl_;
+    std::unique_ptr<PhysFlyControl> pFirstPersonControl_;
+    std::unique_ptr<PhysZenithFlyControl> pZenithControl_;
+    std::unique_ptr<MachLogZenithCameraMotionConstraint> pZenithConstraint_;
+    std::unique_ptr<MachLogGroundCameraMotionConstraint> pGroundConstraint_;
+    std::unique_ptr<PhysMotionConstraint> pPlanetConstraint_;
+    std::unique_ptr<MachLogCamera> pFirstPersonCamera_;
+    std::unique_ptr<MachLogCamera> pFreeCamera_;
+    std::unique_ptr<MachLogCamera> pGroundCamera_;
+    std::unique_ptr<MachLogCamera> pZenithCamera_;
     MachLogCamera* pCurrentCamera_;
     MachActor* pFollowTarget_ = nullptr;
     W4dSceneManager* pSceneManager_;

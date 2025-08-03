@@ -49,24 +49,14 @@ MachCameras::MachCameras(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     : pSceneManager_(pSceneManager)
     , pRoot_(pRoot)
     , pCurrentCamera_(nullptr)
-    , pGroundControl_(nullptr)
-    , pFreeControl_(nullptr)
-    , pZenithControl_(nullptr)
-    , pFirstPersonControl_(nullptr)
-    , pGroundCamera_(nullptr)
-    , pFreeCamera_(nullptr)
-    , pZenithCamera_(nullptr)
-    , pFirstPersonCamera_(nullptr)
     , zenithMinimumHeight_(0.0)
     , zenithMaximumHeight_(1.0)
     , zenithMinimumEarHeight_(0.0)
     , zenithMaximumEarHeight_(1.0)
     , cameraMoved_(false)
-    , pGroundConstraint_(nullptr)
-    , pZenithConstraint_(nullptr)
     , groundCameraMoved_(true)
 {
-    pKeyTranslator_ = new DevKeyToCommandTranslator();
+    pKeyTranslator_ = std::make_unique<DevKeyToCommandTranslator>();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         Device::KeyCode::PAD_2,
         ZENITHVIEW,
@@ -149,24 +139,7 @@ MachCameras::~MachCameras()
 {
     TEST_INVARIANT;
 
-    DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() enter" << std::endl);
-
-    delete pKeyTranslator_;
-    delete pGroundControl_;
-    delete pFreeControl_;
-    delete pZenithControl_;
-    delete pFirstPersonControl_;
-
-    delete pPlanetConstraint_;
-    delete pZenithConstraint_;
-    delete pGroundConstraint_;
-
-    delete pGroundCamera_;
-    delete pFreeCamera_;
-    delete pZenithCamera_;
-    delete pFirstPersonCamera_;
-
-    DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() leave" << std::endl);
+    DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras()" << std::endl);
 }
 
 void MachCameras::CLASS_INVARIANT
@@ -211,26 +184,26 @@ void MachCameras::loadGame()
             DEFAULT_ASSERT_BAD_CASE((int)races.cameraInfo(playerRace).type_);
     }
 
-    pFirstPersonCamera_ = new MachLogCamera(pSceneManager_, pRoot_, eyeTransform, MachLogCamera::FIRST_PERSON);
-    pGroundCamera_ = new MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::GROUND);
-    pZenithCamera_ = new MachLogCamera(pSceneManager_, pRoot_, zenithTransform, MachLogCamera::ZENITH);
-    pFreeCamera_ = new MachLogCamera(pSceneManager_, pRoot_, groundTransform, MachLogCamera::FREE_MOVING);
+    pFirstPersonCamera_ = std::make_unique<MachLogCamera>(pSceneManager_, pRoot_, eyeTransform, MachLogCamera::FIRST_PERSON);
+    pGroundCamera_ = std::make_unique<MachLogCamera>(pSceneManager_, pRoot_, groundTransform, MachLogCamera::GROUND);
+    pZenithCamera_ = std::make_unique<MachLogCamera>(pSceneManager_, pRoot_, zenithTransform, MachLogCamera::ZENITH);
+    pFreeCamera_ = std::make_unique<MachLogCamera>(pSceneManager_, pRoot_, groundTransform, MachLogCamera::FREE_MOVING);
 
-    pGroundConstraint_ = new MachLogGroundCameraMotionConstraint(pGroundCamera_);
-    pZenithConstraint_ = new MachLogZenithCameraMotionConstraint(pZenithCamera_);
-    pPlanetConstraint_ = new MachLogPlanetCameraConstraint();
+    pGroundConstraint_ = std::make_unique<MachLogGroundCameraMotionConstraint>(pGroundCamera_.get());
+    pZenithConstraint_ = std::make_unique<MachLogZenithCameraMotionConstraint>(pZenithCamera_.get());
+    pPlanetConstraint_ = std::make_unique<MachLogPlanetCameraConstraint>();
 
-    pGroundControl_ = new PhysGroundFlyControl(std::make_unique<W4dMotionControlledEntity>(pGroundCamera_));
-    pGroundControl_->setConstraint(pGroundConstraint_);
-    pFirstPersonControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pFirstPersonCamera_));
-    pFreeControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pFreeCamera_));
-    pFreeControl_->setConstraint(pPlanetConstraint_);
+    pGroundControl_ = std::make_unique<PhysGroundFlyControl>(std::make_unique<W4dMotionControlledEntity>(pGroundCamera_.get()));
+    pGroundControl_->setConstraint(pGroundConstraint_.get());
+    pFirstPersonControl_ = std::make_unique<PhysFlyControl>(std::make_unique<W4dMotionControlledEntity>(pFirstPersonCamera_.get()));
+    pFreeControl_ = std::make_unique<PhysFlyControl>(std::make_unique<W4dMotionControlledEntity>(pFreeCamera_.get()));
+    pFreeControl_->setConstraint(pPlanetConstraint_.get());
 
     pZenithConstraint_->minHeight(zenithMinHeight);
     pZenithConstraint_->maxHeight(zenithMaxHeight);
 
-    pZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_));
-    pZenithControl_->setConstraint(pZenithConstraint_);
+    pZenithControl_ = std::make_unique<PhysZenithFlyControl>(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_.get()));
+    pZenithControl_->setConstraint(pZenithConstraint_.get());
 
     // override standard key translator for now because currently keys do not control machine.
     pFirstPersonControl_->setKeyTranslator(new DevKeyToCommandTranslator());
@@ -239,16 +212,16 @@ void MachCameras::loadGame()
     {
         // Initially use the zenith camera.
         pZenithControl_->enableInput();
-        pCurrentCamera_ = pZenithCamera_;
-        pSceneManager_->useCamera(pZenithCamera_);
+        pCurrentCamera_ = pZenithCamera_.get();
+        pSceneManager_->useCamera(pZenithCamera_.get());
         reduceFog();
     }
     else
     {
         // Initially use the ground camera.
         pGroundControl_->enableInput();
-        pCurrentCamera_ = pGroundCamera_;
-        pSceneManager_->useCamera(pGroundCamera_);
+        pCurrentCamera_ = pGroundCamera_.get();
+        pSceneManager_->useCamera(pGroundCamera_.get());
         restoreFog();
     }
 
@@ -375,22 +348,14 @@ void MachCameras::loadSavedGame(PerIstream& inStream)
 
 void MachCameras::unloadGame()
 {
-    delete pGroundControl_;
-    delete pFreeControl_;
-    delete pZenithControl_;
-    delete pFirstPersonControl_;
-    delete pGroundCamera_;
-    delete pFreeCamera_;
-    delete pZenithCamera_;
-    delete pFirstPersonCamera_;
-    pGroundControl_ = nullptr;
-    pFreeControl_ = nullptr;
-    pZenithControl_ = nullptr;
-    pFirstPersonControl_ = nullptr;
-    pGroundCamera_ = nullptr;
-    pFreeCamera_ = nullptr;
-    pZenithCamera_ = nullptr;
-    pFirstPersonCamera_ = nullptr;
+    pGroundControl_.reset();
+    pFreeControl_.reset();
+    pZenithControl_.reset();
+    pFirstPersonControl_.reset();
+    pGroundCamera_.reset();
+    pFreeCamera_.reset();
+    pZenithCamera_.reset();
+    pFirstPersonCamera_.reset();
 
     pCurrentCamera_ = nullptr;
 }
@@ -489,7 +454,7 @@ void MachCameras::switchToZenith(const MexPoint3d& lookAt)
     reduceFog();
 
     pZenithControl_->snapTo(MexTransform3d(lookAt));
-    useCamera(pZenithCamera_);
+    useCamera(pZenithCamera_.get());
     pZenithCamera_->update();
     pZenithControl_->enableInput();
 }
@@ -594,7 +559,7 @@ void MachCameras::restoreCamera(const CameraSave& cameraSave)
         restoreFog();
 
         pGroundControl_->snapTo(cameraSave.position_);
-        useCamera(pGroundCamera_);
+        useCamera(pGroundCamera_.get());
         pGroundCamera_->update();
         pGroundControl_->enableInput();
     }
@@ -614,7 +579,7 @@ void MachCameras::restoreCamera(const CameraSave& cameraSave)
         pZenithConstraint_->cameraPositionData(zoomDistance, x, y, heading);
 
         // Make sure we use and update this camera
-        useCamera(pZenithCamera_);
+        useCamera(pZenithCamera_.get());
         pZenithCamera_->update();
         pZenithControl_->enableInput();
     }
@@ -753,7 +718,7 @@ void MachCameras::scroll(ScrollDir scrollDir, const GuiMouseEvent& event)
 {
     setFollowTarget(nullptr);
 
-    if (pCurrentCamera_ == pZenithCamera_)
+    if (pCurrentCamera_ == pZenithCamera_.get())
     {
         switch (scrollDir)
         {
@@ -783,7 +748,7 @@ void MachCameras::scroll(ScrollDir scrollDir, const GuiMouseEvent& event)
                 break;
         }
     }
-    else if (pCurrentCamera_ == pGroundCamera_)
+    else if (pCurrentCamera_ == pGroundCamera_.get())
     {
         switch (scrollDir)
         {
@@ -820,7 +785,7 @@ void MachCameras::scrollWithWheel(const Gui::ScrollState wheelDir, const double 
     constexpr auto zoomIn = Gui::ScrollState::SCROLL_UP;
     constexpr auto zoomOut = Gui::ScrollState::SCROLL_DOWN;
 
-    if (pCurrentCamera_ == pZenithCamera_)
+    if (pCurrentCamera_ == pZenithCamera_.get())
     {
         auto zenithMotion = PhysMotion { pZenithControl_->motion_ };
         auto zenithTransform = MexTransform3d { pZenithCamera_->globalTransform() };
@@ -844,7 +809,7 @@ void MachCameras::scrollWithWheel(const Gui::ScrollState wheelDir, const double 
             step / pZenithControl_->metresPerSecond());
         pZenithCamera_->globalTransform(zenithTransform);
     }
-    else if (pCurrentCamera_ == pGroundCamera_)
+    else if (pCurrentCamera_ == pGroundCamera_.get())
     {
         auto groundMotion = PhysMotion { pGroundControl_->motion_ };
         auto groundTransform = MexTransform3d { pGroundCamera_->globalTransform() };
@@ -873,17 +838,17 @@ void MachCameras::scrollWithWheel(const Gui::ScrollState wheelDir, const double 
 
 bool MachCameras::isZenithCameraActive() const
 {
-    return (pCurrentCamera_ == pZenithCamera_);
+    return (pCurrentCamera_ == pZenithCamera_.get());
 }
 
 bool MachCameras::isGroundCameraActive() const
 {
-    return (pCurrentCamera_ == pGroundCamera_);
+    return (pCurrentCamera_ == pGroundCamera_.get());
 }
 
 bool MachCameras::is1stPersonCameraActive() const
 {
-    return (pCurrentCamera_ == pFirstPersonCamera_);
+    return (pCurrentCamera_ == pFirstPersonCamera_.get());
 }
 
 void MachCameras::freezeMotion()
@@ -1050,7 +1015,7 @@ void MachCameras::use1stPersonCamera()
 {
     resetFollowTarget();
 
-    useCamera(pFirstPersonCamera_);
+    useCamera(pFirstPersonCamera_.get());
     pFirstPersonCamera_->update();
     pFirstPersonControl_->enableInput();
     restoreFog();
@@ -1084,7 +1049,7 @@ void MachCameras::useGroundCamera()
 
         // Set ground camera to new position.
         pGroundControl_->snapTo(cameraTrans);
-        useCamera(pGroundCamera_);
+        useCamera(pGroundCamera_.get());
         pGroundCamera_->update();
         pGroundControl_->enableInput();
         restoreFog();
