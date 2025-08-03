@@ -18,6 +18,8 @@
 #include <string>
 #include <cstring>
 
+static std::vector<ISysRegistryObserver*> RegistryObservers;
+
 class SysRegistryImpl
 {
 public:
@@ -98,6 +100,10 @@ SysRegistry::~SysRegistry()
 void SysRegistry::reload()
 {
     pImpl_ = std::make_unique<SysRegistryImpl>();
+    for (ISysRegistryObserver* observer : RegistryObservers)
+    {
+        observer->onChanges();
+    }
 }
 
 void SysRegistry::CLASS_INVARIANT
@@ -192,6 +198,16 @@ SysRegistry::queryValueNoRecord(const std::string& valueName, std::string& targe
         }
     }
     return result;
+}
+
+void SysRegistry::addObserver(ISysRegistryObserver* observer)
+{
+    RegistryObservers.push_back(observer);
+}
+
+void SysRegistry::removeObserver(ISysRegistryObserver* observer)
+{
+    RegistryObservers.erase(std::remove(RegistryObservers.begin(), RegistryObservers.end(), observer), RegistryObservers.end());
 }
 
 SysRegistry::ReturnValue

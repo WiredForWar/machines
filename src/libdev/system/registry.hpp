@@ -16,6 +16,13 @@
 
 #include <memory>
 
+class ISysRegistryObserver
+{
+public:
+    virtual ~ISysRegistryObserver() = default;
+    virtual void onChanges() = 0;
+};
+
 class SysRegistryImpl;
 
 class SysRegistry
@@ -66,6 +73,9 @@ public:
     void setIntegerValue(const std::string& keyName, const std::string& valueName, int value);
 
     ReturnValue queryValueNoRecord(const std::string& valueName, std::string&);
+
+    void addObserver(ISysRegistryObserver* observer);
+    void removeObserver(ISysRegistryObserver* observer);
 
     void CLASS_INVARIANT;
 
