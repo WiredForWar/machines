@@ -9,20 +9,19 @@
 #include "device/keyboard.hpp"
 #include "phys/mczenith.hpp"
 
-PhysZenithFlyControl::PhysZenithFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, forwards)
+PhysZenithFlyControl::PhysZenithFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
+    : PhysMotionControlWithTrans(std::move(target), forwards)
 {
-    PRE(pMotionControlled);
-    ctor(pMotionControlled);
+    ctor();
 }
 
-void PhysZenithFlyControl::ctor(PhysMotionControlled* pMotionControlled)
+void PhysZenithFlyControl::ctor()
 {
     metresPerSecond(35.0);
     degreesPerSecond(10.0);
 
     // We use the target's current location and pitch angle
-    MexTransform3d defaultTransform(pMotionControlled->globalTransform());
+    MexTransform3d defaultTransform(pMotionControlled_->globalTransform());
 
     // Setup pitch and default heading
     MexEulerAngles angles;

@@ -30,7 +30,7 @@ public:
     // PRE( pMotionControlled );
     // POST( metresPerSecond() == 10.0 );
     // POST( degreesPerSecond() == 5.0 );
-    PhysZenithFlyControl(PhysMotionControlled*, const MexVec2& forwards = defaultForwards());
+    PhysZenithFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards = defaultForwards());
 
     ~PhysZenithFlyControl() override;
 
@@ -54,7 +54,7 @@ private:
 
     void updateMotion();
     void setupDefaultKeyboardMapping();
-    void ctor(PhysMotionControlled* pMotionControlled);
+    void ctor();
 
     // data members
     MexRadians pitchAngle_; // Fixed pitch angle

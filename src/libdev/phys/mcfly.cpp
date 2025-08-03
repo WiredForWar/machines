@@ -17,8 +17,8 @@
 #include "device/keyboard.hpp"
 #include "phys/mcfly.hpp"
 
-PhysFlyControl::PhysFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, forwards)
+PhysFlyControl::PhysFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
+    : PhysMotionControlWithTrans(std::move(target), forwards)
 {
     ctor();
 }

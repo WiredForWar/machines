@@ -32,16 +32,16 @@ PhysMotionControlled::~PhysMotionControlled()
 {
 }
 
-PhysMotionControl::PhysMotionControl(PhysMotionControlled* t)
-    : pMotionControlled_(t)
+PhysMotionControl::PhysMotionControl(std::unique_ptr<PhysMotionControlled> t)
+    : pMotionControlled_(std::move(t))
     , enabled_(false)
     , frozen_(false)
 {
     PRE(MexCoordSystem::instance().isSet());
-    PRE(t);
+    PRE(pMotionControlled_.get());
 
     allControls_.push_front(this);
-    default_ = t->globalTransform();
+    default_ = pMotionControlled_->globalTransform();
 
     POST(! enabled_);
 }
@@ -50,7 +50,6 @@ PhysMotionControl::~PhysMotionControl()
 {
     ASSERT(find(allControls_.begin(), allControls_.end(), this) != allControls_.end(), logic_error());
     allControls_.remove(this);
-    delete pMotionControlled_;
 }
 
 static void update_ctrl(PhysMotionControl* ctrl)
@@ -414,8 +413,8 @@ void PhysAltitudeClamp::move(
 }
 
 ///////////////////////////////////////////////////////////////////////////
-PhysPlanControl::PhysPlanControl(PhysMotionControlled* t)
-    : PhysMotionControl(t)
+PhysPlanControl::PhysPlanControl(std::unique_ptr<PhysMotionControlled> target)
+    : PhysMotionControl(std::move(target))
     , dx_(0)
     , dy_(0)
 {

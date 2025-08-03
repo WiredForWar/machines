@@ -14,6 +14,8 @@
 #include "mathex/transf3d.hpp"
 #include "mathex/vec3.hpp"
 
+#include <memory>
+
 // class ostream;
 class PhysMotionConstraint; // defined below
 class MexTransform3d;
@@ -153,7 +155,7 @@ public:
 protected:
     // Note that target will be deleted by PhysMotionControl and should be
     // allocated on the heap.
-    PhysMotionControl(PhysMotionControlled* target);
+    PhysMotionControl(std::unique_ptr<PhysMotionControlled> target);
     // PRE(MexCoordSystem::instance().isSet());
     // PRE( target );
     // POST( not enabled_ );
@@ -161,7 +163,7 @@ protected:
     virtual bool doProcessButtonEvent(const DevButtonEvent&);
 
     // data members
-    PhysMotionControlled* const pMotionControlled_; // What this control is acting upon.
+    const std::unique_ptr<PhysMotionControlled> pMotionControlled_; // What this control is acting upon.
     DevTimer frameTimer_, keyTimer_;
 
 private:
@@ -238,7 +240,7 @@ private:
 class PhysPlanControl : public PhysMotionControl
 {
 public:
-    PhysPlanControl(PhysMotionControlled* target);
+    PhysPlanControl(std::unique_ptr<PhysMotionControlled> target);
     // POST(not MotionControl::enabled_);
 
     // Look for keypresses and modify motion as appropriate.

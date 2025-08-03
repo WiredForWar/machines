@@ -22,14 +22,12 @@ PhysMotionConstraint* GetUnconstrainedMotion()
 
 } // namespace
 
-PhysMotionControlWithTrans::PhysMotionControlWithTrans(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
-    : PhysMotionControl(pMotionControlled)
+PhysMotionControlWithTrans::PhysMotionControlWithTrans(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
+    : PhysMotionControl(std::move(target))
     , pKeyTranslator_(nullptr)
     , pMotionConstraint_(GetUnconstrainedMotion())
     , motion_(forwards)
 {
-    PRE(pMotionControlled);
-
     commandList_.reserve(NUM_COMMANDS);
 
     for (size_t i = 0; i < NUM_COMMANDS; ++i)

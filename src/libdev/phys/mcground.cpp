@@ -18,10 +18,9 @@
 #include "device/keytrans.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////
-PhysGroundFlyControl::PhysGroundFlyControl(PhysMotionControlled* pMotionControlled, const MexVec2& forwards)
-    : PhysMotionControlWithTrans(pMotionControlled, forwards)
+PhysGroundFlyControl::PhysGroundFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
+    : PhysMotionControlWithTrans(std::move(target), forwards)
 {
-    PRE(pMotionControlled);
     ctor();
 }
 

@@ -32,7 +32,7 @@ public:
     // POST( metresPerSecond() == 8.0 );
     // POST( degreesPerSecond() == 3.0 );
     // The forwards direction defaults to the +ve x axis.
-    PhysFlyControl(PhysMotionControlled* target, const MexVec2& forwards = defaultForwards());
+    PhysFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards = defaultForwards());
 
     ~PhysFlyControl() override;
 

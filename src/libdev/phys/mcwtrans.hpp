@@ -67,7 +67,7 @@ public:
     void CLASS_INVARIANT;
 
 protected:
-    PhysMotionControlWithTrans(PhysMotionControlled*, const MexVec2& forwards);
+    PhysMotionControlWithTrans(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards);
     // PRE( pMotionControlled );
 
     bool doProcessButtonEvent(const DevButtonEvent&) override;

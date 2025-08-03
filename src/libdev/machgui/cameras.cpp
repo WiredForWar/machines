@@ -220,16 +220,16 @@ void MachCameras::loadGame()
     pZenithConstraint_ = new MachLogZenithCameraMotionConstraint(pZenithCamera_);
     pPlanetConstraint_ = new MachLogPlanetCameraConstraint();
 
-    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_));
+    pGroundControl_ = new PhysGroundFlyControl(std::make_unique<W4dMotionControlledEntity>(pGroundCamera_));
     pGroundControl_->setConstraint(pGroundConstraint_);
-    pFirstPersonControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFirstPersonCamera_));
-    pFreeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_));
+    pFirstPersonControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pFirstPersonCamera_));
+    pFreeControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pFreeCamera_));
     pFreeControl_->setConstraint(pPlanetConstraint_);
 
     pZenithConstraint_->minHeight(zenithMinHeight);
     pZenithConstraint_->maxHeight(zenithMaxHeight);
 
-    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_));
+    pZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_));
     pZenithControl_->setConstraint(pZenithConstraint_);
 
     // override standard key translator for now because currently keys do not control machine.

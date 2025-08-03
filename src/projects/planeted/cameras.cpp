@@ -122,11 +122,11 @@ void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     pSuperHighZenithCamera_->yonClipDistance(50000);
     pFreeCamera_ = new MachLogCamera(pSceneManager, pRoot, groundTransform, MachLogCamera::FREE_MOVING);
 
-    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_));
-    pEyeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pEyeCamera_));
-    pFreeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_));
-    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_));
-    pSuperHighZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pSuperHighZenithCamera_));
+    pGroundControl_ = new PhysGroundFlyControl(std::make_unique<W4dMotionControlledEntity>(pGroundCamera_));
+    pEyeControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pEyeCamera_));
+    pFreeControl_ = new PhysFlyControl(std::make_unique<W4dMotionControlledEntity>(pFreeCamera_));
+    pZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_));
+    pSuperHighZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pSuperHighZenithCamera_));
 
     // override standard key translator for now because currently keys do not control machine.
     pEyeControl_->setKeyTranslator(new DevKeyToCommandTranslator());
