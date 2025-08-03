@@ -156,6 +156,11 @@ MachCameras::~MachCameras()
     delete pFreeControl_;
     delete pZenithControl_;
     delete pFirstPersonControl_;
+
+    delete pPlanetConstraint_;
+    delete pZenithConstraint_;
+    delete pGroundConstraint_;
+
     delete pGroundCamera_;
     delete pFreeCamera_;
     delete pZenithCamera_;
@@ -213,16 +218,19 @@ void MachCameras::loadGame()
 
     pGroundConstraint_ = new MachLogGroundCameraMotionConstraint(pGroundCamera_);
     pZenithConstraint_ = new MachLogZenithCameraMotionConstraint(pZenithCamera_);
+    pPlanetConstraint_ = new MachLogPlanetCameraConstraint();
 
-    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_), pGroundConstraint_);
+    pGroundControl_ = new PhysGroundFlyControl(new W4dMotionControlledEntity(pGroundCamera_));
+    pGroundControl_->setConstraint(pGroundConstraint_);
     pFirstPersonControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFirstPersonCamera_));
-    pFreeControl_
-        = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_), new MachLogPlanetCameraConstraint());
+    pFreeControl_ = new PhysFlyControl(new W4dMotionControlledEntity(pFreeCamera_));
+    pFreeControl_->setConstraint(pPlanetConstraint_);
 
     pZenithConstraint_->minHeight(zenithMinHeight);
     pZenithConstraint_->maxHeight(zenithMaxHeight);
 
-    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_), pZenithConstraint_);
+    pZenithControl_ = new PhysZenithFlyControl(new W4dMotionControlledEntity(pZenithCamera_));
+    pZenithControl_->setConstraint(pZenithConstraint_);
 
     // override standard key translator for now because currently keys do not control machine.
     pFirstPersonControl_->setKeyTranslator(new DevKeyToCommandTranslator());

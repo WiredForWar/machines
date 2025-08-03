@@ -26,6 +26,7 @@ class DevKeyToCommandTranslator;
 class PhysFlyControl;
 class PhysZenithFlyControl;
 class PhysGroundFlyControl;
+class PhysMotionConstraint;
 class MachLogZenithCameraMotionConstraint;
 class MachLogGroundCameraMotionConstraint;
 class MachLogCamera;
@@ -205,6 +206,7 @@ private:
     PhysZenithFlyControl* pZenithControl_;
     MachLogZenithCameraMotionConstraint* pZenithConstraint_;
     MachLogGroundCameraMotionConstraint* pGroundConstraint_;
+    PhysMotionConstraint* pPlanetConstraint_;
     MachLogCamera* pFirstPersonCamera_;
     MachLogCamera* pFreeCamera_;
     MachLogCamera* pGroundCamera_;
