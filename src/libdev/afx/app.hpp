@@ -99,7 +99,7 @@ private:
     // This is a hook which is called when clientStartup has succeeded.
     virtual void clientStarted() { }
 
-    ExitStatus exitStatus_;
+    ExitStatus exitStatus_{};
     AfxInvokeArgs args_;
 
     std::string appName_;
