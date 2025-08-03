@@ -38,6 +38,7 @@
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
 #include "system/metafile.hpp"
+#include "machgui/MachGuiOptionsManager.hpp"
 #include "machgui/ProgressIndicator.hpp"
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
@@ -168,6 +169,8 @@ bool SDLApp::clientStartup()
     // This must be called before any render library object is created.  (It
     // ensures a correct destruction order for render library Singletons.)
     Ren::initialise();
+
+    pOptionsManager = std::make_unique<MachGuiOptionsManager>();
 
     W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
@@ -420,7 +423,7 @@ bool SDLApp::clientStartup()
 
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.35, 0.37);
-    pStartupScreens_->initializeCursorOptions();
+    pOptionsManager->initializeCursor();
 
     MachPhysData::instance();
 

@@ -4,6 +4,8 @@ set(MACHGUI_SOURCES
     GameMenuContext.hpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
+    MachGuiOptionsManager.cpp
+    MachGuiOptionsManager.hpp
     ProgressIndicator.cpp
     ProgressIndicator.hpp
     ResolvedUiString.cpp

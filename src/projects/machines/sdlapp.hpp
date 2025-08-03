@@ -4,6 +4,8 @@
 #include "device/timer.hpp"
 #include "afx/AfxSdlApp.hpp"
 
+#include <memory>
+
 class IProgressReporter;
 class RenDevice;
 class RenDisplay;
@@ -17,6 +19,7 @@ class GuiRoot;
 class MexTransform3d;
 class MexPoint2d;
 class MexPoint3d;
+class MachGuiOptionsManager;
 class MachGuiStartupScreens;
 
 // This class represents an application based on Direct3D.  When we know
@@ -95,6 +98,7 @@ private:
     DevTimer finishTimer_;
     MachGuiStartupScreens* pStartupScreens_{};
     RenTextureSet* pTextureSet_{};
+    std::unique_ptr<MachGuiOptionsManager> pOptionsManager{};
 
     size_t savedSampleVolume_{};
     size_t savedCDVolume_{};
