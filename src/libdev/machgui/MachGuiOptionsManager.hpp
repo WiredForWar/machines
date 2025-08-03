@@ -11,4 +11,7 @@ public:
     void initializeCursor();
 
     void onChanges() override;
+
+private:
+    void recreatePhysMarkers();
 };

@@ -204,6 +204,11 @@ MachPhysMarker::~MachPhysMarker()
     TEST_INVARIANT;
 }
 
+MachPhysMarker::MarkerType MachPhysMarker::markerType()
+{
+    return sMarkerType;
+}
+
 void MachPhysMarker::setMarkerType(MarkerType type)
 {
     sMarkerType = type;

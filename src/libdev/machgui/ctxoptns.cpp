@@ -42,7 +42,6 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/races.hpp"
-#include "machlog/actor.hpp"
 
 #define OPTIONS_AREA_MINX 95
 #define OPTIONS_AREA_MINY 50
@@ -639,29 +638,6 @@ void MachGuiCtxOptions::writeToConfig()
 
     // Store cursor type (2D/3D)
     SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
-
-    // If cursor type has changed then refresh all selection boxes
-    if (cursorType2d_ != pCursorType_->isChecked())
-    {
-        MachLogRaces::Objects& allObjects = MachLogRaces::instance().objects();
-
-        for (MachLogRaces::Objects::iterator iter = allObjects.begin(); iter != allObjects.end(); ++iter)
-        {
-            MachActor* pActor = *iter;
-            if (pActor->selectionState() == MachLog::SELECTED)
-            {
-                // Deselect, then reselect to refresh bounding box
-                pActor->selectionState(MachLog::NOT_SELECTED);
-                pActor->selectionState(MachLog::SELECTED);
-            }
-            else if (pActor->selectionState() == MachLog::HIGHLIGHTED)
-            {
-                // Deselect, then reselect to refresh bounding box
-                pActor->selectionState(MachLog::NOT_SELECTED);
-                pActor->selectionState(MachLog::HIGHLIGHTED);
-            }
-        }
-    }
 
     // Store reverse direction of up/down keys/mouse
     SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());

@@ -43,6 +43,7 @@ public:
         ThreeD,
     };
 
+    static MarkerType markerType();
     static void setMarkerType(MarkerType type);
     static void setMarkerLineWidth(float width);
 
