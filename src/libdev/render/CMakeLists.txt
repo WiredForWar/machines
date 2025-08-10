@@ -144,8 +144,6 @@ set(RENDER_SOURCES
     normmap.cpp
     normmap.hpp
     pixelfmt.cpp
-    points.cpp
-    points.hpp
     polysord.cpp
     polysorp.cpp
     render.cpp
