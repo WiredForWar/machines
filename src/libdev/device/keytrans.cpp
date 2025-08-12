@@ -147,85 +147,81 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
     // Process key presses...
     if (buttonEvent.action() == DevButtonEvent::PRESS)
     {
-        for (size_t i = 0; i < commandTranslations_.size(); ++i)
+        for (const DevKeyToCommand* pTranslation : commandTranslations_)
         {
-            DevKeyToCommand* pEvent = commandTranslations_[i];
-
-            ASSERT(pEvent->commandId() < commandList.size(), "command list does not contain commandId")
+            ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId")
 
             // Find out if modifier keys are in correct state for this command
-            bool ctrlCorrect = (pEvent->ctrlReq() == DevKeyToCommand::EITHER)
-                || (pEvent->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
-                || (pEvent->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
-            bool shiftCorrect = (pEvent->shiftReq() == DevKeyToCommand::EITHER)
-                || (pEvent->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
-                || (pEvent->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
-            bool altCorrect = (pEvent->altReq() == DevKeyToCommand::EITHER)
-                || (pEvent->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
-                || (pEvent->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
+            bool ctrlCorrect = (pTranslation->ctrlReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
+                || (pTranslation->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
+            bool shiftCorrect = (pTranslation->shiftReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
+                || (pTranslation->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
+            bool altCorrect = (pTranslation->altReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
+                || (pTranslation->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
 
-            if (pEvent->scanCode() == buttonEvent.scanCode())
+            if (pTranslation->scanCode() == buttonEvent.scanCode())
             {
                 found = true;
 
                 // The button has been pressed but the command isn't necessarily turned on. This is
                 // dependant on whether or not the shift, control and alt keys are in the correct
                 // state.
-                commandList[pEvent->commandId()].pressed_ = true;
+                commandList[pTranslation->commandId()].pressed_ = true;
             }
 
             if (ctrlCorrect && shiftCorrect && altCorrect)
             {
-                if (commandList[pEvent->commandId()].pressed_)
+                if (commandList[pTranslation->commandId()].pressed_)
                 {
-                    commandList[pEvent->commandId()].on_ = true;
-                    commandList[pEvent->commandId()].reset_ = false;
+                    commandList[pTranslation->commandId()].on_ = true;
+                    commandList[pTranslation->commandId()].reset_ = false;
                 }
             }
             else
             {
-                commandList[pEvent->commandId()].reset_ = true;
+                commandList[pTranslation->commandId()].reset_ = true;
             }
         }
     }
     else // Key released...
     {
-        for (size_t i = 0; i < commandTranslations_.size(); ++i)
+        for (const DevKeyToCommand* pTranslation : commandTranslations_)
         {
-            DevKeyToCommand* pEvent = commandTranslations_[i];
-
-            ASSERT(pEvent->commandId() < commandList.size(), "command list does not contain commandId");
+            ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId");
 
             // Find out if modifier keys are in correct state for this command
-            bool ctrlCorrect = (pEvent->ctrlReq() == DevKeyToCommand::EITHER)
-                || (pEvent->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
-                || (pEvent->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
-            bool shiftCorrect = (pEvent->shiftReq() == DevKeyToCommand::EITHER)
-                || (pEvent->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
-                || (pEvent->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
-            bool altCorrect = (pEvent->altReq() == DevKeyToCommand::EITHER)
-                || (pEvent->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
-                || (pEvent->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
+            bool ctrlCorrect = (pTranslation->ctrlReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->ctrlReq() == DevKeyToCommand::PRESSED && buttonEvent.wasCtrlPressed())
+                || (pTranslation->ctrlReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasCtrlPressed());
+            bool shiftCorrect = (pTranslation->shiftReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->shiftReq() == DevKeyToCommand::PRESSED && buttonEvent.wasShiftPressed())
+                || (pTranslation->shiftReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasShiftPressed());
+            bool altCorrect = (pTranslation->altReq() == DevKeyToCommand::EITHER)
+                || (pTranslation->altReq() == DevKeyToCommand::PRESSED && buttonEvent.wasAltPressed())
+                || (pTranslation->altReq() == DevKeyToCommand::RELEASED && ! buttonEvent.wasAltPressed());
 
-            if (pEvent->scanCode() == buttonEvent.scanCode())
+            if (pTranslation->scanCode() == buttonEvent.scanCode())
             {
-                commandList[pEvent->commandId()].reset_ = true;
-                commandList[pEvent->commandId()].pressed_ = false;
+                commandList[pTranslation->commandId()].reset_ = true;
+                commandList[pTranslation->commandId()].pressed_ = false;
                 found = true;
             }
             else
             {
                 if (ctrlCorrect && shiftCorrect && altCorrect)
                 {
-                    if (commandList[pEvent->commandId()].pressed_)
+                    if (commandList[pTranslation->commandId()].pressed_)
                     {
-                        commandList[pEvent->commandId()].on_ = true;
-                        commandList[pEvent->commandId()].reset_ = false;
+                        commandList[pTranslation->commandId()].on_ = true;
+                        commandList[pTranslation->commandId()].reset_ = false;
                     }
                 }
                 else
                 {
-                    commandList[pEvent->commandId()].reset_ = true;
+                    commandList[pTranslation->commandId()].reset_ = true;
                 }
             }
         }
@@ -252,18 +248,19 @@ void DevKeyToCommandTranslator::initEventQueue()
 void DevKeyToCommandTranslator::resetCommands(CommandList* pCommandList, bool forceReset /* = false*/)
 {
     CommandList& commandList = *pCommandList;
-
-    for (size_t i = 0; i < commandList.size(); ++i)
+    for (Command& command : commandList)
     {
         if (forceReset)
         {
-            commandList[i].on_ = false;
-            commandList[i].pressed_ = false;
+            command.on_ = false;
+            command.pressed_ = false;
         }
         else
-            commandList[i].on_ = commandList[i].on_ && ! commandList[i].reset_;
+        {
+            command.on_ = command.on_ && !command.reset_;
+        }
 
-        commandList[i].reset_ = false;
+        command.reset_ = false;
     }
 }
 
