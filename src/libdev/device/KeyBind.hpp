@@ -1,6 +1,7 @@
 #pragma once
 
 #include "device/KeyWithModifiers.hpp"
+#include "utility/Array.hpp"
 
 class KeyBind
 {
@@ -13,6 +14,14 @@ public:
     bool matches(const KeyWithModifiers& key) const;
     bool modifiersMatch(const KeyWithModifiers& key) const;
     bool keysMatch(const KeyWithModifiers& key) const;
+};
+
+class KeyBinds : public Utility::Array<KeyBind, 3>
+{
+public:
+    using Array::Array;
+
+    bool matches(const KeyWithModifiers& key) const;
 };
 
 inline Device::KeyCode KeyBind::keyCode() const
@@ -38,4 +47,15 @@ inline bool KeyBind::modifiersMatch(const KeyWithModifiers& key) const
 inline bool KeyBind::keysMatch(const KeyWithModifiers& key) const
 {
     return key.keyCode() == keyWithMods.keyCode();
+}
+
+inline bool KeyBinds::matches(const KeyWithModifiers& key) const
+{
+    for (const KeyBind bind : *this)
+    {
+        if (bind.matches(key))
+            return true;
+    }
+
+    return false;
 }
