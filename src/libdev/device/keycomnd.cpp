@@ -15,10 +15,17 @@ DevKeyToCommand::DevKeyToCommand(
     DevKeyToCommand::Modifier alt)
 {
     commandId_ = comId;
-    scanCode_ = sc;
-    ctrlReq_ = ctrl;
-    shiftReq_ = shift;
-    altReq_ = alt;
+    bind_ = {
+        .keyWithMods = { sc
+                         | KeyModifierFlags::fromCtrlAltShiftState(
+                             ctrl == Modifier::PRESSED,
+                             alt == Modifier::PRESSED,
+                             shift == Modifier::PRESSED) },
+        .releasedModifiers = KeyModifierFlags::fromCtrlAltShiftState(
+            ctrl == Modifier::RELEASED,
+            alt == Modifier::RELEASED,
+            shift == Modifier::RELEASED),
+    };
 
     TEST_INVARIANT;
 }
@@ -31,46 +38,17 @@ DevKeyToCommand::DevKeyToCommand(
     AltModifier alt /*= ALT_EITHER*/)
 {
     commandId_ = comId;
-    scanCode_ = sc;
-    switch (ctrl)
-    {
-        case CTRLKEY_EITHER:
-            ctrlReq_ = EITHER;
-            break;
-        case CTRLKEY_PRESSED:
-            ctrlReq_ = PRESSED;
-            break;
-        case CTRLKEY_RELEASED:
-            ctrlReq_ = RELEASED;
-            break;
-            DEFAULT_ASSERT_BAD_CASE(ctrl);
-    }
-    switch (shift)
-    {
-        case SHIFTKEY_EITHER:
-            shiftReq_ = EITHER;
-            break;
-        case SHIFTKEY_PRESSED:
-            shiftReq_ = PRESSED;
-            break;
-        case SHIFTKEY_RELEASED:
-            shiftReq_ = RELEASED;
-            break;
-            DEFAULT_ASSERT_BAD_CASE(shift);
-    }
-    switch (alt)
-    {
-        case ALTKEY_EITHER:
-            altReq_ = EITHER;
-            break;
-        case ALTKEY_PRESSED:
-            altReq_ = PRESSED;
-            break;
-        case ALTKEY_RELEASED:
-            altReq_ = RELEASED;
-            break;
-            DEFAULT_ASSERT_BAD_CASE(alt);
-    }
+    bind_ = {
+        .keyWithMods = { sc
+                         | KeyModifierFlags::fromCtrlAltShiftState(
+                             ctrl == CTRLKEY_PRESSED,
+                             alt == ALTKEY_PRESSED,
+                             shift == SHIFTKEY_PRESSED) },
+        .releasedModifiers = KeyModifierFlags::fromCtrlAltShiftState(
+            ctrl == CTRLKEY_RELEASED,
+            alt == ALTKEY_RELEASED,
+            shift == SHIFTKEY_RELEASED),
+    };
 }
 
 DevKeyToCommand::~DevKeyToCommand()
@@ -78,24 +56,34 @@ DevKeyToCommand::~DevKeyToCommand()
     TEST_INVARIANT;
 }
 
+DevKeyToCommand::Modifier DevKeyToCommand::modReq(Device::KeyModifier modifier) const
+{
+    if (bind_.releasedModifiers & modifier)
+        return Modifier::RELEASED;
+    if (bind_.keyWithMods & modifier)
+        return Modifier::PRESSED;
+
+    return Modifier::EITHER;
+}
+
 DevKeyToCommand::Modifier DevKeyToCommand::ctrlReq() const
 {
-    return ctrlReq_;
+    return modReq(Device::KeyModifier::Ctrl);
 }
 
 DevKeyToCommand::Modifier DevKeyToCommand::shiftReq() const
 {
-    return shiftReq_;
+    return modReq(Device::KeyModifier::Shift);
 }
 
 DevKeyToCommand::Modifier DevKeyToCommand::altReq() const
 {
-    return altReq_;
+    return modReq(Device::KeyModifier::Alt);
 }
 
 DevKeyToCommand::ScanCode DevKeyToCommand::scanCode() const
 {
-    return scanCode_;
+    return bind_.keyWithMods.keyCode();
 }
 
 DevKeyToCommand::CommandId DevKeyToCommand::commandId() const

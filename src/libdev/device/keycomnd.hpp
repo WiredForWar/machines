@@ -18,7 +18,7 @@
 
 #include "base/base.hpp"
 
-#include "device/key.hpp"
+#include "device/KeyBind.hpp"
 
 class DevKeyToCommand
 // Canonical form
@@ -64,6 +64,7 @@ public:
 
     ~DevKeyToCommand();
 
+    Modifier modReq(Device::KeyModifier modifier) const;
     Modifier ctrlReq() const;
     Modifier shiftReq() const;
     Modifier altReq() const;
@@ -79,11 +80,8 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t);
 
     // data members
-    CommandId commandId_;
-    ScanCode scanCode_;
-    Modifier ctrlReq_;
-    Modifier shiftReq_;
-    Modifier altReq_;
+    CommandId commandId_{};
+    KeyBind bind_{};
 };
 
 #endif

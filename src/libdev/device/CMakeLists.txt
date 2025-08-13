@@ -1,6 +1,7 @@
 
 set(DEVICE_SOURCES
     DevCDImpl.hpp
+    KeyBind.hpp
     KeyWithModifiers.hpp
     SdlDelegate.hpp
     butevent.cpp
