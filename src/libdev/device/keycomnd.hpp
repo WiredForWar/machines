@@ -71,6 +71,8 @@ public:
     ScanCode scanCode() const;
     CommandId commandId() const;
 
+    KeyBind bind() const { return bind_; }
+
     void CLASS_INVARIANT;
 
 private:
