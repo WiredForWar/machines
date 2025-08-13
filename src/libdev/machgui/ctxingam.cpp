@@ -170,8 +170,8 @@ bool MachGuiCtxInGameOptions::okayToSwitchContext()
                 IDS_MENUMSG_QUIT,
                 new MachGuiExitToInternetMessageBoxResponder(
                     pStartupScreens_,
-                    MachGuiExitToInternetMessageBoxResponder::UNLOAD_GAME)),
-                true;
+                    MachGuiExitToInternetMessageBoxResponder::UNLOAD_GAME),
+                true);
             return false;
         }
 
