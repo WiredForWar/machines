@@ -26,8 +26,6 @@ DevKeyToCommand::DevKeyToCommand(
             alt == Modifier::RELEASED,
             shift == Modifier::RELEASED),
     };
-
-    TEST_INVARIANT;
 }
 
 DevKeyToCommand::DevKeyToCommand(
@@ -51,49 +49,9 @@ DevKeyToCommand::DevKeyToCommand(
     };
 }
 
-DevKeyToCommand::~DevKeyToCommand()
-{
-    TEST_INVARIANT;
-}
-
-DevKeyToCommand::Modifier DevKeyToCommand::modReq(Device::KeyModifier modifier) const
-{
-    if (bind_.releasedModifiers & modifier)
-        return Modifier::RELEASED;
-    if (bind_.keyWithMods & modifier)
-        return Modifier::PRESSED;
-
-    return Modifier::EITHER;
-}
-
-DevKeyToCommand::Modifier DevKeyToCommand::ctrlReq() const
-{
-    return modReq(Device::KeyModifier::Ctrl);
-}
-
-DevKeyToCommand::Modifier DevKeyToCommand::shiftReq() const
-{
-    return modReq(Device::KeyModifier::Shift);
-}
-
-DevKeyToCommand::Modifier DevKeyToCommand::altReq() const
-{
-    return modReq(Device::KeyModifier::Alt);
-}
-
-DevKeyToCommand::ScanCode DevKeyToCommand::scanCode() const
-{
-    return bind_.keyWithMods.keyCode();
-}
-
 DevKeyToCommand::CommandId DevKeyToCommand::commandId() const
 {
     return commandId_;
-}
-
-void DevKeyToCommand::CLASS_INVARIANT
-{
-    INVARIANT(this != nullptr);
 }
 
 std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t)

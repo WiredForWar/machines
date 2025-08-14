@@ -13,10 +13,7 @@
     DevKeyToCommand( Device::KeyCode::KEY_DELETE, MYDELETECOMMANDID, Modifier::PRESSED, Modifier::EITHER, Modifier::PRESSED );
 */
 
-#ifndef _DEV_KEYCOMND_HPP
-#define _DEV_KEYCOMND_HPP
-
-#include "base/base.hpp"
+#pragma once
 
 #include "device/KeyBind.hpp"
 
@@ -62,18 +59,9 @@ public:
         ShiftModifier = SHIFTKEY_EITHER,
         AltModifier = ALTKEY_EITHER);
 
-    ~DevKeyToCommand();
-
-    Modifier modReq(Device::KeyModifier modifier) const;
-    Modifier ctrlReq() const;
-    Modifier shiftReq() const;
-    Modifier altReq() const;
-    ScanCode scanCode() const;
     CommandId commandId() const;
 
     KeyBind bind() const { return bind_; }
-
-    void CLASS_INVARIANT;
 
 private:
     // Revoked
@@ -85,7 +73,3 @@ private:
     CommandId commandId_{};
     KeyBind bind_{};
 };
-
-#endif
-
-/* End MCEVENT.HPP **************************************************/
