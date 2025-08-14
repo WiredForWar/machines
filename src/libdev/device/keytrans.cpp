@@ -57,52 +57,6 @@ void DevKeyToCommandTranslator::addTranslation(const DevKeyToCommand& newTrans)
     commandTranslations_.push_back(new DevKeyToCommand(newTrans));
 }
 
-bool DevKeyToCommandTranslator::needsReleasedState(
-    DevKeyToCommandTranslator::Command& command,
-    DevKeyToCommand::Modifier modifier)
-{
-    bool processed = false;
-
-    if (modifier == DevKeyToCommand::RELEASED)
-    {
-        processed = true;
-        command.reset_ = true;
-    }
-    else if (modifier == DevKeyToCommand::PRESSED)
-    {
-        if (command.pressed_ == true)
-        {
-            command.on_ = true;
-            processed = true;
-        }
-    }
-
-    return processed;
-}
-
-bool DevKeyToCommandTranslator::needsPressedState(
-    DevKeyToCommandTranslator::Command& command,
-    DevKeyToCommand::Modifier modifier)
-{
-    bool processed = false;
-
-    if (modifier == DevKeyToCommand::PRESSED)
-    {
-        processed = true;
-        command.reset_ = true;
-    }
-    else if (modifier == DevKeyToCommand::RELEASED)
-    {
-        if (command.pressed_ == true)
-        {
-            command.on_ = true;
-            processed = true;
-        }
-    }
-
-    return processed;
-}
-
 bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, CommandId* pCommandId)
 {
     PRE(pCommandId);

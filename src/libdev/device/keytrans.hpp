@@ -85,9 +85,6 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const DevKeyToCommandTranslator& t);
 
-    bool needsReleasedState(Command&, DevKeyToCommand::Modifier modifier);
-    bool needsPressedState(Command&, DevKeyToCommand::Modifier modifier);
-
     // data members
     std::vector<DevKeyToCommand*> commandTranslations_;
 };
