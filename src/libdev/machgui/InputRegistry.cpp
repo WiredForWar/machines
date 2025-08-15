@@ -130,6 +130,131 @@ void InputRegistry::load()
     binds_["commands-treachery-trigger"] = {
         { KeyCode::KEY_J },
     };
+
+    binds_["fpv-fire"] = { { KeyCode::SPACE } };
+    binds_["fpv-center-head"] = { { KeyCode::PAD_5 } };
+    binds_["fpv-switch-weapon"] = { { KeyCode::TAB } };
+
+    binds_["fpv-move-forward"] = {
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Shift },
+        { .keyWithMods = KeyCode::UP_ARROW_PAD, .releasedModifiers = KeyModifier::Shift },
+    };
+
+    binds_["fpv-move-backward"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Shift },
+
+        // Removed by NA 3/2/99 so that switch to zenith works. obviously you can no longer reverse the machine
+        // using the pad down arrow key.
+        // { .keyWithMods = KeyCode::DOWN_ARROW_PAD, .releasedModifiers = KeyModifier::Shift },
+    };
+
+    binds_["fpv-look-down-fast"] = {
+        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+    };
+    binds_["fpv-look-up-fast"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+    };
+    binds_["fpv-look-down"] = {
+        { KeyCode::UP_ARROW | KeyModifier::Ctrl | KeyModifier::Shift },
+    };
+    binds_["fpv-look-up"] = {
+        { KeyCode::DOWN_ARROW | KeyModifier::Ctrl | KeyModifier::Shift },
+    };
+
+    binds_["fpv-turn-left"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW_PAD | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-right"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW_PAD | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    };
+
+    binds_["fpv-turn-left-fast"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW_PAD,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-right-fast"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW_PAD,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+
+    binds_["fpv-turn-head-left"] = {
+        {
+            KeyCode::LEFT_ARROW | KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            KeyCode::LEFT_ARROW_PAD | KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-head-right"] = {
+        {
+            KeyCode::RIGHT_ARROW | KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            KeyCode::RIGHT_ARROW_PAD | KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-head-left-fast"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW_PAD | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+    };
+    binds_["fpv-turn-head-right-fast"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW_PAD | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+    };
+
+    binds_["fpv-command-select-next"] = {
+        { KeyCode::HOME },
+    };
+    binds_["fpv-command-select-previous"] = {
+        { KeyCode::END },
+    };
+    binds_["fpv-command-attack"] = {
+        { KeyCode::DELETE },
+    };
+    binds_["fpv-command-move"] = {
+        { KeyCode::PAGE_DOWN },
+    };
+    binds_["fpv-command-follow"] = {
+        { KeyCode::INSERT },
+    };
 }
 
 const KeyBinds& InputRegistry::getBinds(BindId id) const

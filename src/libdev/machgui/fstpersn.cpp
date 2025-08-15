@@ -46,6 +46,7 @@
 #include "machgui/chatmsgs.hpp"
 #include "machgui/database.hpp"
 #include "machgui/dbscenar.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/MachGuiFPCommand.hpp"
 #include "machphys/objdata.hpp"
 #include "machphys/snddata.hpp"
@@ -242,159 +243,43 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
 
     // Setup keyboard translator
     pKeyTranslator_ = new DevKeyToCommandTranslator();
-    // Keyboard shoot handler
-    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::SPACE, FIRE));
-    // Keboard centre head handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::PAD_5, CENTREHEAD));
-    // Keboard weapon select handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(Device::KeyCode::TAB, WEAPONSELECT));
-    // Keboard move foward/backward handlers
-    pKeyTranslator_->addTranslation(
-        DevKeyToCommand(Device::KeyCode::UP_ARROW, FOWARD, DevKeyToCommand::CTRLKEY_EITHER, DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        BACKWARD,
-        DevKeyToCommand::CTRLKEY_EITHER,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW_PAD,
-        FOWARD,
-        DevKeyToCommand::CTRLKEY_EITHER,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    // Removed by NA 3/2/99 so that switch to zenith works. obviously you can no longer reverse the machine using the
-    // pad down arrow key.
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::DOWN_ARROW_PAD, BACKWARD,
-    // DevKeyToCommand::CTRLKEY_EITHER, DevKeyToCommand::SHIFTKEY_RELEASED ) );
+    const auto addTranslation
+        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId) {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
 
-    // Keyboard head up/down handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW,
-        LOOKDOWNFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        LOOKUPFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW,
-        LOOKDOWN,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        LOOKUP,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
+    // Keyboard shoot handler
+    addTranslation(pKeyTranslator_, FIRE, "fpv-fire"_bind);
+    addTranslation(pKeyTranslator_, CENTREHEAD, "fpv-center-head"_bind);
+    addTranslation(pKeyTranslator_, WEAPONSELECT, "fpv-switch-weapon"_bind);
+
+    addTranslation(pKeyTranslator_, FOWARD, "fpv-move-forward"_bind);
+    addTranslation(pKeyTranslator_, BACKWARD, "fpv-move-backward"_bind);
+
+    addTranslation(pKeyTranslator_, LOOKDOWN, "fpv-look-down"_bind);
+    addTranslation(pKeyTranslator_, LOOKUP, "fpv-look-up"_bind);
+    addTranslation(pKeyTranslator_, LOOKDOWNFAST, "fpv-look-down-fast"_bind);
+    addTranslation(pKeyTranslator_, LOOKUPFAST, "fpv-look-up-fast"_bind);
+
     // Keyboard turn left/right handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        TURNLEFT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        TURNRIGHT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        TURNLEFTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        TURNRIGHTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW_PAD,
-        TURNLEFT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW_PAD,
-        TURNRIGHT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW_PAD,
-        TURNLEFTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW_PAD,
-        TURNRIGHTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
+    addTranslation(pKeyTranslator_, TURNLEFT, "fpv-turn-left"_bind);
+    addTranslation(pKeyTranslator_, TURNRIGHT, "fpv-turn-right"_bind);
+    addTranslation(pKeyTranslator_, TURNLEFTFAST, "fpv-turn-left-fast"_bind);
+    addTranslation(pKeyTranslator_, TURNRIGHTFAST, "fpv-turn-right-fast"_bind);
+
     // Keyboard turn head left/right handlers
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        TURNHEADLEFT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        TURNHEADRIGHT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        TURNHEADLEFTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        TURNHEADRIGHTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW_PAD,
-        TURNHEADLEFT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW_PAD,
-        TURNHEADRIGHT,
-        DevKeyToCommand::CTRLKEY_PRESSED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW_PAD,
-        TURNHEADLEFTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW_PAD,
-        TURNHEADRIGHTFAST,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED));
+    addTranslation(pKeyTranslator_, TURNHEADLEFT, "fpv-turn-head-left"_bind);
+    addTranslation(pKeyTranslator_, TURNHEADRIGHT, "fpv-turn-head-right"_bind);
+    addTranslation(pKeyTranslator_, TURNHEADLEFTFAST, "fpv-turn-head-left-fast"_bind);
+    addTranslation(pKeyTranslator_, TURNHEADRIGHTFAST, "fpv-turn-head-right-fast"_bind);
+
     // Keyboard commands for first person command
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::HOME,
-        COMMAND_SELECT_NEXT,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::END,
-        COMMAND_SELECT_PREV,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_DELETE,
-        COMMAND_ORDER_ATTACK,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAGE_DOWN,
-        COMMAND_ORDER_MOVE,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::INSERT,
-        COMMAND_ORDER_FOLLOW,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_RELEASED));
+    addTranslation(pKeyTranslator_, COMMAND_SELECT_NEXT, "fpv-command-select-next"_bind);
+    addTranslation(pKeyTranslator_, COMMAND_SELECT_PREV, "fpv-command-select-previous"_bind);
+    addTranslation(pKeyTranslator_, COMMAND_ORDER_ATTACK, "fpv-command-attack"_bind);
+    addTranslation(pKeyTranslator_, COMMAND_ORDER_MOVE, "fpv-command-move"_bind);
+    addTranslation(pKeyTranslator_, COMMAND_ORDER_FOLLOW, "fpv-command-follow"_bind);
 
     pKeyTranslator_->initEventQueue();
 

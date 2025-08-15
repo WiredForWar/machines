@@ -129,6 +129,7 @@ bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
 void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents(ScanCode code)
 {
+    PRE_INFO(static_cast<int>(code));
     PRE(Device::isValidCode(code));
     setReleaseFilterFor(code, true);
     setPressFilterFor(code, true);
