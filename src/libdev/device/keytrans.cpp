@@ -24,13 +24,6 @@ void DevKeyToCommandTranslator::Command::forceOn()
     }
 }
 
-DevKeyToCommandTranslator::Command::Command()
-    : on_(false)
-    , pressed_(false)
-    , reset_(false)
-{
-}
-
 DevKeyToCommandTranslator::DevKeyToCommandTranslator()
 {
     commandTranslations_.reserve(256);

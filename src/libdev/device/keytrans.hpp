@@ -27,15 +27,15 @@ public:
     class Command
     {
     public:
-        Command();
+        Command() = default;
         bool on() const;
         void forceOn();
 
     private:
         // data members
-        bool pressed_; // true if commands main key is pressed (this doesn't mean that the command is on)
-        bool on_; // Indicates that the command is on.
-        bool reset_; // Command should be reset after use.
+        bool pressed_{}; // true if commands main key is pressed (this doesn't mean that the command is on)
+        bool on_{}; // Indicates that the command is on.
+        bool reset_{}; // Command should be reset after use.
 
         friend class DevKeyToCommandTranslator;
     };
