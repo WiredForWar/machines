@@ -49,6 +49,7 @@ append_test(BasePersistenceTests base/PersistenceTests.cpp)
 append_test(DevButtonEventTests device/DevButtonEventTests.cpp)
 append_test(DevEventQueueTests device/DevEventQueueTests.cpp)
 append_test(DevMouseTests device/DevMouseTests.cpp)
+append_test(DevKeyToCommandTranslator device/DevKeyToCommandTranslator.cpp)
 #~:gui
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
 #~:network
