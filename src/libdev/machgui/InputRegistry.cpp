@@ -131,6 +131,32 @@ void InputRegistry::load()
         { KeyCode::KEY_J },
     };
 
+    for (int i = 0; i <= 9; ++i)
+    {
+        Device::KeyCode keyCode = KeyCode::KEY_0 + Device::KeyCodeOffset { i };
+        static_assert(KeyCode::KEY_9 == KeyCode::KEY_0 + Device::KeyCodeOffset { 9 });
+
+        const std::string bindId = std::to_string(i);
+        binds_["squadron-create-" + bindId] = {
+            {
+                .keyWithMods = keyCode | KeyModifier::Ctrl,
+                .releasedModifiers = KeyModifier::Shift,
+            },
+        };
+        binds_["squadron-select-" + bindId] = {
+            {
+                .keyWithMods = keyCode,
+                .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+            },
+        };
+        binds_["squadron-add-units-" + bindId] = {
+            {
+                .keyWithMods = keyCode | KeyModifier::Shift,
+                .releasedModifiers = KeyModifier::Ctrl,
+            },
+        };
+    }
+
     binds_["fpv-fire"] = { { KeyCode::SPACE } };
     binds_["fpv-center-head"] = { { KeyCode::PAD_5 } };
     binds_["fpv-switch-weapon"] = { { KeyCode::TAB } };

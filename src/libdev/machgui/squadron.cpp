@@ -10,6 +10,7 @@
 #include "machlog/squad.hpp"
 #include "machlog/administ.hpp"
 
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/cameras.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ingame.hpp"
@@ -196,188 +197,23 @@ MachGuiSquadronBank::MachGuiSquadronBank(
     childrenUpdated();
 
     pKeyTranslator_ = new DevKeyToCommandTranslator();
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_1,
-        CREATE_SQUAD1,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_2,
-        CREATE_SQUAD2,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_3,
-        CREATE_SQUAD3,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_4,
-        CREATE_SQUAD4,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_5,
-        CREATE_SQUAD5,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_6,
-        CREATE_SQUAD6,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_7,
-        CREATE_SQUAD7,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_8,
-        CREATE_SQUAD8,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_9,
-        CREATE_SQUAD9,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_0,
-        CREATE_SQUAD0,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
+    const auto addTranslation = [](DevKeyToCommandTranslator* pKeyTranslator_,
+                                   DevKeyToCommand::CommandId command,
+                                   const std::string& bindName) {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(MachGui::BindId(bindName));
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
 
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_1,
-        ADD_TO_SQUAD1,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_2,
-        ADD_TO_SQUAD2,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_3,
-        ADD_TO_SQUAD3,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_4,
-        ADD_TO_SQUAD4,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_5,
-        ADD_TO_SQUAD5,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_6,
-        ADD_TO_SQUAD6,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_7,
-        ADD_TO_SQUAD7,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_8,
-        ADD_TO_SQUAD8,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_9,
-        ADD_TO_SQUAD9,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_0,
-        ADD_TO_SQUAD0,
-        DevKeyToCommand::CTRLKEY_RELEASED,
-        DevKeyToCommand::SHIFTKEY_PRESSED,
-        DevKeyToCommand::ALTKEY_RELEASED));
-
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_1,
-        SELECT_SQUAD1,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_2,
-        SELECT_SQUAD2,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_3,
-        SELECT_SQUAD3,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_4,
-        SELECT_SQUAD4,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_5,
-        SELECT_SQUAD5,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_6,
-        SELECT_SQUAD6,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_7,
-        SELECT_SQUAD7,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_8,
-        SELECT_SQUAD8,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_9,
-        SELECT_SQUAD9,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_0,
-        SELECT_SQUAD0,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
+    for (int i = 0; i <= 9; ++i)
+    {
+        const std::string bindIndex = std::to_string(i);
+        addTranslation(pKeyTranslator_, CREATE_SQUAD0 + i, "squadron-create-" + bindIndex);
+        addTranslation(pKeyTranslator_, SELECT_SQUAD0 + i, "squadron-select-" + bindIndex);
+        addTranslation(pKeyTranslator_, ADD_TO_SQUAD0 + i, "squadron-add-units-" + bindIndex);
+        static_assert(CREATE_SQUAD0 + 9 == CREATE_SQUAD9);
+        static_assert(ADD_TO_SQUAD0 + 9 == ADD_TO_SQUAD9);
+        static_assert(SELECT_SQUAD0 + 9 == SELECT_SQUAD9);
+    }
     pKeyTranslator_->initEventQueue();
 }
 
