@@ -17,6 +17,8 @@
 
 #include "device/KeyBind.hpp"
 
+using KeyBindsPtr = const KeyBinds*;
+
 class DevKeyToCommand
 // Canonical form
 {
@@ -51,7 +53,7 @@ public:
 
     // Old constructor. Kept in for now so that client code doesn't have to change.
     DevKeyToCommand(ScanCode, CommandId, Modifier ctrl, Modifier shift, Modifier alt);
-    DevKeyToCommand(CommandId command, KeyBind bind);
+    DevKeyToCommand(CommandId command, KeyBindsPtr binds);
 
     DevKeyToCommand(
         ScanCode,
@@ -62,7 +64,8 @@ public:
 
     CommandId commandId() const;
 
-    KeyBind bind() const { return bind_; }
+    const KeyBinds& binds() const;
+    bool matches(const KeyWithModifiers& key) const;
 
 private:
     // Revoked
@@ -72,5 +75,6 @@ private:
 
     // data members
     CommandId commandId_{};
-    KeyBind bind_{};
+    const KeyBindsPtr bindsRef_{};
+    KeyBinds binds_{};
 };

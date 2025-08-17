@@ -63,7 +63,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
 
     for (const DevKeyToCommand* pTranslation : commandTranslations_)
     {
-        if (pTranslation->bind().matches(keyWithMods))
+        if (pTranslation->matches(keyWithMods))
         {
             *pCommandId = pTranslation->commandId();
             return true;
@@ -94,47 +94,18 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
         for (const DevKeyToCommand* pTranslation : commandTranslations_)
         {
             ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId")
-            const KeyBind bind = pTranslation->bind();
-
-            if (bind.keysMatch(keyWithMods))
+            for (const KeyBind& bind : pTranslation->binds())
             {
-                found = true;
-
-                // The button has been pressed but the command isn't necessarily turned on. This is
-                // dependant on whether or not the shift, control and alt keys are in the correct
-                // state.
-                commandList[pTranslation->commandId()].pressed_ = true;
-            }
-
-            if (bind.modifiersMatch(keyWithMods))
-            {
-                if (commandList[pTranslation->commandId()].pressed_)
+                if (bind.keysMatch(keyWithMods))
                 {
-                    commandList[pTranslation->commandId()].on_ = true;
-                    commandList[pTranslation->commandId()].reset_ = false;
-                }
-            }
-            else
-            {
-                commandList[pTranslation->commandId()].reset_ = true;
-            }
-        }
-    }
-    else // Key released...
-    {
-        for (const DevKeyToCommand* pTranslation : commandTranslations_)
-        {
-            ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId");
-            const KeyBind bind = pTranslation->bind();
+                    found = true;
 
-            if (bind.keysMatch(keyWithMods))
-            {
-                commandList[pTranslation->commandId()].reset_ = true;
-                commandList[pTranslation->commandId()].pressed_ = false;
-                found = true;
-            }
-            else
-            {
+                    // The button has been pressed but the command isn't necessarily turned on. This is
+                    // dependant on whether or not the shift, control and alt keys are in the correct
+                    // state.
+                    commandList[pTranslation->commandId()].pressed_ = true;
+                }
+
                 if (bind.modifiersMatch(keyWithMods))
                 {
                     if (commandList[pTranslation->commandId()].pressed_)
@@ -150,6 +121,37 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
             }
         }
     }
+    else // Key released...
+    {
+        for (const DevKeyToCommand* pTranslation : commandTranslations_)
+        {
+            ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId");
+            for (const KeyBind& bind : pTranslation->binds())
+            {
+                if (bind.keysMatch(keyWithMods))
+                {
+                    commandList[pTranslation->commandId()].reset_ = true;
+                    commandList[pTranslation->commandId()].pressed_ = false;
+                    found = true;
+                }
+                else
+                {
+                    if (bind.modifiersMatch(keyWithMods))
+                    {
+                        if (commandList[pTranslation->commandId()].pressed_)
+                        {
+                            commandList[pTranslation->commandId()].on_ = true;
+                            commandList[pTranslation->commandId()].reset_ = false;
+                        }
+                    }
+                    else
+                    {
+                        commandList[pTranslation->commandId()].reset_ = true;
+                    }
+                }
+            }
+        }
+    }
 
     return found;
 }
@@ -157,7 +159,12 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
 void DevKeyToCommandTranslator::initEventQueue()
 {
     for (const DevKeyToCommand* pTranslation : commandTranslations_)
-        DevEventQueue::instance().queueEvents(pTranslation->bind().keyCode());
+    {
+        for (const auto bind : pTranslation->binds())
+        {
+            DevEventQueue::instance().queueEvents(bind.keyCode());
+        }
+    }
 
     DevEventQueue::instance().queueEvents(Device::KeyCode::LEFT_SHIFT);
     DevEventQueue::instance().queueEvents(Device::KeyCode::RIGHT_SHIFT);

@@ -7,10 +7,13 @@
 
 #include "device/keycomnd.hpp"
 
-DevKeyToCommand::DevKeyToCommand(CommandId command, KeyBind bind) :
-    commandId_(command),
-    bind_(bind)
+#include "base/prepost.hpp"
+
+DevKeyToCommand::DevKeyToCommand(CommandId command, KeyBindsPtr binds)
+    : commandId_(command)
+    , bindsRef_(binds)
 {
+    PRE(binds != nullptr);
 }
 
 DevKeyToCommand::DevKeyToCommand(
@@ -21,7 +24,7 @@ DevKeyToCommand::DevKeyToCommand(
     DevKeyToCommand::Modifier alt)
 {
     commandId_ = comId;
-    bind_ = {
+    binds_ = {{
         .keyWithMods = { sc
                          | KeyModifierFlags::fromCtrlAltShiftState(
                              ctrl == Modifier::PRESSED,
@@ -31,7 +34,7 @@ DevKeyToCommand::DevKeyToCommand(
             ctrl == Modifier::RELEASED,
             alt == Modifier::RELEASED,
             shift == Modifier::RELEASED),
-    };
+    }};
 }
 
 DevKeyToCommand::DevKeyToCommand(
@@ -42,7 +45,7 @@ DevKeyToCommand::DevKeyToCommand(
     AltModifier alt /*= ALT_EITHER*/)
 {
     commandId_ = comId;
-    bind_ = {
+    binds_ = {{
         .keyWithMods = { sc
                          | KeyModifierFlags::fromCtrlAltShiftState(
                              ctrl == CTRLKEY_PRESSED,
@@ -52,7 +55,7 @@ DevKeyToCommand::DevKeyToCommand(
             ctrl == CTRLKEY_RELEASED,
             alt == ALTKEY_RELEASED,
             shift == SHIFTKEY_RELEASED),
-    };
+    }};
 }
 
 DevKeyToCommand::CommandId DevKeyToCommand::commandId() const
@@ -60,13 +63,12 @@ DevKeyToCommand::CommandId DevKeyToCommand::commandId() const
     return commandId_;
 }
 
-std::ostream& operator<<(std::ostream& o, const DevKeyToCommand& t)
+const KeyBinds& DevKeyToCommand::binds() const
 {
-
-    o << "DevKeyToCommand " << static_cast<const void*>(&t) << " start" << std::endl;
-    o << "DevKeyToCommand " << static_cast<const void*>(&t) << " end" << std::endl;
-
-    return o;
+    return bindsRef_ ? *bindsRef_ : binds_;
 }
 
-/* End KEYCOMND.CPP **************************************************/
+bool DevKeyToCommand::matches(const KeyWithModifiers& key) const
+{
+    return binds().matches(key);
+}
