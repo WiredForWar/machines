@@ -154,6 +154,16 @@ enum class KeyCode : detail::KeyCodeUnderlying
     INVALID = COUNT
 };
 
+struct KeyCodeOffset
+{
+    int value{};
+};
+
+inline constexpr KeyCode operator+(KeyCode code1, KeyCodeOffset offset)
+{
+    return static_cast<KeyCode>(static_cast<int>(code1) + offset.value);
+}
+
 // This *must* be the highest code in this enumeration plus 1.
 inline constexpr int MAX_CODE = static_cast<detail::KeyCodeUnderlying>(KeyCode::COUNT);
 inline constexpr bool isValidCode(KeyCode code)
