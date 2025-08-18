@@ -7,7 +7,7 @@ on:
 jobs:
   game_data_archive:
     name: "Prepare game data archive"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -37,12 +37,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - os: ubuntu-22.04
+        - os: ubuntu-24.04
           build-type: Release
           upload-data-pack: true
           tests: true
 
-        - os: ubuntu-22.04
+        - os: ubuntu-24.04
           toolchain: mingw64
           build-type: Release
           package: true
