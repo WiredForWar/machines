@@ -78,11 +78,13 @@ protected:
     void resetCommands();
 
     // data members
-    std::unique_ptr<DevKeyToCommandTranslator> pKeyTranslator_;
     PhysMotionConstraint* pMotionConstraint_;
     PhysMotion motion_;
 
     DevKeyToCommandTranslator::CommandList commandList_;
+
+private:
+    std::unique_ptr<DevKeyToCommandTranslator> pKeyTranslator_;
 
 private:
     // operations revoked
