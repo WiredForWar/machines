@@ -128,8 +128,8 @@ void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     pZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_));
     pSuperHighZenithControl_ = new PhysZenithFlyControl(std::make_unique<W4dMotionControlledEntity>(pSuperHighZenithCamera_));
 
-    // override standard key translator for now because currently keys do not control machine.
-    pEyeControl_->setKeyTranslator(new DevKeyToCommandTranslator());
+    // disable the key translator for now because currently keys do not control machine.
+    pEyeControl_->disableInput();
 
     // Initially use the ground camera.
     pGroundControl_->enableInput();

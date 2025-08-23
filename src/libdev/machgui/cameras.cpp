@@ -204,8 +204,8 @@ void MachCameras::loadGame()
     pZenithControl_ = std::make_unique<PhysZenithFlyControl>(std::make_unique<W4dMotionControlledEntity>(pZenithCamera_.get()));
     pZenithControl_->setConstraint(pZenithConstraint_.get());
 
-    // override standard key translator for now because currently keys do not control machine.
-    pFirstPersonControl_->setKeyTranslator(new DevKeyToCommandTranslator());
+    // disable the key translator for now because currently keys do not control machine.
+    pFirstPersonControl_->disableInput();
 
     if (races.cameraInfo(playerRace).type_ == MachLogCamera::ZENITH)
     {
