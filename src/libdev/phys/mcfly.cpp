@@ -42,7 +42,6 @@ PhysFlyControl::~PhysFlyControl()
 
 void PhysFlyControl::useDefaultKeyboardMapping()
 {
-    pKeyTranslator_ = new DevKeyToCommandTranslator();
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         Device::KeyCode::ENTER_PAD,
         PhysMotionControlWithTrans::FOWARD,

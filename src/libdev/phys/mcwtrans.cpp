@@ -24,7 +24,7 @@ PhysMotionConstraint* GetUnconstrainedMotion()
 
 PhysMotionControlWithTrans::PhysMotionControlWithTrans(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
     : PhysMotionControl(std::move(target))
-    , pKeyTranslator_(nullptr)
+    , pKeyTranslator_(std::make_unique<DevKeyToCommandTranslator>())
     , pMotionConstraint_(GetUnconstrainedMotion())
     , motion_(forwards)
 {
@@ -38,12 +38,7 @@ PhysMotionControlWithTrans::PhysMotionControlWithTrans(std::unique_ptr<PhysMotio
     TEST_INVARIANT;
 }
 
-PhysMotionControlWithTrans::~PhysMotionControlWithTrans()
-{
-    TEST_INVARIANT;
-
-    delete pKeyTranslator_;
-}
+PhysMotionControlWithTrans::~PhysMotionControlWithTrans() = default;
 
 void PhysMotionControlWithTrans::CLASS_INVARIANT
 {
@@ -65,8 +60,7 @@ void PhysMotionControlWithTrans::resetCommands()
 
 void PhysMotionControlWithTrans::initEventQueue()
 {
-    if (pKeyTranslator_)
-        pKeyTranslator_->initEventQueue();
+    pKeyTranslator_->initEventQueue();
 }
 
 void PhysMotionControlWithTrans::forceCommandOn(Command CommandId)
@@ -79,22 +73,7 @@ void PhysMotionControlWithTrans::forceCommandOn(Command CommandId)
 // virtual
 bool PhysMotionControlWithTrans::doProcessButtonEvent(const DevButtonEvent& buttonEvent)
 {
-    bool processed = false;
-
-    if (pKeyTranslator_)
-    {
-        processed = pKeyTranslator_->translate(buttonEvent, &commandList_);
-    }
-
-    return processed;
-}
-
-void PhysMotionControlWithTrans::setKeyTranslator(DevKeyToCommandTranslator* pTranslator)
-{
-    PRE(pTranslator);
-
-    delete pKeyTranslator_;
-    pKeyTranslator_ = pTranslator;
+    return pKeyTranslator_->translate(buttonEvent, &commandList_);
 }
 
 void PhysMotionControlWithTrans::setConstraint(PhysMotionConstraint* pMotionConstraint)

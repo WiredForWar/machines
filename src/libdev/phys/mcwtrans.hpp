@@ -41,9 +41,6 @@ public:
 
     ~PhysMotionControlWithTrans() override;
 
-    void setKeyTranslator(DevKeyToCommandTranslator*);
-    // PRE( pTranslator );
-
     // Supply an abstract object which will limit the object's movement.
     // The control will delete the constraint when finished with it.
     // Don't share constraints amongst controls.
@@ -75,7 +72,7 @@ protected:
     void resetCommands();
 
     // data members
-    DevKeyToCommandTranslator* pKeyTranslator_;
+    std::unique_ptr<DevKeyToCommandTranslator> pKeyTranslator_;
     PhysMotionConstraint* pMotionConstraint_;
     PhysMotion motion_;
 
