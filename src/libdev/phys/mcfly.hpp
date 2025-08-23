@@ -19,12 +19,6 @@
 class PhysFlyControl : public PhysMotionControlWithTrans
 {
 public:
-    enum Command
-    {
-        STOP_ROTATING = PhysMotionControlWithTrans::NUM_COMMANDS,
-        STOP_MOVING
-    };
-
     // *All* ctors share these pre- and post-conditions.
     // PRE(PhysMotion::coordinateSystem().isSet()); (from base)
     // PRE( target );

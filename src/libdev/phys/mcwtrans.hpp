@@ -36,6 +36,8 @@ public:
         ROLL_RIGHT,
         RESET_POS,
         RESET_ORIENTATION,
+        STOP_ROTATING,
+        STOP_MOVING,
         NUM_COMMANDS /*Must come last*/
     };
 
