@@ -11,6 +11,8 @@
 #include "mathex/point3d.hpp"
 #include "mathex/eulerang.hpp"
 
+#include "machgui/IInputRegistry.hpp"
+
 namespace
 {
 
@@ -74,6 +76,12 @@ void PhysMotionControlWithTrans::forceCommandOn(Command CommandId)
 bool PhysMotionControlWithTrans::doProcessButtonEvent(const DevButtonEvent& buttonEvent)
 {
     return pKeyTranslator_->translate(buttonEvent, &commandList_);
+}
+
+void PhysMotionControlWithTrans::addBind(Command command, MachGui::BindId bindId)
+{
+    const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
+    pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
 }
 
 void PhysMotionControlWithTrans::setConstraint(PhysMotionConstraint* pMotionConstraint)

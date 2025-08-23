@@ -42,102 +42,24 @@ PhysFlyControl::~PhysFlyControl()
 
 void PhysFlyControl::useDefaultKeyboardMapping()
 {
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::ENTER_PAD,
-        PhysMotionControlWithTrans::FOWARD,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_DELETE,
-        PhysMotionControlWithTrans::BACKWARD,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::END,
-        PhysMotionControlWithTrans::SLIDE_LEFT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PLUS_PAD,
-        PhysMotionControlWithTrans::UP,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::MINUS_PAD,
-        PhysMotionControlWithTrans::DOWN,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::HOME,
-        PhysMotionControlWithTrans::ROLL_LEFT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::INSERT,
-        STOP_MOVING,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAD_5,
-        STOP_ROTATING,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_R,
-        PhysMotionControlWithTrans::RESET_POS,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_R,
-        PhysMotionControlWithTrans::RESET_ORIENTATION,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        PhysMotionControlWithTrans::ROTATE_LEFT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        PhysMotionControlWithTrans::ROTATE_RIGHT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        PhysMotionControlWithTrans::PITCH_UP,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW,
-        PhysMotionControlWithTrans::PITCH_DOWN,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAGE_UP,
-        PhysMotionControlWithTrans::ROLL_RIGHT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAGE_DOWN,
-        PhysMotionControlWithTrans::SLIDE_RIGHT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
+    addBind(Command::FOWARD, "free-camera-forward"_bind);
+    addBind(Command::BACKWARD, "free-camera-backward"_bind);
+    addBind(Command::SLIDE_LEFT, "free-camera-slide-left"_bind);
+    addBind(Command::SLIDE_RIGHT, "free-camera-slide-right"_bind);
+    addBind(Command::ROTATE_LEFT, "free-camera-rotate-left"_bind);
+    addBind(Command::ROTATE_RIGHT, "free-camera-rotate-right"_bind);
+    addBind(Command::UP, "free-camera-up"_bind);
+    addBind(Command::DOWN, "free-camera-down"_bind);
+    addBind(Command::PITCH_UP, "free-camera-pitch-up"_bind);
+    addBind(Command::PITCH_DOWN, "free-camera-pitch-down"_bind);
+    addBind(Command::ROLL_LEFT, "free-camera-roll-left"_bind);
+    addBind(Command::ROLL_RIGHT, "free-camera-roll-right"_bind);
+
+    addBind(Command::RESET_POS, "free-camera-reset-position"_bind);
+    addBind(Command::RESET_ORIENTATION, "free-camera-reset-orientation"_bind);
+
+    addBind(Command::STOP_MOVING, "free-camera-stop-moving"_bind);
+    addBind(Command::STOP_ROTATING, "free-camera-stop-rotating"_bind);
 }
 
 void PhysFlyControl::updateMotion()

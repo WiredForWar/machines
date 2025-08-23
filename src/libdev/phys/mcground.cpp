@@ -50,82 +50,16 @@ void PhysGroundFlyControl::CLASS_INVARIANT
 
 void PhysGroundFlyControl::setupDefaultKeyboardMapping()
 {
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW,
-        PhysMotionControlWithTrans::FOWARD,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        PhysMotionControlWithTrans::BACKWARD,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_DELETE,
-        PhysMotionControlWithTrans::SLIDE_LEFT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::END,
-        PhysMotionControlWithTrans::SLIDE_RIGHT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::LEFT_ARROW,
-        PhysMotionControlWithTrans::ROTATE_LEFT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::RIGHT_ARROW,
-        PhysMotionControlWithTrans::ROTATE_RIGHT,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAGE_UP,
-        PhysMotionControlWithTrans::UP,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAGE_DOWN,
-        PhysMotionControlWithTrans::DOWN,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PLUS_PAD,
-        PhysMotionControlWithTrans::UP,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::MINUS_PAD,
-        PhysMotionControlWithTrans::DOWN,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::UP_ARROW,
-        PhysMotionControlWithTrans::PITCH_UP,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::DOWN_ARROW,
-        PhysMotionControlWithTrans::PITCH_DOWN,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::KEY_R,      PhysMotionControlWithTrans::RESET_POS,
-    // DevKeyToCommand::EITHER,    DevKeyToCommand::PRESSED,   DevKeyToCommand::RELEASED  ) );
-    // pKeyTranslator_->addTranslation( DevKeyToCommand( Device::KeyCode::KEY_R, PhysMotionControlWithTrans::RESET_ORIENTATION,
-    // DevKeyToCommand::EITHER, DevKeyToCommand::RELEASED,  DevKeyToCommand::RELEASED  ) );
+    addBind(Command::FOWARD, "ground-camera-forward"_bind);
+    addBind(Command::BACKWARD, "ground-camera-backward"_bind);
+    addBind(Command::SLIDE_LEFT, "ground-camera-slide-left"_bind);
+    addBind(Command::SLIDE_RIGHT, "ground-camera-slide-right"_bind);
+    addBind(Command::ROTATE_LEFT, "ground-camera-rotate-left"_bind);
+    addBind(Command::ROTATE_RIGHT, "ground-camera-rotate-right"_bind);
+    addBind(Command::UP, "ground-camera-up"_bind);
+    addBind(Command::DOWN, "ground-camera-down"_bind);
+    addBind(Command::PITCH_UP, "ground-camera-pitch-up"_bind);
+    addBind(Command::PITCH_DOWN, "ground-camera-pitch-down"_bind);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

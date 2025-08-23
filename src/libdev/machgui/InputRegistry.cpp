@@ -157,6 +157,85 @@ void InputRegistry::load()
         };
     }
 
+    binds_["zenith-camera-forward"] = {
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-backward"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-slide-left"] = {
+        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-slide-right"] = {
+        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-rotate-left"] = {
+        { .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["zenith-camera-rotate-right"] = {
+        { .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["zenith-camera-up"] = {
+        { .keyWithMods = KeyCode::PAGE_UP, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::PLUS_PAD, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-down"] = {
+        { .keyWithMods = KeyCode::PAGE_DOWN, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::MINUS_PAD, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+
+    binds_["ground-camera-forward"] = {
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["ground-camera-backward"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["ground-camera-slide-left"] = {
+        { .keyWithMods = KeyCode::DELETE, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-slide-right"] = {
+        { .keyWithMods = KeyCode::END, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-rotate-left"] = {
+        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-rotate-right"] = {
+        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-up"] = {
+        { .keyWithMods = KeyCode::PAGE_UP, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::PLUS_PAD, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-down"] = {
+        { .keyWithMods = KeyCode::PAGE_DOWN, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::MINUS_PAD, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-pitch-up"] = {
+        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+    };
+    binds_["ground-camera-pitch-down"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+    };
+
+    binds_["free-camera-forward"] = { { KeyCode::ENTER_PAD } };
+    binds_["free-camera-backward"] = { { KeyCode::DELETE } };
+    binds_["free-camera-slide-left"] = { { KeyCode::END } };
+    binds_["free-camera-slide-right"] = { { KeyCode::PAGE_DOWN } };
+    binds_["free-camera-rotate-left"] = { { KeyCode::LEFT_ARROW } };
+    binds_["free-camera-rotate-right"] = { { KeyCode::RIGHT_ARROW } };
+
+    binds_["free-camera-up"] = { { KeyCode::PLUS_PAD } };
+    binds_["free-camera-down"] = { { KeyCode::MINUS_PAD } };
+    binds_["free-camera-pitch-up"] = { { KeyCode::DOWN_ARROW } };
+    binds_["free-camera-pitch-down"] = { { KeyCode::UP_ARROW } };
+    binds_["free-camera-roll-left"] = { { KeyCode::HOME } };
+    binds_["free-camera-roll-right"] = { { KeyCode::PAGE_UP } };
+    binds_["free-camera-reset-position"] = { { KeyCode::KEY_R | KeyModifier::Shift } };
+    binds_["free-camera-reset-orientation"]
+        = { { .keyWithMods = KeyCode::KEY_R, .releasedModifiers = KeyModifier::Shift } };
+    binds_["free-camera-stop-moving"] = { { KeyCode::INSERT } };
+    binds_["free-camera-stop-rotating"] = { { KeyCode::PAD_5 } };
+
     binds_["fpv-fire"] = { { KeyCode::SPACE } };
     binds_["fpv-center-head"] = { { KeyCode::PAD_5 } };
     binds_["fpv-switch-weapon"] = { { KeyCode::TAB } };

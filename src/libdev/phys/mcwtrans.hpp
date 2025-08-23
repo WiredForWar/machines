@@ -13,6 +13,9 @@
 #define _PHYS_MCWTRANS_HPP
 
 #include "base/base.hpp"
+
+#include "machgui/BindId.hpp"
+
 #include "phys/mcmotion.hpp"
 #include "device/keytrans.hpp"
 
@@ -71,6 +74,7 @@ protected:
 
     bool doProcessButtonEvent(const DevButtonEvent&) override;
 
+    void addBind(Command command, MachGui::BindId bindId);
     void resetCommands();
 
     // data members
