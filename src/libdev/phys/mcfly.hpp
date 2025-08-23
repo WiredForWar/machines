@@ -53,7 +53,6 @@ public:
     // the keypad and the Machines non-keypad version.  You can in any case
     // pick something entirely different by calling setKeyTranslator.
     void useDefaultKeyboardMapping();
-    void useKeypadMapping();
 
 private:
     void updateMotion();
