@@ -389,6 +389,102 @@ void InputRegistry::load()
     binds_["fpv-command-follow"] = {
         { KeyCode::INSERT },
     };
+
+    // Override with modern keys
+
+    // Unassign WASD hotkeys
+    binds_["commands-stand-ground-trigger"] = {}; // W
+    binds_["commands-attack-trigger"] = {}; // A
+    binds_["commands-stop-trigger"] = {}; // S
+    binds_["commands-deconstruct-trigger"] = { { KeyCode::KEY_X } }; // D
+
+    binds_["zenith-camera-forward"] = {
+        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-backward"] = {
+        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-slide-left"] = {
+        { .keyWithMods = KeyCode::KEY_A, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+    binds_["zenith-camera-slide-right"] = {
+        { .keyWithMods = KeyCode::KEY_D, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    };
+
+    binds_["fpv-move-forward"] = {
+        { .keyWithMods = KeyCode::UP_ARROW },
+        { .keyWithMods = KeyCode::KEY_W },
+    };
+    binds_["fpv-move-backward"] = {
+        { .keyWithMods = KeyCode::DOWN_ARROW },
+        { .keyWithMods = KeyCode::KEY_S },
+    };
+
+    binds_["fpv-turn-left"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-right"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_R | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    };
+
+    binds_["fpv-turn-left-fast"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_A,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+    binds_["fpv-turn-right-fast"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_D,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    };
+
+    binds_["fpv-look-down-fast"] = {};
+    binds_["fpv-look-down"] = {};
+
+    binds_["fpv-turn-head-left-fast"] = {
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+    };
+    binds_["fpv-turn-head-right-fast"] = {
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+        {
+            .keyWithMods = KeyCode::KEY_D | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl,
+        },
+    };
 }
 
 const KeyBinds& InputRegistry::getBinds(BindId id) const
