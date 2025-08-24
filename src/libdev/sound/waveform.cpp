@@ -8,6 +8,7 @@
 #include "sound/internal/wavefmt.hpp"
 #include "system/pathname.hpp"
 #include "stdlib/string.hpp"
+#include "system/vfs.hpp"
 
 ////////////////////////////////////////////////////////////
 
@@ -49,7 +50,8 @@ SndWaveform::SndWaveform(const SndWaveformId& id)
 {
     PRE(SndWaveform::isWaveFile(id_.pathname().c_str()));
 
-    waveInfo_ = WaveOpenFileForReading(id.pathname().c_str());
+    const std::string fileName = System::findFile(id.pathname().pathname());
+    waveInfo_ = WaveOpenFileForReading(fileName.c_str());
     POST(waveInfo_);
 }
 

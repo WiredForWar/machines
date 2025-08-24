@@ -106,6 +106,7 @@
 #include "network/node.hpp"
 #include "device/time.hpp"
 #include "system/registry.hpp"
+#include "system/vfs.hpp"
 
 #include <algorithm>
 #include <stdio.h>
@@ -242,7 +243,13 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     const std::string displayStringsFile = "machstrg.xml";
     pStringResourceLib_ = std::make_unique<AfxResourceLib>();
     pStringResourceLib_->addStringsFromFile(displayStringsFile);
+    std::string extraFile = System::findFile(displayStringsFile);
+    if (extraFile != displayStringsFile)
+    {
+        pStringResourceLib_->addStringsFromFile(extraFile);
+    }
     GuiResourceString::resource(pStringResourceLib_.get());
+
     pReporter->report(25, 100); // 25% done
 
     // Construct the set of available commands

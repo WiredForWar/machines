@@ -424,6 +424,7 @@ bool SDLApp::clientStartup()
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.35, 0.37);
     pOptionsManager->initializeCursor();
+    pOptionsManager->initializeLanguage();
 
     MachPhysData::instance();
 

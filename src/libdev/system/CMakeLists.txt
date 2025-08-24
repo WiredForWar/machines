@@ -25,6 +25,8 @@ set(SYSTEM_SOURCES
     pathname.hpp
     registry.cpp
     registry.hpp
+    vfs.cpp
+    vfs.hpp
     winapi.cpp
     winapi.hpp
 )
