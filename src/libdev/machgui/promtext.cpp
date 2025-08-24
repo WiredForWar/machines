@@ -73,8 +73,7 @@ public:
         const std::string& normalFont,
         const std::string& shadowFont,
         GuiBmpFont::FontType fontType,
-        size_t spaceCharWidth,
-        size_t spacing);
+        size_t spaceCharWidth);
 
     GuiBitmap promptBmp_;
     std::string cursorPromptText_; // The prompt displayed for mouse moves
@@ -108,10 +107,9 @@ MachPromptTextImpl::MachPromptTextImpl(
     const std::string& normalFont,
     const std::string& shadowFont,
     GuiBmpFont::FontType fontType,
-    size_t spaceCharWidth,
-    size_t spacing)
-    : font_(GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing))
-    , shadowFont_(GuiBmpFont::getFont(shadowFont, fontType, spaceCharWidth, spacing))
+    size_t spaceCharWidth)
+    : font_(GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth))
+    , shadowFont_(GuiBmpFont::getFont(shadowFont, fontType, spaceCharWidth))
     , refresh_(true)
     , lightOn_(Gui::bitmap(MachGui::getScaledImagePath("gui/misc/tplight2")))
     , lightOff_(Gui::bitmap(MachGui::getScaledImagePath("gui/misc/tplight1")))
@@ -137,10 +135,9 @@ MachPromptText::MachPromptText(
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
     GuiBmpFont::FontType fontType = GuiBmpFont::PROPORTIONAL;
     size_t spaceCharWidth = (Gui::uiScaleFactor() > 1 ? 5 : 7) * Gui::uiScaleFactor();
-    size_t spacing = 1 * Gui::uiScaleFactor();
 
-    font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth, spacing);
-    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth, spacing);
+    font_ = GuiBmpFont::getFont(normalFont, fontType, spaceCharWidth);
+    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont, fontType, spaceCharWidth);
 
     CB_DEPIMPL(GuiBitmap, promptBmp_);
     CB_DEPIMPL(MachCameras*, pCameras_);
