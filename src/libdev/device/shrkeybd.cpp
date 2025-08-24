@@ -384,8 +384,41 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
 {
     switch (code)
     {
+        case KeyCode::UP_ARROW_PAD:
+            o << "UP_ARROW_PAD";
+            break;
+        case KeyCode::DOWN_ARROW_PAD:
+            o << "DOWN_ARROW_PAD";
+            break;
+        case KeyCode::LEFT_ARROW_PAD:
+            o << "LEFT_ARROW_PAD";
+            break;
+        case KeyCode::RIGHT_ARROW_PAD:
+            o << "RIGHT_ARROW_PAD";
+            break;
         case Device::KeyCode::ENTER_PAD:
             o << "ENTER_PAD";
+            break;
+        case Device::KeyCode::INSERT_PAD:
+            o << "INSERT_PAD";
+            break;
+        case Device::KeyCode::DELETE_PAD:
+            o << "DELETE_PAD";
+            break;
+        case Device::KeyCode::HOME_PAD:
+            o << "HOME_PAD";
+            break;
+        case Device::KeyCode::END_PAD:
+            o << "END_PAD";
+            break;
+        case Device::KeyCode::PAGE_UP_PAD:
+            o << "PAGE_UP_PAD";
+            break;
+        case Device::KeyCode::PAGE_DOWN_PAD:
+            o << "PAGE_DOWN_PAD";
+            break;
+        case Device::KeyCode::FIVE_PAD:
+            o << "FIVE_PAD";
             break;
         case Device::KeyCode::ASTERISK_PAD:
             o << "ASTERISK_PAD";
@@ -428,6 +461,12 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
             break;
         case Device::KeyCode::PAD_9:
             o << "PAD_9";
+            break;
+        case Device::KeyCode::FORWARD_SLASH:
+            o << "SCROLL_LOCK";
+            break;
+        case Device::KeyCode::NUM_LOCK:
+            o << "NUM_LOCK";
             break;
         case Device::KeyCode::SCROLL_LOCK:
             o << "SCROLL_LOCK";
@@ -485,6 +524,9 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
             break;
         case Device::KeyCode::TAB:
             o << "TAB";
+            break;
+        case Device::KeyCode::GRAVE:
+            o << "GRAVE";
             break;
         case Device::KeyCode::LEFT_SHIFT:
             o << "LEFT_SHIFT";
@@ -638,6 +680,12 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
             break;
         case Device::KeyCode::KEY_9:
             o << "KEY_9";
+            break;
+        case Device::KeyCode::LEFT_ALT:
+            o << "LEFT_ALT";
+            break;
+        case Device::KeyCode::RIGHT_ALT:
+            o << "RIGHT_ALT";
             break;
         case Device::KeyCode::MOUSE_LEFT:
             o << "MOUSE_LEFT";
