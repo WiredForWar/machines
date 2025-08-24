@@ -492,8 +492,8 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
         case Device::KeyCode::INSERT:
             o << "INSERT";
             break;
-        case Device::KeyCode::KEY_DELETE:
-            o << "KEY_DELETE";
+        case Device::KeyCode::DELETE:
+            o << "DELETE";
             break;
         case Device::KeyCode::HOME:
             o << "HOME";

@@ -72,7 +72,7 @@ static constexpr DevEventQueue::ScanCode ScanCodes[] {
     Device::KeyCode::LEFT_ARROW,
     Device::KeyCode::RIGHT_ARROW,
     Device::KeyCode::INSERT,
-    Device::KeyCode::KEY_DELETE,
+    Device::KeyCode::DELETE,
     Device::KeyCode::HOME,
     Device::KeyCode::END,
     Device::KeyCode::PAGE_UP,

@@ -140,7 +140,7 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
             case Device::KeyCode::BACK_SPACE:
                 backspaceEvent();
                 break;
-            case Device::KeyCode::KEY_DELETE:
+            case Device::KeyCode::DELETE:
                 deleteEvent();
                 break;
             case Device::KeyCode::HOME:

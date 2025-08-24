@@ -170,7 +170,7 @@ Device::KeyCode DevSdlKeyboard::translateScanCode(SDL_Scancode sdlCode)
         { SDL_SCANCODE_GRAVE, ScanCode::GRAVE },
 
         { SDL_SCANCODE_INSERT, ScanCode::INSERT },
-        { SDL_SCANCODE_DELETE, ScanCode::KEY_DELETE },
+        { SDL_SCANCODE_DELETE, ScanCode::DELETE },
         { SDL_SCANCODE_HOME, ScanCode::HOME },
         { SDL_SCANCODE_END, ScanCode::END },
         { SDL_SCANCODE_PAGEUP, ScanCode::PAGE_UP },

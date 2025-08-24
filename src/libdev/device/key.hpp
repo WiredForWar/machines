@@ -3,6 +3,11 @@
 #include <cstdint>
 #include <ostream>
 
+// Unfortunately Windows has a #define for DELETE.
+#ifdef DELETE
+#undef DELETE
+#endif
+
 namespace Device
 {
 
@@ -66,7 +71,7 @@ enum class KeyCode : detail::KeyCodeUnderlying
     LEFT_ARROW,
     RIGHT_ARROW,
     INSERT,
-    KEY_DELETE, // Unfortunately Windows has a #define for DELETE.
+    DELETE,
     HOME,
     END,
     PAGE_UP,
