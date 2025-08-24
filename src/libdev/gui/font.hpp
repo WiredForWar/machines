@@ -36,7 +36,7 @@ public:
     };
 
     static GuiBmpFont
-    getFont(const SysPathName& fontPath, FontType = PROPORTIONAL, size_t spaceCharWidth = 7, size_t spacing = 1);
+    getFont(const SysPathName& fontPath, FontType = PROPORTIONAL, size_t spaceCharWidth = 7);
 
     GuiBmpFont(); // Default constructor to satisfy ctl_vector. DO NOT USE!!!
     GuiBmpFont(const GuiBmpFont&);
