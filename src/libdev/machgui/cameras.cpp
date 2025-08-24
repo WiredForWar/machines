@@ -7,6 +7,7 @@
 
 #include "machgui/cameras.hpp"
 #include "device/keytrans.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "mathex/poly2d.hpp"
 #include "phys/motchunk.hpp"
 #include "world4d/scenemgr.hpp"
@@ -56,78 +57,26 @@ MachCameras::MachCameras(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
     , groundCameraMoved_(true)
 {
     pKeyTranslator_ = std::make_unique<DevKeyToCommandTranslator>();
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAD_2,
-        ZENITHVIEW,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::PAD_0,
-        GROUNDVIEW,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER,
-        DevKeyToCommand::EITHER));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F5,
-        SAVEVIEW1,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F6,
-        SAVEVIEW2,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F7,
-        SAVEVIEW3,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F8,
-        SAVEVIEW4,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F5,
-        RESTOREVIEW1,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F6,
-        RESTOREVIEW2,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F7,
-        RESTOREVIEW3,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::F8,
-        RESTOREVIEW4,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_H,
-        RESTOREDEFAULTCAMERAPOS,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_H,
-        RESTORELASTCAMERAPOS,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
+    const auto addTranslation = [this](Command command, MachGui::BindId bindName)
+    {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(bindName);
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
+    addTranslation(Command::ZENITHVIEW, "view-use-zenith-camera"_bind);
+    addTranslation(Command::GROUNDVIEW, "view-use-ground-camera"_bind);
+    // The game uses "view-toggle-fpv" instead
+    // addTranslation(Command::FIRSTPERSONVIEW, "view-use-in-head-camera"_bind);
+
+    addTranslation(Command::SAVEVIEW1, "view-save-view-1"_bind);
+    addTranslation(Command::SAVEVIEW2, "view-save-view-2"_bind);
+    addTranslation(Command::SAVEVIEW3, "view-save-view-3"_bind);
+    addTranslation(Command::SAVEVIEW4, "view-save-view-4"_bind);
+    addTranslation(Command::RESTOREVIEW1, "view-restore-view-1"_bind);
+    addTranslation(Command::RESTOREVIEW2, "view-restore-view-2"_bind);
+    addTranslation(Command::RESTOREVIEW3, "view-restore-view-3"_bind);
+    addTranslation(Command::RESTOREVIEW4, "view-restore-view-4"_bind);
+    addTranslation(Command::RESTOREDEFAULTCAMERAPOS, "view-restore-default-pos"_bind);
+    addTranslation(Command::RESTORELASTCAMERAPOS, "view-restore-last-pos"_bind);
 
     pKeyTranslator_->initEventQueue();
 

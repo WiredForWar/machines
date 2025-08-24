@@ -44,6 +44,35 @@ void InputRegistry::load()
         { KeyCode::GRAVE },
     };
 
+    binds_["view-use-zenith-camera"] = { { KeyCode::PAD_2 } };
+    binds_["view-use-ground-camera"] = { { KeyCode::PAD_0 } };
+
+    for (int i = 0; i < 4; ++i)
+    {
+        KeyCode keyCode = KeyCode::F5 + Device::KeyCodeOffset { i };
+        const std::string bindId = std::to_string(i + 1);
+        binds_["view-save-view-" + bindId] = {
+            {
+                .keyWithMods = keyCode | KeyModifier::Ctrl,
+                .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift,
+            },
+        };
+        binds_["view-restore-view-" + bindId] = {
+            {
+                .keyWithMods = keyCode,
+                .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift,
+            },
+        };
+    }
+    binds_["view-restore-default-pos"] = {
+        { .keyWithMods = KeyCode::KEY_H | KeyModifier::Shift,
+          .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+    };
+    binds_["view-restore-last-pos"] = {
+        { .keyWithMods = KeyCode::KEY_H | KeyModifier::Ctrl | KeyModifier::Shift,
+          .releasedModifiers = KeyModifier::Alt },
+    };
+
     binds_["commands-assembly-point-trigger"] = {
         { KeyCode::KEY_B },
     };
