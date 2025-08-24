@@ -14,7 +14,6 @@ class SysPathName;
 class RenColour;
 class RenISurfBody;
 class RenIPixelFormat;
-class AfxResourceLib;
 template <class T> class ctl_vector;
 // template <class T> class basic_string;
 // typedef basic_string< char > string;
@@ -80,14 +79,6 @@ public:
     // PRE(!surf.isNull());
     // POST(retval.sharable() && retval.readOnly());
     static RenSurface createSharedSurface(const std::string& bitmapName, const RenSurface& surf);
-
-    // Create a surface whose pixel format matches that of the given surface.
-    // The surface is initialised with data from the named bitmap within the given
-    // resource library.  This does *not* use the search path or look in BMP files.
-    // Typically, the 2nd argument will be the back buffer.
-    // PRE(!surf.isNull());
-    // POST(retval.sharable() && retval.readOnly());
-    static RenSurface createSharedSurface(const std::string& bitmapName, const AfxResourceLib&, const RenSurface& surf);
 
     // Create a new surface whose area subsets the given one's area.  The result
     // shares the same representation & data, so the input must be sharable.

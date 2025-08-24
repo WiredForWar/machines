@@ -13,7 +13,6 @@
 
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"
-#include "afx/resource.hpp"
 #include "render/surfmgr.hpp"
 #include "render/internal/surfbody.hpp"
 #include "render/internal/pixelfmt.hpp"
@@ -71,14 +70,6 @@ WEAK_SYMBOL RenSurface RenSurface::createSharedSurface(const std::string& bitmap
 {
     // This is pure delegation -- let the manager do the pre and post-conditions.
     return RenSurfaceManager::instance().createSharedSurface(bitmapName, surf);
-}
-
-// static
-RenSurface
-RenSurface::createSharedSurface(const std::string& bitmapName, const AfxResourceLib& lib, const RenSurface& surf)
-{
-    // This is pure delegation -- let the manager do the pre and post-conditions.
-    return RenSurfaceManager::instance().createSharedSurface(bitmapName, lib, surf);
 }
 
 // static
