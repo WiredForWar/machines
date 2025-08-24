@@ -333,7 +333,8 @@ void PedConstructionEditor::changeAllSolidities(W4dEntity::Solidity solidity)
 void PedConstructionEditor::initialiseActors()
 {
     TEST_INVARIANT;
-    AfxResourceLib resourceLib("machstrg.xml");
+    AfxResourceLib resourceLib;
+    resourceLib.addStringsFromFile("machstrg.xml");
 
     Construction* pConstruction = nullptr;
     string resource;

@@ -189,7 +189,9 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     pReporter->report(20, 100); // 20% done
 
     // Load the string table resource file
-    pStringResourceLib_ = std::make_unique<AfxResourceLib>(SysPathName("machstrg.xml"));
+    const std::string displayStringsFile = "machstrg.xml";
+    pStringResourceLib_ = std::make_unique<AfxResourceLib>();
+    pStringResourceLib_->addStringsFromFile(displayStringsFile);
     GuiResourceString::resource(pStringResourceLib_.get());
     pReporter->report(25, 100); // 25% done
 
