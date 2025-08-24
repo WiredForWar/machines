@@ -279,7 +279,8 @@ void PedMachineEditor::changeAllSolidities(W4dEntity::Solidity solidity)
 
 void PedMachineEditor::initialiseActors()
 {
-    AfxResourceLib resourceLib("machstrg.xml");
+    AfxResourceLib resourceLib;
+    resourceLib.addStringsFromFile("machstrg.xml");
 
     Machine* pMachine = nullptr;
     string resource;

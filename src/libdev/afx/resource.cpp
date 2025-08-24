@@ -5,25 +5,14 @@
 
 #include "afx/resource.hpp"
 
-#include <limits.h>
-#include "system/pathname.hpp"
 #include "utility/rapidxml_utils.hpp"
 
-// This function is only used in the debug version.
-#ifndef NDEBUG
-static char* formatMsg()
+bool AfxResourceLib::addStringsFromFile(const SysPathName& path)
 {
-    static char msgBuf[] = "test";
-    return msgBuf;
-}
-#endif
+    PRE(path.existsAsFile());
 
-AfxResourceLib::AfxResourceLib(const SysPathName& libFile)
-    : fileName_(libFile)
-{
-    PRE(libFile.existsAsFile());
-
-    rapidxml::file<> xmlFile(libFile.c_str()); // Default template is char
+    bool parsed = true;
+    rapidxml::file<> xmlFile(path.c_str()); // Default template is char
     rapidxml::xml_document<> doc;
     try
     {
@@ -31,22 +20,26 @@ AfxResourceLib::AfxResourceLib(const SysPathName& libFile)
     }
     catch (const rapidxml::parse_error& e)
     {
+        parsed = false;
         std::cerr << e.what() << " here: " << e.where<char>() << std::endl;
     }
 
-    rapidxml::xml_node<>* node = doc.first_node();
-
-    for (rapidxml::xml_node<>* a = node->first_node(); a; a = a->next_sibling())
+    if (parsed)
     {
-        resourceStrings_.insert(std::make_pair(atoi(a->first_attribute()->value()), a->value()));
+        rapidxml::xml_node<>* node = doc.first_node();
+
+        for (rapidxml::xml_node<>* a = node->first_node(); a; a = a->next_sibling())
+        {
+            resourceStrings_[atoi(a->first_attribute()->value())] = a->value();
+        }
     }
 
-    TEST_INVARIANT;
+    return parsed;
 }
 
-AfxResourceLib::~AfxResourceLib()
+void AfxResourceLib::clear()
 {
-    TEST_INVARIANT;
+    resourceStrings_.clear();
 }
 
 std::string AfxResourceLib::getString(const uint id) const
@@ -56,30 +49,3 @@ std::string AfxResourceLib::getString(const uint id) const
     else
         return "";
 }
-
-uint32_t AfxResourceLib::bitmapHandle(const std::string& name) const
-{
-    return 0;
-}
-
-const SysPathName& AfxResourceLib::fileName() const
-{
-    POST(fileName_.existsAsFile());
-    return fileName_;
-}
-
-void AfxResourceLib::CLASS_INVARIANT
-{
-    INVARIANT(this != nullptr);
-}
-
-std::ostream& operator<<(std::ostream& o, const AfxResourceLib& t)
-{
-
-    o << "AfxResourceLib " << static_cast<const void*>(&t) << " start" << std::endl;
-    o << "AfxResourceLib " << static_cast<const void*>(&t) << " end" << std::endl;
-
-    return o;
-}
-
-/* End RESOURCE.CPP *************************************************/
