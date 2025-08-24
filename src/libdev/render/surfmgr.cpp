@@ -101,31 +101,6 @@ RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t h
     return result;
 }
 
-RenSurface RenSurfaceManager::createSharedSurface(
-    const std::string& bitmapName,
-    const AfxResourceLib& lib,
-    const RenSurface& takePixelFormatFrom)
-{
-    CB_REN_SURFACE_MANAGER_DEPIMPL;
-    TEST_INVARIANT;
-    PRE(bitmapName.length() > 0);
-    PRE(!takePixelFormatFrom.isNull());
-    PRE(entries_[takePixelFormatFrom.myId_]);
-
-    const std::string name = lib.fileName().filename() + ":" + bitmapName;
-
-    // Check to see if the given bitmap is already loaded.
-    Ren::TexId returnId = pImpl_->findSharedSurface(name);
-    if (returnId == Ren::NullTexId)
-    {
-    }
-
-    RenSurface retval(returnId);
-    POST(retval.sharable() && retval.readOnly());
-    TEST_INVARIANT;
-    return retval;
-}
-
 RenSurface RenSurfaceManager::createSharedSurface(const std::string& name, const RenSurface& surf)
 {
     CB_REN_SURFACE_MANAGER_DEPIMPL;

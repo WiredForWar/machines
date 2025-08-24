@@ -11,7 +11,6 @@
 #include <string>
 
 // class ostream;
-class AfxResourceLib;
 class SysPathName;
 class RenTexture;
 class RenSurface;
@@ -60,14 +59,6 @@ public:
     // POST(retval.sharable() && retval.readOnly());
     // POST(implies(!retval.isNull(), name().length() > 0));
     RenSurface createSharedSurface(const std::string& name, const RenSurface& surf);
-
-    // Create a surface whose pixel format matches that of the given surface.
-    // The surface is initialised with data from the named bitmap within the given
-    // resource library.  This does *not* use the search path or look in BMP files.
-    // Typically, the 2nd argument will be the back buffer.
-    // PRE(!surf.isNull()); PRE(bitmapName.length() > 0);
-    // POST(retval.sharable() && retval.readOnly());
-    RenSurface createSharedSurface(const std::string& bitmapName, const AfxResourceLib&, const RenSurface& surf);
 
     //  Maintains a list of directories to search for any given texture
     const PathNames& searchList();
