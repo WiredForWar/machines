@@ -124,6 +124,26 @@ void GuiBmpFont::releaseFontMemory()
     fonts.erase(fonts.begin(), fonts.end());
 }
 
+char GuiBmpFont::arrowUpIndex()
+{
+    return 0x8D;
+}
+
+char GuiBmpFont::arrowDownIndex()
+{
+    return 0x8E;
+}
+
+char GuiBmpFont::arrowLeftIndex()
+{
+    return 0x8F;
+}
+
+char GuiBmpFont::arrowRightIndex()
+{
+    return 0x90;
+}
+
 char GuiBmpFont::redCharIndex()
 {
     return 0xA9;

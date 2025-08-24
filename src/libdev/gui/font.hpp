@@ -87,6 +87,11 @@ public:
     static char blueCharIndex();
     static char yellowCharIndex();
 
+    static char arrowUpIndex();
+    static char arrowDownIndex();
+    static char arrowLeftIndex();
+    static char arrowRightIndex();
+
 protected:
     GuiBmpFont(const SysPathName& fontPath);
     void drawTextLeftJustify(const std::string& text, const Gui::Coord& startPos, int maxWidth) const;
