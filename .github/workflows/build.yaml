@@ -16,6 +16,7 @@ jobs:
 
     - name: Prepare the system (Linux)
       run: |
+        sudo apt-get update
         sudo machines-data/scripts/prepare-system.sh
 
     - name: "Bake the data"
