@@ -141,7 +141,7 @@ template <> inline std::ostream& operator<<(std::ostream& o, const DevButtonEven
 {
     o << "Button event: " << std::setprecision(4) << " age=" << t.age() << " s=" << t.wasShiftPressed()
       << " c=" << t.wasCtrlPressed() << " a=" << t.wasAltPressed() << " rpt=" << t.repeatCount() << " ";
-    Device::printScanCode(o, t.scanCode());
+    Device::writeAsString(o, t.scanCode());
     o << ((t.action() == DevButtonEvent::PRESS) ? " down" : " up  ");
     o << " coords=" << t.cursorCoords();
     return o;

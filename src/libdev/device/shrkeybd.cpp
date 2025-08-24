@@ -380,8 +380,14 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
 }
 
 // static
-void Device::printScanCode(std::ostream& o, KeyCode code)
+void Device::writeAsString(std::ostream& o, KeyCode code)
 {
+    if (code == KeyCode::UNKNOWN || !isValidCode(code))
+    {
+        o << static_cast<int>(code);
+        return;
+    }
+
     switch (code)
     {
         case KeyCode::UP_ARROW_PAD:
@@ -722,10 +728,9 @@ void Device::printScanCode(std::ostream& o, KeyCode code)
             o << "MOUSE_EXTRA8";
             break;
 
-        // NB: don't use ASSERT_BAD_CASE because it is non-extensible.  New scan
-        // codes can be added and will work even if this fn doesn't print them.
-        default:
-            o << "Unknown scan code, numeric value=" << static_cast<int>(code);
+        case KeyCode::UNKNOWN:
+        case KeyCode::COUNT:
+            // Processed before this switch
             break;
     }
 }

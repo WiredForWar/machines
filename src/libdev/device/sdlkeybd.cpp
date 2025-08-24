@@ -35,7 +35,7 @@ void DevSdlKeyboard::wm_key(const DevButtonEvent& ev)
     // For state changes, we are only interested in key-press transitions and
     // can ignore all auto-repeat events, i.e. when we receive a keydown
     // message and previous state was also down.
-    // Device::KeyCode::printScanCode(std::cout, ev.scanCode()); std::cout << ": "< ev.action() <<" "<<ev.scanCode()<< std::endl;
+    // Device::writeCode(std::cout, ev.scanCode()); std::cout << ": "< ev.action() <<" "<<ev.scanCode()<< std::endl;
     switch (ev.action())
     {
         case DevButtonEvent::PRESS:

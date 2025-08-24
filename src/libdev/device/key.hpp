@@ -175,7 +175,7 @@ inline constexpr bool isValidCode(KeyCode code)
     return (static_cast<detail::KeyCodeUnderlying>(code) < MAX_CODE);
 }
 
-void printScanCode(std::ostream&, KeyCode code);
+void writeAsString(std::ostream&, KeyCode code);
 
 inline constexpr KeyCode getKeyWithoutModifiers(int value)
 {
