@@ -82,6 +82,7 @@ private:
     MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_ = nullptr;
     MachGuiDropDownListBoxCreator* pDirect3DDrivers_ = nullptr;
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_ = nullptr;
+    MachGuiDropDownListBoxCreator* pLanguageSelector_ = nullptr;
     bool exitFromOptions_ = false;
     RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;

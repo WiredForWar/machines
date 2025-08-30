@@ -148,6 +148,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const MachGuiOptionsLayout::MenuTextInfo& directDrawTxt = screenLayout.menuTextInfo(4);
     const MachGuiOptionsLayout::MenuTextInfo& direct3DTxt = screenLayout.menuTextInfo(5);
     const MachGuiOptionsLayout::MenuTextInfo& scaleFactorTxt = screenLayout.menuTextInfo(5);
+    const MachGuiOptionsLayout::MenuTextInfo& languageTxt = screenLayout.menuTextInfo(6);
     const MachGuiOptionsLayout::CheckBoxInfo& sound3dCB = screenLayout.checkBoxInfo(0);
     const MachGuiOptionsLayout::CheckBoxInfo& transitionsCB = screenLayout.checkBoxInfo(1);
     const MachGuiOptionsLayout::CheckBoxInfo& screenResolutionLock = screenLayout.checkBoxInfo(2);
@@ -193,6 +194,13 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(scaleFactorTxt.topLeft, scaleFactorTxt.bottomRight),
         scaleFactorTxt.idsStringId,
         MachGui::getScaledImagePath(scaleFactorTxt.font),
+        Gui::AlignRight);
+
+    new MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(languageTxt.topLeft, languageTxt.bottomRight),
+        languageTxt.idsStringId,
+        MachGui::getScaledImagePath(languageTxt.font),
         Gui::AlignRight);
 
     // Create check boxes
@@ -353,7 +361,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pGammaCorrection_->setValue(gammaCorrection_);
 
         // Show gamma correction image (helps get gamma setting correct)
-        new GuiImage(pStartupScreens, Gui::Coord(353, 198) * MachGui::menuScaleFactor(), MachGui::getScaledImage("gui/menu/gammacal.bmp"));
+        // new GuiImage(pStartupScreens, Gui::Coord(353, 218) * MachGui::menuScaleFactor(), MachGui::getScaledImage("gui/menu/gammacal.bmp"));
     }
 
     {
@@ -452,6 +460,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         true);
     auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
     pScaleFactorSelector_->items(items);
+
+    pLanguageSelector_ = new MachGuiDropDownListBoxCreator(
+        pStartupScreens,
+        pStartupScreens,
+        Gui::Coord(353, 179) * MachGui::menuScaleFactor(),
+        153 * MachGui::menuScaleFactor(),
+        scaleNames,
+        false,
+        true);
 
     readFromConfig();
 

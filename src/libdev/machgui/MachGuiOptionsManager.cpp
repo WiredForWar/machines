@@ -1,9 +1,24 @@
 #include "MachGuiOptionsManager.hpp"
 
+#include "afx/resource.hpp"
+#include "gui/restring.hpp"
 #include "machgui/gui.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/races.hpp"
 #include "machphys/marker.hpp"
+#include "system/vfs.hpp"
+
+#include "spdlog/spdlog.h"
+
+#include <filesystem>
+#include <system_error>
+
+namespace
+{
+
+const std::string embeddedLang = "en";
+
+} // namespace
 
 MachGuiOptionsManager::MachGuiOptionsManager()
 {
@@ -22,6 +37,57 @@ void MachGuiOptionsManager::initializeCursor()
 
     float lineWidth = MachGui::getPhysMarkerLineWidth();
     MachPhysMarker::setMarkerLineWidth(lineWidth);
+}
+
+void MachGuiOptionsManager::initializeLanguage()
+{
+    System::clearFsOverrides();
+
+    AfxResourceLib& resource = GuiResourceString::resource();
+    resource.clear();
+
+    const std::string displayStringsFile = "machstrg.xml";
+    resource.addStringsFromFile(displayStringsFile);
+
+    std::string lang = SysRegistry::instance().queryStringValue("Options", "Language", embeddedLang);
+
+    if ((lang != embeddedLang) && System::registerFsOverride("languages/" + lang))
+    {
+        std::string extraFile = System::findFile(displayStringsFile);
+        if (extraFile != displayStringsFile)
+        {
+            resource.addStringsFromFile(extraFile);
+        }
+    }
+}
+
+std::vector<std::string> MachGuiOptionsManager::availableLanguages() const
+{
+    std::vector<std::string> result;
+    result.push_back(embeddedLang);
+
+    std::error_code code;
+    std::filesystem::directory_iterator it(
+        "languages",
+        std::filesystem::directory_options::follow_directory_symlink,
+        code);
+    if (code)
+    {
+        spdlog::warn("Unable to list available languages (fs error: {})", code.message());
+    }
+    else
+    {
+        for (const std::filesystem::directory_entry& entry : it)
+        {
+            std::filesystem::path target = entry.is_symlink() ? std::filesystem::read_symlink(entry) : entry;
+            if (!std::filesystem::is_directory(target))
+                continue;
+
+            result.push_back(entry.path());
+        }
+    }
+
+    return result;
 }
 
 void MachGuiOptionsManager::onChanges()

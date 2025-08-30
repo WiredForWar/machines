@@ -5,7 +5,8 @@
 namespace System
 {
 
-void registerFsOverride(std::string extraPath);
+bool registerFsOverride(std::string extraPath);
+void clearFsOverrides();
 
 std::string findFile(std::string path);
 
