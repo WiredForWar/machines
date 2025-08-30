@@ -80,7 +80,7 @@ public:
     void CLASS_INVARIANT;
 
     using VEmailTypeMap = ctl_map<std::string, VoiceMailType, std::less<std::string>>;
-    using MailInfoVector = ctl_pvector<MachLogVoiceMailInfo>;
+    using MailInfoVector = std::vector<std::unique_ptr<MachLogVoiceMailInfo>>;
 
 private:
     // Read voice mail definition file and register the available VID's

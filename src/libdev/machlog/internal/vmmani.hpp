@@ -29,7 +29,7 @@ public:
 
     MachLogVoiceMailManager::BoolVec voiceMailPlaying_; // a 'true' value means this actor has a voice mail associated
                                                         // with it that is currently playing.
-    MachLogVoiceMailManager::MailInfoVector* pAvailableVEMails_;
+    MachLogVoiceMailManager::MailInfoVector availableVEMails_;
     MachLogVoiceMailManager::VEmailIDMap registeredIds_;
     std::vector<std::unique_ptr<MachLogVoiceMail>> incomingMailQueue_;
     size_t currentMailMessage_;
@@ -43,7 +43,7 @@ public:
 
 #define CB_MachLogVoiceMailManager_DEPIMPL()                                                                           \
     CB_DEPIMPL_AUTO(voiceMailPlaying_);                                                                                \
-    CB_DEPIMPL_AUTO(pAvailableVEMails_);                                                                               \
+    CB_DEPIMPL_AUTO(availableVEMails_);                                                                               \
     CB_DEPIMPL_AUTO(registeredIds_);                                                                                   \
     CB_DEPIMPL_AUTO(incomingMailQueue_);                                                                               \
     CB_DEPIMPL_AUTO(currentMailMessage_);                                                                              \

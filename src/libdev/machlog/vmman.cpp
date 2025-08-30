@@ -1,5 +1,4 @@
 /*
- * V M M A N . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
@@ -67,11 +66,6 @@ MachLogVoiceMailManager::~MachLogVoiceMailManager()
     TEST_INVARIANT;
 
     clearMailQueue();
-
-    for (MailInfoVector::iterator i = pAvailableVEMails_->begin(); i != pAvailableVEMails_->end(); ++i)
-        delete *i;
-
-    delete pAvailableVEMails_;
 
     delete pImpl_;
 }
@@ -146,7 +140,7 @@ void MachLogVoiceMailManager::update()
                 // Also check sound lib has free channel.
                 // Note that VM_WAIT_UNTIL_NOTHING_PLAYING
 
-                VoiceMailType mailType = ((*pAvailableVEMails_)[pMail->id()])->mailType_;
+                VoiceMailType mailType = availableVEMails_[pMail->id()]->mailType_;
 
                 if (noOfMailsPlaying_ == 2 || SndMixer::instance().noOfFreeLogicalChannels() == 0
                     || (mailType == VM_WAIT_UNTIL_NOTHING_PLAYING && noOfMailsPlaying_ > 0))
@@ -244,10 +238,10 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MachPhys::Race targetR
 
     // only bother pushing it onto the queue if the actor in question isn't already playing a mail
     // OR it's not a selection-affirmation mail.
-    if (podMailPlaying_ && (((*pAvailableVEMails_)[id])->mailType_ != VM_SELECTION_AFFIRMATION))
+    if (podMailPlaying_ && (availableVEMails_[id]->mailType_ != VM_SELECTION_AFFIRMATION))
         return false;
 
-    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id)));
+    queueMail(std::make_unique<MachLogVoiceMail>(*availableVEMails_.at(id)));
 
     return true;
 }
@@ -264,7 +258,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
     bool acceptMail = false;
 
     // acceptance of mail is contingent upon voicemail type.
-    VoiceMailType mailType = ((*pAvailableVEMails_)[id])->mailType_;
+    VoiceMailType mailType = availableVEMails_[id]->mailType_;
 
     if (mailType == VM_FULL_FUNCTION || mailType == VM_WAIT_UNTIL_NOTHING_PLAYING)
     {
@@ -298,7 +292,7 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
         return false;
     }
 
-    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id), actorId));
+    queueMail(std::make_unique<MachLogVoiceMail>(*availableVEMails_.at(id), actorId));
     update();
 
     return true;
@@ -306,11 +300,11 @@ bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, UtlId actorId, MachPhy
 
 bool MachLogVoiceMailManager::postNewMail(VoiceMailID id, MexPoint3d position, MachPhys::Race targetRace)
 {
-    CB_DEPIMPL_AUTO(pAvailableVEMails_);
+    CB_DEPIMPL_AUTO(availableVEMails_);
     if (!canPostMailForRace(targetRace))
         return false;
 
-    queueMail(std::make_unique<MachLogVoiceMail>(*pAvailableVEMails_->at(id), position));
+    queueMail(std::make_unique<MachLogVoiceMail>(*availableVEMails_.at(id), position));
 
     return true;
 }
@@ -409,7 +403,7 @@ void MachLogVoiceMailManager::postDeathMail(UtlId actorId, MachPhys::Race target
 
                         // okay, now have to dispose of the old mail and replace the queue pointer
                         // of the interrupted mail to that of the newly-created static burst sample
-                        pMail.reset(new MachLogVoiceMail(*pAvailableVEMails_->at(staticId), actorId));
+                        pMail.reset(new MachLogVoiceMail(*availableVEMails_.at(staticId), actorId));
                         pMail->play();
 
                         ASSERT_INFO(actorId);
@@ -504,13 +498,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
         { "VM_WAIT_UNTIL_NOTHING_PLAYING", VM_WAIT_UNTIL_NOTHING_PLAYING },
     };
 
-    pAvailableVEMails_ = new MailInfoVector(VID_N_MAIL_IDS, nullptr);
-    MailInfoVector& availableVEMails_ = *pAvailableVEMails_;
-
-    for (MailInfoVector::iterator i = availableVEMails_.begin(); i != availableVEMails_.end(); ++i)
-    {
-        (*i) = NULL;
-    }
+    availableVEMails_ = MailInfoVector(VID_N_MAIL_IDS);
 
     const SysPathName definitionFileName("sounds/vemail/vemail.dat");
 
@@ -550,14 +538,11 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
         std::string fileName(tokens[1]);
         std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
-        //      ASSERT_DATA( SysPathName vemailFileName( tokens[1] ) );
         ASSERT_DATA(SysPathName vemailFileName(fileName));
         ASSERT_INFO(vemailFileName);
         ASSERT(vemailFileName.existsAsFile(), "Cannot locate vemail file.");
 
-        availableVEMails_[id] = new MachLogVoiceMailInfo
-                                     //(id, tokens[1], type, atoi(tokens[3].c_str()));
-                                     (id, fileName, type, atoi(tokens[3].c_str()));
+        availableVEMails_[id] = std::make_unique<MachLogVoiceMailInfo>(id, fileName, type, atoi(tokens[3].c_str()));
 
         ASSERT_INFO(tokens[4]);
         ASSERT(
@@ -565,7 +550,6 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
             "VEmail definition line must have PRELOAD or NO_PRELOAD as its final parameter.");
 
         if (tokens[4] == "PRELOAD")
-            //          SndMixer::instance().loadWaveform( SndWaveformId( tokens[1] ) );
             SndMixer::instance().loadWaveform(SndWaveformId(fileName));
 
         parser.parseNextLine();
@@ -636,6 +620,3 @@ void MachLogVoiceMailManager::clearMailQueue()
     podMailPlaying_ = false;
     noOfMailsPlaying_ = 0;
 }
-
-// Force recompile 01/02/99 CPS
-/* End VMMAN.CPP ****************************************************/
