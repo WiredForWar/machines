@@ -183,7 +183,17 @@ void AfxSdlApp::coreLoop()
 
 void AfxSdlApp::initLogger()
 {
-    std::shared_ptr<spdlog::logger> logger;
+    bool logToConsole{};
+    for (size_t i = 0; i < invokeArgs().size(); ++i)
+    {
+        const std::string& token = invokeArgs()[i];
+        if (token == "--log-to-console")
+        {
+            logToConsole = true;
+        }
+    }
+
+    std::shared_ptr<spdlog::sinks::sink> fileSink;
     if (logFileEnabled_)
     {
         try
@@ -195,19 +205,20 @@ void AfxSdlApp::initLogger()
             spdlog::filename_t fileName = name();
             std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
             fileName = "logs/" + fileName + ".txt";
-            logger = spdlog::rotating_logger_mt("", fileName, MaxSize, MaxFiles, RotateOnOpen);
+            fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_st>(fileName, MaxSize, MaxFiles, RotateOnOpen);
+            fileSink->set_level(spdlog::level::debug);
         }
         catch (const spdlog::spdlog_ex& ex)
         {
-            std::cout << "Log init failed: " << ex.what() << std::endl;
+            std::cerr << "Log init failed: " << ex.what() << std::endl;
             logFileEnabled_ = false;
         }
     }
-    if (logger.get() == nullptr)
-    {
-        logger = spdlog::stderr_color_mt({});
-    }
 
+    std::shared_ptr<spdlog::sinks::sink> consoleSink = std::make_shared<spdlog::sinks::stderr_color_sink_st>();
+    consoleSink->set_level((logToConsole || !fileSink) ? spdlog::level::debug : spdlog::level::warn);
+
+    auto logger = std::make_shared<spdlog::logger>(std::string(), spdlog::sinks_init_list{fileSink, consoleSink});
     spdlog::set_default_logger(logger);
     spdlog::flush_on(spdlog::level::info);
     spdlog::set_level(spdlog::level::debug);
