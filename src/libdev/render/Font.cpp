@@ -10,6 +10,8 @@
 
 #include <GL/glew.h>
 
+#include "spdlog/spdlog.h"
+
 // FONTS
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -21,7 +23,7 @@ namespace Render
 constexpr int MAXWIDTH = 1024;
 
 /* Create texture atlasses for font sizes */
-void FontImpl::prepareTexture()
+bool FontImpl::prepareTexture()
 {
     FT_Library ft;
     FT_Face face;
@@ -29,9 +31,8 @@ void FontImpl::prepareTexture()
     FT_Error result = FT_Init_FreeType(&ft);
     if (result)
     {
-        std::cerr << "Could not init freetype library!"
-                  << " FT_Error: " << result << std::endl;
-        return;
+        spdlog::critical("Could not init freetype library! FT_Error: {}", result);
+        return false;
     }
 
     /* Load a font */
@@ -39,9 +40,8 @@ void FontImpl::prepareTexture()
     result = FT_New_Face(ft, fontFile.pathname().c_str(), 0, &face);
     if (result)
     {
-        std::cerr << "Could not open font " << fontFile << "."
-                  << " FT_Error: " << result << std::endl;
-        return;
+        spdlog::critical("Could not open font {}. FT_Error: {}", fontFile.pathname(), result);
+        return false;
     }
 
     FT_Set_Pixel_Sizes(face, 0, pixelSize);
@@ -149,6 +149,8 @@ void FontImpl::prepareTexture()
         ox += g->bitmap.width + 1;
     }
     _DELETE_ARRAY(rgbaBitmap);
+
+    return true;
 }
 
 static std::vector<Font> s_fonts;
@@ -211,8 +213,17 @@ const Render::Font* Font::getFont(const std::string& fontName, int pixelSize)
 
     if (it == s_fonts.cend())
     {
-        s_fonts.emplace_back(Font(fontName, pixelSize));
-        return &s_fonts.back();
+        Font newFont(fontName, pixelSize);
+        if (newFont.isValid())
+        {
+            s_fonts.emplace_back(std::move(newFont));
+            return &s_fonts.back();
+        }
+        else
+        {
+            spdlog::critical("Unavailable font is a fatal error. Aborting.");
+            exit(1);
+        }
     }
     else
     {

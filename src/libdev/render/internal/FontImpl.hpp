@@ -17,7 +17,7 @@ public:
 
     static const FontImpl* get(const Font* parent);
 
-    void prepareTexture();
+    bool prepareTexture();
 
     int pixelSize = 0;
 
