@@ -67,6 +67,8 @@
 
 #include "spdlog/spdlog.h"
 
+#include <algorithm>
+
 #include <SDL.h>
 #include <GL/glew.h>
 
@@ -140,6 +142,7 @@ bool RenDevice::initialize()
     gl2DUniformID_ = glGetUniformLocation(glProgramID_GIU2D_, "uTextureSampler");
 
     glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
+
     // Get a handle for our "MVP" uniform
     glModelMatrixID_ = glGetUniformLocation(glProgramID_Standard_, "uM");
     glViewMatrixID_ = glGetUniformLocation(glProgramID_Standard_, "uV");
@@ -156,6 +159,11 @@ bool RenDevice::initialize()
     glTextureSamplerID_ = glGetUniformLocation(glProgramID_Standard_, "uTextureSampler2");
 
     glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
+
+    const auto programIDs = {glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_};
+    if (std::ranges::any_of(programIDs, [](GLuint value) { return value == 0; }))
+        return false;
+
     // VBO
     glGenBuffers(1, &glVertexDataBufferBillboardID_);
     glGenBuffers(1, &glElementBufferBillboardID_);
@@ -343,18 +351,20 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
         return shaderCode;
     };
 
-    const std::string vertexShaderCode = getShaderCode(shadersDir + vertexShaderPath);
+    const std::string vertexShaderFile = shadersDir + vertexShaderPath;
+    const std::string vertexShaderCode = getShaderCode(vertexShaderFile);
     if (vertexShaderCode.empty())
     {
-        spdlog::error("Unable to read the vertex shader file");
+        spdlog::error("Unable to read the vertex shader file {}", vertexShaderFile);
         return 0;
     }
 
     // Read the Fragment Shader code from the file
-    std::string fragmentShaderCode = getShaderCode(shadersDir + fragmentShaderPath);
+    const std::string fragmentShaderFile = shadersDir + fragmentShaderPath;
+    const std::string fragmentShaderCode = getShaderCode(fragmentShaderFile);
     if (fragmentShaderCode.empty())
     {
-        spdlog::error("Unable to read the fragment shader file");
+        spdlog::error("Unable to read the fragment shader file {}", fragmentShaderFile);
         return 0;
     }
 
