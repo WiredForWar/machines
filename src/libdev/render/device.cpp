@@ -2235,7 +2235,7 @@ void RenDevice::renderPrimitive(
 
     // Bind our texture in Texture Unit 0
     glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().empty())
+    if (mat.texture().isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
     else
         glBindTexture(GL_TEXTURE_2D, mat.texture().handle());
@@ -2334,7 +2334,7 @@ void RenDevice::renderIndexed(
 
     // Bind our texture in Texture Unit 0
     glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().empty())
+    if (mat.texture().isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
     else
         glBindTexture(GL_TEXTURE_2D, mat.texture().handle());
@@ -2423,7 +2423,7 @@ void RenDevice::renderIndexedScreenspace(
     glUseProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0
     glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().empty())
+    if (mat.texture().isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
     else
         glBindTexture(GL_TEXTURE_2D, mat.texture().handle());

@@ -591,10 +591,10 @@ void MachContinentMap::updateMapBackground2()
 void MachContinentMap::updateMapFrameOne(size_t loop)
 {
     PRE(! pInGameScreen_->inFirstPerson());
-    PRE(! oreImage().empty());
-    PRE(! debrisImage().empty());
-    PRE(! artifactImage().empty());
-    PRE(! mapFrameOne_.empty());
+    PRE(! oreImage().isEmpty());
+    PRE(! debrisImage().isEmpty());
+    PRE(! artifactImage().isEmpty());
+    PRE(! mapFrameOne_.isEmpty());
 
     // Prepare actor for drawing on second frame
     if (actorPositions_[loop].actorState_ & ATTACKED)

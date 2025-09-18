@@ -79,7 +79,7 @@ void RenIDelayedAlphaGroup::render()
         // RENDER_STREAM("  Set zBias=" << zBias << "\n");
     }
 
-    if (!material_.usesBilinear() && !material_.texture().empty()) // This fixes issue with gun barrels rendering
+    if (!material_.usesBilinear() && !material_.texture().isEmpty()) // This fixes issue with gun barrels rendering
     {
         glDepthMask(GL_TRUE);
         group_->render(vertices_, material_);

@@ -140,8 +140,8 @@ void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int d
 {
     PRE_INFO(*this);
     PRE(!readOnly());
-    PRE(!empty());
-    PRE(!source.empty());
+    PRE(!isEmpty());
+    PRE(!source.isEmpty());
 
     RENDER_STREAM("Simple blit before clipping:\n");
     RENDER_STREAM("  from " << srcArea << " of " << source << "\n");
@@ -222,8 +222,8 @@ void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int d
 void RenSurface::simpleBlit(const RenSurface& source, int destX, int destY)
 {
     PRE(!readOnly());
-    PRE(!empty());
-    PRE(!source.empty());
+    PRE(!isEmpty());
+    PRE(!source.isEmpty());
 
     RENDER_STREAM("Simple blit before clipping:\n");
     RENDER_STREAM("  from all of " << source << "\n");
@@ -981,7 +981,7 @@ void RenSurface::textDimensions(const std::string& text, Ren::Rect* dimensions) 
 }
 
 //-----------------------------Simple properties & delegations-----------------------
-bool RenSurface::empty() const
+bool RenSurface::isEmpty() const
 {
     return width() == 0 || height() == 0;
 }

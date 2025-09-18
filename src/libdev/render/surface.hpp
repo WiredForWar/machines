@@ -178,7 +178,7 @@ public:
     size_t width() const;
     size_t height() const;
     Size size() const;
-    bool empty() const; // i.e., width() == 0 || height() == 0
+    bool isEmpty() const; // i.e., width() == 0 || height() == 0
 
     // Allows a body to get a handle corresponding to itself.
     // PRE(body);
