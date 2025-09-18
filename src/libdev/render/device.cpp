@@ -933,6 +933,24 @@ void RenDevice::commonEndFrame()
     RENDER_STREAM("  RenDevice::endFrame() text done at " << now2 << "(ms)\n");
 }
 
+void RenDevice::bindTexture(const RenISurfBody *surf)
+{
+    glActiveTexture(GL_TEXTURE0);
+    if (surf->isEmpty())
+        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
+    else
+        glBindTexture(GL_TEXTURE_2D, surf->handle());
+}
+
+void RenDevice::bindTexture(const RenSurface& surf, uint textureUnit)
+{
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    if (surf.isEmpty())
+        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
+    else
+        glBindTexture(GL_TEXTURE_2D, surf.handle());
+}
+
 void RenDevice::syncSmoothFilters()
 {
     if (pImpl_->smoothScaleEnabled_)
@@ -2152,12 +2170,7 @@ void RenDevice::renderSurface(
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STATIC_DRAW);
 
     // Bind texture
-    glActiveTexture(GL_TEXTURE0);
-    if (surf->isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, surf->handle());
-
+    bindTexture(surf);
     syncSmoothFilters();
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
@@ -2234,14 +2247,11 @@ void RenDevice::renderPrimitive(
     // glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
     // Bind our texture in Texture Unit 0
-    glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, mat.texture().handle());
+    static const int TextureUnit = 0;
+    bindTexture(mat.texture(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, 0);
+    glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
@@ -2333,13 +2343,11 @@ void RenDevice::renderIndexed(
     glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);*/
 
     // Bind our texture in Texture Unit 0
-    glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, mat.texture().handle());
+    static const int TextureUnit = 0;
+    bindTexture(mat.texture(), TextureUnit);
+
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, 0);
+    glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
@@ -2422,15 +2430,13 @@ void RenDevice::renderIndexedScreenspace(
 
     glUseProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0
-    glActiveTexture(GL_TEXTURE0);
-    if (mat.texture().isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, mat.texture().handle());
+    static const int TextureUnit = 0;
+    bindTexture(mat.texture(), TextureUnit);
 
     glUniformMatrix4fv(glViewProjMatrix_BillboardID_, 1, GL_FALSE, &(*pImpl_->projViewMatrix_)[0][0]);
+
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerBillboardID_, 0);
+    glUniform1i(glTextureSamplerBillboardID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);

@@ -356,6 +356,8 @@ private:
     void addInterference();
     void commonEndFrame();
 
+    void bindTexture(const RenISurfBody* surf);
+    void bindTexture(const RenSurface& surf, uint textureUnit);
     void syncSmoothFilters();
 
     friend class Filter;
