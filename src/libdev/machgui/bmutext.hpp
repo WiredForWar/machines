@@ -59,7 +59,7 @@ public:
     MachGuiBmuButton(
         GuiDisplayable* pParent,
         const Gui::Coord& rel,
-        const SysPathName& bitmap,
+        const GuiBitmap& bitmap,
         MachGuiBmuText* pBmuText,
         MachContinentMap* pContinentMap,
         MachInGameScreen* pInGameScreen);

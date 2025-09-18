@@ -53,7 +53,7 @@ public:
     MachGuiSelectInsideBuildingIcon(
         GuiDisplayable* pParent,
         Gui::Coord rel,
-        const SysPathNames& bitmap,
+        const GuiBitmap& bitmap,
         MachInGameScreen* pInGameScreen)
         : GuiIcon(pParent, rel, bitmap)
         , pConstruction_(nullptr)
@@ -133,7 +133,7 @@ public:
     MachGuiInHeadIcon(
         GuiDisplayable* pParent,
         Gui::Coord rel,
-        const SysPathNames& bitmap,
+        const GuiBitmap& bitmap,
         MachInGameScreen* pInGameScreen)
         : GuiIcon(pParent, rel, bitmap)
         , pMachine_(nullptr)
@@ -514,16 +514,12 @@ MachGuiCorralSingleIcon::MachGuiCorralSingleIcon(
     pSelectInsideBuildingIcon_ = new MachGuiSelectInsideBuildingIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
-        SysPathNames(
-            MachGui::getScaledImagePath("gui/misc/contents.bmp"),
-            MachGui::getScaledImagePath("gui/misc/contents.bmp")),
+        MachGui::getScaledImage("gui/misc/contents.bmp"),
         pInGameScreen_);
     pInHeadIcon_ = new MachGuiInHeadIcon(
         this,
         Gui::Coord(MachGuiCorralResource::buttonWidth() + MachGuiCorralSingleIconInfo::reqWidth(), 0),
-        SysPathNames(
-            MachGui::getScaledImagePath("gui/misc/red/inhead.bmp"),
-            MachGui::getScaledImagePath("gui/misc/red/inhead.bmp")),
+        MachGui::getScaledImage("gui/misc/red/inhead.bmp"),
         pInGameScreen_);
 }
 

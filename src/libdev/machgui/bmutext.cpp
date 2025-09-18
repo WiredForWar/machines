@@ -107,7 +107,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiBmuText& t)
 MachGuiBmuButton::MachGuiBmuButton(
     GuiDisplayable* pParent,
     const Gui::Coord& rel,
-    const SysPathName& bitmap,
+    const GuiBitmap& bitmap,
     MachGuiBmuText* pBmuText,
     MachContinentMap* pContinentMap,
     MachInGameScreen* pInGameScreen)
@@ -120,7 +120,7 @@ MachGuiBmuButton::MachGuiBmuButton(
             Gui::Colour(232.0 / 255.0, 232.0 / 255.0, 232.0 / 255.0),
             Gui::Colour(62.0 / 255.0, 62.0 / 255.0, 62.0 / 255.0),
             Gui::RED()),
-        Gui::bitmap(bitmap),
+        bitmap,
         Gui::Coord(1, 1))
     , pBmuText_(pBmuText)
     , pContinentMap_(pContinentMap)
