@@ -28,7 +28,7 @@ class RenIMatBody
 {
 public:
     virtual ~RenIMatBody();
-    bool operator==(const RenIMatBody&);
+    bool operator==(const RenIMatBody&) const;
 
     // Appearance properties.
     // For a description of material properties, see RenMaterial.

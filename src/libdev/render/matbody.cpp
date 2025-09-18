@@ -101,7 +101,7 @@ void RenIMatBody::updateTransparent()
     transparent_ = matTransparent && (alpha || stipple);
 }
 
-bool RenIMatBody::operator==(const RenIMatBody& rhs)
+bool RenIMatBody::operator==(const RenIMatBody& rhs) const
 {
     // This fn. compares the values of the attributes of a material for
     // equivalence.  It is not appropriate to compare these attributes:

@@ -80,7 +80,7 @@ RenIMatBody* RenIMatManager::defaultBody()
 // This is a linear search.  If too much time is being spent searching for
 // material bodies, the performance may need to be improved.  One possiblity
 // is to sort the vector and use a binary search.
-RenIMatManager::Bodies::iterator findSharableBody(RenIMatManager::Bodies* vec, RenIMatBody* body)
+RenIMatManager::Bodies::iterator findSharableBody(RenIMatManager::Bodies* vec, const RenIMatBody* body)
 {
     // It doesn't make sense to search for a copy of a non-sharable body.
     PRE(vec && body);
@@ -89,7 +89,7 @@ RenIMatManager::Bodies::iterator findSharableBody(RenIMatManager::Bodies* vec, R
     RenIMatManager::Bodies::iterator it = vec->begin();
     while (it != vec->end())
     {
-        RenIMatBody* ptr = *it;
+        const RenIMatBody* ptr = *it;
 
         // Don't include non-sharable bodies in the search.
         if (ptr && ptr->sharable() && (ptr == body || *ptr == *body))
