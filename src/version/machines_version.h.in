@@ -1,0 +1,10 @@
+#ifndef machines_version_h
+#define machines_version_h
+
+#define Machines_VERSION_MAJOR @Machines_VERSION_MAJOR@
+#define Machines_VERSION_MINOR @Machines_VERSION_MINOR@
+#define Machines_VERSION_PATCH @Machines_VERSION_PATCH@
+#define Machines_VERSION "@Machines_VERSION@"
+#define Machines_COMMIT_INFO "@Machines_COMMIT_INFO@"
+
+#endif // machines_version_h
