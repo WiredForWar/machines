@@ -107,7 +107,7 @@ if(PLATFORM_WINDOWS)
   set(MACHINES_SOURCES
       ${MACHINES_SOURCES}
       # Exe icon and meta info
-      ${PROJECT_SOURCE_DIR}/windows/resource.rc
+      ${PROJECT_SOURCE_DIR}/windows/machines.rc
   )
   set(PLANETED_SOURCES
       ${PLANETED_SOURCES}
