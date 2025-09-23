@@ -10,21 +10,12 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 include(CMakeDependentOption)
 include(Utils)
 
-if (NOT BUILD_VERSION)
-    find_package(Git QUIET)
-    if(GIT_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
-        execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
-            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-            OUTPUT_VARIABLE BUILD_VERSION
-            ERROR_QUIET
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-    else()
-        set(BUILD_VERSION "unknown")
-    endif()
+if(NOT DEFINED Machines_COMMIT_INFO)
+    git_get_commit(Machines_COMMIT_INFO)
 endif()
 
-message(STATUS "Building Machines ${Machines_VERSION} (${BUILD_VERSION})")
+message(STATUS "Building Machines ${Machines_VERSION} (commit: ${Machines_COMMIT_INFO})")
+
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 
 set(CMAKE_CXX_STANDARD 20)

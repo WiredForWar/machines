@@ -65,3 +65,32 @@ macro(find_optional_dependency)
     unset(OPTION_NAME)
     unset(OUTPUT_VAR)
 endmacro()
+
+# Usage:
+# git_get_commit(APP_COMMIT_INFO
+#     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+# )
+function(git_get_commit)
+    # Parse arguments
+    set(options)
+    set(oneValueArgs WORKING_DIRECTORY)
+    set(multiValueArgs)
+    cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    set(ARGS_OUTPUT ${ARGV0})
+    if (NOT ARGS_WORKING_DIRECTORY)
+        set(ARGS_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    endif()
+
+    find_package(Git QUIET)
+
+    set(COMMIT_INFO "unknown")
+    if(GIT_FOUND AND EXISTS "${ARGS_WORKING_DIRECTORY}/.git")
+        execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags
+            WORKING_DIRECTORY "${ARGS_WORKING_DIRECTORY}"
+            OUTPUT_VARIABLE COMMIT_INFO
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    endif()
+    set(${ARGS_OUTPUT} "${COMMIT_INFO}" PARENT_SCOPE)
+endfunction()
