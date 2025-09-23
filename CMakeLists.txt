@@ -1,18 +1,14 @@
-##
-# Main CMake project file
-# Contains global options and definitions
-##
-
 cmake_minimum_required(VERSION 3.19)
 
 project(Machines
     VERSION 1.7.2
     LANGUAGES C CXX
 )
-include(CMakeDependentOption)
 
-message(STATUS "Building Machines ${Machines_VERSION}")
-message(STATUS "CMake version: ${CMAKE_VERSION}")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
+include(CMakeDependentOption)
+include(Utils)
 
 if (NOT BUILD_VERSION)
     find_package(Git QUIET)
@@ -27,6 +23,9 @@ if (NOT BUILD_VERSION)
         set(BUILD_VERSION "unknown")
     endif()
 endif()
+
+message(STATUS "Building Machines ${Machines_VERSION} (${BUILD_VERSION})")
+message(STATUS "CMake version: ${CMAKE_VERSION}")
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -73,13 +72,9 @@ endif()
 ##
 # Build options
 ##
-# Include cmake directory with some additional scripts
-set(CMAKE_MODULE_PATH "${Machines_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
 # Build targets should be placed in the root build directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
-include(Utils)
 include(DefaultOptions)
 
 # Options for optional libs

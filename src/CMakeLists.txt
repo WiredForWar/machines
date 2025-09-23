@@ -7,9 +7,6 @@ set(GAME_COMPONENT_LIB_TYPE STATIC)
 
 configure_file("projects/MachinesVersion.cpp.in" "projects/MachinesVersion.cpp")
 
-# Source files
-# GLOB is sometimes considered anti pattern but watever
-
 set(MACHINES_SOURCES
     projects/machines/machines_main.cpp
 
