@@ -55,7 +55,7 @@ if(GLEW_FOUND)
         add_library(GLEW::GLEW INTERFACE IMPORTED)
         set_target_properties(GLEW::GLEW PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES
-                "${GLEW_GLEW_INCLUDE_DIRS}"
+                "${GLEW_INCLUDE_PATH}"
             INTERFACE_LINK_LIBRARIES
                 "${GLEW_LIBRARY}"
         )
