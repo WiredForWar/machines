@@ -399,10 +399,12 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
     nextId();
 
     // Invoke a functor for each triangle groups and all the line groups.
-    GroupRenderFunctor<RenIMaterialGroup> rg1(*vertices_, glWorld);
-    std::for_each(triangles_.begin(), triangles_.end(), rg1);
-    std::for_each(lines_.begin(), lines_.end(), rg1);
-
+    if (vertices_)
+    {
+        GroupRenderFunctor<RenIMaterialGroup> rg1(*vertices_, glWorld);
+        std::for_each(triangles_.begin(), triangles_.end(), rg1);
+        std::for_each(lines_.begin(), lines_.end(), rg1);
+    }
     if (ttfs_.size() > 0)
     {
         glm::mat4 m = devImpl->projViewMatrix() * glWorld;
@@ -453,9 +455,12 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
 
     // Render all the distinct triangle groups and all the line groups.
     RenMaterialVec::const_iterator matIt = mats->begin();
-    GroupRenderFunctorMatOverride<RenIMaterialGroup> rg1(*vertices_, glWorld, matIt);
-    std::for_each(triangles_.begin(), triangles_.end(), rg1);
-    std::for_each(lines_.begin(), lines_.end(), rg1);
+    if (vertices_)
+    {
+        GroupRenderFunctorMatOverride<RenIMaterialGroup> rg1(*vertices_, glWorld, matIt);
+        std::for_each(triangles_.begin(), triangles_.end(), rg1);
+        std::for_each(lines_.begin(), lines_.end(), rg1);
+    }
 
     if (ttfs_.size() > 0)
     {
@@ -512,9 +517,12 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
     nextId();
 
     // Render all the distinct triangle groups and all the line groups.
-    GroupRenderFunctor<RenIMaterialGroup> rg1(*uvAnimated_, glWorld);
-    std::for_each(triangles_.begin(), triangles_.end(), rg1);
-    std::for_each(lines_.begin(), lines_.end(), rg1);
+    if (uvAnimated_)
+    {
+        GroupRenderFunctor<RenIMaterialGroup> rg1(*uvAnimated_, glWorld);
+        std::for_each(triangles_.begin(), triangles_.end(), rg1);
+        std::for_each(lines_.begin(), lines_.end(), rg1);
+    }
 
     if (ttfs_.size() > 0)
     {
@@ -577,9 +585,12 @@ void RenMesh::render(
 
     // Render all the distinct triangle groups and all the line groups.
     RenMaterialVec::const_iterator matIt = mats->begin();
-    GroupRenderFunctorMatOverride<RenIMaterialGroup> rg1(*uvAnimated_, glWorld, matIt);
-    std::for_each(triangles_.begin(), triangles_.end(), rg1);
-    std::for_each(lines_.begin(), lines_.end(), rg1);
+    if(uvAnimated_)
+    {
+        GroupRenderFunctorMatOverride<RenIMaterialGroup> rg1(*uvAnimated_, glWorld, matIt);
+        std::for_each(triangles_.begin(), triangles_.end(), rg1);
+        std::for_each(lines_.begin(), lines_.end(), rg1);
+    }
 
     if (ttfs_.size() > 0)
     {
