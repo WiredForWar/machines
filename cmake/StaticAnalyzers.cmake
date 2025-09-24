@@ -54,6 +54,7 @@ macro(enable_clang_tidy target WARNINGS_AS_ERRORS)
       clang-tidy-15
       clang-tidy
   )
+  mark_as_advanced(CLANG_TIDY)
   if(CLANG_TIDY)
     if(NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
       get_target_property(TARGET_PCH ${target} INTERFACE_PRECOMPILE_HEADERS)

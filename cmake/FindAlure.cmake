@@ -28,13 +28,14 @@ find_path(ALURE_INCLUDE_DIR
       /opt/local/include
       /sw/include
   )
+mark_as_advanced(ALURE_INCLUDE_DIR)
 
 IF (NOT ALURE_MIN_VERSION)
   SET(ALURE_MIN_VERSION "1.1")
 ENDIF()
 
 if(ALURE_INCLUDE_DIR)
-    file(STRINGS ${ALURE_INCLUDE_DIR}/alure.h VERSION_LINE
+    file(STRINGS "${ALURE_INCLUDE_DIR}/alure.h" VERSION_LINE
         LIMIT_COUNT 1
         REGEX "^#define ALURE_VERSION_STRING "
     )
@@ -51,6 +52,7 @@ endif()
       /sw
     PATH_SUFFIXES lib32 lib
   )
+  mark_as_advanced(ALURE_LIBRARY)
 
   set(ALURE_INCLUDE_DIRS
       ${ALURE_INCLUDE_DIR}

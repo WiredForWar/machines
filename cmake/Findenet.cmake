@@ -21,6 +21,7 @@ find_path(ENET_INCLUDE_DIRS enet/enet.h
     /usr
     PATH_SUFFIXES include
 )
+mark_as_advanced(ENET_INCLUDE_DIRS)
 
 find_library(ENET_LIBRARY
     NAMES
@@ -33,6 +34,7 @@ find_library(ENET_LIBRARY
         lib
         lib/static
 )
+mark_as_advanced(ENET_LIBRARY)
 
 # handle the QUIETLY and REQUIRED arguments and set ENET_FOUND to TRUE if
 # all listed variables are TRUE
