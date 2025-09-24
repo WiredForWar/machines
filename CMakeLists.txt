@@ -66,8 +66,6 @@ endif()
 # Build targets should be placed in the root build directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
-include(DefaultOptions)
-
 # Options for optional libs
 option_on_off_auto(BUILD_WITH_SWSCALE "Build with SWScale support" "Auto")
 option_on_off_auto(BUILD_WITH_ALURE "Build with Alure support" "Auto")
@@ -78,7 +76,7 @@ option(BUILD_32 "Builds 32 bit executable" OFF)
 
 # Asserts can be enabled/disabled regardless of build type
 option(DEV_BUILD "Enable assert()s and other debug checks" OFF)
-option(USE_STANDALONE_LAYOUT "Install the executable and data into the same dir" ${DEFAULT_USE_STANDALONE_LAYOUT})
+option(USE_STANDALONE_LAYOUT "Install the executable and data into the same dir" ON)
 
 set(WARNINGS_AS_ERRORS FALSE)
 option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
