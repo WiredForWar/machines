@@ -78,6 +78,19 @@ W4dEntityPlan::PlanState FindPlan(
                 if (n > nRepetitions)
                     n = nRepetitions;
                 timeOffset -= n * duration;
+                if (timeOffset < 0)
+                {
+                    // The time can get a negative (very close to zero) value due
+                    // to floating point rounding error. Fix it up in that case.
+
+                    // On practice we get e.g.:
+                    //     timeOffset = 61.1999999
+                    //     n = 17
+                    //     duration = 3.600000
+                    // leading to timeOffset = 61.1999999 - 17*3.6 = -0.0000001
+                    // which triggers an assert later on.
+                    timeOffset = 0;
+                }
             }
         }
 
