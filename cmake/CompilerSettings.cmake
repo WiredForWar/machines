@@ -46,7 +46,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         message(WARNING "${PROJECT_NAME} will be built for compiler default target architecture.")
     endif()
 
-    set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall -Wold-style-cast -Wmissing-declarations")
+    set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall -Wmissing-declarations")
     set(NORMAL_C_FLAGS " ${MACHINES_COMPILER_BIT_MODE} -Wall")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
 
