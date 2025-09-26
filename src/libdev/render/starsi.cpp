@@ -39,7 +39,6 @@ static const MexRadians FUDGE_FACTOR = Mathex::PI / 24;
 static glm::mat4 starsXform((1), 0.0, 0.0, 0.0, 0.0, (1), 0.0, 0.0, 0.0, 0.0, (1), 0.0, 0.0, 0.0, 0.0, (1));
 
 RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radius, uint nStars)
-
     : configuration_(config)
     , nStars_(nStars)
     , radius_(radius)
