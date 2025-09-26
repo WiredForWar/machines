@@ -19,13 +19,10 @@
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
 
-struct MachGuiInternetNetworkModeImpl
+class MachGuiInternetNetworkModeImpl
 {
-    MachGuiInternetNetworkModeImpl()
-        : pIPAddressEntryBox_(nullptr)
-    {
-    }
-    MachGuiSingleLineEditBox* pIPAddressEntryBox_;
+public:
+    MachGuiSingleLineEditBox* pIPAddressEntryBox_{};
 };
 
 #define INM_MINX 62

@@ -15,8 +15,9 @@
 #include "machlog/machine.hpp"
 #include "machlog/races.hpp"
 
-struct MachLogDatabaseHandlerImpl
+class MachLogDatabaseHandlerImpl
 {
+public:
     using Strings = ctl_vector<std::string>;
     Strings setFlags_;
 

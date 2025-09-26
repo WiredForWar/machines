@@ -35,7 +35,7 @@ class MexPoint3d;
 class W4dEntity;
 class MachLogRace;
 class MachLogSquadron;
-struct DesiredMachineData;
+class DesiredMachineData;
 class MachLogAIStrategicProductionUnit;
 class UtlLineTokeniser;
 class MachLogAIControllerImpl;
@@ -121,8 +121,9 @@ private:
 };
 
 // private nested class for generating production list for race as a whole
-struct DesiredMachineData
+class DesiredMachineData
 {
+public:
     MachLogProductionUnit* pProdUnit_;
     int desiredNumber_;
     int actualNumber_;

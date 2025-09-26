@@ -20,15 +20,11 @@
 #include "network/netnet.hpp"
 #include "machgui/msgbox.hpp"
 
-struct MachGuiModemNetworkModeImpl
+class MachGuiModemNetworkModeImpl
 {
-    MachGuiModemNetworkModeImpl()
-        : pModemSelector_(nullptr)
-        , pTelNoEntryBox_(nullptr)
-    {
-    }
-    MachGuiDropDownListBoxCreator* pModemSelector_;
-    MachGuiSingleLineEditBox* pTelNoEntryBox_;
+public:
+    MachGuiDropDownListBoxCreator* pModemSelector_{};
+    MachGuiSingleLineEditBox* pTelNoEntryBox_{};
 };
 
 MachGuiModemNetworkMode::MachGuiModemNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)

@@ -32,8 +32,9 @@
 PER_DEFINE_PERSISTENT(MachPhysWeaponPersistence);
 
 // a pimple for the MachPhysWeaponPersistence singlton
-struct MachPhysWeaponPersistenceImpl
+class MachPhysWeaponPersistenceImpl
 {
+public:
     MachPhysPlasmaWeapon* pPlasmaRifle_;
     MachPhysPlasmaWeapon* pPlasmaCannon1_;
     MachPhysPlasmaWeapon* pPlasmaCannon2_;

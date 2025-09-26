@@ -37,8 +37,9 @@
 PER_DEFINE_PERSISTENT(W4dEntityPlan);
 
 //////////////////////////////////////////////////////////////////////////////////////////
-struct W4dEntityPlanImpl
+class W4dEntityPlanImpl
 {
+public:
     W4dEntityPlanImpl();
     W4dEntityPlanImpl(const W4dEntityPlanImpl&);
     ~W4dEntityPlanImpl();

@@ -16,9 +16,9 @@ class RenHierarchyBuilder;
 class RenTexture;
 
 namespace XFile {
-class Scene;
-class Mesh;
-class Node;
+struct Scene;
+struct Mesh;
+struct Node;
 }; // namespace XFile
 
 // A class which uses Direct3D RM to load meshes.  Internally, it reads and

@@ -61,8 +61,9 @@
 PER_DEFINE_PERSISTENT(MachPhysOtherPersistence);
 
 // a pimple for the MachPhysOtherPersistence singlton
-struct MachPhysOtherPersistenceImpl
+class MachPhysOtherPersistenceImpl
 {
+public:
     MachPhysPulseBlob* pPulseRifle_;
     MachPhysPulseBlob* pPulseCannon_;
 

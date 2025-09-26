@@ -29,8 +29,8 @@ class IDirect3DRMMeshBuilder;
 class MexTransform3d;
 class GXMesh;
 namespace XFile {
-class Scene;
-class Mesh;
+struct Scene;
+struct Mesh;
 }; // namespace XFile
 
 class RenDevice;

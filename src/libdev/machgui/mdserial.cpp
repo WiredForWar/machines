@@ -17,21 +17,14 @@
 #include "network/netnet.hpp"
 #include "network/comport.hpp"
 
-struct MachGuiSerialNetworkModeImpl
+class MachGuiSerialNetworkModeImpl
 {
-    MachGuiSerialNetworkModeImpl()
-        : pComPortSelecter_(nullptr)
-        , pBaudRateSelecter_(nullptr)
-        , pParitySelecter_(nullptr)
-        , pStopBitsSelecter_(nullptr)
-        , pFlowSelecter_(nullptr)
-    {
-    }
-    MachGuiDropDownListBoxCreator* pComPortSelecter_;
-    MachGuiDropDownListBoxCreator* pBaudRateSelecter_;
-    MachGuiDropDownListBoxCreator* pParitySelecter_;
-    MachGuiDropDownListBoxCreator* pStopBitsSelecter_;
-    MachGuiDropDownListBoxCreator* pFlowSelecter_;
+public:
+    MachGuiDropDownListBoxCreator* pComPortSelecter_{};
+    MachGuiDropDownListBoxCreator* pBaudRateSelecter_{};
+    MachGuiDropDownListBoxCreator* pParitySelecter_{};
+    MachGuiDropDownListBoxCreator* pStopBitsSelecter_{};
+    MachGuiDropDownListBoxCreator* pFlowSelecter_{};
 };
 
 MachGuiSerialNetworkMode::MachGuiSerialNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
