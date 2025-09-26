@@ -216,7 +216,7 @@ struct MachPhys
         IN_AIR // hasn't hit anything, but run out of range
     };
 
-    // THese are used for building and artefact demolition
+    // These are used for building and artefact demolition
     enum ObjectType : unsigned char
     {
         CONSTRUCTION,

@@ -347,8 +347,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::objDemolishExemplar(MachPh
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::hardwareLabDemolishExemplar(MachPhys::DemolitionType type)
 {
-
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::HARDWARE_LAB);
 
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
@@ -401,8 +400,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::hardwareLabDemolishExempla
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::smelterDemolishExemplar(MachPhys::DemolitionType type)
 {
-
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::SMELTER);
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
 
@@ -436,8 +434,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::smelterDemolishExemplar(Ma
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::factoryDemolishExemplar(MachPhys::DemolitionType type)
 {
-
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::FACTORY);
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
 
@@ -498,7 +495,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::factoryDemolishExemplar(Ma
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::missileEmplacementDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::MISSILE_EMPLACEMENT);
 
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
@@ -572,7 +569,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::missileEmplacementDemolish
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::garrisonDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::GARRISON);
 
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
@@ -603,7 +600,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::garrisonDemolishExemplar(M
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::mineDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::MINE);
 
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
@@ -640,7 +637,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::mineDemolishExemplar(MachP
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::beaconDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::BEACON);
 
     MachPhysObjDemolish** ppObjectDemolish = nullptr;
@@ -677,7 +674,7 @@ const MachPhysObjDemolish& MachPhysWeaponPersistence::beaconDemolishExemplar(Mac
 
 const MachPhysObjDemolish& MachPhysWeaponPersistence::podDemolishExemplar(MachPhys::DemolitionType type)
 {
-    PRE(! type.objectType == MachPhys::NOT_CONSTRUCTION);
+    PRE(type.objectType != MachPhys::NOT_CONSTRUCTION);
     PRE(type.constructionType == MachPhys::POD);
 
     MachPhysObjDemolish** ppObjectDemolish;
