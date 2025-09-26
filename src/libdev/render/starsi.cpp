@@ -71,7 +71,10 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
         vertexInserter((*pVertexGen)());
 
     // Sort the vertices by height. The lowest at sectors_[0].
-    ctl_for_each(sectors_, RenIStarsImplSortSectorOp());
+    for (ctl_vector<RenIVertex>& sector : sectors_)
+    {
+        std::sort(sector.begin(), sector.end(), RenIStarsImplVertexHeightLesserOrEqual);
+    }
 
     // Give the vertices some random alpha values.
     ctl_for_each(sectors_, RenIStarsImplD3DLVERTEXRandomiseAlphasOp(0.3, 1.0));

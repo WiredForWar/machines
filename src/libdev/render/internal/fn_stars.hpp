@@ -45,12 +45,9 @@ class RenIStarsImplHemisphericalD3DLVERTEXGen;
 class RenIStarsImplD3DLVERTEXInserterOp;
 
 class RenIStarsImplD3DLVERTEXHeightGreaterOrEqualBinPred;
-class RenIStarsImplD3DLVERTEXHeightLesserOrEqualBinPred;
 
 class RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp;
 class RenIStarsImplD3DLVERTEXRandomiseAlphasOp;
-
-struct RenIStarsImplSortSectorOp;
 
 class RenIStarsImplVerticesColourOp;
 class RenIStarsImplVerticesColourAuxOp;
@@ -197,11 +194,10 @@ private:
 
 ////////////////////////////////////////////////////////////
 /* */
-struct RenIStarsImplD3DLVERTEXHeightLesserOrEqualBinPred
-    : public std::binary_function<const RenIVertex, const RenIVertex, bool>
+inline bool RenIStarsImplVertexHeightLesserOrEqual(const RenIVertex& lhs, const RenIVertex& rhs)
 {
-    bool operator()(const RenIVertex& lhs, const RenIVertex& rhs) const { return lhs.z <= rhs.z; }
-};
+    return lhs.z <= rhs.z;
+}
 
 struct RenIStarsImplD3DLVERTEXHeightGreaterOrEqualBinPred : public std::binary_function<RenIVertex, RenIVertex, bool>
 {
@@ -259,17 +255,6 @@ public:
 
 private:
     RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp alphaRandomiser_;
-};
-
-////////////////////////////////////////////////////////////
-
-struct RenIStarsImplSortSectorOp : public std::unary_function<ctl_vector<RenIVertex>&, void>
-{
-    void operator()(ctl_vector<RenIVertex>& sector)
-    {
-        // Sort the sector in ascending order.
-        sort(sector.begin(), sector.end(), RenIStarsImplD3DLVERTEXHeightLesserOrEqualBinPred());
-    }
 };
 
 ////////////////////////////////////////////////////////////
