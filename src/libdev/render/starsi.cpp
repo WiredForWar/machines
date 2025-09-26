@@ -153,7 +153,14 @@ void RenIStarsImpl::render(
     glEnable(GL_BLEND);
 
     // Render the vertices.
-    ctl_for_each(vertexPtrs, RenIStarsImplRenderVerticesOp(sizes.begin()));
+    static const RenMaterial emptyMat;
+    ASSERT_INFO(vertexPtrs.size());
+    ASSERT_INFO(sizes.size());
+    ASSERT(vertexPtrs.size() == sizes.size(), "Vertices count calculation went wrong");
+    for (std::size_t i = 0; i < vertexPtrs.size(); ++i)
+    {
+        RenDevice::current()->renderPrimitive(vertexPtrs[i], sizes[i], emptyMat, Ren::PrimitiveTopology::Points);
+    }
 
     // Reset the previous states.
     glDisable(GL_BLEND);

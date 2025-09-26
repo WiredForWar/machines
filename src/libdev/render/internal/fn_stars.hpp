@@ -59,8 +59,6 @@ class RenIStarsImplSectorClipBinPred;
 
 class RenIStarsImplPegStarsOp;
 
-class RenIStarsImplRenderVerticesOp;
-
 ////////////////////////////////////////////////////////////
 
 void RenIStarsImplReserveVectorsOp(ctl_vector<RenIVertex>& sector)
@@ -515,27 +513,6 @@ private:
     ctl_vector<int>* const pSizes_;
     float minHeight_;
     float maxHeight_;
-};
-
-////////////////////////////////////////////////////////////
-
-class RenIStarsImplRenderVerticesOp : public std::unary_function<RenIVertex*, void>
-{
-public:
-    RenIStarsImplRenderVerticesOp(ctl_vector<int>::iterator itSizes)
-        : itSizes_(itSizes)
-    {
-    }
-
-    void operator()(RenIVertex* pVertex)
-    {
-        static RenMaterial emptyMat = RenMaterial();
-        RenDevice::current()->renderPrimitive(pVertex, *itSizes_, emptyMat, Ren::PrimitiveTopology::Points);
-        ++itSizes_;
-    }
-
-private:
-    ctl_vector<int>::iterator itSizes_;
 };
 
 #endif /* _INTERNAL_RENDER_STARS_IMPL_FUNCTORS_HPP ********/
