@@ -1,8 +1,12 @@
 #ifndef INCLUDED_XFILETYPES_H
 #define INCLUDED_XFILETYPES_H
 
+#include <exception>
+#include <string>
+
 #define MAX_NUMBER_OF_TEXTURECOORDS 3
 #define MAX_NUMBER_OF_COLOR_SETS 3
+
 namespace XFile {
 using Matrix4x4 = union Matrix4x4
 {

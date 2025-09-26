@@ -61,14 +61,9 @@ struct Face
 struct TexEntry
 {
     std::string mName;
-    bool mIsNormalMap; // true if the texname was specified in a NormalmapFilename tag
+    bool mIsNormalMap{}; // true if the texname was specified in a NormalmapFilename tag
 
-    TexEntry()
-        : mName()
-        , mIsNormalMap(false)
-    {
-        // empty
-    }
+    TexEntry() = default;
     TexEntry(const std::string& pName, bool pIsNormalMap = false)
         : mName(pName)
         , mIsNormalMap(pIsNormalMap)
@@ -81,21 +76,13 @@ struct TexEntry
 struct Material
 {
     std::string mName;
-    bool mIsReference; // if true, mName holds a name by which the actual material can be found in the material list
+    bool mIsReference{}; // if true, mName holds a name by which the actual material can be found in the material list
     XFile::Color4D mDiffuse;
-    float mSpecularExponent;
+    float mSpecularExponent{};
     XFile::Color3D mSpecular;
     XFile::Color3D mEmissive;
     std::vector<TexEntry> mTextures;
-    size_t sceneIndex; ///< the index under which it was stored in the scene's material list
-
-    Material()
-        : mIsReference(false)
-        , mSpecularExponent()
-        , sceneIndex(SIZE_MAX)
-    {
-        // empty
-    }
+    size_t sceneIndex{SIZE_MAX}; ///< the index under which it was stored in the scene's material list
 };
 
 /** Helper structure to represent a bone weight */
@@ -121,58 +108,30 @@ struct Mesh
     std::vector<Face> mPosFaces;
     std::vector<XFile::Vector3D> mNormals;
     std::vector<Face> mNormFaces;
-    unsigned int mNumTextures;
-    std::vector<XFile::Vector2D> mTexCoords[MAX_NUMBER_OF_TEXTURECOORDS];
-    unsigned int mNumColorSets;
-    std::vector<XFile::Color4D> mColors[MAX_NUMBER_OF_COLOR_SETS];
+    unsigned int mNumTextures{};
+    std::vector<XFile::Vector2D> mTexCoords[MAX_NUMBER_OF_TEXTURECOORDS]{};
+    unsigned int mNumColorSets{};
+    std::vector<XFile::Color4D> mColors[MAX_NUMBER_OF_COLOR_SETS]{};
 
     std::vector<unsigned int> mFaceMaterials;
     std::vector<Material> mMaterials;
 
     std::vector<Bone> mBones;
-
-    explicit Mesh(const std::string& pName = "")
-        : mName(pName)
-        , mPositions()
-        , mPosFaces()
-        , mNormals()
-        , mNormFaces()
-        , mNumTextures(0)
-        , mTexCoords {}
-        , mNumColorSets(0)
-        , mColors {}
-        , mFaceMaterials()
-        , mMaterials()
-        , mBones()
-    {
-        // empty
-    }
 };
 
 /** Helper structure to represent a XFile frame */
 struct Node
 {
     std::string mName;
-    XFile::Matrix4x4 mTrafoMatrix;
-    Node* mParent;
+    XFile::Matrix4x4 mTrafoMatrix{};
+    Node* mParent{};
     std::vector<Node*> mChildren;
     std::vector<Mesh*> mMeshes;
 
-    Node()
-        : mName()
-        , mTrafoMatrix()
-        , mParent(nullptr)
-        , mChildren()
-        , mMeshes()
-    {
-        // empty
-    }
+    Node() = default;
+
     explicit Node(Node* pParent)
-        : mName()
-        , mTrafoMatrix()
-        , mParent(pParent)
-        , mChildren()
-        , mMeshes()
+        : mParent(pParent)
     {
         // empty
     }
@@ -192,8 +151,8 @@ struct Node
 
 struct MatrixKey
 {
-    double mTime;
-    XFile::Matrix4x4 mMatrix;
+    double mTime{};
+    XFile::Matrix4x4 mMatrix{};
 };
 
 /** Helper structure representing a single animated bone in a XFile */
@@ -222,26 +181,20 @@ struct Animation
 /** Helper structure analogue to aiScene */
 struct Scene
 {
-    Node* mRootNode;
+    Node* mRootNode{};
 
     std::vector<Mesh*> mGlobalMeshes; // global meshes found outside of any frames
     std::vector<Material*> mGlobalMaterials; // global materials found outside of any meshes.
 
     std::vector<Animation*> mAnims;
-    unsigned int mAnimTicksPerSecond;
+    unsigned int mAnimTicksPerSecond{};
 
-    Scene()
-        : mRootNode(nullptr)
-        , mGlobalMeshes()
-        , mGlobalMaterials()
-        , mAnimTicksPerSecond(0)
-    {
-        // empty
-    }
+    Scene() = default;
     ~Scene()
     {
         delete mRootNode;
         mRootNode = nullptr;
+
         for (unsigned int a = 0; a < mGlobalMeshes.size(); ++a)
         {
             delete mGlobalMeshes[a];
