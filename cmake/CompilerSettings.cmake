@@ -27,6 +27,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-type")
+elseif(MSVC)
+  # similar to -Werror=return-type
+  # https://learn.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-1-c4715?view=msvc-170
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /we4715")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -63,9 +67,15 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(RELEASE_CXX_FLAGS "-O2")
     set(DEBUG_CXX_FLAGS "-g -O0")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(NORMAL_CXX_FLAGS "/wd\"4244\" /wd\"4309\" /wd\"4800\" /wd\"4996\" /wd\"4351\" /EHsc") # disable some useless warnings
+    set(NORMAL_CXX_FLAGS "/wd4244 /wd4309 /wd4800 /wd4996 /wd4351 /EHsc") # disable some useless warnings
     set(RELEASE_CXX_FLAGS "/MD")
     set(DEBUG_CXX_FLAGS "/MDd /ZI")
+
+    if (CMAKE_CXX_STANDARD GREATER_EQUAL 11)
+        # Ensure __cplusplus is correct, otherwise it defaults to 199711L which isn't true
+        # https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-160
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+    endif()
 
     # Needed for Debug information (it's set to "No" by default for some reason)
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
