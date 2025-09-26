@@ -56,10 +56,12 @@ public:
     const RenColour& colourFilter() const;
 
 private:
-    MexTransform3d transform_;
-    double hither_, yon_, angle_;
-    double tanHalfAngle_; // Caches the tan of 0.5*vertical FOV angle
-    RenColour colourFilter_;
+    MexTransform3d transform_{};
+    double hither_{};
+    double yon_{};
+    double angle_{};
+    double tanHalfAngle_{}; // Caches the tan of 0.5*vertical FOV angle
+    RenColour colourFilter_{};
 
     // Operations deliberately revoked.
     RenCamera(const RenCamera&);

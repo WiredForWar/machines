@@ -8,15 +8,12 @@
 RenCamera::RenCamera()
     : hither_(1)
     , yon_(500)
-    , angle_(80.0 * Mathex::PI / 180.0)
-    , tanHalfAngle_(tan(0.5 * angle_))
     , colourFilter_(RenColour::white())
 {
+    verticalFOVAngle(80.0 * Mathex::PI / 180.0);
 }
 
-RenCamera::~RenCamera()
-{
-}
+RenCamera::~RenCamera() = default;
 
 void RenCamera::transform(const MexTransform3d& xform)
 {
