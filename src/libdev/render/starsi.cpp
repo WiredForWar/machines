@@ -88,7 +88,8 @@ void RenIStarsImpl::render(
     MexRadians verticalFOV,
     MexRadians horizontalFOV)
 {
-    PRE(horizontalFOV.asScalar() <= Mathex::PI_DIV_2);
+    // The assumption is not valid, horizontal POV can be greater than 90 degrees.
+    // PRE(horizontalFOV.asScalar() <= Mathex::PI_DIV_2);
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
     ASSERT(devImpl, "There is no current device.");
