@@ -27,15 +27,29 @@ using uint64 = uint64_t;
 
 #define _SDLAPP
 
+#if defined(_WIN32)
+#define MACHINES_PLATFORM_WINDOWS
+#elif defined(__linux__)
+#define MACHINES_PLATFORM_LINUX
+#else
+#error "Unsupported platform"
+#endif
+
+#if defined(__GNUC__)
+#define MACHINES_COMPILER_GCC
+#elif defined(_MSC_VER)
+#define MACHINES_COMPILER_MSVC
+#endif
+
 #if defined(__GNUC__) && !defined(__MINGW32__)
 #define WEAK_SYMBOL __attribute__((weak))
 #define DECL_DEPRECATED __attribute__((__deprecated__))
-#define DECL_UNUSED [[gnu::unused]]
 #else
 #define WEAK_SYMBOL
 #define DECL_DEPRECATED
-#define DECL_UNUSED
 #endif
+
+#define DECL_UNUSED [[maybe_unused]]
 
 #if defined(_MSC_VER)
 #define strcasecmp _stricmp
