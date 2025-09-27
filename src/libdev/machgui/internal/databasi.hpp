@@ -46,14 +46,6 @@ private:
     MachGuiIDatabase(const MachGuiIDatabase&);
     MachGuiIDatabase& operator=(const MachGuiIDatabase&);
 
-    // Used for sorting players into most recent use order
-    using MachGuiDbPlayer_ptr = MachGuiDbPlayer*;
-    class PlayerNameComparator : public std::binary_function<MachGuiDbPlayer_ptr, MachGuiDbPlayer_ptr, bool>
-    {
-    public:
-        bool operator()(const MachGuiDbPlayer_ptr& pLhs, const MachGuiDbPlayer_ptr& pRhs) const;
-    };
-
     using ElementMap = ctl_map<std::string, MachGuiDbElement*, std::less<std::string>>;
     using Players = ctl_vector<MachGuiDbPlayer*>;
     using Systems = ctl_vector<MachGuiDbSystem*>;
@@ -65,12 +57,12 @@ private:
     ctl_vector<MachGuiDbSystem*> multiPlayerSystems_; // the small, medium, large systems for multi-player
     Players players_; // the registered players
     SavedGames savedGames_; // The games saved in the load menu
-    uint nextPlayerId_;
-    uint nextUseSequenceId_; // generates ids for order of use of players
-    ElementMap* pElementMap_;
-    MachGuiDbPlayer* pDbCurrentPlayer_;
-    MachGuiDatabaseHandler* pDbHandler_; // used to interface to lower libs
-    MachGuiDbScenario* pCurrentDbScenario_; // Current scenario being played
+    uint nextPlayerId_{};
+    uint nextUseSequenceId_{}; // generates ids for order of use of players
+    ElementMap* pElementMap_{};
+    MachGuiDbPlayer* pDbCurrentPlayer_{};
+    MachGuiDatabaseHandler* pDbHandler_{}; // used to interface to lower libs
+    MachGuiDbScenario* pCurrentDbScenario_{}; // Current scenario being played
 };
 
 PER_DECLARE_PERSISTENT(MachGuiIDatabase);

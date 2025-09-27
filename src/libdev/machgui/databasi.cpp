@@ -14,12 +14,7 @@
 PER_DEFINE_PERSISTENT(MachGuiIDatabase);
 
 MachGuiIDatabase::MachGuiIDatabase()
-    : pElementMap_(nullptr)
-    , nextPlayerId_(0)
-    , pDbCurrentPlayer_(nullptr)
-    , nextUseSequenceId_(0)
-    , pDbHandler_(new MachGuiDatabaseHandler)
-    , pCurrentDbScenario_(nullptr)
+    : pDbHandler_(new MachGuiDatabaseHandler)
 {
     campaignSystems_.reserve(20);
     skirmishSystems_.reserve(3);
@@ -76,10 +71,4 @@ void perRead(PerIstream& istr, MachGuiIDatabase& ob)
     ob.pDbCurrentPlayer_ = nullptr;
 }
 
-bool MachGuiIDatabase::PlayerNameComparator::operator()(
-    const MachGuiDbPlayer_ptr& pLhs,
-    const MachGuiDbPlayer_ptr& pRhs) const
-{
-    return pLhs->name() < pRhs->name();
-}
 /* End DATABASI.CPP *************************************************/
