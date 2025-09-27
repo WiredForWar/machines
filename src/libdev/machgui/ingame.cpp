@@ -3202,33 +3202,13 @@ void MachInGameScreen::finalizeScreenShot()
     POST(!isRenderingScreenShot());
 }
 
-// Can't use Gui::writeScreenAsBmp() because we need to save the front buffer.
 void MachInGameScreen::saveScreenShot()
 {
     CB_DEPIMPL_AUTO(pSceneManager_);
 
-    bool gotPathName = false;
-    SysPathName pathName;
-    size_t count = 0;
-
-    // Search for the first numbered file which doesn't exist already.
-    while (!gotPathName)
-    {
-        char buffer[20];
-
-        sprintf(buffer, "%04ld", count);
-
-        pathName = SysPathName(std::string("mach") + buffer + ".png");
-
-        if (! pathName.existsAsFile())
-            gotPathName = true;
-
-        ++count;
-    }
-
-    RenDevice& device = *pSceneManager_->pDevice();
-    RenSurface front = device.frontSurface();
-    front.saveAsPng(pathName);
+    const RenDevice& device = *pSceneManager_->pDevice();
+    const RenSurface front = device.frontSurface();
+    front.saveAsPng(Gui::getNextAvailablePngFileName("mach"));
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const

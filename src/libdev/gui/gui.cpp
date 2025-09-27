@@ -240,33 +240,20 @@ Gui::Box Gui::translateBitmapDimensions(const SysPathName& path, const Gui::Coor
     return GuiDisplayable::translateBox(bitmapDimensions(path), rel);
 }
 
-// static
-void Gui::writeScreenAsFile(const char* startFilename)
+SysPathName Gui::getNextAvailablePngFileName(const std::string& startFilename)
 {
-    const RenSurface& surface = Gui::backBuffer();
+    constexpr std::size_t MaxScreenshots = 100000;
 
-    // Create next filename...
-
-    bool gotBmpPathName = false;
-    SysPathName bmpPathName;
-    size_t count = 0;
-
-    while (! gotBmpPathName)
+    for(std::size_t number = 0; number < MaxScreenshots; ++number)
     {
         char buffer[20];
-
-        sprintf(buffer, "%04ld", count);
-
-        // bmpPathName = string( startFilename ) + buffer + ".png";
-        bmpPathName = SysPathName(std::string(startFilename) + buffer + ".png");
-
-        if (! bmpPathName.existsAsFile())
-            gotBmpPathName = true;
-
-        ++count;
+        sprintf(buffer, "%04zu", number);
+        SysPathName pathName(startFilename + buffer + ".png");
+        if (!pathName.existsAsFile())
+            return pathName;
     }
 
-    surface.saveAsPng(bmpPathName);
+    return {};
 }
 
 /* //////////////////////////////////////////////////////////////// */
