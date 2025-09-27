@@ -27,7 +27,7 @@ class MachLogDatabaseHandler
 // Canonical form revoked
 {
 public:
-    ~MachLogDatabaseHandler();
+    virtual ~MachLogDatabaseHandler();
 
     //////////////////////////////////////////
 
