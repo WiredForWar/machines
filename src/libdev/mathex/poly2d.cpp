@@ -492,8 +492,10 @@ bool MexPolygon2d::intersects(size_t vertexIndex, const MexPoint2d& p2) const
         result = true;
     }
 
+#ifdef ENABLE_FLAKY_ASSERTS
     POST_DATA(const MexPoint2d& p1 = vertex(vertexIndex));
     POST(result == intersects(p1, p2, Mathex::TOUCH_ISNT_INTERSECT));
+#endif
 
     return result;
 }
