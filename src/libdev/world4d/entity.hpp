@@ -21,6 +21,7 @@
 #include "world4d/world4d.hpp"
 #include "world4d/fwrdplan.hpp"
 
+#include <memory>
 #include <string>
 
 template <class T> class ctl_vector;
@@ -625,7 +626,7 @@ private:
 
     /////////////////////////////////////////////////////////////////
     // Data members
-    W4dEntityImpl* pImpl_;
+    std::unique_ptr<W4dEntityImpl> pImpl_;
 
     OBJECT_TRACKER(W4dEntity);
 

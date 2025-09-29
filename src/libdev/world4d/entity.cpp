@@ -231,8 +231,6 @@ W4dEntity::~W4dEntity()
     while (intersectingDomains_ != nullptr && intersectingDomains_->size() != 0)
         intersects(intersectingDomains_->back(), false);
 
-    delete pImpl_;
-
     LOG_DESTRUCTION;
 }
 
@@ -2256,13 +2254,14 @@ RenMeshInstance& W4dEntity::mesh(W4dLOD id)
 
 void perWrite(PerOstream& ostr, const W4dEntity& entity)
 {
-    ostr << entity.pImpl_;
+    ostr << entity.pImpl_.get();
 }
 
 void perRead(PerIstream& istr, W4dEntity& entity)
 {
-    //delete entity.pImpl_; //> no idea why this deleted area is referenced on models load
-    istr >> entity.pImpl_;
+    W4dEntityImpl *pImpl = nullptr;
+    istr >> pImpl;
+    entity.pImpl_.reset(pImpl);
 
     //  This call must be made here to make sure that the entity plan
     //  update times are properly set up
@@ -2281,7 +2280,6 @@ void perRead(PerIstream& istr, W4dEntity& entity)
 }
 
 W4dEntity::W4dEntity(PerConstructor)
-    : pImpl_(nullptr)
 {
 }
 
