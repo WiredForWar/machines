@@ -44,8 +44,6 @@ bool SndWaveform::isWaveFile(const char* path)
 SndWaveform::SndWaveform(const SndWaveformId& id)
     : id_(id)
     , ref_(1)
-    , dataSize_(0)
-    , pFormat_(nullptr)
 {
     PRE(SndWaveform::isWaveFile(id_.pathname().c_str()));
 
@@ -64,14 +62,13 @@ WaveFormat* SndWaveform::format()
 {
     if (!pFormat_)
     {
-
-        pFormat_ = new WaveFormat(
+        pFormat_ = std::make_unique<WaveFormat>(
             (Channels)waveInfo_->channels,
             (SampleRateHz)waveInfo_->sampleRate,
             (BitsPerSample)waveInfo_->bitsPerSample);
     }
 
-    return pFormat_;
+    return pFormat_.get();
 }
 
 uint SndWaveform::dataSize()

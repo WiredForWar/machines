@@ -29,9 +29,11 @@
 #include "system/pathname.hpp"
 #include "sound/internal/wavefmt.hpp"
 #include "sound/sndwavid.hpp"
-#include <audio/wave.h>
 
+#include <audio/wave.h>
 #include <al.h>
+
+#include <memory>
 
 ////////////////////////////////////////////////////////////
 
@@ -73,8 +75,8 @@ private:
     WaveInfo* waveInfo_;
 
     size_t ref_;
-    uint dataSize_; // The cached size of the sound. 0 ==> not calculated yet
-    WaveFormat* pFormat_;
+    uint dataSize_{}; // The cached size of the sound. 0 ==> not calculated yet
+    std::unique_ptr<WaveFormat> pFormat_{};
 };
 
 ////////////////////////////////////////////////////////////
