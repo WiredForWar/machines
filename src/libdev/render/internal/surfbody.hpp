@@ -162,6 +162,8 @@ protected:
     // POST(width() == w && height() == h); POST(pixelFormat.isValid());
     bool allocateDDSurfaces(size_t width, size_t height, const RenIPixelFormat&, Residence);
 
+    static SDL_Surface *readFromFile(const char *fileName);
+
 private:
     // Only the surface manager can create internal surface objects.
     friend class RenSurfaceManager;

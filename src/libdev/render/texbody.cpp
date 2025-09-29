@@ -302,12 +302,9 @@ bool RenITexBody::read(const std::string& nameAsString)
         }
     }
 
-    SDL_Surface* surface = IMG_Load(fname);
+    SDL_Surface* surface = readFromFile(fname);
     if (!surface)
-    {
-        RENDER_STREAM("  Failed to load texture from file " << fname << std::endl);
         return false;
-    }
 
     if (!checkTextureSize(requestedTextureName, surface))
         return false;
@@ -335,12 +332,10 @@ bool RenITexBody::read(const std::string& nameAsString)
             RENDER_STREAM(" (found)" << std::endl);
 
             const char* fname = alphaName.pathname().c_str();
-            surfaceAlpha = IMG_Load(fname);
+            surfaceAlpha = readFromFile(fname);
             if (!surfaceAlpha)
-            {
-                RENDER_STREAM("  Failed to load alpha map from file " << alphaName << std::endl);
                 return false;
-            }
+
             ASSERT(surfaceAlpha->w == surface->w, "Wrong alpha map size.");
             ASSERT(surfaceAlpha->h == surface->h, "Wrong alpha map size.");
         }

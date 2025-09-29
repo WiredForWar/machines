@@ -26,6 +26,8 @@
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
 
+#include "spdlog/spdlog.h"
+
 class ScopedGLEnable
 {
 public:
@@ -170,6 +172,16 @@ bool RenISurfBody::allocateDDSurfaces(
     return true;
 }
 
+SDL_Surface* RenISurfBody::readFromFile(const char *fileName)
+{
+    SDL_Surface* surface = IMG_Load(fileName);
+    if (!surface)
+    {
+        spdlog::error("Failed to load texture from file (path: {}, error: {})", fileName, IMG_GetError());
+    }
+    return surface;
+}
+
 // virtual
 RenISurfBody::~RenISurfBody()
 {
@@ -188,20 +200,15 @@ bool RenISurfBody::read(const std::string& bitmapName)
     //  PRE(pixelFormat_.isValid());    // Use the ctor which initialises the format.
 
     bool retval = false;
-    SDL_Surface* surface = IMG_Load(bitmapName.c_str());
+    SDL_Surface* surface = readFromFile(bitmapName.c_str());
     if (!surface)
-    {
-        RENDER_STREAM("Failed to load surface from file " << SDL_GetError() << std::endl);
         return false;
-    }
-    else
-    {
-        if (allocateDDSurfaces(surface->w, surface->h, pixelFormat_, SYSTEM))
-            retval = copyWithColourKeyEmulation(surface, RenColour::magenta());
 
-        name(bitmapName);
-        SDL_FreeSurface(surface);
-    }
+    if (allocateDDSurfaces(surface->w, surface->h, pixelFormat_, SYSTEM))
+        retval = copyWithColourKeyEmulation(surface, RenColour::magenta());
+
+    name(bitmapName);
+    SDL_FreeSurface(surface);
 
     return retval;
 }
