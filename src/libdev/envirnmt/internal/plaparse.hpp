@@ -54,7 +54,7 @@ public:
     EnvISatelliteParams* satelliteInConstruction();
     void satelliteComplete();
     EnvSatellite* lookUpSatellite(const std::string*);
-    void copySatellites(ctl_pvector<EnvSatellite>* vec); // PRE(vec);
+    void takeSatellites(ctl_pvector<EnvSatellite>* vec); // PRE(vec);
 
     void addClut(EnvElevationColourTable*);
     EnvElevationColourTable* lookUpClut(const std::string*);

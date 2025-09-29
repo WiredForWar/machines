@@ -108,7 +108,7 @@ EnvPlanetEnvironment::EnvPlanetEnvironment(const SysPathName& envFile, W4dSceneM
     manager_->useBackground(bgRoot_);
 
     EnvIPlanetParser::instance().parse(envFile, this);
-    EnvIPlanetParser::instance().copySatellites(&satellites_);
+    EnvIPlanetParser::instance().takeSatellites(&satellites_);
 
     sky_ = EnvIPlanetParser::instance().skyDeclaration().completedSky();
 

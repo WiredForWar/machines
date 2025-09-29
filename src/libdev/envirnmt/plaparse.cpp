@@ -167,7 +167,7 @@ EnvSatellite* EnvIPlanetParser::lookUpSatellite(const std::string* name)
         return (*it).second;
 }
 
-void EnvIPlanetParser::copySatellites(ctl_pvector<EnvSatellite>* vec)
+void EnvIPlanetParser::takeSatellites(ctl_pvector<EnvSatellite>* vec)
 {
     PRE(vec);
 
