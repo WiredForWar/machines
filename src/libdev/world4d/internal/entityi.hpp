@@ -98,13 +98,10 @@ private:
     // types
     struct MeshData
     {
-        MeshData()
-            : mesh(nullptr)
-        {
-        }
+        MeshData() = default;
         ~MeshData() { }
 
-        RenMeshInstance* mesh;
+        RenMeshInstance* mesh{};
         W4dEntity::W4dDistance distance;
 
         PER_MEMBER_PERSISTENT_DEFAULT_INLINE(MeshData);
@@ -165,27 +162,27 @@ private:
     // data members
     W4dTransform3d localTransform_;
     W4dTransform3d globalTransform_;
-    W4dEntity* pParent_;
-    W4dEntity::W4dEntities* childList_;
-    Meshes* meshes_;
+    W4dEntity* pParent_{};
+    W4dEntity::W4dEntities* childList_{};
+    Meshes* meshes_{};
 
-    W4dEntity::W4dDomains* intersectingDomains_;
+    W4dEntity::W4dDomains* intersectingDomains_{};
 
-    W4dComposite* pHolder_; // Any composite holding this object
+    W4dComposite* pHolder_{}; // Any composite holding this object
 
-    W4dEntityScale* pEntityScale_; // The object holding all scale info
-    W4dEntityPlan* pPlan_; // Pointer to a current W4dEntityPlan which may modify the
+    W4dEntityScale* pEntityScale_{}; // The object holding all scale info
+    W4dEntityPlan* pPlan_{}; // Pointer to a current W4dEntityPlan which may modify the
                            // entity's local transform, mesh display etc
-    PlanUpdateTimes* pPlanUpdateTimes_; // Cache store for times plans last updated by attribute.
+    PlanUpdateTimes* pPlanUpdateTimes_{}; // Cache store for times plans last updated by attribute.
                                         // Exists if and only if pPlan_ defined.
 
-    W4dSubject* pSubject_; // Optional logical owner of this entity
+    W4dSubject* pSubject_{}; // Optional logical owner of this entity
 
     // A number which uniquely identifies the last camera traversal to draw this entity.
-    uint32_t passId_;
+    uint32_t passId_{};
 
     // The time when the cached global transform was last updated
-    PhysAbsoluteTime timeGlobalTransformLastUpdated_;
+    PhysAbsoluteTime timeGlobalTransformLastUpdated_{};
 
     // Cached transform keys for the parent's global and local transform last
     // used to update the cached global transform
@@ -193,47 +190,47 @@ private:
     MexTransform3dKey lastLocalTransformKey_;
 
     // An id used for various purposes in checking algorithms
-    uint32_t checkId_;
+    uint32_t checkId_{};
 
     // This entity's id
-    W4dId id_;
+    W4dId id_{};
 
     //  A very approximate bounding volume of this ebtities meshes - it does not
     //  include the children of this entity.
-    MexAlignedBox3d* boundingVolume_;
+    MexAlignedBox3d* boundingVolume_{};
 
     // Warning: these variable are bitfields, thus it is not possible
     // to reference them using CB_DEPIMPL
     // W4dEntity has to access them using the indirection operator pImpl_->
-    W4dEntity::Solidity solid_ : 2;
-    bool isDomain_ : 1;
-    bool ownedByParent_ : 1;
-    bool visible_ : 1;
-    bool isStationary_ : 1; // True if the entity is considered as stationary.
+    W4dEntity::Solidity solid_ : 2{};
+    bool isDomain_ : 1{};
+    bool ownedByParent_ : 1{};
+    bool visible_ : 1{};
+    bool isStationary_ : 1{}; // True if the entity is considered as stationary.
                             // False implies likely to move.
 
-    bool notScaled_ : 1; // True iff the lod 0 mesh has unity scale,
+    bool notScaled_ : 1{}; // True iff the lod 0 mesh has unity scale,
                          // and the entity has unity scale override.
-    bool isComposite_ : 1; // True if this is a composite
-    bool isGarbage_ : 1; // True if added to the garbage collection list
-    bool isOwnedByCountedPtr_ : 1; // True if a counted ptr references the entity.
-                                   // In this case it must only be deleted when the
-                                   // last counted ptr goes out of scope - NOT as a child
-                                   // of a deleting parent, or via garbage collection.
-                                   // Set when referenced by a W4dSubject
+    bool isComposite_ : 1{}; // True if this is a composite
+    bool isGarbage_ : 1{}; // True if added to the garbage collection list
+    bool isOwnedByCountedPtr_ : 1{}; // True if a counted ptr references the entity.
+                                     // In this case it must only be deleted when the
+                                     // last counted ptr goes out of scope - NOT as a child
+                                     // of a deleting parent, or via garbage collection.
+                                     // Set when referenced by a W4dSubject
 
-    bool hasMesh_ : 1; // True if the entity has at least one mesh
+    bool hasMesh_ : 1{}; // True if the entity has at least one mesh
 
     // This entity's local light list
-    W4dLocalLightList* pLocalLightList_;
+    W4dLocalLightList* pLocalLightList_{};
 
     std::string name_;
-    AnimationDataPtrs* pAnimationDataPtrs_;
-    AnimationDataPtrs* pAnimationLightDataPtrs_;
-    RenColour* pFilterColour_;
-    int nLinkedSounds_; // Count of sounds associated via W4dSoundManager
-    bool doNotLight_;
-    int clientData_; // To be used as clients of this class see fit.
+    AnimationDataPtrs* pAnimationDataPtrs_{};
+    AnimationDataPtrs* pAnimationLightDataPtrs_{};
+    RenColour* pFilterColour_{};
+    int nLinkedSounds_{}; // Count of sounds associated via W4dSoundManager
+    bool doNotLight_{};
+    int clientData_{}; // To be used as clients of this class see fit.
 
     OBJECT_TRACKER(W4dEntityImpl);
 
