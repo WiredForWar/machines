@@ -47,11 +47,8 @@ public:
     // returns size of PCM data in bytes
     uint dataSize();
 
-    // reads all the wave data to buf and
+    // reads all the wave data to the given buf and
     // returns the size of buf in bytes
-    uint read(void* buf);
-    // as above but copies from an offset into the
-    // wave data specified by from of size len.
     uint read(void* buf, uint from, uint len);
 
     // return the pathname of the SndWaveform

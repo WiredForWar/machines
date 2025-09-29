@@ -108,42 +108,7 @@ ALenum SndWaveform::toALformat()
 
 ////////////////////////////////////////////////////////////
 
-// this reads all the wave data into a buffer
-// , assigns the pointer to the buffer to buf
-// and returns the number of bytes read.
-uint SndWaveform::read(void* buf)
-{
-    uint bufSize = dataSize();
-    char* buffer = new char[bufSize];
-    /*  MMCKINFO dataChunk, chunk;
-
-    // initialise chunks
-    chunk.fccType = mmioFOURCC( 'W', 'A', 'V', 'E' );
-    dataChunk.ckid = mmioFOURCC( 'd', 'a', 't', 'a' );
-
-    mmioDescend( hmmio_, &chunk, NULL, MMIO_FINDRIFF );
-
-    mmioDescend( hmmio_, &dataChunk, &chunk, MMIO_FINDCHUNK );
-
-    mmioRead( hmmio_, (HPSTR)buffer, (LONG)bufSize );
-
-    // go to begining of file
-    mmioSeek( hmmio_, 0, SEEK_SET );
-
-    buf = buffer;*/
-
-    WaveSeekFile(0, waveInfo_);
-
-    uint result = WaveReadFile(buffer, bufSize, waveInfo_);
-    if (result != bufSize)
-    {
-        std::cerr << "Mismatch in wav buffer size when reading from file." << std::endl;
-    }
-    buf = buffer;
-    return bufSize;
-}
-
-// unlike above this reads directly to the passed
+// this reads directly to the passed
 // buf pointer. from specifies an offset into the
 // data and len specifies the size of the buf array.
 // the function returns the number of bytes read
