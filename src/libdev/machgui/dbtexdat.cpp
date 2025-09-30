@@ -44,11 +44,10 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t)
 }
 
 // static
-MachGuiDbTextData* MachGuiDbTextData::pNewTextData(const std::string& filename)
+std::unique_ptr<MachGuiDbTextData> MachGuiDbTextData::pNewTextData(const std::string& filename)
 {
-
     // Construct an empty object
-    MachGuiDbTextData* pTextData = new MachGuiDbTextData;
+    std::unique_ptr<MachGuiDbTextData> pTextData = std::make_unique<MachGuiDbTextData>();
 
     // Construct the persistent file name
     std::string work = "pdata/" + filename;

@@ -14,6 +14,8 @@
 
 #include "base/base.hpp"
 
+#include <memory>
+
 // forward refs
 class MachGuiDbITextData;
 class SysPathName;
@@ -29,7 +31,7 @@ public:
     // This looks first in pdata/... for a .bin persistent version. If not found
     // reads the source file from data/... and creates the persistent file.
     // Client must delete the returned object.
-    static MachGuiDbTextData* pNewTextData(const std::string& filename);
+    static std::unique_ptr<MachGuiDbTextData> pNewTextData(const std::string& filename);
 
     // The various strings of text
     const std::string& campaignText() const; // Campaign screen description

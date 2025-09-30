@@ -113,11 +113,7 @@ const MachGuiDbTextData& MachGuiDbElement::textData() const
 
 void MachGuiDbElement::clearTextData()
 {
-    if (pData_->pTextData_ != nullptr)
-    {
-        delete pData_->pTextData_;
-        pData_->pTextData_ = nullptr;
-    }
+    pData_->pTextData_.reset();
 }
 
 void perWrite(PerOstream& ostr, const MachGuiDbElement& ob)

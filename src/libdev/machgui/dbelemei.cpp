@@ -8,11 +8,12 @@
 #include "machgui/internal/dbelemei.hpp"
 #include "machgui/dbelemen.hpp"
 
+// The following include is needed for std::unique_ptr<MachGuiDbTextData> pTextData_ destructor
+#include "machgui/dbtexdat.hpp"
+
 PER_DEFINE_PERSISTENT(MachGuiDbIElement);
 
 MachGuiDbIElement::MachGuiDbIElement()
-    : menuStringId_(0)
-    , pTextData_(nullptr)
 {
     // Use sensible collection sizes
     antecedents_.reserve(4);
