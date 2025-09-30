@@ -266,18 +266,17 @@ void EnvPlanetEnvironment::updateSky()
         sky_->update(manager_);
 }
 
-static void updateSatellite(EnvSatellite*& sat)
-{
-    sat->update();
-
-    static const bool printDebug = getenv("CB_DEBUG_ENV") != nullptr;
-    if (printDebug)
-        Ren::out() << *sat << std::endl;
-}
-
 void EnvPlanetEnvironment::updateSatellites()
 {
-    for_each(satellites_.begin(), satellites_.end(), updateSatellite);
+    for (const auto& sat : satellites_)
+    {
+        sat->update();
+#ifndef NDEBUG
+        static const bool printDebug = getenv("CB_DEBUG_ENV") != nullptr;
+        if (printDebug)
+            Ren::out() << *sat << std::endl;
+#endif // NDEBUG
+    }
 }
 
 void EnvPlanetEnvironment::updateShadow()
@@ -305,20 +304,14 @@ void EnvPlanetEnvironment::updateShadow()
     W4dShadow::setLight(strongest);
 }
 
-static void accumulateAmbient(EnvSatellite*& sat)
-{
-    sat->update();
-    RenColour amb = RenDevice::current()->ambient();
-    const RenColour& satAmb = sat->ambient();
-    amb += satAmb;
-    RenDevice::current()->ambient(amb);
-}
-
 void EnvPlanetEnvironment::updateAmbient()
 {
     // Add together the ambient lighting from each satellite.
-    RenDevice::current()->ambient(RenColour::black());
-    for_each(satellites_.begin(), satellites_.end(), accumulateAmbient);
+    RenColour amb = RenColour::black();
+    RenDevice::current()->ambient();
+    for (const auto& sat : satellites_)
+        amb += sat->ambient();
+    RenDevice::current()->ambient(amb);
 
     if (isNvgOn())
     {
@@ -353,7 +346,7 @@ void EnvPlanetEnvironment::updateAmbient()
 // Virtual.
 void EnvPlanetEnvironment::nvgOn(bool on)
 {
-    if (isNvgOn_ && !on || !isNvgOn_ && on)
+    if ((isNvgOn_ && !on) || (!isNvgOn_ && on))
     {
         isNvgOn_ = on;
         hasNvgChanged_ = true;
@@ -584,28 +577,18 @@ void EnvPlanetEnvironment::fogColourController(const EnvSatellite* s)
     fogController_ = s;
 }
 
-static void enableSatellite(EnvSatellite*& sat)
-{
-    W4dLight* light = sat->light();
-
-    if (light)
-        light->turnOn();
-}
-
-static void disableSatellite(EnvSatellite*& sat)
-{
-    W4dLight* light = sat->light();
-
-    if (light)
-        light->turnOff();
-}
-
 // virtual
 void EnvPlanetEnvironment::enable()
 {
     enabled_ = true;
     bgRoot_->visible(true);
-    for_each(satellites_.begin(), satellites_.end(), enableSatellite);
+    for (const auto& sat : satellites_)
+    {
+        W4dLight* light = sat->light();
+
+        if (light)
+            light->turnOn();
+    };
 }
 
 // virtual
@@ -613,7 +596,13 @@ void EnvPlanetEnvironment::disable()
 {
     bgRoot_->visible(false);
     manager_->useBackground(nullptr);
-    for_each(satellites_.begin(), satellites_.end(), disableSatellite);
+    for (const auto& sat : satellites_)
+    {
+        W4dLight* light = sat->light();
+
+        if (light)
+            light->turnOff();
+    }
     enabled_ = false;
 }
 
@@ -658,28 +647,21 @@ void EnvPlanetEnvironment::setVisibilityLevel(VisibilityLevel vLevel)
     }
 }
 
-static void visibleSatellite(EnvSatellite*& sat)
-{
-    if (sat)
-        sat->visible(true);
-}
-
-static void unvisibleSatellite(EnvSatellite*& sat)
-{
-    if (sat)
-    {
-        W4dLight* light = sat->light();
-        if (! light)
-            sat->visible(false);
-    }
-}
-
 void EnvPlanetEnvironment::visibleSatellites(bool setVisible)
 {
-    if (setVisible)
-        for_each(satellites_.begin(), satellites_.end(), visibleSatellite);
-    else
-        for_each(satellites_.begin(), satellites_.end(), unvisibleSatellite);
+    for (const auto& sat : satellites_)
+    {
+        if (setVisible)
+        {
+            sat->visible(true);
+        }
+        else
+        {
+            W4dLight* light = sat->light();
+            if (! light)
+                sat->visible(false);
+        }
+    }
 }
 
 void EnvPlanetEnvironment::visibleStars(bool setVisible)
