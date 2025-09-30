@@ -1,6 +1,7 @@
 #ifndef RENDER_FONT_HPP
 #define RENDER_FONT_HPP
 
+#include <memory>
 #include <string>
 
 namespace Render
@@ -16,6 +17,8 @@ class Font
 {
 public:
     Font(const std::string& fontName, int pixelSize);
+    Font(Font&& other);
+
     virtual ~Font();
 
     bool isValid() const;
@@ -28,7 +31,7 @@ public:
 
 protected:
     friend class Render::FontImpl;
-    FontImpl* pImpl_ = nullptr;
+    std::unique_ptr<FontImpl> pImpl_;
 };
 
 } // Render namespace

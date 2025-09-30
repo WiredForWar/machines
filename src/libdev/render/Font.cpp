@@ -219,7 +219,7 @@ static std::vector<Font> s_fonts;
 
 const FontImpl* FontImpl::get(const Font* parent)
 {
-    return parent->pImpl_;
+    return parent->pImpl_.get();
 }
 
 const FontImpl::CharData* FontImpl::getChar(char c) const
@@ -239,10 +239,15 @@ const FontImpl::CharData* FontImpl::getChar(char c) const
  */
 Font::Font(const std::string& fontName, int pixelSize)
 {
-    pImpl_ = new FontImpl();
+    pImpl_ = std::make_unique<FontImpl>();
     pImpl_->fontName = fontName;
     pImpl_->pixelSize = pixelSize;
     pImpl_->prepareTexture();
+}
+
+Font::Font(Font &&other)
+    : pImpl_(std::move(other.pImpl_))
+{
 }
 
 Font::~Font()
