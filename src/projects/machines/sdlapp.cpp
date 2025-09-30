@@ -24,6 +24,7 @@
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/texset.hpp"
+#include "render/Font.hpp"
 #include "world4d/root.hpp"
 #include "world4d/scenemgr.hpp"
 #include "world4d/manager.hpp"
@@ -280,6 +281,7 @@ bool SDLApp::clientStartup()
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
+    Render::initFonts();
     initDefaultFontSize(Gui::uiScaleFactor());
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
@@ -580,6 +582,7 @@ void SDLApp::clientShutdown()
     //  moveWindow(10000, 10000);
 
     cleanUpGui();
+    Render::cleanUpFonts();
 
     DevMouse::instance().unhide();
     delete pRoot_;

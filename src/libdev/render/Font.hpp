@@ -8,6 +8,9 @@ namespace Render
 
 class FontImpl;
 
+void initFonts();
+void cleanUpFonts();
+
 class Font
 // Canonical form revoked
 {

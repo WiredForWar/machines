@@ -3,14 +3,14 @@
 #include "render/Font.hpp"
 #include "system/pathname.hpp"
 
+#include "spdlog/spdlog.h"
+
+#include <GL/glew.h>
+
 #include <algorithm>
 #include <limits>
 #include <ostream>
 #include <vector>
-
-#include <GL/glew.h>
-
-#include "spdlog/spdlog.h"
 
 // FONTS
 #include <ft2build.h>
@@ -22,28 +22,90 @@ namespace Render
 // Maximum font texture width
 constexpr int MAXWIDTH = 1024;
 
+class FontsManager
+{
+public:
+    ~FontsManager()
+    {
+        FT_Done_FreeType(library);
+    }
+
+    bool init()
+    {
+        FT_Error result = FT_Init_FreeType(&library);
+        if (result)
+        {
+            spdlog::critical("Could not init freetype library! FT_Error: {}", result);
+            return false;
+        }
+
+        return true;
+    }
+
+    FT_Library library{};
+};
+
+static std::unique_ptr<FontsManager> fontsManager;
+
+class FontFaceWrapper
+{
+public:
+    FontFaceWrapper(FT_Library library, const std::string& pathName)
+    {
+        initResult_ = FT_New_Face(library, pathName.c_str(), 0, &face_);
+        if (initResult_)
+        {
+            spdlog::critical("Could not open font {}. FT_Error: {}", pathName, initResult_);
+        }
+    }
+
+    ~FontFaceWrapper()
+    {
+        if (face_)
+            FT_Done_Face(face_);
+    }
+
+    FT_Face& getFace()
+    {
+        return face_;
+    }
+
+    bool isValid() const
+    {
+        return face_ && (initResult_ == 0);
+    }
+
+protected:
+    FT_Face face_{};
+    FT_Error initResult_{};
+};
+
+void initFonts()
+{
+    spdlog::info("Initializing FreeType library...");
+    fontsManager.reset(new FontsManager);
+    fontsManager->init();
+}
+
+void cleanUpFonts()
+{
+    spdlog::info("Deinitializing FreeType library...");
+    fontsManager.reset();
+}
+
 /* Create texture atlasses for font sizes */
 bool FontImpl::prepareTexture()
 {
-    FT_Library ft;
-    FT_Face face;
-    /* Initialize the FreeType2 library */
-    FT_Error result = FT_Init_FreeType(&ft);
-    if (result)
-    {
-        spdlog::critical("Could not init freetype library! FT_Error: {}", result);
+    if (!fontsManager)
         return false;
-    }
 
     /* Load a font */
     SysPathName fontFile("gui/" + (fontName + ".ttf"));
-    result = FT_New_Face(ft, fontFile.pathname().c_str(), 0, &face);
-    if (result)
-    {
-        spdlog::critical("Could not open font {}. FT_Error: {}", fontFile.pathname(), result);
+    FontFaceWrapper faceWrapper(fontsManager->library, fontFile.pathname());
+    if (!faceWrapper.isValid())
         return false;
-    }
 
+    FT_Face &face = faceWrapper.getFace();
     FT_Set_Pixel_Sizes(face, 0, pixelSize);
     FT_GlyphSlot g = face->glyph;
 
