@@ -29,6 +29,7 @@ public:
 
     PER_MEMBER_PERSISTENT_DEFAULT(MachGuiDbISavedGame);
     PER_FRIEND_READ_WRITE(MachGuiDbISavedGame);
+    ~MachGuiDbISavedGame();
 
 private:
     friend class MachGuiDbSavedGame;
@@ -36,7 +37,6 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbISavedGame& t);
 
     MachGuiDbISavedGame();
-    ~MachGuiDbISavedGame();
     MachGuiDbISavedGame(const MachGuiDbISavedGame&);
     MachGuiDbISavedGame& operator=(const MachGuiDbISavedGame&);
 

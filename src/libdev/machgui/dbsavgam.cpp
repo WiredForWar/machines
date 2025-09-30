@@ -17,7 +17,7 @@ MachGuiDbSavedGame::MachGuiDbSavedGame(
     const std::string& fileName,
     MachGuiDbScenario* pDbScenario)
 {
-    pData_ = new MachGuiDbISavedGame;
+    pData_.reset(new MachGuiDbISavedGame);
     pData_->userFileName_ = userFileName;
     pData_->fileName_ = fileName;
     pData_->pDbScenario_ = pDbScenario;
@@ -28,8 +28,6 @@ MachGuiDbSavedGame::MachGuiDbSavedGame(
 MachGuiDbSavedGame::~MachGuiDbSavedGame()
 {
     TEST_INVARIANT;
-
-    delete pData_;
 }
 
 void MachGuiDbSavedGame::CLASS_INVARIANT
@@ -48,16 +46,17 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDbSavedGame& t)
 
 void perWrite(PerOstream& ostr, const MachGuiDbSavedGame& ob)
 {
-    ostr << ob.pData_;
+    ostr << ob.pData_.get();
 }
 
 void perRead(PerIstream& istr, MachGuiDbSavedGame& ob)
 {
-    istr >> ob.pData_;
+    MachGuiDbISavedGame *impl{};
+    istr >> impl;
+    ob.pData_.reset(impl);
 }
 
 MachGuiDbSavedGame::MachGuiDbSavedGame(PerConstructor)
-    : pData_(nullptr)
 {
 }
 

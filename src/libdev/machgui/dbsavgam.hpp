@@ -16,6 +16,8 @@
 #include "base/persist.hpp"
 #include "stdlib/string.hpp"
 
+#include <memory>
+
 // forward refs
 class MachGuiDbScenario;
 class MachGuiDbPlayer;
@@ -67,7 +69,7 @@ private:
     MachGuiDbSavedGame& operator=(const MachGuiDbSavedGame&);
 
     // data members
-    MachGuiDbISavedGame* pData_; // data implementation object
+    std::unique_ptr<MachGuiDbISavedGame> pData_; // data implementation object
 };
 
 PER_DECLARE_PERSISTENT(MachGuiDbSavedGame);
