@@ -12,6 +12,8 @@
 #include "render/stars.hpp"
 #include "ctl/pvector.hpp"
 
+#include <memory>
+
 class RenCamera;
 class RenLightColourTransform;
 class W4dRoot;
@@ -99,7 +101,7 @@ public:
     void visibleStars(bool setVisible);
 
     EnvOrbit* createOrbit(EnvIOrbitParams*);
-    EnvSatellite* createSatellite(EnvISatelliteParams*);
+    std::unique_ptr<EnvSatellite> createSatellite(EnvISatelliteParams*);
     EnvUniformSky* createUniformSky();
     EnvStaticSky* createStaticSky();
     EnvDynamicSky* createDynamicSky();
@@ -121,7 +123,7 @@ private:
     W4dGeneric* const skyRoot_; // order is...
     W4dGeneric* const satelliteRoot_; // important.
 
-    ctl_pvector<EnvSatellite> satellites_;
+    std::vector<std::unique_ptr<EnvSatellite>> satellites_;
     bool enabled_;
     EnvSky* sky_;
     W4dStars* pStars_;

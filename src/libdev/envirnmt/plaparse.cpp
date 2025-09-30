@@ -144,9 +144,8 @@ void EnvIPlanetParser::satelliteComplete()
     PRE(planet_);
     PRE(satelliteInConstruction());
 
-    EnvSatellite* satellite = planet_->createSatellite(satParams_);
-    std::pair<const std::string, EnvSatellite*> value(satParams_->name(), satellite);
-    satellites_.insert(value);
+    std::unique_ptr<EnvSatellite> satellite = planet_->createSatellite(satParams_);
+    satellites_.emplace(satParams_->name(), std::move(satellite));
 
     delete satParams_;
     satParams_ = nullptr;
@@ -164,23 +163,21 @@ EnvSatellite* EnvIPlanetParser::lookUpSatellite(const std::string* name)
     if (it == satellites_.end())
         return nullptr;
     else
-        return (*it).second;
+        return (*it).second.get();
 }
 
-void EnvIPlanetParser::takeSatellites(ctl_pvector<EnvSatellite>* vec)
+std::vector<std::unique_ptr<EnvSatellite>> EnvIPlanetParser::takeSatellites()
 {
-    PRE(vec);
+    std::vector<std::unique_ptr<EnvSatellite>> result;
+    result.reserve(satellites_.size());
 
-    SatelliteMap::const_iterator it = satellites_.begin();
-    while (it != satellites_.end())
+    for(auto &[key, value] : satellites_)
     {
-        vec->push_back((*it).second);
-        ++it;
+        result.emplace_back(std::move(value));
     }
+    satellites_.clear();
 
-    // Remove the satellites from this object's list, effectively transferring
-    // ownership to the vector.
-    satellites_.erase(satellites_.begin(), satellites_.end());
+    return result;
 }
 
 void EnvIPlanetParser::addClut(EnvElevationColourTable* clut)

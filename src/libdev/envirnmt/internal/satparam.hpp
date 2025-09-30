@@ -9,6 +9,8 @@
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
 
+#include <memory>
+
 class W4dSceneManager;
 class EnvOrbit;
 class EnvSatellite;
@@ -29,7 +31,7 @@ public:
     void mesh(const std::string* name);
     void meshColourClut(const std::string* name);
 
-    EnvSatellite* createSatellite(W4dSceneManager*);
+    std::unique_ptr<EnvSatellite> createSatellite(W4dSceneManager*);
 
     void CLASS_INVARIANT;
 

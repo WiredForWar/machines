@@ -100,15 +100,13 @@ EnvPlanetEnvironment::EnvPlanetEnvironment(const SysPathName& envFile, W4dSceneM
     , nvgSkylineColour_(RenColour(0, 0.6, 0.1))
     , averageIllumination_(0.0)
 {
-    satellites_.reserve(16);
-
     // Horrilble cruft: the background root must be set before we create any
     // global lights, otherwise W4dSceneManager::addLight won't actually add
     // the lights to its list.
     manager_->useBackground(bgRoot_);
 
     EnvIPlanetParser::instance().parse(envFile, this);
-    EnvIPlanetParser::instance().takeSatellites(&satellites_);
+    satellites_ = EnvIPlanetParser::instance().takeSatellites();
 
     sky_ = EnvIPlanetParser::instance().skyDeclaration().completedSky();
 
@@ -129,6 +127,8 @@ EnvPlanetEnvironment::~EnvPlanetEnvironment()
     TEST_INVARIANT;
 
     delete sky_;
+
+    satellites_.clear();
     delete satelliteRoot_;
     delete skyRoot_;
     delete bgRoot_;
@@ -161,7 +161,7 @@ void EnvPlanetEnvironment::update()
 
         for (int index = 0; index < nSatellites(); ++index)
         {
-            EnvSatellite* pSat = satellites_[index];
+            EnvSatellite* pSat = satellites_[index].get();
 
             if (pSat->light() && pSat->light()->isOn())
             {
@@ -412,7 +412,7 @@ EnvOrbit* EnvPlanetEnvironment::createOrbit(EnvIOrbitParams* p)
     return p->createOrbit(satelliteRoot_);
 }
 
-EnvSatellite* EnvPlanetEnvironment::createSatellite(EnvISatelliteParams* p)
+std::unique_ptr<EnvSatellite> EnvPlanetEnvironment::createSatellite(EnvISatelliteParams* p)
 {
     PRE(p);
     return p->createSatellite(manager_);
@@ -457,13 +457,13 @@ size_t EnvPlanetEnvironment::nSatellites() const
 EnvSatellite* EnvPlanetEnvironment::satellite(size_t n)
 {
     PRE(n < nSatellites());
-    return satellites_[n];
+    return satellites_[n].get();
 }
 
 const EnvSatellite* EnvPlanetEnvironment::satellite(size_t n) const
 {
     PRE(n < nSatellites());
-    return satellites_[n];
+    return satellites_[n].get();
 }
 
 void EnvPlanetEnvironment::skyDomeOn(bool on)

@@ -8,13 +8,15 @@
 
 #include "base/base.hpp"
 
-#include "ctl/map.hpp"
-
 #include "stdlib/string.hpp"
 
 #include "mathex/mathex.hpp"
 #include "render/stars.hpp"
 #include "envirnmt/internal/skydecl.hpp"
+
+#include <map>
+#include <memory>
+#include <vector>
 
 class SysPathName;
 
@@ -54,7 +56,7 @@ public:
     EnvISatelliteParams* satelliteInConstruction();
     void satelliteComplete();
     EnvSatellite* lookUpSatellite(const std::string*);
-    void takeSatellites(ctl_pvector<EnvSatellite>* vec); // PRE(vec);
+    std::vector<std::unique_ptr<EnvSatellite>> takeSatellites();
 
     void addClut(EnvElevationColourTable*);
     EnvElevationColourTable* lookUpClut(const std::string*);
@@ -92,9 +94,9 @@ private:
     EnvElevationColourTable* skylineClut_;
     EnvSatellite* skylineController_;
 
-    using ClutMap = ctl_map<std::string, EnvElevationColourTable*, std::less<std::string>>;
-    using SatelliteMap = ctl_map<std::string, EnvSatellite*, std::less<std::string>>;
-    using OrbitMap = ctl_map<std::string, EnvOrbit*, std::less<std::string>>;
+    using ClutMap = std::map<std::string, EnvElevationColourTable*, std::less<std::string>>;
+    using SatelliteMap = std::map<std::string, std::unique_ptr<EnvSatellite>, std::less<std::string>>;
+    using OrbitMap = std::map<std::string, EnvOrbit*, std::less<std::string>>;
 
     ClutMap cluts_;
     OrbitMap orbits_;

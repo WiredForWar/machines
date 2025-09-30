@@ -66,9 +66,9 @@ void EnvISatelliteParams::mesh(const std::string* name)
     meshName_ = *name;
 }
 
-EnvSatellite* EnvISatelliteParams::createSatellite(W4dSceneManager*)
+std::unique_ptr<EnvSatellite> EnvISatelliteParams::createSatellite(W4dSceneManager*)
 {
-    EnvSatellite* result = new EnvSatellite(name_, orbit_);
+    std::unique_ptr<EnvSatellite> result = std::make_unique<EnvSatellite>(name_, orbit_);
 
     if (meshName_.length() > 0)
         result->loadMesh(meshName_, meshClut_);

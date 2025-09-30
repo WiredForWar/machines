@@ -81,9 +81,9 @@ private:
     const PhysRelativeTime period_;
     MexRadians minElevation_, maxElevation_;
 
-    W4dGeneric* const satellite1_; // NB: initialisation order is important!
-    W4dGeneric* const satellite2_; // NB: initialisation order is important!
-    W4dGeneric* const satellite3_; // NB: initialisation order is important!
+    W4dGeneric* const satellite1_{}; // NB: initialisation order is important!
+    W4dGeneric* const satellite2_{}; // NB: initialisation order is important!
+    W4dGeneric* const satellite3_{}; // NB: initialisation order is important!
 
     // This is the time at which the first minimum occurs.
     const PhysAbsoluteTime firstMinTime_;

@@ -192,9 +192,9 @@ EnvOrbit::EnvOrbit(
 EnvOrbit::~EnvOrbit()
 {
     TEST_INVARIANT;
-    delete satellite1_;
-    delete satellite2_;
     delete satellite3_;
+    delete satellite2_;
+    delete satellite1_;
 }
 
 // Immediately move from the current orbit to an new orbit.  The new orbit
