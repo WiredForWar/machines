@@ -31,13 +31,13 @@ public:
     ctl_vector<std::string> components_;
 
     // True iff the pathname has been explicitly set.
-    bool set_;
+    bool set_{};
 
-    size_t rootId_;
-    bool fullPathnameSet_;
-    bool componentsSet_;
+    size_t rootId_{};
+    bool fullPathnameSet_{};
+    bool componentsSet_{};
 
-    bool containsCapitals_;
+    bool containsCapitals_{};
 };
 
 #endif /* _SYSTEM_INTERNAL_PATHNAME_IMPL_HPP **************/

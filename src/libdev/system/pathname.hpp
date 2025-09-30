@@ -21,6 +21,8 @@
 #include "stdlib/string.hpp"
 #include <cstring>
 
+#include <memory>
+#include <string>
 //////////////////////////////////////////////////////////////////////
 
 template <class T> class ctl_vector;
@@ -152,7 +154,7 @@ public:
     PER_MEMBER_PERSISTENT_DEFAULT(SysPathName)
 
 private:
-    SysPathNameImpl* pImpl_;
+    std::unique_ptr<SysPathNameImpl> pImpl_;
 
     static std::string& internalRootDirectory();
     static bool& internalRootDirectorySet();

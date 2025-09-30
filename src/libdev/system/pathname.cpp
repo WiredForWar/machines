@@ -42,7 +42,6 @@
 PER_DEFINE_PERSISTENT(SysPathName);
 
 SysPathName::SysPathName()
-
     : pImpl_(new SysPathNameImpl())
 {
     CB_SYS_PATHNAME_DEPIMPL;
@@ -110,8 +109,6 @@ extern bool traceStack;
 
 SysPathName::~SysPathName()
 {
-    delete pImpl_;
-
     LOG_DESTRUCTION;
 }
 
@@ -569,9 +566,7 @@ SysPathName& SysPathName::operator=(const SysPathName& rhs)
 {
     if (this != &rhs)
     {
-        SysPathNameImpl* pNewImpl = new SysPathNameImpl(*rhs.pImpl_);
-        delete pImpl_;
-        pImpl_ = pNewImpl;
+        pImpl_ = std::make_unique<SysPathNameImpl>(*rhs.pImpl_);
     }
 
     POST(*this == rhs);
