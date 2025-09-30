@@ -23,6 +23,8 @@
 #include "recorder/recorder.hpp"
 #include "recorder/private/recpriv.hpp"
 
+#include <memory>
+
 extern void debugTiming(const char*, bool);
 
 //////////////////////////////////////////////////
@@ -468,14 +470,14 @@ bool SndMixer::hasLoadedWaveform(const SndWaveformId& pathname) const
 // load the named sample
 const SndWaveform& SndMixer::loadWaveform(const SndWaveformId& id, bool threeD)
 {
-    SndSampleParameters* pNewParams;
+    std::unique_ptr<SndSampleParameters> pNewParams;
     if (threeD)
     {
         MexPoint3d pos;
-        pNewParams = new SndSampleParameters(id, pos);
+        pNewParams.reset(new SndSampleParameters(id, pos));
     }
     else
-        pNewParams = new SndSampleParameters(id);
+        pNewParams.reset(new SndSampleParameters(id));
 
     pNewParams->setPreload(true);
 
@@ -486,7 +488,6 @@ const SndWaveform& SndMixer::loadWaveform(const SndWaveformId& id, bool threeD)
         ALSample* pNewSample = new ALSample(*pNewParams);
         ALSound::instance().preLoadedSamples_.push_back(pNewSample);
         SndWaveManager::instance().loadedSoundBuffers_.insert(id, pNewSample->alBuffer_);
-        delete pNewParams;
     }
 
     SndWaveform* pWave = SndWaveManager::instance().getWaveForm(id);
