@@ -35,22 +35,22 @@ NetNode::NetNodeStatus& NetNode::currentStatusNoRecord()
 
 #define CB_NetNode_DEPIMPL()                                                                                           \
     PRE(pImpl_);                                                                                                       \
-    CB_DEPIMPL(NetNodeUid*, pNodeUid_);                                                                                \
-    CB_DEPIMPL(NetAppSessionUid*, pAppSessionUid_);                                                                    \
-    CB_DEPIMPL(NetMessageBuffer, messageBuffer_);                                                                      \
-    CB_DEPIMPL(bool, acceptingPing_);                                                                                  \
-    CB_DEPIMPL(const string, pingString_);                                                                             \
-    CB_DEPIMPL(NetNode::Ping, ping_);                                                                                  \
-    CB_DEPIMPL(double, lastPingAllTime_);                                                                              \
-    CB_DEPIMPL(double, lastCompoundTransmitTime_);                                                                     \
-    CB_DEPIMPL(DevTimer, timer_);                                                                                      \
-    CB_DEPIMPL(NetCompoundMessage*, pCompoundMessage_);                                                                \
-    CB_DEPIMPL(ctl_pvector<NetCompoundMessage>, cachedCompoundMessages_);
+    CB_DEPIMPL_AUTO(pNodeUid_);                                                                                        \
+    CB_DEPIMPL_AUTO(pAppSessionUid_);                                                                                  \
+    CB_DEPIMPL_AUTO(messageBuffer_);                                                                                   \
+    CB_DEPIMPL_AUTO(acceptingPing_);                                                                                   \
+    CB_DEPIMPL_AUTO(pingString_);                                                                                      \
+    CB_DEPIMPL_AUTO(ping_);                                                                                            \
+    CB_DEPIMPL_AUTO(lastPingAllTime_);                                                                                 \
+    CB_DEPIMPL_AUTO(lastCompoundTransmitTime_);                                                                        \
+    CB_DEPIMPL_AUTO(timer_);                                                                                           \
+    CB_DEPIMPL_AUTO(pCompoundMessage_);                                                                                \
+    CB_DEPIMPL_AUTO(cachedCompoundMessages_);
 
 NetNode::NetNode(const NetNodeName& name)
-    : pImpl_(new NetNodeImpl))
+    : pImpl_(new NetNodeImpl)
 {
-    CB_NetNode_DEPIMPL(;
+    CB_NetNode_DEPIMPL();
 
     PRE(isValidNoRecord());
     pNodeUid_ = NULL;
@@ -242,7 +242,7 @@ void NetNode::ping(const NetNodeUid& recipientUid)
 // virtual
 void NetNode::sendMessage(
     const NetPriority& priority,
-    const NetMessage::NetMessageRecipients& /*to*/,
+    const NetMessageRecipients& /*to*/,
     const NetMessageBody& body)
 {
     CB_NetNode_DEPIMPL();
