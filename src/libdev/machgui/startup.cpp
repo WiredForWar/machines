@@ -106,8 +106,6 @@ inline constexpr bool cDemoVersion =
 #include "machlog/score.hpp"
 #include "machlog/RecentEventsManager.hpp"
 
-#include "network/node.hpp"
-#include "network/session.hpp"
 #include "device/cd.hpp"
 #include "device/butevent.hpp"
 #include "afx/resource.hpp"

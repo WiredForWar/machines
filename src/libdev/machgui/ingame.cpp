@@ -103,7 +103,7 @@
 #include "base/IProgressReporter.hpp"
 #include "machgui/internal/strings.hpp"
 #include "sim/manager.hpp"
-#include "network/node.hpp"
+#include "network/netnet.hpp"
 #include "device/time.hpp"
 #include "system/registry.hpp"
 
@@ -1451,15 +1451,17 @@ void MachInGameScreen::asynchronousUpdate()
         pSceneManager_->out() << *selectedActors().front() << std::endl;
     if (showNetworkPing_ && MachLogNetwork::instance().isNetworkGame())
     {
+        /*
         const NetNode& node = MachLogNetwork::instance().node();
-        /*      const NetNode::Ping& pingInfo = node.pingInformation();
+        const NetNode::Ping& pingInfo = node.pingInformation();
         for( NetNode::Ping::const_iterator i = pingInfo.begin(); i != pingInfo.end(); ++i )
         {
             if( (*i).first != node.nodeUid() )
             {
                 pSceneManager_->out() << "Current ping : " << (*i).first.nodeName() << " " << (*i).second << std::endl;
             }
-        }*/
+        }
+        */
     }
 #endif
 }

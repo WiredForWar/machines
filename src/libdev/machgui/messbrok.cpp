@@ -17,7 +17,6 @@
 #include "machgui/chatmsgs.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
-#include "network/node.hpp"
 #include "system/pathname.hpp"
 
 #pragma pack(push, 1)

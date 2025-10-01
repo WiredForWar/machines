@@ -23,7 +23,6 @@
 #include "network/netdefs.hpp"
 #include "network/netnet.hpp"
 #include "network/session.hpp"
-#include "network/node.hpp"
 
 class NetIRecorder
 // Canonical form revoked

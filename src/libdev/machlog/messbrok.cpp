@@ -14,7 +14,6 @@
 #include "network/session.hpp"
 #include "network/nodeuid.hpp"
 #include "network/netnet.hpp"
-#include "network/node.hpp"
 #include "network/sysmess.hpp"
 
 #include "phys/phys.hpp"

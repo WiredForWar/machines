@@ -4,7 +4,6 @@
 
 #include "profiler/profiler.hpp"
 
-#include "network/node.hpp"
 #include "network/nodeuid.hpp"
 #include "network/sessuid.hpp"
 #include "network/session.hpp"

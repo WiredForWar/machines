@@ -1,5 +1,4 @@
 #include "network/messhead.hpp"
-#include "network/node.hpp"
 #include "network/netdefs.hpp"
 // #include "network/priority.hpp"
 

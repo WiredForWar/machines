@@ -35,7 +35,6 @@
 #include "network/netnet.hpp"
 #include "network/session.hpp"
 #include "network/nodeuid.hpp"
-#include "network/node.hpp"
 #include "system/winapi.hpp"
 #include "machgui/menus_helper.hpp"
 

@@ -12,7 +12,6 @@
 #include "network/session.hpp"
 #include "network/sessuid.hpp"
 #include "network/netnet.hpp"
-#include "network/node.hpp"
 #include "network/netdefs.hpp"
 #include "network/internal/netinet.hpp"
 #include "network/internal/sessioni.hpp"

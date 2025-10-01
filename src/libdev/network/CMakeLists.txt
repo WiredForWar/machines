@@ -24,9 +24,9 @@ set(NETWORK_SOURCES
     netinet.cpp
     netnet.cpp
     netnet.hpp
-    # node.cpp // somewhy unused
-    node.hpp
-    nodei.cpp
+    # node.cpp # unused
+    # node.hpp # unused
+    # nodei.cpp # unused
     nodeuid.cpp
     nodeuid.hpp
     pinghelp.cpp
@@ -34,9 +34,9 @@ set(NETWORK_SOURCES
     priority.cpp
     priority.hpp
     recorder.cpp
-    # session.cpp // somewhy unused
+    # session.cpp # unused
     session.hpp
-    # sessioni.cpp // somewhy unused
+    # sessioni.cpp # unused
     sessuid.cpp
     sessuid.hpp
     sysmess.cpp

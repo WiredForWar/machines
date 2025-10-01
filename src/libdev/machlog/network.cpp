@@ -13,7 +13,6 @@
 #include "network/netnet.hpp"
 #include "network/session.hpp"
 #include "network/nodeuid.hpp"
-#include "network/node.hpp"
 #include "machlog/messbrok.hpp"
 #include "machlog/scenario.hpp"
 #include "machlog/internal/netimpl.hpp"
