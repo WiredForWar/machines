@@ -17,7 +17,6 @@
 #include "mathex/point3d.hpp"
 
 class MexTransform3d;
-class MexSausage3d;
 
 class MexSphere3d
 // Canonical form revoked
@@ -38,7 +37,6 @@ public:
     void center(const MexPoint3d& newCenter) { center_ = newCenter; }
 
     // true if the first argument intersects this
-    bool intersects(const MexSausage3d& otherShape) const;
     bool intersects(const MexSphere3d& otherShape) const;
     //  virtual void embed( const ctl_vector<MexPoint3d>& );
 

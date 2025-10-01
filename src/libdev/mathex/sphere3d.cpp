@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "mathex/sphere3d.hpp"
-#include "mathex/sausage3d.hpp"
 #include "mathex/line3d.hpp"
 #include "mathex/transf3d.hpp"
 
@@ -38,23 +37,6 @@ void MexSphere3d::CLASS_INVARIANT
 void MexSphere3d::transform(const MexTransform3d& t)
 {
     t.transform(&center_);
-}
-
-bool MexSphere3d::intersects(const MexSausage3d& otherShape) const
-{
-    PRE(otherShape.length() > 0);
-
-    bool result;
-
-    MATHEX_SCALAR axisDistance = MexLine3d::sqrEuclidianDistance(
-        otherShape.startPoint(),
-        otherShape.endPoint(),
-        otherShape.length(),
-        center());
-
-    result = (axisDistance <= (radius() + otherShape.radius()) * (radius() + otherShape.radius()));
-
-    return result;
 }
 
 bool MexSphere3d::intersects(const MexSphere3d& otherShape) const

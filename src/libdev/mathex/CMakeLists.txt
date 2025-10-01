@@ -68,7 +68,6 @@ set(MATHEX_SOURCES
     random.hpp
     sausag2d.cpp
     sausag2d.hpp
-    sausage3d.hpp
     size2d.cpp
     size2d.hpp
     sphere3d.cpp
