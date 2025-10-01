@@ -5,8 +5,7 @@
 #include "network/netdefs.hpp"
 #include "network/sessuid.hpp"
 #include "network/nodeuid.hpp"
-
-#include "ctl/map.hpp"
+#include "network/NetPingInformation.hpp"
 
 class NetAppSessionUid;
 class NetPriority;
@@ -21,6 +20,8 @@ class NetNode
 // cannonical form revoked
 {
 public:
+    using Ping = NetPing;
+
     enum NetNodeStatus
     {
         NETNODE_OK,
@@ -69,27 +70,6 @@ public:
     bool isAcceptingPing() const;
 
     int lastPingTime() const;
-
-    struct NetPingInformation
-    {
-        double lastTimePingAsked_;
-        double lastTimePingSet_;
-        double lastPingTime_;
-        double lastProperPingTime_;
-        friend bool operator==(const NetPingInformation& lhs, const NetPingInformation& rhs)
-        {
-            return lhs.lastTimePingAsked_ == rhs.lastTimePingAsked_ && lhs.lastTimePingSet_ == rhs.lastTimePingSet_
-                && lhs.lastPingTime_ == rhs.lastPingTime_ && lhs.lastProperPingTime_ == rhs.lastProperPingTime_;
-        }
-        friend bool operator<(const NetPingInformation& lhs, const NetPingInformation& rhs)
-        {
-            return lhs.lastTimePingAsked_ < rhs.lastTimePingAsked_ && lhs.lastTimePingSet_ < rhs.lastTimePingSet_
-                && lhs.lastPingTime_ < rhs.lastPingTime_ && lhs.lastProperPingTime_ < rhs.lastProperPingTime_;
-        }
-        friend std::ostream& operator<<(std::ostream& o, const NetPingInformation& pi);
-    };
-
-    using Ping = ctl_map<NetNodeUid, NetPingInformation, std::less<NetNodeUid>>;
 
     void pingAll();
     const Ping& pingInformation() const;

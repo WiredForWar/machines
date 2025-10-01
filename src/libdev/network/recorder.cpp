@@ -396,16 +396,16 @@ void NetIRecorder::recordNodeUid(const NetNodeUid& nodeUid) const
     RecRecorderPrivate::instance().recordNetworkString(nodeUid.nodeName());
 }
 
-NetNode::Ping NetIRecorder::playbackPing() const
+NetPing NetIRecorder::playbackPing() const
 {
     const uint size = RecRecorderPrivate::instance().playbackNetworkUint();
 
-    NetNode::Ping ping;
+    NetPing ping;
 
     for (size_t i = 0; i < size; ++i)
     {
         NetNodeUid nodeUid = playbackNodeUid();
-        NetNode::NetPingInformation info;
+        NetPingInformation info;
         RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &info), sizeof(info));
         ping.insert(nodeUid, info);
     }
@@ -413,14 +413,14 @@ NetNode::Ping NetIRecorder::playbackPing() const
     return ping;
 }
 
-void NetIRecorder::recordPing(const NetNode::Ping& ping) const
+void NetIRecorder::recordPing(const NetPing& ping) const
 {
     RecRecorderPrivate::instance().recordNetworkUint(ping.size());
 
-    for (NetNode::Ping::const_iterator i = ping.begin(); i != ping.end(); ++i)
+    for (NetPing::const_iterator i = ping.begin(); i != ping.end(); ++i)
     {
         recordNodeUid((*i).first);
-        const NetNode::NetPingInformation& info = (*i).second;
+        const NetPingInformation& info = (*i).second;
         RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &info), sizeof(info));
     }
 }

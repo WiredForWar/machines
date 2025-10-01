@@ -18,6 +18,7 @@
 
 #include "base/base.hpp"
 
+#include "network/NetPingInformation.hpp"
 #include "network/NetSessionInfo.hpp"
 #include "network/netdefs.hpp"
 #include "network/netnet.hpp"
@@ -96,8 +97,8 @@ public:
     NetNodeUid playbackNodeUid() const;
     void recordNodeUid(const NetNodeUid&) const;
 
-    NetNode::Ping playbackPing() const;
-    void recordPing(const NetNode::Ping&) const;
+    NetPing playbackPing() const;
+    void recordPing(const NetPing&) const;
 
     double playbacklastPingAllTime() const;
     void recordLastPingAllTime(double) const;
