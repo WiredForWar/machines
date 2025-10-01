@@ -99,8 +99,6 @@ public:
     // time in ms since last ping all call.
     double lastPingAllTime() const;
 
-    using NetMessageBuffer = ctl_pvector<NetMessage>;
-
     // To use compound messaging call this with true or false.
     // Internally this is safe and multiple calls are coped with gracefully and correctly.
     void useCompoundMessaging(bool);

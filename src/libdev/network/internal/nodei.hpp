@@ -46,7 +46,7 @@ private:
     NetNodeUid* pNodeUid_; // ORDER DEPENDENCY
     NetAppSessionUid* pAppSessionUid_; // ORDER DEPENDENCY
 
-    NetNode::NetMessageBuffer messageBuffer_;
+    NetMessageBuffer messageBuffer_;
 
     bool acceptingPing_;
 

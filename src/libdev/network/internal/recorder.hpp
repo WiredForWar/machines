@@ -102,8 +102,8 @@ public:
     double playbacklastPingAllTime() const;
     void recordLastPingAllTime(double) const;
 
-    void playbackMessageBuffer(NetNode::NetMessageBuffer*);
-    void recordMessageBuffer(const NetNode::NetMessageBuffer&);
+    void playbackMessageBuffer(NetMessageBuffer*);
+    void recordMessageBuffer(const NetMessageBuffer&);
 
     void CLASS_INVARIANT;
 
@@ -146,7 +146,7 @@ private:
         NODE_IDS_NOT_EQUAL
     };
 
-    NetNode::NetMessageBuffer previousMessageBuffer_;
+    NetMessageBuffer previousMessageBuffer_;
     NetAppSession::NodeIds previousNodeIds_;
 };
 

@@ -172,7 +172,7 @@ private:
 
     ///////////////////////////////
 
-    NetNode::NetMessageBuffer messageBuffer_;
+    NetMessageBuffer messageBuffer_;
     NetNetwork::Sessions sessions_;
     double lastSessionsUpdate_{};
     Peers peers_;

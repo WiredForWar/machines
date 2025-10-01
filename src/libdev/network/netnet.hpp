@@ -20,6 +20,8 @@ class NetINetwork;
 class NetSystemMessageHandler;
 class NetComPortAddress;
 
+using NetMessageBuffer = ctl_pvector<NetMessage>;
+
 class NetNetwork
 {
 public:

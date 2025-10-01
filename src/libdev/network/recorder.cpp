@@ -435,7 +435,7 @@ void NetIRecorder::recordLastPingAllTime(double d) const
     RecRecorderPrivate::instance().recordNetworkDouble(d);
 }
 
-void NetIRecorder::playbackMessageBuffer(NetNode::NetMessageBuffer* pMessageBuffer)
+void NetIRecorder::playbackMessageBuffer(NetMessageBuffer* pMessageBuffer)
 {
     while (! reachedEndOfMessageBufferUpdate())
     {
@@ -454,7 +454,7 @@ bool NetIRecorder::reachedEndOfMessageBufferUpdate() const
     return RecRecorderPrivate::instance().playbackNetworkInt() == END_OF_BUFFER;
 }
 
-void NetIRecorder::recordMessageBuffer(const NetNode::NetMessageBuffer& messageBuffer)
+void NetIRecorder::recordMessageBuffer(const NetMessageBuffer &messageBuffer)
 {
     //  Find the first item in the message buffer that is new (i.e. is not in the
     //  previous message buffer). We then write out this item and all items after
@@ -462,9 +462,9 @@ void NetIRecorder::recordMessageBuffer(const NetNode::NetMessageBuffer& messageB
     //  of the buffer - an assertion checks for this.
 
     bool foundNewItem = false;
-    NetNode::NetMessageBuffer::const_iterator newItem;
+    NetMessageBuffer::const_iterator newItem;
 
-    for (NetNode::NetMessageBuffer::const_iterator i = messageBuffer.begin();
+    for (NetMessageBuffer::const_iterator i = messageBuffer.begin();
          i != messageBuffer.end() && ! foundNewItem;
          ++i)
     {
@@ -480,7 +480,7 @@ void NetIRecorder::recordMessageBuffer(const NetNode::NetMessageBuffer& messageB
 
     if (foundNewItem)
     {
-        for (NetNode::NetMessageBuffer::const_iterator i = newItem; i != messageBuffer.end(); ++i)
+        for (NetMessageBuffer::const_iterator i = newItem; i != messageBuffer.end(); ++i)
         {
             const NetMessage* pMessage = (*i);
             ASSERT(
