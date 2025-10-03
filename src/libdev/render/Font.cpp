@@ -39,6 +39,33 @@ public:
             return false;
         }
 
+        {
+            struct Version
+            {
+                int Major{};
+                int Minor{};
+                int Patch{};
+
+                bool operator==(const Version& another) const = default;
+            };
+
+            Version runtimeV;
+            FT_Library_Version(library, &runtimeV.Major, &runtimeV.Minor, &runtimeV.Patch);
+
+            constexpr Version compiledWithVersion{FREETYPE_MAJOR, FREETYPE_MINOR, FREETYPE_PATCH};
+            if (runtimeV == compiledWithVersion)
+                spdlog::info("FreeType version: {}.{}.{}", runtimeV.Major, runtimeV.Minor, runtimeV.Patch);
+            else
+                spdlog::info(
+                    "FreeType version: {}.{}.{} (compiled with {}.{}.{})",
+                    runtimeV.Major,
+                    runtimeV.Minor,
+                    runtimeV.Patch,
+                    compiledWithVersion.Major,
+                    compiledWithVersion.Minor,
+                    compiledWithVersion.Patch);
+        }
+
         return true;
     }
 
