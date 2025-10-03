@@ -1,7 +1,6 @@
 #include "internal/FontImpl.hpp"
 
 #include "render/Font.hpp"
-#include "system/pathname.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -126,8 +125,8 @@ bool FontImpl::prepareTexture()
         return false;
 
     /* Load a font */
-    SysPathName fontFile("gui/" + (fontName + ".ttf"));
-    FontFaceWrapper faceWrapper(fontsManager->library, fontFile.pathname());
+    std::string fontFile("gui/" + fontName + ".ttf");
+    FontFaceWrapper faceWrapper(fontsManager->library, fontFile);
     if (!faceWrapper.isValid())
         return false;
 
@@ -186,7 +185,8 @@ bool FontImpl::prepareTexture()
     /* Paste all glyph bitmaps into the texture, remembering the offset */
     int ox = 0;
     int oy = 0;
-    GLuint* rgbaBitmap = _NEW_ARRAY(GLuint, pixelSize * pixelSize);
+    std::vector<GLuint> rgbaBitmap;
+    rgbaBitmap.resize(pixelSize * pixelSize);
     rowh = 0;
 
     for (uint32_t i = 32; i <= maxCharacter; i++)
@@ -213,7 +213,7 @@ bool FontImpl::prepareTexture()
             g->bitmap.rows,
             GL_RGBA,
             GL_UNSIGNED_BYTE,
-            rgbaBitmap);
+            rgbaBitmap.data());
 
         CharData& data = charData_[i];
         data.ax = g->advance.x >> 6;
@@ -233,7 +233,6 @@ bool FontImpl::prepareTexture()
         rowh = std::max(rowh, g->bitmap.rows);
         ox += g->bitmap.width + 1;
     }
-    _DELETE_ARRAY(rgbaBitmap);
 
     return true;
 }
