@@ -1,9 +1,8 @@
-#ifndef GUI_TTF_FONT_IMPL_HPP
-#define GUI_TTF_FONT_IMPL_HPP
-
-#include "render/Font.hpp"
+#pragma once
 
 #include <GL/glew.h>
+
+#include <string>
 
 namespace Render
 {
@@ -50,5 +49,3 @@ protected:
 };
 
 } // Render namespace
-
-#endif // GUI_TTF_FONT_IMPL_HPP
