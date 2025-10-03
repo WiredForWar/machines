@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <limits>
-#include <ostream>
 #include <vector>
 
 // FONTS
@@ -150,7 +149,7 @@ bool FontImpl::prepareTexture()
     {
         if (FT_Load_Char(face, i, FT_LOAD_RENDER))
         {
-            std::cerr << "Loading font character " << i << " failed!" << std::endl;
+            spdlog::warn("Loading font character {} failed!", i);
             continue;
         }
         if (roww + g->bitmap.width + 1 >= MAXWIDTH)
@@ -193,10 +192,7 @@ bool FontImpl::prepareTexture()
     for (uint32_t i = 32; i <= maxCharacter; i++)
     {
         if (FT_Load_Char(face, i, FT_LOAD_RENDER))
-        {
-            std::cerr << "Loading font character " << i << " failed!" << std::endl;
             continue;
-        }
 
         if (ox + g->bitmap.width + 1 >= MAXWIDTH)
         {
