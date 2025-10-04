@@ -149,9 +149,6 @@ protected:
             absCopy.y(absCopy.y() + 19 * Gui::uiScaleFactor());
             absCopy.x(absCopy.x() + width() - 2 * Gui::uiScaleFactor());
 
-            char buffer[8];
-            snprintf(buffer, sizeof(buffer), "%zu", numThisType_);
-
             // Render the text
             Gui::TextOptions options;
             options.setAlignment(Gui::AlignRight);
@@ -160,7 +157,7 @@ protected:
             options.setColor(Gui::WHITE());
             options.setShadow(1, 1, shadowColor);
 
-            GuiPainter::instance().drawText(absCopy, buffer, options, MachGui::navigationButtonNumberFontSize());
+            GuiPainter::instance().drawText(absCopy, std::to_string(numThisType_), options, MachGui::navigationButtonNumberFontSize());
         }
     }
 

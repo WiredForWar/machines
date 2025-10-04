@@ -479,7 +479,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
         options.setShadow(1, 1, Gui::BLACK());
 
         const int fontPixelSize = MachGui::corralInfoFontSize();
-        GuiPainter::instance().drawText(textPos, concat.c_str(), options, fontPixelSize);
+        GuiPainter::instance().drawText(textPos, concat, options, fontPixelSize);
     }
 }
 
