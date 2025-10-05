@@ -159,7 +159,7 @@ const FontImpl* FontImpl::get(const Font* parent)
     return parent->pImpl_.get();
 }
 
-const FontImpl::CharData* FontImpl::getChar(char c) const
+const FontImpl::CharData* FontImpl::getChar(int32_t c) const
 {
     uint8_t index = c;
     return &charData_[index];

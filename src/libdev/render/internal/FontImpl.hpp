@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <cstdint>
+
 namespace Render
 {
 
@@ -28,21 +30,22 @@ public:
 
     struct CharData
     {
-        float ax; // advance.x
-        float ay; // advance.y
+        float ax{}; // advance.x
+        float ay{}; // advance.y
 
-        int bw; // bitmap.width;
-        int bh; // bitmap.height;
+        int bw{}; // bitmap.width;
+        int bh{}; // bitmap.height;
 
-        int bl; // bitmap_left;
-        int bt; // bitmap_top;
+        int bl{}; // bitmap_left;
+        int bt{}; // bitmap_top;
 
-        float tx; // x offset of glyph in texture coordinates
-        float ty; // y offset of glyph in texture coordinates
-        float tx2, ty2;
+        float tx{}; // x offset of glyph in texture coordinates
+        float ty{}; // y offset of glyph in texture coordinates
+        float tx2{};
+        float ty2{};
     };
 
-    const CharData* getChar(char c) const;
+    const CharData* getChar(int32_t c) const;
 
 protected:
     CharData charData_[256]; // character information
