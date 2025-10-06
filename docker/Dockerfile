@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 USER root
 
@@ -8,6 +8,7 @@ RUN apt-get update --fix-missing && \
         file \
         sudo \
         apt-utils \
+        ninja-build \
         cmake \
         cmake-curses-gui \
         mingw-w64 \
