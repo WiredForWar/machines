@@ -37,26 +37,22 @@ static std::string concatRemainingTokens(UtlLineTokeniser& parser, size_t fromTo
 
 static RenColour parseColour(UtlLineTokeniser& parser, size_t fromToken)
 {
-    const std::string tmp = concatRemainingTokens(parser, fromToken);
-    char* stringCopy = strdup(tmp.c_str());
-    std::istringstream istr(stringCopy);
+    std::string tmp = concatRemainingTokens(parser, fromToken);
+    std::istringstream istr(tmp);
 
     RenColour colour;
     istr >> colour;
-    free(stringCopy);
 
     return colour;
 }
 
 static float parseFloat(UtlLineTokeniser& parser, size_t fromToken)
 {
-    const std::string tmp = concatRemainingTokens(parser, fromToken);
-    char* stringCopy = strdup(tmp.c_str());
-    std::istringstream istr(stringCopy);
+    std::string tmp = concatRemainingTokens(parser, fromToken);
+    std::istringstream istr(tmp);
 
     float f;
     istr >> f;
-    free(stringCopy);
 
     return f;
 }
