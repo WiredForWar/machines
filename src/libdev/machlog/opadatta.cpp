@@ -141,8 +141,8 @@ bool MachLogAdminAttackOperation::doStart()
             // attack op taking him to the target while the others are using a group move
             pActor_->currentTarget(pDirectObject_);
             pActor_->strategy().newOperation(
-                new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-                true;
+                new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+                true);
         }
     }
 
@@ -232,8 +232,8 @@ PhysRelativeTime MachLogAdminAttackOperation::doUpdate()
         // note that the administrator will move slightly separately from his subordinate group, relying on his attack
         // op taking him to the target while the others are using a group move
         pActor_->strategy().newOperation(
-            new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-            true;
+            new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+            true);
     }
 
     return 5;

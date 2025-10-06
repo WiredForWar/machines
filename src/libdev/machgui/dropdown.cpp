@@ -186,8 +186,7 @@ void MachGuiDropDownListBox::update()
     {
         if (nextItem_ < itemText_.size())
         {
-            //new MachGuiDropDownListBoxItem( &startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_ )
-            //);
+            // new MachGuiDropDownListBoxItem( &startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_ );
             createListBoxItem(&startupScreens(), this, itemWidth_, itemText_[nextItem_], whiteFont_);
 
             childAdded();

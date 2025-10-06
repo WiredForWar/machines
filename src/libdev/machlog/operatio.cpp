@@ -44,7 +44,7 @@ MachLogOperation::MachLogOperation(
 MachLogOperation::~MachLogOperation()
 {
     LOG_DESTRUCTION;
-    // HAL_STREAM("MLOperation::DTOR\n" ;
+    // HAL_STREAM("MLOperation::DTOR\n");
     delete pImpl_;
 }
 

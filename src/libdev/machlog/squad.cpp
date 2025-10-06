@@ -42,7 +42,7 @@ MachLogSquadron::MachLogSquadron(MachLogRace* pRace, W4dEntity* pPhysObject, int
     , pImpl_(new MachLogSquadronImpl(squadronId))
 {
     // this assertion is no longer valid for the AI races.
-    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" ;
+    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" );
     CB_DEPIMPL(MachLogSquadron::DesiredMachineList, desiredMachineList_);
     desiredMachineList_.reserve(10);
 
@@ -54,7 +54,7 @@ MachLogSquadron::MachLogSquadron(MachLogRace* pRace, W4dEntity* pPhysObject, int
     , pImpl_(new MachLogSquadronImpl(squadronId))
 {
     // this assertion is no longer valid for the AI races.
-    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" ;
+    //   ASSERT( squadronId > 0 and squadronId < 11,"Bad ID passed into MLSquadron\n" );
     CB_DEPIMPL(MachLogSquadron::DesiredMachineList, desiredMachineList_);
     desiredMachineList_.reserve(10);
 

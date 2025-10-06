@@ -122,7 +122,7 @@ MachLogMachineMotionSequencer::~MachLogMachineMotionSequencer()
         //  The reason for this apparantly unnecessary set of braces
         //  is to ensure that the MachLogMotionSequencerEntryExit
         //  object (created by the LOG_ENTER macro) is destroyed
-        //  before the delete pImpl_ ) call.
+        //  before the 'delete pImpl_' call.
         //  If it isn't destroyed, it will try and write to the stream
         //  that has just been destroyed because the pimpl has been
         //  destroyed.

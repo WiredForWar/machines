@@ -253,7 +253,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
 
     W4dUniformLight* pLight = new W4dUniformLight(pMachine, MexVec3(1, 0, 0), 30));
 
-    pLight->colour( RenColour( 3, 3, 3);
+    pLight->colour( RenColour( 3, 3, 3) );
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.7);
     pLight->quadraticAttenuation(0.3);
@@ -295,7 +295,7 @@ PhysRelativeTime MachPhysPulseWeapon::applyVictimAnimation(
     //a strong unuiform light generated at he point of impact
     W4dUniformLight* pLight = new W4dUniformLight(pConstruction, MexVec3(1, 0, 0), 30));
 
-    pLight->colour( RenColour( 3, 3, 3);
+    pLight->colour( RenColour( 3, 3, 3) );
     pLight->constantAttenuation(0);
     pLight->linearAttenuation(0.7);
     pLight->quadraticAttenuation(0.3);

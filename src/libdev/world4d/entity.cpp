@@ -1476,7 +1476,7 @@ void W4dEntity::replaceMeshes(const W4dEntity& entity)
         const W4dEntityImpl::MeshData& meshData = *i;
 
         if (meshData.mesh)
-            add(new RenMeshInstance(*(meshData.mesh))), sqrt(meshData.distance), id;
+            add(new RenMeshInstance(*(meshData.mesh)), sqrt(meshData.distance), id);
         else
             add(nullptr, sqrt(meshData.distance), id);
 

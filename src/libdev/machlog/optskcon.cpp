@@ -245,8 +245,7 @@ bool MachLogTaskConstructOperation::placeConstruction(
 
     HAL_STREAM("MLTaskConstructOperation::placeConstruction exit\n");
     return isValid;
-    //                  MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
-    //                 ;
+    // MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) );
 }
 
 // static
@@ -295,8 +294,7 @@ bool MachLogTaskConstructOperation::couldPlaceConstruction(const MachLogProducti
         isValid = ! MachLogSpacialManipulation::intersectsWithMotionChunks(globalBorder);
 
     return isValid;
-    //                  MachLogMine * pConstruction_ = new MachLogMine( pRace, 1, (*i)->position(), MexRadians( 0 ) )
-    //                 ;
+    // MachLogMine* pConstruction_ = new MachLogMine(pRace, 1, (*i)->position(), MexRadians(0));
 }
 
 void MachLogTaskConstructOperation::issueConstructOperation(MachLogConstruction* pConstruction)

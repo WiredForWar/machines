@@ -351,8 +351,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                     else
                     {
                         pActor->strategy().newOperation(
-                            new MachLogAttackOperation(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-                            true;
+                            new MachLogAttackOperation(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+                            true);
                     }
 
                     // don't check again for another target in the next three seconds (this will be cancelled if the
@@ -420,13 +420,13 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
                     if (pMach->id() != currentTarget().id())
                     {
                         currentTarget(pMach);
-                        pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach)), true;
+                        pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach), true);
                     }
                 }
                 else
                 {
                     currentTarget(pMach);
-                    pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach)), true;
+                    pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach), true);
                 }
             }
         }
@@ -571,8 +571,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
                 new MachLogMissileEmplacementAttackOperation(
                     pActor,
                     pMach,
-                    MachLogAttackOperation::TERMINATE_ON_CHANGE)),
-                false;
+                    MachLogAttackOperation::TERMINATE_ON_CHANGE),
+                false);
         }
     }
 }

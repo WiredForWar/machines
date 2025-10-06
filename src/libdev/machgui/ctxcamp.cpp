@@ -333,8 +333,8 @@ void MachGuiCtxCampaign::buttonEvent(MachGui::ButtonEvent be)
             strings.push_back(pSelectedPlayer_->name());
             pStartupScreens_->displayMsgBox(
                 IDS_MENUMSG_DELETEPLAYER,
-                new MachGuiPlayerDeleteMessageBoxResponder(this)),
-                strings;
+                new MachGuiPlayerDeleteMessageBoxResponder(this),
+                strings);
         }
         else
         {

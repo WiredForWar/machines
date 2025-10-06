@@ -559,8 +559,8 @@ bool MachGuiCtxImReady::okayToSwitchContext()
                     IDS_MENUMSG_QUIT,
                     new MachGuiExitToInternetMessageBoxResponder(
                         pStartupScreens_,
-                        MachGuiExitToInternetMessageBoxResponder::DO_NOT_UNLOAD_GAME)),
-                    true;
+                        MachGuiExitToInternetMessageBoxResponder::DO_NOT_UNLOAD_GAME),
+                    true);
 
                 NETWORK_STREAM("lobbied game so returning false\n");
                 NETWORK_INDENT(-2);

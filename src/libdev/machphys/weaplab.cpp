@@ -23,9 +23,9 @@ MachPhysWeaponsLab::MachPhysWeaponsLab(
     size_t level,
     MachPhys::Race race)
     : MachPhysConstruction(factory(level), pParent, localTransform, level, race)
-    , pData_(new MachPhysWeaponsLabData(factory(level).data(), globalTransform())))
+    , pData_(new MachPhysWeaponsLabData(factory(level).data(), globalTransform()))
 {
-    W4dSoundManager::instance().play(this, SID_LABS, PhysAbsoluteTime(0), 0;
+    W4dSoundManager::instance().play(this, SID_LABS, PhysAbsoluteTime(0), 0);
     //    W4dSoundManager::instance().play( this, SysPathName( "sounds/labs.wav" ),
     //                                      PhysAbsoluteTime( 0 ), 100.0, 8.0,
     //                                      W4dSoundManager::LOOP_CONTINUOUSLY );
@@ -45,7 +45,7 @@ MachPhysWeaponsLab::MachPhysWeaponsLab(W4dEntity* pParent, size_t level)
         10.0,
         level,
         MachPhysData::instance().weaponsLabData(level))
-    , pData_(new MachPhysWeaponsLabData(MachPhysData::instance().weaponsLabData(level), W4dTransform3d())))
+    , pData_(new MachPhysWeaponsLabData(MachPhysData::instance().weaponsLabData(level), W4dTransform3d()))
 {
     TEST_INVARIANT;
 }

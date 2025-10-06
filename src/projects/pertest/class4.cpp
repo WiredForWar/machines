@@ -39,7 +39,7 @@ ostream& operator<<(ostream& ostr, const Class4& t)
 void perWrite(PerOstream& str, const Class4& ob)
 {
     str << ob.pC1_;
-    PER_WRITE_RAW_POINTER(str, ob.pC2_;
+    PER_WRITE_RAW_POINTER(str, ob.pC2_);
     str << ob.pC3_;
     str << ob.c3_;
     str << ob.val_;

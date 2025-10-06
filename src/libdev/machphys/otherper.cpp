@@ -157,7 +157,6 @@ MachPhysOtherPersistence::MachPhysOtherPersistence()
     : pImpl_(new MachPhysOtherPersistenceImpl())
     , root_(50000)
 {
-    // pImpl_->root_ = W4dRoot(50000 ;
     pImpl_->pPulseRifle_ = nullptr;
     pImpl_->pPulseCannon_ = nullptr;
     pImpl_->pPlasmaBoltRifle_ = nullptr;

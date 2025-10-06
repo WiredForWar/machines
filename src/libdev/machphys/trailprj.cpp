@@ -54,7 +54,7 @@ MachPhysTrailedProjectile::MachPhysTrailedProjectile(
     , pFlame_(nullptr)
     , level_(level)
 {
-    // PRE( level > 0 and level < 10;
+    // PRE( level > 0 and level < 10 );
 
     TEST_INVARIANT;
 }
@@ -108,7 +108,7 @@ MachPhysTrailedProjectile::~MachPhysTrailedProjectile()
 
 void MachPhysTrailedProjectile::update()
 {
-    // CB_DEPIMPL(MachPhysVapourTrail*, pVapourTrail_;
+    // CB_DEPIMPL(MachPhysVapourTrail*, pVapourTrail_ );
     // CB_DEPIMPL(MexVec3, vapourTrailOffset_ );
     // CB_DEPIMPL(PhysAbsoluteTime, destructionTime_ );
 
