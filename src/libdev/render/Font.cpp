@@ -1,6 +1,7 @@
 #include "internal/FontImpl.hpp"
 
 #include "render/Font.hpp"
+#include "render/FontsManager.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -8,6 +9,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <memory>
 #include <vector>
 
 // FONTS
@@ -20,96 +22,12 @@ namespace Render
 // Maximum font texture width
 constexpr int MAXWIDTH = 1024;
 
-class FontsManager
-{
-public:
-    ~FontsManager()
-    {
-        FT_Done_FreeType(library);
-    }
-
-    bool init()
-    {
-        FT_Error result = FT_Init_FreeType(&library);
-        if (result)
-        {
-            spdlog::critical("Could not init freetype library! FT_Error: {}", result);
-            return false;
-        }
-
-        {
-            struct Version
-            {
-                int Major{};
-                int Minor{};
-                int Patch{};
-
-                bool operator==(const Version& another) const = default;
-            };
-
-            Version runtimeV;
-            FT_Library_Version(library, &runtimeV.Major, &runtimeV.Minor, &runtimeV.Patch);
-
-            constexpr Version compiledWithVersion{FREETYPE_MAJOR, FREETYPE_MINOR, FREETYPE_PATCH};
-            if (runtimeV == compiledWithVersion)
-                spdlog::info("FreeType version: {}.{}.{}", runtimeV.Major, runtimeV.Minor, runtimeV.Patch);
-            else
-                spdlog::info(
-                    "FreeType version: {}.{}.{} (compiled with {}.{}.{})",
-                    runtimeV.Major,
-                    runtimeV.Minor,
-                    runtimeV.Patch,
-                    compiledWithVersion.Major,
-                    compiledWithVersion.Minor,
-                    compiledWithVersion.Patch);
-        }
-
-        return true;
-    }
-
-    FT_Library library{};
-};
-
 static std::unique_ptr<FontsManager> fontsManager;
-
-class FontFaceWrapper
-{
-public:
-    FontFaceWrapper(FT_Library library, const std::string& pathName)
-    {
-        initResult_ = FT_New_Face(library, pathName.c_str(), 0, &face_);
-        if (initResult_)
-        {
-            spdlog::critical("Could not open font {}. FT_Error: {}", pathName, initResult_);
-        }
-    }
-
-    ~FontFaceWrapper()
-    {
-        if (face_)
-            FT_Done_Face(face_);
-    }
-
-    FT_Face& getFace()
-    {
-        return face_;
-    }
-
-    bool isValid() const
-    {
-        return face_ && (initResult_ == 0);
-    }
-
-protected:
-    FT_Face face_{};
-    FT_Error initResult_{};
-};
 
 void initFonts()
 {
     spdlog::info("Initializing FreeType library...");
     fontsManager.reset(new FontsManager);
-    fontsManager->init();
 }
 
 void cleanUpFonts()
@@ -124,13 +42,10 @@ bool FontImpl::prepareTexture()
     if (!fontsManager)
         return false;
 
-    /* Load a font */
-    std::string fontFile("gui/" + fontName + ".ttf");
-    FontFaceWrapper faceWrapper(fontsManager->library, fontFile);
-    if (!faceWrapper.isValid())
+    FT_Face face = fontsManager->getFace(fontName);
+    if (!face)
         return false;
 
-    FT_Face &face = faceWrapper.getFace();
     FT_Set_Pixel_Sizes(face, 0, pixelSize);
     FT_GlyphSlot g = face->glyph;
 
