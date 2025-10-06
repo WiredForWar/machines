@@ -11,6 +11,8 @@
 #include "gui/gui.hpp"
 #include "machgui/gui.hpp"
 
+#include <cstring>
+
 MachGuiMenuText::MachGuiMenuText(
     GuiDisplayable* pParent,
     const Gui::Box& box,
@@ -137,7 +139,7 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
             }
             // Does space exist in last ten characters? If it does it's worth moving the
             // beginning of the word onto the next line...
-            else if (strchr(almostStrEnd, ' '))
+            else if (std::strchr(almostStrEnd, ' '))
             {
                 // Remove beginning of last word from this line and stuff on next line...
                 std::string newLine;

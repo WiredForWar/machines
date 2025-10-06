@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #include <algorithm>
 #include <cctype>
+#include <cstring>
 
 #define CB_SYS_PATHNAME_DEPIMPL                                                                                        \
     CB_DEPIMPL(std::string, pathname_);                                                                                     \
@@ -402,7 +403,7 @@ void SysPathName::createComponents() const
 
     for (; index < pathname_.length(); ++index)
     {
-        if (strchr(separators, pathname_[index]) != nullptr)
+        if (std::strchr(separators, pathname_[index]) != nullptr)
         {
             indices.push_back(index);
             lastIndex = index + 1;
@@ -459,7 +460,7 @@ bool SysPathName::hasExtension() const
 
     if (components().size() != 0)
     {
-        if (strchr(components().back().c_str(), extensionCharacter()) != nullptr)
+        if (std::strchr(components().back().c_str(), extensionCharacter()) != nullptr)
             result = true;
     }
 
@@ -472,7 +473,7 @@ std::string SysPathName::extension() const
 
     PRE(hasExtension());
 
-    const char* pExtension = strchr(components().back().c_str(), extensionCharacter());
+    const char* pExtension = std::strchr(components().back().c_str(), extensionCharacter());
 
     return std::string(pExtension + 1);
 }
@@ -485,7 +486,7 @@ void SysPathName::extension(const std::string& newExtension)
 
     if (hasExtension())
     {
-        const char* pExtension = strchr(components().back().c_str(), extensionCharacter());
+        const char* pExtension = std::strchr(components().back().c_str(), extensionCharacter());
 
         if (newExtension == "")
         {
