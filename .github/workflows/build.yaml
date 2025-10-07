@@ -14,12 +14,26 @@ jobs:
         path: "machines-data"
         repository: "WiredForWar/machines-data"
 
+    - name: "Get the current machines-data version info"
+      run: |
+        cd ${{github.workspace}}/machines-data
+        echo "data_commit=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      id: data_cache
+      with:
+        path: ${{github.workspace}}/machines-data/install/machines
+        key: "${{ env.data_commit }}"
+        enableCrossOsArchive: true
+
     - name: Prepare the system (Linux)
+      if: steps.data_cache.outputs.cache-hit != 'true'
       run: |
         sudo apt-get update
         sudo machines-data/scripts/prepare-system.sh
 
     - name: "Bake the data"
+      if: steps.data_cache.outputs.cache-hit != 'true'
       run: |
         SKIP_GRAYSCALE=y machines-data/scripts/install.sh
 
