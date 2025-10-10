@@ -12,6 +12,8 @@
 #include "machgui/dbtexdat.hpp"
 #include "machgui/internal/dbtexdai.hpp"
 
+#include "system/vfs.hpp"
+
 MachGuiDbTextData::MachGuiDbTextData()
 {
     pData_ = new MachGuiDbITextData;
@@ -53,6 +55,8 @@ std::unique_ptr<MachGuiDbTextData> MachGuiDbTextData::pNewTextData(const std::st
     SysPathName persistentPath(work);
     persistentPath.extension("bin");
 
+    persistentPath = System::findFile(persistentPath.pathname());
+
     // If the persistent file exists..
     if (persistentPath.existsAsFile())
     {
@@ -66,7 +70,7 @@ std::unique_ptr<MachGuiDbTextData> MachGuiDbTextData::pNewTextData(const std::st
     {
         // Construct the source path
         std::string work = "data/" + filename;
-        SysPathName sourcePath(work);
+        SysPathName sourcePath = System::findFile(work);
         ASSERT_FILE_EXISTS(sourcePath.c_str());
 
         // Read it in

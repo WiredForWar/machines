@@ -1,6 +1,7 @@
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
 #include "system/pathname.hpp"
+#include "system/vfs.hpp"
 
 #include <cassert>
 #include <stdio.h>
@@ -84,6 +85,8 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
             path += s_BmpTextureSuffix;
         }
 
+        pngImagePath = System::findFile(pngImagePath);
+
         // Prefer (try first) png images
         if (SysPathName::existsAsFile(pngImagePath))
         {
@@ -104,6 +107,7 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
         scaledImagePath += s_ScaledTextureSuffix;
     }
 
+    scaledImagePath = System::findFile(scaledImagePath);
     if (SysPathName::existsAsFile(scaledImagePath))
     {
         return Gui::bitmap(scaledImagePath);
