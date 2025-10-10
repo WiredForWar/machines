@@ -43,6 +43,8 @@
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
 
+#include "system/vfs.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <cstdio>
@@ -164,6 +166,15 @@ bool SDLApp::clientStartup()
 
     // Initially, pick the lowest-res 16-bit mode.
     pDisplay_->buildDisplayModesList();
+
+    {
+        const std::vector<std::string> mods = System::listMods();
+        for (const std::string& modDir : mods)
+        {
+            spdlog::info("Adding FS override '{}'", modDir);
+            System::addFsOverride(modDir);
+        }
+    }
 
     // Check for windowed mode
     if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Windowed"))
