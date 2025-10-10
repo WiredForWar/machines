@@ -65,6 +65,8 @@ void GuiButton::doHandleMouseClickEvent(const GuiMouseEvent& e)
             // Only interested in release event if we are a popupButton,
             // stay-pressed buttons are sent release event when they are pressed
             // a second time.
+
+            Callback callback = clickedCallback_; // Keep copy because `this` can be deleted in doBeReleased() overrides
             if (isPopupButton_ && isDepressed_)
             {
                 isDepressed_ = false;
@@ -76,9 +78,9 @@ void GuiButton::doHandleMouseClickEvent(const GuiMouseEvent& e)
                 }
             }
 
-            if (clickedCallback_)
+            if (callback)
             {
-                clickedCallback_(this);
+                callback(this);
             }
         }
         else if (e.leftButton() == Gui::PRESSED)
