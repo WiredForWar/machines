@@ -13,6 +13,8 @@
 #define _MACHGUI_COMMANDI_HPP
 
 #include "base/base.hpp"
+#include "device/KeyBind.hpp"
+#include "machgui/BindId.hpp"
 #include "machlog/machop.hpp"
 
 class MachInGameScreen;
@@ -21,7 +23,7 @@ class MachGuiCommandImpl
 // Canonical form revoked
 {
 public:
-    MachGuiCommandImpl(MachInGameScreen*);
+    MachGuiCommandImpl(MachInGameScreen*, MachGui::BindId triggerBindId);
     ~MachGuiCommandImpl();
 
     void add(const MachLogMachineOperation&);
@@ -41,6 +43,7 @@ private:
     MachLogMachineOperations machineOperations_;
 
     MachInGameScreen* pInGameScreen_; // The in-game screen
+    const KeyBinds& triggerBinds_;
 };
 
 #endif

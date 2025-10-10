@@ -9,6 +9,8 @@
 #include "commandi.hpp"
 
 #include "mathex/point3d.hpp"
+
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"
 #include "machlog/actor.hpp"
@@ -25,14 +27,15 @@
 #include "mathex/transf3d.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp"
+#include "gui/event.hpp"
 #include "system/pathname.hpp"
 
-MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen)
+MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
     : isExecuted_(false)
     , isVisible_(false)
     , isSquadronContext_(pInGameScreen->applyCommandToSquadron())
     , hasPlayedVoiceMail_(false)
-    , pImpl_(new MachGuiCommandImpl(pInGameScreen))
+    , pImpl_(new MachGuiCommandImpl(pInGameScreen, triggerBindId))
 {
     PRE(pInGameScreen != nullptr);
 
@@ -543,8 +546,16 @@ MachGuiCommand::ObstacleFlags MachGuiCommand::selectedActorObstacleFlags() const
 }
 
 // virtual
-bool MachGuiCommand::processButtonEvent(const GuiKeyEvent&)
+bool MachGuiCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    const auto& trigger = pImpl_->triggerBinds_;
+    const DevButtonEvent& be = event.buttonEvent();
+    if (isVisible() && trigger.matches(event.keyWithMods()) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
+    {
+        inGameScreen().activeCommand(*this);
+        return true;
+    }
+
     return false;
 }
 

@@ -6,11 +6,12 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "commandi.hpp"
+#include "machgui/IInputRegistry.hpp"
 
-MachGuiCommandImpl::MachGuiCommandImpl(MachInGameScreen* pInGameScreen)
+MachGuiCommandImpl::MachGuiCommandImpl(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
     : pInGameScreen_(pInGameScreen)
+    , triggerBinds_(MachGui::inputRegistry()->getBinds(triggerBindId))
 {
-
     TEST_INVARIANT;
 }
 

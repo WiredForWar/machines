@@ -19,6 +19,7 @@
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
 #include "gui/StringId.hpp"
+#include "machgui/BindId.hpp"
 #include "machgui/gui.hpp"
 #include "machlog/machlog.hpp"
 
@@ -43,7 +44,7 @@ class MachGuiCommand
 {
 public:
     // ctor.
-    MachGuiCommand(MachInGameScreen* pInGameScreen);
+    MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId = MachGui::NoBind);
 
     // dtor
     virtual ~MachGuiCommand();
