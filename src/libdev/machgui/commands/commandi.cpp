@@ -10,6 +10,7 @@
 
 MachGuiCommandImpl::MachGuiCommandImpl(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
     : pInGameScreen_(pInGameScreen)
+    , triggerBindId_(triggerBindId)
     , triggerBinds_(MachGui::inputRegistry()->getBinds(triggerBindId))
 {
     TEST_INVARIANT;

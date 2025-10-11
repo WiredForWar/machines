@@ -43,6 +43,7 @@ private:
     MachLogMachineOperations machineOperations_;
 
     MachInGameScreen* pInGameScreen_; // The in-game screen
+    MachGui::BindId triggerBindId_;
     const KeyBinds& triggerBinds_;
 };
 

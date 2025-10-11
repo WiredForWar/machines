@@ -52,8 +52,17 @@ MachGuiCommand::~MachGuiCommand()
 
 std::string MachGuiCommand::getCursorPromptText() const
 {
-    // Load the string for the command
-    return ResolvedUiString(cursorPromptStringId());
+    std::string promptText = ResolvedUiString(cursorPromptStringId());
+    std::string bindText = getBindDisplayString();
+    if (!bindText.empty())
+        promptText = promptText + " (" + bindText + ')';
+
+    return promptText;
+}
+
+std::string MachGuiCommand::getBindDisplayString() const
+{
+    return MachGui::inputRegistry()->getBindDisplayString(pImpl_->triggerBindId_);
 }
 
 bool MachGuiCommand::addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const

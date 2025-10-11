@@ -63,6 +63,8 @@ public:
     // The resource file id of the prompt to be displayed when the command is clicked
     virtual Gui::StringId commandPromptStringid() const = 0;
 
+    std::string getBindDisplayString() const;
+
     virtual bool addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const;
 
     // Called when the command becomes active

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <string id="1"
-	>Move (M)</string>
+	>Move</string>
 <string id="2"
-	>Attack (A)</string>
+	>Attack</string>
 <string id="3"
-	>Construct (C)</string>
+	>Construct</string>
 <string id="4"
-	>Locate Minerals (L)</string>
+	>Locate Minerals</string>
 <string id="5"
-	>Patrol (P)</string>
+	>Patrol</string>
 <string id="6"
 	>Research</string>
 <string id="7"
-	>Deploy (E)</string>
+	>Deploy</string>
 <string id="8"
-	>Pick up (I)</string>
+	>Pick up</string>
 <string id="9"
-	>Transport (T)</string>
+	>Transport</string>
 <string id="10"
-	>Build Machine (B)</string>
+	>Build Machine</string>
 <string id="11"
 	>Research new level of machine</string>
 <string id="12"
@@ -47,65 +47,65 @@
 <string id="23"
 	>Select new machine type to research</string>
 <string id="24"
-	>Self-destruct (Ctrl+Shift+Backspace)</string>
+	>Self-destruct</string>
 <string id="25"
 	>Press again to initiate self-destruct sequence</string>
 <string id="26"
-	>Form a Squadron (F)</string>
+	>Form a Squadron</string>
 <string id="27"
 	>Select squadron number</string>
 <string id="28"
 	>Select position to drop mine</string>
 <string id="29"
-	>Drop mine (Shift+M)</string>
+	>Drop mine</string>
 <string id="30"
-	>Refill land mines (G)</string>
+	>Refill land mines</string>
 <string id="31"
 	>Spy will recharge land mines at nearest garrison and return.</string>
 <string id="32"
-	>Heal (H)</string>
+	>Heal</string>
 <string id="33"
 	>Select target</string>
 <string id="34"
-	>Deconstruct (D)</string>
+	>Deconstruct</string>
 <string id="35"
 	>Select construction to deconstruct</string>
 <string id="36"
-	>Recycle (Q)</string>
+	>Recycle</string>
 <string id="37"
 	>Select smelter</string>
 <string id="38"
-	>Stop (S)</string>
+	>Stop</string>
 <string id="39"
 	>Stop</string>
 <string id="40"
-	>Stand ground (W)</string>
+	>Stand ground</string>
 <string id="41"
 	>Stand ground</string>
 <string id="42"
-	>Repair (R)</string>
+	>Repair</string>
 <string id="43"
 	>Select construction to repair</string>
 <string id="44"
-	>Capture (U)</string>
+	>Capture</string>
 <string id="45"
 	>Select construction to capture</string>
 <string id="46"
-	>Machine Initiative Setting. Currently Low (TAB)</string>
+	>Machine Initiative Setting. Currently Low</string>
 <string id="47"
-	>Machine Initiative Setting. Currently Medium (TAB)</string>
+	>Machine Initiative Setting. Currently Medium</string>
 <string id="48"
-	>Machine Initiative Setting. Currently High (TAB)</string>
+	>Machine Initiative Setting. Currently High</string>
 <string id="49"
-	>Ion-Cannon Attack (I)</string>
+	>Ion-Cannon Attack</string>
 <string id="50"
 	>Select target</string>
 <string id="51"
-	>Nuke Attack (N)</string>
+	>Nuke Attack</string>
 <string id="52"
 	>Select target</string>
 <string id="53"
-	>Assemble At (B)</string>
+	>Assemble At</string>
 <string id="54"
 	>Select assembly point</string>
 <string id="55"
@@ -117,17 +117,17 @@
 <string id="58"
 	>Info : Obstacles</string>
 <string id="59"
-	>Scavenge (Y)</string>
+	>Scavenge</string>
 <string id="60"
 	>Select Debris</string>
 <string id="61"
 	>Info : Can't construct in Fog of War</string>
 <string id="62"
-	>Camouflage (O)</string>
+	>Camouflage</string>
 <string id="63"
 	>Camouflage</string>
 <string id="64"
-	>Treachery (J)</string>
+	>Treachery</string>
 <string id="65"
 	>Select Target</string>
 <string id="66"
