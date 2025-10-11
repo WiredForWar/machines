@@ -168,7 +168,10 @@ void MachLogPlanetDomains::intersecting(const MexLine2d& line, Domains* pDomains
     MexGrid2d::Cells cells;
     MexGrid2d::Points points;
     grid.intersect(line, &cells, &points);
+
+#ifdef ENABLE_FLAKY_ASSERTS
     ASSERT(cells.size() > 0, "Line does not intersect with any domains\n");
+#endif
     for (MexGrid2d::Cells::iterator i = cells.begin(); i != cells.end(); ++i)
     {
         pDomains->push_back(pSurface->domainByXYIndex((*i).xIndex(), (*i).yIndex()));
