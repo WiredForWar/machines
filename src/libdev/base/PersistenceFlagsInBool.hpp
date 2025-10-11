@@ -3,10 +3,11 @@
 #include <cstdint>
 
 #include "base/prepost.hpp"
+#include "base/persist.hpp"
 
 // Booleans are stored as 32-bit unsigned number which gives us some
 // space to store extra info in a way compatible with old save files
-class HackyFlagsPacker
+class PersistenceFlagsInBool
 {
     using BooleanStorage = uint32_t;
     static constexpr std::size_t Capacity = (sizeof(BooleanStorage) * 8 - 2);
@@ -14,6 +15,10 @@ class HackyFlagsPacker
 
 public:
     uint32_t value = HackyPackIndicator;
+    const void *perObject{};
+
+    PersistenceFlagsInBool(const void *pObj) : perObject(pObj) {}
+
     void unpackBoolean(int index, bool* boolean) const
     {
         PRE(index < Capacity);
@@ -32,3 +37,6 @@ public:
             value &= ~(1 << index);
     }
 };
+
+PerOstream& operator<<(PerOstream& ostr, const PersistenceFlagsInBool& ob);
+PerIstream& operator>>(PerIstream& istr, PersistenceFlagsInBool& ob);

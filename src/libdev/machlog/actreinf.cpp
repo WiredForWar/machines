@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 #include "base/diag.hpp"
-#include "base/PersistenceHackyPacker.hpp"
+#include "base/PersistenceFlagsInBool.hpp"
 #include "stdlib/string.hpp"
 #include <functional>
 #include <algorithm>
@@ -236,11 +236,11 @@ void perWrite(PerOstream& ostr, const MachLogReinforcementsAction& action)
     ostr << action.race_;
     ostr << action.displayAsRace_;
 
-    HackyFlagsPacker packer;
+    PersistenceFlagsInBool packer(&action.assignToSquadron_);
     packer.packBoolean(0, action.assignToSquadron_);
     packer.packBoolean(1, action.giveVoiceMail_);
 
-    ostr << packer.value;
+    ostr << packer;
     ostr << action.assignToSquadronIndex_;
 }
 
@@ -254,8 +254,8 @@ void perRead(PerIstream& istr, MachLogReinforcementsAction& action)
     istr >> action.race_;
     istr >> action.displayAsRace_;
 
-    HackyFlagsPacker packer;
-    istr >> packer.value;
+    PersistenceFlagsInBool packer(&action.assignToSquadron_);
+    istr >> packer;
     packer.unpackBoolean(0, &action.assignToSquadron_);
     packer.unpackBoolean(1, &action.giveVoiceMail_);
 
