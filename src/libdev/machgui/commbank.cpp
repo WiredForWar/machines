@@ -127,12 +127,7 @@ public:
 
     void doHandleContainsMouseEvent(const GuiMouseEvent&) override
     {
-        // Load the string for the command
-        GuiResourceString::Id id = pCommand()->cursorPromptStringId();
-        GuiResourceString prompt(id);
-
-        // Set the cursor prompt
-        pCommand()->inGameScreen().setCursorPromptText(prompt.asString());
+        setCursorPromptText();
     }
 };
 
@@ -375,8 +370,7 @@ bool MachCommandIcon::isEligableForVisibility() const
     return (pCommand_->isVisible() && GuiBitmapButtonWithFilledBorder::isEligableForVisibility());
 }
 
-// virtual
-void MachCommandIcon::doHandleMouseEnterEvent(const GuiMouseEvent&)
+void MachCommandIcon::setCursorPromptText()
 {
     // Load the string for the command
     GuiResourceString::Id id = pCommand_->cursorPromptStringId();
@@ -384,6 +378,12 @@ void MachCommandIcon::doHandleMouseEnterEvent(const GuiMouseEvent&)
 
     // Set the cursor prompt
     pCommand_->inGameScreen().setCursorPromptText(prompt.asString());
+}
+
+// virtual
+void MachCommandIcon::doHandleMouseEnterEvent(const GuiMouseEvent&)
+{
+    setCursorPromptText();
 }
 
 // virtual

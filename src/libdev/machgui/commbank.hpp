@@ -114,6 +114,7 @@ protected:
 
     // Inherited from GuiDisplayable
     bool isEligableForVisibility() const override;
+    void setCursorPromptText();
 
 private:
     MachCommandIcon(const MachCommandIcon&);
