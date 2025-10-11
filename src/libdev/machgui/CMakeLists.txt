@@ -51,8 +51,6 @@ set(MACHGUI_SOURCES
     commands/cmdcaptr.hpp
     commands/cmdconst.cpp
     commands/cmdconst.hpp
-    commands/cmddamag.cpp
-    commands/cmddamag.hpp
     commands/cmddecon.cpp
     commands/cmddecon.hpp
     commands/cmddefau.cpp
