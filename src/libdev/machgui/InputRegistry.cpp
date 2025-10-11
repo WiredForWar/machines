@@ -2,6 +2,8 @@
 
 #include "base/prepost.hpp"
 
+#include "gui/KeyToString.hpp"
+
 #include <string>
 #include <unordered_map>
 
@@ -17,6 +19,7 @@ public:
     void load();
 
     const KeyBinds& getBinds(BindId id) const final;
+    const std::string& getBindDisplayString(BindId id) const final;
 
 protected:
     struct string_hash
@@ -27,6 +30,7 @@ protected:
     };
 
     std::unordered_map<std::string, KeyBinds, string_hash, std::equal_to<>> binds_;
+    mutable std::unordered_map<std::string, std::string, string_hash, std::equal_to<>> bindDisplayStrings_;
 };
 
 void InputRegistry::load()
@@ -495,6 +499,18 @@ const KeyBinds& InputRegistry::getBinds(BindId id) const
     const auto it = data.find(asView);
     PRE(it != data.end());
     return it->second;
+}
+
+const std::string& InputRegistry::getBindDisplayString(BindId id) const
+{
+    const auto it = bindDisplayStrings_.find(id);
+    if (it != bindDisplayStrings_.end())
+        return it->second;
+
+    std::string idAsString = std::string(id);
+    const KeyBinds& binds = getBinds(id);
+
+    return bindDisplayStrings_[idAsString] = binds.empty() ? std::string() : Gui::toDisplayString(binds.at(0));
 }
 
 IInputRegistry* inputRegistry()

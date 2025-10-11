@@ -11,6 +11,7 @@ class IInputRegistry
 {
 public:
     virtual const KeyBinds& getBinds(BindId id) const = 0;
+    virtual const std::string& getBindDisplayString(BindId id) const = 0;
 };
 
 IInputRegistry* inputRegistry();
