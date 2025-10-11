@@ -269,7 +269,7 @@ void PersistenceImplementationRead::readObjectPre(PerIstream& istr, const void* 
 
     startRead();
     PER_READ_INDENT_STREAM("Start  object " << className << " ");
-    // std::cout << "POS:" << istr.tellg() << std::endl;
+    // std::cout << "POS:" << istr.pos() << std::endl;
 
     PerDataType type = readDataType(istr);
 
