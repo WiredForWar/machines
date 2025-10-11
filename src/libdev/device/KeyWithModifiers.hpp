@@ -9,7 +9,13 @@ public:
     static constexpr Underlying Alt = static_cast<Underlying>(Device::KeyModifier::Alt);
     static constexpr Underlying Ctrl = static_cast<Underlying>(Device::KeyModifier::Ctrl);
     static constexpr Underlying Shift = static_cast<Underlying>(Device::KeyModifier::Shift);
-    static constexpr Underlying All = static_cast<Underlying>(Device::KeyModifier::All);
+    static constexpr Underlying All = Alt|Ctrl|Shift;
+
+    static constexpr Device::KeyModifier Order[] = {
+        Device::KeyModifier::Ctrl,
+        Device::KeyModifier::Alt,
+        Device::KeyModifier::Shift,
+    };
 
     KeyModifierFlags() = default;
     KeyModifierFlags(Device::KeyModifier modifier);

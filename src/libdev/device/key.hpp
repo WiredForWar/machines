@@ -21,7 +21,6 @@ enum class KeyModifier
     Alt = 0x1 << detail::ModifiersBitsShift,
     Ctrl = 0x2 << detail::ModifiersBitsShift,
     Shift = 0x4 << detail::ModifiersBitsShift,
-    All = Ctrl|Alt|Shift,
 };
 
 enum class KeyCode : detail::KeyCodeUnderlying
