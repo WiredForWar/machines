@@ -1,5 +1,7 @@
 #include "FontsManager.hpp"
 
+#include "system/pathname.hpp"
+
 #include "spdlog/spdlog.h"
 
 namespace Render
@@ -64,7 +66,10 @@ FT_Face FontsManager::getFace(const std::string& fontName)
         return faceIt->second;
 
     FT_Face face{};
-    std::string fontFile("gui/fonts/" + fontName + ".ttf");
+    std::string fontFile("gui/" + fontName + ".ttf");
+    if (!SysPathName::existsAsFile(fontFile))
+        fontFile = "gui/fonts/" + fontName + ".ttf";
+
     FT_Error initResult_ = FT_New_Face(library_, fontFile.c_str(), 0, &face);
     if (initResult_)
     {
