@@ -58,6 +58,7 @@ public:
     // The resource file id of the prompt to be displayed when the cursor moves
     // over the command icon
     virtual Gui::StringId cursorPromptStringId() const = 0;
+    virtual std::string getCursorPromptText() const;
 
     // The resource file id of the prompt to be displayed when the command is clicked
     virtual Gui::StringId commandPromptStringid() const = 0;

@@ -28,6 +28,7 @@
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp"
 #include "gui/event.hpp"
+#include "gui/ResolvedUiString.hpp"
 #include "system/pathname.hpp"
 
 MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
@@ -47,6 +48,12 @@ MachGuiCommand::~MachGuiCommand()
     TEST_INVARIANT;
 
     delete pImpl_;
+}
+
+std::string MachGuiCommand::getCursorPromptText() const
+{
+    // Load the string for the command
+    return ResolvedUiString(cursorPromptStringId());
 }
 
 bool MachGuiCommand::addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const

@@ -371,7 +371,8 @@ bool MachCommandIcon::isEligableForVisibility() const
 
 void MachCommandIcon::setCursorPromptText()
 {
-    pCommand_->inGameScreen().setCursorPromptText(pCommand_->cursorPromptStringId());
+    std::string promptText = pCommand_->getCursorPromptText();
+    pCommand_->inGameScreen().setCursorPromptText(promptText);
 }
 
 // virtual
