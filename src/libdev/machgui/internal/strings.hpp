@@ -72,6 +72,8 @@
 #define IDS_NOTENOUGHCASH 66
 #define IDS_MAXUNITS 67
 
+#define IDS_LAUNCH_COST_BMU 70
+
 // Machine descriptions ( Numbers are important!!!! )
 #define IDS_ADMINISTRATOR_BOSS 100
 #define IDS_ADMINISTRATOR_BOSS1 101

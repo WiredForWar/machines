@@ -27,6 +27,8 @@
 
 #include "machgui/internal/strings.hpp"
 
+#include "gui/restring.hpp"
+
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-nuke-attack-trigger"_bind)
     , action_(DO_NOTHING)
@@ -272,6 +274,18 @@ const std::pair<std::string, std::string>& MachGuiNukeAttackCommand::iconNames()
 uint MachGuiNukeAttackCommand::cursorPromptStringId() const
 {
     return IDS_NUKE_ATTACK_COMMAND;
+}
+
+std::string MachGuiNukeAttackCommand::getCursorPromptText() const
+{
+    std::string promptText = MachGuiCommand::getCursorPromptText();
+
+    MachPhys::BuildingMaterialUnits cost = MachPhysData::instance().generalData().nukeLaunchCost();
+    GuiResourceString bmuText(IDS_BMUPOINTS, std::to_string(cost));
+
+    std::string costText = GuiResourceString(IDS_LAUNCH_COST_BMU, bmuText.asString()).asString();
+
+    return promptText + " " + costText;
 }
 
 // virtual

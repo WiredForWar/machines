@@ -101,7 +101,7 @@
 <string id="50"
 	>Select target</string>
 <string id="51"
-	>Nuke Attack (N) Launch cost Å500</string>
+	>Nuke Attack (N)</string>
 <string id="52"
 	>Select target</string>
 <string id="53"
@@ -134,6 +134,8 @@
 	>Info : 5 Bmus required to place construction</string>
 <string id="67"
 	>Info : Max units already exist</string>
+<string id="70"
+	>Launch cost %1</string>
 <string id="100"
 	>Airborne Unit</string>
 <string id="101"

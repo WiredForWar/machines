@@ -40,6 +40,8 @@ public:
     // over the command icon
     uint cursorPromptStringId() const override;
 
+    std::string getCursorPromptText() const override;
+
     // The resource file id of the prompt to be displayed when the command is clicked
     uint commandPromptStringid() const override;
 
