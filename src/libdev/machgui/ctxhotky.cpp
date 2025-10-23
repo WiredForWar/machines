@@ -6,24 +6,23 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxhotky.hpp"
-#include "ctl/vector.hpp"
+
 #include "gui/font.hpp"
 #include "system/pathname.hpp"
-#include "machgui/ui/MenuButton.hpp"
-#include "machgui/ui/MenuText.hpp"
-#include "machgui/startup.hpp"
-#include "machgui/ingame.hpp"
-#include "machgui/ui/MenuStyle.hpp"
-#include "machgui/ui/ScrollableText.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
-#include "utility/linetok.hpp"
+#include "machgui/startup.hpp"
+#include "machgui/ui/MenuButton.hpp"
+#include "machgui/ui/MenuStyle.hpp"
+#include "machgui/ui/MenuText.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
 #include "device/cd.hpp"
-#include <fstream>
+
 #include <algorithm>
+#include <fstream>
 
 MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("so", pStartupScreens)
@@ -38,22 +37,21 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     const uint HOTKEY_KEY_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH;
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
-    uint smallFontHeight
-        = GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + MachGui::menuScaleFactor() * 2;
-    uint largeFontHeight = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight())).charHeight()
-        + MachGui::menuScaleFactor() * 2;
+    const GuiBmpFont headingFont = GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
+    const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    const uint headingFontHeight = headingFont.charHeight() + MachGui::menuScaleFactor() * 2;
+    const uint textFontHeight = textFont.charHeight() + MachGui::menuScaleFactor() * 2;
 
     bool enableAnimation = MachGui::menuScaleFactor() == 1;
 
     // Display First Person Control heading
     //
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
     GuiResourceString optionsHeading(IDS_MENU_FIRSTPERSONCONTROL);
     MachGuiMenuText* firstPersonHeading = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             Gui::Coord(HOTKEY_MIN_X, HOTKEY_MIN_Y),
-            Gui::Size(font.textWidth(optionsHeading.asString()), largeFontHeight)),
+            Gui::Size(headingFont.textWidth(optionsHeading.asString()), headingFontHeight)),
         IDS_MENU_FIRSTPERSONCONTROL,
         MachGui::Menu::largeFontLight(),
         Gui::AlignLeft|Gui::AlignTop);
@@ -68,7 +66,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             firstPersonHeading->relativeBoundary().bottomLeft(),
-            Gui::Size(HOTKEY_ACTION_WIDTH, noLines * smallFontHeight)),
+            Gui::Size(HOTKEY_ACTION_WIDTH, noLines * textFontHeight)),
         hotKey1stPersonActions,
         MachGui::Menu::smallFontLight(),
         Gui::AlignLeft|Gui::AlignTop);
@@ -89,16 +87,15 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     // Display General Controls heading underneath First Person Controls hot keys
     //
-    font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
     GuiResourceString optionsGeneralHeading(IDS_MENU_GENERALCONTROL);
-    uint genHeadingMaxY = fstPersonWindowMaxY + largeFontHeight;
+    uint genHeadingMaxY = fstPersonWindowMaxY + headingFontHeight;
 
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             HOTKEY_MIN_X,
             fstPersonWindowMaxY,
-            HOTKEY_MIN_X + font.textWidth(optionsGeneralHeading.asString()),
+            HOTKEY_MIN_X + headingFont.textWidth(optionsGeneralHeading.asString()),
             genHeadingMaxY),
         IDS_MENU_GENERALCONTROL,
         MachGui::Menu::largeFontLight(),
@@ -106,9 +103,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     // Calculate the number of lines of General hotkeys that can be displayed under
     // the First Person hotkeys
-    font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
-
-    uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / smallFontHeight;
+    uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / textFontHeight;
 
     std::string hotKeyGeneralActions;
 
@@ -116,7 +111,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     strings choppedText;
 
-    MachGuiMenuText::chopUpText(hotKeyGeneralActions, MachGui::menuScaleFactor() * 200, font, &choppedText);
+    MachGuiMenuText::chopUpText(hotKeyGeneralActions, MachGui::menuScaleFactor() * 200, textFont, &choppedText);
 
     uint noRemainingLines = noLines - noDisplayableLines;
 
@@ -141,7 +136,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     WAYNE_STREAM("headString - " << headString << std::endl);
     WAYNE_STREAM("remainderString - " << remainderString << std::endl);
 
-    uint generalWindowMaxY = genHeadingMaxY + (noDisplayableLines * smallFontHeight);
+    uint generalWindowMaxY = genHeadingMaxY + (noDisplayableLines * textFontHeight);
 
     WAYNE_STREAM("generalHeadingMaxY - " << genHeadingMaxY << std::endl);
     WAYNE_STREAM("generalWindowMaxY - " << generalWindowMaxY << std::endl);
@@ -158,7 +153,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         Gui::AlignLeft|Gui::AlignTop);
 
     const int secondColumnY = enableAnimation ? HOTKEY_MIN_Y : firstPersonContent->relativeBoundary().top();
-    uint generalRemainderHeight = noRemainingLines * smallFontHeight;
+    uint generalRemainderHeight = noRemainingLines * textFontHeight;
 
     WAYNE_STREAM("generalRemainderMaxY - " << generalRemainderHeight << std::endl);
 
@@ -177,7 +172,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
 
     strings choppedupText;
-    MachGuiMenuText::chopUpText(hotKeyGeneralKeys, MachGui::menuScaleFactor() * 200, font, &choppedupText);
+    MachGuiMenuText::chopUpText(hotKeyGeneralKeys, MachGui::menuScaleFactor() * 200, textFont, &choppedupText);
 
     headString = remainderString = "";
 
