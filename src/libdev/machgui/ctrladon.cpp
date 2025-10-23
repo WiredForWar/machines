@@ -59,11 +59,7 @@ protected:
         GuiBitmapButtonWithFilledBorder::doHandleMouseEnterEvent(rel);
 
         usingZenithCamera_ = pInGameScreen_->cameras()->isZenithCameraActive();
-        // Load the resource string
-        GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
-
-        // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        setCursorPromptText();
     }
 
     const GuiBitmap& getBitmap() const override
@@ -91,13 +87,17 @@ protected:
         if (usingZenithCamera_ != pInGameScreen_->cameras()->isZenithCameraActive())
         {
             usingZenithCamera_ = ! usingZenithCamera_;
-
-            // Load the resource string
-            GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
-
-            // Set the cursor prompt
-            pInGameScreen_->setCursorPromptText(prompt.asString());
+            setCursorPromptText();
         }
+    }
+
+    void setCursorPromptText()
+    {
+        // Load the resource string
+        GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
+
+        // Set the cursor prompt
+        pInGameScreen_->setCursorPromptText(prompt.asString());
     }
 
 private:
