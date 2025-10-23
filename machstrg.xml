@@ -136,6 +136,8 @@
 	>Info : Max units already exist</string>
 <string id="70"
 	>Launch cost %1</string>
+<string id="71"
+	>Machine Initiative</string>
 <string id="100"
 	>Airborne Unit</string>
 <string id="101"
@@ -436,6 +438,78 @@
 	>Beacons</string>
 <string id="1430"
 	>Pods/Beacons</string>
+<string id="1600"
+	>Zenith View</string>
+<string id="1601"
+	>Ground View</string>
+<string id="1602"
+	>1st Person</string>
+<string id="1610"
+	>Save View %1-%2</string>
+<string id="1611"
+	>Restore View %1-%2</string>
+<string id="1612"
+	>Camera to Home</string>
+<string id="1613"
+	>Last Transmission</string>
+<string id="1614"
+	>View Next</string>
+<string id="1615"
+	>Select All</string>
+<string id="1616"
+	>Select On-Screen</string>
+<string id="1617"
+	>Deselect All</string>
+<string id="1618"
+	>Move Camera</string>
+<string id="1619"
+	>Map Move Camera</string>
+<string id="1620"
+	>Alternative Cursor</string>
+<string id="1630"
+	>Create Squad %1-%2</string>
+<string id="1631"
+	>Add to Squad %1-%2</string>
+<string id="1632"
+	>Select Squad %1-%2</string>
+<string id="1640"
+	>Hide/Show panel</string>
+<string id="1650"
+	>Forward</string>
+<string id="1651"
+	>Backward</string>
+<string id="1652"
+	>Turn Left</string>
+<string id="1653"
+	>Turn Right</string>
+<string id="1654"
+	>Look Up</string>
+<string id="1655"
+	>Look Down</string>
+<string id="1656"
+	>Head Left</string>
+<string id="1657"
+	>Head Right</string>
+<string id="1658"
+	>Centre Head</string>
+<string id="1659"
+	>Slow</string>
+<string id="1660"
+	>Fire</string>
+<string id="1661"
+	>Weapon Select</string>
+<string id="1662"
+	>NVG On/Off</string>
+<string id="1680"
+	>Screen Shot</string>
+<string id="1681"
+	>Send Chat Message</string>
+<string id="1682"
+	>Alliance Toggle</string>
+<string id="1690"
+	>Exit</string>
+<string id="1691"
+	>Menus</string>
 <string id="1800"
 	>Machine Navigator. Toggle On/Off</string>
 <string id="1810"
