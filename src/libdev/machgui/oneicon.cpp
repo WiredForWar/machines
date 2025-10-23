@@ -5,9 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
-#include "machgui/corral.hpp"
 #include "machgui/oneicon.hpp"
+
+#include "machgui/IInputRegistry.hpp"
+#include "machgui/corral.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/actnamid.hpp"
 #include "machgui/controlp.hpp"
@@ -175,9 +176,13 @@ public:
     {
         GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-        GuiResourceString prompt(IDS_INHEAD);
+        std::string promptText = GuiResourceString(IDS_INHEAD).asString();
+        MachGui::BindId bindId = "view-toggle-fpv"_bind;
+        std::string bindText = MachGui::inputRegistry()->getBindDisplayString(bindId);
+        if (!bindText.empty())
+            promptText = promptText + " (" + bindText + ')';
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(promptText);
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

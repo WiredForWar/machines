@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctrladon.hpp"
+
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/cameras.hpp"
@@ -95,9 +97,15 @@ protected:
     {
         // Load the resource string
         GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
+        MachGui::BindId bindId = usingZenithCamera_ ? "view-use-ground-camera"_bind : "view-use-zenith-camera"_bind;
+
+        std::string promptText = prompt.asString();
+        std::string bindText = MachGui::inputRegistry()->getBindDisplayString(bindId);
+        if (!bindText.empty())
+            promptText = promptText + " (" + bindText + ')';
 
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(promptText);
     }
 
 private:

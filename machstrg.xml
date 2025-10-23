@@ -491,7 +491,7 @@
 <string id="2012"
 	>ž%1</string>
 <string id="2020"
-	>Switch to 1st person view (NumPad 1)</string>
+	>Switch to 1st person view</string>
 <string id="2030"
 	>Select all friendly machines currently inside building</string>
 <string id="2040"
@@ -525,9 +525,9 @@
 <string id="2170"
 	>Land Mine</string>
 <string id="2180"
-	>Change to zenith camera (NumPad 2)</string>
+	>Change to zenith camera</string>
 <string id="2190"
-	>Change to ground camera (NumPad 0)</string>
+	>Change to ground camera</string>
 <string id="2200"
 	>Exit</string>
 <string id="2210"
