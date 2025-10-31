@@ -96,7 +96,7 @@ protected:
     void setCursorPromptText()
     {
         // Load the resource string
-        GuiResourceString prompt(usingZenithCamera_ ? IDS_GROUND_CAMERA : IDS_ZENITH_CAMERA);
+        GuiResourceString prompt(usingZenithCamera_ ? IDS_USE_GROUND_CAMERA : IDS_USE_ZENITH_CAMERA);
         MachGui::BindId bindId = usingZenithCamera_ ? "view-use-ground-camera"_bind : "view-use-zenith-camera"_bind;
 
         std::string promptText = prompt.asString();
