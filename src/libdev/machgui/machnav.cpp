@@ -361,7 +361,7 @@ protected:
 
         // Load the string for the command
         GuiResourceString prompt(stringId_);
-        GuiResourceString selectAll(IDS_SELECT_ALL, prompt.asString());
+        GuiResourceString selectAll(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString());
 
         // Set the cursor prompt
         pInGameScreen_->setCursorPromptText(selectAll.asString());
@@ -699,7 +699,7 @@ protected:
 
         // Load the string for the command
         GuiResourceString prompt(stringId_);
-        GuiResourceString selectAll(IDS_SELECT_ALL, prompt.asString());
+        GuiResourceString selectAll(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString());
 
         // Set the cursor prompt
         pInGameScreen_->setCursorPromptText(selectAll.asString());
