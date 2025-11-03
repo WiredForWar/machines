@@ -2,6 +2,7 @@
 set(GUI_SOURCES
     ResolvedUiString.cpp
     ResolvedUiString.hpp
+    StringId.hpp
     border.cpp
     border.hpp
     button.cpp
@@ -52,7 +53,8 @@ set(GUI_SOURCES
     sslistit.cpp
     sslistit.hpp
     RootSharedBitmaps.hpp
-    RootSharedBitmaps.cpp)
+    RootSharedBitmaps.cpp
+)
 
 add_library(gui ${GAME_COMPONENT_LIB_TYPE} ${GUI_SOURCES})
 add_library(LibDev::gui ALIAS gui)

@@ -12,14 +12,14 @@
 
 //////////////////////////////////////////////////////////////////////
 
-GuiResourceString::GuiResourceString(Id id)
+GuiResourceString::GuiResourceString(Gui::StringId id)
 {
     PRE(hasResource());
 
     insertionString_ = GuiResourceString::map_Id_to_string(id);
 }
 
-GuiResourceString::GuiResourceString(Id id, const GuiString& str)
+GuiResourceString::GuiResourceString(Gui::StringId id, const GuiString& str)
 {
     PRE(hasResource());
 
@@ -28,7 +28,7 @@ GuiResourceString::GuiResourceString(Id id, const GuiString& str)
     insert(inserts);
 }
 
-GuiResourceString::GuiResourceString(Id id, const GuiStrings& inserts)
+GuiResourceString::GuiResourceString(Gui::StringId id, const GuiStrings& inserts)
 {
     PRE(hasResource());
 
@@ -97,7 +97,7 @@ std::ostream& operator<<(std::ostream& o, const GuiResourceString& t)
 //////////////////////////////////////////////////////////////////////
 
 // static
-GuiString GuiResourceString::map_Id_to_string(Id id)
+GuiString GuiResourceString::map_Id_to_string(Gui::StringId id)
 {
     PRE(hasResource());
     GuiString result = resource().getString(id);

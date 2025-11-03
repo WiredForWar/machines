@@ -88,7 +88,7 @@ public:
         GuiDisplayable* pParent,
         const Gui::Coord& rel,
         const SysPathName& bitmapFilename,
-        GuiResourceString::Id stringId)
+        Gui::StringId stringId)
         : GuiBitmapButtonWithFilledBorder(
             pParent,
             rel,
@@ -161,7 +161,7 @@ protected:
         }
     }
 
-    GuiResourceString::Id stringId_;
+    Gui::StringId stringId_;
 
 private:
     MachGuiNavButtonWithCounter(const MachGuiNavButtonWithCounter&);
@@ -189,7 +189,7 @@ public:
         size_t subType,
         MachInGameScreen* pInGameScreen,
         MachGuiNavigatorBase* pNavigator,
-        GuiResourceString::Id stringId);
+        Gui::StringId stringId);
     ~MachGuiNavButton() override { }
 
     static size_t reqWidth()
@@ -608,7 +608,7 @@ public:
         MachInGameScreen* pInGameScreen,
         MachGuiNavigatorBase* pNavigator,
         MachGuiNavRow* pNavRow,
-        GuiResourceString::Id stringId)
+        Gui::StringId stringId)
         : MachGuiNavButtonWithCounter(pParent, Gui::Coord(0, 0), SysPathName("gui/navigate/all.bmp"), stringId)
         , objectType_(ot)
         , pInGameScreen_(pInGameScreen)
@@ -828,7 +828,7 @@ MachGuiNavButton::MachGuiNavButton(
     size_t subType,
     MachInGameScreen* pInGameScreen,
     MachGuiNavigatorBase* pNavigator,
-    GuiResourceString::Id stringId)
+    Gui::StringId stringId)
     : MachGuiNavButtonWithCounter(pParent, Gui::Coord(0, 0), getBitmapFilename(ot, subType, false), stringId)
     , objType_(ot)
     , subType_(subType)

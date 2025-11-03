@@ -835,7 +835,7 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
         pActiveCommand_ = std::move(pNewCommand);
 
         // Load the string for the command
-        GuiResourceString::Id id = pActiveCommand_->commandPromptStringid();
+        Gui::StringId id = pActiveCommand_->commandPromptStringid();
         GuiResourceString prompt(id);
 
         // Set the command prompt
@@ -1160,7 +1160,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
     CB_DEPIMPL_AUTO(pPromptTextActor_);
     CB_DEPIMPL_AUTO(pActiveCommand_);
 
-    GuiResourceString::Id stringId = 0;
+    Gui::StringId stringId = 0;
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
     GuiString weaponName;
 

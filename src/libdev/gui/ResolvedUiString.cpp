@@ -2,7 +2,7 @@
 
 #include "gui/restring.hpp"
 
-ResolvedUiString::ResolvedUiString(unsigned int stringId)
+ResolvedUiString::ResolvedUiString(Gui::StringId stringId)
 {
     const GuiResourceString resourceLabel(stringId);
     str_ = resourceLabel.asString();

@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "gui/StringId.hpp"
+
 class ResolvedUiString
 {
 public:
@@ -12,7 +14,7 @@ public:
     {
     }
 
-    ResolvedUiString(unsigned int stringId);
+    ResolvedUiString(Gui::StringId stringId);
 
     operator std::string() const { return str_; }
 

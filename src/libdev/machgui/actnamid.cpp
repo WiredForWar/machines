@@ -22,7 +22,7 @@ MachLogActorStringIdRestorer::~MachLogActorStringIdRestorer()
 }
 
 // static
-uint MachLogActorStringIdRestorer::stringId(MachActor* pActor)
+Gui::StringId MachLogActorStringIdRestorer::stringId(MachActor* pActor)
 {
     // Extract hw level from actor
     int level = 0;
@@ -41,7 +41,7 @@ uint MachLogActorStringIdRestorer::stringId(MachActor* pActor)
 }
 
 // static
-uint MachLogActorStringIdRestorer::weaponStringId(MachPhys::WeaponCombo wc)
+Gui::StringId MachLogActorStringIdRestorer::weaponStringId(MachPhys::WeaponCombo wc)
 {
     switch (wc)
     {
@@ -129,7 +129,7 @@ uint MachLogActorStringIdRestorer::weaponStringId(MachPhys::WeaponCombo wc)
 }
 
 // static
-uint MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t subType)
+Gui::StringId MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t subType)
 {
     switch (objType)
     {
@@ -248,7 +248,7 @@ uint MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t 
     return 0;
 }
 
-uint MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t subType, int level)
+Gui::StringId MachLogActorStringIdRestorer::stringId(MachLog::ObjectType objType, size_t subType, int level)
 {
     return stringId(objType, subType) + level;
 }
@@ -259,7 +259,7 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(
     size_t subType,
     MachPhys::WeaponCombo wc,
     int level,
-    uint* pStringId)
+    Gui::StringId* pStringId)
 {
     switch (objType)
     {
@@ -385,7 +385,7 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(
 }
 
 // static
-bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, uint* pStringId)
+bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, Gui::StringId* pStringId)
 {
     // Extract hw level from actor
     int level = 0;
@@ -415,7 +415,10 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, uint* pS
 }
 
 // static
-std::string MachLogActorStringIdRestorer::getActorPromptText(MachActor* pActor, uint actorId, uint actorWithWeaponId)
+std::string MachLogActorStringIdRestorer::getActorPromptText(
+    MachActor* pActor,
+    Gui::StringId actorId,
+    Gui::StringId actorWithWeaponId)
 {
     // Extract hw level from actor
     int level = 0;
@@ -457,10 +460,10 @@ std::string MachLogActorStringIdRestorer::getActorPromptText(
     size_t subType,
     MachPhys::WeaponCombo wc,
     int level,
-    uint actorStrId,
-    uint actorWithWeaponStrId)
+    Gui::StringId actorStrId,
+    Gui::StringId actorWithWeaponStrId)
 {
-    GuiResourceString::Id stringId;
+    Gui::StringId stringId;
     std::string machName;
     std::string weaponName;
 

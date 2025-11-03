@@ -67,7 +67,7 @@ void MachGuiDispositionChangeNotifiable::notifyDispositionChangeToAlly(
     doDisplay(IDS_DISPOSITION_TO_ALLY, checkRace, targetRace);
 }
 
-void MachGuiDispositionChangeNotifiable::doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2)
+void MachGuiDispositionChangeNotifiable::doDisplay(Gui::StringId id, MachPhys::Race race1, MachPhys::Race race2)
 {
     if (pStartupScreens_->gameType() == MachGuiStartupScreens::MULTIGAME)
     {

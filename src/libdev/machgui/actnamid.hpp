@@ -4,7 +4,8 @@
 
 #include "machlog/machlog.hpp"
 #include "machphys/machphys.hpp"
-#include "stdlib/string.hpp"
+
+#include "gui/StringId.hpp"
 
 class MachActor;
 
@@ -17,11 +18,11 @@ public:
 
     // Returns string id used to display actors sub-type ( e.g. Lab-Tech, Commanded, Grunt ). Add hardware
     // level to get stringId that describes specific machine type ( e.g. Judas Warlord, Shark )
-    static uint stringId(MachActor*);
-    static uint stringId(MachLog::ObjectType objType, size_t subType, int level);
+    static Gui::StringId stringId(MachActor*);
+    static Gui::StringId stringId(MachLog::ObjectType objType, size_t subType, int level);
 
     // Returns string id used to display name of weapon.
-    static uint weaponStringId(MachPhys::WeaponCombo wc);
+    static Gui::StringId weaponStringId(MachPhys::WeaponCombo wc);
 
     // To display full id text about a machine the weaponStringId and stringId+hardware level
     // are used ( stringId + hardware level + "WITH" + weaponStringId ). Sometimes this is not
@@ -33,27 +34,27 @@ public:
         size_t subType,
         MachPhys::WeaponCombo wc,
         int level,
-        uint* pStringId);
-    static bool isExceptionToRule(MachActor*, uint* pStringId);
+        Gui::StringId* pStringId);
+    static bool isExceptionToRule(MachActor*, Gui::StringId* pStringId);
 
-    static std::string getActorPromptText(MachActor*, uint actorStrId, uint actorWithWeaponStrId);
+    static std::string getActorPromptText(MachActor*, Gui::StringId actorStrId, Gui::StringId actorWithWeaponStrId);
     static std::string getActorPromptText(
         MachLog::ObjectType objType,
         size_t subType,
         MachPhys::WeaponCombo wc,
         int level,
-        uint actorStrId,
-        uint actorWithWeaponStrId);
+        Gui::StringId actorStrId,
+        Gui::StringId actorWithWeaponStrId);
 
 private:
-    static uint stringId(MachLog::ObjectType objType, size_t subType);
+    static Gui::StringId stringId(MachLog::ObjectType objType, size_t subType);
 
     MachLogActorStringIdRestorer(const MachLogActorStringIdRestorer&);
     MachLogActorStringIdRestorer& operator=(const MachLogActorStringIdRestorer&);
     bool operator==(const MachLogActorStringIdRestorer&);
 
     // Data members...
-    uint stringId_;
+    Gui::StringId stringId_{};
 };
 
 /* //////////////////////////////////////////////////////////////// */

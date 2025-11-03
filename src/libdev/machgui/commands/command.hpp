@@ -18,6 +18,7 @@
 
 #include "base/base.hpp"
 #include "stdlib/string.hpp"
+#include "gui/StringId.hpp"
 #include "machgui/gui.hpp"
 #include "machlog/machlog.hpp"
 
@@ -54,10 +55,10 @@ public:
 
     // The resource file id of the prompt to be displayed when the cursor moves
     // over the command icon
-    virtual uint cursorPromptStringId() const = 0;
+    virtual Gui::StringId cursorPromptStringId() const = 0;
 
     // The resource file id of the prompt to be displayed when the command is clicked
-    virtual uint commandPromptStringid() const = 0;
+    virtual Gui::StringId commandPromptStringid() const = 0;
 
     virtual bool addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const;
 

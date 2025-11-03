@@ -299,7 +299,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
     {
         MachLogActorStringIdRestorer infoStringId;
 
-        GuiResourceString::Id id = infoStringId.stringId(pActor_);
+        Gui::StringId id = infoStringId.stringId(pActor_);
         GuiResourceString iconInfo(id);
         std::string concat = iconInfo.asString();
         concat += "\n";

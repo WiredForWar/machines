@@ -13,7 +13,7 @@
 #define _MACHGUI_DISPNOTI_HPP
 
 #include "base/base.hpp"
-#include "gui/restring.hpp"
+#include "gui/StringId.hpp"
 #include "machlog/dispnoti.hpp"
 
 class MachGuiStartupScreens;
@@ -39,7 +39,7 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDispositionChangeNotifiable& t);
 
-    void doDisplay(GuiResourceString::Id id, MachPhys::Race race1, MachPhys::Race race2);
+    void doDisplay(Gui::StringId id, MachPhys::Race race1, MachPhys::Race race2);
     std::string getDisplayName(MachPhys::Race race);
 
     MachGuiDispositionChangeNotifiable(const MachGuiDispositionChangeNotifiable&);

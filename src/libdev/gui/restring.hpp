@@ -11,6 +11,8 @@
 #ifndef _GUI_RESTRING_HPP
 #define _GUI_RESTRING_HPP
 
+#include "gui/StringId.hpp"
+
 #include <string>
 #include <vector>
 
@@ -27,19 +29,17 @@ class GuiResourceString
 // memberwise cannonical
 {
 public:
-    using Id = unsigned int;
-
     // loading string with id from current resource file
-    GuiResourceString(Id id);
+    GuiResourceString(Gui::StringId id);
     // PRE( hasResource() );
 
     // as above, replacing all occurrences of %1 with insert
-    GuiResourceString(Id id, const GuiString& insert);
+    GuiResourceString(Gui::StringId id, const GuiString& insert);
     // PRE( hasResource() );
 
     // as above, replacing all occurrences of %1 with insert[ 0 ],
     // %2 with insert[ 1 ] etc
-    GuiResourceString(Id id, const GuiStrings& insert);
+    GuiResourceString(Gui::StringId id, const GuiStrings& insert);
     // PRE( hasResource() );
 
     const GuiString& asString() const;
@@ -72,7 +72,7 @@ public:
 private:
     using ResourcePtr = AfxResourceLib*;
     static ResourcePtr& pResource();
-    static GuiString map_Id_to_string(Id);
+    static GuiString map_Id_to_string(Gui::StringId id);
     // PRE( hasResource() );
     // POST( isInsertionString( result ) );
 

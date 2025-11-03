@@ -343,7 +343,7 @@ void MachIncSWLevelIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent
 {
     GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-    GuiResourceString::Id stringId = MachLogActorStringIdRestorer::stringId(machineType_, subType_, hwLevel_);
+    Gui::StringId stringId = MachLogActorStringIdRestorer::stringId(machineType_, subType_, hwLevel_);
 
     // Load the resource string
     GuiResourceString machName(stringId);
