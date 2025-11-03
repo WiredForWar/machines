@@ -1408,8 +1408,8 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                     processed = true;
                 }
             case 4: // Screen shot
-                if (event.key() == Device::KeyCode::F12 && event.isShiftPressed() && event.isCtrlPressed()
-                    && event.state() == Gui::PRESSED)
+                static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+                if (event.state() == Gui::PRESSED && screenshotTrigger.matches(event.keyWithMods()))
                 {
                     pInGameScreen_->initiateScreenShot();
                     processed = true;

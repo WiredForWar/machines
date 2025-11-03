@@ -127,7 +127,8 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 break;
             case 10: // Screen shot
-                if (e.key() == Device::KeyCode::F12 && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
+                static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+                if (e.state() == Gui::PRESSED && screenshotTrigger.matches(e.keyWithMods()))
                 {
                     initiateScreenShot();
                     processed = true;

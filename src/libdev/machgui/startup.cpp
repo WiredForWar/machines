@@ -41,6 +41,7 @@ inline constexpr bool cDemoVersion =
 #include "machgui/focusctl.hpp"
 #include "machgui/dispnoti.hpp"
 #include "machgui/menus_helper.hpp"
+#include "machgui/InputRegistry.hpp"
 #include "machgui/ProgressIndicator.hpp"
 
 // Context helpers
@@ -1784,7 +1785,8 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     if (e.state() == Gui::PRESSED)
     {
         // Save menu screen shot
-        if (e.key() == Device::KeyCode::F12 && e.isShiftPressed() && e.isCtrlPressed())
+        static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+        if (screenshotTrigger.matches(e.keyWithMods()))
         {
             Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
         }
