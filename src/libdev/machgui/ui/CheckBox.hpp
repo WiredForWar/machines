@@ -15,7 +15,7 @@
 #include "machgui/focusctl.hpp"
 
 #include "gui/font.hpp"
-#include "machgui/ResolvedUiString.hpp"
+#include "gui/ResolvedUiString.hpp"
 
 class MachGuiCheckBox
     : public GuiDisplayable

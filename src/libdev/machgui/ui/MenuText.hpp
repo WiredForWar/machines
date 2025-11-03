@@ -8,7 +8,7 @@
 #include "gui/displaya.hpp"
 
 #include "system/pathname.hpp"
-#include "machgui/ResolvedUiString.hpp"
+#include "gui/ResolvedUiString.hpp"
 
 using strings = std::vector<std::string>;
 class GuiBmpFont;

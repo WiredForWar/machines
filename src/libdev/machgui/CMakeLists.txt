@@ -6,8 +6,6 @@ set(MACHGUI_SOURCES
     MachGuiFPCommand.hpp
     ProgressIndicator.cpp
     ProgressIndicator.hpp
-    ResolvedUiString.cpp
-    ResolvedUiString.hpp
     actbmpnm.cpp
     actbmpnm.hpp
     actnamid.cpp

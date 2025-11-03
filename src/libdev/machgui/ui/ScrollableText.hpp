@@ -12,7 +12,7 @@
 #pragma once
 
 #include "gui/scrolist.hpp"
-#include "machgui/ResolvedUiString.hpp"
+#include "gui/ResolvedUiString.hpp"
 
 class GuiRoot;
 

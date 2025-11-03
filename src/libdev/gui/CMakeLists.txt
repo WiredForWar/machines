@@ -1,5 +1,7 @@
 
 set(GUI_SOURCES
+    ResolvedUiString.cpp
+    ResolvedUiString.hpp
     border.cpp
     border.hpp
     button.cpp
