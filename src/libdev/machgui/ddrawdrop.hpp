@@ -21,6 +21,7 @@
 class MachGuiDropDownCallback
 {
 public:
+    virtual ~MachGuiDropDownCallback() = default;
     virtual void callBack() = 0;
 };
 
