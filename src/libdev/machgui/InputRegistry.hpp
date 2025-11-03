@@ -8,6 +8,8 @@
 namespace MachGui
 {
 
+class IBindsStorage;
+
 class InputCategoryDetails
 {
 public:
@@ -28,7 +30,10 @@ public:
     using KeyCode = Device::KeyCode;
     using KeyModifier = Device::KeyModifier;
 
-    InputRegistry();
+    explicit InputRegistry(IBindsStorage* storage);
+
+    void load();
+    void save() const;
 
     const KeyBinds& getBinds(BindId id) const final;
     const std::string& getBindDisplayString(BindId id, DisplayFormat format = {}) const final;
@@ -83,6 +88,7 @@ protected:
     mutable std::unordered_map<std::string, std::string, string_hash, std::equal_to<>> bindDisplayStrings_;
 
     std::vector<CategoryData> categories_;
+    IBindsStorage *storage_{};
 };
 
 InputRegistry* inputRegistryImpl();

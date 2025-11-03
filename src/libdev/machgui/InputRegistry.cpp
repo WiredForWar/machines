@@ -1,5 +1,6 @@
 #include "machgui/InputRegistry.hpp"
 
+#include "machgui/BindsStorageXml.hpp"
 #include "machgui/internal/strings.hpp"
 
 #include "gui/KeyToString.hpp"
@@ -41,10 +42,39 @@ bool isArrowKey(Device::KeyCode code)
 
 } // namespace
 
-InputRegistry::InputRegistry()
+InputRegistry::InputRegistry(IBindsStorage *storage)
+    : storage_(storage)
 {
     initBinds();
     setDefaults();
+
+    load();
+}
+
+void InputRegistry::load()
+{
+    bindDisplayStrings_.clear();
+
+    for (auto& [bindId, bindData] : binds_)
+    {
+        if (bindData.special_)
+            continue;
+
+        storage_->read(BindId(bindId), &bindData.binds_);
+    }
+}
+
+void InputRegistry::save() const
+{
+    for (const auto& [bindId, bindData] : binds_)
+    {
+        if (bindData.special_)
+            continue;
+
+        storage_->write(BindId(bindId), bindData.binds_);
+    }
+
+    storage_->sync();
 }
 
 const KeyBinds& InputRegistry::getBinds(BindId id) const
@@ -537,6 +567,8 @@ void InputRegistry::initBinds()
 
 void InputRegistry::setDefaults()
 {
+    bindDisplayStrings_.clear();
+
     setBinds("ui-controlpanel-hide"_bind, {
         { KeyCode::LEFT_ARROW | KeyModifier::Alt },
     });
@@ -975,11 +1007,14 @@ IInputRegistry* inputRegistry()
 
 InputRegistry *inputRegistryImpl()
 {
-    static InputRegistry r;
+    static BindsStorageXml storage;
+    static InputRegistry r(&storage);
     static bool initialized = false;
     if (!initialized)
     {
         initialized = true;
+        r.load();
+        r.save();
     }
     return &r;
 }

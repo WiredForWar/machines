@@ -1,8 +1,11 @@
 
 set(MACHGUI_SOURCES
     BindId.hpp
+    BindsStorageXml.cpp
+    BindsStorageXml.hpp
     GameMenuContext.cpp
     GameMenuContext.hpp
+    IBindsStorage.hpp
     IInputRegistry.hpp
     InputRegistry.cpp
     InputRegistry.hpp
