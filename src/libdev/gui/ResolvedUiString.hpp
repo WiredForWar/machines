@@ -5,6 +5,8 @@
 class ResolvedUiString
 {
 public:
+    ResolvedUiString() = default;
+
     ResolvedUiString(std::string str)
         : str_(std::move(str))
     {

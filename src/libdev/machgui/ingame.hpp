@@ -15,6 +15,7 @@
 #include "base/base.hpp"
 #include "world4d/observer.hpp"
 #include "gui/root.hpp"
+#include "gui/ResolvedUiString.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/igcurs2d.hpp"
 
@@ -123,15 +124,15 @@ public:
     void cancelActiveCommand();
 
     // Set/get the prompt text related to cursor position
-    void setCursorPromptText(const std::string& prompt);
-    void setCursorPromptText(const std::string& prompt, bool restartScroll);
+    void setCursorPromptText(const ResolvedUiString& prompt);
+    void setCursorPromptText(const ResolvedUiString& prompt, bool restartScroll);
     const std::string& cursorPromptText() const;
 
     // Clear any prompt text associated with the cursor position
     void clearCursorPromptText();
 
     // Set/get the prompt text related to current command state
-    void commandPromptText(const std::string& prompt);
+    void commandPromptText(const ResolvedUiString& prompt);
     const std::string& commandPromptText() const;
 
     // Clear any prompt text associated with the current command state

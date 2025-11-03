@@ -257,7 +257,7 @@ MachGui::Cursor2dType MachGuiConstructCommand::cursorOnTerrain(const MexPoint3d&
         if (legalPosition)
         {
             cursor = MachGui::CONSTRUCT_CURSOR;
-            inGameScreen().commandPromptText("");
+            inGameScreen().commandPromptText({});
         }
         else
         {

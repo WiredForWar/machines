@@ -2022,7 +2022,7 @@ void MachInGameScreen::cancelActiveCommand()
     cancelActiveCommand_ = true;
 }
 
-void MachInGameScreen::setCursorPromptText(const std::string& prompt)
+void MachInGameScreen::setCursorPromptText(const ResolvedUiString& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2031,7 +2031,7 @@ void MachInGameScreen::setCursorPromptText(const std::string& prompt)
     pPromptText_->setCursorPromptText(prompt);
 }
 
-void MachInGameScreen::setCursorPromptText(const std::string& prompt, bool restartScroll)
+void MachInGameScreen::setCursorPromptText(const ResolvedUiString& prompt, bool restartScroll)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
@@ -2055,7 +2055,7 @@ void MachInGameScreen::clearCursorPromptText()
     pPromptText_->clearCursorPromptText();
 }
 
-void MachInGameScreen::commandPromptText(const std::string& prompt)
+void MachInGameScreen::commandPromptText(const ResolvedUiString& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);
 
