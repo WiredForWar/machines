@@ -59,3 +59,7 @@ target_link_libraries(gui PUBLIC
     LibDev::device
     LibDev::render
 )
+
+target_link_libraries(gui PRIVATE
+    LibDev::world4d
+)
