@@ -9,6 +9,7 @@
 
 #include "gui/font.hpp"
 #include "system/pathname.hpp"
+#include "machgui/InputRegistry.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/startup.hpp"
@@ -29,179 +30,145 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 {
     const uint HOTKEY_MIN_X = MachGui::menuScaleFactor() * 128;
     const uint HOTKEY_MIN_Y = MachGui::menuScaleFactor() * 15;
-    const uint HOTKEY_MAX_Y = MachGui::menuScaleFactor() * 350;
+    const uint HOTKEY_MAX_Y = MachGui::menuScaleFactor() * 338;
     const uint HOTKEY_ACTION_WIDTH = MachGui::menuScaleFactor() * 111;
     const uint HOTKEY_KEY_WIDTH = MachGui::menuScaleFactor() * 131;
     const uint HOTKEY_SEPARATION = MachGui::menuScaleFactor() * 2;
-
-    const uint HOTKEY_KEY_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH;
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
     const GuiBmpFont headingFont = GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
     const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     const uint headingFontHeight = headingFont.charHeight() + MachGui::menuScaleFactor() * 2;
-    const uint textFontHeight = textFont.charHeight() + MachGui::menuScaleFactor() * 2;
+    const uint textFontHeight = textFont.charHeight() + MachGui::menuScaleFactor() * 1;
+    const uint verticalSpacing = textFontHeight;
 
     bool enableAnimation = MachGui::menuScaleFactor() == 1;
 
-    // Display First Person Control heading
-    //
-    GuiResourceString optionsHeading(IDS_MENU_FIRSTPERSONCONTROL);
-    MachGuiMenuText* firstPersonHeading = new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(
-            Gui::Coord(HOTKEY_MIN_X, HOTKEY_MIN_Y),
-            Gui::Size(headingFont.textWidth(optionsHeading.asString()), headingFontHeight)),
-        IDS_MENU_FIRSTPERSONCONTROL,
-        MachGui::Menu::largeFontLight(),
-        Gui::AlignLeft|Gui::AlignTop);
+    const MachGui::InputRegistry* inputRegistry = MachGui::inputRegistryImpl();
+    uint x = HOTKEY_MIN_X;
+    uint y = HOTKEY_MIN_Y;
 
-    // Create First Person Actions text below First Person Control heading
-    //
-    uint noLines;
-    std::string hotKey1stPersonActions;
-    readHotkeyData("gui/menu/hk1pAction.dat", hotKey1stPersonActions, noLines);
+    const uint maxLinesInColumn = (HOTKEY_MAX_Y - y - headingFontHeight) / textFontHeight;
+    const uint maxLines = maxLinesInColumn * 2;
 
-    MachGuiMenuText* firstPersonContent = new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(
-            firstPersonHeading->relativeBoundary().bottomLeft(),
-            Gui::Size(HOTKEY_ACTION_WIDTH, noLines * textFontHeight)),
-        hotKey1stPersonActions,
-        MachGui::Menu::smallFontLight(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    uint headingMaxY = firstPersonHeading->relativeBoundary().bottom();
-    uint fstPersonWindowMaxY = firstPersonContent->relativeBoundary().bottom();
-
-    // Create First Person Keys text next to First Person Action text
-    //
-    std::string hotKey1stPersonKeys;
-    readHotkeyData("gui/menu/hk1pKeys.dat", hotKey1stPersonKeys, noLines);
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(HOTKEY_KEY_X, headingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, fstPersonWindowMaxY),
-        hotKey1stPersonKeys,
-        MachGui::Menu::smallFontWhite(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    // Display General Controls heading underneath First Person Controls hot keys
-    //
-    GuiResourceString optionsGeneralHeading(IDS_MENU_GENERALCONTROL);
-    uint genHeadingMaxY = fstPersonWindowMaxY + headingFontHeight;
-
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(
-            HOTKEY_MIN_X,
-            fstPersonWindowMaxY,
-            HOTKEY_MIN_X + headingFont.textWidth(optionsGeneralHeading.asString()),
-            genHeadingMaxY),
-        IDS_MENU_GENERALCONTROL,
-        MachGui::Menu::largeFontLight(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    // Calculate the number of lines of General hotkeys that can be displayed under
-    // the First Person hotkeys
-    uint noDisplayableLines = (HOTKEY_MAX_Y - genHeadingMaxY) / textFontHeight;
-
-    std::string hotKeyGeneralActions;
-
-    readHotkeyData("gui/menu/hkGenActions.dat", hotKeyGeneralActions, noLines);
-
-    strings choppedText;
-
-    MachGuiMenuText::chopUpText(hotKeyGeneralActions, MachGui::menuScaleFactor() * 200, textFont, &choppedText);
-
-    uint noRemainingLines = noLines - noDisplayableLines;
-
-    WAYNE_STREAM(" noDisplayableLines " << noDisplayableLines << std::endl);
-    WAYNE_STREAM(" noRemainingLines - " << noRemainingLines << std::endl);
-
-    std::string headString, remainderString;
-
-    // Create new strings to be displayed
-    for (uint i = 0; i < noDisplayableLines; i++)
+    const auto useNextColumn = [&]()
     {
-        headString += choppedText[i];
-        headString += "\n";
-    }
-    uint stringSize = choppedText.size();
+        x = HOTKEY_2NDCOLUMN_X;
+        y = HOTKEY_MIN_Y;
+    };
 
-    for (uint i = noDisplayableLines; i < stringSize; i++)
+    constexpr Gui::KeysDisplayFormat displayFormat = Gui::KeysDisplayFormat::Compact;
+    const std::vector<std::string> categoryNames = inputRegistry->getCategories();
+    for (const std::string& categoryName : inputRegistry->getCategories())
     {
-        remainderString += choppedText[i];
-        remainderString += "\n";
+        const MachGui::InputCategoryDetails& category = inputRegistry->getCategoryDetails(categoryName);
+        const std::string& displayName = category.displayName_;
+
+        std::vector<std::string> actionNames;
+        std::vector<std::string> actionKeys;
+
+        actionNames.reserve(category.bindIds_.size());
+        actionKeys.reserve(actionNames.size());
+
+        for (const MachGui::BindId& bindId : category.bindIds_)
+        {
+            const MachGui::BindDisplayData& data = inputRegistry->getBindDisplayData(bindId, displayFormat);
+            if (data.displayName_.empty())
+                continue;
+
+            actionNames.push_back(data.displayName_);
+            actionKeys.push_back(data.displayBind_);
+
+            if (actionNames.size() == maxLines)
+            {
+                // Ignore lines which do not fit
+                break;
+            }
+        }
+
+        if (actionNames.empty())
+        {
+            // Empty input category
+            continue;
+        }
+
+        if (categoryName == categoryNames.back() && (x < HOTKEY_2NDCOLUMN_X))
+        {
+            const uint textSpaceInThisColumn = HOTKEY_MAX_Y - y - headingFontHeight;
+            if (textSpaceInThisColumn / textFontHeight < actionNames.size())
+            {
+                if (actionNames.size() <= maxLinesInColumn)
+                {
+                    // We're gonna fit the next column
+                    useNextColumn();
+                }
+            }
+        }
+
+        new MachGuiMenuText(
+            pStartupScreens,
+            Gui::Box(
+                Gui::Coord(x, y),
+                Gui::Size(headingFont.textWidth(displayName), headingFontHeight)),
+            displayName,
+            MachGui::Menu::largeFontLight(),
+            Gui::AlignLeft|Gui::AlignTop);
+
+        y += headingFontHeight;
+
+        uint added = 0;
+        while (added < actionNames.size())
+        {
+            uint thisColumnMaxItems = (HOTKEY_MAX_Y - y) / textFontHeight;
+            uint columnLines = std::min<uint>(thisColumnMaxItems, actionNames.size() - added);
+
+            uint verticalSize = columnLines * textFontHeight;
+
+            std::string columnNames = Gui::join(std::next(actionNames.begin(), added), columnLines, "\n");
+            std::string columnKeys = Gui::join(std::next(actionKeys.begin(), added), columnLines, "\n");
+
+            new MachGuiMenuText(
+                pStartupScreens,
+                Gui::Box(
+                    Gui::Coord(x, y),
+                    Gui::Size(HOTKEY_ACTION_WIDTH, verticalSize)),
+                columnNames,
+                MachGui::Menu::smallFontLight(),
+                Gui::AlignLeft|Gui::AlignTop);
+
+            new MachGuiMenuText(
+                pStartupScreens,
+                Gui::Box(
+                    Gui::Coord(x + HOTKEY_ACTION_WIDTH, y),
+                    Gui::Size(HOTKEY_KEY_WIDTH, verticalSize)),
+                columnKeys,
+                MachGui::Menu::smallFontWhite(),
+                Gui::AlignLeft|Gui::AlignTop);
+
+            added += columnLines;
+
+            y += verticalSize;
+            if (added == actionNames.size())
+                y += verticalSpacing;
+
+            const bool needMoreLines = added < actionNames.size();
+            if (needMoreLines || y + headingFontHeight > HOTKEY_MAX_Y)
+            {
+                if (x < HOTKEY_2NDCOLUMN_X)
+                {
+                    useNextColumn();
+                    if (needMoreLines)
+                    {
+                        y += headingFontHeight;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
     }
-    WAYNE_STREAM("headString - " << headString << std::endl);
-    WAYNE_STREAM("remainderString - " << remainderString << std::endl);
-
-    uint generalWindowMaxY = genHeadingMaxY + (noDisplayableLines * textFontHeight);
-
-    WAYNE_STREAM("generalHeadingMaxY - " << genHeadingMaxY << std::endl);
-    WAYNE_STREAM("generalWindowMaxY - " << generalWindowMaxY << std::endl);
-
-    WAYNE_STREAM(
-        "Head box dimensions: " << HOTKEY_MIN_X << "," << genHeadingMaxY << "," << HOTKEY_MIN_X << ","
-                                << generalWindowMaxY << std::endl);
-
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(HOTKEY_MIN_X, genHeadingMaxY, HOTKEY_KEY_X, generalWindowMaxY),
-        headString,
-        MachGui::Menu::smallFontLight(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    const int secondColumnY = enableAnimation ? HOTKEY_MIN_Y : firstPersonContent->relativeBoundary().top();
-    uint generalRemainderHeight = noRemainingLines * textFontHeight;
-
-    WAYNE_STREAM("generalRemainderMaxY - " << generalRemainderHeight << std::endl);
-
-    WAYNE_STREAM(
-        " Remainder box dimensions: " << HOTKEY_2NDCOLUMN_X << "," << HOTKEY_MIN_Y << "," << HOTKEY_2NDCOLUMN_X << ","
-                                      << generalRemainderHeight << std::endl);
-
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(Gui::Coord(HOTKEY_2NDCOLUMN_X, secondColumnY), Gui::Size(HOTKEY_ACTION_WIDTH, generalRemainderHeight)),
-        remainderString,
-        MachGui::Menu::smallFontLight(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    std::string hotKeyGeneralKeys;
-    readHotkeyData("gui/menu/hkGenKeys.dat", hotKeyGeneralKeys, noLines);
-
-    strings choppedupText;
-    MachGuiMenuText::chopUpText(hotKeyGeneralKeys, MachGui::menuScaleFactor() * 200, textFont, &choppedupText);
-
-    headString = remainderString = "";
-
-    // Create new strings to be displayed
-    for (uint i = 0; i < noDisplayableLines; i++)
-    {
-        headString += choppedupText[i];
-        headString += "\n";
-    }
-    for (uint i = noDisplayableLines; i < stringSize; i++)
-    {
-        remainderString += choppedupText[i];
-        remainderString += "\n";
-    }
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(HOTKEY_KEY_X, genHeadingMaxY, HOTKEY_KEY_X + HOTKEY_KEY_WIDTH, generalWindowMaxY),
-        headString,
-        MachGui::Menu::smallFontWhite(),
-        Gui::AlignLeft|Gui::AlignTop);
-
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(
-            Gui::Coord(HOTKEY_2NDCOLUMN_X + HOTKEY_ACTION_WIDTH, secondColumnY),
-            Gui::Size(HOTKEY_KEY_WIDTH, generalRemainderHeight)),
-        remainderString,
-        MachGui::Menu::smallFontWhite(),
-        Gui::AlignLeft|Gui::AlignTop);
 
     if (enableAnimation)
     {
