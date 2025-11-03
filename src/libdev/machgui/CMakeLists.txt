@@ -7,6 +7,8 @@ set(MACHGUI_SOURCES
     GameMenuContext.hpp
     IBindsStorage.hpp
     IInputRegistry.hpp
+    InputLayout.cpp
+    InputLayout.hpp
     InputRegistry.cpp
     InputRegistry.hpp
     MachGuiFPCommand.cpp

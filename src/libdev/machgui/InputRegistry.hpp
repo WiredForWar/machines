@@ -1,5 +1,7 @@
 #include "IInputRegistry.hpp"
 
+#include "machgui/InputLayout.hpp"
+
 #include "gui/StringId.hpp"
 
 #include <unordered_map>
@@ -31,6 +33,8 @@ public:
     using KeyModifier = Device::KeyModifier;
 
     explicit InputRegistry(IBindsStorage* storage);
+
+    void setLayout(InputLayout layout);
 
     void load();
     void save() const;
@@ -83,12 +87,16 @@ protected:
 
     void setDefaults();
 
+    void setLegacyDefaults();
+    void setWasdLayout();
+
 protected:
     std::unordered_map<std::string, BindData, string_hash, std::equal_to<>> binds_;
     mutable std::unordered_map<std::string, std::string, string_hash, std::equal_to<>> bindDisplayStrings_;
 
     std::vector<CategoryData> categories_;
     IBindsStorage *storage_{};
+    InputLayout layout_{};
 };
 
 InputRegistry* inputRegistryImpl();

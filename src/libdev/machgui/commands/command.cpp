@@ -564,6 +564,12 @@ MachGuiCommand::ObstacleFlags MachGuiCommand::selectedActorObstacleFlags() const
 // virtual
 bool MachGuiCommand::processButtonEvent(const GuiKeyEvent& event)
 {
+    if (pImpl_->triggerBindId_ == "commands-stop-trigger")
+    {
+        const KeyBind b{event.keyWithMods(), {}};
+        std::cerr << "commands-stop-trigger got pressed " << Gui::toDisplayString(b) << std::endl;
+    }
+
     const auto& trigger = pImpl_->triggerBinds_;
     const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && trigger.matches(event.keyWithMods()) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)

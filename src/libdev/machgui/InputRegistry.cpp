@@ -46,13 +46,21 @@ InputRegistry::InputRegistry(IBindsStorage *storage)
     : storage_(storage)
 {
     initBinds();
-    setDefaults();
+
+    layout_ = Config::inputBaseLayout.get();
+}
+
+void InputRegistry::setLayout(InputLayout layout)
+{
+    layout_ = layout;
 
     load();
 }
 
 void InputRegistry::load()
 {
+    setDefaults();
+
     bindDisplayStrings_.clear();
 
     for (auto& [bindId, bindData] : binds_)
@@ -569,6 +577,16 @@ void InputRegistry::setDefaults()
 {
     bindDisplayStrings_.clear();
 
+    setLegacyDefaults();
+
+    if (layout_ == InputLayout::WASD)
+    {
+        setWasdLayout();
+    }
+}
+
+void InputRegistry::setLegacyDefaults()
+{
     setBinds("ui-controlpanel-hide"_bind, {
         { KeyCode::LEFT_ARROW | KeyModifier::Alt },
     });
@@ -997,6 +1015,124 @@ void InputRegistry::setDefaults()
     });
     setBinds("fpv-command-follow"_bind, {
         { KeyCode::INSERT },
+    });
+}
+
+void InputRegistry::setWasdLayout()
+{
+    // Add Ctrl to normal WASD binds
+    setBinds("commands-stand-ground-trigger"_bind, {
+        { KeyCode::KEY_W | KeyModifier::Ctrl },
+    });
+    setBinds("commands-attack-trigger"_bind, {
+        { KeyCode::KEY_A | KeyModifier::Ctrl },
+    });
+    setBinds("commands-stop-trigger"_bind, {
+        { KeyCode::KEY_S | KeyModifier::Ctrl },
+    });
+    setBinds("commands-deconstruct-trigger"_bind, {
+        { KeyCode::KEY_D | KeyModifier::Ctrl },
+        { KeyCode::KEY_X }
+    });
+
+    setBinds("view-next-machine"_bind, {}); // Alt+A
+    setBinds("view-next-construction"_bind, {}); // Alt+S
+    setBinds("select-all-machines"_bind, {}); // Shift+A
+    setBinds("select-all-constructions"_bind, {}); // Shift+S
+    setBinds("add-all-machines"_bind, {}); // Ctrl+Shift+A
+    setBinds("add-all-constructions"_bind, {}); // Ctrl+Shift+S
+
+    setBinds("zenith-camera-forward"_bind, {
+        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("zenith-camera-backward"_bind, {
+        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("zenith-camera-slide-left"_bind, {
+        { .keyWithMods = KeyCode::KEY_A, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("zenith-camera-slide-right"_bind, {
+        { .keyWithMods = KeyCode::KEY_D, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("zenith-camera-rotate-left"_bind, {
+        { .keyWithMods = KeyCode::KEY_A | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+    });
+    setBinds("zenith-camera-rotate-right"_bind, {
+        { .keyWithMods = KeyCode::KEY_D | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+    });
+
+    setBinds("fpv-move-forward"_bind, {
+        { .keyWithMods = KeyCode::KEY_W },
+        { .keyWithMods = KeyCode::UP_ARROW },
+    });
+    setBinds("fpv-move-backward"_bind, {
+        { .keyWithMods = KeyCode::KEY_S },
+        { .keyWithMods = KeyCode::DOWN_ARROW },
+    });
+
+    setBinds("fpv-turn-left"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    });
+    setBinds("fpv-turn-right"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_D | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Ctrl,
+            .releasedModifiers = KeyModifier::Shift,
+        },
+    });
+
+    setBinds("fpv-turn-left-fast"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_A,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::LEFT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    });
+    setBinds("fpv-turn-right-fast"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_D,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+        {
+            .keyWithMods = KeyCode::RIGHT_ARROW,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    });
+
+    setBinds("fpv-look-down-fast"_bind, {
+        { .keyWithMods = KeyCode::KEY_W | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+    });
+    setBinds("fpv-look-up-fast"_bind, {
+        { .keyWithMods = KeyCode::KEY_S | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl },
+    });
+    setBinds("fpv-turn-head-left-fast"_bind, {
+        { .keyWithMods = KeyCode::KEY_A | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl, },
+        { .keyWithMods = KeyCode::LEFT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl, },
+    });
+    setBinds("fpv-turn-head-right-fast"_bind, {
+        { .keyWithMods = KeyCode::KEY_D | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl, },
+        { .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl, },
     });
 }
 
