@@ -52,8 +52,6 @@
 #include "machgui/ingame.hpp"
 #include "machgui/mextemp.hpp"
 
-#include "gui/restring.hpp"
-
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen)
 {
@@ -264,47 +262,26 @@ MachGui::Cursor2dType MachGuiConstructCommand::cursorOnTerrain(const MexPoint3d&
             switch (invalidPosReason_)
             {
                 case MINETOCLOSETOSMELTER:
-                    {
-                        GuiResourceString commandstr(IDS_MINETOCLOSETOSMELTER);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_MINETOCLOSETOSMELTER);
+                    break;
                 case SMELTERTOCLOSETOMINE:
-                    {
-                        GuiResourceString commandstr(IDS_SMELTERTOCLOSETOMINE);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_SMELTERTOCLOSETOMINE);
+                    break;
                 case UNEVENTERRAIN:
-                    {
-                        GuiResourceString commandstr(IDS_UNEVENTERRAIN);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_UNEVENTERRAIN);
+                    break;
                 case TOCLOSETOOBSTACLES:
-                    {
-                        GuiResourceString commandstr(IDS_TOCLOSETOOBSTACLES);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_TOCLOSETOOBSTACLES);
+                    break;
                 case INFOGOFWAR:
-                    {
-                        GuiResourceString commandstr(IDS_INFOGOFWAR);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_INFOGOFWAR);
+                    break;
                 case NOTENOUGHCASH:
-                    {
-                        GuiResourceString commandstr(IDS_NOTENOUGHCASH);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_NOTENOUGHCASH);
+                    break;
                 case MAXUNITS:
-                    {
-                        GuiResourceString commandstr(IDS_MAXUNITS);
-                        inGameScreen().commandPromptText(commandstr.asString());
-                        break;
-                    }
+                    inGameScreen().commandPromptText(IDS_MAXUNITS);
+                    break;
             }
             cursor = MachGui::INVALID_CURSOR;
         }

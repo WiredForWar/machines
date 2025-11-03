@@ -16,7 +16,6 @@
 #include "machgui/commands/cmdionat.hpp"
 #include "machgui/commands/cmdnukat.hpp"
 #include "machgui/controlp.hpp"
-#include "gui/restring.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
 
@@ -372,12 +371,7 @@ bool MachCommandIcon::isEligableForVisibility() const
 
 void MachCommandIcon::setCursorPromptText()
 {
-    // Load the string for the command
-    GuiResourceString::Id id = pCommand_->cursorPromptStringId();
-    GuiResourceString prompt(id);
-
-    // Set the cursor prompt
-    pCommand_->inGameScreen().setCursorPromptText(prompt.asString());
+    pCommand_->inGameScreen().setCursorPromptText(pCommand_->cursorPromptStringId());
 }
 
 // virtual
