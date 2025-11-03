@@ -182,7 +182,7 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent&
             Gui::Coord coord = absoluteBoundary().minCorner();
 
             // Make sure that selected string appears first in list
-            GuiStrings orderedStrings;
+            ctl_vector<std::string> orderedStrings;
             orderedStrings.push_back(text_);
 
             for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)

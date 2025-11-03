@@ -17,8 +17,6 @@ GuiResourceString::GuiResourceString(Id id)
     PRE(hasResource());
 
     insertionString_ = GuiResourceString::map_Id_to_string(id);
-
-    TEST_INVARIANT;
 }
 
 GuiResourceString::GuiResourceString(Id id, const GuiString& str)
@@ -28,8 +26,6 @@ GuiResourceString::GuiResourceString(Id id, const GuiString& str)
     insertionString_ = GuiResourceString::map_Id_to_string(id);
     GuiStrings inserts(1, str);
     insert(inserts);
-
-    TEST_INVARIANT;
 }
 
 GuiResourceString::GuiResourceString(Id id, const GuiStrings& inserts)
@@ -38,8 +34,6 @@ GuiResourceString::GuiResourceString(Id id, const GuiStrings& inserts)
 
     insertionString_ = GuiResourceString::map_Id_to_string(id);
     insert(inserts);
-
-    TEST_INVARIANT;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -53,8 +47,6 @@ void GuiResourceString::insert(const GuiStrings& inserts)
 // <leadingdigit>   ::= <1> - <9>
 // <digit>          ::= <0> - <9>
 {
-    TEST_INVARIANT;
-
     for (size_t i = 0; i < insertionString_.length(); ++i)
     {
         if (insertionString_[i] == '%')
@@ -86,8 +78,6 @@ void GuiResourceString::insert(const GuiStrings& inserts)
             }
         }
     }
-
-    TEST_INVARIANT;
 }
 
 const GuiString& GuiResourceString::asString() const
@@ -96,10 +86,6 @@ const GuiString& GuiResourceString::asString() const
 }
 
 //////////////////////////////////////////////////////////////////////
-
-void GuiResourceString::CLASS_INVARIANT
-{
-}
 
 std::ostream& operator<<(std::ostream& o, const GuiResourceString& t)
 {
