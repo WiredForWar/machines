@@ -323,6 +323,40 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     return result;
 }
 
+std::string InputRegistry::formatTwoKeys(BindId id1, BindId id2, DisplayFormat format) const
+{
+    const auto& bind1 = getBinds(id1);
+    const auto& bind2 = getBinds(id2);
+    if (bind1.empty() || bind2.empty())
+        return {};
+
+    const auto keyWithMods1 = bind1.at(0).keyWithMods;
+    const auto keyWithMods2 = bind2.at(0).keyWithMods;
+
+    if (keyWithMods1 == keyWithMods2)
+        return Gui::toDisplayString(bind1.at(0), format);
+
+    const std::string delimiter = isArrowKey(keyWithMods1.keyCode()) ? " " : "/";
+    if (keyWithMods1.modifiers() == keyWithMods2.modifiers())
+    {
+        std::string result;
+        result = Gui::toDisplayString(bind1.at(0).keyCode(), format) + delimiter
+            + Gui::toDisplayString(bind2.at(0).keyCode(), format);
+
+        for (const KeyModifier mod : KeyModifierFlags::Order)
+        {
+            if (keyWithMods1.modifiers() & mod)
+                result += " " + toDisplayString(mod, format);
+        }
+
+        return result;
+    }
+    else
+    {
+        return Gui::toDisplayString(bind1.at(0), format) + delimiter + Gui::toDisplayString(bind2.at(0), format);
+    }
+}
+
 void InputRegistry::initBinds()
 {
     binds_[std::string(NoBind)] = {};

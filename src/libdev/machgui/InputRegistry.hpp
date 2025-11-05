@@ -72,6 +72,7 @@ protected:
     static std::string getKeysDisplayString(const KeyBinds& binds, DisplayFormat format);
 
     BindDisplayData getSpecialBindDisplayData(BindId id, const BindData& data, DisplayFormat format) const;
+    std::string formatTwoKeys(BindId id1, BindId id2, DisplayFormat format) const;
 
     void initBinds();
 
