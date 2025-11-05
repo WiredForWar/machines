@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/machnav.hpp"
+
+#include "machgui/InputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/cameras.hpp"
 #include "machgui/gui.hpp"
@@ -924,25 +926,16 @@ MachGuiConstructionNavigator::MachGuiConstructionNavigator(
     // What race is the PC controller controlling:
     , MachLogNotifiable(MachPhys::RED)
 {
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_S,
-        SELECT_ALL,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_S,
-        SELECT_ALL_KEEP_SELECTION,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_S,
-        VIEW_NEXT,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED));
-    pKeyTranslator_->initEventQueue();
+    const auto addTranslation
+        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId)
+    {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
+
+    addTranslation(pKeyTranslator_, SELECT_ALL, "select-all-constructions"_bind);
+    addTranslation(pKeyTranslator_, SELECT_ALL_KEEP_SELECTION, "add-all-constructions"_bind);
+    addTranslation(pKeyTranslator_, VIEW_NEXT, "view-next-construction"_bind);
 
     buildConstructIcons();
 
@@ -1329,25 +1322,16 @@ MachGuiMachineNavigator::MachGuiMachineNavigator(
     // What race is the PC controller controlling:
     , MachLogNotifiable(MachPhys::RED)
 {
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_A,
-        SELECT_ALL,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_A,
-        SELECT_ALL_KEEP_SELECTION,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_A,
-        VIEW_NEXT,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED));
-    pKeyTranslator_->initEventQueue();
+    const auto addTranslation
+        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId)
+    {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
+
+    addTranslation(pKeyTranslator_, SELECT_ALL, "select-all-machines"_bind);
+    addTranslation(pKeyTranslator_, SELECT_ALL_KEEP_SELECTION, "add-all-machines"_bind);
+    addTranslation(pKeyTranslator_, VIEW_NEXT, "view-next-machine"_bind);
 
     buildMachineIcons();
 

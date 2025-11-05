@@ -203,7 +203,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if (id == "x-view-next"_bind)
     {
-        result.displayBind_ = "S/A " + Gui::toDisplayString(KeyModifier::Alt);
+        result.displayBind_ = formatTwoKeys("view-next-machine"_bind, "view-next-construction"_bind, format);
     }
     else if (id == "x-select-visible"_bind)
     {
@@ -379,10 +379,19 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-view-restore"_bind, IDS_RESTORE_VIEW_FROM_X_TO_Y);
 
     createSpecialBind(bcGeneral, "x-view-next"_bind, IDS_VIEW_NEXT);
+    createBind(bcGeneral, "view-next-machine"_bind);
+    createBind(bcGeneral, "view-next-construction"_bind);
+
+    createBind(bcGeneral, "select-all-machines"_bind);
+    createBind(bcGeneral, "select-all-constructions"_bind);
+    createBind(bcGeneral, "add-all-machines"_bind);
+    createBind(bcGeneral, "add-all-constructions"_bind);
+
     createBind(bcGeneral, "select-visible-machines"_bind);
     createBind(bcGeneral, "select-visible-constructions"_bind);
     createBind(bcGeneral, "add-visible-machines"_bind);
     createBind(bcGeneral, "add-visible-constructions"_bind);
+
     createSpecialBind(bcGeneral, "x-select-visible"_bind, IDS_SELECT_VISIBLE);
     createSpecialBind(bcGeneral, "x-select-all"_bind, IDS_SELECT_ALL);
     createSpecialBind(bcGeneral, "x-deselect-all"_bind, IDS_DESELECT_ALL);
@@ -563,6 +572,43 @@ void InputRegistry::setDefaults()
     setBinds("view-restore-last-pos"_bind, {
         {
             .keyWithMods = KeyCode::KEY_H | KeyModifier::Ctrl | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Alt,
+        },
+    });
+
+    setBinds("view-next-machine"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Alt,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    });
+    setBinds("view-next-construction"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_S | KeyModifier::Alt,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift,
+        },
+    });
+    setBinds("select-all-machines"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt,
+        },
+    });
+    setBinds("select-all-constructions"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_S | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt,
+        },
+    });
+    setBinds("add-all-machines"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_A | KeyModifier::Ctrl | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Alt,
+        },
+    });
+    setBinds("add-all-constructions"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_S | KeyModifier::Ctrl | KeyModifier::Shift,
             .releasedModifiers = KeyModifier::Alt,
         },
     });
