@@ -137,40 +137,40 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMachineNavigator& t);
 
     // Data members...
-    MachGuiNavRow* pRow1_;
-    MachGuiNavRow* pRow2_;
-    MachGuiNavRow* pRow3_;
-    MachGuiNavRow* pRow4_;
-    MachGuiNavRow* pRow5_;
-    MachGuiNavRow* pRow6_;
+    MachGuiNavRow* pRow1_{};
+    MachGuiNavRow* pRow2_{};
+    MachGuiNavRow* pRow3_{};
+    MachGuiNavRow* pRow4_{};
+    MachGuiNavRow* pRow5_{};
+    MachGuiNavRow* pRow6_{};
 
-    MachGuiNavButton* pGruntButton_;
-    MachGuiNavButton* pAssassinButton_;
-    MachGuiNavButton* pBallistaButton_;
-    MachGuiNavButton* pKnightButton_;
-    MachGuiNavButton* pNinjaButton_;
-    MachGuiNavButton* pBossButton_;
-    MachGuiNavButton* pOverseerButton_;
-    MachGuiNavButton* pCommanderButton_;
-    MachGuiNavButton* pLabTechButton_;
-    MachGuiNavButton* pTechBoyButton_;
-    MachGuiNavButton* pBrainBoxButton_;
-    MachGuiNavButton* pDozerButton_;
-    MachGuiNavButton* pBuilderButton_;
-    MachGuiNavButton* pBehemothButton_;
-    MachGuiNavButton* pGeoLocatorButton_;
-    MachGuiNavButton* pSpyLocatorButton_;
-    MachGuiNavButton* pResourceCarrierButton_;
-    MachGuiNavButton* pAPCButton_;
+    MachGuiNavButton* pGruntButton_{};
+    MachGuiNavButton* pAssassinButton_{};
+    MachGuiNavButton* pBallistaButton_{};
+    MachGuiNavButton* pKnightButton_{};
+    MachGuiNavButton* pNinjaButton_{};
+    MachGuiNavButton* pBossButton_{};
+    MachGuiNavButton* pOverseerButton_{};
+    MachGuiNavButton* pCommanderButton_{};
+    MachGuiNavButton* pLabTechButton_{};
+    MachGuiNavButton* pTechBoyButton_{};
+    MachGuiNavButton* pBrainBoxButton_{};
+    MachGuiNavButton* pDozerButton_{};
+    MachGuiNavButton* pBuilderButton_{};
+    MachGuiNavButton* pBehemothButton_{};
+    MachGuiNavButton* pGeoLocatorButton_{};
+    MachGuiNavButton* pSpyLocatorButton_{};
+    MachGuiNavButton* pResourceCarrierButton_{};
+    MachGuiNavButton* pAPCButton_{};
 
-    MachGuiSelectAllNavButton* pAggressorSelectAll_;
-    MachGuiSelectAllNavButton* pAdministratorSelectAll_;
-    MachGuiSelectAllNavButton* pConstructorSelectAll_;
-    MachGuiSelectAllNavButton* pTechSelectAll_;
-    MachGuiSelectAllNavButton* pLocatorSelectAll_;
-    MachGuiSelectAllNavButton* pTransportSelectAll_;
+    MachGuiSelectAllNavButton* pAggressorSelectAll_{};
+    MachGuiSelectAllNavButton* pAdministratorSelectAll_{};
+    MachGuiSelectAllNavButton* pConstructorSelectAll_{};
+    MachGuiSelectAllNavButton* pTechSelectAll_{};
+    MachGuiSelectAllNavButton* pLocatorSelectAll_{};
+    MachGuiSelectAllNavButton* pTransportSelectAll_{};
 
-    MachLogResearchTree* pResearchTree_;
+    MachLogResearchTree* pResearchTree_{};
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,35 +231,35 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiConstructionNavigator& t);
 
     // Data members...
-    MachGuiNavRow* pRow1_;
-    MachGuiNavRow* pRow2_;
-    MachGuiNavRow* pRow3_;
-    MachGuiNavRow* pRow4_;
-    MachGuiNavRow* pRow5_;
-    MachGuiNavRow* pRow6_;
+    MachGuiNavRow* pRow1_{};
+    MachGuiNavRow* pRow2_{};
+    MachGuiNavRow* pRow3_{};
+    MachGuiNavRow* pRow4_{};
+    MachGuiNavRow* pRow5_{};
+    MachGuiNavRow* pRow6_{};
 
-    MachGuiNavButton* pPodButton_;
-    MachGuiNavButton* pTurretButton_;
-    MachGuiNavButton* pSentryButton_;
-    MachGuiNavButton* pLauncherButton_;
-    MachGuiNavButton* pICBMButton_;
-    MachGuiNavButton* pCivFacButton_;
-    MachGuiNavButton* pMilFacButton_;
-    MachGuiNavButton* pCivLabButton_;
-    MachGuiNavButton* pMilLabButton_;
-    MachGuiNavButton* pSmelterButton_;
-    MachGuiNavButton* pMineButton_;
-    MachGuiNavButton* pGarrisonButton_;
-    MachGuiNavButton* pBeaconButton_;
+    MachGuiNavButton* pPodButton_{};
+    MachGuiNavButton* pTurretButton_{};
+    MachGuiNavButton* pSentryButton_{};
+    MachGuiNavButton* pLauncherButton_{};
+    MachGuiNavButton* pICBMButton_{};
+    MachGuiNavButton* pCivFacButton_{};
+    MachGuiNavButton* pMilFacButton_{};
+    MachGuiNavButton* pCivLabButton_{};
+    MachGuiNavButton* pMilLabButton_{};
+    MachGuiNavButton* pSmelterButton_{};
+    MachGuiNavButton* pMineButton_{};
+    MachGuiNavButton* pGarrisonButton_{};
+    MachGuiNavButton* pBeaconButton_{};
 
-    MachGuiSelectAllNavButton* pPodSelectAll_;
-    MachGuiSelectAllNavButton* pMissileSelectAll_;
-    MachGuiSelectAllNavButton* pFactorySelectAll_;
-    MachGuiSelectAllNavButton* pLabSelectAll_;
-    MachGuiSelectAllNavButton* pSmelterSelectAll_;
-    MachGuiSelectAllNavButton* pGarrisonSelectAll_;
+    MachGuiSelectAllNavButton* pPodSelectAll_{};
+    MachGuiSelectAllNavButton* pMissileSelectAll_{};
+    MachGuiSelectAllNavButton* pFactorySelectAll_{};
+    MachGuiSelectAllNavButton* pLabSelectAll_{};
+    MachGuiSelectAllNavButton* pSmelterSelectAll_{};
+    MachGuiSelectAllNavButton* pGarrisonSelectAll_{};
 
-    MachLogConstructionTree* pConstructionTree_;
+    MachLogConstructionTree* pConstructionTree_{};
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

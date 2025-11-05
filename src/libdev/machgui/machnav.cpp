@@ -921,9 +921,8 @@ MachGuiConstructionNavigator::MachGuiConstructionNavigator(
         pParent,
         Gui::Box(rel.x(), rel.y(), rel.x() + reqWidth(), rel.y() + reqHeight()),
         pInGameScreen)
+    // What race is the PC controller controlling:
     , MachLogNotifiable(MachPhys::RED)
-    , // What race is the PC controller controlling?
-    pConstructionTree_(nullptr)
 {
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         Device::KeyCode::KEY_S,
@@ -1327,9 +1326,8 @@ MachGuiMachineNavigator::MachGuiMachineNavigator(
         pParent,
         Gui::Box(rel.x(), rel.y(), rel.x() + reqWidth(), rel.y() + reqHeight()),
         pInGameScreen)
+    // What race is the PC controller controlling:
     , MachLogNotifiable(MachPhys::RED)
-    , // What race is the PC controller controlling?
-    pResearchTree_(nullptr)
 {
     pKeyTranslator_->addTranslation(DevKeyToCommand(
         Device::KeyCode::KEY_A,
