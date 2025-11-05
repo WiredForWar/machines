@@ -9,6 +9,7 @@
 
 #include "gui/event.hpp"
 #include "mathex/point3d.hpp"
+#include "machgui/InputRegistry.hpp"
 #include "machgui/intcurac.hpp"
 #include "machgui/commands/cmdattac.hpp"
 #include "machgui/commands/cmdmove.hpp"
@@ -355,7 +356,7 @@ bool MachGuiDefaultCommand::doApply(MachActor*, std::string*)
 }
 
 // virtual
-MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& location, bool, bool, bool altPressed)
+MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& location, bool ctrlPressed, bool shiftPressed, bool altPressed)
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
@@ -381,6 +382,8 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
             }
         }
 
+        const KeyModifierFlags modifiers = KeyModifierFlags::fromCtrlAltShiftState(ctrlPressed, altPressed, shiftPressed);
+        const auto& altCursorBind = MachGui::inputRegistry()->getBinds("alternative-cursor"_bind);
         if (pSelectedActor)
         {
             if (pSelectedActor->objectIsMachine() && pSelectedActor->race() == playerRace)
@@ -392,12 +395,12 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
                     if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
                     {
                         // Locators default to Locate, move is alternative
-                        if (pSelectedActor->objectType() == MachLog::GEO_LOCATOR && ! altPressed)
+                        if (pSelectedActor->objectType() == MachLog::GEO_LOCATOR && !altCursorBind.modifiersMatch(modifiers))
                         {
                             cursor = MachGui::LOCATETO_CURSOR;
                         }
                         // APC default to move, deploy is alternative
-                        else if (pSelectedActor->objectType() == MachLog::APC && altPressed)
+                        else if (pSelectedActor->objectType() == MachLog::APC && altCursorBind.modifiersMatch(modifiers))
                         {
                             cursor = MachGui::DEPLOY_CURSOR;
                         }
@@ -416,7 +419,7 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
             // Factories get the "assemble at" cursor as an alternative
             else if (
                 pSelectedActor->objectType() == MachLog::FACTORY && pSelectedActor->race() == playerRace
-                && altPressed)
+                && altCursorBind.modifiersMatch(modifiers))
             {
                 if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
                 {

@@ -219,10 +219,6 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     {
         result.displayBind_ = Gui::toDisplayString(KeyCode::MOUSE_RIGHT, format);
     }
-    else if (id == "x-alternative-cursor"_bind)
-    {
-        result.displayBind_ = Gui::toDisplayString(KeyModifier::Alt);
-    }
     else if (id == "x-squadron-create"_bind)
     {
         result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
@@ -356,7 +352,7 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-select-visible"_bind, IDS_SELECT_VISIBLE);
     createSpecialBind(bcGeneral, "x-select-all"_bind, IDS_SELECT_ALL);
     createSpecialBind(bcGeneral, "x-deselect-all"_bind, IDS_DESELECT_ALL);
-    createSpecialBind(bcGeneral, "x-alternative-cursor"_bind, IDS_ALT_CURSOR);
+    createBind(bcGeneral, "alternative-cursor"_bind, IDS_ALT_CURSOR);
     createSpecialBind(bcGeneral, "x-squadron-create"_bind, IDS_SQUADRON_CREATE_X_TO_Y);
     createSpecialBind(bcGeneral, "x-squadron-add"_bind, IDS_SQUADRON_ADD_X_TO_Y);
     createSpecialBind(bcGeneral, "x-squadron-select"_bind, IDS_SQUADRON_SELECT_X_TO_Y);
@@ -560,6 +556,8 @@ void InputRegistry::setDefaults()
             .releasedModifiers = KeyModifier::Alt,
         },
     });
+
+    setBinds("alternative-cursor"_bind, { KeyBind { .keyWithMods = KeyWithModifiers({}, KeyModifier::Alt) } });
 
     setBinds("commands-assembly-point-trigger"_bind, {
         { KeyCode::KEY_B },

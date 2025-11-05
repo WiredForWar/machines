@@ -13,6 +13,7 @@ public:
 
     bool matches(const KeyWithModifiers& key) const;
     bool modifiersMatch(const KeyWithModifiers& key) const;
+    bool modifiersMatch(const KeyModifierFlags modifiers) const;
     bool keysMatch(const KeyWithModifiers& key) const;
 };
 
@@ -22,6 +23,7 @@ public:
     using Array::Array;
 
     bool matches(const KeyWithModifiers& key) const;
+    bool modifiersMatch(const KeyModifierFlags modifiers) const;
 };
 
 inline Device::KeyCode KeyBind::keyCode() const
@@ -36,7 +38,11 @@ inline bool KeyBind::matches(const KeyWithModifiers& key) const
 
 inline bool KeyBind::modifiersMatch(const KeyWithModifiers& key) const
 {
-    const KeyModifierFlags modifiers = key.modifiers();
+    return modifiersMatch(key.modifiers());
+}
+
+inline bool KeyBind::modifiersMatch(const KeyModifierFlags modifiers) const
+{
     if (modifiers & releasedModifiers)
         return false;
 
@@ -54,6 +60,17 @@ inline bool KeyBinds::matches(const KeyWithModifiers& key) const
     for (const KeyBind bind : *this)
     {
         if (bind.matches(key))
+            return true;
+    }
+
+    return false;
+}
+
+inline bool KeyBinds::modifiersMatch(const KeyModifierFlags modifiers) const
+{
+    for (const KeyBind bind : *this)
+    {
+        if (bind.modifiersMatch(modifiers))
             return true;
     }
 
