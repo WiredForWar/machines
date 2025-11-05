@@ -349,6 +349,10 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-view-restore"_bind, IDS_RESTORE_VIEW_FROM_X_TO_Y);
 
     createSpecialBind(bcGeneral, "x-view-next"_bind, IDS_VIEW_NEXT);
+    createBind(bcGeneral, "select-visible-machines"_bind);
+    createBind(bcGeneral, "select-visible-constructions"_bind);
+    createBind(bcGeneral, "add-visible-machines"_bind);
+    createBind(bcGeneral, "add-visible-constructions"_bind);
     createSpecialBind(bcGeneral, "x-select-visible"_bind, IDS_SELECT_VISIBLE);
     createSpecialBind(bcGeneral, "x-select-all"_bind, IDS_SELECT_ALL);
     createSpecialBind(bcGeneral, "x-deselect-all"_bind, IDS_DESELECT_ALL);
@@ -529,6 +533,30 @@ void InputRegistry::setDefaults()
     setBinds("view-restore-last-pos"_bind, {
         {
             .keyWithMods = KeyCode::KEY_H | KeyModifier::Ctrl | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Alt,
+        },
+    });
+    setBinds("select-visible-machines"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_Z | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt,
+        },
+    });
+    setBinds("select-visible-constructions"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_X | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt,
+        },
+    });
+    setBinds("add-visible-machines"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_Z | KeyModifier::Ctrl | KeyModifier::Shift,
+            .releasedModifiers = KeyModifier::Alt,
+        },
+    });
+    setBinds("add-visible-constructions"_bind, {
+        {
+            .keyWithMods = KeyCode::KEY_X | KeyModifier::Ctrl | KeyModifier::Shift,
             .releasedModifiers = KeyModifier::Alt,
         },
     });

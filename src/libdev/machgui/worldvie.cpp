@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/worldvie.hpp"
+
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/commands/command.hpp"
@@ -53,31 +55,16 @@ MachWorldViewWindow::MachWorldViewWindow(
     , rubberBanding_(false)
 {
     pKeyTranslator_ = new DevKeyToCommandTranslator();
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_Z,
-        SELECT_ONSCREEN_MACHINES,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_X,
-        SELECT_ONSCREEN_CONSTRUCTIONS,
-        DevKeyToCommand::RELEASED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_Z,
-        SELECT_ONSCREEN_MACHINES_KEEP_SEL,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->addTranslation(DevKeyToCommand(
-        Device::KeyCode::KEY_X,
-        SELECT_ONSCREEN_CONSTRUCTIONS_KEEP_SEL,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::PRESSED,
-        DevKeyToCommand::RELEASED));
-    pKeyTranslator_->initEventQueue();
+    const auto addTranslation
+        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId) {
+        const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
+        pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
+    };
+
+    addTranslation(pKeyTranslator_, SELECT_ONSCREEN_MACHINES, "select-visible-machines"_bind);
+    addTranslation(pKeyTranslator_, SELECT_ONSCREEN_CONSTRUCTIONS, "select-visible-constructions"_bind);
+    addTranslation(pKeyTranslator_, SELECT_ONSCREEN_MACHINES_KEEP_SEL, "add-visible-machines"_bind);
+    addTranslation(pKeyTranslator_, SELECT_ONSCREEN_CONSTRUCTIONS_KEEP_SEL, "add-visible-constructions"_bind);
 
     selectedEntities_.reserve(20);
 
