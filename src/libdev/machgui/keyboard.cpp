@@ -72,16 +72,18 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 static const auto & hidePanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-hide"_bind);
                 static const auto & showPanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-show"_bind);
 
-                // Dismiss control panel?
-                if (e.state() == Gui::PRESSED && hidePanelTrigger.matches(e.keyWithMods()))
+                if (e.state() == Gui::PRESSED)
                 {
-                    pImpl_->controlPanelOn_ = false;
-                    processed = true;
-                }
-                else if (e.state() == Gui::PRESSED && showPanelTrigger.matches(e.keyWithMods()))
-                {
-                    pImpl_->controlPanelOn_ = true;
-                    processed = true;
+                    if (pImpl_->controlPanelOn_ && hidePanelTrigger.matches(e.keyWithMods()))
+                    {
+                        pImpl_->controlPanelOn_ = false;
+                        processed = true;
+                    }
+                    else if (showPanelTrigger.matches(e.keyWithMods()))
+                    {
+                        pImpl_->controlPanelOn_ = true;
+                        processed = true;
+                    }
                 }
                 break;
             case 2:
