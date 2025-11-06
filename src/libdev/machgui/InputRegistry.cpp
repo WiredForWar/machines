@@ -207,13 +207,19 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if (id == "x-select-visible"_bind)
     {
-        result.displayBind_
-            = "Z/X " + Gui::toDisplayString(KeyModifier::Shift) + " (" + Gui::toDisplayString(KeyModifier::Ctrl) + ")";
+        result.displayBind_ = formatTwoKeys("select-visible-machines"_bind, "select-visible-constructions"_bind, format);
+        if (!result.displayBind_.empty())
+        {
+            result.displayBind_ += " (" + Gui::toDisplayString(KeyModifier::Ctrl) + ")";
+        }
     }
     else if (id == "x-select-all"_bind)
     {
-        result.displayBind_
-            = "S/A " + Gui::toDisplayString(KeyModifier::Shift) + " (" + Gui::toDisplayString(KeyModifier::Ctrl) + ")";
+        result.displayBind_ = formatTwoKeys("select-all-machines"_bind, "select-all-constructions"_bind, format);
+        if (!result.displayBind_.empty())
+        {
+            result.displayBind_ += " (" + Gui::toDisplayString(KeyModifier::Ctrl) + ")";
+        }
     }
     else if (id == "x-deselect-all"_bind)
     {
@@ -244,7 +250,6 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
         result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
         result.displayBind_ = Gui::toDisplayString(KeyCode::KEY_0) + "-" + Gui::toDisplayString(KeyCode::KEY_9);
     }
-
     else if (id == "x-move-camera"_bind)
     {
         const auto& keyUp = getBinds("zenith-camera-forward"_bind);
@@ -286,8 +291,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if (id == "x-ui-controlpanel-toggle"_bind)
     {
-        result.displayBind_ = Gui::toDisplayString(KeyCode::LEFT_ARROW, format) + " "
-            + Gui::toDisplayString(KeyCode::RIGHT_ARROW, format) + " " + Gui::toDisplayString(KeyModifier::Alt);
+        result.displayBind_ = formatTwoKeys("ui-controlpanel-hide"_bind, "ui-controlpanel-show"_bind, format);
     }
     else if (id == "x-send-chat-to-target"_bind)
     {
