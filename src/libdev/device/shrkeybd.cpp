@@ -469,7 +469,7 @@ void Device::writeAsString(std::ostream& o, KeyCode code)
             o << "PAD_9";
             break;
         case Device::KeyCode::FORWARD_SLASH:
-            o << "SCROLL_LOCK";
+            o << "FORWARD_SLASH";
             break;
         case Device::KeyCode::NUM_LOCK:
             o << "NUM_LOCK";
