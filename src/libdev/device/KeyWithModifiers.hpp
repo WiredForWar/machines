@@ -77,6 +77,7 @@ public:
     KeyWithModifiers(const KeyWithModifiers&) = default;
 
     auto operator<=>(const KeyWithModifiers&) const = default;
+    bool operator==(const KeyWithModifiers&) const = default;
     bool operator==(Underlying v) const
     {
         return value == v;
