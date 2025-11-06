@@ -63,6 +63,7 @@ static constexpr DevEventQueue::ScanCode ScanCodes[] {
     Device::KeyCode::PAD_7,
     Device::KeyCode::PAD_8,
     Device::KeyCode::PAD_9,
+    Device::KeyCode::FORWARD_SLASH,
     Device::KeyCode::SCROLL_LOCK,
     Device::KeyCode::BREAK,
     Device::KeyCode::RIGHT_CONTROL,
