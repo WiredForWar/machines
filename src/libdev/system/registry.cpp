@@ -6,17 +6,15 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "system/registry.hpp"
-#include "profiler/profiler.hpp"
 
 #include "recorder/recorder.hpp"
 #include "recorder/private/recpriv.hpp"
 
 #include "utility/rapidxml_utils.hpp"
 #include "utility/rapidxml_ext.hpp"
-#include <iostream>
+
 #include <fstream>
 #include <string>
-#include <cstring>
 
 class SysRegistryImpl
 {
