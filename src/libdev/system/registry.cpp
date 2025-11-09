@@ -13,60 +13,97 @@
 #include "utility/rapidxml_utils.hpp"
 #include "utility/rapidxml_ext.hpp"
 
+#include "system/pathname.hpp"
+
 #include <fstream>
 #include <string>
 
 class SysRegistryImpl
 {
 public:
-    SysRegistryImpl(std::string fileName = "config.xml")
-        : regFile_(fileName)
-        , xmlFile_(nullptr)
-    {
-        bool create = false;
-        try
-        {
-            xmlFile_ = new rapidxml::file<>(regFile_.c_str());
-            doc_.parse<0>(xmlFile_->data());
-        }
-        catch (const rapidxml::parse_error& e)
-        {
-            std::cerr << e.what() << " here: " << e.where<char>() << std::endl;
-            create = true;
-        }
-        catch (...)
-        {
-            create = true;
-        }
-        if (create)
-        {
-            std::cout << "Failed to parse config file, new empty one is created." << std::endl;
-            doc_.clear();
-            char* node_name = doc_.allocate_string("keys");
-            rapidxml::xml_node<>* child = doc_.allocate_node(rapidxml::node_element, node_name);
-            doc_.append_node(child);
-        }
-    };
-    ~SysRegistryImpl()
-    {
-        doc_.clear();
-        delete xmlFile_;
-    };
-    void store()
-    {
-        // Save to file
-        std::ofstream file_stored(regFile_.c_str());
-        file_stored << doc_;
-        file_stored.close();
-    }
+    // Default template is char
+    using XmlFileData = rapidxml::file<>;
+
+    SysRegistryImpl(std::string fileName = "config.xml");
+
+    ~SysRegistryImpl();
+
+    void init();
+    bool readFromFile();
+
+    void store();
 
     friend class SysRegistry;
     std::string currentStubKey_;
 
     rapidxml::xml_document<> doc_;
-    rapidxml::file<>* xmlFile_; // Default template is char
+    std::unique_ptr<XmlFileData> xmlFile_{};
     std::string regFile_;
 };
+
+SysRegistryImpl::SysRegistryImpl(std::string fileName)
+    : regFile_(fileName)
+{
+    init();
+};
+
+SysRegistryImpl::~SysRegistryImpl()
+{
+    doc_.clear();
+};
+
+void SysRegistryImpl::init()
+{
+    bool create = true;
+
+    if (SysPathName::existsAsFile(regFile_))
+    {
+        if (readFromFile())
+        {
+            create = false;
+        }
+    }
+
+    if (create)
+    {
+        doc_.clear();
+        char* node_name = doc_.allocate_string("keys");
+        rapidxml::xml_node<>* child = doc_.allocate_node(rapidxml::node_element, node_name);
+        doc_.append_node(child);
+    }
+}
+
+bool SysRegistryImpl::readFromFile()
+{
+    bool result = true;
+
+    try
+    {
+        xmlFile_ = std::make_unique<XmlFileData>(regFile_.c_str());
+        doc_.parse<0>(xmlFile_->data());
+    }
+    catch (const rapidxml::parse_error& e)
+    {
+        std::cerr << e.what() << " here: " << e.where<char>() << std::endl;
+        result = false;
+    }
+    catch (...)
+    {
+        result = false;
+    }
+
+    std::cout << "Failed to parse config file, new empty one is created." << std::endl;
+
+    return result;
+}
+
+void SysRegistryImpl::store()
+{
+    // Save to file
+    std::ofstream file_stored(regFile_.c_str());
+    file_stored << doc_;
+    file_stored.close();
+}
 
 #define CB_SysRegistry_DEPIMPL()                                                                                       \
     PRE(pImpl_)                                                                                                        \
@@ -82,24 +119,13 @@ SysRegistry& SysRegistry::instance()
 SysRegistry::SysRegistry()
     : pImpl_(std::make_unique<SysRegistryImpl>())
 {
-
-    TEST_INVARIANT;
 }
 
-SysRegistry::~SysRegistry()
-{
-    CB_SysRegistry_DEPIMPL();
-    TEST_INVARIANT;
-}
+SysRegistry::~SysRegistry() = default;
 
 void SysRegistry::reload()
 {
     pImpl_ = std::make_unique<SysRegistryImpl>();
-}
-
-void SysRegistry::CLASS_INVARIANT
-{
-    INVARIANT(this != nullptr);
 }
 
 std::ostream& operator<<(std::ostream& o, const SysRegistry& t)

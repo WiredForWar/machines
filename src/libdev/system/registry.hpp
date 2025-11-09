@@ -53,8 +53,6 @@ public:
 
     ReturnValue queryValueNoRecord(const std::string& valueName, std::string&);
 
-    void CLASS_INVARIANT;
-
 private:
     friend std::ostream& operator<<(std::ostream& o, const SysRegistry& t);
 
