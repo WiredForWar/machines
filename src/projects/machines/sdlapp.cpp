@@ -124,14 +124,6 @@ bool SDLApp::clientStartup()
     // Hide the cursor
     DevMouse::instance().hide();
 
-// must be called before the display is created
-// and the CD volume registry is used
-#ifndef DEMO
-    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
-#else
-    SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines Demo");
-#endif
-
 #ifdef DEMO
     SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_2);
 #else

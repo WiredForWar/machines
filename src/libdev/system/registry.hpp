@@ -34,23 +34,9 @@ public:
         SUCCESS,
         FAILED
     };
-    enum DataType
-    {
-        BINARY,
-        INTEGER,
-        MULTI_STRINGS,
-        STRING
-    };
-
-    // Most systems will have a default stub for example machines is:
-    //"SOFTWARE\Acclaim Entertainment\Machines"
-    // So rather than always fully specifying the key the stub maybe set in one place
-    const std::string& currentStubKey() const;
-    void currentStubKey(const std::string&);
 
     // This is the same as above but will create the key if necessary - this is normal use
     ReturnValue deleteKey(const std::string& keyName);
-    ReturnValue queryValue(const std::string& valueName, DataType, void* pBuffer, int* pBufferSize);
     ReturnValue setValue(const std::string& valueName, const std::string& value);
     ReturnValue deleteValue(const std::string& valueName);
 

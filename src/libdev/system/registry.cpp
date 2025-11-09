@@ -72,7 +72,6 @@ public:
 
 #define CB_SysRegistry_DEPIMPL()                                                                                       \
     PRE(pImpl_)                                                                                                        \
-    CB_DEPIMPL(std::string, currentStubKey_)                                                                           \
     CB_DEPIMPL(rapidxml::xml_document<>, doc_)
 
 // static
@@ -141,35 +140,6 @@ SysRegistry::ReturnValue SysRegistry::deleteKey(const std::string& keyName)
 
         if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             RecRecorderPrivate::instance().recordRegistryReturnValue(result);
-    }
-
-    return result;
-}
-
-SysRegistry::ReturnValue SysRegistry::queryValue(
-    const std::string& valueName,
-    SysRegistry::DataType dataType,
-    void* pBuffer,
-    int* pBufferSize)
-{
-    ReturnValue result = SUCCESS;
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        result = RecRecorderPrivate::instance().playbackRegistryReturnValue();
-        *pBufferSize = RecRecorderPrivate::instance().playbackRegistryBuffer(pBuffer);
-    }
-    else
-    {
-        std::string value;
-        result = queryValueNoRecord(valueName, value);
-        strncpy((char*)pBuffer, value.c_str(), value.length());
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-        {
-            RecRecorderPrivate::instance().recordRegistryReturnValue(result);
-            RecRecorderPrivate::instance().recordRegistryBuffer(pBuffer, *pBufferSize);
-        }
     }
 
     return result;
@@ -357,18 +327,6 @@ void SysRegistry::setIntegerValue(const std::string& keyName, const std::string&
 
     std::string valueStr = std::to_string(value);
     setValue(actualKeyName, valueStr);
-}
-
-const std::string& SysRegistry::currentStubKey() const
-{
-    CB_SysRegistry_DEPIMPL();
-    return currentStubKey_;
-}
-
-void SysRegistry::currentStubKey(const std::string& newStubKey)
-{
-    CB_SysRegistry_DEPIMPL();
-    currentStubKey_ = newStubKey;
 }
 
 /* End REGISTRY.CPP *************************************************/
