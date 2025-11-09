@@ -18,6 +18,8 @@
 #include <fstream>
 #include <string>
 
+#include <stdio.h>
+
 class SysRegistryImpl
 {
 public:
@@ -61,6 +63,14 @@ void SysRegistryImpl::init()
         if (readFromFile())
         {
             create = false;
+        }
+        else
+        {
+            const std::string backupFileName = regFile_ + ".bak";
+            if (SysPathName::existsAsFile(backupFileName))
+                remove(regFile_.c_str());
+
+            rename(regFile_.c_str(), backupFileName.c_str());
         }
     }
 
