@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 
 #include "base/internal/persist.hpp"
+#include "base/persist.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/vector.hpp"
-#include "stdlib/string.hpp"
 
 constexpr PerIdentifier initialId = 100;
 using ClampedSizeType = uint32_t;

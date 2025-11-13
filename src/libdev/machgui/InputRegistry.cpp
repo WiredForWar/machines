@@ -9,6 +9,8 @@
 
 #include "base/prepost.hpp"
 
+#include "utility/string.hpp"
+
 #include <algorithm>
 #include <unordered_map>
 
@@ -279,7 +281,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
             };
         }
 
-        result.displayBind_ = Gui::join(keyStrings, " ") + " " + "(" + Gui::toDisplayString(KeyModifier::Shift) + ")";
+        result.displayBind_ = Utils::join(keyStrings, " ") + " " + "(" + Gui::toDisplayString(KeyModifier::Shift) + ")";
     }
     else if (id == "x-map-move-camera"_bind)
     {
@@ -295,7 +297,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if (id == "x-send-chat-to-target"_bind)
     {
-        result.displayBind_ = Gui::join<std::vector<std::string>>(
+        result.displayBind_ = Utils::join<std::vector<std::string>>(
             {
                 Gui::toDisplayString(KeyCode::F1),
                 Gui::toDisplayString(KeyCode::F2),
@@ -306,7 +308,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if(id == "x-alliance-toggle"_bind)
     {
-        result.displayBind_ = Gui::join<std::vector<std::string>>(
+        result.displayBind_ = Utils::join<std::vector<std::string>>(
             {
                 Gui::toDisplayString(KeyCode::F1),
                 Gui::toDisplayString(KeyCode::F2),

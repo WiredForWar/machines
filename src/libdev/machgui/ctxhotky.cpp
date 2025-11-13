@@ -22,6 +22,8 @@
 #include "ani/AniSmackerRegular.hpp"
 #include "device/cd.hpp"
 
+#include "utility/string.hpp"
+
 #include <algorithm>
 #include <fstream>
 
@@ -124,8 +126,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
             uint verticalSize = columnLines * textFontHeight;
 
-            std::string columnNames = Gui::join(std::next(actionNames.begin(), added), columnLines, "\n");
-            std::string columnKeys = Gui::join(std::next(actionKeys.begin(), added), columnLines, "\n");
+            std::string columnNames = Utils::join(std::next(actionNames.begin(), added), columnLines, "\n");
+            std::string columnKeys = Utils::join(std::next(actionKeys.begin(), added), columnLines, "\n");
 
             new MachGuiMenuText(
                 pStartupScreens,

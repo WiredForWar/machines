@@ -26,6 +26,8 @@ set(UTILITY_SOURCES
     rapidxml_ext.hpp
     rapidxml_print.hpp
     rapidxml_utils.hpp
+    string.cpp
+    string.hpp
     subrange.hpp
     time.hpp
     tostring.cpp
