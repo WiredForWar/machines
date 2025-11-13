@@ -13,8 +13,6 @@
 #ifndef _WORLD4D_GENREPOS_HPP
 #define _WORLD4D_GENREPOS_HPP
 
-#include "stdlib/utility.hpp"
-
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "ctl/vector.hpp"

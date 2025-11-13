@@ -19,7 +19,6 @@
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 // #include "world4d/entity.hpp"
-#include "stdlib/utility.hpp"
 
 // Forward declarations
 class W4dCamera;

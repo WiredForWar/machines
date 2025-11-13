@@ -4,7 +4,6 @@ set(STDLIB_SOURCES
     exceptio.hpp
     function.hpp
     memory.hpp
-    utility.hpp
 )
 
 add_library(stdlib ${GAME_COMPONENT_LIB_TYPE} ${STDLIB_SOURCES})

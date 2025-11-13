@@ -5,8 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/utility.hpp"
-
 #include "phys/brake.hpp"
 #include "mathex/epsilon.hpp"
 
