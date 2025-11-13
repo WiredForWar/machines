@@ -1,8 +1,9 @@
 #include "network/messhead.hpp"
-#include "network/netdefs.hpp"
 // #include "network/priority.hpp"
 
 #include <enet/enet.h>
+
+#include <ostream>
 
 // NetMessageHeader::NetMessageHeader( NetNode* pSender, NetPriority priority, const Recipients& recipients):
 // sender_(pSender->nodeUid()),
@@ -28,7 +29,7 @@ NetMessageHeader::NetMessageHeader(ENetPeer* pPeer, const NetPriority& priority)
 }
 
 NetMessageHeader::NetMessageHeader(const NetMessageHeader& copyMe)
-    : sender_(_CONST_CAST(ENetPeer*, copyMe.sender()))
+    : sender_(const_cast<ENetPeer*>(copyMe.sender()))
     , priority_(copyMe.priority())
 {
 }

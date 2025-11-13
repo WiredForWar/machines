@@ -1,5 +1,7 @@
 #include "network/nodeuid.hpp"
 
+#include <ostream>
+
 const NetProcessUid& NetNodeUid::processUid() const
 {
     return processUid_;
