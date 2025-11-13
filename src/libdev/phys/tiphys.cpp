@@ -7,7 +7,6 @@
 // #define _INSTANTIATE_TEMPLATE_FUNCTIONS
 
 #include "base/base.hpp"
-#include "stdlib/memory.hpp"
 #include "phys/eulertx.hpp"
 #include "phys/rampacce.hpp"
 #include "ctl/vector.hpp"

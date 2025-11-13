@@ -11,7 +11,6 @@
 #ifndef _MACHPHYS_MOVE_HPP
 #define _MACHPHYS_MOVE_HPP
 
-#include "stdlib/memory.hpp"
 #include "phys/phys.hpp"
 #include "mathex/mathex.hpp"
 #include "machphys/mcmovinf.hpp"

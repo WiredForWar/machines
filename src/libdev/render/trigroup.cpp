@@ -10,7 +10,6 @@
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/illumine.hpp"
 #include "render/internal/devicei.hpp"
-#include "stdlib/memory.hpp"
 
 #include "render/device.hpp"
 

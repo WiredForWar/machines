@@ -13,10 +13,10 @@
 #define _PHYS_CS2DOMAI_HPP
 
 #include "base/base.hpp"
-#include "stdlib/memory.hpp"
 #include "mathex/abox2d.hpp"
 
 #include "phys/cspace2.hpp"
+#include "ctl/vector.hpp"
 
 // Forward refs
 class MexPolygon2d;

@@ -13,7 +13,6 @@
 #define _PHYS_CS2POLYG_HPP
 
 #include "base/base.hpp"
-#include "stdlib/memory.hpp"
 #include "mathex/mathex.hpp"
 #include "mathex/abox2d.hpp"
 

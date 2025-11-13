@@ -7,7 +7,6 @@
 #define _RENDER_POLYSORD_HPP
 
 #include "base/base.hpp"
-#include "stdlib/memory.hpp"
 #include <memory>
 #include "mathex/mathex.hpp"
 #include "ctl/vector.hpp"

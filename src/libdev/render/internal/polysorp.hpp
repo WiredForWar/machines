@@ -7,7 +7,6 @@
 #define _RENDER_POLYSORP_HPP
 
 #include "base/base.hpp"
-#include "stdlib/memory.hpp"
 #include "mathex/mathex.hpp"
 #include "ctl/vector.hpp"
 #include "render/material.hpp"

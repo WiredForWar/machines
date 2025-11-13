@@ -12,7 +12,6 @@
 #include <memory>
 
 #include "system/pathname.hpp"
-#include "stdlib/memory.hpp"
 #include "mathex/mathex.hpp"
 #include "mathex/abox3d.hpp"
 #include "mathex/point3d.hpp" // TBD: shouldn't be required.
