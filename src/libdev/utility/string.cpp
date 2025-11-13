@@ -1,7 +1,5 @@
 #include "utility/string.hpp"
 
-#include <vector>
-
 namespace Utils
 {
 
@@ -31,6 +29,20 @@ std::string join(Iterator beginIt, Iterator endIt, std::string_view sep)
     }
 
     return result;
+}
+
+std::vector<std::string_view> split(std::string_view path, char delimiter)
+{
+    std::vector<std::string_view> pathComponents;
+    std::size_t pos = 0;
+    std::size_t fromPos = 0;
+    while ((pos = path.find(delimiter, fromPos)) != std::string::npos)
+    {
+        pathComponents.push_back(path.substr(fromPos, pos - fromPos));
+        fromPos = pos + 1;
+    }
+    pathComponents.push_back(path.substr(fromPos));
+    return pathComponents;
 }
 
 namespace
