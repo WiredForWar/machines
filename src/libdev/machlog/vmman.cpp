@@ -21,8 +21,6 @@
 #include "sound/sndwavid.hpp"
 #include "utility/linetok.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 // static
@@ -511,21 +509,9 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
 
     const SysPathName definitionFileName("sounds/vemail/vemail.dat");
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, definitionFileName, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, definitionFileName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(definitionFileName.c_str());
-        // pIstream = new ifstream( definitionFileName.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(definitionFileName.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
     while (! parser.finished())

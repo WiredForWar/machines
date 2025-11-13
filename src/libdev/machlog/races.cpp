@@ -70,9 +70,6 @@
 
 #include "base/IProgressReporter.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
-
 #include <memory>
 #include <cstdio>
 
@@ -2381,22 +2378,9 @@ bool MachLogRaces::loadSavedGame(
         std::string scenarioPath = "data\\" + scenarioFileName;
         const SysPathName scenarioPathName(scenarioPath);
 
-        SysMetaFile metaFile("mach1.met");
-
-        std::unique_ptr<std::istream> pIstream;
-
-        if (SysMetaFile::useMetaFile() && metaFile.hasFile(scenarioPath))
-        {
-            // pIstream = new SysMetaFileIstream( metaFile, scenarioPathName, ios::text );
-            pIstream
-                = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, scenarioPathName, std::ios::in));
-        }
-        else
-        {
-            ASSERT_FILE_EXISTS(scenarioPathName.c_str());
-            // pIstream = new ifstream( scenarioPathName.c_str(), ios::text | ios::in );
-            pIstream = std::unique_ptr<std::istream>(new std::ifstream(scenarioPathName.c_str(), std::ios::in));
-        }
+        ASSERT_FILE_EXISTS(scenarioPathName.c_str());
+        std::unique_ptr<std::istream> pIstream
+            = std::unique_ptr<std::istream>(new std::ifstream(scenarioPathName.c_str(), std::ios::in));
 
         UtlLineTokeniser parser(*pIstream, scenarioPathName);
 

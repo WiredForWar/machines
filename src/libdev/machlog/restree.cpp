@@ -15,9 +15,6 @@
 #include "machlog/scenario.hpp"
 #include "machlog/resitem.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
-
 #include <memory>
 #include <sstream>
 
@@ -120,21 +117,9 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
 {
     CB_MachLogResearchTree_DEPIMPL();
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, treePath, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, treePath, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(treePath.c_str());
-        // pIstream = new ifstream( treePath.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(treePath.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(treePath.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(treePath.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, treePath);
     while (! parser.finished())

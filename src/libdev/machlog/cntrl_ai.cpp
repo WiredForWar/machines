@@ -7,10 +7,6 @@
 
 #include "ctl/algorith.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
-#include <memory>
-
 #include "utility/linetok.hpp"
 
 #include "mathex/cvexpgon.hpp"
@@ -60,6 +56,8 @@
 #include "machlog/oreholo.hpp"
 #include "machlog/spacial.hpp"
 #include "machlog/score.hpp"
+
+#include <memory>
 
 /* //////////////////////////////////////////////////////////////// */
 // comparison function used for sorting pointers to objects
@@ -617,21 +615,9 @@ void MachLogAIController::readRules(const SysPathName& pathName)
     MachLogRaces& races = MachLogRaces::instance();
     MachPhys::Race myRace = race();
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile() && metaFile.hasFile(pathName))
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, pathName, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(pathName.c_str());
-        // pIstream = new ifstream( pathName.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(pathName.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, pathName);
     bool finishedSPL = false;

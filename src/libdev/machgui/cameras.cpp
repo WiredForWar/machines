@@ -34,8 +34,6 @@
 #include "utility/linetok.hpp"
 #include "gui/event.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 static void readZenithDataFile(
@@ -856,21 +854,9 @@ void readZenithDataFile(
 {
     const SysPathName fileName("data/zenith.dat");
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, fileName, std::ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fileName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(fileName.c_str());
-        // pIstream = new std::ifstream( fileName.c_str(), std::ios::text | std::ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fileName.c_str(), std::ios::in | std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(fileName.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(fileName.c_str(), std::ios::in | std::ios::in));
 
     UtlLineTokeniser tokeniser(*pIstream, fileName);
 

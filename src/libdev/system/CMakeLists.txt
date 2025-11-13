@@ -17,10 +17,6 @@ set(SYSTEM_SOURCES
     internal/pathnami.hpp
     memcaps.cpp
     memcaps.hpp
-    metafile.cpp
-    metafile.hpp
-    metaistr.cpp
-    metaistr.hpp
     pathname.cpp
     pathname.hpp
     registry.cpp

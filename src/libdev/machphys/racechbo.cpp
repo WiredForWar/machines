@@ -29,8 +29,6 @@
 
 #include "utility/linetok.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 MachPhysRaceChangerBody::MachPhysRaceChangerBody()
@@ -368,21 +366,9 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
         texturesVec.reserve(10);
         static const SysPathName logoFilename = "data/logos.dat";
 
-        SysMetaFile metaFile("mach1.met");
-
-        std::unique_ptr<std::istream> pIstream;
-
-        if (SysMetaFile::useMetaFile())
-        {
-            // pIstream = new SysMetaFileIstream( metaFile, logoFilename, std::ios::text );
-            pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, logoFilename, std::ios::in));
-        }
-        else
-        {
-            ASSERT_FILE_EXISTS(logoFilename.c_str());
-            // pIstream = new ifstream( logoFilename.c_str(), ios::text | ios::in );
-            pIstream = std::unique_ptr<std::istream>(new std::ifstream(logoFilename.c_str(), std::ios::in));
-        }
+        ASSERT_FILE_EXISTS(logoFilename.c_str());
+        std::unique_ptr<std::istream> pIstream
+            = std::unique_ptr<std::istream>(new std::ifstream(logoFilename.c_str(), std::ios::in));
 
         UtlLineTokeniser parser(*pIstream, logoFilename);
 

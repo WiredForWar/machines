@@ -35,9 +35,8 @@
 #include "machlog/presspad.hpp"
 #include "machlog/minesite.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include "profiler/profiler.hpp"
+
 #include <memory>
 
 #ifndef _INLINE
@@ -253,21 +252,9 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
 {
     CB_MachLogPlanet_DEPIMPL();
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, spaceFilePath, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, spaceFilePath, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(spaceFilePath.c_str());
-        // pIstream = new ifstream( spaceFilePath.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(spaceFilePath.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(spaceFilePath.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(spaceFilePath.c_str(), std::ios::in));
 
     pIstream->seekg(0, std::ios::end);
     long nBytesInFile = pIstream->tellg();

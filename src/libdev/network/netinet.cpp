@@ -22,8 +22,6 @@
 #include "recorder/recorder.hpp"
 
 #include "system/Endian.hpp"
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include "system/registry.hpp"
 
 #include "spdlog/spdlog.h"
@@ -803,33 +801,15 @@ void NetINetwork::setAppUid()
         NETWORK_STREAM("NetINetwork::setAppUid\n");
         const SysPathName pathName("appguid.ini");
 
-        SysMetaFile metaFile("mach1.met");
-
-        std::unique_ptr<std::istream> pGuidStream;
-
-        if (SysMetaFile::useMetaFile())
-        {
-            pGuidStream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
-        }
-        else
-        {
-            ASSERT_FILE_EXISTS(pathName.c_str());
-            pGuidStream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
-        }
+        ASSERT_FILE_EXISTS(pathName.c_str());
+        std::unique_ptr<std::istream> pGuidStream
+            = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
 
         NETWORK_STREAM(" close appguid.ini\n");
 
-        std::unique_ptr<std::istream> pGuidStream2;
-
-        if (SysMetaFile::useMetaFile())
-        {
-            pGuidStream2 = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
-        }
-        else
-        {
-            ASSERT_FILE_EXISTS(pathName.c_str());
-            pGuidStream2 = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
-        }
+        ASSERT_FILE_EXISTS(pathName.c_str());
+        std::unique_ptr<std::istream> pGuidStream2
+            = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
 
         NETWORK_STREAM(" open line tokeniser with appguid.ini\n");
         UtlLineTokeniser parser(*pGuidStream2, pathName.c_str());

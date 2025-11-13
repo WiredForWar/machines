@@ -41,7 +41,6 @@
 #include "planeted/cameras.hpp"
 #include "sim/manager.hpp"
 #include "mathex/coordsys.hpp"
-#include "system/metafile.hpp"
 #include "system/winapi.hpp"
 
 #include "machphys/machphys.hpp"
@@ -173,9 +172,6 @@ static void newHandler()
 
 bool SDLApp::clientStartup()
 {
-    // Call early so no files are read in incorrectly.
-    SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_1);
-
     // Set coord system
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);
     ProgressIndicator progressIndicator;

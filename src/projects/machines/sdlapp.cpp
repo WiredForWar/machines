@@ -38,7 +38,6 @@
 #include "machines/errorhnd.hpp"
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
-#include "system/metafile.hpp"
 #include "machgui/ProgressIndicator.hpp"
 #include "machgui/ctxoptns.hpp"
 #include "machgui/gui.hpp"
@@ -123,12 +122,6 @@ bool SDLApp::clientStartup()
 
     // Hide the cursor
     DevMouse::instance().hide();
-
-#ifdef DEMO
-    SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_2);
-#else
-    SysMetaFile::encryptionType(SysMetaFile::ENCRYPTION_1);
-#endif
 
     std::set_new_handler(newHandler);
 

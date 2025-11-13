@@ -52,8 +52,6 @@
 #include "machlog/stats.hpp"
 #include "machlog/cntrl.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 #ifndef _INLINE
@@ -711,21 +709,9 @@ void MachLogFactory::loadGame()
 {
     const SysPathName factoryItemsPath("data/factory.bld");
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, factoryItemsPath, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, factoryItemsPath, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(factoryItemsPath.c_str());
-        // pIstream = new ifstream( factoryItemsPath.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(factoryItemsPath.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(factoryItemsPath.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(factoryItemsPath.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, factoryItemsPath);
     int i = 0;

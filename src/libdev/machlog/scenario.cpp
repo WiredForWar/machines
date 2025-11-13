@@ -8,9 +8,6 @@
 //  TBD: This should be in mcmotseq.hpp, it will cause big recompiles though - Bob
 #include <memory>
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
-
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp"
 #include "utility/linetok.hpp"
@@ -85,21 +82,9 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     const SysPathName factoryItemsPath("data/factory.bld");
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile() && metaFile.hasFile(fullPath))
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, fullPath, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, fullPath, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(fullPath.c_str());
-        // pIstream = new ifstream( fullPath.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(fullPath.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(fullPath.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(fullPath.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, fullPath);
 
@@ -949,19 +934,9 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
 
     const SysPathName RSI(researchItemsPath[gameData.technologyLevel()]);
 
-    std::unique_ptr<std::istream> pIstream2;
-
-    if (SysMetaFile::useMetaFile() && metaFile.hasFile(RSI))
-    {
-        // pIstream2 = new SysMetaFileIstream( metaFile, RSI, ios::text );
-        pIstream2 = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, RSI, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(RSI.c_str());
-        // pIstream2 = new ifstream( RSI.c_str(), ios::text | ios::in );
-        pIstream2 = std::unique_ptr<std::istream>(new std::ifstream(RSI.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(RSI.c_str());
+    std::unique_ptr<std::istream> pIstream2
+        = std::unique_ptr<std::istream>(new std::ifstream(RSI.c_str(), std::ios::in));
 
     UtlLineTokeniser riParser(*pIstream2, RSI);
     bool doForRace[MachPhys::N_RACES] = { false, false, false, false };

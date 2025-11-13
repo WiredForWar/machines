@@ -46,8 +46,6 @@
 #include "ctl/fixedvec.hpp"
 #include "ctl/vector.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 #include <stdio.h>
@@ -899,21 +897,9 @@ MachPhysDataParser::constructionDataStore(const MissileEmplacementDataStore& sto
 
 void MachPhysDataParser::readParameterisedDataFile(const SysPathName& pathname)
 {
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, pathname, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathname, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(pathname.c_str());
-        // pIstream = new ifstream( pathname.c_str(), std::ios::in | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathname.c_str(), std::ios::in | std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(pathname.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(pathname.c_str(), std::ios::in | std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, pathname);
     bool machinesSection = false;

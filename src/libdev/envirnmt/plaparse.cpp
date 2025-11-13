@@ -19,9 +19,6 @@
 
 #include "world4d/stars.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
-
 #include <fstream>
 
 EnvIPlanetParser& EnvIPlanetParser::instance()
@@ -70,18 +67,8 @@ void EnvIPlanetParser::parse(const SysPathName& envFile, EnvPlanetEnvironment* p
     // Do the global variable YACC stuff.
     yydoinit();
 
-    SysMetaFile metaFile("mach1.met");
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pGlobalLexIstream = new SysMetaFileIstream(metaFile, envFile, ios::text);
-        pGlobalLexIstream = new SysMetaFileIstream(metaFile, envFile, std::ios::in);
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(envFile.c_str());
-        pGlobalLexIstream = new std::ifstream(envFile.c_str(), std::ios::in);
-    }
+    ASSERT_FILE_EXISTS(envFile.c_str());
+    pGlobalLexIstream = new std::ifstream(envFile.c_str(), std::ios::in);
 
     yylineno = 1;
     yyparse();

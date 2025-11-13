@@ -24,8 +24,6 @@
 
 #include "ctl/vector.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -671,20 +669,8 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
 
     SndMixer::instance().unloadAll();
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, definitionFileName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(definitionFileName.c_str());
-        // pIstream = new std::ifstream( definitionFileName.c_str(), std::ios::text | std::ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(definitionFileName.c_str());
+    std::unique_ptr<std::istream> pIstream = std::unique_ptr<std::istream>(new std::ifstream(definitionFileName.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, definitionFileName);
     W4dSoundManagerImpl::SoundDataVector& availableSounds = *(pAvailableSounds_);

@@ -61,8 +61,6 @@
 #include "render/render.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/surfbody.hpp"
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include "system/winapi.hpp"
 
 #include "spdlog/spdlog.h"

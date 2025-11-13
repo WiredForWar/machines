@@ -8,8 +8,6 @@
 #include "sim/simstats.hpp"
 #include "utility/linetok.hpp"
 
-#include "system/metafile.hpp"
-#include "system/metaistr.hpp"
 #include <memory>
 
 // static
@@ -68,21 +66,8 @@ void SimStats::readInitialisationFile()
 {
     const SysPathName pathName("data/simstats.ini");
 
-    SysMetaFile metaFile("mach1.met");
-
-    std::unique_ptr<std::istream> pIstream;
-
-    if (SysMetaFile::useMetaFile())
-    {
-        // pIstream = new SysMetaFileIstream( metaFile, pathName, ios::text );
-        pIstream = std::unique_ptr<std::istream>(new SysMetaFileIstream(metaFile, pathName, std::ios::in));
-    }
-    else
-    {
-        ASSERT_FILE_EXISTS(pathName.c_str());
-        // pIstream = new ifstream( pathName.c_str(), ios::text | ios::in );
-        pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
-    }
+    ASSERT_FILE_EXISTS(pathName.c_str());
+    std::unique_ptr<std::istream> pIstream = std::unique_ptr<std::istream>(new std::ifstream(pathName.c_str(), std::ios::in));
 
     UtlLineTokeniser parser(*pIstream, pathName);
 
