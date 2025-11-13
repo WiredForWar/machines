@@ -152,7 +152,6 @@ add_library(libs INTERFACE)
 target_sources(libs
 
     INTERFACE 
-    $<TARGET_OBJECTS:afx>
     $<TARGET_OBJECTS:utility>
     $<TARGET_OBJECTS:profiler>
     $<TARGET_OBJECTS:device>
@@ -165,6 +164,7 @@ target_sources(libs
 )
 
 target_link_libraries(libs INTERFACE
+    LibDev::afx
     LibDev::network
     LibDev::render
     LibDev::mathex
