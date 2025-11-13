@@ -11,7 +11,6 @@
 
 #include "ctl/vector.hpp"
 
-#include "stdlib/string.hpp"
 #include "phys/motplan.hpp"
 #include "mathex/point3d.hpp"
 

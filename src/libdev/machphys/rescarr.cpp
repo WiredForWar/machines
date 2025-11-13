@@ -8,7 +8,6 @@
 #include "machphys/ofactory.hpp"
 #include "machphys/rescarr.hpp"
 
-#include "stdlib/string.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/abox3d.hpp"
 

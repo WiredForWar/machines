@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "world4d/domain.hpp"
 #include "machphys/pulseblb.hpp"
 #include "machphys/weapon.hpp"

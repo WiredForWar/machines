@@ -8,7 +8,6 @@
 
 #include "base/base.hpp"
 
-#include "stdlib/string.hpp"
 
 #include "mathex/mathex.hpp"
 #include "render/stars.hpp"

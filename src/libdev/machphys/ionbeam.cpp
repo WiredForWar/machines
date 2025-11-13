@@ -9,7 +9,6 @@
 #include "machphys/ionbeam.hpp"
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/transf3d.hpp"
 #include "phys/lsclplan.hpp"

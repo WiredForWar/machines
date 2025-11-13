@@ -13,7 +13,6 @@
 #define _MACHGUI_STRTDATA_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/machlog.hpp"

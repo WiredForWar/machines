@@ -13,7 +13,6 @@
 #define _MACHGUI_PLAYERIT_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/displaya.hpp"
 #include "gui/root.hpp"
 #include "machphys/machphys.hpp"

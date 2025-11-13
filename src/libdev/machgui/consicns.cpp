@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "machgui/consmenu.hpp"
 #include "machgui/consicns.hpp"
 #include "machgui/conselic.hpp"

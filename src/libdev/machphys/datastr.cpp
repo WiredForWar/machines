@@ -7,7 +7,6 @@
 
 #include "machphys/private/datastr.hpp"
 
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 #include "system/pathname.hpp"
 

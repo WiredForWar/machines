@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 #include "mathex/point2d.hpp"
 #include "sim/manager.hpp"

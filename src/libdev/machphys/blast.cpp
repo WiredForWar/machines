@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 #include "mathex/point2d.hpp"
 #include "machphys/blast.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "phys/rampacce.hpp"
 #include "machphys/private/otherper.hpp"

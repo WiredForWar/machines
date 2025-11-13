@@ -3,8 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "stdlib/string.hpp"
-
 #include "ctl/algorith.hpp"
 #include "ctl/list.hpp"
 

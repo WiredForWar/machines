@@ -13,7 +13,6 @@
 #define _MACHLOG_GRPMOVEI_HPP
 
 // #include <string>
-#include "stdlib/string.hpp"
 
 #include "base/base.hpp"
 

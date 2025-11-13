@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-#include "stdlib/string.hpp"
 #include "planeted/race.hpp"
 
 MachPhys::Race PedRace::parse(const string& race)

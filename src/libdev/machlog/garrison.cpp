@@ -3,8 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-//  Definitions of non-inline non-template methods and global functions
-#include "stdlib/string.hpp"
+#include "machlog/garrison.hpp"
 
 #include "mathex/transf3d.hpp"
 #include "mathex/abox2d.hpp"
@@ -15,7 +14,6 @@
 #include "machphys/mphydata.hpp"
 #include "machphys/garrdata.hpp"
 
-#include "machlog/garrison.hpp"
 #include "machlog/internal/garrisoi.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/planet.hpp"

@@ -6,7 +6,6 @@
 #pragma once
 
 #include "gui/gui.hpp"
-#include "stdlib/string.hpp"
 
 class MachLogMachine;
 

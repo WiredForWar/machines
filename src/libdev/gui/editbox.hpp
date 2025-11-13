@@ -13,7 +13,6 @@
 #define _GUI_EDITBOX_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/displaya.hpp"
 #include "gui/font.hpp"
 #include "gui/gui.hpp"

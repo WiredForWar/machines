@@ -14,7 +14,6 @@
 #define _MACHLOG_OPERATII_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "base/persist.hpp"
 #include "machlog/operatio.hpp"
 #include "machlog/grpmvinf.hpp"

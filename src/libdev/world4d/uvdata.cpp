@@ -11,7 +11,6 @@
 #include "world4d/uvplan.hpp"
 #include "world4d/uvtrans.hpp"
 
-#include "stdlib/string.hpp"
 #include "render/texture.hpp"
 #include "render/texmgr.hpp"
 

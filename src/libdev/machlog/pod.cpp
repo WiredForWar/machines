@@ -8,8 +8,6 @@
 #include "machlog/pod.hpp"
 #include "machlog/internal/podi.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp"
 

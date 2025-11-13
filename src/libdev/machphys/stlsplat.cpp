@@ -9,7 +9,6 @@
 #include "machphys/stlsplat.hpp"
 #include "machphys/private/otherper.hpp"
 #include "ctl/vector.hpp"
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 #include "render/texmgr.hpp"

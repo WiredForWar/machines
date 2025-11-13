@@ -9,7 +9,6 @@
 #include "machphys/private/otherper.hpp"
 #include "machphys/machphys.hpp"
 
-#include "stdlib/string.hpp"
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/colour.hpp"

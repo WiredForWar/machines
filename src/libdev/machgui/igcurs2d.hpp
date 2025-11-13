@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "mathex/point2d.hpp"
-#include "stdlib/string.hpp"
 #include "machgui/gui.hpp"
 
 // Forward refs

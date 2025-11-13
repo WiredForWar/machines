@@ -6,7 +6,6 @@
 #include "base/diag.hpp"
 #include "world4d/soundman.hpp"
 
-#include "stdlib/string.hpp"
 #include "world4d/entity.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/internal/snddata.hpp"

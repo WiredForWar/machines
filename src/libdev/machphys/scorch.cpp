@@ -7,7 +7,6 @@
 
 #include "machphys/scorch.hpp"
 
-#include "stdlib/string.hpp"
 
 #include "machphys/private/weapper.hpp"
 
@@ -76,11 +75,11 @@ void MachPhysGroundScorch::CLASS_INVARIANT
     INVARIANT(this != NULL);
 }
 
-ostream& operator<<(ostream& o, const MachPhysGroundScorch& t)
+std::ostream& operator<<(std::ostream& o, const MachPhysGroundScorch& t)
 {
 
-    o << "MachPhysGroundScorch " << (void*)&t << " start" << endl;
-    o << "MachPhysGroundScorch " << (void*)&t << " end" << endl;
+    o << "MachPhysGroundScorch " << (void*)&t << " start" << std::endl;
+    o << "MachPhysGroundScorch " << (void*)&t << " end" << std::endl;
 
     return o;
 }

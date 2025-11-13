@@ -16,8 +16,6 @@
 #include "machphys/machphys.hpp"
 #include "machphys/internal/dataimpl.hpp"
 
-#include "stdlib/string.hpp"
-
 class SysPathName;
 class UtlLineTokeniser;
 class MachPhysLevelIndexMap;

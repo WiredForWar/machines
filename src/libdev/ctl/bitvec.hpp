@@ -28,7 +28,6 @@
 #include "base/base.hpp"
 
 #include <limits.h>
-#include "stdlib/string.hpp"
 
 /////////////////////////////////////////////////////////////////////
 

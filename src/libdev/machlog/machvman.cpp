@@ -10,8 +10,6 @@
 
 #include "machlog/machvman.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machlog/actor.hpp"
 #include "machlog/aggressr.hpp"
 #include "machlog/construc.hpp"

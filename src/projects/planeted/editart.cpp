@@ -9,7 +9,6 @@
 #include "base/base.hpp"
 #include "base/diag.hpp"
 
-#include "stdlib/string.hpp"
 #include "device/keyboard.hpp"
 #include "device/eventq.hpp"
 #include "device/mouse.hpp"

@@ -5,7 +5,6 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "stdlib/string.hpp"
 #include "ctl/map.hpp"
 #include "ctl/set.hpp"
 #include "ctl/countptr.hpp"

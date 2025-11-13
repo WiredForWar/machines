@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 #include "machlog/internal/statimpl.hpp"
 

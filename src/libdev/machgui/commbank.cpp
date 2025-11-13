@@ -5,7 +5,6 @@
 
 #include "commbank.hpp"
 
-#include "stdlib/string.hpp"
 #include "mathex/point3d.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/guictrl.hpp"

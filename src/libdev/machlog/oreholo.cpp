@@ -4,7 +4,6 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "stdlib/string.hpp"
 #include "ctl/pvector.hpp"
 #include "mathex/transf3d.hpp"
 #include "world4d/domain.hpp"

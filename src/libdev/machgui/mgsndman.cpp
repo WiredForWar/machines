@@ -10,7 +10,6 @@
 #include "base/diag.hpp"
 #include "sound/smphandl.hpp"
 // Inclusion in here to stop compilation error
-#include "stdlib/string.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
 #include "sound/smpparam.hpp"

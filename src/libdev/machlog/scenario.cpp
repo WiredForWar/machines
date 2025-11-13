@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 //  TBD: This should be in mcmotseq.hpp, it will cause big recompiles though - Bob
-#include "stdlib/string.hpp"
 #include <memory>
 
 #include "system/metafile.hpp"

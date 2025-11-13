@@ -7,7 +7,6 @@
 #include "sound/internal/waveform.hpp"
 #include "sound/internal/wavefmt.hpp"
 #include "system/pathname.hpp"
-#include "stdlib/string.hpp"
 
 ////////////////////////////////////////////////////////////
 

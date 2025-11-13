@@ -7,7 +7,6 @@
 
 #include "machphys/loading.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/countptr.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"

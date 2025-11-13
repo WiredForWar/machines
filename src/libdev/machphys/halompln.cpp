@@ -7,8 +7,6 @@
 
 #include "machphys/halompln.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "system/pathname.hpp"
 #include "render/material.hpp"
 #include "render/matvec.hpp"

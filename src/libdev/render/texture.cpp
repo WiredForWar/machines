@@ -5,7 +5,6 @@
 
 #include "render/texture.hpp"
 
-#include "stdlib/string.hpp"
 #include "render/surfmgr.hpp"
 #include "render/texmgr.hpp"
 #include "render/internal/texbody.hpp"

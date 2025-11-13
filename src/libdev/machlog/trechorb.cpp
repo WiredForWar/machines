@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "ctl/pvector.hpp"
 #include "world4d/domain.hpp"
 #include "sim/manager.hpp"

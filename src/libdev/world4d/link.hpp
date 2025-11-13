@@ -12,7 +12,6 @@
 #ifndef _LINK_HPP
 #define _LINK_HPP
 
-#include "stdlib/string.hpp"
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "world4d/world4d.hpp"

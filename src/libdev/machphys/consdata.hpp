@@ -19,8 +19,6 @@
 #include "mathex/line2d.hpp"
 #include "ctl/vector.hpp"
 
-#include "stdlib/string.hpp"
-
 class MexTransform3d;
 class MexConvexPolygon2d;
 class MachPhysStations;

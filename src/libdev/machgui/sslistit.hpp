@@ -13,7 +13,6 @@
 #define _MACHGUI_SSLISTIT_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/root.hpp"
 #include "gui/sslistit.hpp"
 

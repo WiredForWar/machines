@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/point2d.hpp"
 #include "machlog/artfacts.hpp"

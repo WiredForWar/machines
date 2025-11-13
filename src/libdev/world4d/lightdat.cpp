@@ -7,8 +7,6 @@
 
 #include "world4d/internal/lightdat.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/list.hpp"
 #include "ctl/countptr.hpp"
 #include "mathex/transf3d.hpp"

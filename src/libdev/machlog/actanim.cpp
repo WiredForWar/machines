@@ -8,8 +8,6 @@
 #include "ctl/list.hpp"
 #include "ctl/countptr.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "utility/linetok.hpp"
 #include "world4d/composit.hpp"
 #include "world4d/compplan.hpp"

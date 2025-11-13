@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "machgui/chatwind.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/ui/MenuStyle.hpp"

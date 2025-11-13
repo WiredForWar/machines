@@ -5,8 +5,6 @@
 
 #include "machphys/mine.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/countptr.hpp"
 #include "mathex/eulerang.hpp"
 #include "mathex/transf3d.hpp"

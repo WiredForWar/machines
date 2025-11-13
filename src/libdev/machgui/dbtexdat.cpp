@@ -7,7 +7,6 @@
 
 #include "base/persist.hpp"
 #include "system/pathname.hpp"
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 
 #include "machgui/dbtexdat.hpp"

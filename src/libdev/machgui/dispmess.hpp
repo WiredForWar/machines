@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 #include "phys/phys.hpp"
 #include "ctl/pvector.hpp"
-#include "stdlib/string.hpp"
 
 class MachGuiMessageDisplay
 // Canonical form revoked

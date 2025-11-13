@@ -7,8 +7,6 @@
 
 #include "machines/scrndump.hpp"
 
-// #include <string.hpp>
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 
 #include "device/keyboard.hpp"

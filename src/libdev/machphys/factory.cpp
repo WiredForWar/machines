@@ -8,7 +8,6 @@
 #include "machphys/ofactory.hpp"
 #include "machphys/subid.hpp"
 #include "machphys/factory.hpp"
-#include "stdlib/string.hpp"
 
 #include "render/mesh.hpp"
 #include "render/meshinst.hpp"

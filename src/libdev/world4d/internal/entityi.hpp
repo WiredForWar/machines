@@ -26,7 +26,6 @@
 #include "ctl/countptr.hpp"
 #include "world4d/internal/animdata.hpp"
 #include "world4d/entity.hpp"
-#include "stdlib/string.hpp"
 
 class W4dEntity;
 class RenColour;

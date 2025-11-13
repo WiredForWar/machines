@@ -12,7 +12,6 @@
 #include "world4d/internal/nolight.hpp"
 
 #include "ctl/vector.hpp"
-#include "stdlib/string.hpp"
 
 PER_DEFINE_PERSISTENT(W4dGeneric);
 

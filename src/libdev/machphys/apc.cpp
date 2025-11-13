@@ -12,8 +12,6 @@
 // instantiation errors.  No idea why.
 #include "mathex/point3d.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/list.hpp"
 
 #include "system/pathname.hpp"

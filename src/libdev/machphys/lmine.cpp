@@ -9,7 +9,6 @@
 #include "machphys/lmine.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "world4d/root.hpp"
 #include "world4d/garbcoll.hpp"

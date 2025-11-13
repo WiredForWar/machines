@@ -13,8 +13,6 @@
 #ifndef _PLANSURF_HPP
 #define _PLANSURF_HPP
 
-#include "stdlib/string.hpp"
-
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "system/pathname.hpp"

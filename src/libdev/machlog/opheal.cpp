@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-#include "stdlib/string.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/countptr.hpp"
 #include "mathex/abox2d.hpp"

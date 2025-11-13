@@ -4,7 +4,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "machgui/hwreicon.hpp"
 #include "machgui/hwrebank.hpp"

@@ -8,7 +8,6 @@
 #include "machphys/damagwav.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "machphys/machphys.hpp"
 
 #include "render/texmgr.hpp"

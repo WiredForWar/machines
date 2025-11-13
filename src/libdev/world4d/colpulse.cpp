@@ -7,7 +7,6 @@
 
 #include "world4d/colpulse.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "ctl/vector.hpp"
 

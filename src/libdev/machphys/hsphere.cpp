@@ -9,7 +9,6 @@
 #include "machphys/hsphere.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/transf3d.hpp"
 #include "world4d/entyplan.hpp"

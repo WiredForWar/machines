@@ -10,7 +10,6 @@
 #include "render/colour.hpp"
 #include "mathex/angle.hpp"
 #include "ctl/mmvector.hpp"
-#include "stdlib/string.hpp"
 
 class SysPathName;
 

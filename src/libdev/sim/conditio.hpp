@@ -12,7 +12,6 @@
 #include "base/base.hpp"
 #include "ctl/pvector.hpp"
 #include "phys/phys.hpp"
-#include "stdlib/string.hpp"
 
 class SimAction;
 

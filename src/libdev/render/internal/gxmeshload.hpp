@@ -7,7 +7,6 @@
 #define _GXMESHLOAD_HPP
 
 #include "base/base.hpp"
-// #include "stdlib/string .hpp"
 #include <string>
 #include "ctl/map.hpp"
 #include "ctl/pvector.hpp"

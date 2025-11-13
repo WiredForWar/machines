@@ -7,8 +7,6 @@
 
 #include "machphys/halo.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/private/otherper.hpp"
 
 #include "mathex/transf3d.hpp"

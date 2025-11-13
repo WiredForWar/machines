@@ -18,8 +18,6 @@
 #include "mathex/mathex.hpp"
 #include "sound/snd.hpp"
 
-#include "stdlib/string.hpp"
-
 // forward decls
 class W4dEntity;
 class MexPoint3d;

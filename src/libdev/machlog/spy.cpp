@@ -2,8 +2,7 @@
  * S P Y . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
-
-#include "stdlib/string.hpp"
+#include "machlog/spy.hpp"
 
 #include "ctl/algorith.hpp"
 #include "ctl/pvector.hpp"
@@ -24,7 +23,6 @@
 #include "machphys/mphydata.hpp"
 
 #include "machlog/constron.hpp"
-#include "machlog/spy.hpp"
 #include "machlog/planet.hpp"
 #include "machlog/plandoms.hpp"
 #include "machlog/race.hpp"

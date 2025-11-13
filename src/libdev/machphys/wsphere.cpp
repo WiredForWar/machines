@@ -8,7 +8,6 @@
 #include "mathex/point2d.hpp"
 #include "machphys/wsphere.hpp"
 
-#include "stdlib/string.hpp"
 
 #include "machphys/private/otherper.hpp"
 

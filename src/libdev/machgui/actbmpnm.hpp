@@ -13,7 +13,6 @@
 #define _MACHGUI_ACTBMPNM_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "machlog/machlog.hpp"
 #include "machphys/machphys.hpp"
 

@@ -10,7 +10,6 @@
 #include "phys/phys.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
-#include "stdlib/string.hpp"
 
 class W4dRoot;
 class W4dLight;

@@ -8,7 +8,6 @@
 
 #include "base/base.hpp"
 #include "mathex/angle.hpp"
-#include "stdlib/string.hpp"
 
 class RenColour;
 class EnvOrbit;

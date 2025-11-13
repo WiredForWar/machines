@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <algorithm>
-// #include "stdlib/string.hpp"
 #include "machphys/levels.hpp"
 
 //  These all break our normal rules of no global statics etc. but

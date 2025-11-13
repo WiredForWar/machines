@@ -1,4 +1,3 @@
-#include "stdlib/string.hpp"
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
 #include "system/pathname.hpp"

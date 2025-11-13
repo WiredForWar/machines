@@ -18,7 +18,6 @@
 #include "base/persist.hpp"
 #include "base/tracker.hpp"
 
-#include "stdlib/string.hpp"
 #include <cstring>
 
 #include <memory>

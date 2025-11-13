@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "stdlib/string.hpp"
 
 // forward refs
 class MachGuiDbScenario;

@@ -20,7 +20,6 @@
 #include "phys/phys.hpp"
 #include "render/colour.hpp"
 #include "render/texture.hpp"
-#include "stdlib/string.hpp"
 
 class MachPhysWeaponData
 // Canonical form revoked

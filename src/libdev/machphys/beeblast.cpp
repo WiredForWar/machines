@@ -8,7 +8,6 @@
 // #include "machphys/beeblast.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 
 #include "phys/lsclplan.hpp"

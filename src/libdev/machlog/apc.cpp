@@ -2,7 +2,6 @@
  * A P C . C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
-#include "stdlib/string.hpp"
 #include "machlog/apc.hpp"
 #include "machlog/internal/apci.hpp"
 

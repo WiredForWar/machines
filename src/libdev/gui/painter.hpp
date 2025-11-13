@@ -6,8 +6,6 @@
 #ifndef _GUI_PAINTER_HPP
 #define _GUI_PAINTER_HPP
 
-#include "stdlib/string.hpp"
-
 #include "gui/gui.hpp"
 
 /* //////////////////////////////////////////////////////////////// */

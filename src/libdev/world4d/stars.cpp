@@ -18,8 +18,6 @@
 #include "mathex/point3d.hpp"
 #include "mathex/double.hpp"
 
-#include "stdlib/string.hpp"
-
 #ifndef _INLINE
 #include "world4d/stars.ipp"
 #endif

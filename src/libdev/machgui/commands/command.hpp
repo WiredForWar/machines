@@ -17,7 +17,6 @@
 #define _MACHGUI_COMMAND_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/StringId.hpp"
 #include "machgui/BindId.hpp"
 #include "machgui/gui.hpp"

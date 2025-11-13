@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/editobst.hpp"
-#include "stdlib/string.hpp"
 #include <fstream>
 #include "ctl/utility.hpp"
 #include "utility/linetok.hpp"

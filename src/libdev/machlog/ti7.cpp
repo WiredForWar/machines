@@ -7,7 +7,6 @@
 
 #include "ctl/map.hpp"
 #include "ctl/map.ctp"
-#include "stdlib/string.hpp"
 
 class SimCondition;
 

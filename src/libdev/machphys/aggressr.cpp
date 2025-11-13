@@ -6,9 +6,6 @@
 #include "machphys/ofactory.hpp"
 #include "machphys/subid.hpp"
 
-// This file must be included before mexpdata.hpp to avoid
-// instantiation errors.  No idea why.
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/point3d.hpp"
 

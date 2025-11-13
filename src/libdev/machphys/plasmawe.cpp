@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 

@@ -14,7 +14,6 @@
 #define _WORLD4D_GENREPOS_HPP
 
 #include "stdlib/utility.hpp"
-#include "stdlib/string.hpp"
 
 #include "base/base.hpp"
 #include "base/persist.hpp"

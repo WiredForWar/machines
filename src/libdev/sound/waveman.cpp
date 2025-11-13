@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "sound/internal/waveman.hpp"
 #include "sound/internal/alsound.hpp"
 

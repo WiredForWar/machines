@@ -2,7 +2,6 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "ctl/vector.hpp"
 #include "device/keyboard.hpp"

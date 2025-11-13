@@ -7,7 +7,6 @@
 
 #include "machphys/nuclweap.hpp"
 
-#include "stdlib/string.hpp"
 #include "mathex/abox3d.hpp"
 #include "mathex/abox2d.hpp"
 #include "mathex/line3d.hpp"

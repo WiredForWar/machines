@@ -9,7 +9,6 @@
 #include "machphys/private/otherper.hpp"
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/line2d.hpp"

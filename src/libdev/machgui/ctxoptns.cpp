@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxoptns.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "system/pathname.hpp"
 #include "system/registry.hpp"

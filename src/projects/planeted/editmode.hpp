@@ -17,7 +17,6 @@
 #include "mathex/line3d.hpp"
 #include "ctl/vector.hpp"
 #include <fstream>
-#include "stdlib/string.hpp"
 
 class W4dSceneManager;
 class MachLogPlanet;

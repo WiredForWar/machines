@@ -14,7 +14,6 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
-#include "stdlib/string.hpp"
 #include "utility/id.hpp"
 #include "phys/phys.hpp"
 #include "phys/motchunk.hpp"

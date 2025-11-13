@@ -4,8 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-
-#include "stdlib/string.hpp"
+#include "machlog/spacial.hpp"
 
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
@@ -38,7 +37,6 @@
 #include "machlog/plandoms.hpp"
 #include "machlog/planet.hpp"
 #include "machlog/races.hpp"
-#include "machlog/spacial.hpp"
 #include "machlog/mapper.hpp"
 
 /////////////////////////////////////////////////////////////////////////

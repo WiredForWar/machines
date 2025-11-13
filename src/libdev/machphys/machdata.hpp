@@ -16,7 +16,6 @@
 
 #include "machphys/objdata.hpp"
 #include "mathex/angle.hpp"
-#include "stdlib/string.hpp"
 #include "machphys/epp.hpp"
 
 class MachPhysMachineData : public MachPhysObjectData

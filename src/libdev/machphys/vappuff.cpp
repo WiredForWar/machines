@@ -4,14 +4,12 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-
-#include "stdlib/string.hpp"
+#include "machphys/vappuff.hpp"
 
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 #include "phys/rampacce.hpp"
 
-#include "machphys/vappuff.hpp"
 #include "render/device.hpp"
 #include "render/capable.hpp"
 #include "render/texmgr.hpp"

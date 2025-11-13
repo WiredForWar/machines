@@ -7,7 +7,6 @@
 
 #include "planeted/editmach.hpp"
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "device/keyboard.hpp"
 #include "device/eventq.hpp"
 #include "device/mouse.hpp"
@@ -28,7 +27,6 @@
 #include "machphys/legcombo.hpp"
 #include "machphys/marker.hpp"
 #include "world4d/scenemgr.hpp"
-#include "stdlib/string.hpp"
 #include "afx/resource.hpp"
 #include "planeted/strings.hpp"
 

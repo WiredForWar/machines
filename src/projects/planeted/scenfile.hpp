@@ -13,7 +13,6 @@
 #define _PLANETED_SCENFILE_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"
 #include "utility/linetok.hpp"

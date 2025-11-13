@@ -2,7 +2,6 @@
  * R A C E S. C P P
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
-#include "stdlib/string.hpp"
 #include "machlog/races.hpp"
 #include "mathex/point2d.hpp"
 #include "mathex/eulerang.hpp"

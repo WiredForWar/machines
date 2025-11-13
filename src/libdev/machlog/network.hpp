@@ -13,7 +13,6 @@
 #define _MACHLOG_NETWORK_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "machphys/machphys.hpp"
 
 class NetNode;

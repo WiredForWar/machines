@@ -18,7 +18,6 @@
 */
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 
 class MexDegrees;
 

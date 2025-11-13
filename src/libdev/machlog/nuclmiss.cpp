@@ -7,7 +7,6 @@
 
 #include "machlog/nuclmiss.hpp"
 
-#include "stdlib/string.hpp"
 #include "world4d/domain.hpp"
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"

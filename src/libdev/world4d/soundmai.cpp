@@ -4,7 +4,6 @@
  */
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "world4d/internal/soundmai.hpp"
 #include "world4d/internal/snddata.hpp"
 

@@ -14,7 +14,6 @@
 #define _NETWORK_SYSMESS_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 
 class NetSystemMessageHandler
 // Canonical form revoked

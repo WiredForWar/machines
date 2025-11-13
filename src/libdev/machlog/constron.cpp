@@ -11,7 +11,6 @@
 #include "machlog/buildpnt.hpp"
 #include "ctl/pvector.hpp"
 
-#include "stdlib/string.hpp"
 
 #include "mathex/circle2d.hpp"
 #include "mathex/abox3d.hpp"

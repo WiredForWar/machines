@@ -13,7 +13,6 @@
 #define _MACHLOG_ACTTASKS_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "sim/action.hpp"
 #include "machphys/machphys.hpp"
 

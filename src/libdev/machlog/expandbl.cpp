@@ -11,8 +11,6 @@
 #include "ctl/list.hpp"
 #include "ctl/algorith.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "mathex/abox2d.hpp"
 #include "mathex/point2d.hpp"
 #include "mathex/poly2d.hpp"

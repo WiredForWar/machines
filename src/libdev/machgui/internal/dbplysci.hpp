@@ -12,7 +12,6 @@
 #ifndef _MACHGUI_DBPLYSCI_HPP
 #define _MACHGUI_DBPLYSCI_HPP
 
-#include "stdlib/string.hpp"
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "ctl/vector.hpp"

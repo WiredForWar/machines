@@ -9,7 +9,6 @@
  */
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "sound/internal/alsound.hpp"
 #include "sound/internal/alsample.hpp"
 #include "sound/internal/dxs.hpp"

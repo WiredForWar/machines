@@ -7,8 +7,6 @@
 
 #include "envirnmt/internal/skydecl.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "mathex/angle.hpp"
 
 #include "ctl/vector.hpp"

@@ -13,7 +13,6 @@
 #define _MACHGUI_STATISTICS_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 
 class MachGuiStatistics
 // Canonical form revoked

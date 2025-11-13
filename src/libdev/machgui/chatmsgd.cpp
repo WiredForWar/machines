@@ -15,7 +15,6 @@
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
 #include "render/surface.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 
 struct MachGuiInGameChatMessagesDisplayImpl

@@ -11,9 +11,6 @@
 #include "base/persist.hpp"
 #include "base/internal/perolog.hpp"
 
-// persistent string
-#include "stdlib/string.hpp"
-
 PersistenceImplementationWrite::PersistenceImplementationWrite()
     : outputCount_(0)
     , indentStream_(Diag::instance().perWriteStream(), "")

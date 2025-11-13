@@ -13,7 +13,6 @@
 #define _MACHGUI_PROMTEXT_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "gui/displaya.hpp"
 #include "gui/gui.hpp"
 #include "gui/editbox.hpp"

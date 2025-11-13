@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <iostream>
-#include "stdlib/string.hpp"
 
 #include "device/time.hpp"
 #include "mathex/degrees.hpp"

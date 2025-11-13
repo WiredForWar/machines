@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <stdlib.h>
-#include "stdlib/string.hpp"
 #include "machgui/optlayout.hpp"
 #include "system/pathname.hpp"
 

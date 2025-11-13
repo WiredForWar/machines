@@ -6,8 +6,6 @@
 #ifndef _GENERIC_HPP
 #define _GENERIC_HPP
 
-#include "stdlib/string.hpp"
-#include "base/base.hpp"
 #include "base/persist.hpp"
 #include "world4d/entity.hpp"
 

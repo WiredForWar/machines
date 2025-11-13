@@ -17,7 +17,6 @@
 #include "world4d/domain.hpp"
 
 #include "sim/manager.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 
 #include "machphys/machine.hpp"

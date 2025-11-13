@@ -12,7 +12,6 @@
 #include "phys/linemoti.hpp" // before compplan.hpp
 #include "phys/rampacce.hpp" // before compplan.hpp
 #include "mathex/transf3d.hpp" // before compplan.hpp
-#include "stdlib/string.hpp" // before compplan.hpp
 
 #include "world4d/camera.hpp"
 #include "world4d/root.hpp"

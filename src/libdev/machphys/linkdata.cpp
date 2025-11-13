@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "world4d/composit.hpp"
 #include "world4d/link.hpp"

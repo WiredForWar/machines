@@ -7,7 +7,6 @@
 
 #include "machphys/stflames.hpp"
 
-// #include "stdlib/string.hpp"
 // #include "system/pathname.hpp"
 
 #include "world4d/entyplan.hpp"

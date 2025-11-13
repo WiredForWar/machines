@@ -7,8 +7,6 @@
 
 #include "machphys/radidisc.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/private/otherper.hpp"
 
 #include "world4d/root.hpp"

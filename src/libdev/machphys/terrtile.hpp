@@ -19,8 +19,6 @@
 
 #include "world4d/entity.hpp"
 
-#include "stdlib/string.hpp"
-
 // Forward declarations
 class SysPathName;
 class MachPhysTileData;

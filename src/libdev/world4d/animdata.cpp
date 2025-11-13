@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "world4d/internal/animdata.hpp"
-#include "stdlib/string.hpp"
 
 PER_DEFINE_PERSISTENT_ABSTRACT(W4dAnimationData);
 

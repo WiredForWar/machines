@@ -9,7 +9,6 @@
 
 #include "machgui/gui.hpp"
 #include "phys/phys.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "machgui/messbrok.hpp"
 #include "machgui/startup.hpp"

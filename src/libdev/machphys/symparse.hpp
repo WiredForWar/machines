@@ -14,8 +14,6 @@
 
 #include "machphys/machphys.hpp"
 
-#include "stdlib/string.hpp"
-
 class MachPhysSymbolParser
 {
 public:

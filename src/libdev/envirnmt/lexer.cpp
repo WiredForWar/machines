@@ -78,7 +78,6 @@ static void unput(unsigned char);
 
 #include <stdlib.h>
 #include <cstring> /* strcpy(), getc(),  putc()  */
-#include "stdlib/string.hpp"
 
 class RenColour;
 

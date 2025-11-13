@@ -1,5 +1,4 @@
 #include "base/memwatch.hpp"
-#include "stdlib/string.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/prodbank.hpp"

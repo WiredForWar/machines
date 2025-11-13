@@ -9,7 +9,6 @@
 #include "machphys/internal/machinei.hpp"
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "render/colour.hpp" //for fading
 
 #include "world4d/fdedapln.hpp" //for fading

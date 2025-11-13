@@ -7,7 +7,6 @@
 
 #include "world4d/coldata.hpp"
 
-#include "stdlib/string.hpp"
 #include "render/texture.hpp"
 #include "render/texmgr.hpp"
 

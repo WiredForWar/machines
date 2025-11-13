@@ -11,7 +11,6 @@
 #include "phys/phys.hpp"
 #include "mathex/angle.hpp"
 #include "mathex/vec3.hpp"
-#include "stdlib/string.hpp"
 
 class W4dEntity;
 class W4dGeneric;

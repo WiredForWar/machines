@@ -7,7 +7,6 @@
 
 #include "machphys/effects.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "render/texture.hpp"
 #include "world4d/matplan.hpp"

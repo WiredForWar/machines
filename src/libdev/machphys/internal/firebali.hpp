@@ -11,7 +11,6 @@
 #include "world4d/matplan.hpp"
 
 #include "machphys/machphys.hpp"
-#include "stdlib/string.hpp"
 
 class RenMaterial;
 

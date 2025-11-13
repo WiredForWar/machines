@@ -13,7 +13,6 @@
 #define _MACHLOG_VMMANI_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/map.hpp"
 #include "ctl/pvector.hpp"
 #include "machlog/vmman.hpp"

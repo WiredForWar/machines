@@ -8,7 +8,6 @@
 #include "mathex/point2d.hpp"
 #include "machphys/pulseblb.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 

@@ -7,8 +7,6 @@
 
 #include "machphys/shockwav.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/private/otherper.hpp"
 #include "machphys/machphys.hpp"
 

@@ -8,7 +8,6 @@
 #include <stdlib.h>
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 
 #include "mathex/mathex.hpp"
 #include "mathex/transf3d.hpp"

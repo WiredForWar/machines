@@ -10,7 +10,6 @@
 // Note: unfortunately there are #include order dependencies due to forward
 // declarations of templates.
 #include "phys/rampacce.hpp" // order dependencies
-#include "stdlib/string.hpp" // order dependencies
 
 #include "world4d/root.hpp"
 #include "world4d/domain.hpp"

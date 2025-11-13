@@ -2,10 +2,10 @@
 #ifndef _SIM_CONDITIONS_MANAGER
 #define _SIM_CONDITIONS_MANAGER
 
-#include "base/base.hpp"
-#include "stdlib/string.hpp"
+#include "base/prepost.hpp"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 class SimManager;

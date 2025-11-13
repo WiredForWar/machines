@@ -10,7 +10,6 @@
 #include "machphys/locator.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 
 #include "mathex/transf3d.hpp"

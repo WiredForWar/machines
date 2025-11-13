@@ -8,7 +8,6 @@
 // string.hpp included to avoid compilation errors with the
 // inclusion of machine.hpp
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"
 #include "world4d/root.hpp"

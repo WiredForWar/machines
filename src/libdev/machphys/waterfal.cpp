@@ -7,8 +7,6 @@
 
 #include "machphys/waterfal.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/snddata.hpp"
 #include "machphys/private/otherper.hpp"
 

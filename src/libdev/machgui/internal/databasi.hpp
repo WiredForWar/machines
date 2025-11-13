@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "stdlib/string.hpp"
 #include <functional>
 #include "ctl/vector.hpp"
 #include "ctl/map.hpp"

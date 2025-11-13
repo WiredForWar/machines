@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-#include "stdlib/string.hpp"
 #include "ctl/algorith.hpp"
 #include "ctl/list.hpp"
 #include "mathex/transf3d.hpp"

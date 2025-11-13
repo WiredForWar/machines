@@ -14,7 +14,6 @@
 #define _MACHLOG_ARTSDATA_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/pvector.hpp"
 #include "machphys/artfdata.hpp"

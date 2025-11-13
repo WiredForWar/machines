@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 #include "base/error.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "machlog/restree.hpp"
 #include "machlog/internal/restreei.hpp"

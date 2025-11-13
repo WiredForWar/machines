@@ -14,7 +14,6 @@
 #ifndef _MACHPHYS_EPP_HPP
 #define _MACHPHYS_EPP_HPP
 
-#include "stdlib/string.hpp"
 #include "base/base.hpp"
 
 /* //////////////////////////////////////////////////////////////// */

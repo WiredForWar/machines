@@ -8,7 +8,6 @@
 #include "machphys/garrison.hpp"
 #include "machphys/ofactory.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 
 #include "mathex/transf3d.hpp"

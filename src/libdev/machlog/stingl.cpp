@@ -4,12 +4,11 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
+#include "machlog/stingl.hpp"
 
-#include "stdlib/string.hpp"
 #include "world4d/domain.hpp"
 #include "machphys/weapon.hpp"
 #include "machphys/wepdata.hpp"
-#include "machlog/stingl.hpp"
 #include "machlog/plandoms.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogLightSting);

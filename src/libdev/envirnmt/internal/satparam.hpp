@@ -7,7 +7,6 @@
 #define _ENVIRNMT_SATPARAM_HPP
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 
 #include <memory>
 

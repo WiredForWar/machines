@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "ctl/vector.hpp"
 #include "gui/manager.hpp"

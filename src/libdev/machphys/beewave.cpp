@@ -8,7 +8,6 @@
 #include "machphys/beewave.hpp"
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
 #include "render/matvec.hpp"
 #include "render/mesh.hpp"
 #include "render/meshinst.hpp"

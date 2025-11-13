@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/hwrebank.hpp"
 #include "machgui/cameras.hpp"

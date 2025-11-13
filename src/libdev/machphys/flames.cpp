@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 #include "mathex/point3d.hpp"
 

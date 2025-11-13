@@ -7,7 +7,6 @@
 #include "mathex/point2d.hpp"
 #include "machphys/beam.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/transf3d.hpp"
 

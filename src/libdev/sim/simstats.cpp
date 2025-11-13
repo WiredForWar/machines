@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "sim/simstats.hpp"
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 
 #include "system/metafile.hpp"

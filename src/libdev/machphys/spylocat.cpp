@@ -9,7 +9,6 @@
 #include "machphys/spylocat.hpp"
 #include "machphys/internal/spylocai.hpp"
 
-#include "stdlib/string.hpp"
 #include "mathex/point3d.hpp"
 #include "world4d/link.hpp"
 #include "machphys/mexpdata.hpp"

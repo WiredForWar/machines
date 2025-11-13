@@ -7,7 +7,6 @@
 
 #include "machlog/dbhandlr.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/list.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/point2d.hpp" //required for instantiation only

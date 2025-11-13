@@ -17,7 +17,6 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 // #include <utility.hpp>
-#include "stdlib/string.hpp"
 #include "phys/phys.hpp"
 
 #include "world4d/world4d.hpp"

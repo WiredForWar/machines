@@ -20,8 +20,6 @@
 #include "world4d/internal/complexi.hpp"
 #include "world4d/internal/entityi.hpp"
 
-#include "stdlib/string.hpp"
-
 // For debugging the culling.  This generates loads of output, so it's not
 // normally compiled into the code.
 // #define DO_CULL_TRACING

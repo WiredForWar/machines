@@ -7,7 +7,6 @@
 // Don't know why
 #include "machphys/ofactory.hpp"
 #include "machphys/subid.hpp"
-#include "stdlib/string.hpp"
 
 #include "machphys/administ.hpp"
 

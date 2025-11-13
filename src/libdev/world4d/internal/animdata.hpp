@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "phys/phys.hpp"
-#include "stdlib/string.hpp"
 #include "world4d/world4d.hpp"
 
 class W4dEntity;

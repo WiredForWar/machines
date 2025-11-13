@@ -9,7 +9,6 @@
 #include "machphys/subid.hpp"
 #include "machphys/technici.hpp"
 
-#include "stdlib/string.hpp"
 #include "mathex/point3d.hpp"
 #include "world4d/soundman.hpp"
 #include "world4d/compplan.hpp"

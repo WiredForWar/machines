@@ -7,8 +7,6 @@
 
 #include "machphys/persist.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "mathex/transf3d.hpp"
 #include "phys/rampacce.hpp"
 #include "phys/persist.hpp"

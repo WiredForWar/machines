@@ -7,8 +7,6 @@
 
 #include "machphys/terrtile.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "system/pathname.hpp"
 
 #include "ctl/map.hpp"
@@ -30,8 +28,6 @@
 #include "sim/manager.hpp"
 #include "machphys/tiledata.hpp"
 // #include "machphys/waterfal.hpp"
-
-#include "stdlib/string.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysTerrainTile);
 

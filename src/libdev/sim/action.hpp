@@ -10,7 +10,6 @@
 
 #include "base/base.hpp"
 #include "phys/phys.hpp"
-#include "stdlib/string.hpp"
 
 class SimCondition;
 

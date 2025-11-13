@@ -4,9 +4,6 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-
-#include "stdlib/string.hpp"
-
 #include "machlog/vmman.hpp"
 
 #include "mathex/point2d.hpp"

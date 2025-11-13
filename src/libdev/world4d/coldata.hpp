@@ -18,7 +18,6 @@
 #include "world4d/world4d.hpp"
 #include "render/colour.hpp"
 #include "render/texture.hpp"
-#include "stdlib/string.hpp"
 
 class W4dColourPulseData
 // Canonical form revoked

@@ -8,7 +8,6 @@
 
 #include "base/base.hpp"
 #include "mathex/angle.hpp"
-#include "stdlib/string.hpp"
 
 class EnvOrbit;
 class W4dEntity;

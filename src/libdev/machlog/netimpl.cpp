@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "machlog/internal/netimpl.hpp"
 
 MachLogNetworkDataImpl::MachLogNetworkDataImpl()

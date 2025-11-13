@@ -7,7 +7,6 @@
 
 #include "machphys/stglwep.hpp"
 
-#include "stdlib/string.hpp"
 #include "system/pathname.hpp"
 
 #include "ctl/vector.hpp"

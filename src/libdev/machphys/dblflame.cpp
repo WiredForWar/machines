@@ -7,8 +7,6 @@
 
 #include "machphys/private/otherper.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "render/scale.hpp"
 #include "render/texture.hpp"
 #include "render/matvec.hpp"

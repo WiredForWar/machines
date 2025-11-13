@@ -7,8 +7,6 @@
 
 #include "machlog/beebomb.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "world4d/domain.hpp"
 
 #include "machphys/weapon.hpp"

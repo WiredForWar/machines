@@ -7,7 +7,6 @@
 
 #include "machphys/beacon.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/countptr.hpp"
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"

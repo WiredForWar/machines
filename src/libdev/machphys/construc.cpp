@@ -10,8 +10,6 @@
 
 #include "machphys/construc.hpp"
 
-// Include this prior to mexpdata.hpp or you'll go to the bad place
-#include "stdlib/string.hpp"
 #include "machphys/mexpdata.hpp"
 
 #include "sim/manager.hpp"

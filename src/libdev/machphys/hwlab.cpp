@@ -10,7 +10,6 @@
 #include "machphys/hwlab.hpp"
 
 #include "base/diag.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/countptr.hpp"
 #include "ctl/pvector.hpp"
 #include "system/pathname.hpp"

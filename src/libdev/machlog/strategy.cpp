@@ -5,8 +5,6 @@
 
 #include "machlog/strategy.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp" // only needed if we need to have a "path" move op in the forceAsSubOp
 

@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
-#include "stdlib/string.hpp"
 
 class W4dSceneManager;
 

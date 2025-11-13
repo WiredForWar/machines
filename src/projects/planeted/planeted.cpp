@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/planeted.hpp"
-#include "stdlib/string.hpp"
 #include "device/keyboard.hpp"
 #include "device/eventq.hpp"
 #include "mathex/eulerang.hpp"

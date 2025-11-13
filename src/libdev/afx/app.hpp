@@ -17,7 +17,6 @@
 #define _FRAMEWORK_BASE_APP_INCLUDED
 
 // #include <string.hpp>
-#include "stdlib/string.hpp"
 #include "base/base.hpp"
 #include "afx/invkargs.hpp"
 

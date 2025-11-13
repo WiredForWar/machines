@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 
 #include "mathex/point2d.hpp"
-#include "stdlib/string.hpp"
 #include "planeted/polygon.hpp"
 
 class PedObstacle : public PedPolygon

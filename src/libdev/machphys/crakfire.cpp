@@ -10,7 +10,6 @@
 #include "machphys/private/otherper.hpp"
 #include "machphys/internal/crakfiri.hpp"
 
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/point3d.hpp"
 #include "system/pathname.hpp"

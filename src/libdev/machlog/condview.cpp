@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "world4d/camera.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"

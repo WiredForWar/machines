@@ -5,8 +5,6 @@
 
 #include "base/base.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "ctl/algorith.hpp"
 
 #include "system/metafile.hpp"

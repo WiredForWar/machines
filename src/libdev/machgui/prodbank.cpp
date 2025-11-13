@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "machgui/prodbank.hpp"
 #include "machgui/bufscbut.hpp"
 #include "machgui/prodicns.hpp"

@@ -14,7 +14,6 @@
 
 #include "gui/displaya.hpp"
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/vector.hpp"
 #include "machphys/machphys.hpp"

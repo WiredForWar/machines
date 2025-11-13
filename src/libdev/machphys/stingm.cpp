@@ -10,7 +10,6 @@
 
 #include "base/diag.hpp"
 #include "machphys/private/otherper.hpp"
-#include "stdlib/string.hpp"
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"
 #include "mathex/transf3d.hpp"

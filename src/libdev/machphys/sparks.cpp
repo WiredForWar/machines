@@ -8,8 +8,6 @@
 #include "mathex/point2d.hpp"
 #include "machphys/sparks.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/private/otherper.hpp"
 
 #include "world4d/root.hpp"

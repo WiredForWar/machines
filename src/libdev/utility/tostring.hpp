@@ -2,13 +2,10 @@
 #ifndef _UTL_TOSTRING_HPP
 #define _UTL_TOSTRING_HPP
 
-#include "base/base.hpp"
-
-// #include <string.hpp>
-#include "stdlib/string.hpp"
-#include <utility>
-
 #include "utility/subrange.hpp"
+
+#include <string>
+#include <utility>
 
 //////////////////////////////////////////////////////////////////////
 

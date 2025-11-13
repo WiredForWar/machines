@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/mdmodem.hpp"
-#include "stdlib/string.hpp"
 #include "gui/gui.hpp"
 #include "gui/font.hpp"
 #include "gui/manager.hpp"

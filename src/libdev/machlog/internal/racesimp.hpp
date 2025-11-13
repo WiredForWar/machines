@@ -16,7 +16,6 @@
 #include "machlog/races.hpp"
 #include "ctl/list.hpp"
 #include "ctl/pvector.hpp"
-#include "stdlib/string.hpp"
 
 class MachLogDatabaseHandler;
 

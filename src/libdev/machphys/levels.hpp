@@ -16,7 +16,6 @@
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/levindmp.hpp"
-#include "stdlib/string.hpp"
 
 class MachPhysLevels
 {

@@ -16,7 +16,6 @@
 #include "machlog/cntrl_ai.hpp"
 #include "ctl/list.hpp"
 #include "ctl/pvector.hpp"
-#include "stdlib/string.hpp"
 
 class MachLogAIControllerImpl
 // Canonical form revoked

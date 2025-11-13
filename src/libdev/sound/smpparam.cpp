@@ -10,8 +10,6 @@
 
 #include "mathex/point3d.hpp"
 
-#include "stdlib/string.hpp"
-
 class SndSampleParametersImpl
 {
 public:

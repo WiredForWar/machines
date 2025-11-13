@@ -7,8 +7,6 @@
 
 #include "machphys/flash.hpp"
 
-#include "stdlib/string.hpp"
-
 #include "machphys/private/otherper.hpp"
 
 #include "mathex/double.hpp"

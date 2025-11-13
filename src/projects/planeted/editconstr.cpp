@@ -9,8 +9,6 @@
 #include "planeted/wdebug.hpp"
 
 #include "base/base.hpp"
-#include "stdlib/string.hpp"
-#include "stdlib/string.hpp"
 #include "afx/resource.hpp"
 #include "device/keyboard.hpp"
 #include "device/eventq.hpp"

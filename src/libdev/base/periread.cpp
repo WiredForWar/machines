@@ -12,8 +12,6 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "stdlib/string.hpp"
-
 //  Comment out this line to avoid doing the timing
 
 // #define TIME_OBJECTS

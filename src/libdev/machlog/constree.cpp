@@ -5,7 +5,6 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "stdlib/string.hpp"
 #include "machlog/mlnotif.hpp"
 #include "machlog/consitem.hpp"
 #include "machlog/constree.hpp"

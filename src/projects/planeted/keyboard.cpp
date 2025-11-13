@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include "stdlib/string.hpp"
 
 #include "base/base.hpp"
 

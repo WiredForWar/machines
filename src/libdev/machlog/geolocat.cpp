@@ -4,7 +4,6 @@
  */
 
 #include <iostream>
-#include "stdlib/string.hpp"
 
 #include "ctl/algorith.hpp"
 #include "ctl/list.hpp"

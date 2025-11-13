@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "gui/gui.hpp"
-#include "stdlib/string.hpp"
 
 class GuiDisplayable;
 class MachGuiMenuText;

@@ -10,7 +10,6 @@
 // #include <conio.h>
 #include <ctype.h>
 
-#include "stdlib/string.hpp"
 #include "utility/linetok.hpp"
 #include "mathex/quatern.hpp"
 #include "mathex/transf3d.hpp"
