@@ -19,6 +19,8 @@
 #include "base/ostr.hpp"
 #include "base/istr.hpp"
 
+#include <string>
+
 //================= DEBUG MACROS ===================================================
 
 //  These write to the same streams as PER_WRITE_STREAM and PER_READ_STREAM but they
@@ -275,6 +277,15 @@
 //  You will need to add perWrite and perRead functions as normal.
 
 #define PER_DEFINE_NON_INTRUSIVE_PERSISTENT_T2(className) PER_PRIVATE_DEFINE_NON_INTRUSIVE_PERSISTENT_T2(className)
+
+void writeAllocatedStringFromPointer(PerOstream& ostr, const std::string* pOb);
+void readAllocatedStringFromPointer(PerIstream& istr, std::string* pOb);
+
+void perWrite(PerOstream& ostr, const std::string& ob);
+void perRead(PerIstream& istr, std::string& ob);
+
+PerOstream& operator<<(PerOstream&, const std::string&);
+PerIstream& operator>>(PerIstream&, std::string&);
 
 #endif
 
