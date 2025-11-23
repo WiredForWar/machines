@@ -125,12 +125,14 @@ void MachLogOperation::subOperation(MachActor* pActor, std::unique_ptr<MachLogOp
 {
     PRE(op != nullptr);
 
-    CB_DEPIMPL(MachLogOperation*, pSubOperation_);
+    CB_DEPIMPL_AUTO(pSubOperation_);
     TEST_INVARIANT;
 
     pSubOperation_ = op.get();
-    pActor->strategy().newOperation(std::move(op), true);
-    // Can be an issue: if the actor is dead then pSubOperation_ points to a deleted object
+    if (!pActor->strategy().newOperation(std::move(op), true))
+    {
+        pSubOperation_ = nullptr;
+    }
 }
 
 bool MachLogOperation::hasSubOperation()

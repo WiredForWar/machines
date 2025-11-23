@@ -104,14 +104,14 @@ bool MachLogStrategy::isFinished() const
     return queue_.size() == 0 && pPendingOperation_ == nullptr;
 }
 
-void MachLogStrategy::newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation)
+bool MachLogStrategy::newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation)
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
     if (pActor_->isDead())
     {
         // Don't accept the op. In fact, delete it, instead.
-        return;
+        return false;
     }
 
     // ensure that all ops put on as new are treated as having to START.
@@ -142,6 +142,8 @@ void MachLogStrategy::newOperation(std::unique_ptr<MachLogOperation> operation, 
             queue_.push_back(operation.release());
         }
     }
+
+    return true;
 }
 
 bool MachLogStrategy::addOperationAsSubOperationToFollowOperation(std::unique_ptr<MachLogOperation> operation)

@@ -42,7 +42,7 @@ public:
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime);
     // PRE( not isFinished() );
 
-    void newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation = false);
+    bool newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation = false);
 
     // this returns false if no follow op was on the queue, or only a follow op which already had
     // a suboperation.
