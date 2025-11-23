@@ -273,7 +273,7 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, std::string* pRea
         }
     }
     else
-        *pReason = "Building has no free space";
+        *pReason = ResolvedUiString(IDS_BUILDING_HAS_NO_FREE_SPACE);
 
     return result;
 }

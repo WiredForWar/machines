@@ -688,6 +688,10 @@
 	>Minutes remaining</string>
 <string id="2600"
 	>%1 : %2 (%3 %4)</string>
+<string id="2700"
+	>Building has no free space</string>
+<string id="2701"
+	>Nothing to deploy</string>
 <string id="4000"
 	>Bolter</string>
 <string id="4010"

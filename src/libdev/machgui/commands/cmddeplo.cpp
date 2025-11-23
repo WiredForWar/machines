@@ -107,7 +107,7 @@ bool MachGuiDeployCommand::doApply(MachActor* pActor, std::string* pReason)
         }
     }
     else
-        *pReason = "Nothing to deploy";
+        *pReason = ResolvedUiString(IDS_NOTHING_TO_DEPLOY);
 
     return canDo;
 }
