@@ -272,7 +272,6 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
 
                     if (! finished)
                     {
-                        MachLogOperation* pOpBefore = pOp;
                         if (pOp->progress() != MachLogOperation::START)
                         {
                             // Two seperate checks for not finished followed by finished as it may have nowe finished

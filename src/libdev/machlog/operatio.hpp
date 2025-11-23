@@ -124,9 +124,6 @@ public:
     const std::string& operationTypeAsString() const;
     OperationType operationType() const;
 
-    // get/set for the priority. The priority may be reclassified.
-    Priority priority() const;
-    void priority(const Priority&);
     ///////////////////////////////
 
     // redefinition required, invocation revoked
