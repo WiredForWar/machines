@@ -28,9 +28,11 @@
 #include "world4d/domain.hpp"
 #include "world4d/entity.hpp"
 #include "sim/manager.hpp"
+#include "machphys/genedata.hpp"
 #include "machphys/machdata.hpp"
 #include "machphys/machine.hpp"
 #include "machphys/mcmovinf.hpp"
+#include "machphys/mphydata.hpp"
 #include "machphys/plansurf.hpp"
 #include "ctl/list.hpp"
 
@@ -1388,6 +1390,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
             autoUnlockAnyLockedEntrance();
         }
 
+        interval *= MachPhysData::instance().generalData().updateIntervalFactor();
+
         LOG_WHERE;
         // Store the scheduled update time
         scheduledUpdateTime_ = timeNow + interval;
@@ -2167,7 +2171,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
 
         // Try again in a bit
         if (interval == 0.0)
-            interval = 2;
+            interval = MachPhysData::instance().generalData().initialMoveRetryInterval();
     }
 
     LOG_STREAM("Finish initiate move " << static_cast<const void*>(this) << std::endl);

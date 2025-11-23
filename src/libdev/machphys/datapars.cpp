@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "system/pathname.hpp"
+#include "system/vfs.hpp"
+
 #include "utility/linetok.hpp"
 #include "machphys/internal/datapars.hpp"
 #include "machphys/station.hpp"
@@ -83,6 +85,11 @@ void MachPhysDataParser::read(const SysPathName& pathname, MachPhysDataImplement
 
     initialiseDataStores();
     readParameterisedDataFile(pathname);
+    std::string configFile = System::findFile(pathname.pathname());
+    if (configFile != pathname.pathname())
+    {
+        readParameterisedDataFile(configFile);
+    }
 }
 
 void MachPhysDataParser::initialiseDataStores()
@@ -2604,6 +2611,14 @@ void MachPhysDataParser::parseGeneralData(UtlLineTokeniser* pParser)
         else if (pParser->tokens()[0] == "VIRTUAL_DEFCON_INTERVAL")
         {
             generalData.virtualDefConInterval(atof(pParser->tokens()[1].c_str()));
+        }
+        else if (pParser->tokens()[0] == "INITIAL_MOVE_RETRY_INTERVAL")
+        {
+            generalData.setInitialMoveRetryInterval(atof(pParser->tokens()[1].c_str()));
+        }
+        else if (pParser->tokens()[0] == "UPDATE_INTERVAL_FACTOR")
+        {
+            generalData.setUpdateIntervalFactor(atof(pParser->tokens()[1].c_str()));
         }
         else if (pParser->tokens()[0] == "PC_PATH_FINDING_PRIORITY")
         {

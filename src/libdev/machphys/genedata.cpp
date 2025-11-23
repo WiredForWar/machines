@@ -23,6 +23,8 @@ public:
     MATHEX_SCALAR startRotationDistance_;
     MATHEX_SCALAR maxTerrainUnevenness_;
     PhysRelativeTime virtualDefConInterval_;
+    PhysRelativeTime initialMoveRetryInterval_{};
+    MATHEX_SCALAR updateIntervalFactor_{};
     PhysPathFindingPriority pcPathFindingPriority_;
     MachPhys::BuildingMaterialUnits nukeLaunchCost_;
     size_t maxUnitsPerRace_;
@@ -42,6 +44,8 @@ MachPhysGeneralData::MachPhysGeneralData()
     pImpl_->maxMoveGradient_ = 65.0;
     pImpl_->maxTerrainUnevenness_ = 0.1;
     pImpl_->virtualDefConInterval_ = 5.0;
+    pImpl_->initialMoveRetryInterval_ = 2.0;
+    pImpl_->updateIntervalFactor_ = 1.0;
     pImpl_->pcPathFindingPriority_ = Phys::defaultPathFindingPriority();
     pImpl_->nukeLaunchCost_ = 500;
     pImpl_->maxUnitsPerRace_ = 400;
@@ -160,9 +164,29 @@ PhysRelativeTime MachPhysGeneralData::virtualDefConInterval() const
     return pImpl_->virtualDefConInterval_;
 }
 
+PhysRelativeTime MachPhysGeneralData::initialMoveRetryInterval() const
+{
+    return pImpl_->initialMoveRetryInterval_;
+}
+
+MATHEX_SCALAR MachPhysGeneralData::updateIntervalFactor() const
+{
+    return pImpl_->updateIntervalFactor_;
+}
+
 void MachPhysGeneralData::virtualDefConInterval(PhysRelativeTime interval)
 {
     pImpl_->virtualDefConInterval_ = interval;
+}
+
+void MachPhysGeneralData::setInitialMoveRetryInterval(PhysRelativeTime interval)
+{
+    pImpl_->initialMoveRetryInterval_ = interval;
+}
+
+void MachPhysGeneralData::setUpdateIntervalFactor(MATHEX_SCALAR factor)
+{
+    pImpl_->updateIntervalFactor_ = factor;
 }
 
 PhysPathFindingPriority MachPhysGeneralData::pcPathFindingPriority() const

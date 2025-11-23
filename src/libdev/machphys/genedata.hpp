@@ -44,6 +44,10 @@ public:
     // the time after a direct user order in which a machine is to be treated as though in defcon HIGH
     PhysRelativeTime virtualDefConInterval() const;
 
+    PhysRelativeTime initialMoveRetryInterval() const;
+
+    MATHEX_SCALAR updateIntervalFactor() const;
+
     //  The maximum gradient a non-glider machine can move up
     MexRadians maxMoveGradient() const;
 
@@ -80,6 +84,8 @@ private:
     void maxMoveGradient(MexRadians gradient);
     void maxTerrainUnevenness(MATHEX_SCALAR);
     void virtualDefConInterval(PhysRelativeTime interval);
+    void setInitialMoveRetryInterval(PhysRelativeTime interval);
+    void setUpdateIntervalFactor(MATHEX_SCALAR factor);
     void pcPathFindingPriority(PhysPathFindingPriority);
     void nukeLaunchCost(MachPhys::BuildingMaterialUnits cost);
     void maxUnitsPerRace(size_t);
