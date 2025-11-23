@@ -1,8 +1,13 @@
 
 set(SYSTEM_SOURCES
+    ConfigVariables.cpp
+    ConfigVariables.hpp
     Endian.hpp
     SysInfo.cpp
     SysInfo.hpp
+    Variable.cpp
+    Variable.hpp
+    Variable_p.hpp
     filedata.cpp
     filedata.hpp
     filedate.cpp
