@@ -522,11 +522,8 @@ bool MachGuiConstructCommand::doApply(MachActor* pActor, std::string*)
 
     // Remove reservations from the new constructions. Remember, the superconstruct operation will just have
     // added its own reservations for all the constructions, so this won't make the wireframes disappear.
-    for (ctl_pvector<MachLogConstruction>::iterator iter = newConstructions_.begin(); iter != newConstructions_.end();
-         ++iter)
-    {
-        (*iter)->cancelReservation();
-    }
+    for (MachLogConstruction *construction : newConstructions_)
+        construction->cancelReservation();
 
     // Clean up list of new constructions. We are not going to delete them because we have passed
     // resposibility for this over to the MachLogSuperConstructOperation
@@ -566,11 +563,8 @@ void MachGuiConstructCommand::finish()
         inGameScreen().currentContext(previousMenuContext_);
 
     // Remove reservations from any remaining new constructions.
-    for (ctl_pvector<MachLogConstruction>::iterator iter = newConstructions_.begin(); iter != newConstructions_.end();
-         ++iter)
-    {
-        (*iter)->cancelReservation();
-    }
+    for (MachLogConstruction *construction : newConstructions_)
+        construction->cancelReservation();
 }
 
 // virtual
@@ -603,28 +597,27 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
 
     MachActor* pFirstConstructor = nullptr;
 
-    bool found = false;
-    for (MachInGameScreen::Actors::const_iterator i = inGameScreen().selectedActors().begin();
-         ! found && i != inGameScreen().selectedActors().end();
-         ++i)
-        if ((*i)->objectType() == MachLog::CONSTRUCTOR)
+    for (MachActor* pActor : inGameScreen().selectedActors())
+    {
+        if (pActor->objectType() == MachLog::CONSTRUCTOR)
         {
-            found = true;
-            pFirstConstructor = (*i);
+            pFirstConstructor = pActor;
+            break;
         }
+    }
 
-    ASSERT(found, "No constructor found in corral!");
+    ASSERT(pFirstConstructor != nullptr, "No constructor found in corral!");
+    if (pFirstConstructor == nullptr)
+        return false;
 
     // give out voicemail
     MachLogMachineVoiceMailManager::instance().postNewMail(*pFirstConstructor, MachineVoiceMailEventID::MOVE_TO_SITE);
 
     // Remove reservations from the new constructions. Remember, the superconstruct operation will just have
     // added its own reservations for all the constructions, so this won't make the wireframes disappear.
-    for (ctl_pvector<MachLogConstruction>::iterator iter = newConstructions_.begin(); iter != newConstructions_.end();
-         ++iter)
-    {
-        (*iter)->cancelReservation();
-    }
+    for (MachLogConstruction *construction : newConstructions_)
+        construction->cancelReservation();
+
     // Clean up list of new constructions. This prevents finish() from attempting to cancel reservations twice.
     newConstructions_.erase(newConstructions_.begin(), newConstructions_.end());
 
@@ -726,5 +719,4 @@ void MachGuiConstructCommand::stopIntersectingMachines(const MachLogConstruction
     }
 }
 
-// Forced recompile 19/2/99 CPS
 /* End CMDCONST.CPP **************************************************/
