@@ -167,12 +167,12 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
                 if (MachLogRaces::instance().controller(pActor_->race()).type() == MachLogController::AI_CONTROLLER)
                     assignLocatorTask(&(*i)->asGeoLocator());
                 else
-                    (*i)->newOperation(new MachLogLocateOperation(&(*i)->asGeoLocator(), path_));
+                    (*i)->newOperation(std::make_unique<MachLogLocateOperation>(&(*i)->asGeoLocator(), path_));
             }
             else
             {
                 // HAL_STREAM(" issuing follow for a " << (*i)->objectType() << std::endl );
-                (*i)->newOperation(new MachLogFollowOperation(
+                (*i)->newOperation(std::make_unique<MachLogFollowOperation>(
                     (MachLogMachine*)*i,
                     pLoc,
                     MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, index++, 15)));
@@ -187,7 +187,7 @@ PhysRelativeTime MachLogAdminLocateOperation::doUpdate()
     if (! pActor_->motionSeq().isFollowing() && ! pSubOperation())
         subOperation(
             pActor_,
-            new MachLogFollowOperation(
+            std::make_unique<MachLogFollowOperation>(
                 pActor_,
                 pLoc,
                 MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::LOCATOR_CONVOY, 0, 15)));
@@ -261,7 +261,7 @@ void MachLogAdminLocateOperation::assignLocatorTask(MachLogGeoLocator* obj)
             dest.x(dest.x() + MachPhysRandom::randomDouble(-30, 30));
             dest.y(dest.y() + MachPhysRandom::randomDouble(-30, 30));
         }
-        obj->newOperation(new MachLogLocateOperation(obj, dest));
+        obj->newOperation(std::make_unique<MachLogLocateOperation>(obj, dest));
     }
 }
 

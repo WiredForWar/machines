@@ -105,10 +105,10 @@ bool MachGuiDropLandMineCommand::doApply(MachActor* pActor, std::string* /*pReas
 
         if (convertPointsToValidPoints(USE_ALL_OBSTACLES, &pActor->asMachine(), path_, &path))
         {
-            MachLogDropLandMineOperation* pOp = new MachLogDropLandMineOperation(&pActor->asSpyLocator(), path);
+            auto op = std::make_unique<MachLogDropLandMineOperation>(&pActor->asSpyLocator(), path);
 
             // Give to actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
             canDo = true;
 
             if (! hasPlayedVoiceMail())
@@ -192,9 +192,9 @@ bool MachGuiDropLandMineCommand::doAdminApply(MachLogAdministrator* pAdministrat
     if (convertPointsToValidPoints(USE_ALL_OBSTACLES, pAdministrator, path_, &path))
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminLocateOperation* pOp = new MachLogAdminLocateOperation(pAdministrator, path);
+        auto op = std::make_unique<MachLogAdminLocateOperation>(pAdministrator, path);
 
-        pAdministrator->newOperation(pOp);
+        pAdministrator->newOperation(std::move(op));
 
         MachActor* pFirstSpyLocator = nullptr;
 

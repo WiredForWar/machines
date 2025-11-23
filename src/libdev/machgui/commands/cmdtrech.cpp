@@ -122,10 +122,10 @@ bool MachGuiTreacheryCommand::applyMove(MachActor* pActor, std::string*)
 
         if (valid)
         {
-            MachLogMoveToOperation* pOp = new MachLogMoveToOperation(&pActor->asMachine(), validPoint);
+            auto op = std::make_unique<MachLogMoveToOperation>(&pActor->asMachine(), validPoint);
 
             // Give it to the actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
             result = true;
 
             if (! hasPlayedVoiceMail())
@@ -145,18 +145,15 @@ bool MachGuiTreacheryCommand::applyTreacheryObject(MachActor* pActor, std::strin
     bool canDo = pActor->race() != pDirectObject_->race();
     if (canDo)
     {
-        // Construct appropriate type of operation
-        MachLogOperation* pOp;
-
         ASSERT(
             (pActor->objectType() == MachLog::ADMINISTRATOR || pActor->objectType() == MachLog::AGGRESSOR)
                 && pActor->asCanAttack().hasTreacheryWeapon(),
             "Unexpected non-treachery-capable actor about to be issued a treachery op.");
 
-        pOp = new MachLogTreacheryOperation(&pActor->asMachine(), pDirectObject_);
+        auto op = std::make_unique<MachLogTreacheryOperation>(&pActor->asMachine(), pDirectObject_);
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
 
         if (! hasPlayedVoiceMail())
         {

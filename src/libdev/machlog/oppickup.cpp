@@ -278,7 +278,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 // horrible big transporters)
                 attemptToGuaranteeClearPickupPoint(actorPos, carrierClearance, &clearPickupPoint);
 
-                subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
+                subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, clearPickupPoint));
                 interval = 0.0;
             }
         }
@@ -368,7 +368,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
                 // ensure motion sequencer is not locked
                 pActor_->motionSeq().allowMoveOutOfWay(true);
 
-                subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
+                subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, clearPickupPoint));
                 interval = 0.0;
             }
         }

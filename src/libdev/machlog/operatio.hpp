@@ -16,6 +16,7 @@
 #include "mathex/point2d.hpp"
 #include "mathex/point3d.hpp"
 
+#include <memory>
 #include <string>
 
 /* //////////////////////////////////////////////////////////////// */
@@ -113,7 +114,7 @@ public:
     bool isFinished() const;
     virtual PhysAbsoluteTime update();
     virtual PhysRelativeTime doUpdate() = 0;
-    void subOperation(MachActor*, MachLogOperation*);
+    void subOperation(MachActor*, std::unique_ptr<MachLogOperation>);
     bool hasSubOperation();
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;

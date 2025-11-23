@@ -86,9 +86,9 @@ bool MachGuiStandGroundCommand::doApply(MachActor* pActor, std::string*)
     if (! machine.isStandingGround())
     {
         // Create a stand ground operation for the machine
-        MachLogStandGroundOperation* pOp = new MachLogStandGroundOperation(&machine);
+        auto op = std::make_unique<MachLogStandGroundOperation>(&machine);
 
-        machine.newOperation(pOp);
+        machine.newOperation(std::move(op));
 
         if (! hasPlayedVoiceMail())
         {

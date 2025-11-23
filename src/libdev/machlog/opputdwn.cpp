@@ -145,7 +145,7 @@ PhysRelativeTime MachLogPutDownOperation::doUpdate()
             // horrible big transporters)
             attemptToGuaranteeClearPutDownPoint(actorPos, carrierClearance, &clearPickupPoint);
 
-            subOperation(pActor_, new MachLogMoveToOperation(pActor_, clearPickupPoint));
+            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, clearPickupPoint));
             interval = 0.0;
         }
     }

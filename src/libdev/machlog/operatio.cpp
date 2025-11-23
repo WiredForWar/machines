@@ -91,7 +91,7 @@ bool MachLogOperation::checkNeedAndDoLeaveOperation(MachActor* pActor)
 
         // If the machine has a station locked, need to pass it in
         MachPhysStation* pStation = (mlm.hasStationLocked() ? &mlm.stationLocked() : nullptr);
-        subOperation(&mlm, new MachLogLeaveBuildingOperation(&mlm, pConstruction, pStation));
+        subOperation(&mlm, std::make_unique<MachLogLeaveBuildingOperation>(&mlm, pConstruction, pStation));
     }
 
     return found;
@@ -121,15 +121,16 @@ std::ostream& operator<<(std::ostream& o, const MachLogOperation& op)
     return o;
 }
 
-void MachLogOperation::subOperation(MachActor* pActor, MachLogOperation* pOp)
+void MachLogOperation::subOperation(MachActor* pActor, std::unique_ptr<MachLogOperation> op)
 {
-    PRE(pOp != nullptr);
+    PRE(op != nullptr);
 
     CB_DEPIMPL(MachLogOperation*, pSubOperation_);
     TEST_INVARIANT;
 
-    pSubOperation_ = pOp;
-    pActor->strategy().newOperation(pOp, true);
+    pSubOperation_ = op.get();
+    pActor->strategy().newOperation(std::move(op), true);
+    // Can be an issue: if the actor is dead then pSubOperation_ points to a deleted object
 }
 
 bool MachLogOperation::hasSubOperation()

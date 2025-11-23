@@ -103,10 +103,10 @@ bool MachGuiLocateToCommand::doApply(MachActor* pActor, std::string*)
 
         if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), path_, &path))
         {
-            MachLogLocateOperation* pOp = new MachLogLocateOperation(&pActor->asGeoLocator(), path);
+            auto op = std::make_unique<MachLogLocateOperation>(&pActor->asGeoLocator(), path);
 
             // Give to actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
             canDo = true;
 
             if (! hasPlayedVoiceMail())
@@ -189,9 +189,9 @@ bool MachGuiLocateToCommand::doAdminApply(MachLogAdministrator* pAdministrator, 
     if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, pAdministrator, path_, &path))
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminLocateOperation* pOp = new MachLogAdminLocateOperation(pAdministrator, path);
+        auto op = std::make_unique<MachLogAdminLocateOperation>(pAdministrator, path);
 
-        pAdministrator->newOperation(pOp);
+        pAdministrator->newOperation(std::move(op));
 
         MachActor* pFirstGeoLocator = nullptr;
 

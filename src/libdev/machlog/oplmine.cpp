@@ -176,7 +176,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
         // now, any more places to go to?
         if (pActor_->nMines() > 0 && ! path_.empty())
         {
-            subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
+            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, MexPoint3d(path_.front())));
             interval = 2.0;
         }
     }
@@ -188,7 +188,7 @@ PhysRelativeTime MachLogDropLandMineOperation::doUpdate()
         {
             // no apparent problems reaching that point....let's go.
 
-            subOperation(pActor_, new MachLogMoveToOperation(pActor_, MexPoint3d(path_.front())));
+            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, MexPoint3d(path_.front())));
             interval = 2.0;
         }
         else

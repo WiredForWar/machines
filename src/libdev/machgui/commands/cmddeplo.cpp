@@ -91,10 +91,10 @@ bool MachGuiDeployCommand::doApply(MachActor* pActor, std::string* pReason)
         if (valid)
         {
             // Construct the operation
-            MachLogDeployAPCOperation* pOp = new MachLogDeployAPCOperation(&apc, validPoint);
+            auto op = std::make_unique<MachLogDeployAPCOperation>(&apc, validPoint);
 
             // Give to apc
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
 
             if (! hasPlayedVoiceMail())
             {

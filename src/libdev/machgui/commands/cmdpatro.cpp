@@ -120,10 +120,10 @@ bool MachGuiPatrolCommand::doApply(MachActor* pActor, std::string*)
             path.push_back(pActor->position());
 
             // Construct the patrol op
-            MachLogPatrolOperation* pOp = new MachLogPatrolOperation(&pActor->asMachine(), path, true);
+            auto op = std::make_unique<MachLogPatrolOperation>(&pActor->asMachine(), path, true);
 
             // Give to actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
 
             if (! hasPlayedVoiceMail())
             {

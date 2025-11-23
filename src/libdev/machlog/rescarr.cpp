@@ -388,7 +388,7 @@ void MachLogResourceCarrier::mayNeedNewOp(StartWithPickUpOrPutDown startType)
     {
         // okay, should we now initiate a transport op?
         if (hasSuppliers() || hasSmeltingBuilding())
-            newOperation(new MachLogTransportOperation(this, startType));
+            newOperation(std::make_unique<MachLogTransportOperation>(this, startType));
     }
 }
 
@@ -901,7 +901,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                     {
                         poolOfWorthwhileMines.push_back(pNearestMine);
                         obj->setSuppliers(poolOfWorthwhileMines);
-                        obj->newOperation(new MachLogPickUpOperation(obj));
+                        obj->newOperation(std::make_unique<MachLogPickUpOperation>(obj));
                         failedToAssign = false;
                     }
                 }

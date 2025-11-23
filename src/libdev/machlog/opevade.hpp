@@ -62,7 +62,7 @@ protected:
 
     bool doBeInterrupted() override;
 
-    void storeOldFirstOperation(MachLogOperation*);
+    void storeOldFirstOperation(std::unique_ptr<MachLogOperation> operation);
 
 private:
     // Operations deliberately revoked

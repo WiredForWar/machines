@@ -114,7 +114,7 @@ PhysRelativeTime MachLogRecycleOperation::doUpdate()
 
             subOperation(
                 pActor_,
-                new MachLogMoveToOperation(pActor_, destinationPadPosition_, true, machineClearance * 2.0));
+                std::make_unique<MachLogMoveToOperation>(pActor_, destinationPadPosition_, true, machineClearance * 2.0));
             interval = 1.0;
         }
         else

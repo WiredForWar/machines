@@ -11,8 +11,6 @@
 #include "machlog/operatio.hpp"
 #include "machlog/rescarr.hpp"
 
-#include "mathex/point2d.hpp"
-
 PER_DEFINE_PERSISTENT(MachLogAutoScavengeOperationImpl);
 
 MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl(
@@ -22,7 +20,6 @@ MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl(
     , pDebris_(pDebris)
     , finished_(false)
     , initiatedScavengeOp_(false)
-    , pCachedOperation_(nullptr)
 {
     PRE(pScavenger->isScavenger());
 
@@ -54,7 +51,7 @@ void perWrite(PerOstream& ostr, const MachLogAutoScavengeOperationImpl& AutoScav
     ostr << AutoScavengeOpImpl.pDebris_;
     ostr << AutoScavengeOpImpl.finished_;
     ostr << AutoScavengeOpImpl.initiatedScavengeOp_;
-    ostr << AutoScavengeOpImpl.pCachedOperation_;
+    ostr << AutoScavengeOpImpl.pCachedOperation_.get();
 }
 
 void perRead(PerIstream& istr, MachLogAutoScavengeOperationImpl& AutoScavengeOpImpl)
@@ -63,7 +60,9 @@ void perRead(PerIstream& istr, MachLogAutoScavengeOperationImpl& AutoScavengeOpI
     istr >> AutoScavengeOpImpl.pDebris_;
     istr >> AutoScavengeOpImpl.finished_;
     istr >> AutoScavengeOpImpl.initiatedScavengeOp_;
-    istr >> AutoScavengeOpImpl.pCachedOperation_;
+    MachLogOperation *operation{};
+    istr >> operation;
+    AutoScavengeOpImpl.pCachedOperation_.reset(operation);
 }
 
 MachLogAutoScavengeOperationImpl::MachLogAutoScavengeOperationImpl(PerConstructor)

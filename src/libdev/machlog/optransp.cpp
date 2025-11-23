@@ -109,7 +109,7 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
         else
         {
             // HAL_STREAM("(" << pActor_->id() << ") MLTransportOp...issuing PickUpOperation\n" );
-            subOperation(pActor_, new MachLogPickUpOperation(pActor_));
+            subOperation(pActor_, std::make_unique<MachLogPickUpOperation>(pActor_));
             donePickUp_ = true;
             return 10.0;
         }
@@ -126,7 +126,7 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
         else
         {
             // HAL_STREAM(" using point " << whichPoint << std::endl );
-            subOperation(pActor_, new MachLogPutDownOperation(pActor_));
+            subOperation(pActor_, std::make_unique<MachLogPutDownOperation>(pActor_));
 
             int iterations = pActor_->iterations();
 

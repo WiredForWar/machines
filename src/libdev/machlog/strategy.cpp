@@ -39,7 +39,7 @@ public:
     PER_FRIEND_READ_WRITE(MachLogStrategyImpl);
 
 private:
-    MachLogOperation* pPendingOperation_;
+    std::unique_ptr<MachLogOperation> pPendingOperation_;
     bool mustRemoveAllOperations_;
     bool semaphoreInUpdate_;
     MachLogStrategy::Queue queue_;
@@ -67,7 +67,7 @@ PER_DEFINE_PERSISTENT(MachLogStrategyImpl);
     CB_DEPIMPL(bool, semaphoreInUpdate_);                                                                              \
     CB_DEPIMPL(bool, mustRemoveAllOperations_);                                                                        \
     CB_DEPIMPL(MachLogStrategy::Queue, queue_);                                                                        \
-    CB_DEPIMPL(MachLogOperation*, pPendingOperation_);                                                                 \
+    CB_DEPIMPL_AUTO(pPendingOperation_);                                                                               \
     CB_DEPIMPL(PhysRelativeTime, nextUpdateTime_);
 
 /* //////////////////////////////////////////////////////////////// */
@@ -93,8 +93,6 @@ MachLogStrategy::~MachLogStrategy()
         queue_.erase(queue_.begin());
         // HAL_STREAM("  MLStrategy:: after delete queue_.size() " << queue_.size() << std::endl );
     }
-    if (pPendingOperation_)
-        delete pPendingOperation_;
 
     delete pImpl_;
 }
@@ -106,50 +104,47 @@ bool MachLogStrategy::isFinished() const
     return queue_.size() == 0 && pPendingOperation_ == nullptr;
 }
 
-void MachLogStrategy::newOperation(MachLogOperation* pNewOperation, bool subOperation)
+void MachLogStrategy::newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation)
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
     if (pActor_->isDead())
     {
         // Don't accept the op. In fact, delete it, instead.
-        delete pNewOperation;
+        return;
     }
+
+    // ensure that all ops put on as new are treated as having to START.
+    // this is important for cases where an old op has been restored after suspension, and
+    // might have last been in an UPDATE state etc.
+    operation->progress(MachLogOperation::START);
+    HAL_STREAM(
+        "(" << pActor_->id() << ") MLStrategy::newOperation " << operation->operationTypeAsString()
+            << std::endl);
+    if (subOperation)
+        queue_.push_back(operation.release());
     else
     {
-        // ensure that all ops put on as new are treated as having to START.
-        // this is important for cases where an old op has been restored after suspension, and
-        // might have last been in an UPDATE state etc.
-        pNewOperation->progress(MachLogOperation::START);
-        HAL_STREAM(
-            "(" << pActor_->id() << ") MLStrategy::newOperation " << pNewOperation->operationTypeAsString()
-                << std::endl);
-        if (subOperation)
-            queue_.push_back(pNewOperation);
+        if (pPendingOperation_)
+        {
+            pPendingOperation_.reset();
+        }
+        HAL_STREAM(" semaphoreInUpdate_ " << semaphoreInUpdate_ << std::endl);
+        tryToRemoveAllOperations();
+
+        if (queue_.size() > 0)
+        {
+            HAL_STREAM(" operations still exist so setting pPendingOperation_\n");
+            pPendingOperation_ = std::move(operation);
+        }
         else
         {
-            if (pPendingOperation_)
-            {
-                delete pPendingOperation_;
-                pPendingOperation_ = nullptr;
-            }
-            HAL_STREAM(" semaphoreInUpdate_ " << semaphoreInUpdate_ << std::endl);
-            tryToRemoveAllOperations();
-
-            if (queue_.size() > 0)
-            {
-                HAL_STREAM(" operations still exist so setting pPendingOperation_\n");
-                pPendingOperation_ = pNewOperation;
-            }
-            else
-            {
-                queue_.push_back(pNewOperation);
-            }
+            queue_.push_back(operation.release());
         }
     }
 }
 
-bool MachLogStrategy::addOperationAsSubOperationToFollowOperation(MachLogOperation* pNewOperation)
+bool MachLogStrategy::addOperationAsSubOperationToFollowOperation(std::unique_ptr<MachLogOperation> operation)
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
@@ -169,7 +164,7 @@ bool MachLogStrategy::addOperationAsSubOperationToFollowOperation(MachLogOperati
             found = true;
             if (! pOp->hasSubOperation())
             {
-                pOp->subOperation(pActor_, pNewOperation);
+                pOp->subOperation(pActor_, std::move(operation));
                 succeeded = true;
             }
         }
@@ -215,8 +210,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
 
         if (queue_.size() == 0)
         {
-            queue_.push_back(pPendingOperation_);
-            pPendingOperation_ = nullptr;
+            queue_.push_back(pPendingOperation_.release());
             i = 0;
         }
     }
@@ -267,11 +261,7 @@ PhysRelativeTime MachLogStrategy::update(const PhysRelativeTime&)
                         {
                             // if we need to do a MLLeaveBuildingOperation then swap this operation for the
                             // pendingOperation. Erase operation from stack.
-                            if (pPendingOperation_)
-                            {
-                                delete pPendingOperation_;
-                            }
-                            pPendingOperation_ = pOp;
+                            pPendingOperation_.reset(pOp);
                             queue_.erase(queue_.begin() + i);
                             increment = false;
                             finished = true;
@@ -412,8 +402,7 @@ void MachLogStrategy::removeAllOperations()
         }
         if (pPendingOperation_)
         {
-            delete pPendingOperation_;
-            pPendingOperation_ = nullptr;
+            pPendingOperation_.reset();
         }
     }
     POST(queue_.size() == 0);
@@ -460,25 +449,27 @@ void MachLogStrategy::changeToEvadeMode()
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
-    MachLogEvadeOperation* pEvadeOp = new MachLogEvadeOperation(pMachine);
+    std::unique_ptr<MachLogEvadeOperation> pEvadeOp;
+    pEvadeOp.reset(new MachLogEvadeOperation(pMachine));
 
-    MachLogOperation* pOldTopOp = nullptr;
+    std::unique_ptr<MachLogOperation> oldTopOp = extractTopOperation();
 
-    if (extractTopOperation(&pOldTopOp))
+    if (oldTopOp)
         removeAllOperations();
     else
     {
-        pOldTopOp = new MachLogMoveToOperation(pMachine, pMachine->position(), true, 10.0); // 10m tolerance
+        constexpr MATHEX_SCALAR tolerance{10.0};
+        oldTopOp = std::make_unique<MachLogMoveToOperation>(pMachine, pMachine->position(), true, tolerance);
         // removeAllOperations();
     }
 
-    ASSERT(pOldTopOp, "Unexpected NULL for pOldTopOp!");
+    ASSERT(oldTopOp, "Unexpected NULL for pOldTopOp!");
 
-    pEvadeOp->storeOldFirstOperation(pOldTopOp);
+    pEvadeOp->storeOldFirstOperation(std::move(oldTopOp));
 
     // make the evade operation the new (and only) op on the queue. The "old first op" will be restored
     // if the evade op terminates with the actor still alive
-    newOperation(pEvadeOp, false);
+    newOperation(std::move(pEvadeOp), false);
 }
 
 void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
@@ -491,11 +482,12 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
 
     MachLogMachine* pMachine = &(pActor_->asMachine());
 
-    MachLogCounterattackOperation* pCounterattackOp = new MachLogCounterattackOperation(pMachine, pTarget);
+    std::unique_ptr<MachLogCounterattackOperation> pCounterattackOp(
+        new MachLogCounterattackOperation(pMachine, pTarget));
 
-    MachLogOperation* pOldTopOp = nullptr;
+    std::unique_ptr<MachLogOperation> pOldTopOp = extractTopOperation();
 
-    if (extractTopOperation(&pOldTopOp))
+    if (pOldTopOp)
         removeAllOperations();
     else
     {
@@ -510,18 +502,22 @@ void MachLogStrategy::changeToCounterattackMode(MachActor* pTarget)
         MATHEX_SCALAR postKillPause = (2.0 * pActor_->hpRatio()) + MachPhysRandom::randomDouble(0, 2.0);
 
         // now turns towards point first sighted enemy at after returning to initial position
-        pOldTopOp = new 
-            MachLogMoveAndTurnOperation(pMachine, pMachine->position(), pTarget->position(), true, postKillPause);
+        pOldTopOp = std::make_unique<MachLogMoveAndTurnOperation>(
+            pMachine,
+            pMachine->position(),
+            pTarget->position(),
+            true,
+            postKillPause);
         // removeAllOperations();
     }
 
     ASSERT(pOldTopOp, "Unexpected NULL for pOldTopOp!");
 
-    pCounterattackOp->storeOldFirstOperation(pOldTopOp);
+    pCounterattackOp->storeOldFirstOperation(std::move(pOldTopOp));
 
     // make the counterattack operation the new (and only) op on the queue. The "old first op" will be restored
     // if the counterattack op terminates with the actor still alive
-    newOperation(pCounterattackOp, false);
+    newOperation(std::move(pCounterattackOp), false);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachLogStrategy& s)
@@ -573,8 +569,7 @@ void MachLogStrategy::beInterrupted()
     // if mustRemoveAllOperations is true then the pPending is still needed.
     if (pPendingOperation_ && ! mustRemoveAllOperations_)
     {
-        delete pPendingOperation_;
-        pPendingOperation_ = nullptr;
+        pPendingOperation_.reset();
     }
 
     if (semaphoreInUpdate_)
@@ -631,7 +626,7 @@ const MachLogOperation* MachLogStrategy::pPendingOperation() const
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    return pPendingOperation_;
+    return pPendingOperation_.get();
 }
 
 void perWrite(PerOstream& ostr, const MachLogStrategy& strategy)
@@ -653,7 +648,7 @@ MachLogStrategy::MachLogStrategy(PerConstructor)
 
 void perWrite(PerOstream& ostr, const MachLogStrategyImpl& impl)
 {
-    ostr << impl.pPendingOperation_;
+    ostr << impl.pPendingOperation_.get();
     ostr << impl.mustRemoveAllOperations_;
     ostr << impl.queue_;
     ostr << impl.pActor_;
@@ -663,7 +658,9 @@ void perWrite(PerOstream& ostr, const MachLogStrategyImpl& impl)
 
 void perRead(PerIstream& istr, MachLogStrategyImpl& impl)
 {
-    istr >> impl.pPendingOperation_;
+    MachLogOperation *operation{};
+    istr >> operation;
+    impl.pPendingOperation_.reset(operation);
     istr >> impl.mustRemoveAllOperations_;
     istr >> impl.queue_;
     istr >> impl.pActor_;
@@ -671,18 +668,13 @@ void perRead(PerIstream& istr, MachLogStrategyImpl& impl)
     istr >> impl.semaphoreInUpdate_;
 }
 
-bool MachLogStrategy::extractTopOperation(MachLogOperation** ppOldTopOp)
+std::unique_ptr<MachLogOperation> MachLogStrategy::extractTopOperation()
 {
     CB_MACHLOGSTRATEGY_DEPIMPL();
 
-    bool hadTopOp = false;
-
     if (pPendingOperation_)
     {
-        *ppOldTopOp = pPendingOperation_;
-        pPendingOperation_ = nullptr;
-
-        hadTopOp = true;
+        return std::move(pPendingOperation_);
     }
     else if (queue_.size() > 0)
     {
@@ -697,12 +689,10 @@ bool MachLogStrategy::extractTopOperation(MachLogOperation** ppOldTopOp)
         // knock the pointer to the top op from the queue.
         queue_.erase(queue_.begin());
 
-        *ppOldTopOp = pOldTopOp;
-
-        hadTopOp = true;
+        return std::unique_ptr<MachLogOperation>(pOldTopOp);
     }
 
-    return hadTopOp;
+    return {};
 }
 
 void MachLogStrategy::changeToScavengeMode(MachLogDebris* pDebris)
@@ -715,24 +705,24 @@ void MachLogStrategy::changeToScavengeMode(MachLogDebris* pDebris)
 
     MachLogResourceCarrier* pScavenger = &(pActor_->asResourceCarrier());
 
-    MachLogAutoScavengeOperation* pAutoScavengeOp = new MachLogAutoScavengeOperation(pScavenger, pDebris);
+    std::unique_ptr<MachLogAutoScavengeOperation> pAutoScavengeOp(new MachLogAutoScavengeOperation(pScavenger, pDebris));
 
-    MachLogOperation* pOldTopOp = nullptr;
+    std::unique_ptr<MachLogOperation> pOldTopOp = extractTopOperation();
 
-    if (extractTopOperation(&pOldTopOp))
+    if (pOldTopOp)
         removeAllOperations();
     else
     {
-        pOldTopOp = new MachLogMoveToOperation(pScavenger, pScavenger->position(), true, 10.0); // 10m tolerance
+        pOldTopOp.reset(new MachLogMoveToOperation(pScavenger, pScavenger->position(), true, 10.0)); // 10m tolerance
     }
 
     ASSERT(pOldTopOp, "Unexpected NULL for pOldTopOp!");
 
-    pAutoScavengeOp->storeOldFirstOperation(pOldTopOp);
+    pAutoScavengeOp->storeOldFirstOperation(std::move(pOldTopOp));
 
     // make the scavenge operation the new (and only) op on the queue. The "old first op" will be restored
     // if the scavenge op terminates with the actor still alive
-    newOperation(pAutoScavengeOp, false);
+    newOperation(std::move(pAutoScavengeOp), false);
 }
 
 bool MachLogStrategy::isDoingLeaveOperation() const

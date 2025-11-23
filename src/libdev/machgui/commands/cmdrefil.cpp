@@ -64,10 +64,10 @@ bool MachGuiRefillLandMineCommand::doApply(MachActor* pActor, std::string* /*pRe
     bool canDo = false;
     if (pActor->objectType() == MachLog::SPY_LOCATOR)
     {
-        MachLogRefillLandMinesOperation* pOp = new MachLogRefillLandMinesOperation(&pActor->asSpyLocator());
+        auto op = std::make_unique<MachLogRefillLandMinesOperation>(&pActor->asSpyLocator());
 
         // Give to actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
         canDo = true;
 
         if (! hasPlayedVoiceMail())

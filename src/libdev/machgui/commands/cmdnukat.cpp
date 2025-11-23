@@ -159,10 +159,10 @@ bool MachGuiNukeAttackCommand::applyAttackLocation(MachActor* pActor, std::strin
         if (canDo)
         {
             // Construct appropriate type of operation
-            MachLogOperation* pOp = new MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), validPoint);
+            auto op = std::make_unique<MachLogNukeAttackOperation>(&pActor->asMissileEmplacement(), validPoint);
 
             // Give it to the actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
 
             // deduct the dosh
             races.smartSubtractBMUs(playerRace, nukeLaunchCost);
@@ -198,10 +198,10 @@ bool MachGuiNukeAttackCommand::applyAttackObject(MachActor* pActor, std::string*
                 "A non-ICBM has somehow been allowed to initiate a nuclear attack.");
 
             // Construct appropriate type of operation
-            MachLogOperation* pOp = new MachLogNukeAttackOperation(&pActor->asMissileEmplacement(), pDirectObject_);
+            auto op = std::make_unique<MachLogNukeAttackOperation>(&pActor->asMissileEmplacement(), pDirectObject_);
 
             // Give it to the actor
-            pActor->newOperation(pOp);
+            pActor->newOperation(std::move(op));
 
             // deduct the dosh
             races.smartSubtractBMUs(playerRace, nukeLaunchCost);

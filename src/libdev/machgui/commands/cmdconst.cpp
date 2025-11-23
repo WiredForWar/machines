@@ -507,12 +507,12 @@ void MachGuiConstructCommand::placeConstruction()
 bool MachGuiConstructCommand::doApply(MachActor* pActor, std::string*)
 {
     // Create a superconstruct operation for the constructor
-    MachLogSuperConstructOperation* pOp = new MachLogSuperConstructOperation(
+    auto op = std::make_unique<MachLogSuperConstructOperation>(
         &pActor->asConstructor(),
         allConstructions_,
         MachLogOperation::CONSTRUCT_OPERATION);
 
-    pActor->newOperation(pOp);
+    pActor->newOperation(std::move(op));
 
     if (! hasPlayedVoiceMail())
     {
@@ -597,10 +597,9 @@ bool MachGuiConstructCommand::doAdminApply(MachLogAdministrator* pAdministrator,
     PRE(canAdminApply());
 
     // Create an admin superconstruct operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = new 
-        MachLogAdminSuperConstructOperation(pAdministrator, allConstructions_, MachLogOperation::CONSTRUCT_OPERATION);
+    auto op = std::make_unique<MachLogAdminSuperConstructOperation>(pAdministrator, allConstructions_, MachLogOperation::CONSTRUCT_OPERATION);
 
-    pAdministrator->newOperation(pOp);
+    pAdministrator->newOperation(std::move(op));
 
     MachActor* pFirstConstructor = nullptr;
 

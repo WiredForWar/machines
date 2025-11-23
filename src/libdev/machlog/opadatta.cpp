@@ -109,7 +109,7 @@ bool MachLogAdminAttackOperation::doStart()
                         // only attack if in range
                         if (machineAsCanAttack.inWeaponRange(*pDirectObject_, MachLogCanAttack::NONE))
                         {
-                            pSquadronMachine->newOperation(new MachLogAttackOperation(
+                            pSquadronMachine->newOperation(std::make_unique<MachLogAttackOperation>(
                                 pSquadronMachine,
                                 pDirectObject_,
                                 MachLogAttackOperation::TERMINATE_ON_CHANGE));
@@ -141,7 +141,7 @@ bool MachLogAdminAttackOperation::doStart()
             // attack op taking him to the target while the others are using a group move
             pActor_->currentTarget(pDirectObject_);
             pActor_->strategy().newOperation(
-                new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+                std::make_unique<MachLogAttackOperation>(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
                 true);
         }
     }
@@ -184,7 +184,7 @@ PhysRelativeTime MachLogAdminAttackOperation::doUpdate()
                         if (distanceToTargetNow < 100.0
                             || machineAsCanAttack.inWeaponRange(*pDirectObject_, MachLogCanAttack::NONE))
                         {
-                            squadronMachine.newOperation(new MachLogAttackOperation(
+                            squadronMachine.newOperation(std::make_unique<MachLogAttackOperation>(
                                 &squadronMachine,
                                 pDirectObject_,
                                 MachLogAttackOperation::TERMINATE_ON_CHANGE));
@@ -232,7 +232,7 @@ PhysRelativeTime MachLogAdminAttackOperation::doUpdate()
         // note that the administrator will move slightly separately from his subordinate group, relying on his attack
         // op taking him to the target while the others are using a group move
         pActor_->strategy().newOperation(
-            new MachLogAttackOperation(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+            std::make_unique<MachLogAttackOperation>(pActor_, pDirectObject_, MachLogAttackOperation::TERMINATE_ON_CHANGE),
             true);
     }
 

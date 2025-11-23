@@ -1847,12 +1847,11 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
                 // even if this actor doesn't respond to the SOS call, bump its alertness up to full
                 pFollowingMachine->asCanAttack().setMinimumAlertness(125);
 
-                MachLogOperation* pOp = new MachLogAttackOperation(
+                auto op = std::make_unique<MachLogAttackOperation>(
                     pFollowingMachine,
                     &threatActor,
                     MachLogAttackOperation::TERMINATE_ON_CHANGE);
-                if (!(pFollowingMachine->strategy().addOperationAsSubOperationToFollowOperation(pOp)))
-                    delete pOp;
+                pFollowingMachine->strategy().addOperationAsSubOperationToFollowOperation(std::move(op));
             }
             ++iFollowers;
         }
@@ -2532,7 +2531,7 @@ void MachLogMachine::checkAndDoClearEntrance(MachLogConstruction& constron)
             if (MachLogSpacialManipulation::pointInsideConfigSpaceIsFree(clearPoint, myClearance, interiorConfigSpace))
             {
                 succeeded = true;
-                strategy().newOperation(new MachLogMoveToOperation(this, clearPoint, false));
+                strategy().newOperation(std::make_unique<MachLogMoveToOperation>(this, clearPoint, false));
             }
         }
     }

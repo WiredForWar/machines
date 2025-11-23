@@ -103,9 +103,9 @@ bool MachGuiRecycleCommand::doApply(MachActor* pActor, std::string*)
         pSmeltingBuilding_ != nullptr,
         "pSmeltingBuilding_ should not have a NULL assignment if MachGuiRecycleCommand::doApply is called");
 
-    MachLogRecycleOperation* pOp = new MachLogRecycleOperation(&pActor->asMachine(), pSmeltingBuilding_);
+    auto op = std::make_unique<MachLogRecycleOperation>(&pActor->asMachine(), pSmeltingBuilding_);
 
-    pActor->newOperation(pOp);
+    pActor->newOperation(std::move(op));
 
     if (! hasPlayedVoiceMail())
     {

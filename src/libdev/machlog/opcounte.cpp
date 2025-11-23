@@ -31,7 +31,7 @@ PER_DEFINE_PERSISTENT(MachLogCounterattackOperation);
     CB_DEPIMPL(MachActor*, pTarget_);                                                                                  \
     CB_DEPIMPL(bool, finished_);                                                                                       \
     CB_DEPIMPL(bool, initiatedAttackOp_);                                                                              \
-    CB_DEPIMPL(MachLogOperation*, pCachedOperation_);                                                                  \
+    CB_DEPIMPL_AUTO(pCachedOperation_);                                                                                \
     CB_DEPIMPL(PhysAbsoluteTime, nextTimeINeedToCheckImClosing_);                                                      \
     CB_DEPIMPL(MATHEX_SCALAR, distanceBeyondWeaponRangeLastTimeIChecked_);                                             \
     CB_DEPIMPL(PhysAbsoluteTime, lastTimeTargetWasntEvading_);
@@ -55,11 +55,6 @@ MachLogCounterattackOperation::MachLogCounterattackOperation(MachLogMachine* pAc
 MachLogCounterattackOperation::~MachLogCounterattackOperation()
 {
     CB_MachLogCounterattackOperation_DEPIMPL();
-
-    // if we still have a pointer to the cached op, we must be terminating through circumstances where that
-    // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
-    if (pCachedOperation_)
-        delete pCachedOperation_;
 
     if (pTarget_)
         pTarget_->detach(this);
@@ -128,11 +123,11 @@ bool MachLogCounterattackOperation::beNotified(
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogCounterattackOperation::storeOldFirstOperation(MachLogOperation* pOldOp)
+void MachLogCounterattackOperation::storeOldFirstOperation(std::unique_ptr<MachLogOperation> operation)
 {
     CB_MachLogCounterattackOperation_DEPIMPL();
 
-    pCachedOperation_ = pOldOp;
+    pCachedOperation_ = std::move(operation);
     POST(pCachedOperation_ != nullptr);
 }
 
@@ -170,8 +165,7 @@ PhysRelativeTime MachLogCounterattackOperation::doUpdate()
     if (shouldBreakOffAttack())
     {
         // restore previous first operation as first (and only) operation on the strategy queue.
-        pActor_->strategy().newOperation(pCachedOperation_, false);
-        pCachedOperation_ = nullptr; // so we don't try and delete it in the destructor
+        pActor_->strategy().newOperation(std::move(pCachedOperation_), false);
         finished_ = true;
         return 0.0;
     }
@@ -188,10 +182,10 @@ PhysRelativeTime MachLogCounterattackOperation::doUpdate()
 
     PhysRelativeTime interval = 0.0;
 
-    MachLogOperation* pNewSubOp
-        = new MachLogAttackOperation(pActor_, pTarget_, MachLogAttackOperation::TERMINATE_ON_CHANGE);
+    auto pNewSubOp
+        = std::make_unique<MachLogAttackOperation>(pActor_, pTarget_, MachLogAttackOperation::TERMINATE_ON_CHANGE);
 
-    subOperation(pActor_, pNewSubOp);
+    subOperation(pActor_, std::move(pNewSubOp));
 
     initiatedAttackOp_ = true;
 

@@ -298,7 +298,7 @@ float MachLogHardwareLab::totalResearchRate() const
             && &(*i)->motionSeq().currentConfigSpace() == &interiorConfigSpace())
         {
             if ((*i)->isIdle())
-                (*i)->newOperation(new MachLogResearchAnimation(*i));
+                (*i)->newOperation(std::make_unique<MachLogResearchAnimation>(*i));
 
             float researchContributed = 0;
 

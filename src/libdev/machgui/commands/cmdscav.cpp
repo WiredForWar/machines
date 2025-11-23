@@ -121,16 +121,14 @@ bool MachGuiScavengeCommand::doApply(MachActor* pActor, std::string* pReason)
 bool MachGuiScavengeCommand::applyScavengeObject(MachActor* pActor, std::string*)
 {
     // Construct appropriate type of operation
-    MachLogOperation* pOp;
-
     ASSERT_INFO(pActor->objectType());
     ASSERT(pActor->objectType() == MachLog::RESOURCE_CARRIER, "Unexpected actor type");
     ASSERT(pActor->asResourceCarrier().isScavenger(), "Resource carrier is not a scavenger!");
 
-    pOp = new MachLogScavengeOperation(&pActor->asResourceCarrier(), suppliers_);
+    auto op = std::make_unique<MachLogScavengeOperation>(&pActor->asResourceCarrier(), suppliers_);
 
     // Give it to the actor
-    pActor->newOperation(pOp);
+    pActor->newOperation(std::move(op));
 
     if (! hasPlayedVoiceMail())
     {

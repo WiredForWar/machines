@@ -202,7 +202,7 @@ protected:
 
     static size_t& commandId();
 
-    void add(MachLogMachine*, MachLogOperation*);
+    void add(MachLogMachine*, std::unique_ptr<MachLogOperation> operation);
 
     PhysPathFindingPriority pathFindingPriority() const;
 

@@ -268,7 +268,7 @@ PhysRelativeTime MachLogTaskAttackOperation::doUpdateWithCommander()
         || commanderOp == MachLogOperation::ADMIN_ATTACK_OPERATION)
         return 30.0;
     // The commander is not doing an aggressive operation...so we can reassign as necessary.
-    pActor_->commander().newOperation(new MachLogSeekAndDestroyOperation(
+    pActor_->commander().newOperation(std::make_unique<MachLogSeekAndDestroyOperation>(
         &pActor_->commander(),
         MachLogRaces::instance().AICommandId(),
         targetSystemType_,
@@ -460,7 +460,7 @@ void MachLogTaskAttackOperation::tryIonAttack()
             if (races.findMostValuableTarget(pod, &pTarget, targetSystemType_, objectType_, pod.position(), 50))
             {
                 // let's toast it!
-                pod.newOperation(new MachLogPodAttackOperation(&pod, pTarget));
+                pod.newOperation(std::make_unique<MachLogPodAttackOperation>(&pod, pTarget));
             }
         }
     }
@@ -496,7 +496,7 @@ void MachLogTaskAttackOperation::tryNukeAttack()
                         100)) // 100 = minimum distance required
                 {
                     // I'm pressin' the button, Charlie.......
-                    emplacement.newOperation(new MachLogNukeAttackOperation(&emplacement, pTarget));
+                    emplacement.newOperation(std::make_unique<MachLogNukeAttackOperation>(&emplacement, pTarget));
                 }
             }
         }
@@ -550,7 +550,7 @@ void MachLogTaskAttackOperation::issueSeekAndDestroysToAllMachinesWithoutTargets
         MachLogMachine& squadronMachine = (**i);
         if (squadronMachine.objectIsCanAttack() && ! squadronMachine.asCanAttack().hasCurrentTarget())
         {
-            squadronMachine.newOperation(new MachLogSeekAndDestroyOperation(
+            squadronMachine.newOperation(std::make_unique<MachLogSeekAndDestroyOperation>(
                 &squadronMachine,
                 MachLogRaces::instance().AICommandId(),
                 targetSystemType_,
@@ -630,7 +630,7 @@ PhysRelativeTime MachLogTaskAttackOperation::attackSpecificTarget(const MachActo
                 }
                 else
                 {
-                    squadronMachine.newOperation(new MachLogSeekAndDestroyOperation(
+                    squadronMachine.newOperation(std::make_unique<MachLogSeekAndDestroyOperation>(
                         &squadronMachine,
                         MachLogRaces::instance().AICommandId(),
                         targetSystemType_,

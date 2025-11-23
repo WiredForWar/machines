@@ -25,7 +25,6 @@ MachLogCounterattackOperationImpl::MachLogCounterattackOperationImpl(MachLogMach
     , pTarget_(pTarget)
     , finished_(false)
     , initiatedAttackOp_(false)
-    , pCachedOperation_(nullptr)
     , distanceBeyondWeaponRangeLastTimeIChecked_(0.0) // dummy assignment
 {
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
@@ -61,7 +60,7 @@ void perWrite(PerOstream& ostr, const MachLogCounterattackOperationImpl& counter
     ostr << counterattackOpImpl.pTarget_;
     ostr << counterattackOpImpl.finished_;
     ostr << counterattackOpImpl.initiatedAttackOp_;
-    ostr << counterattackOpImpl.pCachedOperation_;
+    ostr << counterattackOpImpl.pCachedOperation_.get();
     ostr << counterattackOpImpl.lastTimeTargetWasntEvading_;
     ostr << counterattackOpImpl.distanceBeyondWeaponRangeLastTimeIChecked_;
     ostr << counterattackOpImpl.nextTimeINeedToCheckImClosing_;
@@ -73,7 +72,9 @@ void perRead(PerIstream& istr, MachLogCounterattackOperationImpl& counterattackO
     istr >> counterattackOpImpl.pTarget_;
     istr >> counterattackOpImpl.finished_;
     istr >> counterattackOpImpl.initiatedAttackOp_;
-    istr >> counterattackOpImpl.pCachedOperation_;
+    MachLogOperation *operation{};
+    istr >> operation;
+    counterattackOpImpl.pCachedOperation_.reset(operation);
     istr >> counterattackOpImpl.lastTimeTargetWasntEvading_;
     istr >> counterattackOpImpl.distanceBeyondWeaponRangeLastTimeIChecked_;
     istr >> counterattackOpImpl.nextTimeINeedToCheckImClosing_;

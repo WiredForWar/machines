@@ -13,6 +13,7 @@
 #include "machlog/destroy.hpp"
 
 #include <iostream>
+#include <memory>
 #include <optional>
 
 /* //////////////////////////////////////////////////////////////// */
@@ -124,7 +125,7 @@ public:
 
     ///////////////////////////////
 
-    void newOperation(MachLogOperation* pNewOperation);
+    void newOperation(std::unique_ptr<MachLogOperation> operation);
     //  void subOperation( MachOperation * pNewOperation );
 
     // Set/get the selection state

@@ -30,7 +30,7 @@ PER_DEFINE_PERSISTENT(MachLogAutoScavengeOperation);
     CB_DEPIMPL(bool, finished_);                                                                                       \
     CB_DEPIMPL(bool, initiatedScavengeOp_);                                                                            \
                                                                                                                        \
-    CB_DEPIMPL(MachLogOperation*, pCachedOperation_);
+    CB_DEPIMPL_AUTO(pCachedOperation_);
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -49,11 +49,6 @@ MachLogAutoScavengeOperation::MachLogAutoScavengeOperation(MachLogResourceCarrie
 MachLogAutoScavengeOperation::~MachLogAutoScavengeOperation()
 {
     CB_MachLogAutoScavengeOperation_DEPIMPL();
-
-    // if we still have a pointer to the cached op, we must be terminating through circumstances where that
-    // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
-    if (pCachedOperation_)
-        delete pCachedOperation_;
 
     if (pDebris_)
         pDebris_->detach(this);
@@ -90,11 +85,11 @@ bool MachLogAutoScavengeOperation::beNotified(
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogAutoScavengeOperation::storeOldFirstOperation(MachLogOperation* pOldOp)
+void MachLogAutoScavengeOperation::storeOldFirstOperation(std::unique_ptr<MachLogOperation> operation)
 {
     CB_MachLogAutoScavengeOperation_DEPIMPL();
 
-    pCachedOperation_ = pOldOp;
+    pCachedOperation_ = std::move(operation);
     POST(pCachedOperation_ != nullptr);
 }
 
@@ -132,8 +127,7 @@ PhysRelativeTime MachLogAutoScavengeOperation::doUpdate()
     if (shouldStopScavenging())
     {
         // restore previous first operation as first (and only) operation on the strategy queue.
-        pScavenger_->strategy().newOperation(pCachedOperation_, false);
-        pCachedOperation_ = nullptr; // so we don't try and delete it in the destructor
+        pScavenger_->strategy().newOperation(std::move(pCachedOperation_), false);
         finished_ = true;
         return 0.0;
     }
@@ -150,9 +144,9 @@ PhysRelativeTime MachLogAutoScavengeOperation::doUpdate()
 
     PhysRelativeTime interval = 0.0;
 
-    MachLogOperation* pNewSubOp = new MachLogScavengeOperation(pScavenger_, pDebris_);
+    auto pNewSubOp = std::make_unique<MachLogScavengeOperation>(pScavenger_, pDebris_);
 
-    subOperation(pScavenger_, pNewSubOp);
+    subOperation(pScavenger_, std::move(pNewSubOp));
 
     initiatedScavengeOp_ = true;
 

@@ -139,9 +139,11 @@ void MachGuiCaptureCommand::typeData(MachLog::ObjectType /*objectType*/, int /*s
 // virtual
 bool MachGuiCaptureCommand::doApply(MachActor* pActor, std::string*)
 {
-    MachLogSuperConstructOperation* pOp = new 
-        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::CAPTURE_OPERATION);
-    pActor->newOperation(pOp);
+    auto op = std::make_unique<MachLogSuperConstructOperation>(
+        &pActor->asConstructor(),
+        constructions_,
+        MachLogOperation::CAPTURE_OPERATION);
+    pActor->newOperation(std::move(op));
 
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
@@ -192,10 +194,12 @@ bool MachGuiCaptureCommand::doAdminApply(MachLogAdministrator* pAdministrator, s
     PRE(canAdminApply());
 
     // Create an admin superconstruct(capture) operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = new 
-        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::CAPTURE_OPERATION);
+    auto op = std::make_unique<MachLogAdminSuperConstructOperation>(
+        pAdministrator,
+        constructions_,
+        MachLogOperation::CAPTURE_OPERATION);
 
-    pAdministrator->newOperation(pOp);
+    pAdministrator->newOperation(std::move(op));
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
     pAdministrator->squadron()->manualCommandIssuedToSquadron();
 

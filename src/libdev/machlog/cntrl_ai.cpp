@@ -375,7 +375,7 @@ void MachLogAIController::handleEnemyContact(const MachLogMessage& msg)
                         &targetPosition))
                 {
                     MexPoint3d targetPosition3d(targetPosition);
-                    pIdleAggressiveMachine->newOperation(new MachLogMoveToOperation(
+                    pIdleAggressiveMachine->newOperation(std::make_unique<MachLogMoveToOperation>(
                         pIdleAggressiveMachine,
                         targetPosition3d,
                         true,
@@ -552,7 +552,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                         if (researchInterest_ == HARDWARE)
                         {
                             if (!(obj->insideBuilding() && obj->insideWhichBuilding().id() == pChosenLab->id()))
-                                obj->newOperation(new MachLogEnterBuildingOperation(obj, pChosenLab, pStation));
+                                obj->newOperation(std::make_unique<MachLogEnterBuildingOperation>(obj, pChosenLab, pStation));
                         }
                     }
                 }
@@ -973,12 +973,12 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
             if (parser.tokens()[i] == "RANGE_POD")
                 maxRangeFromPod = atof(parser.tokens()[i + 1].c_str());
         }
-        pSquad->newOperation(new MachLogTaskLocateOperation(pSquad, nDesiredSites, maxRangeFromPod));
+        pSquad->newOperation(std::make_unique<MachLogTaskLocateOperation>(pSquad, nDesiredSites, maxRangeFromPod));
     }
     else if (parser.tokens()[1] == "CONSTRUCT")
     {
         HAL_STREAM(" Found Token for: TaskConstructOperation\n");
-        pSquad->newOperation(new MachLogTaskConstructOperation(pSquad));
+        pSquad->newOperation(std::make_unique<MachLogTaskConstructOperation>(pSquad));
     }
     else if (parser.tokens()[1] == "ATTACK")
     {
@@ -989,7 +989,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         // AttackIn parameter is expressed in minutes so convert to seconds
         PhysRelativeTime attackIn = atof(parser.tokens()[3].c_str());
         attackIn *= 60.0;
-        MachLogTaskAttackOperation* pAttackOp = new MachLogTaskAttackOperation(pSquad, attackIn);
+        auto pAttackOp = std::make_unique<MachLogTaskAttackOperation>(pSquad, attackIn);
         for (std::size_t i = 3; i < parser.tokens().size(); ++i)
         {
             HAL_STREAM(" processing token " << parser.tokens()[i] << std::endl);
@@ -1050,7 +1050,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
                 pAttackOp->supressProximityCheck();
             }
         }
-        pSquad->newOperation(pAttackOp);
+        pSquad->newOperation(std::move(pAttackOp));
     }
     else if (parser.tokens()[1] == "DROP_MINES")
     {
@@ -1061,18 +1061,21 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
         MATHEX_SCALAR maxRange = atof(parser.tokens()[3].c_str());
         if (parser.tokens()[4] == "POD")
         {
-            MachLogTaskDropLandMineOperation* pDropMinesOp
-                = new MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange);
-            pSquad->newOperation(pDropMinesOp);
+            auto pDropMinesOp
+                = std::make_unique<MachLogTaskDropLandMineOperation>(pSquad, minRange, maxRange);
+            pSquad->newOperation(std::move(pDropMinesOp));
         }
         else
         {
             ASSERT(parser.tokens().size() == 7, "Start coordinate token assumed but wrong number of tokens\n");
             MATHEX_SCALAR startX = atof(parser.tokens()[5].c_str());
             MATHEX_SCALAR startY = atof(parser.tokens()[6].c_str());
-            MachLogTaskDropLandMineOperation* pDropMinesOp
-                = new MachLogTaskDropLandMineOperation(pSquad, minRange, maxRange, MexPoint2d(startX, startY));
-            pSquad->newOperation(pDropMinesOp);
+            auto pDropMinesOp = std::make_unique<MachLogTaskDropLandMineOperation>(
+                pSquad,
+                minRange,
+                maxRange,
+                MexPoint2d(startX, startY));
+            pSquad->newOperation(std::move(pDropMinesOp));
         }
     }
     else if (parser.tokens()[1] == "PATROL")
@@ -1098,7 +1101,7 @@ void MachLogAIController::createCorrectSquadronOperation(MachLogSquadron* pSquad
             point.y(atof(parser.tokens()[i + 1].c_str()));
             path.push_back(point);
         }
-        pSquad->newOperation(new MachLogTaskPatrolOperation(pSquad, path, attackIn));
+        pSquad->newOperation(std::make_unique<MachLogTaskPatrolOperation>(pSquad, path, attackIn));
     }
 }
 

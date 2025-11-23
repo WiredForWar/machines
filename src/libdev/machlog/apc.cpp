@@ -163,7 +163,7 @@ void MachLogAPC::specialAPCHitStuff()
         // damage critical - evacuate craft! But only trigger new op if we're not already doing
         // a deploy in this area.
         if (! isDeploying() || ! nearDropzone())
-            newOperation(new MachLogDeployAPCOperation(this, position()));
+            newOperation(std::make_unique<MachLogDeployAPCOperation>(this, position()));
     }
 }
 
@@ -447,7 +447,7 @@ void MachLogAPC::turnRearToFaceNearestIncoming()
            + MexRadians(Mathex::PI));
     //  (Add 180 degrees as you want to point your arse towards it).
 
-    newOperation(new MachLogTurnAnimation(this, newAngle));
+    newOperation(std::make_unique<MachLogTurnAnimation>(this, newAngle));
 }
 
 //////////////////////////////////////////////////////////////////////////////////

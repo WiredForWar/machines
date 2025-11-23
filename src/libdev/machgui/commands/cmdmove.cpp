@@ -177,12 +177,12 @@ bool MachGuiMoveCommand::applySimpleMove(MachActor* pActor, std::string*)
     if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, &pActor->asMachine(), points_, &path))
     {
         // Construct a move operation
-        MachLogMoveToOperation* pOp
-            = new MachLogMoveToOperation(&pActor->asMachine(), path, commandId(), pathFindingPriority());
+        auto op
+            = std::make_unique<MachLogMoveToOperation>(&pActor->asMachine(), path, commandId(), pathFindingPriority());
 
         // Give it to the actor
         //  The operation is now given to the actor by the group move code
-        add(&pActor->asMachine(), pOp);
+        add(&pActor->asMachine(), std::move(op));
 
         ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
         pActor->asMachine().manualCommandIssued();
@@ -234,11 +234,14 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, std::string* pRea
     if (result)
     {
         // Yes, we can enter the building
-        MachLogEnterBuildingOperation* pEnterOp
-            = new MachLogEnterBuildingOperation(&machine, pConstruction_, pStation, pathFindingPriority());
+        auto op = std::make_unique<MachLogEnterBuildingOperation>(
+            &machine,
+            pConstruction_,
+            pStation,
+            pathFindingPriority());
 
         // Give it to the actor
-        pActor->newOperation(pEnterOp);
+        pActor->newOperation(std::move(op));
 
         machine.manualCommandIssued();
 
@@ -287,10 +290,10 @@ bool MachGuiMoveCommand::applyEnterAPC(MachActor* pActor, std::string*)
     if (couldEnterAPC(*pActor, *pAPC_))
     {
         // Construct an enter APC operation
-        MachLogEnterAPCOperation* pOp = new MachLogEnterAPCOperation(&machine, pAPC_, pathFindingPriority());
+        auto op = std::make_unique<MachLogEnterAPCOperation>(&machine, pAPC_, pathFindingPriority());
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
 
         machine.manualCommandIssued();
 
@@ -316,13 +319,12 @@ bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, std::string*)
     if (pActor != _STATIC_CAST(MachActor*, pMachine_))
     {
         // Construct a follow operation
-        MachLogFollowOperation* pOp
-            = new MachLogFollowOperation(&pActor->asMachine(), pMachine_, MexPoint2d(0, 0), pathFindingPriority());
+        auto op = std::make_unique<MachLogFollowOperation>(&pActor->asMachine(), pMachine_, MexPoint2d(0, 0), pathFindingPriority());
 
         // Give it to the actor
 
         // The operation is now given to the actor by the group move code
-        add(&pActor->asMachine(), pOp);
+        add(&pActor->asMachine(), std::move(op));
 
         ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
         pActor->asMachine().manualCommandIssued();
@@ -516,14 +518,13 @@ bool MachGuiMoveCommand::doAdminApply(MachLogAdministrator* pAdministrator, std:
     if (convertPointsToValidPoints(IGNORE_SELECTED_ACTOR_OBSTACLES, &pAdministrator->asMachine(), points_, &path))
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminMoveToOperation* pOp
-            = new MachLogAdminMoveToOperation(pAdministrator, path, pathFindingPriority());
+        auto op = std::make_unique<MachLogAdminMoveToOperation>(pAdministrator, path, pathFindingPriority());
 
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pAdministrator, MachineVoiceMailEventID::MOVING);
 
         // The operation is now given to the actor by the group move code
-        add(pAdministrator, pOp);
+        add(pAdministrator, std::move(op));
 
         ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
         pAdministrator->squadron()->manualCommandIssuedToSquadron();

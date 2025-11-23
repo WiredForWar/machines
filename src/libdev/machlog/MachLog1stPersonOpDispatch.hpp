@@ -41,7 +41,7 @@ public:
             }
 
             // DON'T PANIC! MachLogStrategy is responsible for Operation disposal.
-            machine->strategy().newOperation(new Operation(machine, args...));
+            machine->strategy().newOperation(std::make_unique<Operation>(machine, args...));
         }
     }
 

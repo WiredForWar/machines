@@ -457,7 +457,7 @@ PhysRelativeTime MachLogMoveAndTurnOperation::doUpdate()
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, endFacing_);
         if (! withinEpsilonOf(angleToTurnToFace(*pActor_, endFacing_).asScalar(), 0.0))
-            subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
+            subOperation(pActor_, std::make_unique<MachLogTurnAnimation>(pActor_, turnBy));
     }
     return interval;
 }

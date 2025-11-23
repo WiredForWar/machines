@@ -232,19 +232,19 @@ const MachLogStrategy& MachActor::strategy() const
     return *pStrategy_;
 }
 
-void MachActor::newOperation(MachLogOperation* pNewOperation)
+void MachActor::newOperation(std::unique_ptr<MachLogOperation> operation)
 {
     CB_DEPIMPL(MachLogStrategy*, pStrategy_);
 
     // no machine should EVER be being issued an operation if inside an APC.
     PRE(! objectIsMachine() || ! asMachine().insideAPC());
 
-    pStrategy_->newOperation(pNewOperation, false);
+    MachLogOperation::OperationType type = operation->operationType();
+    pStrategy_->newOperation(std::move(operation), false);
 
     // Ensure we get an update as soon as possible
     nextUpdateTime(SimManager::instance().currentTime());
     // we can do better than ensure a callback soon - we can duplicate a callback ourseleves
-    MachLogOperation::OperationType type = pNewOperation->operationType();
     switch (type)
     {
         case MachLogOperation::MOVE_TO_OPERATION:
@@ -305,7 +305,7 @@ void MachActor::beHit(
         if (hp() <= 0)
         {
             strategy().beInterrupted();
-            strategy().newOperation(new MachLogBeDestroyedAnimation(this));
+            strategy().newOperation(std::make_unique<MachLogBeDestroyedAnimation>(this));
             isDead(true);
 
             if (selfDestructActive_)

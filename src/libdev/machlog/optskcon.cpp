@@ -305,14 +305,14 @@ void MachLogTaskConstructOperation::issueConstructOperation(MachLogConstruction*
             MachLogConstructor* pConstructor = &(*i)->asConstructor();
             if (pConstructor->strategy().currentOperationType() != MachLogOperation::CONSTRUCT_OPERATION)
             {
-                pConstructor->newOperation(new MachLogConstructOperation(pConstructor, pConstruction));
+                pConstructor->newOperation(std::make_unique<MachLogConstructOperation>(pConstructor, pConstruction));
             }
         }
 }
 
 void MachLogTaskConstructOperation::issueAdminConstructOperation(MachLogConstruction* pConstruction)
 {
-    pActor_->commander().newOperation(new MachLogAdminConstructOperation(&pActor_->commander(), pConstruction));
+    pActor_->commander().newOperation(std::make_unique<MachLogAdminConstructOperation>(&pActor_->commander(), pConstruction));
 }
 
 void perWrite(PerOstream& ostr, const MachLogTaskConstructOperation& op)

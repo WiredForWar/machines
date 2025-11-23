@@ -9,6 +9,8 @@
 #include "base/base.hpp"
 #include "machlog/operatio.hpp"
 
+#include <memory>
+
 /* //////////////////////////////////////////////////////////////// */
 
 // forward refs
@@ -40,12 +42,11 @@ public:
     PhysRelativeTime update(const PhysRelativeTime& maxCPUTime);
     // PRE( not isFinished() );
 
-    void newOperation(MachLogOperation* pNewOperation, bool subOperation = false);
+    void newOperation(std::unique_ptr<MachLogOperation> operation, bool subOperation = false);
 
     // this returns false if no follow op was on the queue, or only a follow op which already had
     // a suboperation.
-    // IT IS THE CLIENT'S RESPONSIBILITY TO DELETE AN OPERATION WHICH FAILED TO BE ADDED TO THE QUEUE.
-    bool addOperationAsSubOperationToFollowOperation(MachLogOperation* pNewOperation);
+    bool addOperationAsSubOperationToFollowOperation(std::unique_ptr<MachLogOperation> operation);
 
     // these return the current "boss" operation at the front of the queue
     const std::string& currentOperationTypeAsString() const;
@@ -106,7 +107,7 @@ private:
     // from the stored operations, updates the pointer to point to this operation if found, and returns the found
     // status. If you were to call removeAllOperations() after extracting an operation, it would NOT be deleted.
     // Responsibility for deletion becomes the client's.
-    bool extractTopOperation(MachLogOperation** ppOldTopOp);
+    std::unique_ptr<MachLogOperation> extractTopOperation();
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogStrategy& s);
 

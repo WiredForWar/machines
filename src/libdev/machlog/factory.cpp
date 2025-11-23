@@ -943,7 +943,7 @@ void MachLogFactory::moveToDeployPoint(
     MATHEX_SCALAR tolerance = 10;
     if (deployPointIsSet_)
         tolerance = 25;
-    pMach->newOperation(new MachLogMoveToOperation(pMach, dest, false, tolerance));
+    pMach->newOperation(std::make_unique<MachLogMoveToOperation>(pMach, dest, false, tolerance));
 }
 
 bool MachLogFactory::buildMachineUniqueWithSquadIndex(

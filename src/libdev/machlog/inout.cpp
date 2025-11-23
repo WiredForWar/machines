@@ -386,7 +386,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                     path.push_back(dest4);
                     path.push_back(dest5);
 
-                    subOperation(pActor_, new MachLogMoveToOperation(pActor_, path, false));
+                    subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, path, false));
                     callBackInterval = 5.0;
                     status_ = GOING_TO_STATION;
                 }
@@ -399,7 +399,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                     {
                         subOperation(
                             pActor_,
-                            new MachLogMoveToOperation(pActor_, point2mForwardInDirectionFaced, false));
+                            std::make_unique<MachLogMoveToOperation>(pActor_, point2mForwardInDirectionFaced, false));
                         callBackInterval = 2.0;
                         status_ = GOING_TO_INTERIOR;
                     }
@@ -459,7 +459,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                     // Post move op to internal point
                     MexPoint2d dest2 = pConstruction_->entranceInternalPoint(0);
                     MexPoint3d dest3(dest2.x(), dest2.y(), 0);
-                    subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest3, false));
+                    subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, dest3, false));
                     status_ = GOING_TO_INTERNAL_POINT;
                     callBackInterval = 3.0;
                 }
@@ -519,7 +519,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                             // Post move subop to external point
                             MexPoint2d dest2 = pConstruction_->entranceExternalPoint(0);
                             MexPoint3d dest3(dest2.x(), dest2.y(), 0);
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest3, false));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, dest3, false));
 
                             status_ = GOING_TO_EXTERNAL_POINT;
                             callBackInterval = 5.0;
@@ -552,29 +552,29 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                         if (MachLogPlanet::instance()
                                 .configSpace()
                                 .findSpace(actorPos, externalLoc, 8, 15, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
                         else if (MachLogPlanet::instance()
                                      .configSpace()
                                      .findSpace(actorPos, externalLoc, 8, 25, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
                         else if (MachLogPlanet::instance()
                                      .configSpace()
                                      .findSpace(actorPos, externalLoc, 8, 35, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
 
                         //  Try the random findSpace variant
                         else if (MachLogPlanet::instance()
                                      .configSpace()
                                      .findSpace(externalLoc, 8, 15, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
                         else if (MachLogPlanet::instance()
                                      .configSpace()
                                      .findSpace(externalLoc, 8, 25, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
                         else if (MachLogPlanet::instance()
                                      .configSpace()
                                      .findSpace(externalLoc, 8, 35, pActor_->obstacleFlags(), &newDest))
-                            subOperation(pActor_, new MachLogMoveToOperation(pActor_, newDest));
+                            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, newDest));
                     }
 
                     callBackInterval = 5.0;
@@ -1023,7 +1023,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
 
                     path.push_back(dest2);
 
-                    subOperation(pActor_, new MachLogMoveToOperation(pActor_, path, false));
+                    subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, path, false));
 
                     // If the machine has a station locked, unlock it
                     if (pActor_->hasStationLocked())
@@ -1067,7 +1067,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
                     // post subop to move to external point
                     MexPoint2d dest2 = pConstruction_->entranceExternalPoint(0);
                     MexPoint3d dest3(dest2.x(), dest2.y(), 0);
-                    subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest3, false));
+                    subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, dest3, false));
 
                     status_ = GOING_TO_EXTERNAL_POINT;
                     callBackInterval = 2.0;
@@ -1100,7 +1100,7 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
                         mSeq.highClearance(),
                         &destination))
                 {
-                    subOperation(pActor_, new MachLogMoveToOperation(pActor_, destination, false));
+                    subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, destination, false));
 
                     status_ = GOING_CLEAR;
                     callBackInterval = 2.0;

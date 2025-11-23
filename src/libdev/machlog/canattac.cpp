@@ -350,7 +350,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                     else
                     {
                         pActor->strategy().newOperation(
-                            new MachLogAttackOperation(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE),
+                            std::make_unique<MachLogAttackOperation>(pActor, pMach, MachLogAttackOperation::TERMINATE_ON_CHANGE),
                             true);
                     }
 
@@ -419,13 +419,13 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
                     if (pMach->id() != currentTarget().id())
                     {
                         currentTarget(pMach);
-                        pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach), true);
+                        pActor->strategy().newOperation(std::make_unique<MachLogPodAttackOperation>(pActor, pMach), true);
                     }
                 }
                 else
                 {
                     currentTarget(pMach);
-                    pActor->strategy().newOperation(new MachLogPodAttackOperation(pActor, pMach), true);
+                    pActor->strategy().newOperation(std::make_unique<MachLogPodAttackOperation>(pActor, pMach), true);
                 }
             }
         }
@@ -567,7 +567,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
             HAL_STREAM(" retargetting\n");
             currentTarget(pMach);
             pActor->strategy().newOperation(
-                new MachLogMissileEmplacementAttackOperation(
+                std::make_unique<MachLogMissileEmplacementAttackOperation>(
                     pActor,
                     pMach,
                     MachLogAttackOperation::TERMINATE_ON_CHANGE),

@@ -37,7 +37,7 @@ private:
 
     // stores the topmost op the machine was doing before
     // all this evade nonsense was started
-    MachLogOperation* pCachedOperation_;
+    std::unique_ptr<MachLogOperation> pCachedOperation_;
 
     MachLogEvadeOperation::EvadeOpType currentEvadeOpType_;
 

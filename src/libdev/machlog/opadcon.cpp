@@ -159,7 +159,7 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
             if ((*i)->objectType() == MachLog::RESOURCE_CARRIER)
                 MachLogResourceCarrier::assignResourceCarrierTask(&(*i)->asResourceCarrier());
             if ((*i)->objectType() == MachLog::AGGRESSOR || (*i)->objectType() == MachLog::ADMINISTRATOR)
-                (*i)->newOperation(new MachLogFollowOperation(
+                (*i)->newOperation(std::make_unique<MachLogFollowOperation>(
                     (*i),
                     constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
                     MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));
@@ -169,7 +169,7 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
                 if (haveIncompleteConstruction)
                 {
                     ////HAL_STREAM("  Assigning construct operation to " << (*i)->id() << std::endl;)
-                    pConstructor->newOperation(new MachLogConstructOperation(pConstructor, pConstruction));
+                    pConstructor->newOperation(std::make_unique<MachLogConstructOperation>(pConstructor, pConstruction));
                     taskedConstructor = true;
                 }
                 else
@@ -184,7 +184,7 @@ PhysRelativeTime MachLogAdminConstructOperation::doUpdate()
     if (!pSubOperation())
         subOperation(
             pActor_,
-            new MachLogFollowOperation(
+            std::make_unique<MachLogFollowOperation>(
                 pActor_,
                 constructors[MachPhysRandom::randomInt(0, (int)constructors.size())],
                 MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20))));

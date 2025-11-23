@@ -146,9 +146,11 @@ bool MachGuiRepairCommand::doApply(MachActor* pActor, std::string*)
     PRE(hadFinalPick_);
 
     // Create a superconstruct(repair) operation for the constructor
-    MachLogSuperConstructOperation* pOp = new 
-        MachLogSuperConstructOperation(&pActor->asConstructor(), constructions_, MachLogOperation::REPAIR_OPERATION);
-    pActor->newOperation(pOp);
+    auto op = std::make_unique<MachLogSuperConstructOperation>(
+        &pActor->asConstructor(),
+        constructions_,
+        MachLogOperation::REPAIR_OPERATION);
+    pActor->newOperation(std::move(op));
 
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
@@ -199,10 +201,12 @@ bool MachGuiRepairCommand::doAdminApply(MachLogAdministrator* pAdministrator, st
     PRE(canAdminApply());
 
     // Create an admin superconstruct(repair) operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp
-        = new MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::REPAIR_OPERATION);
+    auto op = std::make_unique<MachLogAdminSuperConstructOperation>(
+        pAdministrator,
+        constructions_,
+        MachLogOperation::REPAIR_OPERATION);
 
-    pAdministrator->newOperation(pOp);
+    pAdministrator->newOperation(std::move(op));
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
     pAdministrator->squadron()->manualCommandIssuedToSquadron();
 

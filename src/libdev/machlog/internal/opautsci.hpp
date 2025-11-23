@@ -18,6 +18,8 @@
 
 #include "phys/phys.hpp"
 
+#include <memory>
+
 // forward declarations
 
 class MachLogResourceCarrier;
@@ -50,7 +52,7 @@ private:
 
     // stores the topmost op the machine was doing before
     // all this AutoScavenge nonsense was started
-    MachLogOperation* pCachedOperation_;
+    std::unique_ptr<MachLogOperation> pCachedOperation_;
 };
 
 PER_DECLARE_PERSISTENT(MachLogAutoScavengeOperationImpl);

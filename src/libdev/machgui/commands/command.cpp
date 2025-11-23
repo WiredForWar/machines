@@ -595,9 +595,9 @@ void MachGuiCommand::cursorInFogOfWar(bool inFOW)
     inFogOfWarFlag() = inFOW;
 }
 
-void MachGuiCommand::add(MachLogMachine* pMachine, MachLogOperation* pOperation)
+void MachGuiCommand::add(MachLogMachine* pMachine, std::unique_ptr<MachLogOperation> operation)
 {
-    pImpl_->add(MachLogMachineOperation(pMachine, pOperation));
+    pImpl_->add(MachLogMachineOperation(pMachine, operation.release()));
 }
 
 PhysPathFindingPriority MachGuiCommand::pathFindingPriority() const

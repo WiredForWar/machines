@@ -356,7 +356,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                 if (pActor_->canEnterConstructionNow(*pTargetBuilding) && ! pActor_->isStandingGround()
                     && ! targetMachine.isLeavingBuilding()) // don't bother chasing inside if the target is already
                                                                // coming out.
-                    subOperation(pActor_, new MachLogEnterBuildingOperation(pActor_, pTargetBuilding, nullptr));
+                    subOperation(pActor_, std::make_unique<MachLogEnterBuildingOperation>(pActor_, pTargetBuilding, nullptr));
                 else
                     targetBehindCover_ = true;
             }
@@ -371,7 +371,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
                     turnToFaceTarget();
                 }
                 else
-                    subOperation(pActor_, new MachLogLeaveBuildingOperation(pActor_, pAttackerBuilding, nullptr));
+                    subOperation(pActor_, std::make_unique<MachLogLeaveBuildingOperation>(pActor_, pAttackerBuilding, nullptr));
             }
             return 1.0;
         }
@@ -771,7 +771,7 @@ PhysRelativeTime MachLogAttackOperation::turnToFaceTarget()
     if (canTurn)
     {
         MexRadians turnBy = angleToTurnToFace(*pActor_, directObject().position());
-        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnBy));
+        subOperation(pActor_, std::make_unique<MachLogTurnAnimation>(pActor_, turnBy));
     }
 
     HAL_STREAM("MachLogAttackOperation::turnToFaceTarget DONE\n");

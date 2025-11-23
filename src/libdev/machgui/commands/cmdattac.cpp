@@ -137,13 +137,16 @@ bool MachGuiAttackCommand::applyMove(MachActor* pActor, std::string*)
 
         if (valid)
         {
-            MachLogMoveToOperation* pOp
-                = new MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId(), pathFindingPriority());
+            auto op = std::make_unique<MachLogMoveToOperation>(
+                &pActor->asMachine(),
+                validPoint,
+                commandId(),
+                pathFindingPriority());
 
             // Give it to the actor
 
             // The operation is now given to the actor by the group move code
-            add(&pActor->asMachine(), pOp);
+            add(&pActor->asMachine(), std::move(op));
 
             pActor->asMachine().manualCommandIssued();
 
@@ -165,15 +168,12 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
 
     if (canDo)
     {
-        // Construct appropriate type of operation
-        MachLogOperation* pOp;
-
         switch (pActor->objectType())
         {
             case MachLog::AGGRESSOR:
             case MachLog::ADMINISTRATOR:
                 {
-                    pOp = new MachLogAttackOperation(
+                    auto op = std::make_unique<MachLogAttackOperation>(
                         &pActor->asMachine(),
                         pDirectObject_,
                         commandId(),
@@ -189,7 +189,7 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
                     pActor->asMachine().manualCommandIssued();
 
                     // The operation is now given to the actor by the group move code
-                    add(&pActor->asMachine(), pOp);
+                    add(&pActor->asMachine(), std::move(op));
 
                     break;
                 }
@@ -205,9 +205,9 @@ bool MachGuiAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
                     // CAACT could wipe it off before it even has a chance to get to doStart
                     missileEmp.suppressAttackingUrges(3.0);
 
-                    pOp = new MachLogMissileEmplacementAttackOperation(&missileEmp, pDirectObject_);
+                    auto op = std::make_unique<MachLogMissileEmplacementAttackOperation>(&missileEmp, pDirectObject_);
 
-                    missileEmp.newOperation(pOp);
+                    missileEmp.newOperation(std::move(op));
 
                     break;
                 }
@@ -331,11 +331,10 @@ bool MachGuiAttackCommand::applyAdminAttackObject(MachLogAdministrator* pAdminis
     if (canDo)
     {
         // Create an admin Attack operation for the administrator
-        MachLogAdminAttackOperation* pOp
-            = new MachLogAdminAttackOperation(pAdministrator, pDirectObject_, pathFindingPriority());
+        auto op = std::make_unique<MachLogAdminAttackOperation>(pAdministrator, pDirectObject_, pathFindingPriority());
 
         // The operation is now given to the actor by the group move code
-        add(pAdministrator, pOp);
+        add(pAdministrator, std::move(op));
 
         ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
         pAdministrator->squadron()->manualCommandIssuedToSquadron();
@@ -380,14 +379,13 @@ bool MachGuiAttackCommand::applyAdminMove(MachLogAdministrator* pAdministrator, 
     if (valid)
     {
         // Create an admin Move operation for the administrator
-        MachLogAdminMoveToOperation* pOp
-            = new MachLogAdminMoveToOperation(pAdministrator, validPoint, pathFindingPriority());
+        auto op = std::make_unique<MachLogAdminMoveToOperation>(pAdministrator, validPoint, pathFindingPriority());
 
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pAdministrator, MachineVoiceMailEventID::MOVING);
 
         // The operation is now given to the actor by the group move code
-        add(pAdministrator, pOp);
+        add(pAdministrator, std::move(op));
 
         ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
         pAdministrator->squadron()->manualCommandIssuedToSquadron();

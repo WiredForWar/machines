@@ -48,7 +48,7 @@ protected:
 
     bool doBeInterrupted() override;
 
-    void storeOldFirstOperation(MachLogOperation*);
+    void storeOldFirstOperation(std::unique_ptr<MachLogOperation> operation);
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData) override;
 

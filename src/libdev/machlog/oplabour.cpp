@@ -203,7 +203,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
             }
 
             pActor_->motionSeq().stop();
-            subOperation(pActor_, new MachLogMoveAndTurnOperation(pActor_, approachPosition, constructionPosition));
+            subOperation(pActor_, std::make_unique<MachLogMoveAndTurnOperation>(pActor_, approachPosition, constructionPosition));
 
             return 0.0;
         }
@@ -253,7 +253,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                         MexRadians turnAngle
                             = MachLogSpacialManipulation::angleToTurnToFace(*pActor_, constructionCentre).asScalar();
 
-                        subOperation(pActor_, new MachLogTurnAnimation(pActor_, turnAngle));
+                        subOperation(pActor_, std::make_unique<MachLogTurnAnimation>(pActor_, turnAngle));
                         interval = 0.5;
                     }
                 }
@@ -290,7 +290,7 @@ PhysRelativeTime MachLogLabourOperation::doUpdate()
                         pActor_->motionSeq().stop();
                         subOperation(
                             pActor_,
-                            new MachLogMoveAndTurnOperation(pActor_, actualBuildPosition, constructionPosition));
+                            std::make_unique<MachLogMoveAndTurnOperation>(pActor_, actualBuildPosition, constructionPosition));
                     }
                 }
             }

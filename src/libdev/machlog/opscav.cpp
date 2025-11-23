@@ -208,7 +208,7 @@ PhysRelativeTime MachLogScavengeOperation::doUpdate()
             interval = 2.0;
         else
         {
-            subOperation(pActor_, new MachLogMoveToOperation(pActor_, dest_));
+            subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, dest_));
             TEST_INVARIANT;
             interval = 2.0;
         }

@@ -23,7 +23,7 @@ public:
     static void
     processClump(const MachLogGroupMoverUtility::Clump& clump, const MachLogMachineOperations& machineOperations);
 
-    static MachLogOperation*
+    static std::unique_ptr<MachLogOperation>
     pOperation(const MachLogMachine* pMachine, const MachLogMachineOperations& machineOperations);
 
 private:
@@ -81,7 +81,7 @@ void MachLogGroupMoverInternal::processClump(
     for (MachLogGroupMoverUtility::Machines::const_iterator i = machines.begin(); i != machines.end(); ++i)
     {
         MachLogMachine* pMachine = (*i);
-        MachLogOperation* pOperation = MachLogGroupMoverInternal::pOperation(pMachine, machineOperations);
+        std::unique_ptr<MachLogOperation> pOperation = MachLogGroupMoverInternal::pOperation(pMachine, machineOperations);
 
         MexVec2 offset(clump.centroid(), pMachine->position());
 
@@ -91,21 +91,20 @@ void MachLogGroupMoverInternal::processClump(
         // We must make sure that we don't give the new operation to the
         // machine until after we have set up the group move information.
 
-        pMachine->newOperation(pOperation);
+        pMachine->newOperation(std::move(pOperation));
     }
 }
 
-MachLogOperation*
-MachLogGroupMoverInternal::pOperation(const MachLogMachine* pMachine, const MachLogMachineOperations& machineOperations)
+std::unique_ptr<MachLogOperation> MachLogGroupMoverInternal::pOperation(const MachLogMachine* pMachine, const MachLogMachineOperations& machineOperations)
 {
-    MachLogOperation* result = nullptr;
+    std::unique_ptr<MachLogOperation> result;
 
     for (MachLogMachineOperations::const_iterator i = machineOperations.begin();
          i != machineOperations.end() && result == nullptr;
          ++i)
     {
         if (pMachine == (*i).pMachine())
-            result = (*i).pOperation();
+            result.reset((*i).pOperation());
     }
 
     POST(result != nullptr);

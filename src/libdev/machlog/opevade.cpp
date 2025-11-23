@@ -46,7 +46,7 @@ PER_DEFINE_PERSISTENT(MachLogEvadeOperation);
     PRE(pImpl_);                                                                                                       \
     CB_DEPIMPL(MachLogMachine*, pActor_);                                                                              \
     CB_DEPIMPL(bool, finished_);                                                                                       \
-    CB_DEPIMPL(MachLogOperation*, pCachedOperation_);                                                                  \
+    CB_DEPIMPL_AUTO(pCachedOperation_);                                                                                \
     CB_DEPIMPL(EvadeOpType, currentEvadeOpType_);                                                                      \
     CB_DEPIMPL(PhysAbsoluteTime, lastTimeIHadStrongThreat_);
 
@@ -70,21 +70,16 @@ MachLogEvadeOperation::~MachLogEvadeOperation()
 
     pActor_->evading(false);
 
-    // if we still have a pointer to the cached op, we must be terminating through circumstances where that
-    // that op has NOT been restored to the strategy. We must delete it ourselves to prevent a memory leak.
-    if (pCachedOperation_)
-        delete pCachedOperation_;
-
     delete pImpl_;
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
-void MachLogEvadeOperation::storeOldFirstOperation(MachLogOperation* pOldOp)
+void MachLogEvadeOperation::storeOldFirstOperation(std::unique_ptr<MachLogOperation> operation)
 {
     CB_MachLogEvadeOperation_DEPIMPL();
 
-    pCachedOperation_ = pOldOp;
+    pCachedOperation_ = std::move(operation);
     POST(pCachedOperation_ != nullptr);
 }
 
@@ -162,8 +157,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
         || (!(strongThreats.empty()) && pActor_->notAfraidOfStrongThreats(strongThreats)))
     {
         // restore previous first operation as first (and only) operation on the strategy queue.
-        pActor_->strategy().newOperation(pCachedOperation_, false);
-        pCachedOperation_ = nullptr; // so we don't try and delete it in the destructor
+        pActor_->strategy().newOperation(std::move(pCachedOperation_), false);
         finished_ = true;
         return 0.0;
     }
@@ -282,7 +276,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
     // now create a subop dependent on the results of our priority search.
 
-    MachLogOperation* pNewSubOp;
+    std::unique_ptr<MachLogOperation> pNewSubOp;
 
     switch (currentEvadeOpType_)
     {
@@ -293,7 +287,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                     "MachLogEvadeOperation::doUpdate : We have an unexpected NULL pointer for pGarrison and/or "
                     "pStation.");
 
-                pNewSubOp = new MachLogEnterBuildingOperation(pActor_, pGarrison, pStation);
+                pNewSubOp = std::make_unique<MachLogEnterBuildingOperation>(pActor_, pGarrison, pStation);
                 break;
             }
         case SEEK_AGGRESSIVE:
@@ -307,7 +301,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
                 // set up a special follow op which will terminate when the machine is sufficiently close.
 
-                pNewSubOp = new MachLogFollowOperation(
+                pNewSubOp = std::make_unique<MachLogFollowOperation>(
                     pActor_,
                     &(pEvadeDestinationActor->asMachine()),
                     MexPoint2d(MachPhysRandom::randomDouble(-20, 20), MachPhysRandom::randomDouble(-20, 20)),
@@ -385,7 +379,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = new MachLogMoveToOperation(pActor_, dest);
+                pNewSubOp = std::make_unique<MachLogMoveToOperation>(pActor_, dest);
 
                 break;
             }
@@ -418,7 +412,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = new MachLogMoveToOperation(pActor_, dest, true, 10.0); // 10m tolerance
+                pNewSubOp = std::make_unique<MachLogMoveToOperation>(pActor_, dest, true, 10.0); // 10m tolerance
 
                 break;
             }
@@ -476,11 +470,11 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
                         finished = true;
                 }
 
-                pNewSubOp = new MachLogMoveToOperation(pActor_, dest, true, 10.0); // 10m tolerance
+                pNewSubOp = std::make_unique<MachLogMoveToOperation>(pActor_, dest, true, 10.0); // 10m tolerance
             }
     }
 
-    subOperation(pActor_, pNewSubOp);
+    subOperation(pActor_, std::move(pNewSubOp));
 
     return interval; //!! Have to alter interval if we have a subop. Probably.
 }

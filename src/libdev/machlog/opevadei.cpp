@@ -20,7 +20,6 @@ MachLogEvadeOperationImpl::MachLogEvadeOperationImpl(MachLogMachine* pActor)
     : pActor_(pActor)
     , finished_(false)
     , currentEvadeOpType_(MachLogEvadeOperation::SEEK_SAFER_GROUND)
-    , pCachedOperation_(nullptr)
 {
     lastTimeIHadStrongThreat_ = SimManager::instance().currentTime();
     TEST_INVARIANT;
@@ -49,7 +48,7 @@ void perWrite(PerOstream& ostr, const MachLogEvadeOperationImpl& evadeOpImpl)
 {
     ostr << evadeOpImpl.pActor_;
     ostr << evadeOpImpl.finished_;
-    ostr << evadeOpImpl.pCachedOperation_;
+    ostr << evadeOpImpl.pCachedOperation_.get();
     ostr << evadeOpImpl.currentEvadeOpType_;
     ostr << evadeOpImpl.lastTimeIHadStrongThreat_;
 }
@@ -58,7 +57,9 @@ void perRead(PerIstream& istr, MachLogEvadeOperationImpl& evadeOpImpl)
 {
     istr >> evadeOpImpl.pActor_;
     istr >> evadeOpImpl.finished_;
-    istr >> evadeOpImpl.pCachedOperation_;
+    MachLogOperation *operation{};
+    istr >> operation;
+    evadeOpImpl.pCachedOperation_.reset(operation);
     istr >> evadeOpImpl.currentEvadeOpType_;
     istr >> evadeOpImpl.lastTimeIHadStrongThreat_;
 }

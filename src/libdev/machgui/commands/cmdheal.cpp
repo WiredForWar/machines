@@ -121,10 +121,10 @@ bool MachGuiHealCommand::applyMove(MachActor* pActor, std::string*)
     if (valid)
     {
         // Construct a move operation
-        MachLogMoveToOperation* pOp = new MachLogMoveToOperation(&pActor->asMachine(), validPoint, commandId());
+        auto op = std::make_unique<MachLogMoveToOperation>(&pActor->asMachine(), validPoint, commandId());
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
 
         if (! hasPlayedVoiceMail())
         {
@@ -142,17 +142,14 @@ bool MachGuiHealCommand::applyHealObject(MachActor* pActor, std::string*)
     bool canDo = pActor != pDirectObject_;
     if (canDo)
     {
-        // Construct appropriate type of operation
-        MachLogOperation* pOp;
-
         ASSERT(
             pActor->objectType() == MachLog::ADMINISTRATOR && pActor->asAdministrator().hasHealingWeapon(),
             "Non-administrator or non-heal-capable administrator about to be issued heal op!");
 
-        pOp = new MachLogHealOperation(&pActor->asAdministrator(), pDirectObject_);
+        auto op = std::make_unique<MachLogHealOperation>(&pActor->asAdministrator(), pDirectObject_);
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
 
         if (! hasPlayedVoiceMail())
         {
@@ -239,8 +236,8 @@ bool MachGuiHealCommand::doAdminApply(MachLogAdministrator* pAdministrator, std:
     if (canDo)
     {
         // Create an admin Heal operation for the administrator
-        MachLogAdminHealOperation* pOp = new MachLogAdminHealOperation(pAdministrator, pDirectObject_);
-        pAdministrator->newOperation(pOp);
+        auto op = std::make_unique<MachLogAdminHealOperation>(pAdministrator, pDirectObject_);
+        pAdministrator->newOperation(std::move(op));
 
         MachActor* pFirstHealingMachine = nullptr;
 

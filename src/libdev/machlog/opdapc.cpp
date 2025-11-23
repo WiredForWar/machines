@@ -143,7 +143,7 @@ PhysRelativeTime MachLogDeployAPCOperation::doUpdate()
         MexPoint2d dropPosition2d = dest;
         if (apcPosition2d.sqrEuclidianDistance(dropPosition2d) > 100)
         {
-            subOperation(pAPC_, new MachLogMoveToOperation(pAPC_, dest));
+            subOperation(pAPC_, std::make_unique<MachLogMoveToOperation>(pAPC_, dest));
         }
         else
         {
@@ -233,7 +233,7 @@ void MachLogDeployAPCOperation::pushFurtherOut(MachLogMachine* pMachine, MATHEX_
 
     if (cs.findSpace(pMachine->position(), dest2d, pMachine->highClearence(), 2, pMachine->obstacleFlags(), &dest2d))
     {
-        pMachine->strategy().newOperation(new MachLogMoveToOperation(
+        pMachine->strategy().newOperation(std::make_unique<MachLogMoveToOperation>(
             pMachine,
             dest2d,
             false)); // Last param == false as no possibility of leaving a building during move

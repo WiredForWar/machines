@@ -146,12 +146,12 @@ void MachGuiDeconstructCommand::typeData(MachLog::ObjectType /*objectType*/, int
 bool MachGuiDeconstructCommand::doApply(MachActor* pActor, std::string*)
 {
     // Create a superconstruct operation for the constructor
-    MachLogSuperConstructOperation* pOp = new MachLogSuperConstructOperation(
+    auto op = std::make_unique<MachLogSuperConstructOperation>(
         &pActor->asConstructor(),
         constructions_,
         MachLogOperation::DECONSTRUCT_OPERATION);
 
-    pActor->newOperation(pOp);
+    pActor->newOperation(std::move(op));
 
     ASSERT(pActor->objectIsMachine(), "Hey! That actor should have been a machine!");
     pActor->asMachine().manualCommandIssued();
@@ -220,10 +220,12 @@ bool MachGuiDeconstructCommand::doAdminApply(MachLogAdministrator* pAdministrato
     ;
 
     // Create an admin superconstruct operation for the administrator
-    MachLogAdminSuperConstructOperation* pOp = new 
-        MachLogAdminSuperConstructOperation(pAdministrator, constructions_, MachLogOperation::DECONSTRUCT_OPERATION);
+    auto op = std::make_unique <MachLogAdminSuperConstructOperation>(
+                  pAdministrator,
+                  constructions_,
+                  MachLogOperation::DECONSTRUCT_OPERATION);
 
-    pAdministrator->newOperation(pOp);
+    pAdministrator->newOperation(std::move(op));
     ASSERT(pAdministrator->squadron(), "Administrator didn't have a squadron!");
     pAdministrator->squadron()->manualCommandIssuedToSquadron();
 

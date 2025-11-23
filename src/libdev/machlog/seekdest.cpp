@@ -274,7 +274,7 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
                 if (aggressor.canEnterConstructionNow(targetMachine.insideWhichBuilding()))
                 {
                     pActor_->motionSeq().stop();
-                    subOperation(&aggressor, new MachLogEnterBuildingOperation(&aggressor, &construction, nullptr));
+                    subOperation(&aggressor, std::make_unique<MachLogEnterBuildingOperation>(&aggressor, &construction, nullptr));
                 }
                 else
                 {
@@ -282,15 +282,15 @@ void MachLogSeekAndDestroyOperation::aggressorUpdateWithTarget(MachActor* pTarge
                     if (construction.race() != aggressor.race())
                     {
                         pActor_->motionSeq().stop();
-                        subOperation(&aggressor, new MachLogAttackOperation(&aggressor, &construction, commandId_));
+                        subOperation(&aggressor, std::make_unique<MachLogAttackOperation>(&aggressor, &construction, commandId_));
                     }
                 }
             }
             else
-                subOperation(&aggressor, new MachLogAttackOperation(&aggressor, pTarget, commandId_));
+                subOperation(&aggressor, std::make_unique<MachLogAttackOperation>(&aggressor, pTarget, commandId_));
         }
         else
-            subOperation(&aggressor, new MachLogAttackOperation(&aggressor, pTarget, commandId_));
+            subOperation(&aggressor, std::make_unique<MachLogAttackOperation>(&aggressor, pTarget, commandId_));
     }
 }
 
@@ -327,7 +327,7 @@ void MachLogSeekAndDestroyOperation::administratorUpdateWithTarget(MachActor* pT
 
     // administrator who leads the gang should be given a standard attack op
     if (! pSubOperation())
-        subOperation(&administrator, new MachLogAttackOperation(pActor_, pTarget, commandId_));
+        subOperation(&administrator, std::make_unique<MachLogAttackOperation>(pActor_, pTarget, commandId_));
 }
 
 int MachLogSeekAndDestroyOperation::issueOrderToSquadronMachine(
@@ -341,11 +341,11 @@ int MachLogSeekAndDestroyOperation::issueOrderToSquadronMachine(
         if (issueAttack)
         {
             pSquadronMachine->motionSeq().stop();
-            pSquadronMachine->newOperation(new MachLogAttackOperation(pSquadronMachine, pTarget, commandId_));
+            pSquadronMachine->newOperation(std::make_unique<MachLogAttackOperation>(pSquadronMachine, pTarget, commandId_));
         }
         else if (! pSquadronMachine->motionSeq().isFollowing())
         {
-            pSquadronMachine->newOperation(new MachLogFollowOperation(
+            pSquadronMachine->newOperation(std::make_unique<MachLogFollowOperation>(
                 pSquadronMachine,
                 pActor_,
                 MachLogConvoyOffsets::convoyOffset(MachLogConvoyOffsets::KILLER_CONVOY, convoyIndex, 20)));

@@ -136,10 +136,10 @@ bool MachGuiIonAttackCommand::applyAttackLocation(MachActor* pActor, std::string
     if (valid)
     {
         // Construct appropriate type of operation
-        MachLogOperation* pOp = new MachLogPodAttackOperation(&pActor->asPod(), validPoint);
+        auto op = std::make_unique<MachLogPodAttackOperation>(&pActor->asPod(), validPoint);
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
     }
 
     return true;
@@ -162,10 +162,10 @@ bool MachGuiIonAttackCommand::applyAttackObject(MachActor* pActor, std::string*)
             "A non-pod actor has somehow been allowed to initiate an ion-attack op.");
 
         // Construct appropriate type of operation
-        MachLogOperation* pOp = new MachLogPodAttackOperation(&pActor->asPod(), pDirectObject_);
+        auto op = std::make_unique<MachLogPodAttackOperation>(&pActor->asPod(), pDirectObject_);
 
         // Give it to the actor
-        pActor->newOperation(pOp);
+        pActor->newOperation(std::move(op));
     }
 
     return canDo;

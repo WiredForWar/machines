@@ -18,6 +18,8 @@
 
 #include "phys/phys.hpp"
 
+#include <memory>
+
 // forward declarations
 
 class MachLogMachine;
@@ -48,7 +50,7 @@ private:
 
     // stores the topmost op the machine was doing before
     // all this counterattack nonsense was started
-    MachLogOperation* pCachedOperation_;
+    std::unique_ptr<MachLogOperation> pCachedOperation_;
 
     PhysAbsoluteTime lastTimeTargetWasntEvading_;
 
