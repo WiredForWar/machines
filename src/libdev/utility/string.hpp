@@ -23,4 +23,6 @@ std::string join(const SeqContainer& container, std::string_view sep)
 
 std::vector<std::string_view> split(std::string_view path, char delimiter);
 
+void replaceAll(std::string *str, std::string_view before, std::string_view after);
+
 } // namespace Utils

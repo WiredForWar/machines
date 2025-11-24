@@ -45,6 +45,17 @@ std::vector<std::string_view> split(std::string_view path, char delimiter)
     return pathComponents;
 }
 
+void replaceAll(std::string* str, std::string_view before, std::string_view after)
+{
+    std::size_t pos = str->find(before);
+    while (pos != std::string::npos)
+    {
+        str->replace(pos, before.size(), after);
+        // Get the next occurrence from the end of the replaced section
+        pos = str->find(before, pos + after.size());
+    }
+}
+
 namespace
 {
 
