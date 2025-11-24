@@ -28,6 +28,7 @@
 #include "machgui/ddrawdrop.hpp"
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
+#include "machgui/InputRegistry.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
@@ -155,6 +156,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const MachGuiOptionsLayout::CheckBoxInfo& reverseKeys = screenLayout.checkBoxInfo(4);
     const MachGuiOptionsLayout::CheckBoxInfo& reverseMouse = screenLayout.checkBoxInfo(5);
     const MachGuiOptionsLayout::CheckBoxInfo& grabMouse = screenLayout.checkBoxInfo(6);
+    const MachGuiOptionsLayout::CheckBoxInfo& useWasd = screenLayout.checkBoxInfo(7);
 
     // Create control labels
     new MachGuiMenuText(
@@ -213,6 +215,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     pGrabMouse_
         = new MachGuiCheckBox(pStartupScreens, pStartupScreens, grabMouse.box(), grabMouse.stringId);
+
+    pWasdControls_
+        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, useWasd.box(), useWasd.stringId);
 
     // Create volume sliders
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
@@ -459,6 +464,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pDisplay_->setCursorGrabEnabled(pCheckBox->isChecked());
     });
 
+    pWasdControls_->setCallback([](MachGuiCheckBox* pCheckBox) {
+        using InputLayout = MachGui::InputLayout;
+        MachGui::inputRegistryImpl()->setLayout(pCheckBox->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
+    });
+
     TEST_INVARIANT;
 }
 
@@ -665,6 +675,10 @@ void MachGuiCtxOptions::writeToConfig()
     SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());
     SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->isChecked());
     SysRegistry::instance().setIntegerValue(c_GrabCursorOptionKey, "on", pGrabMouse_->isChecked());
+    {
+        using InputLayout = MachGui::InputLayout;
+        Config::inputBaseLayout.set(pWasdControls_->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
+    }
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -729,6 +743,10 @@ void MachGuiCtxOptions::readFromConfig()
 
     const bool grabCursorEnabled = SysRegistry::instance().queryBooleanValue(c_GrabCursorOptionKey, "on", true);
     pGrabMouse_->setChecked(grabCursorEnabled);
+    {
+        using InputLayout = MachGui::InputLayout;
+        pWasdControls_->setChecked(Config::inputBaseLayout.get() == InputLayout::WASD);
+    }
 
     pTransitions_->setChecked(pStartupScreens_->startupData()->transitionFlicsOn());
 

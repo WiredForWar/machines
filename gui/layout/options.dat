@@ -45,6 +45,9 @@ CB 6994 95 179 252 190
 // Grab mouse
 CB 11002 95 199 252 210
 
+// Use WASD for camera and FPV movement
+CB 11003 95 219 252 230
+
 // Menu button OK
 MB 85 377 291 423
 
