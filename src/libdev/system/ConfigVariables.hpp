@@ -7,4 +7,6 @@
 namespace Config
 {
 
+extern Variable<int32_t> uiScaleFactor;
+
 } // namespace Config

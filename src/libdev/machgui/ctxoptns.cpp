@@ -7,6 +7,7 @@
 
 #include "machgui/ctxoptns.hpp"
 #include "ctl/list.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/pathname.hpp"
 #include "system/registry.hpp"
 #include "system/memcaps.hpp"
@@ -48,7 +49,6 @@
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 239
 
-const char c_ScaleFactorOptionKey[] = "Options\\Scale Factor";
 const char c_GrabCursorOptionKey[] = "Options\\Grab Cursor";
 
 class MachGuiCtxOptions;
@@ -428,10 +428,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     soundVolume_ = pSoundVolume_->value();
 
     initialDDrawDriver_ = pDriverSelector_->currentDDrawDriver();
-    GuiResourceString defaultStr(IDS_MENU_DEFAULT);
 
     GuiStrings scaleNames = {
-        defaultStr.asString(),
+        ResolvedUiString(IDS_MENU_DEFAULT),
         "100%",
         "200%",
     };
@@ -506,7 +505,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
     if (buttonEvent == MachGui::ButtonEvent::DUMMY_OK)
     {
-        int currentScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+        int currentScaleFactorValue = Config::uiScaleFactor.get();
 
         writeToConfig();
 
@@ -529,7 +528,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         const RenDisplay::Mode& pCurrentMode
             = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
 
-        int newScaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+        int newScaleFactorValue = Config::uiScaleFactor.get();
 
         if (pScreenResolutionLock_->isChecked()
             && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
@@ -703,7 +702,7 @@ void MachGuiCtxOptions::writeToConfig()
     {
         MachGuiDropDownListBoxCreator::DropDownListBoxItem currentItem = pScaleFactorSelector_->item();
         int ScaleValue = *static_cast<const int*>(currentItem);
-        SysRegistry::instance().setIntegerValue(c_ScaleFactorOptionKey, "Value", ScaleValue);
+        Config::uiScaleFactor.set(ScaleValue);
     }
 }
 
@@ -760,7 +759,7 @@ void MachGuiCtxOptions::readFromConfig()
     cursorType2d_ = pCursorType_->isChecked();
 
     {
-        int scaleFactorValue = SysRegistry::instance().queryIntegerValue(c_ScaleFactorOptionKey, "Value");
+        int scaleFactorValue = Config::uiScaleFactor.get();
 
         const MachGuiDropDownListBoxCreator::DropDownListBoxItems& scaleItems = pScaleFactorSelector_->items();
         std::size_t scaleItemIndex = 0;
