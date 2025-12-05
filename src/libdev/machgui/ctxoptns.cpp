@@ -50,8 +50,6 @@
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 239
 
-const char c_GrabCursorOptionKey[] = "Options\\Grab Cursor";
-
 class MachGuiCtxOptions;
 
 class MachGuiDDrawDropDownCallback : public MachGuiDropDownCallback
@@ -674,7 +672,7 @@ void MachGuiCtxOptions::writeToConfig()
     // Store reverse direction of up/down keys/mouse
     SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());
     SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->isChecked());
-    SysRegistry::instance().setIntegerValue(c_GrabCursorOptionKey, "on", pGrabMouse_->isChecked());
+    Config::grabCursor.set(pGrabMouse_->isChecked());
     {
         using InputLayout = MachGui::InputLayout;
         Config::inputBaseLayout.set(pWasdControls_->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
@@ -741,8 +739,7 @@ void MachGuiCtxOptions::readFromConfig()
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));
 
-    const bool grabCursorEnabled = SysRegistry::instance().queryBooleanValue(c_GrabCursorOptionKey, "on", true);
-    pGrabMouse_->setChecked(grabCursorEnabled);
+    pGrabMouse_->setChecked(Config::grabCursor.get());
     {
         using InputLayout = MachGui::InputLayout;
         pWasdControls_->setChecked(Config::inputBaseLayout.get() == InputLayout::WASD);

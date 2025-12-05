@@ -4,6 +4,7 @@
 
 #include "base/IProgressReporter.hpp"
 #include "base/diag.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"
 #include "system/registry.hpp"
@@ -270,10 +271,7 @@ bool SDLApp::clientStartup()
     initDefaultFontSize(Gui::uiScaleFactor());
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
-    {
-        const bool grabEnabled = SysRegistry::instance().queryBooleanValue("Options\\Grab Cursor", "on", true);
-        pDisplay_->setCursorGrabEnabled(grabEnabled);
-    }
+    pDisplay_->setCursorGrabEnabled(Config::grabCursor.get());
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);

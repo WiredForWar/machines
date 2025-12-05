@@ -11,5 +11,6 @@ extern Variable<int32_t> gfxMsaaBuffers;
 extern Variable<int32_t> gfxMsaaSamples;
 
 extern Variable<int32_t> uiScaleFactor;
+extern Variable<bool> grabCursor;
 
 } // namespace Config
