@@ -429,6 +429,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Retain original settings in case user cancels subsequent settings
     musicVolume_ = pMusicVolume_->value();
     soundVolume_ = pSoundVolume_->value();
+    grabCursor_ = Config::grabCursor.get();
 
     initialDDrawDriver_ = pDriverSelector_->currentDDrawDriver();
 
@@ -458,6 +459,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     readFromConfig();
 
     pGrabMouse_->setCallback([](MachGuiCheckBox* pCheckBox) {
+        Config::grabCursor.set(pCheckBox->isChecked());
+
         RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
         pDisplay_->setCursorGrabEnabled(pCheckBox->isChecked());
     });
@@ -571,6 +574,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
     }
     else if (buttonEvent == MachGui::ButtonEvent::DUMMY_EXIT)
     {
+        pGrabMouse_->setChecked(grabCursor_);
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
         pDriverSelector_->useDDrawDriver(initialDDrawDriver_);
@@ -672,7 +676,6 @@ void MachGuiCtxOptions::writeToConfig()
     // Store reverse direction of up/down keys/mouse
     SysRegistry::instance().setIntegerValue("Options\\Reverse UpDown Keys", "on", pReverseKeys_->isChecked());
     SysRegistry::instance().setIntegerValue("Options\\Reverse BackForward Mouse", "on", pReverseMouse_->isChecked());
-    Config::grabCursor.set(pGrabMouse_->isChecked());
     {
         using InputLayout = MachGui::InputLayout;
         Config::inputBaseLayout.set(pWasdControls_->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
@@ -726,9 +729,11 @@ void MachGuiCtxOptions::readFromConfig()
 
     musicVolume_ = DevCD::instance().volume();
     soundVolume_ = SndMixer::instance().masterSampleVolume();
+    grabCursor_ = Config::grabCursor.get();
 
     pMusicVolume_->setValue(musicVolume_);
     pSoundVolume_->setValue(soundVolume_);
+    pGrabMouse_->setChecked(grabCursor_);
 
     // Set resolution lock on if it the first time the game is being run
     pScreenResolutionLock_->setChecked(SysRegistry::instance().queryBooleanValue(

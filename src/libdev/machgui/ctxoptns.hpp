@@ -79,6 +79,7 @@ private:
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
+    bool grabCursor_{};
     RenDriverSelector* pDriverSelector_;
     MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_ = nullptr;
     MachGuiDropDownListBoxCreator* pDirect3DDrivers_ = nullptr;
