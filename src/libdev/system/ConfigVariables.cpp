@@ -8,4 +8,7 @@ Variable<int32_t> gfxMsaaSamples("Options/MSAA/Samples", 2);
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 
+Variable<uint32_t> soundVolume("Options/Sound/Volume", 95);
+Variable<uint32_t> musicVolume("Options/CD/Volume", 30);
+
 } // namespace Config

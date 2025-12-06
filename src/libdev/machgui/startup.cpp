@@ -115,6 +115,7 @@ inline constexpr bool cDemoVersion =
 #include "network/netnet.hpp"
 #include "network/session.hpp"
 #include "phys/phys.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/registry.hpp"
 #include "device/mouse.hpp"
 #include "base/cballoc.hpp"
@@ -3449,12 +3450,12 @@ bool MachGuiStartupScreens::msgBoxIsBeingDisplayed() const
 void MachGuiStartupScreens::initializeVolumes()
 {
     int initialVolume{};
-    initialVolume = SysRegistry::instance().queryIntegerValue("Options\\Sound", "Volume", 95);
+    initialVolume = Config::soundVolume.get();
     SndMixer::instance().masterSampleVolume(initialVolume);
     SOUND_STREAM("Setting sound initialVolume to " << initialVolume << std::endl);
 
     // Set the initial CD volume to the registry value
-    initialVolume = SysRegistry::instance().queryIntegerValue("Options\\CD", "Volume", 30);
+    initialVolume = Config::musicVolume.get();
     DevCD::instance().volume(initialVolume);
     SOUND_STREAM("Setting CD initialVolume to " << initialVolume << std::endl);
 }

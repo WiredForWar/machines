@@ -221,13 +221,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
     pMusicVolume_->minMax(0, 100);
     pMusicVolume_->setValueChangedHandler([](float newValue) {
-        DevCD::instance().volume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
+        Config::musicVolume.set(std::round(newValue));
+        DevCD::instance().volume(Config::musicVolume.get());
     });
 
     pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.range);
     pSoundVolume_->minMax(0, 100);
     pSoundVolume_->setValueChangedHandler([](float newValue) {
-        SndMixer::instance().masterSampleVolume(newValue + 0.5 /*stop rounding errors from slowly reducing volume*/);
+        Config::soundVolume.set(std::round(newValue));
+        SndMixer::instance().masterSampleVolume(Config::soundVolume.get());
     });
 
     const RenCapabilities& caps = W4dManager::instance().sceneManager()->pDevice()->capabilities();
@@ -427,8 +429,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     // Retain original settings in case user cancels subsequent settings
-    musicVolume_ = pMusicVolume_->value();
-    soundVolume_ = pSoundVolume_->value();
+    musicVolume_ = Config::musicVolume.get();
+    soundVolume_ = Config::soundVolume.get();
     grabCursor_ = Config::grabCursor.get();
 
     initialDDrawDriver_ = pDriverSelector_->currentDDrawDriver();
@@ -624,16 +626,6 @@ void MachGuiCtxOptions::writeToConfig()
     SysRegistry::instance().setIntegerValue("Screen Resolution", "Width", pNewMode->width());
     SysRegistry::instance().setIntegerValue("Screen Resolution", "Height", pNewMode->height());
     SysRegistry::instance().setIntegerValue("Screen Resolution", "Refresh Rate", pNewMode->refreshRate());
-
-    // Store sound and CD settings
-    SysRegistry::instance().setIntegerValue(
-        "Options\\CD",
-        "Volume",
-        pMusicVolume_->value() + 0.5 /*stop rounding errors*/);
-    SysRegistry::instance().setIntegerValue(
-        "Options\\Sound",
-        "Volume",
-        pSoundVolume_->value() + 0.5 /*stop rounding errors*/);
 
     // Store gamma correction value
     if (pGammaCorrection_)
