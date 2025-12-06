@@ -1,8 +1,7 @@
-#ifndef _DEVCD_DEFS
-#define _DEVCD_DEFS
+#pragma once
 
-using DevCDTrackIndex = int;
-using Volume = size_t;
-using Seconds = size_t;
+#include <cstdint>
 
-#endif
+using DevCDTrackIndex = int32_t;
+using Volume = uint32_t;
+using Seconds = uint32_t;
