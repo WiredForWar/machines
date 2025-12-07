@@ -79,6 +79,7 @@ protected:
 
 protected:
     static std::string getKeysDisplayString(const KeyBinds& binds, DisplayFormat format);
+    static std::string joinStringsWithOr(std::string str1, std::string str2);
 
     BindDisplayData getSpecialBindDisplayData(BindId id, const BindData& data, DisplayFormat format) const;
     std::string formatTwoKeys(BindId id1, BindId id2, DisplayFormat format) const;

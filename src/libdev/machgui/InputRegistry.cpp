@@ -220,7 +220,22 @@ BindDisplayData InputRegistry::getBindDisplayData(BindId id, DisplayFormat forma
 
 std::string InputRegistry::getKeysDisplayString(const KeyBinds &binds, DisplayFormat format)
 {
-    return binds.empty() ? std::string() : Gui::toDisplayString(binds.at(0), format);
+    if (binds.empty())
+        return {};
+
+    if (binds.size() == 1)
+        return Gui::toDisplayString(binds.at(0), format);
+    else
+        return joinStringsWithOr(Gui::toDisplayString(binds.at(0), format), Gui::toDisplayString(binds.at(1), format));
+}
+
+std::string InputRegistry::joinStringsWithOr(std::string str1, std::string str2)
+{
+    GuiStrings strings;
+    strings.emplace_back(std::move(str1));
+    strings.emplace_back(std::move(str2));
+
+    return GuiResourceString(IDS_KEYS_OR, strings).asString();
 }
 
 BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindData& data, DisplayFormat format) const
@@ -268,16 +283,18 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     else if (id == "x-squadron-create"_bind)
     {
         result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
-        result.displayBind_ = Gui::toDisplayString(KeyCode::KEY_0) + "-" + Gui::toDisplayString(KeyCode::KEY_9) + " "
-            + Gui::toDisplayString(KeyModifier::Ctrl);
+        std::string combinedBind = Gui::toDisplayString(KeyCode::KEY_0) + "-" + Gui::toDisplayString(KeyCode::KEY_9)
+            + " " + Gui::toDisplayString(KeyModifier::Ctrl);
 
-        // Comment-out for now because such ' or ' insertion won't work well with translations
-        //
-        // const auto command = getBinds("commands-form-squadron-trigger"_bind);
-        // if (!command.empty())
-        // {
-        //     result.displayBind_ += " or " + Gui::toDisplayString(command.at(0));
-        // }
+        const auto command = getBinds("commands-form-squadron-trigger"_bind);
+        if (command.empty())
+        {
+            result.displayBind_ = combinedBind;
+        }
+        else
+        {
+            result.displayBind_ = joinStringsWithOr(std::move(combinedBind), Gui::toDisplayString(command.at(0)));
+        }
     }
     else if (id == "x-squadron-add"_bind)
     {
@@ -1031,8 +1048,8 @@ void InputRegistry::setWasdLayout()
         { KeyCode::KEY_S | KeyModifier::Ctrl },
     });
     setBinds("commands-deconstruct-trigger"_bind, {
+        { KeyCode::KEY_X },
         { KeyCode::KEY_D | KeyModifier::Ctrl },
-        { KeyCode::KEY_X }
     });
 
     setBinds("view-next-machine"_bind, {}); // Alt+A

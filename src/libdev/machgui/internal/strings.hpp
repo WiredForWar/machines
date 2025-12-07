@@ -380,6 +380,8 @@
 #define IDS_BUILDING_HAS_NO_FREE_SPACE 2700
 #define IDS_NOTHING_TO_DEPLOY 2701
 
+#define IDS_KEYS_OR 2750
+
 // Weapon Combo descriptions
 #define IDS_L_BOLTER 4000
 #define IDS_R_BOLTER 4010
