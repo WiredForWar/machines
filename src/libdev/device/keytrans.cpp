@@ -96,7 +96,10 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
             ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId")
             for (const KeyBind& bind : pTranslation->binds())
             {
-                if (bind.keysMatch(keyWithMods))
+                if (keyWithMods & bind.releasedModifiers)
+                    continue;
+
+                if (bind.keyCode() == buttonEvent.scanCode())
                 {
                     found = true;
 
@@ -128,7 +131,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
             ASSERT(pTranslation->commandId() < commandList.size(), "command list does not contain commandId");
             for (const KeyBind& bind : pTranslation->binds())
             {
-                if (bind.keysMatch(keyWithMods))
+                if (bind.keyCode() == buttonEvent.scanCode())
                 {
                     commandList[pTranslation->commandId()].reset_ = true;
                     commandList[pTranslation->commandId()].pressed_ = false;
