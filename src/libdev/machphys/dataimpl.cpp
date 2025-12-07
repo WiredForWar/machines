@@ -12,6 +12,7 @@
 #include "machphys/levels.hpp"
 
 #include "system/pathname.hpp"
+#include "system/vfs.hpp"
 
 // Machine type data classes
 #include "machphys/aggrdata.hpp"
@@ -102,7 +103,8 @@ MachPhysDataImplementation::MachPhysDataImplementation()
     , weaponData_(MachPhys::N_WEAPON_TYPES, nullptr)
     , pGeneralData_(nullptr)
 {
-    MachPhysDataParser::instance().read("data/parmdata.dat", this);
+    std::string configFile = System::findFile("data/parmdata.dat");
+    MachPhysDataParser::instance().read(configFile, this);
 
     TEST_INVARIANT;
 }

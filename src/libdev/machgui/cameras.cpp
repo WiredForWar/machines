@@ -33,6 +33,7 @@
 #include "render/device.hpp"
 #include "utility/linetok.hpp"
 #include "gui/event.hpp"
+#include "system/vfs.hpp"
 
 #include <memory>
 
@@ -852,7 +853,8 @@ void readZenithDataFile(
     MATHEX_SCALAR* pZenithEarMinHeight,
     MATHEX_SCALAR* pZenithEarMaxHeight)
 {
-    const SysPathName fileName("data/zenith.dat");
+    std::string configFile = System::findFile("data/zenith.dat");
+    const SysPathName fileName(configFile);
 
     ASSERT_FILE_EXISTS(fileName.c_str());
     std::unique_ptr<std::istream> pIstream
