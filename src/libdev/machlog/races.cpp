@@ -70,6 +70,8 @@
 
 #include "base/IProgressReporter.hpp"
 
+#include "system/vfs.hpp"
+
 #include <memory>
 #include <cstdio>
 
@@ -2292,7 +2294,7 @@ bool MachLogRaces::loadPlanet(W4dSceneManager* pSceneManager, const std::string&
     psfPath += ".psf";
 
     // Load the planet surface
-    MachLogPlanet::instance().surface(pSceneManager, psfPath, pReporter);
+    MachLogPlanet::instance().surface(pSceneManager, System::findFile(psfPath), pReporter);
 
     pDataImpl_->currentPlanet_ = planetName;
 

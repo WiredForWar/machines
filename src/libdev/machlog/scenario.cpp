@@ -76,8 +76,7 @@
 void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGameCreationData& gameData)
 {
     MachLogRaces& races = MachLogRaces::instance();
-    SysPathName fullPath("data");
-    fullPath.combine(scenarioFilePath);
+    SysPathName fullPath(System::findFile("data/" + scenarioFilePath.pathname()));
 
     ASSERT_INFO(scenarioFilePath);
     ASSERT_INFO(fullPath);

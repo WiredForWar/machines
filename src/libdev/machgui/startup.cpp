@@ -117,6 +117,7 @@ inline constexpr bool cDemoVersion =
 #include "phys/phys.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/registry.hpp"
+#include "system/vfs.hpp"
 #include "device/mouse.hpp"
 #include "base/cballoc.hpp"
 
