@@ -1051,6 +1051,12 @@ void InputRegistry::setWasdLayout()
         { KeyCode::KEY_X },
         { KeyCode::KEY_D | KeyModifier::Ctrl },
     });
+    setBinds("commands-deploy-trigger"_bind, {
+        { KeyCode::KEY_E | KeyModifier::Ctrl },
+    });
+    setBinds("commands-recycle-trigger"_bind, {
+        { KeyCode::KEY_Q | KeyModifier::Ctrl },
+    });
 
     setBinds("view-next-machine"_bind, {}); // Alt+A
     setBinds("view-next-construction"_bind, {}); // Alt+S
@@ -1082,6 +1088,39 @@ void InputRegistry::setWasdLayout()
     setBinds("zenith-camera-rotate-right"_bind, {
         { .keyWithMods = KeyCode::KEY_D | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
         { .keyWithMods = KeyCode::RIGHT_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+    });
+
+    setBinds("ground-camera-forward"_bind, {
+        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("ground-camera-backward"_bind, {
+        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+    });
+    setBinds("ground-camera-slide-left"_bind, {
+        { .keyWithMods = KeyCode::KEY_A, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::DELETE, .releasedModifiers = KeyModifier::Alt },
+    });
+    setBinds("ground-camera-slide-right"_bind, {
+        { .keyWithMods = KeyCode::KEY_D, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::END, .releasedModifiers = KeyModifier::Alt },
+    });
+    setBinds("ground-camera-rotate-left"_bind, {
+        { .keyWithMods = KeyCode::KEY_Q, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Alt },
+    });
+    setBinds("ground-camera-rotate-right"_bind, {
+        { .keyWithMods = KeyCode::KEY_E, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Alt },
+    });
+    setBinds("ground-camera-pitch-up"_bind, {
+        { .keyWithMods = KeyCode::KEY_W | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+    });
+    setBinds("ground-camera-pitch-down"_bind, {
+        { .keyWithMods = KeyCode::KEY_S | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
     });
 
     setBinds("fpv-move-forward"_bind, {
