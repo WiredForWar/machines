@@ -277,8 +277,6 @@ public:
     bool ignoreHostLostSystemMessage() const;
     void ignoreHostLostSystemMessage(bool);
 
-    static int getDefaultLockScreenResolutionValue();
-
 protected:
     bool doHandleFocusCapableControls(const GuiKeyEvent& e);
 

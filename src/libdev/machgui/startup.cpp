@@ -1431,8 +1431,7 @@ void MachGuiStartupScreens::doBecomeRoot()
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
     // Use 640x480 menu resolution
-    if (! SysRegistry::instance()
-                .queryIntegerValue("Screen Resolution", "Lock Resolution", getDefaultLockScreenResolutionValue()))
+    if (!Config::gfxLockResolution.get())
     {
         //      pSceneManager_->pDevice()->display()->useMode(640, 480, 0);
 
@@ -1457,14 +1456,11 @@ void MachGuiStartupScreens::doBecomeNotRoot()
     int oldWidth = inGameResolutionWidth_;
     int oldHeight = inGameResolutionHeight_;
 
-    if (SysRegistry::instance()
-            .queryIntegerValue("Screen Resolution", "Lock Resolution", getDefaultLockScreenResolutionValue())
-        == 0)
+    if (!Config::gfxLockResolution.get())
     {
-
-        inGameResolutionWidth_ = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
-        inGameResolutionHeight_ = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
-        inGameResolutionRate_ = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
+        inGameResolutionWidth_ = Config::gfxResolutionWidth.get();
+        inGameResolutionHeight_ = Config::gfxResolutionHeight.get();
+        inGameResolutionRate_ = Config::gfxRefreshRate.get();
 
         // Check that minimum resolution is specified
         if (inGameResolutionWidth_ < 640 || inGameResolutionHeight_ < 480)
@@ -3786,11 +3782,6 @@ void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
 {
     CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
     ignoreHostLostSystemMessage_ = value;
-}
-
-int MachGuiStartupScreens::getDefaultLockScreenResolutionValue()
-{
-    return 1;
 }
 
 void MachGuiStartupScreens::changeLogoImage(const char* image)

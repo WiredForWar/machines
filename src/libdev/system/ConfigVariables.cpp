@@ -5,6 +5,13 @@ namespace Config
 
 Variable<int32_t> gfxMsaaBuffers("Options/MSAA/Buffers", 1);
 Variable<int32_t> gfxMsaaSamples("Options/MSAA/Samples", 2);
+
+Variable<int32_t> gfxResolutionWidth("Screen Resolution/Width", 0);
+Variable<int32_t> gfxResolutionHeight("Screen Resolution/Height", 0);
+Variable<int32_t> gfxRefreshRate("Screen Resolution/Refresh Rate", 0);
+Variable<bool> gfxWindowed("Screen Resolution/Windowed", false);
+Variable<bool> gfxLockResolution("Screen Resolution/Lock Resolution", true);
+
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 

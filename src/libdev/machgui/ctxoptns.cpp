@@ -623,9 +623,9 @@ void MachGuiCtxOptions::writeToConfig()
 
     // Store the new screen size in the registry
     const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
-    SysRegistry::instance().setIntegerValue("Screen Resolution", "Width", pNewMode->width());
-    SysRegistry::instance().setIntegerValue("Screen Resolution", "Height", pNewMode->height());
-    SysRegistry::instance().setIntegerValue("Screen Resolution", "Refresh Rate", pNewMode->refreshRate());
+    Config::gfxResolutionWidth.set(pNewMode->width());
+    Config::gfxResolutionHeight.set(pNewMode->height());
+    Config::gfxRefreshRate.set(pNewMode->refreshRate());
 
     // Store gamma correction value
     if (pGammaCorrection_)
@@ -637,7 +637,7 @@ void MachGuiCtxOptions::writeToConfig()
     }
 
     // Store option to maintain screen res of in-game menus in menus
-    SysRegistry::instance().setIntegerValue("Screen Resolution", "Lock Resolution", pScreenResolutionLock_->isChecked());
+    Config::gfxLockResolution.set(pScreenResolutionLock_->isChecked());
 
     // Store cursor type (2D/3D)
     SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
@@ -728,10 +728,7 @@ void MachGuiCtxOptions::readFromConfig()
     pGrabMouse_->setChecked(grabCursor_);
 
     // Set resolution lock on if it the first time the game is being run
-    pScreenResolutionLock_->setChecked(SysRegistry::instance().queryBooleanValue(
-        "Screen Resolution",
-        "Lock Resolution",
-        MachGuiStartupScreens::getDefaultLockScreenResolutionValue()));
+    pScreenResolutionLock_->setChecked(Config::gfxLockResolution.get());
     pCursorType_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));

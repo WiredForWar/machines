@@ -177,23 +177,18 @@ bool SDLApp::clientStartup()
     }
 
     // Check for windowed mode
-    if (!SysRegistry::instance().queryIntegerValue("Screen Resolution", "Windowed"))
+    if (!Config::gfxWindowed.get())
         pDisplay_->useFullScreen();
 
     bool displayModeInitialized = false;
-    if (SysRegistry::instance().queryIntegerValue(
-            "Screen Resolution",
-            "Lock Resolution",
-            MachGuiStartupScreens::getDefaultLockScreenResolutionValue()))
+    if (Config::gfxLockResolution.get())
     {
-        int modeW = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Width");
-        int modeH = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Height");
-        int modeR = 0;
+        int modeW = Config::gfxResolutionWidth.get();
+        int modeH = Config::gfxResolutionHeight.get();
 
         if (modeW && modeH)
         {
-            if (pDisplay_->fullScreen())
-                modeR = SysRegistry::instance().queryIntegerValue("Screen Resolution", "Refresh Rate");
+            int modeR = pDisplay_->fullScreen()? Config::gfxRefreshRate.get() : 0;
 
             const RenDisplay::Mode loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
             if (loadedMode.isValid())
