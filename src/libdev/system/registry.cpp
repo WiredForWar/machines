@@ -209,25 +209,33 @@ SysRegistry::setValue(const std::string& valueName, const std::string& value)
     }
     else
     {
+        static const char key[] = "key";
+        static const char name[] = "name";
+
         CB_SysRegistry_DEPIMPL();
         bool create = true;
         rapidxml::xml_node<>* root = doc_.first_node();
-        char* node_value = doc_.allocate_string(value.c_str());
-        for (rapidxml::xml_node<>* a = root->first_node(); a; a = a->next_sibling())
+        const char* allocatedNewValue = doc_.allocate_string(value.c_str());
+        for (rapidxml::xml_node<>* keyNode = root->first_node(key); keyNode; keyNode = keyNode->next_sibling(key))
         {
-            if (a->first_attribute()->value() == valueName)
+            const rapidxml::xml_attribute<>* nameAttribute = keyNode->first_attribute(name);
+            if (!nameAttribute)
+                continue;
+
+            if (nameAttribute->value() == valueName)
             {
-                rapidxml::xml_node<>* real_thing = a->first_node();
+                rapidxml::xml_node<>* real_thing = keyNode->first_node();
                 if (real_thing == nullptr)
                 {
-                    a->value(node_value);
+                    keyNode->value(allocatedNewValue);
                 }
                 else if (
                     // these checks just demonstrate that
                     real_thing->next_sibling() == nullptr // it is there and how it is located
                     && real_thing->type() == rapidxml::node_data) // when element does contain text data
                 {
-                    real_thing->value(node_value);
+                    keyNode->value(allocatedNewValue);
+                    real_thing->value(allocatedNewValue);
                 }
                 create = false;
                 break;
@@ -236,12 +244,10 @@ SysRegistry::setValue(const std::string& valueName, const std::string& value)
         // Value does not exist add a new node
         if (create)
         {
-            static const char key[] = "key";
-            static const char name[] = "name";
             rapidxml::xml_node<>* child = doc_.allocate_node(rapidxml::node_element, key);
             char* node_name = doc_.allocate_string(valueName.c_str());
             child->append_attribute(doc_.allocate_attribute(name, node_name));
-            child->value(node_value);
+            child->value(allocatedNewValue);
             root->append_node(child);
         }
         pImpl_->store();
