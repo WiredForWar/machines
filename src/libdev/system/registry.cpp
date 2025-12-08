@@ -57,8 +57,9 @@ SysRegistryImpl::~SysRegistryImpl()
 void SysRegistryImpl::init()
 {
     bool create = true;
+    bool hadFile = SysPathName::existsAsFile(regFile_);
 
-    if (SysPathName::existsAsFile(regFile_))
+    if (hadFile)
     {
         if (readFromFile())
         {
@@ -76,6 +77,9 @@ void SysRegistryImpl::init()
 
     if (create)
     {
+        if (hadFile)
+            std::cerr << "Failed to parse config file, new empty one is created" << std::endl;
+
         doc_.clear();
         char* node_name = doc_.allocate_string("keys");
         rapidxml::xml_node<>* child = doc_.allocate_node(rapidxml::node_element, node_name);
@@ -101,8 +105,6 @@ bool SysRegistryImpl::readFromFile()
     {
         result = false;
     }
-
-    std::cout << "Failed to parse config file, new empty one is created." << std::endl;
 
     return result;
 }
