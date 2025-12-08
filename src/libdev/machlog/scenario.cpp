@@ -70,6 +70,8 @@
 #include "machlog/consitem.hpp"
 #include "machlog/constree.hpp"
 
+#include "system/vfs.hpp"
+
 // static
 void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGameCreationData& gameData)
 {
@@ -80,7 +82,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     ASSERT_INFO(scenarioFilePath);
     ASSERT_INFO(fullPath);
 
-    const SysPathName factoryItemsPath("data/factory.bld");
+    const SysPathName factoryItemsPath(System::findFile("data/factory.bld"));
 
     ASSERT_FILE_EXISTS(fullPath.c_str());
     std::unique_ptr<std::istream> pIstream
@@ -932,7 +934,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         if (! doneRace[i])
             MachLogNetwork::instance().ready(i, true);
 
-    const SysPathName RSI(researchItemsPath[gameData.technologyLevel()]);
+    const SysPathName RSI(System::findFile(researchItemsPath[gameData.technologyLevel()]));
 
     ASSERT_FILE_EXISTS(RSI.c_str());
     std::unique_ptr<std::istream> pIstream2

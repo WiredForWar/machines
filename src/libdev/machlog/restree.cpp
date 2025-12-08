@@ -15,6 +15,8 @@
 #include "machlog/scenario.hpp"
 #include "machlog/resitem.hpp"
 
+#include "system/vfs.hpp"
+
 #include <memory>
 #include <sstream>
 
@@ -28,8 +30,7 @@ MachLogResearchTree::MachLogResearchTree()
     nNotifiables_ = 0;
     researchItems_.reserve(100);
     notifiables_.reserve(100);
-    SysPathName globalTree("data/global.rst");
-    readAllItems(globalTree);
+    readAllItems(System::findFile("data/global.rst"));
     TEST_INVARIANT;
 }
 

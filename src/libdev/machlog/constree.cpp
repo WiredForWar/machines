@@ -17,6 +17,8 @@
 #include "machlog/internal/constrei.hpp"
 #include "machphys/symparse.hpp"
 
+#include "system/vfs.hpp"
+
 #include <memory>
 
 /* //////////////////////////////////////////////////////////////////////////// */
@@ -29,8 +31,7 @@ MachLogConstructionTree::MachLogConstructionTree()
     nNotifiables_ = 0;
     constructionItems_.reserve(50);
     notifiables_.reserve(10);
-    SysPathName globalTree("data/global.cst");
-    readAllItems(globalTree);
+    readAllItems(System::findFile("data/global.cst"));
     TEST_INVARIANT;
 }
 
