@@ -77,16 +77,14 @@ void MachPhysDataParser::CLASS_INVARIANT
 void MachPhysDataParser::read(const SysPathName& pathname, MachPhysDataImplementation* pData)
 {
     PRE_INFO(pathname.pathname());
-    //  Not necessarily true in the presense of metafiles
-    // PRE( pathname.existsAsFile() );
     PRE(pData != nullptr);
 
     pData_ = pData;
 
     initialiseDataStores();
-    readParameterisedDataFile(pathname);
-    std::string configFile = System::findFile(pathname.pathname());
-    if (configFile != pathname.pathname())
+
+    const std::vector<std::string> allOverrides = System::getFileOverrides(pathname.pathname());
+    for (const std::string& configFile : allOverrides)
     {
         readParameterisedDataFile(configFile);
     }
