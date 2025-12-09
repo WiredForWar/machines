@@ -1,5 +1,7 @@
 #include "afx/app.hpp"
 
+#include <iostream>
+
 AfxApp::AfxApp()
 {
 }
@@ -11,6 +13,15 @@ AfxApp::~AfxApp()
 
 AfxApp::ExitStatus AfxApp::run()
 {
+    if (args_.size() == 1)
+    {
+        if (args_.at(0) == "--version")
+        {
+            std::cout << name() << " " << version() << " (build " << buildVersion() << ")" << std::endl;
+            return EXIT_OK;
+        }
+    }
+
     if (startup())
     {
         coreLoop();
@@ -65,14 +76,14 @@ const std::string& AfxApp::name() const
     return appName_;
 }
 
-const std::string& AfxApp::version() const
+std::string_view AfxApp::version() const
 {
     return version_;
 }
 
-const std::string& AfxApp::buildVersion() const
+std::string_view AfxApp::buildVersion() const
 {
-    return buildVersion_;
+    return buildVersion_.empty() ? std::string_view("unknown") : buildVersion_;
 }
 
 void AfxApp::setAppName(const std::string& name)

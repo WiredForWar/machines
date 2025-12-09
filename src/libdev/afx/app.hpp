@@ -47,10 +47,10 @@ public:
     const std::string& name() const;
     void setAppName(const std::string& name);
 
-    const std::string& version() const;
+    std::string_view version() const;
     void setVersion(const std::string& version);
 
-    const std::string& buildVersion() const;
+    std::string_view buildVersion() const;
     void setBuildVersion(const std::string& buildVersion);
 
     // Get the arguments that were supplied at program invocation.
