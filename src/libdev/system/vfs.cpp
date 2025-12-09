@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <ranges>
 #include <vector>
 
 namespace System
@@ -65,16 +66,15 @@ std::vector<std::string> getFileOverrides(std::string path)
 {
     std::vector<std::string> result;
 
-    for (const std::string& location : overrideLocations)
+    if (SysPathName::existsAsFile(path))
+        result.emplace_back(path);
+
+    for (const std::string& location : std::ranges::reverse_view(overrideLocations))
     {
         std::string lookup = location + path;
         if (SysPathName::existsAsFile(lookup))
             result.emplace_back(lookup);
     }
-    std::reverse(result.begin(), result.end());
-
-    if (SysPathName::existsAsFile(path))
-        result.emplace_back(path);
 
     return result;
 }
