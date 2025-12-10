@@ -92,6 +92,8 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
         {
             return Gui::bitmap(pngImagePath);
         }
+
+        path = System::findFile(path);
         return Gui::bitmap(path);
     }
 
