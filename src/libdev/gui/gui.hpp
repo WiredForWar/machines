@@ -77,6 +77,11 @@ using namespace Render::Align;
 using Alignment = Render::Alignment;
 using TextOptions = Render::TextOptions;
 
+inline Size toSize(const Ren::Size& size)
+{
+    return Size(size.width, size.height);
+}
+
 // Deprecated
 using WidthAndHeight = Size;
 

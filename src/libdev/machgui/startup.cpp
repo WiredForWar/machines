@@ -181,7 +181,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     W4dSceneManager* pSceneManager,
     W4dRoot* pRoot,
     IProgressReporter* pReporter)
-    : GuiRoot(Gui::Size(pSceneManager->pDevice()->windowWidth(), pSceneManager->pDevice()->windowHeight()))
+    : GuiRoot(Gui::toSize(pSceneManager->pDevice()->windowSize()))
     , pImpl_(nullptr)
 {
     pImpl_ = new MachGuiStartupScreensImpl;
