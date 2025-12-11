@@ -4,15 +4,29 @@
     <metadata_license>FSFAP</metadata_license>
     <project_license>GPL-3.0</project_license>
     <name>Machines: Wired For War</name>
-    <summary>
-        3D Real-Time Strategy video game from 1999 developed by Charybdis and released as free software by Night Dive Studios
-    </summary>
+    <summary>A true classic 3D RTS from the late 90s</summary>
     <description>
         <p>
-            The application requires original game assets. In case of Flatpak installation the files (top-level `machines` directory) should be placed at ~/.var/app/io.github.wiredforwar.machines/data/.
-            The final game data structure should include 'models', 'pdata', and 'sounds' in ~/.var/app/io.github.wiredforwar.machines/data/machines/.
+            Community fork of a 3D Real-Time Strategy video game from 1999 developed by Charybdis and released as free software by Night Dive Studios.
+        </p>
+        <p>The most notable changes are:<p>
+        <ul>
+            <li>Added support for 2X UI scaling</li>
+            <li>Added support for WASD camera and machines in-head control</li>
+            <li>Added more keyboard shortcuts</li>
+            <li>Added initial support for mods (most notable is German localization)</li>
+            <li>Fixed various LAN game issues</li>
+            <li>Fixed tens of bugs</li>
+            <li>Fixed a dozen of crashes</li>
+        </ul>
+        <p>
+            Note: The application requires original game assets.
+            In case of Flatpak installation the files (top-level `machines` directory) should be placed at <code>~/.var/app/io.github.wiredforwar.machines/data/</code>.
         </p>
     </description>
+    <developer>
+        <name>Wired for War</name>
+    </developer>
     <launchable type="desktop-id">io.github.wiredforwar.machines.desktop</launchable>
     <screenshots>
         <screenshot type="default">
@@ -39,4 +53,5 @@
     <url type="homepage">https://wiredforwar.github.io/</url>
     <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
     <url type="bugtracker">https://github.com/WiredForWar/machines/issues</url>
+    <url type="help">https://github.com/WiredForWar/machines/wiki/Linux</url>
 </component>
