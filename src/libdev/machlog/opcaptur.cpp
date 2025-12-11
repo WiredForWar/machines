@@ -83,35 +83,38 @@ PhysRelativeTime MachLogCaptureOperation::interactWithBuilding()
         = pConstructorMachine->data().constructionRate() * MachLogRaces::instance().stats().enemyCaptureMultiplier();
     MachPhys::BuildingMaterialUnits criticalUnits = 0.3 * pConstron->maximumhp();
 
-    MachPhys::BuildingMaterialUnits BMUValueOfDamage
-        = (units * (SimManager::instance().currentTime() - lastUpdateTime()) / 60);
-
-    MachPhys::HitPointUnits hpsRemoved = pConstron->hitPointValueOfBMUs(BMUValueOfDamage);
-
-    // don't want to damage building far beyond what is necessary to capture it
-
-    if (pConstron->hp() - hpsRemoved < criticalUnits)
-        hpsRemoved = pConstron->hp() - criticalUnits;
-
-    pConstron->beHit(hpsRemoved, MachPhys::N_WEAPON_TYPES, pConstructorMachine);
-    // only update time if added something on.
-
-    ASSERT(pConstron, "Hey! The construction has gone! It shouldn't have!");
-
-    if (!(hpsRemoved == 0))
+    if (pConstron->hp() > criticalUnits)
     {
-        lastUpdateTime(SimManager::instance().currentTime());
-    }
-    else
-    {
-        // oops didn't manage to add anything on lets try again....
+        MachPhys::BuildingMaterialUnits BMUValueOfDamage
+            = (units * (SimManager::instance().currentTime() - lastUpdateTime()) / 60);
 
-        state(MachLogLabourOperation::INTERACTING);
+        MachPhys::HitPointUnits hpsRemoved = pConstron->hitPointValueOfBMUs(BMUValueOfDamage);
+
+               // don't want to damage building far beyond what is necessary to capture it
+
+        if (pConstron->hp() - hpsRemoved < criticalUnits)
+            hpsRemoved = pConstron->hp() - criticalUnits;
+
+        pConstron->beHit(hpsRemoved, MachPhys::N_WEAPON_TYPES, pConstructorMachine);
+        // only update time if added something on.
+
+        ASSERT(pConstron, "Hey! The construction has gone! It shouldn't have!");
+
+        if (!(hpsRemoved == 0))
+        {
+            lastUpdateTime(SimManager::instance().currentTime());
+        }
+        else
+        {
+            // oops didn't manage to add anything on lets try again....
+
+            state(MachLogLabourOperation::INTERACTING);
+        }
     }
+
     // End of TBD
-    const MachPhysObjectData& objData = pConstron->objectData();
     const static float captureRatio = 1.0 / 3.0;
-    if ((float)pConstron->hp() / (float)objData.hitPoints() < captureRatio)
+    if (pConstron->hpRatio() < captureRatio)
     {
         // We have captured the building....we need to reassign it to our race.
         // new method of SimActor -> assignToDifferentProcess( SimProcess );
