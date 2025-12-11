@@ -289,6 +289,7 @@ void MachActor::beHit(
     MachActor::EchoBeHit echo)
 {
     CB_DEPIMPL(bool, selfDestructActive_);
+    PRE(damage >= 0)
 
     if (! isDead())
     {
@@ -1185,6 +1186,8 @@ void MachActor::assignToDifferentRace(MachLogRace& newRace)
 
 void MachActor::addHitPoints(MachPhys::HitPointUnits inc)
 {
+    PRE(inc >= 0)
+
     hp(hp() + inc);
     if (hp() > objectData().hitPoints())
         hp(objectData().hitPoints());
@@ -1956,6 +1959,7 @@ bool MachActor::busy() const
 
 void MachActor::updateArmourAndHps(int damageTaken)
 {
+    PRE(damageTaken >= 0)
     MachPhys::ArmourUnits armourLeft = armour();
 
     // default is for armour to absorb all but 1 point of the damage
