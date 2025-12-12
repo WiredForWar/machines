@@ -3,11 +3,11 @@
 **3D Real Time Strategy video game GL port source code**
 Released as a [free software](https://en.wikipedia.org/wiki/Free_software) under a permission of [Night Dive Studios](https://www.nightdivestudios.com/) who owns the rights to the game.
 
-## Community fork
+# Community fork
 
 This version of the game is a community fork. It is purposely different from the original source code, which is available [here](https://github.com/markol/machines).
 
-## Changes
+# Changes
 
 The most notable changes are:
 - Added support for 2X UI scaling
@@ -18,9 +18,9 @@ The most notable changes are:
 
 Windows builds are now done automatically by GitHub.
 
-## Installation
+# Installation
 
-### Windows
+## Windows
 
 1. Download https://download.wiredforwar.org/Game/Community-Build-1.5/machines-assets.7z. The archive has `machines` directory inside.
 2. Extract the archive (`machines-assets.7z`) to the wanted installation directory.
@@ -29,9 +29,11 @@ Windows builds are now done automatically by GitHub.
 
 Note: if you don't have `machines.exe` inside the extracted `machines` then maybe you've extracted the second archive into the first, which resulted in `machines/machines/machines.exe`. In order to get a correct installation, try to redo the steps from `#2`, this time make sure that you've extracted both archives into the same directory.
 
-### GNU/Linux
+## GNU/Linux
 
-#### Flatpak
+Note: the latest information about installation and troubleshooting is available at https://github.com/WiredForWar/machines/wiki/Linux.
+
+### Flatpak
 
 Use Flatpak to install the client (only amd64 for now):
 ```
@@ -40,10 +42,14 @@ flatpak install --user https://wiredforwar.github.io/flatpak/wiredforwar-machine
 or just open the linked file https://wiredforwar.github.io/flatpak/wiredforwar-machines.flatpakref with default Flatpak frontend.
 Flatpak (the manager) installation howto: https://flatpak.org/setup
 
-After the installation but *before* the first run, download the assets from https://lordovervolt.com/machines (e.g. http://markol.usermd.net/machines/machines-assets.7z) and extract them to `~/.var/app/io.github.wiredforwar.machines/data/`, so there are `sounds` and other assets inside the `~/.var/app/io.github.wiredforwar.machines/data/machines/data/machines` directory.
-Personally I also use the "Enlarged textures" (http://markol.usermd.net/machines/machines-models.7z). Those should be extracted to the `machines` directory so the `models/planet` from the archive overwrite the files at `~/.var/app/io.github.wiredforwar.machines/data/machines/models/`.
+### Providing the assets
+
+After the installation but *before* the first run (you can try to run but the game won't start), download the assets from https://lordovervolt.com/machines (e.g. http://markol.usermd.net/machines/machines-assets.7z or https://download.wiredforwar.org/Game/Community-Build-1.5/machines-assets.7z) and extract them to `~/.var/app/io.github.wiredforwar.machines/data/`, so there are `sounds` and other assets inside the `~/.var/app/io.github.wiredforwar.machines/data/machines/data/machines` directory.
+
+:warning: The directory does not exist before the first run. Don't worry and just create it manually (like in the first line of the script below).
+
 Here is a short script doing that for you:
-```
+```sh
 mkdir -p ~/.var/app/io.github.wiredforwar.machines/downloads
 cd ~/.var/app/io.github.wiredforwar.machines/downloads
 wget https://download.wiredforwar.org/Game/Community-Build-1.5/machines-assets.7z
@@ -57,11 +63,14 @@ On an update released you can use your preferred Flatpak frontend or install the
 ```
 flatpak update io.github.wiredforwar.machines
 ```
+
+### Logs
+
 The logs are in `~/.var/app/io.github.wiredforwar.machines/logs`, and the save files are in `~/.var/app/io.github.wiredforwar.machines/savegame`.
 
-### Development
+# Development
 
-#### Followed conventions
+## Followed conventions
 **The main code is spilt into a set of libraries:**
 - afx - SDL app window creation, string resources handling,
 - ani - smacker animations,
@@ -88,14 +97,14 @@ The logs are in `~/.var/app/io.github.wiredforwar.machines/logs`, and the save f
 - world4d - built on top of the render libraries, turned basic rendering into multi-mesh entities (W4dEntity is a base class for lot of things),
 - xin - .X mesh file loading into game engine (added now),
 
-#### Build dependencies
+## Build dependencies
 Use provided Docker image for building or manually setup your environment.
 
 `libsdl2-dev libsdl2-image-dev libopenal-dev libalure-dev libenet-dev libfreetype6-dev libglew-dev libglm-dev libaudio-dev libswscale-dev`
 
-####  Building
+##  Building
 
-##### For Windows on linux/docker
+### For Windows on linux/docker
 ```
 sudo apt-get install mingw-w64
 mkdir buildMingw64 && cd buildMingw64
@@ -110,22 +119,22 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw32.cmake -DBUILD_32=1 ..
 Extra parameters for release optimizations: 
 `-DCMAKE_BUILD_TYPE=RELEASE -DDEV_BUILD=OFF`
 
-##### For GNU/Linux
+### For GNU/Linux
 + `mkdir build && cd build`
 + `cmake ..`
 + `cmake --build . -j 9`
 
 For ARM SoC development boards (like Raspberry or Nitrogen8M) if you do not have cross compilation toolchain prepared it will be easier to boot-up one of dedicated system distribution and build it within this enviroment (takes approx one hour for 4 cores).
 
-##### Making a package
+### Making a package
 Run `make package` to collect all of the data files, graphics files, and compiled binaries into a single package file. You may then copy the contents of the package into your game's directory.
 
-### Debugging
+## Debugging
 
-#### Class invariant checks
+## Class invariant checks
 `export CB_INVARIANT_CHECKING=on`
 
-#### Debug streams
+## Debug streams
 To turn on a stream define environment variable with correct name, eg. `set CB_HAL_TO=cout` or in linux shell `export CB_HAL_TO=cout`.
 Target cout is a current shell of course, replace it with filename to write log into or leave empty to turn off.
 
