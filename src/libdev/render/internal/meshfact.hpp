@@ -47,7 +47,7 @@ private:
     // Operations deliberately revoked
     RenIMeshFactory(const RenIMeshFactory&);
     RenIMeshFactory& operator=(const RenIMeshFactory&);
-    bool operator==(const RenIMeshFactory&);
+    bool operator==(const RenIMeshFactory&) const;
 };
 
 #endif

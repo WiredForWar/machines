@@ -69,7 +69,7 @@ public:
     void CLASS_INVARIANT;
 
     friend std::ostream& operator<<(std::ostream& o, const MachLogProductionUnit& t);
-    bool operator==(const MachLogProductionUnit&);
+    bool operator==(const MachLogProductionUnit&) const;
     friend bool operator<(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rhs);
     friend bool operator>(const MachLogProductionUnit& lhs, const MachLogProductionUnit& rhs);
 

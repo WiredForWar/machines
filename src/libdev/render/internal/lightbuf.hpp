@@ -75,7 +75,7 @@ private:
     // Operations deliberately revoked.
     RenILightingBuffer(const RenILightingBuffer&);
     RenILightingBuffer& operator=(const RenILightingBuffer&);
-    bool operator==(const RenILightingBuffer&);
+    bool operator==(const RenILightingBuffer&) const;
 };
 
 std::ostream& operator<<(std::ostream&, const RenILightingBuffer&);

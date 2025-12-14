@@ -36,7 +36,7 @@ public:
     double asDouble() const;
 
     friend std::ostream& operator<<(std::ostream& o, const UtlUint64& t);
-    friend bool operator==(const UtlUint64&, const UtlUint64&);
+    bool operator==(const UtlUint64&) const;
 
 private:
     enum

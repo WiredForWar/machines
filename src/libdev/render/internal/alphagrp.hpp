@@ -33,7 +33,7 @@ protected:
     // Operations deliberately revoked.
     RenIDelayedAlphaGroup(const RenIDelayedAlphaGroup&);
     RenIDelayedAlphaGroup& operator=(const RenIDelayedAlphaGroup&);
-    bool operator==(const RenIDelayedAlphaGroup&);
+    bool operator==(const RenIDelayedAlphaGroup&) const;
 
     void print(std::ostream&) const override;
 };

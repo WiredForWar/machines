@@ -49,7 +49,7 @@ private:
     // Operations deliberately revoked (these objects are ref counted).
     RenITexBody(const RenITexBody&);
     RenITexBody& operator=(const RenITexBody&);
-    bool operator==(const RenITexBody&);
+    bool operator==(const RenITexBody&) const;
 };
 
 #ifdef _INLINE

@@ -36,8 +36,6 @@ public:
 private:
     ClassPair(const ClassPair&);
     ClassPair& operator=(const ClassPair&);
-    bool operator==(const ClassPair&);
-    bool operator!=(const ClassPair&);
 
     typedef std::pair<int, double> Pair;
 

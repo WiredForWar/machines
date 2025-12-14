@@ -68,9 +68,9 @@ inline UtlUint64& UtlUint64::operator-=(const UtlUint64& rhs)
     return *this;
 }
 
-inline bool operator==(const UtlUint64& a, const UtlUint64& b)
+inline bool UtlUint64::operator==(const UtlUint64& other) const
 {
-    return a.data_[UtlUint64::MS] == b.data_[UtlUint64::MS] and a.data_[UtlUint64::LS] == b.data_[UtlUint64::LS];
+    return data_[UtlUint64::MS] == other.data_[UtlUint64::MS] && data_[UtlUint64::LS] == other.data_[UtlUint64::LS];
 }
 
 inline std::ostream& operator<<(std::ostream& o, const UtlUint64& t)

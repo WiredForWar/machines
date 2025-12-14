@@ -110,7 +110,7 @@ private:
     UtlLineTokeniser& operator=(const UtlLineTokeniser&);
 
     // Operation deliberately revoked
-    bool operator==(const UtlLineTokeniser&);
+    bool operator==(const UtlLineTokeniser&) const;
 
     void getNextLine();
     void splitIntoTokens();

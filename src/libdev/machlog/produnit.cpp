@@ -183,7 +183,7 @@ void MachLogProductionUnit::needRebuild(bool rebuildSetting)
     needRebuild_ = rebuildSetting;
 }
 
-bool MachLogProductionUnit::operator==(const MachLogProductionUnit& t)
+bool MachLogProductionUnit::operator==(const MachLogProductionUnit& t) const
 {
     TEST_INVARIANT;
     bool result = type_ == t.type_ && subType_ == t.subType_ && hwLevel_ == t.hwLevel_ && swLevel_ == t.swLevel_
