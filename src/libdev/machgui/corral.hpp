@@ -37,6 +37,8 @@ public:
 
     ~MachGuiNewCorralIcon() override;
 
+    void setBitmap(const GuiBitmap& bitmap);
+
     static Gui::Box exteriorRelativeBoundary(const GuiBitmap& bitmap, const GuiBorderMetrics& m, const Gui::Coord& rel);
 
 protected:
@@ -99,6 +101,7 @@ private:
     bool operator==(const MachGuiCorralResource&) const;
 
     void updateHealthBar();
+    void updateIcon();
 
     MachCorralIcons* pParent_{};
     MachActor* pActor_{};

@@ -126,6 +126,11 @@ void MachGuiCorralResource::updateHealthBar()
     changed();
 }
 
+void MachGuiCorralResource::updateIcon()
+{
+    setBitmap(MachGui::getScaledImage(MachGuiCorralResource_hack(pActor_).pathname()));
+}
+
 //////////////////////////////////////////////////////////////////////
 
 // virtual
@@ -143,6 +148,10 @@ bool MachGuiCorralResource::beNotified(W4dSubject* pSubject, W4dSubject::Notific
                 HAL_STREAM("MGCorralRespource::beNotified with HEALTH_STATUIS_CHANGED\n");
                 if (clientData == MachLog::HEALTH_STATUS_CHANGED || clientData == MachLog::PERCENTAGE_COMPLETE_CHANGED)
                     updateHealthBar();
+                else if (clientData == MachLog::RACE_CHANGED)
+                {
+                    updateIcon();
+                }
             }
             break;
     }
@@ -501,6 +510,13 @@ MachGuiNewCorralIcon::MachGuiNewCorralIcon(GuiDisplayable* pParent, const Gui::C
 MachGuiNewCorralIcon::~MachGuiNewCorralIcon()
 {
     // Intentionally Empty
+}
+
+void MachGuiNewCorralIcon::setBitmap(const GuiBitmap& bitmap)
+{
+    bitmap_ = bitmap;
+
+    changed();
 }
 
 void MachGuiNewCorralIcon::doDisplayInteriorEnabled(const Gui::Coord& abs)
