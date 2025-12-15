@@ -57,140 +57,139 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
         }
     }
 
-    while (! finished && ! processed)
+    while (!finished && !processed)
     {
         switch (count)
         {
-            case 0:
-                processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
-                break;
-            case 1:
-                ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
-                processed = pImpl_->pCameras_->processButtonEvent(e);
+        case 0:
+            processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
+            break;
+        case 1:
+            ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
+            processed = pImpl_->pCameras_->processButtonEvent(e);
 
-                static const auto & hidePanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-hide"_bind);
-                static const auto & showPanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-show"_bind);
+            static const auto& hidePanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-hide"_bind);
+            static const auto& showPanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-show"_bind);
 
-                if (e.state() == Gui::PRESSED)
+            if (e.state() == Gui::PRESSED)
+            {
+                if (pImpl_->controlPanelOn_ && hidePanelTrigger.matches(e.keyWithMods()))
                 {
-                    if (pImpl_->controlPanelOn_ && hidePanelTrigger.matches(e.keyWithMods()))
-                    {
-                        pImpl_->controlPanelOn_ = false;
-                        processed = true;
-                    }
-                    else if (showPanelTrigger.matches(e.keyWithMods()))
-                    {
-                        pImpl_->controlPanelOn_ = true;
-                        processed = true;
-                    }
+                    pImpl_->controlPanelOn_ = false;
+                    processed = true;
                 }
-                break;
-            case 2:
-                ASSERT(pImpl_->pSquadronBank_, "pSquadronBank_ is NULL");
-                processed = pImpl_->pSquadronBank_->processButtonEvent(e.buttonEvent());
-                break;
-            case 3:
-                ASSERT(pImpl_->pMachineNavigation_, "pMachineNavigation_ is NULL");
-                processed = pImpl_->pMachineNavigation_->processButtonEvent(e.buttonEvent());
-                break;
-            case 4:
-                ASSERT(pImpl_->pConstructionNavigation_, "pConstructionNavigation_ is NULL");
-                processed = pImpl_->pConstructionNavigation_->processButtonEvent(e.buttonEvent());
-                break;
-            case 5:
-                ASSERT(pImpl_->pWorldViewWindow_, "pWorldViewWindow_ is NULL");
-                processed = pImpl_->pWorldViewWindow_->processButtonEvent(e.buttonEvent());
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                if (e.key() == Device::KeyCode::ESCAPE && e.state() == Gui::PRESSED)
+                else if (showPanelTrigger.matches(e.keyWithMods()))
                 {
-                    if (isMachineNavigationContext() || isConstructionNavigationContext())
+                    pImpl_->controlPanelOn_ = true;
+                    processed = true;
+                }
+            }
+            break;
+        case 2:
+            ASSERT(pImpl_->pSquadronBank_, "pSquadronBank_ is NULL");
+            processed = pImpl_->pSquadronBank_->processButtonEvent(e.buttonEvent());
+            break;
+        case 3:
+            ASSERT(pImpl_->pMachineNavigation_, "pMachineNavigation_ is NULL");
+            processed = pImpl_->pMachineNavigation_->processButtonEvent(e.buttonEvent());
+            break;
+        case 4:
+            ASSERT(pImpl_->pConstructionNavigation_, "pConstructionNavigation_ is NULL");
+            processed = pImpl_->pConstructionNavigation_->processButtonEvent(e.buttonEvent());
+            break;
+        case 5:
+            ASSERT(pImpl_->pWorldViewWindow_, "pWorldViewWindow_ is NULL");
+            processed = pImpl_->pWorldViewWindow_->processButtonEvent(e.buttonEvent());
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            if (e.key() == Device::KeyCode::ESCAPE && e.state() == Gui::PRESSED)
+            {
+                if (isMachineNavigationContext() || isConstructionNavigationContext())
+                {
+                    mainMenuOrSingleFactoryContext();
+                }
+                else
+                {
+                    pImpl_->switchToMenus_ = true;
+                }
+
+                processed = true;
+            }
+            break;
+        case 9: // F10 gets you into menus
+            if (e.key() == Device::KeyCode::F10 && e.state() == Gui::PRESSED)
+            {
+                pImpl_->switchToMenus_ = true;
+                processed = true;
+            }
+            break;
+        case 10: // Screen shot
+            static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+            if (e.state() == Gui::PRESSED && screenshotTrigger.matches(e.keyWithMods()))
+            {
+                initiateScreenShot();
+                processed = true;
+            }
+            break;
+        case 11: // Command hot keys
+        {
+            std::optional<uint> skipCommand;
+            if (pActiveCommand_)
+            {
+                skipCommand = pActiveCommand_->cursorPromptStringId();
+                processed = pActiveCommand_->processButtonEvent(e);
+            }
+            for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && !processed; ++iter)
+            {
+                if (skipCommand.has_value() && ((*iter)->cursorPromptStringId() == skipCommand))
+                {
+                    continue;
+                }
+                processed = (*iter)->processButtonEvent(e);
+            }
+        }
+        break;
+        case 12: // Go inhead
+            static const auto& toggleFpvTrigger = MachGui::inputRegistry()->getBinds("view-toggle-fpv"_bind);
+            if (e.state() == Gui::PRESSED && toggleFpvTrigger.matches(e.keyWithMods()))
+            {
+                if (pFirstPerson_->okayToSwitchTo1stPerson())
+                {
+                    switchToInHead();
+                    processed = true;
+                }
+            }
+            break;
+        case 13: // Pause game
+            if (e.key() == Device::KeyCode::BREAK && e.state() == Gui::PRESSED)
+            {
+                // Can't pause game in multiplayer games
+                if (!MachLogNetwork::instance().isNetworkGame() && actualGameState() == PLAYING)
+                {
+                    if (SimManager::instance().isSuspended())
                     {
-                        mainMenuOrSingleFactoryContext();
+                        SimManager::instance().resume();
+                        MachLogVoiceMailManager::instance().acceptMailPostings(true);
                     }
                     else
                     {
-                        pImpl_->switchToMenus_ = true;
+                        SimManager::instance().suspend();
+                        MachLogVoiceMailManager::instance().acceptMailPostings(false);
                     }
 
                     processed = true;
                 }
-                break;
-            case 9: // F10 gets you into menus
-                if (e.key() == Device::KeyCode::F10 && e.state() == Gui::PRESSED)
-                {
-                    pImpl_->switchToMenus_ = true;
-                    processed = true;
-                }
-                break;
-            case 10: // Screen shot
-                static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
-                if (e.state() == Gui::PRESSED && screenshotTrigger.matches(e.keyWithMods()))
-                {
-                    initiateScreenShot();
-                    processed = true;
-                }
-                break;
-            case 11: // Command hot keys
-                {
-                    std::optional<uint> skipCommand;
-                    if (pActiveCommand_)
-                    {
-                        skipCommand = pActiveCommand_->cursorPromptStringId();
-                        processed = pActiveCommand_->processButtonEvent(e);
-                    }
-                    for (Commands::iterator iter = allCommands_.begin(); iter != allCommands_.end() && !processed;
-                         ++iter)
-                    {
-                        if (skipCommand.has_value() && ((*iter)->cursorPromptStringId() == skipCommand))
-                        {
-                            continue;
-                        }
-                        processed = (*iter)->processButtonEvent(e);
-                    }
-                }
-                break;
-            case 12: // Go inhead
-                static const auto & toggleFpvTrigger = MachGui::inputRegistry()->getBinds("view-toggle-fpv"_bind);
-                if (e.state() == Gui::PRESSED && toggleFpvTrigger.matches(e.keyWithMods()))
-                {
-                    if (pFirstPerson_->okayToSwitchTo1stPerson())
-                    {
-                        switchToInHead();
-                        processed = true;
-                    }
-                }
-                break;
-            case 13: // Pause game
-                if (e.key() == Device::KeyCode::BREAK && e.state() == Gui::PRESSED)
-                {
-                    // Can't pause game in multiplayer games
-                    if (! MachLogNetwork::instance().isNetworkGame() && actualGameState() == PLAYING)
-                    {
-                        if (SimManager::instance().isSuspended())
-                        {
-                            SimManager::instance().resume();
-                            MachLogVoiceMailManager::instance().acceptMailPostings(true);
-                        }
-                        else
-                        {
-                            SimManager::instance().suspend();
-                            MachLogVoiceMailManager::instance().acceptMailPostings(false);
-                        }
-
-                        processed = true;
-                    }
-                }
-            case 14:
-                processed = MachLogRecentEventsManager::instance().doHandleKeyEvent(e);
-                break;
-            default:
-                finished = true;
-                break;
+            }
+        case 14:
+            processed = MachLogRecentEventsManager::instance().doHandleKeyEvent(e);
+            break;
+        default:
+            finished = true;
+            break;
         }
 
         NEIL_STREAM("Keyboard event " << count << " processed " << (processed ? "true" : "false") << std::endl);
@@ -201,7 +200,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     NEIL_STREAM("COUNT " << count << std::endl);
 
 #ifndef PRODUCTION
-    if ((! getenv("cb_nokeyboardhacks")) && (!(count == 1)))
+    if ((!getenv("cb_nokeyboardhacks")) && (!(count == 1)))
     {
         doHandleKeyEventHacks(e);
     }
@@ -220,7 +219,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
     if (e.key() == Device::KeyCode::KEY_M && e.isShiftPressed() && e.isCtrlPressed() && e.state() == Gui::PRESSED)
     {
         static bool fogOfWarOn = true;
-        fogOfWarOn = ! fogOfWarOn;
+        fogOfWarOn = !fogOfWarOn;
         pImpl_->pContinentMap_->fogOfWarOn(fogOfWarOn);
     }
 
@@ -270,7 +269,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             else
                 pImpl_->pSceneManager_->showStats(0.333);
 
-            showStats = ! showStats;
+            showStats = !showStats;
         }
 
         if (e.key() == Device::KeyCode::F8 && e.isShiftPressed() && e.isCtrlPressed())
@@ -291,7 +290,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
         if (e.key() == Device::KeyCode::F9 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            pImpl_->showCurrentMachine_ = ! pImpl_->showCurrentMachine_;
+            pImpl_->showCurrentMachine_ = !pImpl_->showCurrentMachine_;
         }
 
         if (e.key() == Device::KeyCode::F11)
