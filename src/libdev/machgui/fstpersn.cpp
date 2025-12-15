@@ -1937,8 +1937,18 @@ void MachGuiFirstPerson::displayHealthArmour()
         const double healthHeight = healthBmp_.height();
         const double armourHeight = armourBmp_.height();
 
-        double displayHealthHeight = healthHeight * pTargetActor_->hpRatio();
-        double displayArmourHeight = armourHeight * pTargetActor_->armourRatio();
+        double displayHealthHeight{};
+        double displayArmourHeight{};
+        if (pTargetActor_->objectType() == MachLog::LAND_MINE)
+        {
+            displayHealthHeight = healthHeight;
+            displayArmourHeight = armourHeight;
+        }
+        else
+        {
+            displayHealthHeight = healthHeight * pTargetActor_->hpRatio();
+            displayArmourHeight = armourHeight * pTargetActor_->armourRatio();
+        }
 
         const int barYOffset = -9;
         const Gui::Coord hpBarCoord = Gui::Coord(-33, barYOffset) * Gui::uiScaleFactor();
