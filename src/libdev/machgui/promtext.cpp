@@ -685,6 +685,8 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                         {
                             pInGameScreen_->instantExit(true);
                         }
+
+                        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
                     }
                 }
 
