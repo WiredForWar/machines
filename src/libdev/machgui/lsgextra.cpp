@@ -42,7 +42,7 @@ void MachGuiLoadSaveGameExtras::perWriteExtras(PerOstream& ostr)
 
 void MachGuiLoadSaveGameExtras::perReadExtras(PerIstream& istr)
 {
-    pInGameScreen_->loadSavedGame(MachLogRaces::instance().currentPlanet(), istr);
+    pInGameScreen_->loadGame(MachLogRaces::instance().currentPlanet(), &istr);
 }
 
 /* End LSGEXTRA.CPP *************************************************/

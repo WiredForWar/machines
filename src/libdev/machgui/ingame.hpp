@@ -20,6 +20,7 @@
 #include "machgui/igcurs2d.hpp"
 
 #include <memory>
+#include <optional>
 
 // Forward refs
 class IProgressReporter;
@@ -51,13 +52,10 @@ public:
     ~MachInGameScreen() override;
 
     // Create the cameras, initialises button display values and map
-    void loadGame(const std::string& planet);
+    void loadGame(const std::string& planet, std::optional<PerIstream *> savedStream = std::nullopt);
 
     // Save info
     void saveGame(PerOstream& outStream);
-
-    // Load saved game. There is no need to call "loadGame" as well!
-    void loadSavedGame(const std::string& planet, PerIstream& inStream);
 
     // Delete the game's cameras
     void unloadGame();

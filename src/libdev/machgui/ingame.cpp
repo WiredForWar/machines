@@ -2423,7 +2423,7 @@ bool MachInGameScreen::rubberBandSelectionHappening() const
     return pWorldViewWindow_->rubberBandSelectionHappening();
 }
 
-void MachInGameScreen::loadGame(const std::string& planet)
+void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstream *> savedStream)
 {
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pContinentMap_);
@@ -2442,8 +2442,17 @@ void MachInGameScreen::loadGame(const std::string& planet)
     // Don't allow any of the button setting below to trigger their sounds
     MachGuiSoundManager::instance().delaySounds();
 
-    pCameras_->loadGame();
-    pContinentMap_->loadGame(planet);
+    if (savedStream.has_value())
+    {
+        pCameras_->loadSavedGame(*savedStream.value());
+        pContinentMap_->loadSavedGame(planet, *savedStream.value());
+    }
+    else
+    {
+        pCameras_->loadGame();
+        pContinentMap_->loadGame(planet);
+    }
+
     pWorldViewWindow_->loadGame();
     pSquadronBank_->loadGame();
     pMachineNavigation_->loadGame();
@@ -2781,51 +2790,6 @@ void MachInGameScreen::saveGame(PerOstream& outStream)
 
     pCameras_->saveGame(outStream);
     pContinentMap_->saveGame(outStream);
-}
-
-void MachInGameScreen::loadSavedGame(const std::string& planet, PerIstream& inStream)
-{
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL_AUTO(pContinentMap_);
-    CB_DEPIMPL_AUTO(pCameras_);
-    CB_DEPIMPL_AUTO(pWorldViewWindow_);
-    CB_DEPIMPL_AUTO(pSquadronBank_);
-    CB_DEPIMPL_AUTO(pMachineNavigation_);
-    CB_DEPIMPL_AUTO(pConstructionNavigation_);
-    CB_DEPIMPL_AUTO(pBmuButton_);
-    CB_DEPIMPL_AUTO(gameState_);
-    CB_DEPIMPL_AUTO(pMachinesIcon_);
-    CB_DEPIMPL_AUTO(pConstructionsIcon_);
-    CB_DEPIMPL_AUTO(pSquadronIcon_);
-    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
-    CB_DEPIMPL_AUTO(pControlPanel_);
-
-    // Don't allow any of the button setting below to trigger their sounds
-    MachGuiSoundManager::instance().delaySounds();
-
-    pCameras_->loadSavedGame(inStream);
-    pContinentMap_->loadSavedGame(planet, inStream);
-    pWorldViewWindow_->loadGame();
-    pSquadronBank_->loadGame();
-    pMachineNavigation_->loadGame();
-    pConstructionNavigation_->loadGame();
-    pMachinesIcon_->loadGame();
-    pConstructionsIcon_->loadGame();
-    pSquadronIcon_->loadGame();
-    pControlPanel_->setupDecalBitmaps();
-
-    // button should start depressed.
-    pBmuButton_->setDepressed(true);
-
-    // Switch to main menu context.
-    mainMenuContext();
-
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(this, Gui::Box(202, 0, 640, 37));
-    }
-
-    gameState_ = PLAYING;
 }
 
 MachGuiControlPanel& MachInGameScreen::controlPanel()
