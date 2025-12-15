@@ -65,6 +65,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
             break;
         case 1:
+        {
             ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
             processed = pImpl_->pCameras_->processButtonEvent(e);
 
@@ -85,6 +86,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
             }
             break;
+        }
         case 2:
             ASSERT(pImpl_->pSquadronBank_, "pSquadronBank_ is NULL");
             processed = pImpl_->pSquadronBank_->processButtonEvent(e.buttonEvent());
@@ -128,6 +130,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             }
             break;
         case 10: // Screen shot
+        {
             static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
             if (e.state() == Gui::PRESSED && screenshotTrigger.matches(e.keyWithMods()))
             {
@@ -135,6 +138,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 processed = true;
             }
             break;
+        }
         case 11: // Command hot keys
         {
             std::optional<uint> skipCommand;
@@ -151,9 +155,10 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 processed = (*iter)->processButtonEvent(e);
             }
+            break;
         }
-        break;
         case 12: // Go inhead
+        {
             static const auto& toggleFpvTrigger = MachGui::inputRegistry()->getBinds("view-toggle-fpv"_bind);
             if (e.state() == Gui::PRESSED && toggleFpvTrigger.matches(e.keyWithMods()))
             {
@@ -164,6 +169,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
             }
             break;
+        }
         case 13: // Pause game
             if (e.key() == Device::KeyCode::BREAK && e.state() == Gui::PRESSED)
             {
@@ -184,6 +190,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                     processed = true;
                 }
             }
+            break;
         case 14:
             processed = MachLogRecentEventsManager::instance().doHandleKeyEvent(e);
             break;
