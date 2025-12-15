@@ -1384,64 +1384,71 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
             processed = pKeyTranslator_->translate(event.buttonEvent(), &commandList_);
             break;
         case 2: // Exit first person
-            if (((event.key() == Device::KeyCode::ESCAPE) || (event.key() == Device::KeyCode::GRAVE))
-                && event.state() == Gui::PRESSED)
+            if (event.state() == Gui::PRESSED)
             {
-                switchToInGame();
-                processed = true;
-            }
-            else if (event.key() == Device::KeyCode::PAD_0 && event.state() == Gui::PRESSED)
-            {
-                switchBackToGroundCamera_ = true;
-                switchToInGame();
-                processed = true;
-            }
-            else if (event.key() == Device::KeyCode::PAD_2 && event.state() == Gui::PRESSED)
-            {
-                switchBackToGroundCamera_ = false;
-                switchToInGame();
-                processed = true;
-            }
-            break;
-        case 3: // Switch to ingame menus
-            if (event.key() == Device::KeyCode::F10 && event.state() == Gui::PRESSED)
-            {
-                switchToMenus_ = true;
-                processed = true;
-            }
-        case 4: // Screen shot
-            static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
-            if (event.state() == Gui::PRESSED && screenshotTrigger.matches(event.keyWithMods()))
-            {
-                pInGameScreen_->initiateScreenShot();
-                processed = true;
-            }
-        case 5:
-            if (event.key() == Device::KeyCode::KEY_N && event.state() == Gui::PRESSED && pActor_)
-            {
-                if (pActor_->objectIsMachine() && !pActor_->asMachine().hasNVG())
+                static const auto& fpvExitTrigger = MachGui::inputRegistry()->getBinds("fpv-exit"_bind);
+                static const auto& toggleFpvTrigger = MachGui::inputRegistry()->getBinds("view-toggle-fpv"_bind);
+                static const auto& toggleFpvNightVision
+                    = MachGui::inputRegistry()->getBinds("fpv-toggle-night-vision"_bind);
+                static const auto& groundCameraTrigger
+                    = MachGui::inputRegistry()->getBinds("view-use-ground-camera"_bind);
+                static const auto& zenithCameraTrigger
+                    = MachGui::inputRegistry()->getBinds("view-use-zenith-camera"_bind);
+                static const auto& fpvMenusTrigger = MachGui::inputRegistry()->getBinds("fpv-menus"_bind);
+                static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+                if (fpvExitTrigger.matches(event.keyWithMods()) || toggleFpvTrigger.matches(event.keyWithMods()))
                 {
-                    // do nothing
+                    switchToInGame();
+                    processed = true;
                 }
-                else
+                else if (groundCameraTrigger.matches(event.keyWithMods()))
                 {
-                    // Get the environment safely from the logical planet
-                    W4dEnvironment& env = MachLogPlanet::instance().surface()->environment();
-
-                    if (env.isNvgOn())
+                    switchBackToGroundCamera_ = true;
+                    switchToInGame();
+                    processed = true;
+                }
+                else if (zenithCameraTrigger.matches(event.keyWithMods()))
+                {
+                    switchBackToGroundCamera_ = false;
+                    switchToInGame();
+                    processed = true;
+                }
+                else if (fpvMenusTrigger.matches(event.keyWithMods()))
+                {
+                    switchToMenus_ = true;
+                    processed = true;
+                }
+                else if (screenshotTrigger.matches(event.keyWithMods()))
+                {
+                    pInGameScreen_->initiateScreenShot();
+                    processed = true;
+                }
+                else if (toggleFpvNightVision.matches(event.keyWithMods()) && pActor_)
+                {
+                    if (pActor_->objectIsMachine() && !pActor_->asMachine().hasNVG())
                     {
-                        env.nvgOn(false);
-                        machineNVGOn_ = false;
+                        // do nothing
                     }
                     else
                     {
-                        env.nvgOn(true);
-                        machineNVGOn_ = true;
+                        // Get the environment safely from the logical planet
+                        W4dEnvironment& env = MachLogPlanet::instance().surface()->environment();
+
+                        if (env.isNvgOn())
+                        {
+                            env.nvgOn(false);
+                            machineNVGOn_ = false;
+                        }
+                        else
+                        {
+                            env.nvgOn(true);
+                            machineNVGOn_ = true;
+                        }
                     }
+                    processed = true;
                 }
-                processed = true;
             }
-        case 6: // Pause game
+        case 3: // Pause game
             if (event.key() == Device::KeyCode::BREAK && event.state() == Gui::PRESSED)
             {
                 // Can't pause game in multiplayer games
