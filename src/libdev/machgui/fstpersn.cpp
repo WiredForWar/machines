@@ -86,29 +86,29 @@ public:
 
             switch (pInGameScreen_->actualGameState())
             {
-                case MachInGameScreen::WON:
-                    if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                    {
-                        pausedBmp = Gui::bitmap("gui/misc/complete.bmp");
-                    }
-                    else
-                    {
-                        pausedBmp = Gui::bitmap("gui/misc/victory.bmp");
-                    }
-                    break;
-                case MachInGameScreen::LOST:
-                    if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                    {
-                        pausedBmp = Gui::bitmap("gui/misc/failed.bmp");
-                    }
-                    else
-                    {
-                        pausedBmp = Gui::bitmap("gui/misc/defeat.bmp");
-                    }
-                    break;
-                default:
-                    pausedBmp = Gui::bitmap("gui/misc/paused.bmp");
-                    break;
+            case MachInGameScreen::WON:
+                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+                {
+                    pausedBmp = Gui::bitmap("gui/misc/complete.bmp");
+                }
+                else
+                {
+                    pausedBmp = Gui::bitmap("gui/misc/victory.bmp");
+                }
+                break;
+            case MachInGameScreen::LOST:
+                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+                {
+                    pausedBmp = Gui::bitmap("gui/misc/failed.bmp");
+                }
+                else
+                {
+                    pausedBmp = Gui::bitmap("gui/misc/defeat.bmp");
+                }
+                break;
+            default:
+                pausedBmp = Gui::bitmap("gui/misc/paused.bmp");
+                break;
             }
 
             pausedBmp.enableColourKeying();
@@ -192,7 +192,7 @@ public:
     bool reverseUpDownKeys_;
     bool reverseUpDownMouse_;
     MexBasicRandom hitInterferenceRandom_;
-    bool machineNVGOn_= false;
+    bool machineNVGOn_ = false;
     double startupTimer_;
     bool finishedStartupSequence_ = false;
     bool isHitInterferenceOn_;
@@ -244,7 +244,8 @@ MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*,
     // Setup keyboard translator
     pKeyTranslator_ = new DevKeyToCommandTranslator();
     const auto addTranslation
-        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId) {
+        = [](DevKeyToCommandTranslator* pKeyTranslator_, DevKeyToCommand::CommandId command, MachGui::BindId bindId)
+    {
         const auto& trigger = MachGui::inputRegistry()->getBinds(bindId);
         pKeyTranslator_->addTranslation(DevKeyToCommand(command, &trigger));
     };
@@ -342,7 +343,7 @@ void MachGuiFirstPerson::doDisplay()
     CB_DEPIMPL(bool, finishedStartupSequence_);
     CB_DEPIMPL(int, frameNumber_);
 
-    if (borderDrawCount_ || ! finishedStartupSequence_)
+    if (borderDrawCount_ || !finishedStartupSequence_)
     {
         // Get screen dimensions
         RenDevice& device = *pSceneManager_->pDevice();
@@ -423,12 +424,12 @@ void MachGuiFirstPerson::update()
     }
 
     // Check to see if we should automatically leave 1st person
-    if (! isDead_)
+    if (!isDead_)
     {
         MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
         // If the actor has been deleted or has changed race then exit the actor
-        if (! pActor_ || pActor_->isDead() || pActor_->race() != playerRace)
+        if (!pActor_ || pActor_->isDead() || pActor_->race() != playerRace)
         {
             isDead_ = true;
             timeOfDeath_ = Phys::time();
@@ -553,7 +554,7 @@ void MachGuiFirstPerson::update()
         // The command icons should not light up if there's nobody selected. This value will be used more further
         // down...
         bool canIssueCommands = logHandler.getActiveSquadron().hasActiveSquadron();
-        if (! canIssueCommands)
+        if (!canIssueCommands)
         {
             pCommandWidget_->setAttackIconState(MachGuiFPCommand::CommandIconState::INVALID);
             pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::INVALID);
@@ -609,8 +610,7 @@ void MachGuiFirstPerson::update()
         }
 
         // Centre head...
-        if (commandList_[CENTREHEAD].on()
-            || (rightMouseButtonHeadTurningUsed_ && ! DevMouse::instance().rightButton()))
+        if (commandList_[CENTREHEAD].on() || (rightMouseButtonHeadTurningUsed_ && !DevMouse::instance().rightButton()))
         {
             rightMouseButtonHeadTurningUsed_ = false;
 
@@ -663,7 +663,8 @@ void MachGuiFirstPerson::update()
         {
             // Work out if body should be turning at fast rate
             bool turnFast = false;
-            if (! DevKeyboard::instance().ctrlPressed() && ((relMove.x() < -10.0 || relMove.x() > 10.0) || relMove.x() == 0.0))
+            if (!DevKeyboard::instance().ctrlPressed()
+                && ((relMove.x() < -10.0 || relMove.x() > 10.0) || relMove.x() == 0.0))
             {
                 turnFast = true;
             }
@@ -760,17 +761,17 @@ void MachGuiFirstPerson::update()
                 bool anglesValid = logHandler.targetAnglesValid();
 
                 // Display attack cursor or miss cursor
-                if (! pAttackCursor_->isVisible() && anglesValid)
+                if (!pAttackCursor_->isVisible() && anglesValid)
                 {
                     // Attack cursor has just come on line. play sound
                     MachGuiSoundManager::instance().playSound("gui/sounds/attackon.wav");
                 }
                 pAttackCursor_->isVisible(anglesValid);
-                pMissCursor_->isVisible(! anglesValid);
+                pMissCursor_->isVisible(!anglesValid);
             }
             else
             {
-                if (! pMissCursor_->isVisible())
+                if (!pMissCursor_->isVisible())
                 {
                     // Attack cursor has just come on line. play sound
                     MachGuiSoundManager::instance().playSound("gui/sounds/friendon.wav");
@@ -821,7 +822,7 @@ void MachGuiFirstPerson::update()
                 pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::VALID);
 
                 // Only light up Move Icon when pointing at navigable ground AND when the indicator disappears
-                if (viableMoveToTarget && ! moveIndicatorPresent)
+                if (viableMoveToTarget && !moveIndicatorPresent)
                 {
                     pCommandWidget_->setMoveIconState(MachGuiFPCommand::CommandIconState::VALID);
                 }
@@ -835,7 +836,7 @@ void MachGuiFirstPerson::update()
         // Display normal or startup cursor - This is the CROSSHAIRS btw
         if (pStartCursor_->cellIndex() == pStartCursor_->numCells() - 1)
         {
-            pNormalCursor_->isVisible(! viableTarget || ! viableShootingTarget);
+            pNormalCursor_->isVisible(!viableTarget || !viableShootingTarget);
             pStartCursor_->isVisible(false);
         }
         else
@@ -855,9 +856,9 @@ void MachGuiFirstPerson::update()
         {
             bool canFire = false;
             // Check that at least one weapon can fire
-            for (uint weaponIndex = 0; weaponIndex < logHandler.nWeapons() && ! canFire; ++weaponIndex)
+            for (uint weaponIndex = 0; weaponIndex < logHandler.nWeapons() && !canFire; ++weaponIndex)
             {
-                if (! targetingInfo.shootingTarget && logHandler.weaponCanOnlyFireAtActor(weaponIndex))
+                if (!targetingInfo.shootingTarget && logHandler.weaponCanOnlyFireAtActor(weaponIndex))
                 {
                     // canFire remains as false
                 }
@@ -872,7 +873,7 @@ void MachGuiFirstPerson::update()
                 }
             }
 
-            if (! canFire)
+            if (!canFire)
             {
                 // timeWeaponsFired_ stops sound from being triggered over and over
                 if (now - timeWeaponsFired_ > 0.8)
@@ -906,7 +907,7 @@ void MachGuiFirstPerson::update()
 
         if (commandList_[COMMAND_ORDER_FOLLOW].on() && canIssueCommands)
         {
-            if (! viableTarget) // FOLLOW SELF
+            if (!viableTarget) // FOLLOW SELF
             {
                 pCommandWidget_->setFollowIconState(MachGuiFPCommand::CommandIconState::ACTIVATED);
                 logHandler.getActiveSquadron().issueFollowCommand(pActor_);
@@ -922,8 +923,8 @@ void MachGuiFirstPerson::update()
             }
         }
 
-        if (commandList_[COMMAND_ORDER_MOVE].on() && canIssueCommands && viableMoveToTarget && ! viableTarget
-            && ! moveIndicatorPresent)
+        if (commandList_[COMMAND_ORDER_MOVE].on() && canIssueCommands && viableMoveToTarget && !viableTarget
+            && !moveIndicatorPresent)
         {
             const auto& point = targetingInfo.getCommandPoint();
             pCommandWidget_->setMoveIconState(MachGuiFPCommand::CommandIconState::ACTIVATED);
@@ -947,7 +948,7 @@ void MachGuiFirstPerson::update()
         startupTimer_ = now;
     }
 
-    if (! finishedStartupSequence_)
+    if (!finishedStartupSequence_)
     {
         double timeDiff = now - startupTimer_;
         timeDiff *= (STARTUP_SEQUENCE_FRAMES / STARTUP_SEQUENCE_TIME);
@@ -965,7 +966,7 @@ void MachGuiFirstPerson::update()
                 }
             }
 
-            if (! isHitInterferenceOn_)
+            if (!isHitInterferenceOn_)
             {
                 isHitInterferenceOn_ = true;
                 int randomInt = mexRandomInt(&hitInterferenceRandom_, 0, 2);
@@ -1020,11 +1021,11 @@ void MachGuiFirstPerson::update()
                 pInGameScreen_->sceneManager().pDevice()->interferenceOff();
 
                 // Turn NVG on/off
-                if (! env.isNvgOn() && machineNVGOn_)
+                if (!env.isNvgOn() && machineNVGOn_)
                 {
                     env.nvgOn(true);
                 }
-                else if (env.isNvgOn() && ! machineNVGOn_)
+                else if (env.isNvgOn() && !machineNVGOn_)
                 {
                     env.nvgOn(false);
                 }
@@ -1054,7 +1055,7 @@ void MachGuiFirstPerson::update()
 
                         if (randomInt == 0)
                         {
-                            if (! env.isNvgOn())
+                            if (!env.isNvgOn())
                             {
                                 pInGameScreen_->sceneManager().pDevice()->interferenceOff();
                                 env.nvgOn(true);
@@ -1192,7 +1193,8 @@ void MachGuiFirstPerson::doBecomeRoot()
     // Create FP Command Widget
     if (pCommandWidget_ == nullptr)
     {
-        pCommandWidget_ = new MachGuiFPCommand(this, Gui::Coord(21 * Gui::uiScaleFactor(), h - 187 * Gui::uiScaleFactor()));
+        pCommandWidget_
+            = new MachGuiFPCommand(this, Gui::Coord(21 * Gui::uiScaleFactor(), h - 187 * Gui::uiScaleFactor()));
     }
 
     // Embody the actor
@@ -1356,112 +1358,112 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
     {
         processed = true;
 
-        if ((event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::SPACE) && event.state() == Gui::PRESSED)
+        if ((event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::SPACE)
+            && event.state() == Gui::PRESSED)
         {
             switchToInGame();
         }
     }
 
-    while (! finished && ! processed)
+    while (!finished && !processed)
     {
         switch (count)
         {
-            case 0: // Weapon selection
+        case 0: // Weapon selection
+        {
+            DevKeyToCommandTranslator::CommandId commandId;
+            bool found = pKeyTranslator_->translate(event.buttonEvent(), &commandId);
+            if (found && commandId == WEAPONSELECT && event.state() == Gui::RELEASED && pLogHandler_ && pActor_)
+            {
+                processed = true;
+                doWeaponSelect();
+            }
+        }
+        break;
+        case 1: // Weapon fire, general machine motion
+            processed = pKeyTranslator_->translate(event.buttonEvent(), &commandList_);
+            break;
+        case 2: // Exit first person
+            if (((event.key() == Device::KeyCode::ESCAPE) || (event.key() == Device::KeyCode::GRAVE))
+                && event.state() == Gui::PRESSED)
+            {
+                switchToInGame();
+                processed = true;
+            }
+            else if (event.key() == Device::KeyCode::PAD_0 && event.state() == Gui::PRESSED)
+            {
+                switchBackToGroundCamera_ = true;
+                switchToInGame();
+                processed = true;
+            }
+            else if (event.key() == Device::KeyCode::PAD_2 && event.state() == Gui::PRESSED)
+            {
+                switchBackToGroundCamera_ = false;
+                switchToInGame();
+                processed = true;
+            }
+            break;
+        case 3: // Switch to ingame menus
+            if (event.key() == Device::KeyCode::F10 && event.state() == Gui::PRESSED)
+            {
+                switchToMenus_ = true;
+                processed = true;
+            }
+        case 4: // Screen shot
+            static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
+            if (event.state() == Gui::PRESSED && screenshotTrigger.matches(event.keyWithMods()))
+            {
+                pInGameScreen_->initiateScreenShot();
+                processed = true;
+            }
+        case 5:
+            if (event.key() == Device::KeyCode::KEY_N && event.state() == Gui::PRESSED && pActor_)
+            {
+                if (pActor_->objectIsMachine() && !pActor_->asMachine().hasNVG())
                 {
-                    DevKeyToCommandTranslator::CommandId commandId;
-                    bool found = pKeyTranslator_->translate(event.buttonEvent(), &commandId);
-                    if (found && commandId == WEAPONSELECT && event.state() == Gui::RELEASED && pLogHandler_
-                        && pActor_)
+                    // do nothing
+                }
+                else
+                {
+                    // Get the environment safely from the logical planet
+                    W4dEnvironment& env = MachLogPlanet::instance().surface()->environment();
+
+                    if (env.isNvgOn())
                     {
-                        processed = true;
-                        doWeaponSelect();
-                    }
-                }
-                break;
-            case 1: // Weapon fire, general machine motion
-                processed = pKeyTranslator_->translate(event.buttonEvent(), &commandList_);
-                break;
-            case 2: // Exit first person
-                if (((event.key() == Device::KeyCode::ESCAPE) || (event.key() == Device::KeyCode::GRAVE))
-                    && event.state() == Gui::PRESSED)
-                {
-                    switchToInGame();
-                    processed = true;
-                }
-                else if (event.key() == Device::KeyCode::PAD_0 && event.state() == Gui::PRESSED)
-                {
-                    switchBackToGroundCamera_ = true;
-                    switchToInGame();
-                    processed = true;
-                }
-                else if (event.key() == Device::KeyCode::PAD_2 && event.state() == Gui::PRESSED)
-                {
-                    switchBackToGroundCamera_ = false;
-                    switchToInGame();
-                    processed = true;
-                }
-                break;
-            case 3: // Switch to ingame menus
-                if (event.key() == Device::KeyCode::F10 && event.state() == Gui::PRESSED)
-                {
-                    switchToMenus_ = true;
-                    processed = true;
-                }
-            case 4: // Screen shot
-                static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
-                if (event.state() == Gui::PRESSED && screenshotTrigger.matches(event.keyWithMods()))
-                {
-                    pInGameScreen_->initiateScreenShot();
-                    processed = true;
-                }
-            case 5:
-                if (event.key() == Device::KeyCode::KEY_N && event.state() == Gui::PRESSED && pActor_)
-                {
-                    if (pActor_->objectIsMachine() && ! pActor_->asMachine().hasNVG())
-                    {
-                        // do nothing
+                        env.nvgOn(false);
+                        machineNVGOn_ = false;
                     }
                     else
                     {
-                        // Get the environment safely from the logical planet
-                        W4dEnvironment& env = MachLogPlanet::instance().surface()->environment();
-
-                        if (env.isNvgOn())
-                        {
-                            env.nvgOn(false);
-                            machineNVGOn_ = false;
-                        }
-                        else
-                        {
-                            env.nvgOn(true);
-                            machineNVGOn_ = true;
-                        }
+                        env.nvgOn(true);
+                        machineNVGOn_ = true;
                     }
+                }
+                processed = true;
+            }
+        case 6: // Pause game
+            if (event.key() == Device::KeyCode::BREAK && event.state() == Gui::PRESSED)
+            {
+                // Can't pause game in multiplayer games
+                if (!MachLogNetwork::instance().isNetworkGame())
+                {
+                    if (SimManager::instance().isSuspended())
+                    {
+                        SimManager::instance().resume();
+                        MachLogVoiceMailManager::instance().acceptMailPostings(true);
+                    }
+                    else
+                    {
+                        SimManager::instance().suspend();
+                        MachLogVoiceMailManager::instance().acceptMailPostings(false);
+                    }
+
                     processed = true;
                 }
-            case 6: // Pause game
-                if (event.key() == Device::KeyCode::BREAK && event.state() == Gui::PRESSED)
-                {
-                    // Can't pause game in multiplayer games
-                    if (! MachLogNetwork::instance().isNetworkGame())
-                    {
-                        if (SimManager::instance().isSuspended())
-                        {
-                            SimManager::instance().resume();
-                            MachLogVoiceMailManager::instance().acceptMailPostings(true);
-                        }
-                        else
-                        {
-                            SimManager::instance().suspend();
-                            MachLogVoiceMailManager::instance().acceptMailPostings(false);
-                        }
-
-                        processed = true;
-                    }
-                }
-            default:
-                finished = true;
-                break;
+            }
+        default:
+            finished = true;
+            break;
         }
         ++count;
     }
@@ -1549,22 +1551,22 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
     CB_DEPIMPL(MachGuiRadar*, pRadar_);
     CB_DEPIMPL(bool, inFirstPerson_);
 
-    ASSERT((! pActor_) || pSubject == pActor_, "MachGuiFirstPerson::beNotified notified about wrong actor");
+    ASSERT((!pActor_) || pSubject == pActor_, "MachGuiFirstPerson::beNotified notified about wrong actor");
 
     bool exitFromActor = false;
 
     // We want to deselect the actor if being deleted
     switch (event)
     {
-        case W4dSubject::DELETED:
+    case W4dSubject::DELETED:
+        exitFromActor = true;
+        break;
+    case W4dSubject::CLIENT_SPECIFIC:
+        if (clientData == MachLog::RACE_CHANGED)
+        {
             exitFromActor = true;
-            break;
-        case W4dSubject::CLIENT_SPECIFIC:
-            if (clientData == MachLog::RACE_CHANGED)
-            {
-                exitFromActor = true;
-            }
-            break;
+        }
+        break;
     }
 
     // Cancel the selection if required
@@ -1592,7 +1594,7 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
             // above seems odd but it is written like this to cope with the second beNotified event.
             exitActor();
 
-            if (! isDead_)
+            if (!isDead_)
             {
                 isDead_ = true;
                 timeOfDeath_ = Phys::time();
@@ -1605,7 +1607,7 @@ bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::Notificati
         }
     }
 
-    return ! exitFromActor;
+    return !exitFromActor;
 }
 
 // virtual
@@ -1629,8 +1631,8 @@ bool MachGuiFirstPerson::okayToSwitchTo1stPerson()
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Check that the actor can be entered.
-    if (pActor_ && pActor_->objectIsMachine() && pActor_->race() == playerRace
-        && ! pActor_->asMachine().insideAPC() && ! pActor_->isDead())
+    if (pActor_ && pActor_->objectIsMachine() && pActor_->race() == playerRace && !pActor_->asMachine().insideAPC()
+        && !pActor_->isDead())
     {
         return true;
     }
@@ -1661,7 +1663,7 @@ void MachGuiFirstPerson::setFirstPerson3DViewport()
 
     lastBorderHeight_ = borderHeight_;
 
-    if (! finishedStartupSequence_)
+    if (!finishedStartupSequence_)
     {
         double now = DevTime::instance().time();
         double timeDiff = now - startupTimer_;
@@ -1876,7 +1878,7 @@ void MachGuiFirstPerson::displayCompass()
     CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
 
     // Only display compass if start cursor has finished animating
-    if (pActor_ && ! pStartCursor_->isVisible())
+    if (pActor_ && !pStartCursor_->isVisible())
     {
         // Get screen size.
         RenDevice& device = *pSceneManager_->pDevice();
@@ -1937,8 +1939,8 @@ void MachGuiFirstPerson::displayHealthArmour()
         const double healthHeight = healthBmp_.height();
         const double armourHeight = armourBmp_.height();
 
-        double displayHealthHeight{};
-        double displayArmourHeight{};
+        double displayHealthHeight {};
+        double displayArmourHeight {};
         if (pTargetActor_->objectType() == MachLog::LAND_MINE)
         {
             displayHealthHeight = healthHeight;
@@ -2037,7 +2039,7 @@ bool MachGuiFirstPerson::displayWeapon(
 
     if (pLogHandler_)
     {
-        for (int index = 0; index < pLogHandler_->nWeapons() && ! foundWeapon; ++index)
+        for (int index = 0; index < pLogHandler_->nWeapons() && !foundWeapon; ++index)
         {
             MachLogWeapon& weapon = pLogHandler_->weapon(index);
             if (weapon.mounting() == mounting)
@@ -2128,21 +2130,21 @@ void MachGuiFirstPerson::loadWeaponBmps()
         const MachLogWeapon& weapon = pLogHandler_->weapon(index);
         switch (weapon.mounting())
         {
-            case MachPhys::LEFT:
-                leftWeaponBmp_ = getWeaponBmp(weapon.type());
-                leftWeaponBmp_.enableColourKeying();
-                break;
-            case MachPhys::RIGHT:
-                rightWeaponBmp_ = getWeaponBmp(weapon.type());
-                rightWeaponBmp_.enableColourKeying();
-                break;
-            case MachPhys::TOP:
-                topWeaponBmp_ = getWeaponBmp(weapon.type());
-                topWeaponBmp_.enableColourKeying();
-                break;
-            case MachPhys::N_MOUNTINGS:
-                ASSERT_BAD_CASE;
-                break;
+        case MachPhys::LEFT:
+            leftWeaponBmp_ = getWeaponBmp(weapon.type());
+            leftWeaponBmp_.enableColourKeying();
+            break;
+        case MachPhys::RIGHT:
+            rightWeaponBmp_ = getWeaponBmp(weapon.type());
+            rightWeaponBmp_.enableColourKeying();
+            break;
+        case MachPhys::TOP:
+            topWeaponBmp_ = getWeaponBmp(weapon.type());
+            topWeaponBmp_.enableColourKeying();
+            break;
+        case MachPhys::N_MOUNTINGS:
+            ASSERT_BAD_CASE;
+            break;
         }
     }
 }
@@ -2153,99 +2155,99 @@ GuiBitmap MachGuiFirstPerson::getWeaponBmp(MachPhys::WeaponType wt)
 
     switch (wt)
     {
-        case MachPhys::ELECTRIC_CHARGE:
-            bitmapName = "gui/fstpersn/weapon/echarge.bmp";
-            break;
-        case MachPhys::BOLTER:
-            bitmapName = "gui/fstpersn/weapon/bolter.bmp";
-            break;
-        case MachPhys::HEAVY_BOLTER1:
-            bitmapName = "gui/fstpersn/weapon/hbolter.bmp";
-            break;
-        case MachPhys::HEAVY_BOLTER2:
-            bitmapName = "gui/fstpersn/weapon/hbolter2.bmp";
-            break;
-        case MachPhys::FLAME_THROWER1:
-            bitmapName = "gui/fstpersn/weapon/flame1.bmp";
-            break;
-        case MachPhys::FLAME_THROWER2:
-            bitmapName = "gui/fstpersn/weapon/flame2.bmp";
-            break;
-        case MachPhys::AUTO_CANNON:
-            bitmapName = "gui/fstpersn/weapon/autoc.bmp";
-            break;
-        case MachPhys::SUPERCHARGE_ADVANCED:
-            bitmapName = "gui/fstpersn/weapon/heala.bmp";
-            break;
-        case MachPhys::SUPERCHARGE_SUPER:
-            bitmapName = "gui/fstpersn/weapon/heals.bmp";
-            break;
-        case MachPhys::PLASMA_CANNON1:
-            bitmapName = "gui/fstpersn/weapon/plscan1.bmp";
-            break;
-        case MachPhys::PLASMA_CANNON2:
-            bitmapName = "gui/fstpersn/weapon/plscan2.bmp";
-            break;
-        case MachPhys::PLASMA_RIFLE:
-            bitmapName = "gui/fstpersn/weapon/plsrif.bmp";
-            break;
-        case MachPhys::PULSE_CANNON:
-            bitmapName = "gui/fstpersn/weapon/pulscan.bmp";
-            break;
-        case MachPhys::PULSE_RIFLE:
-            bitmapName = "gui/fstpersn/weapon/pulsrif.bmp";
-            break;
-        case MachPhys::LARGE_MISSILE:
-            bitmapName = "gui/fstpersn/weapon/misslrg.bmp";
-            break;
-        case MachPhys::MULTI_LAUNCHER1:
-            bitmapName = "gui/fstpersn/weapon/miss6.bmp"; // Multi launcher 1 releases missiles of type 6
-            break;
-        case MachPhys::MULTI_LAUNCHER2:
-            bitmapName = "gui/fstpersn/weapon/miss5.bmp"; // Multi launcher 2 releases missiles of type 5
-            break;
-        case MachPhys::MULTI_LAUNCHER3:
-            bitmapName = "gui/fstpersn/weapon/miss1.bmp"; // Multi launcher 3 releases missiles of type 1
-            break;
-        case MachPhys::MULTI_LAUNCHER4:
-            bitmapName = "gui/fstpersn/weapon/miss4.bmp"; // Multi launcher 4 releases missiles of type 4
-            break;
-        case MachPhys::MULTI_LAUNCHER5:
-            bitmapName = "gui/fstpersn/weapon/miss2.bmp"; // Multi launcher 5 releases missiles of type 2
-            break;
-        case MachPhys::MULTI_LAUNCHER6:
-            bitmapName = "gui/fstpersn/weapon/miss3.bmp"; // Multi launcher 6 releases missiles of type 3
-            break;
-        case MachPhys::MULTI_LAUNCHER7:
-            bitmapName = "gui/fstpersn/weapon/miss7.bmp"; // Multi launcher 7 releases missiles of type 7
-            break;
-        case MachPhys::VORTEX:
-            bitmapName = "gui/fstpersn/weapon/vortex.bmp";
-            break;
-        case MachPhys::ORB_OF_TREACHERY:
-            bitmapName = "gui/fstpersn/weapon/treach.bmp";
-            break;
-        case MachPhys::GORILLA_PUNCH:
-            bitmapName = "gui/fstpersn/weapon/punch.bmp";
-            break;
-        case MachPhys::VIRUS:
-            bitmapName = "gui/fstpersn/weapon/virus.bmp";
-            break;
-        case MachPhys::BEE_BOMB:
-            bitmapName = "gui/fstpersn/weapon/beebomb.bmp";
-            break;
-        case MachPhys::WASP_LIGHT_STING:
-            bitmapName = "gui/fstpersn/weapon/wasplite.bmp";
-            break;
-        case MachPhys::WASP_METAL_STING:
-            bitmapName = "gui/fstpersn/weapon/waspmis.bmp";
-            break;
-        case MachPhys::NUCLEAR_MISSILE:
-        case MachPhys::ION_ORBITAL_CANNON:
-        case MachPhys::N_WEAPON_TYPES:
-            ASSERT_BAD_CASE;
-            break;
-            DEFAULT_ASSERT_BAD_CASE(wt);
+    case MachPhys::ELECTRIC_CHARGE:
+        bitmapName = "gui/fstpersn/weapon/echarge.bmp";
+        break;
+    case MachPhys::BOLTER:
+        bitmapName = "gui/fstpersn/weapon/bolter.bmp";
+        break;
+    case MachPhys::HEAVY_BOLTER1:
+        bitmapName = "gui/fstpersn/weapon/hbolter.bmp";
+        break;
+    case MachPhys::HEAVY_BOLTER2:
+        bitmapName = "gui/fstpersn/weapon/hbolter2.bmp";
+        break;
+    case MachPhys::FLAME_THROWER1:
+        bitmapName = "gui/fstpersn/weapon/flame1.bmp";
+        break;
+    case MachPhys::FLAME_THROWER2:
+        bitmapName = "gui/fstpersn/weapon/flame2.bmp";
+        break;
+    case MachPhys::AUTO_CANNON:
+        bitmapName = "gui/fstpersn/weapon/autoc.bmp";
+        break;
+    case MachPhys::SUPERCHARGE_ADVANCED:
+        bitmapName = "gui/fstpersn/weapon/heala.bmp";
+        break;
+    case MachPhys::SUPERCHARGE_SUPER:
+        bitmapName = "gui/fstpersn/weapon/heals.bmp";
+        break;
+    case MachPhys::PLASMA_CANNON1:
+        bitmapName = "gui/fstpersn/weapon/plscan1.bmp";
+        break;
+    case MachPhys::PLASMA_CANNON2:
+        bitmapName = "gui/fstpersn/weapon/plscan2.bmp";
+        break;
+    case MachPhys::PLASMA_RIFLE:
+        bitmapName = "gui/fstpersn/weapon/plsrif.bmp";
+        break;
+    case MachPhys::PULSE_CANNON:
+        bitmapName = "gui/fstpersn/weapon/pulscan.bmp";
+        break;
+    case MachPhys::PULSE_RIFLE:
+        bitmapName = "gui/fstpersn/weapon/pulsrif.bmp";
+        break;
+    case MachPhys::LARGE_MISSILE:
+        bitmapName = "gui/fstpersn/weapon/misslrg.bmp";
+        break;
+    case MachPhys::MULTI_LAUNCHER1:
+        bitmapName = "gui/fstpersn/weapon/miss6.bmp"; // Multi launcher 1 releases missiles of type 6
+        break;
+    case MachPhys::MULTI_LAUNCHER2:
+        bitmapName = "gui/fstpersn/weapon/miss5.bmp"; // Multi launcher 2 releases missiles of type 5
+        break;
+    case MachPhys::MULTI_LAUNCHER3:
+        bitmapName = "gui/fstpersn/weapon/miss1.bmp"; // Multi launcher 3 releases missiles of type 1
+        break;
+    case MachPhys::MULTI_LAUNCHER4:
+        bitmapName = "gui/fstpersn/weapon/miss4.bmp"; // Multi launcher 4 releases missiles of type 4
+        break;
+    case MachPhys::MULTI_LAUNCHER5:
+        bitmapName = "gui/fstpersn/weapon/miss2.bmp"; // Multi launcher 5 releases missiles of type 2
+        break;
+    case MachPhys::MULTI_LAUNCHER6:
+        bitmapName = "gui/fstpersn/weapon/miss3.bmp"; // Multi launcher 6 releases missiles of type 3
+        break;
+    case MachPhys::MULTI_LAUNCHER7:
+        bitmapName = "gui/fstpersn/weapon/miss7.bmp"; // Multi launcher 7 releases missiles of type 7
+        break;
+    case MachPhys::VORTEX:
+        bitmapName = "gui/fstpersn/weapon/vortex.bmp";
+        break;
+    case MachPhys::ORB_OF_TREACHERY:
+        bitmapName = "gui/fstpersn/weapon/treach.bmp";
+        break;
+    case MachPhys::GORILLA_PUNCH:
+        bitmapName = "gui/fstpersn/weapon/punch.bmp";
+        break;
+    case MachPhys::VIRUS:
+        bitmapName = "gui/fstpersn/weapon/virus.bmp";
+        break;
+    case MachPhys::BEE_BOMB:
+        bitmapName = "gui/fstpersn/weapon/beebomb.bmp";
+        break;
+    case MachPhys::WASP_LIGHT_STING:
+        bitmapName = "gui/fstpersn/weapon/wasplite.bmp";
+        break;
+    case MachPhys::WASP_METAL_STING:
+        bitmapName = "gui/fstpersn/weapon/waspmis.bmp";
+        break;
+    case MachPhys::NUCLEAR_MISSILE:
+    case MachPhys::ION_ORBITAL_CANNON:
+    case MachPhys::N_WEAPON_TYPES:
+        ASSERT_BAD_CASE;
+        break;
+        DEFAULT_ASSERT_BAD_CASE(wt);
     }
 
     return Gui::requestScaledImage(bitmapName, Gui::uiScaleFactor());
@@ -2285,22 +2287,22 @@ void MachGuiFirstPerson::doWeaponSelect()
     {
         for (int weaponIndex = 0; weaponIndex < pLogHandler_->nWeapons(); ++weaponIndex)
         {
-            if (! pLogHandler_->isWeaponEnabled(weaponIndex))
+            if (!pLogHandler_->isWeaponEnabled(weaponIndex))
             {
                 pLogHandler_->enableWeapon(weaponIndex, true);
 
                 MachLogWeapon& weapon = pLogHandler_->weapon(weaponIndex);
                 switch (weapon.mounting())
                 {
-                    case MachPhys::LEFT:
-                        updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
-                        break;
-                    case MachPhys::RIGHT:
-                        updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
-                        break;
-                    case MachPhys::TOP:
-                        updateWeaponAnimEndTime(topWeaponChangeEndTime_);
-                        break;
+                case MachPhys::LEFT:
+                    updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
+                    break;
+                case MachPhys::RIGHT:
+                    updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
+                    break;
+                case MachPhys::TOP:
+                    updateWeaponAnimEndTime(topWeaponChangeEndTime_);
+                    break;
                 }
             }
         }
@@ -2312,12 +2314,12 @@ void MachGuiFirstPerson::doWeaponSelect()
         {
             if (weaponSelectIndex_ == 0)
             {
-                if (! pLogHandler_->isWeaponEnabled(0))
+                if (!pLogHandler_->isWeaponEnabled(0))
                 {
                     pLogHandler_->enableWeapon(0, true); // Missile 1
                     updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
                 }
-                if (! pLogHandler_->isWeaponEnabled(1))
+                if (!pLogHandler_->isWeaponEnabled(1))
                 {
                     pLogHandler_->enableWeapon(1, true); // Missile 2
                     updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
@@ -2340,7 +2342,7 @@ void MachGuiFirstPerson::doWeaponSelect()
                     pLogHandler_->enableWeapon(1, false); // Missile 2
                     updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
                 }
-                if (! pLogHandler_->isWeaponEnabled(2))
+                if (!pLogHandler_->isWeaponEnabled(2))
                 {
                     pLogHandler_->enableWeapon(2, true); // Punch
                     updateWeaponAnimEndTime(topWeaponChangeEndTime_);
@@ -2360,15 +2362,15 @@ void MachGuiFirstPerson::doWeaponSelect()
                     MachLogWeapon& weapon = pLogHandler_->weapon(weaponIndex);
                     switch (weapon.mounting())
                     {
-                        case MachPhys::LEFT:
-                            updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
-                            break;
-                        case MachPhys::RIGHT:
-                            updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
-                            break;
-                        case MachPhys::TOP:
-                            updateWeaponAnimEndTime(topWeaponChangeEndTime_);
-                            break;
+                    case MachPhys::LEFT:
+                        updateWeaponAnimEndTime(leftWeaponChangeEndTime_);
+                        break;
+                    case MachPhys::RIGHT:
+                        updateWeaponAnimEndTime(rightWeaponChangeEndTime_);
+                        break;
+                    case MachPhys::TOP:
+                        updateWeaponAnimEndTime(topWeaponChangeEndTime_);
+                        break;
                     }
                 }
             }
