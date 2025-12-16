@@ -69,6 +69,8 @@ std::string toDisplayString(Device::KeyCode keyCode, KeysDisplayFormat format)
             return "Home";
         case Device::KeyCode::END:
             return "End";
+        case Device::KeyCode::ESCAPE:
+            return "Esc";
         case Device::KeyCode::BACK_SPACE:
             return "Backspace";
         case Device::KeyCode::TAB:
