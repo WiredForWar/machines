@@ -110,7 +110,9 @@ void PhysZenithFlyControl::updateMotion()
 
     if (inputEnabled())
     {
-        double elapsedTime = keyTimer_.time() * 10.0;
+        double elapsedTime{};
+        double inertia = 0.5;
+        elapsedTime = keyTimer_.time() * 10.0 / inertia;
         if (elapsedTime > 1.0)
             elapsedTime = 1.0; // Knock elapsedTime back to a second to avoid strange motion decay
 
