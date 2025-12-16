@@ -9,7 +9,7 @@
         <p>
             Community fork of a 3D Real-Time Strategy video game from 1999 developed by Charybdis and released as free software by Night Dive Studios.
         </p>
-        <p>The most notable changes are:<p>
+        <p>The most notable changes are:</p>
         <ul>
             <li>Added support for 2X UI scaling</li>
             <li>Added support for WASD camera and machines in-head control</li>
