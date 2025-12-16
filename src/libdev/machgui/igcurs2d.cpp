@@ -20,37 +20,7 @@
 #include <stdlib.h>
 
 MachInGameCursors2d::MachInGameCursors2d(MachInGameScreen* pInGameScreen)
-    : pMenuCursor_(nullptr)
-    , pEnterBuildingCursor_(nullptr)
-    , pAttackCursor_(nullptr)
-    , pConstructCursor_(nullptr)
-    , pLocateToCursor_(nullptr)
-    , pPatrolCursor_(nullptr)
-    , pDeployCursor_(nullptr)
-    , pPickUpCursor_(nullptr)
-    , pScavengeCursor_(nullptr)
-    , pTransportCursor_(nullptr)
-    , pEnterAPCCursor_(nullptr)
-    , pFollowCursor_(nullptr)
-    , pDropLandMineCursor_(nullptr)
-    , pHealCursor_(nullptr)
-    , pDeconstructCursor_(nullptr)
-    , pRecycleCursor_(nullptr)
-    , pRepairCursor_(nullptr)
-    , pCaptureCursor_(nullptr)
-    , pJoinConstructCursor_(nullptr)
-    , pAssemblePointCursor_(nullptr)
-    , pScrollWestCursor_(nullptr)
-    , pScrollEastCursor_(nullptr)
-    , pScrollNorthCursor_(nullptr)
-    , pScrollSouthCursor_(nullptr)
-    , pScrollNorthWestCursor_(nullptr)
-    , pScrollNorthEastCursor_(nullptr)
-    , pScrollSouthWestCursor_(nullptr)
-    , pScrollSouthEastCursor_(nullptr)
-    , pChooseConstructionCursor_(nullptr)
-    , pTreacheryCursor_(nullptr)
-    , currentType_(MachGui::MOVETO_CURSOR)
+    : currentType_(MachGui::MOVETO_CURSOR)
     , pInGameScreen_(pInGameScreen)
     , cursorSize_(LARGECURSORS)
 {
@@ -121,9 +91,6 @@ std::ostream& operator<<(std::ostream& o, const MachInGameCursors2d& t)
 
 void MachInGameCursors2d::loadCursors()
 {
-    // Get the back buffer
-    const GuiBitmap& backBuffer = Gui::backBuffer();
-
     pMenuCursor_ = loadCursor(MachCursorSpec("large/arrow", 1, { 0, 0 }));
     pEnterBuildingCursor_ = loadCursor(MachCursorSpec("large/enter", 6));
     pAttackCursor_ = loadCursor(MachCursorSpec("large/attack", 2));
@@ -180,18 +147,15 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
         fps = defaultFps;
     }
 
-    // Get the back buffer
-    const GuiBitmap& backBuffer = Gui::backBuffer();
-
     // Create the main cursor
     RenAnimCursor2d* pCursor = new RenAnimCursor2d;
 
     // Create and add the surface for each frame
     char buffer[3];
-    std::string cursorDir = "gui/cursor/";
+    const std::string cursorDir = "gui/cursor/";
+    const std::string basePath = cursorDir + baseName;
     std::string extention;
 
-    std::string basePath = cursorDir + baseName;
     {
         std::string withFrames = nFrames > 1 ? basePath + "1" : basePath;
         extention = MachGui::getScaledImagePath(std::string());
