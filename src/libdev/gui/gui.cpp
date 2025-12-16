@@ -98,24 +98,25 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
     }
 
     s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
-    std::string scaledImagePath = path;
+    std::string imagePath = path;
     if (hasBmpExtention)
     {
-        const auto from = scaledImagePath.end() - s_BmpSuffixSize;
-        scaledImagePath.replace(from, scaledImagePath.end(), s_ScaledTextureSuffix);
+        const auto from = imagePath.end() - s_BmpSuffixSize;
+        imagePath.replace(from, imagePath.end(), s_ScaledTextureSuffix);
     }
     else
     {
-        scaledImagePath += s_ScaledTextureSuffix;
+        imagePath += s_ScaledTextureSuffix;
     }
 
-    scaledImagePath = System::findFile(scaledImagePath);
-    if (SysPathName::existsAsFile(scaledImagePath))
+    imagePath = System::findFile(imagePath);
+    if (SysPathName::existsAsFile(imagePath))
     {
-        return Gui::bitmap(scaledImagePath);
+        return Gui::bitmap(imagePath);
     }
 
-    GuiBitmap result = Gui::bitmap(hasBmpExtention ? path : path + s_BmpTextureSuffix);
+    imagePath = System::findFile(hasBmpExtention ? path : path + s_BmpTextureSuffix);
+    GuiBitmap result = Gui::bitmap(imagePath);
     result.setRequestedSize(result.size() * scale);
     return result;
 }
