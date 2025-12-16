@@ -174,7 +174,6 @@ void MachCameras::loadGame()
 
     pFreeControl_->metresPerSecond(1);
     pFreeControl_->degreesPerSecond(10);
-    pZenithControl_->metresPerSecond(10);
 
     // Ensure the cameras are in the correct domain
     pGroundCamera_->update();
@@ -751,10 +750,11 @@ void MachCameras::scrollWithWheel(const Gui::ScrollState wheelDir, const double 
             zenithMotion.deltaClimb(step);
         }
 
+        constexpr double zoomFactor = 10;
         pZenithControl_->pMotionConstraint_->move(
             zenithTransform,
             zenithMotion,
-            step / pZenithControl_->metresPerSecond());
+            step / zoomFactor);
         pZenithCamera_->globalTransform(zenithTransform);
     }
     else if (pCurrentCamera_ == pGroundCamera_.get())
