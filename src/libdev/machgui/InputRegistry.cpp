@@ -242,8 +242,6 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
 {
     PRE_INFO(id);
 
-    GuiStrings strs{"10", "20"};
-
     BindDisplayData result;
     if (id == "x-view-save"_bind)
     {
@@ -341,10 +339,6 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     else if (id == "x-map-move-camera"_bind)
     {
         result.displayBind_ = Gui::toDisplayString(KeyCode::MOUSE_RIGHT);
-    }
-    else if (id == "x-show-menus"_bind)
-    {
-        result.displayBind_ = Gui::toDisplayString(KeyCode::ESCAPE, format) + "/" + Gui::toDisplayString(KeyCode::F10);
     }
     else if (id == "x-ui-controlpanel-toggle"_bind)
     {
@@ -517,7 +511,7 @@ void InputRegistry::initBinds()
     createBind(bcGeneral, "ui-controlpanel-hide"_bind);
     createBind(bcGeneral, "ui-controlpanel-show"_bind);
 
-    createSpecialBind(bcGeneral, "x-show-menus"_bind, IDS_MENUS);
+    createBind(bcGeneral, "show-menus"_bind, IDS_MENUS);
     createSpecialBind(bcGeneral, "x-ui-controlpanel-toggle"_bind, IDS_TOGGLE_PANEL);
 
     createBind(bcGeneral, "screenshot"_bind, IDS_MAKE_SCREENSHOT);
@@ -609,6 +603,10 @@ void InputRegistry::setLegacyDefaults()
     });
     setBinds("ui-controlpanel-show"_bind, {
         { KeyCode::RIGHT_ARROW | KeyModifier::Alt },
+    });
+    setBinds("show-menus"_bind, {
+        { KeyCode::ESCAPE },
+        { KeyCode::F10 },
     });
     setBinds("view-toggle-fpv"_bind, {
         { KeyCode::PAD_1 },

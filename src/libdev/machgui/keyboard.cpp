@@ -123,12 +123,15 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             }
             break;
         case 9: // F10 gets you into menus
-            if (e.key() == Device::KeyCode::F10 && e.state() == Gui::PRESSED)
+        {
+            static const auto& menusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
+            if (e.state() == Gui::PRESSED && menusTrigger.matches(e.keyWithMods()))
             {
                 pImpl_->switchToMenus_ = true;
                 processed = true;
             }
             break;
+        }
         case 10: // Screen shot
         {
             static const auto& screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
