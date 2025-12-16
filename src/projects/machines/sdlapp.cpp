@@ -180,6 +180,8 @@ bool SDLApp::clientStartup()
     if (!Config::gfxWindowed.get())
         pDisplay_->useFullScreen();
 
+    Config::gfxWindowed.writeBack();;
+
     bool displayModeInitialized = false;
     if (Config::gfxLockResolution.get())
     {

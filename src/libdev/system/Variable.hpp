@@ -39,8 +39,17 @@ public:
     void set(const T& value);
     T get() const;
 
+    // Ensure that that option exists in the settings file.
+    void writeBack();
+
 private:
     T defaultValue_{};
 };
+
+template <typename T>
+inline void Variable<T>::writeBack()
+{
+    set(get());
+}
 
 } // namespace Config
