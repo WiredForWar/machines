@@ -21,6 +21,7 @@ template <class T> class ctl_vector;
 namespace Render
 {
 
+class Font;
 class TextOptions;
 
 } // Render namespace
@@ -130,12 +131,9 @@ public:
     void ellipse(const Rect& area, const RenColour& outlineColour, const RenColour& fillColour);
 
     // Returns the actual size used, in case an exact match doesn't exist.
-    size_t useFontHeight(size_t pixelHieght);
-    size_t currentFontHeight() const;
-    static int getDefaultFontHeight();
+    static int getDefaultFontSize();
     static void setDefaultFontSize(int size);
-    void drawText(int x, int y, const std::string& text, const Render::TextOptions& options);
-    void textDimensions(const std::string& text, Ren::Rect* dimensions) const;
+    void drawText(int x, int y, const std::string& text, const Render::Font& font, const Render::TextOptions& options);
 
     // Is source colour keying enabled for this image?
     bool isColourKeyingOn() const;

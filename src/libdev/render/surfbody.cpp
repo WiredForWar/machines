@@ -322,41 +322,13 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
     }
 }
 
-// static
-size_t RenISurfBody::defaultHeight()
+void RenISurfBody::drawText(
+    int x,
+    int y,
+    const std::string& text,
+    const Render::Font& font,
+    const Render::TextOptions& options)
 {
-    return RenSurface::getDefaultFontHeight();
-}
-
-size_t RenISurfBody::useFontHeight(size_t pixelHeight)
-{
-    if (currentHeight_ == 0)
-        currentHeight_ = pixelHeight;
-
-    // Set this whatever results are
-    currentHeight_ = pixelHeight;
-
-    pCurrentFont_ = Render::Font::getFont(pixelHeight);
-
-    return pixelHeight;
-}
-
-size_t RenISurfBody::currentFontHeight() const
-{
-    if (pCurrentFont_)
-        return pCurrentFont_->pixelSize();
-    else
-        return _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
-}
-
-void RenISurfBody::drawText(int x, int y, const std::string& text, const Render::TextOptions& options)
-{
-    if (currentHeight_ == 0)
-        useFontHeight(defaultHeight());
-
-    if (!pCurrentFont_)
-        return;
-
     std::vector<RenIVertex> vertices;
     {
         int expectedVerticesNumber = text.size() * 6;
@@ -378,8 +350,8 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
     }
 
-    y += currentHeight_;
-    const Render::FontImpl& font = *Render::FontImpl::get(pCurrentFont_);
+    y += font.pixelSize();
+    const Render::FontImpl& fontImpl = *Render::FontImpl::get(&font);
     const Render::FontImpl::CharData* charData = nullptr;
 
     auto disabledCullFaceScope = ScopedGLDisable(GL_CULL_FACE);
@@ -398,7 +370,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
                 continue;
             }
 
-            charData = font.getChar(character);
+            charData = fontImpl.getChar(character);
             // Ignore missing characters
             if (!charData)
                 continue;
@@ -430,11 +402,11 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         if (character == '\n')
         {
             x = originX;
-            y += currentHeight_ + 2;
+            y += font.pixelSize() + 2;
             continue;
         }
 
-        charData = font.getChar(character);
+        charData = fontImpl.getChar(character);
         // Ignore missing characters
         if (!charData)
             continue;
@@ -513,22 +485,7 @@ void RenISurfBody::drawText(int x, int y, const std::string& text, const Render:
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
     RenDevice::current()
-        ->renderScreenspace(&vertices.front(), vertices.size(), Ren::PrimitiveTopology::Triangles, width_, height_, font.textureId);
-}
-
-void RenISurfBody::textDimensions(const std::string& text, Ren::Rect* dimensions) const
-{
-    PRE(dimensions);
-
-    if (currentHeight_ == 0)
-        _CONST_CAST(RenISurfBody*, this)->useFontHeight(defaultHeight());
-
-    ASSERT(currentHeight_ > 0, "Failed to create default font.");
-    const Render::Font* pFont = pCurrentFont_;
-
-    ASSERT(pFont && pFont->isValid(), "Failed to get valid font.");
-
-    std::cerr << "RenISurfBody::textDimensions(): NOT IMPLEMENTED" << std::endl;
+        ->renderScreenspace(&vertices.front(), vertices.size(), Ren::PrimitiveTopology::Triangles, width_, height_, fontImpl.textureId);
 }
 
 void RenISurfBody::releaseDC()

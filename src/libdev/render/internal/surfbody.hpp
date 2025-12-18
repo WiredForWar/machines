@@ -67,10 +67,7 @@ public:
     // however, they are placed here to reduce dependancies.
     void setDDColourKey();
     void filledRectangle(const Ren::Rect& area, uint colour);
-    size_t useFontHeight(size_t pixelHieght);
-    size_t currentFontHeight() const; // defaults to 20.
-    void drawText(int x, int y, const std::string& text, const Render::TextOptions& options);
-    void textDimensions(const std::string& text, Ren::Rect* dimensions) const;
+    void drawText(int x, int y, const std::string& text, const Render::Font& font, const Render::TextOptions& options);
 
     // When Alt-Tab is pressed, textures can get unloaded from a hardware
     // device.  Calling this method reloads this image.
@@ -214,10 +211,6 @@ private:
     bool loaded_{};
     bool readOnly_{};
     bool sharable_{};
-    size_t currentHeight_{};
-    static size_t defaultHeight();
-
-    const Render::Font* pCurrentFont_ = nullptr;
 
     RenISurfBody(const RenISurfBody&);
     RenISurfBody& operator=(const RenISurfBody&);

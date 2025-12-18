@@ -154,6 +154,11 @@ bool FontImpl::prepareTexture()
 
 static std::vector<Font> s_fonts;
 
+const FontImpl* FontImpl::get(const Font& parent)
+{
+    return parent.pImpl_.get();
+}
+
 const FontImpl* FontImpl::get(const Font* parent)
 {
     return parent->pImpl_.get();

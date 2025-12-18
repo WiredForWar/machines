@@ -8,6 +8,7 @@
 #include "gui/border.hpp"
 
 #include "ctl/vector.hpp"
+#include "render/Font.hpp"
 #include "render/surface.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
@@ -102,9 +103,10 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
 void GuiPainter::drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int pixelSize) const
 {
     RenSurface backBuffer = Gui::backBuffer();
-    backBuffer.useFontHeight(pixelSize > 0 ? pixelSize : RenSurface::getDefaultFontHeight());
-    backBuffer.drawText(c.x(), c.y(), text, options);
-    backBuffer.useFontHeight(RenSurface::getDefaultFontHeight());
+
+    const Render::Font* font = Render::Font::getFont(pixelSize);
+    ASSERT(font, "Unable to get font");
+    backBuffer.drawText(c.x(), c.y(), text, *font, options);
 }
 
 //////////////////////////////////////////////////////////////////////

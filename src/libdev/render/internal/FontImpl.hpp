@@ -16,6 +16,7 @@ class FontImpl
 public:
     FontImpl() = default;
 
+    static const FontImpl* get(const Font& parent);
     static const FontImpl* get(const Font* parent);
 
     bool prepareTexture();

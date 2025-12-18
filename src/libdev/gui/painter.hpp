@@ -57,7 +57,7 @@ public:
     ///////////////////////////////
 
     virtual void
-    drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int pixelSize = -1) const
+    drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int pixelSize) const
         = 0;
 
     ///////////////////////////////
@@ -113,7 +113,7 @@ public:
 
     ///////////////////////////////
 
-    void drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int pixelSize = -1)
+    void drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, int pixelSize)
         const override;
 
     ///////////////////////////////

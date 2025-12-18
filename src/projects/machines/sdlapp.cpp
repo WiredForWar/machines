@@ -375,13 +375,16 @@ bool SDLApp::clientStartup()
         const int noteBottomMargin{14};
         Gui::Coord notePosition(
             xOffset + waitImageContentOffset.x(),
-            yOffset + waitImageContentOffset.y() - noteBottomMargin - RenSurface::getDefaultFontHeight());
+            yOffset + waitImageContentOffset.y() - noteBottomMargin - RenSurface::getDefaultFontSize());
         const std::string note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
+
+        const Render::Font* font = Render::Font::getFont(RenSurface::getDefaultFontSize());
+        ASSERT(font, "Unable to get font");
+        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, RenColour::yellow());
+        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
     }
 
     Gui::Coord indicatorPos(98 + xOffset, 362 + yOffset);

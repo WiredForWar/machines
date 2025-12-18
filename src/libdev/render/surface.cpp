@@ -12,6 +12,7 @@
 
 #include "ctl/vector.hpp"
 #include "system/pathname.hpp"
+#include "render/Font.hpp"
 #include "render/surfmgr.hpp"
 #include "render/internal/surfbody.hpp"
 #include "render/internal/pixelfmt.hpp"
@@ -939,17 +940,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
     }
 }
 
-size_t RenSurface::useFontHeight(size_t pixelHeight)
-{
-    return internals()->useFontHeight(pixelHeight);
-}
-
-size_t RenSurface::currentFontHeight() const
-{
-    return internals()->currentFontHeight();
-}
-
-int RenSurface::getDefaultFontHeight()
+int RenSurface::getDefaultFontSize()
 {
     return sDefaultFontSize;
 }
@@ -959,15 +950,14 @@ void RenSurface::setDefaultFontSize(int size)
     sDefaultFontSize = size;
 }
 
-void RenSurface::drawText(int x, int y, const std::string& text, const Render::TextOptions& options)
+void RenSurface::drawText(
+    int x,
+    int y,
+    const std::string& text,
+    const Render::Font& font,
+    const Render::TextOptions& options)
 {
-    internals()->drawText(x, y, text, options);
-}
-
-void RenSurface::textDimensions(const std::string& text, Ren::Rect* dimensions) const
-{
-    PRE(dimensions);
-    internals()->textDimensions(text, dimensions);
+    internals()->drawText(x, y, text, font, options);
 }
 
 //-----------------------------Simple properties & delegations-----------------------
