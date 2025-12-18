@@ -57,6 +57,8 @@ append_test(NetUtilsTest network/NetUtilsTests.cpp)
 #~:system
 append_test(SysPathNameTests system/SysPathNameTests.cpp)
 
+append_test(ColourTests render/ColourTests.cpp)
+
 #### Create executables
 list(LENGTH TESTS_SRCS len1)
 math(EXPR len2 "${len1} - 1")

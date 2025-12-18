@@ -10,7 +10,94 @@
 #include "render/colour.ipp"
 #endif
 
+namespace
+{
+
+int fromHex(char c)
+{
+    if (c >= '0' && c <= '9')
+        return c - '0';
+    if (c >= 'a' && c <= 'f')
+        return 10 + (c - 'a');
+    if (c >= 'A' && c <= 'F')
+        return 10 + (c - 'A');
+    return -1;
+}
+
+static inline int hex2int(const char* s, int n)
+{
+    if (n < 0)
+        return -1;
+    int result = 0;
+    for (; n > 0; --n)
+    {
+        result = result * 16;
+        const int h = fromHex(*s++);
+        if (h < 0)
+            return -1;
+        result += h;
+    }
+    return result;
+}
+
+std::optional<RenColour> colorFromString(const char* str, std::size_t length)
+{
+    PRE(str)
+
+    if (length == 0 || str[0] != '#')
+        return std::nullopt;
+
+    ++str;
+    --length;
+    auto toFloat = [](int value) { return static_cast<float>(value) / 255.0f; };
+
+    const char* ptr = str;
+    int rInt = -1, gInt = -1, bInt = -1, aInt = 0xff;
+
+    if (length == 8) // #RRGGBBAA
+    {
+        rInt = hex2int(ptr, 2);
+        gInt = hex2int(ptr + 2, 2);
+        bInt = hex2int(ptr + 4, 2);
+        aInt = hex2int(ptr + 6, 2);
+    }
+    else if (length == 6) // #RRGGBB
+    {
+        rInt = hex2int(ptr, 2);
+        gInt = hex2int(ptr + 2, 2);
+        bInt = hex2int(ptr + 4, 2);
+    }
+    else if (length == 3) // #RGB
+    {
+        const int rHalfByte = fromHex(ptr[0]);
+        const int gHalfByte = fromHex(ptr[1]);
+        const int bHalfByte = fromHex(ptr[2]);
+        if (rHalfByte < 0 || gHalfByte < 0 || bHalfByte < 0)
+            return std::nullopt;
+
+        rInt = (rHalfByte << 4) | rHalfByte;
+        gInt = (gHalfByte << 4) | gHalfByte;
+        bInt = (bHalfByte << 4) | bHalfByte;
+    }
+    else
+    {
+        return std::nullopt;
+    }
+
+    if (rInt < 0 || gInt < 0 || bInt < 0 || aInt < 0)
+        return std::nullopt;
+
+    return RenColour(toFloat(rInt), toFloat(gInt), toFloat(bInt), toFloat(aInt));
+}
+
+} // namespace
+
 PER_DEFINE_PERSISTENT(RenColour);
+
+std::optional<RenColour> RenColour::fromString(const std::string_view& str)
+{
+    return colorFromString(str.data(), str.size());
+}
 
 RenColour& RenColour::linearInterpolate(float i, const RenColour& c1, float i1, const RenColour& c2, float i2)
 {

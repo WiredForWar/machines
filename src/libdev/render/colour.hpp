@@ -9,11 +9,17 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 
+#include <optional>
+#include <string>
+
 class RenColour
 {
 public:
     constexpr RenColour(float grey = 0);
     constexpr RenColour(float r, float g, float b, float a = 1); // PRE(0 <= a <= 1);
+
+    // Acceptable formats: #RGB, #RRGGBB, #RRGGBBAA
+    static std::optional<RenColour> fromString(const std::string_view& str);
 
     float r() const;
     float g() const;
