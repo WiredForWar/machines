@@ -175,56 +175,56 @@ bool RenColour::operator!=(const RenColour& c) const
 // static
 const RenColour& RenColour::black()
 {
-    static const RenColour c(0);
+    static constexpr RenColour c(0);
     return c;
 }
 
 // static
 const RenColour& RenColour::white()
 {
-    static const RenColour c(1);
+    static constexpr RenColour c(1);
     return c;
 }
 
 // static
 const RenColour& RenColour::red()
 {
-    static const RenColour c(1, 0, 0);
+    static constexpr RenColour c(1, 0, 0);
     return c;
 }
 
 // static
 const RenColour& RenColour::green()
 {
-    static const RenColour c(0, 1, 0);
+    static constexpr RenColour c(0, 1, 0);
     return c;
 }
 
 // static
 const RenColour& RenColour::blue()
 {
-    static const RenColour c(0, 0, 1);
+    static constexpr RenColour c(0, 0, 1);
     return c;
 }
 
 // static
 const RenColour& RenColour::yellow()
 {
-    static const RenColour c(1, 1, 0);
+    static constexpr RenColour c(1, 1, 0);
     return c;
 }
 
 // static
 const RenColour& RenColour::cyan()
 {
-    static const RenColour c(0, 1, 1);
+    static constexpr RenColour c(0, 1, 1);
     return c;
 }
 
 // static
 const RenColour& RenColour::magenta()
 {
-    static const RenColour c(1, 0, 1);
+    static constexpr RenColour c(1, 0, 1);
     return c;
 }
 
