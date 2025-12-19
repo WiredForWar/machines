@@ -365,7 +365,7 @@ void RenISurfBody::drawText(
         {
             if (character == '\n')
             {
-                textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
+                textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
                 usedSpacing = 0;
                 continue;
             }
@@ -379,7 +379,7 @@ void RenISurfBody::drawText(
             lineTextWidth += charData->ax + options.letterSpacing();
             usedSpacing = options.letterSpacing();
         }
-        textWidth = std::max<int>(textWidth, lineTextWidth - options.letterSpacing() - usedSpacing);
+        textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
         if (options.hasShadow())
         {
             textWidth += options.shadowX();
