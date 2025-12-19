@@ -157,7 +157,7 @@ bool FontImpl::prepareTexture()
     return true;
 }
 
-static std::vector<Font> s_fonts;
+static std::vector<std::unique_ptr<Font>> s_fonts;
 
 const FontImpl* FontImpl::get(const Font& parent)
 {
@@ -266,19 +266,23 @@ const Font* Font::getFont(int pixelSize)
 
 const Render::Font* Font::getFont(const std::string& fontName, int pixelSize)
 {
-    const auto it = std::find_if(s_fonts.cbegin(), s_fonts.cend(), [&](const Font& fontImpl) {
-        if (fontImpl.pixelSize() == pixelSize)
+    const auto it = std::find_if(
+        s_fonts.cbegin(),
+        s_fonts.cend(),
+        [pixelSize](const std::unique_ptr<Font>& font)
+    {
+        if (font->pixelSize() == pixelSize)
             return true;
         return false;
     });
 
     if (it == s_fonts.cend())
     {
-        Font newFont(fontName, pixelSize);
-        if (newFont.isValid())
+        std::unique_ptr<Font> newFont = std::make_unique<Font>(fontName, pixelSize);
+        if (newFont->isValid())
         {
             s_fonts.emplace_back(std::move(newFont));
-            return &s_fonts.back();
+            return s_fonts.back().get();
         }
         else
         {
@@ -288,7 +292,7 @@ const Render::Font* Font::getFont(const std::string& fontName, int pixelSize)
     }
     else
     {
-        return &*it;
+        return it->get();
     }
 }
 
