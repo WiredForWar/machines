@@ -78,7 +78,9 @@ void GuiSingleLineEditBox::doDisplay()
             Gui::Coord(
                 absoluteBoundary().minCorner().x() + caretPos_ + offset,
                 absoluteBoundary().minCorner().y() + offset),
-            Gui::Coord(absoluteBoundary().minCorner().x() + caretPos_ + offset, absoluteBoundary().maxCorner().y()),
+            Gui::Coord(
+                absoluteBoundary().minCorner().x() + caretPos_ + offset,
+                absoluteBoundary().maxCorner().y() - offset),
             caretColour_,
             1 * Gui::uiScaleFactor());
     }
