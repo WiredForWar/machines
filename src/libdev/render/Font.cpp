@@ -47,6 +47,10 @@ bool FontImpl::prepareTexture()
         return false;
 
     FT_Set_Pixel_Sizes(face, 0, pixelSize);
+
+    ascender_ = static_cast<int>(face->size->metrics.ascender >> 6);
+    descender_ = static_cast<int>(face->size->metrics.descender >> 6);
+    lineHeight_ = static_cast<int>(face->size->metrics.height >> 6);
     FT_GlyphSlot g = face->glyph;
 
     unsigned int roww = 0;
@@ -205,6 +209,11 @@ bool Font::isValid() const
 int Font::pixelSize() const
 {
     return pImpl_ ? pImpl_->pixelSize : 0;
+}
+
+int Font::height() const
+{
+    return pImpl_ ? pImpl_->height() : 0;
 }
 
 const Font* Font::getFont(int pixelSize)

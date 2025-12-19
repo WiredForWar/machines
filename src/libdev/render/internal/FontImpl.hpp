@@ -23,6 +23,11 @@ public:
 
     int pixelSize = 0;
 
+    int ascender() const { return ascender_; }
+    int descender() const { return descender_; }
+    int lineHeight() const { return lineHeight_ ? lineHeight_ : pixelSize; }
+    int height() const { return (ascender_ || descender_) ? (ascender_ - descender_) : pixelSize; }
+
     std::string fontName;
     GLuint textureId = 0; // texture atlas object
 
@@ -49,6 +54,9 @@ public:
     const CharData* getChar(int32_t c) const;
 
 protected:
+    int ascender_ = 0;
+    int descender_ = 0;
+    int lineHeight_ = 0;
     CharData charData_[256]; // character information
 };
 

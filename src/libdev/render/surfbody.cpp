@@ -350,9 +350,10 @@ void RenISurfBody::drawText(
         secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
     }
 
-    y += font.pixelSize();
     const Render::FontImpl& fontImpl = *Render::FontImpl::get(&font);
     const Render::FontImpl::CharData* charData = nullptr;
+
+    y += fontImpl.ascender();
 
     auto disabledCullFaceScope = ScopedGLDisable(GL_CULL_FACE);
     if (options.alignment() & Render::AlignRight)
@@ -402,7 +403,7 @@ void RenISurfBody::drawText(
         if (character == '\n')
         {
             x = originX;
-            y += font.pixelSize() + 2;
+            y += fontImpl.lineHeight() + 2;
             continue;
         }
 
