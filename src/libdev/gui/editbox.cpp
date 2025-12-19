@@ -350,12 +350,12 @@ void GuiSingleLineEditBox::doHandleMouseClickEvent(const GuiMouseEvent&)
     GuiManager::instance().charFocus(this);
 }
 
-const std::string& GuiSingleLineEditBox::leftText() const
+std::string_view GuiSingleLineEditBox::leftText() const
 {
     return leftText_;
 }
 
-const std::string& GuiSingleLineEditBox::rightText() const
+std::string_view GuiSingleLineEditBox::rightText() const
 {
     return rightText_;
 }

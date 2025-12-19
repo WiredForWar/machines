@@ -69,8 +69,9 @@ protected:
 
     virtual void drawBackground();
 
-    const std::string& leftText() const;
-    const std::string& rightText() const;
+    std::string_view leftText() const;
+    std::string_view rightText() const;
+
     Gui::XCoord caretPos() const;
     bool showCaret() const;
     const GuiColour& caretColour() const;
