@@ -3,6 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 // #include "windows.h"
+#include "render/Font.hpp"
 #include "system/pathname.hpp"
 #include "network/netnet.hpp"
 
@@ -715,16 +716,6 @@ int MachGui::iconIndexYOffset()
     return Gui::uiScaleFactor() - 1;
 }
 
-int MachGui::corralInfoFontSize()
-{
-    return Gui::uiScaleFactor() == 1 ? 10 : 18;
-}
-
-int MachGui::navigationButtonNumberFontSize()
-{
-    return Gui::uiScaleFactor() == 1 ? 10 : 18;
-}
-
 // static
 double MachGui::doubleClickInterval()
 {
@@ -863,3 +854,25 @@ const std::string& MachGui::wonSymbolText()
 }
 
 /* End GUI.CPP ******************************************************/
+
+int corralInfoFontSize()
+{
+    return Gui::uiScaleFactor() == 1 ? 10 : 18;
+}
+
+int navigationButtonNumberFontSize()
+{
+    return Gui::uiScaleFactor() == 1 ? 10 : 18;
+}
+
+const Render::Font& MachGui::corralInfoFont()
+{
+    static const Render::Font *font = Render::Font::getFont(corralInfoFontSize());
+    return *font;
+}
+
+const Render::Font& MachGui::navigationButtonNumberFont()
+{
+    static const Render::Font *font = Render::Font::getFont(navigationButtonNumberFontSize());
+    return *font;
+}

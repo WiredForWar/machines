@@ -56,6 +56,7 @@ bool operator<(const GuiBitmap&, const GuiBitmap&);
 namespace Render
 {
 
+class Font;
 class TextOptions;
 
 } // Render namespace

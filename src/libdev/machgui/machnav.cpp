@@ -159,7 +159,7 @@ protected:
             options.setColor(Gui::WHITE());
             options.setShadow(1, 1, shadowColor);
 
-            GuiPainter::instance().drawText(absCopy, std::to_string(numThisType_), options, MachGui::navigationButtonNumberFontSize());
+            GuiPainter::instance().drawText(absCopy, std::to_string(numThisType_), options, MachGui::navigationButtonNumberFont());
         }
     }
 
