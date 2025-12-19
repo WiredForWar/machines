@@ -48,6 +48,15 @@ std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t)
     return o;
 }
 
+void GuiSingleLineEditBox::updateTextViews()
+{
+    if (cursorIndex_ > text_.length())
+        cursorIndex_ = text_.length();
+
+    leftTextView_ = std::string_view(text_).substr(0, cursorIndex_);
+    rightTextView_ = std::string_view(text_).substr(cursorIndex_);
+}
+
 // virtual
 void GuiSingleLineEditBox::doDisplay()
 {
@@ -59,8 +68,8 @@ void GuiSingleLineEditBox::doDisplay()
         absoluteBoundary().minCorner().x() + caretPos_ + offset,
         absoluteBoundary().minCorner().y() + offset);
 
-    font_.drawText(rightText_, startText, maxWidth() - caretPos_);
-    font_.drawText(leftText_, startText, caretPos_, GuiBmpFont::RIGHT_JUSTIFY);
+    font_.drawText(rightText(), startText, maxWidth() - caretPos_);
+    font_.drawText(leftText(), startText, caretPos_, GuiBmpFont::RIGHT_JUSTIFY);
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
         && showCaret_) // Only show caret if we have focus
@@ -103,9 +112,10 @@ bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
     {
         // Check to see if adding this character is allowed, i.e. length of string will
         // be less than or equal to maxChars_ ( maximum length of string allowed ).
-        if ((leftText_.length() + rightText_.length()) < maxChars_ || maxChars_ == 0)
+        if (text_.length() < maxChars_ || maxChars_ == 0)
         {
-            leftText_ += e.getChar();
+            text_.insert(cursorIndex_, 1, e.getChar());
+            ++cursorIndex_;
 
             caretPos_ += font_.charWidth(e.getChar()) + font_.spacing();
 
@@ -158,100 +168,83 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
     return processed;
 }
 
-void GuiSingleLineEditBox::leftArrowEvent()
+void GuiSingleLineEditBox::setCursorPosition(std::size_t position)
 {
-    // Check to see if were not already at the beginning of the edit box
-    if (!leftText_.empty())
-    {
-        char c = leftText_[leftText_.length() - 1];
-        // leftText_.remove( leftText_.length() - 1 );
-        leftText_.erase(leftText_.length() - 1, 1);
-        rightText_ = c + rightText_;
-        caretPos_ -= font_.charWidth(c) + font_.spacing();
+    if (position > text_.length())
+        position = text_.length();
 
-        // Make sure caret is set to beginning of edit box if it has been
-        // moved too far back
+    if (position == cursorIndex_)
+        return;
+
+    bool moved = false;
+    while (cursorIndex_ > position)
+    {
+        char c = text_[cursorIndex_ - 1];
+        --cursorIndex_;
+        caretPos_ -= font_.charWidth(c) + font_.spacing();
         if (caretPos_ < 0)
             caretPos_ = 0;
+        moved = true;
+    }
 
+    while (cursorIndex_ < position)
+    {
+        char c = text_[cursorIndex_];
+        ++cursorIndex_;
+        caretPos_ += font_.charWidth(c) + font_.spacing();
+        if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
+            caretPos_ = maxWidth() - (border_ ? 5 : 1);
+        moved = true;
+    }
+
+    if (moved)
+    {
+        updateTextViews();
         forceRedraw();
     }
+}
+
+void GuiSingleLineEditBox::leftArrowEvent()
+{
+    if (cursorIndex_ > 0)
+        setCursorPosition(cursorIndex_ - 1);
 }
 
 void GuiSingleLineEditBox::rightArrowEvent()
 {
-    // Check to see if were not already at the end of the edit box
-    if (!rightText_.empty())
-    {
-        char c = rightText_[0];
-        // rightText_.remove( 0, 1 );
-        rightText_.erase(0, 1);
-        leftText_ = leftText_ + c;
-        caretPos_ += font_.charWidth(c) + font_.spacing();
-
-        // Make sure caret is set to end of edit box if it has been
-        // moved too far
-        if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
-            caretPos_ = maxWidth() - (border_ ? 5 : 1);
-
-        forceRedraw();
-    }
+    setCursorPosition(cursorIndex_ + 1);
 }
 
 void GuiSingleLineEditBox::homeEvent()
 {
-    // Check to see if were not already at the beginning of the edit box
-    if (!leftText_.empty())
-    {
-        rightText_ = leftText_ + rightText_;
-        // leftText_.remove( 0 );
-        leftText_.erase(0);
-        caretPos_ = 0;
-
-        forceRedraw();
-    }
+    setCursorPosition(0);
 }
 
 void GuiSingleLineEditBox::endEvent()
 {
-    // Check to see if were not already at the end of the edit box
-    if (!rightText_.empty())
-    {
-        leftText_ = leftText_ + rightText_;
-
-        for (int i = 0; i < rightText_.length(); ++i)
-        {
-            caretPos_ += font_.charWidth(rightText_[i]) + font_.spacing();
-        }
-        if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
-            caretPos_ = maxWidth() - (border_ ? 5 : 1);
-
-        // rightText_.remove( 0 );
-        rightText_.erase(0);
-
-        forceRedraw();
-    }
+    setCursorPosition(text_.length());
 }
 
 void GuiSingleLineEditBox::backspaceEvent()
 {
     // Check to see if were not already at the beginning of the edit box
-    if (!leftText_.empty())
+    if (cursorIndex_ > 0)
     {
-        char c = leftText_[leftText_.length() - 1];
-        leftText_.erase(leftText_.length() - 1, 1);
+        char c = text_[cursorIndex_ - 1];
+        text_.erase(cursorIndex_ - 1, 1);
+        --cursorIndex_;
         caretPos_ -= font_.charWidth(c) + font_.spacing();
 
         if (caretPos_ < 0)
         {
             caretPos_ = 0;
             // Jump caret fowards 5 character widths
-            int pos = leftText_.length();
-            int count = 5;
+            std::size_t pos = cursorIndex_;
+            std::size_t count = 5;
             while (pos && --count)
             {
                 --pos;
-                caretPos_ += font_.charWidth(leftText_[pos]) + font_.spacing();
+                caretPos_ += font_.charWidth(text_[pos]) + font_.spacing();
             }
         }
 
@@ -262,16 +255,16 @@ void GuiSingleLineEditBox::backspaceEvent()
 void GuiSingleLineEditBox::deleteEvent()
 {
     // Check to see if were not already at the end of the edit box
-    if (!rightText_.empty())
+    if (cursorIndex_ < text_.length())
     {
-        rightText_.erase(0, 1);
-
+        text_.erase(cursorIndex_, 1);
         onTextChanged();
     }
 }
 
 void GuiSingleLineEditBox::onTextChanged()
 {
+    updateTextViews();
     forceRedraw();
 
     if (textChangedCallback_)
@@ -292,9 +285,8 @@ void GuiSingleLineEditBox::setText(const std::string& newText)
 {
     PRE(maxChars_ ? newText.length() <= maxChars_ : true);
 
-    rightText_ = newText;
-    // leftText_.remove( 0 );
-    leftText_.erase(0);
+    text_ = newText;
+    cursorIndex_ = 0;
     caretPos_ = 0;
 
     onTextChanged();
@@ -302,10 +294,7 @@ void GuiSingleLineEditBox::setText(const std::string& newText)
 
 std::string GuiSingleLineEditBox::text() const
 {
-    std::string retVal;
-    retVal = leftText_ + rightText_;
-
-    return retVal;
+    return text_;
 }
 
 // virtual
@@ -352,12 +341,12 @@ void GuiSingleLineEditBox::doHandleMouseClickEvent(const GuiMouseEvent&)
 
 std::string_view GuiSingleLineEditBox::leftText() const
 {
-    return leftText_;
+    return leftTextView_;
 }
 
 std::string_view GuiSingleLineEditBox::rightText() const
 {
-    return rightText_;
+    return rightTextView_;
 }
 
 Gui::XCoord GuiSingleLineEditBox::caretPos() const

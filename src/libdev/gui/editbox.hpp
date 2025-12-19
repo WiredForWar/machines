@@ -41,6 +41,7 @@ public:
     void setText(const std::string&);
     // PRE( std::string.length() <= maxChars_ );
     std::string text() const;
+    void setCursorPosition(std::size_t position);
     void setTextChangedCallback(Callback callback);
 
     // Turn edit box border on.
@@ -66,6 +67,7 @@ protected:
 
     void onTextChanged();
     void forceRedraw();
+    void updateTextViews();
 
     virtual void drawBackground();
 
@@ -87,8 +89,10 @@ protected:
     Callback textChangedCallback_{};
 
     // Data members...
-    std::string rightText_;
-    std::string leftText_;
+    std::string text_{};
+    std::size_t cursorIndex_ = 0;
+    std::string_view rightTextView_{};
+    std::string_view leftTextView_{};
     Gui::XCoord caretPos_ = 0;
     GuiBmpFont font_;
     bool showCaret_;
