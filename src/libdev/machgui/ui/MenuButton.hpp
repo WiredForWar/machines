@@ -83,10 +83,10 @@ private:
     // Note: The TODO is blocked by MachGuiFocusCapableControl
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 
-    unsigned int stringId_;
-    bool highlighted_;
-    bool flash_;
-    bool disabled_;
-    bool msgBoxButton_;
+    unsigned int stringId_{};
+    bool highlighted_{};
+    bool flash_{};
+    bool disabled_{};
+    bool msgBoxButton_{};
     MachGui::ButtonEvent buttonEvent_;
 };

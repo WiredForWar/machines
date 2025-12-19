@@ -15,12 +15,13 @@
 #include "sound/smpparam.hpp"
 #include "gui/event.hpp"
 #include "gui/painter.hpp"
-#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/mgsndman.hpp"
+#include "render/Font.hpp"
+#include "render/TextOptions.hpp"
 #include "render/device.hpp"
+#include "system/pathname.hpp"
 #include "system/winapi.hpp"
-#include "machgui/menus_helper.hpp"
 
 using namespace MachGui;
 
@@ -35,10 +36,6 @@ MachGuiMenuButton::MachGuiMenuButton(
     , pRootParent_(pRootParent)
     , pStartupScreens_(pParent)
     , stringId_(stringId)
-    , highlighted_(false)
-    , flash_(false)
-    , disabled_(false)
-    , msgBoxButton_(false)
     , buttonEvent_(buttonEvent)
 {
 
@@ -55,10 +52,6 @@ MachGuiMenuButton::MachGuiMenuButton(
     , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , stringId_(stringId)
-    , highlighted_(false)
-    , flash_(false)
-    , disabled_(false)
-    , msgBoxButton_(false)
     , buttonEvent_(buttonEvent)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
@@ -158,40 +151,35 @@ void MachGuiMenuButton::doDisplay()
             absoluteBoundary().minCorner());
     }
 
-    GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
-    GuiBmpFont lightfont(GuiBmpFont::getFont(Menu::largeFontLight()));
-    GuiBmpFont focusfont(GuiBmpFont::getFont(Menu::largeFontFocus()));
-
     GuiResourceString str(stringId_);
     std::string text = str.asString();
 
-    size_t textWidth = darkfont.horizontalAdvance(text);
-    size_t textHeight = darkfont.height();
+    Render::TextOptions options = MachGui::Menu::menuLightTextOptions();
+
+    if (flash_ || highlighted_)
+    {
+        options.setColor(Menu::highlightedTextColor());
+        options.setOutline(1 * MachGui::menuScaleFactor(), Gui::WHITE());
+    }
+    else if (isFocusControl())
+    {
+        options.setColor(Menu::focusedTextColor());
+    }
+
+    if (flash_)
+    {
+        options.setUnderline(true);
+    }
+
+    const Render::Font& font = MachGui::Menu::font();
+    std::size_t textWidth = font.horizontalAdvance(text, options);
+    std::size_t textHeight = font.height();
 
     size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
     size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
 
-    // Draw text
-    if (flash_)
-    {
-        darkfont.underline(true);
-        darkfont.drawText(text, Gui::Coord(textX, textY), 1000);
-    }
-    else if (highlighted_)
-    {
-        darkfont.drawText(text, Gui::Coord(textX, textY), 1000);
-    }
-    else
-    {
-        if (isFocusControl())
-        {
-            focusfont.drawText(text, Gui::Coord(textX, textY), 1000);
-        }
-        else
-        {
-            lightfont.drawText(text, Gui::Coord(textX, textY), 1000);
-        }
-    }
+    IGuiPainter& p = GuiPainter::instance();
+    p.drawText(Gui::Coord(textX, textY), text, options, font);
 
     // Show disabled button if necessary
     if (disabled_)
