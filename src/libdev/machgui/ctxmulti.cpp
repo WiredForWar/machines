@@ -171,7 +171,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
     // Was JOIN pressed?...
     if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::JOIN)
     {
-        if (playerName == "" || // No name entered
+        if (playerName.empty()|| // No name entered
             pSingleLineEditBox_->clearTextOnNextChar())
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERNAME);
