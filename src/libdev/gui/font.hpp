@@ -18,6 +18,8 @@
 #include "system/pathname.hpp"
 #include "gui/gui.hpp"
 
+#include <string_view>
+
 class GuiBmpFontCore;
 
 class GuiBmpFont
@@ -52,12 +54,16 @@ public:
     size_t maxCharWidth() const;
 
     // Display text on screen.
-    void drawText(const std::string& text, const Gui::Coord& startPos, int maxWidth, Justification = LEFT_JUSTIFY) const;
+    void drawText(const std::string_view& text, const Gui::Coord& startPos, int maxWidth, Justification = LEFT_JUSTIFY)
+        const;
 
     // Display text on bitmap.
-    void
-    drawText(GuiBitmap*, const std::string& text, const Gui::Coord& startPos, int maxWidth, Justification = LEFT_JUSTIFY)
-        const;
+    void drawText(
+        GuiBitmap*,
+        const std::string_view& text,
+        const Gui::Coord& startPos,
+        int maxWidth,
+        Justification = LEFT_JUSTIFY) const;
 
     // Get/Set font type ( proportional or fixed space ).
     FontType fontType() const;
@@ -77,7 +83,7 @@ public:
     void underlineColour(const GuiColour&);
 
     // Return the display width of "text" without actually rendering the text.
-    int horizontalAdvance(const std::string& text) const;
+    int horizontalAdvance(const std::string_view& text) const;
 
     // Free's up all the memory used by the cached fonts.
     static void releaseFontMemory();
@@ -94,10 +100,10 @@ public:
 
 protected:
     GuiBmpFont(const SysPathName& fontPath);
-    void drawTextLeftJustify(const std::string& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextRightJustify(const std::string& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextLeftJustify(GuiBitmap*, const std::string& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextRightJustify(GuiBitmap*, const std::string& text, const Gui::Coord& startPos, int maxWidth) const;
+    void drawTextLeftJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
+    void drawTextRightJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
+    void drawTextLeftJustify(GuiBitmap*, const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
+    void drawTextRightJustify(GuiBitmap*, const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
 
 private:
     void CLASS_INVARIANT;
