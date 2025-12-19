@@ -217,6 +217,15 @@ int Font::height() const
     return pImpl_ ? pImpl_->height() : 0;
 }
 
+int Font::charWidth(uint32_t character) const
+{
+    const Render::FontImpl::CharData* charData = pImpl_->getChar(character);
+    if (!charData)
+        return 0;
+
+    return charData->ax;
+}
+
 int Font::horizontalAdvance(const std::string& text, const TextOptions& options) const
 {
     const Render::FontImpl& font = *pImpl_;

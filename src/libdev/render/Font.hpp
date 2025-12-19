@@ -26,6 +26,8 @@ public:
     int pixelSize() const;
     int height() const;
 
+    int charWidth(uint32_t character) const;
+
     int horizontalAdvance(const std::string& text, const TextOptions &options) const;
     int horizontalAdvance(const std::string& text) const;
 
