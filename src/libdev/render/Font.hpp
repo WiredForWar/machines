@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 namespace Render
 {
@@ -28,8 +29,8 @@ public:
 
     int charWidth(uint32_t character) const;
 
-    int horizontalAdvance(const std::string& text, const TextOptions &options) const;
-    int horizontalAdvance(const std::string& text) const;
+    int horizontalAdvance(const std::string_view& text, const TextOptions &options) const;
+    int horizontalAdvance(const std::string_view& text) const;
 
     static const Font* getFont(int pixelSize);
     static const Font* getFont(const std::string& fontName, int pixelSize);

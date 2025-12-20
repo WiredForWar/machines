@@ -101,7 +101,7 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
 
 void GuiPainter::drawText(
     const Gui::Coord& c,
-    const std::string& text,
+    const std::string_view& text,
     const Gui::TextOptions& options,
     const Render::Font& font) const
 {

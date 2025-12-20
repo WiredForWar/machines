@@ -133,7 +133,8 @@ public:
     // Returns the actual size used, in case an exact match doesn't exist.
     static int getDefaultFontSize();
     static void setDefaultFontSize(int size);
-    void drawText(int x, int y, const std::string& text, const Render::Font& font, const Render::TextOptions& options);
+    void drawText(
+        int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options);
 
     // Is source colour keying enabled for this image?
     bool isColourKeyingOn() const;

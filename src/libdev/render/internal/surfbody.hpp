@@ -67,7 +67,8 @@ public:
     // however, they are placed here to reduce dependancies.
     void setDDColourKey();
     void filledRectangle(const Ren::Rect& area, uint colour);
-    void drawText(int x, int y, const std::string& text, const Render::Font& font, const Render::TextOptions& options);
+    void drawText(
+        int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options);
 
     // When Alt-Tab is pressed, textures can get unloaded from a hardware
     // device.  Calling this method reloads this image.

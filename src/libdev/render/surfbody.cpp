@@ -324,11 +324,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 }
 
 void RenISurfBody::drawText(
-    int x,
-    int y,
-    const std::string& text,
-    const Render::Font& font,
-    const Render::TextOptions& options)
+    int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options)
 {
     struct UnderlineSegment
     {

@@ -56,9 +56,11 @@ public:
 
     ///////////////////////////////
 
-    virtual void
-    drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, const Render::Font& font)
-        const
+    virtual void drawText(
+        const Gui::Coord& c,
+        const std::string_view& text,
+        const Gui::TextOptions& options,
+        const Render::Font& font) const
         = 0;
 
     ///////////////////////////////
@@ -114,8 +116,11 @@ public:
 
     ///////////////////////////////
 
-    void drawText(const Gui::Coord& c, const std::string& text, const Gui::TextOptions& options, const Render::Font& font)
-        const override;
+    void drawText(
+        const Gui::Coord& c,
+        const std::string_view& text,
+        const Gui::TextOptions& options,
+        const Render::Font& font) const override;
 
     ///////////////////////////////
 

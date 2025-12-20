@@ -226,7 +226,7 @@ int Font::charWidth(uint32_t character) const
     return charData->ax;
 }
 
-int Font::horizontalAdvance(const std::string& text, const TextOptions& options) const
+int Font::horizontalAdvance(const std::string_view& text, const TextOptions& options) const
 {
     const Render::FontImpl& font = *pImpl_;
     const Render::FontImpl::CharData* charData {};
@@ -263,7 +263,7 @@ int Font::horizontalAdvance(const std::string& text, const TextOptions& options)
     return textWidth;
 }
 
-int Font::horizontalAdvance(const std::string& text) const
+int Font::horizontalAdvance(const std::string_view& text) const
 {
     return horizontalAdvance(text, {});
 }

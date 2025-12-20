@@ -951,11 +951,7 @@ void RenSurface::setDefaultFontSize(int size)
 }
 
 void RenSurface::drawText(
-    int x,
-    int y,
-    const std::string& text,
-    const Render::Font& font,
-    const Render::TextOptions& options)
+    int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options)
 {
     internals()->drawText(x, y, text, font, options);
 }
