@@ -233,42 +233,7 @@ bool MachGuiMenuButton::isFocusEnabled() const
 // virtual
 bool MachGuiMenuButton::executeControl()
 {
-    static uint glowWidth = MachGui::buttonGlowBmp().width();
-    static uint glowHeight = MachGui::buttonGlowBmp().height();
-
-    ASSERT(glowWidth >= width(), "glow bitmap not wide enough");
-    ASSERT(glowHeight >= height(), "glow bitmap not high enough");
-    ASSERT(MachGui::buttonDisableBmp().width() >= width(), "disable bitmap not wide enough");
-    ASSERT(MachGui::buttonDisableBmp().height() >= height(), "disable bitmap not high enough");
-
-    uint glowX = (glowWidth - width()) / 2.0;
-    uint glowY = (glowHeight - height()) / 2.0;
-
-    // Draw glow background to button.
-    RenSurface frontSurface = RenDevice::current()->frontSurface();
-    frontSurface.simpleBlit(
-        MachGui::buttonGlowBmp(),
-        Ren::Rect(glowX, glowY, width(), height()),
-        absoluteBoundary().minCorner().x(),
-        absoluteBoundary().minCorner().y());
-
-    // Draw dark text
-    GuiBmpFont darkfont(GuiBmpFont::getFont(Menu::largeFontDark()));
-
-    GuiResourceString str(stringId_);
-    std::string text = str.asString();
-
-    size_t textWidth = darkfont.horizontalAdvance(text);
-    size_t textHeight = darkfont.height();
-
-    size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
-    size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
-
-    // Draw text
-    darkfont.drawText(&frontSurface, text, Gui::Coord(textX, textY), 1000);
-
-    // Slight pause so on fast PCs you can still see buttons flash
-    SysWindowsAPI::sleep(100);
+    flash_ = true;
 
     // Refresh button
     changed();
