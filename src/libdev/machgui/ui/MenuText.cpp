@@ -13,85 +13,6 @@
 
 #include <cstring>
 
-MachGuiMenuText::MachGuiMenuText(
-    GuiDisplayable* pParent,
-    const Gui::Box& box,
-    const ResolvedUiString& str,
-    const SysPathName& fontPath,
-    Gui::Alignment alignment)
-    : GuiDisplayable(pParent, box)
-    , fontPath_(fontPath)
-    , alignment_(alignment)
-{
-    strings_.reserve(128);
-    chopUpText(str, width(), GuiBmpFont::getFont(fontPath_), &strings_);
-
-    TEST_INVARIANT;
-}
-
-MachGuiMenuText::~MachGuiMenuText()
-{
-    TEST_INVARIANT;
-}
-
-void MachGuiMenuText::CLASS_INVARIANT
-{
-    INVARIANT(this != nullptr);
-}
-
-std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t)
-{
-
-    o << "MachGuiMenuText " << static_cast<const void*>(&t) << " start" << std::endl;
-    o << "MachGuiMenuText " << static_cast<const void*>(&t) << " end" << std::endl;
-
-    return o;
-}
-
-// virtual
-void MachGuiMenuText::doDisplay()
-{
-    GuiBmpFont font(GuiBmpFont::getFont(fontPath_));
-
-    size_t textHeight = font.height();
-    size_t totalHeight = (strings_.size() * (textHeight + 1 * MachGui::menuScaleFactor())) - 1 * MachGui::menuScaleFactor();
-
-    ASSERT_INFO(totalHeight);
-    ASSERT_INFO(height());
-    ASSERT(totalHeight <= height(), "height required to render text is greater than the height assigned");
-
-    int startY = absoluteBoundary().minCorner().y();
-    Gui::Alignment verticalAlignment = alignment_ & Gui::AlignVertical_Mask;
-    if (!verticalAlignment) {
-        // Vertical center is the default behavior
-        verticalAlignment = Gui::AlignVCenter;
-    }
-
-    if (verticalAlignment & Gui::AlignTop)
-        ;
-    else if (verticalAlignment & Gui::AlignVCenter)
-        startY += (height() - totalHeight) / 2.0;
-    else if (verticalAlignment & Gui::AlignBottom)
-        startY += height() - totalHeight;
-
-    for (std::size_t i = 0; i < strings_.size(); ++i)
-    {
-        int textWidth = font.horizontalAdvance(strings_[i]);
-        int textX = 0;
-
-        if (alignment_ & Gui::AlignHCenter)
-            textX = absoluteBoundary().minCorner().x() + ((width() - textWidth) / 2.0);
-        else if (alignment_ & Gui::AlignRight)
-            textX = absoluteBoundary().minCorner().x() + width() - textWidth;
-        else if (alignment_ & Gui::AlignLeft)
-            textX = absoluteBoundary().minCorner().x();
-
-        int textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
-
-        font.drawText(strings_[i], Gui::Coord(textX, textY), 1000);
-    }
-}
-
 // static
 void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
 {
@@ -209,4 +130,81 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
     }
 }
 
-/* End MENUTEXT.CPP *************************************************/
+MachGuiMenuText::MachGuiMenuText(
+    GuiDisplayable* pParent,
+    const Gui::Box& box,
+    const ResolvedUiString& str,
+    const SysPathName& fontPath,
+    Gui::Alignment alignment)
+    : GuiDisplayable(pParent, box)
+    , fontPath_(fontPath)
+    , alignment_(alignment)
+{
+    strings_.reserve(128);
+    chopUpText(str, width(), GuiBmpFont::getFont(fontPath_), &strings_);
+
+    TEST_INVARIANT;
+}
+
+MachGuiMenuText::~MachGuiMenuText()
+{
+    TEST_INVARIANT;
+}
+
+void MachGuiMenuText::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t)
+{
+
+    o << "MachGuiMenuText " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachGuiMenuText " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+// virtual
+void MachGuiMenuText::doDisplay()
+{
+    GuiBmpFont font(GuiBmpFont::getFont(fontPath_));
+
+    size_t textHeight = font.height();
+    size_t totalHeight = (strings_.size() * (textHeight + 1 * MachGui::menuScaleFactor())) - 1 * MachGui::menuScaleFactor();
+
+    ASSERT_INFO(totalHeight);
+    ASSERT_INFO(height());
+    ASSERT(totalHeight <= height(), "height required to render text is greater than the height assigned");
+
+    int startY = absoluteBoundary().minCorner().y();
+    Gui::Alignment verticalAlignment = alignment_ & Gui::AlignVertical_Mask;
+    if (!verticalAlignment) {
+        // Vertical center is the default behavior
+        verticalAlignment = Gui::AlignVCenter;
+    }
+
+    if (verticalAlignment & Gui::AlignTop)
+        ;
+    else if (verticalAlignment & Gui::AlignVCenter)
+        startY += (height() - totalHeight) / 2.0;
+    else if (verticalAlignment & Gui::AlignBottom)
+        startY += height() - totalHeight;
+
+    for (std::size_t i = 0; i < strings_.size(); ++i)
+    {
+        int textWidth = font.horizontalAdvance(strings_[i]);
+        int textX = 0;
+
+        if (alignment_ & Gui::AlignHCenter)
+            textX = absoluteBoundary().minCorner().x() + ((width() - textWidth) / 2.0);
+        else if (alignment_ & Gui::AlignRight)
+            textX = absoluteBoundary().minCorner().x() + width() - textWidth;
+        else if (alignment_ & Gui::AlignLeft)
+            textX = absoluteBoundary().minCorner().x();
+
+        int textY = startY + (i * (textHeight + 1 * MachGui::menuScaleFactor()));
+
+        font.drawText(strings_[i], Gui::Coord(textX, textY), 1000);
+    }
+}
