@@ -17,17 +17,22 @@
 
 #include <cstring>
 
-void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
+namespace
+{
+
+template <class Metrics>
+std::vector<std::string> chopUpTextImpl(const std::string& text, std::size_t maxWidth, const Metrics& metrics)
 {
     // WARNING : this function breaks down if the width is not big enough to store at least 6 characters.
 
+    std::vector<std::string> result;
+
     std::string choppedUpText;
-    int charPos = 0;
-    int textLength = text.length();
+    std::size_t charPos = 0;
     std::size_t curWidth = 0;
     bool beginningOfLine = true;
 
-    while (charPos < textLength)
+    while (charPos < text.length())
     {
         const char curChar = text[charPos];
 
@@ -40,12 +45,12 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
         {
             // Reset beginningOfLine flag
             beginningOfLine = true;
-            pStrings->push_back(choppedUpText);
+            result.push_back(choppedUpText);
             choppedUpText = "";
             curWidth = 0;
         }
         // Is text gonna be too wide if we add this character?
-        else if (curWidth + font.charWidth(curChar) + font.spacing() > maxWidth)
+        else if (metrics.widthAfterAppend(choppedUpText, curWidth, curChar) > maxWidth)
         {
             // Get pointer to character ten position from end of string.
             const char* almostStrEnd = choppedUpText.c_str();
@@ -58,7 +63,7 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
             // chop a word in two...
             if (curChar == ' ')
             {
-                pStrings->push_back(choppedUpText);
+                result.push_back(choppedUpText);
                 choppedUpText = "";
                 curWidth = 0;
 
@@ -71,20 +76,18 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
             {
                 // Remove beginning of last word from this line and stuff on next line...
                 std::string newLine;
-                curWidth = 0;
                 // Remove last chars until we find a space
                 while (choppedUpText[choppedUpText.length() - 1] != ' ')
                 {
-                    char lastChar = choppedUpText[choppedUpText.length() - 1];
+                    const char lastChar = choppedUpText[choppedUpText.length() - 1];
                     newLine = lastChar + newLine;
-                    curWidth += font.charWidth(lastChar) + font.spacing();
                     choppedUpText.erase(choppedUpText.length() - 1, 1);
                 }
                 newLine += curChar;
-
-                curWidth += font.charWidth(curChar) + font.spacing();
-                pStrings->push_back(choppedUpText);
+                result.push_back(choppedUpText);
                 choppedUpText = newLine;
+                curWidth = metrics.width(choppedUpText);
+
                 // We are putting stuff onto the next line therefore the beginningOfLine flag should not be reset.
                 beginningOfLine = false;
             }
@@ -92,26 +95,28 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
             {
                 // Splitting word across two lines...
                 std::string newLine;
-                std::size_t hyphenWidth = font.charWidth('-') + font.spacing();
-                curWidth = 0;
 
                 // Remove as many characters as necessary so that a hyphen can be
                 // added at the end of the line.
-                while (curWidth < hyphenWidth)
+                while (!choppedUpText.empty())
                 {
-                    char lastChar = choppedUpText[choppedUpText.length() - 1];
+                    const std::size_t width = metrics.width(choppedUpText);
+                    if (metrics.widthAfterAppend(choppedUpText, width, '-') <= maxWidth)
+                    {
+                        break;
+                    }
+
+                    const char lastChar = choppedUpText[choppedUpText.length() - 1];
                     newLine = lastChar + newLine;
-                    curWidth += font.charWidth(lastChar) + font.spacing();
-                    // choppedUpText.remove( choppedUpText.length() - 1 );
                     choppedUpText.erase(choppedUpText.length() - 1, 1);
                 }
 
                 choppedUpText += '-';
-                pStrings->push_back(choppedUpText);
+                result.push_back(choppedUpText);
                 // Start of next line
                 choppedUpText = newLine;
                 choppedUpText += curChar;
-                curWidth += font.charWidth(curChar) + font.spacing();
+                curWidth = metrics.width(choppedUpText);
 
                 // We are putting stuff onto the next line therefore the beginningOfLine flag should not be reset.
                 beginningOfLine = false;
@@ -121,7 +126,7 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
         {
             // We CAN add this character without overflowing maxWidth...
             choppedUpText += curChar;
-            curWidth += font.charWidth(curChar) + font.spacing();
+            curWidth = metrics.width(choppedUpText);
 
             beginningOfLine = false;
         }
@@ -131,128 +136,66 @@ void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const
 
     if (choppedUpText.length() != 0)
     {
-        pStrings->push_back(choppedUpText);
+        result.push_back(choppedUpText);
     }
+
+    return result;
+}
+
+struct BmpFontMetrics
+{
+    const GuiBmpFont* pFont{};
+
+    std::size_t charWidth(char c) const { return static_cast<std::size_t>(pFont->charWidth(c)); }
+    std::size_t spacing() const { return static_cast<std::size_t>(pFont->spacing()); }
+
+    std::size_t width(const std::string& text) const
+    {
+        const std::size_t s = spacing();
+        std::size_t w = 0;
+        for (std::size_t i = 0; i < text.size(); ++i)
+        {
+            w += charWidth(text[i]) + (i == 0 ? 0 : s);
+        }
+        return w;
+    }
+
+    std::size_t widthAfterAppend(const std::string& line, std::size_t currentWidth, char c) const
+    {
+        return currentWidth + charWidth(c) + (line.empty() ? 0 : spacing());
+    }
+};
+
+struct TtfFontMetrics
+{
+    const Render::Font* pFont{};
+    const Render::TextOptions* pOptions{};
+
+    std::size_t width(const std::string& text) const
+    {
+        return static_cast<std::size_t>(pFont->horizontalAdvance(text, *pOptions));
+    }
+
+    std::size_t widthAfterAppend(const std::string& line, std::size_t, char c) const
+    {
+        std::string tmp = line;
+        tmp += c;
+        return static_cast<std::size_t>(pFont->horizontalAdvance(tmp, *pOptions));
+    }
+};
+}
+
+void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
+{
+    const BmpFontMetrics metrics { &font };
+    *pStrings = chopUpTextImpl(text, maxWidth, metrics);
 }
 
 void MachGuiMenuText::chopUpText(
-    const std::string& text,
-    size_t maxWidth,
-    const Render::Font& font,
-    const Render::TextOptions& options,
-    strings* pStrings)
+    const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options, strings* pStrings)
 {
-    std::string choppedUpText;
-    int charPos = 0;
-    const int textLength = static_cast<int>(text.length());
-    std::size_t curWidth = 0;
-    bool beginningOfLine = true;
-
-    while (charPos < textLength)
-    {
-        const char curChar = text[charPos];
-
-        // Ignore spaces at beginning of line
-        if (beginningOfLine && curChar == ' ')
-        {
-        }
-        // Force new line
-        else if (curChar == '\n')
-        {
-            // Reset beginningOfLine flag
-            beginningOfLine = true;
-            pStrings->push_back(choppedUpText);
-            choppedUpText = "";
-            curWidth = 0;
-        }
-        // Is text gonna be too wide if we add this character?
-        else if (curWidth + font.charWidth(curChar) + options.letterSpacing() > maxWidth)
-        {
-            // Get pointer to character ten position from end of string.
-            const char* almostStrEnd = choppedUpText.c_str();
-            if (choppedUpText.length() > 11)
-                almostStrEnd = &choppedUpText.c_str()[choppedUpText.length() - 11];
-
-            // Add part of text to pStrings...
-
-            // Do we have a nice break, i.e. a space character, therefore not having to
-            // chop a word in two...
-            if (curChar == ' ')
-            {
-                pStrings->push_back(choppedUpText);
-                choppedUpText = "";
-                curWidth = 0;
-
-                // Reset beginningOfLine flag
-                beginningOfLine = true;
-            }
-            // Does space exist in last ten characters? If it does it's worth moving the
-            // beginning of the word onto the next line...
-            else if (std::strchr(almostStrEnd, ' '))
-            {
-                // Remove beginning of last word from this line and stuff on next line...
-                std::string newLine;
-                curWidth = 0;
-                // Remove last chars until we find a space
-                while (choppedUpText[choppedUpText.length() - 1] != ' ')
-                {
-                    const char lastChar = choppedUpText[choppedUpText.length() - 1];
-                    newLine = lastChar + newLine;
-                    curWidth += font.charWidth(lastChar) + options.letterSpacing();
-                    choppedUpText.erase(choppedUpText.length() - 1, 1);
-                }
-                newLine += curChar;
-
-                curWidth += font.charWidth(curChar) + options.letterSpacing();
-                pStrings->push_back(choppedUpText);
-                choppedUpText = newLine;
-                // We are putting stuff onto the next line therefore the beginningOfLine flag should not be reset.
-                beginningOfLine = false;
-            }
-            else
-            {
-                // Splitting word across two lines...
-                std::string newLine;
-                const std::size_t hyphenWidth = static_cast<std::size_t>(font.horizontalAdvance(std::string(1, '-')));
-                curWidth = 0;
-
-                // Remove as many characters as necessary so that a hyphen can be
-                // added at the end of the line.
-                while (curWidth < hyphenWidth)
-                {
-                    const char lastChar = choppedUpText[choppedUpText.length() - 1];
-                    newLine = lastChar + newLine;
-                    curWidth += font.charWidth(lastChar) + options.letterSpacing();
-                    choppedUpText.erase(choppedUpText.length() - 1, 1);
-                }
-
-                choppedUpText += '-';
-                pStrings->push_back(choppedUpText);
-                // Start of next line
-                choppedUpText = newLine;
-                choppedUpText += curChar;
-                curWidth += font.charWidth(curChar) + options.letterSpacing();
-
-                // We are putting stuff onto the next line therefore the beginningOfLine flag should not be reset.
-                beginningOfLine = false;
-            }
-        }
-        else
-        {
-            // We CAN add this character without overflowing maxWidth...
-            choppedUpText += curChar;
-            curWidth += font.charWidth(curChar) + options.letterSpacing();
-
-            beginningOfLine = false;
-        }
-
-        ++charPos;
-    }
-
-    if (choppedUpText.length() != 0)
-    {
-        pStrings->push_back(choppedUpText);
-    }
+    const TtfFontMetrics metrics { &font, &options };
+    *pStrings = chopUpTextImpl(text, maxWidth, metrics);
 }
 
 MachGuiMenuText::MachGuiMenuText(
@@ -265,7 +208,6 @@ MachGuiMenuText::MachGuiMenuText(
     , bitmapFontPath_(bitmapFontPath)
     , alignment_(alignment)
 {
-    strings_.reserve(128);
     const GuiBmpFont &font = GuiBmpFont::getFont(bitmapFontPath_);
     fontHeight_ = font.height();
 
@@ -286,7 +228,6 @@ MachGuiMenuText::MachGuiMenuText(
     , textOptions_(options)
     , alignment_(alignment)
 {
-    strings_.reserve(128);
     fontHeight_ = font.height();
 
     chopUpText(str, width(), font, textOptions_, &strings_);
