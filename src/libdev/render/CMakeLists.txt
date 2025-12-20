@@ -3,8 +3,6 @@ set(RENDER_SOURCES
     Alignment.hpp
     Font.cpp
     Font.hpp
-    FontMetrics.cpp
-    FontMetrics.hpp
     FontsManager.cpp
     FontsManager.hpp
     OpenGL/Utils.hpp

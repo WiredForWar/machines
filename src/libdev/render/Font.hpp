@@ -8,6 +8,7 @@ namespace Render
 {
 
 class FontImpl;
+class TextOptions;
 
 void initFonts();
 void cleanUpFonts();
@@ -24,6 +25,9 @@ public:
     bool isValid() const;
     int pixelSize() const;
     int height() const;
+
+    int horizontalAdvance(const std::string& text, const TextOptions &options) const;
+    int horizontalAdvance(const std::string& text) const;
 
     static const Font* getFont(int pixelSize);
     static const Font* getFont(const std::string& fontName, int pixelSize);
