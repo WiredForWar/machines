@@ -36,13 +36,9 @@ public:
 
     void CLASS_INVARIANT;
 
-    static void chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings);
-    static void chopUpText(
-        const std::string& text,
-        size_t maxWidth,
-        const Render::Font& font,
-        const Render::TextOptions& options,
-        strings* pStrings);
+    static strings chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font);
+    static strings chopUpText(
+        const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options);
 
 protected:
     void doDisplay() override;

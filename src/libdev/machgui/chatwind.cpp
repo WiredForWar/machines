@@ -97,7 +97,8 @@ void MachGuiChatWindow::doDisplay()
 // static
 void MachGuiChatWindow::addText(const std::string& text)
 {
-    MachGuiMenuText::chopUpText(text, chatWidth(), GuiBmpFont::getFont(MachGui::Menu::smallFontLight()), &linesOfText());
+    const GuiBmpFont& font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    linesOfText() = MachGuiMenuText::chopUpText(text, chatWidth(), font);
 
     while (linesOfText().size() > numLines())
     {

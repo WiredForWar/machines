@@ -185,17 +185,17 @@ struct TtfFontMetrics
 };
 }
 
-void MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font, strings* pStrings)
+strings MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font)
 {
     const BmpFontMetrics metrics { &font };
-    *pStrings = chopUpTextImpl(text, maxWidth, metrics);
+    return chopUpTextImpl(text, maxWidth, metrics);
 }
 
-void MachGuiMenuText::chopUpText(
-    const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options, strings* pStrings)
+strings MachGuiMenuText::chopUpText(
+    const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options)
 {
     const TtfFontMetrics metrics { &font, &options };
-    *pStrings = chopUpTextImpl(text, maxWidth, metrics);
+    return chopUpTextImpl(text, maxWidth, metrics);
 }
 
 MachGuiMenuText::MachGuiMenuText(
@@ -211,7 +211,7 @@ MachGuiMenuText::MachGuiMenuText(
     const GuiBmpFont &font = GuiBmpFont::getFont(bitmapFontPath_);
     fontHeight_ = font.height();
 
-    chopUpText(str, width(), font, &strings_);
+    strings_ = chopUpText(str, width(), font);
 
     TEST_INVARIANT;
 }
@@ -230,7 +230,7 @@ MachGuiMenuText::MachGuiMenuText(
 {
     fontHeight_ = font.height();
 
-    chopUpText(str, width(), font, textOptions_, &strings_);
+    strings_ = chopUpText(str, width(), font, textOptions_);
 
     TEST_INVARIANT;
 }

@@ -201,8 +201,7 @@ void MachPromptText::setCursorPromptText(const std::string& prompt, bool restart
     {
         cursorPromptText_ = prompt;
 
-        cursorPromptTextLines_.erase(cursorPromptTextLines_.begin(), cursorPromptTextLines_.end());
-        MachGuiMenuText::chopUpText(prompt, 2000, font_, &cursorPromptTextLines_);
+        cursorPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, font_);
 
         refresh_ = true;
 
@@ -251,8 +250,7 @@ void MachPromptText::setCommandPromptText(const std::string& prompt)
     {
         commandPromptText_ = prompt;
 
-        commandPromptTextLines_.erase(commandPromptTextLines_.begin(), commandPromptTextLines_.end());
-        MachGuiMenuText::chopUpText(prompt, 2000, font_, &commandPromptTextLines_);
+        commandPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, font_);
 
         if (promptDisplayed_ != CURSORTEXT)
         {

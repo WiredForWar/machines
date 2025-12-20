@@ -34,9 +34,7 @@ void MachGuiScrollableText::setText(const ResolvedUiString& text)
 {
     deleteAllChildren();
 
-    strings linesOfText;
-    linesOfText.reserve(64);
-    MachGuiMenuText::chopUpText(text, width(), GuiBmpFont::getFont(fontName), &linesOfText);
+    strings linesOfText = MachGuiMenuText::chopUpText(text, width(), GuiBmpFont::getFont(fontName));
 
     for (auto iter = linesOfText.begin(); iter != linesOfText.end(); ++iter)
     {

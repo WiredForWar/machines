@@ -125,9 +125,8 @@ void MachGuiInGameChatMessages::addMessage(const std::string& message)
     MachGuiSoundManager::instance().playSound("gui/sounds/chatmsg.wav");
 
     // Chop up text if it is too long to fit on one line
-    strings choppedUpText;
     GuiBmpFont font = GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp"));
-    MachGuiMenuText::chopUpText(message, reqWidth(), font, &choppedUpText);
+    strings choppedUpText = MachGuiMenuText::chopUpText(message, reqWidth(), font);
 
     // Add text to list of chat messages
     for (strings::iterator iter = choppedUpText.begin(); iter != choppedUpText.end(); ++iter)
