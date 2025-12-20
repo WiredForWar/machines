@@ -6,6 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/mdserial.hpp"
+
+#include "machgui/gui.hpp"
 #include "machgui/startup.hpp"
 #include "gui/gui.hpp"
 #include "gui/font.hpp"
@@ -110,7 +112,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     GuiResourceString comPortHeading(IDS_MENU_COMPORT);
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
-    const int textHeight = font.height() + 2;
+    const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
 
     MachGuiMenuText* pComPortText = new MachGuiMenuText(
         &startupScreens(),

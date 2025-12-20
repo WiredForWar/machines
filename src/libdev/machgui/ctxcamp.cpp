@@ -168,7 +168,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             PLAYERS_LB_MINX,
             PLAYERS_LB_MINY,
             PLAYERS_LB_MINX + font.horizontalAdvance(players.asString()),
-            PLAYERS_LB_MINY + font.height() + 2),
+            PLAYERS_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_PLAYERS,
         MachGui::Menu::largeFontLight());
 
@@ -180,7 +180,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             CURRENTSTATUS_MINX,
             CURRENTSTATUS_MINY,
             CURRENTSTATUS_MINX + font.horizontalAdvance(status.asString()),
-            CURRENTSTATUS_MINY + font.height() + 2),
+            CURRENTSTATUS_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENU_PLAYERSTATUS,
         MachGui::Menu::largeFontLight());
 

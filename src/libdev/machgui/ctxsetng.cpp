@@ -205,7 +205,9 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, MAPSIZE_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(mapsizeHeading.asString()), font.height() + 2)),
+            Gui::Size(
+                font.horizontalAdvance(mapsizeHeading.asString()),
+                font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_MAPSIZE,
         MachGui::Menu::largeFontLight());
 
@@ -215,7 +217,9 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, TERRAINTYPE_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(terrainHeading.asString()), font.height() + 2)),
+            Gui::Size(
+                font.horizontalAdvance(terrainHeading.asString()),
+                font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_TERRAINTYPE,
         MachGui::Menu::largeFontLight());
 
@@ -225,7 +229,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, SCENARIO_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(scenarioHeading.asString()), font.height() + 2)),
+            Gui::Size(font.horizontalAdvance(scenarioHeading.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_SCENARIO,
         MachGui::Menu::largeFontLight());
 
@@ -235,7 +239,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(SETTINGS_LB_MINX, SETTINGS_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(settingsHeading.asString()), font.height() + 2)),
+            Gui::Size(font.horizontalAdvance(settingsHeading.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_SETTINGS,
         MachGui::Menu::largeFontLight());
 

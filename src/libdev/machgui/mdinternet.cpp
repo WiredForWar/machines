@@ -36,7 +36,7 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
 
     GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    const int textHeight = font.height() + 2;
+    const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
 
     MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
         &parent(),
@@ -50,7 +50,7 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
         &startupScreens(),
         Gui::Box(
             pIPAddressText->relativeBoundary().bottomLeft(),
-            Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4)),
+            Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4 * MachGui::menuScaleFactor())),
         font);
     pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
     pimpl_->pIPAddressEntryBox_->border(true);
