@@ -23,7 +23,6 @@ class GuiSingleLineEditBox : public GuiDisplayable
 public:
     using Callback = std::function<void(GuiSingleLineEditBox*)>;
 
-    GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box);
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     ~GuiSingleLineEditBox() override;
 
@@ -53,6 +52,8 @@ public:
     void CLASS_INVARIANT;
 
 protected:
+    GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box);
+
     void doDisplay() override;
     bool doHandleCharEvent(const GuiCharEvent& e) override;
     bool doHandleKeyEvent(const GuiKeyEvent& e) override;
