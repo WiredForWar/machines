@@ -17,11 +17,19 @@
 #include "gui/font.hpp"
 #include "gui/gui.hpp"
 
+#include "render/TextOptions.hpp"
+
 class GuiSingleLineEditBox : public GuiDisplayable
 // Canonical form revoked
 {
 public:
     using Callback = std::function<void(GuiSingleLineEditBox*)>;
+
+    GuiSingleLineEditBox(
+        GuiDisplayable* pParent,
+        const Gui::Box& box,
+        const Render::Font& font,
+        const Render::TextOptions& options);
 
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     ~GuiSingleLineEditBox() override;
@@ -96,6 +104,8 @@ protected:
     std::string_view leftTextView_{};
     Gui::XCoord caretPos_ = 0;
     GuiBmpFont font_;
+    const Render::Font *ttfFont_{};
+    Render::TextOptions textOptions_;
     bool showCaret_;
     size_t maxChars_ = 0;
     GuiColour backgroundColour_;

@@ -11,6 +11,7 @@
 #include "gui/manager.hpp"
 #include "device/time.hpp"
 #include "device/butevent.hpp"
+#include "render/Font.hpp"
 
 GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box)
     : GuiDisplayable(pParent, box)
@@ -20,6 +21,17 @@ GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::B
     , dontUpdate_(true)
     , borderColour_(Gui::WHITE())
 {
+}
+
+GuiSingleLineEditBox::GuiSingleLineEditBox(
+    GuiDisplayable* pParent,
+    const Gui::Box& box,
+    const Render::Font& font,
+    const Render::TextOptions& options)
+    : GuiSingleLineEditBox(pParent, box)
+{
+    ttfFont_ = &font;
+    textOptions_ = options;
 }
 
 GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
@@ -57,7 +69,11 @@ void GuiSingleLineEditBox::updateTextViews()
     leftTextView_ = fullView.substr(0, cursorIndex_);
     rightTextView_ = fullView.substr(cursorIndex_);
 
-    caretPos_ = font_.horizontalAdvance(leftTextView_);
+    if (ttfFont_)
+        caretPos_ = ttfFont_->horizontalAdvance(leftTextView_, textOptions_);
+    else
+        caretPos_ = font_.horizontalAdvance(leftTextView_);
+
     const int maxCaret = maxWidth() - (border_ ? 5 : 1);
     if (caretPos_ > maxCaret)
         caretPos_ = maxCaret;
@@ -74,7 +90,16 @@ void GuiSingleLineEditBox::doDisplay()
         absoluteBoundary().minCorner().x() + offset,
         absoluteBoundary().minCorner().y() + offset);
 
-    font_.drawText(text(), startText, maxWidth());
+    IGuiPainter& painter = GuiPainter::instance();
+
+    if (ttfFont_)
+    {
+        painter.drawText(startText, text(), textOptions_, *ttfFont_);
+    }
+    else
+    {
+        font_.drawText(text(), startText, maxWidth());
+    }
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
         && showCaret_) // Only show caret if we have focus
@@ -115,8 +140,16 @@ void GuiSingleLineEditBox::update()
 bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
 {
     // Check that char is usable
-    if (font_.charWidth(e.getChar()) <= 0)
-        return false;
+    if (ttfFont_)
+    {
+        if (ttfFont_->charWidth(e.getChar()) <= 0)
+            return false;
+    }
+    else
+    {
+        if (font_.charWidth(e.getChar()) <= 0)
+            return false;
+    }
 
     // Check to see if adding this character is allowed, i.e. length of string will
     // be less than or equal to maxChars_ ( maximum length of string allowed ).

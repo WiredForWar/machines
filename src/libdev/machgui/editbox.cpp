@@ -8,14 +8,19 @@
 #include "machgui/editbox.hpp"
 
 #include "base/diag.hpp"
-#include "machgui/startup.hpp"
-#include "gui/painter.hpp"
 #include "device/butevent.hpp"
-#include "machgui/menus_helper.hpp"
 
 MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
     : GuiSingleLineEditBox(pParent, box, font)
-    , clearTextOnNextChar_(false)
+    , ignoreSpaceAtBeginning_(true)
+{
+    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
+    TEST_INVARIANT;
+}
+
+MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(
+    GuiDisplayable* pParent, const Gui::Box& box, const Render::Font& font, const Render::TextOptions& options)
+    : GuiSingleLineEditBox(pParent, box, font, options)
     , ignoreSpaceAtBeginning_(true)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));

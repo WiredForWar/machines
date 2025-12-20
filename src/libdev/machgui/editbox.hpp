@@ -22,6 +22,8 @@ class MachGuiSingleLineEditBox : public GuiSingleLineEditBox
 {
 public:
     MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
+    MachGuiSingleLineEditBox(
+        GuiDisplayable* pParent, const Gui::Box& box, const Render::Font& font, const Render::TextOptions& options);
     ~MachGuiSingleLineEditBox() override;
 
     void clearTextOnNextChar(bool);
@@ -42,11 +44,11 @@ private:
     MachGuiSingleLineEditBox(const MachGuiSingleLineEditBox&);
     MachGuiSingleLineEditBox& operator=(const MachGuiSingleLineEditBox&);
 
-    bool clearTextOnNextChar_;
-    bool ignoreSpaceAtBeginning_;
+    bool clearTextOnNextChar_{};
+    bool ignoreSpaceAtBeginning_{};
 
     // A GuiRoot such as MachGuiStartupScreens
-    GuiRoot* pRootParent_;
+    GuiRoot* pRootParent_{};
 };
 
 #endif
