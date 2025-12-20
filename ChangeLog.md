@@ -1,4 +1,29 @@
-Current dev build (to be released as v1.7.1):
+### v1.7.3
+
+- Added an option to use WASD for camera and 1st person control (enable it in the Options menu).
+  Check the in-game Hotkeys menu for more information about the assigned keys.
+- Added initial mods support (allows game data override)
+- Fixed special characters in menu fonts (fixes German localization)
+- Fixed a crash on focus on LandMine (thanks fck for the find)
+- Fixed negative damage on construction capture (fixes armor overflow)
+- Fixed actor Icon not updated on race changed (e.g. for captured constructions)
+- Camera inertia reduced by 50% (this needs its own option of course)
+- 'Windowed mode' option now always added to the config file (this also needs a checkbox)
+
+Under the hood:
+- Totally reworked keyboard input
+- Much improved localization support (still no Unicode)
+
+### v1.7.2
+
+Skipped (had only a broken pre-release).
+
+- Prompt now shows the BMUs possibly gained on a Deconstruction
+- Fixed weird units reaction to given commands
+- Fixed a few possible crashes
+
+### v1.7.1
+
 - Implemented 2X UI scaling (a lot of HD textures wanted)
 - Implemented recent events manager (to cycle through the positions of the last important events with SpaceBar key)
 - Implemented a following camera (click on the Actor in corral or double click the squadron key (<0-9>)
