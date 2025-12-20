@@ -40,6 +40,18 @@ std::vector<std::string> chopUpTextImpl(const std::string& text, std::size_t max
         if (beginningOfLine && curChar == ' ')
         {
         }
+        else if (curChar == '\r')
+        {
+            beginningOfLine = true;
+            result.push_back(choppedUpText);
+            choppedUpText = "";
+            curWidth = 0;
+
+            if (charPos + 1 < text.length() && text[charPos + 1] == '\n')
+            {
+                ++charPos;
+            }
+        }
         // Force new line
         else if (curChar == '\n')
         {
