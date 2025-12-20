@@ -18,6 +18,7 @@
 #include "world4d/soundman.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
+#include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/capable.hpp"
@@ -114,27 +115,31 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     // Display large headings
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
     GuiBmpFont smallFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     GuiResourceString optionsHeading(IDS_MENULB_OPTIONS);
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.horizontalAdvance(optionsHeading.asString()),
+            font.horizontalAdvance(optionsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
             font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_OPTIONS,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     GuiResourceString optimisationsHeading(IDS_MENULB_OPTIMISATIONS);
     new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.horizontalAdvance(optimisationsHeading.asString()),
+            font.horizontalAdvance(optimisationsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
             font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_OPTIMISATIONS,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
     // Initialise gui items
 
     const MachGuiOptionsLayout::SlidebarInfo& musicVolSl = screenLayout.slidebarInfo(0);

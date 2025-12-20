@@ -48,9 +48,9 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
     GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     GuiBmpFont::getFont(MachGui::Menu::smallFontWhite());
-    GuiBmpFont::getFont(MachGui::Menu::largeFontDark());
-    GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
-    GuiBmpFont::getFont(MachGui::Menu::largeFontFocus());
+    // GuiBmpFont::getFont(MachGui::Menu::largeFontDark());
+    // GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
+    // GuiBmpFont::getFont(MachGui::Menu::largeFontFocus());
 
 #ifdef DEMO
     new MachGuiMenuButton(
@@ -110,7 +110,12 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     // Create exit button, responds to escape...
     pExitBtn->escapeControl(true);
 
-    new MachGuiMenuText(pStartupScreens, Gui::Box(97, 32, 243, 122) * MachGui::menuScaleFactor(), IDS_MENU_MAINMENU, MachGui::Menu::largeFontLight());
+    new MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(97, 32, 243, 122) * MachGui::menuScaleFactor(),
+        IDS_MENU_MAINMENU,
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions());
 
     TEST_INVARIANT;
 }

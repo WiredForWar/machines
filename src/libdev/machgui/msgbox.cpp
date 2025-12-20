@@ -51,7 +51,8 @@ MachGuiMessageBox::MachGuiMessageBox(MachGuiStartupScreens* pStartupScreens, uin
         this,
         Gui::Box(203, 157, 484, 293) * MachGui::menuScaleFactor(),
         stringResId,
-        MachGui::Menu::largeFontLight(),
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
         Gui::AlignLeft);
 
     displayButtons(pStartupScreens);
@@ -83,7 +84,8 @@ MachGuiMessageBox::MachGuiMessageBox(
         this,
         Gui::Box(203, 157, 484, 293) * MachGui::menuScaleFactor(),
         wholeStr,
-        MachGui::Menu::largeFontLight(),
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
         Gui::AlignLeft);
 
     displayButtons(pStartupScreens);

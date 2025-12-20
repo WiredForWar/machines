@@ -24,6 +24,7 @@
 #include "machgui/msgbox.hpp"
 #include "machgui/dbplyscn.hpp"
 #include "machgui/dbscenar.hpp"
+#include "render/Font.hpp"
 #include "system/registry.hpp"
 #include "gui/font.hpp"
 #include "gui/restring.hpp"
@@ -161,16 +162,18 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
 
     // Display list box heading
     GuiResourceString players(IDS_MENULB_PLAYERS);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pPlayersText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             PLAYERS_LB_MINX,
             PLAYERS_LB_MINY,
-            PLAYERS_LB_MINX + font.horizontalAdvance(players.asString()),
+            PLAYERS_LB_MAXX,
             PLAYERS_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_PLAYERS,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display current status heading
     GuiResourceString status(IDS_MENU_PLAYERSTATUS);
@@ -179,10 +182,12 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             CURRENTSTATUS_MINX,
             CURRENTSTATUS_MINY,
-            CURRENTSTATUS_MINX + font.horizontalAdvance(status.asString()),
+            CURRENTSTATUS_MAXX,
             CURRENTSTATUS_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENU_PLAYERSTATUS,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create players list box
     pPlayersList_ = new MachGuiSingleSelectionListBox(
@@ -238,12 +243,12 @@ void MachGuiCtxCampaign::updatePlayersList()
     pSelectedPlayer_ = nullptr;
 
     // Create special [new player name] entry in list box.
-    GuiResourceString newPlayerNameStr(IDS_MENU_NEWPLAYERNAME);
+    ResolvedUiString newPlayerNameStr(IDS_MENU_NEWPLAYERNAME);
     pNewPlayerName_ = new MachGuiEditBoxListBoxItem(
         pStartupScreens_,
         pPlayersList_,
         PLAYERS_LB_MAXX - PLAYERS_LB_MINX,
-        newPlayerNameStr.asString());
+        newPlayerNameStr);
     pNewPlayerName_->maxChars(MAX_PLAYERNAME_LEN);
 
     // Add previously created players into list box.

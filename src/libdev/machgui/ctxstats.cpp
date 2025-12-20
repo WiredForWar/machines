@@ -6,10 +6,11 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ctxstats.hpp"
-#include <string.h>
+#include "render/Font.hpp"
 #include "system/pathname.hpp"
 #include "device/time.hpp"
 #include "device/cd.hpp"
+#include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "ani/AniSmacker.hpp"
@@ -35,6 +36,8 @@
 #include "machgui/internal/mgsndman.hpp"
 #include "machgui/internal/playeri.hpp"
 #include "machgui/internal/playscri.hpp"
+
+#include <string.h>
 
 MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sq", pStartupScreens, LoadAnimations::No)
@@ -127,7 +130,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
-    GuiBmpFont largeFont = GuiBmpFont::getFont(SysPathName(MachGui::Menu::largeFontLight()));
+    const Render::Font& largeFont = MachGui::Menu::font();
 
     GuiResourceString statsHeading(IDS_MENU_STATISTICS);
 
@@ -135,10 +138,11 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         pStartupScreens,
         Gui::Box(
             Gui::Coord(53, 31) * MachGui::menuScaleFactor(),
-            largeFont.horizontalAdvance(statsHeading.asString()),
+            largeFont.horizontalAdvance(statsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
             largeFont.height()),
         IDS_MENU_STATISTICS,
-        MachGui::Menu::largeFontLight(),
+        largeFont,
+        MachGui::Menu::menuLightTextOptions(),
         Gui::AlignLeft);
 
     // Get handle to score object for each race

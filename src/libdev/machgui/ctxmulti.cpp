@@ -23,6 +23,7 @@
 #include "gui/restring.hpp"
 #include "network/session.hpp"
 #include "network/netnet.hpp"
+#include "render/Font.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 class MachGuiProtocolListBoxItem : public MachGuiSingleSelectionListBoxItem
@@ -84,13 +85,14 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     pExitBtn->escapeControl(true);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
     pSingleLineEditBox_ = new MachGuiSingleLineEditBox(
         pStartupScreens,
         Gui::Box(
             Gui::Coord(106, 34) * MachGui::menuScaleFactor(),
             Gui::Size(338 * MachGui::menuScaleFactor(), font.height())),
-        font);
+        font,
+        MachGui::Menu::menuLightTextOptions());
     pSingleLineEditBox_->maxChars(MAX_PLAYERNAME_LEN);
 
     if (pStartupScreens_->startupData()->playerName() == "")
@@ -110,15 +112,15 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
 
     size_t startY = 123 * MachGui::menuScaleFactor();
     int startX = 62 * MachGui::menuScaleFactor();
+    int listBoxWidth = 413 * MachGui::menuScaleFactor();
     new MachGuiMenuText(
         pStartupScreens,
-        Gui::Box(
-            Gui::Coord(startX, startY),
-            Gui::Size(font.horizontalAdvance(connectionType.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
+        Gui::Box(Gui::Coord(startX, startY), Gui::Size(listBoxWidth, font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_CONNECTIONTYPE,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
     startY += font.height() + 3 * MachGui::menuScaleFactor();
-    int listBoxWidth = 413 * MachGui::menuScaleFactor();
     MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,
         pStartupScreens,

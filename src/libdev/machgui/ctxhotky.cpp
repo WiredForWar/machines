@@ -16,6 +16,7 @@
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
+#include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "ani/AniSmacker.hpp"
@@ -38,7 +39,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     const uint HOTKEY_SEPARATION = MachGui::menuScaleFactor() * 2;
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
-    const GuiBmpFont headingFont = GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
+    const Render::Font& headingFont = MachGui::Menu::font();
     const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     const uint headingFontHeight = headingFont.height() + MachGui::menuScaleFactor() * 2;
     const uint textFontHeight = textFont.height() + MachGui::menuScaleFactor() * 1;
@@ -58,6 +59,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         x = HOTKEY_2NDCOLUMN_X;
         y = HOTKEY_MIN_Y;
     };
+
 
     constexpr Gui::KeysDisplayFormat displayFormat = Gui::KeysDisplayFormat::Compact;
     const std::vector<std::string> categoryNames = inputRegistry->getCategories();
@@ -111,9 +113,10 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             Gui::Box(
                 Gui::Coord(x, y),
-                Gui::Size(headingFont.horizontalAdvance(displayName), headingFontHeight)),
+                Gui::Size(HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH, headingFontHeight)),
             displayName,
-            MachGui::Menu::largeFontLight(),
+            MachGui::Menu::font(),
+            MachGui::Menu::menuLightTextOptions(),
             Gui::AlignLeft|Gui::AlignTop);
 
         y += headingFontHeight;
@@ -223,7 +226,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(42, 353, 224, 464) * MachGui::menuScaleFactor(),
         IDS_MENU_HOTKEYS,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions());
 
     pContinueBtn->escapeControl(true);
 

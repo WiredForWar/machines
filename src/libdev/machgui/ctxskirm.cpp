@@ -26,13 +26,11 @@
 #include "machgui/dropdwnc.hpp"
 #include "machgui/msgbox.hpp"
 #include "machgui/numpdrop.hpp"
-#include "gui/scrolbut.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
 #include "machgui/internal/strings.hpp"
+#include "render/Font.hpp"
 #include "system/registry.hpp"
+
 #include <stdarg.h>
-#include "machgui/menus_helper.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -271,53 +269,57 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         pScenarioDesc_);
 
     // Display mapsize list box heading
-    GuiResourceString mapsizeHeading(IDS_MENULB_MAPSIZE);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * MAPSIZE_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(mapsizeHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MAXX,
             MachGui::menuScaleFactor() * MAPSIZE_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_MAPSIZE,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display planet list box heading
-    GuiResourceString terrainHeading(IDS_MENULB_TERRAINTYPE);
     MachGuiMenuText* pTerrainText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * TERRAINTYPE_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(terrainHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MAXX,
             MachGui::menuScaleFactor() * TERRAINTYPE_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_TERRAINTYPE,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display scenario list box heading
-    GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
     MachGuiMenuText* pScenarioText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * SCENARIO_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(scenarioHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MAXX,
             MachGui::menuScaleFactor() * SCENARIO_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SCENARIO,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display settings list box heading
-    GuiResourceString settingsHeading(IDS_MENULB_SETTINGS);
     MachGuiMenuText* pSettingsText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * SETTINGS_LB_MINX,
             MachGui::menuScaleFactor() * SETTINGS_LB_MINY,
-            MachGui::menuScaleFactor() * SETTINGS_LB_MINX + font.horizontalAdvance(settingsHeading.asString()),
+            MachGui::menuScaleFactor() * SETTINGS_LB_MAXX,
             MachGui::menuScaleFactor() * SETTINGS_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SETTINGS,
-        MachGui::Menu::largeFontLight());
+        font,
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create system list box
     pMapSizeList_ = new MachGuiSingleSelectionListBox(

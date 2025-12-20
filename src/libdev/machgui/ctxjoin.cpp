@@ -28,11 +28,11 @@
 #include "machgui/mdmodem.hpp"
 #include "machgui/mdinternet.hpp"
 #include "machgui/mdipx.hpp"
-#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "gui/manager.hpp"
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
+#include "render/Font.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,16 +74,21 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     pCancelBtn->escapeControl(true);
     pShowGamesBtn_->defaultControl(true);
 
+    const Render::Font& font = MachGui::Menu::font();
+
     // Display list box heading
     GuiResourceString currentGames(IDS_MENULB_GAMES);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
     MachGuiMenuText* pCurrentGamesText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             Gui::Coord(JOINGAME_LB_MINX, JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(currentGames.asString()), font.height() + 1 * MachGui::menuScaleFactor())),
+            Gui::Size(
+                (JOINGAME_LB_MAXX - JOINGAME_LB_MINX) * MachGui::menuScaleFactor(),
+                font.height() + 1 * MachGui::menuScaleFactor())),
         IDS_MENULB_GAMES,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create games list box
     pGamesList_ = new MachGuiSingleSelectionListBox(
