@@ -263,7 +263,7 @@ const RenDisplay::Mode RenDisplay::findMode(int width, int height, int refreshRa
         return Mode();
     }
 
-    return newMode;
+    return *it;
 }
 
 const RenDisplay::Mode RenDisplay::getWindowedMode(int width, int height) const
