@@ -115,22 +115,20 @@ void GuiSingleLineEditBox::update()
 bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
 {
     // Check that char is usable
-    if (font_.charWidth(e.getChar()) != 0)
+    if (font_.charWidth(e.getChar()) <= 0)
+        return false;
+
+    // Check to see if adding this character is allowed, i.e. length of string will
+    // be less than or equal to maxChars_ ( maximum length of string allowed ).
+    if (text_.length() < maxChars_ || maxChars_ == 0)
     {
-        // Check to see if adding this character is allowed, i.e. length of string will
-        // be less than or equal to maxChars_ ( maximum length of string allowed ).
-        if (text_.length() < maxChars_ || maxChars_ == 0)
-        {
-            text_.insert(cursorIndex_, 1, e.getChar());
-            ++cursorIndex_;
+        text_.insert(cursorIndex_, 1, e.getChar());
+        ++cursorIndex_;
 
-            onTextChanged();
-        }
-
-        return true;
+        onTextChanged();
     }
 
-    return false;
+    return true;
 }
 
 // virtual
