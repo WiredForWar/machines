@@ -74,7 +74,7 @@ public:
 
             GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
             size_t textWidth = font.textWidth(text);
-            size_t textHeight = font.charHeight();
+            size_t textHeight = font.height();
 
             size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
             size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
@@ -195,7 +195,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(37, 353) * MachGui::menuScaleFactor(),
-            Gui::Size(293 * MachGui::menuScaleFactor(), font.charHeight())),
+            Gui::Size(293 * MachGui::menuScaleFactor(), font.height())),
         font);
     pSingleLineEditBox_->maxChars(MAX_CHATMESSAGE_LEN - MAX_PLAYERNAME_LEN - 5);
     GuiResourceString chatMessage(IDS_MENU_CHATMESSAGE);

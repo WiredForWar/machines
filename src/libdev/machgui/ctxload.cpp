@@ -141,7 +141,7 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
             MachGui::menuScaleFactor() * LOAD_LB_MINX,
             MachGui::menuScaleFactor() * LOAD_LB_MINY,
             MachGui::menuScaleFactor() * LOAD_LB_MINX + font.textWidth(loadHeading.asString()),
-            MachGui::menuScaleFactor() * LOAD_LB_MINY + font.charHeight() + 2),
+            MachGui::menuScaleFactor() * LOAD_LB_MINY + font.height() + 2),
         IDS_MENULB_LOADGAME,
         MachGui::Menu::largeFontLight());
 

@@ -148,7 +148,7 @@ bool MachGuiDropDownListBoxCreator::hasItems() const
 // static
 size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 {
-    size_t height = getFont().charHeight() + 4 * MachGui::menuScaleFactor();
+    size_t height = getFont().height() + 4 * MachGui::menuScaleFactor();
 
     if (border)
         height += 2 * MachGui::menuScaleFactor();

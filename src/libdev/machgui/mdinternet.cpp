@@ -36,7 +36,7 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
 
     GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    const int textHeight = font.charHeight() + 2;
+    const int textHeight = font.height() + 2;
 
     MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
         &parent(),

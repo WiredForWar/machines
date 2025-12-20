@@ -168,7 +168,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             PLAYERS_LB_MINX,
             PLAYERS_LB_MINY,
             PLAYERS_LB_MINX + font.textWidth(players.asString()),
-            PLAYERS_LB_MINY + font.charHeight() + 2),
+            PLAYERS_LB_MINY + font.height() + 2),
         IDS_MENULB_PLAYERS,
         MachGui::Menu::largeFontLight());
 
@@ -180,7 +180,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
             CURRENTSTATUS_MINX,
             CURRENTSTATUS_MINY,
             CURRENTSTATUS_MINX + font.textWidth(status.asString()),
-            CURRENTSTATUS_MINY + font.charHeight() + 2),
+            CURRENTSTATUS_MINY + font.height() + 2),
         IDS_MENU_PLAYERSTATUS,
         MachGui::Menu::largeFontLight());
 
@@ -461,7 +461,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box scenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, CURRENTSTATUS_MINY),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pScenarioText_ " << scenarioTextBox << std::endl);
 
@@ -475,7 +475,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box lastScenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            (2 * font.charHeight()) + 1);
+            (2 * font.height()) + 1);
 
         DEBUG_STREAM(DIAG_NEIL, "pLastScenarioText_ " << lastScenarioTextBox << std::endl);
 
@@ -489,7 +489,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box scoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pScoreText_ " << scoreTextBox << std::endl);
 
@@ -503,7 +503,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box lastScoreTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pLastScoreText_ " << lastScoreTextBox << std::endl);
 
@@ -517,7 +517,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box numScenariosPlayedStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pNumScenariosPlayedText_ " << numScenariosPlayedStrBox << std::endl);
 
@@ -533,7 +533,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
                 CURRENTSTATUS_MINX,
                 pNumScenariosPlayedText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pNumScenariosText_ " << numScenariosPlayedBox << std::endl);
 
@@ -547,7 +547,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box totalScoreStrBox(
             Gui::Coord(CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pTotalScoreHeadingText_ " << totalScoreStrBox << std::endl);
 
@@ -563,7 +563,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
                 CURRENTSTATUS_MINX,
                 pTotalScoreHeadingText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            font.charHeight());
+            font.height());
 
         DEBUG_STREAM(DIAG_NEIL, "pTotalScoreText_ " << totalScoreBox << std::endl);
 

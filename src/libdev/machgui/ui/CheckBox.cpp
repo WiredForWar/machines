@@ -47,7 +47,7 @@ MachGuiCheckBox::MachGuiCheckBox(
     constexpr int spacing{8};
     textPos_ = Gui::Coord(
         width() - (IndicatorSize.width() + spacing) * MachGui::menuScaleFactor() - font_.textWidth(label_),
-        font_.charHeight() > height() ? 0 : (height() - font_.charHeight()) / 2 + 1 * Gui::uiScaleFactor());
+        font_.height() > height() ? 0 : (height() - font_.height()) / 2 + 1 * Gui::uiScaleFactor());
 
     TEST_INVARIANT;
 }

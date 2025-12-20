@@ -89,7 +89,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         pStartupScreens,
         Gui::Box(
             Gui::Coord(106, 34) * MachGui::menuScaleFactor(),
-            Gui::Size(338 * MachGui::menuScaleFactor(), font.charHeight())),
+            Gui::Size(338 * MachGui::menuScaleFactor(), font.height())),
         font);
     pSingleLineEditBox_->maxChars(MAX_PLAYERNAME_LEN);
 
@@ -114,10 +114,10 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         pStartupScreens,
         Gui::Box(
             Gui::Coord(startX, startY),
-            Gui::Size(font.textWidth(connectionType.asString()), font.charHeight() + 2 * MachGui::menuScaleFactor())),
+            Gui::Size(font.textWidth(connectionType.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_CONNECTIONTYPE,
         MachGui::Menu::largeFontLight());
-    startY += font.charHeight() + 3 * MachGui::menuScaleFactor();
+    startY += font.height() + 3 * MachGui::menuScaleFactor();
     int listBoxWidth = 413 * MachGui::menuScaleFactor();
     MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,

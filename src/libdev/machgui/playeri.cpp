@@ -72,7 +72,7 @@ void MachGuiPlayerNameList::names(
 
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
 
-    uint spacing = font.charHeight() + 2 * MachGui::menuScaleFactor();
+    uint spacing = font.height() + 2 * MachGui::menuScaleFactor();
     const uint maxWidth = (PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10) * MachGui::menuScaleFactor();
 
     std::string newPlayer1 = truncate(player1, maxWidth);

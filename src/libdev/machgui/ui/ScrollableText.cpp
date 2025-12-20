@@ -23,7 +23,7 @@ MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui:
         pParent,
         box,
         columnWidth,
-        GuiBmpFont::getFont(fontName).charHeight() + 1 * MachGui::menuScaleFactor(),
+        GuiBmpFont::getFont(fontName).height() + 1 * MachGui::menuScaleFactor(),
         1)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));

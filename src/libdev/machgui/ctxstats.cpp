@@ -98,7 +98,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(
             Gui::Coord(196, 41) * MachGui::menuScaleFactor(),
             font.textWidth(generalHeading.asString()),
-            font.charHeight() + 2),
+            font.height() + 2),
         IDS_MENU_STSGENERAL,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -110,7 +110,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(
             Gui::Coord(196, 132) * MachGui::menuScaleFactor(),
             font.textWidth(BARHeading.asString()),
-            font.charHeight() + 2),
+            font.height() + 2),
         IDS_MENU_STSBAR,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -122,7 +122,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(
             Gui::Coord(196, 232) * MachGui::menuScaleFactor(),
             font.textWidth(killsHeading.asString()),
-            font.charHeight() + 2),
+            font.height() + 2),
         IDS_MENU_STSKILLS,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -136,7 +136,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         Gui::Box(
             Gui::Coord(53, 31) * MachGui::menuScaleFactor(),
             largeFont.textWidth(statsHeading.asString()),
-            largeFont.charHeight()),
+            largeFont.height()),
         IDS_MENU_STATISTICS,
         MachGui::Menu::largeFontLight(),
         Gui::AlignLeft);

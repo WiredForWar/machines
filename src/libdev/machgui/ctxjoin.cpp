@@ -81,7 +81,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(JOINGAME_LB_MINX, JOINGAME_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(currentGames.asString()), font.charHeight() + 1 * MachGui::menuScaleFactor())),
+            Gui::Size(font.textWidth(currentGames.asString()), font.height() + 1 * MachGui::menuScaleFactor())),
         IDS_MENULB_GAMES,
         MachGui::Menu::largeFontLight());
 

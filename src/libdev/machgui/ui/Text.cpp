@@ -22,7 +22,7 @@ MachGuiText::MachGuiText(GuiDisplayable* pParent, size_t width, const std::strin
     , text_(str)
     , font_(GuiBmpFont::getFont(font))
 {
-    setRelativeBoundary(Gui::Box(0, 0, width, font_.charHeight()));
+    setRelativeBoundary(Gui::Box(0, 0, width, font_.height()));
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 }
 
@@ -44,5 +44,5 @@ void MachGuiText::doDisplay()
 // static
 size_t MachGuiText::reqHeight()
 {
-    return GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).charHeight() + 1 * MachGui::menuScaleFactor();
+    return GuiBmpFont::getFont(MachGui::Menu::smallFontLight()).height() + 1 * MachGui::menuScaleFactor();
 }

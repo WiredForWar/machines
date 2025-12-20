@@ -20,7 +20,7 @@ MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens
 {
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
     // Work out how may lines we can display in the chat window
-    numLines() = height() / (font.charHeight() + 1.0 /*spacing*/);
+    numLines() = height() / (font.height() + 1.0 /*spacing*/);
 
     chatWidth() = width();
 
@@ -89,7 +89,7 @@ void MachGuiChatWindow::doDisplay()
     while (loop)
     {
         --loop;
-        startY -= font.charHeight() + 1 * Gui::uiScaleFactor();
+        startY -= font.height() + 1 * Gui::uiScaleFactor();
         font.drawText(linesOfText()[loop], Gui::Coord(absoluteBoundary().minCorner().x(), startY), width());
     }
 }

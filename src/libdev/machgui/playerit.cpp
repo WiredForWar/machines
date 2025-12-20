@@ -313,7 +313,7 @@ void MachGuiPlayerListItem::dropDownListDisplayed(MachGuiDropDownListBox* pList)
 // virtual
 void MachGuiPlayerListItem::doDisplay()
 {
-    Gui::YCoord textYOffset = (height() - getFont().charHeight()) / 2.0;
+    Gui::YCoord textYOffset = (height() - getFont().height()) / 2.0;
 
     if (highlighted_ || colourHighlighted_ || pDropDownList_)
     {

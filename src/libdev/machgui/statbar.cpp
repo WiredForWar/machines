@@ -116,7 +116,7 @@ void MachGuiStatisticsBar::showStatistic()
     //  itoa( stat_, statistic, 10 );
     sprintf(statistic, "%d", (int)stat_);
 
-    int yOffset = (statsBarBmp_.height() - font.charHeight()) / 2;
+    int yOffset = (statsBarBmp_.height() - font.height()) / 2;
 
     std::string newStatistic = testForOverflow(std::string(statistic));
     delete statsText_;
@@ -128,7 +128,7 @@ void MachGuiStatisticsBar::showStatistic()
             topLeft_.x() - font.textWidth(newStatistic) - 2 * MachGui::menuScaleFactor(),
             topLeft_.y() + yOffset,
             topLeft_.x(),
-            topLeft_.y() + font.charHeight()),
+            topLeft_.y() + font.height()),
         newStatistic,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignRight);

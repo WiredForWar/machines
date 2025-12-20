@@ -205,7 +205,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, MAPSIZE_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(mapsizeHeading.asString()), font.charHeight() + 2)),
+            Gui::Size(font.textWidth(mapsizeHeading.asString()), font.height() + 2)),
         IDS_MENULB_MAPSIZE,
         MachGui::Menu::largeFontLight());
 
@@ -215,7 +215,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, TERRAINTYPE_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(terrainHeading.asString()), font.charHeight() + 2)),
+            Gui::Size(font.textWidth(terrainHeading.asString()), font.height() + 2)),
         IDS_MENULB_TERRAINTYPE,
         MachGui::Menu::largeFontLight());
 
@@ -225,7 +225,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(LB_MINX, SCENARIO_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(scenarioHeading.asString()), font.charHeight() + 2)),
+            Gui::Size(font.textWidth(scenarioHeading.asString()), font.height() + 2)),
         IDS_MENULB_SCENARIO,
         MachGui::Menu::largeFontLight());
 
@@ -235,7 +235,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(SETTINGS_LB_MINX, SETTINGS_LB_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(settingsHeading.asString()), font.charHeight() + 2)),
+            Gui::Size(font.textWidth(settingsHeading.asString()), font.height() + 2)),
         IDS_MENULB_SETTINGS,
         MachGui::Menu::largeFontLight());
 

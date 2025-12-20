@@ -361,7 +361,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX,
             SYSTEM_LB_MINY,
             LB_MINX + font.textWidth(systemHeading.asString()),
-            SYSTEM_LB_MINY + font.charHeight() + 2),
+            SYSTEM_LB_MINY + font.height() + 2),
         IDS_MENULB_SYSTEM,
         MachGui::Menu::largeFontLight());
 
@@ -373,7 +373,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX,
             PLANET_LB_MINY,
             LB_MINX + font.textWidth(planetHeading.asString()),
-            PLANET_LB_MINY + font.charHeight() + 2),
+            PLANET_LB_MINY + font.height() + 2),
         IDS_MENULB_PLANET,
         MachGui::Menu::largeFontLight());
 
@@ -385,7 +385,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
             LB_MINX,
             SCENARIO_LB_MINY,
             LB_MINX + font.textWidth(scenarioHeading.asString()),
-            SCENARIO_LB_MINY + font.charHeight() + 2),
+            SCENARIO_LB_MINY + font.height() + 2),
         IDS_MENULB_SCENARIO,
         MachGui::Menu::largeFontLight());
 

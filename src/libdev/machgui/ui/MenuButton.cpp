@@ -166,7 +166,7 @@ void MachGuiMenuButton::doDisplay()
     std::string text = str.asString();
 
     size_t textWidth = darkfont.textWidth(text);
-    size_t textHeight = darkfont.charHeight();
+    size_t textHeight = darkfont.height();
 
     size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
     size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
@@ -259,7 +259,7 @@ bool MachGuiMenuButton::executeControl()
     std::string text = str.asString();
 
     size_t textWidth = darkfont.textWidth(text);
-    size_t textHeight = darkfont.charHeight();
+    size_t textHeight = darkfont.height();
 
     size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
     size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;

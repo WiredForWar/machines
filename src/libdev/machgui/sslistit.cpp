@@ -77,7 +77,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBoxIte
 // static
 size_t MachGuiSingleSelectionListBoxItem::reqHeight()
 {
-    size_t myReqHeight = getFont().charHeight();
+    size_t myReqHeight = getFont().height();
 
     myReqHeight += 5 * MachGui::menuScaleFactor();
 

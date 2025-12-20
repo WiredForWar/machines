@@ -122,7 +122,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY) * MachGui::menuScaleFactor(),
             font.textWidth(optionsHeading.asString()),
-            font.charHeight() + 2),
+            font.height() + 2),
         IDS_MENULB_OPTIONS,
         MachGui::Menu::largeFontLight());
 
@@ -132,7 +132,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY) * MachGui::menuScaleFactor(),
             font.textWidth(optimisationsHeading.asString()),
-            font.charHeight() + 2),
+            font.height() + 2),
         IDS_MENULB_OPTIMISATIONS,
         MachGui::Menu::largeFontLight());
     // Initialise gui items
@@ -411,7 +411,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                     optimizationAreaCoord
                         + Gui::Coord(-smallFont.textWidth(choiceTitle.asString()), verticalStep * index),
                     smallFont.textWidth(choiceTitle.asString()),
-                    smallFont.charHeight() + 8 * MachGui::menuScaleFactor()),
+                    smallFont.height() + 8 * MachGui::menuScaleFactor()),
                 id,
                 MachGui::Menu::smallFontLight());
 

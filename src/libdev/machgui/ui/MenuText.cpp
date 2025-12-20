@@ -53,7 +53,7 @@ void MachGuiMenuText::doDisplay()
 {
     GuiBmpFont font(GuiBmpFont::getFont(fontPath_));
 
-    size_t textHeight = font.charHeight();
+    size_t textHeight = font.height();
     size_t totalHeight = (strings_.size() * (textHeight + 1 * MachGui::menuScaleFactor())) - 1 * MachGui::menuScaleFactor();
 
     ASSERT_INFO(totalHeight);

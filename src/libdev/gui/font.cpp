@@ -270,7 +270,7 @@ std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t)
     return o;
 }
 
-size_t GuiBmpFont::charHeight() const
+size_t GuiBmpFont::height() const
 {
     return pFontCore_->charHeight_;
 }
@@ -352,7 +352,7 @@ void GuiBmpFont::drawTextLeftJustify(const std::string& text, const Gui::Coord& 
                     Gui::Box(
                         Gui::Coord(pFontCore_->charData_[(unsigned char)text[i]].offset_, 0),
                         charWidth(text[i]) + 1,
-                        charHeight()),
+                        height()),
                     absPos);
 
                 // Add spacing ready for next character blit
@@ -371,8 +371,8 @@ void GuiBmpFont::drawTextLeftJustify(const std::string& text, const Gui::Coord& 
     if (underline_)
     {
         GuiPainter::instance().line(
-            Gui::Coord(startPos.x(), startPos.y() + charHeight() + 1),
-            Gui::Coord(absPos.x(), startPos.y() + charHeight() + 1),
+            Gui::Coord(startPos.x(), startPos.y() + height() + 1),
+            Gui::Coord(absPos.x(), startPos.y() + height() + 1),
             underlineColour_,
             1);
     }
@@ -407,7 +407,7 @@ void GuiBmpFont::drawTextRightJustify(const std::string& text, const Gui::Coord&
                     Gui::Box(
                         Gui::Coord(pFontCore_->charData_[(unsigned char)text[i]].offset_, 0),
                         charWidth(text[i]) + 1,
-                        charHeight()),
+                        height()),
                     absPos);
             }
             else
@@ -420,8 +420,8 @@ void GuiBmpFont::drawTextRightJustify(const std::string& text, const Gui::Coord&
     if (underline_)
     {
         GuiPainter::instance().line(
-            Gui::Coord(startPos.x(), startPos.y() + charHeight() + 1),
-            Gui::Coord(absPos.x(), startPos.y() + charHeight() + 1),
+            Gui::Coord(startPos.x(), startPos.y() + height() + 1),
+            Gui::Coord(absPos.x(), startPos.y() + height() + 1),
             underlineColour_,
             1);
     }
@@ -450,7 +450,7 @@ void GuiBmpFont::drawTextLeftJustify(GuiBitmap* pBmp, const std::string& text, c
                         pFontCore_->charData_[(unsigned char)text[i]].offset_,
                         0,
                         charWidth(text[i]) + 1,
-                        charHeight()),
+                        height()),
                     absPos.x(),
                     absPos.y());
 
@@ -507,7 +507,7 @@ void GuiBmpFont::drawTextRightJustify(GuiBitmap* pBmp, const std::string& text, 
                         pFontCore_->charData_[(unsigned char)text[i]].offset_,
                         0,
                         charWidth(text[i]) + 1,
-                        charHeight()),
+                        height()),
                     absPos.x(),
                     absPos.y());
             }

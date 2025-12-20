@@ -51,7 +51,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         Gui::Box(
             topLeft,
             GS_BOX_WIDTH * MachGui::menuScaleFactor(),
-            33 * MachGui::menuScaleFactor() - font.charHeight() - 2 * MachGui::menuScaleFactor()),
+            33 * MachGui::menuScaleFactor() - font.height() - 2 * MachGui::menuScaleFactor()),
         titleString,
         MachGui::Menu::smallFontLight(),
         Gui::AlignCenter);
@@ -63,9 +63,9 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
         Gui::Box(
             Gui::Coord(
                 topLeft.x(),
-                topLeft.y() + 33 * MachGui::menuScaleFactor() - font.charHeight() - 2 * MachGui::menuScaleFactor()),
+                topLeft.y() + 33 * MachGui::menuScaleFactor() - font.height() - 2 * MachGui::menuScaleFactor()),
             GS_BOX_WIDTH * MachGui::menuScaleFactor(),
-            font.charHeight() + 2 * MachGui::menuScaleFactor()),
+            font.height() + 2 * MachGui::menuScaleFactor()),
         newPlayer,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignCenter);

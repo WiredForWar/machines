@@ -286,7 +286,7 @@ int MachGuiInGameChatMessages::reqHeight()
 {
     GuiBmpFont font = GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp"));
 
-    return (font.charHeight() + 1 * Gui::uiScaleFactor()) * 5;
+    return (font.height() + 1 * Gui::uiScaleFactor()) * 5;
 }
 
 const std::vector<std::string>& MachGuiInGameChatMessages::standardMessages() const

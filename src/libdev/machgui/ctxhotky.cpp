@@ -40,8 +40,8 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
     const GuiBmpFont headingFont = GuiBmpFont::getFont(MachGui::Menu::largeFontLight());
     const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
-    const uint headingFontHeight = headingFont.charHeight() + MachGui::menuScaleFactor() * 2;
-    const uint textFontHeight = textFont.charHeight() + MachGui::menuScaleFactor() * 1;
+    const uint headingFontHeight = headingFont.height() + MachGui::menuScaleFactor() * 2;
+    const uint textFontHeight = textFont.height() + MachGui::menuScaleFactor() * 1;
     const uint verticalSpacing = textFontHeight;
 
     bool enableAnimation = MachGui::menuScaleFactor() == 1;

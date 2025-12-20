@@ -367,7 +367,7 @@ void MachPromptText::displayChatMessage()
 
     std::string displayChatMessageStr = chatMessageIntendedForStr_ + text();
     int caretPosition = caretPos() + beginningTextWidth_;
-    int startY = shadowFont_.charHeight() / 2;
+    int startY = shadowFont_.height() / 2;
     if (Gui::uiScaleFactor() > 1)
         startY += 1;
 
@@ -417,7 +417,7 @@ void MachPromptText::displayChatMessage()
         && showCaret()) // Only show caret if we have focus
     {
         Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Vec(caretPosition, startY);
-        Gui::Coord to = from + Gui::Vec(0, font_.charHeight());
+        Gui::Coord to = from + Gui::Vec(0, font_.height());
         GuiPainter::instance().line(from, to, caretColour(), 1 * Gui::uiScaleFactor());
     }
 
@@ -439,7 +439,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
         int startY = 0;
         if (textLines.size() == 1)
         {
-            startY += pImpl_->shadowFont_.charHeight() / 2;
+            startY += pImpl_->shadowFont_.height() / 2;
             if (Gui::uiScaleFactor() > 1)
                 startY += 1;
         }
@@ -451,7 +451,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
             pImpl_->shadowFont_
                 .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
             pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
-            startY += pImpl_->shadowFont_.charHeight() + 1 * Gui::uiScaleFactor();
+            startY += pImpl_->shadowFont_.height() + 1 * Gui::uiScaleFactor();
         }
 
         if (pImpl_->restartScroll_)

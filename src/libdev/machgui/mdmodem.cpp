@@ -92,7 +92,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 {
     GuiResourceString modemHeading(IDS_MENU_MODEMTYPE);
     GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
-    const int textHeight = font.charHeight() + 2;
+    const int textHeight = font.height() + 2;
 
     //  NetNetwork::Modems availableModems = NetNetwork::instance().modems();
     NetNetwork::Modems availableModems;

@@ -43,7 +43,7 @@ public:
     GuiBmpFont& operator=(const GuiBmpFont&);
     ~GuiBmpFont();
 
-    size_t charHeight() const;
+    size_t height() const;
 
     size_t charWidth(char c) const;
 
