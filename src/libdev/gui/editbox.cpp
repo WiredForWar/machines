@@ -65,11 +65,10 @@ void GuiSingleLineEditBox::doDisplay()
     int offset = border_ ? 2 * Gui::uiScaleFactor() : 0;
 
     Gui::Coord startText = Gui::Coord(
-        absoluteBoundary().minCorner().x() + caretPos_ + offset,
+        absoluteBoundary().minCorner().x() + offset,
         absoluteBoundary().minCorner().y() + offset);
 
-    font_.drawText(rightText(), startText, maxWidth() - caretPos_);
-    font_.drawText(leftText(), startText, caretPos_, GuiBmpFont::RIGHT_JUSTIFY);
+    font_.drawText(text(), startText, maxWidth());
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
         && showCaret_) // Only show caret if we have focus
