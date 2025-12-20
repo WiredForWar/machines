@@ -53,8 +53,14 @@ void GuiSingleLineEditBox::updateTextViews()
     if (cursorIndex_ > text_.length())
         cursorIndex_ = text_.length();
 
-    leftTextView_ = std::string_view(text_).substr(0, cursorIndex_);
-    rightTextView_ = std::string_view(text_).substr(cursorIndex_);
+    std::string_view fullView(text_);
+    leftTextView_ = fullView.substr(0, cursorIndex_);
+    rightTextView_ = fullView.substr(cursorIndex_);
+
+    caretPos_ = font_.horizontalAdvance(leftTextView_);
+    const int maxCaret = maxWidth() - (border_ ? 5 : 1);
+    if (caretPos_ > maxCaret)
+        caretPos_ = maxCaret;
 }
 
 // virtual
@@ -118,11 +124,6 @@ bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
             text_.insert(cursorIndex_, 1, e.getChar());
             ++cursorIndex_;
 
-            caretPos_ += font_.charWidth(e.getChar()) + font_.spacing();
-
-            if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
-                caretPos_ = maxWidth() - (border_ ? 5 : 1);
-
             onTextChanged();
         }
 
@@ -177,32 +178,9 @@ void GuiSingleLineEditBox::setCursorPosition(std::size_t position)
     if (position == cursorIndex_)
         return;
 
-    bool moved = false;
-    while (cursorIndex_ > position)
-    {
-        char c = text_[cursorIndex_ - 1];
-        --cursorIndex_;
-        caretPos_ -= font_.charWidth(c) + font_.spacing();
-        if (caretPos_ < 0)
-            caretPos_ = 0;
-        moved = true;
-    }
-
-    while (cursorIndex_ < position)
-    {
-        char c = text_[cursorIndex_];
-        ++cursorIndex_;
-        caretPos_ += font_.charWidth(c) + font_.spacing();
-        if (caretPos_ >= maxWidth() - (border_ ? 4 : 0))
-            caretPos_ = maxWidth() - (border_ ? 5 : 1);
-        moved = true;
-    }
-
-    if (moved)
-    {
-        updateTextViews();
-        forceRedraw();
-    }
+    cursorIndex_ = position;
+    updateTextViews();
+    forceRedraw();
 }
 
 void GuiSingleLineEditBox::leftArrowEvent()
@@ -234,20 +212,6 @@ void GuiSingleLineEditBox::backspaceEvent()
         char c = text_[cursorIndex_ - 1];
         text_.erase(cursorIndex_ - 1, 1);
         --cursorIndex_;
-        caretPos_ -= font_.charWidth(c) + font_.spacing();
-
-        if (caretPos_ < 0)
-        {
-            caretPos_ = 0;
-            // Jump caret fowards 5 character widths
-            std::size_t pos = cursorIndex_;
-            std::size_t count = 5;
-            while (pos && --count)
-            {
-                --pos;
-                caretPos_ += font_.charWidth(text_[pos]) + font_.spacing();
-            }
-        }
 
         onTextChanged();
     }
@@ -288,7 +252,6 @@ void GuiSingleLineEditBox::setText(const std::string& newText)
 
     text_ = newText;
     cursorIndex_ = 0;
-    caretPos_ = 0;
 
     onTextChanged();
 }
