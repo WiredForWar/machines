@@ -331,11 +331,23 @@ void RenISurfBody::drawText(
 {
     std::vector<RenIVertex> vertices;
     {
-        int expectedVerticesNumber = text.size() * 6;
+        int passes = 1;
         if (options.hasShadow())
         {
-            expectedVerticesNumber *= 2;
+            passes += 1;
         }
+        if (options.hasOutline())
+        {
+            const int thickness = options.outlineThickness();
+            int outlinePasses = 0;
+            for (int ring = 1; ring <= thickness; ++ring)
+            {
+                outlinePasses += ring * 8;
+            }
+            passes += outlinePasses;
+        }
+
+        int expectedVerticesNumber = text.size() * 6 * passes;
         vertices.reserve(expectedVerticesNumber);
     }
 
@@ -348,6 +360,13 @@ void RenISurfBody::drawText(
     {
         RenColour unpacked = options.shadowColor();
         secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+    }
+
+    uint outlineColor = 0;
+    if (options.hasOutline())
+    {
+        RenColour unpacked = options.outlineColor();
+        outlineColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
     }
 
     const Render::FontImpl& fontImpl = *Render::FontImpl::get(&font);
@@ -483,10 +502,38 @@ void RenISurfBody::drawText(
                 tv1,
                 tv2);
         }
+
+        if (options.hasOutline())
+        {
+            const int thickness = options.outlineThickness();
+            for (int ring = 1; ring <= thickness; ++ring)
+            {
+                for (int ox = -ring; ox <= ring; ++ox)
+                {
+                    const int absOx = (ox < 0) ? -ox : ox;
+                    for (int oy = -ring; oy <= ring; ++oy)
+                    {
+                        const int absOy = (oy < 0) ? -oy : oy;
+                        const int maxAbs = (absOx > absOy) ? absOx : absOy;
+                        if (maxAbs != ring)
+                            continue;
+                        if (ox == 0 && oy == 0)
+                            continue;
+
+                        addVertices(outlineColor, x1 + ox, x2 + ox, y1 + oy, y2 + oy, tu1, tu2, tv1, tv2);
+                    }
+                }
+            }
+        }
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
-    RenDevice::current()
-        ->renderScreenspace(&vertices.front(), vertices.size(), Ren::PrimitiveTopology::Triangles, width_, height_, fontImpl.textureId);
+    RenDevice::current()->renderScreenspace(
+        &vertices.front(),
+        vertices.size(),
+        Ren::PrimitiveTopology::Triangles,
+        width_,
+        height_,
+        fontImpl.textureId);
 }
 
 void RenISurfBody::releaseDC()

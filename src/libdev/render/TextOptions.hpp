@@ -39,14 +39,26 @@ public:
         secondColor_ = color;
     }
 
+    bool hasOutline() const { return outlineThickness_ > 0; }
+    int outlineThickness() const { return outlineThickness_; }
+    RenColour outlineColor() const { return outlineColor_; }
+
+    void setOutline(int thickness, RenColour color)
+    {
+        outlineThickness_ = thickness;
+        outlineColor_ = color;
+    }
+
 private:
     Alignment alignment_{};
     int letterSpacing_{};
-    int shadowX_ = 0;
-    int shadowY_ = 0;
+    int shadowX_{};
+    int shadowY_{};
+    int outlineThickness_{};
 
     RenColour color_;
     RenColour secondColor_;
+    RenColour outlineColor_;
 };
 
 } // Render namespace
