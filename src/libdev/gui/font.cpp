@@ -572,7 +572,7 @@ void GuiBmpFont::underlineColour(const GuiColour& colour)
     underlineColour_ = colour;
 }
 
-int GuiBmpFont::textWidth(const std::string& text) const
+int GuiBmpFont::horizontalAdvance(const std::string& text) const
 {
     Gui::Coord absPos(0, 0);
 

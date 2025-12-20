@@ -84,28 +84,28 @@ void MachGuiPlayerNameList::names(
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, PosX), font.textWidth(newPlayer1), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX), font.horizontalAdvance(newPlayer1), spacing),
         newPlayer1,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, PosX + spacing), font.textWidth(newPlayer2), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + spacing), font.horizontalAdvance(newPlayer2), spacing),
         newPlayer2,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 2)), font.textWidth(newPlayer3), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 2)), font.horizontalAdvance(newPlayer3), spacing),
         newPlayer3,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
     new MachGuiMenuText(
         this,
-        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 3)), font.textWidth(newPlayer4), spacing),
+        Gui::Box(Gui::Coord(PNL_INDENT, PosX + (spacing * 3)), font.horizontalAdvance(newPlayer4), spacing),
         newPlayer4,
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
@@ -152,7 +152,7 @@ std::string MachGuiPlayerNameList::truncate(const std::string& name, uint maxWid
 
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();
 
-    if (font.textWidth(name) > maxWidth)
+    if (font.horizontalAdvance(name) > maxWidth)
     {
         truncatedName.resize(maxChars);
     }

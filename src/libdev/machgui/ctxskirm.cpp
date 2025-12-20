@@ -278,7 +278,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * MAPSIZE_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.textWidth(mapsizeHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(mapsizeHeading.asString()),
             MachGui::menuScaleFactor() * MAPSIZE_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_MAPSIZE,
         MachGui::Menu::largeFontLight());
@@ -290,7 +290,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * TERRAINTYPE_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.textWidth(terrainHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(terrainHeading.asString()),
             MachGui::menuScaleFactor() * TERRAINTYPE_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_TERRAINTYPE,
         MachGui::Menu::largeFontLight());
@@ -302,7 +302,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             MachGui::menuScaleFactor() * SCENARIO_LB_MINY,
-            MachGui::menuScaleFactor() * LB_MINX + font.textWidth(scenarioHeading.asString()),
+            MachGui::menuScaleFactor() * LB_MINX + font.horizontalAdvance(scenarioHeading.asString()),
             MachGui::menuScaleFactor() * SCENARIO_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SCENARIO,
         MachGui::Menu::largeFontLight());
@@ -314,7 +314,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             MachGui::menuScaleFactor() * SETTINGS_LB_MINX,
             MachGui::menuScaleFactor() * SETTINGS_LB_MINY,
-            MachGui::menuScaleFactor() * SETTINGS_LB_MINX + font.textWidth(settingsHeading.asString()),
+            MachGui::menuScaleFactor() * SETTINGS_LB_MINX + font.horizontalAdvance(settingsHeading.asString()),
             MachGui::menuScaleFactor() * SETTINGS_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SETTINGS,
         MachGui::Menu::largeFontLight());

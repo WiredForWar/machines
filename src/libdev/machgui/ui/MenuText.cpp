@@ -76,7 +76,7 @@ void MachGuiMenuText::doDisplay()
 
     for (std::size_t i = 0; i < strings_.size(); ++i)
     {
-        int textWidth = font.textWidth(strings_[i]);
+        int textWidth = font.horizontalAdvance(strings_[i]);
         int textX = 0;
 
         if (alignment_ & Gui::AlignHCenter)

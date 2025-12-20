@@ -114,7 +114,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         pStartupScreens,
         Gui::Box(
             Gui::Coord(startX, startY),
-            Gui::Size(font.textWidth(connectionType.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
+            Gui::Size(font.horizontalAdvance(connectionType.asString()), font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_CONNECTIONTYPE,
         MachGui::Menu::largeFontLight());
     startY += font.height() + 3 * MachGui::menuScaleFactor();

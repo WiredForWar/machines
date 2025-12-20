@@ -114,7 +114,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pComPortText = new MachGuiMenuText(
         &startupScreens(),
-        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY), font.textWidth(comPortHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY), font.horizontalAdvance(comPortHeading.asString()), textHeight),
         IDS_MENU_COMPORT,
         MachGui::Menu::smallFontLight());
 
@@ -152,7 +152,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pBaudText = new MachGuiMenuText(
         &startupScreens(),
-        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY2), font.textWidth(baudHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY2), font.horizontalAdvance(baudHeading.asString()), textHeight),
         IDS_MENU_BAUD,
         MachGui::Menu::smallFontLight());
 
@@ -182,7 +182,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pParityText = new MachGuiMenuText(
         &startupScreens(),
-        Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY2), font.textWidth(parityHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY2), font.horizontalAdvance(parityHeading.asString()), textHeight),
         IDS_MENU_PARITY,
         MachGui::Menu::smallFontLight());
 
@@ -210,7 +210,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pStopBitsText = new MachGuiMenuText(
         &startupScreens(),
-        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY3), font.textWidth(stopBitsHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(SNM_MINX, SNM_MINY3), font.horizontalAdvance(stopBitsHeading.asString()), textHeight),
         IDS_MENU_STOPBITS,
         MachGui::Menu::smallFontLight());
 
@@ -242,7 +242,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pFlowText = new MachGuiMenuText(
         &startupScreens(),
-        Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY3), font.textWidth(flowHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(SNM_MINX2, SNM_MINY3), font.horizontalAdvance(flowHeading.asString()), textHeight),
         IDS_MENU_FLOW,
         MachGui::Menu::smallFontLight());
 

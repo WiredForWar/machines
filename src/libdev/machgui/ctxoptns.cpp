@@ -121,7 +121,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.textWidth(optionsHeading.asString()),
+            font.horizontalAdvance(optionsHeading.asString()),
             font.height() + 2),
         IDS_MENULB_OPTIONS,
         MachGui::Menu::largeFontLight());
@@ -131,7 +131,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.textWidth(optimisationsHeading.asString()),
+            font.horizontalAdvance(optimisationsHeading.asString()),
             font.height() + 2),
         IDS_MENULB_OPTIMISATIONS,
         MachGui::Menu::largeFontLight());
@@ -409,8 +409,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 pStartupScreens,
                 Gui::Box(
                     optimizationAreaCoord
-                        + Gui::Coord(-smallFont.textWidth(choiceTitle.asString()), verticalStep * index),
-                    smallFont.textWidth(choiceTitle.asString()),
+                        + Gui::Coord(-smallFont.horizontalAdvance(choiceTitle.asString()), verticalStep * index),
+                    smallFont.horizontalAdvance(choiceTitle.asString()),
                     smallFont.height() + 8 * MachGui::menuScaleFactor()),
                 id,
                 MachGui::Menu::smallFontLight());

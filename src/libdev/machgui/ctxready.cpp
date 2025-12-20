@@ -73,7 +73,7 @@ public:
             std::string text = resString.asString();
 
             GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
-            size_t textWidth = font.textWidth(text);
+            size_t textWidth = font.horizontalAdvance(text);
             size_t textHeight = font.height();
 
             size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;

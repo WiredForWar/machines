@@ -581,7 +581,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                         chatMessageIntendedForStr_
                             += MachGuiInGameChatMessages::instance().opponentName(opponentIndex_);
                         chatMessageIntendedForStr_ += ": ";
-                        beginningTextWidth_ = shadowFont_.textWidth(chatMessageIntendedForStr_);
+                        beginningTextWidth_ = shadowFont_.horizontalAdvance(chatMessageIntendedForStr_);
                     }
                 }
             }
@@ -616,7 +616,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 
                 GuiResourceString sendToEveryoneStr(IDS_SENDTOEVERYONE);
                 chatMessageIntendedForStr_ = sendToEveryoneStr.asString();
-                beginningTextWidth_ = shadowFont_.textWidth(chatMessageIntendedForStr_);
+                beginningTextWidth_ = shadowFont_.horizontalAdvance(chatMessageIntendedForStr_);
             }
         }
         else if (
@@ -629,7 +629,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 
             GuiResourceString sendToSystemStr(IDS_SENDTOSYSTEM);
             chatMessageIntendedForStr_ = sendToSystemStr.asString();
-            beginningTextWidth_ = shadowFont_.textWidth(chatMessageIntendedForStr_);
+            beginningTextWidth_ = shadowFont_.horizontalAdvance(chatMessageIntendedForStr_);
         }
         else if (event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::ENTER || event.key() == Device::KeyCode::F10)
         {

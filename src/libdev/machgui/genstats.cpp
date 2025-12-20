@@ -125,7 +125,7 @@ std::string MachGuiGeneralStatistics::truncate(const std::string& name)
     const uint maxWidth = (GS_BOX_WIDTH - (GS_INDENT * 2) - 10) * MachGui::menuScaleFactor();
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();
 
-    if (font.textWidth(name) > maxWidth)
+    if (font.horizontalAdvance(name) > maxWidth)
     {
         truncatedName.resize(maxChars);
     }

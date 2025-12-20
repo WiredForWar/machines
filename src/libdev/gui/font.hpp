@@ -77,7 +77,7 @@ public:
     void underlineColour(const GuiColour&);
 
     // Return the display width of "text" without actually rendering the text.
-    int textWidth(const std::string& text) const;
+    int horizontalAdvance(const std::string& text) const;
 
     // Free's up all the memory used by the cached fonts.
     static void releaseFontMemory();

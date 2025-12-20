@@ -103,7 +103,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pModemText = new MachGuiMenuText(
         &parent(),
-        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.textWidth(modemHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.horizontalAdvance(modemHeading.asString()), textHeight),
         IDS_MENU_MODEMTYPE,
         MachGui::Menu::smallFontLight());
 
@@ -120,7 +120,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pTelephoneNoText = new MachGuiMenuText(
         &parent(),
-        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.textWidth(telephoneNoHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.horizontalAdvance(telephoneNoHeading.asString()), textHeight),
         IDS_MENU_TELNO,
         MachGui::Menu::smallFontLight());
 

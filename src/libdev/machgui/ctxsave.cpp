@@ -198,7 +198,7 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             MachGui::menuScaleFactor() * SAVE_LB_MINX,
             MachGui::menuScaleFactor() * SAVE_LB_MINY,
-            MachGui::menuScaleFactor() * SAVE_LB_MINX + font.textWidth(saveHeading.asString()),
+            MachGui::menuScaleFactor() * SAVE_LB_MINX + font.horizontalAdvance(saveHeading.asString()),
             MachGui::menuScaleFactor() * SAVE_LB_MINY + font.height() + MachGui::menuScaleFactor() * 2),
         IDS_MENULB_SAVEGAME,
         MachGui::Menu::largeFontLight());

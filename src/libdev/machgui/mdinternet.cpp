@@ -42,7 +42,7 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
         &parent(),
         Gui::Box(
             Gui::Coord(INM_MINX, INM_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.textWidth(IPAddressHeading.asString()), textHeight)),
+            Gui::Size(font.horizontalAdvance(IPAddressHeading.asString()), textHeight)),
         IDS_MENU_IPADDRESS,
         MachGui::Menu::smallFontLight());
 

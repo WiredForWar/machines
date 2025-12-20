@@ -46,7 +46,7 @@ MachGuiCheckBox::MachGuiCheckBox(
 
     constexpr int spacing{8};
     textPos_ = Gui::Coord(
-        width() - (IndicatorSize.width() + spacing) * MachGui::menuScaleFactor() - font_.textWidth(label_),
+        width() - (IndicatorSize.width() + spacing) * MachGui::menuScaleFactor() - font_.horizontalAdvance(label_),
         font_.height() > height() ? 0 : (height() - font_.height()) / 2 + 1 * Gui::uiScaleFactor());
 
     TEST_INVARIANT;
@@ -77,7 +77,7 @@ void MachGuiCheckBox::doDisplay()
     const auto ScaledSize = IndicatorSize * MachGui::menuScaleFactor();
     Gui::Coord indicatorPosition(absoluteBoundary().bottomRight() - Gui::Vec(ScaledSize.width(), ScaledSize.height()));
 
-    font_.drawText(label_, absoluteBoundary().topLeft() + textPos_, font_.textWidth(label_));
+    font_.drawText(label_, absoluteBoundary().topLeft() + textPos_, font_.horizontalAdvance(label_));
 
     if (isChecked_)
     {

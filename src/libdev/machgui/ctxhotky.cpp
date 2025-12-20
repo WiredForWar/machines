@@ -111,7 +111,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             Gui::Box(
                 Gui::Coord(x, y),
-                Gui::Size(headingFont.textWidth(displayName), headingFontHeight)),
+                Gui::Size(headingFont.horizontalAdvance(displayName), headingFontHeight)),
             displayName,
             MachGui::Menu::largeFontLight(),
             Gui::AlignLeft|Gui::AlignTop);

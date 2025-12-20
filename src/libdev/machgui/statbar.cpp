@@ -125,7 +125,7 @@ void MachGuiStatisticsBar::showStatistic()
     statsText_ = new MachGuiMenuText(
         pParent_,
         Gui::Box(
-            topLeft_.x() - font.textWidth(newStatistic) - 2 * MachGui::menuScaleFactor(),
+            topLeft_.x() - font.horizontalAdvance(newStatistic) - 2 * MachGui::menuScaleFactor(),
             topLeft_.y() + yOffset,
             topLeft_.x(),
             topLeft_.y() + font.height()),
