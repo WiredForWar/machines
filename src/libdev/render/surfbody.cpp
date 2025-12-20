@@ -9,6 +9,7 @@
 
 #include "system/pathname.hpp"
 #include "render/Font.hpp"
+#include "render/surface.hpp"
 #include "render/TextOptions.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"
@@ -329,6 +330,15 @@ void RenISurfBody::drawText(
     const Render::Font& font,
     const Render::TextOptions& options)
 {
+    struct UnderlineSegment
+    {
+        int x1{};
+        int x2{};
+        int y{};
+    };
+
+    std::vector<UnderlineSegment> underlineSegments;
+
     std::vector<RenIVertex> vertices;
     {
         int passes = 1;
@@ -415,14 +425,31 @@ void RenISurfBody::drawText(
 
     const int originX = x;
 
+    int lineStartX = originX;
+    int lineEndX = originX;
+    int lineBaselineY = y;
+
     x = originX;
     for (int i = 0; i < text.size(); ++i)
     {
         char character = text[i];
         if (character == '\n')
         {
+            if (options.underline() && lineEndX != lineStartX)
+            {
+                underlineSegments.push_back({
+                    lineStartX,
+                    lineEndX,
+                    lineBaselineY - fontImpl.descender() + 1,
+                });
+            }
+
             x = originX;
             y += fontImpl.lineHeight() + 2;
+
+            lineStartX = originX;
+            lineEndX = originX;
+            lineBaselineY = y;
             continue;
         }
 
@@ -439,6 +466,7 @@ void RenISurfBody::drawText(
         /* Advance the cursor to the start of the next character */
         x += charData->ax + options.letterSpacing();
         y += charData->ay;
+        lineEndX = x;
 
         /* Skip glyphs that have no pixels */
         if (w <= 0 || h <= 0)
@@ -534,6 +562,30 @@ void RenISurfBody::drawText(
         width_,
         height_,
         fontImpl.textureId);
+
+    if (options.underline() && lineEndX != lineStartX)
+    {
+        underlineSegments.push_back({
+            lineStartX,
+            lineEndX,
+            lineBaselineY - fontImpl.descender() + 1,
+        });
+    }
+
+    if (!underlineSegments.empty())
+    {
+        RenSurface surface = RenSurface::createFromInternal(this);
+        RenSurface::Points pts;
+        pts.reserve(2);
+
+        for (const UnderlineSegment& seg : underlineSegments)
+        {
+            pts.erase(pts.begin(), pts.end());
+            pts.push_back(MexPoint2d(seg.x1, seg.y));
+            pts.push_back(MexPoint2d(seg.x2, seg.y));
+            surface.polyLine(pts, options.color(), 1);
+        }
+    }
 }
 
 void RenISurfBody::releaseDC()

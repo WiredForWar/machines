@@ -49,12 +49,19 @@ public:
         outlineColor_ = color;
     }
 
+    bool underline() const { return underline_; }
+    void setUnderline(bool underline)
+    {
+        underline_ = underline;
+    }
+
 private:
     Alignment alignment_{};
     int letterSpacing_{};
     int shadowX_{};
     int shadowY_{};
     int outlineThickness_{};
+    bool underline_{};
 
     RenColour color_;
     RenColour secondColor_;
