@@ -38,11 +38,9 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
 MachGuiPlayerNameList::MachGuiPlayerNameList(
     GuiDisplayable* pParent,
     const Gui::Boundary& boundary,
-    const std::string& fontName,
-    uint title,
-    bool isWhite)
+    uint title)
     : GuiDisplayable(pParent, boundary)
-    , isWhite_(isWhite)
+    , isWhite_(true)
 {
     // Create title text
     new MachGuiMenuText(
@@ -52,7 +50,8 @@ MachGuiPlayerNameList::MachGuiPlayerNameList(
             boundary.maxCorner().x() - boundary.minCorner().x(),
             35 * MachGui::menuScaleFactor()),
         title,
-        fontName,
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
         Gui::AlignCenter);
 
     TEST_INVARIANT;

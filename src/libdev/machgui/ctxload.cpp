@@ -20,8 +20,9 @@
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/font.hpp"
 #include "gui/restring.hpp"
+#include "render/Font.hpp"
+
 #include <stdio.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,16 +135,19 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
 
     // Display save list box heading
     GuiResourceString loadHeading(IDS_MENULB_LOADGAME);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
+
     MachGuiMenuText* pLoadText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LOAD_LB_MINX,
             MachGui::menuScaleFactor() * LOAD_LB_MINY,
-            MachGui::menuScaleFactor() * LOAD_LB_MINX + font.horizontalAdvance(loadHeading.asString()),
+            MachGui::menuScaleFactor() * LOAD_LB_MAXX,
             MachGui::menuScaleFactor() * LOAD_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_LOADGAME,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create save game list box
     pSaveGameList_ = new MachGuiSingleSelectionListBox(

@@ -25,7 +25,6 @@
 #include "machgui/ui/ScrollableText.hpp"
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "machgui/gui.hpp"
-#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
@@ -33,7 +32,7 @@
 #include "gui/image.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
-#include "system/registry.hpp"
+#include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "device/cd.hpp"
@@ -354,16 +353,18 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
 
     // Display system list box heading
     GuiResourceString systemHeading(IDS_MENULB_SYSTEM);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font(MachGui::Menu::font());
     MachGuiMenuText* pSystemText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             LB_MINX,
             SYSTEM_LB_MINY,
-            LB_MINX + font.horizontalAdvance(systemHeading.asString()),
+            LB_MAXX,
             SYSTEM_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SYSTEM,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display planet list box heading
     GuiResourceString planetHeading(IDS_MENULB_PLANET);
@@ -372,10 +373,12 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             LB_MINX,
             PLANET_LB_MINY,
-            LB_MINX + font.horizontalAdvance(planetHeading.asString()),
+            LB_MAXX,
             PLANET_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_PLANET,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Display scenario list box heading
     GuiResourceString scenarioHeading(IDS_MENULB_SCENARIO);
@@ -384,10 +387,12 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
         Gui::Box(
             LB_MINX,
             SCENARIO_LB_MINY,
-            LB_MINX + font.horizontalAdvance(scenarioHeading.asString()),
+            LB_MAXX,
             SCENARIO_LB_MINY + font.height() + 2 * MachGui::menuScaleFactor()),
         IDS_MENULB_SCENARIO,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create system list box
     pSystemList_ = new MachGuiSystemPlanetScenarioListBox(

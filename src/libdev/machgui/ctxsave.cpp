@@ -24,10 +24,10 @@
 #include "machlog/races.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
+#include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 
@@ -192,16 +192,18 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
 
     // Display save list box heading
     GuiResourceString saveHeading(IDS_MENULB_SAVEGAME);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+    const Render::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pSaveText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * SAVE_LB_MINX,
             MachGui::menuScaleFactor() * SAVE_LB_MINY,
-            MachGui::menuScaleFactor() * SAVE_LB_MINX + font.horizontalAdvance(saveHeading.asString()),
+            MachGui::menuScaleFactor() * SAVE_LB_MAXX,
             MachGui::menuScaleFactor() * SAVE_LB_MINY + font.height() + MachGui::menuScaleFactor() * 2),
         IDS_MENULB_SAVEGAME,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions(),
+        Gui::AlignLeft);
 
     // Create save game list box
     pSaveGameList_ = new MachGuiSingleSelectionListBox(

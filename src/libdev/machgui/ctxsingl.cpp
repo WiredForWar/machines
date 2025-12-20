@@ -45,7 +45,8 @@ MachGuiCtxSinglePlayer::MachGuiCtxSinglePlayer(MachGuiStartupScreens* pStartupSc
         pStartupScreens,
         Gui::Box(82, 292, 262, 399) * MachGui::menuScaleFactor(),
         IDS_MENU_SINGLEPLAYER,
-        MachGui::Menu::largeFontLight());
+        MachGui::Menu::font(),
+        MachGui::Menu::menuLightTextOptions());
     pCancelBtn->escapeControl(true);
 
     TEST_INVARIANT;

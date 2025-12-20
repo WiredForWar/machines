@@ -15,9 +15,7 @@ MachGuiPlayerScore::MachGuiPlayerScore(GuiDisplayable* pParent, const Gui::Coord
     : MachGuiPlayerNameList(
         pParent,
         Gui::Boundary(topLeft, MexSize2d(135, 77) * MachGui::menuScaleFactor()),
-        MachGui::Menu::largeFontLight(),
-        IDS_MENU_STSSCORE,
-        true)
+        IDS_MENU_STSSCORE)
     , statDisplay_(pParent, topLeft + Gui::Coord(59, 35) * MachGui::menuScaleFactor(), MachPhys::N_RACES)
 {
 

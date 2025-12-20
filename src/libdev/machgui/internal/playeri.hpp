@@ -21,12 +21,7 @@ class MachGuiPlayerNameList : public GuiDisplayable
 {
 public:
     MachGuiPlayerNameList(GuiDisplayable* pParent, const Gui::Coord& topLeft, const std::string& fontName, uint title);
-    MachGuiPlayerNameList(
-        GuiDisplayable* pParent,
-        const Gui::Boundary& boundary,
-        const std::string& fontName,
-        uint title,
-        bool isWhite);
+    MachGuiPlayerNameList(GuiDisplayable* pParent, const Gui::Boundary& boundary, uint title);
     ~MachGuiPlayerNameList() override;
 
     void CLASS_INVARIANT;

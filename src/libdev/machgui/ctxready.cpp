@@ -35,8 +35,8 @@
 #include "network/netnet.hpp"
 #include "network/session.hpp"
 #include "network/nodeuid.hpp"
+#include "render/Font.hpp"
 #include "system/winapi.hpp"
-#include "machgui/menus_helper.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +72,7 @@ public:
             GuiResourceString resString(stringId());
             std::string text = resString.asString();
 
-            GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::largeFontLight()));
+            const Render::Font& font = MachGui::Menu::font();
             size_t textWidth = font.horizontalAdvance(text);
             size_t textHeight = font.height();
 
