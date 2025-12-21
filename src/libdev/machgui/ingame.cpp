@@ -2467,6 +2467,7 @@ void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstr
     // Switch to main menu context.
     mainMenuContext();
 
+    if (MachLogNetwork::instance().isNetworkGame())
     {
         const int chatMessagesX = 202 * Gui::uiScaleFactor();
         const int chatMessagesY = 0 * Gui::uiScaleFactor();
