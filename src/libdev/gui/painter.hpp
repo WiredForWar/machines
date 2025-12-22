@@ -63,6 +63,12 @@ public:
         const Render::Font& font) const
         = 0;
 
+    virtual void drawText(
+        const Gui::Box& rect,
+        const std::string_view& text,
+        const Gui::TextOptions& options,
+        const Render::Font& font) const
+        = 0;
     ///////////////////////////////
 
     virtual void filledBorder(
@@ -122,6 +128,11 @@ public:
         const Gui::TextOptions& options,
         const Render::Font& font) const override;
 
+    void drawText(
+        const Gui::Box& rect,
+        const std::string_view& text,
+        const Gui::TextOptions& options,
+        const Render::Font& font) const override;
     ///////////////////////////////
 
     void filledBorder(
