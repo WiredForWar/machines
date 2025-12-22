@@ -676,25 +676,25 @@ void MachWorldViewWindow::doDisplay()
             case MachInGameScreen::WON:
                 if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
                 {
-                    pausedBmp = Gui::bitmap("gui/misc/complete.bmp");
+                    pausedBmp = Gui::getScaledImage("gui/misc/complete.bmp");
                 }
                 else
                 {
-                    pausedBmp = Gui::bitmap("gui/misc/victory.bmp");
+                    pausedBmp = Gui::getScaledImage("gui/misc/victory.bmp");
                 }
                 break;
             case MachInGameScreen::LOST:
                 if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
                 {
-                    pausedBmp = Gui::bitmap("gui/misc/failed.bmp");
+                    pausedBmp = Gui::getScaledImage("gui/misc/failed.bmp");
                 }
                 else
                 {
-                    pausedBmp = Gui::bitmap("gui/misc/defeat.bmp");
+                    pausedBmp = Gui::getScaledImage("gui/misc/defeat.bmp");
                 }
                 break;
             default:
-                pausedBmp = Gui::bitmap("gui/misc/paused.bmp");
+                pausedBmp = Gui::getScaledImage("gui/misc/paused.bmp");
                 break;
         }
 
@@ -713,7 +713,7 @@ void MachWorldViewWindow::doDisplay()
     else if (pInGameScreen_->isNetworkStuffed())
     {
         // Display "Network Busy" message ( top right )
-        GuiBitmap pausedBmp = Gui::bitmap("gui/misc/netbusy.bmp");
+        GuiBitmap pausedBmp = Gui::getScaledImage("gui/misc/netbusy.bmp");
         pausedBmp.enableColourKeying();
 
         RenDevice& device = *pInGameScreen_->sceneManager().pDevice();
