@@ -17,6 +17,8 @@
 #include "machgui/controlp.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/mgsndman.hpp"
+#include "render/Font.hpp"
+#include "render/TextOptions.hpp"
 
 static constexpr int MaxCommandsNumber = 14;
 static constexpr int CommandsPerRow = 2;
@@ -403,6 +405,49 @@ size_t MachCommandIcon::reqHeight()
 const MachGuiCommand* MachCommandIcon::pCommand() const
 {
     return pCommand_;
+}
+
+void MachCommandIcon::doDisplayInteriorEnabled(const Gui::Coord& absCoord)
+{
+    GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(absCoord);
+    return;
+
+    std::string text = ResolvedUiString(pCommand_->cursorPromptStringId());
+    IGuiPainter& painter = GuiPainter::instance();
+    static const GuiBitmap bm = Gui::getScaledImage("gui/commands/selfdes2");
+
+    static const int pxSize = MachGui::menuScaleFactor() > 1 ? 20 : 10;
+    static const Render::Font *font = Render::Font::getFont("U001/u001con-bol", pxSize);
+
+    static const int pxSize2 = MachGui::menuScaleFactor() > 1 ? 18 : 8;
+    static const Render::Font *font2 = Render::Font::getFont("U001/u001con-bol", pxSize2);
+
+    ASSERT(font, "Unable to load MachCommand font");
+
+    Render::TextOptions options(Gui::WHITE());
+    options.setOutline(1 * Gui::uiScaleFactor(), Gui::BLACK());
+
+    const Render::Font *f = font;
+
+    std::size_t textWidth = font->horizontalAdvance(text, options);
+    std::size_t textWidth2 = font2->horizontalAdvance(text, options);
+    if (textWidth + 1> width())
+    {
+        if (textWidth2 > width())
+        {
+            GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(absCoord);
+            return;
+        }
+        f = font2;
+    }
+    if (text.empty())
+    {
+        GuiBitmapButtonWithFilledBorder::doDisplayInteriorEnabled(absCoord);
+        return;
+    }
+
+    painter.blit(bm, absCoord);
+    painter.drawText(absoluteBoundary(), text, options, *f);
 }
 
 /* //////////////////////////////////////////////////////////////// */

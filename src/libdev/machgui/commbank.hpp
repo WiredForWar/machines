@@ -105,6 +105,8 @@ public:
     const MachGuiCommand* pCommand() const;
 
 protected:
+    void doDisplayInteriorEnabled(const Gui::Coord& absCoord) override;
+
     MachInGameScreen& inGameScreen();
     const MachInGameScreen& inGameScreen() const;
 
