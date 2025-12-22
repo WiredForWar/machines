@@ -8,6 +8,7 @@
 #include "gui/border.hpp"
 
 #include "ctl/vector.hpp"
+#include "render/Font.hpp"
 #include "render/surface.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
@@ -107,6 +108,17 @@ void GuiPainter::drawText(
 {
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.drawText(c.x(), c.y(), text, font, options);
+}
+
+void GuiPainter::drawText(
+    const Gui::Box& rect, const std::string_view& text, const Gui::TextOptions& options, const Render::Font& font) const
+{
+    std::size_t textWidth = font.horizontalAdvance(text, options);
+    std::size_t textHeight = font.height();
+    std::size_t textX = rect.minCorner().x() + (rect.width() - textWidth) / 2.0;
+    std::size_t textY = rect.minCorner().y() + (rect.height() - textHeight) / 2.0;
+
+    drawText(Gui::Coord(textX, textY), text, options, font);
 }
 
 //////////////////////////////////////////////////////////////////////

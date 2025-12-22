@@ -31,6 +31,11 @@ public:
         drawText,
         (const Gui::Coord& c, const std::string_view& text, const Gui::TextOptions& options, const Render::Font& font),
         (const, override));
+    MOCK_METHOD(
+        void,
+        drawText,
+        (const Gui::Box& box, const std::string_view& text, const Gui::TextOptions& options, const Render::Font& font),
+        (const, override));
     MOCK_METHOD(void, filledBorder, ( const Gui::Coord& absCoord, const GuiBorderDimensions&, const GuiFilledBorderColours&, const GuiBorderMetrics&), (const, override));
 };
 
