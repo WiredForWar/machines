@@ -115,28 +115,16 @@ void MachGuiPlayerNameList::names(
 void MachGuiPlayerNameList::doDisplay()
 {
     const Gui::Boundary& boundary = absoluteBoundary();
+    const Gui::Colour decorationColor = isWhite_ ? MachGui::OFFWHITE() : MachGui::DROPDOWNLIGHTGREEN();
 
-    if (isWhite_)
-    {
-        // Draw bounding box
-        GuiPainter::instance().hollowRectangle(boundary, MachGui::OFFWHITE(), 1 * MachGui::menuScaleFactor());
-        // Line across box
-        GuiPainter::instance().line(
-            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
-            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
-            MachGui::OFFWHITE(),
-            1 * MachGui::menuScaleFactor());
-    }
-    else
-    {
-        GuiPainter::instance().hollowRectangle(boundary, MachGui::DROPDOWNLIGHTGREEN(), 1 * MachGui::menuScaleFactor());
-        // Line across box
-        GuiPainter::instance().line(
-            Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
-            Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
-            MachGui::DROPDOWNLIGHTGREEN(),
-            1 * MachGui::menuScaleFactor());
-    }
+    // Draw bounding box
+    GuiPainter::instance().hollowRectangle(boundary, decorationColor, 1 * MachGui::menuScaleFactor());
+    // Line across box
+    GuiPainter::instance().line(
+        Gui::Coord(boundary.minCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
+        Gui::Coord(boundary.maxCorner().x(), boundary.minCorner().y() + 34 * MachGui::menuScaleFactor()),
+        decorationColor,
+        1 * MachGui::menuScaleFactor());
 }
 
 void MachGuiPlayerNameList::CLASS_INVARIANT
