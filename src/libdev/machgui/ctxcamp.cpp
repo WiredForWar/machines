@@ -473,9 +473,11 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             Gui::AlignLeft);
 
         Gui::Box lastScenarioTextBox(
-            Gui::Coord(CURRENTSTATUS_MINX, pScenarioText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pScenarioText_->absoluteBoundary().maxCorner().y() + 2 * MachGui::menuScaleFactor() - topLeft.first),
             CURRENTSTATUS_WIDTH,
-            (2 * font.height()) + 1);
+            (2 * font.height()) + 1 * MachGui::menuScaleFactor());
 
         DEBUG_STREAM(DIAG_NEIL, "pLastScenarioText_ " << lastScenarioTextBox << std::endl);
 
@@ -487,7 +489,10 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             Gui::AlignLeft);
 
         Gui::Box scoreTextBox(
-            Gui::Coord(CURRENTSTATUS_MINX, pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 - topLeft.first),
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pLastScenarioText_->absoluteBoundary().maxCorner().y() + 4 * MachGui::menuScaleFactor()
+                    - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
@@ -501,7 +506,9 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             Gui::AlignLeft);
 
         Gui::Box lastScoreTextBox(
-            Gui::Coord(CURRENTSTATUS_MINX, pScoreText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pScoreText_->absoluteBoundary().maxCorner().y() + 2 * MachGui::menuScaleFactor() - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
@@ -515,7 +522,9 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             Gui::AlignLeft);
 
         Gui::Box numScenariosPlayedStrBox(
-            Gui::Coord(CURRENTSTATUS_MINX, pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pLastScoreText_->absoluteBoundary().maxCorner().y() + 6 * MachGui::menuScaleFactor() - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
@@ -531,7 +540,8 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box numScenariosPlayedBox(
             Gui::Coord(
                 CURRENTSTATUS_MINX,
-                pNumScenariosPlayedText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+                pNumScenariosPlayedText_->absoluteBoundary().maxCorner().y() + 2 * MachGui::menuScaleFactor()
+                    - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
@@ -545,7 +555,10 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             Gui::AlignLeft);
 
         Gui::Box totalScoreStrBox(
-            Gui::Coord(CURRENTSTATUS_MINX, pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 - topLeft.first),
+            Gui::Coord(
+                CURRENTSTATUS_MINX,
+                pNumScenariosText_->absoluteBoundary().maxCorner().y() + 6 * MachGui::menuScaleFactor()
+                    - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
@@ -561,7 +574,8 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         Gui::Box totalScoreBox(
             Gui::Coord(
                 CURRENTSTATUS_MINX,
-                pTotalScoreHeadingText_->absoluteBoundary().maxCorner().y() + 2 - topLeft.first),
+                pTotalScoreHeadingText_->absoluteBoundary().maxCorner().y() + 2 * MachGui::menuScaleFactor()
+                    - topLeft.first),
             CURRENTSTATUS_WIDTH,
             font.height());
 
