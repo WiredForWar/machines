@@ -28,10 +28,9 @@ class MexCompressedPoint2d;
 class MexPoint2d
 {
 public:
-    // ctors
-    MexPoint2d() = default;
-    MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y);
-    MexPoint2d(const MexPoint2d& rhs);
+    constexpr MexPoint2d() = default;
+    constexpr MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y);
+    constexpr MexPoint2d(const MexPoint2d& rhs) = default;
     explicit MexPoint2d(const MexVec2& rhs);
 
     MexPoint2d(const MexPoint3d& p3);
@@ -42,8 +41,7 @@ public:
 
     MexPoint2d(const MexCompressedPoint2d& p);
 
-    // dtor.
-    ~MexPoint2d();
+    constexpr ~MexPoint2d() = default;
 
     // Operator overloads
     MexPoint2d& operator=(const MexPoint2d& rhs);
@@ -53,8 +51,8 @@ public:
     bool operator!=(const MexPoint2d&) const;
 
     // Get/Set coordinates
-    MATHEX_SCALAR x() const;
-    MATHEX_SCALAR y() const;
+    constexpr MATHEX_SCALAR x() const { return x_; }
+    constexpr MATHEX_SCALAR y() const { return y_; }
     void x(MATHEX_SCALAR xNew);
     void y(MATHEX_SCALAR yNew);
 
@@ -99,6 +97,12 @@ bool operator<=(const MexPoint2d&, const MexPoint2d&);
 bool operator>=(const MexPoint2d&, const MexPoint2d&);
 
 PER_DECLARE_PERSISTENT(MexPoint2d);
+
+inline constexpr MexPoint2d::MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y)
+    : x_(x)
+    , y_(y)
+{
+}
 
 #ifdef _INLINE
 #include "Mathex/point2d.ipp"
