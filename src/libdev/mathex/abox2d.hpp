@@ -87,6 +87,9 @@ public:
 
     MATHEX_SCALAR width() const;
     MATHEX_SCALAR height() const;
+    void setWidth(MATHEX_SCALAR value);
+    void setHeight(MATHEX_SCALAR value);
+
     MexSize2d size() const;
 
     MATHEX_SCALAR area() const;
@@ -114,9 +117,16 @@ public:
     // PRE( yNew >= minCorner.y() )
 
     MATHEX_SCALAR top() const { return vmin_.y(); }
+    void setTop(MATHEX_SCALAR value) { vmin_.y(value); }
+
     MATHEX_SCALAR bottom() const { return vmax_.y(); }
+    void setBottom(MATHEX_SCALAR value) { vmax_.y(value); }
+
     MATHEX_SCALAR left() const { return vmin_.x(); }
+    void setLeft(MATHEX_SCALAR value) { vmin_.x(value); }
+
     MATHEX_SCALAR right() const { return vmax_.x(); }
+    void setRight(MATHEX_SCALAR value) { vmax_.x(value); }
 
     MexPoint2d topLeft() const { return vmin_; }
     MexPoint2d topRight() const { return { right(), top() }; }

@@ -195,6 +195,16 @@ MATHEX_SCALAR MexAlignedBox2d::height() const
     return vmax_.y() - vmin_.y();
 }
 
+void MexAlignedBox2d::setWidth(MATHEX_SCALAR value)
+{
+    vmax_.x(vmin_.x() + value);
+}
+
+void MexAlignedBox2d::setHeight(MATHEX_SCALAR value)
+{
+    vmax_.y(vmin_.y() + value);
+}
+
 MexSize2d MexAlignedBox2d::size() const
 {
     return MexSize2d(width(), height());
