@@ -67,6 +67,8 @@ const std::string& unavailableText();
 const std::string& wonSymbolText();
 
 MATHEX_SCALAR menuScaleFactor();
+void setMenuScaleFactor(MATHEX_SCALAR scale);
+
 void setUiScaleFactor(MATHEX_SCALAR scale);
 
 std::string getScaledImagePath(std::string path);

@@ -597,9 +597,17 @@ const std::string& MachGui::unavailableText()
     return text;
 }
 
+static double s_menuScaleFactor = 0;
+
+void MachGui::setMenuScaleFactor(MATHEX_SCALAR scale)
+{
+    s_menuScaleFactor = scale;
+}
+
 MATHEX_SCALAR MachGui::menuScaleFactor()
 {
-    return Gui::uiScaleFactor();
+    assert(s_menuScaleFactor > 0);
+    return s_menuScaleFactor;
 }
 
 void MachGui::setUiScaleFactor(MATHEX_SCALAR scale)

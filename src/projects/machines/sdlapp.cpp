@@ -272,6 +272,7 @@ bool SDLApp::clientStartup()
         }
 
         spdlog::info("Using scale factor {}%", scaleFactorPercents);
+        MachGui::setMenuScaleFactor(scaleFactorPercents / 100.0);
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
