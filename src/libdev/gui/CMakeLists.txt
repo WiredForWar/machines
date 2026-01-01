@@ -1,7 +1,5 @@
 
 set(GUI_SOURCES
-    KeyToString.cpp
-    KeyToString.hpp
     ResolvedUiString.cpp
     ResolvedUiString.hpp
     StringId.hpp

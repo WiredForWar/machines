@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-namespace Gui
+namespace MachGui
 {
 
 namespace
@@ -145,4 +145,4 @@ std::string toDisplayString(const KeyBind& bind, KeysDisplayFormat format)
     return result;
 }
 
-} // namespace Gui
+} // namespace MachGui

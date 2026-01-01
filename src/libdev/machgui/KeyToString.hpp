@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace Gui
+namespace MachGui
 {
 
 enum class KeysDisplayFormat
@@ -17,4 +17,4 @@ std::string toDisplayString(Device::KeyCode keyCode, KeysDisplayFormat format = 
 std::string toDisplayString(Device::KeyModifier mod, KeysDisplayFormat format = {});
 std::string toDisplayString(const KeyBind& bind, KeysDisplayFormat format = {});
 
-} // namespace Gui
+} // namespace MachGui

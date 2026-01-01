@@ -61,7 +61,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     };
 
 
-    constexpr Gui::KeysDisplayFormat displayFormat = Gui::KeysDisplayFormat::Compact;
+    constexpr MachGui::KeysDisplayFormat displayFormat = MachGui::KeysDisplayFormat::Compact;
     const std::vector<std::string> categoryNames = inputRegistry->getCategories();
     for (const std::string& categoryName : inputRegistry->getCategories())
     {

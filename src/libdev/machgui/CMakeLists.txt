@@ -11,6 +11,8 @@ set(MACHGUI_SOURCES
     InputLayout.hpp
     InputRegistry.cpp
     InputRegistry.hpp
+    KeyToString.cpp
+    KeyToString.hpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
     ProgressIndicator.cpp
