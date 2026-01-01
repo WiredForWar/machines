@@ -323,6 +323,8 @@ bool SDLApp::clientStartup()
         pDisplay_->gammaCorrection(gammaValue);
     }
 
+    std::string waitFilePath = System::findFile("gui/menu/wait.bmp");
+    std::string waitLobbFilePath = System::findFile("gui/menu/waitlobb.bmp");
     // Get top left offset for images
     int xOffset = (mode.width() - 640) / 2;
     int yOffset = (mode.height() - 480) / 2;
@@ -335,7 +337,7 @@ bool SDLApp::clientStartup()
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface("gui/menu/waitlobb.bmp", frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
 
         // Initialise lobby code
@@ -344,7 +346,7 @@ bool SDLApp::clientStartup()
 
         // Display progress loading screen.
         // Call it twice to ensure on both buffers.
-        RenSurface waitBmp2 = RenSurface::createSharedSurface("gui/menu/wait.bmp", frontBuffer);
+        RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp2, xOffset, yOffset);
     }
     else
@@ -352,7 +354,7 @@ bool SDLApp::clientStartup()
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface("gui/menu/wait.bmp", frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
@@ -364,7 +366,7 @@ bool SDLApp::clientStartup()
         // Display progress loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface("gui/menu/wait.bmp", frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();

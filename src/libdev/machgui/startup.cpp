@@ -3787,9 +3787,10 @@ void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
     ignoreHostLostSystemMessage_ = value;
 }
 
-void MachGuiStartupScreens::changeLogoImage(const char* image)
+void MachGuiStartupScreens::changeLogoImage(std::string_view image)
 {
-    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", image, MachGui::menuScaleFactor());
+    std::string waitFilePath = System::findFile(image);
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", waitFilePath, MachGui::menuScaleFactor());
 
     changed();
 }
