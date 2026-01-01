@@ -47,7 +47,7 @@ TEST(GuiRootSharedBitmapsTests, NamedBitmap_GetNamedBitmap_RefCount)
 
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
 
-    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp");
+    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp", 1);
 
     {
         auto currentBackdrop = sharedBitmaps.getNamedBitmap("backdrop");
@@ -82,7 +82,7 @@ TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmapFromArea)
         .Times(1);
 
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
-    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp");
+    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp", 1);
 
     auto backdrop = sharedBitmaps.getNamedBitmap("backdrop");
     sharedBitmaps.blitNamedBitmapFromArea(backdrop, srcBox, dstPoint, [](const Gui::Box& src){
@@ -119,7 +119,7 @@ TEST(GuiRootSharedBitmapsTests, Blitting_blitNamedBitmap)
         .Times(1);
 
     auto sharedBitmaps = GuiRootSharedBitmaps{ mockPainter };
-    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp");
+    sharedBitmaps.createUpdateNamedBitmap("backdrop", "gui/menu/acclaim.bmp", 1);
 
     auto backdrop = sharedBitmaps.getNamedBitmap("backdrop");
     sharedBitmaps.blitNamedBitmap(backdrop, dstPoint);

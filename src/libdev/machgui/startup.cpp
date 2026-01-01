@@ -214,7 +214,10 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     // The loading image is the very first backdrop. Loaded before construction of MGSS. It needs to be tracked by its
     // purpose. Since this bitmap was already loaded in sdlapp.cpp, the surface manager will simply increase the ref
     // count (:
-    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp");
+
+    // We have to use 'scaleFactor = 1' here and use unscaled postload animation because scale causes glitches.
+    const double scaleFactor = 1; // Should be MachGui::menuScaleFactor()
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp", scaleFactor);
 
     pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
 
