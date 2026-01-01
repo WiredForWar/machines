@@ -1161,9 +1161,7 @@ void MachGuiStartupScreens::doDisplay()
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
     if (context_ != CTX_LOADINGEXE && context_ != CTX_POSTLOADINGANIMATION)
     {
-        RenDevice::current()->backSurface().filledRectangle(
-            Ren::Rect(0, 0, mode.width(), mode.height()),
-            RenColour::black());
+        GuiPainter::instance().filledRectangle(Gui::toSize(mode.size()), RenColour::black());
     }
 
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
