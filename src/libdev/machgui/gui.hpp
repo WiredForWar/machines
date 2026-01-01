@@ -40,6 +40,8 @@ const Gui::Colour& DARKBLUE();
 const Gui::Colour& DROPDOWNDARKGREEN();
 const Gui::Colour& DROPDOWNLIGHTGREEN();
 
+inline constexpr Gui::Coord waitImageContentOffset{32, 129};
+
 void releaseMenuBmpMemory();
 // Cached menu bitmaps
 GuiBitmap& longGlowBmp();

@@ -2321,12 +2321,11 @@ void MachGuiStartupScreens::contextAnimation()
         SysPathName sysFlicName("flics/postload.smk");
         std::string cdRomDrive;
         bool flicExists = false;
-        Gui::Coord animationPos = Gui::Coord(32, 129);
 
         // Try playing intro anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
-            startPlayingAnimation(sysFlicName, false, true, animationPos);
+            startPlayingAnimation(sysFlicName, false, true, MachGui::waitImageContentOffset);
             flicExists = true;
         }
         // Try playing intro anim off CD-ROM
@@ -2341,7 +2340,7 @@ void MachGuiStartupScreens::contextAnimation()
             if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/postload.smk"))
             {
                 SysPathName sysCDFlicName(cdRomDrive + "flics/postload.smk");
-                startPlayingAnimation(sysCDFlicName, false, true, animationPos);
+                startPlayingAnimation(sysCDFlicName, false, true, MachGui::waitImageContentOffset);
                 flicExists = true;
             }
         }

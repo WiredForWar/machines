@@ -328,6 +328,7 @@ bool SDLApp::clientStartup()
     // Get top left offset for images
     int xOffset = (mode.width() - 640) / 2;
     int yOffset = (mode.height() - 480) / 2;
+    Gui::Coord offset(xOffset, yOffset);
 
     // moved the sequence of calls slightly - the init sound call must still be done first though
     //     initSound();
@@ -374,11 +375,9 @@ bool SDLApp::clientStartup()
     }
     // Draw copyright note, store it in a way preventing from modification
     {
-        Gui::Coord waitImageContentOffset(32, 129);
         const int noteBottomMargin{14};
-        Gui::Coord notePosition(
-            xOffset + waitImageContentOffset.x(),
-            yOffset + waitImageContentOffset.y() - noteBottomMargin - RenSurface::getDefaultFontSize());
+        Gui::Coord notePosition = offset + MachGui::waitImageContentOffset
+            + Gui::Vec(0, -noteBottomMargin - RenSurface::getDefaultFontSize());
         const std::string_view note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
 
