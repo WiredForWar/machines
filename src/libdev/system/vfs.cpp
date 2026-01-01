@@ -17,16 +17,20 @@ void addFsOverride(std::string extraPath)
     overrideLocations.emplace_back(extraPath + "/");
 }
 
-std::string findFile(std::string path)
+std::string findFile(std::string_view path)
 {
-    for (const std::string& location : overrideLocations)
+    for (std::string_view location : overrideLocations)
     {
-        std::string lookup = location + path;
+        std::string lookup;
+        lookup.reserve(location.size() + path.size());
+        lookup.append(location);
+        lookup.append(path);
+
         if (SysPathName::existsAsFile(lookup))
             return lookup;
     }
 
-    return path;
+    return std::string(path);
 }
 
 std::vector<std::string> listAvailableMods()

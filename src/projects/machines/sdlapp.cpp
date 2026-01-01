@@ -377,7 +377,7 @@ bool SDLApp::clientStartup()
         Gui::Coord notePosition(
             xOffset + waitImageContentOffset.x(),
             yOffset + waitImageContentOffset.y() - noteBottomMargin - RenSurface::getDefaultFontSize());
-        const std::string note("NOT for sale, for testing purposes only.");
+        const std::string_view note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
 
         const Render::Font* font = Render::Font::getFont(RenSurface::getDefaultFontSize());

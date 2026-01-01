@@ -397,7 +397,7 @@ private:
     void contextLogo();
 
     // Change the logo image
-    void changeLogoImage(const char* image);
+    void changeLogoImage(std::string_view image);
 
     // Get the X & Y Coordinates of the Menu's BG Image Top Left Corner.
     friend class LoadGameProgressIndicator;

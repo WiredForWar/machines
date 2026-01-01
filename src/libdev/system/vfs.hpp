@@ -10,7 +10,7 @@ std::vector<std::string> listAvailableMods();
 std::vector<std::string> listMods();
 void addFsOverride(std::string extraPath);
 
-std::string findFile(std::string path);
+std::string findFile(std::string_view path);
 
 // includes the given path if it points to an existing file
 // The files are sorted from the lowest to highest priority
