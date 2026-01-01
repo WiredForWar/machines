@@ -1,6 +1,9 @@
 #include "KeyToString.hpp"
 
+#include "gui/ResolvedUiString.hpp"
 #include "gui/font.hpp"
+
+#include "machgui/internal/strings.hpp"
 
 #include <sstream>
 
@@ -53,33 +56,75 @@ std::string toDisplayString(Device::KeyCode keyCode, KeysDisplayFormat format)
     {
         case Device::KeyCode::FORWARD_SLASH:
             return "/";
+        case Device::KeyCode::RIGHT_CONTROL:
+            return ResolvedUiString(IDS_KEYNAME_RIGHT_CONTROL);
+        case Device::KeyCode::LEFT_CONTROL:
+            return ResolvedUiString(IDS_KEYNAME_LEFT_CONTROL);
         case Device::KeyCode::UP_ARROW:
-            return "Up";
+            return ResolvedUiString(IDS_KEYNAME_ARROW_UP);
         case Device::KeyCode::DOWN_ARROW:
-            return "Down";
+            return ResolvedUiString(IDS_KEYNAME_ARROW_DOWN);
         case Device::KeyCode::LEFT_ARROW:
-            return "Left";
+            return ResolvedUiString(IDS_KEYNAME_ARROW_LEFT);
         case Device::KeyCode::RIGHT_ARROW:
-            return "Right";
+            return ResolvedUiString(IDS_KEYNAME_ARROW_RIGHT);
         case Device::KeyCode::INSERT:
-            return "Insert";
+            return ResolvedUiString(IDS_KEYNAME_INSERT);
         case Device::KeyCode::DELETE:
-            return "Delete";
+            return ResolvedUiString(IDS_KEYNAME_DELETE);
         case Device::KeyCode::HOME:
-            return "Home";
+            return ResolvedUiString(IDS_KEYNAME_HOME);
         case Device::KeyCode::END:
-            return "End";
+            return ResolvedUiString(IDS_KEYNAME_END);
+        case Device::KeyCode::PAGE_UP:
+            return ResolvedUiString(IDS_KEYNAME_PAGE_UP);
+        case Device::KeyCode::PAGE_DOWN:
+            return ResolvedUiString(IDS_KEYNAME_PAGE_DOWN);
+        case Device::KeyCode::BREAK:
+            return ResolvedUiString(IDS_KEYNAME_BREAK);
         case Device::KeyCode::ESCAPE:
-            return "Esc";
+            return ResolvedUiString(IDS_KEYNAME_ESCAPE);
+        case Device::KeyCode::ENTER:
+            return ResolvedUiString(IDS_KEYNAME_ENTER);
+        case Device::KeyCode::SPACE:
+            return ResolvedUiString(IDS_KEYNAME_SPACE);
         case Device::KeyCode::BACK_SPACE:
-            return "Backspace";
+            return ResolvedUiString(IDS_KEYNAME_BACKSPACE);
         case Device::KeyCode::TAB:
-            return "Tab";
+            return ResolvedUiString(IDS_KEYNAME_TAB);
+        case Device::KeyCode::GRAVE:
+            return ResolvedUiString(IDS_KEYNAME_GRAVE);
+        case Device::KeyCode::LEFT_SHIFT:
+            return ResolvedUiString(IDS_KEYNAME_LEFT_SHIFT);
+        case Device::KeyCode::RIGHT_SHIFT:
+            return ResolvedUiString(IDS_KEYNAME_RIGHT_SHIFT);
+        case Device::KeyCode::LEFT_ALT:
+            return ResolvedUiString(IDS_KEYNAME_LEFT_ALT);
+        case Device::KeyCode::RIGHT_ALT:
+            return ResolvedUiString(IDS_KEYNAME_RIGHT_ALT);
 
         case Device::KeyCode::MOUSE_LEFT:
-            return "Left Mouse Button";
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_LEFT);
         case Device::KeyCode::MOUSE_RIGHT:
-            return "Right Mouse Button";
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_RIGHT);
+        case Device::KeyCode::MOUSE_MIDDLE:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_MIDDLE);
+        case Device::KeyCode::MOUSE_EXTRA1:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA1);
+        case Device::KeyCode::MOUSE_EXTRA2:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA2);
+        case Device::KeyCode::MOUSE_EXTRA3:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA3);
+        case Device::KeyCode::MOUSE_EXTRA4:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA4);
+        case Device::KeyCode::MOUSE_EXTRA5:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA5);
+        case Device::KeyCode::MOUSE_EXTRA6:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA6);
+        case Device::KeyCode::MOUSE_EXTRA7:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA7);
+        case Device::KeyCode::MOUSE_EXTRA8:
+            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA8);
 
         default:
             break;
@@ -95,12 +140,11 @@ std::string toDisplayString(Device::KeyModifier mod, KeysDisplayFormat format)
     switch (mod)
     {
         case Device::KeyModifier::Alt:
-            return "Alt";
+            return ResolvedUiString(IDS_KEYNAME_ALT);
         case Device::KeyModifier::Ctrl:
-            return "Ctrl";
+            return ResolvedUiString(IDS_KEYNAME_CTRL);
         case Device::KeyModifier::Shift:
-            return "Shift";
-            break;
+            return ResolvedUiString(IDS_KEYNAME_SHIFT);
         case Device::KeyModifier::None:
             break;
     }

@@ -694,6 +694,82 @@
 	>Nothing to deploy</string>
 <string id="2750"
 	>%1 or %2</string>
+
+<string id="3001"
+	>Alt</string>
+<string id="3002"
+	>Ctrl</string>
+<string id="3003"
+	>Shift</string>
+<string id="3010"
+	>Right Ctrl</string>
+<string id="3011"
+	>Left Ctrl</string>
+<string id="3012"
+	>Up</string>
+<string id="3013"
+	>Down</string>
+<string id="3014"
+	>Left</string>
+<string id="3015"
+	>Right</string>
+<string id="3016"
+	>Insert</string>
+<string id="3017"
+	>Delete</string>
+<string id="3018"
+	>Home</string>
+<string id="3019"
+	>End</string>
+<string id="3020"
+	>Page Up</string>
+<string id="3021"
+	>Page Down</string>
+<string id="3022"
+	>Break</string>
+<string id="3023"
+	>Esc</string>
+<string id="3024"
+	>Enter</string>
+<string id="3025"
+	>Space</string>
+<string id="3026"
+	>Backspace</string>
+<string id="3027"
+	>Tab</string>
+<string id="3028"
+	>Grave</string>
+<string id="3029"
+	>Left Shift</string>
+<string id="3030"
+	>Right Shift</string>
+<string id="3031"
+	>Left Alt</string>
+<string id="3032"
+	>Right Alt</string>
+<string id="3201"
+	>Left Mouse Button</string>
+<string id="3202"
+	>Right Mouse Button</string>
+<string id="3203"
+	>Middle Mouse Button</string>
+<string id="3204"
+	>Mouse Button 4</string>
+<string id="3205"
+	>Mouse Button 5</string>
+<string id="3206"
+	>Mouse Button 6</string>
+<string id="3207"
+	>Mouse Button 7</string>
+<string id="3208"
+	>Mouse Button 8</string>
+<string id="3209"
+	>Mouse Button 9</string>
+<string id="3210"
+	>Mouse Button 10</string>
+<string id="3211"
+	>Mouse Button 11</string>
+
 <string id="4000"
 	>Bolter</string>
 <string id="4010"
