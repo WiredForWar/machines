@@ -6,7 +6,6 @@
 #include "gui/event.hpp"
 #include "gui/internal/scrolisi.hpp"
 #include "gui/listobvr.hpp"
-#include "stdlib/function.hpp"
 
 #define CB_GUISIMPLESCROLLABLELIST_DEPIMPL()                                                                           \
     CB_DEPIMPL_AUTO(canScrollFoward_);                                                                                 \
@@ -70,7 +69,9 @@ GuiSimpleScrollableList::~GuiSimpleScrollableList()
 
     // If there are any observers still attached then tell them I am being deleted. It
     // is their responsibility to make sure they don't call an invalid list.
-    std::for_each(observers_.begin(), observers_.end(), mem_fun_void(&GuiListObserver::listDeleted));
+    for (GuiListObserver *observer : observers_)
+        observer->listDeleted();
+
     delete pImpl_;
 }
 
@@ -297,7 +298,8 @@ void GuiSimpleScrollableList::notifyObservers()
 {
     CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
-    std::for_each(observers_.begin(), observers_.end(), mem_fun_void(&GuiListObserver::listUpdated));
+    for (GuiListObserver *observer : observers_)
+        observer->listUpdated();
 }
 
 void GuiSimpleScrollableList::doHandleMouseScrollEvent(GuiMouseEvent* event)
