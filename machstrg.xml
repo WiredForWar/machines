@@ -138,6 +138,62 @@
 	>Launch cost %1</string>
 <string id="71"
 	>Machine Initiative</string>
+<string id="72"
+	>Assemble at</string>
+<string id="73"
+	>Attack</string>
+<string id="74"
+	>Camouflage</string>
+<string id="75"
+	>Capture</string>
+<string id="76"
+	>Construct</string>
+<string id="77"
+	>Deconstruct</string>
+<string id="78"
+	>Initiative</string>
+<string id="79"
+	>Deploy</string>
+<string id="80"
+	>Drop Mine</string>
+<string id="81"
+	>Form Squad</string>
+<string id="82"
+	>Heal</string>
+<string id="83"
+	>IonAttack</string>
+<string id="84"
+	>Locate</string>
+<string id="85"
+	>Move</string>
+<string id="86"
+	>NukeAttack</string>
+<string id="87"
+	>Patrol</string>
+<string id="88"
+	>Pickup</string>
+<string id="89"
+	>Recycle</string>
+<string id="90"
+	>Refill</string>
+<string id="91"
+	>Repair</string>
+<string id="92"
+	>Research</string>
+<string id="93"
+	>Scavenge</string>
+<string id="94"
+	>Supercharge</string>
+<string id="95"
+	>Self-Destruct</string>
+<string id="96"
+	>Stand Ground</string>
+<string id="97"
+	>Stop</string>
+<string id="98"
+	>Transport</string>
+<string id="99"
+	>Treachery</string>
 <string id="100"
 	>Airborne Unit</string>
 <string id="101"
