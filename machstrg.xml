@@ -747,6 +747,62 @@
 	>Left Alt</string>
 <string id="3032"
 	>Right Alt</string>
+<string id="3050"
+	>NumPad %1</string>
+<string id="3101"
+	>Alt</string>
+<string id="3102"
+	>Ctrl</string>
+<string id="3103"
+	>Shift</string>
+<string id="3110"
+	>Right Ctrl</string>
+<string id="3111"
+	>Left Ctrl</string>
+<string id="3112"
+	>Up</string>
+<string id="3113"
+	>Down</string>
+<string id="3114"
+	>Left</string>
+<string id="3115"
+	>Right</string>
+<string id="3116"
+	>Ins</string>
+<string id="3117"
+	>Del</string>
+<string id="3118"
+	>Home</string>
+<string id="3119"
+	>End</string>
+<string id="3120"
+	>PgUp</string>
+<string id="3121"
+	>PgDown</string>
+<string id="3122"
+	>Brk</string>
+<string id="3123"
+	>Esc</string>
+<string id="3124"
+	>Enter</string>
+<string id="3125"
+	>Space</string>
+<string id="3126"
+	>Backspace</string>
+<string id="3127"
+	>Tab</string>
+<string id="3128"
+	>Grave</string>
+<string id="3129"
+	>Left Shift</string>
+<string id="3130"
+	>Right Shift</string>
+<string id="3131"
+	>Left Alt</string>
+<string id="3132"
+	>Right Alt</string>
+<string id="3150"
+	>Pad %1</string>
 <string id="3201"
 	>Left Mouse Button</string>
 <string id="3202"
@@ -769,6 +825,29 @@
 	>Mouse Button 10</string>
 <string id="3211"
 	>Mouse Button 11</string>
+<string id="3301"
+	>Left Mouse Btn</string>
+<string id="3302"
+	>Right Mouse Btn</string>
+<string id="3303"
+	>Middle Mouse Btn</string>
+<string id="3304"
+	>Mouse Btn 4</string>
+<string id="3305"
+	>Mouse Btn 5</string>
+<string id="3306"
+	>Mouse Btn 6</string>
+<string id="3307"
+	>Mouse Btn 7</string>
+<string id="3308"
+	>Mouse Btn 8</string>
+<string id="3309"
+	>Mouse Btn 9</string>
+<string id="3310"
+	>Mouse Btn 10</string>
+<string id="3311"
+	>Mouse Btn 11</string>
+
 
 <string id="4000"
 	>Bolter</string>

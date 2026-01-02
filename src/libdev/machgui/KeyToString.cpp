@@ -2,6 +2,7 @@
 
 #include "gui/ResolvedUiString.hpp"
 #include "gui/font.hpp"
+#include "gui/restring.hpp"
 
 #include "machgui/internal/strings.hpp"
 
@@ -28,106 +29,177 @@ bool inRange(T value, T minValue, T maxValue)
 
 std::string toDisplayString(Device::KeyCode keyCode, KeysDisplayFormat format)
 {
+    auto constexpr Compact = KeysDisplayFormat::Compact;
     if (inRange(keyCode, Device::KeyCode::KEY_A, Device::KeyCode::KEY_Z))
         return std::string(1, static_cast<int>(keyCode) - static_cast<int>(Device::KeyCode::KEY_A) + 'A');
     else if (inRange(keyCode, Device::KeyCode::KEY_0, Device::KeyCode::KEY_9))
         return std::string(1, static_cast<int>(keyCode) - static_cast<int>(Device::KeyCode::KEY_0) + '0');
     else if (inRange(keyCode, Device::KeyCode::PAD_0, Device::KeyCode::PAD_9))
-        return "NumPad " + std::string(1, static_cast<int>(keyCode) - static_cast<int>(Device::KeyCode::PAD_0) + '0');
+    {
+        std::string number = std::string(1, static_cast<int>(keyCode) - static_cast<int>(Device::KeyCode::PAD_0) + '0');
+        Gui::StringId id = format == Compact ? IDS_COMPACT_KEYNAME_NUMPAD_N : IDS_LONG_KEYNAME_NUMPAD_N;
+        return GuiResourceString(id, number).asString();
+    }
+    else if (keyCode == Device::KeyCode::FORWARD_SLASH)
+        return "/";
 
     if (format == KeysDisplayFormat::Compact)
     {
         switch (keyCode)
         {
-            case Device::KeyCode::UP_ARROW:
-                return {GuiBmpFont::arrowUpIndex()};
-            case Device::KeyCode::DOWN_ARROW:
-                return {GuiBmpFont::arrowDownIndex()};
-            case Device::KeyCode::LEFT_ARROW:
-                return {GuiBmpFont::arrowLeftIndex()};
-            case Device::KeyCode::RIGHT_ARROW:
-                return {GuiBmpFont::arrowRightIndex()};
-            default:
-                break;
-        }
-    }
-
-    switch (keyCode)
-    {
-        case Device::KeyCode::FORWARD_SLASH:
-            return "/";
         case Device::KeyCode::RIGHT_CONTROL:
-            return ResolvedUiString(IDS_KEYNAME_RIGHT_CONTROL);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_RIGHT_CONTROL);
         case Device::KeyCode::LEFT_CONTROL:
-            return ResolvedUiString(IDS_KEYNAME_LEFT_CONTROL);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_LEFT_CONTROL);
         case Device::KeyCode::UP_ARROW:
-            return ResolvedUiString(IDS_KEYNAME_ARROW_UP);
+            return { GuiBmpFont::arrowUpIndex() };
         case Device::KeyCode::DOWN_ARROW:
-            return ResolvedUiString(IDS_KEYNAME_ARROW_DOWN);
+            return { GuiBmpFont::arrowDownIndex() };
         case Device::KeyCode::LEFT_ARROW:
-            return ResolvedUiString(IDS_KEYNAME_ARROW_LEFT);
+            return { GuiBmpFont::arrowLeftIndex() };
         case Device::KeyCode::RIGHT_ARROW:
-            return ResolvedUiString(IDS_KEYNAME_ARROW_RIGHT);
+            return { GuiBmpFont::arrowRightIndex() };
         case Device::KeyCode::INSERT:
-            return ResolvedUiString(IDS_KEYNAME_INSERT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_INSERT);
         case Device::KeyCode::DELETE:
-            return ResolvedUiString(IDS_KEYNAME_DELETE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_DELETE);
         case Device::KeyCode::HOME:
-            return ResolvedUiString(IDS_KEYNAME_HOME);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_HOME);
         case Device::KeyCode::END:
-            return ResolvedUiString(IDS_KEYNAME_END);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_END);
         case Device::KeyCode::PAGE_UP:
-            return ResolvedUiString(IDS_KEYNAME_PAGE_UP);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_PAGE_UP);
         case Device::KeyCode::PAGE_DOWN:
-            return ResolvedUiString(IDS_KEYNAME_PAGE_DOWN);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_PAGE_DOWN);
         case Device::KeyCode::BREAK:
-            return ResolvedUiString(IDS_KEYNAME_BREAK);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_BREAK);
         case Device::KeyCode::ESCAPE:
-            return ResolvedUiString(IDS_KEYNAME_ESCAPE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_ESCAPE);
         case Device::KeyCode::ENTER:
-            return ResolvedUiString(IDS_KEYNAME_ENTER);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_ENTER);
         case Device::KeyCode::SPACE:
-            return ResolvedUiString(IDS_KEYNAME_SPACE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_SPACE);
         case Device::KeyCode::BACK_SPACE:
-            return ResolvedUiString(IDS_KEYNAME_BACKSPACE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_BACKSPACE);
         case Device::KeyCode::TAB:
-            return ResolvedUiString(IDS_KEYNAME_TAB);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_TAB);
         case Device::KeyCode::GRAVE:
-            return ResolvedUiString(IDS_KEYNAME_GRAVE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_GRAVE);
         case Device::KeyCode::LEFT_SHIFT:
-            return ResolvedUiString(IDS_KEYNAME_LEFT_SHIFT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_LEFT_SHIFT);
         case Device::KeyCode::RIGHT_SHIFT:
-            return ResolvedUiString(IDS_KEYNAME_RIGHT_SHIFT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_RIGHT_SHIFT);
         case Device::KeyCode::LEFT_ALT:
-            return ResolvedUiString(IDS_KEYNAME_LEFT_ALT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_LEFT_ALT);
         case Device::KeyCode::RIGHT_ALT:
-            return ResolvedUiString(IDS_KEYNAME_RIGHT_ALT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_RIGHT_ALT);
 
         case Device::KeyCode::MOUSE_LEFT:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_LEFT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_LEFT);
         case Device::KeyCode::MOUSE_RIGHT:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_RIGHT);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_RIGHT);
         case Device::KeyCode::MOUSE_MIDDLE:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_MIDDLE);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_MIDDLE);
         case Device::KeyCode::MOUSE_EXTRA1:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA1);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA1);
         case Device::KeyCode::MOUSE_EXTRA2:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA2);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA2);
         case Device::KeyCode::MOUSE_EXTRA3:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA3);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA3);
         case Device::KeyCode::MOUSE_EXTRA4:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA4);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA4);
         case Device::KeyCode::MOUSE_EXTRA5:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA5);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA5);
         case Device::KeyCode::MOUSE_EXTRA6:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA6);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA6);
         case Device::KeyCode::MOUSE_EXTRA7:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA7);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA7);
         case Device::KeyCode::MOUSE_EXTRA8:
-            return ResolvedUiString(IDS_KEYNAME_MOUSE_EXTRA8);
+            return ResolvedUiString(IDS_COMPACT_KEYNAME_MOUSE_EXTRA8);
 
         default:
             break;
+        }
+    }
+    else if (format == KeysDisplayFormat::Verbose)
+    {
+        switch (keyCode)
+        {
+        case Device::KeyCode::FORWARD_SLASH:
+            return "/";
+        case Device::KeyCode::RIGHT_CONTROL:
+            return ResolvedUiString(IDS_LONG_KEYNAME_RIGHT_CONTROL);
+        case Device::KeyCode::LEFT_CONTROL:
+            return ResolvedUiString(IDS_LONG_KEYNAME_LEFT_CONTROL);
+        case Device::KeyCode::UP_ARROW:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ARROW_UP);
+        case Device::KeyCode::DOWN_ARROW:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ARROW_DOWN);
+        case Device::KeyCode::LEFT_ARROW:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ARROW_LEFT);
+        case Device::KeyCode::RIGHT_ARROW:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ARROW_RIGHT);
+        case Device::KeyCode::INSERT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_INSERT);
+        case Device::KeyCode::DELETE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_DELETE);
+        case Device::KeyCode::HOME:
+            return ResolvedUiString(IDS_LONG_KEYNAME_HOME);
+        case Device::KeyCode::END:
+            return ResolvedUiString(IDS_LONG_KEYNAME_END);
+        case Device::KeyCode::PAGE_UP:
+            return ResolvedUiString(IDS_LONG_KEYNAME_PAGE_UP);
+        case Device::KeyCode::PAGE_DOWN:
+            return ResolvedUiString(IDS_LONG_KEYNAME_PAGE_DOWN);
+        case Device::KeyCode::BREAK:
+            return ResolvedUiString(IDS_LONG_KEYNAME_BREAK);
+        case Device::KeyCode::ESCAPE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ESCAPE);
+        case Device::KeyCode::ENTER:
+            return ResolvedUiString(IDS_LONG_KEYNAME_ENTER);
+        case Device::KeyCode::SPACE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_SPACE);
+        case Device::KeyCode::BACK_SPACE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_BACKSPACE);
+        case Device::KeyCode::TAB:
+            return ResolvedUiString(IDS_LONG_KEYNAME_TAB);
+        case Device::KeyCode::GRAVE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_GRAVE);
+        case Device::KeyCode::LEFT_SHIFT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_LEFT_SHIFT);
+        case Device::KeyCode::RIGHT_SHIFT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_RIGHT_SHIFT);
+        case Device::KeyCode::LEFT_ALT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_LEFT_ALT);
+        case Device::KeyCode::RIGHT_ALT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_RIGHT_ALT);
+
+        case Device::KeyCode::MOUSE_LEFT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_LEFT);
+        case Device::KeyCode::MOUSE_RIGHT:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_RIGHT);
+        case Device::KeyCode::MOUSE_MIDDLE:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_MIDDLE);
+        case Device::KeyCode::MOUSE_EXTRA1:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA1);
+        case Device::KeyCode::MOUSE_EXTRA2:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA2);
+        case Device::KeyCode::MOUSE_EXTRA3:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA3);
+        case Device::KeyCode::MOUSE_EXTRA4:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA4);
+        case Device::KeyCode::MOUSE_EXTRA5:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA5);
+        case Device::KeyCode::MOUSE_EXTRA6:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA6);
+        case Device::KeyCode::MOUSE_EXTRA7:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA7);
+        case Device::KeyCode::MOUSE_EXTRA8:
+            return ResolvedUiString(IDS_LONG_KEYNAME_MOUSE_EXTRA8);
+
+        default:
+            break;
+        }
     }
 
     std::ostringstream stream;
@@ -140,11 +212,11 @@ std::string toDisplayString(Device::KeyModifier mod, KeysDisplayFormat format)
     switch (mod)
     {
         case Device::KeyModifier::Alt:
-            return ResolvedUiString(IDS_KEYNAME_ALT);
+            return ResolvedUiString(IDS_LONG_KEYNAME_ALT);
         case Device::KeyModifier::Ctrl:
-            return ResolvedUiString(IDS_KEYNAME_CTRL);
+            return ResolvedUiString(IDS_LONG_KEYNAME_CTRL);
         case Device::KeyModifier::Shift:
-            return ResolvedUiString(IDS_KEYNAME_SHIFT);
+            return ResolvedUiString(IDS_LONG_KEYNAME_SHIFT);
         case Device::KeyModifier::None:
             break;
     }
