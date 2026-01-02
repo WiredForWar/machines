@@ -165,12 +165,11 @@ std::string toDisplayString(const KeyBind& bind, KeysDisplayFormat format)
     };
 
     using KeyModifier = Device::KeyModifier;
-    const bool keyFirst = format == KeysDisplayFormat::Compact;
+    const bool keyFirst = format == KeysDisplayFormat::Compact && isAlphaNumKey(bind.keyCode());
 
     if (keyFirst)
     {
-        if (bind.keyCode() != Device::KeyCode::UNKNOWN)
-            addKey(toDisplayString(bind.keyCode(), format));
+        addKey(toDisplayString(bind.keyCode(), format));
     }
 
     const KeyModifierFlags pressedMods = bind.keyWithMods.modifiers();
@@ -182,8 +181,7 @@ std::string toDisplayString(const KeyBind& bind, KeysDisplayFormat format)
 
     if (!keyFirst)
     {
-        if (bind.keyCode() != Device::KeyCode::UNKNOWN)
-            addKey(toDisplayString(bind.keyCode(), format));
+        addKey(toDisplayString(bind.keyCode(), format));
     }
 
     return result;

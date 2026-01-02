@@ -175,6 +175,11 @@ inline constexpr bool isValidCode(KeyCode code)
     return (static_cast<detail::KeyCodeUnderlying>(code) < MAX_CODE);
 }
 
+inline constexpr bool isAlphaNumKey(KeyCode code)
+{
+    return (code >= KeyCode::KEY_A) && (code <= KeyCode::KEY_9);
+}
+
 void writeAsString(std::ostream&, KeyCode code);
 
 inline constexpr KeyCode getKeyWithoutModifiers(int value)
