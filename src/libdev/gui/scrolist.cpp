@@ -3,24 +3,20 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-//  Definitions of non-inline non-template methods and global functions
-
 #include "gui/event.hpp"
 #include "gui/internal/scrolisi.hpp"
 #include "gui/listobvr.hpp"
 #include "stdlib/function.hpp"
 
-#include <algorithm>
-
 #define CB_GUISIMPLESCROLLABLELIST_DEPIMPL()                                                                           \
-    CB_DEPIMPL(bool, canScrollFoward_);                                                                                \
-    CB_DEPIMPL(bool, canScrollBackward_);                                                                              \
-    CB_DEPIMPL(size_t, scrollOffset_);                                                                                 \
-    CB_DEPIMPL(size_t, scrollInc_);                                                                                    \
-    CB_DEPIMPL(size_t, horizontalSpacing_);                                                                            \
-    CB_DEPIMPL(size_t, verticalSpacing_);                                                                              \
-    CB_DEPIMPL(size_t, numPositions_);                                                                                 \
-    CB_DEPIMPL(GuiSimpleScrollableList::Observers, observers_);
+    CB_DEPIMPL_AUTO(canScrollFoward_);                                                                                 \
+    CB_DEPIMPL_AUTO(canScrollBackward_);                                                                               \
+    CB_DEPIMPL_AUTO(scrollOffset_);                                                                                    \
+    CB_DEPIMPL_AUTO(scrollInc_);                                                                                       \
+    CB_DEPIMPL_AUTO(horizontalSpacing_);                                                                               \
+    CB_DEPIMPL_AUTO(verticalSpacing_);                                                                                 \
+    CB_DEPIMPL_AUTO(numPositions_);                                                                                    \
+    CB_DEPIMPL_AUTO(observers_);
 
 GuiSimpleScrollableList::GuiSimpleScrollableList(
     GuiDisplayable* pParent,
@@ -29,7 +25,6 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
     size_t verticalSpacing,
     size_t scrollInc)
     : GuiDisplayable(pParent, box)
-    , pImpl_(nullptr)
 {
     pImpl_ = new GuiSimpleScrollableListImpl;
 
@@ -40,9 +35,6 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
     horizontalSpacing_ = horizontalSpacing;
     verticalSpacing_ = verticalSpacing;
     scrollInc_ = scrollInc;
-    scrollOffset_ = 0;
-    canScrollFoward_ = false;
-    canScrollBackward_ = false;
 
     // Work out how many positions there are that things can be displayed in
     numPositions_ = 0;
@@ -179,21 +171,21 @@ void GuiSimpleScrollableList::childrenUpdated()
     Gui::Coord relPos(0, 0);
     bool endOfDisplayableChildren = false;
 
-    size_t scrollOffsetCountDown = scrollOffset_;
+    std::size_t scrollOffsetCountDown = scrollOffset_;
 
-    for (Children::iterator itter = children().begin(); itter != children().end(); ++itter)
+    for (GuiDisplayable* child : children())
     {
         if (scrollOffsetCountDown) // Have we reached visible children yet?
         { // No
             --scrollOffsetCountDown;
-            (*itter)->setVisible(false);
+            child->setVisible(false);
         }
         else
         { // Yes
-            (*itter)->setVisible(! endOfDisplayableChildren);
+            child->setVisible(!endOfDisplayableChildren);
 
-            if (! endOfDisplayableChildren)
-                positionChildRelative(*itter, relPos); // Only reposition if child is visible
+            if (!endOfDisplayableChildren)
+                positionChildRelative(child, relPos); // Only reposition if child is visible
 
             relPos.x(relPos.x() + horizontalSpacing_);
             if (relPos.x() >= width())
@@ -345,5 +337,3 @@ void GuiSimpleScrollableList::scrollToBegin()
     while (canScrollBackward())
         scrollBackward();
 }
-
-/* End SCROLIST.CPP *************************************************/

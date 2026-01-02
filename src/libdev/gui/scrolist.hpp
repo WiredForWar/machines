@@ -110,7 +110,7 @@ private:
 
     using Observers = ctl_pvector<GuiListObserver>;
 
-    GuiSimpleScrollableListImpl* pImpl_;
+    GuiSimpleScrollableListImpl* pImpl_{};
 
     friend class GuiSimpleScrollableListImpl;
 };
