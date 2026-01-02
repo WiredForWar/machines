@@ -766,8 +766,8 @@ void MachGuiFirstPerson::update()
                     // Attack cursor has just come on line. play sound
                     MachGuiSoundManager::instance().playSound("gui/sounds/attackon.wav");
                 }
-                pAttackCursor_->isVisible(anglesValid);
-                pMissCursor_->isVisible(!anglesValid);
+                pAttackCursor_->setVisible(anglesValid);
+                pMissCursor_->setVisible(!anglesValid);
             }
             else
             {
@@ -778,15 +778,15 @@ void MachGuiFirstPerson::update()
                 }
 
                 // Display miss cursor ( friendly machine )
-                pAttackCursor_->isVisible(false);
-                pMissCursor_->isVisible(true);
+                pAttackCursor_->setVisible(false);
+                pMissCursor_->setVisible(true);
             }
         }
         else
         {
             // Hide attack cursors
-            pAttackCursor_->isVisible(false);
-            pMissCursor_->isVisible(false);
+            pAttackCursor_->setVisible(false);
+            pMissCursor_->setVisible(false);
         }
 
         // FOR COMMAND: Are we targeting a machine?
@@ -836,13 +836,13 @@ void MachGuiFirstPerson::update()
         // Display normal or startup cursor - This is the CROSSHAIRS btw
         if (pStartCursor_->cellIndex() == pStartCursor_->numCells() - 1)
         {
-            pNormalCursor_->isVisible(!viableTarget || !viableShootingTarget);
-            pStartCursor_->isVisible(false);
+            pNormalCursor_->setVisible(!viableTarget || !viableShootingTarget);
+            pStartCursor_->setVisible(false);
         }
         else
         {
-            pNormalCursor_->isVisible(false);
-            pStartCursor_->isVisible(!(viableTarget && viableShootingTarget));
+            pNormalCursor_->setVisible(false);
+            pStartCursor_->setVisible(!(viableTarget && viableShootingTarget));
 
             // End startup cursor animation if there is a valid target
             if (viableTarget && viableShootingTarget)
@@ -1247,10 +1247,10 @@ void MachGuiFirstPerson::doBecomeRoot()
     justEnteredFirstPerson_ = true;
 
     // Switch startup cursor on, all others off.
-    pAttackCursor_->isVisible(false);
-    pNormalCursor_->isVisible(false);
-    pMissCursor_->isVisible(false);
-    pStartCursor_->isVisible(true);
+    pAttackCursor_->setVisible(false);
+    pNormalCursor_->setVisible(false);
+    pMissCursor_->setVisible(false);
+    pStartCursor_->setVisible(true);
 
     // Remove FOW interference
     pSceneManager_->pDevice()->interferenceOff();
@@ -1295,10 +1295,10 @@ void MachGuiFirstPerson::doBecomeNotRoot()
     unloadBitmaps();
 
     // Switch startup cursor on, all others off.
-    pAttackCursor_->isVisible(false);
-    pNormalCursor_->isVisible(false);
-    pMissCursor_->isVisible(false);
-    pStartCursor_->isVisible(true);
+    pAttackCursor_->setVisible(false);
+    pNormalCursor_->setVisible(false);
+    pMissCursor_->setVisible(false);
+    pStartCursor_->setVisible(true);
 
     // Clean up chat message display
     delete pChatMessageDisplay_;

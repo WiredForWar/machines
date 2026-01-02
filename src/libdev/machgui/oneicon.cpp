@@ -275,8 +275,8 @@ bool MachGuiCorralSingleIcon::beNotified(W4dSubject* pSubject, W4dSubject::Notif
             isObservingActor_ = false;
             pActor_ = nullptr;
             pIconInfo_->setActor(nullptr);
-            pSelectInsideBuildingIcon_->isVisible(false);
-            pInHeadIcon_->isVisible(false);
+            pSelectInsideBuildingIcon_->setVisible(false);
+            pInHeadIcon_->setVisible(false);
             changed();
             break;
         case W4dSubject::CLIENT_SPECIFIC:
@@ -610,15 +610,15 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                     pSelectInsideBuildingIcon_->isVisible( false );
                 }*/
 
-                pSelectInsideBuildingIcon_->isVisible(false);
-                pInHeadIcon_->isVisible(false);
+                pSelectInsideBuildingIcon_->setVisible(false);
+                pInHeadIcon_->setVisible(false);
             }
             else
             {
                 pSelectInsideBuildingIcon_->setConstruction(&pActor->asConstruction());
 
-                pInHeadIcon_->isVisible(false);
-                pSelectInsideBuildingIcon_->isVisible(false);
+                pInHeadIcon_->setVisible(false);
+                pSelectInsideBuildingIcon_->setVisible(false);
 
                 const MachLogConstruction& construction = pActor->asConstruction();
 
@@ -639,7 +639,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
 
                 if (friendlyMachineInside)
                 {
-                    pSelectInsideBuildingIcon_->isVisible(true);
+                    pSelectInsideBuildingIcon_->setVisible(true);
                 }
             }
         }
@@ -647,7 +647,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
         {
             MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
-            pSelectInsideBuildingIcon_->isVisible(false);
+            pSelectInsideBuildingIcon_->setVisible(false);
 
             // Check that machine can be entered...
             bool headIconVisible = pActor->race() == playerRace && ! pActor->asMachine().insideAPC();
@@ -658,7 +658,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                 headIconVisible = false;
             }
 
-            pInHeadIcon_->isVisible(headIconVisible);
+            pInHeadIcon_->setVisible(headIconVisible);
             pInHeadIcon_->setMachine(&pActor->asMachine());
         }
 
@@ -679,8 +679,8 @@ void MachGuiCorralSingleIcon::clear()
 
     pActor_ = nullptr;
     isObservingActor_ = false;
-    pSelectInsideBuildingIcon_->isVisible(false);
-    pInHeadIcon_->isVisible(false);
+    pSelectInsideBuildingIcon_->setVisible(false);
+    pInHeadIcon_->setVisible(false);
     pIconInfo_->setActor(nullptr);
     changed();
 }

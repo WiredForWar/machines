@@ -73,7 +73,7 @@ void MachGuiBufferScrollButton::listUpdated()
 
     if (canScroll != isVisible())
     {
-        isVisible(canScroll);
+        setVisible(canScroll);
 
         // Clean up control panel if this is being removed.
         if (! canScroll)

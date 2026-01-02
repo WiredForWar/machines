@@ -137,7 +137,7 @@ MachGuiBmuButton::~MachGuiBmuButton()
 void MachGuiBmuButton::doBeDepressed(const GuiMouseEvent&)
 {
     MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
-    pBmuText_->isVisible(true);
+    pBmuText_->setVisible(true);
     pContinentMap_->forceUpdate();
 }
 
@@ -145,7 +145,7 @@ void MachGuiBmuButton::doBeDepressed(const GuiMouseEvent&)
 void MachGuiBmuButton::doBeReleased(const GuiMouseEvent&)
 {
     MachGuiSoundManager::instance().playSound("gui/sounds/igclick.wav");
-    pBmuText_->isVisible(false);
+    pBmuText_->setVisible(false);
     pContinentMap_->forceUpdate();
 }
 

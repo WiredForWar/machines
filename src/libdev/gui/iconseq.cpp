@@ -103,7 +103,7 @@ void GuiIconSequence::update()
                 ++nFixedChildren_;
                 ASSERT(fixIndex < allocatedPositions_.size(), "index out of range");
                 allocatedPositions_[fixIndex] = true;
-                (*i)->isVisible(true);
+                (*i)->setVisible(true);
                 // moveChildTo( *i, coords()[ fixIndex ] );
                 positionChildRelative(*i, coords()[fixIndex]);
             }
@@ -189,7 +189,7 @@ void GuiIconSequence::repositionChildren()
                     allocatedChild[j] = true;
                     ASSERT(allocatedChild[j], "logic_error");
                     currentAllocatedPositions[j - offset()] = true;
-                    activeChildren_[j]->isVisible(true);
+                    activeChildren_[j]->setVisible(true);
                     // moveChildTo( activeChildren_[ j ], coords()[ i ] );
                     positionChildRelative(activeChildren_[j], coords()[i]);
                 }
@@ -205,7 +205,7 @@ void GuiIconSequence::repositionChildren()
         if (notAllocated)
         {
             ASSERT(j < activeChildren_.size(), "index out of range");
-            activeChildren_[j]->isVisible(false);
+            activeChildren_[j]->setVisible(false);
         }
     }
 }
@@ -313,7 +313,7 @@ void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coor
 
     ASSERT(coordIndex < allocatedPositions_.size(), "index out of range");
     allocatedPositions_[coordIndex] = true;
-    pChild->isVisible(true);
+    pChild->setVisible(true);
     // moveChildTo( pChild, coords()[ coordIndex ] );
     positionChildRelative(pChild, coords()[coordIndex]);
 }
@@ -717,7 +717,7 @@ void GuiScrollableIconSequence::positionScrollers()
         if (canScrollLeft_ || canScrollRight_)
             fixScroller(pTwoWayScroller_, twoWayScrollerIndex_);
         else
-            pTwoWayScroller_->isVisible(false);
+            pTwoWayScroller_->setVisible(false);
     }
     else
     {
@@ -731,9 +731,9 @@ void GuiScrollableIconSequence::positionScrollers()
         else
         {
             if (pLeftScroller_ != nullptr)
-                pLeftScroller_->isVisible(false);
+                pLeftScroller_->setVisible(false);
             if (pRightScroller_ != nullptr)
-                pRightScroller_->isVisible(false);
+                pRightScroller_->setVisible(false);
         }
     }
 }

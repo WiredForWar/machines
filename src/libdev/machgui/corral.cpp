@@ -141,7 +141,7 @@ bool MachGuiCorralResource::beNotified(W4dSubject* pSubject, W4dSubject::Notific
     {
         case W4dSubject::DELETED:
             isObservingActor_ = false;
-            isVisible(false);
+            setVisible(false);
             break;
         case W4dSubject::CLIENT_SPECIFIC:
             {

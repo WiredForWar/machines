@@ -106,7 +106,7 @@ public:
     // default implementation returns true
     virtual bool isEligableForVisibility() const;
 
-    void isVisible(bool visible);
+    void setVisible(bool visible);
     // POST( iff( visible and isEligableForVisibility(), isVisible() ) );
 
     // Returns true is GuiKeyEvent was "used" by this GuiDisplayable

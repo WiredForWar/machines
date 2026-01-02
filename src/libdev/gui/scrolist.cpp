@@ -186,11 +186,11 @@ void GuiSimpleScrollableList::childrenUpdated()
         if (scrollOffsetCountDown) // Have we reached visible children yet?
         { // No
             --scrollOffsetCountDown;
-            (*itter)->isVisible(false);
+            (*itter)->setVisible(false);
         }
         else
         { // Yes
-            (*itter)->isVisible(! endOfDisplayableChildren);
+            (*itter)->setVisible(! endOfDisplayableChildren);
 
             if (! endOfDisplayableChildren)
                 positionChildRelative(*itter, relPos); // Only reposition if child is visible
@@ -225,7 +225,7 @@ void GuiSimpleScrollableList::childAdded()
     if (children().size() - scrollOffset_ > numPositions_)
     {
         // no need to do anything, the child does not fall into the viewable area
-        children().back()->isVisible(false);
+        children().back()->setVisible(false);
     }
     else
     {

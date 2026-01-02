@@ -210,7 +210,7 @@ void GuiDisplayable::positionChildRelative(GuiDisplayable* pChild, const Gui::Co
 
 //////////////////////////////////////////////////////////////////////
 
-void GuiDisplayable::isVisible(bool visible)
+void GuiDisplayable::setVisible(bool visible)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 

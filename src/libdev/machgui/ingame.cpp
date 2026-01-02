@@ -2275,56 +2275,56 @@ void MachInGameScreen::updateChildVisible()
     // Make single icon corral visible/invisible
     if (! isCorralSingleIconVisible() && pCorralSingleIcon_->isVisible())
     {
-        pCorralSingleIcon_->isVisible(false);
+        pCorralSingleIcon_->setVisible(false);
         pControlPanel_->redrawArea(*pCorralSingleIcon_);
     }
     else if (isCorralSingleIconVisible() && ! pCorralSingleIcon_->isVisible())
     {
-        pCorralSingleIcon_->isVisible(true);
+        pCorralSingleIcon_->setVisible(true);
     }
 
     // Make multi-icon corral visible/invisible
     if (! isCorralVisible() && pCorral_->isVisible())
     {
-        pCorral_->isVisible(false);
+        pCorral_->setVisible(false);
         pControlPanel_->redrawArea(*pCorral_);
     }
     else if (isCorralVisible() && ! pCorral_->isVisible())
     {
-        pCorral_->isVisible(true);
+        pCorral_->setVisible(true);
     }
 
     // Make squadron bank visible/invisible
     if (! isSquadronBankVisible() && pSquadronBank_->isVisible())
     {
-        pSquadronBank_->isVisible(false);
+        pSquadronBank_->setVisible(false);
         pControlPanel_->redrawArea(*pSquadronBank_);
     }
     else if (isSquadronBankVisible() && ! pSquadronBank_->isVisible())
     {
-        pSquadronBank_->isVisible(true);
+        pSquadronBank_->setVisible(true);
     }
 
     // Make command icons visible/invisible
     if (! isCommandIconsVisible() && pCommandIcons_->isVisible())
     {
-        pCommandIcons_->isVisible(false);
+        pCommandIcons_->setVisible(false);
         pControlPanel_->redrawArea(*pCommandIcons_);
     }
     else if (isCommandIconsVisible() && ! pCommandIcons_->isVisible())
     {
-        pCommandIcons_->isVisible(true);
+        pCommandIcons_->setVisible(true);
     }
 
     // Make small command icons visible/invisible
     if (! isSmallCommandIconsVisible() && pSmallCommandIcons_->isVisible())
     {
-        pSmallCommandIcons_->isVisible(false);
+        pSmallCommandIcons_->setVisible(false);
         pControlPanel_->redrawArea(*pSmallCommandIcons_);
     }
     else if (isSmallCommandIconsVisible() && ! pSmallCommandIcons_->isVisible())
     {
-        pSmallCommandIcons_->isVisible(true);
+        pSmallCommandIcons_->setVisible(true);
     }
 
     // Make various bits and bobs visible/invisible
@@ -2336,7 +2336,7 @@ void MachInGameScreen::updateChildVisible()
     {
         if (visible != pProductionBank_->isVisible())
         {
-            pProductionBank_->isVisible(visible);
+            pProductionBank_->setVisible(visible);
         }
     }
     // Make hardware research bank visible/invisible
@@ -2344,7 +2344,7 @@ void MachInGameScreen::updateChildVisible()
     {
         if (visible != pHWResearchBank_->isVisible())
         {
-            pHWResearchBank_->isVisible(visible);
+            pHWResearchBank_->setVisible(visible);
         }
     }
     // Make construction menu visible/invisible
@@ -2352,7 +2352,7 @@ void MachInGameScreen::updateChildVisible()
     {
         if (visible != pConstructMenu_->isVisible())
         {
-            pConstructMenu_->isVisible(visible);
+            pConstructMenu_->setVisible(visible);
         }
     }
     // Make build menu visible/invisible
@@ -2360,7 +2360,7 @@ void MachInGameScreen::updateChildVisible()
     {
         if (visible != pBuildMenu_->isVisible())
         {
-            pBuildMenu_->isVisible(visible);
+            pBuildMenu_->setVisible(visible);
         }
     }
     // Make research menu visible/invisible
@@ -2368,7 +2368,7 @@ void MachInGameScreen::updateChildVisible()
     {
         if (visible != pHWResearchMenu_->isVisible())
         {
-            pHWResearchMenu_->isVisible(visible);
+            pHWResearchMenu_->setVisible(visible);
         }
     }
 }

@@ -840,7 +840,7 @@ MachGuiNavButton::MachGuiNavButton(
     , cycleIndex_(0)
 {
     greyBitmap_ = MachGui::getScaledImage(getBitmapFilename(ot, subType, true));
-    isVisible(false);
+    setVisible(false);
     disable();
 }
 
@@ -1793,7 +1793,7 @@ void MachGuiNavigatorBase::doDisplay()
 
 void MachGuiNavigatorBase::makeVisible(bool visible)
 {
-    isVisible(visible);
+    setVisible(visible);
 
     if (visible && updateReq_)
     {
