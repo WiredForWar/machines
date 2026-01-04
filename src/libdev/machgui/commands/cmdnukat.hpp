@@ -119,7 +119,7 @@ private:
 
     // Data members
     Action action_; // What to do
-    MachActor* pDirectObject_; // The target of the attack
+    MachActor* pDirectObject_{}; // The target of the attack
     MexPoint3d location_; // The location to move to
     bool hadFinalPick_; // True when the final destination pick has been received
 };

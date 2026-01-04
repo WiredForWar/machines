@@ -32,7 +32,6 @@
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-nuke-attack-trigger"_bind)
     , action_(DO_NOTHING)
-    , pDirectObject_(nullptr)
     , hadFinalPick_(! atLeastOneActorHasChargedNuke())
 {
     TEST_INVARIANT;
@@ -300,11 +299,11 @@ void MachGuiNukeAttackCommand::update(const Actors& actors)
     // Work out how recharged the nukes are
     int nHighestPercentageRecharged = 0;
 
-    for (Actors::const_iterator iter = actors.begin(); iter != actors.end(); ++iter)
+    for (const MachActor* actor : actors)
     {
-        if ((*iter)->objectType() == MachLog::MISSILE_EMPLACEMENT && (*iter)->asMissileEmplacement().isNukeSilo())
+        if (actor->objectType() == MachLog::MISSILE_EMPLACEMENT && actor->asMissileEmplacement().isNukeSilo())
         {
-            int percentageRecharged = (*iter)->asMissileEmplacement().weapons().front()->percentageRecharge();
+            int percentageRecharged = actor->asMissileEmplacement().weapons().front()->percentageRecharge();
 
             if (percentageRecharged > nHighestPercentageRecharged)
             {
@@ -333,25 +332,22 @@ void MachGuiNukeAttackCommand::giveNotEnoughBMUsVoicemail() const
 
 bool MachGuiNukeAttackCommand::atLeastOneActorHasChargedNuke() const
 {
-    bool noneHasChargedNuke = true;
+    bool someoneHasChargedNuke = false;
 
-    for (MachInGameScreen::Actors::const_iterator iter = inGameScreen().selectedActors().begin();
-         iter != inGameScreen().selectedActors().end() && noneHasChargedNuke;
-         ++iter)
+    for (const MachActor* pActor : inGameScreen().selectedActors())
     {
-        MachActor& actor = (**iter);
-
-        if (actor.objectIsMissileEmplacement())
+        if (pActor->objectIsMissileEmplacement())
         {
-            const MachLogMissileEmplacement& missileEmp = actor.asMissileEmplacement();
+            const MachLogMissileEmplacement& missileEmp = pActor->asMissileEmplacement();
             if (missileEmp.isNukeSilo() && missileEmp.nukeReady())
             {
-                noneHasChargedNuke = false;
+                someoneHasChargedNuke = true;
+                break;
             }
         }
     }
 
-    return !(noneHasChargedNuke);
+    return someoneHasChargedNuke;
 }
 
 // Forced recompile 19/2/99 CPS
