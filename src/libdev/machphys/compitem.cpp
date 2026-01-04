@@ -15,7 +15,7 @@ static void idToString(const ItemId& id, std::string* stringId)
 {
     PRE(stringId);
     char buffer[20];
-    sprintf(buffer, "%u", id);
+    snprintf(buffer, sizeof(buffer), "%u", id);
     *stringId = buffer;
 }
 

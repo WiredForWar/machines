@@ -187,9 +187,9 @@ void RenStats::endFrame()
         if (show_)
         {
             stream_.clear();
-            char buf[1000];
-            sprintf(buf, "Frame time=%.1f; frame rate=%.1f;\n", 1000 * avFrameTime, frameRate_);
-            stream_ << buf;
+            char buffer[1000];
+            snprintf(buffer, sizeof(buffer), "Frame time=%.1f; frame rate=%.1f;\n", 1000 * avFrameTime, frameRate_);
+            stream_ << buffer;
 
             stream_ << "Frame time average over " << maxQueueLength_ << " frames = " << 1000 * averageFrameTime()
                     << "\n";

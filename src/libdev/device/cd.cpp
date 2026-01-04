@@ -317,7 +317,7 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     }
 
     char fileName[40];
-    sprintf(fileName, "sounds/music/track%d.ogg", trackPlaying_);
+    snprintf(fileName, sizeof(fileName), "sounds/music/track%d.ogg", trackPlaying_);
     SysPathName filePath(fileName);
     stream_ = alureCreateStreamFromFile(filePath.pathname().c_str(), STREAM_BUFFER_SIZE, 0, nullptr);
 

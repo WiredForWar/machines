@@ -201,7 +201,7 @@ bool MachGuiDeconstructCommand::addPromptTextCommandInfo(const MachActor* pActor
             = totalBMUs * MachLogRaces::instance().stats().secondhandRefundablePercentage();
 
         char buffer[32];
-        sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), secondHandBMUs);
+        snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), secondHandBMUs);
 
         GuiResourceString bmuText(IDS_BMUPOINTS_ON_DECONSTRUCTION, buffer);
         prompt += ", " + bmuText.asString();

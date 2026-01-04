@@ -320,7 +320,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
                 // Display percentage complete
                 //              itoa( pActor_->asConstruction().percentageComplete(), buffer, 10 );
-                sprintf(buffer, "%d", pActor_->asConstruction().percentageComplete());
+                snprintf(buffer, sizeof(buffer), "%d", pActor_->asConstruction().percentageComplete());
                 GuiResourceString percentCompleteText(IDS_PERCENTAGECOMPLETE, GuiString(buffer));
                 concat += percentCompleteText.asString();
                 concat += "\n";
@@ -346,7 +346,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 if (pActor_->objectIsCanAttack())
                 {
                     //                  itoa( pActor_->asCanAttack().getMaximumWeaponRange(), buffer, 10 );
-                    sprintf(buffer, "%d", (uint)pActor_->asCanAttack().getMaximumWeaponRange());
+                    snprintf(buffer, sizeof(buffer), "%d", (uint)pActor_->asCanAttack().getMaximumWeaponRange());
                     GuiResourceString weaponRangeStr(IDS_WEAPONRANGE);
                     actorSpecificInfoStr = weaponRangeStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -358,8 +358,8 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 {
                     //                  itoa( pActor_->asResourceCarrier().data().capacity(), buffer, 10 );
                     //                  itoa( pActor_->asResourceCarrier().amountCarried(), buffer2, 10 );
-                    sprintf(buffer, "%d", pActor_->asResourceCarrier().data().capacity());
-                    sprintf(buffer2, "%d", pActor_->asResourceCarrier().amountCarried());
+                    snprintf(buffer, sizeof(buffer), "%d", pActor_->asResourceCarrier().data().capacity());
+                    snprintf(buffer2, sizeof(buffer2), "%d", pActor_->asResourceCarrier().amountCarried());
                     GuiResourceString capacityStr(IDS_CAPACITY);
                     actorSpecificInfoStr = capacityStr.asString() + " ";
                     actorSpecificInfoStr += buffer2;
@@ -370,7 +370,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 else if (pActor_->objectType() == MachLog::TECHNICIAN)
                 {
                     //                  itoa( pActor_->asTechnician().data().researchRate(), buffer, 10 );
-                    sprintf(buffer, "%d", pActor_->asTechnician().data().researchRate());
+                    snprintf(buffer, sizeof(buffer), "%d", pActor_->asTechnician().data().researchRate());
                     GuiResourceString researchPointsStr(IDS_MACHINERESEARCHPOINTS);
                     actorSpecificInfoStr = researchPointsStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -380,8 +380,8 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 {
                     //                  itoa( pActor_->asSpyLocator().data().mineCapacity(), buffer, 10 );
                     //                  itoa( pActor_->asSpyLocator().nMines(), buffer2, 10 );
-                    sprintf(buffer, "%d", pActor_->asSpyLocator().data().mineCapacity());
-                    sprintf(buffer2, "%d", pActor_->asSpyLocator().nMines());
+                    snprintf(buffer, sizeof(buffer), "%d", pActor_->asSpyLocator().data().mineCapacity());
+                    snprintf(buffer2, sizeof(buffer2), "%d", pActor_->asSpyLocator().nMines());
                     GuiResourceString minesStr(IDS_MINESHELD);
                     actorSpecificInfoStr = minesStr.asString() + " ";
                     actorSpecificInfoStr += buffer2;
@@ -392,7 +392,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 else if (pActor_->objectType() == MachLog::GEO_LOCATOR)
                 {
                     //                  itoa( pActor_->asMachine().machineData().scannerRange(), buffer, 10 );
-                    sprintf(buffer, "%d", (uint)pActor_->asMachine().machineData().scannerRange());
+                    snprintf(buffer, sizeof(buffer), "%d", (uint)pActor_->asMachine().machineData().scannerRange());
                     GuiResourceString locateRangeStr(IDS_LOCATERANGE);
                     actorSpecificInfoStr = locateRangeStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -401,7 +401,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 else if (pActor_->objectType() == MachLog::CONSTRUCTOR)
                 {
                     //                  itoa( pActor_->asConstructor().data().constructionRate(), buffer, 10 );
-                    sprintf(buffer, "%d", pActor_->asConstructor().data().constructionRate());
+                    snprintf(buffer, sizeof(buffer), "%d", pActor_->asConstructor().data().constructionRate());
                     GuiResourceString constructRateStr(IDS_CONSTRUCTRATE);
                     actorSpecificInfoStr = constructRateStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -418,7 +418,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
                     // Add BMU info
                     //                  itoa( bmusLeft, buffer, 10 );
-                    sprintf(buffer, "%d", bmusLeft);
+                    snprintf(buffer, sizeof(buffer), "%d", bmusLeft);
                     GuiResourceString remainingBmuStr(IDS_REMAININGBMU);
                     actorSpecificInfoStr = remainingBmuStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -428,7 +428,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 {
                     // Add BMU info
                     //                  itoa( pActor_->asFactory().data().buildRate(), buffer, 10 );
-                    sprintf(buffer, "%d", pActor_->asFactory().data().buildRate());
+                    snprintf(buffer, sizeof(buffer), "%d", pActor_->asFactory().data().buildRate());
                     GuiResourceString buildRateStr(IDS_BUILDRATE);
                     actorSpecificInfoStr = buildRateStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -438,7 +438,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
                 {
                     // Add Research Rate info
                     //                  itoa( pActor_->asHardwareLab().totalResearchRate(), buffer, 10 );
-                    sprintf(buffer, "%d", (uint)pActor_->asHardwareLab().totalResearchRate());
+                    snprintf(buffer, sizeof(buffer), "%d", (uint)pActor_->asHardwareLab().totalResearchRate());
                     GuiResourceString researchPointsStr(IDS_RESEARCHPOINTSINLAB);
                     actorSpecificInfoStr = researchPointsStr.asString() + " ";
                     actorSpecificInfoStr += buffer;
@@ -454,8 +454,8 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             // Display armour info
             //          itoa( ap, buffer, 10 );
             //          itoa( maxAp, buffer2, 10 );
-            sprintf(buffer, "%d", ap);
-            sprintf(buffer2, "%d", maxAp);
+            snprintf(buffer, sizeof(buffer), "%d", ap);
+            snprintf(buffer2, sizeof(buffer2), "%d", maxAp);
             GuiStrings insertStrings;
             insertStrings.reserve(2);
             insertStrings.push_back(GuiString(buffer));
@@ -467,8 +467,8 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             // Display hp info
             //          itoa( hp, buffer, 10 );
             //          itoa( maxHp, buffer2, 10 );
-            sprintf(buffer, "%d", hp);
-            sprintf(buffer2, "%d", maxHp);
+            snprintf(buffer, sizeof(buffer), "%d", hp);
+            snprintf(buffer2, sizeof(buffer2), "%d", maxHp);
             GuiStrings insertStrings2;
             insertStrings2.reserve(2);
             insertStrings2.push_back(GuiString(buffer));

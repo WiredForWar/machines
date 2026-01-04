@@ -101,7 +101,7 @@ void PedMapCreator::createBmp()
 
         char buffer[20];
         //      itoa( count, buffer, 10 );
-        sprintf(buffer, "%zu", count);
+        snprintf(buffer, sizeof(buffer), "%zu", count);
 
         int zeros = 3 - strlen(buffer);
         if (zeros < 0)

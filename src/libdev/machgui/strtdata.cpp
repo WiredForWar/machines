@@ -312,7 +312,7 @@ void MachGuiStartupData::receivedJoinMessage(const std::string& playerName, int 
                 newPlayerName = playerName;
                 char buffer[20];
                 //              newPlayerName += itoa( nameChangeNumber++, buffer, 10 );
-                sprintf(buffer, "%d", nameChangeNumber++);
+                snprintf(buffer, sizeof(buffer), "%d", nameChangeNumber++);
                 newPlayerName += buffer;
             }
             else // Check against other players
@@ -327,7 +327,7 @@ void MachGuiStartupData::receivedJoinMessage(const std::string& playerName, int 
                         newPlayerName = playerName;
                         char buffer[20];
                         //                      newPlayerName += itoa( nameChangeNumber++, buffer, 10 );
-                        sprintf(buffer, "%d", nameChangeNumber++);
+                        snprintf(buffer, sizeof(buffer), "%d", nameChangeNumber++);
                         newPlayerName += buffer;
                         break;
                     }

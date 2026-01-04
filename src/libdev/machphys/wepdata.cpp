@@ -159,10 +159,7 @@ ctl_vector<RenTexture> MachPhysWeaponData::trailTextures() const
                     textureName += "0";
                 }
 
-                char textN[4];
-                //              itoa(i, textN, 10 );
-                sprintf(textN, "%d", i);
-                textureName += std::string(textN);
+                textureName += std::to_string(i);
 
                 textureName += extension;
                 trailTextures.push_back(RenTexManager::instance().createTexture(textureName));

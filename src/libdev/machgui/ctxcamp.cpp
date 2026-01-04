@@ -444,10 +444,10 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             char buffer[255];
 
             //          lastScoreStr = itoa( lastScenario.lastScore(), buffer, 10 );
-            sprintf(buffer, "%d", lastScenario.lastScore());
+            snprintf(buffer, sizeof(buffer), "%d", lastScenario.lastScore());
             lastScoreStr = buffer;
             //          numScenariosPlayed = itoa( pSelectedPlayer_->nPlayerScenarios(), buffer, 10 );
-            sprintf(buffer, "%d", pSelectedPlayer_->nPlayerScenarios());
+            snprintf(buffer, sizeof(buffer), "%d", pSelectedPlayer_->nPlayerScenarios());
             numScenariosPlayed = buffer;
 
             // Total all the scores for scenarios played
@@ -456,7 +456,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             {
                 nTotalScore += pSelectedPlayer_->playerScenario(loop).lastScore();
             }
-            sprintf(buffer, "%d", nTotalScore);
+            snprintf(buffer, sizeof(buffer), "%d", nTotalScore);
             totalScore = buffer;
             //          totalScore = itoa( nTotalScore, buffer, 10 );
         }

@@ -89,7 +89,7 @@ std::string utlToString(long double f)
 {
     static constexpr int BUFFER_SIZE = 64;
     char buffer[BUFFER_SIZE];
-    int len = sprintf(buffer, "%Lf", f);
+    int len = snprintf(buffer, sizeof(buffer), "%Lf", f);
     ASSERT(len <= BUFFER_SIZE, "");
     return std::string(buffer);
 }

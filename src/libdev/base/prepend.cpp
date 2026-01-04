@@ -107,9 +107,9 @@ void DiagOstreamPrepend::doPrepend()
     {
         double clockValue = (double)clock() / CLOCKS_PER_SEC;
 
-        char str[20];
-        sprintf(str, "%8.2f  ", clockValue);
-        outputCharacters(str, strlen(str));
+        char buffer[20];
+        snprintf(buffer, sizeof(buffer), "%8.2f  ", clockValue);
+        outputCharacters(buffer, strlen(buffer));
     }
 
     if (prependString_)

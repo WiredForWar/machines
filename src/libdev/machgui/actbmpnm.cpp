@@ -352,7 +352,7 @@ void MachActorBitmaps::appendHwLevel(std::string& str, int hwLevel)
 {
     char buffer[20];
     //  itoa( hwLevel, buffer, 10 );
-    sprintf(buffer, "%d", hwLevel);
+    snprintf(buffer, sizeof(buffer), "%d", hwLevel);
     str += buffer;
 }
 

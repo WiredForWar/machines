@@ -413,15 +413,7 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
 
             for (int i = 1; i <= nTextures; ++i)
             {
-                std::string textureName = nameRoot;
-
-                char textN[4];
-                //              itoa(i, textN, 10 );
-                sprintf(textN, "%d", i);
-                textureName += std::string(textN);
-
-                textureName += extension;
-
+                std::string textureName = nameRoot + std::to_string(i) + extension;
                 textures.push_back(RenTexManager::instance().createTexture(textureName));
             }
 

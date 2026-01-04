@@ -65,8 +65,8 @@ std::string MachHWResearchIcon::getPromptText() const
     // Add bmu cost and rp cost to end of prompt text
     char bmuBuffer[20];
     char rpBuffer[20];
-    sprintf(bmuBuffer, "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
-    sprintf(rpBuffer, "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
+    snprintf(bmuBuffer, sizeof(bmuBuffer), "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
+    snprintf(rpBuffer, sizeof(rpBuffer), "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
 
     if (pResearchItem_->buildingCost() != 0)
     {

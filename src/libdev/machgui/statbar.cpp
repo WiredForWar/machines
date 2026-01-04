@@ -107,18 +107,14 @@ void MachGuiStatisticsBar::showStatistic()
 {
     showStatistic_ = true;
     GuiBmpFont font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
-    char statistic[255];
     uint statsBarWidth = 0;
 
     if (stat() >= 0)
         statsBarWidth = (stat() / range()) * width();
 
-    //  itoa( stat_, statistic, 10 );
-    sprintf(statistic, "%d", (int)stat_);
-
     int yOffset = (statsBarBmp_.height() - font.height()) / 2;
 
-    std::string newStatistic = testForOverflow(std::string(statistic));
+    std::string newStatistic = testForOverflow(std::to_string(static_cast<int>(stat_)));
     delete statsText_;
     statsText_ = nullptr;
 

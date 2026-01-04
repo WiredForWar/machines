@@ -283,7 +283,7 @@ std::string MachGuiNukeAttackCommand::getCursorPromptText() const
     MachPhys::BuildingMaterialUnits cost = MachPhysData::instance().generalData().nukeLaunchCost();
 
     char buffer[32];
-    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), cost);
+    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), cost);
     std::string costText = GuiResourceString(IDS_LAUNCH_COST_BMU, buffer).asString();
 
     return promptText + " " + costText;

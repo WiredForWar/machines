@@ -68,22 +68,11 @@ MachPhysMine::MachPhysMine(W4dEntity* pParent, size_t level)
         mineAdornments.push_back(pDecals);
 
     fans_.reserve(10);
+    std::string fan = "fan";
     std::string fanLinkName0 = "fan0";
     for (int i = 1; i <= 10; ++i)
     {
-        // TODO check this
-        char textN[4];
-        //      itoa(i, textN, 10 );
-        sprintf(textN, "%d", i);
-        std::string fanLinkName = fanLinkName0 + std::string(textN);
-        if (i == 10)
-        {
-            fanLinkName = "fan" + std::string(textN);
-            //          itoa(0, textN, 10 );
-            sprintf(textN, "%d", 0);
-            fanLinkName += std::string(textN);
-        }
-
+        std::string fanLinkName = (i < 10 ? fanLinkName0 : fan) + std::to_string(i);
         W4dLink* fanLink = nullptr;
         if (findLink(fanLinkName, &fanLink))
         {

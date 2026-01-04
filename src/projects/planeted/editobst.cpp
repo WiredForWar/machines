@@ -466,7 +466,7 @@ void PedObstacleEditor::validate()
         {
             char buffer[20];
             //          itoa( (*iter)->uniqueId(), buffer, 10 );
-            sprintf(buffer, "%zu", (*iter)->uniqueId());
+            snprintf(buffer, sizeof(buffer), "%zu", (*iter)->uniqueId());
             string msg("Warning : obstacle ");
             msg += buffer;
             msg += " concave or anti-clockwise";

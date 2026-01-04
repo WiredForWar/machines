@@ -373,7 +373,7 @@ void PedPortalEditor::validate()
 
         char buffer[20];
         //      itoa( pPortal->uniqueId(), buffer, 10 );
-        sprintf(buffer, "%zu", pPortal->uniqueId());
+        snprintf(buffer, sizeof(buffer), "%zu", pPortal->uniqueId());
         string msg("Warning : Portal ");
         msg += buffer;
 

@@ -274,7 +274,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             char buffer[30];
             //          string resolutionStr = itoa( mode.width(), buffer, 10 );
             //          resolutionStr += itoa( mode.height(), buffer, 10 );
-            sprintf(buffer, "%dx%d %d hz", mode.width(), mode.height(), mode.refreshRate());
+            snprintf(buffer, sizeof(buffer), "%dx%d %d hz", mode.width(), mode.height(), mode.refreshRate());
             std::string resolutionStr = buffer;
 
             // If this mode is the current mode for ingame then make sure it appears first in the

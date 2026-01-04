@@ -173,7 +173,7 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
         }
         if (nFrames > 1)
         {
-            sprintf(buffer, "%d", nFrames * 2);
+            snprintf(buffer, sizeof(buffer), "%d", nFrames * 2);
             if (SysPathName::existsAsFile(basePath + buffer + extention))
             {
                 // Twice many frames
@@ -191,7 +191,7 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
         {
             int frameNumber = i + 1;
             //          name += itoa( frameNumber, buffer, 10 );
-            sprintf(buffer, "%d", frameNumber);
+            snprintf(buffer, sizeof(buffer), "%d", frameNumber);
             name += buffer;
         }
 

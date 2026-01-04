@@ -253,14 +253,15 @@ void W4dSceneManager::render()
             device_->out() << "Adjustable ";
         device_->out() << " scene complexity" << std::endl;
 
-        char buf[1000];
-        sprintf(
-            buf,
+        char buffer[1000];
+        snprintf(
+            buffer,
+            sizeof(buffer),
             " target frame rate [%.1f, %.1f]; frame rate %.1f\n",
             requestedMinFrameRate_,
             highEnoughFrameRate_,
             pImpl_->frameRate());
-        device_->out() << buf;
+        device_->out() << buffer;
         complexity().usePriority(0);
         device_->out() << " low  priority machines (level, range multiplier): (" << complexity().level() << ", "
                        << complexity().rangeMultiplier() << ")" << std::endl;

@@ -253,7 +253,7 @@ SysPathName Gui::getNextAvailablePngFileName(const std::string& startFilename)
     for(std::size_t number = 0; number < MaxScreenshots; ++number)
     {
         char buffer[20];
-        sprintf(buffer, "%04zu", number);
+        snprintf(buffer, sizeof(buffer), "%04zu", number);
         SysPathName pathName(startFilename + buffer + ".png");
         if (!pathName.existsAsFile())
             return pathName;

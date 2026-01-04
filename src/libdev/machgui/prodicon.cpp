@@ -223,7 +223,7 @@ void MachProductionIcon::displayCursorPromptText()
 
     // Add bmu cost to end of prompt text
     char buffer[20];
-    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), item.factoryInstanceCost());
+    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), item.factoryInstanceCost());
     GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
     prompt += "\n" + bmuCostText.asString();
@@ -231,7 +231,7 @@ void MachProductionIcon::displayCursorPromptText()
     // Percentage complete info
     //  GuiResourceString percentCompleteText( IDS_BUILDPERCENTAGECOMPLETE, GuiString( itoa(
     //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
-    sprintf(buffer, "%d", (uint)pProgressBar_->percentageComplete());
+    snprintf(buffer, sizeof(buffer), "%d", (uint)pProgressBar_->percentageComplete());
     GuiResourceString percentCompleteText(IDS_BUILDPERCENTAGECOMPLETE, GuiString(buffer));
     prompt += ", " + percentCompleteText.asString();
 

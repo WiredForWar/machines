@@ -215,8 +215,8 @@ void MachHWResearchBankIcon::displayCursorPromptText()
     char rpBuffer[20];
     //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
     //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
-    sprintf(bmuBuffer, "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
-    sprintf(rpBuffer, "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
+    snprintf(bmuBuffer, sizeof(bmuBuffer), "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
+    snprintf(rpBuffer, sizeof(rpBuffer), "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
 
     if (pResearchItem_->buildingCost() != 0)
     {
@@ -234,7 +234,7 @@ void MachHWResearchBankIcon::displayCursorPromptText()
 
     // Percentage complete info
     char buffer[20];
-    sprintf(buffer, "%d", (uint)pProgressBar_->percentageComplete());
+    snprintf(buffer, sizeof(buffer), "%d", (uint)pProgressBar_->percentageComplete());
     //  GuiResourceString percentCompleteText( IDS_RESEARCHPERCENTAGECOMPLETE, GuiString( itoa(
     //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
     GuiResourceString percentCompleteText(IDS_RESEARCHPERCENTAGECOMPLETE, GuiString(buffer));

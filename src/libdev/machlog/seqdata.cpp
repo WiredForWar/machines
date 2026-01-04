@@ -36,7 +36,7 @@ MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
 
     //  Set up the pathname for the log stream and clear it.
     char str[200];
-    sprintf(str, "ms%06d", id);
+    snprintf(str, sizeof(str), "ms%06d", id);
     // logFilePathName_ = str + string( ".log" );
     logFilePathName_ = SysPathName(str + std::string(".log"));
 

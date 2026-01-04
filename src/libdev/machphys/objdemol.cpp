@@ -249,7 +249,7 @@ bool MachPhysObjDemolish::useGenericDemolition(MachPhys::DemolitionType type)
         std::string level = levelName;
         char buffer[20];
         //  level+=itoa(type.level, buffer, 10);
-        sprintf(buffer, "%d", type.level);
+        snprintf(buffer, sizeof(buffer), "%d", type.level);
         level += buffer;
         fileName.combine(SysPathName(level));
         fileName.combine(demolishName);
@@ -335,7 +335,7 @@ SysPathName MachPhysObjDemolish::compositeFileName(MachPhys::DemolitionType type
         std::string level = levelName;
         char buffer[20];
         //  level+=itoa(type.level, buffer, 10);
-        sprintf(buffer, "%d", type.level);
+        snprintf(buffer, sizeof(buffer), "%d", type.level);
         level += buffer;
         result.combine(SysPathName(level));
         result.combine(demolishName);

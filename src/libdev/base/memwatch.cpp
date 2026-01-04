@@ -253,9 +253,9 @@ void BaseMemWatcher::traceOustandingAllocations(std::ostream& outStream)
             char* pNewText = pSite->aNewText_;
             char buffer[64];
             if (pNewText != nullptr)
-                sprintf(buffer, "NEW %zu %#08x @ %.32s @", pSite->nBytes_, pAllocatedBlock->address_, pNewText);
+                snprintf(buffer, sizeof(buffer), "NEW %zu %#08x @ %.32s @", pSite->nBytes_, pAllocatedBlock->address_, pNewText);
             else
-                sprintf(buffer, "NEW %zu %#08x", pSite->nBytes_, pAllocatedBlock->address_);
+                snprintf(buffer, sizeof(buffer), "NEW %zu %#08x", pSite->nBytes_, pAllocatedBlock->address_);
 
             // get the profiler to write the call stack line in the correct format for profanal
             profiler.traceStack(

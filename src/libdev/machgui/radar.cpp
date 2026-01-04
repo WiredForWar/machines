@@ -539,7 +539,7 @@ void MachGuiRadar::loadBitmaps()
         char buffer[3];
 
         // framePath += itoa( loop, buffer, 10 );
-        sprintf(buffer, "%d", loop);
+        snprintf(buffer, sizeof(buffer), "%d", loop);
         framePath += buffer;
 
         radarStartupFrames_[loop] = Gui::requestScaledImage(framePath);

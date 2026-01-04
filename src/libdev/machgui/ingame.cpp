@@ -897,8 +897,9 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
         char buffer[32];
 
         // Get HP and Armour info
-        sprintf(
+        snprintf(
             buffer,
+            sizeof(buffer),
             "\n"
             "%c%d %c%d",
             GuiBmpFont::healthPointsIndex(),
@@ -911,8 +912,9 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
         // For technicians add on how clever they are onto the prompt text
         if (pActor->objectType() == MachLog::TECHNICIAN)
         {
-            sprintf(
+            snprintf(
                 buffer,
+                sizeof(buffer),
                 " %c%d",
                 GuiBmpFont::researchPointsIndex(),
                 pActor->asTechnician().data().researchRate());
@@ -922,8 +924,9 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
         else if (
             pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier())
         {
-            sprintf(
+            snprintf(
                 buffer,
+                sizeof(buffer),
                 " "
                 "%c%d/%d",
                 GuiBmpFont::bmuPointsIndex(),
@@ -1020,14 +1023,14 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
             }
 
             // Add BMU info
-            sprintf(buffer, " %c%d", GuiBmpFont::bmuPointsIndex(), bmusLeft);
+            snprintf(buffer, sizeof(buffer), " %c%d", GuiBmpFont::bmuPointsIndex(), bmusLeft);
             prompt += buffer;
         }
 
         // Percentage complete info
         //      GuiResourceString percentCompleteText( IDS_PERCENTAGECOMPLETE, GuiString( itoa(
         //      pActor->asConstruction().percentageComplete(), buffer, 10 ) ) );
-        sprintf(buffer, "%d", pActor->asConstruction().percentageComplete());
+        snprintf(buffer, sizeof(buffer), "%d", pActor->asConstruction().percentageComplete());
         GuiResourceString percentCompleteText(IDS_PERCENTAGECOMPLETE, GuiString(buffer));
         prompt += ", " + percentCompleteText.asString();
 
@@ -1037,8 +1040,9 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
     else if (pActor->objectIsConstruction() && pActor->race() == playerRace)
     {
         // Get HP and Armour info
-        sprintf(
+        snprintf(
             buffer,
+            sizeof(buffer),
             "\n"
             "%c%d %c%d",
             GuiBmpFont::healthPointsIndex(),
@@ -1059,8 +1063,9 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
             }
 
             // Add BMU info
-            sprintf(
+            snprintf(
                 buffer,
+                sizeof(buffer),
                 " "
                 "%c%d %c%d",
                 GuiBmpFont::bmuPointsIndex(),
@@ -1074,8 +1079,9 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
         else if (pActor->objectType() == MachLog::HARDWARE_LAB)
         {
             // Add Research Rate info
-            sprintf(
+            snprintf(
                 buffer,
+                sizeof(buffer),
                 " %c%.0f",
                 GuiBmpFont::researchPointsIndex(),
                 pActor->asHardwareLab().totalResearchRate());
@@ -1105,9 +1111,10 @@ bool MachInGameScreen::addPromptTextArtefactInfo(const MachActor* pActor, GuiStr
         char buffer[32];
 
         // Get HP and Armour info
-        sprintf(
+        snprintf(
             buffer,
-            " "
+            sizeof(buffer),
+            "\n"
             "%c%d %c%d",
             GuiBmpFont::healthPointsIndex(),
             pActor->hp(),
@@ -1130,7 +1137,7 @@ bool MachInGameScreen::addPromptTextDebrisInfo(const MachActor* pActor, GuiStrin
         char buffer[20];
 
         // Display BMU value for Debris
-        sprintf(buffer, " %c%d", GuiBmpFont::bmuPointsIndex(), pActor->asDebris().quantity());
+        snprintf(buffer, sizeof(buffer), " %c%d", GuiBmpFont::bmuPointsIndex(), pActor->asDebris().quantity());
         prompt += buffer;
 
         processed = true;
@@ -1148,8 +1155,9 @@ bool MachInGameScreen::addPromptTextOreHolographInfo(const MachActor* pActor, Gu
         char buffer[20];
 
         // BMU's in mineral site
-        sprintf(
+        snprintf(
             buffer,
+            sizeof(buffer),
             " %c%d",
             GuiBmpFont::bmuPointsIndex(),
             pActor->asOreHolograph().mineralSite().amountOfOre());

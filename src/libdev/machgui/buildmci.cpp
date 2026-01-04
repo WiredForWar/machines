@@ -111,7 +111,7 @@ void MachBuildMachineIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEve
 
     // Add bmu cost to end of prompt text
     char buffer[20];
-    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), researchItem_.factoryInstanceCost());
+    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), researchItem_.factoryInstanceCost());
     GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
     prompt += "\n" + bmuCostText.asString();

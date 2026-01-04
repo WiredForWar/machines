@@ -218,7 +218,7 @@ void* cbAlloc(size_t nBytes)
     // Comment in to trap run time leaks     and profiler.isProfilingEnabled() )
     // Comment in to trap run time leaks {
     // Comment in to trap run time leaks     char buffer[64];
-    // Comment in to trap run time leaks     sprintf( buffer, "NEW %d %#08x", nBytes, (void*)(&pReturnBlock->pNext_) );
+    // Comment in to trap run time leaks     snprintf(buffer, sizeof(buffer), "NEW %d %#08x", nBytes, (void*)(&pReturnBlock->pNext_) );
     // Comment in to trap run time leaks     profiler.traceStack( Diag::instance().danielStream(), true, 0, buffer );
     // Comment in to trap run time leaks }
 
@@ -246,7 +246,7 @@ void cbFree(void* pBlock)
     // Comment in to trap run time leaks {
     // Comment in to trap run time leaks     //Set up string detailing the extra information we want
     // Comment in to trap run time leaks     char buffer[64];
-    // Comment in to trap run time leaks     sprintf( buffer, "DELETE %#08x", pBlock );
+    // Comment in to trap run time leaks     snprintf(buffer, sizeof(buffer), "DELETE %#08x", pBlock );
     // Comment in to trap run time leaks     profiler.traceStack( Diag::instance().danielStream(), true, 0, buffer );
     // Comment in to trap run time leaks }
 
