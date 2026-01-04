@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!-- Commands -->
 <string id="1"
 	>Move</string>
 <string id="2"
@@ -138,6 +139,8 @@
 	>Launch cost %1</string>
 <string id="71"
 	>Machine Initiative</string>
+
+<!-- Command labels (as on the buttons) -->
 <string id="72"
 	>Assemble at</string>
 <string id="73"
@@ -194,6 +197,8 @@
 	>Transport</string>
 <string id="99"
 	>Treachery</string>
+
+<!-- Machine descriptions -->
 <string id="100"
 	>Airborne Unit</string>
 <string id="101"
@@ -318,6 +323,8 @@
 	>Bull Transporter</string>
 <string id="275"
 	>Rhino Transporter</string>
+
+<!-- Construction descriptions -->
 <string id="300"
 	>Radar Beacon</string>
 <string id="301"
@@ -406,6 +413,8 @@
 	>Smelter</string>
 <string id="423"
 	>Refinery Smelter</string>
+
+<!-- Navigator text -->
 <string id="1000"
 	>Select All %1</string>
 <string id="1010"
@@ -494,6 +503,8 @@
 	>Beacons</string>
 <string id="1430"
 	>Pods/Beacons</string>
+
+<!-- Hotkeys-related strings -->
 <string id="1600"
 	>Zenith View</string>
 <string id="1601"
@@ -566,6 +577,7 @@
 	>Exit</string>
 <string id="1691"
 	>Menus</string>
+
 <string id="1800"
 	>Machine Navigator. Toggle On/Off</string>
 <string id="1810"
@@ -751,6 +763,7 @@
 <string id="2750"
 	>%1 or %2</string>
 
+<!-- (Long) key names -->
 <string id="3001"
 	>Alt</string>
 <string id="3002"
@@ -805,6 +818,8 @@
 	>Right Alt</string>
 <string id="3050"
 	>NumPad %1</string>
+
+<!-- Abbreviated key names -->
 <string id="3101"
 	>Alt</string>
 <string id="3102"
@@ -859,6 +874,8 @@
 	>Right Alt</string>
 <string id="3150"
 	>Pad %1</string>
+
+<!-- Mouse button names -->
 <string id="3201"
 	>Left Mouse Button</string>
 <string id="3202"
@@ -881,6 +898,8 @@
 	>Mouse Button 10</string>
 <string id="3211"
 	>Mouse Button 11</string>
+
+<!-- Abbreviated mouse button names -->
 <string id="3301"
 	>Left Mouse Btn</string>
 <string id="3302"
@@ -904,7 +923,7 @@
 <string id="3311"
 	>Mouse Btn 11</string>
 
-
+<!-- Weapon Combo descriptions -->
 <string id="4000"
 	>Bolter</string>
 <string id="4010"
@@ -1007,6 +1026,8 @@
 	>Air Sentinel</string>
 <string id="5011"
 	>Leviathan Missile Launcher</string>
+
+<!-- Artifacts -->
 <string id="6001"
 	>Rock</string>
 <string id="6002"
@@ -1065,6 +1086,8 @@
 	>Enemy Controller</string>
 <string id="6029"
 	>Central Control Core</string>
+
+<!-- Menu text -->
 <string id="6991"
 	>Gamma</string>
 <string id="6992"
@@ -1412,6 +1435,8 @@ BELONGING TO</string>
 	>Options</string>
 <string id="7212"
 	>Optimizations</string>
+
+<!-- Menu buttons 7300-7399 -->
 <string id="7300"
 	>Settings</string>
 <string id="7302"
@@ -1474,6 +1499,8 @@ BELONGING TO</string>
 	>Back To Internet</string>
 <string id="7331"
 	>Exit To Internet</string>
+
+<!-- Systems 8000-8099 -->
 <string id="8000"
 	>Corinthian System</string>
 <string id="8001"
@@ -1486,6 +1513,8 @@ BELONGING TO</string>
 	>Midian Prime</string>
 <string id="8005"
 	>The Core System</string>
+
+<!-- Planets 8000-8099 -->
 <string id="8100"
 	>Talon Prime</string>
 <string id="8101"
@@ -1510,6 +1539,8 @@ BELONGING TO</string>
 	>Talok, the moon of Talon Prime</string>
 <string id="8111"
 	>Volcanic</string>
+
+<!-- Terrain Type 8200-8299 -->
 <string id="8200"
 	>Desert</string>
 <string id="8201"
@@ -1530,6 +1561,8 @@ BELONGING TO</string>
 	>Midian Interior</string>
 <string id="8209"
 	>Home World</string>
+
+<!-- Scenarios 8300-8999 -->
 <string id="8300"
 	>Contact Comm-Sat Relay Station</string>
 <string id="8301"
@@ -1678,6 +1711,8 @@ BELONGING TO</string>
 	>Island Skirmish - Day/Night</string>
 <string id="8373"
 	>Oasis - Day/Night</string>
+
+<!-- Machine Operations 9000-9199 -->
 <string id="9000"
 	>Moving</string>
 <string id="9001"
@@ -1772,6 +1807,7 @@ BELONGING TO</string>
 	>Attacking</string>
 <string id="9047"
 	>Scavenging</string>
+
 <string id="10000"
 	>Dynamic Lights</string>
 <string id="10001"
