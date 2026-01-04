@@ -22,18 +22,18 @@ MachLogActorStringIdRestorer::~MachLogActorStringIdRestorer()
 }
 
 // static
-Gui::StringId MachLogActorStringIdRestorer::stringId(MachActor* pActor)
+Gui::StringId MachLogActorStringIdRestorer::stringId(const MachActor* pActor)
 {
     // Extract hw level from actor
     int level = 0;
     if (pActor->objectIsMachine())
     {
-        MachLogMachine& machine = pActor->asMachine();
+        const MachLogMachine& machine = pActor->asMachine();
         level = machine.hwLevel();
     }
     else if (pActor->objectIsConstruction())
     {
-        MachLogConstruction& construction = pActor->asConstruction();
+        const MachLogConstruction& construction = pActor->asConstruction();
         level = construction.level();
     }
 
@@ -385,18 +385,18 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(
 }
 
 // static
-bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, Gui::StringId* pStringId)
+bool MachLogActorStringIdRestorer::isExceptionToRule(const MachActor* pActor, Gui::StringId* pStringId)
 {
     // Extract hw level from actor
     int level = 0;
     if (pActor->objectIsMachine())
     {
-        MachLogMachine& machine = pActor->asMachine();
+        const MachLogMachine& machine = pActor->asMachine();
         level = machine.hwLevel();
     }
     else if (pActor->objectIsConstruction())
     {
-        MachLogConstruction& construction = pActor->asConstruction();
+        const MachLogConstruction& construction = pActor->asConstruction();
         level = construction.level();
     }
 
@@ -416,7 +416,7 @@ bool MachLogActorStringIdRestorer::isExceptionToRule(MachActor* pActor, Gui::Str
 
 // static
 std::string MachLogActorStringIdRestorer::getActorPromptText(
-    MachActor* pActor,
+    const MachActor* pActor,
     Gui::StringId actorId,
     Gui::StringId actorWithWeaponId)
 {
@@ -424,12 +424,12 @@ std::string MachLogActorStringIdRestorer::getActorPromptText(
     int level = 0;
     if (pActor->objectIsMachine())
     {
-        MachLogMachine& machine = pActor->asMachine();
+        const MachLogMachine& machine = pActor->asMachine();
         level = machine.hwLevel();
     }
     else if (pActor->objectIsConstruction())
     {
-        MachLogConstruction& construction = pActor->asConstruction();
+        const MachLogConstruction& construction = pActor->asConstruction();
         level = construction.level();
     }
 

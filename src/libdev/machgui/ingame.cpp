@@ -887,14 +887,14 @@ void MachInGameScreen::highlightActor(MachActor* pHighlightActor)
     }
 }
 
-bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& prompt)
+bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     if (pActor->objectIsMachine() && pActor->race() == playerRace)
     {
-        MachLogMachine& machine = pActor->asMachine();
+        const MachLogMachine& machine = pActor->asMachine();
         char buffer[20];
 
         // Get HP and Armour info
@@ -943,7 +943,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
 
             bool first = true;
             int count = 0;
-            MachLogAPC& apc = pActor->asAPC();
+            const MachLogAPC& apc = pActor->asAPC();
 
             for (MachLogAPC::Machines::const_iterator iter = apc.machines().begin();
                  iter != apc.machines().end() && count < 10;
@@ -998,7 +998,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(MachActor* pActor, GuiString& pr
     return processed;
 }
 
-bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiString& prompt)
+bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
     char buffer[20];
@@ -1015,7 +1015,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
 
             if (pActor->asMine().hasMineralSite())
             {
-                bmusLeft = _CONST_CAST(const MachLogMine&, pActor->asMine()).mineralSite().amountOfOre();
+                bmusLeft = pActor->asMine().mineralSite().amountOfOre();
             }
 
             // Add BMU info
@@ -1054,7 +1054,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
 
             if (pActor->asMine().hasMineralSite())
             {
-                bmusLeft = _CONST_CAST(const MachLogMine&, pActor->asMine()).mineralSite().amountOfOre();
+                bmusLeft = pActor->asMine().mineralSite().amountOfOre();
             }
 
             // Add BMU info
@@ -1093,7 +1093,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(MachActor* pActor, GuiStrin
     return processed;
 }
 
-bool MachInGameScreen::addPromptTextArtefactInfo(MachActor* pActor, GuiString& prompt)
+bool MachInGameScreen::addPromptTextArtefactInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
 
@@ -1116,7 +1116,7 @@ bool MachInGameScreen::addPromptTextArtefactInfo(MachActor* pActor, GuiString& p
     return processed;
 }
 
-bool MachInGameScreen::addPromptTextDebrisInfo(MachActor* pActor, GuiString& prompt)
+bool MachInGameScreen::addPromptTextDebrisInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
 
@@ -1137,7 +1137,7 @@ bool MachInGameScreen::addPromptTextDebrisInfo(MachActor* pActor, GuiString& pro
     return processed;
 }
 
-bool MachInGameScreen::addPromptTextOreHolographInfo(MachActor* pActor, GuiString& prompt)
+bool MachInGameScreen::addPromptTextOreHolographInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
 
@@ -1159,7 +1159,7 @@ bool MachInGameScreen::addPromptTextOreHolographInfo(MachActor* pActor, GuiStrin
     return processed;
 }
 
-void MachInGameScreen::displayActorPromptText(MachActor* pActor)
+void MachInGameScreen::displayActorPromptText(const MachActor* pActor)
 {
     CB_DEPIMPL_AUTO(pPromptTextActor_);
     CB_DEPIMPL_AUTO(pActiveCommand_);
@@ -1182,7 +1182,7 @@ void MachInGameScreen::displayActorPromptText(MachActor* pActor)
             if ((pActor->objectType() == MachLog::POD && pActor->asPod().hasIonCannon())
                 || pActor->objectType() != MachLog::POD)
             {
-                MachLogCanAttack& canAttack = pActor->asCanAttack();
+                const MachLogCanAttack& canAttack = pActor->asCanAttack();
                 GuiResourceString weapon(MachLogActorStringIdRestorer::weaponStringId(canAttack.weaponCombo()));
                 weaponName = weapon.asString();
             }

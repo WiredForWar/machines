@@ -205,7 +205,7 @@ public:
     // display information about this actor in corral ( only if no other actors are selected ).
     void highlightActor(MachActor*);
     void removeHighlightedActor();
-    void displayActorPromptText(MachActor*);
+    void displayActorPromptText(const MachActor* pActor);
 
     // Set the viewport to the fullscreen or to the world-view window, respectivley.
     void setGuiViewport();
@@ -358,11 +358,11 @@ protected:
     void domainDeleted(W4dDomain* pDomain) override;
 
     // Helper methods for actor prompt text
-    bool addPromptTextMachineInfo(MachActor* pActor, std::string& prompt);
-    bool addPromptTextConstructionInfo(MachActor* pActor, std::string& prompt);
-    bool addPromptTextArtefactInfo(MachActor* pActor, std::string& prompt);
-    bool addPromptTextDebrisInfo(MachActor* pActor, std::string& prompt);
-    bool addPromptTextOreHolographInfo(MachActor* pActor, std::string& prompt);
+    bool addPromptTextMachineInfo(const MachActor* pActor, std::string& prompt);
+    bool addPromptTextConstructionInfo(const MachActor* pActor, std::string& prompt);
+    bool addPromptTextArtefactInfo(const MachActor* pActor, std::string& prompt);
+    bool addPromptTextDebrisInfo(const MachActor* pActor, std::string& prompt);
+    bool addPromptTextOreHolographInfo(const MachActor* pActor, std::string& prompt);
 
     // Should control panel be displayed ( certain modes require the control panel to be
     // revealed, i.e. construction menu ).

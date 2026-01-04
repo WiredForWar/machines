@@ -18,7 +18,7 @@ public:
 
     // Returns string id used to display actors sub-type ( e.g. Lab-Tech, Commanded, Grunt ). Add hardware
     // level to get stringId that describes specific machine type ( e.g. Judas Warlord, Shark )
-    static Gui::StringId stringId(MachActor*);
+    static Gui::StringId stringId(const MachActor*);
     static Gui::StringId stringId(MachLog::ObjectType objType, size_t subType, int level);
 
     // Returns string id used to display name of weapon.
@@ -35,9 +35,9 @@ public:
         MachPhys::WeaponCombo wc,
         int level,
         Gui::StringId* pStringId);
-    static bool isExceptionToRule(MachActor*, Gui::StringId* pStringId);
+    static bool isExceptionToRule(const MachActor*, Gui::StringId* pStringId);
 
-    static std::string getActorPromptText(MachActor*, Gui::StringId actorStrId, Gui::StringId actorWithWeaponStrId);
+    static std::string getActorPromptText(const MachActor*, Gui::StringId actorStrId, Gui::StringId actorWithWeaponStrId);
     static std::string getActorPromptText(
         MachLog::ObjectType objType,
         size_t subType,

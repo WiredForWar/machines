@@ -110,7 +110,7 @@ public:
     MachGuiNukeAttackCommand* pNukeAttackCommand_{};
     std::unique_ptr<MachGuiFirstPerson> pFirstPerson_;
     Gui::Coord rightClickMousePos_{}; // When right click happens the coord is stored in this var.
-    MachActor* pPromptTextActor_{}; // Actor whos info is on the prompt text
+    const MachActor* pPromptTextActor_{}; // Actor whos info is on the prompt text
     MachGuiControlPanelAddOn* pControlPanelAddOn_{};
     bool controlPanelOn_{};
     int controlPanelXPos_{};
