@@ -14,6 +14,7 @@
 #include "machlog/hwlab.hpp"
 #include "machlog/resitem.hpp"
 #include "machlog/races.hpp"
+#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -64,10 +65,8 @@ std::string MachHWResearchIcon::getPromptText() const
     // Add bmu cost and rp cost to end of prompt text
     char bmuBuffer[20];
     char rpBuffer[20];
-    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
-    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
-    sprintf(bmuBuffer, "%d", pResearchItem_->buildingCost());
-    sprintf(rpBuffer, "%d", pResearchItem_->researchCost());
+    sprintf(bmuBuffer, "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
+    sprintf(rpBuffer, "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
 
     if (pResearchItem_->buildingCost() != 0)
     {
@@ -79,7 +78,7 @@ std::string MachHWResearchIcon::getPromptText() const
     }
     else
     {
-        GuiResourceString costText(IDS_COST_RP, GuiString(rpBuffer));
+        GuiResourceString costText(IDS_COST, GuiString(rpBuffer));
         prompt += "\n" + costText.asString();
     }
 

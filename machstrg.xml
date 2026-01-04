@@ -614,24 +614,12 @@
 	>%1 - with %2</string>
 <string id="1970"
 	>SW%1</string>
-<string id="1980"
-	>ù%1</string>
-<string id="1990"
-	>Ä%1</string>
-<string id="1991"
-	>Å%1</string>
-<string id="1992"
-	>ô%1</string>
 <string id="1993"
-	>Deconstruct would yield Å%1</string>
+	>Deconstruct would yield %1</string>
 <string id="2000"
-	>COST Å%1</string>
+	>COST %1</string>
 <string id="2010"
-	>COST Å%1 û%2</string>
-<string id="2011"
-	>COST Å%1</string>
-<string id="2012"
-	>û%1</string>
+	>COST %1 %2</string>
 <string id="2020"
 	>Switch to 1st person view</string>
 <string id="2030"

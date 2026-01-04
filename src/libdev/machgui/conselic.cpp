@@ -11,6 +11,7 @@
 #include "machgui/actnamid.hpp"
 #include "machgui/ingame.hpp"
 #include "machgui/commands/command.hpp"
+#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "machlog/machlog.hpp"
 #include "machlog/races.hpp"
@@ -106,8 +107,7 @@ void MachConstructionSelectIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mo
 
     // Add bmu cost to end of prompt text
     char buffer[20];
-    //  itoa( consItem_.buildingCost(), buffer, 10 );
-    sprintf(buffer, "%d", consItem_.buildingCost());
+    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), consItem_.buildingCost());
     GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
     prompt += " " + bmuCostText.asString();

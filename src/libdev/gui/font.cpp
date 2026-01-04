@@ -144,6 +144,31 @@ char GuiBmpFont::arrowRightIndex()
     return 0x90;
 }
 
+char GuiBmpFont::healthPointsIndex()
+{
+    return 0x9D;
+}
+
+char GuiBmpFont::armorPointsIndex()
+{
+    return 0x80;
+}
+
+char GuiBmpFont::bmuPointsIndex()
+{
+    return 0x81;
+}
+
+char GuiBmpFont::bmuMinedPointsIndex()
+{
+    return 0x99;
+}
+
+char GuiBmpFont::researchPointsIndex()
+{
+    return 0x9E;
+}
+
 char GuiBmpFont::redCharIndex()
 {
     return 0xA9;

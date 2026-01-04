@@ -7,6 +7,7 @@
 
 #include "cmddecon.hpp"
 
+#include "gui/font.hpp"
 #include "gui/restring.hpp"
 
 #include "mathex/point3d.hpp"
@@ -199,7 +200,10 @@ bool MachGuiDeconstructCommand::addPromptTextCommandInfo(const MachActor* pActor
         MachPhys::BuildingMaterialUnits secondHandBMUs
             = totalBMUs * MachLogRaces::instance().stats().secondhandRefundablePercentage();
 
-        GuiResourceString bmuText(IDS_BMUPOINTS_ON_DECONSTRUCTION, GuiString(std::to_string(secondHandBMUs)));
+        char buffer[32];
+        sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), secondHandBMUs);
+
+        GuiResourceString bmuText(IDS_BMUPOINTS_ON_DECONSTRUCTION, buffer);
         prompt += ", " + bmuText.asString();
         return true;
     }

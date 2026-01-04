@@ -894,41 +894,42 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
 
     if (pActor->objectIsMachine() && pActor->race() == playerRace)
     {
-        const MachLogMachine& machine = pActor->asMachine();
-        char buffer[20];
+        char buffer[32];
 
         // Get HP and Armour info
-        //      GuiResourceString hpText( IDS_HEALTHPOINTS, GuiString( itoa( machine.hp(), buffer, 10 ) ) );
-        //      GuiResourceString apText( IDS_ARMOURPOINTS, GuiString( itoa( machine.armour(), buffer, 10 ) ) );
-        sprintf(buffer, "%d", machine.hp());
-        GuiResourceString hpText(IDS_HEALTHPOINTS, GuiString(buffer));
-        sprintf(buffer, "%d", machine.armour());
-        GuiResourceString apText(IDS_ARMOURPOINTS, GuiString(buffer));
+        sprintf(
+            buffer,
+            "\n"
+            "%c%d %c%d",
+            GuiBmpFont::healthPointsIndex(),
+            pActor->hp(),
+            GuiBmpFont::armorPointsIndex(),
+            pActor->armour());
 
-        prompt += "\n" + hpText.asString() + " " + apText.asString();
+        prompt += buffer;
 
         // For technicians add on how clever they are onto the prompt text
         if (pActor->objectType() == MachLog::TECHNICIAN)
         {
-            //          GuiResourceString rpText( IDS_RESEARCHPOINTS, GuiString( itoa(
-            //          pActor->asTechnician().data().researchRate(), buffer, 10 ) ) );
-            sprintf(buffer, "%d", pActor->asTechnician().data().researchRate());
-            GuiResourceString rpText(IDS_RESEARCHPOINTS, GuiString(buffer));
-            prompt += " " + rpText.asString();
+            sprintf(
+                buffer,
+                " %c%d",
+                GuiBmpFont::researchPointsIndex(),
+                pActor->asTechnician().data().researchRate());
+            prompt += buffer;
         }
         // Resource carrier info
         else if (
             pActor->objectType() == MachLog::RESOURCE_CARRIER && pActor->asResourceCarrier().isNormalResourceCarrier())
         {
-            char buffer2[20];
-            //          itoa( pActor->asResourceCarrier().data().capacity(), buffer, 10 );
-            //          itoa( pActor->asResourceCarrier().amountCarried(), buffer2, 10 );
-            sprintf(buffer, "%d", pActor->asResourceCarrier().data().capacity());
-            sprintf(buffer2, "%d", pActor->asResourceCarrier().amountCarried());
+            sprintf(
+                buffer,
+                " "
+                "%c%d/%d",
+                GuiBmpFont::bmuPointsIndex(),
+                pActor->asResourceCarrier().amountCarried(),
+                pActor->asResourceCarrier().data().capacity());
 
-            GuiResourceString bmuText(IDS_BMUPOINTS, buffer2);
-            prompt += " " + bmuText.asString();
-            prompt += "/";
             prompt += buffer;
         }
         // For APC add on contents
@@ -1001,7 +1002,7 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
 bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, GuiString& prompt)
 {
     bool processed = false;
-    char buffer[20];
+    char buffer[32];
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // Display incomplete construction info
@@ -1019,10 +1020,8 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
             }
 
             // Add BMU info
-            //          GuiResourceString bmuText( IDS_BMUPOINTS, GuiString( itoa( bmusLeft, buffer, 10 ) ) );
-            sprintf(buffer, "%d", bmusLeft);
-            GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(buffer));
-            prompt += " " + bmuText.asString();
+            sprintf(buffer, " %c%d", GuiBmpFont::bmuPointsIndex(), bmusLeft);
+            prompt += buffer;
         }
 
         // Percentage complete info
@@ -1038,14 +1037,16 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
     else if (pActor->objectIsConstruction() && pActor->race() == playerRace)
     {
         // Get HP and Armour info
-        //      GuiResourceString hpText( IDS_HEALTHPOINTS, GuiString( itoa( pActor->hp(), buffer, 10 ) ) );
-        //      GuiResourceString apText( IDS_ARMOURPOINTS, GuiString( itoa( pActor->armour(), buffer, 10 ) ) );
-        sprintf(buffer, "%d", pActor->hp());
-        GuiResourceString hpText(IDS_HEALTHPOINTS, GuiString(buffer));
-        sprintf(buffer, "%d", pActor->armour());
-        GuiResourceString apText(IDS_ARMOURPOINTS, GuiString(buffer));
+        sprintf(
+            buffer,
+            "\n"
+            "%c%d %c%d",
+            GuiBmpFont::healthPointsIndex(),
+            pActor->hp(),
+            GuiBmpFont::armorPointsIndex(),
+            pActor->armour());
 
-        prompt += "\n" + hpText.asString() + " " + apText.asString();
+        prompt += buffer;
 
         // Add BMU's left in mine onto prompt text
         if (pActor->objectType() == MachLog::MINE)
@@ -1058,25 +1059,27 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
             }
 
             // Add BMU info
-            //          GuiResourceString bmuText( IDS_BMUPOINTS, GuiString( itoa( bmusLeft, buffer, 10 ) ) );
-            //          GuiResourceString bmuMinedText( IDS_BMUPOINTSMINED, GuiString( itoa( pActor->asMine().ore(),
-            //          buffer, 10 ) ) );
-            sprintf(buffer, "%d", bmusLeft);
-            GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(buffer));
-            sprintf(buffer, "%d", pActor->asMine().ore());
-            GuiResourceString bmuMinedText(IDS_BMUPOINTSMINED, GuiString(buffer));
-            prompt += " " + bmuText.asString();
-            prompt += " " + bmuMinedText.asString();
+            sprintf(
+                buffer,
+                " "
+                "%c%d %c%d",
+                GuiBmpFont::bmuPointsIndex(),
+                bmusLeft,
+                GuiBmpFont::bmuMinedPointsIndex(),
+                pActor->asMine().ore());
+
+            prompt += buffer;
         }
         // Add Research Rate info for Hardware Labs
         else if (pActor->objectType() == MachLog::HARDWARE_LAB)
         {
             // Add Research Rate info
-            //          GuiResourceString rpText( IDS_RESEARCHPOINTS, GuiString( itoa(
-            //          pActor->asHardwareLab().totalResearchRate(), buffer, 10 ) ) );
-            sprintf(buffer, "%.0f", pActor->asHardwareLab().totalResearchRate());
-            GuiResourceString rpText(IDS_RESEARCHPOINTS, GuiString(buffer));
-            prompt += " " + rpText.asString();
+            sprintf(
+                buffer,
+                " %c%.0f",
+                GuiBmpFont::researchPointsIndex(),
+                pActor->asHardwareLab().totalResearchRate());
+            prompt += buffer;
         }
 
         // Add on a string describing the current operation
@@ -1099,17 +1102,19 @@ bool MachInGameScreen::addPromptTextArtefactInfo(const MachActor* pActor, GuiStr
 
     if (pActor->objectIsArtefact())
     {
-        char buffer[20];
+        char buffer[32];
 
         // Get HP and Armour info
-        //      GuiResourceString hpText( IDS_HEALTHPOINTS, GuiString( itoa( pActor->hp(), buffer, 10 ) ) );
-        //      GuiResourceString apText( IDS_ARMOURPOINTS, GuiString( itoa( pActor->armour(), buffer, 10 ) ) );
-        sprintf(buffer, "%d", pActor->hp());
-        GuiResourceString hpText(IDS_HEALTHPOINTS, GuiString(buffer));
-        sprintf(buffer, "%d", pActor->armour());
-        GuiResourceString apText(IDS_ARMOURPOINTS, GuiString(buffer));
-        prompt += " " + hpText.asString() + " " + apText.asString();
+        sprintf(
+            buffer,
+            " "
+            "%c%d %c%d",
+            GuiBmpFont::healthPointsIndex(),
+            pActor->hp(),
+            GuiBmpFont::armorPointsIndex(),
+            pActor->armour());
 
+        prompt += buffer;
         processed = true;
     }
 
@@ -1125,11 +1130,8 @@ bool MachInGameScreen::addPromptTextDebrisInfo(const MachActor* pActor, GuiStrin
         char buffer[20];
 
         // Display BMU value for Debris
-        //      GuiResourceString bmuText( IDS_BMUPOINTS, GuiString( itoa( pActor->asDebris().quantity(), buffer, 10 ) )
-        //      );
-        sprintf(buffer, "%d", pActor->asDebris().quantity());
-        GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(buffer));
-        prompt += " " + bmuText.asString();
+        sprintf(buffer, " %c%d", GuiBmpFont::bmuPointsIndex(), pActor->asDebris().quantity());
+        prompt += buffer;
 
         processed = true;
     }
@@ -1146,12 +1148,12 @@ bool MachInGameScreen::addPromptTextOreHolographInfo(const MachActor* pActor, Gu
         char buffer[20];
 
         // BMU's in mineral site
-        //      GuiResourceString bmuText( IDS_BMUPOINTS, GuiString( itoa(
-        //      pActor->asOreHolograph().mineralSite().amountOfOre(), buffer, 10 ) ) );
-        sprintf(buffer, "%d", pActor->asOreHolograph().mineralSite().amountOfOre());
-        GuiResourceString bmuText(IDS_BMUPOINTS, GuiString(buffer));
-
-        prompt += " " + bmuText.asString();
+        sprintf(
+            buffer,
+            " %c%d",
+            GuiBmpFont::bmuPointsIndex(),
+            pActor->asOreHolograph().mineralSite().amountOfOre());
+        prompt += buffer;
 
         processed = true;
     }

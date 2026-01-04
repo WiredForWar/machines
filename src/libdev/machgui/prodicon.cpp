@@ -15,6 +15,7 @@
 #include "machlog/restree.hpp"
 #include "machlog/resitem.hpp"
 
+#include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/restring.hpp"
 
@@ -217,17 +218,12 @@ void MachProductionIcon::displayCursorPromptText()
         IDS_BUILDING_PROMPT,
         IDS_BUILDING_WITH_WEAPON_PROMPT);
 
+    const MachLogResearchItem& item
+        = MachLogRaces::instance().researchTree().researchItem(machineType_, subType_, hwLevel_, weaponCombo_);
+
     // Add bmu cost to end of prompt text
     char buffer[20];
-    //  itoa( MachLogRaces::instance().researchTree().researchItem( machineType_, subType_, hwLevel_, weaponCombo_
-    //  ).factoryInstanceCost(), buffer, 10 );
-    sprintf(
-        buffer,
-        "%d",
-        MachLogRaces::instance()
-            .researchTree()
-            .researchItem(machineType_, subType_, hwLevel_, weaponCombo_)
-            .factoryInstanceCost());
+    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), item.factoryInstanceCost());
     GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
     prompt += "\n" + bmuCostText.asString();

@@ -14,6 +14,7 @@
 #include "machlog/factory.hpp"
 #include "machlog/resitem.hpp"
 #include "machlog/races.hpp"
+#include "gui/font.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/mgsndman.hpp"
@@ -110,8 +111,7 @@ void MachBuildMachineIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEve
 
     // Add bmu cost to end of prompt text
     char buffer[20];
-    //  itoa( researchItem_.factoryInstanceCost(), buffer, 10 );
-    sprintf(buffer, "%d", researchItem_.factoryInstanceCost());
+    sprintf(buffer, "%c%d", GuiBmpFont::bmuPointsIndex(), researchItem_.factoryInstanceCost());
     GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
 
     prompt += "\n" + bmuCostText.asString();

@@ -98,6 +98,12 @@ public:
     static char arrowLeftIndex();
     static char arrowRightIndex();
 
+    static char healthPointsIndex(); // 1980 // 0x9d
+    static char armorPointsIndex(); // 1990 // 0x80
+    static char bmuPointsIndex(); // 1991 // 0x81
+    static char bmuMinedPointsIndex(); // 1992 // 0x99
+    static char researchPointsIndex(); // 2012 // 0x9e
+
 protected:
     GuiBmpFont(const SysPathName& fontPath);
     void drawTextLeftJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
