@@ -1817,4 +1817,6 @@ BELONGING TO</string>
 	>Grab Mouse</string>
 <string id="11003"
 	>Use WASD keys</string>
+<string id="11004"
+	>Camera Acceleration</string>
 </resources>

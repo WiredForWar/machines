@@ -87,7 +87,7 @@ private:
     bool exitFromOptions_ = false;
     RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;
-    MachGuiSlideBar* pGammaCorrection_ = nullptr;
+    MachGuiSlideBar* pGammaCorrection_{};
 };
 
 #endif

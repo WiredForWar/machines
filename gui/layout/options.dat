@@ -4,25 +4,25 @@
 //       (<left> <top> <right> <bottom>)
 
 // Music volume
-SB 353 79 153
-MT 7020 270 79 346 90 gui/menu/smallfnt.bmp
+SB 375 79 150
+MT 7020 252 79 368 90 gui/menu/smallfnt.bmp
 
 // SFX Volume
-SB 353 99 153
-MT 7021 270 99 346 110 gui/menu/smallfnt.bmp
+SB 375 99 150
+MT 7021 252 99 368 110 gui/menu/smallfnt.bmp
 
 // Gamma Correction
-SB 353 179 153
-MT 6991 270 179 346 190 gui/menu/smallfnt.bmp
+SB 375 179 150
+MT 6991 252 179 368 190 gui/menu/smallfnt.bmp
 
 // Screen Resolution
-MT 7023 270 119 346 130 gui/menu/smallfnt.bmp
+MT 7023 252 119 368 130 gui/menu/smallfnt.bmp
 
 // Direct draw display driver label
-MT 6999 250 139 346 150	gui/menu/smallfnt.bmp
+MT 6999 252 139 368 150	gui/menu/smallfnt.bmp
 
 // Scale Factor
-MT 11000 270 159 346 170 gui/menu/smallfnt.bmp
+MT 11000 252 159 368 170 gui/menu/smallfnt.bmp
 
 // 3DSound
 CB 7098 95 79 252 90

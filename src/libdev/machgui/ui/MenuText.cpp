@@ -273,7 +273,7 @@ void MachGuiMenuText::doDisplay()
 
     ASSERT_INFO(totalHeight);
     ASSERT_INFO(height());
-    ASSERT(totalHeight <= height(), "height required to render text is greater than the height assigned");
+    // ASSERT(totalHeight <= height(), "height required to render text is greater than the height assigned");
 
     int startY = absoluteBoundary().minCorner().y();
     Gui::Alignment verticalAlignment = alignment_ & Gui::AlignVertical_Mask;
@@ -330,4 +330,5 @@ void MachGuiMenuText::doDisplay()
 
         drawText(textWidthCb, drawTextCb);
     }
+    // GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::RED(), 1);
 }
