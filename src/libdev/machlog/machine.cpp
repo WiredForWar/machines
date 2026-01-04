@@ -945,7 +945,7 @@ void MachLogMachine::doVisualiseSelectionState()
             MexTransform3d(),
             physObject.compositeBoundingVolume(),
             permanent,
-            (100 * hp()) / machineData().hitPoints());
+            100 * hpRatio());
     }
 }
 

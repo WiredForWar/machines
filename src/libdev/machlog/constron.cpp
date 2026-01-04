@@ -919,7 +919,7 @@ void MachLogConstruction::doVisualiseSelectionState()
             MexTransform3d(),
             physObject.compositeBoundingVolume(),
             permanent,
-            (100 * hp()) / constructionData().hitPoints());
+            100 * hpRatio());
     }
 }
 
