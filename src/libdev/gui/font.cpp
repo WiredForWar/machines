@@ -190,13 +190,13 @@ char GuiBmpFont::yellowCharIndex()
 }
 
 // static
-GuiBmpFont
-GuiBmpFont::getFont(const SysPathName& fontPath, FontType fontType /*= PROPORTIONAL*/, size_t spaceCharWidth /*= 7*/)
+GuiBmpFont GuiBmpFont::getFont(const SysPathName& fontPath, FontType fontType /*= PROPORTIONAL*/)
 {
     typedef ctl_vector<GuiBmpFont> GuiBmpFonts;
 
     GuiBmpFonts& fonts = getFontCache();
     size_t spacing = 1 * Gui::uiScaleFactor();
+    size_t spaceCharWidth = 5 * Gui::uiScaleFactor();
 
     for (GuiBmpFonts::iterator iter = fonts.begin(); iter != fonts.end(); ++iter)
     {
