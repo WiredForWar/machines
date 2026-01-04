@@ -229,9 +229,7 @@ PhysZenithMotionConstraint::PhysZenithMotionConstraint()
     : maxHeight(250.0)
     , minHeight(20.0)
     , maxSpeed(250.0)
-    , minSpeed(-250.0)
     , maxTurnRate(MexDegrees(120))
-    , minTurnRate(-MexDegrees(120))
 {
 }
 
@@ -241,23 +239,23 @@ void PhysZenithMotionConstraint::move(MexTransform3d& xform, PhysMotion& motion,
     // First, make sure "motion" is not too fast in speed, climb, pitch etc.
     if (motion.speed() > maxSpeed())
         motion.speed(maxSpeed());
-    else if (motion.speed() < minSpeed())
-        motion.speed(minSpeed());
+    else if (motion.speed() < -maxSpeed())
+        motion.speed(-maxSpeed());
 
     if (motion.drift() > maxSpeed())
         motion.drift(maxSpeed());
-    else if (motion.drift() < minSpeed())
-        motion.drift(minSpeed());
+    else if (motion.drift() < -maxSpeed())
+        motion.drift(-maxSpeed());
 
     if (motion.climb() > maxSpeed())
         motion.climb(maxSpeed());
-    else if (motion.climb() < minSpeed())
-        motion.climb(minSpeed());
+    else if (motion.climb() < -maxSpeed())
+        motion.climb(-maxSpeed());
 
     if (motion.heading() > maxTurnRate().asScalar())
         motion.heading(maxTurnRate().asScalar());
-    else if (motion.heading() < minTurnRate().asScalar())
-        motion.heading(minTurnRate().asScalar());
+    else if (motion.heading() < -maxTurnRate().asScalar())
+        motion.heading(-maxTurnRate().asScalar());
 
     // Work out new position using an UnconstrainedMotion
     MexTransform3d newTrans(xform);
@@ -270,12 +268,12 @@ void PhysZenithMotionConstraint::move(MexTransform3d& xform, PhysMotion& motion,
     if (position.z() < minHeight())
     {
         position.z(minHeight());
-        motion.climb(std::max(minSpeed(), 0.0));
+        motion.climb(0.0);
     }
     else if (position.z() > maxHeight())
     {
         position.z(maxHeight());
-        motion.climb(std::max(minSpeed(), 0.0));
+        motion.climb(0.0);
     }
 
     // Update passed in transform. This is the new location that the

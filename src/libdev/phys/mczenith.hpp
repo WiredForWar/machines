@@ -79,9 +79,7 @@ public:
     UtlProperty<MATHEX_SCALAR> maxHeight;
     UtlProperty<MATHEX_SCALAR> minHeight;
     UtlProperty<MATHEX_SCALAR> maxSpeed;
-    UtlProperty<MATHEX_SCALAR> minSpeed;
     UtlProperty<MexRadians> maxTurnRate;
-    UtlProperty<MexRadians> minTurnRate;
 };
 
 #endif

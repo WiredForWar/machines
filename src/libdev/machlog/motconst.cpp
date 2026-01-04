@@ -309,23 +309,23 @@ void MachLogZenithCameraMotionConstraint::move(MexTransform3d& trans, PhysMotion
     // First, make sure "motion" is not too fast in speed, climb, pitch etc.
     if (motion.speed() > maxSpeed())
         motion.speed(maxSpeed());
-    else if (motion.speed() < minSpeed())
-        motion.speed(minSpeed());
+    else if (motion.speed() < -maxSpeed())
+        motion.speed(-maxSpeed());
 
     if (motion.drift() > maxSpeed())
         motion.drift(maxSpeed());
-    else if (motion.drift() < minSpeed())
-        motion.drift(minSpeed());
+    else if (motion.drift() < -maxSpeed())
+        motion.drift(-maxSpeed());
 
     if (motion.climb() > maxSpeed())
         motion.climb(maxSpeed());
-    else if (motion.climb() < minSpeed())
-        motion.climb(minSpeed());
+    else if (motion.climb() < -maxSpeed())
+        motion.climb(-maxSpeed());
 
     if (motion.heading() > maxTurnRate().asScalar())
         motion.heading(maxTurnRate().asScalar());
-    else if (motion.heading() < minTurnRate().asScalar())
-        motion.heading(minTurnRate().asScalar());
+    else if (motion.heading() < -maxTurnRate().asScalar())
+        motion.heading(-maxTurnRate().asScalar());
 
     // If any of these values are moving we can't be up to date
     if (motion.speed() != 0.0 || motion.drift() != 0.0 || motion.climb() != 0.0 || motion.heading() != 0.0)
