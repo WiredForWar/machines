@@ -155,11 +155,13 @@ void InputRegistry::addCategory(std::string name, Gui::StringId stringId)
         });
 }
 
-void InputRegistry::createBind(std::string_view category, BindId id, Gui::StringId stringId)
+void InputRegistry::createBind(
+    std::string_view category, BindId id, Gui::StringId stringId, Gui::StringId compactStringId)
 {
     std::string idAsString(id);
     BindData& data = binds_[idAsString];
     data.stringId_ = stringId;
+    data.compactStringId_ = compactStringId;
 
     const auto categoryIt
         = std::find_if(categories_.begin(), categories_.end(), [category](const CategoryData& data) -> bool {
@@ -212,7 +214,8 @@ BindDisplayData InputRegistry::getBindDisplayData(BindId id, DisplayFormat forma
         return getSpecialBindDisplayData(id, data, format);
 
     return {
-        .displayName_ = ResolvedUiString(data.stringId_),
+        .displayName_ = data.stringId_,
+        .compactDisplayName_ = data.compactStringId_,
         .displayBind_ = getKeysDisplayString(data.binds_, format),
     };
 }
@@ -370,7 +373,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
 
     if (result.displayName_.empty())
-        result.displayName_ = ResolvedUiString(data.stringId_);
+        result.displayName_ = data.stringId_;
 
     POST(!result.displayName_.empty())
 
@@ -519,33 +522,33 @@ void InputRegistry::initBinds()
 
     createBind(bcGeneral, "commands-build-trigger"_bind);
 
-    createBind(bcGeneral, "commands-move-trigger"_bind, IDS_MOVE_COMMAND);
-    createBind(bcGeneral, "commands-attack-trigger"_bind, IDS_ATTACK_COMMAND);
-    createBind(bcGeneral, "commands-construct-trigger"_bind, IDS_CONSTRUCT_COMMAND);
+    createBind(bcGeneral, "commands-move-trigger"_bind, IDS_MOVE_COMMAND, IDS_COMMAND_MOVE);
+    createBind(bcGeneral, "commands-attack-trigger"_bind, IDS_ATTACK_COMMAND, IDS_COMMAND_ATTACK);
+    createBind(bcGeneral, "commands-construct-trigger"_bind, IDS_CONSTRUCT_COMMAND, IDS_COMMAND_CONSTRUCT);
     createBind(bcGeneral, "commands-construct-rotate"_bind);
-    createBind(bcGeneral, "commands-locate-trigger"_bind, IDS_LOCATETO_COMMAND);
-    createBind(bcGeneral, "commands-patrol-trigger"_bind, IDS_PATROL_COMMAND);
-    createBind(bcGeneral, "commands-deploy-trigger"_bind, IDS_DEPLOY_COMMAND);
-    createBind(bcGeneral, "commands-pick-up-trigger"_bind, IDS_PICKUP_COMMAND);
-    createBind(bcGeneral, "commands-transport-trigger"_bind, IDS_TRANSPORT_COMMAND);
+    createBind(bcGeneral, "commands-locate-trigger"_bind, IDS_LOCATETO_COMMAND, IDS_COMMAND_LOCATE);
+    createBind(bcGeneral, "commands-patrol-trigger"_bind, IDS_PATROL_COMMAND, IDS_COMMAND_PATROL);
+    createBind(bcGeneral, "commands-deploy-trigger"_bind, IDS_DEPLOY_COMMAND, IDS_COMMAND_DEPLOY);
+    createBind(bcGeneral, "commands-pick-up-trigger"_bind, IDS_PICKUP_COMMAND, IDS_COMMAND_PICKUP);
+    createBind(bcGeneral, "commands-transport-trigger"_bind, IDS_TRANSPORT_COMMAND, IDS_COMMAND_TRANSPORT);
 
-    createBind(bcGeneral, "commands-self-destruct-trigger"_bind, IDS_SELF_DESTRUCT_COMMAND);
-    createBind(bcGeneral, "commands-drop-land-mine-trigger"_bind, IDS_DROPLANDMINE_COMMAND);
-    createBind(bcGeneral, "commands-refill-land-mine-trigger"_bind, IDS_REFILLLANDMINE_COMMAND);
-    createBind(bcGeneral, "commands-heal-trigger"_bind, IDS_HEAL_COMMAND);
-    createBind(bcGeneral, "commands-deconstruct-trigger"_bind, IDS_DECONSTRUCT_COMMAND);
-    createBind(bcGeneral, "commands-recycle-trigger"_bind, IDS_RECYCLE_COMMAND);
-    createBind(bcGeneral, "commands-stop-trigger"_bind, IDS_STOP_COMMAND);
-    createBind(bcGeneral, "commands-stand-ground-trigger"_bind, IDS_STANDGROUND_COMMAND);
-    createBind(bcGeneral, "commands-repair-trigger"_bind, IDS_REPAIR_COMMAND);
-    createBind(bcGeneral, "commands-capture-trigger"_bind, IDS_CAPTURE_COMMAND);
-    createBind(bcGeneral, "commands-defcon-trigger"_bind, IDS_MACHINE_INITIATIVE_COMMAND_NAME);
-    createBind(bcGeneral, "commands-ion-attack-trigger"_bind, IDS_ION_ATTACK_COMMAND);
-    createBind(bcGeneral, "commands-nuke-attack-trigger"_bind, IDS_NUKE_ATTACK_COMMAND);
-    createBind(bcGeneral, "commands-assembly-point-trigger"_bind, IDS_ASSEMBLEAT_COMMAND);
-    createBind(bcGeneral, "commands-scavenge-trigger"_bind, IDS_SCAVENGE_COMMAND);
-    createBind(bcGeneral, "commands-camouflage-trigger"_bind, IDS_CAMOUFLAGE_COMMAND);
-    createBind(bcGeneral, "commands-treachery-trigger"_bind, IDS_TREACHERY_COMMAND);
+    createBind(bcGeneral, "commands-self-destruct-trigger"_bind, IDS_SELF_DESTRUCT_COMMAND, IDS_COMMAND_SELF_DESTRUCT);
+    createBind(bcGeneral, "commands-drop-land-mine-trigger"_bind, IDS_DROPLANDMINE_COMMAND, IDS_COMMAND_DROP_MINE);
+    createBind(bcGeneral, "commands-refill-land-mine-trigger"_bind, IDS_REFILLLANDMINE_COMMAND, IDS_COMMAND_REFILL);
+    createBind(bcGeneral, "commands-heal-trigger"_bind, IDS_HEAL_COMMAND, IDS_COMMAND_HEAL);
+    createBind(bcGeneral, "commands-deconstruct-trigger"_bind, IDS_DECONSTRUCT_COMMAND, IDS_COMMAND_DECONSTRUCT);
+    createBind(bcGeneral, "commands-recycle-trigger"_bind, IDS_RECYCLE_COMMAND, IDS_COMMAND_RECYCLE);
+    createBind(bcGeneral, "commands-stop-trigger"_bind, IDS_STOP_COMMAND, IDS_COMMAND_STOP);
+    createBind(bcGeneral, "commands-stand-ground-trigger"_bind, IDS_STANDGROUND_COMMAND, IDS_COMMAND_STAND_GROUND);
+    createBind(bcGeneral, "commands-repair-trigger"_bind, IDS_REPAIR_COMMAND, IDS_COMMAND_REPAIR);
+    createBind(bcGeneral, "commands-capture-trigger"_bind, IDS_CAPTURE_COMMAND, IDS_COMMAND_CAPTURE);
+    createBind(bcGeneral, "commands-defcon-trigger"_bind, IDS_MACHINE_INITIATIVE_COMMAND_NAME, IDS_COMMAND_INITIATIVE_LEVEL);
+    createBind(bcGeneral, "commands-ion-attack-trigger"_bind, IDS_ION_ATTACK_COMMAND, IDS_COMMAND_ION_ATTACK);
+    createBind(bcGeneral, "commands-nuke-attack-trigger"_bind, IDS_NUKE_ATTACK_COMMAND, IDS_COMMAND_NUKE_ATTACK);
+    createBind(bcGeneral, "commands-assembly-point-trigger"_bind, IDS_ASSEMBLEAT_COMMAND, IDS_COMMAND_ASSEMBLE);
+    createBind(bcGeneral, "commands-scavenge-trigger"_bind, IDS_SCAVENGE_COMMAND, IDS_COMMAND_SCAVENGE);
+    createBind(bcGeneral, "commands-camouflage-trigger"_bind, IDS_CAMOUFLAGE_COMMAND, IDS_COMMAND_CAMOUFLAGE);
+    createBind(bcGeneral, "commands-treachery-trigger"_bind, IDS_TREACHERY_COMMAND, IDS_COMMAND_TREACHERY);
 
     createBind(bcFirstPerson, "fpv-fire"_bind, IDS_ACTION_FIRE);
     createBind(bcFirstPerson, "fpv-switch-weapon"_bind, IDS_ACTION_WEAPON_SWITCH);

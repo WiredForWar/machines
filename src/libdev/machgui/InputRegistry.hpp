@@ -2,7 +2,7 @@
 
 #include "machgui/InputLayout.hpp"
 
-#include "gui/StringId.hpp"
+#include "gui/ResolvedUiString.hpp"
 
 #include <unordered_map>
 #include <vector>
@@ -22,7 +22,8 @@ public:
 class BindDisplayData
 {
 public:
-    std::string displayName_;
+    ResolvedUiString displayName_;
+    ResolvedUiString compactDisplayName_;
     std::string displayBind_;
 };
 
@@ -46,7 +47,8 @@ public:
     InputCategoryDetails getCategoryDetails(const std::string& name) const;
 
     void addCategory(std::string name, Gui::StringId stringId);
-    void createBind(std::string_view category, BindId id, Gui::StringId stringId = {});
+    void createBind(
+        std::string_view category, BindId id, Gui::StringId stringId = {}, Gui::StringId compactStringId = {});
     void createSpecialBind(std::string_view category, BindId id, Gui::StringId stringId);
     void setBinds(BindId id, const KeyBinds& newBinds);
 
@@ -56,8 +58,9 @@ protected:
     class BindData
     {
     public:
-        Gui::StringId stringId_;
-        KeyBinds binds_;
+        Gui::StringId stringId_{};
+        Gui::StringId compactStringId_{};
+        KeyBinds binds_{};
         bool special_{};
     };
 
