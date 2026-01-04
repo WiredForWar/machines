@@ -62,6 +62,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
 
     constexpr MachGui::KeysDisplayFormat displayFormat = MachGui::KeysDisplayFormat::Compact;
+    const GuiBmpFont actionFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     const std::vector<std::string> categoryNames = inputRegistry->getCategories();
     for (const std::string& categoryName : inputRegistry->getCategories())
     {
@@ -80,7 +81,16 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             if (data.displayName_.empty())
                 continue;
 
-            actionNames.push_back(data.displayName_);
+            std::string_view displayNameView = data.displayName_;
+            if (actionFont.horizontalAdvance(displayNameView) > HOTKEY_ACTION_WIDTH)
+            {
+                // The descriptive name does not fit
+                if (!data.compactDisplayName_.empty())
+                    displayNameView = data.compactDisplayName_;
+            }
+
+            // Check width, use compactDisplayName_ as fallback
+            actionNames.push_back(std::string(displayNameView));
             actionKeys.push_back(data.displayBind_);
 
             if (actionNames.size() == maxLines)
