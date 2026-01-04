@@ -23,11 +23,11 @@ class MachGuiOptionsLayout
 public:
     struct SlidebarInfo
     {
-        SlidebarInfo(MexPoint2d tl, uint rng)
+        SlidebarInfo(MexPoint2d tl, uint w)
             : topLeft(tl)
-            , range(rng) {};
+            , width(w) {};
         MexPoint2d topLeft;
-        uint range;
+        uint width;
     };
 
     struct MenuButtonInfo

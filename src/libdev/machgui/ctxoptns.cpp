@@ -223,14 +223,14 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         = new MachGuiCheckBox(pStartupScreens, pStartupScreens, useWasd.box(), useWasd.stringId);
 
     // Create volume sliders
-    pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.range);
+    pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.width);
     pMusicVolume_->minMax(0, 100);
     pMusicVolume_->setValueChangedHandler([](float newValue) {
         Config::musicVolume.set(std::round(newValue));
         DevCD::instance().volume(Config::musicVolume.get());
     });
 
-    pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.range);
+    pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.width);
     pSoundVolume_->minMax(0, 100);
     pSoundVolume_->setValueChangedHandler([](float newValue) {
         Config::soundVolume.set(std::round(newValue));
@@ -350,7 +350,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             pStartupScreens,
             pStartupScreens,
             gammaCorrectionSl.topLeft,
-            gammaCorrectionSl.range,
+            gammaCorrectionSl.width,
             GAMMA_LOWER_LIMIT,
             GAMMA_UPPER_LIMIT);
         // Store initial value

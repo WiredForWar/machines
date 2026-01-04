@@ -77,8 +77,8 @@ void MachGuiOptionsLayout::parseSlidebar(const UtlLineTokeniser::Tokens& tokens)
     ASSERT(tokens.size() == 4, "wrong number of arguments");
 
     MexPoint2d topLeft(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
-    uint range = atoi(tokens[3].c_str());
-    slidebars_.emplace_back(SlidebarInfo(topLeft * scale_, range));
+    uint width = atoi(tokens[3].c_str());
+    slidebars_.emplace_back(SlidebarInfo(topLeft * scale_, width * scale_));
 }
 
 void MachGuiOptionsLayout::parseMenuButton(const UtlLineTokeniser::Tokens& tokens)
@@ -119,7 +119,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiOptionsLayout& t)
     {
         const MachGuiOptionsLayout::SlidebarInfo& info = t.slidebars_[i];
         o << "topleft :" << info.topLeft << std::endl;
-        o << "range: " << info.range << std::endl;
+        o << "range: " << info.width << std::endl;
     }
     for (uint i = 0; i < t.menuTexts_.size(); i++)
     {
