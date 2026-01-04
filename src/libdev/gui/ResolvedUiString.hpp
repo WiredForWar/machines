@@ -4,6 +4,8 @@
 
 #include "gui/StringId.hpp"
 
+#include <optional>
+
 class ResolvedUiString
 {
 public:
@@ -16,8 +18,16 @@ public:
 
     ResolvedUiString(Gui::StringId stringId);
 
-    operator std::string() const { return str_; }
+    bool empty() const;
+
+    std::string asString() const;
+    std::string_view asStringView() const;
+    operator std::string() const { return asString(); }
+    operator std::string_view() const { return asStringView(); }
 
 private:
-    std::string str_;
+    void fillValue() const;
+
+    mutable std::optional<std::string> str_;
+    Gui::StringId id_{};
 };
