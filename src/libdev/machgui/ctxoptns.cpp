@@ -343,6 +343,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     //  showDirect3DDrivers();
 
+#if 0
     // Only display gamma correction slider if gamma correction is supported
     if (pDisplay_->supportsGammaCorrection())
     {
@@ -372,6 +373,20 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         // Show gamma correction image (helps get gamma setting correct)
         new GuiImage(pStartupScreens, Gui::Coord(secondColumnInputX, 198) * MachGui::menuScaleFactor(), MachGui::getScaledImage("gui/menu/gammacal.bmp"));
     }
+#else
+    new MachGuiMenuText(
+        pStartupScreens,
+        Gui::Box(gammaCorrectionTxt.topLeft, gammaCorrectionTxt.bottomRight),
+        IDS_CONFIG_CAMERA_ACCELERATION,
+        MachGui::getScaledImagePath(gammaCorrectionTxt.font),
+        Gui::AlignRight);
+
+    pCameraAccelerationSlider_ = new MachGuiSlideBar(
+        pStartupScreens, pStartupScreens, gammaCorrectionSl.topLeft, gammaCorrectionSl.width, 1, 30);
+
+    pCameraAccelerationSlider_->setValue(Config::uiZenithCameraAcceleration.get());
+    pCameraAccelerationSlider_->setValueChangedHandler([](float v) { Config::uiZenithCameraAcceleration.set(v); });
+#endif
 
     {
         const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -599,6 +614,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         {
             pGammaCorrection_->setValue(gammaCorrection_);
         }
+        pCameraAccelerationSlider_->setValue(cameraAcceleration_);
 
         pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
     }
@@ -736,6 +752,7 @@ void MachGuiCtxOptions::readFromConfig()
     musicVolume_ = DevCD::instance().volume();
     soundVolume_ = SndMixer::instance().masterSampleVolume();
     grabCursor_ = Config::grabCursor.get();
+    cameraAcceleration_ = Config::uiZenithCameraAcceleration.get();
 
     pMusicVolume_->setValue(musicVolume_);
     pSoundVolume_->setValue(soundVolume_);

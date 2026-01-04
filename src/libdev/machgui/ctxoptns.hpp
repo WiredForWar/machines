@@ -80,6 +80,7 @@ private:
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
     bool grabCursor_{};
+    int32_t cameraAcceleration_{};
     RenDriverSelector* pDriverSelector_;
     MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_ = nullptr;
     MachGuiDropDownListBoxCreator* pDirect3DDrivers_ = nullptr;
@@ -88,6 +89,7 @@ private:
     RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;
     MachGuiSlideBar* pGammaCorrection_{};
+    MachGuiSlideBar* pCameraAccelerationSlider_{};
 };
 
 #endif
