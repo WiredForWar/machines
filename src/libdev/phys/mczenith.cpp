@@ -9,6 +9,8 @@
 #include "device/keyboard.hpp"
 #include "phys/mczenith.hpp"
 
+#include "system/ConfigVariables.hpp"
+
 PhysZenithFlyControl::PhysZenithFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
     : PhysMotionControlWithTrans(std::move(target), forwards)
 {
@@ -17,7 +19,9 @@ PhysZenithFlyControl::PhysZenithFlyControl(std::unique_ptr<PhysMotionControlled>
 
 void PhysZenithFlyControl::ctor()
 {
-    metresPerSecond(35.0);
+    const int32_t cameraSpeedLimit = std::clamp(Config::uiZenithCameraSpeedLimit.get(), 1, 50);
+
+    metresPerSecond(cameraSpeedLimit);
     degreesPerSecond(10.0);
 
     // We use the target's current location and pitch angle
@@ -111,8 +115,9 @@ void PhysZenithFlyControl::updateMotion()
     if (inputEnabled())
     {
         double elapsedTime{};
-        double inertia = 0.5;
-        elapsedTime = keyTimer_.time() * 10.0 / inertia;
+        const int32_t accelerationFactor = std::clamp(Config::uiZenithCameraAcceleration.get(), 1, 30);
+        elapsedTime = keyTimer_.time() * accelerationFactor;
+
         if (elapsedTime > 1.0)
             elapsedTime = 1.0; // Knock elapsedTime back to a second to avoid strange motion decay
 
