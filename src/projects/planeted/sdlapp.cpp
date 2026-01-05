@@ -308,7 +308,17 @@ bool SDLApp::clientStartup()
     // Ensure correct order of destruction of static singletons.
     // Destruction order is reverse of creation
 
-    MachGui::setUiScaleFactor(1);
+    {
+        const RenDisplay::Mode& mode = pDisplay_->currentMode();
+        if (mode.width() > 1024 && mode.height() > 768)
+        {
+            MachGui::setUiScaleFactor(2);
+        }
+        else
+        {
+            MachGui::setUiScaleFactor(1);
+        }
+    }
 
     Render::initFonts();
     RenSurface::setDefaultFontSize(10 * Gui::uiScaleFactor());
