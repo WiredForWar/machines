@@ -132,12 +132,12 @@ void EnvIPlanetParser::satelliteComplete()
     PRE(satelliteInConstruction());
 
     std::unique_ptr<EnvSatellite> satellite = planet_->createSatellite(satParams_);
+    IAIN_STREAM("Created new " << *satellite << std::endl);
+
     satellites_.emplace(satParams_->name(), std::move(satellite));
 
     delete satParams_;
     satParams_ = nullptr;
-
-    IAIN_STREAM("Created new " << *satellite << std::endl);
 
     POST(!satelliteInConstruction());
 }
