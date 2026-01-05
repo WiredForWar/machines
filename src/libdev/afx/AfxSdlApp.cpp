@@ -19,6 +19,8 @@
 
 #include <SDL.h>
 
+#include <vector>
+
 AfxSdlApp::AfxSdlApp(int argc, char* argv[])
 {
     AfxInvokeArgs args;
@@ -218,7 +220,12 @@ void AfxSdlApp::initLogger()
     std::shared_ptr<spdlog::sinks::sink> consoleSink = std::make_shared<spdlog::sinks::stderr_color_sink_st>();
     consoleSink->set_level((logToConsole || !fileSink) ? spdlog::level::debug : spdlog::level::warn);
 
-    auto logger = std::make_shared<spdlog::logger>(std::string(), spdlog::sinks_init_list{fileSink, consoleSink});
+    std::vector<spdlog::sink_ptr> sinks;
+    sinks.push_back(consoleSink);
+    if (fileSink)
+        sinks.push_back(fileSink);
+
+    auto logger = std::make_shared<spdlog::logger>(std::string(), sinks.begin(), sinks.end());
     spdlog::set_default_logger(logger);
     spdlog::flush_on(spdlog::level::info);
     spdlog::set_level(spdlog::level::debug);
