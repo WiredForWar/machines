@@ -328,6 +328,8 @@ bool SDLApp::clientStartup()
         return false;
 
     manager_ = new W4dSceneManager(std::move(pDevice), root);
+    manager_->pDevice()->debugTextCoords(4 * Gui::uiScaleFactor(), 4);
+
     W4dManager::instance().sceneManager(manager_);
 
     // Set the viewport boundary to the entire screen.
