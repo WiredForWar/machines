@@ -222,8 +222,7 @@ bool SDLApp::clientStartup()
     string planetName;
     bool windowMode = true;
     size_t displayMode = 0;
-    int modeW = 320;
-    int modeH = 200;
+    std::optional<Ren::Size> modSize;
 
     switch (invokeArgs().size())
     {
@@ -244,8 +243,9 @@ bool SDLApp::clientStartup()
             {
                 const string flag = invokeArgs()[1];
                 windowMode = (flag == "-w");
-                modeW = atoi(invokeArgs()[2].c_str());
-                modeH = atoi(invokeArgs()[3].c_str());
+                int modeW = atoi(invokeArgs()[2].c_str());
+                int modeH = atoi(invokeArgs()[3].c_str());
+                modSize = Ren::Size(modeW, modeH);
             }
 
         case 1:
@@ -269,9 +269,12 @@ bool SDLApp::clientStartup()
     ErrorHandler::instance().pDisplay(pDisplay_);
     pDisplay_->buildDisplayModesList();
 
+    const RenDisplay::Mode desktopMode = pDisplay_->getDesktopDisplayMode();
+
     if (windowMode)
     {
-        const RenDisplay::Mode selectedMode = pDisplay_->getWindowedMode(modeW, modeH);
+        Ren::Size windowSize = modSize.value_or(desktopMode.size() * 0.75f);
+        const RenDisplay::Mode selectedMode = pDisplay_->getWindowedMode(windowSize.width, windowSize.height);
         pDisplay_->useMode(selectedMode);
     }
     else
@@ -279,12 +282,15 @@ bool SDLApp::clientStartup()
         // Initially, pick the lowest-res 16-bit mode.
         pDisplay_->useFullScreen();
 
-        std::cout << "Trying to select display mode " << modeW << "x" << modeH << "x" << 16 << std::endl;
-        const RenDisplay::Mode selectedMode = pDisplay_->findMode(modeW, modeH, 0);
+        if (modSize->isNull())
+            modSize = desktopMode.size();
+
+        std::cout << "Trying to select display mode " << modSize->width << "x" << modSize->height << "x" << 16 << std::endl;
+        const RenDisplay::Mode selectedMode = pDisplay_->findMode(modSize->width, modSize->height, 0);
         if (!selectedMode.isValid() || !pDisplay_->useMode(selectedMode))
         {
             std::cout << "Failed to select that mode -- the nearest alternative will be chosen." << std::endl;
-            pDisplay_->useNearestMode(modeW * modeH, 16);
+            pDisplay_->useNearestMode(modSize->width * modSize->height, 16);
         }
 
         // If there are no 16-bit modes, then mode should default to the
