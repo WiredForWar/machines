@@ -4,6 +4,7 @@
 #include "base/diag.hpp"
 #include "base/IProgressReporter.hpp"
 #include "base/error.hpp"
+#include "machgui/gui.hpp"
 #include "sound/snd.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"
@@ -14,6 +15,7 @@
 #include "phys/cspace2.hpp"
 #include "device/time.hpp"
 #include "device/mouse.hpp"
+#include "render/Font.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
 #include "render/surface.hpp"
@@ -260,30 +262,6 @@ bool SDLApp::clientStartup()
     // ensures a correct destruction order for render library Singletons.)
     Ren::initialise();
 
-    // Initialise
-
-    // Ensure correct order of destruction of static singletons.
-    // Destruction order is reverse of creation
-    // DevSound::instance();
-    int nMaxSamples = 20;
-    SndMixerParameters soundParams(
-        //      window(), // Where this is the HWND of your application window
-        Snd::Polyphony(5), // The Mixers polyphony
-        SndMixerParameters::DIRECTSOUND, // You must be using DIRECTSOUND
-        Snd::ELEVEN_THOUSAND_HZ, // The playback sample rate
-        Snd::SIXTEEN_BIT, // The playback "bit-ness" ?!
-        Snd::STEREO, // Speaker setup
-        Snd::THREE_D, // THREE_D or TWO_D
-        nMaxSamples // Number of samples that can exist at one time, an assertion will occur if this limit is
-                    // overstepped.
-    );
-
-    SndMixer::initialise(soundParams);
-
-    MachPhysPreload::registerSounds();
-
-    W4dSoundManager::instance().readSoundDefinitionFile("sounds/snddef64.dat");
-
     W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
     pDisplay_ = new RenDisplay(window());
@@ -319,6 +297,16 @@ bool SDLApp::clientStartup()
         DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     }
 
+    // Initialise
+
+    // Ensure correct order of destruction of static singletons.
+    // Destruction order is reverse of creation
+
+    MachGui::setUiScaleFactor(1);
+
+    Render::initFonts();
+    RenSurface::setDefaultFontSize(10 * Gui::uiScaleFactor());
+
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
     if (!pDevice->initialize())
         return false;
@@ -331,6 +319,26 @@ bool SDLApp::clientStartup()
     const int w = device.windowWidth();
     const int h = device.windowHeight();
     device.setViewport(0, 0, w, h);
+
+    // DevSound::instance();
+    int nMaxSamples = 20;
+    SndMixerParameters soundParams(
+        //      window(), // Where this is the HWND of your application window
+        Snd::Polyphony(5), // The Mixers polyphony
+        SndMixerParameters::DIRECTSOUND, // You must be using DIRECTSOUND
+        Snd::ELEVEN_THOUSAND_HZ, // The playback sample rate
+        Snd::SIXTEEN_BIT, // The playback "bit-ness" ?!
+        Snd::STEREO, // Speaker setup
+        Snd::THREE_D, // THREE_D or TWO_D
+        nMaxSamples // Number of samples that can exist at one time, an assertion will occur if this limit is
+                    // overstepped.
+    );
+
+    SndMixer::initialise(soundParams);
+
+    MachPhysPreload::registerSounds();
+
+    W4dSoundManager::instance().readSoundDefinitionFile("sounds/snddef64.dat");
 
     SysPathName planetFileName;
     // Set up the texture search path.
@@ -486,6 +494,8 @@ bool SDLApp::clientStartup()
 void SDLApp::clientShutdown()
 {
     delete pEnvironment_;
+
+    Render::cleanUpFonts();
 
     DevMouse::instance().unhide();
     delete pRoot_;
