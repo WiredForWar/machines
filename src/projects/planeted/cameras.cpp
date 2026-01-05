@@ -138,6 +138,7 @@ void MachCameras::initialise(W4dSceneManager* pSceneManager, W4dRoot* pRoot)
 
     pEyeControl_->metresPerSecond(2);
     pEyeControl_->degreesPerSecond(10);
+    pGroundControl_->degreesPerSecond(10);
     pFreeControl_->metresPerSecond(1);
     pFreeControl_->degreesPerSecond(10);
     pZenithControl_->metresPerSecond(10);

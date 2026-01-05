@@ -148,13 +148,13 @@ void PhysGroundFlyControl::updateMotion()
         {
             if (motion_.heading() < 0.0)
                 motion_.heading(abs(motion_.heading()));
-            motion_.deltaHeading(radiansPerSecond.asScalar());
+            motion_.deltaHeading(radiansPerSecond.asScalar() * elapsedTime);
         }
         else if (commandList_[PhysMotionControlWithTrans::ROTATE_LEFT].on())
         {
             if (motion_.heading() > 0.0)
                 motion_.heading(-motion_.heading());
-            motion_.deltaHeading(-radiansPerSecond.asScalar());
+            motion_.deltaHeading(-radiansPerSecond.asScalar() * elapsedTime);
         }
         else if (fabs(motion_.heading()) < radiansPerSecond.asScalar())
         {
