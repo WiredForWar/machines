@@ -425,7 +425,6 @@ void PedArtefactEditor::deleteArtefacts()
             uint nArtefacts = artefacts_[col].size();
             for (uint row = 0; row < nArtefacts; row++)
                 delete artefacts_[col][row].artefact_;
-            artefacts_[col].empty();
         }
     }
 }
