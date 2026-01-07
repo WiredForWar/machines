@@ -56,15 +56,15 @@ PedMachineEditor::~PedMachineEditor()
 void PedMachineEditor::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr)
-    INVARIANT((pSelectedMachine_ == (*mapIterator_).machine_) or (pSelectedMachine_ == nullptr));
+    INVARIANT((pSelectedMachine_ == (*mapIterator_).machine_) || (pSelectedMachine_ == nullptr));
 }
 
 // virtual
 void PedMachineEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     PedActorEditor::processInput(devButtonEvent);
-    if (devButtonEvent.scanCode() == Device::KeyCode::KEY_2 and not devButtonEvent.wasShiftPressed()
-        and devButtonEvent.wasCtrlPressed())
+    if (devButtonEvent.scanCode() == Device::KeyCode::KEY_2 && ! devButtonEvent.wasShiftPressed()
+        && devButtonEvent.wasCtrlPressed())
     {
         processHide(hidden_);
     }
@@ -104,10 +104,10 @@ void PedMachineEditor::readScnFile(PedScenarioFile& scenarioFile)
         for (machDataIter_ = machineData_.begin(); machDataIter_ != machineData_.end(); ++machDataIter_)
         {
             if (((*machDataIter_)->machineType_ == (*scnMachIter).type)
-                and ((*machDataIter_)->subType_ == (*scnMachIter).subType)
-                and ((*machDataIter_)->bodyLevel_ == (*scnMachIter).bodyLevel)
-                and ((*machDataIter_)->brainboxLevel_ == (*scnMachIter).brainboxLevel)
-                and ((*machDataIter_)->weaponCombo_ == (*scnMachIter).weaponCombo))
+                && ((*machDataIter_)->subType_ == (*scnMachIter).subType)
+                && ((*machDataIter_)->bodyLevel_ == (*scnMachIter).bodyLevel)
+                && ((*machDataIter_)->brainboxLevel_ == (*scnMachIter).brainboxLevel)
+                && ((*machDataIter_)->weaponCombo_ == (*scnMachIter).weaponCombo))
             {
                 break;
             }
@@ -180,8 +180,8 @@ void PedMachineEditor::processSelection()
 
     if (actorSelected(&actor))
     {
-        if (((actor->id() == PedActorEditor::MACHINE) and (not alreadySelected_))
-            or ((actor->id() == PedActorEditor::MACHINE) and (alreadySelected_) and (actor != pSelectedMachine_)))
+        if (((actor->id() == PedActorEditor::MACHINE) && (! alreadySelected_))
+            || ((actor->id() == PedActorEditor::MACHINE) && (alreadySelected_) && (actor != pSelectedMachine_)))
         {
             // actor is a machine of some sort
             pSelectedMachine_ = (MachPhysMachine*)actor; // Safe since we know entity is a MachPhysConstructor
@@ -206,7 +206,7 @@ void PedMachineEditor::processSelection()
             }
             alreadySelected_ = true;
         }
-        else if ((actor->id() == PedActorEditor::MACHINE) and (alreadySelected_) and (actor == pSelectedMachine_))
+        else if ((actor->id() == PedActorEditor::MACHINE) && (alreadySelected_) && (actor == pSelectedMachine_))
         {
             pSelectedMachine_->solid(W4dEntity::NOT_SOLID);
             mouseDrag_ = true;
@@ -263,7 +263,7 @@ void PedMachineEditor::rotateAfterMove()
 void PedMachineEditor::processHide(bool hidden)
 {
     for (MachineMappings::iterator i = machineMap_.begin(); i != machineMap_.end(); i++)
-        (*i).machine_->visible(not hidden);
+        (*i).machine_->visible(! hidden);
 
     PedActorEditor::processHide(hidden);
 }

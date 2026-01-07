@@ -59,7 +59,7 @@ PedConstructionEditor::~PedConstructionEditor()
 void PedConstructionEditor::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
-    INVARIANT((pSelectedConstruction_ == (*mapIterator_).construction_) or (pSelectedConstruction_ == nullptr));
+    INVARIANT((pSelectedConstruction_ == (*mapIterator_).construction_) || (pSelectedConstruction_ == nullptr));
 }
 
 // virtual
@@ -68,7 +68,7 @@ void PedConstructionEditor::processInput(const DevButtonEvent& devButtonEvent)
     TEST_INVARIANT;
 
     PedActorEditor::processInput(devButtonEvent);
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
         if (devButtonEvent.scanCode() == Device::KeyCode::KEY_L)
         {
@@ -79,8 +79,8 @@ void PedConstructionEditor::processInput(const DevButtonEvent& devButtonEvent)
             processRotation(false);
         }
     }
-    if (devButtonEvent.scanCode() == Device::KeyCode::KEY_1 and not devButtonEvent.wasShiftPressed()
-        and devButtonEvent.wasCtrlPressed())
+    if (devButtonEvent.scanCode() == Device::KeyCode::KEY_1 && ! devButtonEvent.wasShiftPressed()
+        && devButtonEvent.wasCtrlPressed())
     {
         processHide(hidden_);
     }
@@ -130,9 +130,9 @@ void PedConstructionEditor::readScnFile(PedScenarioFile& scenarioFile)
         for (conDataIter_ = constructionData_.begin(); conDataIter_ != constructionData_.end(); ++conDataIter_)
         {
             if (((*conDataIter_)->constructionType_ == (*scnConIter).type)
-                and ((*conDataIter_)->subType_ == (*scnConIter).subType)
-                and ((*conDataIter_)->hardwareLevel_ == (*scnConIter).hardwareLevel)
-                and ((*conDataIter_)->weaponCombo_ == (*scnConIter).weaponCombo))
+                && ((*conDataIter_)->subType_ == (*scnConIter).subType)
+                && ((*conDataIter_)->hardwareLevel_ == (*scnConIter).hardwareLevel)
+                && ((*conDataIter_)->weaponCombo_ == (*scnConIter).weaponCombo))
             {
                 break;
             }
@@ -209,9 +209,9 @@ void PedConstructionEditor::processSelection()
 
     if (actorSelected(&actor))
     {
-        if (((actor->id() == PedActorEditor::CONSTRUCTION) and (not alreadySelected_))
-            or ((actor->id() == PedActorEditor::CONSTRUCTION) and (alreadySelected_)
-                and (actor != pSelectedConstruction_)))
+        if (((actor->id() == PedActorEditor::CONSTRUCTION) && (! alreadySelected_))
+            || ((actor->id() == PedActorEditor::CONSTRUCTION) && (alreadySelected_)
+                && (actor != pSelectedConstruction_)))
 
         {
             // actor is a construction of some sort
@@ -239,7 +239,7 @@ void PedConstructionEditor::processSelection()
             alreadySelected_ = true;
         }
         else if (
-            (actor->id() == PedActorEditor::CONSTRUCTION) and (alreadySelected_) and (actor == pSelectedConstruction_))
+            (actor->id() == PedActorEditor::CONSTRUCTION) && (alreadySelected_) && (actor == pSelectedConstruction_))
         {
             pSelectedConstruction_->solid(W4dEntity::NOT_SOLID);
             mouseDrag_ = true;
@@ -302,7 +302,7 @@ void PedConstructionEditor::processRotation(bool clockwise)
         MexDegrees orientation = (clockwise) ? -90 : 90;
         (*mapIterator_).scnConstruction_.orientation += orientation;
         MATHEX_SCALAR result = (*mapIterator_).scnConstruction_.orientation.asScalar();
-        if ((result > 270) or (result < -270))
+        if ((result > 270) || (result < -270))
             (*mapIterator_).scnConstruction_.orientation = 0;
         MexTransform3d rotateTransform = pSelectedConstruction_->localTransform();
         MexTransform3d rotateZ90(MexEulerAngles(orientation, 0, 0));
@@ -317,7 +317,7 @@ void PedConstructionEditor::processHidden(bool hidden)
 {
     TEST_INVARIANT;
     for (ConstructionMappings::iterator i = constructionMap_.begin(); i != constructionMap_.end(); i++)
-        (*i).construction_->visible(not hidden);
+        (*i).construction_->visible(! hidden);
 
     PedActorEditor::processHide(hidden);
     TEST_INVARIANT;

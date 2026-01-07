@@ -57,7 +57,7 @@ void PedCameraEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     // Process keyboard/mouse events
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
         if (devButtonEvent.scanCode() == Device::KeyCode::KEY_D)
         {
@@ -113,7 +113,7 @@ void PedCameraEditor::readScnFile(PedScenarioFile& scenarioFile)
         const PedScenarioFile::Camera& scnCamera = scenarioFile.camera(race);
 
         // Only reinitialise position if new position is not the origin
-        if (not(scnCamera.transform.position() == origin))
+        if (!(scnCamera.transform.position() == origin))
         {
             W4dDomain* pDomain = MachLogPlanetDomains::pDomainAt(scnCamera.transform.position());
 
@@ -227,7 +227,7 @@ void PedCameraEditor::setMarkerToCamera(PedCameraMarker** ppCameraMarker, MachPh
 
     // Check camera mode is valid
     MachLogCamera::Type cameraType = MachCameras::instance().currentCameraType();
-    if ((cameraType == MachLogCamera::GROUND) or (cameraType == MachLogCamera::ZENITH))
+    if ((cameraType == MachLogCamera::GROUND) || (cameraType == MachLogCamera::ZENITH))
     {
         // Get the local transform for the camera
         MachLogCamera* pCurrentCamera = MachCameras::instance().currentCamera();

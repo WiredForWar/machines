@@ -78,11 +78,11 @@ void PedTileEditor::readCspFile(const SysPathName&)
 // virtual
 void PedTileEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
         if (devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT)
         {
-            if (not devButtonEvent.wasCtrlPressed())
+            if (! devButtonEvent.wasCtrlPressed())
             {
                 clearAllSelectedTiles();
             }
@@ -116,11 +116,11 @@ void PedTileEditor::processInput(const DevButtonEvent& devButtonEvent)
         {
             processCycleTile(CURRENT);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_C and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_C && ! devButtonEvent.wasShiftPressed())
         {
             processAttatchCeilingArtefact(true);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_C and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_C && devButtonEvent.wasShiftPressed())
         {
             processAttatchCeilingArtefact(false);
         }
@@ -151,7 +151,7 @@ void PedTileEditor::highlightTile()
         &pEntity,
         &distance);
 
-    if (result and not isSelected(_REINTERPRET_CAST(MachPhysTerrainTile*, pEntity)))
+    if (result && ! isSelected(_REINTERPRET_CAST(MachPhysTerrainTile*, pEntity)))
     {
         // Display a box around the selected tile
         pHighlightTile_ = new PedTileMarker(pEntity, MexTransform3d(), pEntity->boundingVolume(), false);
@@ -209,7 +209,7 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
 
         bool found = false;
 
-        while (not found)
+        while (! found)
         {
             MachPhysTerrainTile* pTile = pSurface->pTile(terrPos);
 
@@ -217,7 +217,7 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
             {
                 found = true;
 
-                if (not isSelected(pTile))
+                if (! isSelected(pTile))
                 {
                     SelectedTile* pNewSelTile = new SelectedTile();
                     pNewSelTile->xPos_ = xPos;
@@ -272,7 +272,7 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
 void PedTileEditor::processRotation(bool clockwise)
 {
     // Ignore keypress if no selected tile
-    if (not selectedTiles_.empty())
+    if (! selectedTiles_.empty())
     {
         for (SelectedTiles::iterator iter = selectedTiles_.begin(); iter != selectedTiles_.end(); ++iter)
         {
@@ -289,7 +289,7 @@ void PedTileEditor::processRotation(bool clockwise)
 void PedTileEditor::processHeightChange(bool up, bool shiftPressed)
 {
     // Ignore keypress if no selected tiles
-    if (not selectedTiles_.empty())
+    if (! selectedTiles_.empty())
     {
         for (SelectedTiles::iterator iter = selectedTiles_.begin(); iter != selectedTiles_.end(); ++iter)
         {
@@ -319,7 +319,7 @@ void PedTileEditor::processCycleTile(CycleDir dir)
     PRE(pPlanet_ != nullptr);
 
     // Ignore keypress if no selected tiles
-    if (not selectedTiles_.empty())
+    if (! selectedTiles_.empty())
     {
         SysPathName newLod;
         switch (dir)
@@ -389,13 +389,13 @@ void PedTileEditor::displayTileCoords()
         MexDegrees degrees = eulerAngle.azimuth();
 
         int intRotation = 0;
-        if (degrees.asScalar() > 85.0 and degrees.asScalar() < 95.0)
+        if (degrees.asScalar() > 85.0 && degrees.asScalar() < 95.0)
             intRotation = 3;
         else if (
-            (degrees.asScalar() > -185.0 and degrees.asScalar() < -175.0)
-            or (degrees.asScalar() > 175.0 and degrees.asScalar() < 185.0))
+            (degrees.asScalar() > -185.0 && degrees.asScalar() < -175.0)
+            || (degrees.asScalar() > 175.0 && degrees.asScalar() < 185.0))
             intRotation = 2;
-        else if (degrees.asScalar() > -95.0 and degrees.asScalar() < -85.0)
+        else if (degrees.asScalar() > -95.0 && degrees.asScalar() < -85.0)
             intRotation = 1;
 
         pSceneManager_->out() << "Tile Rotation (" << intRotation << ")" << std::endl;

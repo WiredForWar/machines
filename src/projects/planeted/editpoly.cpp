@@ -53,27 +53,27 @@ std::ostream& operator<<(std::ostream& o, const PedPolygonEditor& t)
 
 void PedPolygonEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
-        if (devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT and pHighlightVertex_ and not mouseDrag_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT && pHighlightVertex_ && ! mouseDrag_)
         {
             processSelectPolygon();
         }
 
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_D and pHighlightVertex_)
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_D && pHighlightVertex_)
         {
             processDropPolygon();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_X and devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_X && devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
             // Delete polygon
             processDeletePolygon();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_X and not devButtonEvent.wasShiftPressed()
-            and devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_X && ! devButtonEvent.wasShiftPressed()
+            && devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
             // Cut polygon
             copyVerticies_ = pSelectedPolygon_->verticies();
@@ -81,24 +81,24 @@ void PedPolygonEditor::processInput(const DevButtonEvent& devButtonEvent)
         }
 
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_I and devButtonEvent.wasShiftPressed() and not polygons_.empty())
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_I && devButtonEvent.wasShiftPressed() && ! polygons_.empty())
         {
             processPrevPolygon();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_I and not devButtonEvent.wasShiftPressed()
-            and not polygons_.empty())
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_I && ! devButtonEvent.wasShiftPressed()
+            && ! polygons_.empty())
         {
             processPrevVertex();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_O and not devButtonEvent.wasShiftPressed()
-            and not polygons_.empty())
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_O && ! devButtonEvent.wasShiftPressed()
+            && ! polygons_.empty())
         {
             processNextVertex();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_O and devButtonEvent.wasShiftPressed() and not polygons_.empty())
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_O && devButtonEvent.wasShiftPressed() && ! polygons_.empty())
         {
             processNextPolygon();
         }
@@ -131,14 +131,14 @@ void PedPolygonEditor::processInput(const DevButtonEvent& devButtonEvent)
                 processVertexDown();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_V and not devButtonEvent.wasShiftPressed()
-            and devButtonEvent.wasCtrlPressed())
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_V && ! devButtonEvent.wasShiftPressed()
+            && devButtonEvent.wasCtrlPressed())
         {
             processPaste(true);
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_C and not devButtonEvent.wasShiftPressed()
-            and devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_C && ! devButtonEvent.wasShiftPressed()
+            && devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
             copyVerticies_ = pSelectedPolygon_->verticies();
         }
@@ -148,13 +148,13 @@ void PedPolygonEditor::processInput(const DevButtonEvent& devButtonEvent)
         }
     }
 
-    if (devButtonEvent.action() == DevButtonEvent::RELEASE and devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT)
+    if (devButtonEvent.action() == DevButtonEvent::RELEASE && devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT)
     {
         mouseDrag_ = false;
     }
 
-    if (devButtonEvent.action() == DevButtonEvent::RELEASE and devButtonEvent.scanCode() == Device::KeyCode::KEY_V
-        and pPastePolygon_ and active_)
+    if (devButtonEvent.action() == DevButtonEvent::RELEASE && devButtonEvent.scanCode() == Device::KeyCode::KEY_V
+        && pPastePolygon_ && active_)
     {
         processPaste(false);
     }
@@ -165,7 +165,7 @@ void PedPolygonEditor::processPaste(bool tempPaste)
     delete pPastePolygon_;
     pPastePolygon_ = nullptr;
 
-    if (not copyVerticies_.empty() and pHighlightVertex_)
+    if (! copyVerticies_.empty() && pHighlightVertex_)
     {
         MexPoint2d dropPoint = pHighlightVertex_->position();
         MexPoint2d firstPoint = copyVerticies_[0];
@@ -310,10 +310,10 @@ void PedPolygonEditor::processSelectPolygon()
 
         // Iterate through each polygon trying to find the polygon who's
         // vertex matches the one highlighted by the cursor
-        for (Polygons::iterator obIter = polygons_.begin(); obIter != polygons_.end() and not found; ++obIter)
+        for (Polygons::iterator obIter = polygons_.begin(); obIter != polygons_.end() && ! found; ++obIter)
         {
             for (PolyVerticies::iterator verIter = (*obIter)->verticies().begin();
-                 verIter != (*obIter)->verticies().end() and not found;
+                 verIter != (*obIter)->verticies().end() && ! found;
                  ++verIter)
             {
                 // Have we found the highlighted vertex?
@@ -362,7 +362,7 @@ void PedPolygonEditor::processDeletePolygon()
 
 void PedPolygonEditor::processPrevPolygon()
 {
-    if (not pSelectedPolygon_)
+    if (! pSelectedPolygon_)
     {
         selectFirstPolygon();
     }
@@ -393,7 +393,7 @@ void PedPolygonEditor::processPrevPolygon()
 
 void PedPolygonEditor::processPrevVertex()
 {
-    if (not pSelectedPolygon_)
+    if (! pSelectedPolygon_)
     {
         selectFirstPolygon();
     }
@@ -431,7 +431,7 @@ void PedPolygonEditor::selectFirstPolygon()
 
 void PedPolygonEditor::processNextPolygon()
 {
-    if (not pSelectedPolygon_)
+    if (! pSelectedPolygon_)
     {
         selectFirstPolygon();
     }
@@ -463,7 +463,7 @@ void PedPolygonEditor::processNextPolygon()
 
 void PedPolygonEditor::processNextVertex()
 {
-    if (not pSelectedPolygon_)
+    if (! pSelectedPolygon_)
     {
         selectFirstPolygon();
     }
@@ -498,7 +498,7 @@ void PedPolygonEditor::processPolygonRight()
 
         // Check if shift is going to work
         for (PolyVerticies::iterator verIter = pSelectedPolygon_->verticies().begin();
-             verIter != pSelectedPolygon_->verticies().end() and dryRunOk;
+             verIter != pSelectedPolygon_->verticies().end() && dryRunOk;
              ++verIter)
         {
             MexPoint2d checkPoint = *verIter;
@@ -533,7 +533,7 @@ void PedPolygonEditor::processPolygonLeft()
 
         // Check if shift is going to work
         for (PolyVerticies::iterator verIter = pSelectedPolygon_->verticies().begin();
-             verIter != pSelectedPolygon_->verticies().end() and dryRunOk;
+             verIter != pSelectedPolygon_->verticies().end() && dryRunOk;
              ++verIter)
         {
             MexPoint2d checkPoint = *verIter;
@@ -568,7 +568,7 @@ void PedPolygonEditor::processPolygonUp()
 
         // Check if shift is going to work
         for (PolyVerticies::iterator verIter = pSelectedPolygon_->verticies().begin();
-             verIter != pSelectedPolygon_->verticies().end() and dryRunOk;
+             verIter != pSelectedPolygon_->verticies().end() && dryRunOk;
              ++verIter)
         {
             MexPoint2d checkPoint = *verIter;
@@ -603,7 +603,7 @@ void PedPolygonEditor::processPolygonDown()
 
         // Check if shift is going to work
         for (PolyVerticies::iterator verIter = pSelectedPolygon_->verticies().begin();
-             verIter != pSelectedPolygon_->verticies().end() and dryRunOk;
+             verIter != pSelectedPolygon_->verticies().end() && dryRunOk;
              ++verIter)
         {
             MexPoint2d checkPoint = *verIter;
@@ -669,7 +669,7 @@ void PedPolygonEditor::writeCspFile(std::ofstream& out)
 
 void PedPolygonEditor::processFlattenPolygons()
 {
-    flattenPolygons_ = not flattenPolygons_;
+    flattenPolygons_ = ! flattenPolygons_;
     for (Polygons::iterator polyIter = polygons_.begin(); polyIter != polygons_.end(); ++polyIter)
     {
         (*polyIter)->flatten(flattenPolygons_);

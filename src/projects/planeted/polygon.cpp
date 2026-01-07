@@ -41,9 +41,9 @@ void PedPolygon::refreshMesh()
     RenMaterial mat(selected_ ? RenColour::green() : getWireColour());
 
     // Even if obstacle is hidden show it when it is selected
-    if (hidden_ and selected_)
+    if (hidden_ && selected_)
         attachTo(MachLogPlanet::instance().pWorld());
-    else if (hidden_ and not selected_)
+    else if (hidden_ && ! selected_)
         attachTo(&MachLogPlanet::instance().hiddenRoot());
 
     // Construct a wire frame cuboid surrounding the boundary
@@ -76,7 +76,7 @@ void PedPolygon::refreshMesh()
 
         boxMesh.addLine(pointOne, pointTwo, mat);
 
-        if (not flatten_)
+        if (! flatten_)
         {
             boxMesh.addLine(pointOne, pointThree, mat);
             boxMesh.addLine(pointThree, pointFour, mat);
@@ -119,7 +119,7 @@ void PedPolygon::hide(bool hide)
     hidden_ = hide;
 
     // Only hide if it isn't selected
-    if (not selected_)
+    if (! selected_)
         attachTo(hidden_ ? &MachLogPlanet::instance().hiddenRoot() : MachLogPlanet::instance().pWorld());
 }
 

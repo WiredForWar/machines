@@ -64,7 +64,7 @@ void PedDomain::save(std::ofstream& out)
         bool x_1_2 = verticies_[1].x() == verticies_[2].x();
         bool y_0_1 = verticies_[0].y() == verticies_[1].y();
         bool y_2_3 = verticies_[2].y() == verticies_[3].y();
-        if (x_0_3 and x_1_2 and y_0_1 and y_2_3)
+        if (x_0_3 && x_1_2 && y_0_1 && y_2_3)
         {
             size_t minX = std::min(verticies_[0].x(), verticies_[2].x());
             size_t maxX = std::max(verticies_[0].x(), verticies_[2].x());
@@ -75,7 +75,7 @@ void PedDomain::save(std::ofstream& out)
         }
     }
 
-    if (not writtenBox)
+    if (! writtenBox)
     {
         out << "NEWDOMAIN " << uniqueId_ << " " << verticies_.size() << std::endl;
 
@@ -137,7 +137,7 @@ bool PedDomain::intersectsPortal(const PedPortal& portal) const
 
     TEST_INVARIANT;
 
-    return portalVertex1Intersects and portalVertex2Intersects;
+    return portalVertex1Intersects && portalVertex2Intersects;
 }
 
 /*bool PedDomain::intersectsDomain( const PedDomain& rhs, MexPoint2d& point1, MexPoint2d& point2 ) const
@@ -242,14 +242,14 @@ bool PedDomain::intersectsDomain(const PedDomain& that, MexPoint2d* pPoint1, Mex
     PolyVerticies::const_iterator itThatEnd = that.verticies().end();
 
     // Outer loop goes through this objects' vertices.
-    for (int thisEdgeIndex = 0; itThisVertex1 != itThisEnd and result != true;
+    for (int thisEdgeIndex = 0; itThisVertex1 != itThisEnd && result != true;
          ++thisEdgeIndex, ++itThisVertex1, ++itThisVertex2)
     {
         if (itThisVertex1 == itThisEnd - 1)
             itThisVertex2 = verticies().begin();
 
         // Inner loop goes through that objects' vertices.
-        for (int thatEdgeIndex = 0; itThatVertex1 != itThatEnd and result != true;
+        for (int thatEdgeIndex = 0; itThatVertex1 != itThatEnd && result != true;
              ++thatEdgeIndex, ++itThatVertex1, ++itThatVertex2)
         {
             if (itThatVertex1 == itThatEnd - 1)
@@ -272,21 +272,21 @@ bool PedDomain::intersectsDomain(const PedDomain& that, MexPoint2d* pPoint1, Mex
             DANIEL_STREAM("thatEdge :" << thatLine << std::endl);
 
             bool colinear = MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end1()) == Mathex::ONEDGE
-                and MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end2()) == Mathex::ONEDGE
-                and MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end1()) == Mathex::ONEDGE
-                and MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end2()) == Mathex::ONEDGE;
+                && MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end2()) == Mathex::ONEDGE
+                && MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end1()) == Mathex::ONEDGE
+                && MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end2()) == Mathex::ONEDGE;
 
-            bool longEnough = thisLine.length() >= 1 and thatLine.length() >= 1;
+            bool longEnough = thisLine.length() >= 1 && thatLine.length() >= 1;
 
             DANIEL_STREAM("colinear == " << colinear << std::endl);
             DANIEL_STREAM("longEnough == " << longEnough << std::endl);
 
             // This returns true if the lines are colinear.
             if (MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end1()) == Mathex::ONEDGE
-                and MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end2()) == Mathex::ONEDGE
-                and MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end1()) == Mathex::ONEDGE
-                and MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end2()) == Mathex::ONEDGE
-                and thisLine.length() >= 1 and thatLine.length() >= 1)
+                && MexLine2d::side(thatLine.end1(), thatLine.end2(), thisLine.end2()) == Mathex::ONEDGE
+                && MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end1()) == Mathex::ONEDGE
+                && MexLine2d::side(thisLine.end1(), thisLine.end2(), thatLine.end2()) == Mathex::ONEDGE
+                && thisLine.length() >= 1 && thatLine.length() >= 1)
             {
                 DANIEL_STREAM("Lines are colinear." << std::endl);
                 // As pointX is at the origin of this it's displacement is 0. The names are
@@ -325,7 +325,7 @@ bool PedDomain::intersectsDomain(const PedDomain& that, MexPoint2d* pPoint1, Mex
                 // I can get to the job of finding whether there is one. By some
                 // sneeky use of relational ops I can further reduce the state space.
                 // This sneekyness forces the guard in the first if statement.
-                if (not((d1 <= x and d2 <= x) or (d1 >= d and d2 >= d)))
+                if (!((d1 <= x && d2 <= x) || (d1 >= d && d2 >= d)))
                 {
                     DANIEL_STREAM("The lines intersect." << std::endl);
 

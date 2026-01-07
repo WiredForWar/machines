@@ -245,10 +245,10 @@ bool MachCameras::processButtonEvent(const DevButtonEvent& buttonEvent)
 
     // Give motion control chance to accept buttonEvent
     bool processed = PhysMotionControl::processButtonEvent(buttonEvent);
-    if (not processed)
+    if (! processed)
         processed = MachLogMachineThirdPerson::processButtonEvent(buttonEvent);
 
-    if (not processed)
+    if (! processed)
     {
         // Now process all commands that motion control is not interested in
         CommandId commandId;
@@ -688,7 +688,7 @@ void readZenithDataFile(
     {
         UtlLineTokeniser tokeniser(fileName);
 
-        while (not tokeniser.finished())
+        while (! tokeniser.finished())
         {
             ASSERT_INFO(tokeniser.tokens().size());
             ASSERT(tokeniser.tokens().size() == 2, "");

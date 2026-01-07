@@ -116,7 +116,7 @@ void PedPlanetEditor::preRenderUpdate()
 {
     // Must wait until scene has been rendered once.
     static bool firstTime = true;
-    if (not firstTime)
+    if (! firstTime)
     {
         // Daniel: Quick fix, may remove condition on validation.
         // Validate all modes if the warnings are enabled.
@@ -219,7 +219,7 @@ void PedPlanetEditor::processSave()
             pConstructionMode_->writeScnFile(scenarioFile_);
             pMachineMode_->writeScnFile(scenarioFile_);
             scenarioFile_.write(scnFileStream);
-            saveSuccessful_ = not(scnFileStream.fail() or scnFileStream.fail());
+            saveSuccessful_ = !(scnFileStream.fail() || scnFileStream.fail());
         }
     }
 }
@@ -330,64 +330,64 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
     if (devButtonEvent.action() == DevButtonEvent::PRESS)
     {
         // Check for mode change first...
-        if (devButtonEvent.scanCode() == Device::KeyCode::F5 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pTileMode_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::F5 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pTileMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pTileMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::F6 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pDomainMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::F6 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pDomainMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pDomainMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::F7 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pObstacleMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::F7 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pObstacleMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pObstacleMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::F8 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pPortalMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::F8 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pPortalMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pPortalMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_1 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pConstructionMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_1 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pConstructionMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pConstructionMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_2 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pMachineMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_2 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pMachineMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pMachineMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_3 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pArtefactMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_3 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pArtefactMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pArtefactMode_;
             pCurrentMode_->activateMode();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_4 and not devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed() and pCurrentMode_ != pCameraMode_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_4 && ! devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed() && pCurrentMode_ != pCameraMode_)
         {
             pCurrentMode_->changingMode();
             pCurrentMode_ = pCameraMode_;
@@ -396,7 +396,7 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
 
         else if (devButtonEvent.scanCode() == Device::KeyCode::F10)
         {
-            dispKeyboardControls_ = not dispKeyboardControls_;
+            dispKeyboardControls_ = ! dispKeyboardControls_;
         }
         else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_S)
         {
@@ -409,7 +409,7 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
             //          pDomainMode_->validate();
             //          pObstacleMode_->validate();
             //          pPortalMode_->validate();
-            dispWarnings_ = not dispWarnings_;
+            dispWarnings_ = ! dispWarnings_;
         }
         else if (devButtonEvent.scanCode() == Device::KeyCode::F11)
         {
@@ -422,7 +422,7 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
         }
         else if (devButtonEvent.scanCode() == Device::KeyCode::HOME)
         {
-            if (not ProProfiler::instance().isProfilingEnabled())
+            if (! ProProfiler::instance().isProfilingEnabled())
                 ProProfiler::instance().enableProfiling();
         }
         else if (devButtonEvent.scanCode() == Device::KeyCode::END)

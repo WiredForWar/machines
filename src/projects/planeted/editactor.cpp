@@ -57,9 +57,9 @@ void PedActorEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     // Process common keyboard/mouse events
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
-        if (devButtonEvent.scanCode() == Device::KeyCode::KEY_D and pVertexMarker_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::KEY_D && pVertexMarker_)
         {
             processDrop();
         }
@@ -91,7 +91,7 @@ void PedActorEditor::processInput(const DevButtonEvent& devButtonEvent)
         {
             processMove(LEFT);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT and pVertexMarker_)
+        else if (devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT && pVertexMarker_)
         {
             processSelection();
             /*   if( not alreadySelected_ )
@@ -105,12 +105,12 @@ void PedActorEditor::processInput(const DevButtonEvent& devButtonEvent)
                 mouseDrag_ = true;
             } */
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_X and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_X && devButtonEvent.wasShiftPressed())
         {
             processDelete();
         }
     }
-    if (devButtonEvent.action() == DevButtonEvent::RELEASE and devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT)
+    if (devButtonEvent.action() == DevButtonEvent::RELEASE && devButtonEvent.scanCode() == Device::KeyCode::MOUSE_LEFT)
     {
         processReleaseSelection();
     }
@@ -232,7 +232,7 @@ void PedActorEditor::processReleaseSelection()
     {
         pSelectedActor->solid(W4dEntity::SOLID);
     }
-    if (alreadySelected_ and mouseDrag_)
+    if (alreadySelected_ && mouseDrag_)
     {
         alreadySelected_ = mouseDrag_ = false;
     }
@@ -462,7 +462,7 @@ void PedActorEditor::changeRace(MachPhys::Race* race)
 
 void PedActorEditor::processHide(bool hidden)
 {
-    hidden_ = not hidden;
+    hidden_ = ! hidden;
 }
 
 std::ostream& operator<<(std::ostream& o, const PedActorEditor& t)

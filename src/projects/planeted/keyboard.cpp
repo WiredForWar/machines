@@ -77,7 +77,7 @@ void SDLApp::processInput()
 {
     DevEventQueue& devEventQueue = DevEventQueue::instance();
 
-    while (not devEventQueue.isEmpty())
+    while (! devEventQueue.isEmpty())
     {
         DevButtonEvent devButtonEvent = devEventQueue.oldestEvent();
 

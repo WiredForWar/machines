@@ -210,13 +210,13 @@ void PedScenarioFile::readAI()
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished() and not done)
+    while (! pParser_->finished() && ! done)
     {
         if (pParser_->tokens()[0] == AIToken_)
         {
             parsingAI = true;
         }
-        else if (parsingAI and (pParser_->tokens()[0] == endAIToken_))
+        else if (parsingAI && (pParser_->tokens()[0] == endAIToken_))
         {
             parsingAI = false;
             done = true;
@@ -238,13 +238,13 @@ void PedScenarioFile::readMineralSite()
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished() and not done)
+    while (! pParser_->finished() && ! done)
     {
-        if ((pParser_->tokens()[0] == mineralToken_) and (pParser_->tokens()[1] == siteToken_))
+        if ((pParser_->tokens()[0] == mineralToken_) && (pParser_->tokens()[1] == siteToken_))
         {
             parsingMineralsSites = true;
         }
-        else if (parsingMineralsSites and (pParser_->tokens()[0] == endMineralSiteToken_))
+        else if (parsingMineralsSites && (pParser_->tokens()[0] == endMineralSiteToken_))
         {
             parsingMineralsSites = false;
             done = true;
@@ -266,13 +266,13 @@ void PedScenarioFile::readConditions()
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished() and not done)
+    while (! pParser_->finished() && ! done)
     {
         if (pParser_->tokens()[0] == conditionsToken_)
         {
             parsing = true;
         }
-        else if (parsing and (pParser_->tokens()[0] == endConditionsToken_))
+        else if (parsing && (pParser_->tokens()[0] == endConditionsToken_))
         {
             parsing = false;
             done = true;
@@ -294,13 +294,13 @@ void PedScenarioFile::readActions()
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished() and not done)
+    while (! pParser_->finished() && ! done)
     {
         if (pParser_->tokens()[0] == actionsToken_)
         {
             parsing = true;
         }
-        else if (parsing and (pParser_->tokens()[0] == endActionsToken_))
+        else if (parsing && (pParser_->tokens()[0] == endActionsToken_))
         {
             parsing = false;
             done = true;
@@ -326,9 +326,9 @@ void PedScenarioFile::readRace(RaceInfo& raceInfo, MachPhys::Race race)
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished() and not done)
+    while (! pParser_->finished() && ! done)
     {
-        if ((pParser_->tokens()[0] == raceToken_) and (race == PedRace::parse(pParser_->tokens()[1])))
+        if ((pParser_->tokens()[0] == raceToken_) && (race == PedRace::parse(pParser_->tokens()[1])))
         {
             parsingRace = true;
             for (uint parameter = 2; parameter < pParser_->tokens().size(); parameter++)
@@ -336,37 +336,37 @@ void PedScenarioFile::readRace(RaceInfo& raceInfo, MachPhys::Race race)
                 raceInfo.raceParameters.push_back(pParser_->tokens()[parameter]);
             }
         }
-        else if (pParser_->tokens()[0] == endRaceToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == endRaceToken_ && parsingRace)
         {
             done = true;
         }
-        else if (pParser_->tokens()[0] == cameraToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == cameraToken_ && parsingRace)
         {
             raceInfo.camera = parseCamera(pParser_->tokens());
         }
-        else if (pParser_->tokens()[0] == constructionToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == constructionToken_ && parsingRace)
         {
             parsingMachines = parsingMiscellani = false;
             parsingConstructions = true;
         }
-        else if (pParser_->tokens()[0] == machineToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == machineToken_ && parsingRace)
         {
             parsingConstructions = parsingMiscellani = false;
             parsingMachines = true;
         }
-        else if (pParser_->tokens()[0] == assemblyPointToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == assemblyPointToken_ && parsingRace)
         {
             // parsingMachines = parsingConstructions = false;
             parsingConstructions = false;
             AssemblyPoint assemblyPoint = parseAssemblyPoint(pParser_->tokens());
             raceInfo.assemblyPoints.push_back(assemblyPoint);
         }
-        else if (pParser_->tokens()[0] == endRaceToken_ and parsingRace)
+        else if (pParser_->tokens()[0] == endRaceToken_ && parsingRace)
         {
             parsingMachines = parsingConstructions = parsingMiscellani = false;
             done = true;
         }
-        else if (parsingRace and parsingMachines and (pParser_->tokens().size() < 6 or pParser_->tokens().size() > 11))
+        else if (parsingRace && parsingMachines && (pParser_->tokens().size() < 6 || pParser_->tokens().size() > 11))
         {
             parsingMachines = parsingConstructions = false;
             parsingMiscellani = true;
@@ -403,7 +403,7 @@ void PedScenarioFile::readMiscellani()
     for (uint i = 0; i < raceNumber; ++i)
     {
         bool parsedEndRace = false;
-        while (not parsedEndRace)
+        while (! parsedEndRace)
         {
             if (pParser_->tokens()[0] == endRaceToken_)
             {
@@ -413,7 +413,7 @@ void PedScenarioFile::readMiscellani()
         }
     }
     // Read everything past last race until eof
-    while (not pParser_->finished())
+    while (! pParser_->finished())
     {
         miscellani_.push_back(pParser_->line());
         pParser_->parseNextLine();
@@ -430,9 +430,9 @@ void PedScenarioFile::readArtefacts()
     delete pParser_;
     pParser_ = new UtlLineTokeniser(fileName_);
 
-    while (not pParser_->finished())
+    while (! pParser_->finished())
     {
-        if ((pParser_->tokens().size() >= 5) and parsingArtefacts and parsingKey and pParser_->tokens()[0] == "AT")
+        if ((pParser_->tokens().size() >= 5) && parsingArtefacts && parsingKey && pParser_->tokens()[0] == "AT")
         {
             // Read artefact data
             Artefact artefact;
@@ -452,8 +452,8 @@ void PedScenarioFile::readArtefacts()
             parsingArtefacts = false;
         }
         else if (
-            (pParser_->tokens()[0] == artefactDumbToken_ or pParser_->tokens()[0] == artefactActiveToken_)
-            and parsingArtefacts)
+            (pParser_->tokens()[0] == artefactDumbToken_ || pParser_->tokens()[0] == artefactActiveToken_)
+            && parsingArtefacts)
         {
             key = pParser_->tokens()[1];
             parsingKey = true;
@@ -510,7 +510,7 @@ PedScenarioFile::Construction PedScenarioFile::parseConstruction(const UtlLineTo
     ASSERT_INFO(pParser_->lineNumber());
     ASSERT(tokens.size() >= 6, "not enough arguments");
 
-    if (not(tokens.size() >= 6))
+    if (!(tokens.size() >= 6))
     {
         string error = "Invalid construction ";
         error += tokens[0].c_str();
@@ -529,8 +529,8 @@ PedScenarioFile::Construction PedScenarioFile::parseConstruction(const UtlLineTo
         construction.weaponCombo = weaponCombo(tokens[6].c_str());
         buildParametersIndex = 7;
     }
-    if ((construction.type == MachPhys::FACTORY) or (construction.type == MachPhys::HARDWARE_LAB)
-        or (construction.type == MachPhys::MISSILE_EMPLACEMENT))
+    if ((construction.type == MachPhys::FACTORY) || (construction.type == MachPhys::HARDWARE_LAB)
+        || (construction.type == MachPhys::MISSILE_EMPLACEMENT))
     {
         construction.subType = constructionSubType(tokens[6].c_str());
         buildParametersIndex = 7;
@@ -569,14 +569,14 @@ PedScenarioFile::Machine PedScenarioFile::parseMachine(const UtlLineTokeniser::T
     ASSERT(tokens.size() >= 6, "too few arguments");
     ASSERT(tokens.size() <= 11, "too many arguments");
 
-    if (not(tokens.size() >= 6))
+    if (!(tokens.size() >= 6))
     {
         string error = "Invalid machine ";
         error += tokens[0].c_str();
         error += " - too few arguments";
         errorBox(error);
     }
-    else if (not(tokens.size() <= 11))
+    else if (!(tokens.size() <= 11))
     {
         string error = "Invalid machine ";
         error += tokens[0].c_str();
@@ -599,7 +599,7 @@ PedScenarioFile::Machine PedScenarioFile::parseMachine(const UtlLineTokeniser::T
     machine.bodyLevel = atol(tokens[1].c_str());
     machine.brainboxLevel = atol(tokens[2].c_str());
 
-    if ((machine.type == MachPhys::AGGRESSOR) or (machine.type == MachPhys::ADMINISTRATOR))
+    if ((machine.type == MachPhys::AGGRESSOR) || (machine.type == MachPhys::ADMINISTRATOR))
     {
         machine.weaponCombo = weaponCombo(tokens[7].c_str());
         squadIndex = 8;
@@ -745,7 +745,7 @@ void PedScenarioFile::writeArtefacts(std::ofstream& out) const
         string key = "";
         for (Artefacts::const_iterator i = artefacts_.begin(); i != artefacts_.end(); ++i)
         {
-            if (not((*i).key == key))
+            if (!((*i).key == key))
             {
                 key = (*i).key;
                 out << artefactDumbToken_ << " " << key << std::endl;
@@ -774,7 +774,7 @@ void PedScenarioFile::writeCamera(std::ofstream& out, const Camera& camera) cons
     out << MexDegrees(angles.roll()) << " ";
 
     // ASSERT_INFO( camera.type );
-    ASSERT(camera.type == MachLogCamera::ZENITH or camera.type == MachLogCamera::GROUND, "invalid camera type");
+    ASSERT(camera.type == MachLogCamera::ZENITH || camera.type == MachLogCamera::GROUND, "invalid camera type");
 
     switch (camera.type)
     {
@@ -811,7 +811,7 @@ void PedScenarioFile::writeConstruction(std::ofstream& out, const Construction& 
             break;
     }
 
-    if ((construction.type == MachPhys::MISSILE_EMPLACEMENT) or (construction.type == MachPhys::POD))
+    if ((construction.type == MachPhys::MISSILE_EMPLACEMENT) || (construction.type == MachPhys::POD))
     {
         out << construction.weaponCombo;
     }
@@ -848,7 +848,7 @@ void PedScenarioFile::writeMachine(std::ofstream& out, const Machine& machine) c
             out << (MachPhys::AdministratorSubType)machine.subType << " ";
             break;
     }
-    if ((machine.type == MachPhys::AGGRESSOR) or (machine.type == MachPhys::ADMINISTRATOR))
+    if ((machine.type == MachPhys::AGGRESSOR) || (machine.type == MachPhys::ADMINISTRATOR))
         out << machine.weaponCombo;
 
     if (machine.inSquad)
@@ -1060,7 +1060,7 @@ uint PedScenarioFile::nRaces()
 
     UtlLineTokeniser* pParser = new UtlLineTokeniser(fileName_);
 
-    while (not pParser->finished())
+    while (! pParser->finished())
     {
         if (pParser->tokens()[0] == raceToken_)
         {

@@ -23,7 +23,7 @@ void LeakTracker::update(Action action, SampleRate rate)
         case INLOOP:
             {
                 // Check for a new keypress on F12
-                bool f12Hit = not f12Down and DevKeyboard::instance().keyCode(Device::KeyCode::F12);
+                bool f12Hit = ! f12Down && DevKeyboard::instance().keyCode(Device::KeyCode::F12);
                 if (f12Hit)
                     f12Down = true;
                 else

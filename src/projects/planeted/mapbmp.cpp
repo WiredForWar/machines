@@ -95,7 +95,7 @@ void PedMapCreator::createBmp()
     bool nextBmpFilename = false;
     string filename;
 
-    while (not nextBmpFilename)
+    while (! nextBmpFilename)
     {
         filename = "map";
 
@@ -116,14 +116,14 @@ void PedMapCreator::createBmp()
         filename += ".png";
 
         SysPathName bmpfilename(filename);
-        nextBmpFilename = not bmpfilename.existsAsFile();
+        nextBmpFilename = ! bmpfilename.existsAsFile();
         ++count;
     }
 
     W4dManager::instance().sceneManager()->out() << "Creating map '" << filename << "'. Please wait." << std::endl;
     W4dManager::instance().render();
 
-    if (not domainEditor_.polygonsHidden())
+    if (! domainEditor_.polygonsHidden())
     {
         // Output solid domains...
         for (Polygons::const_iterator polyIter = domainEditor_.polygons().begin();
@@ -184,7 +184,7 @@ void PedMapCreator::createBmp()
         surface.polyLine(verticies, RenColour(0.4, 0.4, 0.4), 1);
     }
 
-    if (not domainEditor_.polygonsHidden())
+    if (! domainEditor_.polygonsHidden())
     {
         // Output domains...
         for (Polygons::const_iterator polyIter = domainEditor_.polygons().begin();
@@ -198,7 +198,7 @@ void PedMapCreator::createBmp()
         }
     }
 
-    if (not obstacleEditor_.polygonsHidden())
+    if (! obstacleEditor_.polygonsHidden())
     {
         // Output obstacles...
         for (Polygons::const_iterator polyIter = obstacleEditor_.polygons().begin();
@@ -212,7 +212,7 @@ void PedMapCreator::createBmp()
         }
     }
 
-    if (not portalEditor_.polygonsHidden())
+    if (! portalEditor_.polygonsHidden())
     {
         // Output portals...
         for (Polygons::const_iterator polyIter = portalEditor_.polygons().begin();

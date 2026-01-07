@@ -69,7 +69,7 @@ void PedPortalEditor::readCspFile(const SysPathName& cspFileName)
     UtlLineTokeniser parser(cspFileName);
 
     // Read definitions until finished
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT(parser.tokens().size() != 0, "");
 
@@ -107,23 +107,23 @@ void PedPortalEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     PedPolygonEditor::processInput(devButtonEvent);
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
         if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P)
         {
             processCreatePortalsFromDomains();
         }
-        if (devButtonEvent.scanCode() == Device::KeyCode::F8 and devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::F8 && devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
-            pSelectedPolygon_->hide(not pSelectedPolygon_->hidden());
+            pSelectedPolygon_->hide(! pSelectedPolygon_->hidden());
         }
     }
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and devButtonEvent.scanCode() == Device::KeyCode::F8
-        and devButtonEvent.wasCtrlPressed() and not devButtonEvent.wasShiftPressed())
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && devButtonEvent.scanCode() == Device::KeyCode::F8
+        && devButtonEvent.wasCtrlPressed() && ! devButtonEvent.wasShiftPressed())
     {
-        hidePolygons_ = not hidePolygons_;
+        hidePolygons_ = ! hidePolygons_;
         hidePolygons(hidePolygons_);
     }
 }
@@ -234,7 +234,7 @@ void PedPortalEditor::processVertexDown()
 // virtual
 void PedPortalEditor::updatePolygon()
 {
-    if (mouseDrag_ and pSelectedPolygon_ and pHighlightVertex_)
+    if (mouseDrag_ && pSelectedPolygon_ && pHighlightVertex_)
     {
         *pSelectedPoint_ = pHighlightVertex_->position();
         pSelectedPolygon_->refreshMesh();
@@ -382,12 +382,12 @@ void PedPortalEditor::validate()
             msg += " connects too many domains";
             warnings_.push_back(msg);
         }
-        else if (not secondDomainFound and firstDomainFound)
+        else if (! secondDomainFound && firstDomainFound)
         {
             msg += " is only connected correctly to one domain";
             warnings_.push_back(msg);
         }
-        else if (not firstDomainFound)
+        else if (! firstDomainFound)
         {
             msg += " does not connect any domains";
             warnings_.push_back(msg);

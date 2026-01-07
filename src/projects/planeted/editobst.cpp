@@ -73,33 +73,33 @@ void PedObstacleEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     PedPolygonEditor::processInput(devButtonEvent);
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
-        if (devButtonEvent.scanCode() == Device::KeyCode::KEY_V and not devButtonEvent.wasCtrlPressed() and pHighlightVertex_
-            and pSelectedVertex_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::KEY_V && ! devButtonEvent.wasCtrlPressed() && pHighlightVertex_
+            && pSelectedVertex_)
         {
             processInsertVertex();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_X and not devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedVertex_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_X && ! devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedVertex_)
         {
             processDeleteVertex();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::F7 and devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::F7 && devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
-            pSelectedPolygon_->hide(not pSelectedPolygon_->hidden());
+            pSelectedPolygon_->hide(! pSelectedPolygon_->hidden());
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_K and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_K && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
             size_t heightChange = devButtonEvent.wasShiftPressed() ? 10 : 1;
             pSelectedPolygon_->height(pSelectedPolygon_->height() + heightChange);
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_L and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_L && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
             size_t heightChange = devButtonEvent.wasShiftPressed() ? 10 : 1;
 
@@ -108,20 +108,20 @@ void PedObstacleEditor::processInput(const DevButtonEvent& devButtonEvent)
                 pSelectedPolygon_->height(pSelectedPolygon_->height() - heightChange);
             }
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P && ! devButtonEvent.wasShiftPressed())
         {
             processDisplayVerticalPolygons(true);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P && devButtonEvent.wasShiftPressed())
         {
             processDisplayVerticalPolygons(false);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P and devButtonEvent.wasCtrlPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_P && devButtonEvent.wasCtrlPressed())
         {
             processComputeVerticalPolygons();
             processDisplayVerticalPolygons(true);
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_N and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_N && ! devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::NORMAL);
             if (pSelectedPolygon_)
@@ -129,12 +129,12 @@ void PedObstacleEditor::processInput(const DevButtonEvent& devButtonEvent)
                 processChangeObstacleType();
             }
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_N and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_N && devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::NORMAL);
             highlightAllObstacles();
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_W and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_W && ! devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::WATER);
             if (pSelectedPolygon_)
@@ -142,12 +142,12 @@ void PedObstacleEditor::processInput(const DevButtonEvent& devButtonEvent)
                 processChangeObstacleType();
             }
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_W and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_W && devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::WATER);
             highlightAllObstacles();
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_E and not devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_E && ! devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::LOW);
             if (pSelectedPolygon_)
@@ -155,16 +155,16 @@ void PedObstacleEditor::processInput(const DevButtonEvent& devButtonEvent)
                 processChangeObstacleType();
             }
         }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_E and devButtonEvent.wasShiftPressed())
+        else if (devButtonEvent.scanCode() == Device::KeyCode::KEY_E && devButtonEvent.wasShiftPressed())
         {
             PedObstacle::highlightedType(PedObstacle::LOW);
             highlightAllObstacles();
         }
     }
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and devButtonEvent.scanCode() == Device::KeyCode::F7
-        and devButtonEvent.wasCtrlPressed() and not devButtonEvent.wasShiftPressed())
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && devButtonEvent.scanCode() == Device::KeyCode::F7
+        && devButtonEvent.wasCtrlPressed() && ! devButtonEvent.wasShiftPressed())
     {
-        hidePolygons_ = not hidePolygons_;
+        hidePolygons_ = ! hidePolygons_;
         hidePolygons(hidePolygons_);
     }
 }
@@ -175,7 +175,7 @@ void PedObstacleEditor::readCspFile(const SysPathName& cspFileName)
     UtlLineTokeniser parser(cspFileName);
 
     // Read definitions until finished
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT(parser.tokens().size() != 0, "");
 
@@ -443,7 +443,7 @@ void PedObstacleEditor::highlightAllObstacles()
 // virtual
 void PedObstacleEditor::updatePolygon()
 {
-    if (mouseDrag_ and pSelectedPolygon_ and pHighlightVertex_)
+    if (mouseDrag_ && pSelectedPolygon_ && pHighlightVertex_)
     {
         *pSelectedPoint_ = pHighlightVertex_->position();
         pSelectedPolygon_->refreshMesh();
@@ -462,7 +462,7 @@ void PedObstacleEditor::validate()
 
     for (Polygons::iterator iter = polygons_.begin(); iter != polygons_.end(); ++iter)
     {
-        if (not(*iter)->isConvex())
+        if (!(*iter)->isConvex())
         {
             char buffer[20];
             //          itoa( (*iter)->uniqueId(), buffer, 10 );

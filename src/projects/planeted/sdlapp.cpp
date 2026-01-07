@@ -365,7 +365,7 @@ bool SDLApp::clientStartup()
     // We set different search paths depending on the amount
     // of video memory availbable after the display mode has been set
     const bool canSupport4MegTexture = manager_->pDevice()->capabilities().supports4MBytesTextureSet();
-    if (not canSupport4MegTexture)
+    if (! canSupport4MegTexture)
     {
         searchList.push_back(SysPathName("models/texture2"));
         searchList.push_back(SysPathName("models/texture2/exp"));
@@ -431,7 +431,7 @@ bool SDLApp::clientStartup()
     cspPath.createFromComponents(cspPathComps);
 
     // Create csp file if it doesn't exist
-    if (not cspPath.existsAsFile())
+    if (! cspPath.existsAsFile())
     {
         std::ofstream cspFile(cspPath.pathname().c_str());
     }
@@ -449,7 +449,7 @@ bool SDLApp::clientStartup()
         scnPath.createFromComponents(scnPathComps);
 
         //  Abort if .arf doesn't exist
-        if (not scnPath.existsAsFile())
+        if (! scnPath.existsAsFile())
         {
             string usageString = scnPath.c_str();
             usageString += "\t does not exist - terminating program.\n";
@@ -493,7 +493,7 @@ bool SDLApp::clientStartup()
         scnPath.createFromComponents(scnPathComps);
 
         // Create scn file if it doesn't exist
-        if (not scnPath.existsAsFile())
+        if (! scnPath.existsAsFile())
         {
             std::ofstream scnFile(scnPath.pathname().c_str());
         }
@@ -525,7 +525,7 @@ void SDLApp::clientShutdown()
 void SDLApp::loopCycle()
 {
     // Prevent processing before clientStartup() call
-    if (not initialised_)
+    if (! initialised_)
         return;
 
     SimManager::instance().cycle();
@@ -678,7 +678,7 @@ void SDLApp::readEnvironment(const string& planetLeafName)
 void SDLApp::checkForQuit(const DevButtonEvent& devButtonEvent)
 {
     if (devButtonEvent.scanCode() == Device::KeyCode::KEY_Q
-        or (devButtonEvent.scanCode() == Device::KeyCode::ESCAPE and devButtonEvent.wasShiftPressed()))
+        || (devButtonEvent.scanCode() == Device::KeyCode::ESCAPE && devButtonEvent.wasShiftPressed()))
     {
         finish();
         PhysConfigSpace2d* pConfigSpace = &pPlanet_->configSpace();

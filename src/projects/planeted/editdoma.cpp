@@ -62,7 +62,7 @@ void PedDomainEditor::readCspFile(const SysPathName& cspFileName)
     UtlLineTokeniser parser(cspFileName);
 
     // Read definitions until finished
-    while (not parser.finished())
+    while (! parser.finished())
     {
         ASSERT(parser.tokens().size() != 0, "");
 
@@ -130,29 +130,29 @@ void PedDomainEditor::processInput(const DevButtonEvent& devButtonEvent)
 {
     PedPolygonEditor::processInput(devButtonEvent);
 
-    if (devButtonEvent.action() == DevButtonEvent::PRESS and active_)
+    if (devButtonEvent.action() == DevButtonEvent::PRESS && active_)
     {
-        if (devButtonEvent.scanCode() == Device::KeyCode::F6 and devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedPolygon_)
+        if (devButtonEvent.scanCode() == Device::KeyCode::F6 && devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedPolygon_)
         {
-            pSelectedPolygon_->hide(not pSelectedPolygon_->hidden());
+            pSelectedPolygon_->hide(! pSelectedPolygon_->hidden());
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::F6 and devButtonEvent.wasCtrlPressed()
-            and not devButtonEvent.wasShiftPressed())
+            devButtonEvent.scanCode() == Device::KeyCode::F6 && devButtonEvent.wasCtrlPressed()
+            && ! devButtonEvent.wasShiftPressed())
         {
-            hidePolygons_ = not hidePolygons_;
+            hidePolygons_ = ! hidePolygons_;
             hidePolygons(hidePolygons_);
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_V and not devButtonEvent.wasCtrlPressed() and pHighlightVertex_
-            and pSelectedVertex_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_V && ! devButtonEvent.wasCtrlPressed() && pHighlightVertex_
+            && pSelectedVertex_)
         {
             processInsertVertex();
         }
         else if (
-            devButtonEvent.scanCode() == Device::KeyCode::KEY_X and not devButtonEvent.wasShiftPressed()
-            and not devButtonEvent.wasCtrlPressed() and pSelectedVertex_)
+            devButtonEvent.scanCode() == Device::KeyCode::KEY_X && ! devButtonEvent.wasShiftPressed()
+            && ! devButtonEvent.wasCtrlPressed() && pSelectedVertex_)
         {
             processDeleteVertex();
         }
@@ -311,7 +311,7 @@ PedPolygon* PedDomainEditor::createDefaultPolygon() const
 // virtual
 void PedDomainEditor::updatePolygon()
 {
-    if (mouseDrag_ and pSelectedPolygon_ and pHighlightVertex_)
+    if (mouseDrag_ && pSelectedPolygon_ && pHighlightVertex_)
     {
         if (DevKeyboard::instance().altPressed())
         {
@@ -339,7 +339,7 @@ void PedDomainEditor::changeX(size_t fromX, size_t toX)
     PolyVerticies testVert = pSelectedPolygon_->verticies();
     for (PolyVerticies::iterator verIter = testVert.begin(); verIter != testVert.end(); ++verIter)
     {
-        if ((*verIter).x() == fromX or (*verIter).x() == toX)
+        if ((*verIter).x() == fromX || (*verIter).x() == toX)
         {
             ++count;
         }
@@ -369,7 +369,7 @@ void PedDomainEditor::changeY(size_t fromY, size_t toY)
     PolyVerticies testVert = pSelectedPolygon_->verticies();
     for (PolyVerticies::iterator verIter = testVert.begin(); verIter != testVert.end(); ++verIter)
     {
-        if ((*verIter).y() == fromY or (*verIter).y() == toY)
+        if ((*verIter).y() == fromY || (*verIter).y() == toY)
         {
             ++count;
         }
@@ -414,7 +414,7 @@ void PedDomainEditor::validate()
     {
         for (Polygons::iterator itDomainPtr = polygons_.begin(); itDomainPtr != polygons_.end(); ++itDomainPtr)
         {
-            if (not(*itDomainPtr)->isConvex())
+            if (!(*itDomainPtr)->isConvex())
             {
                 string warningMsg("WARNING : Domain ");
                 warningMsg += utlToString(_STATIC_CAST(unsigned long, (*itDomainPtr)->uniqueId()));
