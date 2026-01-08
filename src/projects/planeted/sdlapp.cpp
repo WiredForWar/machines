@@ -518,6 +518,8 @@ void SDLApp::clientShutdown()
     DevMouse::instance().unhide();
     delete pRoot_;
     delete manager_;
+    // Tell W4dManager about destruction of sceneManager
+    W4dManager::instance().clearSceneManager();
     delete pDisplay_;
 }
 
