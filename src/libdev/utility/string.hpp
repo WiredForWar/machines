@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace Utils
@@ -26,6 +27,12 @@ std::vector<std::string_view> split(std::string_view path, char delimiter);
 void replaceAll(std::string *str, std::string_view before, std::string_view after);
 
 void toLowerInPlace(std::string *str);
+std::string trimWhitespace(std::string_view text);
+
+inline bool startsWith(std::string_view text, std::string_view prefix)
+{
+    return text.size() >= prefix.size() && text.compare(0, prefix.size(), prefix) == 0;
+}
 
 inline bool caseInsensitiveEqual(std::string_view a, std::string_view b)
 {
