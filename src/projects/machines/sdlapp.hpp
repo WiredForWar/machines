@@ -5,6 +5,8 @@
 #include "afx/AfxSdlApp.hpp"
 #include "utility/CallbackHandle.hpp"
 
+#include <memory>
+
 class IProgressReporter;
 class RenDevice;
 class RenDisplay;
@@ -19,6 +21,13 @@ class MexTransform3d;
 class MexPoint2d;
 class MexPoint3d;
 class MachGuiStartupScreens;
+
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
 
 // This class represents an application based on Direct3D.  When we know
 // what's common to all D3D apps, this probably ought to become an abstract
@@ -50,6 +59,7 @@ private:
 
     void outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor);
 
+    void initConsole();
     void initProfiling(IProgressReporter* pReporter);
 
     // Sim
@@ -87,6 +97,7 @@ private:
     double runTime_;
     RenDisplay* pDisplay_{};
     W4dRoot* pRoot_{};
+    std::unique_ptr<System::IConsole> console_;
     W4dSceneManager* manager_{};
     MachKeyFocus* pKeyboardFocus_{};
     bool showPosition_{};

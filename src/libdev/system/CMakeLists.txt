@@ -2,7 +2,10 @@
 set(SYSTEM_SOURCES
     ConfigVariables.cpp
     ConfigVariables.hpp
+    Console.cpp
+    Console.hpp
     Endian.hpp
+    IConsole.hpp
     SysInfo.cpp
     SysInfo.hpp
     Variable.cpp
