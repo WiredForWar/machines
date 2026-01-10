@@ -44,6 +44,7 @@
 #include "machgui/VSyncMode.hpp"
 #include "machgui/gui.hpp"
 
+#include "system/Console.hpp"
 #include "system/vfs.hpp"
 
 #include "spdlog/spdlog.h"
@@ -132,6 +133,8 @@ bool SDLApp::clientStartup()
     DevMouse::instance().hide();
 
     std::set_new_handler(newHandler);
+
+    initConsole();
 
     // Set the diretory to look for all files
     SysPathName::rootEnvironmentVariable("MACH_ROOT");
@@ -678,6 +681,11 @@ void SDLApp::setVSyncOptions()
 
     targetFrameRate_ = targetRefreshRate;
     manager_->pDevice()->setVSyncPreference(enable);
+}
+
+void SDLApp::initConsole()
+{
+    console_ = std::make_unique<System::Console>();
 }
 
 void SDLApp::initProfiling(IProgressReporter* /*pReporter*/)
