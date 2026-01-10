@@ -393,6 +393,12 @@ void MachGuiStartupScreens::displayGui()
         pInGameScreen_->setWorldViewViewport();
 }
 
+void MachGuiStartupScreens::instantExit()
+{
+    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
+    pInGameScreen_->instantExit(true);
+}
+
 void MachGuiStartupScreens::checkSwitchGuiRoot()
 {
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);

@@ -95,6 +95,7 @@ public:
     void updateGui();
     void displayGui();
 
+    void instantExit();
     bool finishApp();
 
     void loopCycle();

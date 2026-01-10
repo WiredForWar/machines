@@ -686,6 +686,10 @@ void SDLApp::setVSyncOptions()
 void SDLApp::initConsole()
 {
     console_ = std::make_unique<System::Console>();
+
+    console_->registerCommand({ "exit", "Immediately exit the game." }, [this](auto) {
+        pStartupScreens_->instantExit();
+    });
 }
 
 void SDLApp::initProfiling(IProgressReporter* /*pReporter*/)
