@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <math.h>
+#include <cmath>
 
 #include "mathex/vec3.hpp"
 #include "mathex/epsilon.hpp"

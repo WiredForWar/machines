@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
 #include "render/internal/glmath.hpp"
@@ -14,7 +14,7 @@ glm::vec3* GLVecNormalise(glm::vec3* v)
     vz = v->z;
     if ((vx == 0) && (vy == 0) && (vz == 0))
         return v;
-    inv_mod = (float)(1.0 / sqrt(vx * vx + vy * vy + vz * vz));
+    inv_mod = (float)(1.0 / std::sqrt(vx * vx + vy * vy + vz * vz));
     v->x = vx * inv_mod;
     v->y = vy * inv_mod;
     v->z = vz * inv_mod;

@@ -199,7 +199,7 @@ void RenNonUniformScale::project(const MexVec2& yz, MATHEX_SCALAR* inPlane, MATH
     const MATHEX_SCALAR tx = yz.x() * z_;
     const MATHEX_SCALAR ty = yz.y() * y_;
 
-    *inPlane = yz_ / sqrt(tx * tx + ty * ty);
+    *inPlane = yz_ / std::sqrt(tx * tx + ty * ty);
     *x = x_;
 }
 

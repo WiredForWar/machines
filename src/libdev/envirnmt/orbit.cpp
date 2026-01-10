@@ -21,8 +21,8 @@
 #include "world4d/manager.hpp"
 #include "world4d/entyplan.hpp"
 
+#include <cmath>
 #include <limits.h>
-#include <math.h>
 
 // With a period of 30 minutes, 10 million orbits take 500 years.
 // TBD: should we worry about the year 3000 bug?
@@ -273,7 +273,7 @@ MexRadians EnvOrbit::elevation() const
 {
     const MexTransform3d& xform = movingEntity()->globalTransform();
     const MexPoint3d pos = xform.position();
-    const MATHEX_SCALAR adjacent = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
+    const MATHEX_SCALAR adjacent = std::sqrt(pos.x() * pos.x() + pos.y() * pos.y());
     return atan2(pos.z(), adjacent);
 }
 

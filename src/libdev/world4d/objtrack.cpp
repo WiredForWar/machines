@@ -124,7 +124,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
     MATHEX_SCALAR qy = target.y();
     MATHEX_SCALAR qz = target.z();
     MATHEX_SCALAR hSqrd = qx * qx + qy * qy;
-    MATHEX_SCALAR h = sqrt(hSqrd);
+    MATHEX_SCALAR h = std::sqrt(hSqrd);
 
     // Hence compute the yaw angle
     MATHEX_SCALAR eps = MexEpsilon::instance();
@@ -140,7 +140,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
         else
         {
             yawSine = (yawSine >= 0.0 ? maxAbsYawSine : -maxAbsYawSine);
-            yawCosine = sqrt(1.0 - yawSine * yawSine);
+            yawCosine = std::sqrt(1.0 - yawSine * yawSine);
         }
     }
     else
@@ -158,7 +158,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
     }
 
     // Now compute distance to target
-    MATHEX_SCALAR l = sqrt(hSqrd + qz * qz);
+    MATHEX_SCALAR l = std::sqrt(hSqrd + qz * qz);
 
     // Now the pitch angle
     MATHEX_SCALAR pitchSine, pitchCosine;
@@ -173,7 +173,7 @@ MATHEX_SCALAR W4dObjectTracker::track(
         else
         {
             pitchSine = (pitchSine >= 0.0 ? maxAbsPitchSine : -maxAbsPitchSine);
-            pitchCosine = sqrt(1.0 - pitchSine * pitchSine);
+            pitchCosine = std::sqrt(1.0 - pitchSine * pitchSine);
         }
     }
     else

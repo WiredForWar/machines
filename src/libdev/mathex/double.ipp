@@ -3,6 +3,8 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
+#include <cmath>
+
 inline MexDouble::MexDouble(double d)
     : rep_(d, FINITE)
 {
@@ -379,7 +381,7 @@ inline MexDouble sqrt(const MexDouble& d)
     if (d.isPlusInfinity())
         result = d;
     else
-        result = sqrt(d.rep_.value_);
+        result = std::sqrt(d.rep_.value_);
 
     POST(result >= MexDouble(0.0));
 

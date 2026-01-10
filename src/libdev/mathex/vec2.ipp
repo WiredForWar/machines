@@ -91,7 +91,7 @@ MexVec2::MexVec2(const MexVec3& rhs)
 _CODE_INLINE
 MATHEX_SCALAR MexVec2::modulus() const
 {
-    return sqrt(x_ * x_ + y_ * y_);
+    return std::sqrt(x_ * x_ + y_ * y_);
 }
 
 _CODE_INLINE

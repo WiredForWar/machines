@@ -153,7 +153,7 @@ void MexVec2::makeUnitVector()
     // No modification needed if already unit
     if (length != 1)
     {
-        MATHEX_SCALAR s = 1.0 / sqrt(length);
+        MATHEX_SCALAR s = 1.0 / std::sqrt(length);
         x_ *= s;
         y_ *= s;
     }

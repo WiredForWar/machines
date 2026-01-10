@@ -786,7 +786,7 @@ bool PhysCS2dVisibilityGraph::processFindPathVertexWithOldVertex(ObstacleFlags f
                     ArcId arcId = arcIdGenerator_.next();
                     graph_.addArc(findPathVertexId, processingGraphVertexId_, arcId, ArcData());
                     A_STAR_WHERE;
-                    graph_.weight(arcId, sqrt(sqrDistance));
+                    graph_.weight(arcId, std::sqrt(sqrDistance));
                     A_STAR_WHERE;
                 }
                 else

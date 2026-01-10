@@ -118,7 +118,7 @@ double W4dSoundManagerImpl::computeVolume(const EntitySound& entitySound)
         fallOffStartDistance *= scaleFactor_;
     }
 
-    double distance = sqrt(entitySound.sqrDistance_);
+    double distance = std::sqrt(entitySound.sqrDistance_);
 
     if (distance > fallOffStartDistance)
     {

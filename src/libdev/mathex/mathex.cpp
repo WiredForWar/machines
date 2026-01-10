@@ -15,7 +15,7 @@
 
 const double Mathex::PI = 3.14159265358979323846;
 const double Mathex::PI_DIV_2 = PI / 2.0;
-const double Mathex::SQRT_2 = sqrt(2.0);
+const double Mathex::SQRT_2 = std::sqrt(2.0);
 
 //////////////////////////////////////////////////////////////////////
 // static

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <math.h>
+#include <cmath>
 
 #include "mathex/mathex.hpp"
 #include "mathex/quatern.hpp"
@@ -160,7 +160,7 @@ void MexQuaternion::normalise(MATHEX_SCALAR* pX, MATHEX_SCALAR* pY, MATHEX_SCALA
 
     if (k != 1.0)
     {
-        k = sqrt(k);
+        k = std::sqrt(k);
         *pX /= k;
         *pY /= k;
         *pZ /= k;

@@ -5,7 +5,7 @@
 
 #include "render/internal/ren_pch.hpp" //  NB: this must come first.
 
-#include <math.h>
+#include <cmath>
 #include "mathex/vec2.hpp"
 #include "ctl/algorith.hpp"
 #include "render/spinpoly.hpp"

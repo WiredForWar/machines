@@ -1,7 +1,7 @@
 #ifndef __GLMATH_H__
 #define __GLMATH_H__
 
-#include <math.h>
+#include <cmath>
 #include "mathex/point3d.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 

@@ -129,7 +129,7 @@ PhysRelativeTime MachLogTaskDropLandMineOperation::doUpdate()
                         // generate coordinates.
                         MATHEX_SCALAR range = MachPhysRandom::randomDouble(minRange_, maxRange_);
                         MATHEX_SCALAR x = MachPhysRandom::randomDouble(-1, 1);
-                        MATHEX_SCALAR y = sqrt(1 - x * x);
+                        MATHEX_SCALAR y = std::sqrt(1 - x * x);
                         if (MachPhysRandom::randomInt(0, 10) < 5)
                             y *= -1;
                         x *= range;

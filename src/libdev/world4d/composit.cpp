@@ -44,7 +44,7 @@
 #include "ctl/list.hpp"
 
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 #define CB_W4dComposite_DEPIMPL()                                                                                      \
     CB_DEPIMPL(W4dLinks, links_);                                                                                      \

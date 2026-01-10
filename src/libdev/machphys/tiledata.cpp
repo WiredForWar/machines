@@ -1254,7 +1254,7 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
     // Get the 2d line length and x/y components
     MATHEX_SCALAR xLineLength = finishX - startX;
     MATHEX_SCALAR yLineLength = finishY - startY;
-    MATHEX_SCALAR lineLength = sqrt(xLineLength * xLineLength + yLineLength * yLineLength);
+    MATHEX_SCALAR lineLength = std::sqrt(xLineLength * xLineLength + yLineLength * yLineLength);
 
     PATH_PROFILE_INSPECT(xLineLength);
     PATH_PROFILE_INSPECT(yLineLength);

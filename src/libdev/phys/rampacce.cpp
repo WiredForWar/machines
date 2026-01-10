@@ -72,7 +72,7 @@ PhysRelativeTime PhysRampAcceleration::totalTime(
     }
     else
     {
-        *pAccelerationTime = sqrt(distance / acceleration);
+        *pAccelerationTime = std::sqrt(distance / acceleration);
         duration = *pAccelerationTime * 2.0;
     }
 
@@ -219,7 +219,7 @@ PhysRelativeTime PhysRampAcceleration::totalTime(
             if (root < 0)
                 root = 0.0;
             else
-                root = sqrt(root);
+                root = std::sqrt(root);
 
             accelerationTime = (acceleration == 0.0 ? 0.0 : (root - startVelocity) / acceleration);
 
@@ -233,7 +233,7 @@ PhysRelativeTime PhysRampAcceleration::totalTime(
             if (root < 0)
                 root = 0.0;
             else
-                root = sqrt(root);
+                root = std::sqrt(root);
 
             accelerationTime = 0.0;
             totalTime = decelerationTime = (startVelocity - root) / deceleration;
@@ -246,7 +246,7 @@ PhysRelativeTime PhysRampAcceleration::totalTime(
             if (root < 0)
                 root = 0.0;
             else
-                root = sqrt(root);
+                root = std::sqrt(root);
 
             totalTime = accelerationTime = (root - startVelocity) / acceleration;
             decelerationTime = 0.0;

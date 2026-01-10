@@ -414,13 +414,13 @@ void MachPhysMachine::smoothTransition(
         //  Calculate the point above the slope transition point at which the
         //  machine will be sat exactly across the slope
 
-        MATHEX_SCALAR t1 = tan(entryAngle);
-        MATHEX_SCALAR t2 = tan(exitAngle);
+        MATHEX_SCALAR t1 = std::tan(entryAngle);
+        MATHEX_SCALAR t2 = std::tan(exitAngle);
 
         MATHEX_SCALAR m = machineLength / 2;
-        MATHEX_SCALAR k = sqrt((4 * m * m) / (4 + t1 * t1 + t2 * t2 - 2 * t1 * t2));
+        MATHEX_SCALAR k = std::sqrt((4 * m * m) / (4 + t1 * t1 + t2 * t2 - 2 * t1 * t2));
 
-        MATHEX_SCALAR z = fabs(k * (t1 + t2) / 2.0);
+        MATHEX_SCALAR z = std::fabs(k * (t1 + t2) / 2.0);
 
         MexPoint3d position(thisTransform.position());
         position += MexVec3(0.0, 0.0, z);
@@ -468,7 +468,7 @@ void MachPhysMachine::moveTransform(
 
 MATHEX_SCALAR MachPhysMachine::angleWithHorizontal(const MexVec3& vec) const
 {
-    return atan2(vec.z(), sqrt(vec.x() * vec.x() + vec.y() * vec.y()));
+    return std::atan2(vec.z(), std::sqrt(vec.x() * vec.x() + vec.y() * vec.y()));
 }
 
 void MachPhysMachine::doMove(const MachPhysMachineMoveInfo& info)

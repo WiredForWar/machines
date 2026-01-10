@@ -153,7 +153,7 @@ bool MachPhysVortexBomb::radiusTime(const MATHEX_SCALAR& distance, PhysRelativeT
 
     if (dis > 0 && dis <= dis1)
     {
-        time = sqrt(2.0 * dis / acce1);
+        time = std::sqrt(2.0 * dis / acce1);
         ASSERT(time >= 0, "");
         time += 2; // plus the 2 seconds of black sphere's invisible period
         reachTarget = true;
@@ -161,7 +161,7 @@ bool MachPhysVortexBomb::radiusTime(const MATHEX_SCALAR& distance, PhysRelativeT
 
     if (dis > dis1 && dis <= total)
     {
-        const MATHEX_SCALAR delta = sqrt(constSpeed * constSpeed + 2.0 * (dis - dis1) * acce2);
+        const MATHEX_SCALAR delta = std::sqrt(constSpeed * constSpeed + 2.0 * (dis - dis1) * acce2);
 
         time = (delta - constSpeed) / acce2;
 

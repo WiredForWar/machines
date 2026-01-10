@@ -100,7 +100,7 @@ MATHEX_SCALAR MexPoint2d::operator[](size_t i) const
 _CODE_INLINE
 MATHEX_SCALAR MexPoint2d::euclidianDistance(const MexPoint2d& rhs) const
 {
-    return sqrt(sqrEuclidianDistance(rhs));
+    return std::sqrt(sqrEuclidianDistance(rhs));
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 _CODE_INLINE

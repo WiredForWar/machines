@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include <math.h>
+#include <cmath>
 #include "render/colour.hpp"
 
 #ifndef _INLINE

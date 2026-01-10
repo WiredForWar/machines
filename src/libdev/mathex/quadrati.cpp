@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <math.h>
+#include <cmath>
 
 #include "mathex/quadrati.hpp"
 
@@ -34,7 +34,7 @@ int MexQuadratic::solve(MATHEX_SCALAR a, MATHEX_SCALAR b, MATHEX_SCALAR c, Roots
         if (square > epsilon)
         {
             // Normal situation
-            MATHEX_SCALAR root = sqrt(square);
+            MATHEX_SCALAR root = std::sqrt(square);
             MATHEX_SCALAR root1 = (root - b) / (2.0 * a);
             MATHEX_SCALAR root2 = -(root + b) / (2.0 * a);
 

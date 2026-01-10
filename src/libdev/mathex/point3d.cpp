@@ -113,7 +113,7 @@ MATHEX_SCALAR MexPoint3d::euclidianDistance(const MexPoint3d& v) const
     dy_ = Mathex::abs(y() - v.y());
     dz_ = Mathex::abs(z() - v.z());
 
-    return sqrt((dx_ * dx_) + (dy_ * dy_) + (dz_ * dz_));
+    return std::sqrt((dx_ * dx_) + (dy_ * dy_) + (dz_ * dz_));
 }
 
 //////////////////////////////////////////////////////////////////////

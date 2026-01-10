@@ -2311,7 +2311,7 @@ bool MachLogMachineMotionSequencer::tryNearerPoint(
     if (canMoveCloser)
     {
         // try a point 2 * clearance nearer than the collision
-        MATHEX_SCALAR distanceToCollision = sqrt(sqrDistanceToCollision);
+        MATHEX_SCALAR distanceToCollision = std::sqrt(sqrDistanceToCollision);
         MATHEX_SCALAR f = (distanceToCollision - 2.0 * useClearance_) / distanceToCollision;
         *pNewPoint = MexPoint2d(fromPoint, collisionPoint, f);
     }

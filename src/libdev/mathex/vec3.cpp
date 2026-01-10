@@ -5,7 +5,7 @@
 
 /////////////////////////////////////////////////////////
 
-#include <math.h>
+#include <cmath>
 
 #include "mathex/mathex.hpp"
 #include "mathex/vec3.hpp"
@@ -182,7 +182,7 @@ bool MexVec3::isPerpendicularTo(const MexVec3& v) const
 
 MATHEX_SCALAR MexVec3::modulus() const
 {
-    return sqrt((x() * x()) + (y() * y()) + (z() * z()));
+    return std::sqrt((x() * x()) + (y() * y()) + (z() * z()));
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -260,7 +260,7 @@ MATHEX_SCALAR MexVec3::euclidianDistance(const MexVec3& v) const
     dy_ = Mathex::abs(y() - v.y());
     dz_ = Mathex::abs(z() - v.z());
 
-    return sqrt((dx_ * dx_) + (dy_ * dy_) + (dz_ * dz_));
+    return std::sqrt((dx_ * dx_) + (dy_ * dy_) + (dz_ * dz_));
 }
 
 //////////////////////////////////////////////////////////////////////

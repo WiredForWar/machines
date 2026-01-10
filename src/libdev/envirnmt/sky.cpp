@@ -202,7 +202,7 @@ EnvDynamicSky::~EnvDynamicSky()
 static MexRadians vertexElevation(const RenVertex& vtx)
 {
     const MexPoint3d pos = vtx.position();
-    const MATHEX_SCALAR adjacent = sqrt(pos.x() * pos.x() + pos.y() * pos.y());
+    const MATHEX_SCALAR adjacent = std::sqrt(pos.x() * pos.x() + pos.y() * pos.y());
     return atan2(pos.z(), adjacent);
 }
 

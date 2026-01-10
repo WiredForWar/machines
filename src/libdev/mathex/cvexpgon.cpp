@@ -136,7 +136,7 @@ MexConvexPolygon2d::MexConvexPolygon2d(const MexPolygon2d& rhs, MATHEX_SCALAR ex
             {
                 // Generate 2 vertices. Recompute lambda.
                 count = 2;
-                MATHEX_SCALAR l = sqrt(lambda * lambda + expansionDistance * expansionDistance);
+                MATHEX_SCALAR l = std::sqrt(lambda * lambda + expansionDistance * expansionDistance);
                 lambda = (l - expansionDistance) * (expansionDistance / lambda);
             }
         }

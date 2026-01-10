@@ -116,7 +116,7 @@ uint MexUtility::quadraticRealRoots(
         if (t > 0.0)
         {
             //  Easy case - 2 roots
-            MATHEX_SCALAR t1 = sqrt(t);
+            MATHEX_SCALAR t1 = std::sqrt(t);
             ASSERT_INFO(t1);
 
             nRoots = 2;

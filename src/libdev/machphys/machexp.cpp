@@ -289,8 +289,8 @@ void MachPhysMachineExplosion::setupMotionPlans(
     MATHEX_SCALAR minAngularCineticEnergy = pow(lightestPartMinAngularSpeed, 2) / 2;
     MATHEX_SCALAR maxAngularCineticEnergy = pow(lightestPartMaxAngularSpeed, 2) / 2;
     // the max angular speed for the current part is computed from its weight
-    MATHEX_SCALAR minAngularSpeed = sqrt(minAngularCineticEnergy * 2 / pseudoWeight);
-    MATHEX_SCALAR maxAngularSpeed = sqrt(maxAngularCineticEnergy * 2 / pseudoWeight);
+    MATHEX_SCALAR minAngularSpeed = std::sqrt(minAngularCineticEnergy * 2 / pseudoWeight);
+    MATHEX_SCALAR maxAngularSpeed = std::sqrt(maxAngularCineticEnergy * 2 / pseudoWeight);
     MATHEX_SCALAR tumbleRateRadiansPerSecond = randomDouble(minAngularSpeed, maxAngularSpeed);
     tumbleRateRadiansPerSecond = (tumbleRateRadiansPerSecond < 0.5) ? 0.5 : tumbleRateRadiansPerSecond;
 

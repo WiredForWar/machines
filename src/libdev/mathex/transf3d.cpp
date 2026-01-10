@@ -849,7 +849,7 @@ void MexTransform3d::rotation(MexEulerAngles* pAngles) const
     TEST_INVARIANT;
 
     se = -forward_[0][2];
-    ce = sqrt(forward_[0][0] * forward_[0][0] + forward_[0][1] * forward_[0][1]);
+    ce = std::sqrt(forward_[0][0] * forward_[0][0] + forward_[0][1] * forward_[0][1]);
 
     if (Mathex::abs(ce) < MexEpsilon::instance())
     {
@@ -1031,16 +1031,16 @@ void MexTransform3d::zBasis(MexVec3* v) const
 void MexTransform3d::rotation(MexQuaternion* pParams) const
 {
     // Compute the scalar value
-    MATHEX_SCALAR s = 0.5 * sqrt(fabs(1.0 + forward_[0][0] + forward_[1][1] + forward_[2][2]));
+    MATHEX_SCALAR s = 0.5 * std::sqrt(fabs(1.0 + forward_[0][0] + forward_[1][1] + forward_[2][2]));
     MATHEX_SCALAR x, y, z;
 
     // Check for near 180 degree rotation
     if (s < 0.01)
     {
         MATHEX_SCALAR sSquared = s * s;
-        x = sqrt(fabs(0.5 * (1.0 + forward_[0][0]) - sSquared));
-        y = sqrt(fabs(0.5 * (1.0 + forward_[1][1]) - sSquared));
-        z = sqrt(fabs(0.5 * (1.0 + forward_[2][2]) - sSquared));
+        x = std::sqrt(fabs(0.5 * (1.0 + forward_[0][0]) - sSquared));
+        y = std::sqrt(fabs(0.5 * (1.0 + forward_[1][1]) - sSquared));
+        z = std::sqrt(fabs(0.5 * (1.0 + forward_[2][2]) - sSquared));
     }
     else
     {

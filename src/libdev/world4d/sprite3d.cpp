@@ -107,7 +107,7 @@ bool W4dSprite3d::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) con
 
 void W4dSprite3d::rotate(const MexRadians& angle)
 {
-    static const MATHEX_SCALAR s2 = sqrt(2.0) / 2.0;
+    static const MATHEX_SCALAR s2 = std::sqrt(2.0) / 2.0;
     const MexRadians a2 = MexDegrees(45) - angle;
     const MATHEX_SCALAR c = s2 * cos(a2);
     const MATHEX_SCALAR s = s2 * sin(a2);

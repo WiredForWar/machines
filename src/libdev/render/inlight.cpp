@@ -571,7 +571,7 @@ float RenIAttenuatedLight::attenuation(
     if (sqrRangeToVtx >= sqrRange)
         return 0;
     else
-        return attenuation(sqrt(sqrRangeToVtx));
+        return attenuation(std::sqrt(sqrRangeToVtx));
 }
 
 // virtual
@@ -722,7 +722,7 @@ void RenIPointLight::lightVertices(
             // Rather than call dir.makeUnitVector(), avoid a squrare root and
             // divide by the range to the vertex because we need that separately
             // for the attenuation calculation.
-            const float rangeToVtx = sqrt(sqrRangeToVtx);
+            const float rangeToVtx = std::sqrt(sqrRangeToVtx);
             const float recipRange = 1 / rangeToVtx;
             const RenIVec3FixPtS0_7 fixPtDir(recipRange * dx, recipRange * dy, recipRange * dz);
 
@@ -940,7 +940,7 @@ void RenIUniformLight::lightVertices(
         }
         else
         {
-            const float intensity = attenuation(sqrt(sqrRangeToVtx));
+            const float intensity = attenuation(std::sqrt(sqrRangeToVtx));
             accumulateIllumination(pR, pG, pB, sumType, intensity, myColour);
         }
 
