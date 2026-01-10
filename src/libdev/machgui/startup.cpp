@@ -1582,8 +1582,12 @@ void MachGuiStartupScreens::loopCycleInGame()
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(finishApp_);
 
     PRE(context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
+
+    if (finishApp_)
+        return;
 
 #ifndef PRODUCTION
 
