@@ -2446,7 +2446,6 @@ void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstr
     CB_DEPIMPL_AUTO(pMachinesIcon_);
     CB_DEPIMPL_AUTO(pConstructionsIcon_);
     CB_DEPIMPL_AUTO(pSquadronIcon_);
-    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
     CB_DEPIMPL_AUTO(pControlPanel_);
 
     // Don't allow any of the button setting below to trigger their sounds
@@ -2479,16 +2478,7 @@ void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstr
 
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        const int chatMessagesX = 202 * Gui::uiScaleFactor();
-        const int chatMessagesY = 0 * Gui::uiScaleFactor();
-
-        pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
-            this,
-            Gui::Box(
-                Gui::Coord(chatMessagesX, chatMessagesY),
-                MachGuiInGameChatMessages::reqWidth(),
-                MachGuiInGameChatMessages::reqHeight()),
-            &worldViewWindow());
+        setupChatMessages();
     }
 
     gameState_ = PLAYING;
@@ -2886,6 +2876,24 @@ void MachInGameScreen::setupPromptText()
     // Move prompt text
     Gui::Coord promptNewTopLeft(controlPanelXPos_ + MachGui::promptTextXOffset(), h + MachGui::promptTextYOffset());
     positionChildRelative(pPromptText_, promptNewTopLeft);
+}
+
+void MachInGameScreen::setupChatMessages()
+{
+    CB_DEPIMPL_AUTO(pChatMessageDisplay_);
+    if (pChatMessageDisplay_)
+        return;
+
+    const int chatMessagesX = 202 * Gui::uiScaleFactor();
+    const int chatMessagesY = 0 * Gui::uiScaleFactor();
+
+    pChatMessageDisplay_ = new MachGuiInGameChatMessagesDisplay(
+        this,
+        Gui::Box(
+            Gui::Coord(chatMessagesX, chatMessagesY),
+            MachGuiInGameChatMessages::reqWidth(),
+            MachGuiInGameChatMessages::reqHeight()),
+        &worldViewWindow());
 }
 
 void MachInGameScreen::setupNavigators()

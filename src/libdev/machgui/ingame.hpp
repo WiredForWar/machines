@@ -388,6 +388,8 @@ private:
     // Create/Update prompt text ( called after resolution change )
     void setupPromptText();
 
+    void setupChatMessages();
+
     void setupNavigators();
 
     void setupCorralAndCommandIcons();
