@@ -9,6 +9,7 @@
 #include "ctl/list.hpp"
 #include "ctl/pvector.hpp"
 #include "machgui/gui.hpp"
+#include "machgui/IInputRegistry.hpp"
 #include "machgui/promtext.hpp"
 #include "machgui/cameras.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -498,6 +499,9 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 
     if (event.state() == Gui::PRESSED)
     {
+        static const auto& sendChatToSystemTrigger = MachGui::inputRegistry()->getBinds("chat-send-to-system"_bind);
+        static const auto& showMenusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
+
         if ((event.key() == Device::KeyCode::F1 || event.key() == Device::KeyCode::F2 || event.key() == Device::KeyCode::F3)
             && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
@@ -614,8 +618,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                 beginningTextWidth_ = shadowFont_.horizontalAdvance(chatMessageIntendedForStr_);
             }
         }
-        else if (
-            event.key() == Device::KeyCode::F11 && event.isShiftPressed() && event.isCtrlPressed() && event.isAltPressed())
+        else if (sendChatToSystemTrigger.matches(event.keyWithMods()))
         {
             opponentIndex_ = SYSTEM_MESSAGE;
             enteringChatMessage_ = true;
@@ -626,7 +629,9 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             chatMessageIntendedForStr_ = sendToSystemStr.asString();
             beginningTextWidth_ = shadowFont_.horizontalAdvance(chatMessageIntendedForStr_);
         }
-        else if (event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::ENTER || event.key() == Device::KeyCode::F10)
+        else if (
+            event.key() == Device::KeyCode::ESCAPE || event.key() == Device::KeyCode::ENTER
+            || showMenusTrigger.matches(event.keyWithMods()))
         {
             if (enteringChatMessage_)
             {

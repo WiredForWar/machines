@@ -517,6 +517,7 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-ui-controlpanel-toggle"_bind, IDS_TOGGLE_PANEL);
 
     createBind(bcGeneral, "screenshot"_bind, IDS_MAKE_SCREENSHOT);
+    createBind(bcGeneral, "chat-send-to-system"_bind);
     createSpecialBind(bcGeneral, "x-send-chat-to-target"_bind, IDS_SEND_CHAT_TO_TARGET);
     createSpecialBind(bcGeneral, "x-alliance-toggle"_bind, IDS_ALLIANCE_TOGGLE);
 
@@ -615,6 +616,7 @@ void InputRegistry::setLegacyDefaults()
         { KeyCode::GRAVE },
     });
     setBinds("screenshot"_bind, { { KeyCode::F12 | KeyModifier::Ctrl | KeyModifier::Shift } });
+    setBinds("chat-send-to-system"_bind, { { KeyCode::F11 | KeyModifier::Ctrl | KeyModifier::Shift | KeyModifier::Alt } });
 
     setBinds("view-use-zenith-camera"_bind, { { KeyCode::PAD_2 } });
     setBinds("view-use-ground-camera"_bind, { { KeyCode::PAD_0 } });
