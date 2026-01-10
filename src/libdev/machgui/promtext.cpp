@@ -603,62 +603,13 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                 // Send a chat message
                 if (event.key() == Device::KeyCode::ENTER)
                 {
-                    if (opponentIndex_ != SYSTEM_MESSAGE)
-                    {
-                        std::string chatMessageStr;
-
-                        // Add coloured token to beginning of message
-                        switch (MachGuiInGameChatMessages::instance().playerRace())
-                        {
-                            case MachPhys::RED:
-                                chatMessageStr += GuiBmpFont::redCharIndex();
-                                break;
-                            case MachPhys::GREEN:
-                                chatMessageStr += GuiBmpFont::greenCharIndex();
-                                break;
-                            case MachPhys::BLUE:
-                                chatMessageStr += GuiBmpFont::blueCharIndex();
-                                break;
-                            case MachPhys::YELLOW:
-                                chatMessageStr += GuiBmpFont::yellowCharIndex();
-                                break;
-                        }
-                        chatMessageStr += MachGuiInGameChatMessages::instance().playerName();
-                        chatMessageStr += ": ";
-                        chatMessageStr += text();
-
-                        MachGuiInGameChatMessages::instance().sendMessage(chatMessageStr, chatMessageIntendedForRace_);
-                        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
-                    }
-                    else
-                    {
-                        //                      if ( strnicmp( text().c_str(), "MUSIC", 5 ) == 0 and text().length() > 5
-                        //                      )
-                        if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 && text().length() > 5)
-                        {
-                            int track = atoi(&text().c_str()[5]);
-
-                            if (track > 0 && // Valid track number entered
-                                DevCD::instance().isAudioCDPresent() && // Audio CD is in CD-Rom
-                                track < DevCD::instance()
-                                            .numberOfTracks()) // Track number is not outside the number of tracks on CD
-                            {
-                                DevCD::instance().play(track);
-                            }
-                        }
-                        else if (strcasecmp(text().c_str(), "EXIT") == 0) // Instant Exit
-                        {
-                            pInGameScreen_->instantExit(true);
-                        }
-
-                        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
-                    }
+                    submit();
                 }
 
                 // Clear message from prompt text
                 enteringChatMessage_ = false;
                 GuiManager::instance().removeCharFocus();
-                setText("");
+                setText({});
                 refresh_ = true;
                 restartScroll_ = true;
                 processed = true;
@@ -700,6 +651,62 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
     const int xOffset = lightOn_.width() + hSpacing;
 
     return absoluteBoundary().minCorner() + Gui::Vec(xOffset, yOffset);
+}
+
+void MachPromptText::submit()
+{
+    CB_DEPIMPL_AUTO(chatMessageIntendedForRace_);
+    CB_DEPIMPL_AUTO(chatMessageIntendedForStr_);
+    CB_DEPIMPL_AUTO(opponentIndex_);
+    CB_DEPIMPL_AUTO(pInGameScreen_);
+
+    if (opponentIndex_ == SYSTEM_MESSAGE)
+    {
+        if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 && text().length() > 5)
+        {
+            int track = atoi(&text().c_str()[5]);
+
+            if (track > 0 && // Valid track number entered
+                DevCD::instance().isAudioCDPresent() && // Audio CD is in CD-Rom
+                track < DevCD::instance().numberOfTracks()) // Track number is not outside the number of tracks on CD
+            {
+                DevCD::instance().play(track);
+            }
+        }
+        else if (strcasecmp(text().c_str(), "EXIT") == 0) // Instant Exit
+        {
+            pInGameScreen_->instantExit(true);
+        }
+
+        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
+    }
+    else
+    {
+        std::string chatMessageStr;
+
+        // Add coloured token to beginning of message
+        switch (MachGuiInGameChatMessages::instance().playerRace())
+        {
+        case MachPhys::RED:
+            chatMessageStr += GuiBmpFont::redCharIndex();
+            break;
+        case MachPhys::GREEN:
+            chatMessageStr += GuiBmpFont::greenCharIndex();
+            break;
+        case MachPhys::BLUE:
+            chatMessageStr += GuiBmpFont::blueCharIndex();
+            break;
+        case MachPhys::YELLOW:
+            chatMessageStr += GuiBmpFont::yellowCharIndex();
+            break;
+        }
+        chatMessageStr += MachGuiInGameChatMessages::instance().playerName();
+        chatMessageStr += ": ";
+        chatMessageStr += text();
+
+        MachGuiInGameChatMessages::instance().sendMessage(chatMessageStr, chatMessageIntendedForRace_);
+        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
+    }
 }
 
 bool MachPromptText::processesMouseEvents() const

@@ -80,6 +80,8 @@ protected:
     int maxWidth() const override;
     Gui::Coord getPromptTextAbsolutePosition() const;
 
+    void submit();
+
     // Pass mouse position in as relative to this GuiDisplayable. Updates
     // mouse position to be relative to pPassEventsTo_.
     // bool passEventTo( GuiMouseEvent* );
