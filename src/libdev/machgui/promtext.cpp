@@ -3,11 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-//  Definitions of non-inline non-template methods and global functions
-
 #include "base/prepost.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/promtext.hpp"
@@ -18,54 +14,23 @@
 #include "machgui/ingame.hpp"
 #include "machlog/network.hpp"
 #include "machlog/races.hpp"
-#include "machlog/pod.hpp"
-#include "machlog/canattac.hpp"
-#include "machlog/weapon.hpp"
-#include "machlog/nuclbomb.hpp"
-#include "machlog/missilem.hpp"
-#include "machlog/restree.hpp"
-#include "machlog/resitem.hpp"
-#include "machphys/objdata.hpp"
-#include "machphys/wepdata.hpp"
-#include "machphys/mphydata.hpp"
 #include "gui/manager.hpp"
 #include "gui/event.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/restring.hpp"
-#include "device/butevent.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
 #include "render/surfmgr.hpp"
 #include "device/cd.hpp"
+
 #include <string>
-// #include <mbstring.h>
 
 #define SYSTEM_MESSAGE 100
 
 using strings = std::vector<std::string>;
-
-bool checkEnteredText(const unsigned char* pEncryptedText, const unsigned char* pDecryptKey, const std::string& enteredText)
-{
-    //  int sizeOfEncryptedText = _mbslen( pEncryptedText );
-    int sizeOfEncryptedText = 10; // Magic codes, have a fun decrypting them - martin.
-
-    std::string decryptedText;
-
-    if (sizeOfEncryptedText != enteredText.length())
-    {
-        return false;
-    }
-
-    for (int i = 0; i < sizeOfEncryptedText; ++i)
-    {
-        decryptedText += pEncryptedText[i] ^ pDecryptKey[i];
-    }
-
-    return enteredText == decryptedText;
-}
 
 class MachPromptTextImpl
 {
@@ -708,7 +673,6 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
     return processed || enteringChatMessage_;
 }
 
-// virtual
 int MachPromptText::maxWidth() const
 {
     // Work out how much room there is to type in a chat message
@@ -738,89 +702,7 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
     return absoluteBoundary().minCorner() + Gui::Vec(xOffset, yOffset);
 }
 
-/* NA 30/11/98. New processesMouseEvents added to GuiDisplayable means I don't need these
-//virtual
-void MachPromptText::doHandleMouseClickEvent( const GuiMouseEvent& rel )
-{
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
-    GuiMouseEvent relToOther = rel;
-
-    if ( passEventTo( &relToOther ) )
-    {
-        pPassEventsTo_->doHandleMouseClickEvent( relToOther );
-    }
-}
-
-//virtual
-void MachPromptText::doHandleMouseEnterEvent( const GuiMouseEvent& rel )
-{
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
-    GuiMouseEvent relToOther = rel;
-
-    if ( passEventTo( &relToOther ) )
-    {
-        pPassEventsTo_->doHandleMouseEnterEvent( relToOther );
-    }
-}
-
-//virtual
-void MachPromptText::doHandleMouseExitEvent( const GuiMouseEvent& rel )
-{
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
-    GuiMouseEvent relToOther = rel;
-
-    if ( passEventTo( &relToOther ) )
-    {
-        pPassEventsTo_->doHandleContainsMouseEvent( relToOther );
-    }
-    else
-    {
-        pPassEventsTo_->doHandleMouseExitEvent( relToOther );
-    }
-}
-
-//virtual
-void MachPromptText::doHandleContainsMouseEvent( const GuiMouseEvent& rel )
-{
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
-    GuiMouseEvent relToOther = rel;
-
-    if ( passEventTo( &relToOther ) )
-    {
-        pPassEventsTo_->doHandleContainsMouseEvent( relToOther );
-    }
-}
-
-bool MachPromptText::passEventTo( GuiMouseEvent* pMouseEvent )
-{
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
-    bool returnValue = false;
-
-    Gui::Coord absEventPos = absoluteBoundary().minCorner();
-    absEventPos.x( absEventPos.x() + pMouseEvent->coord().x() );
-    absEventPos.y( absEventPos.y() + pMouseEvent->coord().y() );
-
-    if ( pPassEventsTo_->contains( absEventPos ) )
-    {
-        pMouseEvent->translate( Gui::Vec( ( absEventPos.x() - pPassEventsTo_->absoluteCoord().x() ) -
-pMouseEvent->coord().x(), ( absEventPos.y() - pPassEventsTo_->absoluteCoord().y() ) - pMouseEvent->coord().y() ) );
-        returnValue = true;
-    }
-
-    return returnValue;
-}
-*/
-
-// virtual
 bool MachPromptText::processesMouseEvents() const
 {
     return false;
 }
-
-// Forced recompile 16/2/99 CPS
-/* End PROMTEXT.CPP *************************************************/
