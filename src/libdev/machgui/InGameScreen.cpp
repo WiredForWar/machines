@@ -2959,6 +2959,7 @@ void MachInGameScreen::setupPromptText()
             Gui::Boundary(controlPanelXPos_, h + MachGui::promptTextYOffset(), w, h),
             pCameras_.get(),
             &worldViewWindow());
+        pPromptText_->setConsole(console_);
     }
 
     // Move prompt text

@@ -21,6 +21,13 @@ class MachCameras;
 class MachPromptTextImpl;
 class MachInGameScreen;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 // orthodox canonical (revoked)
 class MachPromptText : public GuiSingleLineEditBox
 {
@@ -34,6 +41,8 @@ public:
 
     // dtor.
     ~MachPromptText() override;
+
+    void setConsole(System::IConsole* pConsole);
 
     // Set/get the prompt text related to cursor position
     void setCursorPromptText(const std::string& prompt);
