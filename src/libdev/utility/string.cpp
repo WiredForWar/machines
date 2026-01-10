@@ -67,6 +67,17 @@ void toLowerInPlace(std::string* str)
         ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
 }
 
+std::string trimWhitespace(std::string_view text)
+{
+    const std::size_t first = text.find_first_not_of(" \t\r\n");
+    if (first == std::string_view::npos)
+    {
+        return {};
+    }
+    const std::size_t last = text.find_last_not_of(" \t\r\n");
+    return std::string(text.substr(first, last - first + 1));
+}
+
 namespace
 {
 
