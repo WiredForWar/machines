@@ -1,4 +1,6 @@
 #include "base/memwatch.hpp"
+
+#include "machgui/ConsoleDropDown.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ProductionBank.hpp"
@@ -37,6 +39,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     CB_DEPIMPL_AUTO(pActiveCommand_);
     CB_DEPIMPL_AUTO(pFirstPerson_);
     CB_DEPIMPL_AUTO(gameStateTimer_);
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
 
     NEIL_STREAM(
         "InGame button event : " << static_cast<int>(e.key()) << " ctrl " << e.isCtrlPressed() << " shift "
@@ -62,8 +65,34 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
         switch (count)
         {
         case 0:
-            processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
+        {
+            static const auto& consoleTrigger = MachGui::inputRegistry()->getBinds("ui-toggle-console"_bind);
+            if (e.state() == Gui::PRESSED && consoleTrigger.matches(e.keyWithMods()))
+            {
+                toggleConsoleDropDown();
+            }
+            else if (pConsoleDropDown_ && pConsoleDropDown_->isOpen())
+            {
+                static const auto& menusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
+                if (e.state() == Gui::PRESSED)
+                {
+                    if (menusTrigger.matches(e.keyWithMods()))
+                    {
+                        toggleConsoleDropDown();
+                    }
+                    else
+                    {
+                        processed = true;
+                        pConsoleDropDown_->doHandleKeyEvent(e);
+                    }
+                }
+            }
+            else
+            {
+                processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
+            }
             break;
+        }
         case 1:
         {
             ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
@@ -104,7 +133,6 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             processed = pImpl_->pWorldViewWindow_->processButtonEvent(e.buttonEvent());
             break;
         case 6:
-            break;
         case 7:
             break;
         case 8:

@@ -31,6 +31,8 @@ set(MACHGUI_SOURCES
     ChatWindow.hpp
     CommandIcons.cpp
     CommandIcons.hpp
+    ConsoleDropDown.cpp
+    ConsoleDropDown.hpp
     ConstructMenu.cpp
     ConstructMenu.hpp
     ConstructMenuIcons.cpp

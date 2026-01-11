@@ -39,6 +39,8 @@ const Gui::Colour& DARKGREEN();
 const Gui::Colour& DARKBLUE();
 const Gui::Colour& DROPDOWNDARKGREEN();
 const Gui::Colour& DROPDOWNLIGHTGREEN();
+const Gui::Colour& CONSOLEBORDERCOLOR();
+const Gui::Colour& CONSOLEFILLCOLOR();
 
 inline constexpr Gui::Coord waitImageContentOffset{32, 129};
 

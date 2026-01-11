@@ -377,6 +377,8 @@ protected:
     // revealed, i.e. construction menu ).
     bool displayControlPanel() const;
 
+    void toggleConsoleDropDown();
+
 private:
     // When an actor is selected, this should be called to ensure that
     // the navigator is dismissed at the correct time
@@ -396,6 +398,7 @@ private:
 
     // Create/Update prompt text ( called after resolution change )
     void setupPromptText();
+    void updateConsoleDropDownViewport();
 
     void setupChatMessages();
 

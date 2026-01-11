@@ -31,6 +31,7 @@ class MachMachinesIcon;
 class MachConstructionsIcon;
 class MachSquadronIcon;
 class MachPromptText;
+class MachGuiConsoleDropDown;
 class MachGuiCorralSingleIcon;
 class MachGuiCorral;
 class MachGuiMachineNavigator;
@@ -123,6 +124,8 @@ public:
     bool controlPanelOn_{};
     int controlPanelXPos_{};
     MachGuiControlPanel* pControlPanel_{};
+    std::unique_ptr<MachGuiConsoleDropDown> pConsoleDropDown_{};
+    int consoleDropDownOffset_{};
     MachGuiMapArea* pMapArea_{};
     MachGuiCameraScrollArea* pTopCameraScrollArea_{};
     MachGuiCameraScrollArea* pBottomCameraScrollArea_{};
