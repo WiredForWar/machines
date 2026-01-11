@@ -44,6 +44,7 @@ public:
     void backgroundColour(const GuiColour& colour);
     void caretColour(const GuiColour& colour);
 
+    void clear();
     // Set text that is displayed in edit box
     void setText(const std::string&);
     // PRE( std::string.length() <= maxChars_ );
