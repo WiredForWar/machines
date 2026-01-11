@@ -686,6 +686,18 @@ void SDLApp::initConsole()
         console.writeLine("Exiting...");
         pStartupScreens_->requestExit();
     });
+    console_->registerCommand(
+        { .name = "version", .description = "Print the game version" },
+        [this](const System::IConsole::CommandRequest&, System::IConsole& console)
+    {
+        std::string output = name();
+        output += " ";
+        output += version();
+        output += " (build ";
+        output += buildVersion();
+        output += ")";
+        console.writeLine(output);
+    });
 }
 
 void SDLApp::initProfiling(IProgressReporter* /*pReporter*/)
