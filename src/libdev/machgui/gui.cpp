@@ -262,6 +262,20 @@ const Gui::Colour& MachGui::DROPDOWNLIGHTGREEN()
 }
 
 // static
+const Gui::Colour& MachGui::CONSOLEBORDERCOLOR()
+{
+    static Gui::Colour result_(0x2a / 255.0, 0x2a / 255.0, 0x2a / 255.0);
+    return result_;
+}
+
+// static
+const Gui::Colour& MachGui::CONSOLEFILLCOLOR()
+{
+    static Gui::Colour result_(0x00 / 255.0, 0x1e / 255.0, 0x04 / 255.0, 220.0 / 255.0);
+    return result_;
+}
+
+// static
 void MachGui::drawNumber(GuiBitmap* pNumberArray, size_t value, Gui::Coord* pAbsCoord)
 {
     do

@@ -586,6 +586,8 @@ void InputRegistry::initBinds()
 
     createBind(bcFirstPerson, "fpv-exit"_bind, IDS_EXIT);
     createBind(bcFirstPerson, "fpv-menus"_bind, IDS_MENUS);
+
+    createBind(bcGeneral, "ui-toggle-console"_bind);
 }
 
 void InputRegistry::setDefaults()
@@ -602,6 +604,7 @@ void InputRegistry::setDefaults()
 
 void InputRegistry::setLegacyDefaults()
 {
+    setBinds("ui-toggle-console"_bind, {{ KeyCode::F1 }});
     setBinds("ui-controlpanel-hide"_bind, {
         { KeyCode::LEFT_ARROW | KeyModifier::Alt },
     });
