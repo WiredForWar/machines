@@ -40,6 +40,13 @@ class MachActor;
 class MachGuiControlPanel;
 template <class T> class ctl_pvector;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 // orthodox canonical (revoked)
 class MachInGameScreen
     : public GuiRoot
@@ -50,6 +57,8 @@ public:
     MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter* pReporter);
 
     ~MachInGameScreen() override;
+
+    void setConsole(System::IConsole* console);
 
     // Create the cameras, initialises button display values and map
     void loadGame(const std::string& planet, std::optional<PerIstream *> savedStream = std::nullopt);

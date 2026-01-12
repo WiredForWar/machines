@@ -150,6 +150,7 @@ public:
 #define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
     CB_DEPIMPL(RenCursor2d*, pMenuCursor_);                                                                            \
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);                                                                      \
+    CB_DEPIMPL_AUTO(console_);                                                                                         \
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);                                                              \
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);                                                     \
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);                                                    \
@@ -178,9 +179,7 @@ public:
     CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
 
 MachGuiStartupScreens::MachGuiStartupScreens(
-    W4dSceneManager* pSceneManager,
-    W4dRoot* pRoot,
-    IProgressReporter* pReporter)
+    W4dSceneManager* pSceneManager, W4dRoot* pRoot, System::IConsole* console, IProgressReporter* pReporter)
     : GuiRoot(Gui::toSize(pSceneManager->pDevice()->windowSize()))
     , pImpl_(nullptr)
 {
@@ -189,6 +188,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     CB_MachGuiStartupScreens_DEPIMPL();
 
     pSceneManager_ = pSceneManager;
+    console_ = console;
     pBackdrop_ = nullptr;
     finishApp_ = false;
     switchGuiRoot_ = false;
@@ -220,6 +220,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp", scaleFactor);
 
     pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
+    pInGameScreen_->setConsole(console_);
 
     pReporter->report(70, 100); // 70% of gui stuff done
 

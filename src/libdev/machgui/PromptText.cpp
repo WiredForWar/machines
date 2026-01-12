@@ -64,6 +64,7 @@ public:
     int standardMessageIndex_;
     int opponentIndex_;
     MachInGameScreen* pInGameScreen_;
+    System::IConsole *pConsole_{};
 };
 
 constexpr int c_textScrollSpeed = 20;
@@ -226,6 +227,12 @@ const std::string& MachPromptText::commandPromptText() const
     CB_DEPIMPL(std::string, commandPromptText_);
 
     return commandPromptText_;
+}
+
+void MachPromptText::setConsole(System::IConsole* console)
+{
+    CB_DEPIMPL_AUTO(pConsole_);
+    pConsole_ = console;
 }
 
 void MachPromptText::clearCommandPromptText()
@@ -643,6 +650,7 @@ void MachPromptText::submit()
     CB_DEPIMPL_AUTO(chatMessageIntendedForStr_);
     CB_DEPIMPL_AUTO(opponentIndex_);
     CB_DEPIMPL_AUTO(pInGameScreen_);
+    CB_DEPIMPL_AUTO(pConsole_);
 
     if (opponentIndex_ == SYSTEM_MESSAGE)
     {

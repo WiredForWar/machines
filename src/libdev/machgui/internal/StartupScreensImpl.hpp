@@ -36,6 +36,7 @@ private:
     // Data members...
     RenCursor2d* pMenuCursor_;
     W4dSceneManager* pSceneManager_;
+    System::IConsole* console_{};
     MachGuiStartupScreens::Context context_;
     MachGuiStartupScreens::Context contextAfterFlic_;
     MachGuiStartupScreens::Context contextBeforeFlic_;

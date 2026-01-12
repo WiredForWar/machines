@@ -106,6 +106,7 @@
 #include "device/time.hpp"
 #include "system/registry.hpp"
 #include "system/vfs.hpp"
+#include "system/Console.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -290,6 +291,12 @@ MachInGameScreen::~MachInGameScreen()
     delete pImpl_;
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::DTOR leave" << std::endl);
+}
+
+void MachInGameScreen::setConsole(System::IConsole* console)
+{
+    CB_DEPIMPL_AUTO(console_);
+    console_ = console;
 }
 
 void MachInGameScreen::doBecomeRoot()
@@ -2856,6 +2863,7 @@ void MachInGameScreen::setupPromptText()
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pPromptText_);
     CB_DEPIMPL_AUTO(controlPanelXPos_);
+    CB_DEPIMPL_AUTO(console_);
 
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
@@ -2869,6 +2877,7 @@ void MachInGameScreen::setupPromptText()
             Gui::Boundary(controlPanelXPos_, h + MachGui::promptTextYOffset(), w, h),
             pCameras_.get(),
             &worldViewWindow());
+        pPromptText_->setConsole(console_);
     }
 
     // Move prompt text
