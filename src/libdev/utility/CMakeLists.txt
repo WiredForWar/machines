@@ -1,6 +1,7 @@
 
 set(UTILITY_SOURCES
     Array.hpp
+    CallbackHandle.hpp
     DependencyProvider.hpp
     ascpict.cpp
     ascpict.hpp
