@@ -16,7 +16,7 @@
 #include "machlog/oprecycl.hpp"
 
 MachGuiRecycleCommand::MachGuiRecycleCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-recycle-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-recycle"_bind)
     , hadFinalPick_(false)
     , pSmeltingBuilding_(nullptr)
 {

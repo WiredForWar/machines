@@ -14,7 +14,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiBuildCommand::MachGuiBuildCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-build-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-build"_bind)
 {
     TEST_INVARIANT;
 }

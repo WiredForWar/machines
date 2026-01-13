@@ -23,7 +23,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiDropLandMineCommand::MachGuiDropLandMineCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-drop-land-mine-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-drop-land-mine"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable allocation size

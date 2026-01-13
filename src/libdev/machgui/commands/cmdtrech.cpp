@@ -18,7 +18,7 @@
 #include "machlog/races.hpp"
 
 MachGuiTreacheryCommand::MachGuiTreacheryCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-treachery-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-treachery"_bind)
     , action_(ATTACK_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)

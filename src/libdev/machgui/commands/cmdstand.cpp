@@ -18,7 +18,7 @@
 #include "machlog/opstandg.hpp"
 
 MachGuiStandGroundCommand::MachGuiStandGroundCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-stand-ground-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-stand-ground"_bind)
 {
     TEST_INVARIANT;
 }

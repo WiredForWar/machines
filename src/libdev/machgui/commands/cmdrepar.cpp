@@ -28,7 +28,7 @@
 #include "machphys/objdata.hpp"
 
 MachGuiRepairCommand::MachGuiRepairCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-repair-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-repair"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;

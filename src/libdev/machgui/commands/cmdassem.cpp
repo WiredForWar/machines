@@ -16,7 +16,7 @@
 #include "machlog/factory.hpp"
 
 MachGuiAssemblyPointCommand::MachGuiAssemblyPointCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-assembly-point-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-assembly-point"_bind)
     , interactionComplete_(false)
 {
     TEST_INVARIANT;

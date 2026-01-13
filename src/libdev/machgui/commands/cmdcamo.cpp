@@ -16,7 +16,7 @@
 #include "world4d/domain.hpp"
 
 MachGuiCamouflageCommand::MachGuiCamouflageCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-camouflage-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-camouflage"_bind)
 {
     TEST_INVARIANT;
 }

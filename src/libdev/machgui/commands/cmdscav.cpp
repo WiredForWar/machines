@@ -21,7 +21,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-scavenge-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-scavenge"_bind)
     , hadFinalPick_(false)
     , action_(SCAVENGE)
 {

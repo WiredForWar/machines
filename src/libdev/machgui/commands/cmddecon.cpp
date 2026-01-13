@@ -30,7 +30,7 @@
 #include "machgui/ingame.hpp"
 
 MachGuiDeconstructCommand::MachGuiDeconstructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-deconstruct-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-deconstruct"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;

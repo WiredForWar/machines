@@ -42,7 +42,7 @@
 #include "machgui/internal/mgsndman.hpp"
 
 MachGuiMoveCommand::MachGuiMoveCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-move-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-move"_bind)
     , action_(SIMPLE_MOVE)
     , hadFinalPick_(false)
     , pConstruction_(nullptr)

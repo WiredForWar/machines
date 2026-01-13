@@ -17,7 +17,7 @@
 #include "system/pathname.hpp"
 
 MachGuiPatrolCommand::MachGuiPatrolCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-patrol-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-patrol"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable vector size

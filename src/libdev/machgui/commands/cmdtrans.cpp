@@ -22,7 +22,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiTransportCommand::MachGuiTransportCommand(MachInGameScreen* pInGameScreen, bool explicitOrder)
-    : MachGuiCommand(pInGameScreen, "commands-transport-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-transport"_bind)
     , pSmeltingBuilding_(nullptr)
     , explicitOrder_(explicitOrder)
     , hadFinalPick_(false)

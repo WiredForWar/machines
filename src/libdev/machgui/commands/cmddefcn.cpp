@@ -21,7 +21,7 @@ bool MachGuiDefconCommand::defconHigh_ = false;
 bool MachGuiDefconCommand::goHighFromNormal_ = true;
 
 MachGuiDefconCommand::MachGuiDefconCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-defcon-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-defcon"_bind)
 {
     TEST_INVARIANT;
 }

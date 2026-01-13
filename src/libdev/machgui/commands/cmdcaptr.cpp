@@ -24,7 +24,7 @@
 #include "machlog/machvman.hpp"
 
 MachGuiCaptureCommand::MachGuiCaptureCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-capture-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-capture"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;

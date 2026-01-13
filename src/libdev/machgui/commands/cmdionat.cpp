@@ -20,7 +20,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiIonAttackCommand::MachGuiIonAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-ion-attack-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-ion-attack"_bind)
     , action_(DO_NOTHING)
     , // this default is for the case where no ion cannons are charged
     pDirectObject_(nullptr)

@@ -55,7 +55,7 @@
 #include "machgui/mextemp.hpp"
 
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-construct-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-construct"_bind)
 {
     allConstructions_.reserve(10);
     newConstructions_.reserve(10);

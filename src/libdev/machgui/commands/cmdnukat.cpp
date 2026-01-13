@@ -31,7 +31,7 @@
 #include "gui/font.hpp"
 
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-nuke-attack-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-nuke-attack"_bind)
     , action_(DO_NOTHING)
     , hadFinalPick_(! atLeastOneActorHasChargedNuke())
 {

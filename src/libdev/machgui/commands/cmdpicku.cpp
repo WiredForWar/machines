@@ -21,7 +21,7 @@
 #include "machgui/internal/strings.hpp"
 
 MachGuiPickUpCommand::MachGuiPickUpCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-pick-up-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-pick-up"_bind)
     , hadFinalPick_(false)
     , addingOrReplacing_(REPLACING)
     , action_(PICKUP)

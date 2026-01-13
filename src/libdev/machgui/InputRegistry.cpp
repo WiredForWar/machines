@@ -286,7 +286,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
         std::string combinedBind = toDisplayString(KeyCode::KEY_0) + "-" + toDisplayString(KeyCode::KEY_9)
             + " " + toDisplayString(KeyModifier::Ctrl);
 
-        const auto command = getBinds("commands-form-squadron-trigger"_bind);
+        const auto command = getBinds("commands-form-squadron"_bind);
         if (command.empty())
         {
             result.displayBind_ = combinedBind;
@@ -457,7 +457,7 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-squadron-add"_bind, IDS_SQUADRON_ADD_X_TO_Y);
     createSpecialBind(bcGeneral, "x-squadron-select"_bind, IDS_SQUADRON_SELECT_X_TO_Y);
 
-    createBind(bcGeneral, "commands-form-squadron-trigger"_bind);
+    createBind(bcGeneral, "commands-form-squadron"_bind);
     for (int i = 0; i <= 9; ++i)
     {
         const std::string bindId = std::to_string(i);
@@ -521,35 +521,35 @@ void InputRegistry::initBinds()
     createSpecialBind(bcGeneral, "x-send-chat-to-target"_bind, IDS_SEND_CHAT_TO_TARGET);
     createSpecialBind(bcGeneral, "x-alliance-toggle"_bind, IDS_ALLIANCE_TOGGLE);
 
-    createBind(bcGeneral, "commands-build-trigger"_bind);
+    createBind(bcGeneral, "commands-build"_bind);
 
-    createBind(bcGeneral, "commands-move-trigger"_bind, IDS_MOVE_COMMAND, IDS_COMMAND_MOVE);
-    createBind(bcGeneral, "commands-attack-trigger"_bind, IDS_ATTACK_COMMAND, IDS_COMMAND_ATTACK);
-    createBind(bcGeneral, "commands-construct-trigger"_bind, IDS_CONSTRUCT_COMMAND, IDS_COMMAND_CONSTRUCT);
+    createBind(bcGeneral, "commands-move"_bind, IDS_MOVE_COMMAND, IDS_COMMAND_MOVE);
+    createBind(bcGeneral, "commands-attack"_bind, IDS_ATTACK_COMMAND, IDS_COMMAND_ATTACK);
+    createBind(bcGeneral, "commands-construct"_bind, IDS_CONSTRUCT_COMMAND, IDS_COMMAND_CONSTRUCT);
     createBind(bcGeneral, "commands-construct-rotate"_bind);
-    createBind(bcGeneral, "commands-locate-trigger"_bind, IDS_LOCATETO_COMMAND, IDS_COMMAND_LOCATE);
-    createBind(bcGeneral, "commands-patrol-trigger"_bind, IDS_PATROL_COMMAND, IDS_COMMAND_PATROL);
-    createBind(bcGeneral, "commands-deploy-trigger"_bind, IDS_DEPLOY_COMMAND, IDS_COMMAND_DEPLOY);
-    createBind(bcGeneral, "commands-pick-up-trigger"_bind, IDS_PICKUP_COMMAND, IDS_COMMAND_PICKUP);
-    createBind(bcGeneral, "commands-transport-trigger"_bind, IDS_TRANSPORT_COMMAND, IDS_COMMAND_TRANSPORT);
+    createBind(bcGeneral, "commands-locate"_bind, IDS_LOCATETO_COMMAND, IDS_COMMAND_LOCATE);
+    createBind(bcGeneral, "commands-patrol"_bind, IDS_PATROL_COMMAND, IDS_COMMAND_PATROL);
+    createBind(bcGeneral, "commands-deploy"_bind, IDS_DEPLOY_COMMAND, IDS_COMMAND_DEPLOY);
+    createBind(bcGeneral, "commands-pick-up"_bind, IDS_PICKUP_COMMAND, IDS_COMMAND_PICKUP);
+    createBind(bcGeneral, "commands-transport"_bind, IDS_TRANSPORT_COMMAND, IDS_COMMAND_TRANSPORT);
 
-    createBind(bcGeneral, "commands-self-destruct-trigger"_bind, IDS_SELF_DESTRUCT_COMMAND, IDS_COMMAND_SELF_DESTRUCT);
-    createBind(bcGeneral, "commands-drop-land-mine-trigger"_bind, IDS_DROPLANDMINE_COMMAND, IDS_COMMAND_DROP_MINE);
-    createBind(bcGeneral, "commands-refill-land-mine-trigger"_bind, IDS_REFILLLANDMINE_COMMAND, IDS_COMMAND_REFILL);
-    createBind(bcGeneral, "commands-heal-trigger"_bind, IDS_HEAL_COMMAND, IDS_COMMAND_HEAL);
-    createBind(bcGeneral, "commands-deconstruct-trigger"_bind, IDS_DECONSTRUCT_COMMAND, IDS_COMMAND_DECONSTRUCT);
-    createBind(bcGeneral, "commands-recycle-trigger"_bind, IDS_RECYCLE_COMMAND, IDS_COMMAND_RECYCLE);
-    createBind(bcGeneral, "commands-stop-trigger"_bind, IDS_STOP_COMMAND, IDS_COMMAND_STOP);
-    createBind(bcGeneral, "commands-stand-ground-trigger"_bind, IDS_STANDGROUND_COMMAND, IDS_COMMAND_STAND_GROUND);
-    createBind(bcGeneral, "commands-repair-trigger"_bind, IDS_REPAIR_COMMAND, IDS_COMMAND_REPAIR);
-    createBind(bcGeneral, "commands-capture-trigger"_bind, IDS_CAPTURE_COMMAND, IDS_COMMAND_CAPTURE);
-    createBind(bcGeneral, "commands-defcon-trigger"_bind, IDS_MACHINE_INITIATIVE_COMMAND_NAME, IDS_COMMAND_INITIATIVE_LEVEL);
-    createBind(bcGeneral, "commands-ion-attack-trigger"_bind, IDS_ION_ATTACK_COMMAND, IDS_COMMAND_ION_ATTACK);
-    createBind(bcGeneral, "commands-nuke-attack-trigger"_bind, IDS_NUKE_ATTACK_COMMAND, IDS_COMMAND_NUKE_ATTACK);
-    createBind(bcGeneral, "commands-assembly-point-trigger"_bind, IDS_ASSEMBLEAT_COMMAND, IDS_COMMAND_ASSEMBLE);
-    createBind(bcGeneral, "commands-scavenge-trigger"_bind, IDS_SCAVENGE_COMMAND, IDS_COMMAND_SCAVENGE);
-    createBind(bcGeneral, "commands-camouflage-trigger"_bind, IDS_CAMOUFLAGE_COMMAND, IDS_COMMAND_CAMOUFLAGE);
-    createBind(bcGeneral, "commands-treachery-trigger"_bind, IDS_TREACHERY_COMMAND, IDS_COMMAND_TREACHERY);
+    createBind(bcGeneral, "commands-self-destruct"_bind, IDS_SELF_DESTRUCT_COMMAND, IDS_COMMAND_SELF_DESTRUCT);
+    createBind(bcGeneral, "commands-drop-land-mine"_bind, IDS_DROPLANDMINE_COMMAND, IDS_COMMAND_DROP_MINE);
+    createBind(bcGeneral, "commands-refill-land-mine"_bind, IDS_REFILLLANDMINE_COMMAND, IDS_COMMAND_REFILL);
+    createBind(bcGeneral, "commands-heal"_bind, IDS_HEAL_COMMAND, IDS_COMMAND_HEAL);
+    createBind(bcGeneral, "commands-deconstruct"_bind, IDS_DECONSTRUCT_COMMAND, IDS_COMMAND_DECONSTRUCT);
+    createBind(bcGeneral, "commands-recycle"_bind, IDS_RECYCLE_COMMAND, IDS_COMMAND_RECYCLE);
+    createBind(bcGeneral, "commands-stop"_bind, IDS_STOP_COMMAND, IDS_COMMAND_STOP);
+    createBind(bcGeneral, "commands-stand-ground"_bind, IDS_STANDGROUND_COMMAND, IDS_COMMAND_STAND_GROUND);
+    createBind(bcGeneral, "commands-repair"_bind, IDS_REPAIR_COMMAND, IDS_COMMAND_REPAIR);
+    createBind(bcGeneral, "commands-capture"_bind, IDS_CAPTURE_COMMAND, IDS_COMMAND_CAPTURE);
+    createBind(bcGeneral, "commands-defcon"_bind, IDS_MACHINE_INITIATIVE_COMMAND_NAME, IDS_COMMAND_INITIATIVE_LEVEL);
+    createBind(bcGeneral, "commands-ion-attack"_bind, IDS_ION_ATTACK_COMMAND, IDS_COMMAND_ION_ATTACK);
+    createBind(bcGeneral, "commands-nuke-attack"_bind, IDS_NUKE_ATTACK_COMMAND, IDS_COMMAND_NUKE_ATTACK);
+    createBind(bcGeneral, "commands-assembly-point"_bind, IDS_ASSEMBLEAT_COMMAND, IDS_COMMAND_ASSEMBLE);
+    createBind(bcGeneral, "commands-scavenge"_bind, IDS_SCAVENGE_COMMAND, IDS_COMMAND_SCAVENGE);
+    createBind(bcGeneral, "commands-camouflage"_bind, IDS_CAMOUFLAGE_COMMAND, IDS_COMMAND_CAMOUFLAGE);
+    createBind(bcGeneral, "commands-treachery"_bind, IDS_TREACHERY_COMMAND, IDS_COMMAND_TREACHERY);
 
     createBind(bcFirstPerson, "fpv-fire"_bind, IDS_ACTION_FIRE);
     createBind(bcFirstPerson, "fpv-switch-weapon"_bind, IDS_ACTION_WEAPON_SWITCH);
@@ -714,22 +714,22 @@ void InputRegistry::setLegacyDefaults()
 
     setBinds("alternative-cursor"_bind, { KeyBind { .keyWithMods = KeyWithModifiers({}, KeyModifier::Alt) } });
 
-    setBinds("commands-assembly-point-trigger"_bind, {
+    setBinds("commands-assembly-point"_bind, {
         { KeyCode::KEY_B },
     });
-    setBinds("commands-attack-trigger"_bind, {
+    setBinds("commands-attack"_bind, {
         { KeyCode::KEY_A },
     });
-    setBinds("commands-build-trigger"_bind, {
+    setBinds("commands-build"_bind, {
         { KeyCode::KEY_B },
     });
-    setBinds("commands-camouflage-trigger"_bind, {
+    setBinds("commands-camouflage"_bind, {
         { KeyCode::KEY_O },
     });
-    setBinds("commands-capture-trigger"_bind, {
+    setBinds("commands-capture"_bind, {
         { KeyCode::KEY_U },
     });
-    setBinds("commands-construct-trigger"_bind, {
+    setBinds("commands-construct"_bind, {
         { KeyCode::KEY_C },
     });
     setBinds("commands-construct-rotate"_bind, {
@@ -737,67 +737,67 @@ void InputRegistry::setLegacyDefaults()
         { KeyCode::KEY_R },
         { KeyCode::MOUSE_EXTRA1 },
     });
-    setBinds("commands-deconstruct-trigger"_bind, {
+    setBinds("commands-deconstruct"_bind, {
         { KeyCode::KEY_D },
     });
-    setBinds("commands-defcon-trigger"_bind, {
+    setBinds("commands-defcon"_bind, {
         { KeyCode::TAB },
     });
-    setBinds("commands-deploy-trigger"_bind, {
+    setBinds("commands-deploy"_bind, {
         { KeyCode::KEY_E },
     });
-    setBinds("commands-form-squadron-trigger"_bind, {
+    setBinds("commands-form-squadron"_bind, {
         { KeyCode::KEY_F },
     });
-    setBinds("commands-heal-trigger"_bind, {
+    setBinds("commands-heal"_bind, {
         { KeyCode::KEY_H },
     });
-    setBinds("commands-ion-attack-trigger"_bind, {
+    setBinds("commands-ion-attack"_bind, {
         { KeyCode::KEY_I },
     });
-    setBinds("commands-drop-land-mine-trigger"_bind, {
+    setBinds("commands-drop-land-mine"_bind, {
         { KeyCode::KEY_M | KeyModifier::Shift },
     });
-    setBinds("commands-locate-trigger"_bind, {
+    setBinds("commands-locate"_bind, {
         { KeyCode::KEY_L },
     });
-    setBinds("commands-move-trigger"_bind, {
+    setBinds("commands-move"_bind, {
         { KeyCode::KEY_M },
     });
-    setBinds("commands-nuke-attack-trigger"_bind, {
+    setBinds("commands-nuke-attack"_bind, {
         { KeyCode::KEY_N },
     });
-    setBinds("commands-patrol-trigger"_bind, {
+    setBinds("commands-patrol"_bind, {
         { KeyCode::KEY_P },
     });
-    setBinds("commands-pick-up-trigger"_bind, {
+    setBinds("commands-pick-up"_bind, {
         { KeyCode::KEY_K },
     });
-    setBinds("commands-recycle-trigger"_bind, {
+    setBinds("commands-recycle"_bind, {
         { KeyCode::KEY_Q },
     });
-    setBinds("commands-refill-land-mine-trigger"_bind, {
+    setBinds("commands-refill-land-mine"_bind, {
         { KeyCode::KEY_G },
     });
-    setBinds("commands-repair-trigger"_bind, {
+    setBinds("commands-repair"_bind, {
         { KeyCode::KEY_R },
     });
-    setBinds("commands-scavenge-trigger"_bind, {
+    setBinds("commands-scavenge"_bind, {
         { KeyCode::KEY_Y },
     });
-    setBinds("commands-self-destruct-trigger"_bind, {
+    setBinds("commands-self-destruct"_bind, {
         { KeyCode::BACK_SPACE | KeyModifier::Ctrl | KeyModifier::Shift },
     });
-    setBinds("commands-stand-ground-trigger"_bind, {
+    setBinds("commands-stand-ground"_bind, {
         { KeyCode::KEY_W },
     });
-    setBinds("commands-stop-trigger"_bind, {
+    setBinds("commands-stop"_bind, {
         { KeyCode::KEY_S },
     });
-    setBinds("commands-transport-trigger"_bind, {
+    setBinds("commands-transport"_bind, {
         { KeyCode::KEY_T },
     });
-    setBinds("commands-treachery-trigger"_bind, {
+    setBinds("commands-treachery"_bind, {
         { KeyCode::KEY_J },
     });
 
@@ -1040,23 +1040,23 @@ void InputRegistry::setLegacyDefaults()
 void InputRegistry::setWasdLayout()
 {
     // Add Ctrl to normal WASD binds
-    setBinds("commands-stand-ground-trigger"_bind, {
+    setBinds("commands-stand-ground"_bind, {
         { KeyCode::KEY_W | KeyModifier::Ctrl },
     });
-    setBinds("commands-attack-trigger"_bind, {
+    setBinds("commands-attack"_bind, {
         { KeyCode::KEY_A | KeyModifier::Ctrl },
     });
-    setBinds("commands-stop-trigger"_bind, {
+    setBinds("commands-stop"_bind, {
         { KeyCode::KEY_S | KeyModifier::Ctrl },
     });
-    setBinds("commands-deconstruct-trigger"_bind, {
+    setBinds("commands-deconstruct"_bind, {
         { KeyCode::KEY_X },
         { KeyCode::KEY_D | KeyModifier::Ctrl },
     });
-    setBinds("commands-deploy-trigger"_bind, {
+    setBinds("commands-deploy"_bind, {
         { KeyCode::KEY_E | KeyModifier::Ctrl },
     });
-    setBinds("commands-recycle-trigger"_bind, {
+    setBinds("commands-recycle"_bind, {
         { KeyCode::KEY_Q | KeyModifier::Ctrl },
     });
 

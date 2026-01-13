@@ -16,7 +16,7 @@
 #include "machlog/administ.hpp"
 
 MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-refill-land-mine-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-refill-land-mine"_bind)
     , hadFinalPick_(true)
 {
     TEST_INVARIANT;

@@ -21,7 +21,7 @@
 #include "system/pathname.hpp"
 
 MachGuiLocateToCommand::MachGuiLocateToCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-locate-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-locate"_bind)
     , hadFinalPick_(false)
 {
     // Ensure reasonable allocation size

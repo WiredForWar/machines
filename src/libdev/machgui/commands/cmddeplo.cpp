@@ -17,7 +17,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiDeployCommand::MachGuiDeployCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-deploy-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-deploy"_bind)
     , hadFinalPick_(false)
 {
     TEST_INVARIANT;

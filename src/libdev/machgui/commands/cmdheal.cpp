@@ -18,7 +18,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiHealCommand::MachGuiHealCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-heal-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-heal"_bind)
     , action_(HEAL_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)

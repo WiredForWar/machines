@@ -19,7 +19,7 @@
 #include "machlog/squad.hpp"
 
 MachGuiStopCommand::MachGuiStopCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-stop-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-stop"_bind)
 {
     TEST_INVARIANT;
 }

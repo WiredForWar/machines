@@ -28,7 +28,7 @@
 #include "ctl/pvector.hpp"
 
 MachGuiAttackCommand::MachGuiAttackCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiCommand(pInGameScreen, "commands-attack-trigger"_bind)
+    : MachGuiCommand(pInGameScreen, "commands-attack"_bind)
     , action_(ATTACK_OBJECT)
     , pDirectObject_(nullptr)
     , hadFinalPick_(false)

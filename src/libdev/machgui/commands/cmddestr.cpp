@@ -14,7 +14,7 @@
 #include "machlog/machvman.hpp"
 
 MachGuiSelfDestructCommand::MachGuiSelfDestructCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiDefaultCommand(pInGameScreen, "commands-self-destruct-trigger"_bind)
+    : MachGuiDefaultCommand(pInGameScreen, "commands-self-destruct"_bind)
 {
     TEST_INVARIANT;
 }

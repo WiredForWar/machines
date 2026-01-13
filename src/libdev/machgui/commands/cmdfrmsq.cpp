@@ -13,7 +13,7 @@
 #include "machlog/machlog.hpp"
 
 MachGuiFormSquadronCommand::MachGuiFormSquadronCommand(MachInGameScreen* pInGameScreen)
-    : MachGuiDefaultCommand(pInGameScreen, "commands-form-squadron-trigger"_bind)
+    : MachGuiDefaultCommand(pInGameScreen, "commands-form-squadron"_bind)
 {
     TEST_INVARIANT;
 }
