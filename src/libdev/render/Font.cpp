@@ -241,6 +241,7 @@ int Font::horizontalAdvance(const std::string_view& text, const TextOptions& opt
         if (character == '\n')
         {
             textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
+            lineTextWidth = 0;
             usedSpacing = 0;
             continue;
         }
