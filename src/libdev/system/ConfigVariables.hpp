@@ -24,6 +24,8 @@ extern Variable<int32_t> uiGroundCameraAcceleration;
 extern Variable<int32_t> uiScaleFactor;
 extern Variable<bool> grabCursor;
 
+extern Variable<bool> debugShowRenderStats;
+
 extern Variable<uint32_t> soundVolume;
 extern Variable<uint32_t> musicVolume;
 

@@ -103,6 +103,7 @@
 #include "sim/manager.hpp"
 #include "network/netnet.hpp"
 #include "device/time.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/registry.hpp"
 #include "system/vfs.hpp"
 
@@ -156,6 +157,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     CB_DEPIMPL_AUTO(pCursors2d_);
     CB_DEPIMPL_AUTO(pControlPanel_);
     CB_DEPIMPL_AUTO(pMapArea_);
+    CB_DEPIMPL_AUTO(renderStatsHandle_);
 #ifndef PRODUCTION
     CB_DEPIMPL_AUTO(showCurrentMachine_);
     CB_DEPIMPL_AUTO(showNetworkStuffed_);
@@ -274,6 +276,14 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
 #endif
 
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::CTOR exit" << std::endl);
+
+    renderStatsHandle_ = Config::debugShowRenderStats.addListener([this]
+    {
+        if (Config::debugShowRenderStats.get())
+            pImpl_->pSceneManager_->hideStats();
+        else
+            pImpl_->pSceneManager_->showStats(0.333);
+    });
 }
 
 MachInGameScreen::~MachInGameScreen()

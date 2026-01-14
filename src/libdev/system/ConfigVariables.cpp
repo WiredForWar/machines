@@ -20,6 +20,8 @@ Variable<int32_t> uiGroundCameraAcceleration("Options/Ground Camera/Acceleration
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 
+Variable<bool> debugShowRenderStats("Options/Render Stats/on", false);
+
 Variable<uint32_t> soundVolume("Options/Sound/Volume", 95);
 Variable<uint32_t> musicVolume("Options/CD/Volume", 30);
 
