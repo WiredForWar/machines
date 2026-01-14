@@ -29,7 +29,7 @@
 #include "machgui/ddrawdrop.hpp"
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
-#include "machgui/InputRegistry.hpp"
+#include "machgui/InputLayout.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
@@ -495,7 +495,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     pWasdControls_->setCallback([](MachGuiCheckBox* pCheckBox) {
         using InputLayout = MachGui::InputLayout;
-        MachGui::inputRegistryImpl()->setLayout(pCheckBox->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
+        Config::inputBaseLayout.set(pCheckBox->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
     });
 
     TEST_INVARIANT;

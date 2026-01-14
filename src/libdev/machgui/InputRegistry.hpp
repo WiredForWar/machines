@@ -101,6 +101,7 @@ protected:
     std::vector<CategoryData> categories_;
     IBindsStorage *storage_{};
     InputLayout layout_{};
+    Utils::HandleWithTriggerUPtr layoutVarHandle_{};
 };
 
 InputRegistry* inputRegistryImpl();

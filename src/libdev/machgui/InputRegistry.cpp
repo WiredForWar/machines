@@ -46,7 +46,8 @@ InputRegistry::InputRegistry(IBindsStorage *storage)
 {
     initBinds();
 
-    layout_ = Config::inputBaseLayout.get();
+    layoutVarHandle_ = Config::inputBaseLayout.addListener([this]() {setLayout(Config::inputBaseLayout.get());});
+    layoutVarHandle_->trigger();
 }
 
 void InputRegistry::setLayout(InputLayout layout)
@@ -1207,7 +1208,6 @@ InputRegistry *inputRegistryImpl()
     if (!initialized)
     {
         initialized = true;
-        r.load();
         r.save();
     }
     return &r;
