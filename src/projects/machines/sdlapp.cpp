@@ -282,7 +282,9 @@ bool SDLApp::clientStartup()
     initDefaultFontSize(Gui::uiScaleFactor());
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
-    pDisplay_->setCursorGrabEnabled(Config::grabCursor.get());
+    grabCursorHandle_
+        = Config::grabCursor.addListener([this]() { pDisplay_->setCursorGrabEnabled(Config::grabCursor.get()); });
+    grabCursorHandle_->trigger();
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);

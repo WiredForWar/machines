@@ -491,12 +491,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     readFromConfig();
 
-    pGrabMouse_->setCallback([](MachGuiCheckBox* pCheckBox) {
-        Config::grabCursor.set(pCheckBox->isChecked());
-
-        RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
-        pDisplay_->setCursorGrabEnabled(pCheckBox->isChecked());
-    });
+    pGrabMouse_->setCallback([](MachGuiCheckBox* pCheckBox) { Config::grabCursor.set(pCheckBox->isChecked()); });
 
     pWasdControls_->setCallback([](MachGuiCheckBox* pCheckBox) {
         using InputLayout = MachGui::InputLayout;

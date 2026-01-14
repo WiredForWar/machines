@@ -3,6 +3,7 @@
 
 #include "device/timer.hpp"
 #include "afx/AfxSdlApp.hpp"
+#include "utility/CallbackHandle.hpp"
 
 class IProgressReporter;
 class RenDevice;
@@ -98,6 +99,8 @@ private:
 
     size_t savedSampleVolume_{};
     size_t savedCDVolume_{};
+
+    Utils::HandleWithTriggerUPtr grabCursorHandle_;
 };
 
 #endif
