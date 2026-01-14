@@ -599,7 +599,7 @@ const RenCursor2d* RenDisplay::currentCursor() const
 
 void RenDisplay::setCursorGrabEnabled(bool enabled)
 {
-    SDL_SetWindowGrab(pImpl_->pWnd_, enabled ? SDL_TRUE : SDL_FALSE);
+    SDL_SetWindowMouseGrab(pImpl_->pWnd_, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
 uint32_t RenDisplay::frameNumber() const
