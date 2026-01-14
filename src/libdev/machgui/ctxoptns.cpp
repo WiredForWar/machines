@@ -159,7 +159,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     const MachGuiOptionsLayout::CheckBoxInfo& grabMouse = screenLayout.checkBoxInfo(6);
     const MachGuiOptionsLayout::CheckBoxInfo& useWasd = screenLayout.checkBoxInfo(7);
 
-    // const uint a = musicVolTxt.topLeft;
+    const uint verticalStep = 20 * MachGui::menuScaleFactor();
     const uint secondColumnLabelLeft = musicVolTxt.topLeft.x();
     const uint secondColumnLabelRight = musicVolTxt.bottomRight.x();
     const uint secondColumnLabelWidth = secondColumnLabelRight - secondColumnLabelLeft;
@@ -376,7 +376,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Gui::AlignRight);
 
     pCameraAccelerationSlider_ = new MachGuiSlideBar(
-        pStartupScreens, pStartupScreens, gammaCorrectionSl.topLeft, gammaCorrectionSl.width, 1, 30);
+        pStartupScreens, pStartupScreens, gammaCorrectionSl.topLeft, secondColumnInputWidth, 1, 30);
 
     pCameraAccelerationSlider_->setValue(Config::uiZenithCameraAcceleration.get());
     pCameraAccelerationSlider_->setValueChangedHandler([](float v) { Config::uiZenithCameraAcceleration.set(v); });
@@ -408,7 +408,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             = Gui::Coord(secondColumnLabelLeft, (OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor());
         const auto choicesBaseCoord
             = Gui::Coord(secondColumnInputX, (OPTIMISATIONS_AREA_MINY + 35) * MachGui::menuScaleFactor());
-        const int verticalStep = 20 * MachGui::menuScaleFactor();
         for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
         {
             uint id = (*it)->id();
