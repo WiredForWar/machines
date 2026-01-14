@@ -13,6 +13,7 @@
 #include "ctl/pvector.hpp"
 
 #include "machgui/startup.hpp"
+#include "utility/CallbackHandle.hpp"
 
 class RenCursor2d;
 class MachGuiMessageBox;
@@ -67,6 +68,8 @@ private:
     FocusCapableControls focusCapableControls_;
     MachGuiDispositionChangeNotifiable* pDispositionNotifiable_;
     bool ignoreHostLostSystemMessage_;
+    Utils::HandleWithTriggerUPtr soundVolumeHandle_;
+    Utils::HandleWithTriggerUPtr musicVolumeHandle_;
 
     friend class MachGuiStartupScreens;
 };

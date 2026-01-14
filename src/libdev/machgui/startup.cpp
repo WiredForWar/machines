@@ -3450,15 +3450,23 @@ bool MachGuiStartupScreens::msgBoxIsBeingDisplayed() const
 
 void MachGuiStartupScreens::initializeVolumes()
 {
-    int initialVolume{};
-    initialVolume = Config::soundVolume.get();
-    SndMixer::instance().masterSampleVolume(initialVolume);
-    SOUND_STREAM("Setting sound initialVolume to " << initialVolume << std::endl);
+    CB_DEPIMPL_AUTO(soundVolumeHandle_);
+    soundVolumeHandle_ = Config::soundVolume.addListener([]
+    {
+        int volume = Config::soundVolume.get();
+        SndMixer::instance().masterSampleVolume(volume);
+        SOUND_STREAM("Setting sound initialVolume to " << volume << std::endl);
+    });
+    soundVolumeHandle_->trigger();
 
-    // Set the initial CD volume to the registry value
-    initialVolume = Config::musicVolume.get();
-    DevCD::instance().volume(initialVolume);
-    SOUND_STREAM("Setting CD initialVolume to " << initialVolume << std::endl);
+    CB_DEPIMPL_AUTO(musicVolumeHandle_);
+    musicVolumeHandle_ = Config::musicVolume.addListener([]
+    {
+        int volume = Config::musicVolume.get();
+        DevCD::instance().volume(volume);
+        SOUND_STREAM("Setting CD initialVolume to " << volume << std::endl);
+    });
+    musicVolumeHandle_->trigger();
 }
 
 void MachGuiStartupScreens::initializeCursorOptions()
