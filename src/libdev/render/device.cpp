@@ -542,9 +542,6 @@ bool RenDevice::initializeContext()
         spdlog::info("GL_SHADING_LANGUAGE_VERSION: {}", getGlStringAsConstChar(GL_SHADING_LANGUAGE_VERSION));
     }
 
-    // Disable vertical sync
-    SDL_GL_SetSwapInterval(0);
-
     spdlog::info("Initializing GLEW...");
     GLenum glew_status = glewInit();
     if (glew_status != GLEW_OK)
@@ -1956,6 +1953,59 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
     PRE(pX && pY);
     *pX = pImpl_->debugX_;
     *pY = pImpl_->debugY_;
+}
+
+void RenDevice::setVSyncPreference(bool enabled)
+{
+    vsyncEnabled_ = enabled;
+
+    if (SDLGlContext_)
+    {
+        if (!setVSync(enabled))
+        {
+            spdlog::warn("Failed to switch VSync to {} after context creation", enabled);
+        }
+    }
+}
+
+bool RenDevice::setVSync(bool enabled)
+{
+    if (!SDLGlContext_)
+    {
+        spdlog::warn("Cannot set VSync: GL context not initialised yet");
+        return false;
+    }
+
+    bool success{};
+
+    if (enabled)
+    {
+        if (SDL_GL_SetSwapInterval(-1) == 0)
+        {
+            vsyncEnabled_ = true;
+            spdlog::info("Adaptive VSync enabled");
+            success = true;
+        }
+        else if (SDL_GL_SetSwapInterval(1) == 0)
+        {
+            vsyncEnabled_ = true;
+            spdlog::info("Standard VSync enabled (adaptive unavailable: {})", SDL_GetError());
+            success = true;
+        }
+    }
+    else if (SDL_GL_SetSwapInterval(0) == 0)
+    {
+        vsyncEnabled_ = false;
+        spdlog::info("VSync disabled");
+        success = true;
+    }
+
+    if (!success)
+    {
+        spdlog::warn("Failed to apply VSync setting (enabled={}): {}", enabled, SDL_GetError());
+    }
+
+    return success;
 }
 
 void RenDevice::antiAliasingOn(bool o)

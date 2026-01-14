@@ -69,6 +69,7 @@ private:
     void checkFinishApp();
     void activateGui();
 
+    void setVSyncOptions();
     void initDefaultFontSize(float scaleFactor);
     // Sound
     void initSound();
@@ -80,6 +81,7 @@ private:
     void updateSound(const MexPoint3d& pos);
 
     void loadPlanets();
+    void applyFrameRateLimit();
 
     int winWidth_, winHeight_;
     double runTime_;
@@ -94,6 +96,9 @@ private:
     bool initialised_{};
     DevTimer keyTimer_;
     DevTimer finishTimer_;
+    DevTimer frameTimer_;
+    double frameSleepMs_{};
+    int targetFrameRate_{};
     MachGuiStartupScreens* pStartupScreens_{};
     RenTextureSet* pTextureSet_{};
 
@@ -101,6 +106,7 @@ private:
     size_t savedCDVolume_{};
 
     Utils::HandleWithTriggerUPtr grabCursorHandle_;
+    Utils::HandleWithTriggerUPtr vsyncHandle_;
 };
 
 #endif

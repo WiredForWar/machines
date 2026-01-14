@@ -174,6 +174,9 @@ public:
     void overrideFog(float start, float end, float density, const RenColour&);
     void restoreFog();
 
+    void setVSyncPreference(bool enabled);
+    bool vsyncEnabled() const { return vsyncEnabled_; }
+
     // Fog query methods.
     bool isFogOn() const;
     float fogStart() const;
@@ -258,6 +261,8 @@ public:
 
     // Features supported by this rendering system.
     const RenCapabilities& capabilities() const;
+
+    bool setVSync(bool enabled);
 
     // colour filter
 
@@ -401,6 +406,7 @@ private:
     glm::vec3 fogParams_ {};
 
     bool clearAll2D_ { false };
+    bool vsyncEnabled_ { true };
 
     // Operations deliberately revoked
     RenDevice(const RenDevice&);

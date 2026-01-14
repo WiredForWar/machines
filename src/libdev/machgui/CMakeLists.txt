@@ -209,6 +209,8 @@ set(MACHGUI_SOURCES
     SystemMessageHandler.hpp
     TypeRestorer.cpp
     TypeRestorer.hpp
+    VSyncMode.cpp
+    VSyncMode.hpp
     WorldViewWindow.cpp
     WorldViewWindow.hpp
     commands/CommandAssemblyPoint.cpp

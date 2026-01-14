@@ -15,8 +15,11 @@
 #include "network/netnet.hpp"
 #include "recorder/recorder.hpp"
 #include "device/timer.hpp"
+#include "device/time.hpp"
 #include "machines/scrndump.hpp"
 #include "sim/manager.hpp"
+
+#include "system/ConfigVariables.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -120,7 +123,10 @@ void SDLApp::loopCycle()
 
     // Prevent processing before clientStartup() call
     if (! initialised_)
+    {
+        frameTimer_.time(0.0);
         return;
+    }
 
     checkFinishApp();
 
@@ -129,6 +135,80 @@ void SDLApp::loopCycle()
     pStartupScreens_->loopCycle();
 
     MachScreenDumper::instance().dump();
+
+    applyFrameRateLimit();
+}
+
+void SDLApp::applyFrameRateLimit()
+{
+    if (targetFrameRate_ <= 0)
+    {
+        frameTimer_.time(0.0);
+        return;
+    }
+
+    const double targetSeconds = 1.0 / static_cast<double>(targetFrameRate_);
+    double frameElapsed = frameTimer_.time();
+
+    constexpr double AheadThresholdSeconds = 0.003;
+    constexpr double MinSleep = 1;
+    constexpr double MaxSleep = 5;
+
+    double newSleepMs = frameSleepMs_;
+    if (frameElapsed + AheadThresholdSeconds < targetSeconds)
+    {
+        double requestedSleepMs = std::clamp(frameSleepMs_, MinSleep, MaxSleep);
+
+        const double sleepStart = DevTime::instance().time();
+        // TODO: Try SDL_DelayNS() of SDL3
+        SDL_Delay(static_cast<uint32_t>(requestedSleepMs));
+        const double sleptMs = (DevTime::instance().time() - sleepStart) * 1000.0;
+        frameElapsed = frameTimer_.time();
+
+        if (frameElapsed > targetSeconds)
+        {
+            const double overshootMs = (frameElapsed - targetSeconds) * 1000.0;
+            newSleepMs = frameSleepMs_ - static_cast<uint32_t>(overshootMs + 1);
+        }
+        else
+        {
+            const double headroomMs = (targetSeconds - frameElapsed) * 1000.0;
+            if (headroomMs > (AheadThresholdSeconds + 0.001) && sleptMs >= requestedSleepMs - 0.25)
+            {
+                newSleepMs = frameSleepMs_ + 0.5;
+            }
+        }
+    }
+    else
+    {
+        newSleepMs = MinSleep;
+    }
+
+    const double clampedSleepMs = std::clamp(newSleepMs, MinSleep, MaxSleep);
+
+#ifndef PRODUCTION
+    uint32_t oldSleep = frameSleepMs_;
+    uint32_t newSleep = clampedSleepMs;
+
+    if (newSleep > oldSleep)
+    {
+        spdlog::debug(
+            "Frame sleep increased to {:.2f} ms (target FPS {})",
+            clampedSleepMs,
+            targetFrameRate_);
+    }
+    else if (newSleep < oldSleep)
+    {
+        spdlog::debug(
+            "Frame sleep decreased to {:.2f} ms (target FPS {})",
+            clampedSleepMs,
+            targetFrameRate_);
+    }
+#endif
+
+    frameSleepMs_ = clampedSleepMs;
+
+    frameTimer_.time(0.0);
 }
 
 void SDLApp::activateGui()

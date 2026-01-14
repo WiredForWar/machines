@@ -39,13 +39,16 @@
 #include "machines/errorhnd.hpp"
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
-#include "machgui/ProgressIndicator.hpp"
 #include "machgui/MenuContext/CtxOptions.hpp"
+#include "machgui/ProgressIndicator.hpp"
+#include "machgui/VSyncMode.hpp"
 #include "machgui/gui.hpp"
 
 #include "system/vfs.hpp"
 
 #include "spdlog/spdlog.h"
+
+#include <SDL.h>
 
 #include <cstdio>
 
@@ -298,6 +301,9 @@ bool SDLApp::clientStartup()
     manager_->pDevice()->debugTextCoords(204, 0);
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
+
+    vsyncHandle_ = Config::gfxVSyncMode.addListener([this]() { setVSyncOptions(); });
+    vsyncHandle_->trigger();
 
     {
         int maxDomainDepth = 96; // The original game had 36
@@ -633,6 +639,41 @@ void SDLApp::outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform,
     // Update leak tracking
     LeakTracker::update(LeakTracker::INLOOP, LeakTracker::NONE);
 #endif
+}
+
+void SDLApp::setVSyncOptions()
+{
+    int targetRefreshRate{};
+    bool enable{};
+
+    switch(Config::gfxVSyncMode.get())
+    {
+    case MachGui::VSyncMode::Auto:
+    {
+        constexpr int TargetRefreshRate = 120;
+        const RenDisplay::Mode& mode = pDisplay_->currentMode();
+        // +1 to work around devices using 119.88 Hz rate
+        if (mode.refreshRate() + 1 >= TargetRefreshRate)
+        {
+            // Consider the input at this refresh rate to be fairly responsive
+            enable = true;
+        }
+        else
+        {
+            // VSync can affect user input. Disable VSync to keep input responsive.
+            targetRefreshRate = TargetRefreshRate;
+        }
+        break;
+    }
+    case MachGui::VSyncMode::Enabled:
+        enable = true;
+        break;
+    case MachGui::VSyncMode::Disabled:
+        break;
+    }
+
+    targetFrameRate_ = targetRefreshRate;
+    manager_->pDevice()->setVSyncPreference(enable);
 }
 
 void SDLApp::initProfiling(IProgressReporter* pReporter)
