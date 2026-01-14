@@ -19,6 +19,8 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 
+#include "utility/CallbackHandle.hpp"
+
 // Foward refs...
 class W4dSceneManager;
 class W4dRoot;
@@ -140,6 +142,7 @@ public:
     double networkStuffedStartTime_{};
     bool disableFirstPerson_{};
     bool instantExit_{};
+    Utils::CallbackHandleUPtr renderStatsHandle_{};
 
 #ifndef PRODUCTION
     bool showCurrentMachine_{};
