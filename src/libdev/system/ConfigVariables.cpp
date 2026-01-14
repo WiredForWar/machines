@@ -22,6 +22,8 @@ Variable<bool> uiUse2DSelectionMarker("Options/Cursor Type/2D", false);
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 
+Variable<bool> debugShowRenderStats({}, false);
+
 Variable<uint32_t> soundVolume("Options/Sound/Volume", 95);
 Variable<uint32_t> musicVolume("Options/CD/Volume", 30);
 

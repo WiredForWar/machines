@@ -30,6 +30,8 @@
 #include "render/SurfaceManager.hpp"
 #include "machlog/Messaging/Network.hpp"
 
+#include "system/ConfigVariables.hpp"
+
 #include <optional>
 
 bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
@@ -243,6 +245,15 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     {
         doHandleKeyEventHacks(e);
     }
+#else
+    if (e.state() == Gui::PRESSED)
+    {
+        if (e.key() == Device::KeyCode::F7 && e.isShiftPressed() && e.isCtrlPressed())
+        {
+            Config::debugShowRenderStats.set(!Config::debugShowRenderStats.get());
+            processed = true;
+        }
+    }
 #endif
 
     return processed;
@@ -293,14 +304,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
         if (e.key() == Device::KeyCode::F7 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            static bool showStats = false;
-
-            if (showStats)
-                pImpl_->pSceneManager_->hideStats();
-            else
-                pImpl_->pSceneManager_->showStats(0.333);
-
-            showStats = !showStats;
+            Config::debugShowRenderStats.set(!Config::debugShowRenderStats.get());
         }
 
         if (e.key() == Device::KeyCode::F8 && e.isShiftPressed() && e.isCtrlPressed())
