@@ -232,6 +232,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Create volume sliders
     pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.width);
     pMusicVolume_->minMax(0, 100);
+    pMusicVolume_->setValue(Config::musicVolume.get());
     pMusicVolume_->setValueChangedHandler([](float newValue) {
         Config::musicVolume.set(std::round(newValue));
         DevCD::instance().volume(Config::musicVolume.get());
@@ -239,6 +240,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.width);
     pSoundVolume_->minMax(0, 100);
+    pSoundVolume_->setValue(Config::soundVolume.get());
     pSoundVolume_->setValueChangedHandler([](float newValue) {
         Config::soundVolume.set(std::round(newValue));
         SndMixer::instance().masterSampleVolume(Config::soundVolume.get());
