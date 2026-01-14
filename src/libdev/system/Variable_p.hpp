@@ -27,6 +27,19 @@ T Variable<T>::get() const
 template<typename T>
 void Variable<T>::set(const T& value)
 {
+    write(value);
+    onChanged();
+}
+
+template <typename T>
+void Variable<T>::writeBack()
+{
+    write(get());
+}
+
+template <typename T>
+void Variable<T>::write(const T& value)
+{
     SysRegistry::instance().setValue(name_, Impl::toString<T>(value));
 }
 

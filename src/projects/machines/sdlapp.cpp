@@ -120,6 +120,8 @@ void SDLApp::initMusic()
 
 bool SDLApp::clientStartup()
 {
+    Config::initConfigManager();
+
     double time = DevTime::instance().time();
     double loadPos = 0;
 
@@ -588,6 +590,8 @@ void SDLApp::clientShutdown()
     delete pDisplay_;
     delete pTextureSet_;
     cleanUpSound();
+
+    Config::cleanUpConfigManager();
 }
 
 void SDLApp::outputDebugInfo(const MexPoint2d& pos, const MexTransform3d& xform, MachActor* pActor)

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "utility/CallbackHandle.hpp"
+
+#include <functional>
 #include <optional>
 #include <string>
 
@@ -17,6 +20,9 @@ extern std::optional<T> toValue(const std::string& asString);
 
 } // namespace Impl
 
+void initConfigManager();
+void cleanUpConfigManager();
+
 class IVariable
 {
 public:
@@ -24,7 +30,12 @@ public:
 
     std::string_view name() const;
 
+    using ChangesListener = std::function<void()>;
+    Utils::HandleWithTriggerUPtr addListener(ChangesListener listener);
+
 protected:
+    void onChanged();
+
     std::string name_;
 };
 
@@ -43,13 +54,9 @@ public:
     void writeBack();
 
 private:
+    void write(const T& value);
+
     T defaultValue_{};
 };
-
-template <typename T>
-inline void Variable<T>::writeBack()
-{
-    set(get());
-}
 
 } // namespace Config
