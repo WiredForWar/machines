@@ -127,6 +127,8 @@ void MachGuiSlideBar::setValue(float newVal)
     RICHARD_STREAM("value maxValue_" << maxValue_ << std::endl);
     RICHARD_STREAM("value minValue_ " << minValue_ << std::endl);
 
+    float oldBarPos = barPos_ - 1.0 * MachGui::menuScaleFactor();
+
     float barPosPercent = (newVal - minValue_) / minMaxDiff;
 
     float barPos = barPosPercent * usableWidth;
@@ -134,11 +136,16 @@ void MachGuiSlideBar::setValue(float newVal)
     barPos_ = barPos + 1.0 * MachGui::menuScaleFactor();
     RICHARD_STREAM("barPos_(b) " << barPos_ << std::endl);
 
-    changed();
-
-    RICHARD_STREAM("New val " << newVal << std::endl);
-
-    valueChanged(newVal);
+    if (oldBarPos != barPos)
+    {
+        changed();
+        RICHARD_STREAM("New val " << newVal << std::endl);
+        valueChanged(newVal);
+    }
+    else
+    {
+        RICHARD_STREAM("Val set to the same" << newVal << std::endl);
+    }
 }
 
 // virtual
