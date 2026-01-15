@@ -250,7 +250,6 @@ set(MACHGUI_SOURCES
     internal/playscri.hpp
     internal/startui.hpp
     internal/strings.hpp
-    istype.hpp
     keyboard.cpp
     lsgextra.cpp
     lsgextra.hpp
