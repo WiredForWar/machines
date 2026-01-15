@@ -35,8 +35,8 @@
 #include "machgui/chatmsgd.hpp"
 #include "machgui/internal/igameimp.hpp"
 #include "machgui/internal/mgsndman.hpp"
-#include "machgui/database.hpp"
-#include "machgui/dbscenar.hpp"
+#include "machgui/db/Database.hpp"
+#include "machgui/db/DbScenario.hpp"
 
 // Commands
 #include "machgui/commands/CommandAttack.hpp"

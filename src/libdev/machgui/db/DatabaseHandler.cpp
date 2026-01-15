@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/dbhandlr.hpp"
+#include "machgui/db/DatabaseHandler.hpp"
 
 #include "ctl/vector.hpp"
-#include "machgui/database.hpp"
-#include "machgui/dbplayer.hpp"
-#include "machgui/dbplyscn.hpp"
-#include "machgui/dbscenar.hpp"
-#include "machgui/dbtexdat.hpp"
+#include "machgui/db/Database.hpp"
+#include "machgui/db/DbPlayer.hpp"
+#include "machgui/db/DbPlayerScenario.hpp"
+#include "machgui/db/DbScenario.hpp"
+#include "machgui/db/DbTextData.hpp"
 
 MachGuiDatabaseHandler::MachGuiDatabaseHandler()
     : MachLogDatabaseHandler()

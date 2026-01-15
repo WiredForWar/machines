@@ -158,35 +158,44 @@ set(MACHGUI_SOURCES
     corral.hpp
     ctrladon.cpp
     ctrladon.hpp
-    database.cpp
-    database.hpp
-    databasi.cpp
-    dbelemei.cpp
-    dbelemen.cpp
-    dbelemen.hpp
-    dbhandlr.cpp
-    dbhandlr.hpp
-    dbplanei.cpp
-    dbplanet.cpp
-    dbplanet.hpp
-    dbplayei.cpp
-    dbplayer.cpp
-    dbplayer.hpp
-    dbplysci.cpp
-    dbplyscn.cpp
-    dbplyscn.hpp
-    dbsavgai.cpp
-    dbsavgam.cpp
-    dbsavgam.hpp
-    dbscenai.cpp
-    dbscenar.cpp
-    dbscenar.hpp
-    dbsystei.cpp
-    dbsystem.cpp
-    dbsystem.hpp
-    dbtexdai.cpp
-    dbtexdat.cpp
-    dbtexdat.hpp
+    db/Database.cpp
+    db/Database.hpp
+    db/DatabaseHandler.cpp
+    db/DatabaseHandler.hpp
+    db/DbElement.cpp
+    db/DbElement.hpp
+    db/DbIDatabase.cpp
+    db/DbIElement.cpp
+    db/DbIPlanet.cpp
+    db/DbIPlayer.cpp
+    db/DbIPlayerScenario.cpp
+    db/DbISavedGame.cpp
+    db/DbIScenario.cpp
+    db/DbISystem.cpp
+    db/DbITextData.cpp
+    db/DbPlanet.cpp
+    db/DbPlanet.hpp
+    db/DbPlayer.cpp
+    db/DbPlayer.hpp
+    db/DbPlayerScenario.cpp
+    db/DbPlayerScenario.hpp
+    db/DbSavedGame.cpp
+    db/DbSavedGame.hpp
+    db/DbScenario.cpp
+    db/DbScenario.hpp
+    db/DbSystem.cpp
+    db/DbSystem.hpp
+    db/DbTextData.cpp
+    db/DbTextData.hpp
+    db/internal/DbIDatabase.hpp
+    db/internal/DbIElement.hpp
+    db/internal/DbIPlanet.hpp
+    db/internal/DbIPlayer.hpp
+    db/internal/DbIPlayerScenario.hpp
+    db/internal/DbISavedGame.hpp
+    db/internal/DbIScenario.hpp
+    db/internal/DbISystem.hpp
+    db/internal/DbITextData.hpp
     ddrawdrop.cpp
     ddrawdrop.hpp
     dispmess.cpp
@@ -234,15 +243,6 @@ set(MACHGUI_SOURCES
     intcurac.cpp
     intcurac.hpp
     internal/controli.hpp
-    internal/databasi.hpp
-    internal/dbelemei.hpp
-    internal/dbplanei.hpp
-    internal/dbplayei.hpp
-    internal/dbplysci.hpp
-    internal/dbsavgai.hpp
-    internal/dbscenai.hpp
-    internal/dbsystei.hpp
-    internal/dbtexdai.hpp
     internal/igameimp.hpp
     internal/mapareai.hpp
     internal/mgsndman.hpp
@@ -271,6 +271,8 @@ set(MACHGUI_SOURCES
     mdnetwork.hpp
     mdserial.cpp
     mdserial.hpp
+    menus_helper.cpp
+    menus_helper.hpp
     messbrok.cpp
     messbrok.hpp
     mextemp.cpp
@@ -345,8 +347,6 @@ set(MACHGUI_SOURCES
     ui/VerticalScrollBar.hpp
     worldvie.cpp
     worldvie.hpp
-    menus_helper.hpp
-    menus_helper.cpp
 )
 
 add_library(machgui ${GAME_COMPONENT_LIB_TYPE} ${MACHGUI_SOURCES})

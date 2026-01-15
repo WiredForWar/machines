@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "machgui/dbelemen.hpp"
+#include "machgui/db/DbElement.hpp"
 
 // forward refs
 class MachGuiDbISystem;

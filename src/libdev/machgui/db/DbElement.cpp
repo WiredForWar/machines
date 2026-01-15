@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/dbelemen.hpp"
-#include "machgui/internal/dbelemei.hpp"
-#include "machgui/dbtexdat.hpp"
+#include "machgui/db/DbElement.hpp"
+#include "machgui/db/internal/DbIElement.hpp"
+#include "machgui/db/DbTextData.hpp"
 #include "gui/restring.hpp"
 #include <algorithm>
 

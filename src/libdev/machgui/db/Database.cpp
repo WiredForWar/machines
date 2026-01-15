@@ -10,15 +10,15 @@
 #include "utility/linetok.hpp"
 
 #include "machlog/scenario.hpp"
-#include "machgui/database.hpp"
-#include "machgui/internal/databasi.hpp"
+#include "machgui/db/Database.hpp"
+#include "machgui/db/internal/DbIDatabase.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machgui/dbsystem.hpp"
-#include "machgui/dbplanet.hpp"
-#include "machgui/dbscenar.hpp"
-#include "machgui/dbplayer.hpp"
-#include "machgui/dbplyscn.hpp"
-#include "machgui/dbsavgam.hpp"
+#include "machgui/db/DbSystem.hpp"
+#include "machgui/db/DbPlanet.hpp"
+#include "machgui/db/DbScenario.hpp"
+#include "machgui/db/DbPlayer.hpp"
+#include "machgui/db/DbPlayerScenario.hpp"
+#include "machgui/db/DbSavedGame.hpp"
 #include "machgui/startup.hpp"
 
 #include <algorithm>

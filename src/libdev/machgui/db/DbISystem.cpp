@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/internal/dbsystei.hpp"
-#include "machgui/dbplanet.hpp"
+#include "machgui/db/internal/DbISystem.hpp"
+#include "machgui/db/DbPlanet.hpp"
 
 PER_DEFINE_PERSISTENT(MachGuiDbISystem);
 

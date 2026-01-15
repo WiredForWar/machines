@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/internal/dbtexdai.hpp"
+#include "machgui/db/internal/DbITextData.hpp"
 
 PER_DEFINE_PERSISTENT(MachGuiDbITextData);
 

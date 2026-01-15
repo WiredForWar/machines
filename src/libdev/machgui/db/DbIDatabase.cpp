@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/internal/databasi.hpp"
-#include "machgui/dbsystem.hpp"
-#include "machgui/dbplayer.hpp"
-#include "machgui/dbsavgam.hpp"
-#include "machgui/dbhandlr.hpp"
+#include "machgui/db/internal/DbIDatabase.hpp"
+#include "machgui/db/DbSystem.hpp"
+#include "machgui/db/DbPlayer.hpp"
+#include "machgui/db/DbSavedGame.hpp"
+#include "machgui/db/DatabaseHandler.hpp"
 
 PER_DEFINE_PERSISTENT(MachGuiIDatabase);
 

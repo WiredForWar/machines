@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/internal/dbelemei.hpp"
-#include "machgui/dbelemen.hpp"
+#include "machgui/db/internal/DbIElement.hpp"
+#include "machgui/db/DbElement.hpp"
 
 // The following include is needed for std::unique_ptr<MachGuiDbTextData> pTextData_ destructor
-#include "machgui/dbtexdat.hpp"
+#include "machgui/db/DbTextData.hpp"
 
 PER_DEFINE_PERSISTENT(MachGuiDbIElement);
 

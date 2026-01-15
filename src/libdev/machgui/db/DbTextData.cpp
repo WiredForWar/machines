@@ -9,8 +9,8 @@
 #include "system/pathname.hpp"
 #include "utility/linetok.hpp"
 
-#include "machgui/dbtexdat.hpp"
-#include "machgui/internal/dbtexdai.hpp"
+#include "machgui/db/DbTextData.hpp"
+#include "machgui/db/internal/DbITextData.hpp"
 
 #include "system/vfs.hpp"
 
