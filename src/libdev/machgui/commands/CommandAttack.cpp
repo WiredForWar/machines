@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdattac.hpp"
+#include "CommandAttack.hpp"
 
 #include "gui/event.hpp"
 #include "machgui/ingame.hpp"

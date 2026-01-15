@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdfrmsq.hpp"
+#include "CommandFormSquadron.hpp"
 
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"

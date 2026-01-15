@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdnukat.hpp"
+#include "CommandNukeAttack.hpp"
 
 #include "ctl/pvector.hpp"
 #include "mathex/transf3d.hpp"

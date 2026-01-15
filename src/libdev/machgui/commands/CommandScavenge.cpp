@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdscav.hpp"
+#include "CommandScavenge.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/debris.hpp"

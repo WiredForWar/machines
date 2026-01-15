@@ -12,7 +12,7 @@
 #ifndef _MACHGUI_CMDFRMSQ_HPP
 #define _MACHGUI_CMDFRMSQ_HPP
 
-#include "machgui/commands/cmddefau.hpp"
+#include "machgui/commands/CommandDefault.hpp"
 
 #include "base/base.hpp"
 #include "mathex/point3d.hpp"

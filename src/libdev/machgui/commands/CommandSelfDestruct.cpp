@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmddestr.hpp"
+#include "CommandSelfDestruct.hpp"
 
 #include "machgui/ingame.hpp"
 #include "device/time.hpp"

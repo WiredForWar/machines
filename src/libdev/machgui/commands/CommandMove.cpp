@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdmove.hpp"
+#include "CommandMove.hpp"
 
 #include "mathex/point2d.hpp"
 

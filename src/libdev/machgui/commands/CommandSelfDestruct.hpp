@@ -12,7 +12,7 @@
 #ifndef _MACHGUI_CMDDESTR_HPP
 #define _MACHGUI_CMDDESTR_HPP
 
-#include "cmddefau.hpp"
+#include "CommandDefault.hpp"
 
 #include "base/base.hpp"
 #include "ctl/pvector.hpp"

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmddefcn.hpp"
+#include "CommandDefcon.hpp"
 
 #include "mathex/point3d.hpp"
 #include "machgui/ingame.hpp"

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmddecon.hpp"
+#include "CommandDeconstruct.hpp"
 
 #include "gui/font.hpp"
 #include "gui/restring.hpp"

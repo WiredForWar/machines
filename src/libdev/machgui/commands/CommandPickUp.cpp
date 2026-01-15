@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdpicku.hpp"
+#include "CommandPickUp.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"

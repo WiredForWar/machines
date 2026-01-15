@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdcaptr.hpp"
+#include "CommandCapture.hpp"
 
 #include "machgui/ingame.hpp"
 

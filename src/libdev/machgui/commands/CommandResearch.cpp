@@ -4,7 +4,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdresea.hpp"
+#include "CommandResearch.hpp"
 
 #include "machgui/ingame.hpp"
 #include "machgui/internal/strings.hpp"

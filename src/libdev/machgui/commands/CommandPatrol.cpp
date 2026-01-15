@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdpatro.hpp"
+#include "CommandPatrol.hpp"
 
 #include "machgui/ingame.hpp"
 #include "machgui/internal/mgsndman.hpp"

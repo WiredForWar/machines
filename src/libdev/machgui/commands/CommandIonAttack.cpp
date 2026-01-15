@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdionat.hpp"
+#include "CommandIonAttack.hpp"
 
 #include "machgui/ingame.hpp"
 #include "machphys/machphys.hpp"

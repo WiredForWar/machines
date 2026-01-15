@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdtrans.hpp"
+#include "CommandTransport.hpp"
 
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"

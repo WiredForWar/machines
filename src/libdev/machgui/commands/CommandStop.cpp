@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdstop.hpp"
+#include "CommandStop.hpp"
 
 #include "machgui/ingame.hpp"
-#include "machgui/commands/cmddestr.hpp"
+#include "machgui/commands/CommandSelfDestruct.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
 #include "machlog/actor.hpp"

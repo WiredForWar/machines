@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdassem.hpp"
+#include "CommandAssemblyPoint.hpp"
 
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "cmdconst.hpp"
+#include "CommandConstruct.hpp"
 
 #include "gui/event.hpp"
 #include "machgui/internal/mgsndman.hpp"
