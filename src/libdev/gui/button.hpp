@@ -12,7 +12,7 @@
 class GuiButton : public GuiDisplayable
 {
 public:
-    using Callback = std::function<void(GuiButton*)>;
+    using Callback = std::function<void()>;
 
     GuiButton(GuiDisplayable* pParent, const Gui::Box& rel);
 
@@ -61,7 +61,7 @@ private:
     GuiButton& operator=(const GuiButton&);
     bool operator==(const GuiButton&) const;
 
-    std::function<void(GuiButton*)> clickedCallback_;
+    Callback clickedCallback_;
 
     bool isDepressed_;
     bool isDisabled_;

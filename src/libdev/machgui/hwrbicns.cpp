@@ -30,10 +30,9 @@ MachHWResearchBankIcons::MachHWResearchBankIcons(
     TEST_INVARIANT;
 }
 
-void MachHWResearchBankIcons::onIconClicked(GuiButton* pIcon)
+void MachHWResearchBankIcons::onIconClicked(MachHWResearchBankIcon* pIcon)
 {
-    MachHWResearchBankIcon* pHWResBankIcon = static_cast<MachHWResearchBankIcon*>(pIcon);
-    pHardwareLab_->removeResearchItem(*pHWResBankIcon->researchItem());
+    pHardwareLab_->removeResearchItem(*pIcon->researchItem());
 
     updateIcons();
 }
@@ -78,11 +77,10 @@ void MachHWResearchBankIcons::updateIcons()
     MachPhys::Race race = pHardwareLab_->race();
 
     // Iterate through the queue and add an icon for each one
-    for (MachLogResearchTree::ResearchItems::const_iterator it = queue.begin(); it != queue.end(); ++it)
+    for (const MachLogResearchItem* pResearchItem : queue)
     {
-        MachLogResearchItem* pResearchItem = (*it);
         MachHWResearchBankIcon* pIcon = new MachHWResearchBankIcon(this, pInGameScreen_, pResearchItem, race);
-        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
+        pIcon->setMouseClickHandler([this, pIcon] { onIconClicked(pIcon); });
     }
 
     // Ensure redisplayed

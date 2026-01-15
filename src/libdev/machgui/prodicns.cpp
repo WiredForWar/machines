@@ -33,10 +33,9 @@ MachProductionIcons::MachProductionIcons(
     TEST_INVARIANT;
 }
 
-void MachProductionIcons::onIconClicked(GuiButton* pIcon)
+void MachProductionIcons::onIconClicked(MachProductionIcon* pIcon)
 {
-    MachProductionIcon* pProdIcon = static_cast<MachProductionIcon*>(pIcon);
-    pFactory_->cancelProductionUnit(pProdIcon->productionUnit());
+    pFactory_->cancelProductionUnit(pIcon->productionUnit());
 
     updateIcons();
 }
@@ -68,14 +67,12 @@ void MachProductionIcons::updateIcons()
     const MachLogFactory::ProductionLine& queue = pFactory_->productionLine();
 
     // Iterate through the queue and add an icon for each one
-    MachLogFactory::ProductionLine::const_iterator it = queue.begin();
     int index = 1;
 
-    for (; it != queue.end(); ++it)
+    for (const MachLogProductionUnit* pResearchItem : queue)
     {
-        const MachLogProductionUnit& item = *(*it);
-        MachProductionIcon* pIcon = new MachProductionIcon(this, pInGameScreen_, &item, index++);
-        pIcon->setMouseClickHandler([this](GuiButton* pButton) { onIconClicked(pButton); });
+        MachProductionIcon* pIcon = new MachProductionIcon(this, pInGameScreen_, pResearchItem, index++);
+        pIcon->setMouseClickHandler([this, pIcon] { onIconClicked(pIcon); });
     }
 
     // Ensure redisplayed

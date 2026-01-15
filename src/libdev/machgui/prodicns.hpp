@@ -20,6 +20,7 @@
 class GuiButton;
 class MachInGameScreen;
 class MachLogFactory;
+class MachProductionIcon;
 
 // orthodox canonical (revoked)
 class MachProductionIcons : public GuiSimpleScrollableList
@@ -57,7 +58,7 @@ private:
     MachProductionIcons& operator=(const MachProductionIcons&);
     bool operator==(const MachProductionIcons&);
 
-    void onIconClicked(GuiButton* pIcon);
+    void onIconClicked(MachProductionIcon* pIcon);
 
     // data members
     MachLogFactory* pFactory_; // The factory whose production queu is depicted
