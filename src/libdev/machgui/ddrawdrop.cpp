@@ -10,29 +10,6 @@
 MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,
-    int width,
-    MachGuiDropDownCallback* pCallbackHandler)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width)
-    , callbackHandler_(pCallbackHandler)
-{
-    TEST_INVARIANT;
-}
-
-MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
-    GuiDisplayable* pParent,
-    MachGuiStartupScreens* pStartup,
-    int width,
-    bool whiteFont,
-    MachGuiDropDownCallback* pCallbackHandler)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, whiteFont)
-    , callbackHandler_(pCallbackHandler)
-{
-    TEST_INVARIANT;
-}
-
-MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
-    GuiDisplayable* pParent,
-    MachGuiStartupScreens* pStartup,
     const Gui::Coord& relCoord,
     int width,
     bool whiteFont,

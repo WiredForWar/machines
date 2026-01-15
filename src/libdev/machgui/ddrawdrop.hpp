@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 #include "gui/displaya.hpp"
-#include "gui/restring.hpp"
 #include "machgui/dropdwnc.hpp"
 
 class MachGuiDropDownCallback
@@ -29,17 +28,6 @@ class MachGuiDDrawDropDownListBoxCreator : public MachGuiDropDownListBoxCreator
 // Canonical form revoked
 {
 public:
-    MachGuiDDrawDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        MachGuiDropDownCallback* pCallbackHandler);
-    MachGuiDDrawDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        bool whiteFont,
-        MachGuiDropDownCallback* pCallbackHandler);
     MachGuiDDrawDropDownListBoxCreator(
         GuiDisplayable* pParent,
         MachGuiStartupScreens*,
