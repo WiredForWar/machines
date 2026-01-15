@@ -14,9 +14,8 @@
 MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,
-    int width,
-    const GuiStrings& availText)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText)
+    int width)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width)
 {
 
     TEST_INVARIANT;
@@ -26,9 +25,8 @@ MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,
     int width,
-    const GuiStrings& availText,
     bool whiteFont)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText, whiteFont)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, whiteFont)
 {
 
     TEST_INVARIANT;
@@ -39,10 +37,9 @@ MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator
     MachGuiStartupScreens* pStartup,
     const Gui::Coord& relCoord,
     int width,
-    const GuiStrings& availText,
     bool whiteFont,
     bool border)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, availText, whiteFont, border)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, whiteFont, border)
 {
 
     TEST_INVARIANT;

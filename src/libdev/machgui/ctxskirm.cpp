@@ -632,13 +632,13 @@ MachGuiText* MachGuiCtxSkirmish::addSetting(
 
     if (numPlayersDropDown)
     {
-        pCreator
-            = new MachGuiNumPlayersDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
+        pCreator = new MachGuiNumPlayersDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, true);
     }
     else
     {
-        pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, strings, true);
+        pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width, true);
     }
+    pCreator->setAvailText(strings);
 
     va_end(marker); // Reset variable arguments.
 

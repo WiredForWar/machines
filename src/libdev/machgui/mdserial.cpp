@@ -125,9 +125,9 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY + textHeight),
         SNM_WIDTH,
-        comStrings,
         true,
         true);
+    pimpl_->pComPortSelecter_->setAvailText(comStrings);
     pimpl_->pComPortSelecter_->items(comSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems baudSettings;
@@ -163,9 +163,9 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY2 + textHeight),
         SNM_WIDTH,
-        baudStrings,
         true,
         true);
+    pimpl_->pBaudRateSelecter_->setAvailText(baudStrings);
     pimpl_->pBaudRateSelecter_->items(baudSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems paritySettings;
@@ -193,9 +193,9 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY2 + textHeight),
         SNM_WIDTH,
-        parityStrings,
         true,
         true);
+    pimpl_->pParitySelecter_->setAvailText(parityStrings);
     pimpl_->pParitySelecter_->items(paritySettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems bitSettings;
@@ -221,9 +221,9 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY3 + textHeight),
         SNM_WIDTH,
-        bitStrings,
         true,
         true);
+    pimpl_->pStopBitsSelecter_->setAvailText(bitStrings);
     pimpl_->pStopBitsSelecter_->items(bitSettings);
 
     MachGuiDropDownListBoxCreator::DropDownListBoxItems flowSettings;
@@ -253,9 +253,9 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY3 + textHeight),
         SNM_WIDTH,
-        flowStrings,
         true,
         true);
+    pimpl_->pFlowSelecter_->setAvailText(flowStrings);
     pimpl_->pFlowSelecter_->items(flowSettings);
 }
 

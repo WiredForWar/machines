@@ -112,9 +112,9 @@ void MachGuiModemNetworkMode::readNetworkDetails()
         &startupScreens(),
         Gui::Coord(MNM_MINX, MNM_MINY + textHeight),
         MNM_WIDTH,
-        availableModems,
         true,
         true);
+    pimpl_->pModemSelector_->setAvailText(availableModems);
 
     GuiResourceString telephoneNoHeading(IDS_MENU_TELNO);
 

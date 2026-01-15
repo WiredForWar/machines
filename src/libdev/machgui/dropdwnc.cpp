@@ -18,16 +18,13 @@
 MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartupScreens,
-    int width,
-    const GuiStrings& availText)
+    int width)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(false)
     , border_(false)
 {
-    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
@@ -37,16 +34,13 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartupScreens,
     int width,
-    const GuiStrings& availText,
     bool whiteFont)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
     , border_(false)
 {
-    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
@@ -57,18 +51,14 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     MachGuiStartupScreens* pStartupScreens,
     const Gui::Coord& relCoord,
     int width,
-    const GuiStrings& availText,
     bool whiteFont,
     bool border)
     : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight(border)))
     , MachGuiFocusCapableControl(pStartupScreens)
-    , strings_(availText)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
     , border_(border)
 {
-    PRE(availText.size() > 0);
-    text_ = availText[0];
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
 
     TEST_INVARIANT;
@@ -101,6 +91,18 @@ const std::string& MachGuiDropDownListBoxCreator::text() const
 void MachGuiDropDownListBoxCreator::text(const std::string& newText)
 {
     text_ = newText;
+    changed();
+}
+
+void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
+{
+    strings_ = availText;
+
+    if (!strings_.empty())
+    {
+        text_ = strings_.front();
+    }
+
     changed();
 }
 

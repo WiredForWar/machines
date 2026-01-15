@@ -45,23 +45,13 @@ public:
 
     // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
     // still needed for
-    MachGuiDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        const GuiStrings& availText);
-    MachGuiDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        const GuiStrings& availText,
-        bool whiteFont);
+    MachGuiDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width);
+    MachGuiDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width, bool whiteFont);
     MachGuiDropDownListBoxCreator(
         GuiDisplayable* pParent,
         MachGuiStartupScreens*,
         const Gui::Coord& relCoord,
         int width,
-        const GuiStrings& availText,
         bool whiteFont,
         bool border);
     ~MachGuiDropDownListBoxCreator() override;
@@ -71,6 +61,7 @@ public:
     // Get and set the text shown in the control.
     const std::string& text() const;
     void text(const std::string&);
+    void setAvailText(const GuiStrings& availText);
 
     // Get ptr to item associated with currently highlighted text
     const DropDownListBoxItem item() const;

@@ -299,9 +299,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Coord(secondColumnInputX, 119 * MachGui::menuScaleFactor()),
         secondColumnInputWidth,
-        strings,
         false,
         true);
+    pScreenSize_->setAvailText(strings);
     pScreenSize_->items(modeList);
 
     // Create list of avaliable direct draw drivers/direct 3d drivers
@@ -326,10 +326,10 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Coord(secondColumnInputX, 139 * MachGui::menuScaleFactor()),
         secondColumnInputWidth,
-        dDrawDriverNames,
         false,
         true,
         new MachGuiDDrawDropDownCallback(*this));
+    pDirectDrawDrivers_->setAvailText(dDrawDriverNames);
 
     pDirectDrawDrivers_->items(dDrawDrivers);
 
@@ -437,15 +437,16 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 MachGui::Menu::smallFontLight(),
                 Gui::AlignRight);
 
-            choicesOptimisations_.push_back(new MachGuiDropDownListBoxCreator(
+            auto* choiceDropDown = new MachGuiDropDownListBoxCreator(
                 pStartupScreens,
                 pStartupScreens,
                 choicesBaseCoord + Gui::Coord(0, verticalStep * index),
                 secondColumnInputWidth,
-                choices,
                 false,
-                true));
-            (*(choicesOptimisations_.end() - 1))->items(choiceIds);
+                true);
+            choiceDropDown->setAvailText(choices);
+            choiceDropDown->items(choiceIds);
+            choicesOptimisations_.push_back(choiceDropDown);
             ++index;
         }
     }
@@ -474,9 +475,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Coord(secondColumnInputX, 159 * MachGui::menuScaleFactor()),
         secondColumnInputWidth,
-        scaleNames,
         false,
         true);
+    pScaleFactorSelector_->setAvailText(scaleNames);
     auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
     pScaleFactorSelector_->items(items);
 
@@ -860,9 +861,9 @@ void MachGuiCtxOptions::showDirect3DDrivers()
         pStartupScreens_,
         Gui::Coord(375, 159) * MachGui::menuScaleFactor(),
         150 * MachGui::menuScaleFactor(),
-        d3dDriverNames,
         false,
         true);
+    pDirect3DDrivers_->setAvailText(d3dDriverNames);
     pDirect3DDrivers_->items(d3dDrivers);
 
     pDirect3DDrivers_->text(pDriverSelector_->currentD3dDriver()->name());

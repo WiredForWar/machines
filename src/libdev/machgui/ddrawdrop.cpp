@@ -11,12 +11,10 @@ MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,
     int width,
-    const GuiStrings& availText,
     MachGuiDropDownCallback* pCallbackHandler)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width)
     , callbackHandler_(pCallbackHandler)
 {
-
     TEST_INVARIANT;
 }
 
@@ -24,13 +22,11 @@ MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
     GuiDisplayable* pParent,
     MachGuiStartupScreens* pStartup,
     int width,
-    const GuiStrings& availText,
     bool whiteFont,
     MachGuiDropDownCallback* pCallbackHandler)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, availText, whiteFont)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, width, whiteFont)
     , callbackHandler_(pCallbackHandler)
 {
-
     TEST_INVARIANT;
 }
 
@@ -39,14 +35,12 @@ MachGuiDDrawDropDownListBoxCreator::MachGuiDDrawDropDownListBoxCreator(
     MachGuiStartupScreens* pStartup,
     const Gui::Coord& relCoord,
     int width,
-    const GuiStrings& availText,
     bool whiteFont,
     bool border,
     MachGuiDropDownCallback* pCallbackHandler)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, availText, whiteFont, border)
+    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, whiteFont, border)
     , callbackHandler_(pCallbackHandler)
 {
-
     TEST_INVARIANT;
 }
 

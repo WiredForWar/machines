@@ -22,23 +22,13 @@ class MachGuiNumPlayersDropDownListBoxCreator : public MachGuiDropDownListBoxCre
 // Canonical form revoked
 {
 public:
-    MachGuiNumPlayersDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        const GuiStrings& availText);
-    MachGuiNumPlayersDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        int width,
-        const GuiStrings& availText,
-        bool whiteFont);
+    MachGuiNumPlayersDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width);
+    MachGuiNumPlayersDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width, bool whiteFont);
     MachGuiNumPlayersDropDownListBoxCreator(
         GuiDisplayable* pParent,
         MachGuiStartupScreens*,
         const Gui::Coord& relCoord,
         int width,
-        const GuiStrings& availText,
         bool whiteFont,
         bool border);
     ~MachGuiNumPlayersDropDownListBoxCreator() override;

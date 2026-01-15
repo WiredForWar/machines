@@ -586,12 +586,8 @@ void MachGuiCtxSettings::addSetting(MachGuiDropDownListBoxCreator*& pCreator, ui
         strings.push_back(listBoxStr.asString());
     }
 
-    pCreator = new MachGuiDropDownListBoxCreator(
-        pSettingsList_,
-        pStartupScreens_,
-        width * Gui::uiScaleFactor(),
-        strings,
-        true);
+    pCreator = new MachGuiDropDownListBoxCreator(pSettingsList_, pStartupScreens_, width * Gui::uiScaleFactor(), true);
+    pCreator->setAvailText(strings);
 
     va_end(marker); // Reset variable arguments.
 }
