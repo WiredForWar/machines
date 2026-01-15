@@ -838,9 +838,8 @@ void MachGuiCtxOptions::showDirect3DDrivers()
     if (!pDirectDrawDrivers_->hasItems())
         return;
 
-    // CtlCountedPtr<RenDriver> const & newDriver = ( CtlCountedPtr<RenDriver> const & ) *(pDirectDrawDrivers_->item());
-    CtlCountedPtr<RenDriver> const& newDriver
-        = (CtlCountedPtr<RenDriver> const&)*((CtlCountedPtr<RenDriver>*)pDirectDrawDrivers_->item());
+    const std::shared_ptr<RenDriver>& newDriver
+        = *reinterpret_cast<const std::shared_ptr<RenDriver>*>(pDirectDrawDrivers_->item());
     pDriverSelector_->useDDrawDriver(newDriver);
 
     delete pDirect3DDrivers_;

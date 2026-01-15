@@ -14,8 +14,9 @@
 
 #include "base/base.hpp"
 
+#include <memory>
+
 class RenIDriverImpl;
-template <class T> class CtlCountedPtr;
 
 // A class wrapper for DirectDraw/Direct3D driver info.
 // Objects of this type will be created by an RenDriverSelector only.
@@ -48,7 +49,7 @@ private:
     RenIDriverImpl* pImpl_;
 };
 
-using RenDriverPtr = CtlCountedPtr<RenDriver>;
+using RenDriverPtr = std::shared_ptr<RenDriver>;
 
 #endif
 

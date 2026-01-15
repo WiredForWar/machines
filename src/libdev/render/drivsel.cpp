@@ -26,14 +26,8 @@ private:
     void eraseD3dDrivers();
     void eraseNonAutomaticD3dDrivers();
 
-    enum PushWhere
-    {
-        BACK,
-        FRONT
-    };
-
-    void addDDrawDriver(const RenDriverPtr& driver, PushWhere pushWhere = BACK);
-    void addD3dDriver(const RenDriverPtr& driver, PushWhere pushWhere = BACK);
+    void addDDrawDriver(const RenDriverPtr& driver);
+    void addD3dDriver(const RenDriverPtr& driver);
 
     static RenDriverPtr createAutomaticDriver(const RenDriverSelector::RenDrivers&);
 
@@ -74,7 +68,7 @@ RenDriverPtr RenDriverSelectorImpl::createAutomaticDriver(const RenDriverSelecto
         if ((bestDriverInList == RenDriverPtr(nullptr)) || (*it)->isBetterChoiceThan(*bestDriverInList))
             bestDriverInList = (*it);
     }
-    ASSERT(bestDriverInList.isDefined(), " Could not find a acceptable driver in list ");
+    ASSERT(bestDriverInList.get(), " Could not find a acceptable driver in list ");
 
     // create a new dummy entry for the list
     RenDriver* automaticDriver = new RenDriver(*bestDriverInList);
@@ -105,32 +99,14 @@ void RenDriverSelectorImpl::eraseNonAutomaticD3dDrivers()
     }
 }
 
-void RenDriverSelectorImpl::addDDrawDriver(const RenDriverPtr& driverPtr, PushWhere pushWhere)
+void RenDriverSelectorImpl::addDDrawDriver(const RenDriverPtr& driverPtr)
 {
-    switch (pushWhere)
-    {
-        case FRONT:
-            dDrawDrivers_.push_front(driverPtr);
-            break;
-        case BACK:
-            dDrawDrivers_.push_back(driverPtr);
-        default:
-            break;
-    }
+    dDrawDrivers_.push_back(driverPtr);
 }
 
-void RenDriverSelectorImpl::addD3dDriver(const RenDriverPtr& driverPtr, PushWhere pushWhere)
+void RenDriverSelectorImpl::addD3dDriver(const RenDriverPtr& driverPtr)
 {
-    switch (pushWhere)
-    {
-        case FRONT:
-            d3dDrivers_.push_front(driverPtr);
-            break;
-        case BACK:
-            d3dDrivers_.push_back(driverPtr);
-        default:
-            break;
-    }
+    d3dDrivers_.push_back(driverPtr);
 }
 
 //
@@ -220,7 +196,7 @@ void RenDriverSelector::buildD3dDrivers()
 
     // Get the best driver from the list andf copy it in a new entry of the list
     RenDriverPtr bestDriver = RenDriverSelectorImpl::createAutomaticDriver(d3dDrivers_);
-    driverSelectorImpl().addD3dDriver(bestDriver, RenDriverSelectorImpl::FRONT);
+    driverSelectorImpl().addD3dDriver(bestDriver);
 
     automaticD3dDriver_ = bestDriver;
 
@@ -230,14 +206,14 @@ void RenDriverSelector::buildD3dDrivers()
     if (currentDDrawDriver_->driverImpl().isAutomatic())
         driverSelectorImpl().eraseNonAutomaticD3dDrivers();
 
-    ASSERT(automaticD3dDriver_.isDefined(), "Unable to find an appropriate D3D driver ");
+    ASSERT(automaticD3dDriver_.get(), "Unable to find an appropriate D3D driver ");
 
-    bool isAutomatic;
-    if (! isAutomatic)
+    bool isAutomatic{};
+    if (!isAutomatic)
     {
         RENDER_STREAM("The user has requested not to use the automatic driver " << std::endl);
 
-        if (currentD3dDriver_.isDefined())
+        if (currentD3dDriver_.get())
             RENDER_STREAM(
                 "Requested Direct3d Driver found (" << currentD3dDriver_->name() << ", "
                                                     << currentD3dDriver_->description() << ")" << std::endl);
@@ -245,7 +221,7 @@ void RenDriverSelector::buildD3dDrivers()
             RENDER_STREAM("Requested Direct3d Driver not found (automatic driver will be used) " << std::endl);
     }
 
-    if (! currentD3dDriver_.isDefined())
+    if (! currentD3dDriver_.get())
         currentD3dDriver_ = automaticD3dDriver_;
 
     RENDER_STREAM(
@@ -254,7 +230,7 @@ void RenDriverSelector::buildD3dDrivers()
 
     RENDER_INDENT(-2);
 
-    POST(currentD3dDriver_.isDefined());
+    POST(currentD3dDriver_.get());
     TEST_INVARIANT;
 }
 
@@ -380,7 +356,7 @@ const RenDisplay& RenDriverSelector::display() const
 RenDriverSelector::ReturnValue RenDriverSelector::updateDriverRegistries()
 {
     CB_RenDriverSelector_DEPIMPL();
-    PRE(currentDDrawDriver().isDefined());
+    PRE(currentDDrawDriver().get());
 
     currentDDrawDriver()->driverImpl().writeToRegistry();
     if (display_)

@@ -15,9 +15,10 @@
 #include "base/base.hpp"
 #include "render/driv.hpp"
 
+#include <vector>
+
 class RenDisplay;
 class RenDriverSelectorImpl;
-template <class T> class ctl_list;
 
 class RenDriverSelector
 // Canonical form revoked
@@ -32,7 +33,7 @@ public:
 
     void CLASS_INVARIANT;
 
-    using RenDrivers = ctl_list<RenDriverPtr>;
+    using RenDrivers = std::vector<RenDriverPtr>;
 
     enum ReturnValue
     {
