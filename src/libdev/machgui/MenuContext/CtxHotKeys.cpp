@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ctxhotky.hpp"
+#include "machgui/MenuContext/CtxHotKeys.hpp"
 
 #include "gui/font.hpp"
 #include "system/pathname.hpp"

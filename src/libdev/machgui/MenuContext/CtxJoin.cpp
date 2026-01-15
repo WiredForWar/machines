@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/diag.hpp"
-#include "machgui/ctxjoin.hpp"
+#include "machgui/MenuContext/CtxJoin.hpp"
 #include "machgui/sslistit.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"

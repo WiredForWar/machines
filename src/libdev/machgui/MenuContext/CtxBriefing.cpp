@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 //
 
-#include "machgui/ctxbrief.hpp"
+#include "machgui/MenuContext/CtxBriefing.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/ScrollableText.hpp"

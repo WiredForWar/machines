@@ -40,7 +40,7 @@
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
 #include "machgui/ProgressIndicator.hpp"
-#include "machgui/ctxoptns.hpp"
+#include "machgui/MenuContext/CtxOptions.hpp"
 #include "machgui/gui.hpp"
 
 #include "system/vfs.hpp"

@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "network/netnet.hpp"
-#include "machgui/ctxdebrf.hpp"
+#include "machgui/MenuContext/CtxDeBriefing.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/startup.hpp"
 #include "machgui/strtdata.hpp"

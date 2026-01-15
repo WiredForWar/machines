@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ctxstats.hpp"
+#include "machgui/MenuContext/CtxStatistics.hpp"
 #include "render/Font.hpp"
 #include "system/pathname.hpp"
 #include "device/time.hpp"

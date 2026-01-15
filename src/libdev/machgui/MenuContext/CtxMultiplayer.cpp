@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ctxmulti.hpp"
+#include "machgui/MenuContext/CtxMultiplayer.hpp"
 
 #include "base/diag.hpp"
 #include "machgui/ui/MenuButton.hpp"

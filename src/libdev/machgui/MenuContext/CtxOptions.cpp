@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ctxoptns.hpp"
+#include "machgui/MenuContext/CtxOptions.hpp"
 #include "ctl/list.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/pathname.hpp"

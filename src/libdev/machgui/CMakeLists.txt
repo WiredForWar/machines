@@ -15,6 +15,40 @@ set(MACHGUI_SOURCES
     KeyToString.hpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
+    MenuContext/CtxBriefing.cpp
+    MenuContext/CtxBriefing.hpp
+    MenuContext/CtxCampaign.cpp
+    MenuContext/CtxCampaign.hpp
+    MenuContext/CtxDeBriefing.cpp
+    MenuContext/CtxDeBriefing.hpp
+    MenuContext/CtxHotKeys.cpp
+    MenuContext/CtxHotKeys.hpp
+    MenuContext/CtxImReady.cpp
+    MenuContext/CtxImReady.hpp
+    MenuContext/CtxInGameOptions.cpp
+    MenuContext/CtxInGameOptions.hpp
+    MenuContext/CtxJoin.cpp
+    MenuContext/CtxJoin.hpp
+    MenuContext/CtxLoad.cpp
+    MenuContext/CtxLoad.hpp
+    MenuContext/CtxMainMenu.cpp
+    MenuContext/CtxMainMenu.hpp
+    MenuContext/CtxMultiplayer.cpp
+    MenuContext/CtxMultiplayer.hpp
+    MenuContext/CtxOptions.cpp
+    MenuContext/CtxOptions.hpp
+    MenuContext/CtxSave.cpp
+    MenuContext/CtxSave.hpp
+    MenuContext/CtxScenario.cpp
+    MenuContext/CtxScenario.hpp
+    MenuContext/CtxSettings.cpp
+    MenuContext/CtxSettings.hpp
+    MenuContext/CtxSinglePlayer.cpp
+    MenuContext/CtxSinglePlayer.hpp
+    MenuContext/CtxSkirmish.cpp
+    MenuContext/CtxSkirmish.hpp
+    MenuContext/CtxStatistics.cpp
+    MenuContext/CtxStatistics.hpp
     ProgressIndicator.cpp
     ProgressIndicator.hpp
     actbmpnm.cpp
@@ -124,40 +158,6 @@ set(MACHGUI_SOURCES
     corral.hpp
     ctrladon.cpp
     ctrladon.hpp
-    ctxbrief.cpp
-    ctxbrief.hpp
-    ctxcamp.cpp
-    ctxcamp.hpp
-    ctxdebrf.cpp
-    ctxdebrf.hpp
-    ctxhotky.cpp
-    ctxhotky.hpp
-    ctxingam.cpp
-    ctxingam.hpp
-    ctxjoin.cpp
-    ctxjoin.hpp
-    ctxload.cpp
-    ctxload.hpp
-    ctxmmenu.cpp
-    ctxmmenu.hpp
-    ctxmulti.cpp
-    ctxmulti.hpp
-    ctxoptns.cpp
-    ctxoptns.hpp
-    ctxready.cpp
-    ctxready.hpp
-    ctxsave.cpp
-    ctxsave.hpp
-    ctxscenr.cpp
-    ctxscenr.hpp
-    ctxsetng.cpp
-    ctxsetng.hpp
-    ctxsingl.cpp
-    ctxsingl.hpp
-    ctxskirm.cpp
-    ctxskirm.hpp
-    ctxstats.cpp
-    ctxstats.hpp
     database.cpp
     database.hpp
     databasi.cpp

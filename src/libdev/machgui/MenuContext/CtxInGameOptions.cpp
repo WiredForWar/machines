@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "machgui/ctxingam.hpp"
+#include "machgui/MenuContext/CtxInGameOptions.hpp"
 
 #include "machgui/gui.hpp"
 #include "network/netnet.hpp"

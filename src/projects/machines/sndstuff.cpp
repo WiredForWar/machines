@@ -2,7 +2,7 @@
 
 #include "base/diag.hpp"
 
-#include "machgui/ctxoptns.hpp"
+#include "machgui/MenuContext/CtxOptions.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"
 #include "world4d/soundman.hpp"
