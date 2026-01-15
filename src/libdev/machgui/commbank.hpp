@@ -84,11 +84,7 @@ class MachCommandIcon : public GuiBitmapButtonWithFilledBorder
 // cannonical form revoked
 {
 public:
-    MachCommandIcon(
-        GuiDisplayable* pParent,
-        const Gui::Coord& rel,
-        const MachGuiCommand& command,
-        MachInGameScreen* pInGameScreen);
+    MachCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command);
 
     ~MachCommandIcon() override;
 
@@ -105,9 +101,6 @@ public:
     const MachGuiCommand* pCommand() const;
 
 protected:
-    MachInGameScreen& inGameScreen();
-    const MachInGameScreen& inGameScreen() const;
-
     // Inherited from GuiButton
     void doBeDepressed(const GuiMouseEvent& rel) override;
     void doBeReleased(const GuiMouseEvent& rel) override;
@@ -124,7 +117,6 @@ private:
     // Helper function used in initialisation list
     std::pair<std::string, std::string> bitmapPaths(const MachGuiCommand& command) const;
 
-    MachInGameScreen* pInGameScreen_;
     const MachGuiCommand* pCommand_; // The command instance to be activated on clicking the icon
 };
 

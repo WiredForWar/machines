@@ -25,11 +25,7 @@ class MachActor;
 class MachGuiSelfDestructCommandIcon : public MachCommandIcon
 {
 public:
-    MachGuiSelfDestructCommandIcon(
-        GuiDisplayable* pParent,
-        const Gui::Coord& rel,
-        const MachGuiCommand& command,
-        MachInGameScreen* pInGameScreen);
+    MachGuiSelfDestructCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command);
     ~MachGuiSelfDestructCommandIcon() override;
 
     const GuiBitmap& getBitmap() const override;

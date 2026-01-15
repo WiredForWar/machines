@@ -211,11 +211,8 @@ void MachGuiSelfDestructCommand::update(const Actors& actors)
 }
 
 MachGuiSelfDestructCommandIcon::MachGuiSelfDestructCommandIcon(
-    GuiDisplayable* pParent,
-    const Gui::Coord& rel,
-    const MachGuiCommand& command,
-    MachInGameScreen* pInGameScreen)
-    : MachCommandIcon(pParent, rel, command, pInGameScreen)
+    GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
+    : MachCommandIcon(pParent, rel, command)
 {
     icons().push_back(this);
 }

@@ -27,12 +27,8 @@ static constexpr int CommandsMaxRows = MaxCommandsNumber / CommandsPerRow;
 class MachGuiNukeAttackCommandIcon : public MachCommandIcon
 {
 public:
-    MachGuiNukeAttackCommandIcon(
-        GuiDisplayable* pParent,
-        const Gui::Coord& rel,
-        const MachGuiCommand& command,
-        MachInGameScreen* pInGameScreen)
-        : MachCommandIcon(pParent, rel, command, pInGameScreen)
+    MachGuiNukeAttackCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
+        : MachCommandIcon(pParent, rel, command)
     {
     }
 
@@ -56,12 +52,8 @@ public:
 class MachGuiIonAttackCommandIcon : public MachCommandIcon
 {
 public:
-    MachGuiIonAttackCommandIcon(
-        GuiDisplayable* pParent,
-        const Gui::Coord& rel,
-        const MachGuiCommand& command,
-        MachInGameScreen* pInGameScreen)
-        : MachCommandIcon(pParent, rel, command, pInGameScreen)
+    MachGuiIonAttackCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
+        : MachCommandIcon(pParent, rel, command)
     {
     }
 
@@ -85,12 +77,8 @@ public:
 class MachGuiDefconCommandIcon : public MachCommandIcon
 {
 public:
-    MachGuiDefconCommandIcon(
-        GuiDisplayable* pParent,
-        const Gui::Coord& rel,
-        const MachGuiCommand& command,
-        MachInGameScreen* pInGameScreen)
-        : MachCommandIcon(pParent, rel, command, pInGameScreen)
+    MachGuiDefconCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
+        : MachCommandIcon(pParent, rel, command)
     {
     }
 
@@ -150,26 +138,29 @@ MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& re
 
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
+        MachCommandIcon *pButton{};
         if (commands[i].get() == pInGameScreen->defconCommand())
         {
-            new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {
-            new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->ionAttackCommand())
         {
-            new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->nukeAttackCommand())
         {
-            new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else
         {
-            new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
+
+        pButton->setMouseClickHandler([this, pButton]() { pInGameScreen_->activeCommand(*pButton->pCommand()); });
     }
 }
 
@@ -240,26 +231,29 @@ MachSmallCommandIcons::MachSmallCommandIcons(
 
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
+        MachCommandIcon *pButton{};
         if (commands[i].get() == pInGameScreen->defconCommand())
         {
-            new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {
-            new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiSelfDestructCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->ionAttackCommand())
         {
-            new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiIonAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->nukeAttackCommand())
         {
-            new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachGuiNukeAttackCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else
         {
-            new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i], pInGameScreen);
+            pButton = new MachCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
+        pButton->setMouseClickHandler([this, pButton]() { pInGameScreen_->activeCommand(*pButton->pCommand()); });
+
     }
 }
 
@@ -309,19 +303,14 @@ size_t MachSmallCommandIcons::reqHeight()
 
 ////////////////////////////////////////////////////////////////////
 
-MachCommandIcon::MachCommandIcon(
-    GuiDisplayable* pParent,
-    const Gui::Coord& rel,
-    const MachGuiCommand& command,
-    MachInGameScreen* pInGameScreen)
+MachCommandIcon::MachCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
     : GuiBitmapButtonWithFilledBorder(
-        pParent,
-        rel,
-        GuiBorderMetrics(1, 1, 1),
-        GuiFilledBorderColours(Gui::BLACK(), Gui::DARKGREY(), Gui::DARKGREY(), Gui::RED(), Gui::BLACK()),
-        MachGui::getScaledImage(bitmapPaths(command).first),
-        Gui::Coord(1, 1))
-    , pInGameScreen_(pInGameScreen)
+          pParent,
+          rel,
+          GuiBorderMetrics(1, 1, 1),
+          GuiFilledBorderColours(Gui::BLACK(), Gui::DARKGREY(), Gui::DARKGREY(), Gui::RED(), Gui::BLACK()),
+          MachGui::getScaledImage(bitmapPaths(command).first),
+          Gui::Coord(1, 1))
     , pCommand_(&command)
 {
     // Intentionally Empty
@@ -330,16 +319,6 @@ MachCommandIcon::MachCommandIcon(
 MachCommandIcon::~MachCommandIcon()
 {
     // Intentionally Empty
-}
-
-MachInGameScreen& MachCommandIcon::inGameScreen()
-{
-    return *pInGameScreen_;
-}
-
-const MachInGameScreen& MachCommandIcon::inGameScreen() const
-{
-    return *pInGameScreen_;
 }
 
 std::pair<std::string, std::string> MachCommandIcon::bitmapPaths(const MachGuiCommand& command) const
@@ -357,9 +336,6 @@ void MachCommandIcon::doBeDepressed(const GuiMouseEvent&)
 // virtual
 void MachCommandIcon::doBeReleased(const GuiMouseEvent&)
 {
-    // Make the command active
-    MachInGameScreen& inGameScreen = pCommand_->inGameScreen();
-    inGameScreen.activeCommand(*pCommand_);
 }
 
 // virtual
