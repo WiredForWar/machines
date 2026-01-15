@@ -17,7 +17,7 @@
 #include "base/base.hpp"
 #include "ctl/pvector.hpp"
 #include "mathex/point3d.hpp"
-#include "machgui/commbank.hpp"
+#include "machgui/CommandIcons.hpp"
 
 // Forward refs
 class MachActor;

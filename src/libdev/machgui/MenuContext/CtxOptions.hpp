@@ -17,7 +17,7 @@
 #include "ctl/pvector.hpp"
 #include "ctl/countptr.hpp"
 #include "render/driv.hpp"
-#include "machgui/startup.hpp"
+#include "machgui/StartupScreens.hpp"
 
 #define GAMMA_REG_MULTIPLIER 0x19999999
 #define GAMMA_LOWER_LIMIT 0.1

@@ -7,7 +7,7 @@
 
 #include "machgui/db/internal/DbIScenario.hpp"
 #include "machgui/db/DbPlanet.hpp"
-#include "machgui/startup.hpp"
+#include "machgui/StartupScreens.hpp"
 
 PER_DEFINE_PERSISTENT(MachGuiDbIScenario);
 

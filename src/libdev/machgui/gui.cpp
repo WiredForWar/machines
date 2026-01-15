@@ -15,7 +15,7 @@
 #include "gui/restring.hpp"
 
 #include "system/pathname.hpp"
-#include "machgui/actbmpnm.hpp"
+#include "machgui/ActorBitmaps.hpp"
 #include "machlog/canattac.hpp"
 #include "machlog/machine.hpp"
 #include <cassert>

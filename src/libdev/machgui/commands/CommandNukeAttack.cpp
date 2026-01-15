@@ -23,7 +23,7 @@
 #include "machlog/vmman.hpp"
 #include "machlog/weapon.hpp"
 
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 
 #include "machgui/internal/strings.hpp"
 

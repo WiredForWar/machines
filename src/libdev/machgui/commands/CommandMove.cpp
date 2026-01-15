@@ -35,11 +35,11 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 
-#include "machgui/ingame.hpp"
-#include "machgui/cameras.hpp"
+#include "machgui/InGameScreen.hpp"
+#include "machgui/Cameras.hpp"
 
 #include "machgui/internal/strings.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 
 MachGuiMoveCommand::MachGuiMoveCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-move"_bind)

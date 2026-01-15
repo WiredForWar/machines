@@ -12,7 +12,7 @@
 #include "machgui/InputRegistry.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machgui/startup.hpp"
+#include "machgui/StartupScreens.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"

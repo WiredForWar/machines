@@ -12,7 +12,7 @@
 #pragma once
 
 #include "gui/displaya.hpp"
-#include "machgui/focusctl.hpp"
+#include "machgui/FocusCapableControl.hpp"
 
 class GuiRoot;
 

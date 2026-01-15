@@ -19,7 +19,7 @@
 #include "phys/brake.hpp"
 
 #include "gui/gui.hpp"
-#include "machgui/cameras.hpp"
+#include "machgui/Cameras.hpp"
 
 class PhysZenithFlyControl : public PhysMotionControlWithTrans
 {

@@ -16,8 +16,8 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 
-#include "machgui/ingame.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/InGameScreen.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
 MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)

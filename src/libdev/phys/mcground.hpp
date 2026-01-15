@@ -16,7 +16,7 @@
 #include "phys/mcwtrans.hpp"
 
 #include "gui/gui.hpp"
-#include "machgui/cameras.hpp"
+#include "machgui/Cameras.hpp"
 
 // orthodox canonical ( revoked )
 class PhysGroundFlyControl : public PhysMotionControlWithTrans

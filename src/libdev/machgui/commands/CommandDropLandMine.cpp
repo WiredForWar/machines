@@ -8,9 +8,9 @@
 #include "CommandDropLandMine.hpp"
 
 #include "mathex/point3d.hpp"
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "system/pathname.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/oplmine.hpp"

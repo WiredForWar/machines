@@ -7,8 +7,8 @@
 
 #include "CommandPatrol.hpp"
 
-#include "machgui/ingame.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/InGameScreen.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"

@@ -8,7 +8,7 @@
 #include "CommandConstruct.hpp"
 
 #include "gui/event.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
 #include "mathex/abox2d.hpp"
@@ -51,8 +51,8 @@
 #include "machlog/vmman.hpp"
 
 #include "machgui/IInputRegistry.hpp"
-#include "machgui/ingame.hpp"
-#include "machgui/mextemp.hpp"
+#include "machgui/InGameScreen.hpp"
+#include "machgui/MexTemp.hpp"
 
 MachGuiConstructCommand::MachGuiConstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-construct"_bind)

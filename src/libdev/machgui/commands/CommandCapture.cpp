@@ -7,9 +7,9 @@
 
 #include "CommandCapture.hpp"
 
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
 #include "ctl/algorith.hpp"

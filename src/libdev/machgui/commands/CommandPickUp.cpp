@@ -17,7 +17,7 @@
 #include "machlog/vmman.hpp"
 #include "machlog/vmdata.hpp"
 
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 
 MachGuiPickUpCommand::MachGuiPickUpCommand(MachInGameScreen* pInGameScreen)

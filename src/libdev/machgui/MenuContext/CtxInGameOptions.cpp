@@ -13,8 +13,8 @@
 #include "system/pathname.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/db/Database.hpp"
-#include "machgui/startup.hpp"
-#include "machgui/msgboxei.hpp"
+#include "machgui/StartupScreens.hpp"
+#include "machgui/ExitToInternetMessageBoxResponder.hpp"
 #include "machgui/internal/strings.hpp"
 
 #include "world4d/soundman.hpp"

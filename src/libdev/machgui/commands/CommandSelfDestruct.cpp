@@ -7,7 +7,7 @@
 
 #include "CommandSelfDestruct.hpp"
 
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "device/time.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"

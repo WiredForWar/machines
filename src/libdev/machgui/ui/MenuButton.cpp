@@ -8,7 +8,7 @@
 #include "MenuButton.hpp"
 
 #include "machgui/gui.hpp"
-#include "machgui/startup.hpp"
+#include "machgui/StartupScreens.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
@@ -16,7 +16,7 @@
 #include "gui/event.hpp"
 #include "gui/painter.hpp"
 #include "gui/restring.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 #include "render/Font.hpp"
 #include "render/TextOptions.hpp"
 #include "render/device.hpp"

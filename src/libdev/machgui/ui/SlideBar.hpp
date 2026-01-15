@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/displaya.hpp"
-#include "machgui/focusctl.hpp"
+#include "machgui/FocusCapableControl.hpp"
 
 #include <functional>
 

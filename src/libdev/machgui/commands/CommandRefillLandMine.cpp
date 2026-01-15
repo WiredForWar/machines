@@ -8,7 +8,7 @@
 #include "CommandRefillLandMine.hpp"
 
 #include "mathex/point3d.hpp"
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/machvman.hpp"

@@ -26,8 +26,8 @@
 #include "machlog/stats.hpp"
 
 #include "machgui/internal/strings.hpp"
-#include "machgui/internal/mgsndman.hpp"
-#include "machgui/ingame.hpp"
+#include "machgui/internal/SoundManager.hpp"
+#include "machgui/InGameScreen.hpp"
 
 MachGuiDeconstructCommand::MachGuiDeconstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-deconstruct"_bind)

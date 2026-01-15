@@ -7,7 +7,7 @@
 
 #include "CommandTreachery.hpp"
 
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"
 #include "machlog/administ.hpp"

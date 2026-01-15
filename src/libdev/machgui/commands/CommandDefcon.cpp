@@ -8,7 +8,7 @@
 #include "CommandDefcon.hpp"
 
 #include "mathex/point3d.hpp"
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/domain.hpp"
 #include "machlog/actor.hpp"

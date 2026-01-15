@@ -8,7 +8,7 @@
 #include "CommandAttack.hpp"
 
 #include "gui/event.hpp"
-#include "machgui/ingame.hpp"
+#include "machgui/InGameScreen.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/actor.hpp"

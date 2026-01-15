@@ -1,7 +1,7 @@
 #include "RecentEventsManager.hpp"
 
 #include "gui/event.hpp"
-#include "machgui/cameras.hpp"
+#include "machgui/Cameras.hpp"
 #include "machlog/MachineVoiceMailEventID.hpp"
 #include "machlog/actor.hpp"
 

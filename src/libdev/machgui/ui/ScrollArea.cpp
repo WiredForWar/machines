@@ -7,11 +7,11 @@
 
 #include "ScrollArea.hpp"
 
-#include "machgui/ingame.hpp"
-#include "machgui/controlp.hpp"
+#include "machgui/InGameScreen.hpp"
+#include "machgui/ControlPanel.hpp"
 #include "gui/scrolist.hpp"
 #include "gui/painter.hpp"
-#include "machgui/internal/mgsndman.hpp"
+#include "machgui/internal/SoundManager.hpp"
 
 MachGuiScrollButton::MachGuiScrollButton(
     GuiDisplayable* pParent,

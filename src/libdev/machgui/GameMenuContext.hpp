@@ -1,8 +1,8 @@
 #pragma once
 
-#include "machgui/startctx.hpp"
+#include "machgui/StartupScreenContext.hpp"
 
-#include "machgui/animatio.hpp"
+#include "machgui/Animation.hpp"
 
 namespace MachGui
 {

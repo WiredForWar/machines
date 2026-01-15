@@ -1,20 +1,115 @@
 
 set(MACHGUI_SOURCES
+    ActorBitmaps.cpp
+    ActorBitmaps.hpp
+    ActorStringIdRestorer.cpp
+    ActorStringIdRestorer.hpp
+    Animation.cpp
+    Animation.hpp
+    AutoDeleteDisplayable.cpp
+    AutoDeleteDisplayable.hpp
     BindId.hpp
     BindsStorageXml.cpp
     BindsStorageXml.hpp
+    BmuText.cpp
+    BmuText.hpp
+    BufferScrollButton.cpp
+    BufferScrollButton.hpp
+    BuildMachineIcon.cpp
+    BuildMachineIcon.hpp
+    BuildMenu.cpp
+    BuildMenu.hpp
+    BuildMenuIcons.cpp
+    BuildMenuIcons.hpp
+    BuildProgressBar.cpp
+    BuildProgressBar.hpp
+    CameraScrollArea.cpp
+    CameraScrollArea.hpp
+    Cameras.cpp
+    Cameras.hpp
+    ChatWindow.cpp
+    ChatWindow.hpp
+    CommandIcons.cpp
+    CommandIcons.hpp
+    ConstructMenu.cpp
+    ConstructMenu.hpp
+    ConstructMenuIcons.cpp
+    ConstructMenuIcons.hpp
+    ConstructionSelectIcon.cpp
+    ConstructionSelectIcon.hpp
+    ContinentMap.cpp
+    ContinentMap.cpp
+    ContinentMap.hpp
+    ContinentMap.hpp
+    ControlPanel.cpp
+    ControlPanel.hpp
+    ControlPanelAddOn.cpp
+    ControlPanelAddOn.hpp
+    ControlPanelImpl.cpp
+    CorralSingleIconInfo.cpp
+    CorralSingleIconInfo.hpp
+    CursorSpec.cpp
+    CursorSpec.hpp
+    DispositionChangeNotifiable.cpp
+    DispositionChangeNotifiable.hpp
+    DropDownCallback.cpp
+    DropDownCallback.hpp
+    DropDownListBox.cpp
+    DropDownListBox.hpp
+    DropDownListBoxCreator.cpp
+    DropDownListBoxCreator.hpp
+    EditBoxListBoxItem.cpp
+    EditBoxListBoxItem.hpp
+    ExitToInternetMessageBoxResponder.cpp
+    ExitToInternetMessageBoxResponder.hpp
+    FactoryBuffer.cpp
+    FactoryBuffer.hpp
+    FirstPerson.cpp
+    FirstPerson.hpp
+    FocusCapableControl.cpp
+    FocusCapableControl.hpp
     GameMenuContext.cpp
     GameMenuContext.hpp
+    GeneralStatistics.cpp
+    GeneralStatistics.hpp
+    HWResearchBank.cpp
+    HWResearchBank.hpp
+    HWResearchBankIcons.cpp
+    HWResearchBankIcons.hpp
+    HWResearchIcon.cpp
+    HWResearchIcon.hpp
+    HWResearchIcons.cpp
+    HWResearchIcons.hpp
+    HWResearchMenu.cpp
+    HWResearchMenu.hpp
+    HealthBar.cpp
+    HealthBar.hpp
     IBindsStorage.hpp
     IInputRegistry.hpp
+    IconWithCounter.cpp
+    IconWithCounter.hpp
+    InGameChatMessages.cpp
+    InGameChatMessages.hpp
+    InGameChatMessagesDisplay.cpp
+    InGameChatMessagesDisplay.hpp
+    InGameScreen.cpp
+    InGameScreen.hpp
+    InGameScreenKeyboard.cpp
     InputLayout.cpp
     InputLayout.hpp
     InputRegistry.cpp
     InputRegistry.hpp
+    IntelligentCursorOnActor.cpp
+    IntelligentCursorOnActor.hpp
     KeyToString.cpp
     KeyToString.hpp
+    LoadSaveGameExtras.cpp
+    LoadSaveGameExtras.hpp
     MachGuiFPCommand.cpp
     MachGuiFPCommand.hpp
+    MapArea.cpp
+    MapArea.hpp
+    MapAreaImpl.cpp
     MenuContext/CtxBriefing.cpp
     MenuContext/CtxBriefing.hpp
     MenuContext/CtxCampaign.cpp
@@ -49,38 +144,77 @@ set(MACHGUI_SOURCES
     MenuContext/CtxSkirmish.hpp
     MenuContext/CtxStatistics.cpp
     MenuContext/CtxStatistics.hpp
+    MessageBoxResponder.cpp
+    MessageBoxResponder.hpp
+    MessageBroker.cpp
+    MessageBroker.hpp
+    MessageDisplay.cpp
+    MessageDisplay.hpp
+    MexTemp.cpp
+    MexTemp.hpp
+    NavigatorBase.cpp
+    NavigatorBase.hpp
+    Network/IPXNetworkMode.cpp
+    Network/IPXNetworkMode.hpp
+    Network/InternetNetworkMode.cpp
+    Network/InternetNetworkMode.hpp
+    Network/ModemNetworkMode.cpp
+    Network/ModemNetworkMode.hpp
+    Network/NetworkProtocolMode.cpp
+    Network/NetworkProtocolMode.hpp
+    Network/SerialNetworkMode.cpp
+    Network/SerialNetworkMode.hpp
+    NewCorralIcon.cpp
+    NewCorralIcon.hpp
+    NewProductionIcon.cpp
+    NewProductionIcon.hpp
+    NewResearchIcon.cpp
+    NewResearchIcon.hpp
+    NumPlayersDropDownListBoxCreator.cpp
+    NumPlayersDropDownListBoxCreator.hpp
+    OptionsLayout.cpp
+    OptionsLayout.hpp
+    PlayerColour.cpp
+    PlayerColour.hpp
+    PlayerNameList.cpp
+    PlayerScore.cpp
+    ProductionBank.cpp
+    ProductionBank.hpp
+    ProductionIcons.cpp
+    ProductionIcons.hpp
     ProgressIndicator.cpp
     ProgressIndicator.hpp
-    actbmpnm.cpp
-    actbmpnm.hpp
-    actnamid.cpp
-    actnamid.hpp
-    animatio.cpp
-    animatio.hpp
-    autodel.cpp
-    autodel.hpp
-    bildicns.cpp
-    bildicns.hpp
-    bildmenu.cpp
-    bildmenu.hpp
-    bmutext.cpp
-    bmutext.hpp
-    bufscbut.cpp
-    bufscbut.hpp
-    buildbar.cpp
-    buildbar.hpp
-    buildmci.cpp
-    buildmci.hpp
-    cameras.cpp
-    cameras.hpp
-    camscrol.cpp
-    camscrol.hpp
-    chatmsgd.cpp
-    chatmsgd.hpp
-    chatmsgs.cpp
-    chatmsgs.hpp
-    chatwind.cpp
-    chatwind.hpp
+    PromptText.cpp
+    PromptText.hpp
+    Radar.cpp
+    Radar.hpp
+    SingleLineEditBox.cpp
+    SingleLineEditBox.hpp
+    SingleSelectionListBox.cpp
+    SingleSelectionListBox.hpp
+    SingleSelectionListBoxItem.cpp
+    SingleSelectionListBoxItem.hpp
+    SoundManager.cpp
+    SquadronBank.cpp
+    SquadronBank.hpp
+    StartupData.cpp
+    StartupData.hpp
+    StartupScreenContext.cpp
+    StartupScreenContext.hpp
+    StartupScreens.cpp
+    StartupScreens.hpp
+    Statistics.cpp
+    Statistics.hpp
+    StatisticsBar.cpp
+    StatisticsBar.hpp
+    StatisticsDisplay.cpp
+    StatisticsDisplay.hpp
+    SystemMessageHandler.cpp
+    SystemMessageHandler.hpp
+    TypeRestorer.cpp
+    TypeRestorer.hpp
+    WorldViewWindow.cpp
+    WorldViewWindow.hpp
     commands/CommandAssemblyPoint.cpp
     commands/CommandAssemblyPoint.hpp
     commands/CommandAttack.cpp
@@ -143,21 +277,6 @@ set(MACHGUI_SOURCES
     commands/command.hpp
     commands/commandi.cpp
     commands/commandi.hpp
-    commbank.cpp
-    commbank.hpp
-    conselic.cpp
-    conselic.hpp
-    consicns.cpp
-    consicns.hpp
-    consmenu.cpp
-    consmenu.hpp
-    controli.cpp
-    controlp.cpp
-    controlp.hpp
-    corral.cpp
-    corral.hpp
-    ctrladon.cpp
-    ctrladon.hpp
     db/Database.cpp
     db/Database.hpp
     db/DatabaseHandler.cpp
@@ -196,136 +315,19 @@ set(MACHGUI_SOURCES
     db/internal/DbIScenario.hpp
     db/internal/DbISystem.hpp
     db/internal/DbITextData.hpp
-    ddrawdrop.cpp
-    ddrawdrop.hpp
-    dispmess.cpp
-    dispmess.hpp
-    dispnoti.cpp
-    dispnoti.hpp
-    dropdown.cpp
-    dropdown.hpp
-    dropdwnc.cpp
-    dropdwnc.hpp
-    editbox.cpp
-    editbox.hpp
-    editlist.cpp
-    editlist.hpp
-    factbuff.cpp
-    factbuff.hpp
-    focusctl.cpp
-    focusctl.hpp
-    fstpersn.cpp
-    fstpersn.hpp
-    genstats.cpp
-    genstats.hpp
     gui.cpp
     gui.hpp
-    guictrl.cpp
-    guictrl.hpp
-    health.cpp
-    health.hpp
-    hwrbicns.cpp
-    hwrbicns.hpp
-    hwrbicon.cpp
-    hwrbicon.hpp
-    hwrebank.cpp
-    hwrebank.hpp
-    hwreicns.cpp
-    hwreicns.hpp
-    hwreicon.cpp
-    hwreicon.hpp
-    hwremenu.cpp
-    hwremenu.hpp
-    igcurs2d.cpp
-    igcurs2d.hpp
-    ingame.cpp
-    ingame.hpp
-    intcurac.cpp
-    intcurac.hpp
-    internal/controli.hpp
-    internal/igameimp.hpp
-    internal/mapareai.hpp
-    internal/mgsndman.hpp
-    internal/playeri.hpp
-    internal/playscri.hpp
-    internal/startui.hpp
+    internal/ControlPanelImpl.hpp
+    internal/InGameScreenImpl.hpp
+    internal/MapAreaImpl.hpp
+    internal/PlayerNameList.hpp
+    internal/PlayerScore.hpp
+    internal/SoundManager.hpp
+    internal/StartupScreensImpl.hpp
     internal/strings.hpp
-    keyboard.cpp
-    lsgextra.cpp
-    lsgextra.hpp
-    machnav.cpp
-    machnav.hpp
-    map.cpp
-    map.hpp
-    maparea.cpp
-    maparea.hpp
-    mapareai.cpp
-    mdinternet.cpp
-    mdinternet.hpp
-    mdipx.cpp
-    mdipx.hpp
-    mdmodem.cpp
-    mdmodem.hpp
-    mdnetwork.cpp
-    mdnetwork.hpp
-    mdserial.cpp
-    mdserial.hpp
     menus_helper.cpp
     menus_helper.hpp
-    messbrok.cpp
-    messbrok.hpp
-    mextemp.cpp
-    mextemp.hpp
-    mgsndman.cpp
-    msgbox.cpp
-    msgbox.hpp
-    msgboxei.cpp
-    msgboxei.hpp
-    numpdrop.cpp
-    numpdrop.hpp
-    oneicon.cpp
-    oneicon.hpp
-    optlayout.cpp
-    optlayout.hpp
-    playeri.cpp
-    playerit.cpp
-    playerit.hpp
-    playscri.cpp
-    prodbank.cpp
-    prodbank.hpp
-    prodicns.cpp
-    prodicns.hpp
-    prodicon.cpp
-    prodicon.hpp
-    promtext.cpp
-    promtext.hpp
-    radar.cpp
-    radar.hpp
-    restorer.cpp
-    restorer.hpp
     root.hpp
-    squadron.cpp
-    squadron.hpp
-    sslistbx.cpp
-    sslistbx.hpp
-    sslistit.cpp
-    sslistit.hpp
-    startctx.cpp
-    startctx.hpp
-    startup.cpp
-    startup.hpp
-    statbar.cpp
-    statbar.hpp
-    statdisp.cpp
-    statdisp.hpp
-    statistics.cpp
-    statistics.hpp
-    strtdata.cpp
-    strtdata.hpp
-    sysmess.cpp
-    sysmess.hpp
-    typemap.cpp
-    typemap.hpp
     ui/CheckBox.cpp
     ui/CheckBox.hpp
     ui/MenuButton.cpp
@@ -344,8 +346,6 @@ set(MACHGUI_SOURCES
     ui/Text.hpp
     ui/VerticalScrollBar.cpp
     ui/VerticalScrollBar.hpp
-    worldvie.cpp
-    worldvie.hpp
 )
 
 add_library(machgui ${GAME_COMPONENT_LIB_TYPE} ${MACHGUI_SOURCES})
