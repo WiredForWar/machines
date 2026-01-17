@@ -16,17 +16,14 @@
 
 #include "ctl/pvector.hpp"
 #include "ctl/countptr.hpp"
-#include "render/driv.hpp"
 #include "machgui/StartupScreens.hpp"
 
 #define GAMMA_REG_MULTIPLIER 0x19999999
 #define GAMMA_LOWER_LIMIT 0.1
 #define GAMMA_UPPER_LIMIT 5.0
 
-class RenDriverSelector;
 class MachGuiSlideBar;
 class MachGuiDropDownListBoxCreator;
-class MachGuiDDrawDropDownListBoxCreator;
 class MachGuiCheckBox;
 class RenDisplay;
 
@@ -52,7 +49,6 @@ private:
 
     void writeToConfig();
     void readFromConfig();
-    void showDirect3DDrivers();
 
     MachGuiCtxOptions(const MachGuiCtxOptions&);
     MachGuiCtxOptions& operator=(const MachGuiCtxOptions&);
@@ -60,33 +56,27 @@ private:
     using BooleanOptimisations = ctl_pvector<MachGuiCheckBox>;
     using ChoicesOptimisations = ctl_pvector<MachGuiDropDownListBoxCreator>;
 
-    friend class MachGuiDDrawDropDownCallback;
-
     // Data members...
     MachGuiStartupScreens::Context exitContext_;
 
-    MachGuiSlideBar* pMusicVolume_ = nullptr;
-    MachGuiSlideBar* pSoundVolume_ = nullptr;
-    MachGuiCheckBox* pSound3d_ = nullptr;
-    MachGuiCheckBox* pTransitions_ = nullptr;
-    MachGuiCheckBox* pScreenResolutionLock_ = nullptr;
-    MachGuiCheckBox* pCursorType_ = nullptr;
-    MachGuiCheckBox* pReverseKeys_ = nullptr;
-    MachGuiCheckBox* pReverseMouse_ = nullptr;
+    MachGuiSlideBar* pMusicVolume_{};
+    MachGuiSlideBar* pSoundVolume_{};
+    MachGuiCheckBox* pSound3d_{};
+    MachGuiCheckBox* pTransitions_{};
+    MachGuiCheckBox* pScreenResolutionLock_{};
+    MachGuiCheckBox* pCursorType_{};
+    MachGuiCheckBox* pReverseKeys_{};
+    MachGuiCheckBox* pReverseMouse_{};
     MachGuiCheckBox* pGrabMouse_{};
     MachGuiCheckBox* pWasdControls_{};
-    MachGuiDropDownListBoxCreator* pScreenSize_ = nullptr;
+    MachGuiDropDownListBoxCreator* pScreenSize_{};
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
     bool grabCursor_{};
     int32_t cameraAcceleration_{};
-    RenDriverSelector* pDriverSelector_;
-    MachGuiDDrawDropDownListBoxCreator* pDirectDrawDrivers_ = nullptr;
-    MachGuiDropDownListBoxCreator* pDirect3DDrivers_ = nullptr;
-    MachGuiDropDownListBoxCreator* pScaleFactorSelector_ = nullptr;
+    MachGuiDropDownListBoxCreator* pScaleFactorSelector_{};
     bool exitFromOptions_ = false;
-    RenDriverPtr initialDDrawDriver_;
     bool cursorType2d_;
     MachGuiSlideBar* pGammaCorrection_{};
     MachGuiSlideBar* pCameraAccelerationSlider_{};

@@ -20,11 +20,9 @@
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/capable.hpp"
-#include "render/drivsel.hpp"
 #include "gui/restring.hpp"
 #include "gui/font.hpp"
 #include "gui/image.hpp"
-#include "machgui/DropDownCallback.hpp"
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
 #include "machgui/InputLayout.hpp"
@@ -36,7 +34,6 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/ui/SlideBar.hpp"
-#include "machgui/OptionsLayout.hpp"
 #include "machgui/DropDownListBoxCreator.hpp"
 #include "machgui/ui/CheckBox.hpp"
 #include "machgui/internal/SoundManager.hpp"
@@ -48,21 +45,6 @@
 #define OPTIONS_AREA_MINY 50
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 239
-
-class MachGuiCtxOptions;
-
-class MachGuiDDrawDropDownCallback : public MachGuiDropDownCallback
-{
-public:
-    MachGuiDDrawDropDownCallback(MachGuiCtxOptions& optionsScreen)
-        : optionsScreen_(optionsScreen)
-    {
-    }
-    void callBack() override { optionsScreen_.showDirect3DDrivers(); }
-
-private:
-    MachGuiCtxOptions& optionsScreen_;
-};
 
 class MachGuiOptionsExitMessageBoxResponder : public MachGuiMessageBoxResponder
 {
@@ -88,24 +70,23 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Get the display, required for things like gamma correction, display drivers etc
     RenDisplay* pDisplay_ = W4dManager::instance().sceneManager()->pDevice()->display();
 
-    // Load the layout information
-    MachGuiOptionsLayout screenLayout(SysPathName("gui/layout/options.dat"), MachGui::menuScaleFactor());
-
     // Create buttons
     {
-        const MachGuiOptionsLayout::MenuButtonInfo& okButtonInfo = screenLayout.menuButtonInfo(0);
-        const MachGuiOptionsLayout::MenuButtonInfo& cancelButtonInfo = screenLayout.menuButtonInfo(1);
+        const uint menuScaleFactor = MachGui::menuScaleFactor();
+        const Gui::Coord okTopLeft = Gui::Coord(85, 377) * menuScaleFactor;
+        const Gui::Size buttonSize = Gui::Size(206, 46) * menuScaleFactor;
+        const Gui::Coord cancelTopLeft = Gui::Coord(337, 377) * menuScaleFactor;
 
         MachGuiMenuButton* pOkBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
-            Gui::Box(okButtonInfo.topLeft, okButtonInfo.bottomRight),
+            Gui::Box(okTopLeft, buttonSize),
             IDS_MENUBTN_OK,
             MachGui::ButtonEvent::DUMMY_OK);
         MachGuiMenuButton* pCancelBtn = new MachGuiMenuButton(
             pStartupScreens,
             pStartupScreens,
-            Gui::Box(cancelButtonInfo.topLeft, cancelButtonInfo.bottomRight),
+            Gui::Box(cancelTopLeft, buttonSize),
             IDS_MENUBTN_CANCEL,
             MachGui::ButtonEvent::DUMMY_EXIT);
         pCancelBtn->escapeControl(true);
@@ -120,8 +101,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIONS_AREA_MINX, OPTIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.horizontalAdvance(optionsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
-            font.height() + 2 * MachGui::menuScaleFactor()),
+            Gui::Size(
+                font.horizontalAdvance(optionsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
+                font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_OPTIONS,
         font,
         MachGui::Menu::menuLightTextOptions(),
@@ -132,108 +114,107 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pStartupScreens,
         Gui::Box(
             Gui::Coord(OPTIMISATIONS_AREA_MINX, OPTIMISATIONS_AREA_MINY) * MachGui::menuScaleFactor(),
-            font.horizontalAdvance(optimisationsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
-            font.height() + 2 * MachGui::menuScaleFactor()),
+            Gui::Size(
+                font.horizontalAdvance(optimisationsHeading.asString(), MachGui::Menu::menuLightTextOptions()),
+                font.height() + 2 * MachGui::menuScaleFactor())),
         IDS_MENULB_OPTIMISATIONS,
         font,
         MachGui::Menu::menuLightTextOptions(),
         Gui::AlignLeft);
     // Initialise gui items
 
-    const MachGuiOptionsLayout::SlidebarInfo& musicVolSl = screenLayout.slidebarInfo(0);
-    const MachGuiOptionsLayout::SlidebarInfo& soundVolSl = screenLayout.slidebarInfo(1);
-    const MachGuiOptionsLayout::SlidebarInfo& gammaCorrectionSl = screenLayout.slidebarInfo(2);
-    const MachGuiOptionsLayout::MenuTextInfo& musicVolTxt = screenLayout.menuTextInfo(0);
-    const MachGuiOptionsLayout::MenuTextInfo& soundVolTxt = screenLayout.menuTextInfo(1);
-    const MachGuiOptionsLayout::MenuTextInfo& gammaCorrectionTxt = screenLayout.menuTextInfo(2);
-    const MachGuiOptionsLayout::MenuTextInfo& screenSizeTxt = screenLayout.menuTextInfo(3);
-    const MachGuiOptionsLayout::MenuTextInfo& directDrawTxt = screenLayout.menuTextInfo(4);
-    const MachGuiOptionsLayout::MenuTextInfo& direct3DTxt = screenLayout.menuTextInfo(5);
-    const MachGuiOptionsLayout::MenuTextInfo& scaleFactorTxt = screenLayout.menuTextInfo(5);
-    const MachGuiOptionsLayout::CheckBoxInfo& sound3dCB = screenLayout.checkBoxInfo(0);
-    const MachGuiOptionsLayout::CheckBoxInfo& transitionsCB = screenLayout.checkBoxInfo(1);
-    const MachGuiOptionsLayout::CheckBoxInfo& screenResolutionLock = screenLayout.checkBoxInfo(2);
-    const MachGuiOptionsLayout::CheckBoxInfo& cursorType = screenLayout.checkBoxInfo(3);
-    const MachGuiOptionsLayout::CheckBoxInfo& reverseKeys = screenLayout.checkBoxInfo(4);
-    const MachGuiOptionsLayout::CheckBoxInfo& reverseMouse = screenLayout.checkBoxInfo(5);
-    const MachGuiOptionsLayout::CheckBoxInfo& grabMouse = screenLayout.checkBoxInfo(6);
-    const MachGuiOptionsLayout::CheckBoxInfo& useWasd = screenLayout.checkBoxInfo(7);
+    const uint menuScaleFactor = MachGui::menuScaleFactor();
+    const uint firstColumnX = 95 * menuScaleFactor;
+    const uint contentY = 79 * menuScaleFactor;
+    const uint firstColumnWidth = 157 * menuScaleFactor;
+    const uint columnSpacing = 0 * menuScaleFactor;
+    const uint secondColumnX = firstColumnX + firstColumnWidth + columnSpacing;
+    const uint secondColumnTextWidth = 116 * menuScaleFactor;
+    const uint secondColumnSpacing = 7 * menuScaleFactor;
+    const uint secondColumnInputX = secondColumnX + secondColumnTextWidth + secondColumnSpacing;
+    const uint secondColumnInputWidth = 150 * menuScaleFactor;
+    const uint rowHeight = MachGuiCheckBox::implicitHeight();
+    const uint verticalSpacing = 9 * menuScaleFactor;
+    int itemsIn1stColumn{};
+    int itemsIn2ndColumn{};
 
-    const uint verticalStep = 20 * MachGui::menuScaleFactor();
-    const uint secondColumnLabelLeft = musicVolTxt.topLeft.x();
-    const uint secondColumnLabelRight = musicVolTxt.bottomRight.x();
-    const uint secondColumnLabelWidth = secondColumnLabelRight - secondColumnLabelLeft;
-    const uint secondColumnInputX = musicVolSl.topLeft.x();
-    const uint secondColumnInputWidth = musicVolSl.width;
+    auto addCheckBox = [&](const ResolvedUiString& label) -> MachGuiCheckBox*
+    {
+        const uint y = contentY + (rowHeight + verticalSpacing) * itemsIn1stColumn;
+        auto* checkBox = new MachGuiCheckBox(
+            pStartupScreens,
+            pStartupScreens,
+            Gui::Box(
+                Gui::Coord(firstColumnX, y),
+                Gui::Size(firstColumnWidth, rowHeight)),
+            label);
+        ++itemsIn1stColumn;
+        return checkBox;
+    };
 
-    // Create control labels
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(musicVolTxt.topLeft, musicVolTxt.bottomRight),
-        musicVolTxt.idsStringId,
-        MachGui::getScaledImagePath(musicVolTxt.font),
-        Gui::AlignRight);
+    auto addSliderBar = [&](const ResolvedUiString& label) -> MachGuiSlideBar*
+    {
+        const uint y = contentY + (rowHeight + verticalSpacing) * itemsIn2ndColumn;
 
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(soundVolTxt.topLeft, soundVolTxt.bottomRight),
-        soundVolTxt.idsStringId,
-        MachGui::getScaledImagePath(soundVolTxt.font),
-        Gui::AlignRight);
+        new MachGuiMenuText(
+            pStartupScreens,
+            Gui::Box(
+                Gui::Coord(secondColumnX, y),
+                Gui::Size(secondColumnTextWidth, rowHeight)),
+            label,
+            MachGui::Menu::smallFontLight(),
+            Gui::AlignRight);
 
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(screenSizeTxt.topLeft, screenSizeTxt.bottomRight),
-        screenSizeTxt.idsStringId,
-        MachGui::getScaledImagePath(screenSizeTxt.font),
-        Gui::AlignRight);
+        auto* slider = new MachGuiSlideBar(
+            pStartupScreens,
+            pStartupScreens,
+            Gui::Coord(secondColumnInputX, y),
+            secondColumnInputWidth);
+        ++itemsIn2ndColumn;
+        return slider;
+    };
 
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(directDrawTxt.topLeft, directDrawTxt.bottomRight),
-        directDrawTxt.idsStringId,
-        MachGui::getScaledImagePath(directDrawTxt.font),
-        Gui::AlignRight);
+    auto addDropDown = [&](const ResolvedUiString& label) -> MachGuiDropDownListBoxCreator*
+    {
+        const uint y = contentY + (rowHeight + verticalSpacing) * itemsIn2ndColumn;
 
-    //  new MachGuiMenuText( pStartupScreens, Gui::Box( direct3DTxt.topLeft, direct3DTxt.bottomRight ),
-    //                         direct3DTxt.idsStringId, direct3DTxt.font, Gui::AlignRight );
+        new MachGuiMenuText(
+            pStartupScreens,
+            Gui::Box(
+                Gui::Coord(secondColumnX, y),
+                Gui::Size(secondColumnTextWidth, rowHeight)),
+            label,
+            MachGui::Menu::smallFontLight(),
+            Gui::AlignRight);
 
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(scaleFactorTxt.topLeft, scaleFactorTxt.bottomRight),
-        scaleFactorTxt.idsStringId,
-        MachGui::getScaledImagePath(scaleFactorTxt.font),
-        Gui::AlignRight);
+        auto* dropDown = new MachGuiDropDownListBoxCreator(
+            pStartupScreens,
+            pStartupScreens,
+            Gui::Coord(secondColumnInputX, y),
+            secondColumnInputWidth,
+            false,
+            true);
+        ++itemsIn2ndColumn;
+        return dropDown;
+    };
 
     // Create check boxes
-    pSound3d_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, sound3dCB.box(), sound3dCB.stringId);
-
-    pTransitions_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, transitionsCB.box(), transitionsCB.stringId);
-
-    pScreenResolutionLock_ = new 
-        MachGuiCheckBox(pStartupScreens, pStartupScreens, screenResolutionLock.box(), screenResolutionLock.stringId);
-
-    pCursorType_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, cursorType.box(), cursorType.stringId);
-
-    pReverseKeys_ = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseKeys.box(), reverseKeys.stringId);
-
-    pReverseMouse_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, reverseMouse.box(), reverseMouse.stringId);
-
-    pGrabMouse_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, grabMouse.box(), grabMouse.stringId);
-
-    pWasdControls_
-        = new MachGuiCheckBox(pStartupScreens, pStartupScreens, useWasd.box(), useWasd.stringId);
+    pSound3d_ = addCheckBox(IDS_MENU_3DSOUND);
+    pTransitions_ = addCheckBox(IDS_MENU_SCREENTRANSITIONS);
+    pScreenResolutionLock_ = addCheckBox(IDS_MENU_SCREENRESLOCK);
+    pCursorType_ = addCheckBox(IDS_MENU_CURSORTYPE);
+    pReverseKeys_ = addCheckBox(IDS_MENU_REVERSEKEYS);
+    pReverseMouse_ = addCheckBox(IDS_MENU_REVERSEMOUSE);
+    pGrabMouse_ = addCheckBox(IDS_GRAB_MOUSE);
+    pWasdControls_ = addCheckBox(IDS_USE_WASD);
 
     // Create volume sliders
-    pMusicVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, musicVolSl.topLeft, musicVolSl.width);
+    pMusicVolume_ = addSliderBar(IDS_MENU_MUSICVOL);
     pMusicVolume_->minMax(0, 100);
     pMusicVolume_->setValue(Config::musicVolume.get());
     pMusicVolume_->setValueChangedHandler([](float newValue) { Config::musicVolume.set(std::round(newValue)); });
 
-    pSoundVolume_ = new MachGuiSlideBar(pStartupScreens, pStartupScreens, soundVolSl.topLeft, soundVolSl.width);
+    pSoundVolume_ = addSliderBar(IDS_MENU_SOUNDVOL);
     pSoundVolume_->minMax(0, 100);
     pSoundVolume_->setValue(Config::soundVolume.get());
     pSoundVolume_->setValueChangedHandler([](float newValue) { Config::soundVolume.set(std::round(newValue)); });
@@ -294,67 +275,39 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         }
     }
 
-    pScreenSize_ = new MachGuiDropDownListBoxCreator(
-        pStartupScreens,
-        pStartupScreens,
-        Gui::Coord(secondColumnInputX, 119 * MachGui::menuScaleFactor()),
-        secondColumnInputWidth,
-        false,
-        true);
+    pScreenSize_ = addDropDown(IDS_MENU_SCREENSIZE);
     pScreenSize_->setAvailText(strings);
     pScreenSize_->items(modeList);
 
-    // Create list of avaliable direct draw drivers/direct 3d drivers
-
-    pDriverSelector_ = new RenDriverSelector(pDisplay_);
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems dDrawDrivers;
-    GuiStrings dDrawDriverNames;
-    dDrawDriverNames.reserve(4);
-    dDrawDrivers.reserve(4);
-
-    const RenDriverSelector::RenDrivers& dDrawDriversList = pDriverSelector_->dDrawDrivers();
-
-    for (RenDriverSelector::RenDrivers::const_iterator i = dDrawDriversList.begin(); i != dDrawDriversList.end(); ++i)
     {
-        dDrawDrivers.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem) & (*i));
-        dDrawDriverNames.push_back((*i)->name());
+        GuiStrings scaleNames = {
+            ResolvedUiString(IDS_MENU_DEFAULT),
+            "100%",
+            "200%",
+        };
+
+        static const int scaleValues[] = {
+            0,
+            100,
+            200,
+        };
+
+        pScaleFactorSelector_ = addDropDown(IDS_SCALE_FACTOR);
+        pScaleFactorSelector_->setAvailText(scaleNames);
+        auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
+        pScaleFactorSelector_->items(items);
     }
-    dDrawDriverNames.push_back("default");
 
-    pDirectDrawDrivers_ = new MachGuiDDrawDropDownListBoxCreator(
-        pStartupScreens,
-        pStartupScreens,
-        Gui::Coord(secondColumnInputX, 139 * MachGui::menuScaleFactor()),
-        secondColumnInputWidth,
-        false,
-        true,
-        new MachGuiDDrawDropDownCallback(*this));
-    pDirectDrawDrivers_->setAvailText(dDrawDriverNames);
+    pCameraAccelerationSlider_ = addSliderBar(IDS_CONFIG_CAMERA_ACCELERATION);
+    pCameraAccelerationSlider_->minMax(1, 30);
+    pCameraAccelerationSlider_->setValue(Config::uiZenithCameraAcceleration.get());
+    pCameraAccelerationSlider_->setValueChangedHandler([](float v) { Config::uiZenithCameraAcceleration.set(v); });
 
-    pDirectDrawDrivers_->items(dDrawDrivers);
-
-    //  pDirectDrawDrivers_->text( pDriverSelector_->currentDDrawDriver()->name() );
-
-    //  showDirect3DDrivers();
-
-#if 0
     // Only display gamma correction slider if gamma correction is supported
     if (pDisplay_->supportsGammaCorrection())
     {
-        new MachGuiMenuText(
-            pStartupScreens,
-            Gui::Box(gammaCorrectionTxt.topLeft, gammaCorrectionTxt.bottomRight),
-            gammaCorrectionTxt.idsStringId,
-            MachGui::getScaledImagePath(gammaCorrectionTxt.font),
-            Gui::AlignRight);
-
-        pGammaCorrection_ = new MachGuiSlideBar(
-            pStartupScreens,
-            pStartupScreens,
-            gammaCorrectionSl.topLeft,
-            gammaCorrectionSl.width,
-            GAMMA_LOWER_LIMIT,
-            GAMMA_UPPER_LIMIT);
+        pGammaCorrection_ = addSliderBar(IDS_MENU_GAMMACORRECTION);
+        pGammaCorrection_->minMax(GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT);
         // Store initial value
 
         pGammaCorrection_->setValueChangedHandler([](float newValue) {
@@ -365,22 +318,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         pGammaCorrection_->setValue(gammaCorrection_);
 
         // Show gamma correction image (helps get gamma setting correct)
-        new GuiImage(pStartupScreens, Gui::Coord(secondColumnInputX, 198) * MachGui::menuScaleFactor(), MachGui::getScaledImage("gui/menu/gammacal.bmp"));
+        new GuiImage(
+            pStartupScreens,
+            Gui::Coord(secondColumnInputX, pGammaCorrection_->relativeBoundary().bottom() + verticalSpacing),
+            MachGui::getScaledImage("gui/menu/gammacal.bmp"));
     }
-#else
-    new MachGuiMenuText(
-        pStartupScreens,
-        Gui::Box(gammaCorrectionTxt.topLeft, gammaCorrectionTxt.bottomRight),
-        IDS_CONFIG_CAMERA_ACCELERATION,
-        MachGui::getScaledImagePath(gammaCorrectionTxt.font),
-        Gui::AlignRight);
-
-    pCameraAccelerationSlider_ = new MachGuiSlideBar(
-        pStartupScreens, pStartupScreens, gammaCorrectionSl.topLeft, secondColumnInputWidth, 1, 30);
-
-    pCameraAccelerationSlider_->setValue(Config::uiZenithCameraAcceleration.get());
-    pCameraAccelerationSlider_->setValueChangedHandler([](float v) { Config::uiZenithCameraAcceleration.set(v); });
-#endif
 
     {
         const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
@@ -394,7 +336,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             booleanOptimisations_.push_back(new MachGuiCheckBox(
                 pStartupScreens,
                 pStartupScreens,
-                Gui::Box(optimizationAreaCoord + Gui::Coord(0, verticalStep * index), MexSize2d(boxWidth, MachGuiCheckBox::implicitHeight())),
+                Gui::Box(
+                    optimizationAreaCoord + Gui::Coord(0, verticalStep * index),
+                    MexSize2d(boxWidth, MachGuiCheckBox::implicitHeight())),
                 item->id()));
             ++index;
         }
@@ -405,7 +349,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
         uint index = 0;
         const auto optimizationAreaCoord
-            = Gui::Coord(secondColumnLabelLeft, (OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor());
+            = Gui::Coord(secondColumnX, (OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor());
         const auto choicesBaseCoord
             = Gui::Coord(secondColumnInputX, (OPTIMISATIONS_AREA_MINY + 35) * MachGui::menuScaleFactor());
         for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
@@ -430,9 +374,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             new MachGuiMenuText(
                 pStartupScreens,
                 Gui::Box(
-                    optimizationAreaCoord + Gui::Vec(0, verticalStep * index),
-                    secondColumnLabelWidth,
-                    smallFont.height() + 8 * MachGui::menuScaleFactor()),
+                    optimizationAreaCoord + Gui::Vec(0, verticalSpacing * index),
+                    Gui::Size(secondColumnTextWidth, smallFont.height() + 8 * MachGui::menuScaleFactor())),
                 id,
                 MachGui::Menu::smallFontLight(),
                 Gui::AlignRight);
@@ -440,7 +383,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             auto* choiceDropDown = new MachGuiDropDownListBoxCreator(
                 pStartupScreens,
                 pStartupScreens,
-                choicesBaseCoord + Gui::Coord(0, verticalStep * index),
+                choicesBaseCoord + Gui::Coord(0, verticalSpacing * index),
                 secondColumnInputWidth,
                 false,
                 true);
@@ -455,31 +398,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     musicVolume_ = Config::musicVolume.get();
     soundVolume_ = Config::soundVolume.get();
     grabCursor_ = Config::grabCursor.get();
-
-    initialDDrawDriver_ = pDriverSelector_->currentDDrawDriver();
-
-    GuiStrings scaleNames = {
-        ResolvedUiString(IDS_MENU_DEFAULT),
-        "100%",
-        "200%",
-    };
-
-    static const int scaleValues[] = {
-        0,
-        100,
-        200,
-    };
-
-    pScaleFactorSelector_ = new MachGuiDropDownListBoxCreator(
-        pStartupScreens,
-        pStartupScreens,
-        Gui::Coord(secondColumnInputX, 159 * MachGui::menuScaleFactor()),
-        secondColumnInputWidth,
-        false,
-        true);
-    pScaleFactorSelector_->setAvailText(scaleNames);
-    auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
-    pScaleFactorSelector_->items(items);
 
     readFromConfig();
 
@@ -546,14 +464,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 
         bool bDisplayMessageBox = false;
 
-        // Determine if the video driver settings have changed
-        /*if( ( pDriverSelector_->currentDDrawDriver()->name() != initialDDrawDriver_->name() ) or
-            ( pDriverSelector_->currentDDrawDriver()->description() != initialDDrawDriver_->description() ) )
-        {
-            idsMessage = IDS_MENUMSG_DISPLAYDRIVER;
-            bDisplayMessageBox = true;
-        }*/
-
         // Determine if the 2D selection boxes are enabled and screen resolution has changed
         const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
         const RenDisplay::Mode& pCurrentMode
@@ -597,7 +507,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pGrabMouse_->setChecked(grabCursor_);
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
-        pDriverSelector_->useDDrawDriver(initialDDrawDriver_);
         // Only restore gamma correction if gamma correction is supported
         if (pGammaCorrection_)
         {
@@ -715,16 +624,6 @@ void MachGuiCtxOptions::writeToConfig()
         ++index;
     }
 
-    // Set Direct3DDriver to be the one selected in the list of available Direct3DDrivers
-    // CtlCountedPtr<RenDriver> const & newDriver = ( CtlCountedPtr<RenDriver> const & ) *(pDirect3DDrivers_->item());
-    //  CtlCountedPtr<RenDriver> const & newDriver =
-    //        ( CtlCountedPtr<RenDriver> const & ) *((CtlCountedPtr<RenDriver>*)pDirect3DDrivers_->item());
-
-    //  pDriverSelector_->useD3dDriver( newDriver );
-
-    // Save display driver info in registry
-    //   pDriverSelector_->updateDriverRegistries();
-
     {
         MachGuiDropDownListBoxCreator::DropDownListBoxItem currentItem = pScaleFactorSelector_->item();
         int ScaleValue = *static_cast<const int*>(currentItem);
@@ -831,41 +730,6 @@ void MachGuiCtxOptions::load3dSoundFiles(bool enabled)
         else
             W4dSoundManager::instance().readSoundDefinitionFile("sounds/sd2d16.dat");
     }
-}
-
-void MachGuiCtxOptions::showDirect3DDrivers()
-{
-    if (!pDirectDrawDrivers_->hasItems())
-        return;
-
-    const std::shared_ptr<RenDriver>& newDriver
-        = *reinterpret_cast<const std::shared_ptr<RenDriver>*>(pDirectDrawDrivers_->item());
-    pDriverSelector_->useDDrawDriver(newDriver);
-
-    delete pDirect3DDrivers_;
-
-    const RenDriverSelector::RenDrivers& d3dDriversList = pDriverSelector_->d3dDrivers();
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems d3dDrivers;
-    GuiStrings d3dDriverNames;
-    d3dDriverNames.reserve(4);
-    d3dDrivers.reserve(4);
-
-    for (RenDriverSelector::RenDrivers::const_iterator i = d3dDriversList.begin(); i != d3dDriversList.end(); ++i)
-    {
-        d3dDrivers.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem) & (*i));
-        d3dDriverNames.push_back((*i)->name());
-    }
-    pDirect3DDrivers_ = new MachGuiDropDownListBoxCreator(
-        pStartupScreens_,
-        pStartupScreens_,
-        Gui::Coord(375, 159) * MachGui::menuScaleFactor(),
-        150 * MachGui::menuScaleFactor(),
-        false,
-        true);
-    pDirect3DDrivers_->setAvailText(d3dDriverNames);
-    pDirect3DDrivers_->items(d3dDrivers);
-
-    pDirect3DDrivers_->text(pDriverSelector_->currentD3dDriver()->name());
 }
 
 void MachGuiCtxOptions::exitFromOptions()

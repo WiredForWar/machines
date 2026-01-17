@@ -52,8 +52,6 @@ set(MACHGUI_SOURCES
     CursorSpec.hpp
     DispositionChangeNotifiable.cpp
     DispositionChangeNotifiable.hpp
-    DropDownCallback.cpp
-    DropDownCallback.hpp
     DropDownListBox.cpp
     DropDownListBox.hpp
     DropDownListBoxCreator.cpp
@@ -172,8 +170,6 @@ set(MACHGUI_SOURCES
     NewResearchIcon.hpp
     NumPlayersDropDownListBoxCreator.cpp
     NumPlayersDropDownListBoxCreator.hpp
-    OptionsLayout.cpp
-    OptionsLayout.hpp
     PlayerColour.cpp
     PlayerColour.hpp
     PlayerNameList.cpp
