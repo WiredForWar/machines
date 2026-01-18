@@ -676,7 +676,7 @@ void MachGuiCtxOptions::readFromConfig()
 
         GuiResourceString choice(id + (*it)->choice() + 1);
 
-        choicesOptimisations_[index]->text(choice.asString());
+        choicesOptimisations_[index]->setCurrentText(choice.asString());
 
         ++index;
     }

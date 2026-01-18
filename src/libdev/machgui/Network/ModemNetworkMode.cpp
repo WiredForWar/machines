@@ -52,7 +52,7 @@ void MachGuiModemNetworkMode::CLASS_INVARIANT
 void MachGuiModemNetworkMode::setNetworkDetails()
 {
     // This function will use the settings from the drop downs to configure network settings
-    std::string currentModem = pimpl_->pModemSelector_->text();
+    std::string currentModem = pimpl_->pModemSelector_->currentText();
     std::string serverTelNo = pimpl_->pTelNoEntryBox_->text();
 
     //  NetNetwork::instance().phone( serverTelNo );

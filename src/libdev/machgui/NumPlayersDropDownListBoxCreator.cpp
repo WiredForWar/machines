@@ -99,21 +99,21 @@ bool MachGuiNumPlayersDropDownListBoxCreator::doHandleNavigationKey(
         GuiResourceString three(IDS_MENU_NUMPLAYERS3);
         GuiResourceString four(IDS_MENU_NUMPLAYERS4);
 
-        if (strcasecmp(two.asString().c_str(), text().c_str()) == 0)
+        if (strcasecmp(two.asString().c_str(), currentText().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 2;
         }
-        else if (strcasecmp(three.asString().c_str(), text().c_str()) == 0)
+        else if (strcasecmp(three.asString().c_str(), currentText().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 3;
         }
-        else if (strcasecmp(four.asString().c_str(), text().c_str()) == 0)
+        else if (strcasecmp(four.asString().c_str(), currentText().c_str()) == 0)
         {
             MachGuiCtxSkirmish::chosenNumPlayers() = 4;
         }
         else
         {
-            ASSERT_INFO(text());
+            ASSERT_INFO(currentText());
             ASSERT(false, "MachGuiDropDownListBoxCreator::doHandleNavigationKey has invalid text()");
         }
 

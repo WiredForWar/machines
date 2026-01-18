@@ -513,11 +513,11 @@ void MachGuiCtxSkirmish::initSettings()
 
     // Add "fog of war" setting...
     addSetting(false, pFogOfWarSelector_, IDS_MENU_FOGOFWAR, 2, IDS_MENU_ON, IDS_MENU_OFF);
-    pFogOfWarSelector_->text(pStartupScreens_->startupData()->fogOfWarStr());
+    pFogOfWarSelector_->setCurrentText(pStartupScreens_->startupData()->fogOfWarStr());
 
     // Add "resource" setting...
     addSetting(false, pResourcesSelector_, IDS_MENU_RESOURCES, 3, IDS_MENU_HIGH, IDS_MENU_MEDIUM, IDS_MENU_LOW);
-    pResourcesSelector_->text(pStartupScreens_->startupData()->resourcesStr());
+    pResourcesSelector_->setCurrentText(pStartupScreens_->startupData()->resourcesStr());
 
     // Add "starting resource" setting...
     addSetting(
@@ -531,11 +531,11 @@ void MachGuiCtxSkirmish::initSettings()
         IDS_MENU_RESOURCESLEVEL3,
         IDS_MENU_RESOURCESLEVEL4,
         IDS_MENU_RESOURCESLEVEL5);
-    pStartingResourcesSelector_->text(pStartupScreens_->startupData()->startingResourcesStr());
+    pStartingResourcesSelector_->setCurrentText(pStartupScreens_->startupData()->startingResourcesStr());
 
     // Add "starting pos" setting...
     addSetting(false, pStartingPosSelector_, IDS_MENU_STARTPOS, 2, IDS_MENU_STARTFIXED, IDS_MENU_STARTRANDOM);
-    pStartingPosSelector_->text(pStartupScreens_->startupData()->startingPositionStr());
+    pStartingPosSelector_->setCurrentText(pStartupScreens_->startupData()->startingPositionStr());
 
     // Add "victory conditions" setting...
     addSetting(
@@ -555,7 +555,7 @@ void MachGuiCtxSkirmish::initSettings()
         IDS_MENU_VICTORYTIMED90,
         IDS_MENU_VICTORYTIMED120,
         IDS_MENU_VICTORYTIMED180);
-    pVictorySelector_->text(pStartupScreens_->startupData()->victoryConditionStr());
+    pVictorySelector_->setCurrentText(pStartupScreens_->startupData()->victoryConditionStr());
 
     // Add "tech level" setting...
     addSetting(
@@ -567,7 +567,7 @@ void MachGuiCtxSkirmish::initSettings()
         IDS_MENU_TECHLEVELLOW,
         IDS_MENU_TECHLEVELMED,
         IDS_MENU_TECHLEVELHIGH);
-    pTechLevelSelector_->text(pStartupScreens_->startupData()->techLevelStr());
+    pTechLevelSelector_->setCurrentText(pStartupScreens_->startupData()->techLevelStr());
 
     // Add "player colour" setting...
     addSetting(
@@ -579,7 +579,7 @@ void MachGuiCtxSkirmish::initSettings()
         IDS_MENU_PLAYERCOLOURGREEN,
         IDS_MENU_PLAYERCOLOURBLUE,
         IDS_MENU_PLAYERCOLOURYELLOW);
-    pColourSelector_->text(pStartupScreens_->startupData()->playerRaceStr());
+    pColourSelector_->setCurrentText(pStartupScreens_->startupData()->playerRaceStr());
 
     pSettingsList_->childrenUpdated();
 }
@@ -588,15 +588,15 @@ void MachGuiCtxSkirmish::initSettings()
 bool MachGuiCtxSkirmish::okayToSwitchContext()
 {
     // Update settings...
-    pStartupScreens_->startupData()->resources(pResourcesSelector_->text());
-    pStartupScreens_->startupData()->fogOfWar(pFogOfWarSelector_->text());
-    pStartupScreens_->startupData()->resources(pResourcesSelector_->text());
-    pStartupScreens_->startupData()->startingResources(pStartingResourcesSelector_->text());
-    pStartupScreens_->startupData()->startingPosition(pStartingPosSelector_->text());
-    pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->text());
-    pStartupScreens_->startupData()->numPlayers(pNumPlayersSelector_->text());
-    pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->text());
-    pStartupScreens_->startupData()->playerRace(pColourSelector_->text());
+    pStartupScreens_->startupData()->resources(pResourcesSelector_->currentText());
+    pStartupScreens_->startupData()->fogOfWar(pFogOfWarSelector_->currentText());
+    pStartupScreens_->startupData()->resources(pResourcesSelector_->currentText());
+    pStartupScreens_->startupData()->startingResources(pStartingResourcesSelector_->currentText());
+    pStartupScreens_->startupData()->startingPosition(pStartingPosSelector_->currentText());
+    pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->currentText());
+    pStartupScreens_->startupData()->numPlayers(pNumPlayersSelector_->currentText());
+    pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->currentText());
+    pStartupScreens_->startupData()->playerRace(pColourSelector_->currentText());
 
     return true;
 }
@@ -683,15 +683,15 @@ void MachGuiCtxSkirmish::updateMaxPlayersList(MachGuiDbScenario& scenario)
 
                 if (chosenNumPlayers() == 2)
                 {
-                    pNumPlayersSelector_->text(str2.asString());
+                    pNumPlayersSelector_->setCurrentText(str2.asString());
                 }
                 else if (chosenNumPlayers() == 3)
                 {
-                    pNumPlayersSelector_->text(str3.asString());
+                    pNumPlayersSelector_->setCurrentText(str3.asString());
                 }
                 else
                 {
-                    pNumPlayersSelector_->text(str4.asString());
+                    pNumPlayersSelector_->setCurrentText(str4.asString());
                 }
             }
             break;
@@ -707,11 +707,11 @@ void MachGuiCtxSkirmish::updateMaxPlayersList(MachGuiDbScenario& scenario)
 
                 if (chosenNumPlayers() == 2)
                 {
-                    pNumPlayersSelector_->text(str2.asString());
+                    pNumPlayersSelector_->setCurrentText(str2.asString());
                 }
                 else
                 {
-                    pNumPlayersSelector_->text(str3.asString());
+                    pNumPlayersSelector_->setCurrentText(str3.asString());
                 }
             }
             break;
@@ -719,7 +719,7 @@ void MachGuiCtxSkirmish::updateMaxPlayersList(MachGuiDbScenario& scenario)
             {
                 pNumPlayersText_ = addSetting(true, pNumPlayersSelector_, IDS_MENU_NUMPLAYERS, 1, IDS_MENU_NUMPLAYERS2);
 
-                pNumPlayersSelector_->text(str2.asString());
+                pNumPlayersSelector_->setCurrentText(str2.asString());
             }
             break;
             DEFAULT_ASSERT_BAD_CASE(scenario.maxPlayers());

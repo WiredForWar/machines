@@ -83,14 +83,39 @@ std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBoxCreator& t
     return o;
 }
 
-const std::string& MachGuiDropDownListBoxCreator::text() const
+std::string MachGuiDropDownListBoxCreator::currentText() const
 {
-    return text_;
+    if (currentIndex_ < 0 || static_cast<size_t>(currentIndex_) >= strings_.size())
+    {
+        return {};
+    }
+
+    return strings_.at(static_cast<size_t>(currentIndex_));
 }
 
-void MachGuiDropDownListBoxCreator::text(const std::string& newText)
+void MachGuiDropDownListBoxCreator::setCurrentText(const std::string& newText)
 {
-    text_ = newText;
+    int foundIndex = -1;
+    for (size_t i = 0; i < strings_.size(); ++i)
+    {
+        if (strings_.at(i) == newText)
+        {
+            foundIndex = static_cast<int>(i);
+            break;
+        }
+    }
+
+    setCurrentIndex(foundIndex);
+}
+
+int MachGuiDropDownListBoxCreator::currentIndex() const
+{
+    return currentIndex_;
+}
+
+void MachGuiDropDownListBoxCreator::setCurrentIndex(int index)
+{
+    currentIndex_ = index;
     changed();
 }
 
@@ -100,10 +125,12 @@ void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
 
     if (!strings_.empty())
     {
-        text_ = strings_.front();
+        setCurrentIndex(0);
     }
-
-    changed();
+    else
+    {
+        setCurrentIndex(-1);
+    }
 }
 
 const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxCreator::item() const
@@ -111,19 +138,14 @@ const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxC
     // Find value assosciated with currently selected text
     PRE(hasItems());
 
-    uint i;
-
-    for (i = 0; i < strings_.size() && strings_[i] != text(); ++i)
-    {
-        // Intentionally empty
-    }
-
-    ASSERT_INFO(text());
+    ASSERT_INFO(currentText());
+    ASSERT(currentIndex_ >= 0, "Selected index must be valid when requesting item.");
+    const size_t index = static_cast<size_t>(currentIndex_);
     ASSERT(
-        strings_[i] == text(),
-        "The selected text in the listbox does not match any of the available text items in the listbox");
+        index < items_.size(),
+        "Selected index must be in range when requesting item.");
 
-    const DropDownListBoxItem returnItem = items_[i];
+    const DropDownListBoxItem returnItem = items_[index];
 
     return returnItem;
 }
@@ -134,7 +156,7 @@ bool MachGuiDropDownListBoxCreator::setCurrentItem(const DropDownListBoxItem ite
     {
         if (items_.at(i) == item)
         {
-            text(strings_[i]);
+            setCurrentIndex(static_cast<int>(i));
             return true;
         }
     }
@@ -185,12 +207,12 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent&
 
             // Make sure that selected string appears first in list
             ctl_vector<std::string> orderedStrings;
-            orderedStrings.push_back(text_);
+            orderedStrings.push_back(currentText());
 
             for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)
             {
-                // Ignore text_, do not add into list again.
-                if (strcasecmp((*iter).c_str(), text_.c_str()) != 0)
+                // Ignore current selection, do not add into list again.
+                if (strcasecmp((*iter).c_str(), orderedStrings.front().c_str()) != 0)
                 {
                     orderedStrings.push_back((*iter));
                 }
@@ -244,7 +266,7 @@ void MachGuiDropDownListBoxCreator::doDisplay()
                 Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
         }
-        getHighlightFont().drawText(text_, textPos, width() - offset2);
+        getHighlightFont().drawText(currentText(), textPos, width() - offset2);
     }
     else
     {
@@ -255,18 +277,18 @@ void MachGuiDropDownListBoxCreator::doDisplay()
                 Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
 
-            getHighlightFont().drawText(text_, textPos, width() - offset2);
+            getHighlightFont().drawText(currentText(), textPos, width() - offset2);
         }
         else
         {
             // Draw list box item text
             if (whiteFont_)
             {
-                getWhiteFont().drawText(text_, textPos, width() - offset2);
+                getWhiteFont().drawText(currentText(), textPos, width() - offset2);
             }
             else
             {
-                getFont().drawText(text_, textPos, width() - offset2);
+                getFont().drawText(currentText(), textPos, width() - offset2);
             }
         }
     }
@@ -367,7 +389,7 @@ MachGuiDropDownList::MachGuiDropDownList(
 // virtual
 void MachGuiDropDownList::itemSelected(const std::string& text)
 {
-    pCreator_->text(text);
+    pCreator_->setCurrentText(text);
 
     MachGuiDropDownListBox::itemSelected(text);
 }
@@ -400,7 +422,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
 
             currentItem = *i;
 
-            itemSelected = currentItem == text();
+            itemSelected = currentItem == currentText();
         }
 
         // Didn't find previous item (first item was selected or there isn't any items to select)
@@ -412,7 +434,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
         // Select the new item
         if (previousItem != "")
         {
-            text(previousItem);
+            setCurrentText(previousItem);
             retValue = true;
         }
     }
@@ -426,7 +448,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
 
         for (/*empty*/; i != strings_.end() && ! itemSelected; ++i)
         {
-            itemSelected = (*i) == text();
+            itemSelected = (*i) == currentText();
         }
 
         // Found selected item, no select one after it...
@@ -434,11 +456,11 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
         {
             if (i != strings_.end())
             {
-                text(*i);
+                setCurrentText(*i);
             }
             else
             {
-                text(strings_.front());
+                setCurrentText(strings_.front());
             }
 
             retValue = true;

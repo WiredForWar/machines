@@ -58,9 +58,12 @@ public:
 
     void CLASS_INVARIANT;
 
-    // Get and set the text shown in the control.
-    const std::string& text() const;
-    void text(const std::string&);
+    std::string currentText() const;
+    void setCurrentText(const std::string&);
+
+    int currentIndex() const;
+    void setCurrentIndex(int index);
+
     void setAvailText(const GuiStrings& availText);
 
     // Get ptr to item associated with currently highlighted text
@@ -113,7 +116,7 @@ private:
     // Data members...
     bool hovered_ = false;
     GuiStrings strings_;
-    GuiString text_;
+    int currentIndex_{-1};
     DropDownListBoxItems items_;
     DropDownListBoxItem item_;
     // TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...

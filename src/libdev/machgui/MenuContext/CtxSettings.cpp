@@ -457,15 +457,15 @@ bool MachGuiCtxSettings::okayToSwitchContext()
 
         // Set scenario and settings before we send a message to all the players.
         pStartupScreens_->startupData()->scenario(pSelectedScenario_);
-        pStartupScreens_->startupData()->fogOfWar(pFogOfWarSelector_->text());
-        pStartupScreens_->startupData()->resources(pResourcesSelector_->text());
-        pStartupScreens_->startupData()->startingResources(pStartingResourcesSelector_->text());
-        pStartupScreens_->startupData()->startingPosition(pStartingPosSelector_->text());
-        pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->text());
+        pStartupScreens_->startupData()->fogOfWar(pFogOfWarSelector_->currentText());
+        pStartupScreens_->startupData()->resources(pResourcesSelector_->currentText());
+        pStartupScreens_->startupData()->startingResources(pStartingResourcesSelector_->currentText());
+        pStartupScreens_->startupData()->startingPosition(pStartingPosSelector_->currentText());
+        pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->currentText());
         pStartupScreens_->startupData()->numPlayers(pSelectedScenario_->maxPlayers());
-        pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->text());
-        pStartupScreens_->startupData()->broadcastAlliances(pAlliancesSelector_->text());
-        pStartupScreens_->startupData()->disableFirstPerson(pDisableFirstPersonSelector_->text());
+        pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->currentText());
+        pStartupScreens_->startupData()->broadcastAlliances(pAlliancesSelector_->currentText());
+        pStartupScreens_->startupData()->disableFirstPerson(pDisableFirstPersonSelector_->currentText());
 
         // Based on the maximum number of players allowed in this multiplayer game update the
         // player slots to "open" or "unavailable".
@@ -499,11 +499,11 @@ void MachGuiCtxSettings::initSettings()
 
     // Add "fog of war" setting...
     addSetting(pFogOfWarSelector_, IDS_MENU_FOGOFWAR, 2, IDS_MENU_ON, IDS_MENU_OFF);
-    pFogOfWarSelector_->text(pStartupScreens_->startupData()->fogOfWarStr());
+    pFogOfWarSelector_->setCurrentText(pStartupScreens_->startupData()->fogOfWarStr());
 
     // Add "resource" setting...
     addSetting(pResourcesSelector_, IDS_MENU_RESOURCES, 3, IDS_MENU_HIGH, IDS_MENU_MEDIUM, IDS_MENU_LOW);
-    pResourcesSelector_->text(pStartupScreens_->startupData()->resourcesStr());
+    pResourcesSelector_->setCurrentText(pStartupScreens_->startupData()->resourcesStr());
 
     // Add "starting resource" setting...
     addSetting(
@@ -516,11 +516,11 @@ void MachGuiCtxSettings::initSettings()
         IDS_MENU_RESOURCESLEVEL3,
         IDS_MENU_RESOURCESLEVEL4,
         IDS_MENU_RESOURCESLEVEL5);
-    pStartingResourcesSelector_->text(pStartupScreens_->startupData()->startingResourcesStr());
+    pStartingResourcesSelector_->setCurrentText(pStartupScreens_->startupData()->startingResourcesStr());
 
     // Add "starting pos" setting...
     addSetting(pStartingPosSelector_, IDS_MENU_STARTPOS, 2, IDS_MENU_STARTFIXED, IDS_MENU_STARTRANDOM);
-    pStartingPosSelector_->text(pStartupScreens_->startupData()->startingPositionStr());
+    pStartingPosSelector_->setCurrentText(pStartupScreens_->startupData()->startingPositionStr());
 
     // Add "victory conditions" setting...
     addSetting(
@@ -539,7 +539,7 @@ void MachGuiCtxSettings::initSettings()
         IDS_MENU_VICTORYTIMED90,
         IDS_MENU_VICTORYTIMED120,
         IDS_MENU_VICTORYTIMED180);
-    pVictorySelector_->text(pStartupScreens_->startupData()->victoryConditionStr());
+    pVictorySelector_->setCurrentText(pStartupScreens_->startupData()->victoryConditionStr());
 
     // Add "tech level" setting...
     addSetting(
@@ -550,15 +550,15 @@ void MachGuiCtxSettings::initSettings()
         IDS_MENU_TECHLEVELLOW,
         IDS_MENU_TECHLEVELMED,
         IDS_MENU_TECHLEVELHIGH);
-    pTechLevelSelector_->text(pStartupScreens_->startupData()->techLevelStr());
+    pTechLevelSelector_->setCurrentText(pStartupScreens_->startupData()->techLevelStr());
 
     // Add "broadcast alliances" setting...
     addSetting(pAlliancesSelector_, IDS_MENU_BROADCAST_ALLIANCE, 2, IDS_MENU_ON, IDS_MENU_OFF);
-    pAlliancesSelector_->text(pStartupScreens_->startupData()->broadcastAlliancesStr());
+    pAlliancesSelector_->setCurrentText(pStartupScreens_->startupData()->broadcastAlliancesStr());
 
     // Add "disable first person" setting...
     addSetting(pDisableFirstPersonSelector_, IDS_MENU_DISABLE_FIRST_PERSON, 2, IDS_MENU_ON, IDS_MENU_OFF);
-    pDisableFirstPersonSelector_->text(pStartupScreens_->startupData()->disableFirstPersonStr());
+    pDisableFirstPersonSelector_->setCurrentText(pStartupScreens_->startupData()->disableFirstPersonStr());
 
     pSettingsList_->childrenUpdated();
 }
