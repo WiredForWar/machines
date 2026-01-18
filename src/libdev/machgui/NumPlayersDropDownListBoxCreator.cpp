@@ -9,17 +9,8 @@
 #include "machgui/MenuContext/CtxSkirmish.hpp"
 #include "machgui/internal/strings.hpp"
 #include "system/registry.hpp"
+
 #include <cstring>
-
-MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator(
-    GuiDisplayable* pParent,
-    MachGuiStartupScreens* pStartup,
-    int width)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, width)
-{
-
-    TEST_INVARIANT;
-}
 
 MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator(
     GuiDisplayable* pParent,
@@ -27,19 +18,6 @@ MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator
     int width,
     bool whiteFont)
     : MachGuiDropDownListBoxCreator(pParent, pStartup, width, whiteFont)
-{
-
-    TEST_INVARIANT;
-}
-
-MachGuiNumPlayersDropDownListBoxCreator::MachGuiNumPlayersDropDownListBoxCreator(
-    GuiDisplayable* pParent,
-    MachGuiStartupScreens* pStartup,
-    const Gui::Coord& relCoord,
-    int width,
-    bool whiteFont,
-    bool border)
-    : MachGuiDropDownListBoxCreator(pParent, pStartup, relCoord, width, whiteFont, border)
 {
 
     TEST_INVARIANT;

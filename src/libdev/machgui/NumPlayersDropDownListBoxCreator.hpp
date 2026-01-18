@@ -15,22 +15,13 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 #include "gui/displaya.hpp"
-#include "gui/restring.hpp"
 #include "machgui/DropDownListBoxCreator.hpp"
 
 class MachGuiNumPlayersDropDownListBoxCreator : public MachGuiDropDownListBoxCreator
 // Canonical form revoked
 {
 public:
-    MachGuiNumPlayersDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width);
     MachGuiNumPlayersDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width, bool whiteFont);
-    MachGuiNumPlayersDropDownListBoxCreator(
-        GuiDisplayable* pParent,
-        MachGuiStartupScreens*,
-        const Gui::Coord& relCoord,
-        int width,
-        bool whiteFont,
-        bool border);
     ~MachGuiNumPlayersDropDownListBoxCreator() override;
 
     void CLASS_INVARIANT;
