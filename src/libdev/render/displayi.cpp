@@ -329,6 +329,10 @@ void RenIDisplay::useCursor(const RenCursor2d* c)
 
 const RenCursor2d* RenIDisplay::currentCursor() const
 {
+    const SDL_Window *window = SDL_GetMouseFocus();
+    if (window == nullptr)
+        return nullptr;
+
     return cursor_;
 }
 
