@@ -65,11 +65,17 @@ void PhysMotionControlWithTrans::initEventQueue()
     pKeyTranslator_->initEventQueue();
 }
 
-void PhysMotionControlWithTrans::forceCommandOn(Command CommandId)
+void PhysMotionControlWithTrans::forceCommandOn(Command commandId)
 {
-    PRE(CommandId < commandList_.size());
+    PRE(commandId < commandList_.size());
 
-    commandList_[CommandId].forceOn();
+    commandList_[commandId].forceOn();
+}
+
+bool PhysMotionControlWithTrans::isCommandOn(Command commandId) const
+{
+    PRE(commandId < commandList_.size());
+    return commandList_[commandId].on();
 }
 
 // virtual

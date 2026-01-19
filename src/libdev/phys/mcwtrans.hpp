@@ -64,7 +64,8 @@ public:
 
     void disableInput() override;
 
-    void forceCommandOn(Command);
+    void forceCommandOn(Command commandId);
+    bool isCommandOn(Command commandId) const;
 
     void CLASS_INVARIANT;
 

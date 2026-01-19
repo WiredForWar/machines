@@ -36,6 +36,7 @@
 #include "system/vfs.hpp"
 
 #include <memory>
+#include <ranges>
 
 static void readZenithDataFile(
     MATHEX_SCALAR* pZenithMinHeight,
@@ -408,6 +409,30 @@ void MachCameras::switchToZenith(const MexPoint3d& lookAt)
 
 void MachCameras::updateCameras()
 {
+    PhysMotionControlWithTrans *pControl{};
+    if (isZenithCameraActive())
+        pControl = pZenithControl_.get();
+    else if (isGroundCameraActive())
+        pControl = pGroundControl_.get();
+
+    if (pControl)
+    {
+        using ControlCommand = PhysMotionControlWithTrans::Command;
+        static const ControlCommand moveCommands[] = {
+            ControlCommand::FOWARD,
+            ControlCommand::BACKWARD,
+            ControlCommand::SLIDE_LEFT,
+            ControlCommand::SLIDE_RIGHT,
+        };
+
+        if (std::ranges::any_of(moveCommands, [pControl](ControlCommand commandId) -> bool {
+            return pControl->isCommandOn(commandId);
+        }))
+        {
+            resetFollowTarget();
+        }
+    }
+
     if (pFollowTarget_)
     {
         if (pFollowTarget_->selectionState() != MachLog::SELECTED)
@@ -663,8 +688,6 @@ void MachCameras::internalLookAt(const MachActor& actor)
 
 void MachCameras::scroll(ScrollDir scrollDir, const GuiMouseEvent& event)
 {
-    setFollowTarget(nullptr);
-
     if (pCurrentCamera_ == pZenithCamera_.get())
     {
         switch (scrollDir)
