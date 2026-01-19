@@ -34,7 +34,7 @@ std::optional<MachGui::InputLayout> toValue(const std::string& asString)
 
 template class Config::Variable<MachGui::InputLayout>;
 
-Variable<MachGui::InputLayout> inputBaseLayout("Input/BaseLayout", {});
+Variable<MachGui::InputLayout> inputBaseLayout("Input/BaseLayout", MachGui::InputLayout::WASD);
 
 } // namespace Config
 
