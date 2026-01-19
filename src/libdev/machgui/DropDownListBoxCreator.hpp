@@ -19,6 +19,8 @@
 #include "gui/root.hpp"
 #include "machgui/DropDownListBox.hpp"
 
+#include <functional>
+
 class MachGuiStartupScreens;
 class GuiBmpFont;
 class MachGuiDropDownList;
@@ -29,6 +31,8 @@ class MachGuiDropDownListBoxCreator
 // Canonical form revoked
 {
 public:
+    using Callback = std::function<void()>;
+
     using DropDownListBoxItem = const void*;
     using DropDownListBoxItems = ctl_vector<DropDownListBoxItem>;
 
@@ -86,6 +90,8 @@ public:
     bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
     void hasFocus(bool) override;
 
+    void setCurrentIndexChangedCallback(Callback callback);
+
 protected:
     static GuiBmpFont getFont();
     static GuiBmpFont getWhiteFont();
@@ -112,6 +118,8 @@ private:
 
     MachGuiDropDownListBoxCreator(const MachGuiDropDownListBoxCreator&);
     MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&);
+
+    Callback currentIndexChangedCallback_;
 
     // Data members...
     bool hovered_ = false;

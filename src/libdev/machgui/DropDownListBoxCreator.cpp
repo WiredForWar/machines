@@ -115,8 +115,14 @@ int MachGuiDropDownListBoxCreator::currentIndex() const
 
 void MachGuiDropDownListBoxCreator::setCurrentIndex(int index)
 {
+    if (currentIndex_ == index)
+        return;
+
     currentIndex_ = index;
     changed();
+
+    if (currentIndexChangedCallback_)
+        currentIndexChangedCallback_();
 }
 
 void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
@@ -476,6 +482,11 @@ void MachGuiDropDownListBoxCreator::hasFocus(bool newValue)
     MachGuiFocusCapableControl::hasFocus(newValue);
 
     changed();
+}
+
+void MachGuiDropDownListBoxCreator::setCurrentIndexChangedCallback(Callback callback)
+{
+    currentIndexChangedCallback_ = callback;
 }
 
 /* End DROPDWNC.CPP *************************************************/
