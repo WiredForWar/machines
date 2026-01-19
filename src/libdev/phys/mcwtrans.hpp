@@ -67,6 +67,9 @@ public:
     void forceCommandOn(Command commandId);
     bool isCommandOn(Command commandId) const;
 
+    PhysMotion& motionRef() { return motion_; }
+    DevTimer& frameTimerRef() { return frameTimer_; }
+
     void CLASS_INVARIANT;
 
 protected:

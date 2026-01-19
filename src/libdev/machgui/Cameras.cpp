@@ -441,7 +441,29 @@ void MachCameras::updateCameras()
         }
         else
         {
-            internalLookAt(*pFollowTarget_);
+            double heading{};
+            double climb{};
+            double frameTimer{};
+
+            if (isZenithCameraActive())
+            {
+                frameTimer = pZenithControl_->frameTimerRef().time();
+                heading = pZenithControl_->motionRef().heading();
+                climb = pZenithControl_->motionRef().climb();
+
+                MexTransform3d actorTrans = pFollowTarget_->globalTransform();
+                MexPoint3d actorPos = actorTrans.position();
+
+                pZenithControl_->snapTo(MexTransform3d(actorPos));
+
+                pZenithControl_->frameTimerRef().time(frameTimer);
+                pZenithControl_->motionRef().heading(heading);
+                pZenithControl_->motionRef().climb(climb);
+            }
+            else
+            {
+                internalLookAt(*pFollowTarget_);
+            }
         }
     }
 
