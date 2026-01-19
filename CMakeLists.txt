@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 
 project(Machines
-    VERSION 1.7.3
+    VERSION 1.7.4
     LANGUAGES C CXX
 )
 
