@@ -27,6 +27,13 @@ class MachGuiDropDownListBoxCreator;
 class MachGuiCheckBox;
 class RenDisplay;
 
+namespace MachGui
+{
+
+enum class VSyncMode;
+
+} // namespace MachGui
+
 class MachGuiCtxOptions : public MachGui::GameMenuContext
 // Canonical form revoked
 {
@@ -75,6 +82,8 @@ private:
     float musicVolume_, soundVolume_, gammaCorrection_;
     bool grabCursor_{};
     int32_t cameraAcceleration_{};
+    MachGui::VSyncMode vsyncMode_{};
+    MachGuiDropDownListBoxCreator* vSyncModeDropDown_{};
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_{};
     bool exitFromOptions_ = false;
     bool cursorType2d_;

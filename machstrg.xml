@@ -1819,4 +1819,12 @@ BELONGING TO</string>
 	>Use WASD keys</string>
 <string id="11004"
 	>Camera Acceleration</string>
+<string id="11005"
+	>Vertical Sync Mode</string>
+<string id="11006"
+	>Auto</string>
+<string id="11007"
+	>Disabled</string>
+<string id="11008"
+	>Enabled</string>
 </resources>

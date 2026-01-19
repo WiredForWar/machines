@@ -25,6 +25,7 @@
 #include "gui/image.hpp"
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
+#include "machgui/VSyncMode.hpp"
 #include "machgui/InputLayout.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -280,6 +281,17 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pScreenSize_->items(modeList);
 
     {
+        GuiStrings itemNames = {
+            ResolvedUiString(IDS_VSYNC_OPTION_AUTO),
+            ResolvedUiString(IDS_VSYNC_OPTION_ENABLED),
+            ResolvedUiString(IDS_VSYNC_OPTION_DISABLED),
+        };
+
+        vSyncModeDropDown_ = addDropDown(IDS_VSYNC_OPTION);
+        vSyncModeDropDown_->setAvailText(itemNames);
+    }
+
+    {
         GuiStrings scaleNames = {
             ResolvedUiString(IDS_MENU_DEFAULT),
             "100%",
@@ -408,6 +420,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Config::inputBaseLayout.set(pCheckBox->isChecked() ? InputLayout::WASD : InputLayout::Legacy);
     });
 
+    vSyncModeDropDown_->setCurrentIndexChangedCallback([this]() {
+        MachGui::VSyncMode selectedMode = static_cast<MachGui::VSyncMode>(vSyncModeDropDown_->currentIndex());
+        Config::gfxVSyncMode.set(selectedMode);
+    });
+
     TEST_INVARIANT;
 }
 
@@ -507,6 +524,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pGrabMouse_->setChecked(grabCursor_);
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
+        vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
         // Only restore gamma correction if gamma correction is supported
         if (pGammaCorrection_)
         {
@@ -656,6 +674,9 @@ void MachGuiCtxOptions::readFromConfig()
     }
 
     pTransitions_->setChecked(pStartupScreens_->startupData()->transitionFlicsOn());
+
+    vsyncMode_ = Config::gfxVSyncMode.get();
+    vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
