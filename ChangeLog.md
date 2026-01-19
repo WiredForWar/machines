@@ -1,13 +1,20 @@
-### v1.7.3
+### v1.7.4
 
-- Added an option to use WASD for camera and 1st person control (enable it in the Options menu).
+(v1.7.3 had only pre-release builds)
+
+- Added an option to use WASD for the camera and 1st person control
   Check the in-game Hotkeys menu for more information about the assigned keys.
+- Added 'Camera acceleration' option
 - Added initial mods support (allows game data override)
+- Implemented VSync
+- TTF font used for the Game Menus
+- 'Grab Cursor' option is now applied at runtime
+- The game now won't move the camera if the cursor is out of the window
+- Implemented Zenith camera rotation support for the Following Camera
 - Fixed special characters in menu fonts (fixes German localization)
 - Fixed a crash on focus on LandMine (thanks @Fuechschen-San for discovering that)
 - Fixed negative damage on construction capture (fixes armor overflow, thanks Iris for detailed steps-to-reproduce)
 - Fixed actor Icon not updated on race changed (e.g. for captured constructions)
-- Camera inertia reduced by 50% (this needs its own option of course)
 - 'Windowed mode' option now always added to the config file (this also needs a checkbox)
 
 Under the hood:
