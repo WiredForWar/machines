@@ -19,6 +19,8 @@ extern Variable<bool> gfxLockResolution;
 extern Variable<int32_t> uiZenithCameraAcceleration;
 extern Variable<int32_t> uiZenithCameraSpeedLimit;
 
+extern Variable<int32_t> uiGroundCameraAcceleration;
+
 extern Variable<int32_t> uiScaleFactor;
 extern Variable<bool> grabCursor;
 

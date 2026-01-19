@@ -15,6 +15,8 @@ Variable<bool> gfxLockResolution("Screen Resolution/Lock Resolution", true);
 Variable<int32_t> uiZenithCameraAcceleration("Options/Zenith Camera/Acceleration", 15);
 Variable<int32_t> uiZenithCameraSpeedLimit("Options/Zenith Camera/Speed Limit", 15);
 
+Variable<int32_t> uiGroundCameraAcceleration("Options/Ground Camera/Acceleration", 15);
+
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 

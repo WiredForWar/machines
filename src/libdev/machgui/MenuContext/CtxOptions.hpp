@@ -81,7 +81,8 @@ private:
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
     bool grabCursor_{};
-    int32_t cameraAcceleration_{};
+    int32_t zenithCameraAcceleration_{};
+    int32_t groundCameraAcceleration_{};
     MachGui::VSyncMode vsyncMode_{};
     MachGuiDropDownListBoxCreator* vSyncModeDropDown_{};
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_{};

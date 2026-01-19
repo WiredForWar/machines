@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "mathex/point3d.hpp"
-#include "device/keyboard.hpp"
 #include "phys/mczenith.hpp"
 
 #include "system/ConfigVariables.hpp"
@@ -114,9 +113,8 @@ void PhysZenithFlyControl::updateMotion()
 
     if (inputEnabled())
     {
-        double elapsedTime{};
         const int32_t accelerationFactor = std::clamp(Config::uiZenithCameraAcceleration.get(), 1, 30);
-        elapsedTime = keyTimer_.time() * accelerationFactor;
+        double elapsedTime = keyTimer_.time() * accelerationFactor;
 
         if (elapsedTime > 1.0)
             elapsedTime = 1.0; // Knock elapsedTime back to a second to avoid strange motion decay

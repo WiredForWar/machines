@@ -313,7 +313,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pCameraAccelerationSlider_ = addSliderBar(IDS_CONFIG_CAMERA_ACCELERATION);
     pCameraAccelerationSlider_->minMax(1, 30);
     pCameraAccelerationSlider_->setValue(Config::uiZenithCameraAcceleration.get());
-    pCameraAccelerationSlider_->setValueChangedHandler([](float v) { Config::uiZenithCameraAcceleration.set(v); });
+    pCameraAccelerationSlider_->setValueChangedHandler([](float v)
+    {
+        Config::uiZenithCameraAcceleration.set(v);
+        Config::uiGroundCameraAcceleration.set(v);
+    });
 
     // Only display gamma correction slider if gamma correction is supported
     if (pDisplay_->supportsGammaCorrection())
@@ -530,7 +534,10 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         {
             pGammaCorrection_->setValue(gammaCorrection_);
         }
-        pCameraAccelerationSlider_->setValue(cameraAcceleration_);
+        pCameraAccelerationSlider_->setValue(zenithCameraAcceleration_);
+
+        // There is no explicit Ground camera control but it is possible to set different settings via config file
+        Config::uiGroundCameraAcceleration.set(groundCameraAcceleration_);
 
         pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
     }
@@ -655,7 +662,8 @@ void MachGuiCtxOptions::readFromConfig()
     pSound3d_->setChecked(
         SysRegistry::instance().queryBooleanValue("Options\\3DSound", "on", SndMixer::instance().is3dMixer()));
 
-    cameraAcceleration_ = Config::uiZenithCameraAcceleration.get();
+    zenithCameraAcceleration_ = Config::uiZenithCameraAcceleration.get();
+    groundCameraAcceleration_ = Config::uiGroundCameraAcceleration.get();
 
     pMusicVolume_->setValue(musicVolume_);
     pSoundVolume_->setValue(soundVolume_);

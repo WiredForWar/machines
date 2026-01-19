@@ -17,6 +17,8 @@
 #include "phys/mcground.hpp"
 #include "device/keytrans.hpp"
 
+#include "system/ConfigVariables.hpp"
+
 //////////////////////////////////////////////////////////////////////////////////////////
 PhysGroundFlyControl::PhysGroundFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
     : PhysMotionControlWithTrans(std::move(target), forwards)
@@ -70,7 +72,8 @@ void PhysGroundFlyControl::updateMotion()
 
     if (inputEnabled())
     {
-        double elapsedTime = keyTimer_.time() * 10.0;
+        const int32_t accelerationFactor = std::clamp(Config::uiGroundCameraAcceleration.get(), 1, 30);
+        double elapsedTime = keyTimer_.time() * accelerationFactor;
         if (elapsedTime > 1.0)
             elapsedTime = 1.0; // Knock elapsedTime back to a second to avoid strange motion decay
 
