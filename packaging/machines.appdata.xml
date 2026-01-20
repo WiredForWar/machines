@@ -15,6 +15,7 @@
             <li>Added support for WASD camera and machines in-head control</li>
             <li>Added more keyboard shortcuts</li>
             <li>Added initial support for mods (most notable is German localization)</li>
+            <li>Implemented VSync</li>
             <li>Fixed various LAN game issues</li>
             <li>Fixed tens of bugs</li>
             <li>Fixed a dozen of crashes</li>
@@ -39,6 +40,10 @@
             <image>https://lordovervolt.com/uploads/machines-screens3.png</image>
         </screenshot>
     </screenshots>
+    <branding>
+        <color type="primary" scheme_preference="light">#cdd9dc</color>
+        <color type="primary" scheme_preference="dark">#012101</color>
+    </branding>
     <keywords>
         <keyword>game</keyword>
     </keywords>
@@ -49,6 +54,7 @@
         <release date="2024-02-21" version="1.7.0"/>
         <release date="2024-09-10" version="1.7.1"/>
         <release date="2025-12-07" version="1.7.2"/>
+        <release date="2026-01-19" version="1.7.4"/>
     </releases>
     <url type="homepage">https://wiredforwar.github.io/</url>
     <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
