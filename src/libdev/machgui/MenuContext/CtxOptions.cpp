@@ -125,15 +125,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Initialise gui items
 
     const uint menuScaleFactor = MachGui::menuScaleFactor();
-    const uint firstColumnX = 95 * menuScaleFactor;
+    const uint firstColumnX = 92 * menuScaleFactor;
     const uint contentY = 79 * menuScaleFactor;
     const uint firstColumnWidth = 157 * menuScaleFactor;
-    const uint columnSpacing = 0 * menuScaleFactor;
+    const uint columnSpacing = 3 * menuScaleFactor;
     const uint secondColumnX = firstColumnX + firstColumnWidth + columnSpacing;
-    const uint secondColumnTextWidth = 116 * menuScaleFactor;
+    const uint secondColumnTextWidth = 120 * menuScaleFactor;
     const uint secondColumnSpacing = 7 * menuScaleFactor;
     const uint secondColumnInputX = secondColumnX + secondColumnTextWidth + secondColumnSpacing;
-    const uint secondColumnInputWidth = 150 * menuScaleFactor;
+    const uint secondColumnInputWidth = 153 * menuScaleFactor;
     const uint rowHeight = MachGuiCheckBox::implicitHeight();
     const uint verticalSpacing = 9 * menuScaleFactor;
     int itemsIn1stColumn{};
