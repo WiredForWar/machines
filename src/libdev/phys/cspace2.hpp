@@ -17,6 +17,7 @@
 #include "ftl/serialid.hpp"
 #include "phys/phys.hpp"
 #include "ctl/utility.hpp"
+
 #include <memory>
 
 // Forward declarations
@@ -38,19 +39,6 @@ class PhysCS2dFindPath;
 class PhysCS2dDomainFindPath;
 template <class T> class ctl_pvector;
 template <class T> class ctl_nb_vector;
-// template < class T > class std::unique_ptr;
-// template < class X, class Y > class pair;
-
-// Warnings about foward references of template classes
-#ifndef CB_NOWARNINGS // Are Charybdis warnings turned on?
-#ifndef _MATHEX_POLY2D_HPP
-#pragma message(__FILE__ "(39): Warning : std::unique_ptr< MexPolygon2d > foward referenced")
-#endif
-
-#ifndef _MATHEX_POINT2D_HPP
-#pragma message(__FILE__ "(43): Warning : ctl_nb_vector< MexPoint2d > foward referenced")
-#endif
-#endif
 
 // Orthodox canonical (revoked)
 class PhysConfigSpace2d
