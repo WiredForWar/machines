@@ -40,7 +40,7 @@ public:
     // Set the vertical field of view angle in radians.
     // Only the vertical angle can be set.  The horizontal angle can be read.
     // PRE(angle > 0 );
-    void verticalFOVAngle(double angle); // default = 80 * PI / 180
+    void setVerticalFOVAngle(double angle); // default = 80 * PI / 180
     double verticalFOVAngle() const;
 
     // The camera will be set-up such that the horizontal angle will be

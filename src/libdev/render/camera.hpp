@@ -34,7 +34,7 @@ public:
     // Set the vertical field of view angle in radians.
     // Only the vertical angle can be set.  The horizontal angle can be read.
     // PRE(angle > 0 );
-    void verticalFOVAngle(double angle); // default = 80 * PI / 180
+    void setVerticalFOVAngle(double angle); // default = 80 * PI / 180
     double verticalFOVAngle() const;
 
     double tanHalfVerticalFOVAngle() const; // tan( 0.5 * verticalFOVAngle() ), but faster
@@ -59,8 +59,8 @@ private:
     MexTransform3d transform_{};
     double hither_{};
     double yon_{};
-    double angle_{};
-    double tanHalfAngle_{}; // Caches the tan of 0.5*vertical FOV angle
+    double verticalAngle_{};
+    double tanHalfVerticalAngle_{}; // Caches the tan of 0.5*vertical FOV angle
     RenColour colourFilter_{};
 
     // Operations deliberately revoked.

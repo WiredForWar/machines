@@ -478,10 +478,10 @@ double W4dCamera::yonClipDistance() const
 }
 
 // Only the vertical angle can be set.  The horizontal angle can be read.
-void W4dCamera::verticalFOVAngle(double angle)
+void W4dCamera::setVerticalFOVAngle(double angle)
 {
     PRE(angle > 0);
-    camera_->verticalFOVAngle(angle);
+    camera_->setVerticalFOVAngle(angle);
 }
 
 double W4dCamera::verticalFOVAngle() const

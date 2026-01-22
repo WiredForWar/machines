@@ -58,24 +58,24 @@ MachLogCamera::MachLogCamera(
     {
         case GROUND:
             yonClipDistance(2000);
-            verticalFOVAngle(40 * Mathex::PI / 180.0);
+            setVerticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case FREE_MOVING:
             yonClipDistance(2000);
-            verticalFOVAngle(40 * Mathex::PI / 180.0);
+            setVerticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case ZENITH:
             yonClipDistance(1000);
-            verticalFOVAngle(40 * Mathex::PI / 180.0);
+            setVerticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case THIRD_PERSON:
             yonClipDistance(2000);
-            verticalFOVAngle(40 * Mathex::PI / 180.0);
+            setVerticalFOVAngle(40 * Mathex::PI / 180.0);
             break;
         case FIRST_PERSON:
             yonClipDistance(2000);
             hitherClipDistance(0.2);
-            verticalFOVAngle(60 * Mathex::PI / 180.0);
+            setVerticalFOVAngle(60 * Mathex::PI / 180.0);
             break;
     }
 }

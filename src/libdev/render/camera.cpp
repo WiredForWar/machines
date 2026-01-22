@@ -10,7 +10,7 @@ RenCamera::RenCamera()
     , yon_(500)
     , colourFilter_(RenColour::white())
 {
-    verticalFOVAngle(80.0 * Mathex::PI / 180.0);
+    setVerticalFOVAngle(80.0 * Mathex::PI / 180.0);
 }
 
 RenCamera::~RenCamera() = default;
@@ -48,31 +48,31 @@ double RenCamera::yonClipDistance() const
 }
 
 // Only the vertical angle can be set.  The horizontal angle can be read.
-void RenCamera::verticalFOVAngle(double angle)
+void RenCamera::setVerticalFOVAngle(double angle)
 {
     PRE(angle > 0);
-    angle_ = angle;
-    tanHalfAngle_ = tan(0.5 * angle);
+    verticalAngle_ = angle;
+    tanHalfVerticalAngle_ = tan(0.5 * angle);
 }
 
 double RenCamera::verticalFOVAngle() const
 {
-    return angle_;
+    return verticalAngle_;
 }
 
 double RenCamera::horizontalFOVAngle(double ratio) const
 {
-    return 2 * atan(ratio * tanHalfAngle_);
+    return 2 * atan(ratio * tanHalfVerticalAngle_);
 }
 
 double RenCamera::projectionPlaneHalfHeight() const
 {
-    return hither_ * tanHalfAngle_;
+    return hither_ * tanHalfVerticalAngle_;
 }
 
 double RenCamera::tanHalfVerticalFOVAngle() const
 {
-    return tanHalfAngle_;
+    return tanHalfVerticalAngle_;
 }
 
 const RenColour& RenCamera::colourFilter() const
