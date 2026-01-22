@@ -52,8 +52,8 @@ public:
     static double abs(double);
     static long double abs(long double);
 
-    static const double PI;
-    static const double PI_DIV_2;
+    inline static constexpr double PI = 3.14159265358979323846;
+    inline static constexpr double PI_DIV_2 = PI / 2.0;
     static const double SQRT_2;
 
     // Used by MexHalfPlane2d for determining which side of
