@@ -151,6 +151,20 @@ void IVariable::onChanged()
 }
 
 template <>
+std::string Impl::toString(const std::string& value)
+{
+    return value;
+}
+
+template <>
+std::optional<std::string> Impl::toValue(const std::string& asString)
+{
+    return asString;
+}
+
+template class Variable<std::string>;
+
+template <>
 std::string Impl::toString(const int32_t& value)
 {
     return std::to_string(value);
