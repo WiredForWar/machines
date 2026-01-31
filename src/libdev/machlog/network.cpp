@@ -253,7 +253,7 @@ int MachLogNetwork::expectedPlayers() const
     return expectedPlayers_;
 }
 
-bool MachLogNetwork::desiredProtocol(const std::string& protocol, MachLogNetwork::InitialiseConnection initConnection)
+bool MachLogNetwork::setDesiredProtocol(const std::string& protocol)
 {
     CB_MachLogNetwork_DEPIMPL();
 
@@ -261,9 +261,6 @@ bool MachLogNetwork::desiredProtocol(const std::string& protocol, MachLogNetwork
     INSPECT_ON(std::cout, desiredProtocol_);
     const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();
     NetNetwork::ProtocolMap::const_iterator findWhere = availableProtocols.find(desiredProtocol_);
-    NetNetwork::InitialiseConnection netInitConnection = (initConnection == INITIALISE_CONNECTION)
-        ? NetNetwork::INITIALISE_CONNECTION
-        : NetNetwork::DO_NOT_INITIALISE_CONNECTION;
 #ifndef NDEBUG
     WHERE;
 #endif
@@ -272,7 +269,7 @@ bool MachLogNetwork::desiredProtocol(const std::string& protocol, MachLogNetwork
 #ifndef NDEBUG
         WHERE;
 #endif
-        NetNetwork::chooseProtocol(desiredProtocol_, netInitConnection);
+        NetNetwork::chooseProtocol(desiredProtocol_, NetNetwork::DO_NOT_INITIALISE_CONNECTION);
         protocolChosen_ = true;
         return true;
     }

@@ -62,7 +62,7 @@ public:
     bool ready(MachPhys::Race) const;
 
     const std::string& desiredProtocol() const;
-    bool desiredProtocol(const std::string&, InitialiseConnection = INITIALISE_CONNECTION);
+    bool setDesiredProtocol(const std::string&);
     void initialiseConnection();
 
     bool hostWithSessionId(const std::string& gameName, const std::string& playerName);

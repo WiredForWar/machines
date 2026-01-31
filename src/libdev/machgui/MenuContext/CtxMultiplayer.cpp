@@ -58,7 +58,7 @@ protected:
         DEBUG_STREAM(DIAG_NETWORK, "MachGuiProtocolListBoxItem::select()\n");
         MachGuiSingleSelectionListBoxItem::select();
 
-        startupScreens()->startupData()->connectionType(text(), MachGuiStartupData::DO_NOT_INITIALISE_CONNECTION);
+        startupScreens()->startupData()->setConnectionType(text());
         DEBUG_STREAM(DIAG_NETWORK, "MachGuiProtocolListBoxItem::select() DONE\n");
     }
 

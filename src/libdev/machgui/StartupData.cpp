@@ -268,11 +268,11 @@ const std::string& MachGuiStartupData::connectionType() const
         return lastProtocol_;
 }
 
-void MachGuiStartupData::connectionType(const std::string& ct, InitialiseConnection initialise)
+void MachGuiStartupData::setConnectionType(const std::string& ct)
 {
     MachLogNetwork::instance().terminateAndReset();
 
-    bool success = MachLogNetwork::instance().desiredProtocol(ct, (MachLogNetwork::InitialiseConnection)initialise);
+    bool success = MachLogNetwork::instance().setDesiredProtocol(ct);
 
     lastProtocol_ = ct;
     // Store chosen protocol in registry so that it persists between different instances of the game

@@ -120,7 +120,7 @@ public:
 
     // Set and get network protocol
     const std::string& connectionType() const;
-    void connectionType(const std::string&, InitialiseConnection = DO_NOT_INITIALISE_CONNECTION);
+    void setConnectionType(const std::string&);
 
     void resetData();
 

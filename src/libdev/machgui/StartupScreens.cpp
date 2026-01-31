@@ -2840,7 +2840,7 @@ void MachGuiStartupScreens::unloadGame()
             // Store connection type because terminateAndReset sets it to "".
             std::string ct = startupData()->connectionType();
             MachLogNetwork::instance().terminateAndReset();
-            startupData()->connectionType(ct);
+            startupData()->setConnectionType(ct);
         }
 
         inGameScreen().unloadGame();
