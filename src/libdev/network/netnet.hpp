@@ -2,7 +2,6 @@
 #define _NETNETWORK_HPP
 
 #include "ctl/pvector.hpp"
-#include "ctl/map.hpp"
 
 #include "network/netdefs.hpp"
 #include "network/message.hpp"
@@ -10,6 +9,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 class NetNode;
 class NetNodeUid;
@@ -51,8 +51,7 @@ public:
         OTHER
     };
 
-    using ProtocolSpec = std::pair<const std::string, NetworkProtocol>;
-    using ProtocolMap = ctl_map<ProtocolSpec::first_type, ProtocolSpec::second_type, std::less<std::string>>;
+    using ProtocolList = std::vector<NetworkProtocol>;
     using Sessions = std::vector<NetSessionInfo>;
     using Modems = ctl_vector<std::string>;
 
@@ -64,7 +63,7 @@ public:
 
     static NetNetwork& instance();
     static NetInterProcessUid nextInterProcessUid();
-    static const ProtocolMap& availableProtocols();
+    static const ProtocolList& availableProtocols();
 
     // Normally a protocol may be chosen with initialise set and the default dialogs will be displayed.
     // If you wish to override the default dialogs then set to NOT_INITIALISE, set the extra parameters via the
@@ -74,7 +73,7 @@ public:
         INITIALISE_CONNECTION,
         DO_NOT_INITIALISE_CONNECTION
     };
-    static void chooseProtocol(const std::string&, InitialiseConnection);
+    static void chooseProtocol(NetworkProtocol, InitialiseConnection);
     void initialiseConnection();
 
     static NetNetworkStatus currentStatus();
@@ -165,5 +164,7 @@ private:
 
     ///////////////////////////////
 };
+
+std::string_view toString(NetNetwork::NetworkProtocol);
 
 #endif //_NETNETWORK_HPP

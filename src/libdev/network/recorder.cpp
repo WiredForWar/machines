@@ -126,42 +126,27 @@ void NetIRecorder::recordHasLocalNode(bool value) const
     RecRecorderPrivate::instance().recordNetworkBool(value);
 }
 
-void NetIRecorder::playbackAvailableProtocols(NetNetwork::ProtocolMap* pMap) const
+void NetIRecorder::playbackAvailableProtocols(NetNetwork::ProtocolList* protocols) const
 {
-    NetNetwork::ProtocolMap map;
+    protocols->clear();
 
     const uint size = RecRecorderPrivate::instance().playbackNetworkUint();
 
     for (size_t i = 0; i < size; ++i)
     {
-        std::string str = RecRecorderPrivate::instance().playbackNetworkString();
-        int ii = RecRecorderPrivate::instance().playbackNetworkInt();
-
-        map.insert(str, static_cast<NetNetwork::NetworkProtocol>(ii));
+        const auto protocolValue = RecRecorderPrivate::instance().playbackNetworkInt();
+        protocols->push_back(static_cast<NetNetwork::NetworkProtocol>(protocolValue));
     }
-
-    *pMap = map;
 }
 
-void NetIRecorder::recordAvailableProtocols(const NetNetwork::ProtocolMap& protocolMap) const
+void NetIRecorder::recordAvailableProtocols(const NetNetwork::ProtocolList& protocols) const
 {
-    RecRecorderPrivate::instance().recordNetworkUint(protocolMap.size());
+    RecRecorderPrivate::instance().recordNetworkUint(protocols.size());
 
-    for (NetNetwork::ProtocolMap::const_iterator i = protocolMap.begin(); i != protocolMap.end(); ++i)
+    for (const auto protocol : protocols)
     {
-        RecRecorderPrivate::instance().recordNetworkString((*i).first);
-        RecRecorderPrivate::instance().recordNetworkInt(static_cast<int>((*i).second));
+        RecRecorderPrivate::instance().recordNetworkInt(static_cast<int>(protocol));
     }
-}
-
-std::string NetIRecorder::playbackCurrentProtocolName() const
-{
-    return RecRecorderPrivate::instance().playbackNetworkString();
-}
-
-void NetIRecorder::recordCurrentProtocolName(const std::string& str) const
-{
-    RecRecorderPrivate::instance().recordNetworkString(str);
 }
 
 NetNetwork::NetNetworkStatus NetIRecorder::playbackCurrentStatus() const

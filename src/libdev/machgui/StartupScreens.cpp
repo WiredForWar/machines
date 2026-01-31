@@ -2836,11 +2836,12 @@ void MachGuiStartupScreens::unloadGame()
         if (gameType() == MachGuiStartupScreens::MULTIGAME)
         {
             NetNetwork::instance().messageThrottlingActive(false);
-            // Disconnect from network ( keep protocol!! )
-            // Store connection type because terminateAndReset sets it to "".
-            std::string ct = startupData()->connectionType();
+            // Disconnect from network ( keep connectionType!! )
+            const std::optional<ConnectionType> selectedConnectionType = startupData()->connectionType();
             MachLogNetwork::instance().terminateAndReset();
-            startupData()->setConnectionType(ct);
+            ASSERT(selectedConnectionType.has_value(), "Invalid connection type");
+
+            startupData()->setConnectionType(*selectedConnectionType);
         }
 
         inGameScreen().unloadGame();

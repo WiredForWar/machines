@@ -152,6 +152,8 @@ set(MACHGUI_SOURCES
     MexTemp.hpp
     NavigatorBase.cpp
     NavigatorBase.hpp
+    Network/ConnectionType.cpp
+    Network/ConnectionType.hpp
     Network/IPXNetworkMode.cpp
     Network/IPXNetworkMode.hpp
     Network/InternetNetworkMode.cpp

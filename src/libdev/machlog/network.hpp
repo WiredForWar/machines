@@ -14,6 +14,9 @@
 
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
+#include "network/netnet.hpp"
+
+#include <optional>
 
 class NetNode;
 class MachLogMessageBroker;
@@ -61,8 +64,8 @@ public:
     void ready(MachPhys::Race, bool newValue);
     bool ready(MachPhys::Race) const;
 
-    const std::string& desiredProtocol() const;
-    bool setDesiredProtocol(const std::string&);
+    std::optional<NetNetwork::NetworkProtocol> desiredProtocol() const;
+    bool setDesiredProtocol(NetNetwork::NetworkProtocol);
     void initialiseConnection();
 
     bool hostWithSessionId(const std::string& gameName, const std::string& playerName);

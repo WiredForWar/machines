@@ -15,6 +15,8 @@
 #include "base/base.hpp"
 #include "machlog/network.hpp"
 
+#include <optional>
+
 class MachLogNetworkDataImpl
 // Canonical form revoked
 {
@@ -36,7 +38,7 @@ private:
     bool isNodeLogicalHost_;
     MachLogNetwork::Remote remote_[MachPhys::N_RACES];
     MachPhys::Race localRace_;
-    std::string desiredProtocol_;
+    std::optional<NetNetwork::NetworkProtocol> desiredProtocol_;
     std::string sessionId_;
     NetNode* pNode_;
     MachLogMessageBroker* pBroker_;

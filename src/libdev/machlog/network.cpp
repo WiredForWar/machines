@@ -85,7 +85,7 @@ void MachLogNetwork::terminateAndReset()
     isNodeLogicalHost_ = false;
     for (bool& status : pImpl_->readyStatus_)
         status = false;
-    desiredProtocol_ = "";
+    desiredProtocol_.reset();
     protocolChosen_ = false;
     NetNetwork::instance().resetStatus();
     DEBUG_STREAM(DIAG_NETWORK, "MachLogNetwork::terminateAndReset done\n");
@@ -126,7 +126,7 @@ void MachLogNetwork::remoteStatus(MachPhys::Race race, MachLogNetwork::Remote re
     remote_[race] = remote;
 }
 
-const std::string& MachLogNetwork::desiredProtocol() const
+std::optional<NetNetwork::NetworkProtocol> MachLogNetwork::desiredProtocol() const
 {
     CB_DEPIMPL_AUTO(desiredProtocol_);
 
@@ -253,27 +253,29 @@ int MachLogNetwork::expectedPlayers() const
     return expectedPlayers_;
 }
 
-bool MachLogNetwork::setDesiredProtocol(const std::string& protocol)
+bool MachLogNetwork::setDesiredProtocol(NetNetwork::NetworkProtocol protocol)
 {
     CB_MachLogNetwork_DEPIMPL();
 
-    desiredProtocol_ = protocol;
-    INSPECT_ON(std::cout, desiredProtocol_);
-    const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();
-    NetNetwork::ProtocolMap::const_iterator findWhere = availableProtocols.find(desiredProtocol_);
-#ifndef NDEBUG
-    WHERE;
-#endif
-    if (findWhere != availableProtocols.end())
+    const NetNetwork::ProtocolList& availableProtocols = NetNetwork::availableProtocols();
+    bool protocolAvailable = false;
+    for (NetNetwork::NetworkProtocol availableProtocol : availableProtocols)
     {
-#ifndef NDEBUG
-        WHERE;
-#endif
-        NetNetwork::chooseProtocol(desiredProtocol_, NetNetwork::DO_NOT_INITIALISE_CONNECTION);
-        protocolChosen_ = true;
-        return true;
+        if (availableProtocol == protocol)
+        {
+            protocolAvailable = true;
+            break;
+        }
     }
-    return false;
+    if (!protocolAvailable)
+    {
+        return false;
+    }
+
+    NetNetwork::chooseProtocol(protocol, NetNetwork::DO_NOT_INITIALISE_CONNECTION);
+    desiredProtocol_ = protocol;
+    protocolChosen_ = true;
+    return true;
 }
 
 void MachLogNetwork::initialiseConnection()
