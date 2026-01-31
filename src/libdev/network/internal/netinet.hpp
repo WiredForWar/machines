@@ -5,7 +5,8 @@
 
 #include "ctl/vector.hpp"
 #include "ctl/list.hpp"
-#include "ctl/map.hpp"
+
+#include <vector>
 
 #include "device/timer.hpp"
 
@@ -55,8 +56,8 @@ public:
 
     ///////////////////////////////
 
-    const NetNetwork::ProtocolMap& availableProtocols(Update update = Update::Yes);
-    void chooseProtocol(const std::string&, NetNetwork::InitialiseConnection);
+    const NetNetwork::ProtocolList& availableProtocols(Update update = Update::Yes);
+    void chooseProtocol(NetNetwork::NetworkProtocol, NetNetwork::InitialiseConnection);
     void initialiseConnection();
 
     static const NetNetwork::NetNetworkStatus& currentStatus();
@@ -110,9 +111,6 @@ private:
     ///////////////////////////////
 
     void clearProtocols();
-    const std::string& protocolName();
-    std::string& protocolNameNoRecord();
-    void setProtocolName(const std::string&);
     void setAppUid();
 
     ///////////////////////////////
@@ -227,7 +225,7 @@ private:
     int originalMaxSentMessagesPerSecond_;
 
     bool messageThrottlingActive_{};
-    NetNetwork::ProtocolMap availableProtocols_;
+    NetNetwork::ProtocolList availableProtocols_;
 };
 
 #endif //_NetINetwork_HPP

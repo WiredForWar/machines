@@ -4,10 +4,12 @@
 
 #include <string>
 
+enum class ConnectionType;
+
 namespace Config
 {
 
-extern Variable<std::string> netSelectedProtocol;
+extern Variable<ConnectionType> netSelectedProtocol;
 extern Variable<std::string> netPlayerName;
 
 } // namespace Config

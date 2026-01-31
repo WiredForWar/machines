@@ -208,7 +208,7 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
 
     newGameName_ = SysRegistry::instance().queryStringValue("Misc", "New Game Name");
     playerName_ = Config::netPlayerName.get();
-    lastProtocol_ = Config::netSelectedProtocol.get();
+    lastConnectionType_ = Config::netSelectedProtocol.get();
 
     MexBasicRandom rng = MexBasicRandom::constructSeededFromTime();
     uniqueMachineNumber_ = mexRandomInt(&rng, INT_MIN, INT_MAX);
@@ -260,21 +260,35 @@ MachGuiDbScenario* MachGuiStartupData::scenario()
     return pScenario_;
 }
 
-const std::string& MachGuiStartupData::connectionType() const
+std::optional<ConnectionType> MachGuiStartupData::connectionType() const
 {
-    if (MachLogNetwork::instance().desiredProtocol() != "")
-        return MachLogNetwork::instance().desiredProtocol();
-    else
-        return lastProtocol_;
+    using NetworkProtocol = NetNetwork::NetworkProtocol;
+    if (const auto desired = MachLogNetwork::instance().desiredProtocol())
+    {
+        switch(desired.value())
+        {
+        case NetworkProtocol::UDP:
+            return ConnectionType::LAN;
+        default:
+            return std::nullopt;
+        }
+    }
+    return lastConnectionType_;
 }
 
-void MachGuiStartupData::setConnectionType(const std::string& ct)
+void MachGuiStartupData::setConnectionType(ConnectionType ct)
 {
     MachLogNetwork::instance().terminateAndReset();
 
-    bool success = MachLogNetwork::instance().setDesiredProtocol(ct);
+    bool success{};
+    switch(ct)
+    {
+    case ConnectionType::LAN:
+        success = MachLogNetwork::instance().setDesiredProtocol(NetNetwork::NetworkProtocol::UDP);
+        break;
+    }
 
-    lastProtocol_ = ct;
+    lastConnectionType_ = ct;
     Config::netSelectedProtocol.set(ct);
 
     ASSERT(success, "failed to set protocol");

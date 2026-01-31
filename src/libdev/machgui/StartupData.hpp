@@ -15,7 +15,11 @@
 #include "base/base.hpp"
 #include "ctl/vector.hpp"
 #include "machphys/machphys.hpp"
+#include "machgui/Network/ConnectionType.hpp"
 #include "machlog/machlog.hpp"
+#include "network/netnet.hpp"
+
+#include <optional>
 
 class StartupInfo;
 class MachGuiDbScenario;
@@ -118,9 +122,8 @@ public:
     MachGuiDbScenario* scenario();
     void scenario(MachGuiDbScenario*);
 
-    // Set and get network protocol
-    const std::string& connectionType() const;
-    void setConnectionType(const std::string&);
+    std::optional<ConnectionType> connectionType() const;
+    void setConnectionType(ConnectionType connectionType);
 
     void resetData();
 
@@ -293,7 +296,7 @@ private:
     std::string newGameName_;
     GameSettings gameSettings_;
     MachPhys::Race playerRace_;
-    std::string lastProtocol_;
+    std::optional<ConnectionType> lastConnectionType_;
     int uniqueMachineNumber_; // Used to identify this machine on the network
 };
 

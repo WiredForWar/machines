@@ -51,11 +51,8 @@ public:
     bool playbackHasLocalNode() const;
     void recordHasLocalNode(bool) const;
 
-    void playbackAvailableProtocols(NetNetwork::ProtocolMap*) const;
-    void recordAvailableProtocols(const NetNetwork::ProtocolMap&) const;
-
-    std::string playbackCurrentProtocolName() const;
-    void recordCurrentProtocolName(const std::string&) const;
+    void playbackAvailableProtocols(NetNetwork::ProtocolList*) const;
+    void recordAvailableProtocols(const NetNetwork::ProtocolList&) const;
 
     NetNetwork::NetNetworkStatus playbackCurrentStatus() const;
     void recordCurrentStatus(const NetNetwork::NetNetworkStatus&) const;

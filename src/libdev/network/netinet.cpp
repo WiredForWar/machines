@@ -543,22 +543,18 @@ void NetINetwork::updateSessions()
     sendLocalServersDiscoveryBroadcast();
 }
 
-const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(Update update)
+const NetNetwork::ProtocolList& NetINetwork::availableProtocols(Update update)
 {
     NETWORK_STREAM("NetINetwork::availableProtocols\n");
     NETWORK_INDENT(2);
     PRE(currentStatusNoRecord() == NetNetwork::NETNET_OK);
 
-    NetNetwork::ProtocolMap& availableProtocols = NetNetwork::instance().netINetwork().availableProtocols_;
+    NetNetwork::ProtocolList& availableProtocols = NetNetwork::instance().netINetwork().availableProtocols_;
 
     if (update == Update::Yes)
     {
         NETWORK_STREAM("UPDATE\n");
-        NetNetwork::ProtocolMap::iterator i = availableProtocols.begin();
-        NetNetwork::ProtocolMap::iterator j = availableProtocols.end();
-
-        if (i != j)
-            availableProtocols.erase(i, j);
+        availableProtocols.clear();
 
         if (RecRecorder::instance().state() == RecRecorder::PLAYING)
         {
@@ -566,17 +562,13 @@ const NetNetwork::ProtocolMap& NetINetwork::availableProtocols(Update update)
         }
         else
         {
-            NetNetwork::ProtocolMap* pAvailableProtocols = &availableProtocols;
-            pAvailableProtocols->insert("LAN Game (UDP connection for IP v4)", NetNetwork::NetworkProtocol::UDP);
+            availableProtocols.push_back(NetNetwork::NetworkProtocol::UDP);
 
             if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             {
                 NetIRecorder::instance().recordAvailableProtocols(availableProtocols);
             }
         }
-
-        i = availableProtocols.begin();
-        j = availableProtocols.end();
     }
 
     POST(currentStatusNoRecord() == NetNetwork::NETNET_OK);
@@ -593,37 +585,20 @@ void NetINetwork::clearProtocols()
     NETWORK_INDENT(2);
     PRE(currentStatusNoRecord() == NetNetwork::NETNET_OK);
 
-    NETWORK_STREAM("there are " << availableProtocols_.size() << " entries in the map" << std::endl);
+    NETWORK_STREAM("there are " << availableProtocols_.size() << " entries in the list" << std::endl);
 
-    NetNetwork::ProtocolMap::iterator i = availableProtocols_.begin();
-    NetNetwork::ProtocolMap::iterator j = availableProtocols_.end();
-
-    NETWORK_STREAM(" iterator to begin is " << (void*)&(*i) << std::endl);
-    NETWORK_STREAM(" iterator to end   is " << (void*)&(*j) << std::endl);
-    NETWORK_STREAM(" iterator i == iterator j " << bool(i == j) << std::endl);
-
-    NETWORK_STREAM(" delete all the array data " << std::endl);
-    for (; i != j; ++i)
+    if (! availableProtocols_.empty())
     {
-        NETWORK_STREAM("delete for " << (*i).first << std::endl);
+        availableProtocols_.clear();
     }
-
-    i = availableProtocols_.begin();
-
-    NETWORK_STREAM(" erase elements\n");
-    if (i != j)
-        availableProtocols_.erase(i, j);
 
     POST(currentStatusNoRecord() == NetNetwork::NETNET_OK);
     NETWORK_INDENT(-2);
     NETWORK_STREAM("NetINetwork::clearProtocols DONE\n");
 }
 
-void NetINetwork::chooseProtocol(const std::string& protocolName, NetNetwork::InitialiseConnection /*initConnection*/)
+void NetINetwork::chooseProtocol(NetNetwork::NetworkProtocol protocol, NetNetwork::InitialiseConnection /*initConnection*/)
 {
-    const NetNetwork::ProtocolMap& availableProtocolsConst = NetINetwork::availableProtocols();
-    NetNetwork::ProtocolMap& availableProtocols = _CONST_CAST(NetNetwork::ProtocolMap&, availableProtocolsConst);
-
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
         RecRecorder::instance().recordingAllowed(false);
@@ -631,43 +606,8 @@ void NetINetwork::chooseProtocol(const std::string& protocolName, NetNetwork::In
         NETWORK_STREAM("NetINetwork::chooseProtocol\n");
         PRE(currentStatusNoRecord() == NetNetwork::NETNET_OK);
 
-        setProtocolName(protocolName);
-
-        if (strstr(protocolName.c_str(), "UDP"))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::UDP;
-            NETWORK_STREAM(" NetNetwork::UDP\n");
-        }
-        else if (strstr(protocolName.c_str(), "IPX "))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::IPX;
-            NETWORK_STREAM(" NetNetwork::IPX\n");
-        }
-        else if (strstr(protocolName.c_str(), " TCP/IP "))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::TCPIP;
-            NETWORK_STREAM(" NetNetwork::TCPIP\n");
-        }
-        else if (strstr(protocolName.c_str(), "Serial "))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::SERIAL;
-            NETWORK_STREAM(" NetNetwork::SERIAL\n");
-        }
-        else if (strstr(protocolName.c_str(), "Modem "))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::MODEM;
-            NETWORK_STREAM(" NetNetwork::MODEM\n");
-        }
-        else if (strstr(protocolName.c_str(), " Zone "))
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::ZONE;
-            NETWORK_STREAM(" NetNetwork::ZONE\n");
-        }
-        else
-        {
-            currentProtocol_ = NetNetwork::NetworkProtocol::OTHER;
-            NETWORK_STREAM(" NetNetwork::OTHER\n");
-        }
+        currentProtocol_ = protocol;
+        NETWORK_STREAM(" Selected protocol " << static_cast<int>(currentProtocol_) << "\n");
 
         // if( initConnection == NetNetwork::INITIALISE_CONNECTION )
         {
@@ -688,8 +628,7 @@ void NetINetwork::chooseProtocol(const std::string& protocolName, NetNetwork::In
 
 void NetINetwork::initialiseConnection()
 {
-    const NetNetwork::ProtocolMap& availableProtocolsConst = NetINetwork::availableProtocols();
-    NetNetwork::ProtocolMap& availableProtocols = _CONST_CAST(NetNetwork::ProtocolMap&, availableProtocolsConst);
+    NetINetwork::availableProtocols();
 
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
@@ -760,38 +699,6 @@ bool NetINetwork::isValidNoRecord() const
 }
 
 // static
-const std::string& NetINetwork::protocolName()
-{
-    std::string& currentProtocolName = protocolNameNoRecord();
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        currentProtocolName = NetIRecorder::instance().playbackCurrentProtocolName();
-    }
-    else
-    {
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-        {
-            NetIRecorder::instance().recordCurrentProtocolName(currentProtocolName);
-        }
-    }
-
-    return currentProtocolName;
-}
-
-// static
-std::string& NetINetwork::protocolNameNoRecord()
-{
-    static std::string currentProtocolName;
-
-    return currentProtocolName;
-}
-
-// static
-void NetINetwork::setProtocolName(const std::string& name)
-{
-    protocolNameNoRecord() = name;
-}
 
 void NetINetwork::setAppUid()
 {

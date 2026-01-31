@@ -34,22 +34,15 @@ public:
         MachGuiStartupScreens* pStartupScreens,
         MachGuiSingleSelectionListBox* pListBox,
         size_t width,
-        const std::string& text)
-        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, text)
+        ConnectionType connectionType)
+        : MachGuiSingleSelectionListBoxItem(pStartupScreens, pListBox, width, toDisplayString(connectionType))
+        , connectionType_(connectionType)
     {
     }
 
-    ~MachGuiProtocolListBoxItem() override { }
-
-    bool isSelectedProtocol()
+    bool isSelected()
     {
-        // returns whether or not this item matches the currectly selected protocol
-        // This will enable client code to reselect it as necessary
-        if (strcasecmp(text().c_str(), startupScreens()->startupData()->connectionType().c_str()) == 0)
-        {
-            return true;
-        }
-        return false;
+        return connectionType_ == startupScreens()->startupData()->connectionType();
     }
 
 protected:
@@ -58,13 +51,15 @@ protected:
         DEBUG_STREAM(DIAG_NETWORK, "MachGuiProtocolListBoxItem::select()\n");
         MachGuiSingleSelectionListBoxItem::select();
 
-        startupScreens()->startupData()->setConnectionType(text());
+        startupScreens()->startupData()->setConnectionType(connectionType_);
         DEBUG_STREAM(DIAG_NETWORK, "MachGuiProtocolListBoxItem::select() DONE\n");
     }
 
 private:
     MachGuiProtocolListBoxItem(const MachGuiProtocolListBoxItem&);
     MachGuiProtocolListBoxItem& operator=(const MachGuiProtocolListBoxItem&);
+
+    ConnectionType connectionType_{};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,15 +128,11 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         MachGuiSingleSelectionListBoxItem::reqHeight(),
         1);
 
-    // Get available protocols
-    const NetNetwork::ProtocolMap& availableProtocols = NetNetwork::availableProtocols();
-
     MachGuiProtocolListBoxItem* pSelectedItem = nullptr;
-    for (const NetNetwork::ProtocolSpec& protocol : availableProtocols)
+    for (ConnectionType type : AllConnectionTypes)
     {
-        MachGuiProtocolListBoxItem* pItem
-            = new MachGuiProtocolListBoxItem(pStartupScreens, pListBox, listBoxWidth, protocol.first);
-        if (pItem->isSelectedProtocol())
+        auto* pItem = new MachGuiProtocolListBoxItem(pStartupScreens, pListBox, listBoxWidth, type);
+        if (pItem->isSelected())
             pSelectedItem = pItem;
     }
 
@@ -191,7 +182,7 @@ bool MachGuiCtxMultiplayer::okayToSwitchContext()
 
             return false;
         }
-        else if (pStartupScreens_->startupData()->connectionType().empty()) // No connection type specified
+        else if (!pStartupScreens_->startupData()->connectionType().has_value()) // No connection type specified
         {
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_CONNECTIONTYPE);
 

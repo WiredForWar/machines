@@ -55,15 +55,15 @@ NetNetwork& NetNetwork::instance()
 // }
 
 // static
-const NetNetwork::ProtocolMap& NetNetwork::availableProtocols()
+const NetNetwork::ProtocolList& NetNetwork::availableProtocols()
 {
     return NetNetwork::instance().pNetINetwork_->availableProtocols();
 }
 
 // static
-void NetNetwork::chooseProtocol(const std::string& protocolName, NetNetwork::InitialiseConnection initConnection)
+void NetNetwork::chooseProtocol(NetworkProtocol protocol, NetNetwork::InitialiseConnection initConnection)
 {
-    NetNetwork::instance().pNetINetwork_->chooseProtocol(protocolName, initConnection);
+    NetNetwork::instance().pNetINetwork_->chooseProtocol(protocol, initConnection);
 }
 
 // static
@@ -291,31 +291,32 @@ void NetNetwork::imStuffed(bool newImStuffed)
     pNetINetwork_->imStuffed_ = newImStuffed;
 }
 
-std::ostream& operator<<(std::ostream& o, NetNetwork::NetworkProtocol protocol)
+std::string_view toString(NetNetwork::NetworkProtocol protocol)
 {
     switch (protocol)
     {
+        case NetNetwork::NetworkProtocol::UDP:
+            return "UDP";
         case NetNetwork::NetworkProtocol::IPX:
-            o << "IPX";
-            break;
+            return "IPX";
         case NetNetwork::NetworkProtocol::TCPIP:
-            o << "TCPIP";
-            break;
+            return "TCPIP";
         case NetNetwork::NetworkProtocol::MODEM:
-            o << "MODEM";
-            break;
+            return "MODEM";
         case NetNetwork::NetworkProtocol::SERIAL:
-            o << "SERIAL";
-            break;
+            return "SERIAL";
         case NetNetwork::NetworkProtocol::ZONE:
-            o << "ZONE";
-            break;
+            return "ZONE";
         case NetNetwork::NetworkProtocol::OTHER:
-            o << "OTHER";
-            break;
-        default:
-            o << "Unknown PROTOCOL type " << (int)protocol << std::endl;
+            return "OTHER";
     }
+
+    return "UNKNOWN";
+}
+
+std::ostream& operator<<(std::ostream& o, NetNetwork::NetworkProtocol protocol)
+{
+    o << toString(protocol);
     return o;
 }
 

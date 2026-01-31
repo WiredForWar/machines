@@ -1397,6 +1397,8 @@ BELONGING TO</string>
 	>The video driver and screen resolution settings will not take effect until you re-run the game.</string>
 <string id="7142"
 	>Your name has changed to '%1' because '%2' is already being used by another player.</string>
+<string id="7150"
+	>LAN Game</string>
 <string id="7200"
 	>Connection Types</string>
 <string id="7201"
