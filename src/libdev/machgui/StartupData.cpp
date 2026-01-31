@@ -22,6 +22,7 @@
 #include "machgui/StartupData.hpp"
 #include "machgui/InGameChatMessages.hpp"
 #include "machlog/network.hpp"
+#include "machgui/Network/NetworkVariables.hpp"
 #include "afx/resource.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
@@ -206,8 +207,8 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
         SysRegistry::instance().queryIntegerValue("Game Settings\\Player Race", "Value", MachPhys::RED));
 
     newGameName_ = SysRegistry::instance().queryStringValue("Misc", "New Game Name");
-    playerName_ = SysRegistry::instance().queryStringValue("Misc", "Players Name");
-    lastProtocol_ = SysRegistry::instance().queryStringValue("Misc", "Chosen Protocol");
+    playerName_ = Config::netPlayerName.get();
+    lastProtocol_ = Config::netSelectedProtocol.get();
 
     MexBasicRandom rng = MexBasicRandom::constructSeededFromTime();
     uniqueMachineNumber_ = mexRandomInt(&rng, INT_MIN, INT_MAX);
@@ -244,8 +245,7 @@ void MachGuiStartupData::playerName(const std::string& playerName)
 {
     playerName_ = playerName;
 
-    // Store players name in registry so that it persists between different instances of the game
-    SysRegistry::instance().setStringValue("Misc", "Players Name", playerName_);
+    Config::netPlayerName.set(playerName_);
 }
 
 void MachGuiStartupData::scenario(MachGuiDbScenario* pScenario)
@@ -275,8 +275,7 @@ void MachGuiStartupData::setConnectionType(const std::string& ct)
     bool success = MachLogNetwork::instance().setDesiredProtocol(ct);
 
     lastProtocol_ = ct;
-    // Store chosen protocol in registry so that it persists between different instances of the game
-    SysRegistry::instance().setStringValue("Misc", "Chosen Protocol", lastProtocol_);
+    Config::netSelectedProtocol.set(ct);
 
     ASSERT(success, "failed to set protocol");
 }
@@ -804,8 +803,6 @@ void MachGuiStartupData::receivedStartMessage()
                 pStartupScreens_->switchContext(MachGuiStartupScreens::CTX_JOIN);
         }
         // Disconnect from network ( keep protocol!! )
-        //      string ct = connectionType(); // Store connection type because terminateAndReset sets it to ""
-        //      connectionType( ct );
     }
     else
     {

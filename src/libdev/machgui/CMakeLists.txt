@@ -160,6 +160,8 @@ set(MACHGUI_SOURCES
     Network/ModemNetworkMode.hpp
     Network/NetworkProtocolMode.cpp
     Network/NetworkProtocolMode.hpp
+    Network/NetworkVariables.cpp
+    Network/NetworkVariables.hpp
     Network/SerialNetworkMode.cpp
     Network/SerialNetworkMode.hpp
     NewCorralIcon.cpp
