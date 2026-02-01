@@ -447,7 +447,7 @@ NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
     spdlog::info("NetINetwork: Connecting to {}", addressStr);
     initHost();
 
-    std::string ipAddress = std::string(getIp(addressStr));
+    std::string ipAddress = std::string(getHost(addressStr));
     std::optional<uint16_t> port = getPort(addressStr);
 
     // c. Connect and user service

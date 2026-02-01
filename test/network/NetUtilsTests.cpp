@@ -6,7 +6,7 @@ TEST(NetUtilsTests, NoArgsIsUnsetTest)
 {
     std::string addressStr = "127.0.0.1:1234";
     auto port = getPort(addressStr);
-    auto ip = getIp(addressStr);
+    auto ip = getHost(addressStr);
 
     ASSERT_TRUE(port.has_value());
     ASSERT_EQ(port.value(), 1234u);
