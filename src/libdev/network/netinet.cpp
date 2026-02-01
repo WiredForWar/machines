@@ -431,10 +431,11 @@ NetAppSession* NetINetwork::createAppSession(const std::string& gameName)
     PRE(isValidNoRecord());
 
     deinitServersDiscoverySocket();
-    initLocalServerDiscovery();
     initHost(true);
 
     gameName_ = gameName;
+
+    registerServer();
 
     return nullptr;
 }
@@ -1342,9 +1343,14 @@ void NetINetwork::acceptLocalServersReplies()
     });
 }
 
+bool NetINetwork::registerServer()
+{
+    return initLocalServerDiscovery();
+}
+
 bool NetINetwork::initLocalServerDiscovery()
 {
-    if(lanDiscoveryServerSocket_ != ENET_SOCKET_NULL)
+    if (lanDiscoveryServerSocket_ != ENET_SOCKET_NULL)
     {
         spdlog::warn("NetINetwork: LAN discovery server socket already exists");
         return false;
