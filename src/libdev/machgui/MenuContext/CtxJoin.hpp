@@ -44,6 +44,7 @@ protected:
     bool validNetworkSettings(bool isHost);
 
     void addNewGameListItem();
+    void onNewGameNameTextChanged();
     void onGamesListSelectionChanged();
 
 private:

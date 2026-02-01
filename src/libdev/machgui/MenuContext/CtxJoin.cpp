@@ -217,21 +217,26 @@ void MachGuiCtxJoin::addNewGameListItem()
     GuiResourceString enterName(IDS_MENU_ENTERGAMENAME);
     pNewGameName_ = new MachGuiEditBoxListBoxItem(pStartupScreens_, pGamesList_, itemWidth, enterName.asString());
     pNewGameName_->maxChars(MAX_GAMENAME_LEN);
+    pNewGameName_->setInputTextChangedCallback([this]() { onNewGameNameTextChanged(); });
     pGamesList_->childrenUpdated();
+}
+
+void MachGuiCtxJoin::onNewGameNameTextChanged()
+{
+    pStartupScreens_->startupData()->newGameName(pNewGameName_->inputText());
 }
 
 void MachGuiCtxJoin::onGamesListSelectionChanged()
 {
     if (pGamesList_->currentItem() == pNewGameName_)
     {
-        pNewGameName_->setText(pStartupScreens_->startupData()->newGameName());
         editingGameName_ = true;
     }
     else
     {
         if (editingGameName_)
         {
-            pStartupScreens_->startupData()->newGameName(pNewGameName_->text());
+            pStartupScreens_->startupData()->newGameName(pNewGameName_->inputText());
 
             changeFocus();
             editingGameName_ = false;
@@ -300,7 +305,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     {
         bool isHost = true;
 
-        if (pStartupScreens_->startupData()->newGameName() == "" || ! editingGameName_ || pNewGameName_->text().empty())
+        if (pStartupScreens_->startupData()->newGameName().empty())
         {
             // Display message box. Type in game name to create game.
             pStartupScreens_->displayMsgBox(IDS_MENUMSG_ENTERGAMENAME);
