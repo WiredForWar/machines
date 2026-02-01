@@ -1,12 +1,10 @@
-#include <algorithm>
-#include <charconv>
-#include <optional>
-#include <string>
-#include <string_view>
-
 #include "AddressUtils.hpp"
 
-std::string_view getIp(const std::string& addressStr)
+#include <algorithm>
+#include <charconv>
+#include <string>
+
+std::string_view getHost(const std::string_view& addressStr)
 {
     auto portDelimiterIt = std::find(addressStr.cbegin(), addressStr.cend(), ':');
     if (portDelimiterIt == addressStr.cend())
@@ -15,20 +13,20 @@ std::string_view getIp(const std::string& addressStr)
     return std::string_view(addressStr.cbegin(), portDelimiterIt);
 }
 
-std::optional<uint16_t> getPort(const std::string& addressStr)
+std::optional<uint16_t> getPort(const std::string_view& addressStr)
 {
     auto portDelimiterIt = std::find(addressStr.cbegin(), addressStr.cend(), ':');
     if (portDelimiterIt == addressStr.cend())
         return {};
 
-           // Skip the delimiter
+    // Skip the delimiter
     ++portDelimiterIt;
 
     if (portDelimiterIt == addressStr.cend())
         return {};
 
     uint16_t port{};
-    auto result = std::from_chars(portDelimiterIt.base(), addressStr.cend().base(), port);
+    auto result = std::from_chars(portDelimiterIt, addressStr.cend(), port);
     if (result.ec != std::errc{})
         return {};
 
