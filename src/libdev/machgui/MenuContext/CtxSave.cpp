@@ -300,7 +300,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
         // Create new save game...
         if (pNewSaveGameName_->isSelected())
         {
-            if (pNewSaveGameName_->text() != "")
+            if (pNewSaveGameName_->inputText() != "")
             {
                 // Check for unique saved game name
                 bool uniqueSaveGameName = true;
@@ -309,7 +309,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
                 for (uint loop = 0; loop < numSavedGames; ++loop)
                 {
                     MachGuiDbSavedGame& savedGame = MachGuiDatabase::instance().savedGame(loop);
-                    if (strcasecmp(savedGame.userFileName().c_str(), pNewSaveGameName_->text().c_str()) == 0)
+                    if (strcasecmp(savedGame.userFileName().c_str(), pNewSaveGameName_->inputText().c_str()) == 0)
                     {
                         uniqueSaveGameName = false;
                     }
@@ -318,7 +318,7 @@ bool MachGuiCtxSave::okayToSwitchContext()
                 if (uniqueSaveGameName)
                 {
                     // Save the game, the name is unique so we can save it...
-                    bool saveSuccess = saveGame(pNewSaveGameName_->text());
+                    bool saveSuccess = saveGame(pNewSaveGameName_->inputText());
 
                     if (! saveSuccess)
                     {

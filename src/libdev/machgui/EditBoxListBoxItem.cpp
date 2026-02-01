@@ -102,8 +102,8 @@ void MachGuiEditBoxListBoxItem::select()
         = new MachGuiEditBoxItem(this, Gui::Box(1, 1, width() - 1, height() - 1), getUnderlineFont(), myListBox());
     pSingleLineEditBox_->caretColour(Gui::BLACK());
     pSingleLineEditBox_->maxChars(maxChars_);
-    pSingleLineEditBox_->setText(text_);
-    pSingleLineEditBox_->setTextChangedCallback([this](GuiSingleLineEditBox* pLineEdit) { text_ = pLineEdit->text(); });
+    pSingleLineEditBox_->setText(inputText_);
+    pSingleLineEditBox_->setTextChangedCallback([this](GuiSingleLineEditBox* pLineEdit) { setInputText(pLineEdit->text()); });
     GuiManager::instance().charFocus(pSingleLineEditBox_);
 }
 
@@ -121,21 +121,29 @@ GuiSingleLineEditBox* MachGuiEditBoxListBoxItem::singleLineEditBox()
     return pSingleLineEditBox_;
 }
 
-std::string MachGuiEditBoxListBoxItem::text() const
+std::string MachGuiEditBoxListBoxItem::inputText() const
 {
-    return text_;
+    return inputText_;
 }
 
-void MachGuiEditBoxListBoxItem::setText(const std::string& str)
+void MachGuiEditBoxListBoxItem::setInputText(const std::string& str)
 {
-    if (singleLineEditBox())
+    if (str == inputText_)
+        return;
+
+    inputText_ = str;
+
+    if (singleLineEditBox() && singleLineEditBox()->text() != str)
     {
         singleLineEditBox()->setText(str);
-        // Existing line editor 'll set the text_ directly via callback
-        return;
     }
 
-    text_ = str;
+    textChangedCallback_();
+}
+
+void MachGuiEditBoxListBoxItem::setInputTextChangedCallback(Callback callback)
+{
+    textChangedCallback_ = callback;
 }
 
 size_t MachGuiEditBoxListBoxItem::maxChars() const

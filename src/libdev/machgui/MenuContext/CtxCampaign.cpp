@@ -275,12 +275,12 @@ bool MachGuiCtxCampaign::okayToSwitchContext()
         // Create new player...
         if (pNewPlayerName_->isSelected())
         {
-            if (pNewPlayerName_->text() != "")
+            if (pNewPlayerName_->inputText() != "")
             {
                 // Store the name of the last selected player in the registry
-                SysRegistry::instance().setStringValue("Misc", "Current Player Name", pNewPlayerName_->text());
+                SysRegistry::instance().setStringValue("Misc", "Current Player Name", pNewPlayerName_->inputText());
 
-                MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer(pNewPlayerName_->text());
+                MachGuiDbPlayer& newPlayer = MachGuiDatabase::instance().addPlayer(pNewPlayerName_->inputText());
                 MachGuiDatabase::instance().currentPlayer(&newPlayer);
                 MachGuiDatabase::instance().writeDatabase();
 
@@ -346,7 +346,7 @@ void MachGuiCtxCampaign::buttonEvent(MachGui::ButtonEvent be)
             if (pNewPlayerName_->isSelected())
             {
                 // Reset new player name
-                pNewPlayerName_->setText("");
+                pNewPlayerName_->setInputText({});
             }
         }
     }
