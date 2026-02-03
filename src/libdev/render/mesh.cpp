@@ -11,6 +11,7 @@
 #include "utility/factory.hpp"
 #include "utility/indent.hpp"
 #include "mathex/point3d.hpp"
+#include "mathex/tri2d.hpp"
 #include "render/material.hpp"
 #include "render/matvec.hpp"
 #include "render/texture.hpp"
@@ -1466,12 +1467,6 @@ static void spinPolyElements(
         if (zEqConst)
             base = MexPoint3d(-base2.y(), base2.x(), constValue);
     }
-}
-
-// local
-static MATHEX_SCALAR areaOfTriangle(const MexPoint2d& p1, const MexPoint2d& p2, const MexPoint2d& p3)
-{
-    return p1.x() * (p3.y() - p2.y()) + p2.x() * (p1.y() - p3.y()) + p3.x() * (p2.y() - p1.y());
 }
 
 // local
