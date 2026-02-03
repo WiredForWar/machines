@@ -187,7 +187,7 @@ static void resizeVector(ctl_vector<MexPoint3d>& v, size_t newSize)
     POST(v.size() == newSize);
 }
 
-inline void setWorldMatrix(const MexTransform3d& world, glm::mat4& World, const RenScale& scale)
+inline void setSpinpolyWorldMatrix(const MexTransform3d& world, glm::mat4& World, const RenScale& scale)
 {
     MexToGLMatrix(world, World);
     scale.apply(&World);
@@ -276,7 +276,7 @@ void RenSpinTFPolygon::render(
 
     // Set a direct3d version of the matrix incorporating scale.
     glm::mat4 glWorld;
-    setWorldMatrix(xForm, glWorld, scale);
+    setSpinpolyWorldMatrix(xForm, glWorld, scale);
 
     applyUVTransform(anim, mat);
 

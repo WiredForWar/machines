@@ -212,7 +212,7 @@ inline void renderPreconditions()
     PRE(RenIDeviceImpl::currentPimpl()->rendering3D());
 }
 
-inline void setWorldMatrix(const MexTransform3d& world, glm::mat4& World, const RenScale& scale)
+inline void setMeshWorldMatrix(const MexTransform3d& world, glm::mat4& World, const RenScale& scale)
 {
     MexToGLMatrix(world, World);
     scale.apply(&World);
@@ -390,7 +390,7 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
     PRE(implies(nTriangles() > 0, vertices_));
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
     glm::mat4 glWorld;
-    setWorldMatrix(world, glWorld, scale);
+    setMeshWorldMatrix(world, glWorld, scale);
 
     if (vertices_)
         devImpl->illuminator()->lightVertices(*vertices_);
@@ -445,7 +445,7 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
     glm::mat4 glWorld;
-    setWorldMatrix(world, glWorld, scale);
+    setMeshWorldMatrix(world, glWorld, scale);
 
     if (vertices_)
         devImpl->illuminator()->lightVertices(*vertices_);
@@ -501,7 +501,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
     glm::mat4 glWorld;
-    setWorldMatrix(world, glWorld, scale);
+    setMeshWorldMatrix(world, glWorld, scale);
 
     if (pVertexTexture_ == nullptr)
     {
@@ -568,7 +568,7 @@ void RenMesh::render(
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
     glm::mat4 glWorld;
-    setWorldMatrix(world, glWorld, scale);
+    setMeshWorldMatrix(world, glWorld, scale);
 
     if (pVertexTexture_ == nullptr)
     {
