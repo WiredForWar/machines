@@ -62,6 +62,14 @@ private:
     MexHalfPlane2d edge1_, edge2_, edge3_;
 };
 
+inline constexpr MATHEX_SCALAR areaOfTriangle(
+    const MexPoint2d& p1,
+    const MexPoint2d& p2,
+    const MexPoint2d& p3)
+{
+    return p1.x() * (p3.y() - p2.y()) + p2.x() * (p1.y() - p3.y()) + p3.x() * (p2.y() - p1.y());
+}
+
 PER_DECLARE_PERSISTENT(MexTriangle2d);
 
 //////////////////////////////////////////////////////////////////////

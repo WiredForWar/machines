@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include "mathex/vec2.hpp"
+#include "mathex/tri2d.hpp"
 #include "ctl/algorith.hpp"
 #include "render/spinpoly.hpp"
 #include "render/render.hpp"
@@ -365,12 +366,6 @@ void RenSpinTFPolygon::spinPlan(
     ASSERT(yBasis.isPerpendicularTo(xBasis), "yBasis is not orthogonal to xAxis");
 
     TEST_INVARIANT;
-}
-
-static MATHEX_SCALAR areaOfTriangle(const MexPoint2d& p1, const MexPoint2d& p2, const MexPoint2d& p3)
-{
-    //*1000 to prevent rounding the result to zero too easity
-    return p1.x() * (p3.y() - p2.y()) + p2.x() * (p1.y() - p3.y()) + p3.x() * (p2.y() - p1.y());
 }
 
 void RenSpinTFPolygon::makeOrderCorrect(const Vertices& points, Vertices* pOrderedPoints)
