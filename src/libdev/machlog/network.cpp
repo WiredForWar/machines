@@ -283,7 +283,7 @@ void MachLogNetwork::initialiseConnection()
     NetNetwork::instance().initialiseConnection();
 }
 
-bool MachLogNetwork::hostWithSessionId(const std::string& gameName, const std::string& playerName)
+bool MachLogNetwork::hostSession(const std::string& gameName, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();
 

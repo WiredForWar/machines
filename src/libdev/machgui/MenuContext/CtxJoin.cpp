@@ -318,7 +318,7 @@ bool MachGuiCtxJoin::okayToSwitchContext()
         else
         {
             // Now pass through player name as input in gui to network library
-            MachLogNetwork::instance().hostWithSessionId(
+            MachLogNetwork::instance().hostSession(
                 pStartupScreens_->startupData()->newGameName(),
                 pStartupScreens_->startupData()->playerName());
 
