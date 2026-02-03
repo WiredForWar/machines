@@ -1,4 +1,3 @@
-
 set(ENVIRNMT_SOURCES
     elevclut.cpp
     elevclut.hpp
@@ -29,6 +28,14 @@ set(ENVIRNMT_SOURCES
 
 add_library(envirnmt STATIC ${ENVIRNMT_SOURCES})
 add_library(LibDev::environment ALIAS envirnmt)
+
+set_source_files_properties(
+    lexer.cpp
+    parser.cpp
+    PROPERTIES
+        SKIP_UNITY_BUILD_INCLUSION
+            ON
+)
 
 target_link_libraries(envirnmt PUBLIC
     LibDev::render
