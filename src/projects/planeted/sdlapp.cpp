@@ -4,7 +4,7 @@
 #include "base/diag.hpp"
 #include "base/IProgressReporter.hpp"
 #include "base/error.hpp"
-#include "machgui/gui.hpp"
+#include "gui/gui.hpp"
 #include "sound/snd.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"
@@ -312,11 +312,11 @@ bool SDLApp::clientStartup()
         const RenDisplay::Mode& mode = pDisplay_->currentMode();
         if (mode.width() > 1024 && mode.height() > 768)
         {
-            MachGui::setUiScaleFactor(2);
+            Gui::setUiScaleFactor(2);
         }
         else
         {
-            MachGui::setUiScaleFactor(1);
+            Gui::setUiScaleFactor(1);
         }
     }
 
