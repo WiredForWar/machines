@@ -1,5 +1,7 @@
 #include "utility/string.hpp"
 
+#include <cctype>
+
 namespace Utils
 {
 
@@ -54,6 +56,15 @@ void replaceAll(std::string* str, std::string_view before, std::string_view afte
         // Get the next occurrence from the end of the replaced section
         pos = str->find(before, pos + after.size());
     }
+}
+
+void toLowerInPlace(std::string* str)
+{
+    if (str == nullptr || str->empty())
+        return;
+
+    for (char& ch : *str)
+        ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
 }
 
 namespace

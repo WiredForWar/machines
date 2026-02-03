@@ -22,23 +22,12 @@
 #include "mathex/coordsys.hpp"
 
 #include "device/time.hpp"
+#include "utility/string.hpp"
 
 // Debugging statements in this file.
 // #define DEBUGFACT(x)  RENDER_STREAM(x)
 #define DEBUGFACT(x) ;
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-// I can't believe I had to write this!
-static void lowerString(std::string* pString)
-{
-    if (!pString || pString->length() == 0)
-        return;
-
-    char ch;
-    for (size_t i = 0; (ch = (*pString)[i]) != '\0'; ++i)
-        (*pString)[i] = (char)tolower(ch);
-}
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // static
@@ -242,7 +231,7 @@ RenID3DMeshLoader::searchForMesh(const SysPathName& pathName, const std::string&
 {
     // Convert the meshname to lower case
     std::string lcMeshName(meshName);
-    lowerString(&lcMeshName);
+    Utils::toLowerInPlace(&lcMeshName);
 
     MeshMap::const_iterator meshIt = meshes->find(lcMeshName);
     if (meshIt != meshes->end())
@@ -426,7 +415,7 @@ void RenID3DMeshLoader::addMesh(XFile::Mesh* mesh)
     {
         // Convert the meshname to lower case
         std::string lcMeshName(name);
-        lowerString(&lcMeshName);
+        Utils::toLowerInPlace(&lcMeshName);
 
         // At present, all meshes must have valid names.  This obviates .x files
         // created with the -m option of conv3ds.  It is conceivable that the maps

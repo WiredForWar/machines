@@ -10,19 +10,10 @@
 #include "render/texture.hpp"
 #include "render/internal/texbody.hpp"
 #include "render/internal/surfbody.hpp"
+#include "utility/string.hpp"
 
 // static
 const Ren::TexId RenISurfaceManagerImpl::firstValidId_ = Ren::NullTexId + 1;
-
-static void lowerString(std::string* pString)
-{
-    if (!pString || pString->length() == 0)
-        return;
-
-    char ch;
-    for (size_t i = 0; (ch = (*pString)[i]) != '\0'; ++i)
-        (*pString)[i] = (char)tolower(ch);
-}
 
 RenISurfaceManagerImpl::RenISurfaceManagerImpl()
     : handleDevice_(nullptr)
@@ -245,7 +236,7 @@ Ren::TexId RenISurfaceManagerImpl::findSharedSurface(const std::string& name) co
     TEST_INVARIANT;
 
     std::string searchName = name;
-    lowerString(&searchName);
+    Utils::toLowerInPlace(&searchName);
 
     RENDER_STREAM("Looking for existing texture " << searchName << std::endl);
 
@@ -389,7 +380,7 @@ Ren::TexId RenISurfaceManagerImpl::addEntry(RenISurfBody* newSurf)
 
     entries_[newId] = newSurf;
     std::string searchName = newSurf->sharedName();
-    lowerString(&searchName);
+    Utils::toLowerInPlace(&searchName);
 
     ASSERT_INFO(newSurf->sharedName());
     ASSERT_DATA(NameMap::iterator it = nameMap_.find(searchName));
@@ -407,7 +398,7 @@ void RenISurfaceManagerImpl::deleteEntry(Ren::TexId id)
     TEST_INVARIANT;
 
     std::string searchName = entries_[id]->sharedName();
-    lowerString(&searchName);
+    Utils::toLowerInPlace(&searchName);
 
     if (searchName.length() > 0)
     {

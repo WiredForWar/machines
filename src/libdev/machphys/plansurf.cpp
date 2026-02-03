@@ -51,6 +51,7 @@
 #include "machphys/internal/plansuri.hpp"
 
 #include "profiler/stktrace.hpp"
+#include "utility/string.hpp"
 
 #ifndef _INLINE
 #include "machphys/plansurf.ipp"
@@ -59,15 +60,6 @@
 PER_DEFINE_PERSISTENT(MachPhysPlanetSurface);
 
 // I can't believe Iain had to write this ! (see meshload.cpp)
-static void lowerString(std::string* pString)
-{
-    if (!pString || pString->length() == 0)
-        return;
-
-    char ch;
-    for (size_t i = 0; (ch = (*pString)[i]) != '\0'; ++i)
-        (*pString)[i] = (char)tolower(ch);
-}
 
 MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, const SysPathName& pathname)
     : pSceneManager_(pSceneManager)
@@ -107,7 +99,7 @@ MachPhysPlanetSurface::MachPhysPlanetSurface(W4dSceneManager* pSceneManager, con
              ++itComponents)
         {
             std::string componentAsLowerCase = (*itComponents);
-            lowerString(&componentAsLowerCase);
+            Utils::toLowerInPlace(&componentAsLowerCase);
             if (componentAsLowerCase == "texture4")
                 directory4MbNotFound = false;
             if (componentAsLowerCase == "texture2")
