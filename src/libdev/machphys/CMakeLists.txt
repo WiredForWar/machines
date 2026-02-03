@@ -492,6 +492,43 @@ set(MACHPHYS_SOURCES
 add_library(machphys STATIC ${MACHPHYS_SOURCES})
 add_library(LibDev::machphys ALIAS machphys)
 
+set_source_files_properties(
+    beam.cpp
+    beewave.cpp
+    crakfire.cpp
+    debrisun.cpp
+    machexp.cpp
+    mushshaf.cpp
+    mushtop.cpp
+    nuclbomb.cpp
+    nukewave.cpp
+    objexplo.cpp
+    plasplat.cpp
+    pulsplat.cpp
+    stlsplat.cpp
+    ti_files/ti_admin.cpp
+    ti_files/ti_aggr.cpp
+    ti_files/ti_apc.cpp
+    ti_files/ti_bk.cpp
+    ti_files/ti_const.cpp
+    ti_files/ti_fa.cpp
+    ti_files/ti_ga.cpp
+    ti_files/ti_gloc.cpp
+    ti_files/ti_hw.cpp
+    ti_files/ti_mis.cpp
+    ti_files/ti_missi.cpp
+    ti_files/ti_mn.cpp
+    ti_files/ti_pod.cpp
+    ti_files/ti_rcarr.cpp
+    ti_files/ti_sloc.cpp
+    ti_files/ti_sm.cpp
+    ti_files/ti_tech.cpp
+    vortbomb.cpp
+    PROPERTIES
+        SKIP_UNITY_BUILD_INCLUSION
+            ON
+)
+
 target_link_libraries(machphys PUBLIC
     LibDev::ctl
     LibDev::environment
