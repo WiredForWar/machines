@@ -37,56 +37,6 @@
 
 /* //////////////////////////////////////////////////////////////// */
 
-const double FPS = 15.0;
-const double FRAME_TIME = 1.0 / FPS;
-
-/* //////////////////////////////////////////////////////////////// */
-
-static bool withinEpsilonOf(MATHEX_SCALAR a, MATHEX_SCALAR b)
-{
-    return Mathex::abs(a - b) <= MexEpsilon::instance();
-}
-
-/* //////////////////////////////////////////////////////////////// */
-
-static MATHEX_SCALAR transformToOrientationInRadians(const MexTransform3d& xform)
-{
-    // Compute the heading from the xbasis vector.
-    MexVec3 xBasis;
-    xform.xBasis(&xBasis);
-    xBasis[2] = 0;
-
-    MATHEX_SCALAR eps = MexEpsilon::instance();
-    bool pointingDown = Mathex::abs(xBasis[0]) < eps && Mathex::abs(xBasis[1]) < eps;
-
-    ASSERT(! pointingDown, logic_error());
-
-    MexEulerAngles e;
-    xform.rotation(&e);
-
-    // By convention, north is along the -ve y-axis.
-    MATHEX_SCALAR result = MexRadians(e.azimuth() + MexRadians(Mathex::PI_DIV_2)).asScalar();
-
-    if (result < 0)
-    {
-        if (withinEpsilonOf(result, 0))
-            result = 0;
-        else
-            result += 2 * Mathex::PI;
-    }
-    else if (result > 2 * Mathex::PI)
-    {
-        if (withinEpsilonOf(result, 2 * Mathex::PI))
-            result = 2 * Mathex::PI;
-        else
-            result -= 2 * Mathex::PI;
-    }
-
-    POST(result >= 0 && result <= (2 * Mathex::PI));
-    return result;
-}
-
-/* //////////////////////////////////////////////////////////////// */
 PER_DEFINE_PERSISTENT_ABSTRACT(MachLogMobile);
 
 MachLogMobile::MachLogMobile(
