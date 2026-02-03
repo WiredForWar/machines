@@ -35,16 +35,6 @@ std::ostream& operator<<(std::ostream& o, const RenIPrioritySortedItem& i)
     return o;
 }
 
-class CompItems
-{
-public:
-    bool operator()(const RenIPrioritySortedItem* i1, const RenIPrioritySortedItem* i2)
-    {
-        PRE(i1 && i2);
-        return *i1 < *i2;
-    }
-};
-
 RenIPriorityPostSorter::RenIPriorityPostSorter()
 {
     items_.reserve(200);
@@ -66,7 +56,9 @@ void RenIPriorityPostSorter::render()
 {
     // The list of polygons must be sorted by depth.  Timing shows that
     // sorting is insignificant when compared with the rendering.
-    sort(items_.begin(), items_.end(), CompItems());
+    sort(items_.begin(), items_.end(), [](const RenIPrioritySortedItem* i1, const RenIPrioritySortedItem* i2) {
+        return *i1 < *i2;
+    });
 
     RENDER_STREAM("Priority post sorter contains " << items_.size() << " items." << std::endl);
     RENDER_INDENT(2);

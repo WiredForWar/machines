@@ -55,16 +55,6 @@ std::ostream& operator<<(std::ostream& o, const RenIDepthSortedItem& i)
     return o;
 }
 
-class CompItems
-{
-public:
-    bool operator()(const RenIDepthSortedItem* i1, const RenIDepthSortedItem* i2)
-    {
-        PRE(i1 && i2);
-        return *i1 < *i2;
-    }
-};
-
 RenIDepthPostSorter::RenIDepthPostSorter()
 {
     items_.reserve(200);
@@ -138,43 +128,6 @@ std::ostream& operator<<(std::ostream& o, const ctl_vector<RenIDepthSortedItem*>
     return o;
 }
 
-/*void RenIDepthPostSorter::render(IDirect3DDevice2* d3dDev)
-{
-    #ifndef NDEBUG
-    POST_SORTER_STREAM("Before sort " << items_ << "\n");
-    checkTransitivity(items_);
-    #endif
-
-    // The list of polygons must be sorted by depth.  Timing shows that
-    // sorting is insignificant when compared with the rendering.
-    sort(items_.begin(), items_.end(), CompItems());
-
-    #ifndef NDEBUG
-    POST_SORTER_STREAM("After sort " << items_ << "\n");
-    checkTransitivity(items_);
-    #endif
-
-    ItemVector::iterator it = items_.begin();
-    while (it != items_.end())
-    {
-        RenIDepthSortedItem* item = *it;
-
-        if (item)
-        {
-            item->render(d3dDev);
-
-            // As soon as the item is drawn, we can delete it.
-            delete item;
-            (*it) = NULL;
-        }
-
-        ++it;
-    }
-
-    // Empty the buffer for the next render pass.
-    items_.erase(items_.begin(), items_.end());
-}*/
-
 void RenIDepthPostSorter::render()
 {
 #ifndef NDEBUG
@@ -184,7 +137,9 @@ void RenIDepthPostSorter::render()
 
     // The list of polygons must be sorted by depth.  Timing shows that
     // sorting is insignificant when compared with the rendering.
-    sort(items_.begin(), items_.end(), CompItems());
+    sort(items_.begin(), items_.end(), [](const RenIDepthSortedItem* i1, const RenIDepthSortedItem* i2) {
+        return *i1 < *i2;
+    });
 
 #ifndef NDEBUG
     POST_SORTER_STREAM("After sort " << items_ << "\n");
