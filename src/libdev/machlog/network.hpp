@@ -68,7 +68,7 @@ public:
     bool setDesiredProtocol(NetNetwork::NetworkProtocol);
     void initialiseConnection();
 
-    bool hostWithSessionId(const std::string& gameName, const std::string& playerName);
+    bool hostSession(const std::string& gameName, const std::string& playerName);
     bool joinSession(const std::string& address, const std::string& playerName);
     void resetSession();
     bool launchFromLobbyInfo();
