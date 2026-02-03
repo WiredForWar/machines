@@ -97,7 +97,10 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
             for (const KeyBind& bind : pTranslation->binds())
             {
                 if (keyWithMods & bind.releasedModifiers)
+                {
+                    commandList[pTranslation->commandId()].reset_ = true;
                     continue;
+                }
 
                 if (bind.keyCode() == buttonEvent.scanCode())
                 {
