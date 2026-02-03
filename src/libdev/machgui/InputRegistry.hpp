@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IInputRegistry.hpp"
 
 #include "machgui/InputLayout.hpp"

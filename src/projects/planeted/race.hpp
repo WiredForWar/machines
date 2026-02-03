@@ -3,6 +3,8 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
+#pragma once
+
 /*
     PedRace
 

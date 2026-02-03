@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Variable.hpp"
 
 #include "system/registry.hpp"

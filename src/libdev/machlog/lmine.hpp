@@ -9,8 +9,7 @@
     Represents a proximity based land mine
 */
 
-#ifndef _MACHLOG_OREHOLO_HPP
-#define _MACHLOG_OREHOLO_HPP
+#pragma once
 
 #include "base/base.hpp"
 
@@ -83,7 +82,5 @@ private:
 };
 
 PER_DECLARE_PERSISTENT(MachLogLandMine);
-
-#endif
 
 /* End OREHOLO.HPP **************************************************/

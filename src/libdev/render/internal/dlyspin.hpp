@@ -3,8 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#ifndef _RENDER_TLPOLY_HPP
-#define _RENDER_TLPOLY_HPP
+#pragma once
 
 #include "base/base.hpp"
 #include "render/material.hpp"
@@ -27,7 +26,5 @@ private:
     const glm::mat4 xform_;
     const size_t nVertices_;
 };
-
-#endif
 
 /* End DLYSPIN.HPP ***************************************************/
