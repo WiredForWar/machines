@@ -356,5 +356,6 @@ add_library(LibDev::machgui ALIAS machgui)
 target_link_libraries(machgui PUBLIC
     LibDev::ani
     LibDev::gui
+    LibDev::machlog
     LibDev::network
 )

@@ -494,6 +494,7 @@ add_library(LibDev::machphys ALIAS machphys)
 
 target_link_libraries(machphys PUBLIC
     LibDev::ctl
+    LibDev::environment
     LibDev::render
     LibDev::sim
 )
