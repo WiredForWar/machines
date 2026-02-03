@@ -1,3 +1,5 @@
+#pragma once
+
 #include "base/IProgressReporter.hpp"
 
 #include "gui/gui.hpp"

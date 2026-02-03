@@ -50,8 +50,6 @@
 #include "machlog/squad.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/lmine.hpp"
-// TODO fix dependency issiue lmine & oreholo
-#undef _MACHLOG_OREHOLO_HPP
 #include "machlog/oreholo.hpp"
 
 #include "machlog/canattac.hpp"

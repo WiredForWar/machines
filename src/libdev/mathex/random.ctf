@@ -3,6 +3,8 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
+#pragma once
+
 //  Definitions of non-inline template global functions
 
 template <class RANDOM> MATHEX_SCALAR mexRandomScalar(RANDOM* pR, MATHEX_SCALAR lowerLimit, MATHEX_SCALAR upperLimit)
