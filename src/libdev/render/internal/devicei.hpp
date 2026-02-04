@@ -189,7 +189,7 @@ private:
     Ren::BufferId glElementBufferBillboardID_{};
 
     GLuint glTextureEmptyID_{};
-    GLuint glOffscreenFrameBuffID_{};
+    Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     SDL_GLContext SDLGlContext_{};
 
@@ -202,6 +202,11 @@ private:
     GLuint glBufferHandle(Ren::BufferId id) const;
     void releaseGLBuffer(Ren::BufferId id);
     std::vector<GLuint> glBuffers_{};
+
+    Ren::FramebufferId addGLFramebuffer(GLuint framebuffer);
+    GLuint glFramebufferHandle(Ren::FramebufferId id) const;
+    void releaseGLFramebuffer(Ren::FramebufferId id);
+    std::vector<GLuint> glFramebuffers_{};
 
     DevTimer frameTimer_;
 

@@ -40,6 +40,7 @@ namespace Ren
     using TexId = uint;
     using ProgramId = uint;
     using BufferId = uint;
+    using FramebufferId = uint;
     // TODO init
     // static const uint NullTexId;
 

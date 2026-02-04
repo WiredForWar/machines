@@ -34,6 +34,7 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , debugY_(0)
     , glPrograms_{0,}
     , glBuffers_{0,}
+    , glFramebuffers_{0,}
     , frameTimer_()
     , videoMemoryShared_(false)
     , videoMemorySharedInitialized_(false)
@@ -124,6 +125,44 @@ void RenIDeviceImpl::releaseGLBuffer(Ren::BufferId id)
     {
         glDeleteBuffers(1, &buffer);
         glBuffers_[idx] = 0;
+    }
+}
+
+Ren::FramebufferId RenIDeviceImpl::addGLFramebuffer(GLuint framebuffer)
+{
+    if (framebuffer == 0)
+        return 0;
+
+    glFramebuffers_.push_back(framebuffer);
+    return static_cast<Ren::FramebufferId>(glFramebuffers_.size() - 1);
+}
+
+GLuint RenIDeviceImpl::glFramebufferHandle(Ren::FramebufferId id) const
+{
+    if (id == 0)
+        return 0;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= glFramebuffers_.size())
+        return 0;
+
+    return glFramebuffers_[idx];
+}
+
+void RenIDeviceImpl::releaseGLFramebuffer(Ren::FramebufferId id)
+{
+    if (id == 0)
+        return;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= glFramebuffers_.size())
+        return;
+
+    const GLuint framebuffer = glFramebuffers_[idx];
+    if (framebuffer != 0)
+    {
+        glDeleteFramebuffers(1, &framebuffer);
+        glFramebuffers_[idx] = 0;
     }
 }
 

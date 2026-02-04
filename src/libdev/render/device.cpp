@@ -244,7 +244,9 @@ bool RenDevice::initialize()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
 
     // Prepare framebuffer for offscreen rendering
-    glGenFramebuffers(1, &glOffscreenFrameBuffID_);
+    GLuint glOffscreenFrameBuff = 0;
+    glGenFramebuffers(1, &glOffscreenFrameBuff);
+    glOffscreenFrameBuffID_ = pImpl_->addGLFramebuffer(glOffscreenFrameBuff);
 
     pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
 
@@ -358,10 +360,7 @@ RenDevice::~RenDevice()
     pImpl_->releaseGLBuffer(glElementBufferID_);
     pImpl_->releaseGLBuffer(glVertexDataBufferBillboardID_);
     pImpl_->releaseGLBuffer(glElementBufferBillboardID_);
-    if (glOffscreenFrameBuffID_)
-    {
-        glDeleteFramebuffers(1, &glOffscreenFrameBuffID_);
-    }
+    pImpl_->releaseGLFramebuffer(glOffscreenFrameBuffID_);
 
     SDL_GL_MakeCurrent(nullptr, nullptr);
 
@@ -2111,7 +2110,7 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     if (targetTexture != Ren::NullTexId)
     {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &lastFrameBuff);
-        glBindFramebuffer(GL_FRAMEBUFFER, glOffscreenFrameBuffID_);
+        glBindFramebuffer(GL_FRAMEBUFFER, pImpl_->glFramebufferHandle(glOffscreenFrameBuffID_));
         RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(targetTexture);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, surfBody ? surfBody->handle() : 0, 0);
         glViewport(0, 0, viewPortW, viewPortH);
