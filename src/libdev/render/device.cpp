@@ -2010,12 +2010,12 @@ bool RenDevice::setVSync(bool enabled)
 
 void RenDevice::antiAliasingOn(bool o)
 {
-    pImpl_->antiAliasingOn_ = true;
+    pImpl_->antiAliasingOn_ = o;
 }
 
 bool RenDevice::antiAliasingOn() const
 {
-    return true;
+    return pImpl_->antiAliasingOn_;
 }
 
 void RenDevice::setSmoothScaleEnabled(bool enabled)
