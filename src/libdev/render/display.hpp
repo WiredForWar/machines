@@ -7,7 +7,6 @@
 #define _REN_DISPLAY_HPP
 
 #include "base/base.hpp"
-#include <SDL.h>
 #include "render/render.hpp"
 
 #include <vector>
@@ -17,6 +16,7 @@ class SysPathName;
 class RenSurface;
 class RenCursor2d;
 class RenIDisplay;
+struct SDL_Window;
 
 // When a Direct3D app goes into full-screen exculsive mode, this class
 // is used to set the mode.  Probably should be merged with DevDisplay?
@@ -43,7 +43,7 @@ public:
             height_ = m.height_;
             depth_ = m.depth_;
             rate_ = m.rate_;
-            mode_ = m.mode_;
+            format_ = m.format_;
             return *this;
         }
         bool operator==(const Mode& m) const
@@ -60,7 +60,6 @@ public:
         int refreshRate() const { return rate_; }
         int pixels() const { return width_ * height_; }
         int memoryRequired() const { return (pixels() * depth_) / 8; }
-        const SDL_DisplayMode& mode() const { return mode_; }
 
     private:
         // Only RenDisplay can create modes.  Thus, clients are prevented from
@@ -72,21 +71,23 @@ public:
             , height_(h)
             , depth_(32)
             , rate_(r)
+            , format_(0)
         {
         }
-        Mode(const SDL_DisplayMode& m)
-            : width_(m.w)
-            , height_(m.h)
-            , depth_(SDL_BITSPERPIXEL(m.format))
-            , rate_(m.refresh_rate)
-            , mode_(m)
+
+        Mode(int w, int h, int d, int r, uint32_t format)
+            : width_(w)
+            , height_(h)
+            , depth_(d)
+            , rate_(r)
+            , format_(format)
         {
         }
         int width_{};
         int height_{};
         int depth_{};
         int rate_{};
-        SDL_DisplayMode mode_{};
+        uint32_t format_{};
     };
 
     // Clients cannot create modes, they must use modeList to get

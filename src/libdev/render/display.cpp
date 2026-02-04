@@ -105,7 +105,7 @@ void RenDisplay::buildDisplayModesList()
                 // Add modes with matching refresh rate only
                 // if(desktopMode.w && (desktopMode.refresh_rate == mode.refresh_rate) )
                 {
-                    RenDisplay::Mode m(mode);
+                    RenDisplay::Mode m(mode.w, mode.h, SDL_BITSPERPIXEL(mode.format), mode.refresh_rate, mode.format);
                     modeList_.push_back(m);
                 }
             }
@@ -126,7 +126,12 @@ const RenDisplay::Mode RenDisplay::getDesktopDisplayMode() const
         // Got no current desktop mode
         return Mode();
     }
-    return Mode(desktopMode);
+    return Mode(
+        desktopMode.w,
+        desktopMode.h,
+        SDL_BITSPERPIXEL(desktopMode.format),
+        desktopMode.refresh_rate,
+        desktopMode.format);
 }
 
 const RenDisplay::Mode RenDisplay::getFailSafeDisplayMode() const
@@ -203,7 +208,8 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     bool success = true;
     if (fullscreen_)
     {
-        success = (0 == SDL_SetWindowDisplayMode(window(), &m.mode()));
+        SDL_DisplayMode sdlMode = { m.format_, m.width(), m.height(), m.refreshRate(), nullptr };
+        success = (0 == SDL_SetWindowDisplayMode(window(), &sdlMode));
         // SDL_SetWindowBordered(window(), SDL_FALSE);
         SDL_SetWindowSize(window(), m.width(), m.height());
         SDL_SetWindowPosition(window(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
