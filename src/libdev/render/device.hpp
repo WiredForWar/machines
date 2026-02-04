@@ -300,11 +300,8 @@ public:
         const size_t nVertices,
         const RenMaterial& mat,
         Ren::PrimitiveTopology topology,
-        const int targetW,
-        const int targetH)
-    {
-        renderScreenspace(vertices, nVertices, topology, targetW, targetH, mat.texture().handle());
-    };
+        const int targetW = 0,
+        const int targetH = 0);
     void renderSurface(
         const RenISurfBody* surf,
         const Ren::Rect& srcArea,

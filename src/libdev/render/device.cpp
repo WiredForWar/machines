@@ -109,6 +109,17 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->smoothFilterMag_ = GL_LINEAR;
 }
 
+void RenDevice::renderScreenspace(
+    const RenIVertex* vertices,
+    const size_t nVertices,
+    const RenMaterial& mat,
+    Ren::PrimitiveTopology topology,
+    const int targetW,
+    const int targetH)
+{
+    renderScreenspace(vertices, nVertices, topology, targetW, targetH, mat.texture().handle());
+}
+
 bool RenDevice::initialize()
 {
     PRE(Ren::initialised());
