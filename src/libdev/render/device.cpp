@@ -362,6 +362,12 @@ RenDevice::~RenDevice()
     pImpl_->releaseGLBuffer(glElementBufferBillboardID_);
     pImpl_->releaseGLFramebuffer(glOffscreenFrameBuffID_);
 
+    if (glTextureEmptyID_)
+    {
+        glDeleteTextures(1, &glTextureEmptyID_);
+        glTextureEmptyID_ = 0;
+    }
+
     SDL_GL_MakeCurrent(nullptr, nullptr);
 
     SDL_GL_DeleteContext(SDLGlContext_);
