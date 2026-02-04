@@ -15,6 +15,10 @@
 #include "render/internal/internal.hpp"
 #include "render/colour.hpp"
 #include "device/timer.hpp"
+
+#include <SDL.h>
+#include <GL/glew.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 class RenDevice;
@@ -148,6 +152,44 @@ private:
     bool smoothFilterApplied_ = false;
     int smoothFilterMin_ = 0;
     int smoothFilterMag_ = 0;
+
+    GLuint glProgramID_GIU2D_{};
+    GLuint glProgramID_Standard_{};
+    GLuint glProgramID_Billboard_{};
+
+    GLuint gl2DVertexBufferID_{};
+    GLuint glVertexUVID_{};
+    GLuint glVertexPosition_screenspaceID_{};
+    GLuint glVertexColour_screenspaceID_{};
+    GLuint glScreenspaceID_{};
+
+    GLuint gl2DUniformID_{};
+    GLuint glTextureSamplerID_{};
+    GLuint glTextureSamplerBillboardID_{};
+
+    GLuint glModelMatrixID_{};
+    GLuint glViewMatrixID_{};
+    GLuint glProjectionMatrixID_{};
+    GLuint glFogColourID_{};
+    GLuint glFogParamsID_{};
+
+    GLuint glVertexPosition_modelspaceID_{};
+    GLuint glVertex_modelspaceUVID_{};
+    GLuint glVertexColour_modelspaceID_{};
+    GLuint glVertexDataBufferID_{};
+    GLuint glElementBufferID_{};
+
+    GLuint glViewProjMatrix_BillboardID_{};
+    GLuint glVertexPosition_BillboardID_{};
+    GLuint glVertex_BillboardUVID_{};
+    GLuint glVertexColour_BillboardID_{};
+    GLuint glVertexDataBufferBillboardID_{};
+    GLuint glElementBufferBillboardID_{};
+
+    GLuint glTextureEmptyID_{};
+    GLuint glOffscreenFrameBuffID_{};
+
+    SDL_GLContext SDLGlContext_{};
 
     DevTimer frameTimer_;
 

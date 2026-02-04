@@ -37,6 +37,8 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "sim/manager.hpp"
 
+#include <GL/glew.h>
+
 using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 const size_t NUM_FRAMES = 12;

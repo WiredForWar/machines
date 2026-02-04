@@ -71,6 +71,39 @@
 #include <SDL.h>
 #include <GL/glew.h>
 
+#define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
+    PRE(pImpl_);                                                                                                       \
+    CB_DEPIMPL_AUTO(glProgramID_GIU2D_);                                                                               \
+    CB_DEPIMPL_AUTO(glProgramID_Standard_);                                                                            \
+    CB_DEPIMPL_AUTO(glProgramID_Billboard_);                                                                           \
+    CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
+    CB_DEPIMPL_AUTO(glVertexUVID_);                                                                                    \
+    CB_DEPIMPL_AUTO(glVertexPosition_screenspaceID_);                                                                  \
+    CB_DEPIMPL_AUTO(glVertexColour_screenspaceID_);                                                                    \
+    CB_DEPIMPL_AUTO(glScreenspaceID_);                                                                                 \
+    CB_DEPIMPL_AUTO(gl2DUniformID_);                                                                                   \
+    CB_DEPIMPL_AUTO(glTextureSamplerID_);                                                                              \
+    CB_DEPIMPL_AUTO(glTextureSamplerBillboardID_);                                                                     \
+    CB_DEPIMPL_AUTO(glModelMatrixID_);                                                                                 \
+    CB_DEPIMPL_AUTO(glViewMatrixID_);                                                                                  \
+    CB_DEPIMPL_AUTO(glProjectionMatrixID_);                                                                            \
+    CB_DEPIMPL_AUTO(glFogColourID_);                                                                                   \
+    CB_DEPIMPL_AUTO(glFogParamsID_);                                                                                   \
+    CB_DEPIMPL_AUTO(glVertexPosition_modelspaceID_);                                                                   \
+    CB_DEPIMPL_AUTO(glVertex_modelspaceUVID_);                                                                         \
+    CB_DEPIMPL_AUTO(glVertexColour_modelspaceID_);                                                                     \
+    CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
+    CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
+    CB_DEPIMPL_AUTO(glViewProjMatrix_BillboardID_);                                                                    \
+    CB_DEPIMPL_AUTO(glVertexPosition_BillboardID_);                                                                    \
+    CB_DEPIMPL_AUTO(glVertex_BillboardUVID_);                                                                          \
+    CB_DEPIMPL_AUTO(glVertexColour_BillboardID_);                                                                      \
+    CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
+    CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
+    CB_DEPIMPL_AUTO(glTextureEmptyID_);                                                                                \
+    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);                                                                           \
+    CB_DEPIMPL_AUTO(SDLGlContext_);
+
 RenDevice::RenDevice(RenDisplay* display)
     : pImpl_(new RenIDeviceImpl(display, this))
     , standardUniformsDirty_(true)
@@ -124,6 +157,8 @@ bool RenDevice::initialize()
 {
     PRE(Ren::initialised());
     PRE(MexCoordSystem::instance().isSet());
+
+    CB_RENDEVICE_DEPIMPL_GL();
 
     // There are two alpha sorters.  Only one is in use at a time.  The switch
     // is made by changing this pointer.
@@ -292,9 +327,7 @@ RenDevice::~RenDevice()
     {
         delete pImpl_->surfFrontBuf_;
     }
-    delete pImpl_;
-
-    pImpl_ = nullptr;
+    CB_RENDEVICE_DEPIMPL_GL();
 
     // Delete shaders
 
@@ -328,6 +361,10 @@ RenDevice::~RenDevice()
     SDL_GL_MakeCurrent(nullptr, nullptr);
 
     SDL_GL_DeleteContext(SDLGlContext_);
+
+    delete pImpl_;
+
+    pImpl_ = nullptr;
 }
 
 void RenDevice::reset()
@@ -520,6 +557,8 @@ void RenDevice::initializeDisplay()
 
 bool RenDevice::initializeContext()
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     constexpr int contextMajorVersion = 2;
     constexpr int contextMinorVersion = 1;
     constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
@@ -946,6 +985,8 @@ void RenDevice::commonEndFrame()
 
 void RenDevice::bindTexture(const RenISurfBody *surf)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     glActiveTexture(GL_TEXTURE0);
     if (surf->isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
@@ -955,6 +996,8 @@ void RenDevice::bindTexture(const RenISurfBody *surf)
 
 void RenDevice::bindTexture(const RenSurface& surf, uint textureUnit)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     if (surf.isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
@@ -1979,6 +2022,8 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
 
 void RenDevice::setVSyncPreference(bool enabled)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     vsyncEnabled_ = enabled;
 
     if (SDLGlContext_)
@@ -1992,6 +2037,8 @@ void RenDevice::setVSyncPreference(bool enabled)
 
 bool RenDevice::setVSync(bool enabled)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     if (!SDLGlContext_)
     {
         spdlog::warn("Cannot set VSync: GL context not initialised yet");
@@ -2052,6 +2099,8 @@ void RenDevice::setMaterialHandles(const RenMaterial& mat)
 
 void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     static GLint lastFrameBuff = 0;
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
@@ -2083,6 +2132,8 @@ void RenDevice::renderScreenspace(
     const int targetH,
     Ren::TexId texture)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     glUseProgram(glProgramID_GIU2D_);
 
     // Bind texture
@@ -2157,6 +2208,8 @@ void RenDevice::renderSurface(
     const uint32_t targetH,
     const uint32_t colour)
 {
+    CB_RENDEVICE_DEPIMPL_GL();
+
     RenIVertex vertices[6];
 
     glm::vec2 vertex_up_left
@@ -2309,6 +2362,8 @@ void RenDevice::renderPrimitive(
     PRE(vertices);
     PRE(nVertices < 5000);
 
+    CB_RENDEVICE_DEPIMPL_GL();
+
     // Use our shader
     glUseProgram(glProgramID_Standard_);
 
@@ -2405,6 +2460,8 @@ void RenDevice::renderIndexed(
     PRE(indices);
     PRE(nVertices < 5000);
     PRE(nIndices < 5000);
+
+    CB_RENDEVICE_DEPIMPL_GL();
 
     glUseProgram(glProgramID_Standard_);
     // Compute the MVP matrix from keyboard and mouse input
@@ -2512,6 +2569,8 @@ void RenDevice::renderIndexedScreenspace(
     PRE(indices);
     PRE(nVertices < 5000);
     PRE(nIndices < 5000);
+
+    CB_RENDEVICE_DEPIMPL_GL();
 
     glUseProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0

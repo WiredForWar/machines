@@ -6,10 +6,6 @@
 
 #include "render/PrimitiveTopology.hpp"
 
-#include <SDL.h>
-
-#include <GL/glew.h>
-
 #include <glm/gtc/matrix_transform.hpp>
 
 class SysPathName;
@@ -378,23 +374,6 @@ private:
     void overrideClipping(double hither, double yon);
 
     RenIDeviceImpl* pImpl_ { nullptr };
-
-    GLuint glProgramID_GIU2D_ { 0 }, glProgramID_Standard_ { 0 }, glProgramID_Billboard_ { 0 };
-
-    GLuint gl2DVertexBufferID_ { 0 }, glVertexUVID_ { 0 }, glVertexPosition_screenspaceID_ { 0 },
-        glVertexColour_screenspaceID_ { 0 }, glScreenspaceID_ { 0 };
-
-    GLuint gl2DUniformID_ { 0 }, glTextureSamplerID_ { 0 }, glTextureSamplerBillboardID_ { 0 };
-    GLuint glModelMatrixID_ { 0 }, glViewMatrixID_ { 0 }, glProjectionMatrixID_ { 0 };
-    GLuint glFogColourID_ { 0 }, glFogParamsID_ { 0 };
-
-    GLuint glVertexPosition_modelspaceID_ { 0 }, glVertex_modelspaceUVID_ { 0 }, glVertexColour_modelspaceID_ { 0 },
-        glVertexDataBufferID_ { 0 }, glElementBufferID_ { 0 };
-    GLuint glViewProjMatrix_BillboardID_ { 0 }, glVertexPosition_BillboardID_ { 0 }, glVertex_BillboardUVID_ { 0 },
-        glVertexColour_BillboardID_ { 0 }, glVertexDataBufferBillboardID_ { 0 }, glElementBufferBillboardID_ { 0 };
-    GLuint glTextureEmptyID_ { 0 }, glOffscreenFrameBuffID_ { 0 };
-
-    SDL_GLContext SDLGlContext_ { nullptr };
 
     glm::mat4 model_ {};
     glm::mat4 view_ {};
