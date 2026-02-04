@@ -24,6 +24,7 @@ namespace Render
 constexpr int MAXWIDTH = 1024;
 
 static std::unique_ptr<FontsManager> fontsManager;
+static std::vector<std::unique_ptr<Font>> s_fonts;
 
 void initFonts()
 {
@@ -34,6 +35,7 @@ void initFonts()
 void cleanUpFonts()
 {
     spdlog::info("Deinitializing FreeType library...");
+    s_fonts.clear();
     fontsManager.reset();
 }
 
@@ -156,8 +158,6 @@ bool FontImpl::prepareTexture()
 
     return true;
 }
-
-static std::vector<std::unique_ptr<Font>> s_fonts;
 
 const FontImpl* FontImpl::get(const Font& parent)
 {
