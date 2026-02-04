@@ -149,7 +149,7 @@ public:
     // PRE(name().length() == 0);
     void name(const std::string&);
     const std::string& name() const;
-    const int handle() const;
+    Ren::TexId handle() const;
 
     Size requestedSize() const;
     void setRequestedSize(Size size);

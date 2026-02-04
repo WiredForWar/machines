@@ -959,7 +959,7 @@ void RenDevice::bindTexture(const RenSurface& surf, uint textureUnit)
     if (surf.isEmpty())
         glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
     else
-        glBindTexture(GL_TEXTURE_2D, surf.handle());
+        glBindTexture(GL_TEXTURE_2D, RenSurfaceManager::instance().impl().getSurface(surf.handle())->handle());
 }
 
 void RenDevice::syncSmoothFilters()
@@ -2050,15 +2050,16 @@ void RenDevice::setMaterialHandles(const RenMaterial& mat)
     pImpl_->setMaterialHandles(mat);
 }
 
-void RenDevice::renderToTextureMode(const GLuint targetTexture, uint32_t viewPortW, uint32_t viewPortH)
+void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH)
 {
     static GLint lastFrameBuff = 0;
     // Bind FBO to texture
-    if (targetTexture)
+    if (targetTexture != Ren::NullTexId)
     {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &lastFrameBuff);
         glBindFramebuffer(GL_FRAMEBUFFER, glOffscreenFrameBuffID_);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, targetTexture, 0);
+        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(targetTexture);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, surfBody ? surfBody->handle() : 0, 0);
         glViewport(0, 0, viewPortW, viewPortH);
     }
     // Bind FBO to screen
@@ -2080,13 +2081,21 @@ void RenDevice::renderScreenspace(
     Ren::PrimitiveTopology topology,
     const int targetW,
     const int targetH,
-    const GLuint texture)
+    Ren::TexId texture)
 {
     glUseProgram(glProgramID_GIU2D_);
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    if (texture == Ren::NullTexId)
+    {
+        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
+    }
+    else
+    {
+        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
+        glBindTexture(GL_TEXTURE_2D, surfBody ? surfBody->handle() : 0);
+    }
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(gl2DUniformID_, 0);

@@ -292,7 +292,7 @@ public:
         const int targetW = 0,
         const int targetH = 0)
     {
-        renderScreenspace(vertices, nVertices, topology, targetW, targetH, glTextureEmptyID_);
+        renderScreenspace(vertices, nVertices, topology, targetW, targetH, Ren::NullTexId);
     };
 
     void renderScreenspace(
@@ -336,7 +336,7 @@ public:
     const glm::mat4& getProjectionMatrix() { return projection_; }
 
     const glm::mat4& getViewMatrix() { return view_; }
-    void renderToTextureMode(const GLuint targetTexture, uint32_t viewPortW, uint32_t viewPortH);
+    void renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH);
 
     // private:
     void renderScreenspace(
@@ -345,7 +345,7 @@ public:
         Ren::PrimitiveTopology topology,
         const int targetW,
         const int targetH,
-        const GLuint texture);
+        Ren::TexId texture);
 
 private:
     void createViewport();

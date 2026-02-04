@@ -4,9 +4,10 @@
 #include "render/FontsManager.hpp"
 #include "render/TextOptions.hpp"
 
-#include "spdlog/spdlog.h"
+#include "render/device.hpp"
+#include "render/surface.hpp"
 
-#include <GL/glew.h>
+#include "spdlog/spdlog.h"
 
 #include <algorithm>
 #include <limits>
@@ -39,10 +40,16 @@ void cleanUpFonts()
     fontsManager.reset();
 }
 
+FontImpl::~FontImpl() = default;
+
 /* Create texture atlasses for font sizes */
 bool FontImpl::prepareTexture()
 {
     if (!fontsManager)
+        return false;
+
+    RenDevice* const dev = RenDevice::current();
+    if (!dev)
         return false;
 
     FT_Face face = fontsManager->getFace(fontName);
@@ -59,11 +66,14 @@ bool FontImpl::prepareTexture()
     unsigned int roww = 0;
     unsigned int rowh = 0;
 
+    w = 0;
+    h = 0;
+
     // Include as many characters as can fit 1 byte to give a chance for more (pre UTF-8 of cource) translations
     // E.g. German translation which needs characters up to 252.
     constexpr uint32_t maxCharacter = std::numeric_limits<uint8_t>::max();
 
-    memset(charData_, 0, sizeof(charData_));
+    std::fill(std::begin(charData_), std::end(charData_), CharData{});
 
     /* Find minimum size for a texture holding all required characters */
     for (uint32_t i = 32; i <= maxCharacter; i++)
@@ -87,29 +97,16 @@ bool FontImpl::prepareTexture()
     w = std::max(w, roww);
     h += rowh;
 
-    /* Create a texture that will be used to hold all required glyphs */
-    glGenTextures(1, &textureId);
-    glBindTexture(GL_TEXTURE_2D, textureId);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-    /* We require 1 byte alignment when uploading texture data */
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    /* Clamping to edges is important to prevent artifacts when scaling */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    /* Linear filtering usually looks best for text */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    atlasSurface = std::make_unique<RenSurface>(RenSurface::createAnonymousSurface(w, h, dev->backSurface()));
+    textureId = atlasSurface->handle();
 
     /* Paste all glyph bitmaps into the texture, remembering the offset */
     int ox = 0;
     int oy = 0;
-    std::vector<GLuint> rgbaBitmap;
-    rgbaBitmap.resize(pixelSize * pixelSize);
     rowh = 0;
+
+    std::vector<uint> atlasPixels;
+    atlasPixels.resize(static_cast<std::size_t>(w) * static_cast<std::size_t>(h));
 
     for (uint32_t i = 32; i <= maxCharacter; i++)
     {
@@ -122,20 +119,18 @@ bool FontImpl::prepareTexture()
             rowh = 0;
             ox = 0;
         }
-        for (int j = 0; j < g->bitmap.width * g->bitmap.rows; ++j)
+
+        for (int y = 0; y < static_cast<int>(g->bitmap.rows); ++y)
         {
-            rgbaBitmap[j] = (g->bitmap.buffer[j] << 24) | 0x00FFFFFF;
+            for (int x = 0; x < static_cast<int>(g->bitmap.width); ++x)
+            {
+                const std::size_t dstX = static_cast<std::size_t>(ox + x);
+                const std::size_t dstY = static_cast<std::size_t>(oy + y);
+                const std::size_t dstIdx = dstY * static_cast<std::size_t>(w) + dstX;
+                const uint8_t alpha = g->bitmap.buffer[y * g->bitmap.width + x];
+                atlasPixels[dstIdx] = (static_cast<uint>(alpha) << 24) | 0x00FFFFFF;
+            }
         }
-        glTexSubImage2D(
-            GL_TEXTURE_2D,
-            0,
-            ox,
-            oy,
-            g->bitmap.width,
-            g->bitmap.rows,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            rgbaBitmap.data());
 
         CharData& data = charData_[i];
         data.ax = g->advance.x >> 6;
@@ -155,6 +150,8 @@ bool FontImpl::prepareTexture()
         rowh = std::max(rowh, g->bitmap.rows);
         ox += g->bitmap.width + 1;
     }
+
+    atlasSurface->copyFromRGBABuffer(atlasPixels.data());
 
     return true;
 }

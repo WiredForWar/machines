@@ -617,7 +617,7 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
             }
             else
                 dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
-            dev->renderToTextureMode(0, 0, 0);
+            dev->renderToTextureMode(Ren::NullTexId, 0, 0);
         }
         else
             dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
@@ -636,7 +636,7 @@ void RenSurface::getPixel(int x, int y, RenColour* colour) const
         RenDevice* dev = RenDevice::current();
         dev->renderToTextureMode(handle(), width(), height());
         glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
-        dev->renderToTextureMode(0, 0, 0);
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
         glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
@@ -900,7 +900,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             {
                 dev->renderToTextureMode(handle(), width(), height());
                 dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), -height());
-                dev->renderToTextureMode(0, 0, 0);
+                dev->renderToTextureMode(Ren::NullTexId, 0, 0);
             }
             else
                 dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), height());
@@ -931,7 +931,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
             {
                 dev->renderToTextureMode(handle(), width(), height());
                 dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
-                dev->renderToTextureMode(0, 0, 0);
+                dev->renderToTextureMode(Ren::NullTexId, 0, 0);
             }
             else
                 dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
@@ -1026,9 +1026,9 @@ void RenSurface::reset()
     swap(RenSurface());
 }
 
-const int RenSurface::handle() const
+Ren::TexId RenSurface::handle() const
 {
-    return internals()->handle();
+    return myId_;
 }
 
 RenSurface::Size RenSurface::requestedSize() const
@@ -1097,7 +1097,7 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
             RenDevice* dev = RenDevice::current();
             dev->renderToTextureMode(handle(), width(), height());
             glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
-            dev->renderToTextureMode(0, 0, 0);
+            dev->renderToTextureMode(Ren::NullTexId, 0, 0);
         }
         else
             glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
@@ -1211,7 +1211,7 @@ void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const Ren
     {
         dev->renderToTextureMode(handle(), width(), height());
         dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), -height());
-        dev->renderToTextureMode(0, 0, 0);
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
         dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), height());

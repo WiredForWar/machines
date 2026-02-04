@@ -252,9 +252,9 @@ void RenISurfBody::unclippedBlit(const RenISurfBody* source, const Ren::Rect& sr
     //  if( (displayType_ != RenI::FRONT) && (displayType_ != RenI::BACK) )
     if (displayType_ == RenI::NOT_DISPLAY)
     {
-        dev->renderToTextureMode(textureID_, width_, height_);
+        dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
         dev->renderSurface(source, srcArea, dstArea, width_, height_);
-        dev->renderToTextureMode(0, 0, 0);
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
@@ -276,12 +276,12 @@ void RenISurfBody::unclippedStretchBlit(const RenISurfBody* source, const Ren::R
 
     if (displayType_ == RenI::NOT_DISPLAY)
     {
-        dev->renderToTextureMode(textureID_, width_, height_);
+        dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
 
         dev->setSmoothScaleEnabled(false);
         dev->renderSurface(source, srcArea, dstArea, width_, height_);
         dev->setSmoothScaleEnabled(true);
-        dev->renderToTextureMode(0, 0, 0);
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
@@ -303,7 +303,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 
     if (displayType_ == RenI::NOT_DISPLAY)
     {
-        dev->renderToTextureMode(textureID_, width_, height_);
+        dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
         if (colour == 0xFFFF00FF) // Handle background colour
         {
             GLint blendSrc, blendDst;
@@ -315,7 +315,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
         }
         else
             dev->renderSurface(&emptySurf, srcArea, area, width_, height_, colour);
-        dev->renderToTextureMode(0, 0, 0);
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {

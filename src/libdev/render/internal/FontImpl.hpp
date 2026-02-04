@@ -1,10 +1,13 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "render/render.hpp"
 
+#include <memory>
 #include <string>
 
 #include <cstdint>
+
+class RenSurface;
 
 namespace Render
 {
@@ -15,6 +18,7 @@ class FontImpl
 {
 public:
     FontImpl() = default;
+    ~FontImpl();
 
     static const FontImpl* get(const Font& parent);
     static const FontImpl* get(const Font* parent);
@@ -29,7 +33,8 @@ public:
     int height() const { return (ascender_ || descender_) ? (ascender_ - descender_) : pixelSize; }
 
     std::string fontName;
-    GLuint textureId = 0; // texture atlas object
+    std::unique_ptr<RenSurface> atlasSurface{};
+    Ren::TexId textureId{Ren::NullTexId};
 
     unsigned int w = 0; // width of texture in pixels
     unsigned int h = 0; // height of texture in pixels
