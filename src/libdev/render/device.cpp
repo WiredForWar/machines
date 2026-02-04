@@ -360,7 +360,7 @@ RenDevice::~RenDevice()
     pImpl_->releaseGLBuffer(glElementBufferBillboardID_);
     if (glOffscreenFrameBuffID_)
     {
-        glDeleteRenderbuffers(1, &glOffscreenFrameBuffID_);
+        glDeleteFramebuffers(1, &glOffscreenFrameBuffID_);
     }
 
     SDL_GL_MakeCurrent(nullptr, nullptr);
