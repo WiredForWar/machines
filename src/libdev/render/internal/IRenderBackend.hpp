@@ -2,7 +2,19 @@
 
 #include "render/render.hpp"
 
+#include <cstddef>
 #include <string_view>
+
+enum class RenBufferTarget
+{
+    Array,
+    ElementArray,
+};
+
+enum class RenBufferUsage
+{
+    StreamDraw,
+};
 
 class RenIRenderBackend
 {
@@ -26,4 +38,12 @@ public:
 
     virtual int uniformLocation(Ren::ProgramId id, std::string_view name) const = 0;
     virtual int attribLocation(Ren::ProgramId id, std::string_view name) const = 0;
+
+    virtual Ren::BufferId createBuffer() = 0;
+    virtual void releaseBuffer(Ren::BufferId id) = 0;
+
+    virtual void bindBuffer(RenBufferTarget target, Ren::BufferId id) = 0;
+    virtual void bufferData(
+        RenBufferTarget target, Ren::BufferId id, std::size_t sizeBytes, const void* data, RenBufferUsage usage)
+        = 0;
 };

@@ -35,7 +35,6 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , debugX_(0)
     , debugY_(0)
     , backend_(std::make_unique<Ren::OpenGL::RenderBackendGL>())
-    , glBuffers_{0,}
     , glFramebuffers_{0,}
     , frameTimer_()
     , videoMemoryShared_(false)
@@ -67,44 +66,6 @@ RenIRenderBackend& RenIDeviceImpl::renderBackend()
 const RenIRenderBackend& RenIDeviceImpl::renderBackend() const
 {
     return *backend_;
-}
-
-Ren::BufferId RenIDeviceImpl::addGLBuffer(GLuint buffer)
-{
-    if (buffer == 0)
-        return 0;
-
-    glBuffers_.push_back(buffer);
-    return static_cast<Ren::BufferId>(glBuffers_.size() - 1);
-}
-
-GLuint RenIDeviceImpl::glBufferHandle(Ren::BufferId id) const
-{
-    if (id == 0)
-        return 0;
-
-    const std::size_t idx = static_cast<std::size_t>(id);
-    if (idx >= glBuffers_.size())
-        return 0;
-
-    return glBuffers_[idx];
-}
-
-void RenIDeviceImpl::releaseGLBuffer(Ren::BufferId id)
-{
-    if (id == 0)
-        return;
-
-    const std::size_t idx = static_cast<std::size_t>(id);
-    if (idx >= glBuffers_.size())
-        return;
-
-    const GLuint buffer = glBuffers_[idx];
-    if (buffer != 0)
-    {
-        glDeleteBuffers(1, &buffer);
-        glBuffers_[idx] = 0;
-    }
 }
 
 Ren::FramebufferId RenIDeviceImpl::addGLFramebuffer(GLuint framebuffer)

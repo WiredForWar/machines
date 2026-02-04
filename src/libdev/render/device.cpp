@@ -180,9 +180,7 @@ bool RenDevice::initialize()
     glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
 
     // Initialize VBO
-    GLuint gl2DVertexBuffer = 0;
-    glGenBuffers(1, &gl2DVertexBuffer);
-    gl2DVertexBufferID_ = pImpl_->addGLBuffer(gl2DVertexBuffer);
+    gl2DVertexBufferID_ = pImpl_->renderBackend().createBuffer();
     // Get a handle for our buffers
     glVertexPosition_screenspaceID_ =
         pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
@@ -201,13 +199,8 @@ bool RenDevice::initialize()
     glFogColourID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogColour");
     glFogParamsID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogParams");
     // VBO
-    GLuint glVertexDataBuffer = 0;
-    glGenBuffers(1, &glVertexDataBuffer);
-    glVertexDataBufferID_ = pImpl_->addGLBuffer(glVertexDataBuffer);
-
-    GLuint glElementBuffer = 0;
-    glGenBuffers(1, &glElementBuffer);
-    glElementBufferID_ = pImpl_->addGLBuffer(glElementBuffer);
+    glVertexDataBufferID_ = pImpl_->renderBackend().createBuffer();
+    glElementBufferID_ = pImpl_->renderBackend().createBuffer();
     // Get a handle for our buffers
     glVertexPosition_modelspaceID_ =
         pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
@@ -222,13 +215,8 @@ bool RenDevice::initialize()
         return false;
 
     // VBO
-    GLuint glVertexDataBufferBillboard = 0;
-    glGenBuffers(1, &glVertexDataBufferBillboard);
-    glVertexDataBufferBillboardID_ = pImpl_->addGLBuffer(glVertexDataBufferBillboard);
-
-    GLuint glElementBufferBillboard = 0;
-    glGenBuffers(1, &glElementBufferBillboard);
-    glElementBufferBillboardID_ = pImpl_->addGLBuffer(glElementBufferBillboard);
+    glVertexDataBufferBillboardID_ = pImpl_->renderBackend().createBuffer();
+    glElementBufferBillboardID_ = pImpl_->renderBackend().createBuffer();
     // Get a handle for our buffers
     glViewProjMatrix_BillboardID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uVP");
     glVertexPosition_BillboardID_ =
@@ -356,11 +344,11 @@ RenDevice::~RenDevice()
     pImpl_->releaseGLProgram(glProgramID_GIU2D_);
     pImpl_->releaseGLProgram(glProgramID_Billboard_);
 
-    pImpl_->releaseGLBuffer(gl2DVertexBufferID_);
-    pImpl_->releaseGLBuffer(glVertexDataBufferID_);
-    pImpl_->releaseGLBuffer(glElementBufferID_);
-    pImpl_->releaseGLBuffer(glVertexDataBufferBillboardID_);
-    pImpl_->releaseGLBuffer(glElementBufferBillboardID_);
+    pImpl_->renderBackend().releaseBuffer(gl2DVertexBufferID_);
+    pImpl_->renderBackend().releaseBuffer(glVertexDataBufferID_);
+    pImpl_->renderBackend().releaseBuffer(glElementBufferID_);
+    pImpl_->renderBackend().releaseBuffer(glVertexDataBufferBillboardID_);
+    pImpl_->renderBackend().releaseBuffer(glElementBufferBillboardID_);
     pImpl_->releaseGLFramebuffer(glOffscreenFrameBuffID_);
 
     if (glTextureEmptyID_)
@@ -2073,12 +2061,16 @@ void RenDevice::renderScreenspace(
 
     glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::Array,
+        gl2DVertexBufferID_,
+        nVertices * sizeof(RenIVertex),
+        &vertices[0],
+        RenBufferUsage::StreamDraw);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
+    pImpl_->renderBackend().bindBuffer(RenBufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2221,8 +2213,12 @@ void RenDevice::renderSurface(
         vertices[5].tv = uv_down_left[1];
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::Array,
+        gl2DVertexBufferID_,
+        6 * sizeof(RenIVertex),
+        &vertices[0],
+        RenBufferUsage::StreamDraw);
 
     // Bind texture
     bindTexture(surf);
@@ -2233,7 +2229,7 @@ void RenDevice::renderSurface(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
+    pImpl_->renderBackend().bindBuffer(RenBufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2313,8 +2309,12 @@ void RenDevice::renderPrimitive(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferID_));
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::Array,
+        glVertexDataBufferID_,
+        nVertices * sizeof(RenIVertex),
+        vertices,
+        RenBufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size
@@ -2413,8 +2413,12 @@ void RenDevice::renderIndexed(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferID_));
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::Array,
+        glVertexDataBufferID_,
+        nVertices * sizeof(RenIVertex),
+        vertices,
+        RenBufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size - 3 for XYZ 4 for XYZW
@@ -2459,8 +2463,12 @@ void RenDevice::renderIndexed(
     );*/
 
     // Index buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pImpl_->glBufferHandle(glElementBufferID_));
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::ElementArray,
+        glElementBufferID_,
+        nIndices * sizeof(unsigned short),
+        indices,
+        RenBufferUsage::StreamDraw);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
@@ -2508,8 +2516,12 @@ void RenDevice::renderIndexedScreenspace(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
-    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferBillboardID_));
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::Array,
+        glVertexDataBufferBillboardID_,
+        nVertices * sizeof(RenIVertex),
+        vertices,
+        RenBufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_BillboardID_, // The attribute we want to configure
         4, // size - 3 for XYZ 4 for XYZW
@@ -2542,8 +2554,12 @@ void RenDevice::renderIndexedScreenspace(
     );
 
     // Index buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pImpl_->glBufferHandle(glElementBufferBillboardID_));
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
+    pImpl_->renderBackend().bufferData(
+        RenBufferTarget::ElementArray,
+        glElementBufferBillboardID_,
+        nIndices * sizeof(unsigned short),
+        indices,
+        RenBufferUsage::StreamDraw);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !

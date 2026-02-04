@@ -200,11 +200,6 @@ private:
     const RenIRenderBackend& renderBackend() const;
     std::unique_ptr<RenIRenderBackend> backend_{};
 
-    Ren::BufferId addGLBuffer(GLuint buffer);
-    GLuint glBufferHandle(Ren::BufferId id) const;
-    void releaseGLBuffer(Ren::BufferId id);
-    std::vector<GLuint> glBuffers_{};
-
     Ren::FramebufferId addGLFramebuffer(GLuint framebuffer);
     GLuint glFramebufferHandle(Ren::FramebufferId id) const;
     void releaseGLFramebuffer(Ren::FramebufferId id);

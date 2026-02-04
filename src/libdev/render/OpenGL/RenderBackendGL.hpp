@@ -32,6 +32,17 @@ public:
     int uniformLocation(Ren::ProgramId id, std::string_view name) const override;
     int attribLocation(Ren::ProgramId id, std::string_view name) const override;
 
+    Ren::BufferId createBuffer() override;
+    void releaseBuffer(Ren::BufferId id) override;
+
+    void bindBuffer(RenBufferTarget target, Ren::BufferId id) override;
+    void bufferData(
+        RenBufferTarget target,
+        Ren::BufferId id,
+        std::size_t sizeBytes,
+        const void* data,
+        RenBufferUsage usage) override;
+
 private:
     static std::string readTextFile(const std::string& path);
 
@@ -43,7 +54,10 @@ private:
 
     GLuint programHandle(Ren::ProgramId id) const;
 
+    GLuint bufferHandle(Ren::BufferId id) const;
+
     std::vector<GLuint> programs_{};
+    std::vector<GLuint> buffers_{};
     bool initialized_{};
 };
 

@@ -9,6 +9,7 @@ namespace Ren::OpenGL
 
 RenderBackendGL::RenderBackendGL()
     : programs_{0,}
+    , buffers_{0,}
 {
 }
 
@@ -41,6 +42,18 @@ GLuint RenderBackendGL::programHandle(Ren::ProgramId id) const
         return 0;
 
     return programs_[idx];
+}
+
+GLuint RenderBackendGL::bufferHandle(Ren::BufferId id) const
+{
+    if (id == 0)
+        return 0;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= buffers_.size())
+        return 0;
+
+    return buffers_[idx];
 }
 
 std::string RenderBackendGL::readTextFile(const std::string& path)
@@ -199,6 +212,51 @@ void RenderBackendGL::releaseProgram(Ren::ProgramId id)
     {
         glDeleteProgram(program);
         programs_[idx] = 0;
+    }
+}
+
+Ren::BufferId RenderBackendGL::createBuffer()
+{
+    GLuint buffer = 0;
+    glGenBuffers(1, &buffer);
+    if (buffer == 0)
+        return 0;
+
+    buffers_.push_back(buffer);
+    return static_cast<Ren::BufferId>(buffers_.size() - 1);
+}
+
+void RenderBackendGL::bindBuffer(RenBufferTarget target, Ren::BufferId id)
+{
+    const GLuint buffer = bufferHandle(id);
+    const GLenum glTarget = (target == RenBufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
+    glBindBuffer(glTarget, buffer);
+}
+
+void RenderBackendGL::bufferData(
+    RenBufferTarget target, Ren::BufferId id, std::size_t sizeBytes, const void* data, RenBufferUsage usage)
+{
+    bindBuffer(target, id);
+
+    const GLenum glTarget = (target == RenBufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
+    const GLenum glUsage = (usage == RenBufferUsage::StreamDraw) ? GL_STREAM_DRAW : GL_STREAM_DRAW;
+    glBufferData(glTarget, static_cast<GLsizeiptr>(sizeBytes), data, glUsage);
+}
+
+void RenderBackendGL::releaseBuffer(Ren::BufferId id)
+{
+    if (id == 0)
+        return;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= buffers_.size())
+        return;
+
+    const GLuint buffer = buffers_[idx];
+    if (buffer != 0)
+    {
+        glDeleteBuffers(1, &buffer);
+        buffers_[idx] = 0;
     }
 }
 
