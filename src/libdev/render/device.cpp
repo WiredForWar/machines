@@ -73,6 +73,8 @@
 
 RenDevice::RenDevice(RenDisplay* display)
     : pImpl_(new RenIDeviceImpl(display, this))
+    , standardUniformsDirty_(true)
+    , billboardUniformsDirty_(true)
 {
     PRE(display);
 
@@ -1005,6 +1007,9 @@ void RenDevice::updateMatrices()
 
     // Cache the product of the above matrices.
     *pImpl_->projViewMatrix_ = projection_ * view_;
+
+    standardUniformsDirty_ = true;
+    billboardUniformsDirty_ = true;
 }
 
 // From the Direct3D tunnel sample:
@@ -1080,7 +1085,6 @@ void RenDevice::updateViewMatrix(glm::mat4& view)
 
     // glm::mat4 view = glm::lookAt(p, dir, up);
     // view = glm::lookAt(p, dir, up);
-    glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view[0][0]);
 }
 
 // Taken straight from the M$ samples.
@@ -1134,6 +1138,9 @@ void RenDevice::updateProjMatrix(double hither, double yon, double h)
         mode.height(),
         hither,
         yon);
+
+    standardUniformsDirty_ = true;
+    billboardUniformsDirty_ = true;
 }
 
 void RenDevice::overrideClipping(double hither, double yon)
@@ -1198,6 +1205,8 @@ void RenDevice::setFog(float start, float end, float dense, const RenColour& col
 
         fogColour_ = glm::vec3(filteredCol.r(), filteredCol.g(), filteredCol.b());
     }
+
+    standardUniformsDirty_ = true;
 }
 
 void RenDevice::fogOn(float start, float end, float density)
@@ -1221,6 +1230,7 @@ void RenDevice::fogOff()
 {
     pImpl_->fogOn_ = false;
     fogParams_ = glm::vec3(0, 0, 0);
+    standardUniformsDirty_ = true;
 }
 
 void RenDevice::fogOn()
@@ -1229,6 +1239,7 @@ void RenDevice::fogOn()
     {
         pImpl_->fogOn_ = true;
         fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
+        standardUniformsDirty_ = true;
     }
 }
 
@@ -2281,15 +2292,16 @@ void RenDevice::renderPrimitive(
     // Use our shader
     glUseProgram(glProgramID_Standard_);
 
-    // Send our transformation to the currently bound shader,
-    // in the "MVP" uniform
-    //    glm::mat4 mvp = (*pImpl_->projViewMatrix_) * model_;
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
-    glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-    glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
+    if (standardUniformsDirty_)
+    {
+        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
+        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
+        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
+        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+        standardUniformsDirty_ = false;
+    }
 
-    glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-    glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
     // std::cout<<glm::to_string(MVP)<<std::endl;
     // glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
     // glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
@@ -2379,14 +2391,16 @@ void RenDevice::renderIndexed(
 
     //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
 
-    // Send our transformation to the currently bound shader,
-    // in the "MVP" uniform
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
-    glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-    glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
+    if (standardUniformsDirty_)
+    {
+        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
+        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
+        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
+        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+        standardUniformsDirty_ = false;
+    }
 
-    glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-    glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
     /*glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
     glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
@@ -2484,7 +2498,11 @@ void RenDevice::renderIndexedScreenspace(
     static const int TextureUnit = 0;
     bindTexture(mat.texture(), TextureUnit);
 
-    glUniformMatrix4fv(glViewProjMatrix_BillboardID_, 1, GL_FALSE, &(*pImpl_->projViewMatrix_)[0][0]);
+    if (billboardUniformsDirty_)
+    {
+        glUniformMatrix4fv(glViewProjMatrix_BillboardID_, 1, GL_FALSE, &(*pImpl_->projViewMatrix_)[0][0]);
+        billboardUniformsDirty_ = false;
+    }
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(glTextureSamplerBillboardID_, TextureUnit);

@@ -408,6 +408,9 @@ private:
     bool clearAll2D_ { false };
     bool vsyncEnabled_ { true };
 
+    bool standardUniformsDirty_{};
+    bool billboardUniformsDirty_{};
+
     // Operations deliberately revoked
     RenDevice(const RenDevice&);
     RenDevice& operator=(const RenDevice&);
