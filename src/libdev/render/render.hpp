@@ -38,6 +38,7 @@ namespace Ren
     using TriangleIdx = ushort;
     using MaterialIdx = uchar;
     using TexId = uint;
+    using ProgramId = uint;
     // TODO init
     // static const uint NullTexId;
 

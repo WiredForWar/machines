@@ -181,45 +181,49 @@ bool RenDevice::initialize()
     // Initialize VBO
     glGenBuffers(1, &gl2DVertexBufferID_);
     // Get a handle for our buffers
-    glVertexPosition_screenspaceID_ = glGetAttribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
-    glVertexUVID_ = glGetAttribLocation(glProgramID_GIU2D_, "vertexUV");
-    glVertexColour_screenspaceID_ = glGetAttribLocation(glProgramID_GIU2D_, "vertexColor");
-    glScreenspaceID_ = glGetUniformLocation(glProgramID_GIU2D_, "uScreenspace");
+    glVertexPosition_screenspaceID_ =
+        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexPosition_screenspace");
+    glVertexUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexUV");
+    glVertexColour_screenspaceID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexColor");
+    glScreenspaceID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "uScreenspace");
     // Initialize uniforms' IDs
-    gl2DUniformID_ = glGetUniformLocation(glProgramID_GIU2D_, "uTextureSampler");
+    gl2DUniformID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "uTextureSampler");
 
     glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
 
     // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = glGetUniformLocation(glProgramID_Standard_, "uM");
-    glViewMatrixID_ = glGetUniformLocation(glProgramID_Standard_, "uV");
-    glProjectionMatrixID_ = glGetUniformLocation(glProgramID_Standard_, "uP");
-    glFogColourID_ = glGetUniformLocation(glProgramID_Standard_, "uFogColour");
-    glFogParamsID_ = glGetUniformLocation(glProgramID_Standard_, "uFogParams");
+    glModelMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uM");
+    glViewMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uV");
+    glProjectionMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uP");
+    glFogColourID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogColour");
+    glFogParamsID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogParams");
     // VBO
     glGenBuffers(1, &glVertexDataBufferID_);
     glGenBuffers(1, &glElementBufferID_);
     // Get a handle for our buffers
-    glVertexPosition_modelspaceID_ = glGetAttribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = glGetAttribLocation(glProgramID_Standard_, "vertexColor");
-    glVertex_modelspaceUVID_ = glGetAttribLocation(glProgramID_Standard_, "vertexUV");
-    glTextureSamplerID_ = glGetUniformLocation(glProgramID_Standard_, "uTextureSampler2");
+    glVertexPosition_modelspaceID_ =
+        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexPosition_modelspace");
+    glVertexColour_modelspaceID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexColor");
+    glVertex_modelspaceUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexUV");
+    glTextureSamplerID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uTextureSampler2");
 
     glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
 
-    const auto programIDs = {glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_};
-    if (std::ranges::any_of(programIDs, [](GLuint value) { return value == 0; }))
+    const std::array<Ren::ProgramId, 3> programIDs = { glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_ };
+    if (std::ranges::any_of(programIDs, [](Ren::ProgramId value) { return value == 0; }))
         return false;
 
     // VBO
     glGenBuffers(1, &glVertexDataBufferBillboardID_);
     glGenBuffers(1, &glElementBufferBillboardID_);
     // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = glGetUniformLocation(glProgramID_Billboard_, "uVP");
-    glVertexPosition_BillboardID_ = glGetAttribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = glGetAttribLocation(glProgramID_Billboard_, "vertexColor");
-    glVertex_BillboardUVID_ = glGetAttribLocation(glProgramID_Billboard_, "vertexUV");
-    glTextureSamplerBillboardID_ = glGetUniformLocation(glProgramID_Billboard_, "uTextureSampler");
+    glViewProjMatrix_BillboardID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "uVP");
+    glVertexPosition_BillboardID_ =
+        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexPosition_Billboard");
+    glVertexColour_BillboardID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexColor");
+    glVertex_BillboardUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexUV");
+    glTextureSamplerBillboardID_ =
+        glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "uTextureSampler");
 
     // Create empty texture
     glGenTextures(1, &glTextureEmptyID_);
@@ -333,18 +337,9 @@ RenDevice::~RenDevice()
 
     glUseProgram(0);
 
-    if (glProgramID_Standard_)
-    {
-        glDeleteProgram(glProgramID_Standard_);
-    }
-    if (glProgramID_GIU2D_)
-    {
-        glDeleteProgram(glProgramID_GIU2D_);
-    }
-    if (glProgramID_Billboard_)
-    {
-        glDeleteProgram(glProgramID_Billboard_);
-    }
+    pImpl_->releaseGLProgram(glProgramID_Standard_);
+    pImpl_->releaseGLProgram(glProgramID_GIU2D_);
+    pImpl_->releaseGLProgram(glProgramID_Billboard_);
     if (glOffscreenFrameBuffID_)
     {
         glDeleteRenderbuffers(1, &glOffscreenFrameBuffID_);
@@ -371,7 +366,7 @@ void RenDevice::reset()
 {
 }
 
-const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
+Ren::ProgramId RenDevice::loadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
 {
     // Read the Vertex Shader code from the file
     std::string shadersDir("data/shaders/");
@@ -484,7 +479,7 @@ const GLuint RenDevice::loadShaders(const char* vertexShaderPath, const char* fr
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
 
-    return programID;
+    return pImpl_->addGLProgram(programID);
 }
 
 void RenDevice::clearAllSurfaces(const RenColour& colour)
@@ -2134,7 +2129,7 @@ void RenDevice::renderScreenspace(
 {
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(glProgramID_GIU2D_);
+    glUseProgram(pImpl_->glProgramHandle(glProgramID_GIU2D_));
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
@@ -2231,7 +2226,7 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    glUseProgram(glProgramID_GIU2D_);
+    glUseProgram(pImpl_->glProgramHandle(glProgramID_GIU2D_));
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
@@ -2365,7 +2360,7 @@ void RenDevice::renderPrimitive(
     CB_RENDEVICE_DEPIMPL_GL();
 
     // Use our shader
-    glUseProgram(glProgramID_Standard_);
+    glUseProgram(pImpl_->glProgramHandle(glProgramID_Standard_));
 
     if (standardUniformsDirty_)
     {
@@ -2463,7 +2458,7 @@ void RenDevice::renderIndexed(
 
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(glProgramID_Standard_);
+    glUseProgram(pImpl_->glProgramHandle(glProgramID_Standard_));
     // Compute the MVP matrix from keyboard and mouse input
 
     //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
@@ -2572,7 +2567,7 @@ void RenDevice::renderIndexedScreenspace(
 
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(glProgramID_Billboard_);
+    glUseProgram(pImpl_->glProgramHandle(glProgramID_Billboard_));
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     bindTexture(mat.texture(), TextureUnit);

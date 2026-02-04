@@ -14,11 +14,13 @@
 #include "render/internal/modeobsv.hpp"
 #include "render/internal/internal.hpp"
 #include "render/colour.hpp"
+#include "render/render.hpp"
 #include "device/timer.hpp"
 
 #include <SDL.h>
 #include <GL/glew.h>
 
+#include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 
 class RenDevice;
@@ -153,9 +155,9 @@ private:
     int smoothFilterMin_ = 0;
     int smoothFilterMag_ = 0;
 
-    GLuint glProgramID_GIU2D_{};
-    GLuint glProgramID_Standard_{};
-    GLuint glProgramID_Billboard_{};
+    Ren::ProgramId glProgramID_GIU2D_{};
+    Ren::ProgramId glProgramID_Standard_{};
+    Ren::ProgramId glProgramID_Billboard_{};
 
     GLuint gl2DVertexBufferID_{};
     GLuint glVertexUVID_{};
@@ -190,6 +192,11 @@ private:
     GLuint glOffscreenFrameBuffID_{};
 
     SDL_GLContext SDLGlContext_{};
+
+    Ren::ProgramId addGLProgram(GLuint program);
+    GLuint glProgramHandle(Ren::ProgramId id) const;
+    void releaseGLProgram(Ren::ProgramId id);
+    std::vector<GLuint> glPrograms_{};
 
     DevTimer frameTimer_;
 

@@ -2,6 +2,7 @@
 
 #include "base/base.hpp"
 #include "render/internal/trigroup.hpp"
+#include "render/render.hpp"
 #include "render/texture.hpp"
 
 #include "render/PrimitiveTopology.hpp"
@@ -279,7 +280,7 @@ public:
     RenIDeviceImpl& impl();
     const RenIDeviceImpl& impl() const;
 
-    const uint loadShaders(const char* vertexPath, const char* fragmentPath);
+    Ren::ProgramId loadShaders(const char* vertexPath, const char* fragmentPath);
 
     void renderScreenspace(
         const RenIVertex* vertices,
