@@ -2072,7 +2072,7 @@ void RenDevice::renderScreenspace(
     glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
@@ -2218,7 +2218,7 @@ void RenDevice::renderSurface(
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
 
     // Bind texture
     bindTexture(surf);
@@ -2307,7 +2307,7 @@ void RenDevice::renderPrimitive(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size
@@ -2403,7 +2403,7 @@ void RenDevice::renderIndexed(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size - 3 for XYZ 4 for XYZW
@@ -2449,7 +2449,7 @@ void RenDevice::renderIndexed(
 
     // Index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferID_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
@@ -2492,7 +2492,7 @@ void RenDevice::renderIndexedScreenspace(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
     glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferBillboardID_);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_BillboardID_, // The attribute we want to configure
         4, // size - 3 for XYZ 4 for XYZW
@@ -2526,7 +2526,7 @@ void RenDevice::renderIndexedScreenspace(
 
     // Index buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferBillboardID_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
