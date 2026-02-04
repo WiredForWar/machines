@@ -212,12 +212,12 @@ target_link_libraries(render PUBLIC
     LibDev::system
     LibDev::mathex
 
-    SDL2::SDL2
-    GLEW::GLEW
     glm::glm
-    Freetype::Freetype
 )
 
 target_link_libraries(render PRIVATE
+    SDL2::SDL2
     SDL2_image::SDL2_image
+    GLEW::GLEW
+    Freetype::Freetype
 )
