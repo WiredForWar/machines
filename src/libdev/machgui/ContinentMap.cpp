@@ -37,8 +37,6 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "sim/manager.hpp"
 
-#include <GL/glew.h>
-
 using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 const size_t NUM_FRAMES = 12;
@@ -697,17 +695,11 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
             scannerDrawPos.x(scannerDrawPos.x() - scannerRange_[actorPositions_[loop].scanner_ - 1]);
             scannerDrawPos.y(scannerDrawPos.y() - scannerRange_[actorPositions_[loop].scanner_ - 1]);
 
-            GLint blendSrc, blendDst; // TODO move this GL code from here!
-            glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
-            glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
-            glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-
             mapVisibleArea_.simpleBlit(
                 scannerRangeImage_[actorPositions_[loop].scanner_ - 1],
                 {},
-                Ren::Point(scannerDrawPos.x(), scannerDrawPos.y()));
-
-            glBlendFunc(blendSrc, blendDst);
+                Ren::Point(scannerDrawPos.x(), scannerDrawPos.y()),
+                Ren::BlitMode::DstMulOneMinusSrcAlpha);
         }
     }
 }
@@ -1905,13 +1897,7 @@ void MachContinentMap::saveGame(PerOstream& outStream)
             = RenSurface::createAnonymousSurface(mapVisibleArea_.size() / Gui::uiScaleFactor(), mapVisibleArea_);
         visibleArea.filledRectangle(visibleArea.size(), Gui::BLACK());
 
-        GLint blendSrc, blendDst;
-        glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
-        glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
-        glBlendFunc(GL_ONE, GL_ZERO);
-
-        visibleArea.stretchBlit(mapVisibleArea_);
-        glBlendFunc(blendSrc, blendDst);
+        visibleArea.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
         visibleArea.write(outStream);
     }
 }

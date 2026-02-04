@@ -225,6 +225,16 @@ void RenISurfBody::setDDColourKey()
 
 void RenISurfBody::unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY)
 {
+    unclippedBlit(source, srcArea, destX, destY, Ren::BlitMode::AlphaBlend);
+}
+
+void RenISurfBody::unclippedBlit(
+    const RenISurfBody* source,
+    const Ren::Rect& srcArea,
+    int destX,
+    int destY,
+    Ren::BlitMode mode)
+{
     PRE_INFO(height());
     PRE_INFO(srcArea.height);
     PRE(source);
@@ -253,16 +263,25 @@ void RenISurfBody::unclippedBlit(const RenISurfBody* source, const Ren::Rect& sr
     if (displayType_ == RenI::NOT_DISPLAY)
     {
         dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
-        dev->renderSurface(source, srcArea, dstArea, width_, height_);
+        dev->renderSurface(source, srcArea, dstArea, width_, height_, 0xFFFFFFFF, mode);
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
-        dev->renderSurface(source, srcArea, dstArea);
+        dev->renderSurface(source, srcArea, dstArea, 0, 0, 0xFFFFFFFF, mode);
     }
 }
 
 void RenISurfBody::unclippedStretchBlit(const RenISurfBody* source, const Ren::Rect& srcArea, const Ren::Rect& dstArea)
+{
+    unclippedStretchBlit(source, srcArea, dstArea, Ren::BlitMode::AlphaBlend);
+}
+
+void RenISurfBody::unclippedStretchBlit(
+    const RenISurfBody* source,
+    const Ren::Rect& srcArea,
+    const Ren::Rect& dstArea,
+    Ren::BlitMode mode)
 {
     PRE(source);
 
@@ -279,13 +298,13 @@ void RenISurfBody::unclippedStretchBlit(const RenISurfBody* source, const Ren::R
         dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
 
         dev->setSmoothScaleEnabled(false);
-        dev->renderSurface(source, srcArea, dstArea, width_, height_);
+        dev->renderSurface(source, srcArea, dstArea, width_, height_, 0xFFFFFFFF, mode);
         dev->setSmoothScaleEnabled(true);
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
-        dev->renderSurface(source, srcArea, dstArea);
+        dev->renderSurface(source, srcArea, dstArea, 0, 0, 0xFFFFFFFF, mode);
     }
 }
 
@@ -301,25 +320,18 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
     RenISurfBody emptySurf;
     RenDevice* dev = _CONST_CAST(RenDevice*, device_);
 
+    const bool backgroundColour = colour == 0xFFFF00FF;
+    const Ren::BlitMode blitMode = backgroundColour ? Ren::BlitMode::ZeroZero : Ren::BlitMode::AlphaBlend;
+
     if (displayType_ == RenI::NOT_DISPLAY)
     {
         dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
-        if (colour == 0xFFFF00FF) // Handle background colour
-        {
-            GLint blendSrc, blendDst;
-            glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
-            glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
-            glBlendFunc(GL_ZERO, GL_ZERO);
-            dev->renderSurface(&emptySurf, srcArea, area, width_, height_, colour);
-            glBlendFunc(blendSrc, blendDst);
-        }
-        else
-            dev->renderSurface(&emptySurf, srcArea, area, width_, height_, colour);
+        dev->renderSurface(&emptySurf, srcArea, area, width_, height_, colour, blitMode);
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
-        dev->renderSurface(&emptySurf, srcArea, area, 0, 0, colour);
+        dev->renderSurface(&emptySurf, srcArea, area, 0, 0, colour, blitMode);
     }
 }
 

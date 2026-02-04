@@ -122,6 +122,12 @@ public:
 
     void unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY);
     void unclippedStretchBlit(const RenISurfBody* source, const Ren::Rect& srcArea, const Ren::Rect& destArea);
+    void unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY, Ren::BlitMode mode);
+    void unclippedStretchBlit(
+        const RenISurfBody* source,
+        const Ren::Rect& srcArea,
+        const Ren::Rect& destArea,
+        Ren::BlitMode mode);
 
     // Copy an image using the GDI.  This can do conversions between numerous
     // bit depths but can't do alpha or colour key emulation.

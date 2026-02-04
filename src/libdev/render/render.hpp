@@ -41,6 +41,14 @@ namespace Ren
     using ProgramId = uint;
     using BufferId = uint;
     using FramebufferId = uint;
+
+    enum class BlitMode
+    {
+        AlphaBlend,
+        Replace,
+        DstMulOneMinusSrcAlpha,
+        ZeroZero,
+    };
     // TODO init
     // static const uint NullTexId;
 

@@ -127,7 +127,8 @@ RenSurface::~RenSurface()
 }
 
 //------------------------------------Blitting---------------------------------------
-void RenSurface::simpleBlit(const RenSurface& source, const std::optional<Rect>& srcArea, Point dest)
+void RenSurface::simpleBlit(
+    const RenSurface& source, const std::optional<Rect>& srcArea, Point dest, Ren::BlitMode mode)
 {
     PRE_INFO(*this);
     PRE(!readOnly());
@@ -241,7 +242,7 @@ void RenSurface::simpleBlit(const RenSurface& source, const std::optional<Rect>&
     ASSERT(tmp.originX + tmp.width <= srcW, "Clipping logic error.");
     ASSERT(tmp.originY + tmp.height <= srcH, "Clipping logic error.");
 
-    internals()->unclippedBlit(source.internals(), tmp, dest.x, dest.y);
+    internals()->unclippedBlit(source.internals(), tmp, dest.x, dest.y, mode);
 }
 
 void RenSurface::tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea)
@@ -332,7 +333,7 @@ inline bool surfaceContainsRect(const RenSurface& surf, const Ren::Rect& rect)
         && rect.originY + rect.height <= surf.height();
 }
 
-void RenSurface::stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea)
+void RenSurface::stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea, Ren::BlitMode mode)
 {
     PRE(!readOnly());
 
@@ -342,23 +343,23 @@ void RenSurface::stretchBlit(const RenSurface& source, const Rect& srcArea, cons
     PRE(surfaceContainsRect(source, srcArea));
     PRE(surfaceContainsRect(*this, destArea));
 
-    internals()->unclippedStretchBlit(source.internals(), srcArea, destArea);
+    internals()->unclippedStretchBlit(source.internals(), srcArea, destArea, mode);
 }
 
-void RenSurface::stretchBlit(const RenSurface& source)
+void RenSurface::stretchBlit(const RenSurface& source, Ren::BlitMode mode)
 {
-    stretchBlit(source, source.size(), size());
+    stretchBlit(source, source.size(), size(), mode);
 }
 
-void RenSurface::blitInRequestedSize(const RenSurface& source, Point dest)
+void RenSurface::blitInRequestedSize(const RenSurface& source, Point dest, Ren::BlitMode mode)
 {
     if (source.requestedSize().isNull())
     {
-        simpleBlit(source, {}, dest);
+        simpleBlit(source, {}, dest, mode);
     }
     else
     {
-        stretchBlit(source, source.size(), { dest, source.requestedSize() });
+        stretchBlit(source, source.size(), { dest, source.requestedSize() }, mode);
     }
 }
 

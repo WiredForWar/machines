@@ -133,7 +133,7 @@ GuiBitmap Gui::getScaledImage(std::string path, float scale)
     scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
     scaledSurface.enableColourKeying();
 
-    scaledSurface.stretchBlit(image);
+    scaledSurface.stretchBlit(image, Ren::BlitMode::Replace);
 
     return scaledSurface;
 }

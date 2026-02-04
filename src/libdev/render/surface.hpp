@@ -103,11 +103,12 @@ public:
     //   tiled  = repeated w/o stretching to entirely cover the destination
     // The shorter version of simpleBlit copies the entire source.
     // PRE(source.pixelFormat() == pixelFormat());      applies to all blits
-    void simpleBlit(const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {});
+    void simpleBlit(
+        const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {}, Ren::BlitMode mode = {});
     void tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
-    void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
-    void stretchBlit(const RenSurface& source);
-    void blitInRequestedSize(const RenSurface& source, Point dest);
+    void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea, Ren::BlitMode mode = {});
+    void stretchBlit(const RenSurface& source, Ren::BlitMode mode = {});
+    void blitInRequestedSize(const RenSurface& source, Point dest, Ren::BlitMode mode = {});
     void copyFromRGBABuffer(const uint* buff);
 
     void hollowRectangle(const Rect&, const RenColour&, int thickness);

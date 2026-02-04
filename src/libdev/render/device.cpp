@@ -2038,7 +2038,8 @@ void RenDevice::renderSurface(
     const Ren::Rect& dstArea,
     const uint32_t targetW,
     const uint32_t targetH,
-    const uint32_t colour)
+    const uint32_t colour,
+    Ren::BlitMode mode)
 {
     CB_RENDEVICE_DEPIMPL_GL();
 
@@ -2177,8 +2178,26 @@ void RenDevice::renderSurface(
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
 
+    switch (mode)
+    {
+    case Ren::BlitMode::AlphaBlend:
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        break;
+    case Ren::BlitMode::Replace:
+        glBlendFunc(GL_ONE, GL_ZERO);
+        break;
+    case Ren::BlitMode::DstMulOneMinusSrcAlpha:
+        glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+        break;
+    case Ren::BlitMode::ZeroZero:
+        glBlendFunc(GL_ZERO, GL_ZERO);
+        break;
+    }
+
     // Draw call
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);

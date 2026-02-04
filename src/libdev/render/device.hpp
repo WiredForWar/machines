@@ -305,7 +305,8 @@ public:
         const Ren::Rect& dstArea,
         const uint32_t targetW = 0,
         const uint32_t targetH = 0,
-        const uint32_t colour = 0xFFFFFFFF);
+        const uint32_t colour = 0xFFFFFFFF,
+        Ren::BlitMode mode = Ren::BlitMode::AlphaBlend);
     void renderPrimitive(
         const RenIVertex* vertices,
         const size_t nVertices,
