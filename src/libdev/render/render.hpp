@@ -39,6 +39,7 @@ namespace Ren
     using MaterialIdx = uchar;
     using TexId = uint;
     using ProgramId = uint;
+    using BufferId = uint;
     // TODO init
     // static const uint NullTexId;
 

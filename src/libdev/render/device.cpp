@@ -179,7 +179,9 @@ bool RenDevice::initialize()
     glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
 
     // Initialize VBO
-    glGenBuffers(1, &gl2DVertexBufferID_);
+    GLuint gl2DVertexBuffer = 0;
+    glGenBuffers(1, &gl2DVertexBuffer);
+    gl2DVertexBufferID_ = pImpl_->addGLBuffer(gl2DVertexBuffer);
     // Get a handle for our buffers
     glVertexPosition_screenspaceID_ =
         glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexPosition_screenspace");
@@ -198,8 +200,13 @@ bool RenDevice::initialize()
     glFogColourID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogColour");
     glFogParamsID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogParams");
     // VBO
-    glGenBuffers(1, &glVertexDataBufferID_);
-    glGenBuffers(1, &glElementBufferID_);
+    GLuint glVertexDataBuffer = 0;
+    glGenBuffers(1, &glVertexDataBuffer);
+    glVertexDataBufferID_ = pImpl_->addGLBuffer(glVertexDataBuffer);
+
+    GLuint glElementBuffer = 0;
+    glGenBuffers(1, &glElementBuffer);
+    glElementBufferID_ = pImpl_->addGLBuffer(glElementBuffer);
     // Get a handle for our buffers
     glVertexPosition_modelspaceID_ =
         glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexPosition_modelspace");
@@ -214,8 +221,13 @@ bool RenDevice::initialize()
         return false;
 
     // VBO
-    glGenBuffers(1, &glVertexDataBufferBillboardID_);
-    glGenBuffers(1, &glElementBufferBillboardID_);
+    GLuint glVertexDataBufferBillboard = 0;
+    glGenBuffers(1, &glVertexDataBufferBillboard);
+    glVertexDataBufferBillboardID_ = pImpl_->addGLBuffer(glVertexDataBufferBillboard);
+
+    GLuint glElementBufferBillboard = 0;
+    glGenBuffers(1, &glElementBufferBillboard);
+    glElementBufferBillboardID_ = pImpl_->addGLBuffer(glElementBufferBillboard);
     // Get a handle for our buffers
     glViewProjMatrix_BillboardID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "uVP");
     glVertexPosition_BillboardID_ =
@@ -340,17 +352,15 @@ RenDevice::~RenDevice()
     pImpl_->releaseGLProgram(glProgramID_Standard_);
     pImpl_->releaseGLProgram(glProgramID_GIU2D_);
     pImpl_->releaseGLProgram(glProgramID_Billboard_);
+
+    pImpl_->releaseGLBuffer(gl2DVertexBufferID_);
+    pImpl_->releaseGLBuffer(glVertexDataBufferID_);
+    pImpl_->releaseGLBuffer(glElementBufferID_);
+    pImpl_->releaseGLBuffer(glVertexDataBufferBillboardID_);
+    pImpl_->releaseGLBuffer(glElementBufferBillboardID_);
     if (glOffscreenFrameBuffID_)
     {
         glDeleteRenderbuffers(1, &glOffscreenFrameBuffID_);
-    }
-    if (glVertexDataBufferBillboardID_)
-    {
-        glDeleteBuffers(1, &glVertexDataBufferBillboardID_);
-    }
-    if (glElementBufferBillboardID_)
-    {
-        glDeleteBuffers(1, &glElementBufferBillboardID_);
     }
 
     SDL_GL_MakeCurrent(nullptr, nullptr);
@@ -2148,12 +2158,12 @@ void RenDevice::renderScreenspace(
 
     glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
-    glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
     glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2296,7 +2306,7 @@ void RenDevice::renderSurface(
         vertices[5].tv = uv_down_left[1];
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(RenIVertex), &vertices[0], GL_STREAM_DRAW);
 
     // Bind texture
@@ -2308,7 +2318,7 @@ void RenDevice::renderSurface(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, gl2DVertexBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(gl2DVertexBufferID_));
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2388,7 +2398,7 @@ void RenDevice::renderPrimitive(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferID_));
     glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
@@ -2488,7 +2498,7 @@ void RenDevice::renderIndexed(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferID_));
     glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
@@ -2534,7 +2544,7 @@ void RenDevice::renderIndexed(
     );*/
 
     // Index buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferID_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pImpl_->glBufferHandle(glElementBufferID_));
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
@@ -2583,7 +2593,7 @@ void RenDevice::renderIndexedScreenspace(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
-    glBindBuffer(GL_ARRAY_BUFFER, glVertexDataBufferBillboardID_);
+    glBindBuffer(GL_ARRAY_BUFFER, pImpl_->glBufferHandle(glVertexDataBufferBillboardID_));
     glBufferData(GL_ARRAY_BUFFER, nVertices * sizeof(RenIVertex), vertices, GL_STREAM_DRAW);
     glVertexAttribPointer(
         glVertexPosition_BillboardID_, // The attribute we want to configure
@@ -2617,7 +2627,7 @@ void RenDevice::renderIndexedScreenspace(
     );
 
     // Index buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glElementBufferBillboardID_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pImpl_->glBufferHandle(glElementBufferBillboardID_));
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(unsigned short), indices, GL_STREAM_DRAW);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);

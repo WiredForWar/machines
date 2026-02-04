@@ -159,7 +159,7 @@ private:
     Ren::ProgramId glProgramID_Standard_{};
     Ren::ProgramId glProgramID_Billboard_{};
 
-    GLuint gl2DVertexBufferID_{};
+    Ren::BufferId gl2DVertexBufferID_{};
     GLuint glVertexUVID_{};
     GLuint glVertexPosition_screenspaceID_{};
     GLuint glVertexColour_screenspaceID_{};
@@ -178,15 +178,15 @@ private:
     GLuint glVertexPosition_modelspaceID_{};
     GLuint glVertex_modelspaceUVID_{};
     GLuint glVertexColour_modelspaceID_{};
-    GLuint glVertexDataBufferID_{};
-    GLuint glElementBufferID_{};
+    Ren::BufferId glVertexDataBufferID_{};
+    Ren::BufferId glElementBufferID_{};
 
     GLuint glViewProjMatrix_BillboardID_{};
     GLuint glVertexPosition_BillboardID_{};
     GLuint glVertex_BillboardUVID_{};
     GLuint glVertexColour_BillboardID_{};
-    GLuint glVertexDataBufferBillboardID_{};
-    GLuint glElementBufferBillboardID_{};
+    Ren::BufferId glVertexDataBufferBillboardID_{};
+    Ren::BufferId glElementBufferBillboardID_{};
 
     GLuint glTextureEmptyID_{};
     GLuint glOffscreenFrameBuffID_{};
@@ -197,6 +197,11 @@ private:
     GLuint glProgramHandle(Ren::ProgramId id) const;
     void releaseGLProgram(Ren::ProgramId id);
     std::vector<GLuint> glPrograms_{};
+
+    Ren::BufferId addGLBuffer(GLuint buffer);
+    GLuint glBufferHandle(Ren::BufferId id) const;
+    void releaseGLBuffer(Ren::BufferId id);
+    std::vector<GLuint> glBuffers_{};
 
     DevTimer frameTimer_;
 
