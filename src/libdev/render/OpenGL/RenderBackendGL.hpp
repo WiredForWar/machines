@@ -2,6 +2,7 @@
 
 #include "render/internal/IRenderBackend.hpp"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,15 @@ public:
         const void* data,
         RenBufferUsage usage) override;
 
+    Ren::FramebufferId createFramebuffer() override;
+    void releaseFramebuffer(Ren::FramebufferId id) override;
+
+    void bindFramebuffer(Ren::FramebufferId id) override;
+    void framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle) override;
+
+    void pushFramebuffer() override;
+    void popFramebuffer() override;
+
 private:
     static std::string readTextFile(const std::string& path);
 
@@ -56,8 +66,12 @@ private:
 
     GLuint bufferHandle(Ren::BufferId id) const;
 
+    GLuint framebufferHandle(Ren::FramebufferId id) const;
+
     std::vector<GLuint> programs_{};
     std::vector<GLuint> buffers_{};
+    std::vector<GLuint> framebuffers_{};
+    std::vector<GLuint> framebufferStack_{};
     bool initialized_{};
 };
 

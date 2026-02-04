@@ -200,11 +200,6 @@ private:
     const RenIRenderBackend& renderBackend() const;
     std::unique_ptr<RenIRenderBackend> backend_{};
 
-    Ren::FramebufferId addGLFramebuffer(GLuint framebuffer);
-    GLuint glFramebufferHandle(Ren::FramebufferId id) const;
-    void releaseGLFramebuffer(Ren::FramebufferId id);
-    std::vector<GLuint> glFramebuffers_{};
-
     DevTimer frameTimer_;
 
     bool videoMemoryShared_;

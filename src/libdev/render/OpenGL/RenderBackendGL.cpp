@@ -10,6 +10,7 @@ namespace Ren::OpenGL
 RenderBackendGL::RenderBackendGL()
     : programs_{0,}
     , buffers_{0,}
+    , framebuffers_{0,}
 {
 }
 
@@ -54,6 +55,18 @@ GLuint RenderBackendGL::bufferHandle(Ren::BufferId id) const
         return 0;
 
     return buffers_[idx];
+}
+
+GLuint RenderBackendGL::framebufferHandle(Ren::FramebufferId id) const
+{
+    if (id == 0)
+        return 0;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= framebuffers_.size())
+        return 0;
+
+    return framebuffers_[idx];
 }
 
 std::string RenderBackendGL::readTextFile(const std::string& path)
@@ -257,6 +270,65 @@ void RenderBackendGL::releaseBuffer(Ren::BufferId id)
     {
         glDeleteBuffers(1, &buffer);
         buffers_[idx] = 0;
+    }
+}
+
+Ren::FramebufferId RenderBackendGL::createFramebuffer()
+{
+    GLuint framebuffer = 0;
+    glGenFramebuffers(1, &framebuffer);
+    if (framebuffer == 0)
+        return 0;
+
+    framebuffers_.push_back(framebuffer);
+    return static_cast<Ren::FramebufferId>(framebuffers_.size() - 1);
+}
+
+void RenderBackendGL::bindFramebuffer(Ren::FramebufferId id)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
+}
+
+void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle)
+{
+    const GLenum glAttachment = (attachment == RenFramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, static_cast<GLuint>(textureHandle), 0);
+}
+
+void RenderBackendGL::pushFramebuffer()
+{
+    GLint current = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current);
+    framebufferStack_.push_back(static_cast<GLuint>(current));
+}
+
+void RenderBackendGL::popFramebuffer()
+{
+    if (framebufferStack_.empty())
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        return;
+    }
+
+    const GLuint restore = framebufferStack_.back();
+    framebufferStack_.pop_back();
+    glBindFramebuffer(GL_FRAMEBUFFER, restore);
+}
+
+void RenderBackendGL::releaseFramebuffer(Ren::FramebufferId id)
+{
+    if (id == 0)
+        return;
+
+    const std::size_t idx = static_cast<std::size_t>(id);
+    if (idx >= framebuffers_.size())
+        return;
+
+    const GLuint framebuffer = framebuffers_[idx];
+    if (framebuffer != 0)
+    {
+        glDeleteFramebuffers(1, &framebuffer);
+        framebuffers_[idx] = 0;
     }
 }
 

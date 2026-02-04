@@ -3,6 +3,7 @@
 #include "render/render.hpp"
 
 #include <cstddef>
+#include <cstdint>
 #include <string_view>
 
 enum class RenBufferTarget
@@ -14,6 +15,11 @@ enum class RenBufferTarget
 enum class RenBufferUsage
 {
     StreamDraw,
+};
+
+enum class RenFramebufferAttachment
+{
+    Color0,
 };
 
 class RenIRenderBackend
@@ -46,4 +52,13 @@ public:
     virtual void bufferData(
         RenBufferTarget target, Ren::BufferId id, std::size_t sizeBytes, const void* data, RenBufferUsage usage)
         = 0;
+
+    virtual Ren::FramebufferId createFramebuffer() = 0;
+    virtual void releaseFramebuffer(Ren::FramebufferId id) = 0;
+
+    virtual void bindFramebuffer(Ren::FramebufferId id) = 0;
+    virtual void framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle) = 0;
+
+    virtual void pushFramebuffer() = 0;
+    virtual void popFramebuffer() = 0;
 };

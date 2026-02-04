@@ -233,9 +233,7 @@ bool RenDevice::initialize()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
 
     // Prepare framebuffer for offscreen rendering
-    GLuint glOffscreenFrameBuff = 0;
-    glGenFramebuffers(1, &glOffscreenFrameBuff);
-    glOffscreenFrameBuffID_ = pImpl_->addGLFramebuffer(glOffscreenFrameBuff);
+    glOffscreenFrameBuffID_ = pImpl_->renderBackend().createFramebuffer();
 
     pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
 
@@ -349,7 +347,7 @@ RenDevice::~RenDevice()
     pImpl_->renderBackend().releaseBuffer(glElementBufferID_);
     pImpl_->renderBackend().releaseBuffer(glVertexDataBufferBillboardID_);
     pImpl_->renderBackend().releaseBuffer(glElementBufferBillboardID_);
-    pImpl_->releaseGLFramebuffer(glOffscreenFrameBuffID_);
+    pImpl_->renderBackend().releaseFramebuffer(glOffscreenFrameBuffID_);
 
     if (glTextureEmptyID_)
     {
@@ -2009,21 +2007,22 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
 {
     CB_RENDEVICE_DEPIMPL_GL();
 
-    static GLint lastFrameBuff = 0;
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &lastFrameBuff);
-        glBindFramebuffer(GL_FRAMEBUFFER, pImpl_->glFramebufferHandle(glOffscreenFrameBuffID_));
+        pImpl_->renderBackend().pushFramebuffer();
+        pImpl_->renderBackend().bindFramebuffer(glOffscreenFrameBuffID_);
         RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(targetTexture);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, surfBody ? surfBody->handle() : 0, 0);
+        pImpl_->renderBackend().framebufferTexture2D(
+            RenFramebufferAttachment::Color0,
+            static_cast<uint32_t>(surfBody ? surfBody->handle() : 0));
         glViewport(0, 0, viewPortW, viewPortH);
     }
     // Bind FBO to screen
     else
     {
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, lastFrameBuff);
+        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, 0);
+        pImpl_->renderBackend().popFramebuffer();
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
         glViewport(0, 0, mode.width(), mode.height());
     }
