@@ -162,9 +162,9 @@ private:
     Ren::ProgramId glProgramID_Billboard_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
-    GLuint glVertexUVID_{};
-    GLuint glVertexPosition_screenspaceID_{};
-    GLuint glVertexColour_screenspaceID_{};
+    int glVertexUVID_{};
+    int glVertexPosition_screenspaceID_{};
+    int glVertexColour_screenspaceID_{};
     GLuint glScreenspaceID_{};
 
     GLuint gl2DUniformID_{};
@@ -177,16 +177,16 @@ private:
     GLuint glFogColourID_{};
     GLuint glFogParamsID_{};
 
-    GLuint glVertexPosition_modelspaceID_{};
-    GLuint glVertex_modelspaceUVID_{};
-    GLuint glVertexColour_modelspaceID_{};
+    int glVertexPosition_modelspaceID_{};
+    int glVertex_modelspaceUVID_{};
+    int glVertexColour_modelspaceID_{};
     Ren::BufferId glVertexDataBufferID_{};
     Ren::BufferId glElementBufferID_{};
 
     GLuint glViewProjMatrix_BillboardID_{};
-    GLuint glVertexPosition_BillboardID_{};
-    GLuint glVertex_BillboardUVID_{};
-    GLuint glVertexColour_BillboardID_{};
+    int glVertexPosition_BillboardID_{};
+    int glVertex_BillboardUVID_{};
+    int glVertexColour_BillboardID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
 
@@ -194,12 +194,11 @@ private:
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     SDL_GLContext SDLGlContext_{};
-    std::unique_ptr<RenIRenderBackend> backend_{};
 
-    Ren::ProgramId addGLProgram(GLuint program);
-    GLuint glProgramHandle(Ren::ProgramId id) const;
     void releaseGLProgram(Ren::ProgramId id);
-    std::vector<GLuint> glPrograms_{};
+    RenIRenderBackend& renderBackend();
+    const RenIRenderBackend& renderBackend() const;
+    std::unique_ptr<RenIRenderBackend> backend_{};
 
     Ren::BufferId addGLBuffer(GLuint buffer);
     GLuint glBufferHandle(Ren::BufferId id) const;

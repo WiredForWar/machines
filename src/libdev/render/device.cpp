@@ -185,21 +185,21 @@ bool RenDevice::initialize()
     gl2DVertexBufferID_ = pImpl_->addGLBuffer(gl2DVertexBuffer);
     // Get a handle for our buffers
     glVertexPosition_screenspaceID_ =
-        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexPosition_screenspace");
-    glVertexUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexUV");
-    glVertexColour_screenspaceID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "vertexColor");
-    glScreenspaceID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "uScreenspace");
+        pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
+    glVertexUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexUV");
+    glVertexColour_screenspaceID_ = pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexColor");
+    glScreenspaceID_ = pImpl_->renderBackend().uniformLocation(glProgramID_GIU2D_, "uScreenspace");
     // Initialize uniforms' IDs
-    gl2DUniformID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_GIU2D_), "uTextureSampler");
+    gl2DUniformID_ = pImpl_->renderBackend().uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
 
     glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
 
     // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uM");
-    glViewMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uV");
-    glProjectionMatrixID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uP");
-    glFogColourID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogColour");
-    glFogParamsID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uFogParams");
+    glModelMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uM");
+    glViewMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uV");
+    glProjectionMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uP");
+    glFogColourID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogColour");
+    glFogParamsID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogParams");
     // VBO
     GLuint glVertexDataBuffer = 0;
     glGenBuffers(1, &glVertexDataBuffer);
@@ -210,10 +210,10 @@ bool RenDevice::initialize()
     glElementBufferID_ = pImpl_->addGLBuffer(glElementBuffer);
     // Get a handle for our buffers
     glVertexPosition_modelspaceID_ =
-        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexColor");
-    glVertex_modelspaceUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "vertexUV");
-    glTextureSamplerID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Standard_), "uTextureSampler2");
+        pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
+    glVertexColour_modelspaceID_ = pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexColor");
+    glVertex_modelspaceUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexUV");
+    glTextureSamplerID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uTextureSampler2");
 
     glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
 
@@ -230,13 +230,13 @@ bool RenDevice::initialize()
     glGenBuffers(1, &glElementBufferBillboard);
     glElementBufferBillboardID_ = pImpl_->addGLBuffer(glElementBufferBillboard);
     // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "uVP");
+    glViewProjMatrix_BillboardID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uVP");
     glVertexPosition_BillboardID_ =
-        glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexColor");
-    glVertex_BillboardUVID_ = glGetAttribLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "vertexUV");
+        pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
+    glVertexColour_BillboardID_ = pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexColor");
+    glVertex_BillboardUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexUV");
     glTextureSamplerBillboardID_ =
-        glGetUniformLocation(pImpl_->glProgramHandle(glProgramID_Billboard_), "uTextureSampler");
+        pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uTextureSampler");
 
     // Create empty texture
     glGenTextures(1, &glTextureEmptyID_);
@@ -347,11 +347,10 @@ RenDevice::~RenDevice()
         delete pImpl_->surfFrontBuf_;
     }
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     // Delete shaders
 
-    glUseProgram(0);
+    pImpl_->renderBackend().useProgram(0);
 
     pImpl_->releaseGLProgram(glProgramID_Standard_);
     pImpl_->releaseGLProgram(glProgramID_GIU2D_);
@@ -370,7 +369,7 @@ RenDevice::~RenDevice()
         glTextureEmptyID_ = 0;
     }
 
-    backend_->shutdown();
+    pImpl_->renderBackend().shutdown();
 
     SDL_GL_MakeCurrent(nullptr, nullptr);
 
@@ -395,110 +394,11 @@ Ren::ProgramId RenDevice::loadShaders(const char* vertexShaderPath, const char* 
     if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
         shadersDir.append("120/");
 
-    const auto getShaderCode = [](const std::string& path) -> std::string {
-        spdlog::debug("Loading the shader code from {}", path);
-
-        std::string shaderCode;
-        std::ifstream shaderStream(path, std::ios::in);
-        if (!shaderStream.is_open())
-        {
-            return std::string();
-        }
-
-        std::string line;
-        while (getline(shaderStream, line))
-        {
-            shaderCode += line + "\n";
-        }
-
-        return shaderCode;
-    };
-
     const std::string vertexShaderFile = shadersDir + vertexShaderPath;
-    const std::string vertexShaderCode = getShaderCode(vertexShaderFile);
-    if (vertexShaderCode.empty())
-    {
-        spdlog::error("Unable to read the vertex shader file {}", vertexShaderFile);
-        return 0;
-    }
-
-    // Read the Fragment Shader code from the file
     const std::string fragmentShaderFile = shadersDir + fragmentShaderPath;
-    const std::string fragmentShaderCode = getShaderCode(fragmentShaderFile);
-    if (fragmentShaderCode.empty())
-    {
-        spdlog::error("Unable to read the fragment shader file {}", fragmentShaderFile);
-        return 0;
-    }
 
-    const auto compileShader = [](GLuint shaderID, const std::string& code) -> bool {
-        char const* sourcePointer = code.c_str();
-        glShaderSource(shaderID, 1, &sourcePointer, nullptr);
-        glCompileShader(shaderID);
-
-        GLint result = GL_FALSE;
-
-        // Check Vertex Shader
-        glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
-        if (result == GL_FALSE)
-        {
-            std::string errorMessage;
-            int infoLogLength;
-            glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-            if (infoLogLength > 2)
-            {
-                errorMessage.resize(infoLogLength);
-                glGetShaderInfoLog(shaderID, infoLogLength, nullptr, &errorMessage[0]);
-            }
-            spdlog::error("Shader compile error: {}", errorMessage);
-        }
-
-        return result == GL_TRUE;
-    };
-
-    // Compile Vertex Shader
-    spdlog::debug("Compiling the vx shader {}", vertexShaderPath);
-    GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-    if (!compileShader(vertexShaderID, vertexShaderCode))
-        return 0;
-
-    // Compile Fragment Shader
-    spdlog::debug("Compiling the fg shader {}", fragmentShaderPath);
-    GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-    if (!compileShader(fragmentShaderID, fragmentShaderCode))
-        return 0;
-
-    // Link the program
-    spdlog::debug("Linking the shader program");
-    GLuint programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
-    glLinkProgram(programID);
-
-    GLint result = GL_FALSE;
-
-    // Check the program
-    glGetProgramiv(programID, GL_LINK_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        std::string errorMessage;
-        int infoLogLength;
-        glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
-        if (infoLogLength > 2)
-        {
-            errorMessage.resize(infoLogLength);
-            glGetProgramInfoLog(programID, infoLogLength, nullptr, &errorMessage[0]);
-        }
-        spdlog::error("Shader program link error: {}", errorMessage);
-    }
-
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-
-    return pImpl_->addGLProgram(programID);
+    return pImpl_->renderBackend().createProgramFromFiles(
+        vertexShaderFile, fragmentShaderFile, vertexShaderPath, fragmentShaderPath);
 }
 
 void RenDevice::clearAllSurfaces(const RenColour& colour)
@@ -572,7 +472,6 @@ void RenDevice::initializeDisplay()
 bool RenDevice::initializeContext()
 {
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     constexpr int contextMajorVersion = 2;
     constexpr int contextMinorVersion = 1;
@@ -632,7 +531,7 @@ bool RenDevice::initializeContext()
         return false;
     }
 
-    if (!backend_->initialize())
+    if (!pImpl_->renderBackend().initialize())
     {
         spdlog::error("Render backend initialization failed");
         return false;
@@ -2044,11 +1943,10 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
 void RenDevice::setVSyncPreference(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     vsyncEnabled_ = enabled;
 
-    if (backend_->isInitialized())
+    if (pImpl_->renderBackend().isInitialized())
     {
         if (!setVSync(enabled))
         {
@@ -2060,9 +1958,8 @@ void RenDevice::setVSyncPreference(bool enabled)
 bool RenDevice::setVSync(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    if (!backend_->isInitialized())
+    if (!pImpl_->renderBackend().isInitialized())
     {
         spdlog::warn("Cannot set VSync: backend not initialised yet");
         return false;
@@ -2157,7 +2054,7 @@ void RenDevice::renderScreenspace(
 {
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(pImpl_->glProgramHandle(glProgramID_GIU2D_));
+    pImpl_->renderBackend().useProgram(glProgramID_GIU2D_);
 
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
@@ -2254,7 +2151,7 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    glUseProgram(pImpl_->glProgramHandle(glProgramID_GIU2D_));
+    pImpl_->renderBackend().useProgram(glProgramID_GIU2D_);
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
@@ -2388,7 +2285,7 @@ void RenDevice::renderPrimitive(
     CB_RENDEVICE_DEPIMPL_GL();
 
     // Use our shader
-    glUseProgram(pImpl_->glProgramHandle(glProgramID_Standard_));
+    pImpl_->renderBackend().useProgram(glProgramID_Standard_);
 
     if (standardUniformsDirty_)
     {
@@ -2486,7 +2383,7 @@ void RenDevice::renderIndexed(
 
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(pImpl_->glProgramHandle(glProgramID_Standard_));
+    pImpl_->renderBackend().useProgram(glProgramID_Standard_);
     // Compute the MVP matrix from keyboard and mouse input
 
     //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
@@ -2595,7 +2492,7 @@ void RenDevice::renderIndexedScreenspace(
 
     CB_RENDEVICE_DEPIMPL_GL();
 
-    glUseProgram(pImpl_->glProgramHandle(glProgramID_Billboard_));
+    pImpl_->renderBackend().useProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     bindTexture(mat.texture(), TextureUnit);

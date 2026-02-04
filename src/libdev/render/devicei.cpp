@@ -35,7 +35,6 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , debugX_(0)
     , debugY_(0)
     , backend_(std::make_unique<Ren::OpenGL::RenderBackendGL>())
-    , glPrograms_{0,}
     , glBuffers_{0,}
     , glFramebuffers_{0,}
     , frameTimer_()
@@ -55,42 +54,19 @@ RenIDeviceImpl::~RenIDeviceImpl()
     delete driverSelector_;
 }
 
-Ren::ProgramId RenIDeviceImpl::addGLProgram(GLuint program)
-{
-    if (program == 0)
-        return 0;
-
-    glPrograms_.push_back(program);
-    return static_cast<Ren::ProgramId>(glPrograms_.size() - 1);
-}
-
-GLuint RenIDeviceImpl::glProgramHandle(Ren::ProgramId id) const
-{
-    if (id == 0)
-        return 0;
-
-    const std::size_t idx = static_cast<std::size_t>(id);
-    if (idx >= glPrograms_.size())
-        return 0;
-
-    return glPrograms_[idx];
-}
-
 void RenIDeviceImpl::releaseGLProgram(Ren::ProgramId id)
 {
-    if (id == 0)
-        return;
+    renderBackend().releaseProgram(id);
+}
 
-    const std::size_t idx = static_cast<std::size_t>(id);
-    if (idx >= glPrograms_.size())
-        return;
+RenIRenderBackend& RenIDeviceImpl::renderBackend()
+{
+    return *backend_;
+}
 
-    const GLuint program = glPrograms_[idx];
-    if (program != 0)
-    {
-        glDeleteProgram(program);
-        glPrograms_[idx] = 0;
-    }
+const RenIRenderBackend& RenIDeviceImpl::renderBackend() const
+{
+    return *backend_;
 }
 
 Ren::BufferId RenIDeviceImpl::addGLBuffer(GLuint buffer)
