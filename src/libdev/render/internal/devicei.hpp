@@ -20,6 +20,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 
+#include <memory>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -35,6 +36,7 @@ class RenIViewportMapping;
 class RenIDepthPostSorter;
 class RenIPriorityPostSorter;
 class RenDriverSelector;
+class RenIRenderBackend;
 
 class RenIDeviceImpl : public RenIDisplayModeObserver
 {
@@ -192,6 +194,7 @@ private:
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     SDL_GLContext SDLGlContext_{};
+    std::unique_ptr<RenIRenderBackend> backend_{};
 
     Ren::ProgramId addGLProgram(GLuint program);
     GLuint glProgramHandle(Ren::ProgramId id) const;

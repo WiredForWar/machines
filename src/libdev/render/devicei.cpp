@@ -14,6 +14,8 @@
 #include "render/drivsel.hpp"
 #include "render/material.hpp"
 
+#include "render/OpenGL/RenderBackendGL.hpp"
+
 #include "system/pathname.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/displayi.hpp"
@@ -32,6 +34,7 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , materialFogMultiplier_(1.0)
     , debugX_(0)
     , debugY_(0)
+    , backend_(std::make_unique<Ren::OpenGL::RenderBackendGL>())
     , glPrograms_{0,}
     , glBuffers_{0,}
     , glFramebuffers_{0,}

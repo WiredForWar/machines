@@ -5,6 +5,8 @@ set(RENDER_SOURCES
     Font.hpp
     FontsManager.cpp
     FontsManager.hpp
+    OpenGL/RenderBackendGL.cpp
+    OpenGL/RenderBackendGL.hpp
     OpenGL/Utils.hpp
     PrimitiveTopology.hpp
     TextOptions.hpp
@@ -54,6 +56,7 @@ set(RENDER_SOURCES
     inlight.cpp
     inpoints.cpp
     internal/FontImpl.hpp
+    internal/IRenderBackend.hpp
     internal/alphagrp.hpp
     internal/capablei.hpp
     internal/capablei.ipp

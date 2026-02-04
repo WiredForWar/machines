@@ -38,6 +38,7 @@
 
 #include "render/OpenGL/Utils.hpp"
 
+#include "render/internal/IRenderBackend.hpp"
 #include "render/internal/devicei.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/internal.hpp"
@@ -346,6 +347,7 @@ RenDevice::~RenDevice()
         delete pImpl_->surfFrontBuf_;
     }
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     // Delete shaders
 
@@ -367,6 +369,8 @@ RenDevice::~RenDevice()
         glDeleteTextures(1, &glTextureEmptyID_);
         glTextureEmptyID_ = 0;
     }
+
+    backend_->shutdown();
 
     SDL_GL_MakeCurrent(nullptr, nullptr);
 
@@ -568,6 +572,7 @@ void RenDevice::initializeDisplay()
 bool RenDevice::initializeContext()
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     constexpr int contextMajorVersion = 2;
     constexpr int contextMinorVersion = 1;
@@ -624,6 +629,12 @@ bool RenDevice::initializeContext()
         SysWindowsAPI::messageBox(
             "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
             "Error");
+        return false;
+    }
+
+    if (!backend_->initialize())
+    {
+        spdlog::error("Render backend initialization failed");
         return false;
     }
 
@@ -2033,10 +2044,11 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
 void RenDevice::setVSyncPreference(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     vsyncEnabled_ = enabled;
 
-    if (SDLGlContext_)
+    if (backend_->isInitialized())
     {
         if (!setVSync(enabled))
         {
@@ -2048,10 +2060,11 @@ void RenDevice::setVSyncPreference(bool enabled)
 bool RenDevice::setVSync(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
-    if (!SDLGlContext_)
+    if (!backend_->isInitialized())
     {
-        spdlog::warn("Cannot set VSync: GL context not initialised yet");
+        spdlog::warn("Cannot set VSync: backend not initialised yet");
         return false;
     }
 
