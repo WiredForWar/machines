@@ -68,6 +68,9 @@ public:
     virtual void bindFramebuffer(Ren::FramebufferId id) = 0;
     virtual void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) = 0;
 
+    virtual bool beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture) = 0;
+    virtual void endRenderToTexture() = 0;
+
     virtual void pushFramebuffer() = 0;
     virtual void popFramebuffer() = 0;
 

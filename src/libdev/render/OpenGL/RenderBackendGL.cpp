@@ -433,6 +433,39 @@ void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, 
     glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
 }
 
+bool RenderBackendGL::beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture)
+{
+    if (framebuffer == 0)
+        return false;
+
+    if (targetTexture == Ren::NullTexId)
+        return false;
+
+    pushFramebuffer();
+    bindFramebuffer(framebuffer);
+    framebufferTexture2D(RenFramebufferAttachment::Color0, targetTexture);
+
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
+        popFramebuffer();
+        return false;
+    }
+
+    return true;
+}
+
+void RenderBackendGL::endRenderToTexture()
+{
+    if (!framebufferStack_.empty())
+    {
+        framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
+    }
+    popFramebuffer();
+}
+
 void RenderBackendGL::pushFramebuffer()
 {
     GLint current = 0;

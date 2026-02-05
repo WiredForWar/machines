@@ -1897,22 +1897,22 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        pImpl_->renderBackend().pushFramebuffer();
-        pImpl_->renderBackend().bindFramebuffer(glOffscreenFrameBuffID_);
-        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, targetTexture);
-        glViewport(0, 0, viewPortW, viewPortH);
+        if (pImpl_->renderBackend().beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
+        {
+            glViewport(0, 0, viewPortW, viewPortH);
+        }
+        else
+        {
+            std::cerr << "Error when binding FBO" << std::endl;
+        }
     }
     // Bind FBO to screen
     else
     {
-        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
-        pImpl_->renderBackend().popFramebuffer();
+        pImpl_->renderBackend().endRenderToTexture();
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
         glViewport(0, 0, mode.width(), mode.height());
     }
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cerr << "Error when binding FBO" << std::endl;
 }
 
 void RenDevice::renderScreenspace(

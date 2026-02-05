@@ -54,6 +54,9 @@ public:
     void bindFramebuffer(Ren::FramebufferId id) override;
     void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) override;
 
+    bool beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture) override;
+    void endRenderToTexture() override;
+
     void pushFramebuffer() override;
     void popFramebuffer() override;
     void bindTexture2D(Ren::TexId id, std::uint32_t unit) override;
