@@ -2,6 +2,8 @@
 
 #include "spdlog/spdlog.h"
 
+#include <SDL.h>
+
 #include <fstream>
 
 namespace Ren::OpenGL
@@ -31,6 +33,43 @@ void RenderBackendGL::shutdown()
 bool RenderBackendGL::isInitialized() const
 {
     return initialized_;
+}
+
+bool RenderBackendGL::setVSync(bool enabled)
+{
+    if (!isInitialized())
+    {
+        spdlog::warn("Cannot set VSync: backend not initialised yet");
+        return false;
+    }
+
+    bool success{};
+
+    if (enabled)
+    {
+        if (SDL_GL_SetSwapInterval(-1) == 0)
+        {
+            spdlog::info("Adaptive VSync enabled");
+            success = true;
+        }
+        else if (SDL_GL_SetSwapInterval(1) == 0)
+        {
+            spdlog::info("Standard VSync enabled (adaptive unavailable: {})", SDL_GetError());
+            success = true;
+        }
+    }
+    else if (SDL_GL_SetSwapInterval(0) == 0)
+    {
+        spdlog::info("VSync disabled");
+        success = true;
+    }
+
+    if (!success)
+    {
+        spdlog::warn("Failed to apply VSync setting (enabled={}): {}", enabled, SDL_GetError());
+    }
+
+    return success;
 }
 
 GLuint RenderBackendGL::programHandle(Ren::ProgramId id) const

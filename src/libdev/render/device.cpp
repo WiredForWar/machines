@@ -523,6 +523,11 @@ bool RenDevice::initializeContext()
         return false;
     }
 
+    if (!setVSync(vsyncEnabled_))
+    {
+        spdlog::warn("Failed to apply VSync preference ({}) during context creation", vsyncEnabled_);
+    }
+
     // glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
@@ -1951,35 +1956,11 @@ bool RenDevice::setVSync(bool enabled)
         return false;
     }
 
-    bool success{};
-
-    if (enabled)
+    const bool success = pImpl_->renderBackend().setVSync(enabled);
+    if (success)
     {
-        if (SDL_GL_SetSwapInterval(-1) == 0)
-        {
-            vsyncEnabled_ = true;
-            spdlog::info("Adaptive VSync enabled");
-            success = true;
-        }
-        else if (SDL_GL_SetSwapInterval(1) == 0)
-        {
-            vsyncEnabled_ = true;
-            spdlog::info("Standard VSync enabled (adaptive unavailable: {})", SDL_GetError());
-            success = true;
-        }
+        vsyncEnabled_ = enabled;
     }
-    else if (SDL_GL_SetSwapInterval(0) == 0)
-    {
-        vsyncEnabled_ = false;
-        spdlog::info("VSync disabled");
-        success = true;
-    }
-
-    if (!success)
-    {
-        spdlog::warn("Failed to apply VSync setting (enabled={}): {}", enabled, SDL_GetError());
-    }
-
     return success;
 }
 

@@ -32,6 +32,8 @@ public:
 
     virtual bool isInitialized() const = 0;
 
+    virtual bool setVSync(bool enabled) = 0;
+
     virtual Ren::ProgramId createProgramFromFiles(
         std::string_view vertexShaderPath,
         std::string_view fragmentShaderPath,

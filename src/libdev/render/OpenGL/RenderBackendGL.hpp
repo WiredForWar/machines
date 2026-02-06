@@ -21,6 +21,8 @@ public:
 
     bool isInitialized() const override;
 
+    bool setVSync(bool enabled) override;
+
     Ren::ProgramId createProgramFromFiles(
         std::string_view vertexShaderPath,
         std::string_view fragmentShaderPath,
