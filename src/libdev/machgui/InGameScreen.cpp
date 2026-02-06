@@ -2892,8 +2892,8 @@ void MachInGameScreen::setupChatMessages()
         Gui::Box(
             Gui::Coord(chatMessagesX, chatMessagesY),
             MachGuiInGameChatMessages::reqWidth(),
-            MachGuiInGameChatMessages::reqHeight()),
-        &worldViewWindow());
+            MachGuiInGameChatMessages::reqHeight()));
+    pChatMessageDisplay_->setPassEventsTo(&worldViewWindow());
 }
 
 void MachInGameScreen::setupNavigators()

@@ -30,6 +30,7 @@ public:
     void doDisplay() override;
 
     void forceUpdate();
+    void setPassEventsTo(GuiDisplayable*);
 
 protected:
     // virtual void doHandleMouseClickEvent( const GuiMouseEvent& rel );

@@ -53,29 +53,6 @@ MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayabl
     TEST_INVARIANT;
 }
 
-MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(
-    GuiDisplayable* pParent,
-    const Gui::Box& relBox,
-    GuiDisplayable* pPassEventsTo)
-    : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
-    , pImpl_(new MachGuiInGameChatMessagesDisplayImpl())
-{
-    CB_DEPIMPL(GuiBitmap, textBmp_);
-    CB_DEPIMPL(GuiDisplayable*, pPassEventsTo_);
-
-    textBmp_ = RenSurface::createAnonymousSurface(
-        width(),
-        height(),
-        W4dManager::instance().sceneManager()->pDevice()->backSurface());
-    textBmp_.enableColourKeying();
-
-    pPassEventsTo_ = pPassEventsTo;
-
-    redrawEveryFrame(true);
-
-    TEST_INVARIANT;
-}
-
 MachGuiInGameChatMessagesDisplay::~MachGuiInGameChatMessagesDisplay()
 {
     TEST_INVARIANT;
@@ -140,6 +117,12 @@ void MachGuiInGameChatMessagesDisplay::forceUpdate()
     CB_DEPIMPL(bool, forceUpdate_);
 
     forceUpdate_ = true;
+}
+
+void MachGuiInGameChatMessagesDisplay::setPassEventsTo(GuiDisplayable* pPassEventsTo)
+{
+    CB_DEPIMPL_AUTO(pPassEventsTo_);
+    pPassEventsTo_ = pPassEventsTo;
 }
 
 /* NA 30/11/98. New processesMouseEvents added to GuiDisplayable means I don't need these
