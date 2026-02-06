@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <SDL.h>
+
 #include <GL/glew.h>
 
 namespace Ren::OpenGL
@@ -16,7 +18,7 @@ class RenderBackendGL final : public RenIRenderBackend
 public:
     RenderBackendGL();
 
-    bool initialize() override;
+    bool initialize(SDL_Window* window) override;
     void shutdown() override;
 
     bool isInitialized() const override;
@@ -75,6 +77,9 @@ private:
     std::vector<GLuint> framebuffers_{};
     std::vector<GLuint> framebufferStack_{};
     bool initialized_{};
+
+    SDL_Window* window_{};
+    SDL_GLContext glContext_{};
 };
 
 } // namespace Ren::OpenGL

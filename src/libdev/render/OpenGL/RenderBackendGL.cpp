@@ -16,10 +16,64 @@ RenderBackendGL::RenderBackendGL()
 {
 }
 
-bool RenderBackendGL::initialize()
+bool RenderBackendGL::initialize(SDL_Window* window)
 {
     if (initialized_)
         return false;
+
+    if (window == nullptr)
+        return false;
+
+    window_ = window;
+
+    constexpr int contextMajorVersion = 2;
+    constexpr int contextMinorVersion = 1;
+    constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
+
+    spdlog::info("Context version: {}.{} (SDL profile: {})", contextMajorVersion, contextMinorVersion, contextProfile);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, contextMajorVersion);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, contextMinorVersion);
+    if (contextProfile)
+    {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, contextProfile);
+    }
+
+    glContext_ = SDL_GL_CreateContext(window_);
+    if (glContext_ == nullptr)
+    {
+        spdlog::error("Fatal in SDL_GL_CreateContext: {}", SDL_GetError());
+        window_ = nullptr;
+        return false;
+    }
+
+    const auto getGlStringAsConstChar = [](GLenum name) {
+        auto pString = glGetString(name);
+        return pString ? reinterpret_cast<const char*>(pString) : "<null>";
+    };
+
+    {
+        spdlog::info("GL_RENDERER: {}", getGlStringAsConstChar(GL_RENDERER));
+        spdlog::info("GL_VERSION: {}", getGlStringAsConstChar(GL_VERSION));
+        spdlog::info("GL_VENDOR: {}", getGlStringAsConstChar(GL_VENDOR));
+        spdlog::info("GL_SHADING_LANGUAGE_VERSION: {}", getGlStringAsConstChar(GL_SHADING_LANGUAGE_VERSION));
+    }
+
+    spdlog::info("Initializing GLEW...");
+    const GLenum glew_status = glewInit();
+    if (glew_status != GLEW_OK)
+    {
+        spdlog::error("Fatal in glewInit: {}", reinterpret_cast<const char*>(glewGetErrorString(glew_status)));
+        shutdown();
+        return false;
+    }
+
+    if (!GLEW_VERSION_2_1)
+    {
+        spdlog::error("GLEW reports that OpengGL 2.1 is not available");
+        shutdown();
+        return false;
+    }
 
     initialized_ = true;
     return true;
@@ -28,6 +82,15 @@ bool RenderBackendGL::initialize()
 void RenderBackendGL::shutdown()
 {
     initialized_ = false;
+
+    if (glContext_ != nullptr)
+    {
+        SDL_GL_MakeCurrent(nullptr, nullptr);
+        SDL_GL_DeleteContext(glContext_);
+        glContext_ = nullptr;
+    }
+
+    window_ = nullptr;
 }
 
 bool RenderBackendGL::isInitialized() const

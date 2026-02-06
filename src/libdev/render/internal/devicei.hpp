@@ -17,7 +17,6 @@
 #include "render/render.hpp"
 #include "device/timer.hpp"
 
-#include <SDL.h>
 #include <GL/glew.h>
 
 #include <memory>
@@ -192,8 +191,6 @@ private:
 
     GLuint glTextureEmptyID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};
-
-    SDL_GLContext SDLGlContext_{};
 
     void releaseGLProgram(Ren::ProgramId id);
     RenIRenderBackend& renderBackend();

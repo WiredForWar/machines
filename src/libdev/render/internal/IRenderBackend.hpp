@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <string_view>
 
+struct SDL_Window;
+
 enum class RenBufferTarget
 {
     Array,
@@ -27,7 +29,7 @@ class RenIRenderBackend
 public:
     virtual ~RenIRenderBackend() = default;
 
-    virtual bool initialize() = 0;
+    virtual bool initialize(SDL_Window* window) = 0;
     virtual void shutdown() = 0;
 
     virtual bool isInitialized() const = 0;

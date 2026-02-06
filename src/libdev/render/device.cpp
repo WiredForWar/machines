@@ -69,7 +69,6 @@
 
 #include <algorithm>
 
-#include <SDL.h>
 #include <GL/glew.h>
 
 #define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
@@ -102,8 +101,7 @@
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
     CB_DEPIMPL_AUTO(glTextureEmptyID_);                                                                                \
-    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);                                                                           \
-    CB_DEPIMPL_AUTO(SDLGlContext_);
+    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);
 
 RenDevice::RenDevice(RenDisplay* display)
     : pImpl_(new RenIDeviceImpl(display, this))
@@ -357,10 +355,6 @@ RenDevice::~RenDevice()
 
     pImpl_->renderBackend().shutdown();
 
-    SDL_GL_MakeCurrent(nullptr, nullptr);
-
-    SDL_GL_DeleteContext(SDLGlContext_);
-
     delete pImpl_;
 
     pImpl_ = nullptr;
@@ -459,65 +453,11 @@ bool RenDevice::initializeContext()
 {
     CB_RENDEVICE_DEPIMPL_GL();
 
-    constexpr int contextMajorVersion = 2;
-    constexpr int contextMinorVersion = 1;
-    constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
-
-    spdlog::info("Context version: {}.{} (SDL profile: {})", contextMajorVersion, contextMinorVersion, contextProfile);
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, contextMajorVersion);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, contextMinorVersion);
-    if (contextProfile)
+    if (pImpl_->renderBackend().isInitialized())
     {
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, contextProfile);
+        pImpl_->renderBackend().shutdown();
     }
-
-    SDLGlContext_ = SDL_GL_CreateContext(pImpl_->display_->window());
-
-    if (SDLGlContext_ == nullptr)
-    {
-        std::string msg("Fatal in SDL_GL_CreateContext: ");
-        msg += SDL_GetError();
-        SysWindowsAPI::messageBox(msg.c_str(), "Error");
-        return false;
-    }
-
-    const auto getGlStringAsConstChar = [](GLenum name) {
-        auto pString = glGetString(name);
-        return pString ? reinterpret_cast<const char*>(pString) : "<null>";
-    };
-
-    {
-        spdlog::info("GL_RENDERER: {}", getGlStringAsConstChar(GL_RENDERER));
-        spdlog::info("GL_VERSION: {}", getGlStringAsConstChar(GL_VERSION));
-        spdlog::info("GL_VENDOR: {}", getGlStringAsConstChar(GL_VENDOR));
-        spdlog::info("GL_SHADING_LANGUAGE_VERSION: {}", getGlStringAsConstChar(GL_SHADING_LANGUAGE_VERSION));
-    }
-
-    spdlog::info("Initializing GLEW...");
-    GLenum glew_status = glewInit();
-    if (glew_status != GLEW_OK)
-    {
-        std::string msg("Fatal in glewInit: ");
-        msg += reinterpret_cast<const char*>(glewGetErrorString(glew_status));
-        spdlog::error(msg);
-        SysWindowsAPI::messageBox(msg.c_str(), "Error");
-        return false;
-    }
-
-    if (!GLEW_VERSION_2_1)
-    {
-        SDL_GL_DeleteContext(SDLGlContext_);
-        SDLGlContext_ = nullptr;
-
-        spdlog::error("GLEW reports that OpengGL 2.1 is not available");
-        SysWindowsAPI::messageBox(
-            "Your graphic card or driver does not support OpenGL 2.1!\nToo bad, will terminate now.",
-            "Error");
-        return false;
-    }
-
-    if (!pImpl_->renderBackend().initialize())
+    if (!pImpl_->renderBackend().initialize(pImpl_->display_->window()))
     {
         spdlog::error("Render backend initialization failed");
         return false;
