@@ -43,6 +43,7 @@
 #include "planeted/cameras.hpp"
 #include "sim/manager.hpp"
 #include "mathex/coordsys.hpp"
+#include "system/Variable.hpp"
 #include "system/winapi.hpp"
 
 #include "machphys/machphys.hpp"
@@ -174,6 +175,8 @@ static void newHandler()
 
 bool SDLApp::clientStartup()
 {
+    Config::initConfigManager();
+
     // Set coord system
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);
     ProgressIndicator progressIndicator;
@@ -521,6 +524,8 @@ void SDLApp::clientShutdown()
     // Tell W4dManager about destruction of sceneManager
     W4dManager::instance().clearSceneManager();
     delete pDisplay_;
+
+    Config::cleanUpConfigManager();
 }
 
 // Update the display.

@@ -141,6 +141,7 @@ std::string_view IVariable::name() const
 
 Utils::HandleWithTriggerUPtr IVariable::addListener(ChangesListener listener)
 {
+    PRE(configManager);
     return configManager->addListener(name(), std::move(listener));
 }
 
