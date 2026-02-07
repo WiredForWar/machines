@@ -30,10 +30,12 @@ private:
 };
 
 struct TextureTag;
+struct CommandBufferTag;
 
 } // namespace internal
 
 using BackendTextureHandle = internal::BackendHandle<internal::TextureTag>;
+using BackendCommandBufferHandle = internal::BackendHandle<internal::CommandBufferTag>;
 
 enum class BufferTarget
 {

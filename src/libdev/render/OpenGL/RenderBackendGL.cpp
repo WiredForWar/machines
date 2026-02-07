@@ -9,6 +9,11 @@
 #include <SDL.h>
 
 #include <fstream>
+#include <variant>
+
+// Immediate mode is more performant, at least for the legacy renderer.
+// Yet we want to have this switch to debug commands buffer implementation.
+constexpr bool ImmediateExecution{true};
 
 namespace Ren
 {
@@ -18,6 +23,7 @@ namespace OpenGL
 
 namespace
 {
+
 GLenum toStorageFormat(TextureFormat format)
 {
     switch (format)
@@ -94,6 +100,7 @@ RenderBackendGL::RenderBackendGL()
     : programs_{0,}
     , buffers_{0,}
     , framebuffers_{0,}
+    , commandBuffers_{CommandBuffer{},}
 {
 }
 
@@ -574,6 +581,134 @@ void RenderBackendGL::bindTexture2D(TexId id, std::uint32_t unit)
 
     glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + unit));
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+}
+
+BackendCommandBufferHandle RenderBackendGL::createCommandBuffer()
+{
+    if (commandBuffers_.empty())
+    {
+        commandBuffers_.push_back(CommandBuffer{});
+    }
+
+    for (std::size_t idx = 1; idx < commandBuffers_.size(); ++idx)
+    {
+        CommandBuffer& buffer = commandBuffers_[idx];
+        if (!buffer.alive)
+        {
+            buffer.alive = true;
+            buffer.recording = false;
+            buffer.commands.clear();
+            return BackendCommandBufferHandle(static_cast<std::uint32_t>(idx));
+        }
+    }
+
+    commandBuffers_.push_back(CommandBuffer{});
+    CommandBuffer& buffer = commandBuffers_.back();
+    buffer.alive = true;
+    buffer.recording = false;
+    buffer.commands.clear();
+    return BackendCommandBufferHandle(static_cast<std::uint32_t>(commandBuffers_.size() - 1));
+}
+
+void RenderBackendGL::destroyCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr)
+        return;
+
+    buffer->alive = false;
+    buffer->recording = false;
+    buffer->commands.clear();
+}
+
+void RenderBackendGL::beginCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr)
+        return;
+
+    buffer->recording = true;
+    buffer->commands.clear();
+}
+
+void RenderBackendGL::recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command)
+{
+    if (!handle.isValid())
+        return;
+
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || !buffer->recording)
+        return;
+
+    if constexpr (ImmediateExecution)
+        executeCommand(command);
+    else
+        buffer->commands.push_back(std::move(command));
+}
+
+void RenderBackendGL::endCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || !buffer->recording)
+        return;
+
+    buffer->recording = false;
+}
+
+void RenderBackendGL::submitCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || buffer->recording)
+        return;
+
+    for (const BackendCommand& command : buffer->commands)
+    {
+        std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+    }
+
+    buffer->commands.clear();
+}
+
+RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle)
+{
+    if (!handle.isValid())
+        return nullptr;
+
+    const std::uint32_t idx = handle.value();
+    if (idx >= commandBuffers_.size())
+        return nullptr;
+
+    CommandBuffer& buffer = commandBuffers_[idx];
+    if (!buffer.alive)
+        return nullptr;
+
+    return &buffer;
+}
+
+const RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle) const
+{
+    if (!handle.isValid())
+        return nullptr;
+
+    const std::uint32_t idx = handle.value();
+    if (idx >= commandBuffers_.size())
+        return nullptr;
+
+    const CommandBuffer& buffer = commandBuffers_[idx];
+    if (!buffer.alive)
+        return nullptr;
+
+    return &buffer;
+}
+
+void RenderBackendGL::executeCommand(const BackendCommand& command)
+{
+    std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
+{
+    glViewport(command.x, command.y, command.width, command.height);
 }
 
 BackendTextureHandle RenderBackendGL::createTexture2D()
