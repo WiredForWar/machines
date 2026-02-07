@@ -81,7 +81,10 @@ bool RenderBackendGL::initialize(SDL_Window* window)
 
     glGenTextures(1, &fallbackTexture2D_);
     if (fallbackTexture2D_ == 0)
+    {
+        shutdown();
         return false;
+    }
 
     glBindTexture(GL_TEXTURE_2D, fallbackTexture2D_);
 
@@ -90,8 +93,7 @@ bool RenderBackendGL::initialize(SDL_Window* window)
 
     if (glGetError() != GL_NO_ERROR)
     {
-        glDeleteTextures(1, &fallbackTexture2D_);
-        fallbackTexture2D_ = 0;
+        shutdown();
         return false;
     }
 
