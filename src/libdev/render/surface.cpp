@@ -350,18 +350,15 @@ void RenSurface::stretchBlit(const RenSurface& source)
     stretchBlit(source, source.size(), size());
 }
 
-void RenSurface::blitInRequestedSize(const RenSurface& source, int destX, int destY)
+void RenSurface::blitInRequestedSize(const RenSurface& source, Point dest)
 {
     if (source.requestedSize().isNull())
     {
-        simpleBlit(source, {}, Point(destX, destY));
+        simpleBlit(source, {}, dest);
     }
     else
     {
-        const RenSurface::Size requestedSourceSize = source.requestedSize();
-        const Ren::Rect sourceArea(0, 0, source.width(), source.height());
-        const Ren::Rect destArea(destX, destY, requestedSourceSize.width, requestedSourceSize.height);
-        stretchBlit(source, sourceArea, destArea);
+        stretchBlit(source, source.size(), { dest, source.requestedSize() });
     }
 }
 
