@@ -125,12 +125,12 @@ void GuiPainter::drawText(
 
 void GuiPainter::blit(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Coord& dest) const
 {
-    Gui::backBuffer().simpleBlit(source, map_GuiBox_to_RenSurfaceRect(sourceArea), dest.x(), dest.y());
+    Gui::backBuffer().simpleBlit(source, map_GuiBox_to_RenSurfaceRect(sourceArea), Ren::Point(dest.x(), dest.y()));
 }
 
 void GuiPainter::blit(const GuiBitmap& source, const Gui::Coord& dest) const
 {
-    Gui::backBuffer().simpleBlit(source, dest.x(), dest.y());
+    Gui::backBuffer().simpleBlit(source, {}, Ren::Point(dest.x(), dest.y()));
 }
 
 void GuiPainter::blit(const GuiBitmap& source) const

@@ -597,7 +597,8 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
     if (actorPositions_[loop].actorState_ & ATTACKED)
         secondFrameActorPositions_.push_back(actorPositions_[loop]);
 
-    const Gui::Coord& pos = actorPositions_[loop].drawPos_;
+    const Gui::Coord& drawPos = actorPositions_[loop].drawPos_;
+    const Ren::Point pos(drawPos.x(), drawPos.y());
     MachPhys::Race race = actorPositions_[loop].displayAsRace_;
 
     // Check for existance of beacon. No point drawing stuff if there is no beacon present.
@@ -607,48 +608,48 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
         {
             // Draw pod...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedPodImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedPodImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(podImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(podImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == MACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedMachineImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(machineImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(machineImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == CAMOUFLAGEDMACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage(playerRace_), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedMachineImage(playerRace_), {}, pos);
             else
-                mapFrameOne_.simpleBlit(machineImage(playerRace_), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(machineImage(playerRace_), {}, pos);
         }
         else if (actorPositions_[loop].type_ == CONSTRUCTION && mapMode_ != RESOURCES_ONLY)
         {
             // Draw construction...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedConstructionImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(selectedConstructionImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(constructionImage(race), pos.x(), pos.y());
+                mapFrameOne_.simpleBlit(constructionImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == DEBRIS)
         {
             // Draw debris...
-            mapFrameOne_.simpleBlit(debrisImage(), pos.x(), pos.y());
+            mapFrameOne_.simpleBlit(debrisImage(), {}, pos);
         }
         else if (actorPositions_[loop].type_ == ORE)
         {
             // Draw ore...
-            mapFrameOne_.simpleBlit(oreImage(), pos.x(), pos.y());
+            mapFrameOne_.simpleBlit(oreImage(), {}, pos);
         }
         else if (actorPositions_[loop].type_ == ARTIFACT)
         {
             // Draw artifact...
-            mapFrameOne_.simpleBlit(artifactImage(), pos.x(), pos.y());
+            mapFrameOne_.simpleBlit(artifactImage(), {}, pos);
         }
     }
 
@@ -703,8 +704,8 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
 
             mapVisibleArea_.simpleBlit(
                 scannerRangeImage_[actorPositions_[loop].scanner_ - 1],
-                scannerDrawPos.x(),
-                scannerDrawPos.y());
+                {},
+                Ren::Point(scannerDrawPos.x(), scannerDrawPos.y()));
 
             glBlendFunc(blendSrc, blendDst);
         }
@@ -717,7 +718,9 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
 
     if (currentBeacon_ != MachLog::NO_BEACON)
     {
-        Gui::Coord cameraImageOffset = Gui::Coord(-2, -2) * Gui::uiScaleFactor();
+        Gui::Vec cameraImageOffset = Gui::Coord(-2, -2) * Gui::uiScaleFactor();
+        Gui::Coord imageCoord{cameraPos_ + cameraImageOffset};
+        Ren::Point imagePos(imageCoord.x(), imageCoord.y());
         int cameraPolygonThickness = 1;
         if (zenithCamera_)
         {
@@ -732,18 +735,12 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
             pMapFrame->polyLine(cameraFovPoints, Gui::LIGHTGREY(), cameraPolygonThickness);
 
             // Draw camera pos
-            pMapFrame->simpleBlit(
-                cameraPosImage_,
-                cameraPos_.x() + cameraImageOffset.x(),
-                cameraPos_.y() + cameraImageOffset.y());
+            pMapFrame->simpleBlit(cameraPosImage_, {}, imagePos);
         }
         else
         {
             // Draw camera pos
-            pMapFrame->simpleBlit(
-                cameraPosImage_,
-                cameraPos_.x() + cameraImageOffset.x(),
-                cameraPos_.y() + cameraImageOffset.y());
+            pMapFrame->simpleBlit(cameraPosImage_, {}, imagePos);
 
             Gui::Vec vecToEndPos(cameraPos_, cameraEndPos_);
             vecToEndPos *= Gui::uiScaleFactor();
@@ -798,7 +795,8 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
     static GuiBitmap constructionAttackedImage = MachGui::getScaledImage("gui/map/aconspix.bmp");
     static GuiBitmap selectedConstructionAttackedImage = MachGui::getScaledImage("gui/map/aconspxs.bmp");
 
-    const Gui::Coord& pos = secondFrameActorPositions_[loop].drawPos_;
+    const Gui::Coord& drawPos = secondFrameActorPositions_[loop].drawPos_;
+    const Ren::Point pos(drawPos.x(), drawPos.y());
     MachPhys::Race race = secondFrameActorPositions_[loop].displayAsRace_;
     ActorState actorState = secondFrameActorPositions_[loop].actorState_;
 
@@ -809,11 +807,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked pods...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(podAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(podAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedPodAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(selectedPodAttackedImage, {}, pos);
             }
         }
         else if (
@@ -823,11 +821,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked machines...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(machineAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(machineAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedMachineAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(selectedMachineAttackedImage, {}, pos);
             }
         }
         else if (secondFrameActorPositions_[loop].type_ == CONSTRUCTION)
@@ -835,11 +833,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked constructions...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(constructionAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(constructionAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedConstructionAttackedImage, pos.x(), pos.y());
+                mapFrameTwo_.simpleBlit(selectedConstructionAttackedImage, {}, pos);
             }
         }
     }

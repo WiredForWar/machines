@@ -475,12 +475,8 @@ void GuiBmpFont::drawTextLeftJustify(
                 pBmp->simpleBlit(
                     pFontCore_->fontBmp_,
                     Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_,
-                        0,
-                        charWidth(text[i]) + 1,
-                        height()),
-                    absPos.x(),
-                    absPos.y());
+                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
+                    Ren::Point(absPos.x(), absPos.y()));
 
                 // Add spacing ready for next character blit
                 if (fontType_ == PROPORTIONAL)
@@ -535,12 +531,8 @@ void GuiBmpFont::drawTextRightJustify(
                 pBmp->simpleBlit(
                     pFontCore_->fontBmp_,
                     Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_,
-                        0,
-                        charWidth(text[i]) + 1,
-                        height()),
-                    absPos.x(),
-                    absPos.y());
+                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
+                    Ren::Point(absPos.x(), absPos.y()));
             }
             else
             {

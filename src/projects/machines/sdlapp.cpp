@@ -338,7 +338,7 @@ bool SDLApp::clientStartup()
     // Get top left offset for images
     int xOffset = (mode.width() - 640) / 2;
     int yOffset = (mode.height() - 480) / 2;
-    Gui::Coord offset(xOffset, yOffset);
+    Ren::Point offset(xOffset, yOffset);
 
     // moved the sequence of calls slightly - the init sound call must still be done first though
     //     initSound();
@@ -349,7 +349,7 @@ bool SDLApp::clientStartup()
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath, frontBuffer);
-        frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp, {}, offset);
 
         // Initialise lobby code
         NetNetwork::instance().instantiateLobby();
@@ -358,7 +358,7 @@ bool SDLApp::clientStartup()
         // Display progress loading screen.
         // Call it twice to ensure on both buffers.
         RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
-        frontBuffer.simpleBlit(waitBmp2, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp2, {}, offset);
     }
     else
     {
@@ -366,10 +366,10 @@ bool SDLApp::clientStartup()
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
-        frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp, {}, offset);
     }
 
     if (lobbyFlag)
@@ -378,15 +378,15 @@ bool SDLApp::clientStartup()
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
-        frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.simpleBlit(waitBmp, xOffset, yOffset);
+        frontBuffer.simpleBlit(waitBmp, {}, offset);
     }
     // Draw copyright note, store it in a way preventing from modification
     {
         const int noteBottomMargin{14};
-        Gui::Coord notePosition = offset + MachGui::waitImageContentOffset
+        Gui::Coord notePosition = Gui::Coord(offset.x, offset.y) + MachGui::waitImageContentOffset
             + Gui::Vec(0, -noteBottomMargin - RenSurface::getDefaultFontSize());
         const std::string_view note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();

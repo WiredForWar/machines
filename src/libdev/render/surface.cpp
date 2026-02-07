@@ -127,7 +127,7 @@ RenSurface::~RenSurface()
 }
 
 //------------------------------------Blitting---------------------------------------
-void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int destX, int destY)
+void RenSurface::simpleBlit(const RenSurface& source, const std::optional<Rect>& srcArea, Point dest)
 {
     PRE_INFO(*this);
     PRE(!readOnly());
@@ -135,39 +135,51 @@ void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int d
     PRE(!source.isEmpty());
 
     RENDER_STREAM("Simple blit before clipping:\n");
-    RENDER_STREAM("  from " << srcArea << " of " << source << "\n");
-    RENDER_STREAM("  to (" << destX << "," << destY << ") of " << (*this) << "\n");
+    if (srcArea.has_value())
+        RENDER_STREAM("  from " << *srcArea << " of " << source << "\n");
+    else
+        RENDER_STREAM("  from all of " << source << "\n");
+    RENDER_STREAM("  to (" << dest.x << "," << dest.y << ") of " << (*this) << "\n");
 
     const int srcW = source.width();
     const int srcH = source.height();
     const int intW = _STATIC_CAST(int, width());
     const int intH = _STATIC_CAST(int, height());
 
-    if (srcArea.originX >= srcW || srcArea.originY >= srcH)
-        return;
-
-    // Check to see if the destination area is completely outside this surface.
-    if (destX > intW || destY > intH || destX + srcArea.width <= 0 || destY + srcArea.height <= 0)
-        return;
-
-    // Clip the source rectangle so that the blit will lie in the destination.
-    Rect tmp = srcArea;
-    if (destX < 0)
+    if (srcArea.has_value())
     {
-        tmp.originX -= destX;
-        tmp.width += destX;
-        destX = 0;
+        if (srcArea->originX >= srcW || srcArea->originY >= srcH)
+            return;
+
+        // Check to see if the destination area is completely outside this surface.
+        if (dest.x > intW || dest.y > intH || dest.x + srcArea->width <= 0 || dest.y + srcArea->height <= 0)
+            return;
+    }
+    else
+    {
+        // Check to see if the destination area is completely outside this surface.
+        if (dest.x > intW || dest.y > intH || dest.x + srcW <= 0 || dest.y + srcH <= 0)
+            return;
     }
 
-    if (destY < 0)
+    // Clip the source rectangle so that the blit will lie in the destination.
+    Rect tmp = srcArea.value_or(source.size());
+    if (dest.x < 0)
     {
-        tmp.originY -= destY;
-        tmp.height += destY;
-        destY = 0;
+        tmp.originX -= dest.x;
+        tmp.width += dest.x;
+        dest.x = 0;
+    }
+
+    if (dest.y < 0)
+    {
+        tmp.originY -= dest.y;
+        tmp.height += dest.y;
+        dest.y = 0;
     }
 
     // Again, clip against the dest rectangle, this time for the maximum coords.
-    const int rightMost = destX + tmp.width, bottomMost = destY + tmp.height;
+    const int rightMost = dest.x + tmp.width, bottomMost = dest.y + tmp.height;
 
     if (rightMost > intW)
         tmp.width -= (rightMost - intW);
@@ -175,28 +187,51 @@ void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int d
     if (bottomMost > intH)
         tmp.height -= (bottomMost - intH);
 
-    // Clip the source area so that it lies within the source surface.
-    if (tmp.originX < 0)
+    if (srcArea)
     {
-        tmp.width += tmp.originX;
-        destX -= tmp.originX;
-        tmp.originX = 0;
-    }
+        // Clip the source area so that it lies within the source surface.
+        if (tmp.originX < 0)
+        {
+            tmp.width += tmp.originX;
+            dest.x -= tmp.originX;
+            tmp.originX = 0;
+        }
 
-    if (tmp.originY < 0)
+        if (tmp.originY < 0)
+        {
+            tmp.height += tmp.originY;
+            dest.y -= tmp.originY;
+            tmp.originY = 0;
+        }
+
+        const int overshootRight = tmp.originX + tmp.width - srcW;
+        if (overshootRight > 0)
+        {
+            tmp.width -= overshootRight;
+        }
+
+        const int overshootBottom = tmp.originY + tmp.height - srcH;
+        if (overshootBottom > 0)
+        {
+            tmp.height -= overshootBottom;
+        }
+    }
+    else
     {
-        tmp.height += tmp.originY;
-        destY -= tmp.originY;
-        tmp.originY = 0;
+        // Again, clip against the dest rectangle, this time for the maximum coords.
+        const int rightMost = dest.x + tmp.width;
+        const int bottomMost = dest.y + tmp.height;
+
+        if (rightMost > intW)
+        {
+            tmp.width -= (rightMost - intW);
+        }
+
+        if (bottomMost > intH)
+        {
+            tmp.height -= (bottomMost - intH);
+        }
     }
-
-    const int overshootRight = tmp.originX + tmp.width - srcW;
-    if (overshootRight > 0)
-        tmp.width -= overshootRight;
-
-    const int overshootBottom = tmp.originY + tmp.height - srcH;
-    if (overshootBottom > 0)
-        tmp.height -= overshootBottom;
 
     if (tmp.width <= 0 || tmp.height <= 0)
         return;
@@ -206,63 +241,7 @@ void RenSurface::simpleBlit(const RenSurface& source, const Rect& srcArea, int d
     ASSERT(tmp.originX + tmp.width <= srcW, "Clipping logic error.");
     ASSERT(tmp.originY + tmp.height <= srcH, "Clipping logic error.");
 
-    internals()->unclippedBlit(source.internals(), tmp, destX, destY);
-}
-
-// Copy the entire source to this.
-void RenSurface::simpleBlit(const RenSurface& source, int destX, int destY)
-{
-    PRE(!readOnly());
-    PRE(!isEmpty());
-    PRE(!source.isEmpty());
-
-    RENDER_STREAM("Simple blit before clipping:\n");
-    RENDER_STREAM("  from all of " << source << "\n");
-    RENDER_STREAM("  to (" << destX << "," << destY << ") of " << (*this) << "\n");
-
-    const int srcW = source.width();
-    const int srcH = source.height();
-    const int intW = _STATIC_CAST(int, width());
-    const int intH = _STATIC_CAST(int, height());
-
-    // Check to see if the destination area is completely outside this surface.
-    if (destX > intW || destY > intH || destX + srcW <= 0 || destY + srcH <= 0)
-        return;
-
-    // Clip the source rectangle so that the blit will lie in the destination.
-    Rect tmp(0, 0, srcW, srcH);
-    if (destX < 0)
-    {
-        tmp.originX -= destX;
-        tmp.width += destX;
-        destX = 0;
-    }
-
-    if (destY < 0)
-    {
-        tmp.originY -= destY;
-        tmp.height += destY;
-        destY = 0;
-    }
-
-    // Again, clip against the dest rectangle, this time for the maximum coords.
-    const int rightMost = destX + tmp.width, bottomMost = destY + tmp.height;
-
-    if (rightMost > intW)
-        tmp.width -= (rightMost - intW);
-
-    if (bottomMost > intH)
-        tmp.height -= (bottomMost - intH);
-
-    if (tmp.width <= 0 || tmp.height <= 0)
-        return;
-
-    ASSERT(tmp.originX >= 0, "Clipping logic error.");
-    ASSERT(tmp.originY >= 0, "Clipping logic error.");
-    ASSERT(tmp.originX + tmp.width <= srcW, "Clipping logic error.");
-    ASSERT(tmp.originY + tmp.height <= srcH, "Clipping logic error.");
-
-    internals()->unclippedBlit(source.internals(), tmp, destX, destY);
+    internals()->unclippedBlit(source.internals(), tmp, dest.x, dest.y);
 }
 
 void RenSurface::tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea)
@@ -382,7 +361,7 @@ void RenSurface::blitInRequestedSize(const RenSurface& source, int destX, int de
 {
     if (source.requestedSize().isNull())
     {
-        simpleBlit(source, destX, destY);
+        simpleBlit(source, {}, Point(destX, destY));
     }
     else
     {

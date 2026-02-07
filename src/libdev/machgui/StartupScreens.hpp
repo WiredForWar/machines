@@ -403,6 +403,7 @@ private:
     friend class LoadGameProgressIndicator;
     int xMenuOffset();
     int yMenuOffset();
+    Ren::Point menuPosition();
 
     static std::string getContextStrName(Context context);
 

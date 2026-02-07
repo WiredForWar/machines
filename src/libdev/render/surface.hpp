@@ -10,6 +10,8 @@
 #include "mathex/point2d.hpp"
 #include "render/render.hpp"
 
+#include <optional>
+
 class SysPathName;
 class RenColour;
 class RenISurfBody;
@@ -38,6 +40,7 @@ class TextOptions;
 class RenSurface
 {
 public:
+    using Point = Ren::Point;
     using Size = Ren::Size;
     using Rect = Ren::Rect;
 
@@ -100,8 +103,7 @@ public:
     //   tiled  = repeated w/o stretching to entirely cover the destination
     // The shorter version of simpleBlit copies the entire source.
     // PRE(source.pixelFormat() == pixelFormat());      applies to all blits
-    void simpleBlit(const RenSurface& source, const Rect& srcArea, int destX = 0, int destY = 0);
-    void simpleBlit(const RenSurface& source, int destX = 0, int destY = 0);
+    void simpleBlit(const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {});
     void tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
     void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
     void stretchBlit(const RenSurface& source, const Rect& destArea);

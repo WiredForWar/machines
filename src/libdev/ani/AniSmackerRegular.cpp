@@ -455,7 +455,7 @@ void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& 
 
         if(scaleFactor_ == 1)
         {
-            dst.simpleBlit(src, xCoordTo_, yCoordTo_);
+            dst.simpleBlit(src, {}, Ren::Point(xCoordTo_, yCoordTo_));
         }
         else
         {
