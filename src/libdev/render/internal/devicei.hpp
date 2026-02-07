@@ -35,7 +35,11 @@ class RenIViewportMapping;
 class RenIDepthPostSorter;
 class RenIPriorityPostSorter;
 class RenDriverSelector;
-class RenIRenderBackend;
+
+namespace Ren
+{
+class IRenderBackend;
+}
 
 class RenIDeviceImpl : public RenIDisplayModeObserver
 {
@@ -191,11 +195,11 @@ private:
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     void releaseGLProgram(Ren::ProgramId id);
-    RenIRenderBackend& renderBackend();
-    const RenIRenderBackend& renderBackend() const;
-    RenIRenderBackend* renderBackendPtr();
-    const RenIRenderBackend* renderBackendPtr() const;
-    std::unique_ptr<RenIRenderBackend> backend_{};
+    Ren::IRenderBackend& renderBackend();
+    const Ren::IRenderBackend& renderBackend() const;
+    Ren::IRenderBackend* renderBackendPtr();
+    const Ren::IRenderBackend* renderBackendPtr() const;
+    std::unique_ptr<Ren::IRenderBackend> backend_{};
 
     DevTimer frameTimer_;
 

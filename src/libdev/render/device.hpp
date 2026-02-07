@@ -27,7 +27,11 @@ class RenISurfBody;
 
 class RenIDeviceImpl;
 class RenIVertexData;
-class RenIRenderBackend;
+
+namespace Ren
+{
+class IRenderBackend;
+}
 
 // A device object represents a rendering target.  It orchestrates
 // the rendering process.
@@ -281,8 +285,8 @@ public:
     RenIDeviceImpl& impl();
     const RenIDeviceImpl& impl() const;
 
-    RenIRenderBackend& backend();
-    const RenIRenderBackend& backend() const;
+    Ren::IRenderBackend& backend();
+    const Ren::IRenderBackend& backend() const;
 
     Ren::ProgramId loadShaders(const char* vertexPath, const char* fragmentPath);
 

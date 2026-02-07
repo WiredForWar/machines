@@ -10,7 +10,10 @@
 
 #include <fstream>
 
-namespace Ren::OpenGL
+namespace Ren
+{
+
+namespace OpenGL
 {
 
 RenderBackendGL::RenderBackendGL()
@@ -163,7 +166,7 @@ bool RenderBackendGL::setVSync(bool enabled)
     return success;
 }
 
-GLuint RenderBackendGL::programHandle(Ren::ProgramId id) const
+GLuint RenderBackendGL::programHandle(ProgramId id) const
 {
     if (id == 0)
         return 0;
@@ -175,7 +178,7 @@ GLuint RenderBackendGL::programHandle(Ren::ProgramId id) const
     return programs_[idx];
 }
 
-GLuint RenderBackendGL::bufferHandle(Ren::BufferId id) const
+GLuint RenderBackendGL::bufferHandle(BufferId id) const
 {
     if (id == 0)
         return 0;
@@ -187,7 +190,7 @@ GLuint RenderBackendGL::bufferHandle(Ren::BufferId id) const
     return buffers_[idx];
 }
 
-GLuint RenderBackendGL::framebufferHandle(Ren::FramebufferId id) const
+GLuint RenderBackendGL::framebufferHandle(FramebufferId id) const
 {
     if (id == 0)
         return 0;
@@ -298,7 +301,7 @@ GLuint RenderBackendGL::createProgramFromSources(
     return programID;
 }
 
-Ren::ProgramId RenderBackendGL::createProgramFromFiles(
+ProgramId RenderBackendGL::createProgramFromFiles(
     std::string_view vertexShaderPath,
     std::string_view fragmentShaderPath,
     std::string_view vertexShaderDebugName,
@@ -323,25 +326,25 @@ Ren::ProgramId RenderBackendGL::createProgramFromFiles(
         return 0;
 
     programs_.push_back(program);
-    return static_cast<Ren::ProgramId>(programs_.size() - 1);
+    return static_cast<ProgramId>(programs_.size() - 1);
 }
 
-void RenderBackendGL::useProgram(Ren::ProgramId id)
+void RenderBackendGL::useProgram(ProgramId id)
 {
     glUseProgram(programHandle(id));
 }
 
-int RenderBackendGL::uniformLocation(Ren::ProgramId id, std::string_view name) const
+int RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
 {
     return glGetUniformLocation(programHandle(id), std::string(name).c_str());
 }
 
-int RenderBackendGL::attribLocation(Ren::ProgramId id, std::string_view name) const
+int RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
 {
     return glGetAttribLocation(programHandle(id), std::string(name).c_str());
 }
 
-void RenderBackendGL::releaseProgram(Ren::ProgramId id)
+void RenderBackendGL::releaseProgram(ProgramId id)
 {
     if (id == 0)
         return;
@@ -358,7 +361,7 @@ void RenderBackendGL::releaseProgram(Ren::ProgramId id)
     }
 }
 
-Ren::BufferId RenderBackendGL::createBuffer()
+BufferId RenderBackendGL::createBuffer()
 {
     GLuint buffer = 0;
     glGenBuffers(1, &buffer);
@@ -366,27 +369,27 @@ Ren::BufferId RenderBackendGL::createBuffer()
         return 0;
 
     buffers_.push_back(buffer);
-    return static_cast<Ren::BufferId>(buffers_.size() - 1);
+    return static_cast<BufferId>(buffers_.size() - 1);
 }
 
-void RenderBackendGL::bindBuffer(RenBufferTarget target, Ren::BufferId id)
+void RenderBackendGL::bindBuffer(BufferTarget target, BufferId id)
 {
     const GLuint buffer = bufferHandle(id);
-    const GLenum glTarget = (target == RenBufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
+    const GLenum glTarget = (target == BufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
     glBindBuffer(glTarget, buffer);
 }
 
 void RenderBackendGL::bufferData(
-    RenBufferTarget target, Ren::BufferId id, std::size_t sizeBytes, const void* data, RenBufferUsage usage)
+    BufferTarget target, BufferId id, std::size_t sizeBytes, const void* data, BufferUsage usage)
 {
     bindBuffer(target, id);
 
-    const GLenum glTarget = (target == RenBufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
-    const GLenum glUsage = (usage == RenBufferUsage::StreamDraw) ? GL_STREAM_DRAW : GL_STREAM_DRAW;
+    const GLenum glTarget = (target == BufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
+    const GLenum glUsage = (usage == BufferUsage::StreamDraw) ? GL_STREAM_DRAW : GL_STREAM_DRAW;
     glBufferData(glTarget, static_cast<GLsizeiptr>(sizeBytes), data, glUsage);
 }
 
-void RenderBackendGL::releaseBuffer(Ren::BufferId id)
+void RenderBackendGL::releaseBuffer(BufferId id)
 {
     if (id == 0)
         return;
@@ -403,7 +406,7 @@ void RenderBackendGL::releaseBuffer(Ren::BufferId id)
     }
 }
 
-Ren::FramebufferId RenderBackendGL::createFramebuffer()
+FramebufferId RenderBackendGL::createFramebuffer()
 {
     GLuint framebuffer = 0;
     glGenFramebuffers(1, &framebuffer);
@@ -411,20 +414,20 @@ Ren::FramebufferId RenderBackendGL::createFramebuffer()
         return 0;
 
     framebuffers_.push_back(framebuffer);
-    return static_cast<Ren::FramebufferId>(framebuffers_.size() - 1);
+    return static_cast<FramebufferId>(framebuffers_.size() - 1);
 }
 
-void RenderBackendGL::bindFramebuffer(Ren::FramebufferId id)
+void RenderBackendGL::bindFramebuffer(FramebufferId id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
-void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture)
+void RenderBackendGL::framebufferTexture2D(FramebufferAttachment attachment, TexId texture)
 {
-    const GLenum glAttachment = (attachment == RenFramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
+    const GLenum glAttachment = (attachment == FramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
 
     GLuint textureHandle = 0;
-    if (texture != Ren::NullTexId)
+    if (texture != NullTexId)
     {
         RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
         if (surfBody && surfBody->nativeTexture2D_.isValid())
@@ -436,23 +439,23 @@ void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, 
     glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
 }
 
-bool RenderBackendGL::beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture)
+bool RenderBackendGL::beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture)
 {
     if (framebuffer == 0)
         return false;
 
-    if (targetTexture == Ren::NullTexId)
+    if (targetTexture == NullTexId)
         return false;
 
     pushFramebuffer();
     bindFramebuffer(framebuffer);
-    framebufferTexture2D(RenFramebufferAttachment::Color0, targetTexture);
+    framebufferTexture2D(FramebufferAttachment::Color0, targetTexture);
 
     const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE)
     {
         spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
-        framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
+        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
         popFramebuffer();
         return false;
     }
@@ -464,7 +467,7 @@ void RenderBackendGL::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
     {
-        framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
+        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
     }
     popFramebuffer();
 }
@@ -489,7 +492,7 @@ void RenderBackendGL::popFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, restore);
 }
 
-void RenderBackendGL::releaseFramebuffer(Ren::FramebufferId id)
+void RenderBackendGL::releaseFramebuffer(FramebufferId id)
 {
     if (id == 0)
         return;
@@ -506,7 +509,7 @@ void RenderBackendGL::releaseFramebuffer(Ren::FramebufferId id)
     }
 }
 
-void RenderBackendGL::bindTexture2D(Ren::TexId id, std::uint32_t unit)
+void RenderBackendGL::bindTexture2D(TexId id, std::uint32_t unit)
 {
     const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(id);
     GLuint textureHandle = fallbackTexture2D_;
@@ -522,61 +525,61 @@ void RenderBackendGL::bindTexture2D(Ren::TexId id, std::uint32_t unit)
 
 namespace
 {
-GLenum toStorageFormat(Ren::TextureFormat format)
+GLenum toStorageFormat(TextureFormat format)
 {
     switch (format)
     {
-    case Ren::TextureFormat::RGBA8_UNorm:
+    case TextureFormat::RGBA8_UNorm:
         return GL_RGBA8;
     }
     return GL_RGBA8;
 }
 
-GLenum toPixelFormat(Ren::TextureFormat format)
+GLenum toPixelFormat(TextureFormat format)
 {
     switch (format)
     {
-    case Ren::TextureFormat::RGBA8_UNorm:
+    case TextureFormat::RGBA8_UNorm:
         return GL_RGBA;
     }
     return GL_RGBA;
 }
 
-GLenum toFilter(Ren::TextureFilter filter)
+GLenum toFilter(TextureFilter filter)
 {
     switch (filter)
     {
-    case Ren::TextureFilter::Nearest:
+    case TextureFilter::Nearest:
         return GL_NEAREST;
-    case Ren::TextureFilter::Linear:
+    case TextureFilter::Linear:
         return GL_LINEAR;
-    case Ren::TextureFilter::LinearMipmapLinear:
+    case TextureFilter::LinearMipmapLinear:
         return GL_LINEAR_MIPMAP_LINEAR;
     }
     return GL_NEAREST;
 }
 
-GLenum toWrap(Ren::TextureWrap wrap)
+GLenum toWrap(TextureWrap wrap)
 {
     switch (wrap)
     {
-    case Ren::TextureWrap::Repeat:
+    case TextureWrap::Repeat:
         return GL_REPEAT;
-    case Ren::TextureWrap::ClampToEdge:
+    case TextureWrap::ClampToEdge:
         return GL_CLAMP_TO_EDGE;
     }
     return GL_REPEAT;
 }
 } // namespace
 
-Ren::BackendTextureHandle RenderBackendGL::createTexture2D()
+BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
     glGenTextures(1, &texture);
-    return Ren::BackendTextureHandle(texture);
+    return BackendTextureHandle(texture);
 }
 
-void RenderBackendGL::destroyTexture2D(Ren::BackendTextureHandle handle)
+void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
 {
     if (!handle.isValid())
         return;
@@ -585,7 +588,7 @@ void RenderBackendGL::destroyTexture2D(Ren::BackendTextureHandle handle)
     glDeleteTextures(1, &texture);
 }
 
-void RenderBackendGL::textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format)
+void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexImage2D(
@@ -593,31 +596,32 @@ void RenderBackendGL::textureStorage2D(Ren::BackendTextureHandle handle, int wid
 }
 
 void RenderBackendGL::textureSubImage2D(
-    Ren::BackendTextureHandle handle, int x, int y, int width, int height, Ren::TextureFormat format, const void* pixels)
+    BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
 }
 
-void RenderBackendGL::textureSetMinMagFilter(
-    Ren::BackendTextureHandle handle, Ren::TextureFilter minFilter, Ren::TextureFilter magFilter)
+void RenderBackendGL::textureSetMinMagFilter(BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(minFilter));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(magFilter));
 }
 
-void RenderBackendGL::textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT)
+void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(wrapS));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(wrapT));
 }
 
-void RenderBackendGL::textureGenerateMipmap(Ren::BackendTextureHandle handle)
+void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-} // namespace Ren::OpenGL
+} // namespace OpenGL
+
+} // namespace Ren

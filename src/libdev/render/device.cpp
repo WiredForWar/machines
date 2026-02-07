@@ -1831,12 +1831,12 @@ const RenIDeviceImpl& RenDevice::impl() const
     return *pImpl_;
 }
 
-RenIRenderBackend& RenDevice::backend()
+Ren::IRenderBackend& RenDevice::backend()
 {
     return impl().renderBackend();
 }
 
-const RenIRenderBackend& RenDevice::backend() const
+const Ren::IRenderBackend& RenDevice::backend() const
 {
     return impl().renderBackend();
 }
@@ -1953,15 +1953,15 @@ void RenDevice::renderScreenspace(
     glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::Array,
+        Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
         nVertices * sizeof(RenIVertex),
         &vertices[0],
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    pImpl_->renderBackend().bindBuffer(RenBufferTarget::Array, gl2DVertexBufferID_);
+    pImpl_->renderBackend().bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2106,11 +2106,11 @@ void RenDevice::renderSurface(
     }
 
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::Array,
+        Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
         6 * sizeof(RenIVertex),
         &vertices[0],
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
 
     // Bind texture
     pImpl_->renderBackend().bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
@@ -2121,7 +2121,7 @@ void RenDevice::renderSurface(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    pImpl_->renderBackend().bindBuffer(RenBufferTarget::Array, gl2DVertexBufferID_);
+    pImpl_->renderBackend().bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2220,11 +2220,11 @@ void RenDevice::renderPrimitive(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::Array,
+        Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
         vertices,
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size
@@ -2324,11 +2324,11 @@ void RenDevice::renderIndexed(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::Array,
+        Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
         vertices,
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_modelspaceID_, // The attribute we want to configure
         3, // size - 3 for XYZ 4 for XYZW
@@ -2374,11 +2374,11 @@ void RenDevice::renderIndexed(
 
     // Index buffer
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::ElementArray,
+        Ren::BufferTarget::ElementArray,
         glElementBufferID_,
         nIndices * sizeof(unsigned short),
         indices,
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !
@@ -2427,11 +2427,11 @@ void RenDevice::renderIndexedScreenspace(
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::Array,
+        Ren::BufferTarget::Array,
         glVertexDataBufferBillboardID_,
         nVertices * sizeof(RenIVertex),
         vertices,
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
     glVertexAttribPointer(
         glVertexPosition_BillboardID_, // The attribute we want to configure
         4, // size - 3 for XYZ 4 for XYZW
@@ -2465,11 +2465,11 @@ void RenDevice::renderIndexedScreenspace(
 
     // Index buffer
     pImpl_->renderBackend().bufferData(
-        RenBufferTarget::ElementArray,
+        Ren::BufferTarget::ElementArray,
         glElementBufferBillboardID_,
         nIndices * sizeof(unsigned short),
         indices,
-        RenBufferUsage::StreamDraw);
+        Ren::BufferUsage::StreamDraw);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
     // Draw the triangles !

@@ -17,8 +17,8 @@
 #include "render/display.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfbody.hpp"
-#include "render/internal/FontImpl.hpp"
 #include "render/internal/IRenderBackend.hpp"
+#include "render/internal/FontImpl.hpp"
 #include "render/OpenGL/Utils.hpp"
 #include "device/timer.hpp"
 #include <algorithm>
@@ -33,14 +33,14 @@
 
 namespace
 {
-RenIRenderBackend& requireBackend()
+Ren::IRenderBackend& requireBackend()
 {
     RenDevice* device = RenDevice::current();
     ASSERT(device, "No active render device available");
     return device->backend();
 }
 
-RenIRenderBackend* tryBackend()
+Ren::IRenderBackend* tryBackend()
 {
     RenDevice* device = RenDevice::current();
     if (!device)
@@ -127,7 +127,7 @@ bool RenISurfBody::allocateDDSurfaces(
     const RenIPixelFormat& format,
     Residence residence)
 {
-    RenIRenderBackend& backend = requireBackend();
+    Ren::IRenderBackend& backend = requireBackend();
 
     nativeTexture2D_ = backend.createTexture2D();
     backend.textureSetMinMagFilter(nativeTexture2D_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
@@ -604,7 +604,7 @@ bool RenISurfBody::copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha
             pixelsDst[index] = pixel | (pixelsSrc[index] & 0xFF000000);
         }
     }
-    RenIRenderBackend& backend = requireBackend();
+    Ren::IRenderBackend& backend = requireBackend();
     backend.textureSubImage2D(
         nativeTexture2D_, 0, 0, surfaceDst->w, surfaceDst->h, Ren::TextureFormat::RGBA8_UNorm, surfaceDst->pixels);
 
@@ -643,7 +643,7 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
         0xff000000);
     SDL_BlitSurface(surfaceTmp, nullptr, surfaceDst, nullptr);
 
-    RenIRenderBackend& backend = requireBackend();
+    Ren::IRenderBackend& backend = requireBackend();
     backend.textureSubImage2D(
         nativeTexture2D_, 0, 0, surfaceDst->w, surfaceDst->h, Ren::TextureFormat::RGBA8_UNorm, surfaceDst->pixels);
     if (createMipmaps && surfaceDst->w > 128 && surfaceDst->h > 128)
@@ -667,7 +667,7 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
 
 bool RenISurfBody::copyFromBuffer(const uint* pixelsBuffer)
 {
-    RenIRenderBackend& backend = requireBackend();
+    Ren::IRenderBackend& backend = requireBackend();
     backend.textureSubImage2D(
         nativeTexture2D_, 0, 0, static_cast<int>(width_), static_cast<int>(height_), Ren::TextureFormat::RGBA8_UNorm, pixelsBuffer);
     return true;

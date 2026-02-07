@@ -35,6 +35,22 @@ struct TextureTag;
 
 using BackendTextureHandle = internal::BackendHandle<internal::TextureTag>;
 
+enum class BufferTarget
+{
+    Array,
+    ElementArray,
+};
+
+enum class BufferUsage
+{
+    StreamDraw,
+};
+
+enum class FramebufferAttachment
+{
+    Color0,
+};
+
 enum class TextureFormat
 {
     RGBA8_UNorm,

@@ -57,12 +57,12 @@ void RenIDeviceImpl::releaseGLProgram(Ren::ProgramId id)
     renderBackend().releaseProgram(id);
 }
 
-RenIRenderBackend& RenIDeviceImpl::renderBackend()
+Ren::IRenderBackend& RenIDeviceImpl::renderBackend()
 {
     return *backend_;
 }
 
-const RenIRenderBackend& RenIDeviceImpl::renderBackend() const
+const Ren::IRenderBackend& RenIDeviceImpl::renderBackend() const
 {
     return *backend_;
 }

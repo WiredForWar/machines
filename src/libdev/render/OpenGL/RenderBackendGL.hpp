@@ -10,10 +10,13 @@
 
 #include <GL/glew.h>
 
-namespace Ren::OpenGL
+namespace Ren
 {
 
-class RenderBackendGL final : public RenIRenderBackend
+namespace OpenGL
+{
+
+class RenderBackendGL final : public IRenderBackend
 {
 public:
     RenderBackendGL();
@@ -25,56 +28,47 @@ public:
 
     bool setVSync(bool enabled) override;
 
-    Ren::ProgramId createProgramFromFiles(
+    ProgramId createProgramFromFiles(
         std::string_view vertexShaderPath,
         std::string_view fragmentShaderPath,
         std::string_view vertexShaderDebugName,
         std::string_view fragmentShaderDebugName) override;
-    void releaseProgram(Ren::ProgramId id) override;
+    void releaseProgram(ProgramId id) override;
 
-    void useProgram(Ren::ProgramId id) override;
+    void useProgram(ProgramId id) override;
 
-    int uniformLocation(Ren::ProgramId id, std::string_view name) const override;
-    int attribLocation(Ren::ProgramId id, std::string_view name) const override;
+    int uniformLocation(ProgramId id, std::string_view name) const override;
+    int attribLocation(ProgramId id, std::string_view name) const override;
 
-    Ren::BufferId createBuffer() override;
-    void releaseBuffer(Ren::BufferId id) override;
+    BufferId createBuffer() override;
+    void releaseBuffer(BufferId id) override;
 
-    void bindBuffer(RenBufferTarget target, Ren::BufferId id) override;
+    void bindBuffer(BufferTarget target, BufferId id) override;
     void bufferData(
-        RenBufferTarget target,
-        Ren::BufferId id,
-        std::size_t sizeBytes,
-        const void* data,
-        RenBufferUsage usage) override;
+        BufferTarget target, BufferId id, std::size_t sizeBytes, const void* data, BufferUsage usage) override;
 
-    Ren::FramebufferId createFramebuffer() override;
-    void releaseFramebuffer(Ren::FramebufferId id) override;
+    FramebufferId createFramebuffer() override;
+    void releaseFramebuffer(FramebufferId id) override;
 
-    void bindFramebuffer(Ren::FramebufferId id) override;
-    void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) override;
+    void bindFramebuffer(FramebufferId id) override;
+    void framebufferTexture2D(FramebufferAttachment attachment, TexId texture) override;
 
-    bool beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture) override;
+    bool beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture) override;
     void endRenderToTexture() override;
 
     void pushFramebuffer() override;
     void popFramebuffer() override;
-    void bindTexture2D(Ren::TexId id, std::uint32_t unit) override;
+    void bindTexture2D(TexId id, std::uint32_t unit) override;
 
-    Ren::BackendTextureHandle createTexture2D() override;
-    void destroyTexture2D(Ren::BackendTextureHandle handle) override;
-    void textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format) override;
+    BackendTextureHandle createTexture2D() override;
+    void destroyTexture2D(BackendTextureHandle handle) override;
+    void textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format) override;
     void textureSubImage2D(
-        Ren::BackendTextureHandle handle,
-        int x,
-        int y,
-        int width,
-        int height,
-        Ren::TextureFormat format,
-        const void* pixels) override;
-    void textureSetMinMagFilter(Ren::BackendTextureHandle handle, Ren::TextureFilter minFilter, Ren::TextureFilter magFilter) override;
-    void textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT) override;
-    void textureGenerateMipmap(Ren::BackendTextureHandle handle) override;
+        BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
+        override;
+    void textureSetMinMagFilter(BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter) override;
+    void textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT) override;
+    void textureGenerateMipmap(BackendTextureHandle handle) override;
 
 private:
     static std::string readTextFile(const std::string& path);
@@ -85,11 +79,11 @@ private:
         std::string_view vertexShaderDebugName,
         std::string_view fragmentShaderDebugName);
 
-    GLuint programHandle(Ren::ProgramId id) const;
+    GLuint programHandle(ProgramId id) const;
 
-    GLuint bufferHandle(Ren::BufferId id) const;
+    GLuint bufferHandle(BufferId id) const;
 
-    GLuint framebufferHandle(Ren::FramebufferId id) const;
+    GLuint framebufferHandle(FramebufferId id) const;
 
     std::vector<GLuint> programs_{};
     std::vector<GLuint> buffers_{};
@@ -103,4 +97,6 @@ private:
     SDL_GLContext glContext_{};
 };
 
-} // namespace Ren::OpenGL
+} // namespace OpenGL
+
+} // namespace Ren

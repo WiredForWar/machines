@@ -9,26 +9,13 @@
 
 struct SDL_Window;
 
-enum class RenBufferTarget
+namespace Ren
 {
-    Array,
-    ElementArray,
-};
 
-enum class RenBufferUsage
-{
-    StreamDraw,
-};
-
-enum class RenFramebufferAttachment
-{
-    Color0,
-};
-
-class RenIRenderBackend
+class IRenderBackend
 {
 public:
-    virtual ~RenIRenderBackend() = default;
+    virtual ~IRenderBackend() = default;
 
     virtual bool initialize(SDL_Window* window) = 0;
     virtual void shutdown() = 0;
@@ -37,57 +24,51 @@ public:
 
     virtual bool setVSync(bool enabled) = 0;
 
-    virtual Ren::ProgramId createProgramFromFiles(
+    virtual ProgramId createProgramFromFiles(
         std::string_view vertexShaderPath,
         std::string_view fragmentShaderPath,
         std::string_view vertexShaderDebugName,
         std::string_view fragmentShaderDebugName)
         = 0;
-    virtual void releaseProgram(Ren::ProgramId id) = 0;
+    virtual void releaseProgram(ProgramId id) = 0;
 
-    virtual void useProgram(Ren::ProgramId id) = 0;
+    virtual void useProgram(ProgramId id) = 0;
 
-    virtual int uniformLocation(Ren::ProgramId id, std::string_view name) const = 0;
-    virtual int attribLocation(Ren::ProgramId id, std::string_view name) const = 0;
+    virtual int uniformLocation(ProgramId id, std::string_view name) const = 0;
+    virtual int attribLocation(ProgramId id, std::string_view name) const = 0;
 
-    virtual Ren::BufferId createBuffer() = 0;
-    virtual void releaseBuffer(Ren::BufferId id) = 0;
+    virtual BufferId createBuffer() = 0;
+    virtual void releaseBuffer(BufferId id) = 0;
 
-    virtual void bindBuffer(RenBufferTarget target, Ren::BufferId id) = 0;
+    virtual void bindBuffer(BufferTarget target, BufferId id) = 0;
     virtual void bufferData(
-        RenBufferTarget target, Ren::BufferId id, std::size_t sizeBytes, const void* data, RenBufferUsage usage)
+        BufferTarget target, BufferId id, std::size_t sizeBytes, const void* data, BufferUsage usage)
         = 0;
 
-    virtual Ren::FramebufferId createFramebuffer() = 0;
-    virtual void releaseFramebuffer(Ren::FramebufferId id) = 0;
+    virtual FramebufferId createFramebuffer() = 0;
+    virtual void releaseFramebuffer(FramebufferId id) = 0;
 
-    virtual void bindFramebuffer(Ren::FramebufferId id) = 0;
-    virtual void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) = 0;
+    virtual void bindFramebuffer(FramebufferId id) = 0;
+    virtual void framebufferTexture2D(FramebufferAttachment attachment, TexId texture) = 0;
 
-    virtual bool beginRenderToTexture(Ren::FramebufferId framebuffer, Ren::TexId targetTexture) = 0;
+    virtual bool beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture) = 0;
     virtual void endRenderToTexture() = 0;
 
     virtual void pushFramebuffer() = 0;
     virtual void popFramebuffer() = 0;
 
-    virtual void bindTexture2D(Ren::TexId id, std::uint32_t unit) = 0;
+    virtual void bindTexture2D(TexId id, std::uint32_t unit) = 0;
 
-    virtual Ren::BackendTextureHandle createTexture2D() = 0;
-    virtual void destroyTexture2D(Ren::BackendTextureHandle handle) = 0;
-    virtual void textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format) = 0;
+    virtual BackendTextureHandle createTexture2D() = 0;
+    virtual void destroyTexture2D(BackendTextureHandle handle) = 0;
+    virtual void textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format) = 0;
     virtual void textureSubImage2D(
-        Ren::BackendTextureHandle handle,
-        int x,
-        int y,
-        int width,
-        int height,
-        Ren::TextureFormat format,
-        const void* pixels) = 0;
-    virtual void textureSetMinMagFilter(
-        Ren::BackendTextureHandle handle,
-        Ren::TextureFilter minFilter,
-        Ren::TextureFilter magFilter)
+        BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
         = 0;
-    virtual void textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT) = 0;
-    virtual void textureGenerateMipmap(Ren::BackendTextureHandle handle) = 0;
+    virtual void textureSetMinMagFilter(BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
+        = 0;
+    virtual void textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT) = 0;
+    virtual void textureGenerateMipmap(BackendTextureHandle handle) = 0;
 };
+
+} // namespace Ren
