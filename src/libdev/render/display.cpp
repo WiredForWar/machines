@@ -579,20 +579,6 @@ void RenDisplay::flipBuffers()
     SDL_GL_SwapWindow(window());
 }
 
-// Note this doesn't actually work on some cards.  It was only ever experimental.
-void RenDisplay::stretchFlipBuffers(RenSurface backSurf, RenSurface frontSurf, const Ren::Rect& fromArea)
-{
-    CB_RenDisplay_DEPIMPL();
-
-    pImpl_->drawCursor(backSurf);
-
-    // Sleep(100);
-    const Ren::Rect toArea(0, 0, frontSurf.width(), frontSurf.height());
-    frontSurf.stretchBlit(backSurf, fromArea, toArea);
-
-    ++frameNo_;
-}
-
 void RenDisplay::useCursor(const RenCursor2d* c)
 {
     pImpl_->useCursor(c);

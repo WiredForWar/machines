@@ -146,11 +146,6 @@ public:
     void flipBuffers(RenSurface backSurf);
     void flipBuffers();
 
-    // Flip the buffers but copy and stretch a sub-area of the back buffer
-    // onto the front buffer.  The fromArea rectangle in the back buffer is
-    // stretched to entirely cover the frontBuffer.
-    void stretchFlipBuffers(RenSurface backSurf, RenSurface frontSurf, const Ren::Rect& fromArea);
-
     // This method should be called every frame in case Alt-Tab has been
     // pressed.  Returns false if one of the buffers is lost and it could
     // not be restored.  Rendering should not proceed if this returns false.
