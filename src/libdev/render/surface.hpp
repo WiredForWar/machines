@@ -106,7 +106,6 @@ public:
     void simpleBlit(const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {});
     void tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
     void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea);
-    void stretchBlit(const RenSurface& source, const Rect& destArea);
     void stretchBlit(const RenSurface& source);
     void blitInRequestedSize(const RenSurface& source, int destX = 0, int destY = 0);
     void copyFromRGBABuffer(const uint* buff);

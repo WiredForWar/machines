@@ -455,14 +455,14 @@ void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& 
 
         if(scaleFactor_ == 1)
         {
-            dst.simpleBlit(src, {}, Ren::Point(xCoordTo_, yCoordTo_));
+            dst.simpleBlit(src, src.size(), Ren::Point(xCoordTo_, yCoordTo_));
         }
         else
         {
             Ren::Rect destRect(src.size() * scaleFactor_);
             destRect.originX = xCoordTo_;
             destRect.originY = yCoordTo_;
-            dst.stretchBlit(src, destRect);
+            dst.stretchBlit(src, src.size(), destRect);
         }
     }
 }

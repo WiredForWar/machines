@@ -156,8 +156,7 @@ void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& sourceArea, co
 
 void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& destArea) const
 {
-    const Ren::Rect sourceArea(0, 0, source.width(), source.height());
-    Gui::backBuffer().stretchBlit(source, sourceArea, map_GuiBox_to_RenSurfaceRect(destArea));
+    Gui::backBuffer().stretchBlit(source, source.size(), map_GuiBox_to_RenSurfaceRect(destArea));
 }
 
 void GuiPainter::blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const
