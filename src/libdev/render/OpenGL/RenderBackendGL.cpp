@@ -1,5 +1,9 @@
 #include "render/OpenGL/RenderBackendGL.hpp"
 
+#include "render/internal/surfmgri.hpp"
+#include "render/internal/surfbody.hpp"
+#include "render/surfmgr.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <SDL.h>
@@ -75,12 +79,34 @@ bool RenderBackendGL::initialize(SDL_Window* window)
         return false;
     }
 
+    glGenTextures(1, &fallbackTexture2D_);
+    if (fallbackTexture2D_ == 0)
+        return false;
+
+    glBindTexture(GL_TEXTURE_2D, fallbackTexture2D_);
+
+    const std::uint32_t data = 0xFFFFFFFF;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
+
+    if (glGetError() != GL_NO_ERROR)
+    {
+        glDeleteTextures(1, &fallbackTexture2D_);
+        fallbackTexture2D_ = 0;
+        return false;
+    }
+
     initialized_ = true;
     return true;
 }
 
 void RenderBackendGL::shutdown()
 {
+    if (fallbackTexture2D_ != 0)
+    {
+        glDeleteTextures(1, &fallbackTexture2D_);
+        fallbackTexture2D_ = 0;
+    }
+
     initialized_ = false;
 
     if (glContext_ != nullptr)
@@ -391,10 +417,18 @@ void RenderBackendGL::bindFramebuffer(Ren::FramebufferId id)
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
-void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle)
+void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture)
 {
     const GLenum glAttachment = (attachment == RenFramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
-    glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, static_cast<GLuint>(textureHandle), 0);
+
+    GLuint textureHandle = 0;
+    if (texture != Ren::NullTexId)
+    {
+        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
+        textureHandle = static_cast<GLuint>(surfBody ? surfBody->nativeTexture2D_ : 0);
+    }
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
 }
 
 void RenderBackendGL::pushFramebuffer()
@@ -432,6 +466,20 @@ void RenderBackendGL::releaseFramebuffer(Ren::FramebufferId id)
         glDeleteFramebuffers(1, &framebuffer);
         framebuffers_[idx] = 0;
     }
+}
+
+void RenderBackendGL::bindTexture2D(Ren::TexId id, std::uint32_t unit)
+{
+    const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(id);
+    GLuint textureHandle = fallbackTexture2D_;
+
+    if (surfBody && !surfBody->isEmpty() && surfBody->nativeTexture2D_)
+    {
+        textureHandle = static_cast<GLuint>(surfBody->nativeTexture2D_);
+    }
+
+    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + unit));
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
 }
 
 } // namespace Ren::OpenGL

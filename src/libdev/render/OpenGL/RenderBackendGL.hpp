@@ -52,10 +52,11 @@ public:
     void releaseFramebuffer(Ren::FramebufferId id) override;
 
     void bindFramebuffer(Ren::FramebufferId id) override;
-    void framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle) override;
+    void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) override;
 
     void pushFramebuffer() override;
     void popFramebuffer() override;
+    void bindTexture2D(Ren::TexId id, std::uint32_t unit) override;
 
 private:
     static std::string readTextFile(const std::string& path);
@@ -76,6 +77,8 @@ private:
     std::vector<GLuint> buffers_{};
     std::vector<GLuint> framebuffers_{};
     std::vector<GLuint> framebufferStack_{};
+
+    GLuint fallbackTexture2D_{};
     bool initialized_{};
 
     SDL_Window* window_{};

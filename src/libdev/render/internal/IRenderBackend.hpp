@@ -24,6 +24,11 @@ enum class RenFramebufferAttachment
     Color0,
 };
 
+enum class RenTextureFormat
+{
+    RGBA8_UNorm,
+};
+
 class RenIRenderBackend
 {
 public:
@@ -61,8 +66,10 @@ public:
     virtual void releaseFramebuffer(Ren::FramebufferId id) = 0;
 
     virtual void bindFramebuffer(Ren::FramebufferId id) = 0;
-    virtual void framebufferTexture2D(RenFramebufferAttachment attachment, std::uint32_t textureHandle) = 0;
+    virtual void framebufferTexture2D(RenFramebufferAttachment attachment, Ren::TexId texture) = 0;
 
     virtual void pushFramebuffer() = 0;
     virtual void popFramebuffer() = 0;
+
+    virtual void bindTexture2D(Ren::TexId id, std::uint32_t unit) = 0;
 };

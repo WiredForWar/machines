@@ -30,6 +30,7 @@
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/surface.hpp"
+#include "render/surfmgr.hpp"
 #include "render/capable.hpp"
 #include "render/stats.hpp"
 #include "render/material.hpp"
@@ -100,7 +101,6 @@
     CB_DEPIMPL_AUTO(glVertexColour_BillboardID_);                                                                      \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
-    CB_DEPIMPL_AUTO(glTextureEmptyID_);                                                                                \
     CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);
 
 RenDevice::RenDevice(RenDisplay* display)
@@ -224,12 +224,6 @@ bool RenDevice::initialize()
     glTextureSamplerBillboardID_ =
         pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uTextureSampler");
 
-    // Create empty texture
-    glGenTextures(1, &glTextureEmptyID_);
-    glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    const uint32_t data = 0xFFFFFFFF;
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &data);
-
     // Prepare framebuffer for offscreen rendering
     glOffscreenFrameBuffID_ = pImpl_->renderBackend().createFramebuffer();
 
@@ -346,12 +340,6 @@ RenDevice::~RenDevice()
     pImpl_->renderBackend().releaseBuffer(glVertexDataBufferBillboardID_);
     pImpl_->renderBackend().releaseBuffer(glElementBufferBillboardID_);
     pImpl_->renderBackend().releaseFramebuffer(glOffscreenFrameBuffID_);
-
-    if (glTextureEmptyID_)
-    {
-        glDeleteTextures(1, &glTextureEmptyID_);
-        glTextureEmptyID_ = 0;
-    }
 
     pImpl_->renderBackend().shutdown();
 
@@ -832,28 +820,6 @@ void RenDevice::commonEndFrame()
 
     const double now2 = DEBUG_FRAME_TIME;
     RENDER_STREAM("  RenDevice::endFrame() text done at " << now2 << "(ms)\n");
-}
-
-void RenDevice::bindTexture(const RenISurfBody *surf)
-{
-    CB_RENDEVICE_DEPIMPL_GL();
-
-    glActiveTexture(GL_TEXTURE0);
-    if (surf->isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, surf->handle());
-}
-
-void RenDevice::bindTexture(const RenSurface& surf, uint textureUnit)
-{
-    CB_RENDEVICE_DEPIMPL_GL();
-
-    glActiveTexture(GL_TEXTURE0 + textureUnit);
-    if (surf.isEmpty())
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    else
-        glBindTexture(GL_TEXTURE_2D, RenSurfaceManager::instance().impl().getSurface(surf.handle())->handle());
 }
 
 void RenDevice::syncSmoothFilters()
@@ -1592,17 +1558,17 @@ void RenDevice::useDevice(RenDevice* d)
 void RenDevice::displayImage(const SysPathName& pathName)
 {
     RenSurface backBuf = backSurface();
-    RenISurfBody surf;
-    surf.read(pathName.pathname());
+    const std::string imagePath = pathName.pathname();
+    RenTexture texture = RenSurfaceManager::instance().createTexture(imagePath);
 
-    Ren::Rect srcArea;
-    srcArea.originX = srcArea.originY = 0;
-    srcArea.width = surf.width();
-    srcArea.height = surf.height();
-    renderSurface(&surf, srcArea, srcArea);
+    if (texture.isNull())
+    {
+        spdlog::error("Failed to load display image from {}", imagePath);
+        return;
+    }
+
+    backBuf.simpleBlit(texture);
     pImpl_->display_->flipBuffers();
-    // This image is no longer needed
-    surf.releaseDC();
 }
 
 bool RenDevice::canSee(const MexPoint3d& pt) const
@@ -1933,16 +1899,13 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     {
         pImpl_->renderBackend().pushFramebuffer();
         pImpl_->renderBackend().bindFramebuffer(glOffscreenFrameBuffID_);
-        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(targetTexture);
-        pImpl_->renderBackend().framebufferTexture2D(
-            RenFramebufferAttachment::Color0,
-            static_cast<uint32_t>(surfBody ? surfBody->handle() : 0));
+        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, targetTexture);
         glViewport(0, 0, viewPortW, viewPortH);
     }
     // Bind FBO to screen
     else
     {
-        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, 0);
+        pImpl_->renderBackend().framebufferTexture2D(RenFramebufferAttachment::Color0, Ren::NullTexId);
         pImpl_->renderBackend().popFramebuffer();
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
         glViewport(0, 0, mode.width(), mode.height());
@@ -1965,16 +1928,7 @@ void RenDevice::renderScreenspace(
     pImpl_->renderBackend().useProgram(glProgramID_GIU2D_);
 
     // Bind texture
-    glActiveTexture(GL_TEXTURE0);
-    if (texture == Ren::NullTexId)
-    {
-        glBindTexture(GL_TEXTURE_2D, glTextureEmptyID_);
-    }
-    else
-    {
-        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
-        glBindTexture(GL_TEXTURE_2D, surfBody ? surfBody->handle() : 0);
-    }
+    pImpl_->renderBackend().bindTexture2D(texture, 0);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(gl2DUniformID_, 0);
@@ -2142,7 +2096,7 @@ void RenDevice::renderSurface(
         RenBufferUsage::StreamDraw);
 
     // Bind texture
-    bindTexture(surf);
+    pImpl_->renderBackend().bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
     syncSmoothFilters();
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
@@ -2241,7 +2195,7 @@ void RenDevice::renderPrimitive(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    bindTexture(mat.texture(), TextureUnit);
+    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(glTextureSamplerID_, TextureUnit);
@@ -2345,7 +2299,7 @@ void RenDevice::renderIndexed(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    bindTexture(mat.texture(), TextureUnit);
+    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(glTextureSamplerID_, TextureUnit);
@@ -2442,7 +2396,7 @@ void RenDevice::renderIndexedScreenspace(
     pImpl_->renderBackend().useProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    bindTexture(mat.texture(), TextureUnit);
+    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
 
     if (billboardUniformsDirty_)
     {

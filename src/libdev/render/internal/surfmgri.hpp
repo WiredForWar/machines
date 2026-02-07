@@ -21,6 +21,11 @@ class RenISurfBody;
 class RenTexture;
 class RenSurface;
 
+namespace Ren::OpenGL
+{
+class RenderBackendGL;
+}
+
 // Pattern: Pimple-Implementation class for a Singleton client.
 class RenISurfaceManagerImpl
 // Cannonical form revoked.
@@ -56,6 +61,7 @@ private:
 
     friend class RenDevice;
     friend class RenIDeviceImpl;
+    friend class Ren::OpenGL::RenderBackendGL;
 
     RenSurface createDisplaySurface(const RenDevice* dev, RenI::DisplayType t);
     void useDevice(const RenDevice* dev, RenI::UpdateType updateType);

@@ -29,6 +29,8 @@
 
 #include "spdlog/spdlog.h"
 
+#include <GL/glew.h>
+
 class ScopedGLEnable
 {
 public:
@@ -141,8 +143,10 @@ bool RenISurfBody::allocateDDSurfaces(
     const RenIPixelFormat& format,
     Residence residence)
 {
-    glGenTextures(1, &textureID_);
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    GLuint texture = 0;
+    glGenTextures(1, &texture);
+    nativeTexture2D_ = static_cast<std::uint32_t>(texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
     /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -187,10 +191,11 @@ SDL_Surface* RenISurfBody::readFromFile(const char *fileName)
 RenISurfBody::~RenISurfBody()
 {
     // Delete texture
-    if (textureID_ != NULL)
+    if (nativeTexture2D_ != 0)
     {
-        glDeleteTextures(1, &textureID_);
-        textureID_ = NULL;
+        const GLuint texture = static_cast<GLuint>(nativeTexture2D_);
+        glDeleteTextures(1, &texture);
+        nativeTexture2D_ = 0;
     }
 }
 
@@ -599,10 +604,11 @@ void RenISurfBody::drawText(
 void RenISurfBody::releaseDC()
 {
     // Delete texture
-    if (textureID_ != NULL)
+    if (nativeTexture2D_ != 0)
     {
-        glDeleteTextures(1, &textureID_);
-        textureID_ = NULL;
+        const GLuint texture = static_cast<GLuint>(nativeTexture2D_);
+        glDeleteTextures(1, &texture);
+        nativeTexture2D_ = 0;
     }
 }
 
@@ -633,7 +639,7 @@ bool RenISurfBody::copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha
             pixelsDst[index] = pixel | (pixelsSrc[index] & 0xFF000000);
         }
     }
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
     glTexSubImage2D(
         GL_TEXTURE_2D,
         0,
@@ -678,7 +684,7 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
         0xff000000);
     SDL_BlitSurface(surfaceTmp, nullptr, surfaceDst, nullptr);
 
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
     glTexSubImage2D(
         GL_TEXTURE_2D,
         0,
@@ -709,7 +715,7 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
 
 bool RenISurfBody::copyFromBuffer(const uint* pixelsBuffer)
 {
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width_, height_, GL_RGBA, GL_UNSIGNED_BYTE, pixelsBuffer);
 
     // unbind

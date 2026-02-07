@@ -24,6 +24,8 @@
 
 #include <SDL2/SDL_image.h>
 
+#include <GL/glew.h>
+
 #include <stdio.h>
 
 static int sDefaultFontSize{10};

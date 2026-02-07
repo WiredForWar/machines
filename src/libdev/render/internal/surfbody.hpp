@@ -13,7 +13,8 @@
 #include "utility/property.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/pixelfmt.hpp"
-#include <GL/glew.h>
+
+#include <cstdint>
 
 struct SDL_Surface;
 
@@ -22,6 +23,11 @@ class SysPathname;
 class RenITexBody;
 class RenIFont;
 class RenDevice;
+
+namespace Ren::OpenGL
+{
+class RenderBackendGL;
+}
 
 namespace Render
 {
@@ -151,7 +157,6 @@ public:
 
     bool isFront() const { return displayType_ == RenI::FRONT; }
     bool isOffscreen() const { return displayType_ == RenI::NOT_DISPLAY; }
-    const GLuint handle() const { return textureID_; }
 
 protected:
     // Used by the surface manager to create surfaces is specific places. The = 2 is a
@@ -172,6 +177,7 @@ private:
     // Only the surface manager can create internal surface objects.
     friend class RenSurfaceManager;
     friend class RenISurfaceManagerImpl;
+    friend class Ren::OpenGL::RenderBackendGL;
 
     // Allocates DirectDraw memory for textures and non-texture bitmaps. This
     // creates a writable surface.  The client must change it to read-only, if
@@ -208,7 +214,7 @@ private:
     RenI::DisplayType displayType_;
     const RenDevice* device_{};
     RenIPixelFormat pixelFormat_;
-    GLuint textureID_{};
+    std::uint32_t nativeTexture2D_{};
     uint width_, height_;
 
     uint refCount_{};

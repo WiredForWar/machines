@@ -188,8 +188,6 @@ private:
     int glVertexColour_BillboardID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
-
-    GLuint glTextureEmptyID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     void releaseGLProgram(Ren::ProgramId id);
