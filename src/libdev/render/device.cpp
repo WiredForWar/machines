@@ -412,7 +412,6 @@ void RenDevice::initializeDisplay()
 
 bool RenDevice::initializeContext()
 {
-    CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
     CB_DEPIMPL_AUTO(display_);
 
@@ -519,6 +518,7 @@ bool RenDevice::startFrame()
     }
 
     pImpl_->useDevice(this, RenI::LAZY_UPDATE);
+    pImpl_->beginFrameCommandBuffer();
 
     RENDER_STREAM(std::endl << "RenDevice::startFrame() == true" << std::endl << '{' << std::endl);
     RENDER_INDENT(3);
@@ -822,8 +822,8 @@ void RenDevice::endFrame()
     commonEndFrame();
     RenSurface backBuf = backSurface();
     pImpl_->display_->displayImpl().drawCursor(backBuf);
+    pImpl_->destroyFrameCommandBuffer();
     pImpl_->display_->flipBuffers();
-
     pImpl_->rendering_ = false;
 
     const double now = DEBUG_FRAME_TIME;
@@ -1726,6 +1726,16 @@ RenDevice* RenDevice::current()
     return RenIDeviceImpl::current();
 }
 
+void RenDevice::recordCommand(Ren::BackendCommand command)
+{
+    PRE(pImpl_);
+    PRE(pImpl_->backend_);
+    const auto handle = pImpl_->currentCommandBufferHandle();
+    PRE(handle.isValid());
+
+    pImpl_->backend_->recordCommand(handle, std::move(command));
+}
+
 bool RenDevice::rendering() const
 {
     return pImpl_->rendering_;
@@ -1883,7 +1893,8 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     {
         if (backend_->beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
         {
-            glViewport(0, 0, viewPortW, viewPortH);
+            Ren::Size viewportSize(viewPortW, viewPortH);
+            recordCommand(Ren::Command::setViewport(viewportSize));
         }
         else
         {
@@ -1895,7 +1906,7 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     {
         backend_->endRenderToTexture();
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        glViewport(0, 0, mode.width(), mode.height());
+        recordCommand(Ren::Command::setViewport(mode.size()));
     }
 }
 

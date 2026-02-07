@@ -60,6 +60,13 @@ public:
     void popFramebuffer() override;
     void bindTexture2D(TexId id, std::uint32_t unit) override;
 
+    BackendCommandBufferHandle createCommandBuffer() override;
+    void destroyCommandBuffer(BackendCommandBufferHandle handle) override;
+    void beginCommandBuffer(BackendCommandBufferHandle handle) override;
+    void recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command) override;
+    void endCommandBuffer(BackendCommandBufferHandle handle) override;
+    void submitCommandBuffer(BackendCommandBufferHandle handle) override;
+
     BackendTextureHandle createTexture2D() override;
     void destroyTexture2D(BackendTextureHandle handle) override;
     void textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format) override;
@@ -85,10 +92,22 @@ private:
 
     GLuint framebufferHandle(FramebufferId id) const;
 
+    struct CommandBuffer
+    {
+        bool alive{};
+        bool recording{};
+        std::vector<BackendCommand> commands{};
+    };
+    CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle);
+    const CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle) const;
+    void executeCommand(const BackendCommand& command);
+    void executeCommand(const BackendCommandSetViewport& command);
+
     std::vector<GLuint> programs_{};
     std::vector<GLuint> buffers_{};
     std::vector<GLuint> framebuffers_{};
     std::vector<GLuint> framebufferStack_{};
+    std::vector<CommandBuffer> commandBuffers_{};
 
     GLuint fallbackTexture2D_{};
     bool initialized_{};

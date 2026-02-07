@@ -57,6 +57,7 @@ set(RENDER_SOURCES
     illumine.cpp
     inlight.cpp
     inpoints.cpp
+    internal/BackendCommands.hpp
     internal/BackendTypes.hpp
     internal/BmpFontCore.hpp
     internal/FontImpl.hpp
