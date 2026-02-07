@@ -101,6 +101,7 @@ private:
     CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle);
     const CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle) const;
     void executeCommand(const BackendCommand& command);
+    void executeCommand(const BackendCommandClear& command);
     void executeCommand(const BackendCommandSetViewport& command);
 
     void flushPendingDeletes();

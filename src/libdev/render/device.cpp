@@ -558,7 +558,12 @@ void RenDevice::end2D()
     // Needs to go here because smacker animations do not call RenDevice's frame lifecycle methods... -_-
     if (clearAll2D_)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        CB_DEPIMPL_AUTO(background_);
+        CB_DEPIMPL_AUTO(backend_);
+
+        using ClearFlag = Ren::BackendClearFlag;
+        Ren::BackendCommand command = Ren::Command::clear(background_, backendClearMask(ClearFlag::Colour));
+        recordCommand(std::move(command));
         clearAll2D_ = false;
     }
 
@@ -606,7 +611,12 @@ void RenDevice::start3D(bool clearBack)
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
     glClearColor(bgCol.r(), bgCol.g(), bgCol.b(), bgCol.a());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    CB_DEPIMPL_AUTO(backend_);
+
+    using ClearFlag = Ren::BackendClearFlag;
+    Ren::BackendCommand command = Ren::Command::clear(bgCol, ClearFlag::Colour | ClearFlag::Depth);
+    recordCommand(std::move(command));
     // Inform the texture manager that a frame is starting.
     // RenTexManager::instance().startFrame();
 
