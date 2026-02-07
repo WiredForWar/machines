@@ -264,8 +264,6 @@ public:
     // Features supported by this rendering system.
     const RenCapabilities& capabilities() const;
 
-    bool setVSync(bool enabled);
-
     // colour filter
 
     class Filter
@@ -363,6 +361,8 @@ private:
     void addStatic();
     void addInterference();
     void commonEndFrame();
+
+    bool setVSync(bool enabled);
 
     void syncSmoothFilters();
 

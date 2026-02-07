@@ -158,6 +158,7 @@ bool RenDevice::initialize()
     PRE(MexCoordSystem::instance().isSet());
 
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     // There are two alpha sorters.  Only one is in use at a time.  The switch
     // is made by changing this pointer.
@@ -178,33 +179,32 @@ bool RenDevice::initialize()
     glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
 
     // Initialize VBO
-    gl2DVertexBufferID_ = pImpl_->renderBackend().createBuffer();
+    gl2DVertexBufferID_ = backend_->createBuffer();
     // Get a handle for our buffers
-    glVertexPosition_screenspaceID_ =
-        pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
-    glVertexUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexUV");
-    glVertexColour_screenspaceID_ = pImpl_->renderBackend().attribLocation(glProgramID_GIU2D_, "vertexColor");
-    glScreenspaceID_ = pImpl_->renderBackend().uniformLocation(glProgramID_GIU2D_, "uScreenspace");
+    glVertexPosition_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
+    glVertexUVID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexUV");
+    glVertexColour_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexColor");
+    glScreenspaceID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uScreenspace");
     // Initialize uniforms' IDs
-    gl2DUniformID_ = pImpl_->renderBackend().uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
+    gl2DUniformID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
 
     glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
 
     // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uM");
-    glViewMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uV");
-    glProjectionMatrixID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uP");
-    glFogColourID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogColour");
-    glFogParamsID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uFogParams");
+    glModelMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uM");
+    glViewMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uV");
+    glProjectionMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uP");
+    glFogColourID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogColour");
+    glFogParamsID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogParams");
     // VBO
-    glVertexDataBufferID_ = pImpl_->renderBackend().createBuffer();
-    glElementBufferID_ = pImpl_->renderBackend().createBuffer();
+    glVertexDataBufferID_ = backend_->createBuffer();
+    glElementBufferID_ = backend_->createBuffer();
     // Get a handle for our buffers
     glVertexPosition_modelspaceID_ =
-        pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexColor");
-    glVertex_modelspaceUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_Standard_, "vertexUV");
-    glTextureSamplerID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Standard_, "uTextureSampler2");
+        backend_->attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
+    glVertexColour_modelspaceID_ = backend_->attribLocation(glProgramID_Standard_, "vertexColor");
+    glVertex_modelspaceUVID_ = backend_->attribLocation(glProgramID_Standard_, "vertexUV");
+    glTextureSamplerID_ = backend_->uniformLocation(glProgramID_Standard_, "uTextureSampler2");
 
     glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
 
@@ -213,19 +213,17 @@ bool RenDevice::initialize()
         return false;
 
     // VBO
-    glVertexDataBufferBillboardID_ = pImpl_->renderBackend().createBuffer();
-    glElementBufferBillboardID_ = pImpl_->renderBackend().createBuffer();
+    glVertexDataBufferBillboardID_ = backend_->createBuffer();
+    glElementBufferBillboardID_ = backend_->createBuffer();
     // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uVP");
-    glVertexPosition_BillboardID_ =
-        pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexColor");
-    glVertex_BillboardUVID_ = pImpl_->renderBackend().attribLocation(glProgramID_Billboard_, "vertexUV");
-    glTextureSamplerBillboardID_ =
-        pImpl_->renderBackend().uniformLocation(glProgramID_Billboard_, "uTextureSampler");
+    glViewProjMatrix_BillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uVP");
+    glVertexPosition_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
+    glVertexColour_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexColor");
+    glVertex_BillboardUVID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexUV");
+    glTextureSamplerBillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uTextureSampler");
 
     // Prepare framebuffer for offscreen rendering
-    glOffscreenFrameBuffID_ = pImpl_->renderBackend().createFramebuffer();
+    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
 
     pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
 
@@ -325,23 +323,24 @@ RenDevice::~RenDevice()
         delete pImpl_->surfFrontBuf_;
     }
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     // Delete shaders
 
-    pImpl_->renderBackend().useProgram(0);
+    backend_->useProgram(0);
 
-    pImpl_->releaseGLProgram(glProgramID_Standard_);
-    pImpl_->releaseGLProgram(glProgramID_GIU2D_);
-    pImpl_->releaseGLProgram(glProgramID_Billboard_);
+    backend_->releaseProgram(glProgramID_Standard_);
+    backend_->releaseProgram(glProgramID_GIU2D_);
+    backend_->releaseProgram(glProgramID_Billboard_);
 
-    pImpl_->renderBackend().releaseBuffer(gl2DVertexBufferID_);
-    pImpl_->renderBackend().releaseBuffer(glVertexDataBufferID_);
-    pImpl_->renderBackend().releaseBuffer(glElementBufferID_);
-    pImpl_->renderBackend().releaseBuffer(glVertexDataBufferBillboardID_);
-    pImpl_->renderBackend().releaseBuffer(glElementBufferBillboardID_);
-    pImpl_->renderBackend().releaseFramebuffer(glOffscreenFrameBuffID_);
+    backend_->releaseBuffer(gl2DVertexBufferID_);
+    backend_->releaseBuffer(glVertexDataBufferID_);
+    backend_->releaseBuffer(glElementBufferID_);
+    backend_->releaseBuffer(glVertexDataBufferBillboardID_);
+    backend_->releaseBuffer(glElementBufferBillboardID_);
+    backend_->releaseFramebuffer(glOffscreenFrameBuffID_);
 
-    pImpl_->renderBackend().shutdown();
+    backend_->shutdown();
 
     delete pImpl_;
 
@@ -372,8 +371,9 @@ Ren::ProgramId RenDevice::loadShaders(const char* vertexShaderPath, const char* 
     const std::string vertexShaderFile = shadersDir + vertexShaderPath;
     const std::string fragmentShaderFile = shadersDir + fragmentShaderPath;
 
-    return pImpl_->renderBackend().createProgramFromFiles(
-        vertexShaderFile, fragmentShaderFile, vertexShaderPath, fragmentShaderPath);
+    CB_DEPIMPL_AUTO(backend_);
+
+    return backend_->createProgramFromFiles(vertexShaderFile, fragmentShaderFile, vertexShaderPath, fragmentShaderPath);
 }
 
 void RenDevice::clearAllSurfaces(const RenColour& colour)
@@ -447,12 +447,14 @@ void RenDevice::initializeDisplay()
 bool RenDevice::initializeContext()
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+    CB_DEPIMPL_AUTO(display_);
 
-    if (pImpl_->renderBackend().isInitialized())
+    if (backend_->isInitialized())
     {
-        pImpl_->renderBackend().shutdown();
+        backend_->shutdown();
     }
-    if (!pImpl_->renderBackend().initialize(pImpl_->display_->window()))
+    if (!backend_->initialize(display_->window()))
     {
         spdlog::error("Render backend initialization failed");
         return false;
@@ -1833,12 +1835,12 @@ const RenIDeviceImpl& RenDevice::impl() const
 
 Ren::IRenderBackend& RenDevice::backend()
 {
-    return impl().renderBackend();
+    return *impl().backend_;
 }
 
 const Ren::IRenderBackend& RenDevice::backend() const
 {
-    return impl().renderBackend();
+    return *impl().backend_;
 }
 
 void RenDevice::debugTextCoords(int x, int y)
@@ -1857,10 +1859,11 @@ void RenDevice::debugTextCoords(int* pX, int* pY) const
 void RenDevice::setVSyncPreference(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     vsyncEnabled_ = enabled;
 
-    if (pImpl_->renderBackend().isInitialized())
+    if (backend_->isInitialized())
     {
         if (!setVSync(enabled))
         {
@@ -1872,14 +1875,10 @@ void RenDevice::setVSyncPreference(bool enabled)
 bool RenDevice::setVSync(bool enabled)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+    PRE(backend_->isInitialized());
 
-    if (!pImpl_->renderBackend().isInitialized())
-    {
-        spdlog::warn("Cannot set VSync: backend not initialised yet");
-        return false;
-    }
-
-    const bool success = pImpl_->renderBackend().setVSync(enabled);
+    const bool success = backend_->setVSync(enabled);
     if (success)
     {
         vsyncEnabled_ = enabled;
@@ -1910,11 +1909,12 @@ void RenDevice::setMaterialHandles(const RenMaterial& mat)
 void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        if (pImpl_->renderBackend().beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
+        if (backend_->beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
         {
             glViewport(0, 0, viewPortW, viewPortH);
         }
@@ -1926,7 +1926,7 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     // Bind FBO to screen
     else
     {
-        pImpl_->renderBackend().endRenderToTexture();
+        backend_->endRenderToTexture();
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
         glViewport(0, 0, mode.width(), mode.height());
     }
@@ -1941,18 +1941,19 @@ void RenDevice::renderScreenspace(
     Ren::TexId texture)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
-    pImpl_->renderBackend().useProgram(glProgramID_GIU2D_);
+    backend_->useProgram(glProgramID_GIU2D_);
 
     // Bind texture
-    pImpl_->renderBackend().bindTexture2D(texture, 0);
+    backend_->bindTexture2D(texture, 0);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(gl2DUniformID_, 0);
 
     glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
 
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
         nVertices * sizeof(RenIVertex),
@@ -1961,7 +1962,7 @@ void RenDevice::renderScreenspace(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    pImpl_->renderBackend().bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
+    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2013,6 +2014,7 @@ void RenDevice::renderSurface(
     Ren::BlitMode mode)
 {
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     RenIVertex vertices[6];
 
@@ -2035,7 +2037,7 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    pImpl_->renderBackend().useProgram(glProgramID_GIU2D_);
+    backend_->useProgram(glProgramID_GIU2D_);
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
@@ -2105,7 +2107,7 @@ void RenDevice::renderSurface(
         vertices[5].tv = uv_down_left[1];
     }
 
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
         6 * sizeof(RenIVertex),
@@ -2113,7 +2115,7 @@ void RenDevice::renderSurface(
         Ren::BufferUsage::StreamDraw);
 
     // Bind texture
-    pImpl_->renderBackend().bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
+    backend_->bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
     syncSmoothFilters();
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
@@ -2121,7 +2123,7 @@ void RenDevice::renderSurface(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    pImpl_->renderBackend().bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
+    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
     glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
 
     // 2nd attribute buffer : UVs
@@ -2189,9 +2191,10 @@ void RenDevice::renderPrimitive(
     PRE(nVertices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
     // Use our shader
-    pImpl_->renderBackend().useProgram(glProgramID_Standard_);
+    backend_->useProgram(glProgramID_Standard_);
 
     if (standardUniformsDirty_)
     {
@@ -2212,14 +2215,14 @@ void RenDevice::renderPrimitive(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
+    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
@@ -2292,8 +2295,9 @@ void RenDevice::renderIndexed(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
-    pImpl_->renderBackend().useProgram(glProgramID_Standard_);
+    backend_->useProgram(glProgramID_Standard_);
     // Compute the MVP matrix from keyboard and mouse input
 
     //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
@@ -2316,14 +2320,14 @@ void RenDevice::renderIndexed(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
+    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
@@ -2373,7 +2377,7 @@ void RenDevice::renderIndexed(
     );*/
 
     // Index buffer
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::ElementArray,
         glElementBufferID_,
         nIndices * sizeof(unsigned short),
@@ -2409,11 +2413,12 @@ void RenDevice::renderIndexedScreenspace(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
 
-    pImpl_->renderBackend().useProgram(glProgramID_Billboard_);
+    backend_->useProgram(glProgramID_Billboard_);
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    pImpl_->renderBackend().bindTexture2D(mat.texture().handle(), TextureUnit);
+    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
 
     if (billboardUniformsDirty_)
     {
@@ -2426,7 +2431,7 @@ void RenDevice::renderIndexedScreenspace(
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(glVertexPosition_BillboardID_);
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferBillboardID_,
         nVertices * sizeof(RenIVertex),
@@ -2464,7 +2469,7 @@ void RenDevice::renderIndexedScreenspace(
     );
 
     // Index buffer
-    pImpl_->renderBackend().bufferData(
+    backend_->bufferData(
         Ren::BufferTarget::ElementArray,
         glElementBufferBillboardID_,
         nIndices * sizeof(unsigned short),

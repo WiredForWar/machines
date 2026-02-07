@@ -194,11 +194,6 @@ private:
     Ren::BufferId glElementBufferBillboardID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
-    void releaseGLProgram(Ren::ProgramId id);
-    Ren::IRenderBackend& renderBackend();
-    const Ren::IRenderBackend& renderBackend() const;
-    Ren::IRenderBackend* renderBackendPtr();
-    const Ren::IRenderBackend* renderBackendPtr() const;
     std::unique_ptr<Ren::IRenderBackend> backend_{};
 
     DevTimer frameTimer_;

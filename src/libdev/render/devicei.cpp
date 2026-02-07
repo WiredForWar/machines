@@ -52,21 +52,6 @@ RenIDeviceImpl::~RenIDeviceImpl()
     delete driverSelector_;
 }
 
-void RenIDeviceImpl::releaseGLProgram(Ren::ProgramId id)
-{
-    renderBackend().releaseProgram(id);
-}
-
-Ren::IRenderBackend& RenIDeviceImpl::renderBackend()
-{
-    return *backend_;
-}
-
-const Ren::IRenderBackend& RenIDeviceImpl::renderBackend() const
-{
-    return *backend_;
-}
-
 // virtual
 void RenIDeviceImpl::prepareForModeChange(const RenDisplay::Mode&, const RenDisplay::Mode&)
 {
