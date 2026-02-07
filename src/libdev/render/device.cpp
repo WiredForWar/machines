@@ -346,6 +346,13 @@ RenDevice::~RenDevice()
     delete pImpl_;
 
     pImpl_ = nullptr;
+
+    RenDevice*& currentDeviceRef = RenIDeviceImpl::current();
+    if (currentDeviceRef == this)
+    {
+        currentDeviceRef = nullptr;
+        RenIDeviceImpl::currentPimpl() = nullptr;
+    }
 }
 
 void RenDevice::reset()
