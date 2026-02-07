@@ -58,6 +58,34 @@ namespace Ren
     using UVTransformPtr = CtlCountedPtr<RenUVTransform>;
     using ConstUVTransformPtr = CtlConstCountedPtr<RenUVTransform>;
 
+    struct Point
+    {
+        constexpr Point() = default;
+        constexpr Point(int _x, int _y)
+            : x(_x)
+            , y(_y)
+        {
+        }
+
+        template <typename T>
+        constexpr Point& operator*=(T multiplier)
+        {
+            x *= multiplier;
+            y *= multiplier;
+            return *this;
+        }
+
+        constexpr Point operator+(const Point& rhs) const
+        {
+            return { x + rhs.x, y + rhs.y };
+        }
+
+        constexpr bool operator==(const Point&) const = default;
+
+        int x{};
+        int y{};
+    };
+
     struct Size
     {
         constexpr Size() = default;
@@ -94,6 +122,13 @@ namespace Ren
     struct Rect
     {
         constexpr Rect() = default;
+        constexpr Rect(Point point, Size size)
+            : originX(point.x)
+            , originY(point.y)
+            , width(size.width)
+            , height(size.height)
+        {
+        }
         constexpr Rect(Size size)
             : width(size.width)
             , height(size.height)
@@ -107,6 +142,7 @@ namespace Ren
         {
         }
 
+        constexpr Point origin() const { return { originX, originY }; }
         constexpr Size size() const { return { width, height }; }
 
         int originX{};
@@ -114,6 +150,12 @@ namespace Ren
         int width{};
         int height{};
     };
+
+    template <typename T>
+    constexpr inline Point operator*(Point rhs, T c)
+    {
+        return rhs *= c;
+    }
 
     template <typename T>
     constexpr inline Size operator*(Size rhs, T c)
