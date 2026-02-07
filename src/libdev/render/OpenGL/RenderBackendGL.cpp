@@ -26,6 +26,24 @@ namespace OpenGL
 namespace
 {
 
+GLbitfield toClearMask(std::uint32_t mask)
+{
+    GLbitfield glMask = 0;
+    if (mask & backendClearMask(BackendClearFlag::Colour))
+    {
+        glMask |= GL_COLOR_BUFFER_BIT;
+    }
+    if (mask & backendClearMask(BackendClearFlag::Depth))
+    {
+        glMask |= GL_DEPTH_BUFFER_BIT;
+    }
+    if (mask & backendClearMask(BackendClearFlag::Stencil))
+    {
+        glMask |= GL_STENCIL_BUFFER_BIT;
+    }
+    return glMask;
+}
+
 GLenum toStorageFormat(TextureFormat format)
 {
     switch (format)
@@ -746,6 +764,28 @@ const RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(B
 void RenderBackendGL::executeCommand(const BackendCommand& command)
 {
     std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandClear& command)
+{
+    const GLbitfield mask = toClearMask(command.mask);
+    if (mask == 0)
+        return;
+
+    GLfloat previousClearColor[4]{};
+    const bool affectsColour = (mask & GL_COLOR_BUFFER_BIT) != 0;
+    if (affectsColour)
+    {
+        glGetFloatv(GL_COLOR_CLEAR_VALUE, previousClearColor);
+        glClearColor(command.r, command.g, command.b, command.a);
+    }
+
+    glClear(mask);
+
+    if (affectsColour)
+    {
+        glClearColor(previousClearColor[0], previousClearColor[1], previousClearColor[2], previousClearColor[3]);
+    }
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)

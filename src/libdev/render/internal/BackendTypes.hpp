@@ -71,4 +71,21 @@ enum class TextureWrap
     ClampToEdge,
 };
 
+enum class BackendClearFlag : std::uint32_t
+{
+    Colour = 1u << 0,
+    Depth = 1u << 1,
+    Stencil = 1u << 2,
+};
+
+inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)
+{
+    return static_cast<std::uint32_t>(flag);
+}
+
+inline constexpr std::uint32_t operator|(BackendClearFlag flag1, BackendClearFlag flag2)
+{
+    return static_cast<std::uint32_t>(flag1) | static_cast<std::uint32_t>(flag2);
+}
+
 } // namespace Ren
