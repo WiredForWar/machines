@@ -1,7 +1,8 @@
 #pragma once
 
-#include "render/internal/BackendTypes.hpp"
 #include "render/render.hpp"
+#include "render/internal/BackendCommands.hpp"
+#include "render/internal/BackendTypes.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -58,6 +59,13 @@ public:
     virtual void popFramebuffer() = 0;
 
     virtual void bindTexture2D(TexId id, std::uint32_t unit) = 0;
+
+    virtual BackendCommandBufferHandle createCommandBuffer() = 0;
+    virtual void destroyCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void beginCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command) = 0;
+    virtual void endCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void submitCommandBuffer(BackendCommandBufferHandle handle) = 0;
 
     virtual BackendTextureHandle createTexture2D() = 0;
     virtual void destroyTexture2D(BackendTextureHandle handle) = 0;

@@ -57,6 +57,7 @@ set(RENDER_SOURCES
     Illuminator.cpp
     InternalLight.cpp
     InternalPoints.cpp
+    internal/BackendCommands.hpp
     internal/BackendTypes.hpp
     internal/BmpFontCore.hpp
     internal/FontImpl.hpp
