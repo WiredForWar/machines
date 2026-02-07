@@ -64,7 +64,7 @@ void PedMapCreator::createBmp()
 
     const size_t xMax = pPlanet->xMax();
     const size_t yMax = pPlanet->yMax();
-    RenSurface surface = RenSurface::createAnonymousSurface(xMax, yMax, RenDevice::current()->backSurface());
+    RenSurface surface = RenSurface::createAnonymousSurface(Ren::Size(xMax, yMax), RenDevice::current()->backSurface());
 
     typedef ctl_pvector<PedPolygon> Polygons;
     typedef ctl_vector<MexPoint2d> PolyVerticies;

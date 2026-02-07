@@ -58,10 +58,9 @@ public:
     // PRE(!surf.isNull()); PRE(width > 0 && height > 0);
     // POST(!retval.sharable() && !retval.readOnly()); POST(name.length() == 0);
     static RenSurface createAnonymousSurface(Size size, const RenSurface& surf);
-    static RenSurface createAnonymousSurface(size_t width, size_t height, const RenSurface& surf);
 
     // Create a non-texture surface in video memory.
-    static RenSurface createAnonymousVideoSurface(size_t width, size_t height, const RenSurface& pixelFmt);
+    static RenSurface createAnonymousVideoSurface(Size size, const RenSurface& pixelFmt);
     // PRE(!pixelFmt.isNull());
     // PRE(width > 0 and height > 0);
     // POST(!retval.sharable() && !retval.readOnly()); POST(name.length() == 0);
@@ -224,11 +223,6 @@ private:
     RenISurfBody* internals();
     const RenISurfBody* internals() const;
 };
-
-inline RenSurface RenSurface::createAnonymousSurface(Size size, const RenSurface& surf)
-{
-    return createAnonymousSurface(size.width, size.height, surf);
-}
 
 #endif
 

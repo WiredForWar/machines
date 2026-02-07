@@ -43,8 +43,7 @@ MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayabl
     CB_DEPIMPL(GuiBitmap, textBmp_);
 
     textBmp_ = RenSurface::createAnonymousSurface(
-        width(),
-        height(),
+        Ren::Size(width(), height()),
         W4dManager::instance().sceneManager()->pDevice()->backSurface());
     textBmp_.enableColourKeying();
 

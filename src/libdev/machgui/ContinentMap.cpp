@@ -304,18 +304,14 @@ void MachContinentMap::loadGame(const std::string& planet)
     else
     {
         GuiBitmap mapBitmap = Gui::bitmap(mapBmp);
-        mapBackground_ = RenSurface::createAnonymousSurface(
-            mapBitmap.width() * Gui::uiScaleFactor(),
-            mapBitmap.height() * Gui::uiScaleFactor(),
-            mapBitmap);
+        mapBackground_ = RenSurface::createAnonymousSurface(mapBitmap.size() * Gui::uiScaleFactor(), mapBitmap);
         mapBackground_.stretchBlit(mapBitmap);
     }
-    mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackground_.width(), mapBackground_.height(), mapBackground_);
-    mapFrameTwo_ = RenSurface::createAnonymousSurface(mapFrameOne_.width(), mapFrameOne_.height(), mapFrameOne_);
+    mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackground_.size(), mapBackground_);
+    mapFrameTwo_ = RenSurface::createAnonymousSurface(mapFrameOne_.size(), mapFrameOne_);
 
     // Set up visible area. This is used for "fog of war"
-    mapVisibleArea_
-        = RenSurface::createAnonymousSurface(mapBackground_.width(), mapBackground_.height(), mapBackground_);
+    mapVisibleArea_ = RenSurface::createAnonymousSurface(mapBackground_.size(), mapBackground_);
     // Initialise to nothing visible
     mapVisibleArea_.filledRectangle(
         RenSurface::Rect(0, 0, mapBackground_.width(), mapBackground_.height()),
@@ -352,7 +348,7 @@ void MachContinentMap::loadGame(const std::string& planet)
             scannerPixelDiameter = 6;
 
         scannerRangeImage_[i]
-            = RenSurface::createAnonymousSurface(scannerPixelDiameter, scannerPixelDiameter, mapBackground_);
+            = RenSurface::createAnonymousSurface(Ren::Size(scannerPixelDiameter, scannerPixelDiameter), mapBackground_);
         //      scannerRangeImage_[i].filledRectangle( RenSurface::Rect( 0, 0, scannerPixelDiameter,
         //      scannerPixelDiameter ), Gui::BLACK() );
         scannerRangeImage_[i].ellipse(
@@ -1656,8 +1652,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
             {
                 GuiBitmap mapBitmap = Gui::bitmap(mapPath_);
                 mapBackground_ = RenSurface::createAnonymousSurface(
-                    mapBitmap.width() * Gui::uiScaleFactor(),
-                    mapBitmap.height() * Gui::uiScaleFactor(),
+                    mapBitmap.size() * Gui::uiScaleFactor(),
                     mapBitmap);
                 mapBackground_.stretchBlit(mapBitmap);
             }
@@ -1908,11 +1903,9 @@ void MachContinentMap::saveGame(PerOstream& outStream)
     }
     else
     {
-        GuiBitmap visibleArea = RenSurface::createAnonymousSurface(
-            mapVisibleArea_.width() / Gui::uiScaleFactor(),
-            mapVisibleArea_.height() / Gui::uiScaleFactor(),
-            mapVisibleArea_);
-        visibleArea.filledRectangle(RenSurface::Rect(0, 0, visibleArea.width(), visibleArea.height()), Gui::BLACK());
+        GuiBitmap visibleArea
+            = RenSurface::createAnonymousSurface(mapVisibleArea_.size() / Gui::uiScaleFactor(), mapVisibleArea_);
+        visibleArea.filledRectangle(visibleArea.size(), Gui::BLACK());
 
         GLint blendSrc, blendDst;
         glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);

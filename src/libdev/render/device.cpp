@@ -249,7 +249,7 @@ bool RenDevice::initialize()
     }
 
     // Test the line drawing capabilities of the system.
-    RenSurface lineSurf = RenSurface::createAnonymousSurface(32, 32, backSurface());
+    RenSurface lineSurf = RenSurface::createAnonymousSurface(Ren::Size(32, 32), backSurface());
     if (startFrame())
     {
         start2D();

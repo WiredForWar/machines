@@ -97,7 +97,7 @@ bool FontImpl::prepareTexture()
     w = std::max(w, roww);
     h += rowh;
 
-    atlasSurface = std::make_unique<RenSurface>(RenSurface::createAnonymousSurface(w, h, dev->backSurface()));
+    atlasSurface = std::make_unique<RenSurface>(RenSurface::createAnonymousSurface(Ren::Size(w, h), dev->backSurface()));
     textureId = atlasSurface->handle();
 
     /* Paste all glyph bitmaps into the texture, remembering the offset */

@@ -30,20 +30,20 @@ static int sDefaultFontSize{10};
 
 //--------------------------------Creation & destruction--------------------------------
 // static
-RenSurface RenSurface::createAnonymousSurface(size_t w, size_t h, const RenSurface& surf)
+RenSurface RenSurface::createAnonymousSurface(Size size, const RenSurface& surf)
 {
     // This is pure delegation -- let the manager do the pre and post-conditions.
-    return RenSurfaceManager::instance().createAnonymousSurface(w, h, surf);
+    return RenSurfaceManager::instance().createAnonymousSurface(size.width, size.height, surf);
 }
 
 // Static.
-RenSurface RenSurface::createAnonymousVideoSurface(size_t width, size_t height, const RenSurface& pixelFmt)
+RenSurface RenSurface::createAnonymousVideoSurface(Size size, const RenSurface& pixelFmt)
 {
     // The pre and post-conditions are in the surface manager.
     // PRE(!pixelFmt.isNull());
     // PRE(width > 0 and height > 0);
 
-    return RenSurfaceManager::instance().createAnonymousVideoSurface(width, height, pixelFmt);
+    return RenSurfaceManager::instance().createAnonymousVideoSurface(size.width, size.height, pixelFmt);
 
     // POST(!result.sharable() and !result.readOnly());
     // POST(name.length() == 0);

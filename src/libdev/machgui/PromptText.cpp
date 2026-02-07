@@ -111,7 +111,7 @@ MachPromptText::MachPromptText(
 
     setLayer(GuiDisplayable::LAYER4);
 
-    promptBmp_ = RenSurface::createAnonymousSurface(width(), height(), Gui::backBuffer());
+    promptBmp_ = RenSurface::createAnonymousSurface(Ren::Size(width(), height()), Gui::backBuffer());
     promptBmp_.enableColourKeying();
     pCameras_ = pCameras;
     promptDisplayed_ = NOTEXT;
