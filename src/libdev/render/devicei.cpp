@@ -138,4 +138,34 @@ void RenIDeviceImpl::updateFogMultiplier(const RenMaterial& mat)
     }
 }
 
+void RenIDeviceImpl::beginFrameCommandBuffer()
+{
+    PRE(!frameCommandBuffer_.isValid());
+    PRE(!frameCommandBufferRecording_);
+
+    frameCommandBuffer_ = backend_->createCommandBuffer();
+
+    backend_->beginCommandBuffer(frameCommandBuffer_);
+    frameCommandBufferRecording_ = true;
+}
+
+void RenIDeviceImpl::destroyFrameCommandBuffer()
+{
+    PRE(frameCommandBuffer_.isValid());
+    PRE(frameCommandBufferRecording_);
+
+    backend_->endCommandBuffer(frameCommandBuffer_);
+    frameCommandBufferRecording_ = false;
+
+    backend_->submitCommandBuffer(frameCommandBuffer_);
+    backend_->destroyCommandBuffer(frameCommandBuffer_);
+    frameCommandBuffer_ = {};
+}
+
+Ren::BackendCommandBufferHandle RenIDeviceImpl::currentCommandBufferHandle() const
+{
+    PRE(frameCommandBufferRecording_)
+    return frameCommandBuffer_;
+}
+
 /* End DEVICEI.CPP ***************************************************/
