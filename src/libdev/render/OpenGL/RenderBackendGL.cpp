@@ -16,6 +16,80 @@ namespace Ren
 namespace OpenGL
 {
 
+namespace
+{
+GLenum toStorageFormat(TextureFormat format)
+{
+    switch (format)
+    {
+    case TextureFormat::RGBA8_UNorm:
+        return GL_RGBA8;
+    }
+    return GL_RGBA8;
+}
+
+GLenum toPixelFormat(TextureFormat format)
+{
+    switch (format)
+    {
+    case TextureFormat::RGBA8_UNorm:
+        return GL_RGBA;
+    }
+    return GL_RGBA;
+}
+
+GLenum toFilter(TextureFilter filter)
+{
+    switch (filter)
+    {
+    case TextureFilter::Nearest:
+        return GL_NEAREST;
+    case TextureFilter::Linear:
+        return GL_LINEAR;
+    case TextureFilter::LinearMipmapLinear:
+        return GL_LINEAR_MIPMAP_LINEAR;
+    }
+    return GL_NEAREST;
+}
+
+GLenum toWrap(TextureWrap wrap)
+{
+    switch (wrap)
+    {
+    case TextureWrap::Repeat:
+        return GL_REPEAT;
+    case TextureWrap::ClampToEdge:
+        return GL_CLAMP_TO_EDGE;
+    }
+    return GL_REPEAT;
+}
+
+bool compileShader(GLuint shaderID, const std::string& code)
+{
+    const char* const sourcePointer = code.c_str();
+    glShaderSource(shaderID, 1, &sourcePointer, nullptr);
+    glCompileShader(shaderID);
+
+    GLint result = GL_FALSE;
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
+    if (result == GL_FALSE)
+    {
+        std::string errorMessage;
+        int infoLogLength{};
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
+        if (infoLogLength > 2)
+        {
+            errorMessage.resize(static_cast<std::size_t>(infoLogLength));
+            glGetShaderInfoLog(shaderID, infoLogLength, nullptr, &errorMessage[0]);
+        }
+        spdlog::error("Shader compile error: {}", errorMessage);
+    }
+
+    return result == GL_TRUE;
+}
+
+} // namespace
+
 RenderBackendGL::RenderBackendGL()
     : programs_{0,}
     , buffers_{0,}
@@ -54,7 +128,8 @@ bool RenderBackendGL::initialize(SDL_Window* window)
         return false;
     }
 
-    const auto getGlStringAsConstChar = [](GLenum name) {
+    const auto getGlStringAsConstChar = [](GLenum name)
+    {
         auto pString = glGetString(name);
         return pString ? reinterpret_cast<const char*>(pString) : "<null>";
     };
@@ -222,30 +297,6 @@ std::string RenderBackendGL::readTextFile(const std::string& path)
     return fileContents;
 }
 
-static bool compileShader(GLuint shaderID, const std::string& code)
-{
-    const char* const sourcePointer = code.c_str();
-    glShaderSource(shaderID, 1, &sourcePointer, nullptr);
-    glCompileShader(shaderID);
-
-    GLint result = GL_FALSE;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        std::string errorMessage;
-        int infoLogLength{};
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-        if (infoLogLength > 2)
-        {
-            errorMessage.resize(static_cast<std::size_t>(infoLogLength));
-            glGetShaderInfoLog(shaderID, infoLogLength, nullptr, &errorMessage[0]);
-        }
-        spdlog::error("Shader compile error: {}", errorMessage);
-    }
-
-    return result == GL_TRUE;
-}
-
 GLuint RenderBackendGL::createProgramFromSources(
     const std::string& vertexShaderCode,
     const std::string& fragmentShaderCode,
@@ -321,7 +372,8 @@ ProgramId RenderBackendGL::createProgramFromFiles(
         return 0;
     }
 
-    const GLuint program = createProgramFromSources(vertexCode, fragmentCode, vertexShaderDebugName, fragmentShaderDebugName);
+    const GLuint program
+        = createProgramFromSources(vertexCode, fragmentCode, vertexShaderDebugName, fragmentShaderDebugName);
     if (program == 0)
         return 0;
 
@@ -424,7 +476,8 @@ void RenderBackendGL::bindFramebuffer(FramebufferId id)
 
 void RenderBackendGL::framebufferTexture2D(FramebufferAttachment attachment, TexId texture)
 {
-    const GLenum glAttachment = (attachment == FramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
+    const GLenum glAttachment
+        = (attachment == FramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
 
     GLuint textureHandle = 0;
     if (texture != NullTexId)
@@ -523,55 +576,6 @@ void RenderBackendGL::bindTexture2D(TexId id, std::uint32_t unit)
     glBindTexture(GL_TEXTURE_2D, textureHandle);
 }
 
-namespace
-{
-GLenum toStorageFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA8;
-    }
-    return GL_RGBA8;
-}
-
-GLenum toPixelFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA;
-    }
-    return GL_RGBA;
-}
-
-GLenum toFilter(TextureFilter filter)
-{
-    switch (filter)
-    {
-    case TextureFilter::Nearest:
-        return GL_NEAREST;
-    case TextureFilter::Linear:
-        return GL_LINEAR;
-    case TextureFilter::LinearMipmapLinear:
-        return GL_LINEAR_MIPMAP_LINEAR;
-    }
-    return GL_NEAREST;
-}
-
-GLenum toWrap(TextureWrap wrap)
-{
-    switch (wrap)
-    {
-    case TextureWrap::Repeat:
-        return GL_REPEAT;
-    case TextureWrap::ClampToEdge:
-        return GL_CLAMP_TO_EDGE;
-    }
-    return GL_REPEAT;
-}
-} // namespace
-
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
@@ -602,7 +606,8 @@ void RenderBackendGL::textureSubImage2D(
     glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
 }
 
-void RenderBackendGL::textureSetMinMagFilter(BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
+void RenderBackendGL::textureSetMinMagFilter(
+    BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(minFilter));
