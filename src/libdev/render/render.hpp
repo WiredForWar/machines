@@ -67,7 +67,7 @@ namespace Ren
         {
         }
 
-        template<typename T>
+        template <typename T>
         constexpr Size& operator*=(T multiplier)
         {
             width *= multiplier;
@@ -75,7 +75,17 @@ namespace Ren
             return *this;
         }
 
+        template <typename T>
+        constexpr Size& operator/=(T delimeter)
+        {
+            width /= delimeter;
+            height /= delimeter;
+            return *this;
+        }
+
         constexpr bool isNull() const { return width == 0 && height == 0; }
+
+        constexpr bool operator==(const Size&) const = default;
 
         int width {};
         int height {};
@@ -96,17 +106,25 @@ namespace Ren
             , height(h)
         {
         }
+
+        constexpr Size size() const { return { width, height }; }
+
         int originX{};
         int originY{};
         int width{};
         int height{};
     };
 
-
-    template<typename T>
+    template <typename T>
     constexpr inline Size operator*(Size rhs, T c)
     {
         return rhs *= c;
+    }
+
+    template <typename T>
+    constexpr inline Size operator/(Size rhs, T c)
+    {
+        return rhs /= c;
     }
 
     enum LightType
