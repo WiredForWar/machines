@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base/base.hpp"
+#include "render/internal/BackendCommands.hpp"
 #include "render/internal/TriangleGroup.hpp"
 #include "render/render.hpp"
 #include "render/Texture.hpp"
@@ -172,6 +173,8 @@ public:
     // N.B. a device *must* be set before loading meshes or textures.
     static void useDevice(RenDevice* d);
     static RenDevice* current();
+
+    void recordCommand(Ren::BackendCommand command);
 
     void backgroundColour(const RenColour&);
     const RenColour& backgroundColour() const;

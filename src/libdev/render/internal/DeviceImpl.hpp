@@ -11,11 +11,13 @@
 #include "base/base.hpp"
 #include "base/LogBuffer.hpp"
 
-#include "render/internal/ModeObserver.hpp"
-#include "render/internal/internal.hpp"
+#include "device/Timer.hpp"
 #include "render/Colour.hpp"
 #include "render/render.hpp"
-#include "device/Timer.hpp"
+
+#include "render/internal/BackendTypes.hpp"
+#include "render/internal/ModeObserver.hpp"
+#include "render/internal/internal.hpp"
 
 #include <GL/glew.h>
 
@@ -87,6 +89,11 @@ public:
 
     void updateFogMultiplier(const RenMaterial&);
     bool fogMultiplierIsNeutral() const;
+
+    void beginFrameCommandBuffer();
+    void destroyFrameCommandBuffer();
+
+    Ren::BackendCommandBufferHandle currentCommandBufferHandle() const;
 
 private:
     friend class RenDevice;
@@ -193,6 +200,9 @@ private:
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};
+
+    Ren::BackendCommandBufferHandle frameCommandBuffer_{};
+    bool frameCommandBufferRecording_{};
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
 
