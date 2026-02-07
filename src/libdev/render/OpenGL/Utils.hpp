@@ -9,6 +9,42 @@ namespace Ren
 
 namespace OpenGL
 {
+    class ScopedEnable
+    {
+    public:
+        explicit ScopedEnable(GLenum capability)
+            : capability_(capability)
+        {
+            glEnable(capability_);
+        }
+
+        ~ScopedEnable()
+        {
+            glDisable(capability_);
+        }
+
+    private:
+        GLenum capability_{};
+    };
+
+    class ScopedDisable
+    {
+    public:
+        explicit ScopedDisable(GLenum capability)
+            : capability_(capability)
+        {
+            glDisable(capability_);
+        }
+
+        ~ScopedDisable()
+        {
+            glEnable(capability_);
+        }
+
+    private:
+        GLenum capability_{};
+    };
+
     constexpr GLenum getDrawMode(Ren::PrimitiveTopology topology)
     {
         switch (topology)

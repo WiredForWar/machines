@@ -18,6 +18,7 @@
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfbody.hpp"
 #include "render/internal/FontImpl.hpp"
+#include "render/OpenGL/Utils.hpp"
 #include "device/timer.hpp"
 #include <algorithm>
 #include <stdlib.h>
@@ -28,42 +29,6 @@
 #include "render/internal/colpack.hpp"
 
 #include "spdlog/spdlog.h"
-
-#include <GL/glew.h>
-
-class ScopedGLEnable
-{
-public:
-    ScopedGLEnable(GLenum capability) :
-        capability_(capability)
-    {
-        glEnable(capability_);
-    }
-
-    ~ScopedGLEnable()
-    {
-        glDisable(capability_);
-    }
-private:
-    GLenum capability_{};
-};
-
-class ScopedGLDisable
-{
-public:
-    ScopedGLDisable(GLenum capability) :
-        capability_(capability)
-    {
-        glDisable(capability_);
-    }
-
-    ~ScopedGLDisable()
-    {
-        glEnable(capability_);
-    }
-private:
-    GLenum capability_{};
-};
 
 RenISurfBody::RenISurfBody()
     : displayType_(RenI::NOT_DISPLAY)
@@ -397,7 +362,7 @@ void RenISurfBody::drawText(
 
     y += fontImpl.ascender();
 
-    auto disabledCullFaceScope = ScopedGLDisable(GL_CULL_FACE);
+    auto disabledCullFaceScope = Ren::OpenGL::ScopedDisable(GL_CULL_FACE);
     if (options.alignment() & Render::AlignRight)
     {
         int textWidth = 0;
