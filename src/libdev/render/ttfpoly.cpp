@@ -49,7 +49,7 @@ RenTTFPolygon::~RenTTFPolygon()
     // This should ensure that no TTFs get destroyed during rendering.
     // Thus the post-sorted polygons can refernce this polygon's attributes
     // without need for reference counting or copying the data.
-    PRE(!RenIDeviceImpl::currentPimpl()->rendering3D());
+    PRE(!RenIDeviceImpl::currentPimpl() || !RenIDeviceImpl::currentPimpl()->rendering3D());
     delete pImpl_;
 }
 
