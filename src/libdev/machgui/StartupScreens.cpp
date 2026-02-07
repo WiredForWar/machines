@@ -2037,11 +2037,12 @@ void MachGuiStartupScreens::startPlayingAnimation(
         pPlayingSmacker_ = pVideo;
         if (pPlayingSmacker_->open())
         {
-            float horizontalRatio = displayMode.width() * 1.0 / pVideo->width();
-            float verticalRatio = displayMode.height() * 1.0 / pVideo->height();
+            Ren::Size videoSize = pVideo->size();
+            float horizontalRatio = displayMode.width() * 1.0 / videoSize.width;
+            float verticalRatio = displayMode.height() * 1.0 / videoSize.height;
             int resultRatio = std::min(horizontalRatio, verticalRatio);
-            int posX = (displayMode.width() - pVideo->width() * resultRatio) / 2;
-            int posY = (displayMode.height() - pVideo->height() * resultRatio) / 2;
+            int posX = (displayMode.width() - videoSize.width * resultRatio) / 2;
+            int posY = (displayMode.height() - videoSize.height * resultRatio) / 2;
             pVideo->setPosition(posX, posY);
             pPlayingSmacker_->setScaleFactor(resultRatio);
         }

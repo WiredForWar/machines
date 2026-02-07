@@ -26,8 +26,7 @@ public:
 
     bool isFinished() const override;
 
-    unsigned int height() const override;
-    unsigned int width() const override;
+    Ren::Size size() const override;
 
     void playNextFrame(RenDevice* pDevice) override;
     void displaySummaryInfo() const override;
@@ -64,8 +63,7 @@ private:
     uint* pBuffer_{};
     RenSurface surface_;
     unsigned frame_{};
-    int width_{};
-    int height_{};
+    Ren::Size size_{};
     double frameTime_{};
     double lastFrameTime_{};
     bool advanceToNextFrame_{};

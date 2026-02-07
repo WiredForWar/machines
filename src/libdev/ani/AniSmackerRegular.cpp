@@ -77,8 +77,8 @@ bool AniSmackerRegular::open()
 
     long unsigned int w, h;
     smk_info_video(pSmack_, &w, &h, nullptr);
-    width_ = w;
-    height_ = h;
+    size_.width = w;
+    size_.height = h;
 
     return true;
 }
@@ -116,14 +116,9 @@ void AniSmackerRegular::setFast(bool value)
     fast_ = value;
 }
 
-unsigned int AniSmackerRegular::height() const
+Ren::Size AniSmackerRegular::size() const
 {
-    return height_;
-}
-
-unsigned int AniSmackerRegular::width() const
-{
-    return width_;
+    return size_;
 }
 
 void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
@@ -199,7 +194,7 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         // frameTime_ = 0.000001 * frameTime_;
         frameTime_ *= 0.000000826;
         surface_ = this->createSmackerSurface(pDevice);
-        pBuffer_ = new uint[width_ * height_];
+        pBuffer_ = new uint[size_.width * size_.height];
 
         // TBD: replace this assertion with something more reasonable
         ASSERT(pBuffer_ != nullptr, "");
@@ -274,8 +269,8 @@ void AniSmackerRegular::displaySummaryInfo() const
     printf(
         "Opened file %s\nWidth: %d\nHeight: %d\nFrames: %lu\nFPS: %f\n",
         fileName_.pathname().c_str(),
-        width_,
-        height_,
+        size_.width,
+        size_.height,
         f,
         1000000.0 / usf);
 
@@ -314,7 +309,7 @@ bool AniSmackerRegular::useFrontBuffer() const
 
 RenSurface AniSmackerRegular::createSmackerSurface(RenDevice* pDevice)
 {
-    return RenSurface::createAnonymousSurface(width_, height_, pDevice->backSurface());
+    return RenSurface::createAnonymousSurface(size(), pDevice->backSurface());
 }
 
 uint* AniSmackerRegular::fillBufferForCurrentFrame()
@@ -338,11 +333,11 @@ uint* AniSmackerRegular::fillBufferForCurrentFrame()
 
     // Fill image buffer
     unsigned int pixel = 0;
-    for (int i = 0; i < height_; ++i)
+    for (int i = 0; i < size_.height; ++i)
     {
-        for (int j = 0; j < width_; ++j)
+        for (int j = 0; j < size_.width; ++j)
         {
-            img_buff[pixel] = col_palette[image_data[i * width_ + j]];
+            img_buff[pixel] = col_palette[image_data[i * size_.width + j]];
             ++pixel;
         }
     }

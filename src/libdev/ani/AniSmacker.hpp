@@ -13,8 +13,7 @@ public:
     virtual void setScaleFactor(float scaleFactor) = 0;
     virtual bool isFinished() const = 0;
 
-    virtual unsigned int height() const = 0;
-    virtual unsigned int width() const = 0;
+    virtual Ren::Size size() const = 0;
 
     virtual void playNextFrame(RenDevice* pDevice) = 0;
     virtual void displaySummaryInfo() const = 0;
