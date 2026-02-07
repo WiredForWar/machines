@@ -61,6 +61,21 @@ public:
     void popFramebuffer() override;
     void bindTexture2D(Ren::TexId id, std::uint32_t unit) override;
 
+    Ren::BackendTextureHandle createTexture2D() override;
+    void destroyTexture2D(Ren::BackendTextureHandle handle) override;
+    void textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format) override;
+    void textureSubImage2D(
+        Ren::BackendTextureHandle handle,
+        int x,
+        int y,
+        int width,
+        int height,
+        Ren::TextureFormat format,
+        const void* pixels) override;
+    void textureSetMinMagFilter(Ren::BackendTextureHandle handle, Ren::TextureFilter minFilter, Ren::TextureFilter magFilter) override;
+    void textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT) override;
+    void textureGenerateMipmap(Ren::BackendTextureHandle handle) override;
+
 private:
     static std::string readTextFile(const std::string& path);
 

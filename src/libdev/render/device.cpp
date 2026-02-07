@@ -1824,6 +1824,16 @@ const RenIDeviceImpl& RenDevice::impl() const
     return *pImpl_;
 }
 
+RenIRenderBackend& RenDevice::backend()
+{
+    return impl().renderBackend();
+}
+
+const RenIRenderBackend& RenDevice::backend() const
+{
+    return impl().renderBackend();
+}
+
 void RenDevice::debugTextCoords(int x, int y)
 {
     pImpl_->debugX_ = x;

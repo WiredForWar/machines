@@ -193,6 +193,8 @@ private:
     void releaseGLProgram(Ren::ProgramId id);
     RenIRenderBackend& renderBackend();
     const RenIRenderBackend& renderBackend() const;
+    RenIRenderBackend* renderBackendPtr();
+    const RenIRenderBackend* renderBackendPtr() const;
     std::unique_ptr<RenIRenderBackend> backend_{};
 
     DevTimer frameTimer_;

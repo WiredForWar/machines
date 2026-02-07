@@ -55,6 +55,7 @@ set(RENDER_SOURCES
     illumine.cpp
     inlight.cpp
     inpoints.cpp
+    internal/BackendTypes.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
     internal/alphagrp.hpp

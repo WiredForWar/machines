@@ -427,7 +427,10 @@ void RenderBackendGL::framebufferTexture2D(RenFramebufferAttachment attachment, 
     if (texture != Ren::NullTexId)
     {
         RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
-        textureHandle = static_cast<GLuint>(surfBody ? surfBody->nativeTexture2D_ : 0);
+        if (surfBody && surfBody->nativeTexture2D_.isValid())
+        {
+            textureHandle = surfBody->nativeTexture2D_.value();
+        }
     }
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
@@ -508,13 +511,113 @@ void RenderBackendGL::bindTexture2D(Ren::TexId id, std::uint32_t unit)
     const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(id);
     GLuint textureHandle = fallbackTexture2D_;
 
-    if (surfBody && !surfBody->isEmpty() && surfBody->nativeTexture2D_)
+    if (surfBody && !surfBody->isEmpty() && surfBody->nativeTexture2D_.isValid())
     {
-        textureHandle = static_cast<GLuint>(surfBody->nativeTexture2D_);
+        textureHandle = surfBody->nativeTexture2D_.value();
     }
 
     glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + unit));
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+}
+
+namespace
+{
+GLenum toStorageFormat(Ren::TextureFormat format)
+{
+    switch (format)
+    {
+    case Ren::TextureFormat::RGBA8_UNorm:
+        return GL_RGBA8;
+    }
+    return GL_RGBA8;
+}
+
+GLenum toPixelFormat(Ren::TextureFormat format)
+{
+    switch (format)
+    {
+    case Ren::TextureFormat::RGBA8_UNorm:
+        return GL_RGBA;
+    }
+    return GL_RGBA;
+}
+
+GLenum toFilter(Ren::TextureFilter filter)
+{
+    switch (filter)
+    {
+    case Ren::TextureFilter::Nearest:
+        return GL_NEAREST;
+    case Ren::TextureFilter::Linear:
+        return GL_LINEAR;
+    case Ren::TextureFilter::LinearMipmapLinear:
+        return GL_LINEAR_MIPMAP_LINEAR;
+    }
+    return GL_NEAREST;
+}
+
+GLenum toWrap(Ren::TextureWrap wrap)
+{
+    switch (wrap)
+    {
+    case Ren::TextureWrap::Repeat:
+        return GL_REPEAT;
+    case Ren::TextureWrap::ClampToEdge:
+        return GL_CLAMP_TO_EDGE;
+    }
+    return GL_REPEAT;
+}
+} // namespace
+
+Ren::BackendTextureHandle RenderBackendGL::createTexture2D()
+{
+    GLuint texture = 0;
+    glGenTextures(1, &texture);
+    return Ren::BackendTextureHandle(texture);
+}
+
+void RenderBackendGL::destroyTexture2D(Ren::BackendTextureHandle handle)
+{
+    if (!handle.isValid())
+        return;
+
+    const GLuint texture = handle.value();
+    glDeleteTextures(1, &texture);
+}
+
+void RenderBackendGL::textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format)
+{
+    glBindTexture(GL_TEXTURE_2D, handle.value());
+    glTexImage2D(
+        GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format), GL_UNSIGNED_BYTE, nullptr);
+}
+
+void RenderBackendGL::textureSubImage2D(
+    Ren::BackendTextureHandle handle, int x, int y, int width, int height, Ren::TextureFormat format, const void* pixels)
+{
+    glBindTexture(GL_TEXTURE_2D, handle.value());
+    glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
+}
+
+void RenderBackendGL::textureSetMinMagFilter(
+    Ren::BackendTextureHandle handle, Ren::TextureFilter minFilter, Ren::TextureFilter magFilter)
+{
+    glBindTexture(GL_TEXTURE_2D, handle.value());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(minFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(magFilter));
+}
+
+void RenderBackendGL::textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT)
+{
+    glBindTexture(GL_TEXTURE_2D, handle.value());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(wrapS));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(wrapT));
+}
+
+void RenderBackendGL::textureGenerateMipmap(Ren::BackendTextureHandle handle)
+{
+    glBindTexture(GL_TEXTURE_2D, handle.value());
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 } // namespace Ren::OpenGL

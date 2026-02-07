@@ -1,5 +1,6 @@
 #pragma once
 
+#include "render/internal/BackendTypes.hpp"
 #include "render/render.hpp"
 
 #include <cstddef>
@@ -22,11 +23,6 @@ enum class RenBufferUsage
 enum class RenFramebufferAttachment
 {
     Color0,
-};
-
-enum class RenTextureFormat
-{
-    RGBA8_UNorm,
 };
 
 class RenIRenderBackend
@@ -75,4 +71,23 @@ public:
     virtual void popFramebuffer() = 0;
 
     virtual void bindTexture2D(Ren::TexId id, std::uint32_t unit) = 0;
+
+    virtual Ren::BackendTextureHandle createTexture2D() = 0;
+    virtual void destroyTexture2D(Ren::BackendTextureHandle handle) = 0;
+    virtual void textureStorage2D(Ren::BackendTextureHandle handle, int width, int height, Ren::TextureFormat format) = 0;
+    virtual void textureSubImage2D(
+        Ren::BackendTextureHandle handle,
+        int x,
+        int y,
+        int width,
+        int height,
+        Ren::TextureFormat format,
+        const void* pixels) = 0;
+    virtual void textureSetMinMagFilter(
+        Ren::BackendTextureHandle handle,
+        Ren::TextureFilter minFilter,
+        Ren::TextureFilter magFilter)
+        = 0;
+    virtual void textureSetWrap(Ren::BackendTextureHandle handle, Ren::TextureWrap wrapS, Ren::TextureWrap wrapT) = 0;
+    virtual void textureGenerateMipmap(Ren::BackendTextureHandle handle) = 0;
 };

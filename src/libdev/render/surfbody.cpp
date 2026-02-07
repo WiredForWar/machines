@@ -18,6 +18,7 @@
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfbody.hpp"
 #include "render/internal/FontImpl.hpp"
+#include "render/internal/IRenderBackend.hpp"
 #include "render/OpenGL/Utils.hpp"
 #include "device/timer.hpp"
 #include <algorithm>
@@ -29,6 +30,24 @@
 #include "render/internal/colpack.hpp"
 
 #include "spdlog/spdlog.h"
+
+namespace
+{
+RenIRenderBackend& requireBackend()
+{
+    RenDevice* device = RenDevice::current();
+    ASSERT(device, "No active render device available");
+    return device->backend();
+}
+
+RenIRenderBackend* tryBackend()
+{
+    RenDevice* device = RenDevice::current();
+    if (!device)
+        return nullptr;
+    return &device->backend();
+}
+} // namespace
 
 RenISurfBody::RenISurfBody()
     : displayType_(RenI::NOT_DISPLAY)
@@ -108,34 +127,13 @@ bool RenISurfBody::allocateDDSurfaces(
     const RenIPixelFormat& format,
     Residence residence)
 {
-    GLuint texture = 0;
-    glGenTextures(1, &texture);
-    nativeTexture2D_ = static_cast<std::uint32_t>(texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);*/
+    RenIRenderBackend& backend = requireBackend();
 
-    /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);*/
-
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexImage2D(
-        GL_TEXTURE_2D, // target
-        0, // level, 0 = base, no minimap,
-        GL_RGBA, // internalformat
-        rqWidth, // width
-        rqHeight, // height
-        0, // border, always 0 in OpenGL ES
-        GL_RGBA, // format
-        GL_UNSIGNED_BYTE, // type, /GL_UNSIGNED_BYTE
-        (GLvoid*)nullptr);
+    nativeTexture2D_ = backend.createTexture2D();
+    backend.textureSetMinMagFilter(nativeTexture2D_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
+    backend.textureSetWrap(nativeTexture2D_, Ren::TextureWrap::Repeat, Ren::TextureWrap::Repeat);
+    backend.textureStorage2D(
+        nativeTexture2D_, static_cast<int>(rqWidth), static_cast<int>(rqHeight), Ren::TextureFormat::RGBA8_UNorm);
 
     width_ = rqWidth;
     height_ = rqHeight;
@@ -156,11 +154,11 @@ SDL_Surface* RenISurfBody::readFromFile(const char *fileName)
 RenISurfBody::~RenISurfBody()
 {
     // Delete texture
-    if (nativeTexture2D_ != 0)
+    if (nativeTexture2D_.isValid())
     {
-        const GLuint texture = static_cast<GLuint>(nativeTexture2D_);
-        glDeleteTextures(1, &texture);
-        nativeTexture2D_ = 0;
+        if (auto* backend = tryBackend())
+            backend->destroyTexture2D(nativeTexture2D_);
+        nativeTexture2D_ = Ren::BackendTextureHandle{};
     }
 }
 
@@ -569,11 +567,13 @@ void RenISurfBody::drawText(
 void RenISurfBody::releaseDC()
 {
     // Delete texture
-    if (nativeTexture2D_ != 0)
+    if (nativeTexture2D_.isValid())
     {
-        const GLuint texture = static_cast<GLuint>(nativeTexture2D_);
-        glDeleteTextures(1, &texture);
-        nativeTexture2D_ = 0;
+        if (auto* backend = tryBackend())
+        {
+            backend->destroyTexture2D(nativeTexture2D_);
+        }
+        nativeTexture2D_ = Ren::BackendTextureHandle{};
     }
 }
 
@@ -604,29 +604,23 @@ bool RenISurfBody::copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha
             pixelsDst[index] = pixel | (pixelsSrc[index] & 0xFF000000);
         }
     }
-    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
-    glTexSubImage2D(
-        GL_TEXTURE_2D,
-        0,
-        0,
-        0,
-        surfaceDst->w,
-        surfaceDst->h,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        surfaceDst->pixels);
+    RenIRenderBackend& backend = requireBackend();
+    backend.textureSubImage2D(
+        nativeTexture2D_, 0, 0, surfaceDst->w, surfaceDst->h, Ren::TextureFormat::RGBA8_UNorm, surfaceDst->pixels);
+
     if (createMipmaps && surfaceDst->w > 128 && surfaceDst->h > 128)
     {
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        backend.textureGenerateMipmap(nativeTexture2D_);
+        backend.textureSetMinMagFilter(
+            nativeTexture2D_, Ren::TextureFilter::LinearMipmapLinear, Ren::TextureFilter::LinearMipmapLinear);
+    }
+    else
+    {
+        backend.textureSetMinMagFilter(nativeTexture2D_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
     }
 
     width_ = surface->w;
     height_ = surface->h;
-
-    // unbind
-    glBindTexture(GL_TEXTURE_2D, NULL);
     SDL_FreeSurface(surfaceDst);
     SDL_FreeSurface(surfaceTmp);
     return true;
@@ -649,29 +643,22 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
         0xff000000);
     SDL_BlitSurface(surfaceTmp, nullptr, surfaceDst, nullptr);
 
-    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
-    glTexSubImage2D(
-        GL_TEXTURE_2D,
-        0,
-        0,
-        0,
-        surfaceDst->w,
-        surfaceDst->h,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        surfaceDst->pixels);
+    RenIRenderBackend& backend = requireBackend();
+    backend.textureSubImage2D(
+        nativeTexture2D_, 0, 0, surfaceDst->w, surfaceDst->h, Ren::TextureFormat::RGBA8_UNorm, surfaceDst->pixels);
     if (createMipmaps && surfaceDst->w > 128 && surfaceDst->h > 128)
     {
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        backend.textureGenerateMipmap(nativeTexture2D_);
+        backend.textureSetMinMagFilter(
+            nativeTexture2D_, Ren::TextureFilter::LinearMipmapLinear, Ren::TextureFilter::LinearMipmapLinear);
+    }
+    else
+    {
+        backend.textureSetMinMagFilter(nativeTexture2D_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
     }
 
     width_ = surface->w;
     height_ = surface->h;
-
-    // unbind
-    glBindTexture(GL_TEXTURE_2D, NULL);
 
     SDL_FreeSurface(surfaceTmp);
     SDL_FreeSurface(surfaceDst);
@@ -680,11 +667,9 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
 
 bool RenISurfBody::copyFromBuffer(const uint* pixelsBuffer)
 {
-    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(nativeTexture2D_));
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width_, height_, GL_RGBA, GL_UNSIGNED_BYTE, pixelsBuffer);
-
-    // unbind
-    glBindTexture(GL_TEXTURE_2D, NULL);
+    RenIRenderBackend& backend = requireBackend();
+    backend.textureSubImage2D(
+        nativeTexture2D_, 0, 0, static_cast<int>(width_), static_cast<int>(height_), Ren::TextureFormat::RGBA8_UNorm, pixelsBuffer);
     return true;
 }
 

@@ -11,6 +11,7 @@
 #include "render/render.hpp"
 #include "render/colour.hpp"
 #include "utility/property.hpp"
+#include "render/internal/IRenderBackend.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/pixelfmt.hpp"
 
@@ -214,7 +215,7 @@ private:
     RenI::DisplayType displayType_;
     const RenDevice* device_{};
     RenIPixelFormat pixelFormat_;
-    std::uint32_t nativeTexture2D_{};
+    Ren::BackendTextureHandle nativeTexture2D_{};
     uint width_, height_;
 
     uint refCount_{};
