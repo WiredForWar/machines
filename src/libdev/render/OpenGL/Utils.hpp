@@ -1,6 +1,7 @@
 #pragma once
 
 #include "render/PrimitiveTopology.hpp"
+#include "render/internal/BackendTypes.hpp"
 
 #include <GL/glew.h>
 
@@ -39,27 +40,13 @@ private:
     GLenum capability_{};
 };
 
-constexpr GLenum getDrawMode(Ren::PrimitiveTopology topology)
-{
-    switch (topology)
-    {
-    case PrimitiveTopology::Points:
-        return GL_POINTS;
-    case PrimitiveTopology::Lines:
-        return GL_LINES;
-    case PrimitiveTopology::LineStrip:
-        return GL_LINE_STRIP;
-    case PrimitiveTopology::Triangles:
-        return GL_TRIANGLES;
-    case PrimitiveTopology::TriangleStrip:
-        return GL_TRIANGLE_STRIP;
-    case PrimitiveTopology::TriangleFan:
-        return GL_TRIANGLE_FAN;
-    }
+GLenum toDrawMode(Ren::PrimitiveTopology topology);
+GLenum toStorageFormat(TextureFormat format);
+GLenum toPixelFormat(TextureFormat format);
+GLenum toFilter(TextureFilter filter);
+GLenum toWrap(TextureWrap wrap);
 
-    // UNREACHABLE
-    return GL_NONE;
-}
+GLbitfield toClearMask(std::uint32_t mask);
 
 } // namespace OpenGL
 
