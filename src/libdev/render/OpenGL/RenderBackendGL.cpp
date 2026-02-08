@@ -27,70 +27,6 @@ namespace OpenGL
 namespace
 {
 
-GLbitfield toClearMask(std::uint32_t mask)
-{
-    GLbitfield glMask = 0;
-    if (mask & backendClearMask(BackendClearFlag::Colour))
-    {
-        glMask |= GL_COLOR_BUFFER_BIT;
-    }
-    if (mask & backendClearMask(BackendClearFlag::Depth))
-    {
-        glMask |= GL_DEPTH_BUFFER_BIT;
-    }
-    if (mask & backendClearMask(BackendClearFlag::Stencil))
-    {
-        glMask |= GL_STENCIL_BUFFER_BIT;
-    }
-    return glMask;
-}
-
-GLenum toStorageFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA8;
-    }
-    return GL_RGBA8;
-}
-
-GLenum toPixelFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA;
-    }
-    return GL_RGBA;
-}
-
-GLenum toFilter(TextureFilter filter)
-{
-    switch (filter)
-    {
-    case TextureFilter::Nearest:
-        return GL_NEAREST;
-    case TextureFilter::Linear:
-        return GL_LINEAR;
-    case TextureFilter::LinearMipmapLinear:
-        return GL_LINEAR_MIPMAP_LINEAR;
-    }
-    return GL_NEAREST;
-}
-
-GLenum toWrap(TextureWrap wrap)
-{
-    switch (wrap)
-    {
-    case TextureWrap::Repeat:
-        return GL_REPEAT;
-    case TextureWrap::ClampToEdge:
-        return GL_CLAMP_TO_EDGE;
-    }
-    return GL_REPEAT;
-}
-
 bool compileShader(GLuint shaderID, const std::string& code)
 {
     const char* const sourcePointer = code.c_str();
@@ -789,7 +725,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
 {
-    const GLenum mode = getDrawMode(command.topology);
+    const GLenum mode = toDrawMode(command.topology);
     glDrawArrays(mode, command.first, command.count);
 }
 
