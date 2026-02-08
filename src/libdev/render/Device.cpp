@@ -663,7 +663,7 @@ void RenDevice::start3D(bool clearBack)
         glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
     }
 
-    glDepthMask(GL_TRUE);
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
 
     // All the alpha polygons are drawn as a post-pass in endFrame, so we can
     // turn blending off for the main pass.
@@ -688,7 +688,9 @@ void RenDevice::startBackground(double yon)
     overrideClipping(pImpl_->currentCamera_->hitherClipDistance(), yon);
     disableLighting();
     disableFog();
-    glDepthMask(GL_FALSE);
+    CB_DEPIMPL_AUTO(backend_);
+
+    recordCommand(Ren::Command::setDepthMaskWritable(false));
 }
 
 inline bool isWhiteChar(char c)
@@ -713,6 +715,8 @@ void RenDevice::flush3DAlpha()
     const double now = DEBUG_FRAME_TIME;
     RENDER_STREAM("RenDevice::flush3DAlpha() at " << now << "(ms)\n");
 
+    CB_DEPIMPL_AUTO(backend_);
+
     // Make sure all the Direct3D parameters are set up correctly. This function
     // may be called after 2D update, therefore we can not rely on these parameters
     // being set correcly.
@@ -721,7 +725,8 @@ void RenDevice::flush3DAlpha()
     glEnable(GL_MULTISAMPLE);
     glAlphaFunc(GL_GREATER, 0);
     glDepthFunc(GL_LEQUAL);
-    glDepthMask(GL_TRUE);
+
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
 
     if (pImpl_->doingBackground_)
     {
@@ -734,7 +739,7 @@ void RenDevice::flush3DAlpha()
 
         // Likewise for the lighting, fog and alpha on the coplanar polys.
         enableLighting();
-        glDepthMask(GL_TRUE);
+        recordCommand(Ren::Command::setDepthMaskWritable(true));
     }
 
     // Inter-mesh coplanar polygons are drawn with normal settings.  They are
@@ -755,12 +760,12 @@ void RenDevice::flush3DAlpha()
     {
         // The whole raison-d'etre of the alpha sorter is drawing the polygons
         // without the z-buffer.
-        glDepthMask(GL_FALSE);
+        recordCommand(Ren::Command::setDepthMaskWritable(false));
         pImpl_->enableAlphaBlending();
 
         pImpl_->normalAlphaSorter_->render();
         pImpl_->disableAlphaBlending();
-        glDepthMask(GL_TRUE);
+        recordCommand(Ren::Command::setDepthMaskWritable(true));
     }
     glDisable(GL_ALPHA_TEST);
 }

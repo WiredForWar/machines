@@ -106,6 +106,7 @@ private:
     void executeCommand(const BackendCommandDraw& command);
     void executeCommand(const BackendCommandDrawIndexed& command);
     void executeCommand(const BackendCommandSetBlendState& command);
+    void executeCommand(const BackendCommandSetDepthMask& command);
     void executeCommand(const BackendCommandSetDepthTest& command);
 
     void flushPendingDeletes();
