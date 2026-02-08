@@ -147,6 +147,10 @@ bool RenderBackendGL::initialize(SDL_Window* window)
     }
 
     glFrontFace(GL_CW);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     initialized_ = true;
     return true;
