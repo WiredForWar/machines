@@ -360,6 +360,8 @@ private:
     void setFog(float, float, float, const RenColour&);
     void addStatic();
     void addInterference();
+    void graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, double maxAlpha);
+    void uniformNoisePolygon(const Ren::Rect& area, double maxAlpha);
     void commonEndFrame();
 
     bool setVSync(bool enabled);

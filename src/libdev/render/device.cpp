@@ -1266,7 +1266,7 @@ inline float random0to1000()
     return mexRandomScalar(&random, 0.0, 1000.0);
 }
 
-static void graduatedNoisePolygon(RenDevice* dev, const Ren::Rect& area, double minAlpha, double maxAlpha)
+void RenDevice::graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, double maxAlpha)
 {
     static RenTexture noiseTex = RenTexManager::instance().createTexture("static.bmp");
     static RenMaterial noiseMat;
@@ -1304,16 +1304,16 @@ static void graduatedNoisePolygon(RenDevice* dev, const Ren::Rect& area, double 
     pts[0].color = pts[1].color = packColour(1, 1, 1, minAlpha);
     pts[2].color = pts[3].color = packColour(1, 1, 1, maxAlpha);
     pts[4].color = pts[5].color = packColour(1, 1, 1, minAlpha);
-    dev->impl().setMaterialHandles(noiseMat);
+    impl().setMaterialHandles(noiseMat);
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    dev->renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
+    renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }
 
-static void uniformNoisePolygon(RenDevice* dev, const Ren::Rect& area, double maxAlpha)
+void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
 {
     static RenTexture noiseTex = RenTexManager::instance().createTexture("static.bmp");
     static RenMaterial noiseMat;
@@ -1348,11 +1348,11 @@ static void uniformNoisePolygon(RenDevice* dev, const Ren::Rect& area, double ma
         pts[i].tv = float(random0to1000());
     }
 
-    dev->impl().setMaterialHandles(noiseMat);
+    impl().setMaterialHandles(noiseMat);
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    dev->renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
+    renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }
@@ -1408,7 +1408,7 @@ void RenDevice::addInterference()
                 lastHeight = bottom;
 
                 Ren::Rect rect1(viewportXOffset, top, viewportWidth, bottom);
-                graduatedNoisePolygon(this, rect1, minAlpha, pImpl_->interference_);
+                graduatedNoisePolygon(rect1, minAlpha, pImpl_->interference_);
             }
         }
         else // Enirely cover the screen, but vary the alpha.
@@ -1430,21 +1430,21 @@ void RenDevice::addInterference()
                 lastHeight = bottom;
 
                 Ren::Rect rect1(viewportXOffset, top, viewportWidth, bottom);
-                graduatedNoisePolygon(this, rect1, alpha, pImpl_->interference_);
+                graduatedNoisePolygon(rect1, alpha, pImpl_->interference_);
             }
 
             // Ensure that we go right to the bottom of the screen.
             if (lastHeight < viewportBottom)
             {
                 Ren::Rect rect1(viewportXOffset, lastHeight, viewportWidth, viewportBottom);
-                graduatedNoisePolygon(this, rect1, alpha, pImpl_->interference_);
+                graduatedNoisePolygon(rect1, alpha, pImpl_->interference_);
             }
         }
     }
     else // Use uniform noise rather than graduated.
     {
         Ren::Rect rect1(viewportXOffset, viewportYOffset, viewportWidth, viewportHeight);
-        uniformNoisePolygon(this, rect1, pImpl_->interference_);
+        uniformNoisePolygon(rect1, pImpl_->interference_);
     }
 }
 
