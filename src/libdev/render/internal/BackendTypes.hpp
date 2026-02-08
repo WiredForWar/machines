@@ -32,10 +32,35 @@ private:
 struct TextureTag;
 struct CommandBufferTag;
 
+template <typename Tag>
+class LocationId
+{
+public:
+    constexpr LocationId() = default;
+
+    explicit constexpr LocationId(int value)
+        : value_{ value }
+    {
+    }
+
+    [[nodiscard]] constexpr int value() const { return value_; }
+
+    [[nodiscard]] constexpr bool isValid() const { return value_ >= 0; }
+
+    constexpr bool operator==(const LocationId& other) const = default;
+
+private:
+    int value_{-1};
+};
+
+struct AttributeTag;
+
 } // namespace internal
 
 using BackendTextureHandle = internal::BackendHandle<internal::TextureTag>;
 using BackendCommandBufferHandle = internal::BackendHandle<internal::CommandBufferTag>;
+
+using AttributeLocationId = internal::LocationId<internal::AttributeTag>;
 
 enum class BufferTarget
 {
@@ -112,6 +137,12 @@ enum class BackendDepthFunc
     NotEqual,
     GreaterOrEqual,
     Always,
+};
+
+enum class BackendVertexAttribType
+{
+    Float,
+    UnsignedByte,
 };
 
 inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)

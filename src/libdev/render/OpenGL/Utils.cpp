@@ -140,6 +140,18 @@ GLenum toDepthFunc(BackendDepthFunc func)
     return GL_LEQUAL;
 }
 
+GLenum toVertexAttribType(BackendVertexAttribType type)
+{
+    switch (type)
+    {
+    case BackendVertexAttribType::Float:
+        return GL_FLOAT;
+    case BackendVertexAttribType::UnsignedByte:
+        return GL_UNSIGNED_BYTE;
+    }
+    return GL_FLOAT;
+}
+
 GLbitfield toClearMask(std::uint32_t mask)
 {
     GLbitfield glMask = 0;
