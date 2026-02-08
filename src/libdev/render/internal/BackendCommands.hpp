@@ -74,6 +74,11 @@ struct BackendCommandSetDepthMask
     bool writable{};
 };
 
+struct BackendCommandSetDepthFunc
+{
+    BackendDepthFunc function{};
+};
+
 struct BackendCommandSetDepthTest
 {
     bool enabled{};
@@ -89,6 +94,7 @@ using BackendCommand = std::variant<
     BackendCommandSetCullFace,
     BackendCommandSetAlphaTest,
     BackendCommandSetDepthMask,
+    BackendCommandSetDepthFunc,
     BackendCommandSetDepthTest>;
 
 namespace Command
@@ -148,6 +154,11 @@ inline BackendCommand setBlendStateDisabled()
 inline BackendCommand setDepthMaskWritable(bool writable)
 {
     return BackendCommandSetDepthMask{writable};
+}
+
+inline BackendCommand setDepthFunc(BackendDepthFunc function)
+{
+    return BackendCommandSetDepthFunc{function};
 }
 
 inline BackendCommand setDepthTest(bool enabled)

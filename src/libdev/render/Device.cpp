@@ -723,8 +723,7 @@ void RenDevice::flush3DAlpha()
     recordCommand(Ren::Command::setAlphaTestEnabled(0.0f));
     recordCommand(Ren::Command::setDepthTest(true));
     recordCommand(Ren::Command::setMultisample(true));
-    glDepthFunc(GL_LEQUAL);
-
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
     recordCommand(Ren::Command::setDepthMaskWritable(true));
 
     if (pImpl_->doingBackground_)

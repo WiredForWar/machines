@@ -110,6 +110,7 @@ private:
     void executeCommand(const BackendCommandSetCullFace& command);
     void executeCommand(const BackendCommandSetAlphaTest& command);
     void executeCommand(const BackendCommandSetDepthMask& command);
+    void executeCommand(const BackendCommandSetDepthFunc& command);
     void executeCommand(const BackendCommandSetDepthTest& command);
 
     void flushPendingDeletes();
