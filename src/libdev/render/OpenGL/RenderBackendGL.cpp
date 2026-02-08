@@ -756,6 +756,18 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
+{
+    if (command.enabled)
+    {
+        glEnable(GL_CULL_FACE);
+    }
+    else
+    {
+        glDisable(GL_CULL_FACE);
+    }
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
 {
     if (command.enabled)
