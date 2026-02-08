@@ -105,6 +105,7 @@ private:
     void executeCommand(const BackendCommandSetViewport& command);
     void executeCommand(const BackendCommandDraw& command);
     void executeCommand(const BackendCommandDrawIndexed& command);
+    void executeCommand(const BackendCommandSetBlendState& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
