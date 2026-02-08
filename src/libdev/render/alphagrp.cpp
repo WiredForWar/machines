@@ -73,8 +73,8 @@ void RenIDelayedAlphaGroup::render()
         ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in alpha sorter.");
         ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in alpha sorter.");
 
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(-(GLfloat)zBias, 1.0);
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(-zBias, 1.0f));
         // RENDER_STREAM("  Set zBias=" << zBias << "\n");
     }
 
@@ -93,8 +93,8 @@ void RenIDelayedAlphaGroup::render()
     // them for it to be worthwhile.
     if (doZBias)
     {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)caps->minZBias(), 1.0);
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(false));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(caps->minZBias(), 1.0f));
     }
 }
 
