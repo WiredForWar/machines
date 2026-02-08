@@ -16,6 +16,7 @@
 #include "render/colour.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendTypes.hpp"
+#include "render/internal/BackendCommands.hpp"
 #include "device/timer.hpp"
 
 #include <GL/glew.h>

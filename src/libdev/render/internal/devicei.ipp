@@ -121,16 +121,4 @@ bool RenIDeviceImpl::fogMultiplierIsNeutral() const
     return materialFogMultiplier_ == 1.0;
 }
 
-_CODE_INLINE
-void RenIDeviceImpl::enableAlphaBlending()
-{
-    glEnable(GL_BLEND);
-}
-
-_CODE_INLINE
-void RenIDeviceImpl::disableAlphaBlending()
-{
-    glDisable(GL_BLEND);
-}
-
 /* End DEVICEI.IPP **************************************************/
