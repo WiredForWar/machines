@@ -18,6 +18,8 @@
 #include "render/internal/BackendTypes.hpp"
 #include "render/internal/ModeObserver.hpp"
 #include "render/internal/internal.hpp"
+#include "render/internal/BackendCommands.hpp"
+#include "device/Timer.hpp"
 
 #include <GL/glew.h>
 
