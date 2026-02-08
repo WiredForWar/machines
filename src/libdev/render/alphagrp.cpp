@@ -80,9 +80,9 @@ void RenIDelayedAlphaGroup::render()
 
     if (!material_.usesBilinear() && !material_.texture().isEmpty()) // This fixes issue with gun barrels rendering
     {
-        glDepthMask(GL_TRUE);
+        RenDevice::current()->recordCommand(Ren::Command::setDepthMaskWritable(true));
         group_->render(vertices_, material_);
-        glDepthMask(GL_FALSE);
+        RenDevice::current()->recordCommand(Ren::Command::setDepthMaskWritable(false));
     }
     else
         group_->render(vertices_, material_);
