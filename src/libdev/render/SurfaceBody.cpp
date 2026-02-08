@@ -18,7 +18,6 @@
 #include "render/internal/SurfaceBody.hpp"
 #include "render/internal/IRenderBackend.hpp"
 #include "render/internal/FontImpl.hpp"
-#include "render/OpenGL/Utils.hpp"
 #include "device/Timer.hpp"
 #include <algorithm>
 #include <stdlib.h>
@@ -374,7 +373,7 @@ void RenISurfBody::drawText(
 
     y += fontImpl.ascender();
 
-    auto disabledCullFaceScope = Ren::OpenGL::ScopedDisable(GL_CULL_FACE);
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
     if (options.alignment() & Ren::AlignRight)
     {
         int textWidth = 0;
@@ -572,6 +571,8 @@ void RenISurfBody::drawText(
             painter.line(Ren::Point(seg.x1, seg.y), Ren::Point(seg.x2, seg.y), options.color(), 1);
         }
     }
+
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenISurfBody::releaseDC()
