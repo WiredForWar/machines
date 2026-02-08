@@ -477,6 +477,7 @@ void RenDevice::setViewport(int left, int top, int width, int height)
 bool RenDevice::startFrame()
 {
     PRE(!rendering());
+    PRE(!pImpl_->immediateCommandBufferActive());
 
     // When the Window is activated this flag is set indicating that surface
     // memory could have been lost to another process.
@@ -1734,6 +1735,19 @@ void RenDevice::recordCommand(Ren::BackendCommand command)
     PRE(handle.isValid());
 
     pImpl_->backend_->recordCommand(handle, std::move(command));
+}
+
+void RenDevice::beginImmediateCommands()
+{
+    PRE(pImpl_);
+    pImpl_->beginImmediateCommandBuffer();
+}
+
+void RenDevice::endImmediateCommands()
+{
+    PRE(pImpl_);
+    PRE(pImpl_->immediateCommandBufferActive());
+    pImpl_->endImmediateCommandBuffer();
 }
 
 bool RenDevice::rendering() const

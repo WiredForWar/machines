@@ -158,6 +158,8 @@ public:
     static RenDevice* current();
 
     void recordCommand(Ren::BackendCommand command);
+    void beginImmediateCommands();
+    void endImmediateCommands();
 
     void backgroundColour(const RenColour&);
     const RenColour& backgroundColour() const;
