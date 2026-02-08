@@ -1753,6 +1753,28 @@ void RenDevice::recordCommand(Ren::BackendCommand command)
     pImpl_->backend_->recordCommand(handle, std::move(command));
 }
 
+void RenDevice::recordEnableVertexAttribPointer(
+    Ren::AttributeLocationId index,
+    int size,
+    Ren::BackendVertexAttribType type,
+    bool normalized,
+    std::size_t stride,
+    std::size_t offset)
+{
+    if (!index.isValid())
+        return;
+
+    recordCommand(Ren::Command::enableVertexAttribPointer(index, size, type, normalized, stride, offset));
+}
+
+void RenDevice::recordDisableVertexAttribPointer(Ren::AttributeLocationId index)
+{
+    if (!index.isValid())
+        return;
+
+    recordCommand(Ren::Command::disableVertexAttribPointer(index));
+}
+
 void RenDevice::beginImmediateCommands()
 {
     PRE(pImpl_);
@@ -1982,30 +2004,27 @@ void RenDevice::renderScreenspace(
         Ren::BufferUsage::StreamDraw);
 
     // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
     backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
+    recordEnableVertexAttribPointer(
+        glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(
+    recordEnableVertexAttribPointer(
         glVertexUVID_,
         2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
+        Ren::BackendVertexAttribType::Float,
+        false,
+        sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
 
     // 3rd attribute vertex colours
-    glEnableVertexAttribArray(glVertexColour_screenspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_screenspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertexColour_screenspaceID_,
+        4,
+        Ren::BackendVertexAttribType::UnsignedByte,
+        true,
+        sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
 
     recordCommand(Ren::Command::setDepthTest(false));
 
@@ -2015,9 +2034,9 @@ void RenDevice::renderScreenspace(
     recordCommand(Ren::Command::setBlendStateDisabled());
     recordCommand(Ren::Command::setDepthTest(true));
 
-    glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glDisableVertexAttribArray(glVertexUVID_);
-    glDisableVertexAttribArray(glVertexColour_screenspaceID_);
+    recordDisableVertexAttribPointer(glVertexPosition_screenspaceID_);
+    recordDisableVertexAttribPointer(glVertexUVID_);
+    recordDisableVertexAttribPointer(glVertexColour_screenspaceID_);
 }
 
 void RenDevice::renderSurface(
@@ -2138,30 +2157,27 @@ void RenDevice::renderSurface(
     glUniform1i(gl2DUniformID_, 0);
 
     // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
     backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
+    recordEnableVertexAttribPointer(
+        glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(
+    recordEnableVertexAttribPointer(
         glVertexUVID_,
         2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
+        Ren::BackendVertexAttribType::Float,
+        false,
+        sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
 
-    // 3rd attribute vertex colours
-    glEnableVertexAttribArray(glVertexColour_screenspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_screenspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    // 3rd attribute buffer : vertex colours
+    recordEnableVertexAttribPointer(
+        glVertexColour_screenspaceID_,
+        4,
+        Ren::BackendVertexAttribType::UnsignedByte,
+        true,
+        sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
 
     recordCommand(Ren::Command::setDepthTest(false));
 
@@ -2176,9 +2192,9 @@ void RenDevice::renderSurface(
 
     recordCommand(Ren::Command::setDepthTest(true));
 
-    glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glDisableVertexAttribArray(glVertexUVID_);
-    glDisableVertexAttribArray(glVertexColour_screenspaceID_);
+    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexPosition_screenspaceID_));
+    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexUVID_));
+    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexColour_screenspaceID_));
 }
 
 void RenDevice::renderPrimitive(
@@ -2221,43 +2237,33 @@ void RenDevice::renderPrimitive(
     glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
         vertices,
         Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_modelspaceID_, // The attribute we want to configure
-        3, // size
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
+    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_);
+    recordEnableVertexAttribPointer(
+        glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_modelspaceUVID_);
-    glVertexAttribPointer(
-        glVertex_modelspaceUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertex_modelspaceUVID_,
+        2,
+        Ren::BackendVertexAttribType::Float,
+        false,
+        sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
 
     // vertex colours
-    glEnableVertexAttribArray(glVertexColour_modelspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_modelspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertexColour_modelspaceID_,
+        4,
+        Ren::BackendVertexAttribType::UnsignedByte,
+        true,
+        sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
 
     /*// 3rd attribute buffer : normals
     glEnableVertexAttribArray(vertexNormal_modelspaceID);
@@ -2273,9 +2279,9 @@ void RenDevice::renderPrimitive(
      */
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
-    glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glDisableVertexAttribArray(glVertex_modelspaceUVID_);
-    glDisableVertexAttribArray(glVertexColour_modelspaceID_);
+    recordDisableVertexAttribPointer(glVertexPosition_modelspaceID_);
+    recordDisableVertexAttribPointer(glVertex_modelspaceUVID_);
+    recordDisableVertexAttribPointer(glVertexColour_modelspaceID_);
     // glDisableVertexAttribArray(vertexNormal_modelspaceID);
 }
 
@@ -2324,43 +2330,33 @@ void RenDevice::renderIndexed(
     glUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
     backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
         nVertices * sizeof(RenIVertex),
         vertices,
         Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_modelspaceID_, // The attribute we want to configure
-        3, // size - 3 for XYZ 4 for XYZW
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
+    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_);
+    recordEnableVertexAttribPointer(
+        glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_modelspaceUVID_);
-    glVertexAttribPointer(
-        glVertex_modelspaceUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertex_modelspaceUVID_,
+        2,
+        Ren::BackendVertexAttribType::Float,
+        false,
+        sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
 
     // vertex colours
-    glEnableVertexAttribArray(glVertexColour_modelspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_modelspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertexColour_modelspaceID_,
+        4,
+        Ren::BackendVertexAttribType::UnsignedByte,
+        true,
+        sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
 
     // 3rd attribute buffer : normals
     /*glEnableVertexAttribArray(vertexNormal_modelspaceID);
@@ -2385,9 +2381,9 @@ void RenDevice::renderIndexed(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glDisableVertexAttribArray(glVertex_modelspaceUVID_);
-    glDisableVertexAttribArray(glVertexColour_modelspaceID_);
+    recordDisableVertexAttribPointer(glVertexPosition_modelspaceID_);
+    recordDisableVertexAttribPointer(glVertex_modelspaceUVID_);
+    recordDisableVertexAttribPointer(glVertexColour_modelspaceID_);
     // glDisableVertexAttribArray(vertexNormal_modelspaceID);
 }
 
@@ -2422,43 +2418,33 @@ void RenDevice::renderIndexedScreenspace(
     glUniform1i(glTextureSamplerBillboardID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_BillboardID_);
     backend_->bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferBillboardID_,
         nVertices * sizeof(RenIVertex),
         vertices,
         Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_BillboardID_, // The attribute we want to configure
-        4, // size - 3 for XYZ 4 for XYZW
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
+    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_);
+    recordEnableVertexAttribPointer(
+        glVertexPosition_BillboardID_, 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_BillboardUVID_);
-    glVertexAttribPointer(
-        glVertex_BillboardUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertex_BillboardUVID_,
+        2,
+        Ren::BackendVertexAttribType::Float,
+        false,
+        sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
 
     // vertex colours
-    glEnableVertexAttribArray(glVertexColour_BillboardID_);
-    glVertexAttribPointer(
-        glVertexColour_BillboardID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    recordEnableVertexAttribPointer(
+        glVertexColour_BillboardID_,
+        4,
+        Ren::BackendVertexAttribType::UnsignedByte,
+        true,
+        sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
 
     // Index buffer
     backend_->bufferData(
@@ -2471,7 +2457,7 @@ void RenDevice::renderIndexedScreenspace(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    glDisableVertexAttribArray(glVertexPosition_BillboardID_);
-    glDisableVertexAttribArray(glVertex_BillboardUVID_);
-    glDisableVertexAttribArray(glVertexColour_BillboardID_);
+    recordDisableVertexAttribPointer(glVertexPosition_BillboardID_);
+    recordDisableVertexAttribPointer(glVertex_BillboardUVID_);
+    recordDisableVertexAttribPointer(glVertexColour_BillboardID_);
 }
