@@ -78,6 +78,9 @@ enum class BackendClearFlag : std::uint32_t
     Stencil = 1u << 2,
 };
 
+constexpr std::uint32_t backendClearMask(BackendClearFlag flag);
+constexpr std::uint32_t operator|(BackendClearFlag flag1, BackendClearFlag flag2);
+
 inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)
 {
     return static_cast<std::uint32_t>(flag);
