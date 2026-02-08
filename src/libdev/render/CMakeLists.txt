@@ -9,6 +9,7 @@ set(RENDER_SOURCES
     FontsManager.hpp
     OpenGL/RenderBackendGL.cpp
     OpenGL/RenderBackendGL.hpp
+    OpenGL/Utils.cpp
     OpenGL/Utils.hpp
     Painter.cpp
     Painter.hpp
