@@ -687,7 +687,7 @@ void RenDevice::flush3DAlpha()
     // may be called after 2D update, therefore we can not rely on these parameters
     // being set correcly.
     glEnable(GL_ALPHA_TEST);
-    glEnable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setDepthTest(true));
     glEnable(GL_MULTISAMPLE);
     glAlphaFunc(GL_GREATER, 0);
     glDepthFunc(GL_LEQUAL);
@@ -1286,10 +1286,13 @@ void RenDevice::graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, do
     impl().setMaterialHandles(noiseMat);
 
     glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+
+    recordCommand(Ren::Command::setDepthTest(false));
+
     renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
+
+    recordCommand(Ren::Command::setDepthTest(true));
     glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
@@ -1330,10 +1333,13 @@ void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
     impl().setMaterialHandles(noiseMat);
 
     glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+
+    recordCommand(Ren::Command::setDepthTest(false));
+
     renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
+
+    recordCommand(Ren::Command::setDepthTest(true));
     glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void RenDevice::addInterference()
@@ -2002,14 +2008,13 @@ void RenDevice::renderScreenspace(
         (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
     );
 
-    glDisable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setDepthTest(false));
 
     using BlendFactor = Ren::BackendBlendFactor;
     recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
     recordCommand(Ren::Command::setBlendStateDisabled());
-
-    glEnable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setDepthTest(true));
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
     glDisableVertexAttribArray(glVertexUVID_);
@@ -2159,20 +2164,18 @@ void RenDevice::renderSurface(
         (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
     );
 
-    glDisable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setDepthTest(false));
 
     const auto [srcFactor, dstFactor] = blendFactorsForBlitMode(mode);
     recordCommand(Ren::Command::setBlendStateEnabled(srcFactor, dstFactor));
-
-    // Draw call
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    recordCommand(Ren::Command::draw(Ren::PrimitiveTopology::Triangles, 0, 6));
 
     using BlendFactor = Ren::BackendBlendFactor;
     recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
 
     recordCommand(Ren::Command::setBlendStateDisabled());
 
-    glEnable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setDepthTest(true));
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
     glDisableVertexAttribArray(glVertexUVID_);
