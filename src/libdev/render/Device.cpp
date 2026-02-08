@@ -659,8 +659,9 @@ void RenDevice::start3D(bool clearBack)
 
     if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
     {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
+        const auto* internalCaps = pImpl_->caps_->internal();
+        recordCommand(Ren::Command::setPolygonOffsetFill(false));
+        recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(internalCaps->minZBias()), 1.0f));
     }
 
     recordCommand(Ren::Command::setDepthMaskWritable(true));
@@ -750,8 +751,9 @@ void RenDevice::flush3DAlpha()
     // The coplanar sorter may leave the zBias in an arbitrary state.
     if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
     {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
+        const auto* internalCaps = pImpl_->caps_->internal();
+        recordCommand(Ren::Command::setPolygonOffsetFill(false));
+        recordCommand(Ren::Command::setPolygonOffset(internalCaps->minZBias(), 1.0f));
     }
 
     if (pImpl_->caps_->supportsFlatAlpha() || pImpl_->caps_->supportsTextureAlpha())
