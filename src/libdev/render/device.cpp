@@ -539,8 +539,6 @@ void RenDevice::start2D()
     // don't initialise lighting or any projection/view matrices.
     disableFog();
 
-    glFrontFace(GL_CW);
-
     pImpl_->alphaSorter_ = nullptr;
     pImpl_->illuminator_->filter(RenColour::white());
 
@@ -622,7 +620,6 @@ void RenDevice::start3D(bool clearBack)
         glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
     }
 
-    glFrontFace(GL_CW);
     glDepthMask(GL_TRUE);
 
     // All the alpha polygons are drawn as a post-pass in endFrame, so we can
