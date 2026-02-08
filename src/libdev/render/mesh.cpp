@@ -421,7 +421,7 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator sIt = stfps_.begin();
         while (sIt != stfps_.end())
@@ -431,7 +431,7 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
             ++sIt;
         }
 
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -478,7 +478,7 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -489,7 +489,7 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
             ++matIt;
         }
 
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -540,7 +540,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -550,7 +550,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
             ++stIt;
         }
 
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -608,7 +608,7 @@ void RenMesh::render(
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -619,7 +619,7 @@ void RenMesh::render(
             ++matIt;
         }
 
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 

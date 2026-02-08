@@ -746,7 +746,7 @@ void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const Ren
         i += inc;
     }
 
-    glDisable(GL_CULL_FACE);
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
     RenDevice* dev = RenDevice::current();
     if (internals() && internals()->isOffscreen())
     {
@@ -756,7 +756,7 @@ void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const Ren
     }
     else
         dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), height());
-    glEnable(GL_CULL_FACE);
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 // These read/write functions are used for fog of war in savegame and store alpha only
