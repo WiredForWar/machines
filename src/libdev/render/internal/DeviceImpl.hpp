@@ -178,9 +178,9 @@ private:
     Ren::ProgramId glProgramID_Billboard_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
-    int glVertexUVID_{};
-    int glVertexPosition_screenspaceID_{};
-    int glVertexColour_screenspaceID_{};
+    Ren::AttributeLocationId glVertexUVID_{};
+    Ren::AttributeLocationId glVertexPosition_screenspaceID_{};
+    Ren::AttributeLocationId glVertexColour_screenspaceID_{};
     GLuint glScreenspaceID_{};
 
     GLuint gl2DUniformID_{};
@@ -193,16 +193,16 @@ private:
     GLuint glFogColourID_{};
     GLuint glFogParamsID_{};
 
-    int glVertexPosition_modelspaceID_{};
-    int glVertex_modelspaceUVID_{};
-    int glVertexColour_modelspaceID_{};
+    Ren::AttributeLocationId glVertexPosition_modelspaceID_{};
+    Ren::AttributeLocationId glVertex_modelspaceUVID_{};
+    Ren::AttributeLocationId glVertexColour_modelspaceID_{};
     Ren::BufferId glVertexDataBufferID_{};
     Ren::BufferId glElementBufferID_{};
 
     GLuint glViewProjMatrix_BillboardID_{};
-    int glVertexPosition_BillboardID_{};
-    int glVertex_BillboardUVID_{};
-    int glVertexColour_BillboardID_{};
+    Ren::AttributeLocationId glVertexPosition_BillboardID_{};
+    Ren::AttributeLocationId glVertex_BillboardUVID_{};
+    Ren::AttributeLocationId glVertexColour_BillboardID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};

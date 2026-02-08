@@ -95,6 +95,17 @@ struct BackendCommandSetDepthTest
     bool enabled{};
 };
 
+struct BackendCommandSetVertexAttribPointer
+{
+    bool enabled{};
+    AttributeLocationId index{};
+    int size{};
+    BackendVertexAttribType type{BackendVertexAttribType::Float};
+    bool normalized{};
+    std::size_t stride{};
+    std::size_t offset{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -108,7 +119,8 @@ using BackendCommand = std::variant<
     BackendCommandSetAlphaTest,
     BackendCommandSetDepthMask,
     BackendCommandSetDepthFunc,
-    BackendCommandSetDepthTest>;
+    BackendCommandSetDepthTest,
+    BackendCommandSetVertexAttribPointer>;
 
 namespace Command
 {
@@ -187,6 +199,28 @@ inline BackendCommand setDepthFunc(BackendDepthFunc function)
 inline BackendCommand setDepthTest(bool enabled)
 {
     return BackendCommandSetDepthTest{enabled};
+}
+
+inline BackendCommand enableVertexAttribPointer(
+    AttributeLocationId index,
+    int size,
+    BackendVertexAttribType type,
+    bool normalized,
+    std::size_t stride,
+    std::size_t offset)
+{
+    return BackendCommandSetVertexAttribPointer{ .enabled = true,
+                                                 .index = index,
+                                                 .size = size,
+                                                 .type = type,
+                                                 .normalized = normalized,
+                                                 .stride = stride,
+                                                 .offset = offset };
+}
+
+inline BackendCommand disableVertexAttribPointer(AttributeLocationId index)
+{
+    return BackendCommandSetVertexAttribPointer{ .enabled = false, .index = index };
 }
 
 } // namespace Command
