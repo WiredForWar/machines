@@ -1290,14 +1290,13 @@ void RenDevice::graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, do
     pts[4].color = pts[5].color = packColour(1, 1, 1, minAlpha);
     impl().setMaterialHandles(noiseMat);
 
-    glDisable(GL_CULL_FACE);
-
+    recordCommand(Ren::Command::setCullFace(false));
     recordCommand(Ren::Command::setDepthTest(false));
 
     renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
 
     recordCommand(Ren::Command::setDepthTest(true));
-    glEnable(GL_CULL_FACE);
+    recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
@@ -1337,14 +1336,13 @@ void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
 
     impl().setMaterialHandles(noiseMat);
 
-    glDisable(GL_CULL_FACE);
-
+    recordCommand(Ren::Command::setCullFace(false));
     recordCommand(Ren::Command::setDepthTest(false));
 
     renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
 
     recordCommand(Ren::Command::setDepthTest(true));
-    glEnable(GL_CULL_FACE);
+    recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenDevice::addInterference()
