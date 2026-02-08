@@ -116,6 +116,30 @@ GLenum toBlendFactor(BackendBlendFactor factor)
     return GL_ONE;
 }
 
+GLenum toDepthFunc(BackendDepthFunc func)
+{
+    switch (func)
+    {
+    case BackendDepthFunc::Never:
+        return GL_NEVER;
+    case BackendDepthFunc::Less:
+        return GL_LESS;
+    case BackendDepthFunc::Equal:
+        return GL_EQUAL;
+    case BackendDepthFunc::LessOrEqual:
+        return GL_LEQUAL;
+    case BackendDepthFunc::Greater:
+        return GL_GREATER;
+    case BackendDepthFunc::NotEqual:
+        return GL_NOTEQUAL;
+    case BackendDepthFunc::GreaterOrEqual:
+        return GL_GEQUAL;
+    case BackendDepthFunc::Always:
+        return GL_ALWAYS;
+    }
+    return GL_LEQUAL;
+}
+
 GLbitfield toClearMask(std::uint32_t mask)
 {
     GLbitfield glMask = 0;
