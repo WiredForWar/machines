@@ -108,6 +108,8 @@ private:
     void executeCommand(const BackendCommandDrawIndexed& command);
     void executeCommand(const BackendCommandSetBlendState& command);
     void executeCommand(const BackendCommandSetCullFace& command);
+    void executeCommand(const BackendCommandSetPolygonOffsetFill& command);
+    void executeCommand(const BackendCommandSetPolygonOffset& command);
     void executeCommand(const BackendCommandSetAlphaTest& command);
     void executeCommand(const BackendCommandSetDepthMask& command);
     void executeCommand(const BackendCommandSetDepthFunc& command);
