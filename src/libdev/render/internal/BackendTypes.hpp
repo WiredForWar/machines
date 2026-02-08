@@ -81,6 +81,13 @@ enum class BackendClearFlag : std::uint32_t
 constexpr std::uint32_t backendClearMask(BackendClearFlag flag);
 constexpr std::uint32_t operator|(BackendClearFlag flag1, BackendClearFlag flag2);
 
+enum class BackendIndexType
+{
+    UnsignedByte,
+    UnsignedShort,
+    UnsignedInt,
+};
+
 inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)
 {
     return static_cast<std::uint32_t>(flag);

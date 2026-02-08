@@ -729,6 +729,13 @@ void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
     glDrawArrays(mode, command.first, command.count);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandDrawIndexed& command)
+{
+    const GLenum mode = toDrawMode(command.topology);
+    const GLenum indexType = toIndexType(command.indexType);
+    glDrawElements(mode, command.count, indexType, reinterpret_cast<const void*>(command.indexBufferOffset));
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
