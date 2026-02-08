@@ -51,6 +51,11 @@ struct BackendCommandSetBlendState
     BackendBlendFactor dstFactor{BackendBlendFactor::Zero};
 };
 
+struct BackendCommandSetDepthMask
+{
+    bool writable{};
+};
+
 struct BackendCommandSetDepthTest
 {
     bool enabled{};
@@ -62,6 +67,7 @@ using BackendCommand = std::variant<
     BackendCommandDraw,
     BackendCommandDrawIndexed,
     BackendCommandSetBlendState,
+    BackendCommandSetDepthMask,
     BackendCommandSetDepthTest>;
 
 namespace Command
@@ -96,6 +102,11 @@ inline BackendCommand setBlendStateEnabled(BackendBlendFactor srcFactor, Backend
 inline BackendCommand setBlendStateDisabled()
 {
     return BackendCommandSetBlendState{ .enabled = false };
+}
+
+inline BackendCommand setDepthMaskWritable(bool writable)
+{
+    return BackendCommandSetDepthMask{writable};
 }
 
 inline BackendCommand setDepthTest(bool enabled)
