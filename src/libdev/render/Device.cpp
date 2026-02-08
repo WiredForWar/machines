@@ -2433,14 +2433,8 @@ void RenDevice::renderIndexed(
         indices,
         Ren::BufferUsage::StreamDraw);
 
-    GLenum mode = Ren::OpenGL::toDrawMode(topology);
-    // Draw the triangles !
-    glDrawElements(
-        mode, // mode
-        nIndices, // count
-        GL_UNSIGNED_SHORT, // type
-        (void*)nullptr // element array buffer offset
-    );
+    Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
+    recordCommand(std::move(command));
 
     glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
     glDisableVertexAttribArray(glVertex_modelspaceUVID_);
@@ -2525,14 +2519,8 @@ void RenDevice::renderIndexedScreenspace(
         indices,
         Ren::BufferUsage::StreamDraw);
 
-    GLenum mode = Ren::OpenGL::toDrawMode(topology);
-    // Draw the triangles !
-    glDrawElements(
-        mode, // mode
-        nIndices, // count
-        GL_UNSIGNED_SHORT, // type
-        (void*)nullptr // element array buffer offset
-    );
+    Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
+    recordCommand(std::move(command));
 
     glDisableVertexAttribArray(glVertexPosition_BillboardID_);
     glDisableVertexAttribArray(glVertex_BillboardUVID_);

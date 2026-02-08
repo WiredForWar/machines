@@ -74,6 +74,20 @@ GLenum toWrap(TextureWrap wrap)
     return GL_REPEAT;
 }
 
+GLenum toIndexType(BackendIndexType type)
+{
+    switch (type)
+    {
+    case BackendIndexType::UnsignedByte:
+        return GL_UNSIGNED_BYTE;
+    case BackendIndexType::UnsignedShort:
+        return GL_UNSIGNED_SHORT;
+    case BackendIndexType::UnsignedInt:
+        return GL_UNSIGNED_INT;
+    }
+    return GL_UNSIGNED_SHORT;
+}
+
 GLbitfield toClearMask(std::uint32_t mask)
 {
     GLbitfield glMask = 0;
