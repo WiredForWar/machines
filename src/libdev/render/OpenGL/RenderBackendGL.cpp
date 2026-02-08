@@ -139,6 +139,8 @@ bool RenderBackendGL::initialize(SDL_Window* window)
         return false;
     }
 
+    glFrontFace(GL_CW);
+
     initialized_ = true;
     return true;
 }
