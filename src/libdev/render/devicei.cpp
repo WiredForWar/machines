@@ -100,6 +100,32 @@ void RenIDeviceImpl::hasSharedVideoMemory(bool setVideoMemoryShared)
     videoMemorySharedInitialized_ = true;
 }
 
+void RenIDeviceImpl::enableAlphaBlending()
+{
+    PRE(parent_);
+    PRE(frameCommandBuffer_.isValid());
+
+    if (!alphaBlendingEnabled_)
+    {
+        using BlendFactor = Ren::BackendBlendFactor;
+        parent_->recordCommand(
+            Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
+        alphaBlendingEnabled_ = true;
+    }
+}
+
+void RenIDeviceImpl::disableAlphaBlending()
+{
+    PRE(parent_);
+    PRE(frameCommandBuffer_.isValid());
+
+    if (alphaBlendingEnabled_)
+    {
+        parent_->recordCommand(Ren::Command::setBlendStateDisabled());
+        alphaBlendingEnabled_ = false;
+    }
+}
+
 void RenIDeviceImpl::resetFrameTimer()
 {
     frameTimer_.time(0);
