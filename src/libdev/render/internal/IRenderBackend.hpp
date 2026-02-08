@@ -2,7 +2,6 @@
 
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
-#include "render/internal/BackendTypes.hpp"
 
 #include <cstddef>
 #include <cstdint>
