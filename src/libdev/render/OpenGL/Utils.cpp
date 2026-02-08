@@ -88,6 +88,34 @@ GLenum toIndexType(BackendIndexType type)
     return GL_UNSIGNED_SHORT;
 }
 
+GLenum toBlendFactor(BackendBlendFactor factor)
+{
+    switch (factor)
+    {
+    case BackendBlendFactor::Zero:
+        return GL_ZERO;
+    case BackendBlendFactor::One:
+        return GL_ONE;
+    case BackendBlendFactor::SrcColor:
+        return GL_SRC_COLOR;
+    case BackendBlendFactor::OneMinusSrcColor:
+        return GL_ONE_MINUS_SRC_COLOR;
+    case BackendBlendFactor::DstColor:
+        return GL_DST_COLOR;
+    case BackendBlendFactor::OneMinusDstColor:
+        return GL_ONE_MINUS_DST_COLOR;
+    case BackendBlendFactor::SrcAlpha:
+        return GL_SRC_ALPHA;
+    case BackendBlendFactor::OneMinusSrcAlpha:
+        return GL_ONE_MINUS_SRC_ALPHA;
+    case BackendBlendFactor::DstAlpha:
+        return GL_DST_ALPHA;
+    case BackendBlendFactor::OneMinusDstAlpha:
+        return GL_ONE_MINUS_DST_ALPHA;
+    }
+    return GL_ONE;
+}
+
 GLbitfield toClearMask(std::uint32_t mask)
 {
     GLbitfield glMask = 0;

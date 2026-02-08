@@ -46,6 +46,7 @@ GLenum toPixelFormat(TextureFormat format);
 GLenum toFilter(TextureFilter filter);
 GLenum toWrap(TextureWrap wrap);
 GLenum toIndexType(BackendIndexType type);
+GLenum toBlendFactor(BackendBlendFactor factor);
 
 GLbitfield toClearMask(std::uint32_t mask);
 
