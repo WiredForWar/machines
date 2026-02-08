@@ -14,6 +14,7 @@
 #include "render/internal/FnStars.hpp"
 #include "render/internal/DeviceImpl.hpp"
 #include "render/Device.hpp"
+#include "render/internal/BackendCommands.hpp"
 
 #include "ctl/Algorithm.hpp"
 
@@ -148,7 +149,9 @@ void RenIStarsImpl::render(
 
     // for_each(sectors_.begin(), sectors_.end(), RenIPrintSectorOp(Diag::instance().renderStream()));
 
-    glEnable(GL_BLEND);
+    using BlendFactor = Ren::BackendBlendFactor;
+    RenDevice::current()->recordCommand(
+        Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
 
     // Render the vertices.
     static const RenMaterial emptyMat;
@@ -161,7 +164,7 @@ void RenIStarsImpl::render(
     }
 
     // Reset the previous states.
-    glDisable(GL_BLEND);
+    RenDevice::current()->recordCommand(Ren::Command::setBlendStateDisabled());
 
     TEST_INVARIANT;
 }
