@@ -63,6 +63,7 @@
 #include "render/render.hpp"
 #include "render/internal/TriangleGroup.hpp"
 #include "render/internal/SurfaceBody.hpp"
+#include "render/RenderUtils.hpp"
 #include "system/WindowsAPI.hpp"
 
 #include "spdlog/spdlog.h"
@@ -2043,13 +2044,13 @@ void RenDevice::renderScreenspace(
         (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
     );
 
-    glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
-    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    using BlendFactor = Ren::BackendBlendFactor;
+    recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
+    recordCommand(Ren::Command::setBlendStateDisabled());
 
-    glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
@@ -2200,31 +2201,19 @@ void RenDevice::renderSurface(
         (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
     );
 
-    glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
-    switch (mode)
-    {
-    case Ren::BlitMode::AlphaBlend:
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        break;
-    case Ren::BlitMode::Replace:
-        glBlendFunc(GL_ONE, GL_ZERO);
-        break;
-    case Ren::BlitMode::DstMulOneMinusSrcAlpha:
-        glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-        break;
-    case Ren::BlitMode::ZeroZero:
-        glBlendFunc(GL_ZERO, GL_ZERO);
-        break;
-    }
+    const auto [srcFactor, dstFactor] = blendFactorsForBlitMode(mode);
+    recordCommand(Ren::Command::setBlendStateEnabled(srcFactor, dstFactor));
 
     // Draw call
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    using BlendFactor = Ren::BackendBlendFactor;
+    recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
 
-    glDisable(GL_BLEND);
+    recordCommand(Ren::Command::setBlendStateDisabled());
+
     glEnable(GL_DEPTH_TEST);
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);

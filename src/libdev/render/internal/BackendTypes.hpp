@@ -88,6 +88,20 @@ enum class BackendIndexType
     UnsignedInt,
 };
 
+enum class BackendBlendFactor
+{
+    Zero,
+    One,
+    SrcColor,
+    OneMinusSrcColor,
+    DstColor,
+    OneMinusDstColor,
+    SrcAlpha,
+    OneMinusSrcAlpha,
+    DstAlpha,
+    OneMinusDstAlpha,
+};
+
 inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)
 {
     return static_cast<std::uint32_t>(flag);
