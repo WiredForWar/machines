@@ -747,6 +747,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetDepthMask& command)
+{
+    glDepthMask(command.writable ? GL_TRUE : GL_FALSE);
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
 {
     if (command.enabled)
