@@ -692,10 +692,9 @@ void RenDevice::flush3DAlpha()
     // Make sure all the Direct3D parameters are set up correctly. This function
     // may be called after 2D update, therefore we can not rely on these parameters
     // being set correcly.
-    glEnable(GL_ALPHA_TEST);
+    recordCommand(Ren::Command::setAlphaTestEnabled(0.0f));
     recordCommand(Ren::Command::setDepthTest(true));
     glEnable(GL_MULTISAMPLE);
-    glAlphaFunc(GL_GREATER, 0);
     glDepthFunc(GL_LEQUAL);
 
     recordCommand(Ren::Command::setDepthMaskWritable(true));
@@ -739,7 +738,8 @@ void RenDevice::flush3DAlpha()
         pImpl_->disableAlphaBlending();
         recordCommand(Ren::Command::setDepthMaskWritable(true));
     }
-    glDisable(GL_ALPHA_TEST);
+
+    recordCommand(Ren::Command::setAlphaTestDisabled());
 }
 
 void RenDevice::end3D()
