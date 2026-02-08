@@ -721,6 +721,18 @@ void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
     glViewport(command.x, command.y, command.width, command.height);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command)
+{
+    if (command.enabled)
+    {
+        glEnable(GL_MULTISAMPLE);
+    }
+    else
+    {
+        glDisable(GL_MULTISAMPLE);
+    }
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
 {
     const GLenum mode = toDrawMode(command.topology);

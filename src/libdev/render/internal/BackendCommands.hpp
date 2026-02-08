@@ -29,6 +29,11 @@ struct BackendCommandSetViewport
     int height{};
 };
 
+struct BackendCommandSetMultisample
+{
+    bool enabled{};
+};
+
 struct BackendCommandDraw
 {
     PrimitiveTopology topology{};
@@ -75,6 +80,7 @@ struct BackendCommandSetDepthTest
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
+    BackendCommandSetMultisample,
     BackendCommandDraw,
     BackendCommandDrawIndexed,
     BackendCommandSetBlendState,
@@ -94,6 +100,11 @@ inline BackendCommand clear(RenColour colour, std::uint32_t mask)
 inline BackendCommand setViewport(Size size)
 {
     return BackendCommandSetViewport{ 0, 0, size.width, size.height };
+}
+
+inline BackendCommand setMultisample(bool enabled)
+{
+    return BackendCommandSetMultisample{enabled};
 }
 
 inline BackendCommand draw(PrimitiveTopology topology, int first, std::size_t count)

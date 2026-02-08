@@ -103,6 +103,7 @@ private:
     void executeCommand(const BackendCommand& command);
     void executeCommand(const BackendCommandClear& command);
     void executeCommand(const BackendCommandSetViewport& command);
+    void executeCommand(const BackendCommandSetMultisample& command);
     void executeCommand(const BackendCommandDraw& command);
     void executeCommand(const BackendCommandDrawIndexed& command);
     void executeCommand(const BackendCommandSetBlendState& command);
