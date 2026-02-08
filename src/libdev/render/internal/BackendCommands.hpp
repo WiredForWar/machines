@@ -61,6 +61,17 @@ struct BackendCommandSetCullFace
     bool enabled{};
 };
 
+struct BackendCommandSetPolygonOffsetFill
+{
+    bool enabled{};
+};
+
+struct BackendCommandSetPolygonOffset
+{
+    float factor{};
+    float units{};
+};
+
 struct BackendCommandSetAlphaTest
 {
     bool enabled{};
@@ -90,6 +101,8 @@ using BackendCommand = std::variant<
     BackendCommandDrawIndexed,
     BackendCommandSetBlendState,
     BackendCommandSetCullFace,
+    BackendCommandSetPolygonOffsetFill,
+    BackendCommandSetPolygonOffset,
     BackendCommandSetAlphaTest,
     BackendCommandSetDepthMask,
     BackendCommandSetDepthFunc,
@@ -132,6 +145,16 @@ inline BackendCommand setBlendStateEnabled(BackendBlendFactor srcFactor, Backend
 inline BackendCommand setCullFace(bool enabled)
 {
     return BackendCommandSetCullFace{enabled};
+}
+
+inline BackendCommand setPolygonOffsetFill(bool enabled)
+{
+    return BackendCommandSetPolygonOffsetFill{enabled};
+}
+
+inline BackendCommand setPolygonOffset(float factor, float units)
+{
+    return BackendCommandSetPolygonOffset{factor, units};
 }
 
 inline BackendCommand setAlphaTestEnabled(float reference)

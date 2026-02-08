@@ -773,6 +773,23 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
+{
+    if (command.enabled)
+    {
+        glEnable(GL_POLYGON_OFFSET_FILL);
+    }
+    else
+    {
+        glDisable(GL_POLYGON_OFFSET_FILL);
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& command)
+{
+    glPolygonOffset(command.factor, command.units);
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
 {
     if (command.enabled)
