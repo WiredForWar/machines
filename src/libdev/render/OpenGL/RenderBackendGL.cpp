@@ -370,9 +370,9 @@ int RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
     return glGetUniformLocation(programHandle(id), std::string(name).c_str());
 }
 
-int RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
+AttributeLocationId RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
 {
-    return glGetAttribLocation(programHandle(id), std::string(name).c_str());
+    return AttributeLocationId(glGetAttribLocation(programHandle(id), std::string(name).c_str()));
 }
 
 void RenderBackendGL::releaseProgram(ProgramId id)
@@ -833,6 +833,30 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
     else
     {
         glDisable(GL_DEPTH_TEST);
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer& command)
+{
+    if (!command.index.isValid())
+        return;
+
+    const GLuint index = static_cast<GLuint>(command.index.value());
+
+    if (command.enabled)
+    {
+        glEnableVertexAttribArray(index);
+        glVertexAttribPointer(
+            index,
+            command.size,
+            toVertexAttribType(command.type),
+            command.normalized ? GL_TRUE : GL_FALSE,
+            static_cast<GLsizei>(command.stride),
+            reinterpret_cast<const void*>(command.offset));
+    }
+    else
+    {
+        glDisableVertexAttribArray(index);
     }
 }
 

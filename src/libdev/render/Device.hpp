@@ -175,6 +175,15 @@ public:
     static RenDevice* current();
 
     void recordCommand(Ren::BackendCommand command);
+    void recordEnableVertexAttribPointer(
+        Ren::AttributeLocationId index,
+        int size,
+        Ren::BackendVertexAttribType type,
+        bool normalized,
+        std::size_t stride,
+        std::size_t offset);
+    void recordDisableVertexAttribPointer(Ren::AttributeLocationId index);
+
     void beginImmediateCommands();
     void endImmediateCommands();
     bool immediateCommandsActive() const;

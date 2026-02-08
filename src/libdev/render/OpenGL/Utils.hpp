@@ -48,6 +48,7 @@ GLenum toWrap(TextureWrap wrap);
 GLenum toIndexType(BackendIndexType type);
 GLenum toBlendFactor(BackendBlendFactor factor);
 GLenum toDepthFunc(BackendDepthFunc func);
+GLenum toVertexAttribType(BackendVertexAttribType type);
 
 GLbitfield toClearMask(std::uint32_t mask);
 
