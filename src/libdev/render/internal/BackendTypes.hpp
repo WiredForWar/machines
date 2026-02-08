@@ -102,6 +102,18 @@ enum class BackendBlendFactor
     OneMinusDstAlpha,
 };
 
+enum class BackendDepthFunc
+{
+    Never,
+    Less,
+    Equal,
+    LessOrEqual,
+    Greater,
+    NotEqual,
+    GreaterOrEqual,
+    Always,
+};
+
 inline constexpr std::uint32_t backendClearMask(BackendClearFlag flag)
 {
     return static_cast<std::uint32_t>(flag);
