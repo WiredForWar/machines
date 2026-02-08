@@ -140,6 +140,7 @@ void RenIDeviceImpl::updateFogMultiplier(const RenMaterial& mat)
 
 void RenIDeviceImpl::beginFrameCommandBuffer()
 {
+    PRE(backend_);
     PRE(!frameCommandBuffer_.isValid());
     PRE(!frameCommandBufferRecording_);
 
@@ -151,7 +152,7 @@ void RenIDeviceImpl::beginFrameCommandBuffer()
 
 void RenIDeviceImpl::destroyFrameCommandBuffer()
 {
-    PRE(frameCommandBuffer_.isValid());
+    PRE(backend_);
     PRE(frameCommandBufferRecording_);
 
     backend_->endCommandBuffer(frameCommandBuffer_);
@@ -162,9 +163,37 @@ void RenIDeviceImpl::destroyFrameCommandBuffer()
     frameCommandBuffer_ = {};
 }
 
+void RenIDeviceImpl::beginImmediateCommandBuffer()
+{
+    PRE(backend_);
+    PRE(!immediateCommandBuffer_.isValid());
+
+    immediateCommandBuffer_ = backend_->createCommandBuffer();
+    backend_->beginCommandBuffer(immediateCommandBuffer_);
+}
+
+void RenIDeviceImpl::endImmediateCommandBuffer()
+{
+    PRE(backend_);
+    PRE(immediateCommandBuffer_.isValid());
+
+    backend_->endCommandBuffer(immediateCommandBuffer_);
+    backend_->submitCommandBuffer(immediateCommandBuffer_);
+    backend_->destroyCommandBuffer(immediateCommandBuffer_);
+    immediateCommandBuffer_ = {};
+}
+
+bool RenIDeviceImpl::immediateCommandBufferActive() const
+{
+    return immediateCommandBuffer_.isValid();
+}
+
 Ren::BackendCommandBufferHandle RenIDeviceImpl::currentCommandBufferHandle() const
 {
-    PRE(frameCommandBufferRecording_)
+    if (immediateCommandBuffer_.isValid())
+        return immediateCommandBuffer_;
+
+    PRE(frameCommandBufferRecording_);
     return frameCommandBuffer_;
 }
 
