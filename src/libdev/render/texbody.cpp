@@ -231,17 +231,6 @@ static bool checkTextureSize(const SysPathName& fileName, const SDL_Surface* sur
     ASSERT_INFO(surface->w);
     ASSERT_INFO(surface->h);
 
-    // If you load a texture which doesn't have these dimensions, Direct3D
-    // silently displays nothing.
-    if (!isPowerOf2(surface->w) || !isPowerOf2(surface->h))
-    {
-        RENDER_STREAM("  Texture " << fileName << " must have dimensions which are a power of 2." << std::endl);
-        RENDER_STREAM("  (Its size is " << surface->w << "x" << surface->h << ".)" << std::endl);
-
-        ASSERT_FAIL("Texture size is not a power of two.");
-        return false;
-    }
-
     // There's a D3D capability query which tells you the maximum size of a
     // texture.  However, all 3Dfx systems appear to have this 256 limitation.
     // So, in practice, it applies to all textures all of the time.  To cope
