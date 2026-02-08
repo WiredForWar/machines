@@ -116,7 +116,7 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
 
     // Assume that the usual backface setting is on.
     if (!backFace())
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
@@ -125,7 +125,7 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
 
     if (!backFace())
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 // virtual
@@ -140,7 +140,7 @@ void RenIDistinctGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& m
 
     // Assume that the usual backface setting is on.
     if (!backFace())
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
@@ -148,7 +148,7 @@ void RenIDistinctGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& m
     RenDevice::current()
         ->renderIndexed(vtx.get(), nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
     if (!backFace())
-        glEnable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 // virtual
