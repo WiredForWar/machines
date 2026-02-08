@@ -51,8 +51,8 @@ void RenIDelayedCoplanarGroup::render()
         ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in coplanar sorter.");
         ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in coplanar sorter.");
 
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(-(GLfloat)zBias, 1.0);
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(-zBias), 1.0f));
     }
 
     group_->render(vertices_, material_);
