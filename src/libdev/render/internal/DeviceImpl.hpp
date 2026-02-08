@@ -92,6 +92,9 @@ public:
 
     void beginFrameCommandBuffer();
     void destroyFrameCommandBuffer();
+    void beginImmediateCommandBuffer();
+    void endImmediateCommandBuffer();
+    bool immediateCommandBufferActive() const;
 
     Ren::BackendCommandBufferHandle currentCommandBufferHandle() const;
 
@@ -202,6 +205,7 @@ private:
     Ren::FramebufferId glOffscreenFrameBuffID_{};
 
     Ren::BackendCommandBufferHandle frameCommandBuffer_{};
+    Ren::BackendCommandBufferHandle immediateCommandBuffer_{};
     bool frameCommandBufferRecording_{};
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
