@@ -736,6 +736,19 @@ void RenderBackendGL::executeCommand(const BackendCommandDrawIndexed& command)
     glDrawElements(mode, command.count, indexType, reinterpret_cast<const void*>(command.indexBufferOffset));
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
+{
+    if (command.enabled)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(toBlendFactor(command.srcFactor), toBlendFactor(command.dstFactor));
+    }
+    else
+    {
+        glDisable(GL_BLEND);
+    }
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
