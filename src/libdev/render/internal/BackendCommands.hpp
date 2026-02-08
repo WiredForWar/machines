@@ -46,11 +46,19 @@ struct BackendCommandDrawIndexed
     std::size_t indexBufferOffset{};
 };
 
+struct BackendCommandSetBlendState
+{
+    bool enabled{};
+    BackendBlendFactor srcFactor{BackendBlendFactor::One};
+    BackendBlendFactor dstFactor{BackendBlendFactor::Zero};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
     BackendCommandDraw,
-    BackendCommandDrawIndexed>;
+    BackendCommandDrawIndexed,
+    BackendCommandSetBlendState>;
 
 namespace Command
 {
@@ -74,6 +82,16 @@ inline BackendCommand drawIndexed(
     PrimitiveTopology topology, BackendIndexType indexType, int count, std::size_t indexBufferOffset = 0)
 {
     return BackendCommandDrawIndexed{ topology, indexType, count, indexBufferOffset };
+}
+
+inline BackendCommand setBlendStateEnabled(BackendBlendFactor srcFactor, BackendBlendFactor dstFactor)
+{
+    return BackendCommandSetBlendState{ .enabled = true, .srcFactor = srcFactor, .dstFactor = dstFactor };
+}
+
+inline BackendCommand setBlendStateDisabled()
+{
+    return BackendCommandSetBlendState{ .enabled = false };
 }
 
 } // namespace Command
