@@ -2433,7 +2433,7 @@ void RenDevice::renderIndexed(
         indices,
         Ren::BufferUsage::StreamDraw);
 
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
+    GLenum mode = Ren::OpenGL::toDrawMode(topology);
     // Draw the triangles !
     glDrawElements(
         mode, // mode
@@ -2525,7 +2525,7 @@ void RenDevice::renderIndexedScreenspace(
         indices,
         Ren::BufferUsage::StreamDraw);
 
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
+    GLenum mode = Ren::OpenGL::toDrawMode(topology);
     // Draw the triangles !
     glDrawElements(
         mode, // mode
