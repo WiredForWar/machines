@@ -756,6 +756,18 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
+{
+    if (command.enabled)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
