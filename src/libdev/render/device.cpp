@@ -2005,9 +2005,7 @@ void RenDevice::renderScreenspace(
     glDisable(GL_DEPTH_TEST);
     //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    // Draw call
-    glDrawArrays(mode, 0, nVertices);
+    recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -2282,9 +2280,7 @@ void RenDevice::renderPrimitive(
         (void*)0                      // array buffer offset
     );
      */
-    // Draw the triangles !
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    glDrawArrays(mode, 0, nVertices);
+    recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
     glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
     glDisableVertexAttribArray(glVertex_modelspaceUVID_);

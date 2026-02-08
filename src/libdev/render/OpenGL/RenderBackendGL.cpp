@@ -1,4 +1,5 @@
 #include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/OpenGL/Utils.hpp"
 
 #include "render/internal/surfmgri.hpp"
 #include "render/internal/surfbody.hpp"
@@ -784,6 +785,12 @@ void RenderBackendGL::executeCommand(const BackendCommandClear& command)
 void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
 {
     glViewport(command.x, command.y, command.width, command.height);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
+{
+    const GLenum mode = getDrawMode(command.topology);
+    glDrawArrays(mode, command.first, command.count);
 }
 
 BackendTextureHandle RenderBackendGL::createTexture2D()

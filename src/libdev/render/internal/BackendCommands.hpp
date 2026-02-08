@@ -2,6 +2,7 @@
 
 #include <variant>
 
+#include "render/PrimitiveTopology.hpp"
 #include "render/colour.hpp"
 #include "render/render.hpp"
 
@@ -25,7 +26,14 @@ struct BackendCommandSetViewport
     int height{};
 };
 
-using BackendCommand = std::variant<BackendCommandClear, BackendCommandSetViewport>;
+struct BackendCommandDraw
+{
+    PrimitiveTopology topology{};
+    int first{};
+    int count{};
+};
+
+using BackendCommand = std::variant<BackendCommandClear, BackendCommandSetViewport, BackendCommandDraw>;
 
 namespace Command
 {
@@ -38,6 +46,11 @@ inline BackendCommand clear(RenColour colour, std::uint32_t mask)
 inline BackendCommand setViewport(Size size)
 {
     return BackendCommandSetViewport{0, 0, size.width, size.height};
+}
+
+inline BackendCommand draw(PrimitiveTopology topology, int first, std::size_t count)
+{
+    return BackendCommandDraw{topology, first, static_cast<int>(count)};
 }
 
 } // namespace Command
