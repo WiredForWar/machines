@@ -461,11 +461,6 @@ bool RenDevice::initializeContext()
         spdlog::warn("Failed to apply VSync preference ({}) during context creation", vsyncEnabled_);
     }
 
-    // glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     return true;
 }
 
