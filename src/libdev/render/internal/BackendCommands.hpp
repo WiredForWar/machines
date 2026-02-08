@@ -51,6 +51,12 @@ struct BackendCommandSetBlendState
     BackendBlendFactor dstFactor{BackendBlendFactor::Zero};
 };
 
+struct BackendCommandSetAlphaTest
+{
+    bool enabled{};
+    float reference{};
+};
+
 struct BackendCommandSetDepthMask
 {
     bool writable{};
@@ -67,6 +73,7 @@ using BackendCommand = std::variant<
     BackendCommandDraw,
     BackendCommandDrawIndexed,
     BackendCommandSetBlendState,
+    BackendCommandSetAlphaTest,
     BackendCommandSetDepthMask,
     BackendCommandSetDepthTest>;
 
@@ -97,6 +104,16 @@ inline BackendCommand drawIndexed(
 inline BackendCommand setBlendStateEnabled(BackendBlendFactor srcFactor, BackendBlendFactor dstFactor)
 {
     return BackendCommandSetBlendState{ .enabled = true, .srcFactor = srcFactor, .dstFactor = dstFactor };
+}
+
+inline BackendCommand setAlphaTestEnabled(float reference)
+{
+    return BackendCommandSetAlphaTest{ .enabled = true, .reference = reference };
+}
+
+inline BackendCommand setAlphaTestDisabled()
+{
+    return BackendCommandSetAlphaTest{ .enabled = false };
 }
 
 inline BackendCommand setBlendStateDisabled()
