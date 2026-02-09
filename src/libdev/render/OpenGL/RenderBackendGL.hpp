@@ -37,7 +37,7 @@ public:
 
     void useProgram(ProgramId id) override;
 
-    int uniformLocation(ProgramId id, std::string_view name) const override;
+    UniformLocationId uniformLocation(ProgramId id, std::string_view name) const override;
     AttributeLocationId attribLocation(ProgramId id, std::string_view name) const override;
 
     BufferId createBuffer() override;
@@ -114,6 +114,10 @@ private:
     void executeCommand(const BackendCommandSetDepthMask& command);
     void executeCommand(const BackendCommandSetDepthFunc& command);
     void executeCommand(const BackendCommandSetDepthTest& command);
+    void executeCommand(const BackendCommandSetUniform1i& command);
+    void executeCommand(const BackendCommandSetUniform2f& command);
+    void executeCommand(const BackendCommandSetUniform3f& command);
+    void executeCommand(const BackendCommandSetUniformMatrix4fv& command);
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
 
     void flushPendingDeletes();
