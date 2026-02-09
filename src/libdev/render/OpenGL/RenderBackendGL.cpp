@@ -358,9 +358,9 @@ void RenderBackendGL::useProgram(ProgramId id)
     glUseProgram(programHandle(id));
 }
 
-int RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
+UniformLocationId RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
 {
-    return glGetUniformLocation(programHandle(id), std::string(name).c_str());
+    return UniformLocationId(glGetUniformLocation(programHandle(id), std::string(name).c_str()));
 }
 
 AttributeLocationId RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
@@ -827,6 +827,38 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
     {
         glDisable(GL_DEPTH_TEST);
     }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1i(command.location.value(), command.value);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform2f(command.location.value(), command.x, command.y);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform3f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform3f(command.location.value(), command.x, command.y, command.z);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniformMatrix4fv(command.location.value(), 1, command.transpose ? GL_TRUE : GL_FALSE, command.values.data());
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer& command)
