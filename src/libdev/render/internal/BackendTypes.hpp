@@ -53,6 +53,7 @@ private:
     int value_{-1};
 };
 
+struct UniformTag;
 struct AttributeTag;
 
 } // namespace internal
@@ -60,6 +61,7 @@ struct AttributeTag;
 using BackendTextureHandle = internal::BackendHandle<internal::TextureTag>;
 using BackendCommandBufferHandle = internal::BackendHandle<internal::CommandBufferTag>;
 
+using UniformLocationId = internal::LocationId<internal::UniformTag>;
 using AttributeLocationId = internal::LocationId<internal::AttributeTag>;
 
 enum class BufferTarget

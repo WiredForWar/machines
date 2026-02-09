@@ -34,7 +34,7 @@ public:
 
     virtual void useProgram(ProgramId id) = 0;
 
-    virtual int uniformLocation(ProgramId id, std::string_view name) const = 0;
+    virtual UniformLocationId uniformLocation(ProgramId id, std::string_view name) const = 0;
     virtual AttributeLocationId attribLocation(ProgramId id, std::string_view name) const = 0;
 
     virtual BufferId createBuffer() = 0;

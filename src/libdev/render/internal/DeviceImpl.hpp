@@ -181,17 +181,17 @@ private:
     Ren::AttributeLocationId glVertexUVID_{};
     Ren::AttributeLocationId glVertexPosition_screenspaceID_{};
     Ren::AttributeLocationId glVertexColour_screenspaceID_{};
-    GLuint glScreenspaceID_{};
+    Ren::UniformLocationId glScreenspaceID_{};
 
-    GLuint gl2DUniformID_{};
-    GLuint glTextureSamplerID_{};
-    GLuint glTextureSamplerBillboardID_{};
+    Ren::UniformLocationId gl2DUniformID_{};
+    Ren::UniformLocationId glTextureSamplerID_{};
+    Ren::UniformLocationId glTextureSamplerBillboardID_{};
 
-    GLuint glModelMatrixID_{};
-    GLuint glViewMatrixID_{};
-    GLuint glProjectionMatrixID_{};
-    GLuint glFogColourID_{};
-    GLuint glFogParamsID_{};
+    Ren::UniformLocationId glModelMatrixID_{};
+    Ren::UniformLocationId glViewMatrixID_{};
+    Ren::UniformLocationId glProjectionMatrixID_{};
+    Ren::UniformLocationId glFogColourID_{};
+    Ren::UniformLocationId glFogParamsID_{};
 
     Ren::AttributeLocationId glVertexPosition_modelspaceID_{};
     Ren::AttributeLocationId glVertex_modelspaceUVID_{};
@@ -199,7 +199,7 @@ private:
     Ren::BufferId glVertexDataBufferID_{};
     Ren::BufferId glElementBufferID_{};
 
-    GLuint glViewProjMatrix_BillboardID_{};
+    Ren::UniformLocationId glViewProjMatrix_BillboardID_{};
     Ren::AttributeLocationId glVertexPosition_BillboardID_{};
     Ren::AttributeLocationId glVertex_BillboardUVID_{};
     Ren::AttributeLocationId glVertexColour_BillboardID_{};
