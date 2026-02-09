@@ -119,6 +119,7 @@ private:
     void executeCommand(const BackendCommandSetUniform3f& command);
     void executeCommand(const BackendCommandSetUniformMatrix4fv& command);
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
+    void executeCommand(const BackendCommandSetProgram& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
