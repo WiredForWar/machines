@@ -175,6 +175,10 @@ public:
     static RenDevice* current();
 
     void recordCommand(Ren::BackendCommand command);
+    void recordSetUniform1i(Ren::UniformLocationId location, int value);
+    void recordSetUniform2f(Ren::UniformLocationId location, float x, float y);
+    void recordSetUniform3f(Ren::UniformLocationId location, float x, float y, float z);
+    void recordSetUniformMatrix4fv(Ren::UniformLocationId location, const glm::mat4& matrix);
     void recordEnableVertexAttribPointer(
         Ren::AttributeLocationId index,
         int size,
