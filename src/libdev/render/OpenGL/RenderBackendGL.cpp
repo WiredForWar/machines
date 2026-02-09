@@ -885,6 +885,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer&
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetProgram& command)
+{
+    useProgram(command.programId);
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;

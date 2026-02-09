@@ -2022,7 +2022,7 @@ void RenDevice::renderScreenspace(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_GIU2D_);
+    recordCommand(Ren::Command::setProgram(glProgramID_GIU2D_));
 
     // Bind texture
     backend_->bindTexture2D(texture, 0);
@@ -2108,7 +2108,7 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    backend_->useProgram(glProgramID_GIU2D_);
+    recordCommand(Ren::Command::setProgram(glProgramID_GIU2D_));
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
@@ -2246,7 +2246,7 @@ void RenDevice::renderPrimitive(
     CB_DEPIMPL_AUTO(backend_);
 
     // Use our shader
-    backend_->useProgram(glProgramID_Standard_);
+    recordCommand(Ren::Command::setProgram(glProgramID_Standard_));
 
     if (standardUniformsDirty_)
     {
@@ -2337,7 +2337,7 @@ void RenDevice::renderIndexed(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_Standard_);
+    recordCommand(Ren::Command::setProgram(glProgramID_Standard_));
     // Compute the MVP matrix from keyboard and mouse input
 
     //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
@@ -2439,7 +2439,7 @@ void RenDevice::renderIndexedScreenspace(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_Billboard_);
+    recordCommand(Ren::Command::setProgram(glProgramID_Billboard_));
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
