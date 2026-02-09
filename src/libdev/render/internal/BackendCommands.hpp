@@ -135,6 +135,11 @@ struct BackendCommandSetVertexAttribPointer
     std::size_t offset{};
 };
 
+struct BackendCommandSetProgram
+{
+    ProgramId programId{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -153,7 +158,8 @@ using BackendCommand = std::variant<
     BackendCommandSetUniform2f,
     BackendCommandSetUniform3f,
     BackendCommandSetUniformMatrix4fv,
-    BackendCommandSetVertexAttribPointer>;
+    BackendCommandSetVertexAttribPointer,
+    BackendCommandSetProgram>;
 
 namespace Command
 {
@@ -274,6 +280,11 @@ inline BackendCommand enableVertexAttribPointer(
 inline BackendCommand disableVertexAttribPointer(AttributeLocationId index)
 {
     return BackendCommandSetVertexAttribPointer{ .enabled = false, .index = index };
+}
+
+inline BackendCommand setProgram(ProgramId programId)
+{
+    return BackendCommandSetProgram{ programId };
 }
 
 } // namespace Command
