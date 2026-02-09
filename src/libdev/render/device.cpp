@@ -10,6 +10,7 @@
 
 #include <array>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <iomanip>
 
@@ -71,6 +72,7 @@
 #include <algorithm>
 
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 #define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
     PRE(pImpl_);                                                                                                       \
@@ -1753,6 +1755,40 @@ void RenDevice::recordCommand(Ren::BackendCommand command)
     pImpl_->backend_->recordCommand(handle, std::move(command));
 }
 
+void RenDevice::recordSetUniform1i(Ren::UniformLocationId location, int value)
+{
+    if (!location.isValid())
+        return;
+
+    recordCommand(Ren::Command::setUniform1i(location, value));
+}
+
+void RenDevice::recordSetUniform2f(Ren::UniformLocationId location, float x, float y)
+{
+    if (!location.isValid())
+        return;
+
+    recordCommand(Ren::Command::setUniform2f(location, x, y));
+}
+
+void RenDevice::recordSetUniform3f(Ren::UniformLocationId location, float x, float y, float z)
+{
+    if (!location.isValid())
+        return;
+
+    recordCommand(Ren::Command::setUniform3f(location, x, y, z));
+}
+
+void RenDevice::recordSetUniformMatrix4fv(Ren::UniformLocationId location, const glm::mat4& matrix)
+{
+    if (!location.isValid())
+        return;
+
+    std::array<float, 16> values{};
+    std::memcpy(values.data(), glm::value_ptr(matrix), sizeof(float) * values.size());
+    recordCommand(Ren::Command::setUniformMatrix4fv(location, values, false));
+}
+
 void RenDevice::recordEnableVertexAttribPointer(
     Ren::AttributeLocationId index,
     int size,
@@ -1992,9 +2028,9 @@ void RenDevice::renderScreenspace(
     backend_->bindTexture2D(texture, 0);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(gl2DUniformID_, 0);
+    recordSetUniform1i(gl2DUniformID_, 0);
 
-    glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
+    recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), static_cast<float>(targetH));
 
     backend_->bufferData(
         Ren::BufferTarget::Array,
@@ -2078,7 +2114,7 @@ void RenDevice::renderSurface(
         = vertices[5].color = colour;
     if (targetW)
     {
-        glUniform2f(glScreenspaceID_, (float)targetW, -(float)targetH);
+        recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), -static_cast<float>(targetH));
 
         vertices[2].x = vertex_up_left[0];
         vertices[2].y = vertex_up_left[1];
@@ -2111,7 +2147,7 @@ void RenDevice::renderSurface(
     else
     {
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        glUniform2f(glScreenspaceID_, (float)mode.width(), (float)mode.height());
+        recordSetUniform2f(glScreenspaceID_, static_cast<float>(mode.width()), static_cast<float>(mode.height()));
 
         vertices[0].x = vertex_up_left[0];
         vertices[0].y = vertex_up_left[1];
@@ -2154,7 +2190,7 @@ void RenDevice::renderSurface(
     syncSmoothFilters();
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(gl2DUniformID_, 0);
+    recordSetUniform1i(gl2DUniformID_, 0);
 
     // 1rst attribute buffer : vertices
     backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
@@ -2192,9 +2228,9 @@ void RenDevice::renderSurface(
 
     recordCommand(Ren::Command::setDepthTest(true));
 
-    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexPosition_screenspaceID_));
-    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexUVID_));
-    recordCommand(Ren::Command::disableVertexAttribPointer(glVertexColour_screenspaceID_));
+    recordDisableVertexAttribPointer(glVertexPosition_screenspaceID_);
+    recordDisableVertexAttribPointer(glVertexUVID_);
+    recordDisableVertexAttribPointer(glVertexColour_screenspaceID_);
 }
 
 void RenDevice::renderPrimitive(
@@ -2214,14 +2250,14 @@ void RenDevice::renderPrimitive(
 
     if (standardUniformsDirty_)
     {
-        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
-        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+        recordSetUniformMatrix4fv(glViewMatrixID_, view_);
+        recordSetUniformMatrix4fv(glProjectionMatrixID_, projection_);
+        recordSetUniform3f(glFogColourID_, fogColour_.x, fogColour_.y, fogColour_.z);
+        recordSetUniform3f(glFogParamsID_, fogParams_.x, fogParams_.y, fogParams_.z);
         standardUniformsDirty_ = false;
     }
 
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
+    recordSetUniformMatrix4fv(glModelMatrixID_, model_);
     // std::cout<<glm::to_string(MVP)<<std::endl;
     // glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
     // glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
@@ -2234,7 +2270,7 @@ void RenDevice::renderPrimitive(
     backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, TextureUnit);
+    recordSetUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     backend_->bufferData(
@@ -2308,14 +2344,14 @@ void RenDevice::renderIndexed(
 
     if (standardUniformsDirty_)
     {
-        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
-        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
+        recordSetUniformMatrix4fv(glViewMatrixID_, view_);
+        recordSetUniformMatrix4fv(glProjectionMatrixID_, projection_);
+        recordSetUniform3f(glFogColourID_, fogColour_.x, fogColour_.y, fogColour_.z);
+        recordSetUniform3f(glFogParamsID_, fogParams_.x, fogParams_.y, fogParams_.z);
         standardUniformsDirty_ = false;
     }
 
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
+    recordSetUniformMatrix4fv(glModelMatrixID_, model_);
     /*glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
     glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
@@ -2327,7 +2363,7 @@ void RenDevice::renderIndexed(
     backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, TextureUnit);
+    recordSetUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     backend_->bufferData(
@@ -2410,12 +2446,12 @@ void RenDevice::renderIndexedScreenspace(
 
     if (billboardUniformsDirty_)
     {
-        glUniformMatrix4fv(glViewProjMatrix_BillboardID_, 1, GL_FALSE, &(*pImpl_->projViewMatrix_)[0][0]);
+        recordSetUniformMatrix4fv(glViewProjMatrix_BillboardID_, *pImpl_->projViewMatrix_);
         billboardUniformsDirty_ = false;
     }
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerBillboardID_, TextureUnit);
+    recordSetUniform1i(glTextureSamplerBillboardID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     backend_->bufferData(
