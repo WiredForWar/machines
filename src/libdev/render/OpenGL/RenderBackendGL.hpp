@@ -121,6 +121,8 @@ private:
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
     void executeCommand(const BackendCommandSetProgram& command);
     void executeCommand(const BackendCommandBindTexture2D& command);
+    void executeCommand(const BackendCommandBufferData& command);
+    void executeCommand(const BackendCommandBindBuffer& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
