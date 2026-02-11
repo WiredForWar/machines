@@ -171,6 +171,12 @@ struct BackendCommandEndRenderToTexture
 {
 };
 
+struct BackendCommandSetCurrentTextureFilter
+{
+    TextureFilter minFilter{};
+    TextureFilter magFilter{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -195,7 +201,8 @@ using BackendCommand = std::variant<
     BackendCommandBufferData,
     BackendCommandBindBuffer,
     BackendCommandBeginRenderToTexture,
-    BackendCommandEndRenderToTexture>;
+    BackendCommandEndRenderToTexture,
+    BackendCommandSetCurrentTextureFilter>;
 
 namespace Command
 {
@@ -347,6 +354,11 @@ inline BackendCommand beginRenderToTexture(FramebufferId framebufferId, BackendT
 inline BackendCommand endRenderToTexture()
 {
     return BackendCommandEndRenderToTexture{};
+}
+
+inline BackendCommand setCurrentTextureFilter(TextureFilter minFilter, TextureFilter magFilter)
+{
+    return BackendCommandSetCurrentTextureFilter{ minFilter, magFilter };
 }
 
 } // namespace Command

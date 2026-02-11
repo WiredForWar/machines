@@ -855,19 +855,18 @@ void RenDevice::commonEndFrame()
 
 void RenDevice::syncSmoothFilters()
 {
+    using TextureFilter = Ren::TextureFilter;
     if (pImpl_->smoothScaleEnabled_)
     {
         if (!pImpl_->smoothFilterApplied_)
         {
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pImpl_->smoothFilterMin_);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pImpl_->smoothFilterMag_);
+            recordCommand(Ren::Command::setCurrentTextureFilter(TextureFilter::Linear, TextureFilter::Linear));
             pImpl_->smoothFilterApplied_ = true;
         }
     }
     else if (pImpl_->smoothFilterApplied_)
     {
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        recordCommand(Ren::Command::setCurrentTextureFilter(TextureFilter::Nearest, TextureFilter::Nearest));
         pImpl_->smoothFilterApplied_ = false;
     }
 }
