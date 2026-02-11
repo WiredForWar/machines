@@ -137,6 +137,10 @@ protected:
     FogOfWarLevel getFogOfWarLevel(const Gui::Coord& checkPos);
     void update3dFogOfWarLightLevel();
 
+    void stampVisibilityEllipse(int centerCellX, int centerCellY, int radiusCells);
+    void rebuildVisibilityGrid();
+    bool isVisibleInGrid(int cellX, int cellY) const;
+
     void handleIntelligentCursor(const GuiMouseEvent& rel, bool buttonClicked);
 
 private:
@@ -210,6 +214,7 @@ private:
     MachGuiTerrainOnOffButton* pTerrainOnOffButton_;
     MachGuiMapModeButton* pMapModeButton_;
     std::vector<BYTE> pBeenHere_; // Stores the largest scanner type that has visited an area of the map.
+    std::vector<uint8_t> visibilityGrid_; // CPU-side fog of war visibility (same resolution as pBeenHere_)
     bool noFastChangeInLightLevel_;
 };
 

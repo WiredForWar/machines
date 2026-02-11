@@ -378,6 +378,7 @@ void MachContinentMap::loadGame(const std::string& planet)
 void MachContinentMap::unloadGame()
 {
     pBeenHere_.clear();
+    visibilityGrid_.clear();
 }
 
 void MachContinentMap::doDisplay()
@@ -700,6 +701,15 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
                 {},
                 Ren::Point(scannerDrawPos.x(), scannerDrawPos.y()),
                 Ren::BlitMode::DstMulOneMinusSrcAlpha);
+
+            // Mirror the scanner ellipse into the CPU-side visibility grid
+            const int scannerIdx = actorPositions_[loop].scanner_ - 1;
+            const int radiusCells = static_cast<int>(
+                SCANNER_ACTUALSIZE[scannerIdx] / (2.0 * beenHereXRatio_) + 0.5);
+            stampVisibilityEllipse(
+                static_cast<int>(beenHereCheckX),
+                static_cast<int>(beenHereCheckY),
+                std::max(radiusCells, 1));
         }
     }
 }
@@ -859,6 +869,7 @@ void MachContinentMap::updateMapToWorldMetrics()
     beenHereXRatio_ = planetX / BEENHERE_ARRAYWIDTH;
     beenHereYRatio_ = planetY / BEENHERE_ARRAYHEIGHT;
     pBeenHere_.resize(BEENHERE_ARRAYWIDTH * BEENHERE_ARRAYHEIGHT, 0);
+    visibilityGrid_.assign(BEENHERE_ARRAYWIDTH * BEENHERE_ARRAYHEIGHT, 0);
 }
 
 MATHEX_SCALAR MachContinentMap::mapToWorldRatio() const
@@ -1817,65 +1828,105 @@ void MachContinentMap::update3dFogOfWarLightLevel()
     fogOfWarFrameTimer_ = fogOfWarNewFrameTimer;
 }
 
+void MachContinentMap::stampVisibilityEllipse(int centerCellX, int centerCellY, int radiusCells)
+{
+    const int r2 = radiusCells * radiusCells;
+
+    const int minY = std::max(0, centerCellY - radiusCells);
+    const int maxY = std::min(static_cast<int>(BEENHERE_ARRAYHEIGHT) - 1, centerCellY + radiusCells);
+    const int minX = std::max(0, centerCellX - radiusCells);
+    const int maxX = std::min(static_cast<int>(BEENHERE_ARRAYWIDTH) - 1, centerCellX + radiusCells);
+
+    for (int cy = minY; cy <= maxY; ++cy)
+    {
+        const int dy = cy - centerCellY;
+        for (int cx = minX; cx <= maxX; ++cx)
+        {
+            const int dx = cx - centerCellX;
+            if (dx * dx + dy * dy <= r2)
+                visibilityGrid_[cy * BEENHERE_ARRAYWIDTH + cx] = 1;
+        }
+    }
+}
+
+void MachContinentMap::rebuildVisibilityGrid()
+{
+    visibilityGrid_.assign(BEENHERE_ARRAYWIDTH * BEENHERE_ARRAYHEIGHT, 0);
+
+    for (size_t cy = 0; cy < BEENHERE_ARRAYHEIGHT; ++cy)
+    {
+        for (size_t cx = 0; cx < BEENHERE_ARRAYWIDTH; ++cx)
+        {
+            const int scannerType = pBeenHere_[cy * BEENHERE_ARRAYWIDTH + cx];
+            if (scannerType > 0)
+            {
+                const int scannerIdx = scannerType - 1;
+                const int radiusCells = static_cast<int>(
+                    SCANNER_ACTUALSIZE[scannerIdx] / (2.0 * beenHereXRatio_) + 0.5);
+                stampVisibilityEllipse(
+                    static_cast<int>(cx),
+                    static_cast<int>(cy),
+                    std::max(radiusCells, 1));
+            }
+        }
+    }
+}
+
+bool MachContinentMap::isVisibleInGrid(int cellX, int cellY) const
+{
+    if (cellX < 0 || cellX >= static_cast<int>(BEENHERE_ARRAYWIDTH)
+        || cellY < 0 || cellY >= static_cast<int>(BEENHERE_ARRAYHEIGHT))
+        return false;
+
+    return visibilityGrid_[cellY * BEENHERE_ARRAYWIDTH + cellX] != 0;
+}
+
 MachContinentMap::FogOfWarLevel MachContinentMap::getFogOfWarLevel(const Gui::Coord& checkPos)
 {
-    RenColour fogColour;
-    mapVisibleArea_.getPixel(checkPos.x(), checkPos.y(), &fogColour);
+    // Convert map-pixel coordinates to visibility grid cell coordinates.
+    // Map pixel -> world: worldX = (mapPixelX - xOffset_) * mapToWorldRatio_
+    // World -> grid cell: cellX = worldX / beenHereXRatio_
+    const int cellX = static_cast<int>((checkPos.x() - xOffset_) * mapToWorldRatio_ / beenHereXRatio_);
+    const int cellY = static_cast<int>((checkPos.y() - yOffset_) * mapToWorldRatio_ / beenHereYRatio_);
 
-    // Check for no fow
-    //  if ( fogColour == Gui::MAGENTA() )
-    if (fogColour.a() == 0)
-    {
+    // Check the cell and its immediate neighbors (mirrors the original ±1 pixel check)
+    if (isVisibleInGrid(cellX, cellY))
         return NO_FOW;
-    }
 
-    // Check for no fow at second level of pixels
     for (int x = -1; x <= 1; ++x)
     {
         for (int y = -1; y <= 1; ++y)
         {
-            if (!(y == 0 && x == 0))
+            if (x != 0 || y != 0)
             {
-                mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
-                //              if ( fogColour == Gui::MAGENTA() )
-                if (fogColour.a() == 0)
-                {
+                if (isVisibleInGrid(cellX + x, cellY + y))
                     return NO_FOW;
-                }
             }
         }
     }
 
-    // Check for tend to 50% fow
+    // Check ring at distance 2 (mirrors the original ±2 pixel ring check)
     for (int x = -2; x <= 2; ++x)
     {
         for (int y = -2; y <= 2; ++y)
         {
-            if (y == -2 || x == -2 || y == 2 || x == 2)
+            if (x == -2 || x == 2 || y == -2 || y == 2)
             {
-                mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
-                //              if ( fogColour == Gui::MAGENTA() )
-                if (fogColour.a() == 0)
-                {
+                if (isVisibleInGrid(cellX + x, cellY + y))
                     return TEND_TO_FIFTY_PERCENT_FOW;
-                }
             }
         }
     }
 
-    // Check for tend to 100% fow
+    // Check ring at distance 3 (mirrors the original ±3 pixel ring check)
     for (int x = -3; x <= 3; ++x)
     {
         for (int y = -3; y <= 3; ++y)
         {
-            if (y == -3 || x == -3 || y == 3 || x == 3)
+            if (x == -3 || x == 3 || y == -3 || y == 3)
             {
-                mapVisibleArea_.getPixel(checkPos.x() + x, checkPos.y() + y, &fogColour);
-                //              if ( fogColour == Gui::MAGENTA() )
-                if (fogColour.a() == 0)
-                {
+                if (isVisibleInGrid(cellX + x, cellY + y))
                     return TEND_TO_FULL_FOW;
-                }
             }
         }
     }
