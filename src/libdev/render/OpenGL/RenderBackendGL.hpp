@@ -120,6 +120,7 @@ private:
     void executeCommand(const BackendCommandSetUniformMatrix4fv& command);
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
     void executeCommand(const BackendCommandSetProgram& command);
+    void executeCommand(const BackendCommandBindTexture2D& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;

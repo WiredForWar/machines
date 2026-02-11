@@ -312,6 +312,14 @@ RenISurfBody* RenISurfaceManagerImpl::getSurface(Ren::TexId id)
     return entries_[id];
 }
 
+const RenISurfBody* RenISurfaceManagerImpl::getSurfaceBody(Ren::TexId id) const
+{
+    if (id < entries_.size())
+        return entries_[id];
+
+    return nullptr;
+}
+
 Ren::TexId RenISurfaceManagerImpl::getBodyId(const RenISurfBody* body)
 {
     if (body)
