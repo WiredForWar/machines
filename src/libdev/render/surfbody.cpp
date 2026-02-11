@@ -27,6 +27,7 @@
 #include <SDL2/SDL_image.h>
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
+#include "render/internal/RenScopedImmediateCommands.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -195,6 +196,7 @@ void RenISurfBody::unclippedBlit(
     // If a cursor is displayed, all blits to the display surfaces must be
     // bracketed by start-end frame calls.
     RenDevice* dev = RenDevice::current();
+    RenScopedImmediateCommands guard(dev);
     PRE_DATA(const bool displayDest = displayType_ == RenI::FRONT || displayType_ == RenI::BACK);
     PRE(dev);
     PRE(dev->display());
@@ -235,6 +237,7 @@ void RenISurfBody::unclippedStretchBlit(
     // If a cursor is displayed, all blits to the display surfaces must be
     // bracketed by start-end frame calls.
     RenDevice* dev = RenDevice::current();
+    RenScopedImmediateCommands guard(dev);
     PRE_DATA(const bool displayDest = displayType_ == RenI::FRONT || displayType_ == RenI::BACK);
     PRE(dev);
     PRE(dev->display());
@@ -261,6 +264,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 
     PRE(device_);
     PRE(device_->display());
+    RenScopedImmediateCommands guard(device_);
     Ren::Rect srcArea;
     srcArea.originX = srcArea.originY = 0;
     srcArea.width = srcArea.height = 1;
@@ -285,6 +289,8 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 void RenISurfBody::drawText(
     int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options)
 {
+    RenScopedImmediateCommands guard(RenDevice::current());
+
     struct UnderlineSegment
     {
         int x1{};

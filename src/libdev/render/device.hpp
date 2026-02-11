@@ -160,6 +160,7 @@ public:
     void recordCommand(Ren::BackendCommand command);
     void beginImmediateCommands();
     void endImmediateCommands();
+    bool immediateCommandsActive() const;
 
     void backgroundColour(const RenColour&);
     const RenColour& backgroundColour() const;
