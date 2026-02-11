@@ -123,6 +123,8 @@ private:
     void executeCommand(const BackendCommandBindTexture2D& command);
     void executeCommand(const BackendCommandBufferData& command);
     void executeCommand(const BackendCommandBindBuffer& command);
+    void executeCommand(const BackendCommandBeginRenderToTexture& command);
+    void executeCommand(const BackendCommandEndRenderToTexture& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
