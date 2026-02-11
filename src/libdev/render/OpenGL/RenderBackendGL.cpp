@@ -904,6 +904,16 @@ void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
     glBindTexture(GL_TEXTURE_2D, textureHandle);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandBufferData& command)
+{
+    bufferData(command.target, command.bufferId, command.data.size(), command.data.data(), command.usage);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindBuffer& command)
+{
+    bindBuffer(command.target, command.bufferId);
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
