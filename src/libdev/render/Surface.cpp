@@ -17,6 +17,7 @@
 #include "render/internal/ColourPack.hpp"
 #include "render/internal/VertexData.hpp"
 #include "render/Device.hpp"
+#include "render/internal/RenScopedImmediateCommands.hpp"
 
 #include <SDL3_image/SDL_image.h>
 
@@ -406,6 +407,7 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
 void RenSurface::getPixel(int x, int y, RenColour* colour) const
 {
     PRE(colour);
+    RenScopedImmediateCommands guard(RenDevice::current());
 
     GLfloat pixel[4] = { 0, 0, 0, 0 };
     if (internals() && internals()->isOffscreen())
@@ -430,6 +432,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
     PRE(!readOnly());
     PRE(pts.size() > 1);
     PRE(thickness > 0);
+    RenScopedImmediateCommands guard(RenDevice::current());
 
     static size_t nVertices = 30;
     static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
@@ -699,6 +702,7 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
 void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const RenColour& brushColour)
 {
     PRE(!readOnly());
+    RenScopedImmediateCommands guard(RenDevice::current());
 
     int x, y, RX, RY;
     uint packedColour = packColour(brushColour.r(), brushColour.g(), brushColour.b(), brushColour.a());
