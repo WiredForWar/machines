@@ -1988,7 +1988,6 @@ void RenDevice::renderScreenspace(
 
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
     //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     GLenum mode = Ren::OpenGL::getDrawMode(topology);
@@ -1997,7 +1996,6 @@ void RenDevice::renderScreenspace(
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
     glDisableVertexAttribArray(glVertexUVID_);
@@ -2149,7 +2147,6 @@ void RenDevice::renderSurface(
 
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
 
     switch (mode)
     {
@@ -2174,7 +2171,6 @@ void RenDevice::renderSurface(
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
 
     glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
     glDisableVertexAttribArray(glVertexUVID_);
