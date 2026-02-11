@@ -897,6 +897,13 @@ void RenderBackendGL::executeCommand(const BackendCommandSetProgram& command)
     useProgram(command.programId);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
+{
+    const GLuint textureHandle = command.textureHandle.isValid() ? command.textureHandle.value() : fallbackTexture2D_;
+    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + command.unit));
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
