@@ -161,6 +161,16 @@ struct BackendCommandBindBuffer
     BufferId bufferId{};
 };
 
+struct BackendCommandBeginRenderToTexture
+{
+    FramebufferId framebufferId{};
+    BackendTextureHandle targetTexture{};
+};
+
+struct BackendCommandEndRenderToTexture
+{
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -183,7 +193,9 @@ using BackendCommand = std::variant<
     BackendCommandSetProgram,
     BackendCommandBindTexture2D,
     BackendCommandBufferData,
-    BackendCommandBindBuffer>;
+    BackendCommandBindBuffer,
+    BackendCommandBeginRenderToTexture,
+    BackendCommandEndRenderToTexture>;
 
 namespace Command
 {
@@ -325,6 +337,16 @@ inline BackendCommand bufferData(BufferTarget target, BufferId bufferId, const v
 inline BackendCommand bindBuffer(BufferTarget target, BufferId bufferId)
 {
     return BackendCommandBindBuffer{ target, bufferId };
+}
+
+inline BackendCommand beginRenderToTexture(FramebufferId framebufferId, BackendTextureHandle targetTexture)
+{
+    return BackendCommandBeginRenderToTexture{ framebufferId, targetTexture };
+}
+
+inline BackendCommand endRenderToTexture()
+{
+    return BackendCommandEndRenderToTexture{};
 }
 
 } // namespace Command

@@ -2041,25 +2041,18 @@ void RenDevice::setMaterialHandles(const RenMaterial& mat)
 void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH)
 {
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        if (backend_->beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
-        {
-            Ren::Size viewportSize(viewPortW, viewPortH);
-            recordCommand(Ren::Command::setViewport(viewportSize));
-        }
-        else
-        {
-            std::cerr << "Error when binding FBO" << std::endl;
-        }
+        recordCommand(Ren::Command::beginRenderToTexture(glOffscreenFrameBuffID_, resolveTextureHandle(targetTexture)));
+        Ren::Size viewportSize(viewPortW, viewPortH);
+        recordCommand(Ren::Command::setViewport(viewportSize));
     }
     // Bind FBO to screen
     else
     {
-        backend_->endRenderToTexture();
+        recordCommand(Ren::Command::endRenderToTexture());
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
         recordCommand(Ren::Command::setViewport(mode.size()));
     }
