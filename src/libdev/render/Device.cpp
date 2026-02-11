@@ -2086,15 +2086,15 @@ void RenDevice::renderScreenspace(
 
     recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), static_cast<float>(targetH));
 
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
-        nVertices * sizeof(RenIVertex),
         &vertices[0],
-        Ren::BufferUsage::StreamDraw);
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
 
     // 1rst attribute buffer : vertices
-    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
     recordEnableVertexAttribPointer(
         glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
@@ -2232,12 +2232,12 @@ void RenDevice::renderSurface(
         vertices[5].tv = uv_down_left[1];
     }
 
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
         gl2DVertexBufferID_,
-        6 * sizeof(RenIVertex),
         &vertices[0],
-        Ren::BufferUsage::StreamDraw);
+        6 * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
 
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit));
@@ -2247,7 +2247,7 @@ void RenDevice::renderSurface(
     recordSetUniform1i(gl2DUniformID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
     recordEnableVertexAttribPointer(
         glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
@@ -2327,13 +2327,13 @@ void RenDevice::renderPrimitive(
     recordSetUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
-        nVertices * sizeof(RenIVertex),
         vertices,
-        Ren::BufferUsage::StreamDraw);
-    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_);
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     recordEnableVertexAttribPointer(
         glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
@@ -2420,13 +2420,13 @@ void RenDevice::renderIndexed(
     recordSetUniform1i(glTextureSamplerID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferID_,
-        nVertices * sizeof(RenIVertex),
         vertices,
-        Ren::BufferUsage::StreamDraw);
-    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_);
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     recordEnableVertexAttribPointer(
         glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
@@ -2461,12 +2461,12 @@ void RenDevice::renderIndexed(
     );*/
 
     // Index buffer
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::ElementArray,
         glElementBufferID_,
-        nIndices * sizeof(unsigned short),
         indices,
-        Ren::BufferUsage::StreamDraw);
+        nIndices * sizeof(unsigned short),
+        Ren::BufferUsage::StreamDraw));
 
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
@@ -2508,13 +2508,13 @@ void RenDevice::renderIndexedScreenspace(
     recordSetUniform1i(glTextureSamplerBillboardID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
         glVertexDataBufferBillboardID_,
-        nVertices * sizeof(RenIVertex),
         vertices,
-        Ren::BufferUsage::StreamDraw);
-    backend_->bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_);
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_));
     recordEnableVertexAttribPointer(
         glVertexPosition_BillboardID_, 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
@@ -2537,12 +2537,12 @@ void RenDevice::renderIndexedScreenspace(
         3 * sizeof(float) + sizeof(uint32_t));
 
     // Index buffer
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::ElementArray,
         glElementBufferBillboardID_,
-        nIndices * sizeof(unsigned short),
         indices,
-        Ren::BufferUsage::StreamDraw);
+        nIndices * sizeof(unsigned short),
+        Ren::BufferUsage::StreamDraw));
 
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
