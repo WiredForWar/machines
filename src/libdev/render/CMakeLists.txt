@@ -11,6 +11,7 @@ set(RENDER_SOURCES
     Painter.cpp
     Painter.hpp
     PrimitiveTopology.hpp
+    RenScopedImmediateCommands.cpp
     TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp
@@ -59,6 +60,7 @@ set(RENDER_SOURCES
     internal/BackendTypes.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
+    internal/RenScopedImmediateCommands.hpp
     internal/alphagrp.hpp
     internal/capablei.hpp
     internal/capablei.ipp
