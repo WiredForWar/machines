@@ -1750,6 +1750,12 @@ void RenDevice::endImmediateCommands()
     pImpl_->endImmediateCommandBuffer();
 }
 
+bool RenDevice::immediateCommandsActive() const
+{
+    PRE(pImpl_);
+    return pImpl_->immediateCommandBufferActive();
+}
+
 bool RenDevice::rendering() const
 {
     return pImpl_->rendering_;
