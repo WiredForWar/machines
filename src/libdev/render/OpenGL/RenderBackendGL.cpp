@@ -907,6 +907,31 @@ void RenderBackendGL::executeCommand(const BackendCommandBindBuffer& command)
     bindBuffer(command.target, command.bufferId);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& command)
+{
+    if (command.framebufferId == 0 || !command.targetTexture.isValid())
+        return;
+
+    pushFramebuffer();
+    bindFramebuffer(command.framebufferId);
+
+    const GLuint textureHandle = command.targetTexture.value();
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
+
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+        popFramebuffer();
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
+{
+    endRenderToTexture();
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
