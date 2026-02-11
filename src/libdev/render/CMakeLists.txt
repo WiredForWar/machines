@@ -13,6 +13,7 @@ set(RENDER_SOURCES
     Painter.cpp
     Painter.hpp
     PrimitiveTopology.hpp
+    RenScopedImmediateCommands.cpp
     TextOptions.hpp
     AlphaGroup.cpp
     AnimCursor2d.cpp
@@ -86,6 +87,7 @@ set(RENDER_SOURCES
     internal/InternalLight.hpp
     internal/InternalLight.ipp
     internal/InternalPoints.hpp
+    internal/RenScopedImmediateCommands.hpp
     internal/internal.hpp
     internal/InternalMap.hpp
     internal/LightBuffer.hpp
