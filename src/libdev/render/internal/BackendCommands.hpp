@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <variant>
+#include <vector>
 
 namespace Ren
 {
@@ -144,6 +145,20 @@ struct BackendCommandBindTexture2D
     std::uint32_t unit{};
 };
 
+struct BackendCommandBufferData
+{
+    BufferTarget target{};
+    BufferId bufferId{};
+    std::vector<std::byte> data{};
+    BufferUsage usage{};
+};
+
+struct BackendCommandBindBuffer
+{
+    BufferTarget target{};
+    BufferId bufferId{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -164,7 +179,9 @@ using BackendCommand = std::variant<
     BackendCommandSetUniformMatrix4fv,
     BackendCommandSetVertexAttribPointer,
     BackendCommandSetProgram,
-    BackendCommandBindTexture2D>;
+    BackendCommandBindTexture2D,
+    BackendCommandBufferData,
+    BackendCommandBindBuffer>;
 
 namespace Command
 {
@@ -295,6 +312,17 @@ inline BackendCommand setProgram(ProgramId programId)
 inline BackendCommand bindTexture2D(BackendTextureHandle textureHandle, std::uint32_t unit)
 {
     return BackendCommandBindTexture2D{ textureHandle, unit };
+}
+
+inline BackendCommand bufferData(BufferTarget target, BufferId bufferId, const void* data, std::size_t sizeBytes, BufferUsage usage)
+{
+    auto bytes = static_cast<const std::byte*>(data);
+    return BackendCommandBufferData{ target, bufferId, std::vector<std::byte>(bytes, bytes + sizeBytes), usage };
+}
+
+inline BackendCommand bindBuffer(BufferTarget target, BufferId bufferId)
+{
+    return BackendCommandBindBuffer{ target, bufferId };
 }
 
 } // namespace Command
