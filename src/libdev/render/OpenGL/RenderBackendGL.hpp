@@ -125,6 +125,7 @@ private:
     void executeCommand(const BackendCommandBindBuffer& command);
     void executeCommand(const BackendCommandBeginRenderToTexture& command);
     void executeCommand(const BackendCommandEndRenderToTexture& command);
+    void executeCommand(const BackendCommandSetCurrentTextureFilter& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
