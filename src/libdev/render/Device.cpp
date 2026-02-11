@@ -74,6 +74,18 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
+static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
+{
+    if (id == Ren::NullTexId)
+        return {};
+
+    const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurfaceBody(id);
+    if (surfBody && !surfBody->isEmpty())
+        return surfBody->nativeTextureHandle();
+
+    return {};
+}
+
 #define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
     PRE(pImpl_);                                                                                                       \
     CB_DEPIMPL_AUTO(glProgramID_GIU2D_);                                                                               \
@@ -2066,11 +2078,11 @@ void RenDevice::renderScreenspace(
 
     recordCommand(Ren::Command::setProgram(glProgramID_GIU2D_));
 
-    // Bind texture
-    backend_->bindTexture2D(texture, 0);
+    static const int TextureUnit = 0;
+    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(texture), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(gl2DUniformID_, 0);
+    recordSetUniform1i(gl2DUniformID_, TextureUnit);
 
     recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), static_cast<float>(targetH));
 
@@ -2227,12 +2239,12 @@ void RenDevice::renderSurface(
         &vertices[0],
         Ren::BufferUsage::StreamDraw);
 
-    // Bind texture
-    backend_->bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
+    static const int TextureUnit = 0;
+    recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit));
     syncSmoothFilters();
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(gl2DUniformID_, 0);
+    recordSetUniform1i(gl2DUniformID_, TextureUnit);
 
     // 1rst attribute buffer : vertices
     backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
@@ -2309,7 +2321,7 @@ void RenDevice::renderPrimitive(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
+    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     recordSetUniform1i(glTextureSamplerID_, TextureUnit);
@@ -2402,7 +2414,7 @@ void RenDevice::renderIndexed(
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
+    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     recordSetUniform1i(glTextureSamplerID_, TextureUnit);
@@ -2484,7 +2496,7 @@ void RenDevice::renderIndexedScreenspace(
     recordCommand(Ren::Command::setProgram(glProgramID_Billboard_));
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
+    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     if (billboardUniformsDirty_)
     {

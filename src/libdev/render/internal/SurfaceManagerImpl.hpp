@@ -39,6 +39,8 @@ public:
 
     std::ostream& write(std::ostream& o);
 
+    const RenISurfBody* getSurfaceBody(Ren::TexId id) const;
+
 private:
     using PathNames = ctl_vector<SysPathName>;
 

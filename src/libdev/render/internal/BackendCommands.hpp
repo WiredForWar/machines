@@ -140,6 +140,12 @@ struct BackendCommandSetProgram
     ProgramId programId{};
 };
 
+struct BackendCommandBindTexture2D
+{
+    BackendTextureHandle textureHandle{};
+    std::uint32_t unit{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -159,7 +165,8 @@ using BackendCommand = std::variant<
     BackendCommandSetUniform3f,
     BackendCommandSetUniformMatrix4fv,
     BackendCommandSetVertexAttribPointer,
-    BackendCommandSetProgram>;
+    BackendCommandSetProgram,
+    BackendCommandBindTexture2D>;
 
 namespace Command
 {
@@ -285,6 +292,11 @@ inline BackendCommand disableVertexAttribPointer(AttributeLocationId index)
 inline BackendCommand setProgram(ProgramId programId)
 {
     return BackendCommandSetProgram{ programId };
+}
+
+inline BackendCommand bindTexture2D(BackendTextureHandle textureHandle, std::uint32_t unit)
+{
+    return BackendCommandBindTexture2D{ textureHandle, unit };
 }
 
 } // namespace Command
