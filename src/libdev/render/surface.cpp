@@ -17,7 +17,6 @@
 #include "render/internal/surfbody.hpp"
 #include "render/internal/pixelfmt.hpp"
 #include "render/internal/surfmgri.hpp"
-#include "render/internal/linediag.hpp"
 #include "render/internal/colpack.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/device.hpp"
@@ -384,218 +383,34 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
     PRE(!readOnly());
     PRE(thickness > 0);
 
-    const int x2 = area.originX + area.width;
-    const int y2 = area.originY + area.height;
-    // Note: DrawPrimitive appears unable to draw lines wider than 1 pixel.
-    //  if (device && thickness == 1)
+    Ren::Rect orderedArea = area;
+
+    if (orderedArea.width < 0)
     {
-        // Due to the bad drawing capabilities of some cards we must use out own primitives.
-        static RenIVertex vertices[8];
-        static bool initialised = false;
-
-        if (! initialised)
-        {
-            initialised = true;
-
-            // This may look overly verbose but speed is key in here.
-
-            vertices[0].z = 0.0;
-            vertices[0].specular = 0;
-            vertices[0].w = 0.1;
-            vertices[0].tu = vertices[0].tv = 0.1;
-
-            vertices[1].z = 0.0;
-            vertices[1].specular = 0;
-            vertices[1].w = 0.1;
-            vertices[1].tu = vertices[1].tv = 0.1;
-
-            vertices[2].z = 0.0;
-            vertices[2].specular = 0;
-            vertices[2].w = 0.1;
-            vertices[2].tu = vertices[2].tv = 0.1;
-
-            vertices[3].z = 0.0;
-            vertices[3].specular = 0;
-            vertices[3].w = 0.1;
-            vertices[3].tu = vertices[3].tv = 0.1;
-
-            vertices[4].z = 0.0;
-            vertices[4].specular = 0;
-            vertices[4].w = 0.1;
-            vertices[4].tu = vertices[4].tv = 0.1;
-
-            vertices[5].z = 0.0;
-            vertices[5].specular = 0;
-            vertices[5].w = 0.1;
-            vertices[5].tu = vertices[5].tv = 0.1;
-
-            vertices[6].z = 0.0;
-            vertices[6].specular = 0;
-            vertices[6].w = 0.1;
-            vertices[6].tu = vertices[6].tv = 0.1;
-
-            vertices[7].z = 0.0;
-            vertices[7].specular = 0;
-            vertices[7].w = 0.1;
-            vertices[7].tu = vertices[7].tv = 0.1;
-        }
-
-        Ren::Rect orderedArea = area;
-
-        // The two vertices of a rectangle must be in an order for this code to be fast enough.
-        if (orderedArea.width < 0)
-        {
-            orderedArea.originX += orderedArea.width;
-            orderedArea.width = -orderedArea.width;
-        }
-
-        if (orderedArea.height < 0)
-        {
-            orderedArea.originY += orderedArea.height;
-            orderedArea.height = -orderedArea.height;
-        }
-
-        uint packedColour = packColour(col.r(), col.g(), col.b(), col.a());
-
-        switch (RenILinesDiagnostic::instance().horizontalResult())
-        {
-            case RenILinesDiagnostic::UNKNOWN:
-                // ASSERT_FAIL("Unknown line classification.");
-                //  Fall through in release and production versions.  This will
-                //  produce lines although not necessarilly 100% correct lines.
-            case RenILinesDiagnostic::NORMAL:
-            case RenILinesDiagnostic::SORTED:
-            case RenILinesDiagnostic::LARGE:
-                // Draw bottom horizontal line.
-                vertices[2].x = orderedArea.originX;
-                vertices[2].y = orderedArea.originY + orderedArea.height;
-                vertices[2].color = packedColour;
-                vertices[3].x = orderedArea.originX + orderedArea.width;
-                vertices[3].y = orderedArea.originY + orderedArea.height;
-                vertices[3].color = packedColour;
-
-                // Draw top horizontal line.
-                vertices[6].x = orderedArea.originX;
-                vertices[6].y = orderedArea.originY;
-                vertices[6].color = packedColour;
-                vertices[7].x = orderedArea.originX + orderedArea.width;
-                vertices[7].y = orderedArea.originY;
-                vertices[7].color = packedColour;
-                break;
-
-            case RenILinesDiagnostic::OFFSET_SORTED:
-                // Draw bottom horizontal line.
-                vertices[2].x = orderedArea.originX;
-                vertices[2].y = orderedArea.originY + orderedArea.height + 1;
-                vertices[2].color = packedColour;
-                vertices[3].x = orderedArea.originX + orderedArea.width;
-                vertices[3].y = orderedArea.originY + orderedArea.height + 1;
-                vertices[3].color = packedColour;
-
-                // Draw top horizontal line.
-                vertices[6].x = orderedArea.originX;
-                vertices[6].y = orderedArea.originY + 1;
-                vertices[6].color = packedColour;
-                vertices[7].x = orderedArea.originX + orderedArea.width;
-                vertices[7].y = orderedArea.originY + 1;
-                vertices[7].color = packedColour;
-                break;
-
-            default:
-                ASSERT_FAIL("Invalid switch parameter.");
-                break;
-        }
-
-        switch (RenILinesDiagnostic::instance().verticalResult())
-        {
-            case RenILinesDiagnostic::UNKNOWN:
-                // ASSERT_FAIL("Unknown line classification.");
-                //  Fall through in release and production versions.  This will
-                //  produce lines although not necessarilly 100% correct lines.
-            case RenILinesDiagnostic::NORMAL:
-            case RenILinesDiagnostic::SORTED:
-                // Draw left vertical line.
-                vertices[0].x = orderedArea.originX;
-                vertices[0].y = orderedArea.originY;
-                vertices[0].color = packedColour;
-                vertices[1].x = orderedArea.originX;
-                vertices[1].y = orderedArea.originY + orderedArea.height;
-                vertices[1].color = packedColour;
-
-                // Draw right vertical line.
-                vertices[4].x = orderedArea.originX + orderedArea.width;
-                vertices[4].y = orderedArea.originY;
-                vertices[4].color = packedColour;
-                vertices[5].x = orderedArea.originX + orderedArea.width;
-                vertices[5].y = orderedArea.originY + orderedArea.height + 1;
-                vertices[5].color = packedColour;
-                break;
-
-            case RenILinesDiagnostic::LARGE:
-                // Draw left vertical line.
-                vertices[0].x = orderedArea.originX;
-                vertices[0].y = orderedArea.originY;
-                vertices[0].color = packedColour;
-                vertices[1].x = orderedArea.originX;
-                vertices[1].y = orderedArea.originY + orderedArea.height;
-                vertices[1].color = packedColour;
-
-                // Draw right vertical line.
-                vertices[4].x = orderedArea.originX + orderedArea.width;
-                vertices[4].y = orderedArea.originY;
-                vertices[4].color = packedColour;
-                vertices[5].x = orderedArea.originX + orderedArea.width;
-                vertices[5].y = orderedArea.originY + orderedArea.height;
-                vertices[5].color = packedColour;
-                break;
-
-            case RenILinesDiagnostic::OFFSET_SORTED:
-                // Draw left vertical line.
-                vertices[0].x = orderedArea.originX + 1;
-                vertices[0].y = orderedArea.originY;
-                vertices[0].color = packedColour;
-                vertices[1].x = orderedArea.originX + 1;
-                vertices[1].y = orderedArea.originY + orderedArea.height;
-                vertices[1].color = packedColour;
-
-                // Draw right vertical line.
-                vertices[4].x = orderedArea.originX + orderedArea.width + 1;
-                vertices[4].y = orderedArea.originY;
-                vertices[4].color = packedColour;
-                vertices[5].x = orderedArea.originX + orderedArea.width + 1;
-                vertices[5].y = orderedArea.originY + orderedArea.height + 1;
-                vertices[5].color = packedColour;
-                break;
-
-            default:
-                ASSERT_FAIL("Invalid switch parameter.");
-                break;
-        }
-
-        glLineWidth((float)thickness);
-
-        RenDevice* dev = RenDevice::current();
-        if (internals() && internals()->isOffscreen())
-        {
-            dev->renderToTextureMode(handle(), width(), height());
-            if (packedColour == 0xFFFF00FF) // Ugly hack to handle background colour
-            {
-                GLint blendSrc, blendDst;
-                glGetIntegerv(GL_BLEND_SRC_ALPHA, &blendSrc);
-                glGetIntegerv(GL_BLEND_DST_ALPHA, &blendDst);
-                glBlendFunc(GL_ZERO, GL_ZERO);
-                dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
-                glBlendFunc(blendSrc, blendDst);
-            }
-            else
-                dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
-            dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-        }
-        else
-            dev->renderScreenspace(vertices, 8, Ren::PrimitiveTopology::Lines, width(), height());
-
-        glLineWidth(1.0);
+        orderedArea.originX += orderedArea.width;
+        orderedArea.width = -orderedArea.width;
     }
+
+    if (orderedArea.height < 0)
+    {
+        orderedArea.originY += orderedArea.height;
+        orderedArea.height = -orderedArea.height;
+    }
+
+    const int x = orderedArea.originX;
+    const int y = orderedArea.originY;
+    const int w = orderedArea.width;
+    const int h = orderedArea.height;
+    const int t = thickness;
+
+    // Top
+    filledRectangle(Ren::Rect(x, y, w, t), col);
+    // Bottom
+    filledRectangle(Ren::Rect(x, y + h - t, w, t), col);
+    // Left
+    filledRectangle(Ren::Rect(x, y + t, t, h - 2 * t), col);
+    // Right
+    filledRectangle(Ren::Rect(x + w - t, y + t, t, h - 2 * t), col);
 }
 
 void RenSurface::getPixel(int x, int y, RenColour* colour) const
@@ -625,291 +440,56 @@ void RenSurface::setPixel(int x, int y, const RenColour& colour)
     ASSERT_FAIL("Not implemented.");
 }
 
-enum LineOrientation
-{
-    HORIZONTAL,
-    VERTICAL,
-    DIAGONAL
-};
-
-static LineOrientation lineOrientation(const MexPoint2d& vertex1, const MexPoint2d& vertex2)
-{
-    LineOrientation result = DIAGONAL;
-
-    if (vertex1.y() == vertex2.y())
-    {
-        if (vertex1.x() != vertex2.x())
-            result = HORIZONTAL;
-    }
-    else if (vertex1.x() == vertex2.x())
-        result = VERTICAL;
-
-    return result;
-}
-
-// #define REN_LINE_STREAM(x)        RENDER_STREAM(x)
-// #define REN_LINE_INDENT(x)        RENDER_INDENT(x)
-#define REN_LINE_STREAM(x) ;
-#define REN_LINE_INDENT(x) ;
-
 void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickness)
 {
     PRE(!readOnly());
     PRE(pts.size() > 1);
     PRE(thickness > 0);
 
-    REN_LINE_STREAM(std::endl << "RenSurface::polyLine()" << std::endl);
-    REN_LINE_STREAM('{' << std::endl);
-    REN_LINE_INDENT(3);
-    REN_LINE_STREAM("colour = " << colour << std::endl);
-    REN_LINE_STREAM("thickness = " << thickness << std::endl);
-    REN_LINE_STREAM("vertices : size() = " << pts.size() << std::endl);
-    REN_LINE_STREAM('{' << std::endl);
-    REN_LINE_INDENT(1);
-    REN_LINE_STREAM(pts);
-    REN_LINE_INDENT(-1);
-    REN_LINE_STREAM('}' << std::endl);
-    REN_LINE_INDENT(-3);
-    REN_LINE_STREAM('}' << std::endl << std::endl);
+    static size_t nVertices = 30;
+    static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
+    static bool initialised = false;
 
-    // Note: DrawPrimitive appears unable to draw lines wider than 1 pixel.
-    //  if (device && thickness == 1)
+    if (nVertices < pts.size())
     {
-        // There *is* a Direct3D device associated with this surface, so we
-        // can use DrawPrimitive and avoid the overheads of getting a DC.
-        static size_t nVertices = 30;
-        static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
-        static bool initialised = false;
+        nVertices = pts.size() + 10;
+        vtx = std::vector<RenIVertex>(nVertices);
+        initialised = false;
+    }
 
-        if (nVertices < pts.size() + (pts.size() - 2))
+    if (! initialised)
+    {
+        initialised = true;
+
+        for (size_t i = 0; i != nVertices; ++i)
         {
-            nVertices = pts.size() + 10;
-            vtx = std::vector<RenIVertex>(nVertices);
-            initialised = false;
-        }
-
-        // Don't bother initialising the const stuff every frame.
-        if (! initialised)
-        {
-            initialised = true;
-
-            // We turn the z-buffer off, so any z values will do.
-            // There's no texture, so rhw and uv are left uninitialised.
-            for (int i = 0; i != nVertices; ++i)
-            {
-                vtx[i].z = 0.0;
-                vtx[i].specular = 0;
-                vtx[i].w = 0.1;
-                vtx[i].tu = vtx[i].tv = 0.1;
-            }
-        }
-
-        uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
-
-        // If the lines diagnostic has performed its' tests, apply the results.
-        if (RenILinesDiagnostic::instance().hasTestedLines())
-        {
-            int index = 0;
-            int vtxIndex = 0;
-            int x1 = 0;
-            int x2 = 0;
-            int y1 = 0;
-            int y2 = 0;
-
-            while (index < pts.size() - 1)
-            {
-                switch (lineOrientation(pts[index], pts[index + 1]))
-                {
-                    case HORIZONTAL:
-                        switch (RenILinesDiagnostic::instance().horizontalResult())
-                        {
-                            // The vertices have to be sorted.
-                            case RenILinesDiagnostic::NORMAL:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                if (x1 > x2)
-                                {
-                                    std::swap(x1, x2);
-                                    std::swap(y1, y2);
-                                }
-                                break;
-
-                            // This is the default drawing style just cast and assign.
-                            case RenILinesDiagnostic::UNKNOWN:
-                                // TODO fix it, sometimes called
-                                // ASSERT_FAIL("Unknown line classification.");
-                                // Fall through in release and production versions.  This will
-                                // produce lines although not necessarilly 100% correct lines.
-                            case RenILinesDiagnostic::SORTED:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-                                break;
-
-                            // This needs moving but not sorting.
-                            case RenILinesDiagnostic::OFFSET_SORTED:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                ++y1;
-                                ++y2;
-                                break;
-
-                            case RenILinesDiagnostic::LARGE:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                if (x1 > x2)
-                                {
-                                    std::swap(x1, x2);
-                                    std::swap(y1, y2);
-                                }
-
-                                --x2;
-                                break;
-
-                            default:
-                                ASSERT_FAIL("Invalid switch parameter.");
-                                break;
-                        }
-                        break;
-
-                    case VERTICAL:
-                        switch (RenILinesDiagnostic::instance().verticalResult())
-                        {
-                            // The vertices have to be sorted.
-                            case RenILinesDiagnostic::NORMAL:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                if (y1 > y2)
-                                {
-                                    std::swap(x1, x2);
-                                    std::swap(y1, y2);
-                                }
-                                break;
-
-                            // This is the default drawing style just cast and assign.
-                            // UNKNOWN is assigned to this because it's the most common.
-                            case RenILinesDiagnostic::UNKNOWN:
-                                // TODO fix this
-                                // ASSERT_FAIL("Unknown line classification.");
-                                // Fall through in release and production versions.  This will
-                                // produce lines although not necessarilly 100% correct lines.
-                            case RenILinesDiagnostic::SORTED:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-                                break;
-
-                            // This needs moving but not sorting.
-                            case RenILinesDiagnostic::OFFSET_SORTED:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                ++x1;
-                                ++x2;
-                                break;
-
-                            case RenILinesDiagnostic::LARGE:
-                                x1 = _STATIC_CAST(int, pts[index].x());
-                                y1 = _STATIC_CAST(int, pts[index].y());
-                                x2 = _STATIC_CAST(int, pts[index + 1].x());
-                                y2 = _STATIC_CAST(int, pts[index + 1].y());
-
-                                if (y1 > y2)
-                                {
-                                    std::swap(x1, x2);
-                                    std::swap(y1, y2);
-                                }
-
-                                --y2;
-                                break;
-
-                            default:
-                                ASSERT_FAIL("Illegal switch parameter.");
-                                break;
-                        }
-                        break;
-
-                    // Diagonal is too hard to fudge so your left with the way the card does it.
-                    case DIAGONAL:
-                        x1 = _STATIC_CAST(int, pts[index].x());
-                        y1 = _STATIC_CAST(int, pts[index].y());
-                        x2 = _STATIC_CAST(int, pts[index + 1].x());
-                        y2 = _STATIC_CAST(int, pts[index + 1].y());
-                        break;
-                }
-
-                vtx[vtxIndex].x = x1;
-                vtx[vtxIndex].y = y1;
-                vtx[vtxIndex++].color = packedColour;
-                vtx[vtxIndex].x = x2;
-                vtx[vtxIndex].y = y2;
-                vtx[vtxIndex++].color = packedColour;
-
-                ++index;
-            } // while(index < pts.size() - 1)
-
-            // They have to be rendered as a line list because otherwise as soon as
-            // an unordered line popped up they would be buggered.
-            RenDevice* dev = RenDevice::current();
-            glLineWidth((float)thickness);
-            if (internals() && internals()->isOffscreen())
-            {
-                dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), -height());
-                dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-            }
-            else
-                dev->renderScreenspace(vtx.data(), pts.size() + (pts.size() - 2), Ren::PrimitiveTopology::Lines, width(), height());
-            glLineWidth(1.0);
-        }
-        else
-        {
-            RENDER_STREAM("WARNING : Drawing without testing." << std::endl);
-
-            Points::const_iterator it = pts.begin();
-            int j = 0;
-
-            while (it != pts.end())
-            {
-                vtx[j].x = _STATIC_CAST(int, (*it).x());
-                vtx[j].y = _STATIC_CAST(int, (*it).y());
-                vtx[j].color = packedColour;
-
-                RENDER_STREAM("  " << vtx[j] << "\n");
-
-                ++it;
-                ++j;
-            }
-
-            RenDevice* dev = RenDevice::current();
-            glLineWidth((float)thickness);
-            if (internals() && internals()->isOffscreen())
-            {
-                dev->renderToTextureMode(handle(), width(), height());
-                dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
-                dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-            }
-            else
-                dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
-            glLineWidth(1.0);
+            vtx[i].z = 0.0;
+            vtx[i].specular = 0;
+            vtx[i].w = 0.1;
+            vtx[i].tu = vtx[i].tv = 0.1;
         }
     }
+
+    uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
+
+    for (size_t i = 0; i < pts.size(); ++i)
+    {
+        vtx[i].x = static_cast<int>(pts[i].x());
+        vtx[i].y = static_cast<int>(pts[i].y());
+        vtx[i].color = packedColour;
+    }
+
+    RenDevice* dev = RenDevice::current();
+    glLineWidth(static_cast<float>(thickness));
+    if (internals() && internals()->isOffscreen())
+    {
+        dev->renderToTextureMode(handle(), width(), height());
+        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+    }
+    else
+        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
+    glLineWidth(1.0);
 }
 
 int RenSurface::getDefaultFontSize()

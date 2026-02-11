@@ -56,7 +56,6 @@
 #include "render/internal/mmx.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfmgri.hpp"
-#include "render/internal/linediag.hpp"
 #include "render/internal/capablei.hpp"
 #include "render/internal/drivi.hpp"
 #include "render/internal/vtxdata.hpp"
@@ -238,39 +237,6 @@ bool RenDevice::initialize()
     {
         statsShown = pStats->shown();
         pStats->hide();
-    }
-
-    // Test the line drawing capabilities of the system.
-    RenSurface lineSurf = RenSurface::createAnonymousSurface(Ren::Size(32, 32), backSurface());
-    if (startFrame())
-    {
-        start2D();
-        {
-            RenILinesDiagnostic::instance().drawLines(&lineSurf);
-        }
-        end2D();
-
-        endFrame();
-    }
-    RenILinesDiagnostic::instance().testLines(lineSurf);
-
-    // No luck, try another one test (TODO: why isn't test above working all the times?)
-    if (RenILinesDiagnostic::instance().verticalResult() == RenILinesDiagnostic::UNKNOWN
-        && RenILinesDiagnostic::instance().horizontalResult() == RenILinesDiagnostic::UNKNOWN)
-    {
-        RenSurface backSurf = backSurface();
-        RenILinesDiagnostic::instance().setTestType(RenILinesDiagnostic::TEST2);
-        if (startFrame())
-        {
-            start2D();
-            {
-                RenILinesDiagnostic::instance().drawLines(&backSurf);
-            }
-            end2D();
-
-            endFrame();
-        }
-        RenILinesDiagnostic::instance().testLines(backSurf);
     }
 
     if (statsShown)
@@ -1466,8 +1432,7 @@ bool RenDevice::isStaticOn() const
 void RenDevice::addStatic()
 {
     // These aren't static because the viewport can change size in-game.
-    // Due to line drawing bugs on some cards (see RenILinesDiagnostic), we
-    // avoid a 1 pixel boundary at the edges of the viewport.
+    // Avoid a 1 pixel boundary at the edges of the viewport.
     const int viewportXOffset = pImpl_->vpMapping_->screenLeft() + 1;
     const int viewportYOffset = pImpl_->vpMapping_->screenTop() + 1;
 

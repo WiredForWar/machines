@@ -86,8 +86,6 @@ set(RENDER_SOURCES
     internal/intmap.hpp
     internal/lightbuf.hpp
     internal/lightbuf.ipp
-    internal/linediag.hpp
-    internal/linediag.ipp
     internal/matapply.hpp
     internal/matbody.hpp
     internal/matbody.ipp
@@ -122,7 +120,6 @@ set(RENDER_SOURCES
     lightbuf.cpp
     light.cpp
     light.hpp
-    linediag.cpp
     litxform.hpp
     matapply.cpp
     matbody.cpp
