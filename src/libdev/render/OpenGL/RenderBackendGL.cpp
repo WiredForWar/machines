@@ -932,6 +932,12 @@ void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*c
     endRenderToTexture();
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetCurrentTextureFilter& command)
+{
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(command.minFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(command.magFilter));
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
