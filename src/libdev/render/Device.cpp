@@ -99,6 +99,7 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
+    CB_DEPIMPL_AUTO(glNormalBufferID_);                                                                                \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
@@ -292,21 +293,35 @@ bool RenDevice::createGpuResources()
             { "vertexPosition_modelspace", 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
             { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
             { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+            { "vertexNormal", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
         };
-        desc.uniformNames = { "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2" };
+        desc.uniformNames = {
+            "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2",
+            "uGpuLighting", "uLightDir", "uLightColor", "uAmbientColor",
+            "uMatDiffuse", "uMatAmbient", "uMatEmissive",
+        };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
         standard_.uvAttr = backend_->pipelineAttribLocation(standard_.id, "vertexUV");
         standard_.colAttr = backend_->pipelineAttribLocation(standard_.id, "vertexColor");
+        standard_.normalAttr = backend_->pipelineAttribLocation(standard_.id, "vertexNormal");
         standard_.modelUniform = backend_->pipelineUniformLocation(standard_.id, "uM");
         standard_.viewUniform = backend_->pipelineUniformLocation(standard_.id, "uV");
         standard_.projUniform = backend_->pipelineUniformLocation(standard_.id, "uP");
         standard_.fogColourUniform = backend_->pipelineUniformLocation(standard_.id, "uFogColour");
         standard_.fogParamsUniform = backend_->pipelineUniformLocation(standard_.id, "uFogParams");
         standard_.texSamplerUniform = backend_->pipelineUniformLocation(standard_.id, "uTextureSampler2");
+        standard_.gpuLightingUniform = backend_->pipelineUniformLocation(standard_.id, "uGpuLighting");
+        standard_.lightDirUniform = backend_->pipelineUniformLocation(standard_.id, "uLightDir");
+        standard_.lightColorUniform = backend_->pipelineUniformLocation(standard_.id, "uLightColor");
+        standard_.ambientColorUniform = backend_->pipelineUniformLocation(standard_.id, "uAmbientColor");
+        standard_.matDiffuseUniform = backend_->pipelineUniformLocation(standard_.id, "uMatDiffuse");
+        standard_.matAmbientUniform = backend_->pipelineUniformLocation(standard_.id, "uMatAmbient");
+        standard_.matEmissiveUniform = backend_->pipelineUniformLocation(standard_.id, "uMatEmissive");
     }
 
     glVertexDataBufferID_ = backend_->createBuffer();
+    glNormalBufferID_ = backend_->createBuffer();
     glElementBufferID_ = backend_->createBuffer();
 
     // Billboard pipeline
@@ -419,6 +434,7 @@ void RenDevice::releaseGpuResources()
 
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
+    backend_->releaseBuffer(glNormalBufferID_);
     backend_->releaseBuffer(glElementBufferID_);
     backend_->releaseBuffer(glVertexDataBufferBillboardID_);
     backend_->releaseBuffer(glElementBufferBillboardID_);
@@ -2310,6 +2326,8 @@ void RenDevice::renderPrimitive(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
+    const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
+
     // Use our shader
     recordCommand(Ren::Command::bindPipeline(standard_.id));
 
@@ -2323,6 +2341,24 @@ void RenDevice::renderPrimitive(
     }
 
     recordSetUniformMatrix4fv(standard_.modelUniform, model_);
+
+    recordSetUniform1i(standard_.gpuLightingUniform, gpuLighting ? 1 : 0);
+    if (gpuLighting)
+    {
+        const auto& ld = pImpl_->gpuLightDir_;
+        const auto& lc = pImpl_->gpuLightColor_;
+        const auto& ac = pImpl_->gpuAmbientColor_;
+        recordSetUniform3f(standard_.lightDirUniform, ld.x, ld.y, ld.z);
+        recordSetUniform3f(standard_.lightColorUniform, lc.x, lc.y, lc.z);
+        recordSetUniform3f(standard_.ambientColorUniform, ac.x, ac.y, ac.z);
+
+        const RenColour& md = mat.diffuse();
+        const RenColour& ma = mat.ambient();
+        const RenColour& me = mat.emissive();
+        recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
+        recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
+        recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
+    }
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
@@ -2341,7 +2377,23 @@ void RenDevice::renderPrimitive(
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
 
+    if (gpuLighting)
+    {
+        recordCommand(Ren::Command::bufferData(
+            Ren::BufferTarget::Array,
+            glNormalBufferID_,
+            pImpl_->expandedNormals_.data(),
+            nVertices * 3 * sizeof(float),
+            Ren::BufferUsage::StreamDraw));
+        recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glNormalBufferID_));
+        recordEnableVertexAttribPointer(
+            standard_.normalAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+    }
+
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
+
+    if (gpuLighting)
+        recordDisableVertexAttribPointer(standard_.normalAttr);
 
     disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }
@@ -2362,6 +2414,8 @@ void RenDevice::renderIndexed(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
+    const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
+
     recordCommand(Ren::Command::bindPipeline(standard_.id));
 
     if (standardUniformsDirty_)
@@ -2374,6 +2428,24 @@ void RenDevice::renderIndexed(
     }
 
     recordSetUniformMatrix4fv(standard_.modelUniform, model_);
+
+    recordSetUniform1i(standard_.gpuLightingUniform, gpuLighting ? 1 : 0);
+    if (gpuLighting)
+    {
+        const auto& ld = pImpl_->gpuLightDir_;
+        const auto& lc = pImpl_->gpuLightColor_;
+        const auto& ac = pImpl_->gpuAmbientColor_;
+        recordSetUniform3f(standard_.lightDirUniform, ld.x, ld.y, ld.z);
+        recordSetUniform3f(standard_.lightColorUniform, lc.x, lc.y, lc.z);
+        recordSetUniform3f(standard_.ambientColorUniform, ac.x, ac.y, ac.z);
+
+        const RenColour& md = mat.diffuse();
+        const RenColour& ma = mat.ambient();
+        const RenColour& me = mat.emissive();
+        recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
+        recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
+        recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
+    }
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
@@ -2392,6 +2464,19 @@ void RenDevice::renderIndexed(
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
 
+    if (gpuLighting)
+    {
+        recordCommand(Ren::Command::bufferData(
+            Ren::BufferTarget::Array,
+            glNormalBufferID_,
+            pImpl_->expandedNormals_.data(),
+            nVertices * 3 * sizeof(float),
+            Ren::BufferUsage::StreamDraw));
+        recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glNormalBufferID_));
+        recordEnableVertexAttribPointer(
+            standard_.normalAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+    }
+
     // Index buffer
     recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::ElementArray,
@@ -2402,6 +2487,9 @@ void RenDevice::renderIndexed(
 
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
+
+    if (gpuLighting)
+        recordDisableVertexAttribPointer(standard_.normalAttr);
 
     disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }

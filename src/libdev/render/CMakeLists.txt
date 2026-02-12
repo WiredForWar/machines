@@ -7,6 +7,8 @@ set(RENDER_SOURCES
     Font.hpp
     FontsManager.cpp
     FontsManager.hpp
+    LightingMode.cpp
+    LightingMode.hpp
     OpenGL/RenderBackendGL.cpp
     OpenGL/RenderBackendGL.hpp
     OpenGL/Utils.cpp
@@ -15,6 +17,8 @@ set(RENDER_SOURCES
     Painter.hpp
     PrimitiveTopology.hpp
     RenScopedImmediateCommands.cpp
+    RenderVariables.cpp
+    RenderVariables.hpp
     TextOptions.hpp
     AlphaGroup.cpp
     AnimCursor2d.cpp

@@ -94,6 +94,9 @@ public:
     const RenIVec3FixPtS0_7& normal(const RenIVertex& v) const;
     RenIVec3FixPtS0_7& normal(const RenIVertex& v);
 
+    // Expand indexed fixed-point normals into a flat per-vertex float array.
+    void expandNormals(float* out, size_t nVertices) const;
+
     const RenIVertexIntensities* intensityMap() const
     {
         return (intensityMap_.isDefined()) ? &(*intensityMap_) : nullptr;

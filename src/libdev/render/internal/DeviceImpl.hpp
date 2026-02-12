@@ -106,6 +106,7 @@ public:
 
 private:
     friend class RenDevice;
+    friend class RenIIlluminator;
     RenIDeviceImpl(RenDisplay* dis, RenDevice* parent); // PRE(dis && parent);
     static void useDevice(RenDevice* d, RenI::UpdateType updateType);
 
@@ -189,12 +190,20 @@ private:
         Ren::AttributeLocationId posAttr{};
         Ren::AttributeLocationId uvAttr{};
         Ren::AttributeLocationId colAttr{};
+        Ren::AttributeLocationId normalAttr{};
         Ren::UniformLocationId modelUniform{};
         Ren::UniformLocationId viewUniform{};
         Ren::UniformLocationId projUniform{};
         Ren::UniformLocationId fogColourUniform{};
         Ren::UniformLocationId fogParamsUniform{};
         Ren::UniformLocationId texSamplerUniform{};
+        Ren::UniformLocationId gpuLightingUniform{};
+        Ren::UniformLocationId lightDirUniform{};
+        Ren::UniformLocationId lightColorUniform{};
+        Ren::UniformLocationId ambientColorUniform{};
+        Ren::UniformLocationId matDiffuseUniform{};
+        Ren::UniformLocationId matAmbientUniform{};
+        Ren::UniformLocationId matEmissiveUniform{};
     };
 
     struct BillboardPipelineLocations
@@ -229,6 +238,7 @@ private:
 
     Ren::BufferId gl2DVertexBufferID_{};
     Ren::BufferId glVertexDataBufferID_{};
+    Ren::BufferId glNormalBufferID_{};
     Ren::BufferId glElementBufferID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
@@ -239,6 +249,13 @@ private:
     bool frameCommandBufferRecording_{};
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
+
+    // GPU lighting state, populated by the illuminator during lightVertices.
+    std::vector<float> expandedNormals_{};
+    size_t expandedNormalsCount_{};
+    glm::vec3 gpuLightDir_{};
+    glm::vec3 gpuLightColor_{};
+    glm::vec3 gpuAmbientColor_{};
 
     DevTimer frameTimer_;
 
