@@ -8,6 +8,8 @@
 #include "render/light.hpp"
 #include "render/mesh.hpp"
 #include "render/camera.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/internal/inlight.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/lightbuf.hpp"
@@ -254,6 +256,40 @@ void RenIIlluminator::lightVertices(
     // Not required now that memcpy is used to initialise lit vertices?
     // vtxBuffer_->setAllSpecular(RenColour::black());
     lightingBuffer_->copyCoords(in);
+
+    // When GPU lighting is active, expand normals into the device scratch buffer
+    // so that renderPrimitive/renderIndexed can upload them as a vertex attribute.
+    // Also extract light parameters for the shader uniforms.
+    const bool gpuLighting = Config::gfxLightingMode.get() != LightingMode::Legacy;
+    if (gpuLighting)
+    {
+        const size_t floatsNeeded = nVertices * 3;
+        if (devImpl_->expandedNormals_.size() < floatsNeeded)
+            devImpl_->expandedNormals_.resize(floatsNeeded);
+        in.expandNormals(devImpl_->expandedNormals_.data(), nVertices);
+        devImpl_->expandedNormalsCount_ = nVertices;
+
+        // Extract the primary directional light direction and color.
+        devImpl_->gpuLightDir_ = glm::vec3(0.0f, -1.0f, 0.0f);
+        devImpl_->gpuLightColor_ = glm::vec3(0.0f);
+        for (const RenILight* light : lightsOn_)
+        {
+            const auto* dirLight = dynamic_cast<const RenIDirectionalLight*>(light);
+            if (dirLight)
+            {
+                const MexVec3& dir = dirLight->direction();
+                devImpl_->gpuLightDir_ = glm::vec3(dir.x(), dir.y(), dir.z());
+                const RenColour& col = dirLight->colour();
+                devImpl_->gpuLightColor_ = glm::vec3(col.r(), col.g(), col.b());
+                break;
+            }
+        }
+        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b());
+    }
+    else
+    {
+        devImpl_->expandedNormalsCount_ = 0;
+    }
 
     if (!disabled())
         computeLambertian(in, mexWorld, pVolume);
