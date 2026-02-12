@@ -86,6 +86,8 @@ public:
     bool hasSharedVideoMemory() const;
     void hasSharedVideoMemory(bool);
 
+    void clearGpuLightingState();
+
     void enableAlphaBlending();
     void disableAlphaBlending();
 
@@ -188,6 +190,8 @@ private:
         Ren::AttributeLocationId uvAttr{};
         Ren::AttributeLocationId colAttr{};
         Ren::AttributeLocationId normalAttr{};
+        Ren::AttributeLocationId vtxDiffuseAttr{};
+        Ren::AttributeLocationId vtxAmbientAttr{};
         Ren::UniformLocationId modelUniform{};
         Ren::UniformLocationId viewUniform{};
         Ren::UniformLocationId projUniform{};
@@ -201,6 +205,8 @@ private:
         Ren::UniformLocationId matDiffuseUniform{};
         Ren::UniformLocationId matAmbientUniform{};
         Ren::UniformLocationId matEmissiveUniform{};
+        Ren::UniformLocationId filterUniform{};
+        Ren::UniformLocationId hasVtxMaterialsUniform{};
     };
 
     struct BillboardPipelineLocations
@@ -236,6 +242,8 @@ private:
     Ren::BufferId gl2DVertexBufferID_{};
     Ren::BufferId glVertexDataBufferID_{};
     Ren::BufferId glNormalBufferID_{};
+    Ren::BufferId glVtxDiffuseBufferID_{};
+    Ren::BufferId glVtxAmbientBufferID_{};
     Ren::BufferId glElementBufferID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
@@ -253,6 +261,11 @@ private:
     glm::vec3 gpuLightDir_{};
     glm::vec3 gpuLightColor_{};
     glm::vec3 gpuAmbientColor_{};
+
+    // Per-vertex material overrides (sparse: sentinel -1 means "use group material").
+    std::vector<float> expandedVtxDiffuse_{};
+    std::vector<float> expandedVtxAmbient_{};
+    bool hasPerVertexMaterials_{};
 
     DevTimer frameTimer_;
 
