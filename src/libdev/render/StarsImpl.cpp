@@ -147,6 +147,9 @@ void RenIStarsImpl::render(
 
     RenDevice::current()->setModelMatrix(starsXform);
 
+    // Stars use pre-colored vertices; disable GPU lighting.
+    devImpl->clearGpuLightingState();
+
     // for_each(sectors_.begin(), sectors_.end(), RenIPrintSectorOp(Diag::instance().renderStream()));
 
     using BlendFactor = Ren::BackendBlendFactor;

@@ -100,6 +100,12 @@ void RenIDeviceImpl::hasSharedVideoMemory(bool setVideoMemoryShared)
     videoMemorySharedInitialized_ = true;
 }
 
+void RenIDeviceImpl::clearGpuLightingState()
+{
+    expandedNormalsCount_ = 0;
+    hasPerVertexMaterials_ = false;
+}
+
 void RenIDeviceImpl::enableAlphaBlending()
 {
     PRE(parent_);

@@ -47,6 +47,10 @@ void RenIDelayedSpinPolygon::render()
     // SetTransform is not const-correct w.r.t. its 2nd argument.
     glm::mat4* crufty = const_cast<glm::mat4*>(&xform_);
     RenDevice::current()->setModelMatrix(*crufty);
+
+    // Pre-lit vertices already have CPU lighting baked in; disable GPU lighting.
+    RenIDeviceImpl::currentPimpl()->clearGpuLightingState();
+
     RenIDeviceImpl::currentPimpl()->setMaterialHandles(material_);
 
     RenIVertex* vtx = vertices_.get();
