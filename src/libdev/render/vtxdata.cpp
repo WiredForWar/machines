@@ -344,6 +344,21 @@ RenIVec3FixPtS0_7& RenIVertexData::normal(const RenIVertex& v)
     return normals_[v.normalIndex];
 }
 
+void RenIVertexData::expandNormals(float* out, size_t nVertices) const
+{
+    PRE(out);
+    PRE(nVertices <= size());
+
+    const_iterator vtxIt = begin();
+    for (size_t i = 0; i < nVertices; ++i, ++vtxIt)
+    {
+        const RenIVec3FixPtS0_7& n = normals_[(*vtxIt).normalIndex];
+        out[i * 3 + 0] = n.x() / 127.0f;
+        out[i * 3 + 1] = n.y() / 127.0f;
+        out[i * 3 + 2] = n.z() / 127.0f;
+    }
+}
+
 void perRead(PerIstream& istr, RenIVertexData& data)
 {
     RenIVertexData::Base& base = data;
