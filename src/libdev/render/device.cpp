@@ -100,6 +100,8 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glNormalBufferID_);                                                                                \
+    CB_DEPIMPL_AUTO(glVtxDiffuseBufferID_);                                                                            \
+    CB_DEPIMPL_AUTO(glVtxAmbientBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
@@ -206,17 +208,25 @@ bool RenDevice::initialize()
             { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
             { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
             { "vertexNormal", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxDiffuse", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxAmbient", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
         };
         desc.uniformNames = {
             "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2",
             "uGpuLighting", "uLightDir", "uLightColor", "uAmbientColor",
-            "uMatDiffuse", "uMatAmbient", "uMatEmissive",
+            "uMatDiffuse", "uMatAmbient", "uMatEmissive", "uFilter",
+            "uHasVtxMaterials",
         };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
         standard_.uvAttr = backend_->pipelineAttribLocation(standard_.id, "vertexUV");
         standard_.colAttr = backend_->pipelineAttribLocation(standard_.id, "vertexColor");
         standard_.normalAttr = backend_->pipelineAttribLocation(standard_.id, "vertexNormal");
+        standard_.vtxDiffuseAttr = backend_->pipelineAttribLocation(standard_.id, "vtxDiffuse");
+        standard_.vtxAmbientAttr = backend_->pipelineAttribLocation(standard_.id, "vtxAmbient");
+        spdlog::info("Standard pipeline attrib locations: pos={} uv={} col={} normal={} vtxDif={} vtxAmb={}",
+            standard_.posAttr.value(), standard_.uvAttr.value(), standard_.colAttr.value(),
+            standard_.normalAttr.value(), standard_.vtxDiffuseAttr.value(), standard_.vtxAmbientAttr.value());
         standard_.modelUniform = backend_->pipelineUniformLocation(standard_.id, "uM");
         standard_.viewUniform = backend_->pipelineUniformLocation(standard_.id, "uV");
         standard_.projUniform = backend_->pipelineUniformLocation(standard_.id, "uP");
@@ -230,10 +240,14 @@ bool RenDevice::initialize()
         standard_.matDiffuseUniform = backend_->pipelineUniformLocation(standard_.id, "uMatDiffuse");
         standard_.matAmbientUniform = backend_->pipelineUniformLocation(standard_.id, "uMatAmbient");
         standard_.matEmissiveUniform = backend_->pipelineUniformLocation(standard_.id, "uMatEmissive");
+        standard_.filterUniform = backend_->pipelineUniformLocation(standard_.id, "uFilter");
+        standard_.hasVtxMaterialsUniform = backend_->pipelineUniformLocation(standard_.id, "uHasVtxMaterials");
     }
 
     glVertexDataBufferID_ = backend_->createBuffer();
     glNormalBufferID_ = backend_->createBuffer();
+    glVtxDiffuseBufferID_ = backend_->createBuffer();
+    glVtxAmbientBufferID_ = backend_->createBuffer();
     glElementBufferID_ = backend_->createBuffer();
 
     // Billboard pipeline
@@ -403,6 +417,8 @@ RenDevice::~RenDevice()
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
     backend_->releaseBuffer(glNormalBufferID_);
+    backend_->releaseBuffer(glVtxDiffuseBufferID_);
+    backend_->releaseBuffer(glVtxAmbientBufferID_);
     backend_->releaseBuffer(glElementBufferID_);
     backend_->releaseBuffer(glVertexDataBufferBillboardID_);
     backend_->releaseBuffer(glElementBufferBillboardID_);
@@ -2313,6 +2329,10 @@ void RenDevice::renderPrimitive(
         recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
         recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
         recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
+
+        const RenColour& f = pImpl_->illuminator_->filter();
+        recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
+        recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
     }
 
     // Bind our texture in Texture Unit 0
@@ -2400,6 +2420,10 @@ void RenDevice::renderIndexed(
         recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
         recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
         recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
+
+        const RenColour& f = pImpl_->illuminator_->filter();
+        recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
+        recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
     }
 
     // Bind our texture in Texture Unit 0
@@ -2430,6 +2454,29 @@ void RenDevice::renderIndexed(
         recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glNormalBufferID_));
         recordEnableVertexAttribPointer(
             standard_.normalAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+
+        if (pImpl_->hasPerVertexMaterials_)
+        {
+            recordCommand(Ren::Command::bufferData(
+                Ren::BufferTarget::Array,
+                glVtxDiffuseBufferID_,
+                pImpl_->expandedVtxDiffuse_.data(),
+                nVertices * 3 * sizeof(float),
+                Ren::BufferUsage::StreamDraw));
+            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxDiffuseBufferID_));
+            recordEnableVertexAttribPointer(
+                standard_.vtxDiffuseAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+
+            recordCommand(Ren::Command::bufferData(
+                Ren::BufferTarget::Array,
+                glVtxAmbientBufferID_,
+                pImpl_->expandedVtxAmbient_.data(),
+                nVertices * 3 * sizeof(float),
+                Ren::BufferUsage::StreamDraw));
+            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxAmbientBufferID_));
+            recordEnableVertexAttribPointer(
+                standard_.vtxAmbientAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+        }
     }
 
     // Index buffer
@@ -2444,7 +2491,14 @@ void RenDevice::renderIndexed(
     recordCommand(std::move(command));
 
     if (gpuLighting)
+    {
         recordDisableVertexAttribPointer(standard_.normalAttr);
+        if (pImpl_->hasPerVertexMaterials_)
+        {
+            recordDisableVertexAttribPointer(standard_.vtxDiffuseAttr);
+            recordDisableVertexAttribPointer(standard_.vtxAmbientAttr);
+        }
+    }
 
     disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }

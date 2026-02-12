@@ -5,13 +5,11 @@
 enum class LightingMode
 {
     Legacy,
-    PerVertex,
     PerPixel,
 };
 
 inline constexpr LightingMode AllLightingModes[] = {
     LightingMode::Legacy,
-    LightingMode::PerVertex,
     LightingMode::PerPixel,
 };
 
