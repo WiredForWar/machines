@@ -4,6 +4,9 @@ precision mediump float;
 // Interpolated values from the vertex shaders
 in vec2 UV;
 in vec4 fragmentColor;
+in vec3 fragWorldNormal;
+in vec3 fragVtxDiffuse;
+in vec3 fragVtxAmbient;
 in vec4 viewSpace;
 in vec4 fragmentFogColour;
 in vec3 fragmentFogParams;
@@ -11,6 +14,17 @@ out vec4 outFragColor;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D uTextureSampler2;
+
+// Per-pixel lighting uniforms
+uniform int uGpuLighting;
+uniform vec3 uLightDir;
+uniform vec3 uLightColor;
+uniform vec3 uAmbientColor;
+uniform vec3 uMatDiffuse;
+uniform vec3 uMatAmbient;
+uniform vec3 uMatEmissive;
+uniform vec3 uFilter;
+uniform int uHasVtxMaterials;
 
 void main() {
     
@@ -26,9 +40,31 @@ void main() {
         fogFactor = (fogStart - dist)/(fogStart - fogEnd);
         fogFactor = clamp( fogFactor, 0.0f, 1.0f );
    }
-    
+
+    vec4 litColor;
+    if (uGpuLighting == 1)
+    {
+        // Per-pixel lighting: re-normalize interpolated normal and compute Lambertian
+        vec3 N = normalize(fragWorldNormal);
+        vec3 L = normalize(uLightDir);
+        float NdotL = max(dot(N, -L), 0.0f);
+        vec3 lambertian = NdotL * uLightColor;
+
+        // Use per-vertex material if available; sentinel -1 means use group material uniform
+        vec3 diffuse = (uHasVtxMaterials == 1 && fragVtxDiffuse.r >= 0.0f) ? fragVtxDiffuse : uMatDiffuse;
+        vec3 ambient = (uHasVtxMaterials == 1 && fragVtxAmbient.r >= 0.0f) ? fragVtxAmbient : uMatAmbient;
+
+        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + uMatEmissive);
+        litColor = vec4(clamp(lit, 0.0f, 1.0f), 1.0f);
+    }
+    else
+    {
+        // Legacy (CPU-lit vertex color) or debug modes (already computed in vertex shader)
+        litColor = fragmentColor;
+    }
+
 	// Output color = color of the texture at the specified UV
-    outFragColor = texture( uTextureSampler2, UV ) * fragmentColor;
+    outFragColor = texture( uTextureSampler2, UV ) * litColor;
     
     //Appy fog, if you inverse color in glsl mix function you have to
     //put 1.0 - fogFactor    

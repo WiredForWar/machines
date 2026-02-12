@@ -20,7 +20,10 @@
 #include "render/internal/colpack.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/devicei.hpp"
+#include "render/litxform.hpp"
 #include "render/device.hpp"
+
+#include "spdlog/spdlog.h"
 
 #include <iostream>
 #include <iomanip>
@@ -269,26 +272,84 @@ void RenIIlluminator::lightVertices(
         in.expandNormals(devImpl_->expandedNormals_.data(), nVertices);
         devImpl_->expandedNormalsCount_ = nVertices;
 
-        // Extract the primary directional light direction and color.
+        // Expand per-vertex material overrides into flat arrays.
+        // Vertices without per-vertex materials get a sentinel (-1) so the
+        // shader knows to use the group material uniform instead.
+        const RenIVertexMaterials* matMap = in.materialMap();
+        devImpl_->hasPerVertexMaterials_ = (matMap != nullptr);
+        if (matMap)
+        {
+            if (devImpl_->expandedVtxDiffuse_.size() < floatsNeeded)
+                devImpl_->expandedVtxDiffuse_.resize(floatsNeeded);
+            if (devImpl_->expandedVtxAmbient_.size() < floatsNeeded)
+                devImpl_->expandedVtxAmbient_.resize(floatsNeeded);
+
+            // Fill with sentinel (-1) meaning "use group material"
+            std::fill_n(devImpl_->expandedVtxDiffuse_.data(), floatsNeeded, -1.0f);
+            std::fill_n(devImpl_->expandedVtxAmbient_.data(), floatsNeeded, -1.0f);
+
+            // Apply global material transform if present
+            const auto* matXform = globalMaterialTransform();
+            RenMaterial transformedMat(RenMaterial::NON_SHARABLE);
+
+            for (auto it = matMap->begin(); it != matMap->end(); ++it)
+            {
+                const Ren::VertexIdx idx = (*it).index();
+                if (idx >= nVertices)
+                    continue;
+
+                const RenMaterial* pMat = &(*it).material();
+                if (matXform)
+                {
+                    matXform->transform(*pMat, &transformedMat);
+                    pMat = &transformedMat;
+                }
+
+                const RenColour& d = pMat->diffuse();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 0] = d.r();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 1] = d.g();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 2] = d.b();
+
+                const RenColour& a = pMat->ambient();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 0] = a.r();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 1] = a.g();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 2] = a.b();
+            }
+        }
+
+        // Sum all directional light contributions into a single direction/color pair.
+        // For multiple directional lights, we accumulate colors and use the last direction.
+        // Also sum uniform lights as additional ambient contribution.
+        const auto* colourXform = RenILight::globalColourTransform();
+
         devImpl_->gpuLightDir_ = glm::vec3(0.0f, -1.0f, 0.0f);
         devImpl_->gpuLightColor_ = glm::vec3(0.0f);
+        glm::vec3 extraAmbient(0.0f);
         for (const RenILight* light : lightsOn_)
         {
-            const auto* dirLight = dynamic_cast<const RenIDirectionalLight*>(light);
-            if (dirLight)
+            if (const auto* dirLight = dynamic_cast<const RenIDirectionalLight*>(light))
             {
                 const MexVec3& dir = dirLight->direction();
                 devImpl_->gpuLightDir_ = glm::vec3(dir.x(), dir.y(), dir.z());
-                const RenColour& col = dirLight->colour();
-                devImpl_->gpuLightColor_ = glm::vec3(col.r(), col.g(), col.b());
-                break;
+                RenColour col = dirLight->colour();
+                if (colourXform)
+                    colourXform->transform(col, Ren::DIRECTIONAL, &col);
+                devImpl_->gpuLightColor_ += glm::vec3(col.r(), col.g(), col.b());
+            }
+            else if (const auto* uniformLight = dynamic_cast<const RenIUniformLight*>(light))
+            {
+                RenColour col = uniformLight->colour();
+                if (colourXform)
+                    colourXform->transform(col, Ren::UNIFORM, &col);
+                extraAmbient += glm::vec3(col.r(), col.g(), col.b());
             }
         }
-        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b());
+        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b()) + extraAmbient;
     }
     else
     {
         devImpl_->expandedNormalsCount_ = 0;
+        devImpl_->hasPerVertexMaterials_ = false;
     }
 
     if (!disabled())
