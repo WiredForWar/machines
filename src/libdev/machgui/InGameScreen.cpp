@@ -107,6 +107,8 @@
 #include "system/registry.hpp"
 #include "system/vfs.hpp"
 
+#include "spdlog/spdlog.h"
+
 #include <algorithm>
 #include <stdio.h>
 
@@ -2435,6 +2437,7 @@ bool MachInGameScreen::rubberBandSelectionHappening() const
 
 void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstream *> savedStream)
 {
+    spdlog::info("Loading planet '{}'", planet);
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pContinentMap_);
     CB_DEPIMPL_AUTO(pWorldViewWindow_);
