@@ -97,6 +97,8 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(shadowRenderPass_);                                                                                \
     CB_DEPIMPL_AUTO(shadowFramebuffer_);                                                                               \
     CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
+    CB_DEPIMPL_AUTO(shadowNearFramebuffer_);                                                                           \
+    CB_DEPIMPL_AUTO(shadowNearDepthTexture_);                                                                          \
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glNormalBufferID_);                                                                                \
@@ -308,6 +310,8 @@ bool RenDevice::createGpuResources()
             "uHasVtxMaterials",
             "uNumPointLights",
             "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten", "uPointLightOmni",
+            "uShadowMap", "uLightSpaceMatrix", "uShadowEnabled", "uShadowStrength",
+            "uShadowMapNear", "uLightSpaceMatrixNear", "uShadowSplitDistance",
         };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
@@ -342,6 +346,13 @@ bool RenDevice::createGpuResources()
         standard_.pointLightRangeUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightRange");
         standard_.pointLightAttenUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightAtten");
         standard_.pointLightOmniUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightOmni");
+        standard_.shadowMapUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowMap");
+        standard_.lightSpaceMatrixUniform = backend_->pipelineUniformLocation(standard_.id, "uLightSpaceMatrix");
+        standard_.shadowEnabledUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowEnabled");
+        standard_.shadowStrengthUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowStrength");
+        standard_.shadowMapNearUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowMapNear");
+        standard_.lightSpaceMatrixNearUniform = backend_->pipelineUniformLocation(standard_.id, "uLightSpaceMatrixNear");
+        standard_.shadowSplitDistanceUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowSplitDistance");
     }
 
     glVertexDataBufferID_ = backend_->createBuffer();
@@ -421,14 +432,21 @@ bool RenDevice::createGpuResources()
         shadowRenderPass_ = backend_->createRenderPass(desc);
     }
 
-    // Shadow map resources
+    // Shadow map resources — two cascades: near (high-res) and far (lower-res).
     {
-        static constexpr int ShadowMapSize = 1024;
+        const int nearSz = RenIDeviceImpl::ShadowMapSizeNear;
+        shadowNearDepthTexture_ = backend_->createTexture2D();
+        backend_->textureStorage2D(shadowNearDepthTexture_, nearSz, nearSz, Ren::TextureFormat::Depth16);
+        backend_->textureSetMinMagFilter(shadowNearDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
+        backend_->textureSetWrap(shadowNearDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+        shadowNearFramebuffer_ = backend_->createFramebuffer();
+        backend_->framebufferAttachDepthTexture(shadowNearFramebuffer_, shadowNearDepthTexture_);
+
+        const int farSz = RenIDeviceImpl::ShadowMapSizeFar;
         shadowDepthTexture_ = backend_->createTexture2D();
-        backend_->textureStorage2D(shadowDepthTexture_, ShadowMapSize, ShadowMapSize, Ren::TextureFormat::Depth16);
+        backend_->textureStorage2D(shadowDepthTexture_, farSz, farSz, Ren::TextureFormat::Depth16);
         backend_->textureSetMinMagFilter(shadowDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
         backend_->textureSetWrap(shadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
-
         shadowFramebuffer_ = backend_->createFramebuffer();
         backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
     }
@@ -458,6 +476,8 @@ void RenDevice::releaseGpuResources()
 
     backend_->destroyTexture2D(shadowDepthTexture_);
     backend_->releaseFramebuffer(shadowFramebuffer_);
+    backend_->destroyTexture2D(shadowNearDepthTexture_);
+    backend_->releaseFramebuffer(shadowNearFramebuffer_);
 
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
@@ -737,6 +757,7 @@ void RenDevice::start3D(bool clearBack)
     RENDER_INDENT(3);
 
     pImpl_->rendering3D_ = true;
+    pImpl_->shadowMappingEnabled_ = false;
 
     if (pImpl_->stats_)
     {
@@ -2419,6 +2440,24 @@ void RenDevice::renderPrimitive(
             recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
             recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
         }
+
+        // Shadow map uniforms (cascaded shadow maps)
+        const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
+        recordSetUniform1i(standard_.shadowEnabledUniform, shadowEnabled ? 1 : 0);
+        if (shadowEnabled)
+        {
+            static const int ShadowFarTextureUnit = 1;
+            static const int ShadowNearTextureUnit = 2;
+            recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
+            recordSetUniform1i(standard_.shadowMapUniform, ShadowFarTextureUnit);
+            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixUniform, pImpl_->lightSpaceMatrix_);
+            recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
+            recordSetUniform1i(standard_.shadowMapNearUniform, ShadowNearTextureUnit);
+            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixNearUniform, pImpl_->lightSpaceMatrixNear_);
+            const float splitDist = pImpl_->shadowSplitDistance_;
+            recordSetUniform1fv(standard_.shadowSplitDistanceUniform, &splitDist, 1);
+            recordSetUniform1fv(standard_.shadowStrengthUniform, &pImpl_->shadowStrength_, 1);
+        }
     }
 
     // Bind our texture in Texture Unit 0
@@ -2520,6 +2559,24 @@ void RenDevice::renderIndexed(
             recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
             recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
             recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
+        }
+
+        // Shadow map uniforms (cascaded shadow maps)
+        const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
+        recordSetUniform1i(standard_.shadowEnabledUniform, shadowEnabled ? 1 : 0);
+        if (shadowEnabled)
+        {
+            static const int ShadowFarTextureUnit = 1;
+            static const int ShadowNearTextureUnit = 2;
+            recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
+            recordSetUniform1i(standard_.shadowMapUniform, ShadowFarTextureUnit);
+            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixUniform, pImpl_->lightSpaceMatrix_);
+            recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
+            recordSetUniform1i(standard_.shadowMapNearUniform, ShadowNearTextureUnit);
+            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixNearUniform, pImpl_->lightSpaceMatrixNear_);
+            const float splitDist = pImpl_->shadowSplitDistance_;
+            recordSetUniform1fv(standard_.shadowSplitDistanceUniform, &splitDist, 1);
+            recordSetUniform1fv(standard_.shadowStrengthUniform, &pImpl_->shadowStrength_, 1);
         }
     }
 
@@ -2664,4 +2721,119 @@ void RenDevice::renderIndexedScreenspace(
     recordCommand(std::move(command));
 
     disableVertexLayout(billboard_.posAttr, billboard_.uvAttr, billboard_.colAttr);
+}
+
+void RenDevice::beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpaceMatrix)
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+
+    if (cascade == ShadowCascade::Near)
+        pImpl_->lightSpaceMatrixNear_ = lightSpaceMatrix;
+    else
+        pImpl_->lightSpaceMatrix_ = lightSpaceMatrix;
+
+    pImpl_->shadowPassActive_ = true;
+    pImpl_->shadowMappingEnabled_ = true;
+
+    const bool isNear = (cascade == ShadowCascade::Near);
+    const int sz = isNear ? RenIDeviceImpl::ShadowMapSizeNear : RenIDeviceImpl::ShadowMapSizeFar;
+    const auto fb = isNear ? shadowNearFramebuffer_ : shadowFramebuffer_;
+
+    recordCommand(Ren::Command::setViewport(0, 0, sz, sz));
+    recordCommand(Ren::Command::beginRenderPass(shadowRenderPass_, fb));
+    recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::Less));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    // Disable face culling so single-sided geometry (terrain tiles) is
+    // written to the shadow map.  Use polygon-offset bias instead of
+    // front-face culling to avoid shadow acne.
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setPolygonOffsetFill(true));
+    recordCommand(Ren::Command::setPolygonOffset(0.5f, 1.0f));
+
+    recordCommand(Ren::Command::bindPipeline(shadowDepth_.id));
+    recordSetUniformMatrix4fv(shadowDepth_.lightSpaceMatrixUniform, lightSpaceMatrix);
+}
+
+void RenDevice::setShadowSplitDistance(float d)
+{
+    pImpl_->shadowSplitDistance_ = d;
+}
+
+void RenDevice::endShadowPass()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    pImpl_->shadowPassActive_ = false;
+
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setCullFace(true));
+    recordCommand(Ren::Command::endRenderPass());
+
+    // Restore the default framebuffer and main viewport.
+    recordCommand(Ren::Command::bindDefaultFramebuffer());
+    const auto sz = windowSize();
+    recordCommand(Ren::Command::setViewport(0, 0, sz.width, sz.height));
+}
+
+bool RenDevice::isShadowPassActive() const
+{
+    return pImpl_->shadowPassActive_;
+}
+
+bool RenDevice::isShadowMappingEnabled() const
+{
+    return pImpl_->shadowMappingEnabled_;
+}
+
+void RenDevice::shadowStrength(float s)
+{
+    pImpl_->shadowStrength_ = s;
+}
+
+float RenDevice::shadowStrength() const
+{
+    return pImpl_->shadowStrength_;
+}
+
+void RenDevice::renderShadowDepth(
+    const RenIVertex* vertices,
+    const size_t nVertices,
+    const Ren::VertexIdx* indices,
+    const size_t nIndices,
+    Ren::PrimitiveTopology topology)
+{
+    PRE(vertices);
+    PRE(indices);
+    PRE(pImpl_->shadowPassActive_);
+
+    CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+
+    recordSetUniformMatrix4fv(shadowDepth_.modelUniform, model_);
+
+    // Upload vertex data — only position is needed for depth.
+    recordCommand(Ren::Command::bufferData(
+        Ren::BufferTarget::Array,
+        glVertexDataBufferID_,
+        vertices,
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
+
+    recordEnableVertexAttribPointer(
+        shadowDepth_.posAttr, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+
+    // Index buffer
+    recordCommand(Ren::Command::bufferData(
+        Ren::BufferTarget::ElementArray,
+        glElementBufferID_,
+        indices,
+        nIndices * sizeof(unsigned short),
+        Ren::BufferUsage::StreamDraw));
+
+    recordCommand(Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices));
+
+    recordDisableVertexAttribPointer(shadowDepth_.posAttr);
 }

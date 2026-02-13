@@ -115,6 +115,7 @@ private:
     void executeCommand(const BackendCommandDrawIndexed& command);
     void executeCommand(const BackendCommandSetBlendState& command);
     void executeCommand(const BackendCommandSetCullFace& command);
+    void executeCommand(const BackendCommandSetCullFaceMode& command);
     void executeCommand(const BackendCommandSetPolygonOffsetFill& command);
     void executeCommand(const BackendCommandSetPolygonOffset& command);
     void executeCommand(const BackendCommandSetAlphaTest& command);
@@ -138,6 +139,7 @@ private:
     void executeCommand(const BackendCommandSetLineWidth& command);
     void executeCommand(const BackendCommandBeginRenderPass& command);
     void executeCommand(const BackendCommandEndRenderPass& command);
+    void executeCommand(const BackendCommandBindDefaultFramebuffer& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;

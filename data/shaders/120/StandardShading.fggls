@@ -34,6 +34,74 @@ uniform float uPointLightRange[MAX_POINT_LIGHTS];
 uniform vec3 uPointLightAtten[MAX_POINT_LIGHTS]; // (constant, linear, quadratic)
 uniform float uPointLightOmni[MAX_POINT_LIGHTS]; // 1.0 = omnidirectional, 0.0 = normal
 
+// Shadow mapping (cascaded shadow maps)
+uniform sampler2D uShadowMap;          // far cascade
+uniform mat4 uLightSpaceMatrix;        // far cascade
+uniform sampler2D uShadowMapNear;      // near cascade
+uniform mat4 uLightSpaceMatrixNear;    // near cascade
+uniform float uShadowSplitDistance;
+uniform int uShadowEnabled;
+uniform float uShadowStrength;
+
+float sampleShadowPCF(sampler2D shadowMap, vec3 projCoords, float bias, float texelSize)
+{
+    float currentDepth = projCoords.z;
+    float shadow = 0.0;
+    for (int x = -2; x <= 2; ++x)
+    {
+        for (int y = -2; y <= 2; ++y)
+        {
+            float pcfDepth = texture2D(shadowMap, projCoords.xy + vec2(float(x), float(y)) * texelSize).r;
+            shadow += (currentDepth - bias > pcfDepth) ? 1.0 : 0.0;
+        }
+    }
+    return shadow / 25.0;
+}
+
+float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
+{
+    float NdotL = dot(normal, -lightDir);
+
+    // Surfaces facing away from the light are in self-shadow by definition.
+    if (NdotL <= 0.0)
+        return 1.0;
+
+    // Smooth transition zone: for surfaces nearly edge-on to the light
+    // (NdotL 0..0.3), blend between full shadow and the shadow map result.
+    // This hides staircase artifacts on steep surfaces (e.g. cliff faces
+    // with a moving sun) by gradually fading out the shadow map influence.
+    float edgeFade = smoothstep(0.0, 0.3, NdotL);
+
+    // Slope-scaled depth bias.
+    float bias = max(0.008 * (1.0 - NdotL), 0.002);
+
+    float shadowSample = 0.0;
+
+    // Try near cascade first.
+    if (viewDist < uShadowSplitDistance)
+    {
+        vec4 lsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0);
+        vec3 projCoords = lsPos.xyz / lsPos.w * 0.5 + 0.5;
+        if (projCoords.x >= 0.0 && projCoords.x <= 1.0 &&
+            projCoords.y >= 0.0 && projCoords.y <= 1.0 &&
+            projCoords.z <= 1.0)
+        {
+            shadowSample = sampleShadowPCF(uShadowMapNear, projCoords, bias, 1.0 / 4096.0);
+            return mix(1.0, shadowSample, edgeFade);
+        }
+    }
+
+    // Fall back to far cascade.
+    vec4 lsPos = uLightSpaceMatrix * vec4(worldPos, 1.0);
+    vec3 projCoords = lsPos.xyz / lsPos.w * 0.5 + 0.5;
+    if (projCoords.x < 0.0 || projCoords.x > 1.0 ||
+        projCoords.y < 0.0 || projCoords.y > 1.0 ||
+        projCoords.z > 1.0)
+        return 0.0;
+    shadowSample = sampleShadowPCF(uShadowMap, projCoords, bias, 1.0 / 2048.0);
+    return mix(1.0, shadowSample, edgeFade);
+}
+
 void main() {
     
     // Distance used by fog
@@ -79,7 +147,11 @@ void main() {
 
         vec3 emissive = (uHasVtxMaterials == 1 && fragVtxEmissive.r >= 0.0) ? fragVtxEmissive : uMatEmissive;
 
-        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
+        float shadow = 0.0;
+        if (uShadowEnabled == 1)
+            shadow = calcShadow(fragWorldPos, N, L, dist) * uShadowStrength;
+
+        vec3 lit = uFilter * ((1.0 - shadow) * lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
         litColor = vec4(clamp(lit, 0.0, 1.0), 1.0);
     }
     else

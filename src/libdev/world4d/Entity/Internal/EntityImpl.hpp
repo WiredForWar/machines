@@ -81,6 +81,9 @@ public:
     // true iff this is a composite
     bool isComposite() const;
 
+    void setShadow(bool isIt);
+    bool isShadow() const;
+
     const W4dEntity::W4dEntities& children() const;
     // Exports list of child entities
     // Persistence
@@ -211,6 +214,7 @@ private:
     bool notScaled_ : 1{}; // True iff the lod 0 mesh has unity scale,
                          // and the entity has unity scale override.
     bool isComposite_ : 1{}; // True if this is a composite
+    bool isShadow_ : 1{}; // True if this is a static shadow entity (W4dShadow)
     bool isGarbage_ : 1{}; // True if added to the garbage collection list
     bool isOwnedByCountedPtr_ : 1{}; // True if a counted ptr references the entity.
                                      // In this case it must only be deleted when the

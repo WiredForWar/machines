@@ -217,6 +217,13 @@ private:
         Ren::UniformLocationId pointLightRangeUniform{};
         Ren::UniformLocationId pointLightAttenUniform{};
         Ren::UniformLocationId pointLightOmniUniform{};
+        Ren::UniformLocationId shadowMapUniform{};
+        Ren::UniformLocationId lightSpaceMatrixUniform{};
+        Ren::UniformLocationId shadowEnabledUniform{};
+        Ren::UniformLocationId shadowStrengthUniform{};
+        Ren::UniformLocationId shadowMapNearUniform{};
+        Ren::UniformLocationId lightSpaceMatrixNearUniform{};
+        Ren::UniformLocationId shadowSplitDistanceUniform{};
     };
 
     struct BillboardPipelineLocations
@@ -246,8 +253,13 @@ private:
     Ren::RenderPassId uiRenderPass_{};
     Ren::RenderPassId shadowRenderPass_{};
 
+    // Far cascade (covers full shadow range).
     Ren::FramebufferId shadowFramebuffer_{};
     Ren::BackendTextureHandle shadowDepthTexture_{};
+
+    // Near cascade (covers close range at higher resolution).
+    Ren::FramebufferId shadowNearFramebuffer_{};
+    Ren::BackendTextureHandle shadowNearDepthTexture_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
     Ren::BufferId glVertexDataBufferID_{};
@@ -287,6 +299,16 @@ private:
     std::vector<float> expandedVtxAmbient_{};
     std::vector<float> expandedVtxEmissive_{};
     bool hasPerVertexMaterials_{};
+
+    // Shadow mapping state (cascaded shadow maps).
+    static constexpr int ShadowMapSizeNear = 4096;
+    static constexpr int ShadowMapSizeFar = 2048;
+    glm::mat4 lightSpaceMatrix_{};     // far cascade
+    glm::mat4 lightSpaceMatrixNear_{}; // near cascade
+    float shadowSplitDistance_{200.0f}; // view-space distance for cascade selection
+    bool shadowPassActive_{};
+    bool shadowMappingEnabled_{};
+    float shadowStrength_{1.0f};
 
     DevTimer frameTimer_;
 

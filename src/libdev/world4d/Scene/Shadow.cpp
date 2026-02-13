@@ -8,6 +8,7 @@
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Entity/Generic.hpp"
 
+#include "world4d/Entity/Internal/EntityImpl.hpp"
 #include "world4d/Internal/Complexity.hpp"
 
 #include "render/ColourHSV.hpp"
@@ -36,12 +37,14 @@ W4dShadow::W4dShadow(W4dEntity* pParent, const W4dTransform3d& localXform)
 {
     TEST_INVARIANT;
     doNotLight(true);
+    entityImpl().setShadow(true);
 }
 
 W4dShadow::W4dShadow(const W4dShadow& copyMe, W4dEntity* pParent)
     : W4dEntity(copyMe, pParent, copyMe.localTransform())
 {
     doNotLight(true);
+    entityImpl().setShadow(true);
 }
 
 W4dShadow::~W4dShadow()
