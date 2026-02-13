@@ -98,6 +98,7 @@ inline constexpr bool cDemoVersion =
 #include "sound/SampleParameters.hpp"
 #include "mathex/Transform3d.hpp"
 #include "sim/Manager.hpp"
+#include "render/RenderVariables.hpp"
 #include "machphys/Marker.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machlog/Races.hpp"
@@ -1851,8 +1852,15 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
             pImpl_->pendingScreenShot_ = true;
         }
 
+        static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
+        if (toggleRendering.matches(e.keyWithMods()))
+        {
+            Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
+            processed = true;
+        }
+
         // Do we have a control with focus that can respond to the key press?
-        processed = doHandleFocusCapableControls(e);
+        processed = processed || doHandleFocusCapableControls(e);
 
         // Are we dismissing a message box?
         if (! processed && pMsgBox_)
