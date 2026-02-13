@@ -76,5 +76,6 @@ Variable<LightingMode> gfxLightingMode("Options/Graphics Complexity/Lighting Mod
 Variable<ShadowQuality> gfxShadowQuality("Options/Graphics Complexity/Shadow Quality", ShadowQuality::Static);
 Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false);
 Variable<FogMode> gfxFogMode("Options/Graphics Complexity/Fog Mode", FogMode::Linear);
+Variable<bool> gfxModernRendering("Options/Graphics Complexity/Modern Rendering", false);
 
 } // namespace Config

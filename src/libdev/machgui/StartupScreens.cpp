@@ -86,6 +86,7 @@ inline constexpr bool cDemoVersion =
 #include "world4d/soundman.hpp"
 #include "system/memcaps.hpp"
 #include "system/pathname.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/cursor2d.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
@@ -1743,8 +1744,15 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
             Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
         }
 
+        static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
+        if (toggleRendering.matches(e.keyWithMods()))
+        {
+            Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
+            processed = true;
+        }
+
         // Do we have a control with focus that can respond to the key press?
-        processed = doHandleFocusCapableControls(e);
+        processed = processed || doHandleFocusCapableControls(e);
 
         // Are we dismissing a message box?
         if (! processed && pMsgBox_)
