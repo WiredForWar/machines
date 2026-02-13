@@ -67,6 +67,17 @@ struct BackendCommandSetCullFace
     bool enabled{};
 };
 
+enum class BackendCullFaceMode
+{
+    Back,
+    Front,
+};
+
+struct BackendCommandSetCullFaceMode
+{
+    BackendCullFaceMode mode{BackendCullFaceMode::Back};
+};
+
 struct BackendCommandSetPolygonOffsetFill
 {
     bool enabled{};
@@ -212,6 +223,10 @@ struct BackendCommandEndRenderPass
 {
 };
 
+struct BackendCommandBindDefaultFramebuffer
+{
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -220,6 +235,7 @@ using BackendCommand = std::variant<
     BackendCommandDrawIndexed,
     BackendCommandSetBlendState,
     BackendCommandSetCullFace,
+    BackendCommandSetCullFaceMode,
     BackendCommandSetPolygonOffsetFill,
     BackendCommandSetPolygonOffset,
     BackendCommandSetAlphaTest,
@@ -242,6 +258,7 @@ using BackendCommand = std::variant<
     BackendCommandEndRenderToTexture,
     BackendCommandSetLineWidth,
     BackendCommandBeginRenderPass,
+    BackendCommandBindDefaultFramebuffer,
     BackendCommandEndRenderPass>;
 
 namespace Command
@@ -252,9 +269,19 @@ inline BackendCommand clear(RenColour colour, std::uint32_t mask)
     return BackendCommandClear{ colour.r(), colour.g(), colour.b(), colour.a(), mask };
 }
 
+inline BackendCommand bindDefaultFramebuffer()
+{
+    return BackendCommandBindDefaultFramebuffer{};
+}
+
 inline BackendCommand setViewport(Size size)
 {
     return BackendCommandSetViewport{ 0, 0, size.width, size.height };
+}
+
+inline BackendCommand setViewport(int x, int y, int width, int height)
+{
+    return BackendCommandSetViewport{ x, y, width, height };
 }
 
 inline BackendCommand setMultisample(bool enabled)
@@ -281,6 +308,11 @@ inline BackendCommand setBlendStateEnabled(BackendBlendFactor srcFactor, Backend
 inline BackendCommand setCullFace(bool enabled)
 {
     return BackendCommandSetCullFace{enabled};
+}
+
+inline BackendCommand setCullFaceMode(BackendCullFaceMode mode)
+{
+    return BackendCommandSetCullFaceMode{mode};
 }
 
 inline BackendCommand setPolygonOffsetFill(bool enabled)

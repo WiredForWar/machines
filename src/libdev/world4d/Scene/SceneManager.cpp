@@ -24,6 +24,7 @@
 #include "render/Stats.hpp"
 #include "render/Colour.hpp"
 #include "render/LightingMode.hpp"
+#include "render/ShadowQuality.hpp"
 #include "render/RenderVariables.hpp"
 
 #include "world4d/Entity/Root.hpp"
@@ -36,6 +37,8 @@
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Internal/Complexity.hpp"
 #include "world4d/Scene/Internal/LightImpl.hpp"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 // #define DO_CULL_TRACING
 #ifdef DO_CULL_TRACING
@@ -290,6 +293,86 @@ void W4dSceneManager::render()
     //  device_->out() << "Distance far clipping plane: " << currentCamera()->yonClipDistance() << " m" << std::endl;
 
     device_->start3D(clearBg_);
+
+    // Shadow depth pass: render scene from the light's perspective into the shadow map.
+    // Must happen after start3D() (rendering state is initialised) but before the main
+    // geometry domainRender() so that the shadow map is ready for sampling.
+    const bool gpuLighting = Config::gfxLightingMode.get() != LightingMode::Legacy;
+    const bool wantShadows = gpuLighting && Config::gfxShadowQuality.get() != ShadowQuality::Static;
+    if (wantShadows)
+    {
+        // Find the first global directional light for the shadow caster.
+        W4dDirectionalLight* shadowLight{};
+        for (auto* light : lights_)
+        {
+            if (light->isGlobal() && light->isOn())
+            {
+                shadowLight = dynamic_cast<W4dDirectionalLight*>(light);
+                if (shadowLight)
+                    break;
+            }
+        }
+
+        if (shadowLight)
+        {
+            const MexVec3& dir = shadowLight->direction();
+            const glm::vec3 lightDir(dir.x(), dir.y(), dir.z());
+
+            const MexPoint3d camPos = currentCamera_->globalTransform().position();
+            const MexPoint3d frustumCenter = shadowFrustumCenter();
+            const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
+            const glm::vec3 center(frustumCenter.x(), frustumCenter.y(), frustumCenter.z());
+
+            // Dynamic cascade extents based on camera height (zoom level).
+            // Low cameras (z ≈ 2..5) get tight cascades; zenith (z ≈ 20..250)
+            // gets progressively larger ones.
+            const float camZ = static_cast<float>(camPos.z());
+            const float heightT = std::clamp((camZ - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+            const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
+            const float farExtent = glm::mix(80.0f, 300.0f, heightT);
+
+            const glm::vec3 up = (std::abs(glm::dot(glm::normalize(lightDir), glm::vec3(0, 0, 1))) > 0.99f)
+                ? glm::vec3(0, 1, 0)
+                : glm::vec3(0, 0, 1);
+
+            // The shader uses view-space distance (length(viewSpace)) to pick
+            // the cascade.  Compute the view-space distance from the camera to
+            // the edge of the near cascade frustum so the split is consistent.
+            const float distToCenter = glm::length(center - eye);
+            const float splitViewDist = distToCenter + nearExtent;
+            device_->setShadowSplitDistance(splitViewDist);
+
+            // --- Near cascade: high-resolution shadows for close objects ---
+            {
+                const glm::vec3 nearLightPos = center - lightDir * (nearExtent * 2.0f);
+                const glm::mat4 nearView = glm::lookAt(nearLightPos, center, up);
+                const glm::mat4 nearProj = glm::ortho(
+                    -nearExtent, nearExtent,
+                    -nearExtent, nearExtent,
+                    1.0f, nearExtent * 5.0f);
+                const glm::mat4 nearMatrix = nearProj * nearView;
+
+                device_->beginShadowPass(RenDevice::ShadowCascade::Near, nearMatrix);
+                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                device_->endShadowPass();
+            }
+
+            // --- Far cascade: lower-resolution shadows for distant objects ---
+            {
+                const glm::vec3 farLightPos = center - lightDir * (farExtent * 2.0f);
+                const glm::mat4 farView = glm::lookAt(farLightPos, center, up);
+                const glm::mat4 farProj = glm::ortho(
+                    -farExtent, farExtent,
+                    -farExtent, farExtent,
+                    1.0f, farExtent * 2.5f);
+                const glm::mat4 farMatrix = farProj * farView;
+
+                device_->beginShadowPass(RenDevice::ShadowCascade::Far, farMatrix);
+                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                device_->endShadowPass();
+            }
+        }
+    }
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
     currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
@@ -850,6 +933,77 @@ bool W4dSceneManager::dynamicLightsEnabled() const
 void W4dSceneManager::dynamicLightsEnabled(bool enabled)
 {
     pImpl_->dynamicLightsEnabled_ = enabled;
+}
+
+MexPoint3d W4dSceneManager::shadowFrustumCenter() const
+{
+    CB_DEPIMPL_AUTO(currentCamera_);
+
+    const MexTransform3d& camXform = currentCamera_->globalTransform();
+    const MexPoint3d camPos = camXform.position();
+    const MexVec3 camFwd = camXform.xBasis();
+    const MexVec3 camUpBasis = camXform.yBasis();
+    const MexVec3 camRightBasis = camXform.zBasis();
+
+    const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
+    const glm::vec3 fwd(camFwd.x(), camFwd.y(), camFwd.z());
+    const glm::vec3 camUp(camUpBasis.x(), camUpBasis.y(), camUpBasis.z());
+    const glm::vec3 camRight(camRightBasis.x(), camRightBasis.y(), camRightBasis.z());
+
+    const double verticalFov = currentCamera_->verticalFOVAngle();
+    const double aspect = currentCamera_->horizontalFOVAngle() / verticalFov;
+    const float tanHalfVFov = static_cast<float>(std::tan(verticalFov * 0.5));
+    const float tanHalfHFov = tanHalfVFov * static_cast<float>(aspect);
+
+    const float camZ = static_cast<float>(camPos.z());
+    const float maxGroundDist = camZ + 200.0f;
+
+    // Sample: center, right edge, top edge, bottom edge.
+    const std::array<glm::vec2, 4> sampleOffsets{{
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {0.0f, 1.0f},
+        {0.0f, -1.0f},
+    }};
+
+    float minGroundDist = std::numeric_limits<float>::max();
+    glm::vec3 groundHit = eye;
+    for (const auto& uv : sampleOffsets)
+    {
+        const glm::vec3 rayDir = glm::normalize(
+            fwd + camRight * (uv.x * tanHalfHFov) + camUp * (uv.y * tanHalfVFov));
+
+        if (rayDir.z >= -0.01f)
+            continue;
+
+        const float tHit = -eye.z / rayDir.z;
+        if (tHit <= 0.0f)
+            continue;
+
+        const float tClamped = std::min(tHit, maxGroundDist);
+        const glm::vec3 hit = eye + rayDir * tClamped;
+        const float dist = glm::length(hit - eye);
+        if (dist < minGroundDist)
+        {
+            minGroundDist = dist;
+            groundHit = hit;
+        }
+    }
+
+    // Fallback: if no frustum ray hits the ground (looking straight up),
+    // place the center slightly ahead on the ground.
+    glm::vec3 center;
+    if (minGroundDist < std::numeric_limits<float>::max())
+    {
+        center = groundHit;
+    }
+    else
+    {
+        const glm::vec3 fwdHoriz = glm::normalize(glm::vec3(fwd.x, fwd.y, 0.0f));
+        center = glm::vec3(eye.x, eye.y, 0.0f) + fwdHoriz * std::min(30.0f, maxGroundDist);
+    }
+
+    return MexPoint3d(center.x, center.y, center.z);
 }
 
 /* End SCENEMGR.CPP *************************************************/

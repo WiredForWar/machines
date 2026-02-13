@@ -86,6 +86,13 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
     RenDevice* device = RenDevice::current();
     W4dEntityImpl& nodeImpl = node->entityImpl();
 
+    // Skip static shadow meshes when real-time shadow mapping is active.
+    if (nodeImpl.isShadow() && device->isShadowMappingEnabled())
+        return;
+
+    if (nodeImpl.doNotLight() && device->isShadowPassActive())
+        return;
+
     // Has the node been rendered by the given camera already on the current
     // render pass?  If so, don't repeatedly render this entity.
     if (nodeImpl.passId() == renderPassId())
@@ -194,6 +201,13 @@ void W4dCamera::renderSubTree(W4dEntity* node)
 
     RenDevice* device = RenDevice::current();
     W4dEntityImpl& nodeImpl = node->entityImpl();
+
+    // Skip static shadow meshes when real-time shadow mapping is active.
+    if (nodeImpl.isShadow() && device->isShadowMappingEnabled())
+        return;
+
+    if (nodeImpl.doNotLight() && device->isShadowPassActive())
+        return;
 
     // Has the node been rendered by the given camera already on the current
     // render pass?  If so, don't repeatedly render this entity.

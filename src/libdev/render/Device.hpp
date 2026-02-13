@@ -391,6 +391,22 @@ public:
     const glm::mat4& getProjectionMatrix() { return projection_; }
 
     const glm::mat4& getViewMatrix() { return view_; }
+
+    // Shadow mapping: render scene depth from the light's perspective.
+    enum class ShadowCascade { Near, Far };
+    void beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpaceMatrix);
+    void endShadowPass();
+    void setShadowSplitDistance(float d);
+    bool isShadowPassActive() const;
+    bool isShadowMappingEnabled() const;
+    void shadowStrength(float s);
+    float shadowStrength() const;
+    void renderShadowDepth(
+        const RenIVertex* vertices,
+        size_t nVertices,
+        const Ren::VertexIdx* indices,
+        size_t nIndices,
+        Ren::PrimitiveTopology topology);
     void renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH);
 
     // private:
