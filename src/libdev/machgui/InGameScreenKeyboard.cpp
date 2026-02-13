@@ -28,6 +28,7 @@
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "render/SurfaceManager.hpp"
+#include "render/RenderVariables.hpp"
 #include "machlog/Messaging/Network.hpp"
 
 #include "system/ConfigVariables.hpp"
@@ -169,6 +170,13 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             if (e.state() == Gui::PRESSED && screenshotTrigger.matches(e.keyWithMods()))
             {
                 initiateScreenShot();
+                processed = true;
+            }
+
+            static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
+            if (e.state() == Gui::PRESSED && toggleRendering.matches(e.keyWithMods()))
+            {
+                Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
                 processed = true;
             }
             break;

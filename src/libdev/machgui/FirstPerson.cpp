@@ -19,6 +19,7 @@
 #include "envirnmt/PlanetEnvironment.hpp"
 #include "render/Device.hpp"
 #include "render/Camera.hpp"
+#include "render/RenderVariables.hpp"
 #include "gui/gui.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
@@ -1288,6 +1289,7 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
         }
     }
 
+    static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
     while (!finished && !processed)
     {
         switch (count)
@@ -1391,6 +1393,12 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
                     processed = true;
                 }
             }
+            if (event.state() == Gui::PRESSED && toggleRendering.matches(event.keyWithMods()))
+            {
+                Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
+                processed = true;
+            }
+            break;
         default:
             finished = true;
             break;
