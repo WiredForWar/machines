@@ -12,6 +12,7 @@
 #include <memory>
 
 class BaseLogBuffer;
+class MexPoint3d;
 class RenColour;
 class RenDevice;
 class W4dEntity;
@@ -158,6 +159,11 @@ private:
     bool shakeCamera() const;
     void cancelCameraShake();
     void updateLights();
+
+    // Estimate the closest visible ground point by intersecting the
+    // camera's view-frustum edge rays with the ground plane (z=0).
+    // Used to center the shadow map cascades on visible terrain.
+    MexPoint3d shadowFrustumCenter() const;
 
     W4dSceneManagerImpl* pImpl_;
 

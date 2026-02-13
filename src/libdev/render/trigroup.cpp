@@ -109,6 +109,15 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
     PRE((indices_.size() % 3) == 0);
 
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
+
+    // Shadow depth pass: only write position to the depth buffer.
+    if (RenDevice::current()->isShadowPassActive())
+    {
+        RenDevice::current()->renderShadowDepth(
+            &vtx.front(), nIndicesUsed_, &(indices_.front()), indices_.size(), Ren::PrimitiveTopology::Triangles);
+        return;
+    }
+
     RenIIlluminator* ill = devImpl->illuminator();
 
     devImpl->setMaterialHandles(mat);
