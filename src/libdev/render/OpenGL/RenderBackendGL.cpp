@@ -850,6 +850,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
     }
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& command)
+{
+    glCullFace(command.mode == BackendCullFaceMode::Front ? GL_FRONT : GL_BACK);
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
 {
     if (command.enabled)
@@ -1044,6 +1049,8 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& comman
     // Bind framebuffer (0 = default framebuffer)
     if (command.framebufferId != 0)
         bindFramebuffer(command.framebufferId);
+    else
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Apply load operations
     GLbitfield clearMask{};
@@ -1076,6 +1083,11 @@ void RenderBackendGL::executeCommand(const BackendCommandEndRenderPass& /*comman
 {
     // In GL 2.1, ending a render pass is a no-op.
     // In Vulkan, this would end the VkRenderPass.
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindDefaultFramebuffer& /*command*/)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
