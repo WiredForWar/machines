@@ -13,5 +13,6 @@ extern Variable<LightingMode> gfxLightingMode;
 extern Variable<ShadowQuality> gfxShadowQuality;
 extern Variable<bool> gfxToneMapping;
 extern Variable<FogMode> gfxFogMode;
+extern Variable<bool> gfxModernRendering;
 
 } // namespace Config

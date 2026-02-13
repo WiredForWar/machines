@@ -4,6 +4,10 @@
 
 #include "base/IProgressReporter.hpp"
 #include "base/diag.hpp"
+#include "render/FogMode.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
+#include "render/ShadowQuality.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"
@@ -300,6 +304,36 @@ bool SDLApp::clientStartup()
     manager_->pDevice()->debugTextCoords(204, 0);
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
+
+    Config::gfxModernRendering
+        .addListener([]
+    {
+        if (Config::gfxModernRendering.get() == true)
+        {
+            Config::gfxLightingMode.set(LightingMode::PerPixel);
+            Config::gfxShadowQuality.set(ShadowQuality::Soft);
+            Config::gfxFogMode.set(FogMode::Exponential2);
+        }
+        else
+        {
+            Config::gfxLightingMode.set(LightingMode::Legacy);
+            Config::gfxShadowQuality.set(ShadowQuality::Static);
+            Config::gfxFogMode.set(FogMode::Linear);
+        }
+
+        spdlog::info(
+            "Render settings: LightingMode::{}, ShadowQuality::{}, Fog: {}",
+            toString(Config::gfxLightingMode.get()),
+            toString(Config::gfxShadowQuality.get()),
+            toString(Config::gfxFogMode.get()));
+    }).release();
+
+    Config::gfxModernRendering.set(false);
+
+    Config::gfxLightingMode.set(LightingMode::Legacy);
+    Config::gfxShadowQuality.set(ShadowQuality::Static);
+    Config::gfxFogMode.set(FogMode::Linear);
+    Config::gfxToneMapping.set(false);
 
     vsyncHandle_ = Config::gfxVSyncMode.addListener([this]() { setVSyncOptions(); });
     vsyncHandle_->trigger();
