@@ -406,11 +406,12 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
     const int x = pos.first;
     const int y = pos.second;
 
-    // Get the states of the modifiers keys at the time of the event.
-    const Uint8* kStates = SDL_GetKeyboardState(nullptr);
-    const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
-    const bool ctrl = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
-    const bool alt = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];
+    // Use the event's own modifier state rather than SDL_GetKeyboardState which
+    // can carry stale modifier flags from before the game window gained focus.
+    const Uint16 mod = event->key.keysym.mod;
+    const bool shift = (mod & (KMOD_LSHIFT | KMOD_RSHIFT)) != 0;
+    const bool ctrl = (mod & (KMOD_LCTRL | KMOD_RCTRL)) != 0;
+    const bool alt = (mod & (KMOD_LALT | KMOD_RALT)) != 0;
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
