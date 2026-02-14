@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "pertest/class12.hpp"
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 
 PER_DEFINE_PERSISTENT(Class12);
 

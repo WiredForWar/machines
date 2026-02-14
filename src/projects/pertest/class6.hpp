@@ -6,7 +6,7 @@
 #define _PER_CLASS6_HPP
 
 #include "base/Persistence.hpp"
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 
 template <class T> class Class6
 {

@@ -1,5 +1,5 @@
 #include "pertest/class2.hpp"
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 #include "pertest/per.hpp"
 
 Class2::Class2()

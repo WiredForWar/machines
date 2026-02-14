@@ -116,7 +116,7 @@ protected:
 };
 
 #ifdef _INLINE
-#include "sample.ipp"
+#include "Sample.ipp"
 #endif
 
 ////////////////////////////////////////////////////////////

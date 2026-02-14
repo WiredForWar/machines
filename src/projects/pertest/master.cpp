@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 
 #include "pertest/per.hpp"
 
 #include "pertest/master.hpp"
 
-// #include "pertest/pvector.hpp"
+// #include "pertest/PtrVector.hpp"
 
 PER_DEFINE_PERSISTENT(Master);
 

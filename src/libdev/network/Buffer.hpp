@@ -7,7 +7,7 @@
 #define _UTL_BUFFER_HPP
 
 #include "base/base.hpp"
-// #include "stdlib/algorith.hpp"
+// #include "stdlib/Algorithm.hpp"
 #include <cstring>
 
 template <class BITWISE> class UtlBuffer

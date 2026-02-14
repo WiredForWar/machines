@@ -11,9 +11,9 @@
 #include "ctl/testh/testfva.hpp"
 #include "ctl/testh/testmva.hpp"
 #include "ctl/testh/clargs.hpp"
-#include "ctl/testh/random.hpp"
+#include "ctl/testh/Random.hpp"
 
-#include "stdlib/string.hpp"
+#include "stdlib/String.hpp"
 
 void testMap();
 void testPair();

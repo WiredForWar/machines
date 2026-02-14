@@ -9,7 +9,7 @@
 
 #include "ctl/testh/testmvec.hpp"
 #include "ctl/testh/soaktest.hpp"
-#include "ctl/testh/random.hpp"
+#include "ctl/testh/Random.hpp"
 #include "ctl/testh/clargs.hpp"
 
 //  static

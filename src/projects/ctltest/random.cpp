@@ -3,10 +3,10 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved
  */
 
-#include "ctltest/random.hpp"
+#include "ctltest/Random.hpp"
 
 #ifndef _INLINE
-#include "ctltest/random.ipp"
+#include "ctltest/Random.ipp"
 #endif
 
 ///////////////////////////////////

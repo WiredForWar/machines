@@ -1,5 +1,5 @@
 #include "pertest/class3.hpp"
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 #include "pertest/per.hpp"
 
 PER_DEFINE_PERSISTENT(Class3);

@@ -12,7 +12,7 @@
 #include "device/ButtonEvent.hpp"
 #include "ctl/CountedPtr.hpp"
 #include "ctl/PtrVector.hpp"
-#include "stdlib/string.hpp"
+#include "stdlib/String.hpp"
 
 class DevButtonEvent;
 class PhysFlyControl;

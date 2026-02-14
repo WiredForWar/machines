@@ -5,7 +5,7 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "stdlib/string.hpp"
+#include "stdlib/String.hpp"
 
 #include "ctl/Vector.hpp"
 #include "ctl/List.hpp"

@@ -103,6 +103,9 @@ private:
     void executeCommand(const BackendCommand& command);
     void executeCommand(const BackendCommandSetViewport& command);
 
+    void flushPendingDeletes();
+    std::size_t activeCommandBufferCount() const;
+
     std::vector<GLuint> programs_{};
     std::vector<GLuint> buffers_{};
     std::vector<GLuint> framebuffers_{};
@@ -110,6 +113,7 @@ private:
     std::vector<CommandBuffer> commandBuffers_{};
 
     GLuint fallbackTexture2D_{};
+    std::vector<GLuint> pendingTextureDeletes_{};
     bool initialized_{};
 
     SDL_Window* window_{};

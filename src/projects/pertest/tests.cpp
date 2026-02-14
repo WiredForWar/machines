@@ -1,7 +1,7 @@
 #include "base/base.hpp"
 #include "base/Persistence.hpp"
 #include "ctl/MinMemoryVector.hpp"
-#include "stdlib/string.hpp"
+#include "stdlib/String.hpp"
 // #include "render/internal/TriangleGroup.hpp"
 #include "pertest/class1.hpp"
 #include "machphys/ObjectFactory.hpp"

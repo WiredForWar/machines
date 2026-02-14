@@ -1,7 +1,7 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "ctl/Map.hpp"
-#include "string.hpp";
+#include "String.hpp";
 
 W4dDummyFunction3()
 {

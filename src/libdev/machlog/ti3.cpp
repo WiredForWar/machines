@@ -13,7 +13,7 @@
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 #include "machlog/Messaging/VoiceMailData.hpp"
-#include "string.hpp"
+#include "String.hpp"
 
 class MachOperation;
 class MachLogMachine;

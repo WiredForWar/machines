@@ -12,7 +12,7 @@
 #ifndef _PERSIST_CONTAIN_HPP
 #define _PERSIST_CONTAIN_HPP
 
-// #include "pertest/pvector.hpp"
+// #include "pertest/PtrVector.hpp"
 
 #include "base/base.hpp"
 #include "base/Persistence.hpp"

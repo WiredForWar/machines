@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "pertest/persist.hpp"
-#include "pertest/contain.hpp"
+#include "pertest/Persistence.hpp"
+#include "pertest/Container.hpp"
 #include "pertest/per.hpp"
 
 PER_DEFINE_PERSISTENT(Containers);

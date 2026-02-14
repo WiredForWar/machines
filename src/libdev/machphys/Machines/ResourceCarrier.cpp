@@ -26,7 +26,7 @@
 #include "machphys/Effects/Scavenger.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-// I don't know why ctl/list.hpp must be included after the other #include
+// I don't know why ctl/List.hpp must be included after the other #include
 // ti avoid instantiation errors
 #include "ctl/List.hpp"
 

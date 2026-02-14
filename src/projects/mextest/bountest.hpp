@@ -20,7 +20,7 @@
 #include "mathex/AlignedBox3d.hpp"
 // #include "mathex/ubox3d.hpp"
 #include "mathex/Plane3d.hpp"
-#include "mextest/random.hpp"
+#include "mextest/Random.hpp"
 // #include "mathex/intdata.hpp"
 
 ////////////////////////////////

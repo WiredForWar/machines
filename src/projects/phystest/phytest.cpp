@@ -11,7 +11,7 @@
 #include "ctl/Vector.hpp"
 #include "ctl/CountedPtr.hpp"
 #include "base/base.hpp"
-// #include "stdlib/algorith.hpp"
+// #include "stdlib/Algorithm.hpp"
 #include "mathex/AlignedBox3d.hpp"
 #include "mathex/Transform3d.hpp"
 #include "mathex/EulerAngles.hpp"

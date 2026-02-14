@@ -9,7 +9,7 @@
 #include "base/Persistence.hpp"
 #include "pertest/class1.hpp"
 #include "ctl/CountedPtr.hpp"
-#include "stdlib/string.hpp"
+#include "stdlib/String.hpp"
 
 class Class2
 {
