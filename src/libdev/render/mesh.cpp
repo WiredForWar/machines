@@ -2134,9 +2134,9 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
             renMat.texture(renTex);
         }
 
-        float r = material->mEmissive.r;
-        float g = material->mEmissive.g;
-        const short shortPower = _STATIC_CAST(short, material->mSpecularExponent);
+        float r = material->mEmissiveCtrl.r;
+        float g = material->mEmissiveCtrl.g;
+        const short shortPower = _STATIC_CAST(short, material->mSortPriority);
 
         // Coplanar and special alpha sorting aren't actually mutually exclusive.
         // Fortunately the one current example where we need both (shadows)
@@ -2185,9 +2185,8 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
 
         RenIDistinctGroup* triangleGroup = new RenIDistinctGroup(renMat);
 
-        // Use the material's specular red component to indicate that
-        // a triangle group should not be backface culled.
-        if (material->mSpecular.r >= 6.0)
+        // mFlags.r >= 6.0 disables backface culling for this triangle group.
+        if (material->mFlags.r >= 6.0)
             triangleGroup->backFace(false);
 
         triangles_.push_back(triangleGroup);

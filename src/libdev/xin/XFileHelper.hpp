@@ -72,15 +72,19 @@ struct TexEntry
     }
 };
 
-/** Helper structure representing a XFile material */
+/** Helper structure representing a XFile material.
+ *  Note: the original .x format fields "specularExponent", "specular" and
+ *  "emissive" were repurposed by the Charybdis artists/engine for sorting
+ *  priorities, rendering flags and emissive control.  The field names below
+ *  reflect their actual in-game meaning rather than the .x format names. */
 struct Material
 {
     std::string mName;
     bool mIsReference{}; // if true, mName holds a name by which the actual material can be found in the material list
     XFile::Color4D mDiffuse;
-    float mSpecularExponent{};
-    XFile::Color3D mSpecular;
-    XFile::Color3D mEmissive;
+    float mSortPriority{}; ///< .x "specularExponent" — coplanar / alpha sort priority value
+    XFile::Color3D mFlags; ///< .x "specular" — r >= 6.0 disables backface culling; g,b unused
+    XFile::Color3D mEmissiveCtrl; ///< .x "emissive" — r: sort-mode selector (0–4), g: emissive intensity multiplier, b: unused
     std::vector<TexEntry> mTextures;
     size_t sceneIndex{SIZE_MAX}; ///< the index under which it was stored in the scene's material list
 };

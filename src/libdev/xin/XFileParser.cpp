@@ -638,9 +638,9 @@ void XFileParser::ParseDataObjectMaterial(XFile::Material* pMaterial)
 
     // read material values
     pMaterial->mDiffuse = ReadRGBA();
-    pMaterial->mSpecularExponent = ReadFloat();
-    pMaterial->mSpecular = ReadRGB();
-    pMaterial->mEmissive = ReadRGB();
+    pMaterial->mSortPriority = ReadFloat(); // .x "specularExponent" repurposed as sort priority
+    pMaterial->mFlags = ReadRGB(); // .x "specular" repurposed as rendering flags
+    pMaterial->mEmissiveCtrl = ReadRGB(); // .x "emissive" repurposed as sort-mode + emissive multiplier
 
     // read other data objects
     bool running = true;
