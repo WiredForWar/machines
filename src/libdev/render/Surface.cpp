@@ -468,7 +468,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
     }
 
     RenDevice* dev = RenDevice::current();
-    glLineWidth(static_cast<float>(thickness));
+    dev->recordCommand(Ren::Command::setLineWidth(static_cast<float>(thickness)));
     if (internals() && internals()->isOffscreen())
     {
         dev->renderToTextureMode(handle(), width(), height());
@@ -477,7 +477,7 @@ void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickn
     }
     else
         dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
-    glLineWidth(1.0);
+    dev->recordCommand(Ren::Command::setLineWidth(1.0f));
 }
 
 int RenSurface::getDefaultFontSize()
