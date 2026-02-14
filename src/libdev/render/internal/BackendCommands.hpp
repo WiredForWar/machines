@@ -3,6 +3,7 @@
 #include "render/PrimitiveTopology.hpp"
 #include "render/colour.hpp"
 #include "render/internal/BackendTypes.hpp"
+#include "render/internal/PipelineSpec.hpp"
 #include "render/render.hpp"
 
 #include <array>
@@ -139,6 +140,11 @@ struct BackendCommandSetProgram
     ProgramId programId{};
 };
 
+struct BackendCommandBindPipeline
+{
+    PipelineId pipelineId{};
+};
+
 struct BackendCommandBindTexture2D
 {
     BackendTextureHandle textureHandle{};
@@ -196,6 +202,7 @@ using BackendCommand = std::variant<
     BackendCommandSetUniformMatrix4fv,
     BackendCommandSetVertexAttribPointer,
     BackendCommandSetProgram,
+    BackendCommandBindPipeline,
     BackendCommandBindTexture2D,
     BackendCommandBufferData,
     BackendCommandBindBuffer,
@@ -327,6 +334,11 @@ inline BackendCommand disableVertexAttribPointer(AttributeLocationId index)
 inline BackendCommand setProgram(ProgramId programId)
 {
     return BackendCommandSetProgram{ programId };
+}
+
+inline BackendCommand bindPipeline(PipelineId pipelineId)
+{
+    return BackendCommandBindPipeline{ pipelineId };
 }
 
 inline BackendCommand bindTexture2D(

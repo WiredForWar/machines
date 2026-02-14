@@ -61,6 +61,7 @@ set(RENDER_SOURCES
     internal/BackendTypes.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
+    internal/PipelineSpec.hpp
     internal/RenScopedImmediateCommands.hpp
     internal/alphagrp.hpp
     internal/capablei.hpp
