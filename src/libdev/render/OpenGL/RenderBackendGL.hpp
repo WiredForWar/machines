@@ -40,6 +40,11 @@ public:
     UniformLocationId uniformLocation(ProgramId id, std::string_view name) const override;
     AttributeLocationId attribLocation(ProgramId id, std::string_view name) const override;
 
+    PipelineId createPipeline(const PipelineDesc& desc) override;
+    void releasePipeline(PipelineId id) override;
+    UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const override;
+    AttributeLocationId pipelineAttribLocation(PipelineId id, std::string_view name) const override;
+
     BufferId createBuffer() override;
     void releaseBuffer(BufferId id) override;
 
@@ -120,6 +125,7 @@ private:
     void executeCommand(const BackendCommandSetUniformMatrix4fv& command);
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
     void executeCommand(const BackendCommandSetProgram& command);
+    void executeCommand(const BackendCommandBindPipeline& command);
     void executeCommand(const BackendCommandBindTexture2D& command);
     void executeCommand(const BackendCommandBufferData& command);
     void executeCommand(const BackendCommandBindBuffer& command);
@@ -130,7 +136,17 @@ private:
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
 
+    struct Pipeline
+    {
+        bool alive{};
+        ProgramId programId{};
+        std::vector<VertexAttributeDesc> vertexAttributes{};
+        std::vector<std::pair<std::string, UniformLocationId>> uniforms{};
+        std::vector<std::pair<std::string, AttributeLocationId>> attributes{};
+    };
+
     std::vector<GLuint> programs_{};
+    std::vector<Pipeline> pipelines_{};
     std::vector<GLuint> buffers_{};
     std::vector<GLuint> framebuffers_{};
     std::vector<GLuint> framebufferStack_{};
