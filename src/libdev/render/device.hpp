@@ -390,8 +390,6 @@ private:
 
     bool setVSync(bool enabled);
 
-    void syncSmoothFilters();
-
     friend class Filter;
     void setFilter(const RenColour&);
     void resetFilter();

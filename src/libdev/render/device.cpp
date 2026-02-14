@@ -151,8 +151,6 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->shouldBeginScene_ = true;
     pImpl_->antiAliasingOn_ = true;
 
-    pImpl_->smoothFilterMin_ = GL_LINEAR;
-    pImpl_->smoothFilterMag_ = GL_LINEAR;
 }
 
 void RenDevice::renderScreenspace(
@@ -818,24 +816,6 @@ void RenDevice::commonEndFrame()
 
     const double now2 = DEBUG_FRAME_TIME;
     RENDER_STREAM("  RenDevice::endFrame() text done at " << now2 << "(ms)\n");
-}
-
-void RenDevice::syncSmoothFilters()
-{
-    using TextureFilter = Ren::TextureFilter;
-    if (pImpl_->smoothScaleEnabled_)
-    {
-        if (!pImpl_->smoothFilterApplied_)
-        {
-            recordCommand(Ren::Command::setCurrentTextureFilter(TextureFilter::Linear, TextureFilter::Linear));
-            pImpl_->smoothFilterApplied_ = true;
-        }
-    }
-    else if (pImpl_->smoothFilterApplied_)
-    {
-        recordCommand(Ren::Command::setCurrentTextureFilter(TextureFilter::Nearest, TextureFilter::Nearest));
-        pImpl_->smoothFilterApplied_ = false;
-    }
 }
 
 void RenDevice::endFrame()
@@ -2187,8 +2167,8 @@ void RenDevice::renderSurface(
         Ren::BufferUsage::StreamDraw));
 
     static const int TextureUnit = 0;
-    recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit));
-    syncSmoothFilters();
+    const auto texFilter = pImpl_->smoothScaleEnabled_ ? Ren::TextureFilter::Linear : Ren::TextureFilter::Nearest;
+    recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit, texFilter, texFilter));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     recordSetUniform1i(gl2DUniformID_, TextureUnit);

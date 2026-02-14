@@ -895,6 +895,8 @@ void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
     const GLuint textureHandle = command.textureHandle.isValid() ? command.textureHandle.value() : fallbackTexture2D_;
     glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + command.unit));
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(command.minFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(command.magFilter));
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandBufferData& command)
@@ -930,12 +932,6 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& c
 void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
 {
     endRenderToTexture();
-}
-
-void RenderBackendGL::executeCommand(const BackendCommandSetCurrentTextureFilter& command)
-{
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(command.minFilter));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(command.magFilter));
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetLineWidth& command)
