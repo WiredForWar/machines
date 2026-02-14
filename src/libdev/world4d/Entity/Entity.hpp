@@ -354,6 +354,12 @@ public:
     void doNotLight(bool lightIt);
     bool doNotLight() const;
 
+    // If true, this entity (and its children) will not be rendered into
+    // the shadow depth map, so it will not cast shadows.  Unlike
+    // doNotLight this does NOT affect the main-pass lighting.
+    void setNoShadowCast(bool v);
+    bool noShadowCast() const;
+
     void filterColour(const RenColour& colour);
     const RenColour& filterColour() const;
     bool filterColourIsSet() const;
