@@ -90,6 +90,7 @@ set(RENDER_SOURCES
     internal/InternalPoints.hpp
     internal/PipelineSpec.hpp
     internal/RenScopedImmediateCommands.hpp
+    internal/RenderPassSpec.hpp
     internal/internal.hpp
     internal/InternalMap.hpp
     internal/LightBuffer.hpp

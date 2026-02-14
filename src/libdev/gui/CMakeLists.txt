@@ -24,7 +24,6 @@ set(GUI_SOURCES
     IconSequence.hpp
     Image.cpp
     Image.hpp
-    internal/DisplayableImpl.hpp
     internal/FontCore.hpp
     internal/IconSequenceImpl.hpp
     internal/ManagerImpl.hpp

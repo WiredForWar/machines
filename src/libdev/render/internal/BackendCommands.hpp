@@ -6,6 +6,7 @@
 #include "render/PrimitiveTopology.hpp"
 #include "render/internal/BackendTypes.hpp"
 #include "render/internal/PipelineSpec.hpp"
+#include "render/internal/RenderPassSpec.hpp"
 #include "render/render.hpp"
 
 #include <array>
@@ -184,6 +185,16 @@ struct BackendCommandSetLineWidth
     float width{};
 };
 
+struct BackendCommandBeginRenderPass
+{
+    RenderPassId renderPassId{};
+    FramebufferId framebufferId{};
+};
+
+struct BackendCommandEndRenderPass
+{
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -210,7 +221,9 @@ using BackendCommand = std::variant<
     BackendCommandBindBuffer,
     BackendCommandBeginRenderToTexture,
     BackendCommandEndRenderToTexture,
-    BackendCommandSetLineWidth>;
+    BackendCommandSetLineWidth,
+    BackendCommandBeginRenderPass,
+    BackendCommandEndRenderPass>;
 
 namespace Command
 {
@@ -376,6 +389,16 @@ inline BackendCommand endRenderToTexture()
 inline BackendCommand setLineWidth(float width)
 {
     return BackendCommandSetLineWidth{ width };
+}
+
+inline BackendCommand beginRenderPass(RenderPassId renderPassId, FramebufferId framebufferId = 0)
+{
+    return BackendCommandBeginRenderPass{ renderPassId, framebufferId };
+}
+
+inline BackendCommand endRenderPass()
+{
+    return BackendCommandEndRenderPass{};
 }
 
 } // namespace Command
