@@ -98,7 +98,7 @@ public:
         d3dLVertex.x = vec.x();
         d3dLVertex.y = vec.y();
         d3dLVertex.z = vec.z();
-        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.b(), rgbColour_.b(), 1.0);
+        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
         d3dLVertex.specular = 0;
 
         return d3dLVertex;
@@ -135,7 +135,7 @@ public:
         d3dLVertex.x = vec.x();
         d3dLVertex.y = vec.y();
         d3dLVertex.z = vec.z();
-        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.b(), rgbColour_.b(), 1.0);
+        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
         d3dLVertex.specular = 0;
         return d3dLVertex;
     }
