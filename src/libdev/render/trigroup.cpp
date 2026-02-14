@@ -214,9 +214,9 @@ void RenILineGroup::render(const RenIVertexData& vtx, const RenMaterial& mat) co
     ASSERT(nIndicesUsed_ <= vtx.size(), "Indices used by group don't match mesh's vertices.");
 
     const float lineWidth = mat.lineWidth();
-    glLineWidth(lineWidth ? lineWidth : 1.0f);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(lineWidth ? lineWidth : 1.0f));
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Lines);
-    glLineWidth(1.0f);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(1.0f));
 }
 
 // virtual
@@ -232,7 +232,10 @@ void RenILineGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& mat) 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
+    const float lineWidth = mat.lineWidth();
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(lineWidth ? lineWidth : 1.0f));
     RenDevice::current()->renderIndexed(vtx.get(), nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Lines);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(1.0f));
 }
 
 // virtual
