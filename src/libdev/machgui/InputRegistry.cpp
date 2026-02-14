@@ -610,7 +610,7 @@ void InputRegistry::setLegacyDefaults()
     });
     setBinds("show-menus"_bind, {
         { KeyCode::ESCAPE },
-        { KeyCode::F10 },
+        { .keyWithMods = KeyCode::F10, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift | KeyModifier::Alt },
     });
     setBinds("view-toggle-fpv"_bind, {
         { KeyCode::PAD_1 },
@@ -1019,7 +1019,12 @@ void InputRegistry::setLegacyDefaults()
 
     setBinds("fpv-toggle-night-vision"_bind, { { KeyCode::KEY_N } });
     setBinds("fpv-exit"_bind, { { KeyCode::ESCAPE } });
-    setBinds("fpv-menus"_bind, { { KeyCode::F10 } });
+    setBinds("fpv-menus"_bind, {
+        {
+            .keyWithMods = KeyCode::F10,
+            .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Shift | KeyModifier::Alt,
+        },
+    });
 
     setBinds("fpv-command-select-next"_bind, {
         { KeyCode::HOME },
