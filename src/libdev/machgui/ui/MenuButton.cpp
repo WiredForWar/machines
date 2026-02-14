@@ -142,13 +142,11 @@ void MachGuiMenuButton::doDisplay()
     uint glowX = (glowWidth - width()) / 2.0;
     uint glowY = (glowHeight - height()) / 2.0;
 
+    IGuiPainter& p = GuiPainter::instance();
     // Draw background to button ( glow or normal backdrop ).
     if (flash_ || highlighted_)
     {
-        GuiPainter::instance().blit(
-            MachGui::buttonGlowBmp(),
-            Gui::Box(Gui::Coord(glowX, glowY), width(), height()),
-            absoluteBoundary().minCorner());
+        p.blit(MachGui::buttonGlowBmp(), Gui::Box(Gui::Coord(glowX, glowY), size()), absoluteBoundary().minCorner());
     }
 
     GuiResourceString str(stringId_);
@@ -178,16 +176,12 @@ void MachGuiMenuButton::doDisplay()
     size_t textX = absoluteBoundary().minCorner().x() + (width() - textWidth) / 2.0;
     size_t textY = absoluteBoundary().minCorner().y() + (height() - textHeight) / 2.0;
 
-    IGuiPainter& p = GuiPainter::instance();
     p.drawText(Gui::Coord(textX, textY), text, options, font);
 
     // Show disabled button if necessary
     if (disabled_)
     {
-        GuiPainter::instance().blit(
-            MachGui::buttonDisableBmp(),
-            Gui::Box(Gui::Coord(0, 0), width(), height()),
-            absoluteBoundary().minCorner());
+        p.blit(MachGui::buttonDisableBmp(), Gui::Box(Gui::Coord{}, size()), absoluteBoundary().minCorner());
     }
 }
 
