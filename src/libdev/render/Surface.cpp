@@ -21,7 +21,7 @@
 
 #include <SDL3_image/SDL_image.h>
 
-#include <GL/glew.h>
+#include "render/internal/IRenderBackend.hpp"
 
 #include <stdio.h>
 
@@ -409,16 +409,16 @@ void RenSurface::getPixel(int x, int y, RenColour* colour) const
     PRE(colour);
     RenScopedImmediateCommands guard(RenDevice::current());
 
-    GLfloat pixel[4] = { 0, 0, 0, 0 };
+    float pixel[4] = { 0, 0, 0, 0 };
+    RenDevice* dev = RenDevice::current();
     if (internals() && internals()->isOffscreen())
     {
-        RenDevice* dev = RenDevice::current();
         dev->renderToTextureMode(handle(), width(), height());
-        glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
+        dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
-        glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
+        dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
 
     colour->r(pixel[0]);
     colour->g(pixel[1]);
@@ -632,15 +632,15 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     if (screenPixels)
     {
         // Read the pixels
+        RenDevice* dev = RenDevice::current();
         if (internals() && internals()->isOffscreen())
         {
-            RenDevice* dev = RenDevice::current();
             dev->renderToTextureMode(handle(), width(), height());
-            glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
+            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
             dev->renderToTextureMode(Ren::NullTexId, 0, 0);
         }
         else
-            glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
+            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
 
         // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on
         // both little and big endian systems.
