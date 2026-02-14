@@ -57,6 +57,9 @@ public:
     void pushFramebuffer() override;
     void popFramebuffer() override;
 
+    void readPixelsFloat(int x, int y, int width, int height, float* rgba) override;
+    void readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba) override;
+
     BackendCommandBufferHandle createCommandBuffer() override;
     void destroyCommandBuffer(BackendCommandBufferHandle handle) override;
     void beginCommandBuffer(BackendCommandBufferHandle handle) override;

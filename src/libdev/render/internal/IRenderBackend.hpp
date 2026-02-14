@@ -62,6 +62,10 @@ public:
     virtual void endCommandBuffer(BackendCommandBufferHandle handle) = 0;
     virtual void submitCommandBuffer(BackendCommandBufferHandle handle) = 0;
 
+    // Synchronous readback — not a recorded command.
+    virtual void readPixelsFloat(int x, int y, int width, int height, float* rgba) = 0;
+    virtual void readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba) = 0;
+
     virtual BackendTextureHandle createTexture2D() = 0;
     virtual void destroyTexture2D(BackendTextureHandle handle) = 0;
     virtual void textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format) = 0;

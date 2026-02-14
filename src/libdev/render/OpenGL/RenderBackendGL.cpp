@@ -471,6 +471,16 @@ void RenderBackendGL::popFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, restore);
 }
 
+void RenderBackendGL::readPixelsFloat(int x, int y, int width, int height, float* rgba)
+{
+    glReadPixels(x, y, width, height, GL_RGBA, GL_FLOAT, rgba);
+}
+
+void RenderBackendGL::readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba)
+{
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+}
+
 void RenderBackendGL::releaseFramebuffer(FramebufferId id)
 {
     if (id == 0)
