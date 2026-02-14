@@ -3,6 +3,7 @@
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/PipelineSpec.hpp"
+#include "render/internal/RenderPassSpec.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -42,6 +43,9 @@ public:
     virtual void releasePipeline(PipelineId id) = 0;
     virtual UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const = 0;
     virtual AttributeLocationId pipelineAttribLocation(PipelineId id, std::string_view name) const = 0;
+
+    virtual RenderPassId createRenderPass(const RenderPassDesc& desc) = 0;
+    virtual void releaseRenderPass(RenderPassId id) = 0;
 
     virtual BufferId createBuffer() = 0;
     virtual void releaseBuffer(BufferId id) = 0;

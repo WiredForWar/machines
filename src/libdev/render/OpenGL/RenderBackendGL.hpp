@@ -45,6 +45,9 @@ public:
     UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const override;
     AttributeLocationId pipelineAttribLocation(PipelineId id, std::string_view name) const override;
 
+    RenderPassId createRenderPass(const RenderPassDesc& desc) override;
+    void releaseRenderPass(RenderPassId id) override;
+
     BufferId createBuffer() override;
     void releaseBuffer(BufferId id) override;
 
@@ -132,6 +135,8 @@ private:
     void executeCommand(const BackendCommandBeginRenderToTexture& command);
     void executeCommand(const BackendCommandEndRenderToTexture& command);
     void executeCommand(const BackendCommandSetLineWidth& command);
+    void executeCommand(const BackendCommandBeginRenderPass& command);
+    void executeCommand(const BackendCommandEndRenderPass& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
@@ -147,6 +152,14 @@ private:
 
     std::vector<GLuint> programs_{};
     std::vector<Pipeline> pipelines_{};
+
+    struct RenderPass
+    {
+        bool alive{};
+        RenderPassDesc desc{};
+    };
+    std::vector<RenderPass> renderPasses_{};
+
     std::vector<GLuint> buffers_{};
     std::vector<GLuint> framebuffers_{};
     std::vector<GLuint> framebufferStack_{};
