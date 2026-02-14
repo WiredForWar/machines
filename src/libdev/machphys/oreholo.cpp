@@ -45,6 +45,9 @@ MachPhysOreHolograph::MachPhysOreHolograph(
     )
     : W4dComposite(factory(), pParent, localTransform)
 {
+    // Holographs are glowing/transparent — they should not cast shadows.
+    setNoShadowCast(true);
+
     // Apply the spin plan
     plan(*spinPlan(), SimManager::instance().currentTime(), 1000000);
 
