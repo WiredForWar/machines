@@ -238,6 +238,10 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
     switch (event->type)
     {
         case SDL_WINDOWEVENT:
+            if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+            {
+                DevSdlKeyboard::sdlInstance().wm_killfocus();
+            }
             break;
 
         case SDL_MOUSEMOTION:
