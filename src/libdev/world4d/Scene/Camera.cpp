@@ -90,7 +90,7 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
     if (nodeImpl.isShadow() && device->isShadowMappingEnabled())
         return;
 
-    if (nodeImpl.doNotLight() && device->isShadowPassActive())
+    if ((nodeImpl.doNotLight() || nodeImpl.noShadowCast()) && device->isShadowPassActive())
         return;
 
     // Has the node been rendered by the given camera already on the current
@@ -206,7 +206,7 @@ void W4dCamera::renderSubTree(W4dEntity* node)
     if (nodeImpl.isShadow() && device->isShadowMappingEnabled())
         return;
 
-    if (nodeImpl.doNotLight() && device->isShadowPassActive())
+    if ((nodeImpl.doNotLight() || nodeImpl.noShadowCast()) && device->isShadowPassActive())
         return;
 
     // Has the node been rendered by the given camera already on the current
