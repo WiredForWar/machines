@@ -2,6 +2,7 @@
 
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
+#include "render/internal/PipelineSpec.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -36,6 +37,11 @@ public:
 
     virtual UniformLocationId uniformLocation(ProgramId id, std::string_view name) const = 0;
     virtual AttributeLocationId attribLocation(ProgramId id, std::string_view name) const = 0;
+
+    virtual PipelineId createPipeline(const PipelineDesc& desc) = 0;
+    virtual void releasePipeline(PipelineId id) = 0;
+    virtual UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const = 0;
+    virtual AttributeLocationId pipelineAttribLocation(PipelineId id, std::string_view name) const = 0;
 
     virtual BufferId createBuffer() = 0;
     virtual void releaseBuffer(BufferId id) = 0;
