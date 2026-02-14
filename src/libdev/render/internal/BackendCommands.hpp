@@ -175,6 +175,11 @@ struct BackendCommandSetCurrentTextureFilter
     TextureFilter magFilter{};
 };
 
+struct BackendCommandSetLineWidth
+{
+    float width{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -200,7 +205,8 @@ using BackendCommand = std::variant<
     BackendCommandBindBuffer,
     BackendCommandBeginRenderToTexture,
     BackendCommandEndRenderToTexture,
-    BackendCommandSetCurrentTextureFilter>;
+    BackendCommandSetCurrentTextureFilter,
+    BackendCommandSetLineWidth>;
 
 namespace Command
 {
@@ -357,6 +363,11 @@ inline BackendCommand endRenderToTexture()
 inline BackendCommand setCurrentTextureFilter(TextureFilter minFilter, TextureFilter magFilter)
 {
     return BackendCommandSetCurrentTextureFilter{ minFilter, magFilter };
+}
+
+inline BackendCommand setLineWidth(float width)
+{
+    return BackendCommandSetLineWidth{ width };
 }
 
 } // namespace Command
