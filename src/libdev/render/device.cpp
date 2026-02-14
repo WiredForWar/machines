@@ -364,10 +364,8 @@ void RenDevice::clearAllSurfaces(const RenColour& colour)
     RENDER_STREAM(
         "Inside RenDevice::clearAllSurfaces( RenColour RGBA: " << colour.r() << ", " << colour.g() << ", " << colour.b()
                                                                << ", " << colour.a() << " )" << std::endl);
-    // Temporarily set, then reset the background colour.
-    glClearColor(colour.r(), colour.g(), colour.b(), colour.a());
+    pImpl_->background_ = colour;
     clearAllSurfaces();
-    glClearColor(colour.r(), pImpl_->background_.g(), pImpl_->background_.b(), pImpl_->background_.a());
 }
 
 void RenDevice::clearAllSurfaces()
@@ -620,7 +618,6 @@ void RenDevice::start3D(bool clearBack)
     bgCol.b(bgCol.b() * pImpl_->currentCamera_->colourFilter().b());
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
-    glClearColor(bgCol.r(), bgCol.g(), bgCol.b(), bgCol.a());
 
     CB_DEPIMPL_AUTO(backend_);
 
