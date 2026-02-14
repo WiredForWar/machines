@@ -4,6 +4,8 @@
 #include "render/internal/surfbody.hpp"
 #include "render/surfmgr.hpp"
 
+#include "base/prepost.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <SDL.h>
@@ -190,6 +192,8 @@ bool RenderBackendGL::initialize(SDL_Window* window)
 
 void RenderBackendGL::shutdown()
 {
+    flushPendingDeletes();
+
     if (fallbackTexture2D_ != 0)
     {
         glDeleteTextures(1, &fallbackTexture2D_);
@@ -669,6 +673,35 @@ void RenderBackendGL::submitCommandBuffer(BackendCommandBufferHandle handle)
     }
 
     buffer->commands.clear();
+
+    // Only flush pending deletes when no other buffer is still recording,
+    // to avoid deleting resources that queued commands may still reference.
+    if (activeCommandBufferCount() == 0)
+        flushPendingDeletes();
+}
+
+void RenderBackendGL::flushPendingDeletes()
+{
+    PRE(activeCommandBufferCount() == 0);
+
+    if (!pendingTextureDeletes_.empty())
+    {
+        glDeleteTextures(
+            static_cast<GLsizei>(pendingTextureDeletes_.size()),
+            pendingTextureDeletes_.data());
+        pendingTextureDeletes_.clear();
+    }
+}
+
+std::size_t RenderBackendGL::activeCommandBufferCount() const
+{
+    std::size_t count{};
+    for (const auto& buffer : commandBuffers_)
+    {
+        if (buffer.alive && buffer.recording)
+            ++count;
+    }
+    return count;
 }
 
 RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle)
@@ -725,8 +758,7 @@ void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
     if (!handle.isValid())
         return;
 
-    const GLuint texture = handle.value();
-    glDeleteTextures(1, &texture);
+    pendingTextureDeletes_.push_back(handle.value());
 }
 
 void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
