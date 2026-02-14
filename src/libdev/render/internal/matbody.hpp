@@ -34,16 +34,12 @@ public:
     // For a description of material properties, see RenMaterial.
     void texture(const RenTexture&);
     void diffuse(const RenColour&);
-    void specular(const RenColour&);
     void ambient(const RenColour&);
     void emissive(const RenColour&);
-    void shininess(double);
     const RenTexture& texture() const;
     const RenColour& diffuse() const;
-    const RenColour& specular() const;
     const RenColour& ambient() const;
     const RenColour& emissive() const;
-    double shininess() const;
 
     bool hasAlphaTransparency() const; // i.e. flat *or* texture
     bool hasFlatTransparency() const; // i.e. flat, regardless of texture

@@ -76,11 +76,6 @@ const Ren::MaterialVecPtr& W4dSimpleIntensityPlan::materialVec(const PhysRelativ
         = RenColour(intensity * ambientColour.r(), intensity * ambientColour.g(), intensity * ambientColour.b());
     _CONST_CAST(W4dSimpleIntensityPlan*, this)->material_.ambient(ambientColour);
 
-    RenColour specularColour = material_.specular();
-    specularColour
-        = RenColour(intensity * specularColour.r(), intensity * specularColour.g(), intensity * specularColour.b());
-    _CONST_CAST(W4dSimpleIntensityPlan*, this)->material_.specular(specularColour);
-
     RenColour emissiveColour = material_.emissive();
     emissiveColour
         = RenColour(intensity * emissiveColour.r(), intensity * emissiveColour.g(), intensity * emissiveColour.b());

@@ -83,12 +83,6 @@ void RenIMatBody::diffuse(const RenColour& c)
 }
 
 _CODE_INLINE
-void RenIMatBody::specular(const RenColour&)
-{
-    ASSERT(false, "Specular material attributes not supported.");
-}
-
-_CODE_INLINE
 void RenIMatBody::ambient(const RenColour&)
 {
     ASSERT(false, "Ambient material attributes not supported.");
@@ -116,12 +110,6 @@ void RenIMatBody::emissive(const RenColour& c)
 }
 
 _CODE_INLINE
-void RenIMatBody::shininess(double)
-{
-    ASSERT(false, "Specular shininess material attributes not supported.");
-}
-
-_CODE_INLINE
 const RenTexture& RenIMatBody::texture() const
 {
     return texture_;
@@ -134,14 +122,6 @@ const RenColour& RenIMatBody::diffuse() const
 }
 
 _CODE_INLINE
-const RenColour& RenIMatBody::specular() const
-{
-    ASSERT(false, "Specular material attributes not supported.");
-    static const RenColour dummy = RenColour::black();
-    return dummy;
-}
-
-_CODE_INLINE
 const RenColour& RenIMatBody::ambient() const
 {
     return diffuse_;
@@ -151,13 +131,6 @@ _CODE_INLINE
 const RenColour& RenIMatBody::emissive() const
 {
     return emissive_;
-}
-
-_CODE_INLINE
-double RenIMatBody::shininess() const
-{
-    ASSERT(false, "Specular shininess material attributes not supported.");
-    return 0;
 }
 
 _CODE_INLINE

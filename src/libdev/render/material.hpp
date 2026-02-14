@@ -40,10 +40,8 @@ public:
     // set to the same as the diffuse colour.
     void texture(const RenTexture&);
     void diffuse(const RenColour&);
-    void specular(const RenColour&);
     void ambient(const RenColour&);
     void emissive(const RenColour&);
-    void shininess(double);
     void coplanarPriority(short);
     void alphaPriority(short);
     void interMeshCoplanar(bool);
@@ -54,10 +52,8 @@ public:
 
     const RenTexture& texture() const;
     const RenColour& diffuse() const;
-    const RenColour& specular() const;
     const RenColour& ambient() const;
     const RenColour& emissive() const;
-    double shininess() const;
     short coplanarPriority() const;
     short coplanarDepth() const; // inverted: USHRT_MAX - priority
     short alphaPriority() const;
@@ -88,8 +84,8 @@ public:
     // to make it appear as if the ideal were implemented.
     bool usesBilinear() const;
 
-    // Returns true if this object has a non-black diffuse, specular or ambient
-    // colour.  If it's purely emissive, it returns false indicating that
+    // Returns true if this object has a non-black diffuse or ambient colour.
+    // If it's purely emissive, it returns false indicating that
     // RenDevice::disableLighting can be called without changing the rendering.
     bool needsLighting() const;
 
