@@ -63,6 +63,7 @@ set(RENDER_SOURCES
     internal/IRenderBackend.hpp
     internal/PipelineSpec.hpp
     internal/RenScopedImmediateCommands.hpp
+    internal/RenderPassSpec.hpp
     internal/alphagrp.hpp
     internal/capablei.hpp
     internal/capablei.ipp

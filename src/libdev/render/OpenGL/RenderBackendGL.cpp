@@ -461,6 +461,24 @@ AttributeLocationId RenderBackendGL::pipelineAttribLocation(PipelineId id, std::
     return AttributeLocationId{};
 }
 
+RenderPassId RenderBackendGL::createRenderPass(const RenderPassDesc& desc)
+{
+    RenderPass pass;
+    pass.alive = true;
+    pass.desc = desc;
+
+    renderPasses_.push_back(std::move(pass));
+    return static_cast<RenderPassId>(renderPasses_.size());
+}
+
+void RenderBackendGL::releaseRenderPass(RenderPassId id)
+{
+    if (id == 0 || id > renderPasses_.size())
+        return;
+
+    renderPasses_[id - 1].alive = false;
+}
+
 BufferId RenderBackendGL::createBuffer()
 {
     GLuint buffer = 0;
@@ -971,6 +989,50 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& c
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
         popFramebuffer();
     }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& command)
+{
+    const RenderPassId id = command.renderPassId;
+    if (id == 0 || id > renderPasses_.size())
+        return;
+
+    const RenderPass& pass = renderPasses_[id - 1];
+    if (!pass.alive)
+        return;
+
+    // Bind framebuffer (0 = default framebuffer)
+    if (command.framebufferId != 0)
+        bindFramebuffer(command.framebufferId);
+
+    // Apply load operations
+    GLbitfield clearMask{};
+
+    if (pass.desc.colorAttachment.loadOp == LoadOp::Clear)
+    {
+        glClearColor(
+            pass.desc.colorAttachment.clearR,
+            pass.desc.colorAttachment.clearG,
+            pass.desc.colorAttachment.clearB,
+            pass.desc.colorAttachment.clearA);
+        clearMask |= GL_COLOR_BUFFER_BIT;
+    }
+
+    if (pass.desc.hasDepthAttachment && pass.desc.depthAttachment.loadOp == LoadOp::Clear)
+    {
+        // GL requires depth writes enabled for glClear to affect the depth buffer.
+        glDepthMask(GL_TRUE);
+        clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+
+    if (clearMask != 0)
+        glClear(clearMask);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandEndRenderPass& /*command*/)
+{
+    // In GL 2.1, ending a render pass is a no-op.
+    // In Vulkan, this would end the VkRenderPass.
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
