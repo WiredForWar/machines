@@ -327,8 +327,6 @@ public:
     Ren::IRenderBackend& backend();
     const Ren::IRenderBackend& backend() const;
 
-    Ren::ProgramId loadShaders(const char* vertexPath, const char* fragmentPath);
-
     void renderScreenspace(
         const RenIVertex* vertices,
         const size_t nVertices,
