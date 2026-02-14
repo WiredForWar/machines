@@ -453,53 +453,11 @@ void RenderBackendGL::bindFramebuffer(FramebufferId id)
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
-void RenderBackendGL::framebufferTexture2D(FramebufferAttachment attachment, TexId texture)
-{
-    const GLenum glAttachment
-        = (attachment == FramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
-
-    GLuint textureHandle = 0;
-    if (texture != NullTexId)
-    {
-        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
-        if (surfBody && surfBody->nativeTexture2D_.isValid())
-        {
-            textureHandle = surfBody->nativeTexture2D_.value();
-        }
-    }
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
-}
-
-bool RenderBackendGL::beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture)
-{
-    if (framebuffer == 0)
-        return false;
-
-    if (targetTexture == NullTexId)
-        return false;
-
-    pushFramebuffer();
-    bindFramebuffer(framebuffer);
-    framebufferTexture2D(FramebufferAttachment::Color0, targetTexture);
-
-    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (status != GL_FRAMEBUFFER_COMPLETE)
-    {
-        spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
-        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
-        popFramebuffer();
-        return false;
-    }
-
-    return true;
-}
-
 void RenderBackendGL::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
     {
-        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
     }
     popFramebuffer();
 }
@@ -541,19 +499,6 @@ void RenderBackendGL::releaseFramebuffer(FramebufferId id)
     }
 }
 
-void RenderBackendGL::bindTexture2D(TexId id, std::uint32_t unit)
-{
-    const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(id);
-    GLuint textureHandle = fallbackTexture2D_;
-
-    if (surfBody && !surfBody->isEmpty() && surfBody->nativeTexture2D_.isValid())
-    {
-        textureHandle = surfBody->nativeTexture2D_.value();
-    }
-
-    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + unit));
-    glBindTexture(GL_TEXTURE_2D, textureHandle);
-}
 
 BackendCommandBufferHandle RenderBackendGL::createCommandBuffer()
 {
