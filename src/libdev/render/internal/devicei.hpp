@@ -17,6 +17,7 @@
 #include "render/render.hpp"
 #include "render/internal/BackendTypes.hpp"
 #include "render/internal/BackendCommands.hpp"
+#include "render/internal/PipelineSpec.hpp"
 #include "device/timer.hpp"
 
 #include <GL/glew.h>
@@ -168,36 +169,13 @@ private:
 
     bool smoothScaleEnabled_{};
 
-    Ren::ProgramId glProgramID_GIU2D_{};
-    Ren::ProgramId glProgramID_Standard_{};
-    Ren::ProgramId glProgramID_Billboard_{};
+    Ren::PipelineId gui2DPipeline_{};
+    Ren::PipelineId standardPipeline_{};
+    Ren::PipelineId billboardPipeline_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
-    Ren::AttributeLocationId glVertexUVID_{};
-    Ren::AttributeLocationId glVertexPosition_screenspaceID_{};
-    Ren::AttributeLocationId glVertexColour_screenspaceID_{};
-    Ren::UniformLocationId glScreenspaceID_{};
-
-    Ren::UniformLocationId gl2DUniformID_{};
-    Ren::UniformLocationId glTextureSamplerID_{};
-    Ren::UniformLocationId glTextureSamplerBillboardID_{};
-
-    Ren::UniformLocationId glModelMatrixID_{};
-    Ren::UniformLocationId glViewMatrixID_{};
-    Ren::UniformLocationId glProjectionMatrixID_{};
-    Ren::UniformLocationId glFogColourID_{};
-    Ren::UniformLocationId glFogParamsID_{};
-
-    Ren::AttributeLocationId glVertexPosition_modelspaceID_{};
-    Ren::AttributeLocationId glVertex_modelspaceUVID_{};
-    Ren::AttributeLocationId glVertexColour_modelspaceID_{};
     Ren::BufferId glVertexDataBufferID_{};
     Ren::BufferId glElementBufferID_{};
-
-    Ren::UniformLocationId glViewProjMatrix_BillboardID_{};
-    Ren::AttributeLocationId glVertexPosition_BillboardID_{};
-    Ren::AttributeLocationId glVertex_BillboardUVID_{};
-    Ren::AttributeLocationId glVertexColour_BillboardID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};

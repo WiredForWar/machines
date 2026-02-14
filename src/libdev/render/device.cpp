@@ -88,31 +88,12 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
 
 #define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
     PRE(pImpl_);                                                                                                       \
-    CB_DEPIMPL_AUTO(glProgramID_GIU2D_);                                                                               \
-    CB_DEPIMPL_AUTO(glProgramID_Standard_);                                                                            \
-    CB_DEPIMPL_AUTO(glProgramID_Billboard_);                                                                           \
+    CB_DEPIMPL_AUTO(gui2DPipeline_);                                                                                   \
+    CB_DEPIMPL_AUTO(standardPipeline_);                                                                                \
+    CB_DEPIMPL_AUTO(billboardPipeline_);                                                                               \
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
-    CB_DEPIMPL_AUTO(glVertexUVID_);                                                                                    \
-    CB_DEPIMPL_AUTO(glVertexPosition_screenspaceID_);                                                                  \
-    CB_DEPIMPL_AUTO(glVertexColour_screenspaceID_);                                                                    \
-    CB_DEPIMPL_AUTO(glScreenspaceID_);                                                                                 \
-    CB_DEPIMPL_AUTO(gl2DUniformID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glTextureSamplerID_);                                                                              \
-    CB_DEPIMPL_AUTO(glTextureSamplerBillboardID_);                                                                     \
-    CB_DEPIMPL_AUTO(glModelMatrixID_);                                                                                 \
-    CB_DEPIMPL_AUTO(glViewMatrixID_);                                                                                  \
-    CB_DEPIMPL_AUTO(glProjectionMatrixID_);                                                                            \
-    CB_DEPIMPL_AUTO(glFogColourID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glFogParamsID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glVertexPosition_modelspaceID_);                                                                   \
-    CB_DEPIMPL_AUTO(glVertex_modelspaceUVID_);                                                                         \
-    CB_DEPIMPL_AUTO(glVertexColour_modelspaceID_);                                                                     \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
-    CB_DEPIMPL_AUTO(glViewProjMatrix_BillboardID_);                                                                    \
-    CB_DEPIMPL_AUTO(glVertexPosition_BillboardID_);                                                                    \
-    CB_DEPIMPL_AUTO(glVertex_BillboardUVID_);                                                                          \
-    CB_DEPIMPL_AUTO(glVertexColour_BillboardID_);                                                                      \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
     CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);
@@ -187,52 +168,59 @@ bool RenDevice::initialize()
 
     initializeDisplay();
 
-    // Create and compile our GLSL programs from the shaders
-    glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
+    // GUI 2D pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "2DShading";
+        desc.fragmentShader = "2DShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_screenspace", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+        };
+        desc.uniformNames = { "uScreenspace", "uTextureSampler" };
+        gui2DPipeline_ = backend_->createPipeline(desc);
+    }
 
-    // Initialize VBO
     gl2DVertexBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
-    glVertexUVID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexUV");
-    glVertexColour_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexColor");
-    glScreenspaceID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uScreenspace");
-    // Initialize uniforms' IDs
-    gl2DUniformID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
 
-    glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
+    // Standard 3D pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "StandardShading";
+        desc.fragmentShader = "StandardShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_modelspace", 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+        };
+        desc.uniformNames = { "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2" };
+        standardPipeline_ = backend_->createPipeline(desc);
+    }
 
-    // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uM");
-    glViewMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uV");
-    glProjectionMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uP");
-    glFogColourID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogColour");
-    glFogParamsID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogParams");
-    // VBO
     glVertexDataBufferID_ = backend_->createBuffer();
     glElementBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_modelspaceID_ =
-        backend_->attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = backend_->attribLocation(glProgramID_Standard_, "vertexColor");
-    glVertex_modelspaceUVID_ = backend_->attribLocation(glProgramID_Standard_, "vertexUV");
-    glTextureSamplerID_ = backend_->uniformLocation(glProgramID_Standard_, "uTextureSampler2");
 
-    glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
+    // Billboard pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "BillboardShading";
+        desc.fragmentShader = "2DShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_Billboard", 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+        };
+        desc.uniformNames = { "uVP", "uTextureSampler" };
+        billboardPipeline_ = backend_->createPipeline(desc);
+    }
 
-    const std::array<Ren::ProgramId, 3> programIDs = { glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_ };
-    if (std::ranges::any_of(programIDs, [](Ren::ProgramId value) { return value == 0; }))
+    const std::array<Ren::PipelineId, 3> pipelineIDs = { gui2DPipeline_, standardPipeline_, billboardPipeline_ };
+    if (std::ranges::any_of(pipelineIDs, [](Ren::PipelineId value) { return value == 0; }))
         return false;
 
-    // VBO
     glVertexDataBufferBillboardID_ = backend_->createBuffer();
     glElementBufferBillboardID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uVP");
-    glVertexPosition_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexColor");
-    glVertex_BillboardUVID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexUV");
-    glTextureSamplerBillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uTextureSampler");
 
     // Prepare framebuffer for offscreen rendering
     glOffscreenFrameBuffID_ = backend_->createFramebuffer();
@@ -304,13 +292,11 @@ RenDevice::~RenDevice()
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    // Delete shaders
-
     backend_->useProgram(0);
 
-    backend_->releaseProgram(glProgramID_Standard_);
-    backend_->releaseProgram(glProgramID_GIU2D_);
-    backend_->releaseProgram(glProgramID_Billboard_);
+    backend_->releasePipeline(gui2DPipeline_);
+    backend_->releasePipeline(standardPipeline_);
+    backend_->releasePipeline(billboardPipeline_);
 
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
@@ -335,24 +321,6 @@ RenDevice::~RenDevice()
 
 void RenDevice::reset()
 {
-}
-
-Ren::ProgramId RenDevice::loadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
-{
-    // Read the Vertex Shader code from the file
-    std::string shadersDir("data/shaders/");
-    // Check if GLSL is too old
-    // Unconditionally use GLSL 120 for now because the 310 ES version causes glitches
-    // (at least for some Windows users
-    if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
-        shadersDir.append("120/");
-
-    const std::string vertexShaderFile = shadersDir + vertexShaderPath;
-    const std::string fragmentShaderFile = shadersDir + fragmentShaderPath;
-
-    CB_DEPIMPL_AUTO(backend_);
-
-    return backend_->createProgramFromFiles(vertexShaderFile, fragmentShaderFile, vertexShaderPath, fragmentShaderPath);
 }
 
 void RenDevice::clearAllSurfaces(const RenColour& colour)
@@ -2004,15 +1972,19 @@ void RenDevice::renderScreenspace(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    recordCommand(Ren::Command::setProgram(glProgramID_GIU2D_));
+    recordCommand(Ren::Command::bindPipeline(gui2DPipeline_));
+
+    const auto posAttr = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexPosition_screenspace");
+    const auto uvAttr = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexUV");
+    const auto colAttr = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexColor");
 
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(texture), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(gl2DUniformID_, TextureUnit);
+    recordSetUniform1i(backend_->pipelineUniformLocation(gui2DPipeline_, "uTextureSampler"), TextureUnit);
 
-    recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), static_cast<float>(targetH));
+    recordSetUniform2f(backend_->pipelineUniformLocation(gui2DPipeline_, "uScreenspace"), static_cast<float>(targetW), static_cast<float>(targetH));
 
     recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
@@ -2024,11 +1996,11 @@ void RenDevice::renderScreenspace(
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
     recordEnableVertexAttribPointer(
-        glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+        posAttr, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
     recordEnableVertexAttribPointer(
-        glVertexUVID_,
+        uvAttr,
         2,
         Ren::BackendVertexAttribType::Float,
         false,
@@ -2037,7 +2009,7 @@ void RenDevice::renderScreenspace(
 
     // 3rd attribute vertex colours
     recordEnableVertexAttribPointer(
-        glVertexColour_screenspaceID_,
+        colAttr,
         4,
         Ren::BackendVertexAttribType::UnsignedByte,
         true,
@@ -2052,9 +2024,9 @@ void RenDevice::renderScreenspace(
     recordCommand(Ren::Command::setBlendStateDisabled());
     recordCommand(Ren::Command::setDepthTest(true));
 
-    recordDisableVertexAttribPointer(glVertexPosition_screenspaceID_);
-    recordDisableVertexAttribPointer(glVertexUVID_);
-    recordDisableVertexAttribPointer(glVertexColour_screenspaceID_);
+    recordDisableVertexAttribPointer(posAttr);
+    recordDisableVertexAttribPointer(uvAttr);
+    recordDisableVertexAttribPointer(colAttr);
 }
 
 void RenDevice::renderSurface(
@@ -2090,13 +2062,19 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    recordCommand(Ren::Command::setProgram(glProgramID_GIU2D_));
+    recordCommand(Ren::Command::bindPipeline(gui2DPipeline_));
+
+    const auto posAttr2D = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexPosition_screenspace");
+    const auto uvAttr2D = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexUV");
+    const auto colAttr2D = backend_->pipelineAttribLocation(gui2DPipeline_, "vertexColor");
+    const auto screenspaceUniform = backend_->pipelineUniformLocation(gui2DPipeline_, "uScreenspace");
+    const auto texSamplerUniform = backend_->pipelineUniformLocation(gui2DPipeline_, "uTextureSampler");
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
     if (targetW)
     {
-        recordSetUniform2f(glScreenspaceID_, static_cast<float>(targetW), -static_cast<float>(targetH));
+        recordSetUniform2f(screenspaceUniform, static_cast<float>(targetW), -static_cast<float>(targetH));
 
         vertices[2].x = vertex_up_left[0];
         vertices[2].y = vertex_up_left[1];
@@ -2129,7 +2107,7 @@ void RenDevice::renderSurface(
     else
     {
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        recordSetUniform2f(glScreenspaceID_, static_cast<float>(mode.width()), static_cast<float>(mode.height()));
+        recordSetUniform2f(screenspaceUniform, static_cast<float>(mode.width()), static_cast<float>(mode.height()));
 
         vertices[0].x = vertex_up_left[0];
         vertices[0].y = vertex_up_left[1];
@@ -2172,16 +2150,16 @@ void RenDevice::renderSurface(
     recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit, texFilter, texFilter));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(gl2DUniformID_, TextureUnit);
+    recordSetUniform1i(texSamplerUniform, TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
     recordEnableVertexAttribPointer(
-        glVertexPosition_screenspaceID_, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+        posAttr2D, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
     recordEnableVertexAttribPointer(
-        glVertexUVID_,
+        uvAttr2D,
         2,
         Ren::BackendVertexAttribType::Float,
         false,
@@ -2190,7 +2168,7 @@ void RenDevice::renderSurface(
 
     // 3rd attribute buffer : vertex colours
     recordEnableVertexAttribPointer(
-        glVertexColour_screenspaceID_,
+        colAttr2D,
         4,
         Ren::BackendVertexAttribType::UnsignedByte,
         true,
@@ -2210,9 +2188,9 @@ void RenDevice::renderSurface(
 
     recordCommand(Ren::Command::setDepthTest(true));
 
-    recordDisableVertexAttribPointer(glVertexPosition_screenspaceID_);
-    recordDisableVertexAttribPointer(glVertexUVID_);
-    recordDisableVertexAttribPointer(glVertexColour_screenspaceID_);
+    recordDisableVertexAttribPointer(posAttr2D);
+    recordDisableVertexAttribPointer(uvAttr2D);
+    recordDisableVertexAttribPointer(colAttr2D);
 }
 
 void RenDevice::renderPrimitive(
@@ -2228,31 +2206,29 @@ void RenDevice::renderPrimitive(
     CB_DEPIMPL_AUTO(backend_);
 
     // Use our shader
-    recordCommand(Ren::Command::setProgram(glProgramID_Standard_));
+    recordCommand(Ren::Command::bindPipeline(standardPipeline_));
+
+    const auto posAttrStd = backend_->pipelineAttribLocation(standardPipeline_, "vertexPosition_modelspace");
+    const auto uvAttrStd = backend_->pipelineAttribLocation(standardPipeline_, "vertexUV");
+    const auto colAttrStd = backend_->pipelineAttribLocation(standardPipeline_, "vertexColor");
 
     if (standardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(glViewMatrixID_, view_);
-        recordSetUniformMatrix4fv(glProjectionMatrixID_, projection_);
-        recordSetUniform3f(glFogColourID_, fogColour_.x, fogColour_.y, fogColour_.z);
-        recordSetUniform3f(glFogParamsID_, fogParams_.x, fogParams_.y, fogParams_.z);
+        recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uV"), view_);
+        recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uP"), projection_);
+        recordSetUniform3f(backend_->pipelineUniformLocation(standardPipeline_, "uFogColour"), fogColour_.x, fogColour_.y, fogColour_.z);
+        recordSetUniform3f(backend_->pipelineUniformLocation(standardPipeline_, "uFogParams"), fogParams_.x, fogParams_.y, fogParams_.z);
         standardUniformsDirty_ = false;
     }
 
-    recordSetUniformMatrix4fv(glModelMatrixID_, model_);
-    // std::cout<<glm::to_string(MVP)<<std::endl;
-    // glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-    // glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
-
-    // glm::vec3 lightPos = glm::vec3(4,4,4);
-    // glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+    recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uM"), model_);
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(glTextureSamplerID_, TextureUnit);
+    recordSetUniform1i(backend_->pipelineUniformLocation(standardPipeline_, "uTextureSampler2"), TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2263,11 +2239,11 @@ void RenDevice::renderPrimitive(
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     recordEnableVertexAttribPointer(
-        glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+        posAttrStd, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
     recordEnableVertexAttribPointer(
-        glVertex_modelspaceUVID_,
+        uvAttrStd,
         2,
         Ren::BackendVertexAttribType::Float,
         false,
@@ -2276,31 +2252,18 @@ void RenDevice::renderPrimitive(
 
     // vertex colours
     recordEnableVertexAttribPointer(
-        glVertexColour_modelspaceID_,
+        colAttrStd,
         4,
         Ren::BackendVertexAttribType::UnsignedByte,
         true,
         sizeof(RenIVertex),
         3 * sizeof(float) + sizeof(uint32_t));
 
-    /*// 3rd attribute buffer : normals
-    glEnableVertexAttribArray(vertexNormal_modelspaceID);
-    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-    glVertexAttribPointer(
-        vertexNormal_modelspaceID,    // The attribute we want to configure
-        3,                            // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );
-     */
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
-    recordDisableVertexAttribPointer(glVertexPosition_modelspaceID_);
-    recordDisableVertexAttribPointer(glVertex_modelspaceUVID_);
-    recordDisableVertexAttribPointer(glVertexColour_modelspaceID_);
-    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
+    recordDisableVertexAttribPointer(posAttrStd);
+    recordDisableVertexAttribPointer(uvAttrStd);
+    recordDisableVertexAttribPointer(colAttrStd);
 }
 
 void RenDevice::renderIndexed(
@@ -2319,33 +2282,29 @@ void RenDevice::renderIndexed(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    recordCommand(Ren::Command::setProgram(glProgramID_Standard_));
-    // Compute the MVP matrix from keyboard and mouse input
+    recordCommand(Ren::Command::bindPipeline(standardPipeline_));
 
-    //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
+    const auto posAttrIdx = backend_->pipelineAttribLocation(standardPipeline_, "vertexPosition_modelspace");
+    const auto uvAttrIdx = backend_->pipelineAttribLocation(standardPipeline_, "vertexUV");
+    const auto colAttrIdx = backend_->pipelineAttribLocation(standardPipeline_, "vertexColor");
 
     if (standardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(glViewMatrixID_, view_);
-        recordSetUniformMatrix4fv(glProjectionMatrixID_, projection_);
-        recordSetUniform3f(glFogColourID_, fogColour_.x, fogColour_.y, fogColour_.z);
-        recordSetUniform3f(glFogParamsID_, fogParams_.x, fogParams_.y, fogParams_.z);
+        recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uV"), view_);
+        recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uP"), projection_);
+        recordSetUniform3f(backend_->pipelineUniformLocation(standardPipeline_, "uFogColour"), fogColour_.x, fogColour_.y, fogColour_.z);
+        recordSetUniform3f(backend_->pipelineUniformLocation(standardPipeline_, "uFogParams"), fogParams_.x, fogParams_.y, fogParams_.z);
         standardUniformsDirty_ = false;
     }
 
-    recordSetUniformMatrix4fv(glModelMatrixID_, model_);
-    /*glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-    glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
-
-    glm::vec3 lightPos = glm::vec3(4,4,4);
-    glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);*/
+    recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(standardPipeline_, "uM"), model_);
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(glTextureSamplerID_, TextureUnit);
+    recordSetUniform1i(backend_->pipelineUniformLocation(standardPipeline_, "uTextureSampler2"), TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2356,11 +2315,11 @@ void RenDevice::renderIndexed(
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
     recordEnableVertexAttribPointer(
-        glVertexPosition_modelspaceID_, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+        posAttrIdx, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
     recordEnableVertexAttribPointer(
-        glVertex_modelspaceUVID_,
+        uvAttrIdx,
         2,
         Ren::BackendVertexAttribType::Float,
         false,
@@ -2369,24 +2328,12 @@ void RenDevice::renderIndexed(
 
     // vertex colours
     recordEnableVertexAttribPointer(
-        glVertexColour_modelspaceID_,
+        colAttrIdx,
         4,
         Ren::BackendVertexAttribType::UnsignedByte,
         true,
         sizeof(RenIVertex),
         3 * sizeof(float) + sizeof(uint32_t));
-
-    // 3rd attribute buffer : normals
-    /*glEnableVertexAttribArray(vertexNormal_modelspaceID);
-    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-    glVertexAttribPointer(
-        vertexNormal_modelspaceID,    // The attribute we want to configure
-        3,                            // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );*/
 
     // Index buffer
     recordCommand(Ren::Command::bufferData(
@@ -2399,10 +2346,9 @@ void RenDevice::renderIndexed(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    recordDisableVertexAttribPointer(glVertexPosition_modelspaceID_);
-    recordDisableVertexAttribPointer(glVertex_modelspaceUVID_);
-    recordDisableVertexAttribPointer(glVertexColour_modelspaceID_);
-    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
+    recordDisableVertexAttribPointer(posAttrIdx);
+    recordDisableVertexAttribPointer(uvAttrIdx);
+    recordDisableVertexAttribPointer(colAttrIdx);
 }
 
 void RenDevice::renderIndexedScreenspace(
@@ -2421,19 +2367,24 @@ void RenDevice::renderIndexedScreenspace(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    recordCommand(Ren::Command::setProgram(glProgramID_Billboard_));
+    recordCommand(Ren::Command::bindPipeline(billboardPipeline_));
+
+    const auto posAttrBB = backend_->pipelineAttribLocation(billboardPipeline_, "vertexPosition_Billboard");
+    const auto uvAttrBB = backend_->pipelineAttribLocation(billboardPipeline_, "vertexUV");
+    const auto colAttrBB = backend_->pipelineAttribLocation(billboardPipeline_, "vertexColor");
+
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
 
     if (billboardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(glViewProjMatrix_BillboardID_, *pImpl_->projViewMatrix_);
+        recordSetUniformMatrix4fv(backend_->pipelineUniformLocation(billboardPipeline_, "uVP"), *pImpl_->projViewMatrix_);
         billboardUniformsDirty_ = false;
     }
 
     // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(glTextureSamplerBillboardID_, TextureUnit);
+    recordSetUniform1i(backend_->pipelineUniformLocation(billboardPipeline_, "uTextureSampler"), TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2444,11 +2395,11 @@ void RenDevice::renderIndexedScreenspace(
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_));
     recordEnableVertexAttribPointer(
-        glVertexPosition_BillboardID_, 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+        posAttrBB, 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
 
     // 2nd attribute buffer : UVs
     recordEnableVertexAttribPointer(
-        glVertex_BillboardUVID_,
+        uvAttrBB,
         2,
         Ren::BackendVertexAttribType::Float,
         false,
@@ -2457,7 +2408,7 @@ void RenDevice::renderIndexedScreenspace(
 
     // vertex colours
     recordEnableVertexAttribPointer(
-        glVertexColour_BillboardID_,
+        colAttrBB,
         4,
         Ren::BackendVertexAttribType::UnsignedByte,
         true,
@@ -2475,7 +2426,7 @@ void RenDevice::renderIndexedScreenspace(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    recordDisableVertexAttribPointer(glVertexPosition_BillboardID_);
-    recordDisableVertexAttribPointer(glVertex_BillboardUVID_);
-    recordDisableVertexAttribPointer(glVertexColour_BillboardID_);
+    recordDisableVertexAttribPointer(posAttrBB);
+    recordDisableVertexAttribPointer(uvAttrBB);
+    recordDisableVertexAttribPointer(colAttrBB);
 }
