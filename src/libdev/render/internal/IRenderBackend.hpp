@@ -49,15 +49,11 @@ public:
     virtual void releaseFramebuffer(FramebufferId id) = 0;
 
     virtual void bindFramebuffer(FramebufferId id) = 0;
-    virtual void framebufferTexture2D(FramebufferAttachment attachment, TexId texture) = 0;
 
-    virtual bool beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture) = 0;
     virtual void endRenderToTexture() = 0;
 
     virtual void pushFramebuffer() = 0;
     virtual void popFramebuffer() = 0;
-
-    virtual void bindTexture2D(TexId id, std::uint32_t unit) = 0;
 
     virtual BackendCommandBufferHandle createCommandBuffer() = 0;
     virtual void destroyCommandBuffer(BackendCommandBufferHandle handle) = 0;

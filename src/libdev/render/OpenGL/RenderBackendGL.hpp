@@ -51,14 +51,11 @@ public:
     void releaseFramebuffer(FramebufferId id) override;
 
     void bindFramebuffer(FramebufferId id) override;
-    void framebufferTexture2D(FramebufferAttachment attachment, TexId texture) override;
 
-    bool beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture) override;
     void endRenderToTexture() override;
 
     void pushFramebuffer() override;
     void popFramebuffer() override;
-    void bindTexture2D(TexId id, std::uint32_t unit) override;
 
     BackendCommandBufferHandle createCommandBuffer() override;
     void destroyCommandBuffer(BackendCommandBufferHandle handle) override;
