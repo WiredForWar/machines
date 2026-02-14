@@ -88,6 +88,7 @@ set(RENDER_SOURCES
     internal/InternalLight.hpp
     internal/InternalLight.ipp
     internal/InternalPoints.hpp
+    internal/PipelineSpec.hpp
     internal/RenScopedImmediateCommands.hpp
     internal/internal.hpp
     internal/InternalMap.hpp

@@ -392,6 +392,86 @@ void RenderBackendGL::releaseProgram(ProgramId id)
     }
 }
 
+PipelineId RenderBackendGL::createPipeline(const PipelineDesc& desc)
+{
+    // Resolve logical shader names to backend-specific file paths
+    static constexpr const char* shadersDir = "data/shaders/120/";
+    static constexpr const char* vertexExt = ".vxgls";
+    static constexpr const char* fragmentExt = ".fggls";
+
+    const std::string vertexShaderFile = shadersDir + desc.vertexShader + vertexExt;
+    const std::string fragmentShaderFile = shadersDir + desc.fragmentShader + fragmentExt;
+
+    const ProgramId programId = createProgramFromFiles(
+        vertexShaderFile, fragmentShaderFile, desc.vertexShader, desc.fragmentShader);
+    if (programId == 0)
+        return 0;
+
+    Pipeline pipeline;
+    pipeline.alive = true;
+    pipeline.programId = programId;
+    pipeline.vertexAttributes = desc.vertexAttributes;
+
+    for (const auto& uniformName : desc.uniformNames)
+    {
+        const auto loc = uniformLocation(programId, uniformName);
+        if (!loc.isValid())
+            spdlog::warn("Uniform '{}' not found in shader program", uniformName);
+        pipeline.uniforms.emplace_back(uniformName, loc);
+    }
+
+    for (const auto& attr : desc.vertexAttributes)
+    {
+        pipeline.attributes.emplace_back(attr.name, attribLocation(programId, attr.name));
+    }
+
+    pipelines_.push_back(std::move(pipeline));
+    return static_cast<PipelineId>(pipelines_.size());
+}
+
+void RenderBackendGL::releasePipeline(PipelineId id)
+{
+    if (id == 0 || id > pipelines_.size())
+        return;
+
+    Pipeline& pipeline = pipelines_[id - 1];
+    if (!pipeline.alive)
+        return;
+
+    releaseProgram(pipeline.programId);
+    pipeline.alive = false;
+    pipeline.programId = 0;
+}
+
+UniformLocationId RenderBackendGL::pipelineUniformLocation(PipelineId id, std::string_view name) const
+{
+    if (id == 0 || id > pipelines_.size())
+        return UniformLocationId{};
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    for (const auto& [uniformName, location] : pipeline.uniforms)
+    {
+        if (uniformName == name)
+            return location;
+    }
+    spdlog::error("Uniform '{}' not registered in pipeline descriptor", name);
+    return UniformLocationId{};
+}
+
+AttributeLocationId RenderBackendGL::pipelineAttribLocation(PipelineId id, std::string_view name) const
+{
+    if (id == 0 || id > pipelines_.size())
+        return AttributeLocationId{};
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    for (const auto& [attrName, location] : pipeline.attributes)
+    {
+        if (attrName == name)
+            return location;
+    }
+    return AttributeLocationId{};
+}
+
 BufferId RenderBackendGL::createBuffer()
 {
     GLuint buffer = 0;
@@ -850,6 +930,19 @@ void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer&
 void RenderBackendGL::executeCommand(const BackendCommandSetProgram& command)
 {
     useProgram(command.programId);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindPipeline& command)
+{
+    const PipelineId id = command.pipelineId;
+    if (id == 0 || id > pipelines_.size())
+        return;
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    if (!pipeline.alive)
+        return;
+
+    useProgram(pipeline.programId);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
