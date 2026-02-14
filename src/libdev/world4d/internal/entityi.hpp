@@ -60,6 +60,9 @@ public:
     void doNotLight(bool lightIt);
     bool doNotLight() const;
 
+    void setNoShadowCast(bool v);
+    bool noShadowCast() const;
+
     // Any non-global lights which illuminate this object.
     bool hasLightList() const;
     W4dLocalLightList& lightListForEdit();
@@ -233,6 +236,7 @@ private:
     RenColour* pFilterColour_{};
     int nLinkedSounds_{}; // Count of sounds associated via W4dSoundManager
     bool doNotLight_{};
+    bool noShadowCast_{}; // True if this entity should not write to the shadow depth map.
     int clientData_{}; // To be used as clients of this class see fit.
 
     OBJECT_TRACKER(W4dEntityImpl);

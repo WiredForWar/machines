@@ -2734,6 +2734,16 @@ bool W4dEntity::doNotLight() const
     return pImpl_->doNotLight();
 }
 
+void W4dEntity::setNoShadowCast(bool v)
+{
+    pImpl_->setNoShadowCast(v);
+}
+
+bool W4dEntity::noShadowCast() const
+{
+    return pImpl_->noShadowCast();
+}
+
 // Entity names aren't always usefully set so they don't work too well for
 // identifying entities.  In addition to the name, try to print some useful
 // info about an entity.
