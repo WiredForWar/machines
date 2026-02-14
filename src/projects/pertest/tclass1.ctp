@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline template methods
 
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 #include "pertest/per.hpp"
 
 template <class T1, class T2>

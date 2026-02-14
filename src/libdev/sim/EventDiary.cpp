@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
-// #include "stdlib/algorith.hpp"
+// #include "stdlib/Algorithm.hpp"
 #include <algorithm>
 #include "sim/EventDiary.hpp"
 

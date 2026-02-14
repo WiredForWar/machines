@@ -9,7 +9,7 @@
 
 #include "testh/testvec.hpp"
 #include "testh/soaktest.hpp"
-#include "testh/random.hpp"
+#include "testh/Random.hpp"
 
 //  static
 template <class VECTOR, class ITERATOR> void TestList<VECTOR, ITERATOR>::operatorPlusPlusPrefix(void)

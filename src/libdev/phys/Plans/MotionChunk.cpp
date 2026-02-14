@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-// #include "stdlib/algorith.hpp"
+// #include "stdlib/Algorithm.hpp"
 
 // #include "mathex/Epsilon.hpp"
 #include "mathex/Sausage2d.hpp"

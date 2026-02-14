@@ -17,7 +17,7 @@
 #include "machphys/Data/Levels.hpp"
 
 #include "system/PathName.hpp"
-// I don't know why ctl/list.hpp must be included after the other #include
+// I don't know why ctl/List.hpp must be included after the other #include
 #include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysSpyLocator);

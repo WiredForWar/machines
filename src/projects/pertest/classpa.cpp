@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 #include "pertest/classpa.hpp"
 #include "pertest/per.hpp"
 

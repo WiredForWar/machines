@@ -105,7 +105,7 @@ inline constexpr MexPoint2d::MexPoint2d(MATHEX_SCALAR x, MATHEX_SCALAR y)
 }
 
 #ifdef _INLINE
-#include "Mathex/point2d.ipp"
+#include "Mathex/Point2d.ipp"
 #endif
 
 #endif

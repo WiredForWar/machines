@@ -12,7 +12,7 @@
 #ifndef _BASE_PERSIST_HPP
 #define _BASE_PERSIST_HPP
 
-#include "pertest/private/persist.hpp"
+#include "pertest/private/Persistence.hpp"
 // #include "base/private/Persistence.hpp"
 
 //  Use PerOstream as your persistent output stream, PerIstream as the input stream.

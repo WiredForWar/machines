@@ -1,5 +1,5 @@
 #include "pertest/class4.hpp"
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 
 PER_DEFINE_PERSISTENT(Class4);
 

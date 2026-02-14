@@ -20,7 +20,7 @@ double randomFloat(double minValue, double maxValue);
 //////////////////////////////
 
 #ifdef _INLINE
-//  #include "testh/random.ipp"
+//  #include "testh/Random.ipp"
 #endif
 
 //////////////////////////////

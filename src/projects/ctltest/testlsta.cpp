@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "ctl/testh/testlsta.hpp"
-#include "ctl/testh/random.hpp"
+#include "ctl/testh/Random.hpp"
 #include "ctl/testh/clargs.hpp"
 
 // static

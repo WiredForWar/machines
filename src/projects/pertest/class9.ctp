@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline template methods
 
-#include "pertest/persist.hpp"
+#include "pertest/Persistence.hpp"
 
 template <class X> Class9<X>::Class9()
 {
