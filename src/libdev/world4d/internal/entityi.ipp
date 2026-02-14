@@ -103,6 +103,18 @@ bool W4dEntityImpl::doNotLight() const
 }
 
 _CODE_INLINE
+void W4dEntityImpl::setNoShadowCast(bool v)
+{
+    noShadowCast_ = v;
+}
+
+_CODE_INLINE
+bool W4dEntityImpl::noShadowCast() const
+{
+    return noShadowCast_;
+}
+
+_CODE_INLINE
 void W4dEntityImpl::clientData(int newValue)
 {
     clientData_ = newValue;
