@@ -821,7 +821,9 @@ void RenDevice::endFrame()
     PRE(rendering());
 
     commonEndFrame();
-    pImpl_->display_->flipBuffers(backSurface());
+    RenSurface backBuf = backSurface();
+    pImpl_->display_->displayImpl().drawCursor(backBuf);
+    pImpl_->display_->flipBuffers();
 
     pImpl_->rendering_ = false;
 

@@ -143,7 +143,6 @@ public:
     // Updates the cursor, if necessary.
     void startFrame();
 
-    void flipBuffers(RenSurface backSurf);
     void flipBuffers();
 
     // This method should be called every frame in case Alt-Tab has been

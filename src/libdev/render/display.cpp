@@ -559,11 +559,9 @@ void RenDisplay::startFrame()
     RENDER_STREAM("Cursor restore took " << 1000 * cursorTimer.time() << "(ms)\n");
 }
 
-void RenDisplay::flipBuffers(RenSurface backBuf)
+void RenDisplay::flipBuffers()
 {
     CB_RenDisplay_DEPIMPL();
-
-    pImpl_->drawCursor(backBuf);
 
     DevTimer flipTimer;
 
@@ -572,11 +570,6 @@ void RenDisplay::flipBuffers(RenSurface backBuf)
     RENDER_STREAM("Buffer flip took " << 1000 * flipTimer.time() << "(ms)\n");
 
     ++frameNo_;
-}
-
-void RenDisplay::flipBuffers()
-{
-    SDL_GL_SwapWindow(window());
 }
 
 void RenDisplay::useCursor(const RenCursor2d* c)

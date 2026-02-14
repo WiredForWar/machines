@@ -50,12 +50,13 @@ public:
     // previous saved area is now irrelevant.
     void discardCursorSaves();
 
+    void drawCursor(RenSurface& backBuf);
+
 private:
     friend class RenDisplay;
     friend class RenDDEnumerator;
     RenIDisplay(SDL_Window* wnd);
 
-    void drawCursor(RenSurface& backBuf);
     void restoreUnderCursor();
     bool blitTest();
 
