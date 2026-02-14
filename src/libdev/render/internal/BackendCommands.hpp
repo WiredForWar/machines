@@ -145,6 +145,8 @@ struct BackendCommandBindTexture2D
 {
     BackendTextureHandle textureHandle{};
     std::uint32_t unit{};
+    TextureFilter minFilter{TextureFilter::Linear};
+    TextureFilter magFilter{TextureFilter::Linear};
 };
 
 struct BackendCommandBufferData
@@ -169,12 +171,6 @@ struct BackendCommandBeginRenderToTexture
 
 struct BackendCommandEndRenderToTexture
 {
-};
-
-struct BackendCommandSetCurrentTextureFilter
-{
-    TextureFilter minFilter{};
-    TextureFilter magFilter{};
 };
 
 struct BackendCommandSetLineWidth
@@ -207,7 +203,6 @@ using BackendCommand = std::variant<
     BackendCommandBindBuffer,
     BackendCommandBeginRenderToTexture,
     BackendCommandEndRenderToTexture,
-    BackendCommandSetCurrentTextureFilter,
     BackendCommandSetLineWidth>;
 
 namespace Command
@@ -336,9 +331,13 @@ inline BackendCommand setProgram(ProgramId programId)
     return BackendCommandSetProgram{ programId };
 }
 
-inline BackendCommand bindTexture2D(BackendTextureHandle textureHandle, std::uint32_t unit)
+inline BackendCommand bindTexture2D(
+    BackendTextureHandle textureHandle,
+    std::uint32_t unit,
+    TextureFilter minFilter = TextureFilter::Linear,
+    TextureFilter magFilter = TextureFilter::Linear)
 {
-    return BackendCommandBindTexture2D{ textureHandle, unit };
+    return BackendCommandBindTexture2D{ textureHandle, unit, minFilter, magFilter };
 }
 
 inline BackendCommand bufferData(BufferTarget target, BufferId bufferId, const void* data, std::size_t sizeBytes, BufferUsage usage)
@@ -360,11 +359,6 @@ inline BackendCommand beginRenderToTexture(FramebufferId framebufferId, BackendT
 inline BackendCommand endRenderToTexture()
 {
     return BackendCommandEndRenderToTexture{};
-}
-
-inline BackendCommand setCurrentTextureFilter(TextureFilter minFilter, TextureFilter magFilter)
-{
-    return BackendCommandSetCurrentTextureFilter{ minFilter, magFilter };
 }
 
 inline BackendCommand setLineWidth(float width)
