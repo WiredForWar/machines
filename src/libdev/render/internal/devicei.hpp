@@ -166,10 +166,7 @@ private:
     int debugX_, debugY_;
     bool antiAliasingOn_;
 
-    bool smoothScaleEnabled_ = false;
-    bool smoothFilterApplied_ = false;
-    int smoothFilterMin_ = 0;
-    int smoothFilterMag_ = 0;
+    bool smoothScaleEnabled_{};
 
     Ren::ProgramId glProgramID_GIU2D_{};
     Ren::ProgramId glProgramID_Standard_{};
