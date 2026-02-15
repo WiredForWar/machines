@@ -217,7 +217,7 @@ bool RenDevice::initialize()
             "uMatDiffuse", "uMatAmbient", "uMatEmissive", "uFilter",
             "uHasVtxMaterials",
             "uNumPointLights",
-            "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten",
+            "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten", "uPointLightOmni",
         };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
@@ -249,6 +249,7 @@ bool RenDevice::initialize()
         standard_.pointLightColorUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightColor");
         standard_.pointLightRangeUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightRange");
         standard_.pointLightAttenUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightAtten");
+        standard_.pointLightOmniUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightOmni");
     }
 
     glVertexDataBufferID_ = backend_->createBuffer();
@@ -2365,6 +2366,7 @@ void RenDevice::renderPrimitive(
             recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
             recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
             recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
+            recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
         }
     }
 
@@ -2466,6 +2468,7 @@ void RenDevice::renderIndexed(
             recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
             recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
             recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
+            recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
         }
     }
 

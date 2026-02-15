@@ -33,6 +33,7 @@ uniform vec3 uPointLightPos[MAX_POINT_LIGHTS];
 uniform vec3 uPointLightColor[MAX_POINT_LIGHTS];
 uniform float uPointLightRange[MAX_POINT_LIGHTS];
 uniform vec3 uPointLightAtten[MAX_POINT_LIGHTS]; // (constant, linear, quadratic)
+uniform float uPointLightOmni[MAX_POINT_LIGHTS]; // 1.0 = omnidirectional, 0.0 = normal
 
 void main() {
     
@@ -73,7 +74,7 @@ void main() {
             float normalised = 1.0f - dist / uPointLightRange[i];
             float att = uPointLightAtten[i].x + uPointLightAtten[i].y * normalised + uPointLightAtten[i].z * normalised * normalised;
             vec3 Lp = normalize(toLight);
-            float NdotLp = max(dot(N, Lp), 0.0f);
+            float NdotLp = mix(max(dot(N, Lp), 0.0f), 1.0f, uPointLightOmni[i]);
             pointLightContrib += att * NdotLp * uPointLightColor[i];
         }
 
