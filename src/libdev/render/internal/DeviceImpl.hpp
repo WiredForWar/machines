@@ -215,6 +215,7 @@ private:
         Ren::UniformLocationId pointLightColorUniform{};
         Ren::UniformLocationId pointLightRangeUniform{};
         Ren::UniformLocationId pointLightAttenUniform{};
+        Ren::UniformLocationId pointLightOmniUniform{};
     };
 
     struct BillboardPipelineLocations
@@ -277,6 +278,7 @@ private:
     glm::vec3 gpuPointLightColor_[MaxGpuPointLights]{};
     float gpuPointLightRange_[MaxGpuPointLights]{};
     glm::vec3 gpuPointLightAtten_[MaxGpuPointLights]{}; // (constant, linear, quadratic)
+    float gpuPointLightOmni_[MaxGpuPointLights]{}; // 1.0 = omnidirectional (uniform light), 0.0 = normal point light
 
     // Per-vertex material overrides (sparse: sentinel -1 means "use group material").
     std::vector<float> expandedVtxDiffuse_{};
