@@ -8,6 +8,7 @@ in vec4 vertexColor;
 in vec3 vertexNormal;
 in vec3 vtxDiffuse;
 in vec3 vtxAmbient;
+in vec3 vtxEmissive;
 
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
@@ -15,6 +16,7 @@ out vec4 fragmentColor;
 out vec3 fragWorldNormal;
 out vec3 fragVtxDiffuse;
 out vec3 fragVtxAmbient;
+out vec3 fragVtxEmissive;
 out vec3 fragWorldPos;
 out vec4 viewSpace;
 out vec4 fragmentFogColour;
@@ -46,6 +48,7 @@ void main() {
         fragWorldPos = (uM * vec4(vertexPosition_modelspace, 1.0)).xyz;
         fragVtxDiffuse = vtxDiffuse;
         fragVtxAmbient = vtxAmbient;
+        fragVtxEmissive = vtxEmissive;
 
         // Debug modes still computed per-vertex for diagnostic purposes
         if (uGpuLighting == 2)
