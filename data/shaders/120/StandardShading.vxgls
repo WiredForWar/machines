@@ -68,7 +68,7 @@ void main() {
     else
     {
         fragWorldNormal = vec3(0.0);
-        fragmentColor = vec4(vertexColor[2],vertexColor[1],vertexColor[0],vertexColor[3]);
+        fragmentColor = vertexColor;
     }
 
     viewSpace = uV * uM * vec4(vertexPosition_modelspace,1); 

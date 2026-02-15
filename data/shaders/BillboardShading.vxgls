@@ -21,6 +21,6 @@ void main() {
     gl_Position =  uVP * pos;
     
 	UV = vertexUV;
-    fragmentColor = vec4(vertexColor[2],vertexColor[1],vertexColor[0],vertexColor[3]);
+    fragmentColor = vertexColor;
 }
 
