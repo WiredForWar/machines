@@ -21,6 +21,8 @@
 #include "render/internal/BackendCommands.hpp"
 #include "device/Timer.hpp"
 #include "render/internal/PipelineSpec.hpp"
+#include "render/internal/RenderPassSpec.hpp"
+#include "device/Timer.hpp"
 
 #include <GL/glew.h>
 
@@ -174,6 +176,9 @@ private:
     Ren::PipelineId gui2DPipeline_{};
     Ren::PipelineId standardPipeline_{};
     Ren::PipelineId billboardPipeline_{};
+
+    Ren::RenderPassId geometryRenderPass_{};
+    Ren::RenderPassId uiRenderPass_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
     Ren::BufferId glVertexDataBufferID_{};

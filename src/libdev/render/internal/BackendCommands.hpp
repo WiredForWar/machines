@@ -189,6 +189,11 @@ struct BackendCommandBeginRenderPass
 {
     RenderPassId renderPassId{};
     FramebufferId framebufferId{};
+    bool overrideClearColor{};
+    float clearR{};
+    float clearG{};
+    float clearB{};
+    float clearA{};
 };
 
 struct BackendCommandEndRenderPass
@@ -394,6 +399,12 @@ inline BackendCommand setLineWidth(float width)
 inline BackendCommand beginRenderPass(RenderPassId renderPassId, FramebufferId framebufferId = 0)
 {
     return BackendCommandBeginRenderPass{ renderPassId, framebufferId };
+}
+
+inline BackendCommand beginRenderPass(RenderPassId renderPassId, RenColour clearColor, FramebufferId framebufferId = 0)
+{
+    return BackendCommandBeginRenderPass{
+        renderPassId, framebufferId, true, clearColor.r(), clearColor.g(), clearColor.b(), clearColor.a() };
 }
 
 inline BackendCommand endRenderPass()

@@ -1021,11 +1021,14 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& comman
 
     if (pass.desc.colorAttachment.loadOp == LoadOp::Clear)
     {
-        glClearColor(
-            pass.desc.colorAttachment.clearR,
-            pass.desc.colorAttachment.clearG,
-            pass.desc.colorAttachment.clearB,
-            pass.desc.colorAttachment.clearA);
+        if (command.overrideClearColor)
+            glClearColor(command.clearR, command.clearG, command.clearB, command.clearA);
+        else
+            glClearColor(
+                pass.desc.colorAttachment.clearR,
+                pass.desc.colorAttachment.clearG,
+                pass.desc.colorAttachment.clearB,
+                pass.desc.colorAttachment.clearA);
         clearMask |= GL_COLOR_BUFFER_BIT;
     }
 
