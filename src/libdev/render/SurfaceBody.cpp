@@ -373,7 +373,6 @@ void RenISurfBody::drawText(
 
     y += fontImpl.ascender();
 
-    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
     if (options.alignment() & Ren::AlignRight)
     {
         int textWidth = 0;
@@ -544,6 +543,11 @@ void RenISurfBody::drawText(
         }
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
+    ASSERT(!vertices.empty(), "drawText called with text that produced no glyphs");
+    if (vertices.empty())
+        return;
+
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
     RenDevice::current()->renderScreenspace(
         &vertices.front(),
         vertices.size(),
