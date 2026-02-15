@@ -7,6 +7,7 @@ in vec4 fragmentColor;
 in vec3 fragWorldNormal;
 in vec3 fragVtxDiffuse;
 in vec3 fragVtxAmbient;
+in vec3 fragVtxEmissive;
 in vec3 fragWorldPos;
 in vec4 viewSpace;
 in vec4 fragmentFogColour;
@@ -78,7 +79,9 @@ void main() {
             pointLightContrib += att * NdotLp * uPointLightColor[i];
         }
 
-        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + uMatEmissive + pointLightContrib * diffuse);
+        vec3 emissive = (uHasVtxMaterials == 1 && fragVtxEmissive.r >= 0.0f) ? fragVtxEmissive : uMatEmissive;
+
+        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
         litColor = vec4(clamp(lit, 0.0f, 1.0f), 1.0f);
     }
     else
