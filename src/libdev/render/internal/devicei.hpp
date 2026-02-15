@@ -207,6 +207,11 @@ private:
         Ren::UniformLocationId matEmissiveUniform{};
         Ren::UniformLocationId filterUniform{};
         Ren::UniformLocationId hasVtxMaterialsUniform{};
+        Ren::UniformLocationId numPointLightsUniform{};
+        Ren::UniformLocationId pointLightPosUniform{};
+        Ren::UniformLocationId pointLightColorUniform{};
+        Ren::UniformLocationId pointLightRangeUniform{};
+        Ren::UniformLocationId pointLightAttenUniform{};
     };
 
     struct BillboardPipelineLocations
@@ -261,6 +266,14 @@ private:
     glm::vec3 gpuLightDir_{};
     glm::vec3 gpuLightColor_{};
     glm::vec3 gpuAmbientColor_{};
+
+    // GPU point lights (collected per lightVertices call).
+    static constexpr int MaxGpuPointLights = 16;
+    int gpuNumPointLights_{};
+    glm::vec3 gpuPointLightPos_[MaxGpuPointLights]{};
+    glm::vec3 gpuPointLightColor_[MaxGpuPointLights]{};
+    float gpuPointLightRange_[MaxGpuPointLights]{};
+    glm::vec3 gpuPointLightAtten_[MaxGpuPointLights]{}; // (constant, linear, quadratic)
 
     // Per-vertex material overrides (sparse: sentinel -1 means "use group material").
     std::vector<float> expandedVtxDiffuse_{};
