@@ -294,10 +294,13 @@ void RenIIlluminator::lightVertices(
                 devImpl_->expandedVtxDiffuse_.resize(floatsNeeded);
             if (devImpl_->expandedVtxAmbient_.size() < floatsNeeded)
                 devImpl_->expandedVtxAmbient_.resize(floatsNeeded);
+            if (devImpl_->expandedVtxEmissive_.size() < floatsNeeded)
+                devImpl_->expandedVtxEmissive_.resize(floatsNeeded);
 
             // Fill with sentinel (-1) meaning "use group material"
             std::fill_n(devImpl_->expandedVtxDiffuse_.data(), floatsNeeded, -1.0f);
             std::fill_n(devImpl_->expandedVtxAmbient_.data(), floatsNeeded, -1.0f);
+            std::fill_n(devImpl_->expandedVtxEmissive_.data(), floatsNeeded, -1.0f);
 
             // Apply global material transform if present
             const auto* matXform = globalMaterialTransform();
@@ -325,6 +328,11 @@ void RenIIlluminator::lightVertices(
                 devImpl_->expandedVtxAmbient_[idx * 3 + 0] = a.r();
                 devImpl_->expandedVtxAmbient_[idx * 3 + 1] = a.g();
                 devImpl_->expandedVtxAmbient_[idx * 3 + 2] = a.b();
+
+                const RenColour& e = pMat->emissive();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 0] = e.r();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 1] = e.g();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 2] = e.b();
             }
         }
 

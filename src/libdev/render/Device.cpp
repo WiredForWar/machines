@@ -102,6 +102,7 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(glNormalBufferID_);                                                                                \
     CB_DEPIMPL_AUTO(glVtxDiffuseBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glVtxAmbientBufferID_);                                                                            \
+    CB_DEPIMPL_AUTO(glVtxEmissiveBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
@@ -298,6 +299,7 @@ bool RenDevice::createGpuResources()
             { "vertexNormal", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
             { "vtxDiffuse", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
             { "vtxAmbient", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxEmissive", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
         };
         desc.uniformNames = {
             "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2",
@@ -314,9 +316,11 @@ bool RenDevice::createGpuResources()
         standard_.normalAttr = backend_->pipelineAttribLocation(standard_.id, "vertexNormal");
         standard_.vtxDiffuseAttr = backend_->pipelineAttribLocation(standard_.id, "vtxDiffuse");
         standard_.vtxAmbientAttr = backend_->pipelineAttribLocation(standard_.id, "vtxAmbient");
-        spdlog::info("Standard pipeline attrib locations: pos={} uv={} col={} normal={} vtxDif={} vtxAmb={}",
+        standard_.vtxEmissiveAttr = backend_->pipelineAttribLocation(standard_.id, "vtxEmissive");
+        spdlog::info("Standard pipeline attrib locations: pos={} uv={} col={} normal={} vtxDif={} vtxAmb={} vtxEmi={}",
             standard_.posAttr.value(), standard_.uvAttr.value(), standard_.colAttr.value(),
-            standard_.normalAttr.value(), standard_.vtxDiffuseAttr.value(), standard_.vtxAmbientAttr.value());
+            standard_.normalAttr.value(), standard_.vtxDiffuseAttr.value(), standard_.vtxAmbientAttr.value(),
+            standard_.vtxEmissiveAttr.value());
         standard_.modelUniform = backend_->pipelineUniformLocation(standard_.id, "uM");
         standard_.viewUniform = backend_->pipelineUniformLocation(standard_.id, "uV");
         standard_.projUniform = backend_->pipelineUniformLocation(standard_.id, "uP");
@@ -344,6 +348,7 @@ bool RenDevice::createGpuResources()
     glNormalBufferID_ = backend_->createBuffer();
     glVtxDiffuseBufferID_ = backend_->createBuffer();
     glVtxAmbientBufferID_ = backend_->createBuffer();
+    glVtxEmissiveBufferID_ = backend_->createBuffer();
     glElementBufferID_ = backend_->createBuffer();
 
     // Billboard pipeline
@@ -459,6 +464,7 @@ void RenDevice::releaseGpuResources()
     backend_->releaseBuffer(glNormalBufferID_);
     backend_->releaseBuffer(glVtxDiffuseBufferID_);
     backend_->releaseBuffer(glVtxAmbientBufferID_);
+    backend_->releaseBuffer(glVtxEmissiveBufferID_);
     backend_->releaseBuffer(glElementBufferID_);
     backend_->releaseBuffer(glVertexDataBufferBillboardID_);
     backend_->releaseBuffer(glElementBufferBillboardID_);
@@ -2567,6 +2573,16 @@ void RenDevice::renderIndexed(
             recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxAmbientBufferID_));
             recordEnableVertexAttribPointer(
                 standard_.vtxAmbientAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
+
+            recordCommand(Ren::Command::bufferData(
+                Ren::BufferTarget::Array,
+                glVtxEmissiveBufferID_,
+                pImpl_->expandedVtxEmissive_.data(),
+                nVertices * 3 * sizeof(float),
+                Ren::BufferUsage::StreamDraw));
+            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxEmissiveBufferID_));
+            recordEnableVertexAttribPointer(
+                standard_.vtxEmissiveAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
         }
     }
 
@@ -2588,6 +2604,7 @@ void RenDevice::renderIndexed(
         {
             recordDisableVertexAttribPointer(standard_.vtxDiffuseAttr);
             recordDisableVertexAttribPointer(standard_.vtxAmbientAttr);
+            recordDisableVertexAttribPointer(standard_.vtxEmissiveAttr);
         }
     }
 

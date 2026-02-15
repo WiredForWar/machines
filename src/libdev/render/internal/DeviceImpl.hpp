@@ -195,6 +195,7 @@ private:
         Ren::AttributeLocationId normalAttr{};
         Ren::AttributeLocationId vtxDiffuseAttr{};
         Ren::AttributeLocationId vtxAmbientAttr{};
+        Ren::AttributeLocationId vtxEmissiveAttr{};
         Ren::UniformLocationId modelUniform{};
         Ren::UniformLocationId viewUniform{};
         Ren::UniformLocationId projUniform{};
@@ -253,6 +254,7 @@ private:
     Ren::BufferId glNormalBufferID_{};
     Ren::BufferId glVtxDiffuseBufferID_{};
     Ren::BufferId glVtxAmbientBufferID_{};
+    Ren::BufferId glVtxEmissiveBufferID_{};
     Ren::BufferId glElementBufferID_{};
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
@@ -283,6 +285,7 @@ private:
     // Per-vertex material overrides (sparse: sentinel -1 means "use group material").
     std::vector<float> expandedVtxDiffuse_{};
     std::vector<float> expandedVtxAmbient_{};
+    std::vector<float> expandedVtxEmissive_{};
     bool hasPerVertexMaterials_{};
 
     DevTimer frameTimer_;
