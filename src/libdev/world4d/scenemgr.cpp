@@ -21,6 +21,8 @@
 #include "mathex/abox3d.hpp"
 
 #include "render/device.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/stats.hpp"
 #include "render/colour.hpp"
 
@@ -335,18 +337,22 @@ void W4dSceneManager::updateLights()
             ++nGlobalLights_;
         }
 
-        // If a light is local, disable it.  It will be enabled again during
-        // the render traversal.  Don't call lazyUpdate for the local lights.
-        // They will be updated when enabled.
-        if (light->isLocal())
+        // In PerPixel mode, treat LOCAL lights as DYNAMIC so they illuminate
+        // everything nearby via domain assignment instead of only their
+        // explicitly-assigned entities.
+        const bool promoteLocal = Config::gfxLightingMode.get() == LightingMode::PerPixel;
+
+        if (light->isLocal() && !promoteLocal)
         {
+            // Legacy path: disable local lights; they will be re-enabled
+            // per-entity during the render traversal.
             ++nLocalLights_;
             light->disable();
         }
 
         // If a client has defined a domain assignor, use it to give every
         // light domains.
-        if (light->isDynamic())
+        if (light->isDynamic() || (light->isLocal() && promoteLocal))
         {
             // Unfortunately, we must update the dynamic lights so that their
             // positions are correct for domain assignment.
