@@ -91,6 +91,8 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(gui2DPipeline_);                                                                                   \
     CB_DEPIMPL_AUTO(standardPipeline_);                                                                                \
     CB_DEPIMPL_AUTO(billboardPipeline_);                                                                               \
+    CB_DEPIMPL_AUTO(geometryRenderPass_);                                                                              \
+    CB_DEPIMPL_AUTO(uiRenderPass_);                                                                                    \
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
@@ -310,6 +312,28 @@ bool RenDevice::createGpuResources()
     glVertexDataBufferBillboardID_ = backend_->createBuffer();
     glElementBufferBillboardID_ = backend_->createBuffer();
 
+    // Geometry render pass: clear color+depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.colorAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.colorAttachment.storeOp = Ren::StoreOp::Store;
+        desc.hasDepthAttachment = true;
+        desc.depthAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.depthAttachment.storeOp = Ren::StoreOp::Store;
+        geometryRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // UI render pass: load existing color, no depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.colorAttachment.loadOp = Ren::LoadOp::Load;
+        desc.colorAttachment.storeOp = Ren::StoreOp::Store;
+        uiRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // Prepare framebuffer for offscreen rendering
+    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
+
     // Prepare framebuffer for offscreen rendering
     glOffscreenFrameBuffID_ = backend_->createFramebuffer();
 
@@ -326,6 +350,9 @@ void RenDevice::releaseGpuResources()
     backend_->releasePipeline(gui2DPipeline_);
     backend_->releasePipeline(standardPipeline_);
     backend_->releasePipeline(billboardPipeline_);
+
+    backend_->releaseRenderPass(geometryRenderPass_);
+    backend_->releaseRenderPass(uiRenderPass_);
 
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
@@ -548,6 +575,9 @@ void RenDevice::start2D()
     pImpl_->alphaSorter_ = nullptr;
     pImpl_->illuminator_->filter(RenColour::white());
 
+    CB_RENDEVICE_DEPIMPL_GL();
+    recordCommand(Ren::Command::beginRenderPass(uiRenderPass_));
+
     const double now = DEBUG_FRAME_TIME;
     RENDER_STREAM("RenDevice::start2D() at " << now << "(ms)\n{\n");
     RENDER_INDENT(3);
@@ -570,6 +600,8 @@ void RenDevice::end2D()
         recordCommand(std::move(command));
         clearAll2D_ = false;
     }
+
+    recordCommand(Ren::Command::endRenderPass());
 
     pImpl_->rendering2D_ = false;
 
@@ -615,13 +647,9 @@ void RenDevice::start3D(bool clearBack)
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
 
-    CB_DEPIMPL_AUTO(backend_);
+    CB_RENDEVICE_DEPIMPL_GL();
 
-    using ClearFlag = Ren::BackendClearFlag;
-    Ren::BackendCommand command = Ren::Command::clear(bgCol, ClearFlag::Colour | ClearFlag::Depth);
-    recordCommand(std::move(command));
-    // Inform the texture manager that a frame is starting.
-    // RenTexManager::instance().startFrame();
+    recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol));
 
     pImpl_->illuminator_->filter(pImpl_->currentCamera_->colourFilter());
     pImpl_->illuminator_->startFrame();
@@ -770,6 +798,8 @@ void RenDevice::end3D()
     const double now3 = DEBUG_FRAME_TIME;
     RENDER_STREAM("  RenDevice::end3D() ends at " << now3 << "(ms)\n");
     RENDER_STREAM('}' << std::endl);
+
+    recordCommand(Ren::Command::endRenderPass());
 
     pImpl_->rendering3D_ = false;
 
