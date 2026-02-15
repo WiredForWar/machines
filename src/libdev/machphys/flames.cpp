@@ -33,17 +33,8 @@ MachPhysFlame::MachPhysFlame(
     MATHEX_SCALAR dOffset,
     const PhysAbsoluteTime& startTime,
     const PhysRelativeTime& duration)
-    : W4dSprite3d(pParent, localTransform, width, height, initialMaterial(flameType))
-    , duration_(duration)
-    , flameType_(flameType)
+    : MachPhysFlame(pParent, localTransform, flameType, width, height, duration)
 {
-    // The current model is all black with emissive flames and things.  Hence,
-    // it should not need lighting.  This could change if the model changes.
-    doNotLight(true);
-
-    depthOffset(dOffset);
-    visible(false);
-
     startFlame(startTime);
 }
 
@@ -54,16 +45,8 @@ MachPhysFlame::MachPhysFlame(
     MATHEX_SCALAR size,
     MATHEX_SCALAR dOffset,
     const PhysRelativeTime& duration)
-    : W4dSprite3d(pParent, localTransform, size, size, initialMaterial(flameType))
-    , duration_(duration)
-    , flameType_(flameType)
+    : MachPhysFlame(pParent, localTransform, flameType, size, size, dOffset, duration)
 {
-    // The current model is all black with emissive flames and things.  Hence,
-    // it should not need lighting.  This could change if the model changes.
-    doNotLight(true);
-
-    depthOffset(dOffset);
-    visible(false);
 }
 
 MachPhysFlame::MachPhysFlame(
