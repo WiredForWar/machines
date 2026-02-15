@@ -11,7 +11,6 @@
 #include "base/diag.hpp"
 #include "render/colour.hpp" //for fading
 
-#include "world4d/light.hpp"
 #include "world4d/fdedapln.hpp" //for fading
 #include "world4d/entyiter.hpp" //for fading
 #include "world4d/soundman.hpp"
@@ -140,19 +139,6 @@ MachPhysMachine::MachPhysMachine(
     //  Store the faceplate link pointer
     if (copyMe.pImpl_->pFaceplate_)
         pFaceplate_ = links()[copyMe.pImpl_->pFaceplate_->id()];
-
-    // Attach a headlight to the faceplate so machines illuminate the ground ahead
-    if (pFaceplate_)
-    {
-        const MexVec3 lightOffset(0.3, 0, 0);
-        auto* pHeadlight = new W4dPointLight(pFaceplate_, lightOffset, 15.0);
-        pHeadlight->colour(RenColour(1.0, 0.95, 0.8));
-        pHeadlight->constantAttenuation(0.3);
-        pHeadlight->linearAttenuation(0.5);
-        pHeadlight->quadraticAttenuation(0.2);
-        pHeadlight->scope(W4dLight::DYNAMIC);
-        pHeadlight->turnOn();
-    }
 
     if (race != MachPhys::RED)
         convertMaterials(data, race_);
