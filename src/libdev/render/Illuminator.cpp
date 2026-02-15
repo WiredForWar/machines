@@ -330,12 +330,11 @@ void RenIIlluminator::lightVertices(
 
         // Sum all directional light contributions into a single direction/color pair.
         // For multiple directional lights, we accumulate colors and use the last direction.
-        // Also sum uniform lights as additional ambient contribution.
+        // Attenuated lights (point + uniform) are collected into GPU arrays.
         const auto* colourXform = RenILight::globalColourTransform();
 
         devImpl_->gpuLightDir_ = glm::vec3(0.0f, -1.0f, 0.0f);
         devImpl_->gpuLightColor_ = glm::vec3(0.0f);
-        glm::vec3 extraAmbient(0.0f);
         int nPt = 0;
         for (const RenILight* light : lightsOn_)
         {
@@ -348,34 +347,29 @@ void RenIIlluminator::lightVertices(
                     colourXform->transform(col, Ren::DIRECTIONAL, &col);
                 devImpl_->gpuLightColor_ += glm::vec3(col.r(), col.g(), col.b());
             }
-            else if (const auto* uniformLight = dynamic_cast<const RenIUniformLight*>(light))
-            {
-                RenColour col = uniformLight->colour();
-                if (colourXform)
-                    colourXform->transform(col, Ren::UNIFORM, &col);
-                extraAmbient += glm::vec3(col.r(), col.g(), col.b());
-            }
-            else if (const auto* pointLight = dynamic_cast<const RenIPointLight*>(light))
+            else if (const auto* attLight = dynamic_cast<const RenIAttenuatedLight*>(light))
             {
                 if (nPt < RenIDeviceImpl::MaxGpuPointLights)
                 {
-                    const MexPoint3d& pos = pointLight->position();
+                    const bool isUniform = dynamic_cast<const RenIUniformLight*>(light) != nullptr;
+                    const MexPoint3d& pos = attLight->position();
                     devImpl_->gpuPointLightPos_[nPt] = glm::vec3(pos.x(), pos.y(), pos.z());
-                    RenColour col = pointLight->colour();
+                    RenColour col = attLight->colour();
                     if (colourXform)
-                        colourXform->transform(col, Ren::POINT, &col);
+                        colourXform->transform(col, isUniform ? Ren::UNIFORM : Ren::POINT, &col);
                     devImpl_->gpuPointLightColor_[nPt] = glm::vec3(col.r(), col.g(), col.b());
-                    devImpl_->gpuPointLightRange_[nPt] = pointLight->maxRange();
+                    devImpl_->gpuPointLightRange_[nPt] = attLight->maxRange();
                     devImpl_->gpuPointLightAtten_[nPt] = glm::vec3(
-                        pointLight->constantAttenuation(),
-                        pointLight->linearAttenuation(),
-                        pointLight->quadraticAttenuation());
+                        attLight->constantAttenuation(),
+                        attLight->linearAttenuation(),
+                        attLight->quadraticAttenuation());
+                    devImpl_->gpuPointLightOmni_[nPt] = isUniform ? 1.0f : 0.0f;
                     ++nPt;
                 }
             }
         }
         devImpl_->gpuNumPointLights_ = nPt;
-        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b()) + extraAmbient;
+        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b());
     }
     else
     {
