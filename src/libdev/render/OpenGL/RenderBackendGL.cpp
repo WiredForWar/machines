@@ -929,12 +929,28 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
     glUniform2f(command.location.value(), command.x, command.y);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1fv(command.location.value(), static_cast<GLsizei>(command.values.size()), command.values.data());
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetUniform3f& command)
 {
     if (!command.location.isValid())
         return;
 
     glUniform3f(command.location.value(), command.x, command.y, command.z);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform3fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform3fv(command.location.value(), static_cast<GLsizei>(command.values.size() / 3), command.values.data());
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
