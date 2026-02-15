@@ -31,6 +31,8 @@
 
 #include "render/Colour.hpp"
 #include "render/Material.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"
@@ -472,6 +474,9 @@ MachPhysPulseBlob* MachPhysPulseWeapon::createPulseBlob(
     }
 
     MachPhysPulseBlob::CreateLights createLights = MachPhysPulseBlob::DONT_CREATE_LIGHTS;
+    if (Config::gfxLightingMode.get() != LightingMode::Legacy)
+        createLights = MachPhysPulseBlob::CREATE_LIGHTS;
+
     if (!firedLightRecently(launchTime))
     {
         pCanAttack->cacheLightLaunch(type(), launchTime);
