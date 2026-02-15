@@ -304,6 +304,8 @@ bool RenDevice::createGpuResources()
             "uGpuLighting", "uLightDir", "uLightColor", "uAmbientColor",
             "uMatDiffuse", "uMatAmbient", "uMatEmissive", "uFilter",
             "uHasVtxMaterials",
+            "uNumPointLights",
+            "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten",
         };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
@@ -330,6 +332,11 @@ bool RenDevice::createGpuResources()
         standard_.matEmissiveUniform = backend_->pipelineUniformLocation(standard_.id, "uMatEmissive");
         standard_.filterUniform = backend_->pipelineUniformLocation(standard_.id, "uFilter");
         standard_.hasVtxMaterialsUniform = backend_->pipelineUniformLocation(standard_.id, "uHasVtxMaterials");
+        standard_.numPointLightsUniform = backend_->pipelineUniformLocation(standard_.id, "uNumPointLights");
+        standard_.pointLightPosUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightPos");
+        standard_.pointLightColorUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightColor");
+        standard_.pointLightRangeUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightRange");
+        standard_.pointLightAttenUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightAtten");
     }
 
     glVertexDataBufferID_ = backend_->createBuffer();
@@ -1895,12 +1902,28 @@ void RenDevice::recordSetUniform2f(Ren::UniformLocationId location, float x, flo
     recordCommand(Ren::Command::setUniform2f(location, x, y));
 }
 
+void RenDevice::recordSetUniform1fv(Ren::UniformLocationId location, const float* data, int count)
+{
+    if (!location.isValid() || count <= 0)
+        return;
+
+    recordCommand(Ren::Command::setUniform1fv(location, std::vector<float>(data, data + count)));
+}
+
 void RenDevice::recordSetUniform3f(Ren::UniformLocationId location, float x, float y, float z)
 {
     if (!location.isValid())
         return;
 
     recordCommand(Ren::Command::setUniform3f(location, x, y, z));
+}
+
+void RenDevice::recordSetUniform3fv(Ren::UniformLocationId location, const float* data, int count)
+{
+    if (!location.isValid() || count <= 0)
+        return;
+
+    recordCommand(Ren::Command::setUniform3fv(location, std::vector<float>(data, data + count * 3)));
 }
 
 void RenDevice::recordSetUniformMatrix4fv(Ren::UniformLocationId location, const glm::mat4& matrix)
@@ -2378,6 +2401,16 @@ void RenDevice::renderPrimitive(
         const RenColour& f = pImpl_->illuminator_->filter();
         recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
         recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
+
+        const int nPt = pImpl_->gpuNumPointLights_;
+        recordSetUniform1i(standard_.numPointLightsUniform, nPt);
+        if (nPt > 0)
+        {
+            recordSetUniform3fv(standard_.pointLightPosUniform, &pImpl_->gpuPointLightPos_[0].x, nPt);
+            recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
+            recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
+            recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
+        }
     }
 
     // Bind our texture in Texture Unit 0
@@ -2469,6 +2502,16 @@ void RenDevice::renderIndexed(
         const RenColour& f = pImpl_->illuminator_->filter();
         recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
         recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
+
+        const int nPt = pImpl_->gpuNumPointLights_;
+        recordSetUniform1i(standard_.numPointLightsUniform, nPt);
+        if (nPt > 0)
+        {
+            recordSetUniform3fv(standard_.pointLightPosUniform, &pImpl_->gpuPointLightPos_[0].x, nPt);
+            recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
+            recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
+            recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
+        }
     }
 
     // Bind our texture in Texture Unit 0

@@ -7,6 +7,7 @@ in vec4 fragmentColor;
 in vec3 fragWorldNormal;
 in vec3 fragVtxDiffuse;
 in vec3 fragVtxAmbient;
+in vec3 fragWorldPos;
 in vec4 viewSpace;
 in vec4 fragmentFogColour;
 in vec3 fragmentFogParams;
@@ -25,6 +26,13 @@ uniform vec3 uMatAmbient;
 uniform vec3 uMatEmissive;
 uniform vec3 uFilter;
 uniform int uHasVtxMaterials;
+
+const int MAX_POINT_LIGHTS = 16;
+uniform int uNumPointLights;
+uniform vec3 uPointLightPos[MAX_POINT_LIGHTS];
+uniform vec3 uPointLightColor[MAX_POINT_LIGHTS];
+uniform float uPointLightRange[MAX_POINT_LIGHTS];
+uniform vec3 uPointLightAtten[MAX_POINT_LIGHTS]; // (constant, linear, quadratic)
 
 void main() {
     
@@ -54,7 +62,22 @@ void main() {
         vec3 diffuse = (uHasVtxMaterials == 1 && fragVtxDiffuse.r >= 0.0f) ? fragVtxDiffuse : uMatDiffuse;
         vec3 ambient = (uHasVtxMaterials == 1 && fragVtxAmbient.r >= 0.0f) ? fragVtxAmbient : uMatAmbient;
 
-        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + uMatEmissive);
+        // Point lights
+        vec3 pointLightContrib = vec3(0.0f);
+        for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
+        {
+            if (i >= uNumPointLights) break;
+            vec3 toLight = uPointLightPos[i] - fragWorldPos;
+            float dist = length(toLight);
+            if (dist >= uPointLightRange[i]) continue;
+            float normalised = 1.0f - dist / uPointLightRange[i];
+            float att = uPointLightAtten[i].x + uPointLightAtten[i].y * normalised + uPointLightAtten[i].z * normalised * normalised;
+            vec3 Lp = normalize(toLight);
+            float NdotLp = max(dot(N, Lp), 0.0f);
+            pointLightContrib += att * NdotLp * uPointLightColor[i];
+        }
+
+        vec3 lit = uFilter * (lambertian * diffuse + uAmbientColor * ambient + uMatEmissive + pointLightContrib * diffuse);
         litColor = vec4(clamp(lit, 0.0f, 1.0f), 1.0f);
     }
     else
