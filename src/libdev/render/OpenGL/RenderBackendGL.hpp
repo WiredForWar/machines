@@ -122,8 +122,10 @@ private:
     void executeCommand(const BackendCommandSetDepthFunc& command);
     void executeCommand(const BackendCommandSetDepthTest& command);
     void executeCommand(const BackendCommandSetUniform1i& command);
+    void executeCommand(const BackendCommandSetUniform1fv& command);
     void executeCommand(const BackendCommandSetUniform2f& command);
     void executeCommand(const BackendCommandSetUniform3f& command);
+    void executeCommand(const BackendCommandSetUniform3fv& command);
     void executeCommand(const BackendCommandSetUniformMatrix4fv& command);
     void executeCommand(const BackendCommandSetVertexAttribPointer& command);
     void executeCommand(const BackendCommandSetProgram& command);
