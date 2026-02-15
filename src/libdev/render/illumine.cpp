@@ -325,6 +325,7 @@ void RenIIlluminator::lightVertices(
         devImpl_->gpuLightDir_ = glm::vec3(0.0f, -1.0f, 0.0f);
         devImpl_->gpuLightColor_ = glm::vec3(0.0f);
         glm::vec3 extraAmbient(0.0f);
+        int nPt = 0;
         for (const RenILight* light : lightsOn_)
         {
             if (const auto* dirLight = dynamic_cast<const RenIDirectionalLight*>(light))
@@ -343,7 +344,26 @@ void RenIIlluminator::lightVertices(
                     colourXform->transform(col, Ren::UNIFORM, &col);
                 extraAmbient += glm::vec3(col.r(), col.g(), col.b());
             }
+            else if (const auto* pointLight = dynamic_cast<const RenIPointLight*>(light))
+            {
+                if (nPt < RenIDeviceImpl::MaxGpuPointLights)
+                {
+                    const MexPoint3d& pos = pointLight->position();
+                    devImpl_->gpuPointLightPos_[nPt] = glm::vec3(pos.x(), pos.y(), pos.z());
+                    RenColour col = pointLight->colour();
+                    if (colourXform)
+                        colourXform->transform(col, Ren::POINT, &col);
+                    devImpl_->gpuPointLightColor_[nPt] = glm::vec3(col.r(), col.g(), col.b());
+                    devImpl_->gpuPointLightRange_[nPt] = pointLight->maxRange();
+                    devImpl_->gpuPointLightAtten_[nPt] = glm::vec3(
+                        pointLight->constantAttenuation(),
+                        pointLight->linearAttenuation(),
+                        pointLight->quadraticAttenuation());
+                    ++nPt;
+                }
+            }
         }
+        devImpl_->gpuNumPointLights_ = nPt;
         devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b()) + extraAmbient;
     }
     else

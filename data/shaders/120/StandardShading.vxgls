@@ -14,6 +14,7 @@ varying vec4 fragmentColor;
 varying vec3 fragWorldNormal;
 varying vec3 fragVtxDiffuse;
 varying vec3 fragVtxAmbient;
+varying vec3 fragWorldPos;
 varying vec4 viewSpace;
 varying vec4 fragmentFogColour;
 varying vec3 fragmentFogParams;
@@ -41,6 +42,7 @@ void main() {
     {
         // Transform normal to world space and pass to fragment shader for per-pixel lighting
         fragWorldNormal = normalize(mat3(uM) * vertexNormal);
+        fragWorldPos = (uM * vec4(vertexPosition_modelspace, 1.0)).xyz;
         fragVtxDiffuse = vtxDiffuse;
         fragVtxAmbient = vtxAmbient;
 
