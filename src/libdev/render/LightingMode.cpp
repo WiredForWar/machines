@@ -8,6 +8,8 @@ std::string_view toString(LightingMode mode)
         return "Legacy";
     case LightingMode::PerVertex:
         return "PerVertex";
+    case LightingMode::PerPixel:
+        return "PerPixel";
     }
 
     return {};
