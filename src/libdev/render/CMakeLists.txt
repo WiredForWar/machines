@@ -17,6 +17,8 @@ set(RENDER_SOURCES
     RenScopedImmediateCommands.cpp
     RenderVariables.cpp
     RenderVariables.hpp
+    ShadowQuality.cpp
+    ShadowQuality.hpp
     TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp
