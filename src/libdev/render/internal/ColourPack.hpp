@@ -18,10 +18,13 @@
 // ambient.  Simply clamping each component separately can, of course,
 // produce a hue shift.  To avoid this, we would need to scale all the
 // components by the same factor to bring the maximum one down to 1.0.
-#define RENI_PACK_A(a) (((long)(a * 0xff000000L)) & 0xff000000L)
-#define RENI_PACK_R(r) (((long)(r * 0x00ff0000L)) & 0x00ff0000L)
+//
+// Pack as ABGR so that the memory layout on little-endian is R,G,B,A
+// which matches OpenGL's GL_UNSIGNED_BYTE vertex attribute order.
+#define RENI_PACK_R(r) ((long)(r * 0x000000ffL))
 #define RENI_PACK_G(g) (((long)(g * 0x0000ff00L)) & 0x0000ff00L)
-#define RENI_PACK_B(b) ((long)(b * 0x000000ffL))
+#define RENI_PACK_B(b) (((long)(b * 0x00ff0000L)) & 0x00ff0000L)
+#define RENI_PACK_A(a) (((long)(a * 0xff000000L)) & 0xff000000L)
 
 inline uint packColourUnChecked(float r, float g, float b, uint32_t a = 0xff000000L)
 {
@@ -35,14 +38,14 @@ inline uint packColourChecked(float r, float g, float b, uint32_t a = 0xff000000
     // ceiling of 1.0 and then uses the D3DRGB macro.  It is faster done this way.
     // NB: comparing against 1 is faster than any other value.  The compiler
     // generates less machine code for 1!
-    return a | ((r >= 1) ? 0xff0000L : RENI_PACK_R(r)) | ((g >= 1) ? 0x00ff00L : RENI_PACK_G(g))
-        | ((b >= 1) ? 0x0000ffL : RENI_PACK_B(b));
+    return a | ((r >= 1) ? 0x0000ffL : RENI_PACK_R(r)) | ((g >= 1) ? 0x00ff00L : RENI_PACK_G(g))
+        | ((b >= 1) ? 0xff0000L : RENI_PACK_B(b));
 }
 
 inline uint packColour(float r, float g, float b, float a)
 {
-    return ((a >= 1) ? 0xff000000L : RENI_PACK_A(a)) | ((r >= 1) ? 0xff0000L : RENI_PACK_R(r))
-        | ((g >= 1) ? 0x00ff00L : RENI_PACK_G(g)) | ((b >= 1) ? 0x0000ffL : RENI_PACK_B(b));
+    return ((a >= 1) ? 0xff000000L : RENI_PACK_A(a)) | ((r >= 1) ? 0x0000ffL : RENI_PACK_R(r))
+        | ((g >= 1) ? 0x00ff00L : RENI_PACK_G(g)) | ((b >= 1) ? 0xff0000L : RENI_PACK_B(b));
 }
 
 #endif
