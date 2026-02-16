@@ -152,8 +152,23 @@ bool RenderBackendGL::initialize(SDL_Window* window)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    stateCache_.reset();
+
     initialized_ = true;
     return true;
+}
+
+void RenderBackendGL::StateCache::reset()
+{
+    currentProgram_ = 0;
+    enabledAttribs_.reset();
+
+    resetTextureUnits();
+}
+
+void RenderBackendGL::StateCache::resetTextureUnits()
+{
+    textureUnits_ = {};
 }
 
 void RenderBackendGL::shutdown()
@@ -362,7 +377,11 @@ ProgramId RenderBackendGL::createProgramFromFiles(
 
 void RenderBackendGL::useProgram(ProgramId id)
 {
-    glUseProgram(programHandle(id));
+    const GLuint handle = programHandle(id);
+    if (handle == stateCache_.currentProgram_)
+        return;
+    stateCache_.currentProgram_ = handle;
+    glUseProgram(handle);
 }
 
 UniformLocationId RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
@@ -733,6 +752,9 @@ void RenderBackendGL::flushPendingDeletes()
             static_cast<GLsizei>(pendingTextureDeletes_.size()),
             pendingTextureDeletes_.data());
         pendingTextureDeletes_.clear();
+
+        // Invalidate texture cache — GL may reuse deleted handles.
+        stateCache_.textureUnits_ = {};
     }
 }
 
@@ -814,13 +836,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
 void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command)
 {
     if (command.enabled)
-    {
         glEnable(GL_MULTISAMPLE);
-    }
     else
-    {
         glDisable(GL_MULTISAMPLE);
-    }
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
@@ -852,13 +870,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
 void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
 {
     if (command.enabled)
-    {
         glEnable(GL_CULL_FACE);
-    }
     else
-    {
         glDisable(GL_CULL_FACE);
-    }
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& command)
@@ -869,13 +883,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& comman
 void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
 {
     if (command.enabled)
-    {
         glEnable(GL_POLYGON_OFFSET_FILL);
-    }
     else
-    {
         glDisable(GL_POLYGON_OFFSET_FILL);
-    }
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& command)
@@ -909,13 +919,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthFunc& command)
 void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
 {
     if (command.enabled)
-    {
         glEnable(GL_DEPTH_TEST);
-    }
     else
-    {
         glDisable(GL_DEPTH_TEST);
-    }
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
@@ -975,7 +981,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer&
 
     if (command.enabled)
     {
-        glEnableVertexAttribArray(index);
+        if (index < MaxVertexAttribs && !stateCache_.enabledAttribs_.test(index))
+        {
+            stateCache_.enabledAttribs_.set(index);
+            glEnableVertexAttribArray(index);
+        }
         glVertexAttribPointer(
             index,
             command.size,
@@ -986,7 +996,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer&
     }
     else
     {
-        glDisableVertexAttribArray(index);
+        if (index < MaxVertexAttribs && stateCache_.enabledAttribs_.test(index))
+        {
+            stateCache_.enabledAttribs_.reset(index);
+            glDisableVertexAttribArray(index);
+        }
     }
 }
 
@@ -1011,10 +1025,25 @@ void RenderBackendGL::executeCommand(const BackendCommandBindPipeline& command)
 void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
 {
     const GLuint textureHandle = command.textureHandle.isValid() ? command.textureHandle.value() : fallbackTexture2D_;
+    const GLenum minF = toFilter(command.minFilter);
+    const GLenum magF = toFilter(command.magFilter);
+    const int unit = static_cast<int>(command.unit);
+
+    if (unit < MaxTextureUnits)
+    {
+        StateCache::TextureUnitState& cached = stateCache_.textureUnits_[unit];
+        if (cached.texture == textureHandle && cached.minFilter == minF && cached.magFilter == magF)
+            return;
+
+        cached.texture = textureHandle;
+        cached.minFilter = minF;
+        cached.magFilter = magF;
+    }
+
     glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + command.unit));
     glBindTexture(GL_TEXTURE_2D, textureHandle);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(command.minFilter));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(command.magFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minF);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magF);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandBufferData& command)
@@ -1128,6 +1157,7 @@ void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
 
 void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexImage2D(
         GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format),
@@ -1137,6 +1167,7 @@ void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, i
 void RenderBackendGL::textureSubImage2D(
     BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
 }
@@ -1144,6 +1175,7 @@ void RenderBackendGL::textureSubImage2D(
 void RenderBackendGL::textureSetMinMagFilter(
     BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(minFilter));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(magFilter));
@@ -1151,6 +1183,7 @@ void RenderBackendGL::textureSetMinMagFilter(
 
 void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(wrapS));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(wrapT));
@@ -1158,6 +1191,7 @@ void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wr
 
 void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glGenerateMipmap(GL_TEXTURE_2D);
 }
