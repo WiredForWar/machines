@@ -1946,9 +1946,13 @@ void MachContinentMap::saveGame(PerOstream& outStream)
     {
         GuiBitmap visibleArea
             = RenSurface::createAnonymousSurface(mapVisibleArea_.size() / Gui::uiScaleFactor(), mapVisibleArea_);
-        visibleArea.filledRectangle(visibleArea.size(), Gui::BLACK());
 
+        RenDevice* dev = RenDevice::current();
+        dev->beginImmediateCommands();
+        visibleArea.filledRectangle(visibleArea.size(), Gui::BLACK());
         visibleArea.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
+        dev->endImmediateCommands();
+
         visibleArea.write(outStream);
     }
 }
