@@ -335,6 +335,7 @@ void MachGuiConstructCommand::typeData(MachLog::ObjectType objectType, int subTy
 
     // save the pads original transforms
     pPhysConstruction_->savePadsTransforms();
+    pPhysConstruction_->setNoShadowCast(true);
 
     // Compute the space required around the model
     computeBorder();
