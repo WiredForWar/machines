@@ -819,8 +819,7 @@ void RenSurface::write(PerOstream& outStream)
     PER_WRITE_RAW_OBJECT(outStream, h);
 
     // Read the entire surface in one GPU call instead of per-pixel.
-    const size_t pixelCount = w * h;
-    auto* rgba = _NEW_ARRAY(unsigned char, pixelCount * 4);
+    std::vector<unsigned char> rgba(w * h * 4);
 
     if (internals() && internals()->isOffscreen())
     {
@@ -828,7 +827,7 @@ void RenSurface::write(PerOstream& outStream)
         dev->renderToTextureMode(handle(), w, h);
         dev->endImmediateCommands();
 
-        dev->backend().readPixelsUByte(0, 0, w, h, rgba);
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba.data());
 
         dev->beginImmediateCommands();
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
@@ -836,21 +835,18 @@ void RenSurface::write(PerOstream& outStream)
     }
     else
     {
-        dev->backend().readPixelsUByte(0, 0, w, h, rgba);
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba.data());
     }
 
-    auto* row = _NEW_ARRAY(char, w);
+    std::vector<char> row(w);
     for (size_t y = 0; y < h; ++y)
     {
         const size_t srcRow = y * w * 4;
         for (size_t x = 0; x < w; ++x)
             row[x] = static_cast<char>(rgba[srcRow + x * 4 + 3]);
 
-        PER_WRITE_RAW_DATA(outStream, row, w);
+        PER_WRITE_RAW_DATA(outStream, row.data(), w);
     }
-
-    _DELETE_ARRAY(row);
-    _DELETE_ARRAY(rgba);
 }
 
 // static
