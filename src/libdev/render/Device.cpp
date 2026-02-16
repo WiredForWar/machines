@@ -1798,6 +1798,13 @@ bool RenDevice::immediateCommandsActive() const
     return pImpl_->immediateCommandBufferActive();
 }
 
+void RenDevice::flushCommandBuffer()
+{
+    PRE(pImpl_);
+    if (pImpl_->frameCommandBufferRecording_)
+        pImpl_->flushFrameCommandBuffer();
+}
+
 bool RenDevice::rendering() const
 {
     return pImpl_->rendering_;

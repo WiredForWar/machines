@@ -179,6 +179,11 @@ public:
     void endImmediateCommands();
     bool immediateCommandsActive() const;
 
+    // Submit all pending frame commands so that subsequent GPU readbacks
+    // see up-to-date results.  A new command buffer is started for the
+    // remainder of the frame.  No-op if no frame buffer is recording.
+    void flushCommandBuffer();
+
     void backgroundColour(const RenColour&);
     const RenColour& backgroundColour() const;
 
