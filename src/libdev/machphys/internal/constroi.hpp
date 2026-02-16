@@ -95,27 +95,27 @@ private:
     // data members
     W4dLinks adornments_;
 
-    double percentageComplete_;
-    double height_;
-    size_t level_;
-    MachPhys::Race race_;
+    double percentageComplete_{};
+    double height_{};
+    size_t level_{};
+    MachPhys::Race race_{};
 
-    bool isWorking_;
-    W4dDomain* pInteriorDomain_;
-    W4dGenericComposite* pInteriorComposite_;
+    bool isWorking_{};
+    W4dDomain* pInteriorDomain_{};
+    W4dGenericComposite* pInteriorComposite_{};
 
     MachPhysConstructionData constructionData_;
 
     // typedef ctl_vector< MachPhysEntrance* > Entrances;
 
     Entrances entrances_;
-    MachPhysEntityDamage* pDamage_;
-    MachPhysObjectExplosion* pExplosion_;
-    LinkTransforms* pSavedPadsTransforms_;
+    MachPhysEntityDamage* pDamage_{};
+    MachPhysObjectExplosion* pExplosion_{};
+    LinkTransforms* pSavedPadsTransforms_{};
 
-    CompletionBand completionBand_;
-    bool completionVisualised_; // True once the percent complete animation has been kicked off
-                                // after creation
+    CompletionBand completionBand_{};
+    bool completionVisualised_{}; // True once the percent complete animation has been kicked off
+                                  // after creation
 };
 
 PER_DECLARE_PERSISTENT(MachPhysConstructionImpl);

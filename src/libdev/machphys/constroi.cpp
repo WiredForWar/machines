@@ -12,7 +12,6 @@
 #include "world4d/genecomp.hpp"
 #include "world4d/link.hpp"
 #include "machphys/damage.hpp"
-#include "profiler/profiler.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysConstructionImpl);
 
@@ -24,16 +23,8 @@ MachPhysConstructionImpl::MachPhysConstructionImpl(
     const MexTransform3d& globalTransform)
     : height_(height)
     , level_(level)
-    , isWorking_(false)
-    , pInteriorDomain_(nullptr)
-    , pInteriorComposite_(nullptr)
-    , constructionData_(data, globalTransform)
-    , pDamage_(nullptr)
-    , percentageComplete_(0)
     , race_(race)
-    , pSavedPadsTransforms_(nullptr)
-    , completionBand_(BAND0)
-    , completionVisualised_(false)
+    , constructionData_(data, globalTransform)
 {
 
     TEST_INVARIANT;
@@ -126,14 +117,6 @@ void perRead(PerIstream& istr, MachPhysConstructionImpl& construction)
 }
 
 MachPhysConstructionImpl::MachPhysConstructionImpl(PerConstructor)
-    : isWorking_(false)
-    , pInteriorDomain_(nullptr)
-    , pInteriorComposite_(nullptr)
-    , pDamage_(nullptr)
-    , percentageComplete_(0)
-    , pSavedPadsTransforms_(nullptr)
-    , completionBand_(BAND0)
-    , completionVisualised_(false)
 {
 }
 
