@@ -407,15 +407,23 @@ void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, in
 void RenSurface::getPixel(int x, int y, RenColour* colour) const
 {
     PRE(colour);
-    RenScopedImmediateCommands guard(RenDevice::current());
+    RenDevice* dev = RenDevice::current();
 
     float pixel[4] = { 0, 0, 0, 0 };
-    RenDevice* dev = RenDevice::current();
     if (internals() && internals()->isOffscreen())
     {
+        // Bind the offscreen FBO, read back, then unbind.  Each step
+        // uses its own immediate command buffer so the FBO bind is
+        // actually executed before the direct readPixelsFloat call.
+        dev->beginImmediateCommands();
         dev->renderToTextureMode(handle(), width(), height());
+        dev->endImmediateCommands();
+
         dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
+
+        dev->beginImmediateCommands();
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+        dev->endImmediateCommands();
     }
     else
         dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
@@ -631,8 +639,12 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     unsigned char* screenPixels = _NEW_ARRAY(unsigned char, width() * height() * 4);
     if (screenPixels)
     {
-        // Read the pixels
+        // Ensure all pending render commands are submitted before reading
+        // back pixel data — callers may have issued blits that haven't
+        // been executed yet.
         RenDevice* dev = RenDevice::current();
+        dev->flushCommandBuffer();
+
         if (internals() && internals()->isOffscreen())
         {
             dev->renderToTextureMode(handle(), width(), height());
@@ -794,6 +806,11 @@ void RenSurface::read(PerIstream& inStream)
 
 void RenSurface::write(PerOstream& outStream)
 {
+    // Ensure all pending render commands are submitted before reading
+    // back pixel data — callers may have issued blits into the frame
+    // command buffer that haven't been executed yet.
+    RenDevice::current()->flushCommandBuffer();
+
     size_t w = width();
     size_t h = height();
 
