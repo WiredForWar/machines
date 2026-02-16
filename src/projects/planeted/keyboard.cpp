@@ -79,13 +79,16 @@ void SDLApp::processInput()
 
     while (! devEventQueue.isEmpty())
     {
-        DevButtonEvent devButtonEvent = devEventQueue.oldestEvent();
+        DevButtonEvent be = DevEventQueue::instance().oldestEvent();
 
-        PedPlanetEditor::instance().processInput(devButtonEvent);
-        PhysMotionControl::processButtonEvent(devButtonEvent);
-        MachCameras::instance().processButtonEvent(devButtonEvent);
+        if (be.isKeyEvent())
+        {
+            PedPlanetEditor::instance().processInput(be);
+            PhysMotionControl::processButtonEvent(be);
+            MachCameras::instance().processButtonEvent(be);
 
-        checkForQuit(devButtonEvent);
+            checkForQuit(be);
+        }
     }
 }
 
