@@ -2,6 +2,8 @@
 
 #include "render/internal/IRenderBackend.hpp"
 
+#include <array>
+#include <bitset>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -171,6 +173,28 @@ private:
     GLuint fallbackTexture2D_{};
     std::vector<GLuint> pendingTextureDeletes_{};
     bool initialized_{};
+
+    static constexpr int MaxVertexAttribs = 16;
+    static constexpr int MaxTextureUnits = 4;
+
+    class StateCache
+    {
+    public:
+        void reset();
+        void resetTextureUnits();
+
+        GLuint currentProgram_{};
+        std::bitset<MaxVertexAttribs> enabledAttribs_{};
+
+        struct TextureUnitState
+        {
+            GLuint texture{};
+            GLenum minFilter{};
+            GLenum magFilter{};
+        };
+        std::array<TextureUnitState, MaxTextureUnits> textureUnits_{};
+    };
+    StateCache stateCache_{};
 
     SDL_Window* window_{};
     SDL_GLContext glContext_{};
