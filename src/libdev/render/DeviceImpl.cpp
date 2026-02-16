@@ -163,6 +163,19 @@ void RenIDeviceImpl::destroyFrameCommandBuffer()
     frameCommandBuffer_ = {};
 }
 
+void RenIDeviceImpl::flushFrameCommandBuffer()
+{
+    PRE(backend_);
+    PRE(frameCommandBufferRecording_);
+
+    backend_->endCommandBuffer(frameCommandBuffer_);
+    backend_->submitCommandBuffer(frameCommandBuffer_);
+    backend_->destroyCommandBuffer(frameCommandBuffer_);
+
+    frameCommandBuffer_ = backend_->createCommandBuffer();
+    backend_->beginCommandBuffer(frameCommandBuffer_);
+}
+
 void RenIDeviceImpl::beginImmediateCommandBuffer()
 {
     PRE(backend_);

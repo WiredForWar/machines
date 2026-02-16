@@ -92,6 +92,7 @@ public:
 
     void beginFrameCommandBuffer();
     void destroyFrameCommandBuffer();
+    void flushFrameCommandBuffer();
     void beginImmediateCommandBuffer();
     void endImmediateCommandBuffer();
     bool immediateCommandBufferActive() const;
