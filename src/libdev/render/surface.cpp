@@ -817,37 +817,48 @@ void RenSurface::write(PerOstream& outStream)
     // Ensure all pending render commands are submitted before reading
     // back pixel data — callers may have issued blits into the frame
     // command buffer that haven't been executed yet.
-    RenDevice::current()->flushCommandBuffer();
+    RenDevice* dev = RenDevice::current();
+    dev->flushCommandBuffer();
 
-    size_t w = width();
-    size_t h = height();
+    const size_t w = width();
+    const size_t h = height();
 
     PER_WRITE_RAW_OBJECT(outStream, w);
     PER_WRITE_RAW_OBJECT(outStream, h);
 
-    size_t lineLength = w;
+    // Read the entire surface in one GPU call instead of per-pixel.
+    const size_t pixelCount = w * h;
+    auto* rgba = _NEW_ARRAY(unsigned char, pixelCount * 4);
 
-    char* image = _NEW_ARRAY(char, lineLength);
-
+    if (internals() && internals()->isOffscreen())
     {
-        for (size_t y = 0; y < h; ++y)
-        {
-            for (size_t x = 0; x < w; ++x)
-            {
-                RenColour col;
-                getPixel(x, y, &col);
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(handle(), w, h);
+        dev->endImmediateCommands();
 
-                //              image[ x * 3 ]         = GetBValue(colRef);
-                //              image[ ( x * 3 ) + 1 ] = GetGValue(colRef);
-                //              image[ ( x * 3 ) + 2 ] = GetRValue(colRef);
-                image[x] = (unsigned char)(col.a() * 0xFF);
-            }
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba);
 
-            PER_WRITE_RAW_DATA(outStream, image, w);
-        }
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+        dev->endImmediateCommands();
+    }
+    else
+    {
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba);
     }
 
-    _DELETE_ARRAY(image);
+    auto* row = _NEW_ARRAY(char, w);
+    for (size_t y = 0; y < h; ++y)
+    {
+        const size_t srcRow = y * w * 4;
+        for (size_t x = 0; x < w; ++x)
+            row[x] = static_cast<char>(rgba[srcRow + x * 4 + 3]);
+
+        PER_WRITE_RAW_DATA(outStream, row, w);
+    }
+
+    _DELETE_ARRAY(row);
+    _DELETE_ARRAY(rgba);
 }
 
 // static
