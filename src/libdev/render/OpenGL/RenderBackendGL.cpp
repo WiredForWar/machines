@@ -639,6 +639,7 @@ void RenderBackendGL::endRenderToTexture()
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
     }
+    currentFboColorAttachment_ = 0;
     popFramebuffer();
 }
 
@@ -1076,6 +1077,10 @@ void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
     const GLenum magF = toFilter(command.magFilter);
     const int unit = static_cast<int>(command.unit);
 
+    ASSERT(
+        currentFboColorAttachment_ == 0 || textureHandle != currentFboColorAttachment_,
+        "Sampling from a texture that is the current FBO color attachment (GL feedback loop)");
+
     if (unit < MaxTextureUnits)
     {
         StateCache::TextureUnitState& cached = stateCache_.textureUnits_[unit];
@@ -1119,7 +1124,12 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& c
     {
         spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+        currentFboColorAttachment_ = 0;
         popFramebuffer();
+    }
+    else
+    {
+        currentFboColorAttachment_ = textureHandle;
     }
 }
 
