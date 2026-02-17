@@ -433,6 +433,7 @@ private:
     void addInterference();
     void graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, double maxAlpha);
     void uniformNoisePolygon(const Ren::Rect& area, double maxAlpha);
+    void blitPostProcess();
     void commonEndFrame();
 
     bool createGpuResources();
