@@ -54,5 +54,6 @@ template class Config::Variable<ShadowQuality>;
 
 Variable<LightingMode> gfxLightingMode("Options/Graphics Complexity/Lighting Mode", LightingMode::Legacy);
 Variable<ShadowQuality> gfxShadowQuality("Options/Graphics Complexity/Shadow Quality", ShadowQuality::Static);
+Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false);
 
 } // namespace Config

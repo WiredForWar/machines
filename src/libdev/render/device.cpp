@@ -64,6 +64,7 @@
 #include "render/internal/trigroup.hpp"
 #include "render/internal/surfbody.hpp"
 #include "render/RenderUtils.hpp"
+#include "render/RenderVariables.hpp"
 #include "system/winapi.hpp"
 
 #include "spdlog/spdlog.h"
@@ -107,7 +108,14 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
     CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
     CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
-    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);
+    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);                                                                          \
+    CB_DEPIMPL_AUTO(postProcess_);                                                                                     \
+    CB_DEPIMPL_AUTO(postProcessFBO_);                                                                                  \
+    CB_DEPIMPL_AUTO(postProcessColorTexture_);                                                                         \
+    CB_DEPIMPL_AUTO(postProcessQuadVBO_);                                                                              \
+    CB_DEPIMPL_AUTO(postProcessWidth_);                                                                                \
+    CB_DEPIMPL_AUTO(postProcessHeight_);                                                                               \
+    CB_DEPIMPL_AUTO(postProcessReady_);
 
 RenDevice::RenDevice(RenDisplay* display)
     : pImpl_(new RenIDeviceImpl(display, this))
@@ -360,6 +368,87 @@ bool RenDevice::initialize()
         backend_->textureSetWrap(shadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
         shadowFramebuffer_ = backend_->createFramebuffer();
         backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
+    }
+
+    // Post-process pipeline (tone mapping)
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "PostProcess";
+        desc.fragmentShader = "PostProcess";
+        desc.vertexAttributes = {
+            { "vertexPosition", 2, Ren::BackendVertexAttribType::Float, false, 4 * sizeof(float), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, 4 * sizeof(float), 2 * sizeof(float) },
+        };
+        desc.uniformNames = { "uSceneTexture", "uExposure" };
+        postProcess_.id = backend_->createPipeline(desc);
+        if (postProcess_.id != 0)
+        {
+            postProcess_.posAttr = backend_->pipelineAttribLocation(postProcess_.id, "vertexPosition");
+            postProcess_.uvAttr = backend_->pipelineAttribLocation(postProcess_.id, "vertexUV");
+            postProcess_.sceneTextureUniform = backend_->pipelineUniformLocation(postProcess_.id, "uSceneTexture");
+            postProcess_.exposureUniform = backend_->pipelineUniformLocation(postProcess_.id, "uExposure");
+        }
+    }
+
+    // Post-process offscreen FBO (RGBA16F color + depth renderbuffer).
+    if (postProcess_.id != 0)
+    {
+        const RenDisplay::Mode mode = pImpl_->display_->currentMode();
+        const int w = mode.width();
+        const int h = mode.height();
+
+        postProcessColorTexture_ = backend_->createTexture2D();
+        postProcessFBO_ = backend_->createFramebuffer();
+
+        // Try RGBA16F first, fall back to RGBA8 if FBO is incomplete.
+        Ren::TextureFormat colorFormat = Ren::TextureFormat::RGBA16F;
+        backend_->textureStorage2D(postProcessColorTexture_, w, h, colorFormat);
+        backend_->textureSetMinMagFilter(
+            postProcessColorTexture_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
+        backend_->textureSetWrap(
+            postProcessColorTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+        backend_->framebufferAttachColorTexture(postProcessFBO_, postProcessColorTexture_);
+        backend_->framebufferAttachDepthRenderbuffer(postProcessFBO_, w, h);
+
+        if (!backend_->isFramebufferComplete(postProcessFBO_))
+        {
+            spdlog::warn("Post-process: RGBA16F FBO incomplete, falling back to RGBA8");
+            colorFormat = Ren::TextureFormat::RGBA8_UNorm;
+            backend_->destroyTexture2D(postProcessColorTexture_);
+            postProcessColorTexture_ = backend_->createTexture2D();
+            backend_->textureStorage2D(postProcessColorTexture_, w, h, colorFormat);
+            backend_->textureSetMinMagFilter(
+                postProcessColorTexture_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
+            backend_->textureSetWrap(
+                postProcessColorTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+            backend_->framebufferAttachColorTexture(postProcessFBO_, postProcessColorTexture_);
+        }
+
+        const bool fboReady = backend_->isFramebufferComplete(postProcessFBO_);
+        const char* fmtName = (colorFormat == Ren::TextureFormat::RGBA16F) ? "RGBA16F" : "RGBA8";
+
+        postProcessQuadVBO_ = backend_->createBuffer();
+
+        // Fullscreen quad: 2 triangles covering [-1,1] with UV [0,1].
+        const float quadVertices[] = {
+            // pos.x, pos.y, uv.x, uv.y
+            -1.0f, -1.0f, 0.0f, 0.0f,
+             1.0f, -1.0f, 1.0f, 0.0f,
+             1.0f,  1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+             1.0f,  1.0f, 1.0f, 1.0f,
+            -1.0f,  1.0f, 0.0f, 1.0f,
+        };
+        backend_->bufferData(
+            Ren::BufferTarget::Array, postProcessQuadVBO_,
+            sizeof(quadVertices), quadVertices, Ren::BufferUsage::StreamDraw);
+
+        postProcessWidth_ = w;
+        postProcessHeight_ = h;
+        postProcessReady_ = fboReady;
+
+        spdlog::info("Post-process: {}x{} {} FBO, pipeline={}, ready={}",
+            w, h, fmtName, postProcess_.id, postProcessReady_);
     }
 
     // Prepare framebuffer for offscreen rendering
@@ -751,7 +840,11 @@ void RenDevice::beginGeometryPass(bool clearBack)
 
     CB_RENDEVICE_DEPIMPL_GL();
 
-    recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol));
+    const bool postProcess = postProcessReady_ && Config::gfxToneMapping.get();
+    if (postProcess)
+        recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol, postProcessFBO_));
+    else
+        recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol));
 
     pImpl_->illuminator_->filter(pImpl_->currentCamera_->colourFilter());
     pImpl_->illuminator_->startFrame();
@@ -901,9 +994,61 @@ void RenDevice::end3D()
 
     recordCommand(Ren::Command::endRenderPass());
 
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    if (postProcessReady_ && Config::gfxToneMapping.get())
+        blitPostProcess();
+
     pImpl_->rendering3D_ = false;
 
     POST(idleRendering());
+}
+
+void RenDevice::blitPostProcess()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    // Resolve the offscreen HDR buffer to the default framebuffer via tone mapping.
+    recordCommand(Ren::Command::bindDefaultFramebuffer());
+    recordCommand(Ren::Command::setViewport(0, 0, postProcessWidth_, postProcessHeight_));
+    recordCommand(Ren::Command::setDepthTest(false));
+    recordCommand(Ren::Command::setDepthMaskWritable(false));
+    recordCommand(Ren::Command::setBlendStateDisabled());
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setAlphaTestDisabled());
+
+    // Disable all vertex attribs left over from the 3D pipeline before
+    // binding the fullscreen-quad VBO which has a different layout.
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.posAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.uvAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.colAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.normalAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxDiffuseAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxAmbientAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxEmissiveAttr));
+
+    recordCommand(Ren::Command::bindPipeline(postProcess_.id));
+    recordCommand(Ren::Command::setUniform1i(postProcess_.sceneTextureUniform, 0));
+    recordCommand(Ren::Command::setUniform1f(postProcess_.exposureUniform, 1.0f));
+
+    recordCommand(Ren::Command::bindTexture2D(
+        postProcessColorTexture_, 0, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear));
+
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, postProcessQuadVBO_));
+    recordCommand(Ren::Command::enableVertexAttribPointer(
+        postProcess_.posAttr, 2, Ren::BackendVertexAttribType::Float, false,
+        4 * sizeof(float), 0));
+    recordCommand(Ren::Command::enableVertexAttribPointer(
+        postProcess_.uvAttr, 2, Ren::BackendVertexAttribType::Float, false,
+        4 * sizeof(float), 2 * sizeof(float)));
+
+    recordCommand(Ren::Command::draw(Ren::PrimitiveTopology::Triangles, 0, 6));
+
+    recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.posAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.uvAttr));
+
+    recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
 }
 
 void RenDevice::commonEndFrame()
