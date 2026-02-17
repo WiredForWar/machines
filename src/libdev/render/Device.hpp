@@ -25,7 +25,6 @@ class RenColour;
 class RenCamera;
 class RenLight;
 class RenMaterial;
-class RenCapabilities;
 class RenStats;
 class RenSurface;
 class RenISurfBody;
@@ -322,9 +321,6 @@ public:
     // value can be null, indicating that statistics are not being gathered.
     RenStats* statistics();
     const RenStats* statistics() const;
-
-    // Features supported by this rendering system.
-    const RenCapabilities& capabilities() const;
 
     // colour filter
 

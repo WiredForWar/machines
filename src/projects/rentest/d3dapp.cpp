@@ -301,11 +301,6 @@ void D3DApp::processInput()
 
             case DevKey::F12:
                 {
-                    if (!device_->capabilities().supportsEdgeAntiAliasing())
-                    {
-                        saveScreenShot();
-                    }
-                    else
                     {
                         // Turn on anti-aliasing, render a frame then save the screen.
                         renderingForShot_ = true;
@@ -1012,8 +1007,6 @@ void D3DApp::exhaustTexMem()
     for (int i = 0; i != total && !failed; ++i)
     {
         RENDER_STREAM("Prior to allocating 256x256 no. " << i << std::endl);
-        RENDER_STREAM(device_->capabilities());
-
         std::ostringstream ostr;
         ostr << "big_" << i << ".bmp" << std::ends;
         textures[i] = RenTexManager::instance().createTexture(ostr.str());
@@ -1762,7 +1755,6 @@ bool D3DApp::clientStartup()
     // to find out how much memory is available for display
     bool highestModeSet = device_->setHighestAllowedDisplayMode();
     ASSERT(highestModeSet, "Could tot find a mode fitting in the amount of display memory available");
-    RENDER_STREAM(device_->capabilities());
     if (!windowMode)
         testCursor();
 
@@ -1788,8 +1780,6 @@ bool D3DApp::clientStartup()
     // loadLotsOfTexture3();
     // loadLotsOfTexture4();
     // loadLotsOfTexture5();
-
-    RENDER_STREAM(device_->capabilities());
 
     MexRadians a1 = MexDegrees(40);
     camera_ = new RenCamera();
