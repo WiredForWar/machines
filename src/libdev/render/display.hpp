@@ -159,7 +159,6 @@ public:
 
     void setCursorGrabEnabled(bool enabled);
 
-    void supportsGammaCorrection(bool);
     bool supportsGammaCorrection() const;
     void gammaCorrection(const double& gammaCorrection);
     const double& gammaCorrection() const;

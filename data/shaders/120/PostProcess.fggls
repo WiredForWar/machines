@@ -4,6 +4,7 @@ varying vec2 UV;
 
 uniform sampler2D uSceneTexture;
 uniform float uExposure;
+uniform float uGamma;
 
 // ACES filmic tone mapping (fitted curve by Krzysztof Narkowicz)
 vec3 acesToneMap(vec3 x) {
@@ -18,5 +19,6 @@ vec3 acesToneMap(vec3 x) {
 void main() {
     vec3 hdrColor = texture2D(uSceneTexture, UV).rgb;
     vec3 mapped = acesToneMap(hdrColor * uExposure);
+    mapped = pow(mapped, vec3(1.0 / uGamma));
     gl_FragColor = vec4(mapped, 1.0);
 }

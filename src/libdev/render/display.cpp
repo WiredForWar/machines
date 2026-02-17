@@ -26,7 +26,6 @@
     CB_DEPIMPL(RenDisplay::Mode, currentMode_);                                                                        \
     CB_DEPIMPL(bool, fullscreen_);                                                                                     \
     CB_DEPIMPL(uint32_t, frameNo_);                                                                                    \
-    CB_DEPIMPL(bool, supportsGammaCorrection_);                                                                        \
     CB_DEPIMPL(double, gammaCorrection_);                                                                              \
     CB_DEPIMPL(RenDisplay::Mode, lowestAllowedMode_);                                                                  \
     CB_DEPIMPL(RenDisplay::Mode, highestAllowedMode_);                                                                 \
@@ -593,68 +592,19 @@ bool RenDisplay::isPrimaryDriver() const
 
 bool RenDisplay::supportsGammaCorrection() const
 {
-    return pImpl_->supportsGammaCorrection_;
-}
-
-void RenDisplay::supportsGammaCorrection(bool doSupport)
-{
-    pImpl_->supportsGammaCorrection_ = doSupport;
-}
-
-using GammaRamp = struct
-{
-    Uint16 red[256], green[256], blue[256];
-};
-static void setGammaRamp(double gamma, GammaRamp* pGammaRamp)
-{
-    PRE(gamma > 0);
-    PRE(pGammaRamp);
-
-    GammaRamp& gammaRamp = *pGammaRamp;
-    const double correction = 1 / gamma;
-
-    for (int i = 0; i != 256; ++i)
-    {
-        const double oldR = i / 255.0;
-        const double oldG = i / 255.0;
-        const double oldB = i / 255.0;
-
-        const double newR = pow(oldR, correction);
-        const double newG = pow(oldG, correction);
-        const double newB = pow(oldB, correction);
-
-        // This shouldn't be necessary for RGB's in the range [0,1].
-        const double clampR = (newR > 1.0) ? 1.0 : newR;
-        const double clampG = (newG > 1.0) ? 1.0 : newG;
-        const double clampB = (newB > 1.0) ? 1.0 : newB;
-
-        gammaRamp.red[i] = (65535 * clampR + 0.5);
-        gammaRamp.green[i] = (65535 * clampG + 0.5);
-        gammaRamp.blue[i] = (65535 * clampB + 0.5);
-    }
+    return true;
 }
 
 void RenDisplay::gammaCorrection(const double& gamma)
 {
     CB_RenDisplay_DEPIMPL();
-    PRE(supportsGammaCorrection());
     PRE(gamma > 0);
-
-    if (gammaCorrection_ == gamma)
-        return;
-
-    // create a gamma ramp
-    GammaRamp gammaRamp;
-    setGammaRamp(gamma, &gammaRamp);
-
-    SDL_SetWindowGammaRamp(window(), gammaRamp.red, gammaRamp.green, gammaRamp.blue);
     gammaCorrection_ = gamma;
 }
 
 const double& RenDisplay::gammaCorrection() const
 {
     CB_RenDisplay_DEPIMPL();
-    PRE(supportsGammaCorrection());
     return gammaCorrection_;
 }
 
