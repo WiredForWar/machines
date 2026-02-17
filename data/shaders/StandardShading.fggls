@@ -81,28 +81,38 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 
     float shadowSample = 0.0f;
 
-    // Try near cascade first.
-    if (viewDist < uShadowSplitDistance)
+    // Far cascade — always computed as a fallback / cross-check.
+    float farShadow = 0.0f;
     {
-        vec4 lsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0f);
+        vec4 lsPos = uLightSpaceMatrix * vec4(worldPos, 1.0f);
         vec3 projCoords = lsPos.xyz / lsPos.w * 0.5f + 0.5f;
         if (projCoords.x >= 0.0f && projCoords.x <= 1.0f &&
             projCoords.y >= 0.0f && projCoords.y <= 1.0f &&
             projCoords.z <= 1.0f)
         {
-            shadowSample = sampleShadowPCF(uShadowMapNear, projCoords, bias, 1.0f / 4096.0f);
+            farShadow = sampleShadowPCF(uShadowMap, projCoords, bias, 1.0f / 2048.0f);
+        }
+    }
+
+    // Try near cascade — it wins whenever the fragment is inside
+    // its light-space projection bounds.  Because the near cascade
+    // has a small extent, tall shadow casters (cliffs) may fall
+    // outside its ortho box.  Cross-check with the far cascade so
+    // those missing shadows are filled in.
+    {
+        vec4 lsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0f);
+        vec3 projCoords = lsPos.xyz / lsPos.w * 0.5f + 0.5f;
+        if (projCoords.x >= 0.0f && projCoords.x <= 1.0f &&
+            projCoords.y >= 0.0f && projCoords.y <= 1.0f &&
+            projCoords.z >= 0.0f && projCoords.z <= 1.0f)
+        {
+            float nearShadow = sampleShadowPCF(uShadowMapNear, projCoords, bias, 1.0f / 4096.0f);
+            shadowSample = max(nearShadow, farShadow);
             return mix(1.0f, shadowSample, edgeFade);
         }
     }
 
-    // Fall back to far cascade.
-    vec4 lsPos = uLightSpaceMatrix * vec4(worldPos, 1.0f);
-    vec3 projCoords = lsPos.xyz / lsPos.w * 0.5f + 0.5f;
-    if (projCoords.x < 0.0f || projCoords.x > 1.0f ||
-        projCoords.y < 0.0f || projCoords.y > 1.0f ||
-        projCoords.z > 1.0f)
-        return 0.0f;
-    shadowSample = sampleShadowPCF(uShadowMap, projCoords, bias, 1.0f / 2048.0f);
+    shadowSample = farShadow;
     return mix(1.0f, shadowSample, edgeFade);
 }
 
