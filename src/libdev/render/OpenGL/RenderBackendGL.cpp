@@ -153,6 +153,19 @@ void RenderBackendGL::StateCache::reset()
     enabledAttribs_.reset();
 
     resetTextureUnits();
+
+    depthTestEnabled_.reset();
+    depthMaskWritable_.reset();
+    depthFunc_.reset();
+    blend_.reset();
+    cullFaceEnabled_.reset();
+    cullFaceMode_.reset();
+    alphaTest_.reset();
+    polygonOffset_.reset();
+    multisampleEnabled_.reset();
+    boundArrayBuffer_ = 0;
+    boundElementBuffer_ = 0;
+    viewport_.reset();
 }
 
 void RenderBackendGL::StateCache::resetTextureUnits()
@@ -512,6 +525,18 @@ BufferId RenderBackendGL::createBuffer()
 void RenderBackendGL::bindBuffer(BufferTarget target, BufferId id)
 {
     const GLuint buffer = bufferHandle(id);
+    if (target == BufferTarget::Array)
+    {
+        if (stateCache_.boundArrayBuffer_ == buffer)
+            return;
+        stateCache_.boundArrayBuffer_ = buffer;
+    }
+    else
+    {
+        if (stateCache_.boundElementBuffer_ == buffer)
+            return;
+        stateCache_.boundElementBuffer_ = buffer;
+    }
     const GLenum glTarget = (target == BufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
     glBindBuffer(glTarget, buffer);
 }
@@ -870,11 +895,21 @@ void RenderBackendGL::executeCommand(const BackendCommandClear& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
 {
+    if (stateCache_.viewport_.has_value())
+    {
+        const auto& v = *stateCache_.viewport_;
+        if (v.x == command.x && v.y == command.y && v.width == command.width && v.height == command.height)
+            return;
+    }
+    stateCache_.viewport_ = {command.x, command.y, command.width, command.height};
     glViewport(command.x, command.y, command.width, command.height);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command)
 {
+    if (stateCache_.multisampleEnabled_ == command.enabled)
+        return;
+    stateCache_.multisampleEnabled_ = command.enabled;
     if (command.enabled)
         glEnable(GL_MULTISAMPLE);
     else
@@ -896,10 +931,19 @@ void RenderBackendGL::executeCommand(const BackendCommandDrawIndexed& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
 {
+    const GLenum src = command.enabled ? toBlendFactor(command.srcFactor) : 0;
+    const GLenum dst = command.enabled ? toBlendFactor(command.dstFactor) : 0;
+    if (stateCache_.blend_.has_value())
+    {
+        const auto& b = *stateCache_.blend_;
+        if (b.enabled == command.enabled && b.srcFactor == src && b.dstFactor == dst)
+            return;
+    }
+    stateCache_.blend_ = {command.enabled, src, dst};
     if (command.enabled)
     {
         glEnable(GL_BLEND);
-        glBlendFunc(toBlendFactor(command.srcFactor), toBlendFactor(command.dstFactor));
+        glBlendFunc(src, dst);
     }
     else
     {
@@ -909,6 +953,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
 {
+    if (stateCache_.cullFaceEnabled_ == command.enabled)
+        return;
+    stateCache_.cullFaceEnabled_ = command.enabled;
     if (command.enabled)
         glEnable(GL_CULL_FACE);
     else
@@ -917,11 +964,21 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& command)
 {
-    glCullFace(command.mode == BackendCullFaceMode::Front ? GL_FRONT : GL_BACK);
+    const GLenum mode = command.mode == BackendCullFaceMode::Front ? GL_FRONT : GL_BACK;
+    if (stateCache_.cullFaceMode_ == mode)
+        return;
+    stateCache_.cullFaceMode_ = mode;
+    glCullFace(mode);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
 {
+    if (stateCache_.polygonOffset_.has_value() && stateCache_.polygonOffset_->fillEnabled == command.enabled)
+        return;
+    if (!stateCache_.polygonOffset_.has_value())
+        stateCache_.polygonOffset_ = {command.enabled, 0.0f, 0.0f};
+    else
+        stateCache_.polygonOffset_->fillEnabled = command.enabled;
     if (command.enabled)
         glEnable(GL_POLYGON_OFFSET_FILL);
     else
@@ -930,11 +987,29 @@ void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& c
 
 void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& command)
 {
+    if (stateCache_.polygonOffset_.has_value()
+        && stateCache_.polygonOffset_->factor == command.factor
+        && stateCache_.polygonOffset_->units == command.units)
+        return;
+    if (!stateCache_.polygonOffset_.has_value())
+        stateCache_.polygonOffset_ = {false, command.factor, command.units};
+    else
+    {
+        stateCache_.polygonOffset_->factor = command.factor;
+        stateCache_.polygonOffset_->units = command.units;
+    }
     glPolygonOffset(command.factor, command.units);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
 {
+    if (stateCache_.alphaTest_.has_value())
+    {
+        const auto& a = *stateCache_.alphaTest_;
+        if (a.enabled == command.enabled && (!command.enabled || a.reference == command.reference))
+            return;
+    }
+    stateCache_.alphaTest_ = {command.enabled, command.reference};
     if (command.enabled)
     {
         glEnable(GL_ALPHA_TEST);
@@ -948,16 +1023,26 @@ void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
 
 void RenderBackendGL::executeCommand(const BackendCommandSetDepthMask& command)
 {
+    if (stateCache_.depthMaskWritable_ == command.writable)
+        return;
+    stateCache_.depthMaskWritable_ = command.writable;
     glDepthMask(command.writable ? GL_TRUE : GL_FALSE);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetDepthFunc& command)
 {
-    glDepthFunc(toDepthFunc(command.function));
+    const GLenum func = toDepthFunc(command.function);
+    if (stateCache_.depthFunc_ == func)
+        return;
+    stateCache_.depthFunc_ = func;
+    glDepthFunc(func);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
 {
+    if (stateCache_.depthTestEnabled_ == command.enabled)
+        return;
+    stateCache_.depthTestEnabled_ = command.enabled;
     if (command.enabled)
         glEnable(GL_DEPTH_TEST);
     else
@@ -1168,6 +1253,7 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& comman
     if (pass.desc.hasDepthAttachment && pass.desc.depthAttachment.loadOp == LoadOp::Clear)
     {
         // GL requires depth writes enabled for glClear to affect the depth buffer.
+        stateCache_.depthMaskWritable_ = true;
         glDepthMask(GL_TRUE);
         clearMask |= GL_DEPTH_BUFFER_BIT;
     }

@@ -5,6 +5,7 @@
 #include <array>
 #include <bitset>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -204,6 +205,43 @@ private:
             GLenum magFilter{};
         };
         std::array<TextureUnitState, MaxTextureUnits> textureUnits_{};
+
+        std::optional<bool> depthTestEnabled_{};
+        std::optional<bool> depthMaskWritable_{};
+        std::optional<GLenum> depthFunc_{};
+
+        struct BlendState
+        {
+            bool enabled{};
+            GLenum srcFactor{};
+            GLenum dstFactor{};
+        };
+        std::optional<BlendState> blend_{};
+
+        std::optional<bool> cullFaceEnabled_{};
+        std::optional<GLenum> cullFaceMode_{};
+
+        struct AlphaTestState
+        {
+            bool enabled{};
+            float reference{};
+        };
+        std::optional<AlphaTestState> alphaTest_{};
+
+        struct PolygonOffsetState
+        {
+            bool fillEnabled{};
+            float factor{};
+            float units{};
+        };
+        std::optional<PolygonOffsetState> polygonOffset_{};
+
+        std::optional<bool> multisampleEnabled_{};
+
+        GLuint boundArrayBuffer_{};
+        GLuint boundElementBuffer_{};
+
+        std::optional<Viewport> viewport_{};
     };
     StateCache stateCache_{};
 
