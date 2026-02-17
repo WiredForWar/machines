@@ -4,8 +4,7 @@
  */
 
 /*
-    Low-level functions which replace the D3DRGBA macro.
-    TBD: could these be rewritten more efficiently in assembly?
+    Low-level colour packing functions.
 */
 
 #ifndef _RENDER_COLPACK_HPP
@@ -20,7 +19,7 @@
 // components by the same factor to bring the maximum one down to 1.0.
 //
 // Pack as ABGR so that the memory layout on little-endian is R,G,B,A
-// which matches OpenGL's GL_UNSIGNED_BYTE vertex attribute order.
+// which matches the unsigned-byte vertex attribute order expected by the backend.
 #define RENI_PACK_R(r) ((long)(r * 0x000000ffL))
 #define RENI_PACK_G(g) (((long)(g * 0x0000ff00L)) & 0x0000ff00L)
 #define RENI_PACK_B(b) (((long)(b * 0x00ff0000L)) & 0x00ff0000L)
@@ -34,10 +33,8 @@ inline uint packColourUnChecked(float r, float g, float b, uint32_t a = 0xff0000
 inline uint packColourChecked(float r, float g, float b, uint32_t a = 0xff000000L)
 {
     // A minor optimisation: if red, green or blue exceed 1, then skip the packing
-    // arithmetic.  The alternative checks the floating point values against a
-    // ceiling of 1.0 and then uses the D3DRGB macro.  It is faster done this way.
-    // NB: comparing against 1 is faster than any other value.  The compiler
-    // generates less machine code for 1!
+    // arithmetic.  NB: comparing against 1 is faster than any other value.  The
+    // compiler generates less machine code for 1!
     return a | ((r >= 1) ? 0x0000ffL : RENI_PACK_R(r)) | ((g >= 1) ? 0x00ff00L : RENI_PACK_G(g))
         | ((b >= 1) ? 0xff0000L : RENI_PACK_B(b));
 }

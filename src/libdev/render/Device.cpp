@@ -105,16 +105,16 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
     CB_DEPIMPL_AUTO(shadowNearFramebuffer_);                                                                           \
     CB_DEPIMPL_AUTO(shadowNearDepthTexture_);                                                                          \
-    CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
-    CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
-    CB_DEPIMPL_AUTO(glNormalBufferID_);                                                                                \
-    CB_DEPIMPL_AUTO(glVtxDiffuseBufferID_);                                                                            \
-    CB_DEPIMPL_AUTO(glVtxAmbientBufferID_);                                                                            \
-    CB_DEPIMPL_AUTO(glVtxEmissiveBufferID_);                                                                            \
-    CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
-    CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
-    CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
-    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);                                                                          \
+    CB_DEPIMPL_AUTO(vertexBuffer2D_);                                                                                  \
+    CB_DEPIMPL_AUTO(vertexDataBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(normalBuffer_);                                                                                    \
+    CB_DEPIMPL_AUTO(vtxDiffuseBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(vtxAmbientBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(vtxEmissiveBuffer_);                                                                               \
+    CB_DEPIMPL_AUTO(elementBuffer_);                                                                                   \
+    CB_DEPIMPL_AUTO(vertexDataBufferBillboard_);                                                                       \
+    CB_DEPIMPL_AUTO(elementBufferBillboard_);                                                                          \
+    CB_DEPIMPL_AUTO(offscreenFramebuffer_);                                                                            \
     CB_DEPIMPL_AUTO(postProcess_);                                                                                     \
     CB_DEPIMPL_AUTO(postProcessFBO_);                                                                                  \
     CB_DEPIMPL_AUTO(postProcessColorTexture_);                                                                         \
@@ -300,7 +300,7 @@ bool RenDevice::createGpuResources()
         gui2D_.texSamplerUniform = backend_->pipelineUniformLocation(gui2D_.id, "uTextureSampler");
     }
 
-    gl2DVertexBufferID_ = backend_->createBuffer();
+    vertexBuffer2D_ = backend_->createBuffer();
 
     // Standard 3D pipeline
     {
@@ -368,12 +368,12 @@ bool RenDevice::createGpuResources()
         standard_.shadowSplitDistanceUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowSplitDistance");
     }
 
-    glVertexDataBufferID_ = backend_->createBuffer();
-    glNormalBufferID_ = backend_->createBuffer();
-    glVtxDiffuseBufferID_ = backend_->createBuffer();
-    glVtxAmbientBufferID_ = backend_->createBuffer();
-    glVtxEmissiveBufferID_ = backend_->createBuffer();
-    glElementBufferID_ = backend_->createBuffer();
+    vertexDataBuffer_ = backend_->createBuffer();
+    normalBuffer_ = backend_->createBuffer();
+    vtxDiffuseBuffer_ = backend_->createBuffer();
+    vtxAmbientBuffer_ = backend_->createBuffer();
+    vtxEmissiveBuffer_ = backend_->createBuffer();
+    elementBuffer_ = backend_->createBuffer();
 
     // Billboard pipeline
     {
@@ -413,8 +413,8 @@ bool RenDevice::createGpuResources()
     if (std::ranges::any_of(pipelineIDs, [](Ren::PipelineId value) { return value == 0; }))
         return false;
 
-    glVertexDataBufferBillboardID_ = backend_->createBuffer();
-    glElementBufferBillboardID_ = backend_->createBuffer();
+    vertexDataBufferBillboard_ = backend_->createBuffer();
+    elementBufferBillboard_ = backend_->createBuffer();
 
     // Geometry render pass: clear color+depth
     {
@@ -546,10 +546,7 @@ bool RenDevice::createGpuResources()
     }
 
     // Prepare framebuffer for offscreen rendering
-    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
-
-    // Prepare framebuffer for offscreen rendering
-    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
+    offscreenFramebuffer_ = backend_->createFramebuffer();
 
     return true;
 }
@@ -574,16 +571,16 @@ void RenDevice::releaseGpuResources()
     backend_->destroyTexture2D(shadowNearDepthTexture_);
     backend_->releaseFramebuffer(shadowNearFramebuffer_);
 
-    backend_->releaseBuffer(gl2DVertexBufferID_);
-    backend_->releaseBuffer(glVertexDataBufferID_);
-    backend_->releaseBuffer(glNormalBufferID_);
-    backend_->releaseBuffer(glVtxDiffuseBufferID_);
-    backend_->releaseBuffer(glVtxAmbientBufferID_);
-    backend_->releaseBuffer(glVtxEmissiveBufferID_);
-    backend_->releaseBuffer(glElementBufferID_);
-    backend_->releaseBuffer(glVertexDataBufferBillboardID_);
-    backend_->releaseBuffer(glElementBufferBillboardID_);
-    backend_->releaseFramebuffer(glOffscreenFrameBuffID_);
+    backend_->releaseBuffer(vertexBuffer2D_);
+    backend_->releaseBuffer(vertexDataBuffer_);
+    backend_->releaseBuffer(normalBuffer_);
+    backend_->releaseBuffer(vtxDiffuseBuffer_);
+    backend_->releaseBuffer(vtxAmbientBuffer_);
+    backend_->releaseBuffer(vtxEmissiveBuffer_);
+    backend_->releaseBuffer(elementBuffer_);
+    backend_->releaseBuffer(vertexDataBufferBillboard_);
+    backend_->releaseBuffer(elementBufferBillboard_);
+    backend_->releaseFramebuffer(offscreenFramebuffer_);
 
     if (postProcessColorTexture_.isValid())
         backend_->destroyTexture2D(postProcessColorTexture_);
@@ -720,9 +717,7 @@ void RenDevice::setViewport(int left, int top, int width, int height)
 
     const double ratio = (double)width / height;
 
-    // glViewport( left, top, width, height );
-    //  NB: if the viewport is changed, these values *must* also
-    //  be updated.
+    // NB: if the viewport is changed, these values *must* also be updated.
     if (pImpl_->vpMapping_)
     {
         delete pImpl_->vpMapping_;
@@ -2206,12 +2201,12 @@ Ren::StandardPipelineHandles RenDevice::buildStandardHandles() const
     h.vtxDiffuseAttr = standard_.vtxDiffuseAttr;
     h.vtxAmbientAttr = standard_.vtxAmbientAttr;
     h.vtxEmissiveAttr = standard_.vtxEmissiveAttr;
-    h.vertexBuffer = glVertexDataBufferID_;
-    h.normalBuffer = glNormalBufferID_;
-    h.vtxDiffuseBuffer = glVtxDiffuseBufferID_;
-    h.vtxAmbientBuffer = glVtxAmbientBufferID_;
-    h.vtxEmissiveBuffer = glVtxEmissiveBufferID_;
-    h.elementBuffer = glElementBufferID_;
+    h.vertexBuffer = vertexDataBuffer_;
+    h.normalBuffer = normalBuffer_;
+    h.vtxDiffuseBuffer = vtxDiffuseBuffer_;
+    h.vtxAmbientBuffer = vtxAmbientBuffer_;
+    h.vtxEmissiveBuffer = vtxEmissiveBuffer_;
+    h.elementBuffer = elementBuffer_;
     return h;
 }
 
@@ -2395,7 +2390,7 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        recordCommand(Ren::Command::beginRenderToTexture(glOffscreenFrameBuffID_, resolveTextureHandle(targetTexture)));
+        recordCommand(Ren::Command::beginRenderToTexture(offscreenFramebuffer_, resolveTextureHandle(targetTexture)));
         Ren::Size viewportSize(viewPortW, viewPortH);
         recordCommand(Ren::Command::setViewport(viewportSize));
     }
@@ -2460,12 +2455,12 @@ void RenDevice::renderScreenspace(
 
     recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
-        gl2DVertexBufferID_,
+        vertexBuffer2D_,
         &vertices[0],
         nVertices * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
 
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, vertexBuffer2D_));
     enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
     recordCommand(Ren::Command::setDepthTest(false));
@@ -2592,7 +2587,7 @@ void RenDevice::renderSurface(
 
     recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
-        gl2DVertexBufferID_,
+        vertexBuffer2D_,
         &vertices[0],
         6 * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
@@ -2601,7 +2596,7 @@ void RenDevice::renderSurface(
     const auto texFilter = pImpl_->smoothScaleEnabled_ ? Ren::TextureFilter::Linear : Ren::TextureFilter::Nearest;
     recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit, texFilter, texFilter));
 
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, vertexBuffer2D_));
     enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
     recordCommand(Ren::Command::setDepthTest(false));
@@ -2717,8 +2712,8 @@ void RenDevice::renderIndexedScreenspace(
     bh.posAttr = billboard_.posAttr;
     bh.uvAttr = billboard_.uvAttr;
     bh.colAttr = billboard_.colAttr;
-    bh.vertexBuffer = glVertexDataBufferBillboardID_;
-    bh.elementBuffer = glElementBufferBillboardID_;
+    bh.vertexBuffer = vertexDataBufferBillboard_;
+    bh.elementBuffer = elementBufferBillboard_;
 
     Ren::BillboardUniforms bu;
     bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
@@ -2836,8 +2831,8 @@ void RenDevice::renderShadowDepth(
     Ren::ShadowDepthPipelineHandles sh;
     sh.pipelineId = shadowDepth_.id;
     sh.posAttr = shadowDepth_.posAttr;
-    sh.vertexBuffer = glVertexDataBufferID_;
-    sh.elementBuffer = glElementBufferID_;
+    sh.vertexBuffer = vertexDataBuffer_;
+    sh.elementBuffer = elementBuffer_;
 
     Ren::ShadowDepthUniforms sdu;
     sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
