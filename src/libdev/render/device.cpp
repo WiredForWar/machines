@@ -41,6 +41,7 @@
 
 #include "render/OpenGL/Utils.hpp"
 
+#include "render/internal/DrawCallFactory.hpp"
 #include "render/internal/IRenderBackend.hpp"
 #include "render/internal/devicei.hpp"
 #include "render/internal/matmgr.hpp"
@@ -2094,6 +2095,75 @@ void RenDevice::recordDisableVertexAttribPointer(Ren::AttributeLocationId index)
     recordCommand(Ren::Command::disableVertexAttribPointer(index));
 }
 
+Ren::FrameState RenDevice::buildFrameState() const
+{
+    Ren::FrameState fs;
+    fs.view = toFloatArray(view_);
+    fs.proj = toFloatArray(projection_);
+    fs.fogColourR = fogColour_.x;
+    fs.fogColourG = fogColour_.y;
+    fs.fogColourB = fogColour_.z;
+    fs.fogStartOrX = fogParams_.x;
+    fs.fogEndOrY = fogParams_.y;
+    fs.fogDensityOrZ = fogParams_.z;
+    return fs;
+}
+
+Ren::GpuLightingState RenDevice::buildGpuLightingState(bool gpuLighting) const
+{
+    Ren::GpuLightingState ls;
+    ls.enabled = gpuLighting;
+    if (!gpuLighting)
+        return ls;
+
+    ls.lightDir = pImpl_->gpuLightDir_;
+    ls.lightColor = pImpl_->gpuLightColor_;
+    ls.ambientColor = pImpl_->gpuAmbientColor_;
+    ls.filter = glm::vec3(
+        pImpl_->illuminator()->filter().r(),
+        pImpl_->illuminator()->filter().g(),
+        pImpl_->illuminator()->filter().b());
+    ls.hasPerVertexMaterials = pImpl_->hasPerVertexMaterials_;
+    ls.numPointLights = pImpl_->gpuNumPointLights_;
+    ls.pointLightPos = pImpl_->gpuPointLightPos_;
+    ls.pointLightColor = pImpl_->gpuPointLightColor_;
+    ls.pointLightRange = pImpl_->gpuPointLightRange_;
+    ls.pointLightAtten = pImpl_->gpuPointLightAtten_;
+    ls.pointLightOmni = pImpl_->gpuPointLightOmni_;
+    ls.shadowEnabled = pImpl_->shadowMappingEnabled_;
+    if (ls.shadowEnabled)
+    {
+        ls.shadowStrength = pImpl_->shadowStrength_;
+        ls.shadowSplitDistance = pImpl_->shadowSplitDistance_;
+        ls.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
+        ls.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
+        ls.shadowDepthTexture = pImpl_->shadowDepthTexture_;
+        ls.shadowNearDepthTexture = pImpl_->shadowNearDepthTexture_;
+    }
+    return ls;
+}
+
+Ren::StandardPipelineHandles RenDevice::buildStandardHandles() const
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    Ren::StandardPipelineHandles h;
+    h.pipelineId = standard_.id;
+    h.posAttr = standard_.posAttr;
+    h.uvAttr = standard_.uvAttr;
+    h.colAttr = standard_.colAttr;
+    h.normalAttr = standard_.normalAttr;
+    h.vtxDiffuseAttr = standard_.vtxDiffuseAttr;
+    h.vtxAmbientAttr = standard_.vtxAmbientAttr;
+    h.vtxEmissiveAttr = standard_.vtxEmissiveAttr;
+    h.vertexBuffer = glVertexDataBufferID_;
+    h.normalBuffer = glNormalBufferID_;
+    h.vtxDiffuseBuffer = glVtxDiffuseBufferID_;
+    h.vtxAmbientBuffer = glVtxAmbientBufferID_;
+    h.vtxEmissiveBuffer = glVtxEmissiveBufferID_;
+    h.elementBuffer = glElementBufferID_;
+    return h;
+}
+
 void RenDevice::beginImmediateCommands()
 {
     PRE(pImpl_);
@@ -2502,113 +2572,24 @@ void RenDevice::renderPrimitive(
     PRE(nVertices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    // Use our shader
-    recordCommand(Ren::Command::bindPipeline(standard_.id));
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitStandard3DDraw(
+        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices,
+        gpuLighting ? pImpl_->expandedNormals_.data() : nullptr,
+        nullptr, nullptr, nullptr,
+        topology, &cmds);
 
     if (standardUniformsDirty_)
-    {
-        Ren::StandardFrameUniforms fu;
-        fu.view = toFloatArray(view_);
-        fu.proj = toFloatArray(projection_);
-        fu.fogColourR = fogColour_.x;
-        fu.fogColourG = fogColour_.y;
-        fu.fogColourB = fogColour_.z;
-        fu.fogStartOrX = fogParams_.x;
-        fu.fogEndOrY = fogParams_.y;
-        fu.fogDensityOrZ = fogParams_.z;
-        recordCommand(Ren::Command::setStandardFrameUniforms(std::move(fu)));
         standardUniformsDirty_ = false;
-    }
 
-    {
-        Ren::StandardObjectUniforms ou;
-        ou.model = toFloatArray(model_);
-        ou.gpuLighting = gpuLighting ? 1 : 0;
-        ou.textureSampler = 0;
-
-        if (gpuLighting)
-        {
-            const auto& ld = pImpl_->gpuLightDir_;
-            const auto& lc = pImpl_->gpuLightColor_;
-            const auto& ac = pImpl_->gpuAmbientColor_;
-            ou.lightDirX = ld.x; ou.lightDirY = ld.y; ou.lightDirZ = ld.z;
-            ou.lightColorR = lc.x; ou.lightColorG = lc.y; ou.lightColorB = lc.z;
-            ou.ambientColorR = ac.x; ou.ambientColorG = ac.y; ou.ambientColorB = ac.z;
-
-            const RenColour& md = mat.diffuse();
-            const RenColour& ma = mat.ambient();
-            const RenColour& me = mat.emissive();
-            ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b();
-            ou.matAmbientR = ma.r(); ou.matAmbientG = ma.g(); ou.matAmbientB = ma.b();
-            ou.matEmissiveR = me.r(); ou.matEmissiveG = me.g(); ou.matEmissiveB = me.b();
-
-            const RenColour& f = pImpl_->illuminator_->filter();
-            ou.filterR = f.r(); ou.filterG = f.g(); ou.filterB = f.b();
-            ou.hasVtxMaterials = pImpl_->hasPerVertexMaterials_ ? 1 : 0;
-
-            const int nPt = pImpl_->gpuNumPointLights_;
-            ou.numPointLights = nPt;
-            if (nPt > 0)
-            {
-                ou.pointLightPos.assign(&pImpl_->gpuPointLightPos_[0].x, &pImpl_->gpuPointLightPos_[0].x + nPt * 3);
-                ou.pointLightColor.assign(&pImpl_->gpuPointLightColor_[0].x, &pImpl_->gpuPointLightColor_[0].x + nPt * 3);
-                ou.pointLightRange.assign(pImpl_->gpuPointLightRange_, pImpl_->gpuPointLightRange_ + nPt);
-                ou.pointLightAtten.assign(&pImpl_->gpuPointLightAtten_[0].x, &pImpl_->gpuPointLightAtten_[0].x + nPt * 3);
-                ou.pointLightOmni.assign(pImpl_->gpuPointLightOmni_, pImpl_->gpuPointLightOmni_ + nPt);
-            }
-
-            const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
-            ou.shadowEnabled = shadowEnabled ? 1 : 0;
-            if (shadowEnabled)
-            {
-                static const int ShadowFarTextureUnit = 1;
-                static const int ShadowNearTextureUnit = 2;
-                recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
-                recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
-                ou.shadowMapUnit = ShadowFarTextureUnit;
-                ou.shadowMapNearUnit = ShadowNearTextureUnit;
-                ou.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
-                ou.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
-                ou.shadowSplitDistance = pImpl_->shadowSplitDistance_;
-                ou.shadowStrength = pImpl_->shadowStrength_;
-            }
-        }
-
-        recordCommand(Ren::Command::setStandardObjectUniforms(std::move(ou)));
-    }
-
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
-
-    // 1rst attribute buffer : vertices
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferID_,
-        vertices,
-        nVertices * sizeof(RenIVertex),
-        Ren::BufferUsage::StreamDraw));
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
-    enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
-
-    if (gpuLighting)
-    {
-        recordCommand(Ren::Command::bufferData(
-            Ren::BufferTarget::Array,
-            glNormalBufferID_,
-            pImpl_->expandedNormals_.data(),
-            nVertices * 3 * sizeof(float),
-            Ren::BufferUsage::StreamDraw));
-        recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glNormalBufferID_));
-        recordEnableVertexAttribPointer(
-            standard_.normalAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
-    }
-
-    recordCommand(Ren::Command::draw(topology, 0, nVertices));
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
 
     if (gpuLighting)
         recordDisableVertexAttribPointer(standard_.normalAttr);
@@ -2630,154 +2611,26 @@ void RenDevice::renderIndexed(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    recordCommand(Ren::Command::bindPipeline(standard_.id));
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitStandard3DDrawIndexed(
+        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices, indices, nIndices,
+        gpuLighting ? pImpl_->expandedNormals_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxDiffuse_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxAmbient_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxEmissive_.data() : nullptr,
+        topology, &cmds);
 
     if (standardUniformsDirty_)
-    {
-        Ren::StandardFrameUniforms fu;
-        fu.view = toFloatArray(view_);
-        fu.proj = toFloatArray(projection_);
-        fu.fogColourR = fogColour_.x;
-        fu.fogColourG = fogColour_.y;
-        fu.fogColourB = fogColour_.z;
-        fu.fogStartOrX = fogParams_.x;
-        fu.fogEndOrY = fogParams_.y;
-        fu.fogDensityOrZ = fogParams_.z;
-        recordCommand(Ren::Command::setStandardFrameUniforms(std::move(fu)));
         standardUniformsDirty_ = false;
-    }
 
-    {
-        Ren::StandardObjectUniforms ou;
-        ou.model = toFloatArray(model_);
-        ou.gpuLighting = gpuLighting ? 1 : 0;
-        ou.textureSampler = 0;
-
-        if (gpuLighting)
-        {
-            const auto& ld = pImpl_->gpuLightDir_;
-            const auto& lc = pImpl_->gpuLightColor_;
-            const auto& ac = pImpl_->gpuAmbientColor_;
-            ou.lightDirX = ld.x; ou.lightDirY = ld.y; ou.lightDirZ = ld.z;
-            ou.lightColorR = lc.x; ou.lightColorG = lc.y; ou.lightColorB = lc.z;
-            ou.ambientColorR = ac.x; ou.ambientColorG = ac.y; ou.ambientColorB = ac.z;
-
-            const RenColour& md = mat.diffuse();
-            const RenColour& ma = mat.ambient();
-            const RenColour& me = mat.emissive();
-            ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b();
-            ou.matAmbientR = ma.r(); ou.matAmbientG = ma.g(); ou.matAmbientB = ma.b();
-            ou.matEmissiveR = me.r(); ou.matEmissiveG = me.g(); ou.matEmissiveB = me.b();
-
-            const RenColour& f = pImpl_->illuminator_->filter();
-            ou.filterR = f.r(); ou.filterG = f.g(); ou.filterB = f.b();
-            ou.hasVtxMaterials = pImpl_->hasPerVertexMaterials_ ? 1 : 0;
-
-            const int nPt = pImpl_->gpuNumPointLights_;
-            ou.numPointLights = nPt;
-            if (nPt > 0)
-            {
-                ou.pointLightPos.assign(&pImpl_->gpuPointLightPos_[0].x, &pImpl_->gpuPointLightPos_[0].x + nPt * 3);
-                ou.pointLightColor.assign(&pImpl_->gpuPointLightColor_[0].x, &pImpl_->gpuPointLightColor_[0].x + nPt * 3);
-                ou.pointLightRange.assign(pImpl_->gpuPointLightRange_, pImpl_->gpuPointLightRange_ + nPt);
-                ou.pointLightAtten.assign(&pImpl_->gpuPointLightAtten_[0].x, &pImpl_->gpuPointLightAtten_[0].x + nPt * 3);
-                ou.pointLightOmni.assign(pImpl_->gpuPointLightOmni_, pImpl_->gpuPointLightOmni_ + nPt);
-            }
-
-            const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
-            ou.shadowEnabled = shadowEnabled ? 1 : 0;
-            if (shadowEnabled)
-            {
-                static const int ShadowFarTextureUnit = 1;
-                static const int ShadowNearTextureUnit = 2;
-                recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
-                recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
-                ou.shadowMapUnit = ShadowFarTextureUnit;
-                ou.shadowMapNearUnit = ShadowNearTextureUnit;
-                ou.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
-                ou.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
-                ou.shadowSplitDistance = pImpl_->shadowSplitDistance_;
-                ou.shadowStrength = pImpl_->shadowStrength_;
-            }
-        }
-
-        recordCommand(Ren::Command::setStandardObjectUniforms(std::move(ou)));
-    }
-
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
-
-    // 1rst attribute buffer : vertices
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferID_,
-        vertices,
-        nVertices * sizeof(RenIVertex),
-        Ren::BufferUsage::StreamDraw));
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
-    enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
-
-    if (gpuLighting)
-    {
-        recordCommand(Ren::Command::bufferData(
-            Ren::BufferTarget::Array,
-            glNormalBufferID_,
-            pImpl_->expandedNormals_.data(),
-            nVertices * 3 * sizeof(float),
-            Ren::BufferUsage::StreamDraw));
-        recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glNormalBufferID_));
-        recordEnableVertexAttribPointer(
-            standard_.normalAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
-
-        if (pImpl_->hasPerVertexMaterials_)
-        {
-            recordCommand(Ren::Command::bufferData(
-                Ren::BufferTarget::Array,
-                glVtxDiffuseBufferID_,
-                pImpl_->expandedVtxDiffuse_.data(),
-                nVertices * 3 * sizeof(float),
-                Ren::BufferUsage::StreamDraw));
-            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxDiffuseBufferID_));
-            recordEnableVertexAttribPointer(
-                standard_.vtxDiffuseAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
-
-            recordCommand(Ren::Command::bufferData(
-                Ren::BufferTarget::Array,
-                glVtxAmbientBufferID_,
-                pImpl_->expandedVtxAmbient_.data(),
-                nVertices * 3 * sizeof(float),
-                Ren::BufferUsage::StreamDraw));
-            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxAmbientBufferID_));
-            recordEnableVertexAttribPointer(
-                standard_.vtxAmbientAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
-
-            recordCommand(Ren::Command::bufferData(
-                Ren::BufferTarget::Array,
-                glVtxEmissiveBufferID_,
-                pImpl_->expandedVtxEmissive_.data(),
-                nVertices * 3 * sizeof(float),
-                Ren::BufferUsage::StreamDraw));
-            recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVtxEmissiveBufferID_));
-            recordEnableVertexAttribPointer(
-                standard_.vtxEmissiveAttr, 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0);
-        }
-    }
-
-    // Index buffer
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::ElementArray,
-        glElementBufferID_,
-        indices,
-        nIndices * sizeof(unsigned short),
-        Ren::BufferUsage::StreamDraw));
-
-    Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
-    recordCommand(std::move(command));
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
 
     if (gpuLighting)
     {
@@ -2807,43 +2660,31 @@ void RenDevice::renderIndexedScreenspace(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    recordCommand(Ren::Command::bindPipeline(billboard_.id));
+    Ren::BillboardPipelineHandles bh;
+    bh.pipelineId = billboard_.id;
+    bh.posAttr = billboard_.posAttr;
+    bh.uvAttr = billboard_.uvAttr;
+    bh.colAttr = billboard_.colAttr;
+    bh.vertexBuffer = glVertexDataBufferBillboardID_;
+    bh.elementBuffer = glElementBufferBillboardID_;
 
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
+    Ren::BillboardUniforms bu;
+    bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
+    bu.textureSampler = 0;
+
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitBillboardDrawIndexed(
+        bh, bu, billboardUniformsDirty_,
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices, indices, nIndices,
+        topology, &cmds);
 
     if (billboardUniformsDirty_)
-    {
-        Ren::BillboardUniforms bu;
-        bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
-        bu.textureSampler = TextureUnit;
-        recordCommand(Ren::Command::setBillboardUniforms(std::move(bu)));
         billboardUniformsDirty_ = false;
-    }
 
-    // 1rst attribute buffer : vertices
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferBillboardID_,
-        vertices,
-        nVertices * sizeof(RenIVertex),
-        Ren::BufferUsage::StreamDraw));
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_));
-    enableVertexLayout(billboard_.posAttr, 4, billboard_.uvAttr, billboard_.colAttr);
-
-    // Index buffer
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::ElementArray,
-        glElementBufferBillboardID_,
-        indices,
-        nIndices * sizeof(unsigned short),
-        Ren::BufferUsage::StreamDraw));
-
-    Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
-    recordCommand(std::move(command));
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
 
     disableVertexLayout(billboard_.posAttr, billboard_.uvAttr, billboard_.colAttr);
 }
@@ -2940,36 +2781,23 @@ void RenDevice::renderShadowDepth(
     PRE(pImpl_->shadowPassActive_);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    {
-        Ren::ShadowDepthUniforms sdu;
-        sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
-        sdu.model = toFloatArray(model_);
-        recordCommand(Ren::Command::setShadowDepthUniforms(std::move(sdu)));
-    }
+    Ren::ShadowDepthPipelineHandles sh;
+    sh.pipelineId = shadowDepth_.id;
+    sh.posAttr = shadowDepth_.posAttr;
+    sh.vertexBuffer = glVertexDataBufferID_;
+    sh.elementBuffer = glElementBufferID_;
 
-    // Upload vertex data — only position is needed for depth.
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferID_,
-        vertices,
-        nVertices * sizeof(RenIVertex),
-        Ren::BufferUsage::StreamDraw));
-    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
+    Ren::ShadowDepthUniforms sdu;
+    sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
+    sdu.model = toFloatArray(model_);
 
-    recordEnableVertexAttribPointer(
-        shadowDepth_.posAttr, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
+        sh, sdu, vertices, nVertices, indices, nIndices, topology, &cmds);
 
-    // Index buffer
-    recordCommand(Ren::Command::bufferData(
-        Ren::BufferTarget::ElementArray,
-        glElementBufferID_,
-        indices,
-        nIndices * sizeof(unsigned short),
-        Ren::BufferUsage::StreamDraw));
-
-    recordCommand(Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices));
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
 
     recordDisableVertexAttribPointer(shadowDepth_.posAttr);
 }
