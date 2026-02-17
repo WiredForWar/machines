@@ -5,6 +5,7 @@
 #include "render/internal/BackendTypes.hpp"
 #include "render/internal/PipelineSpec.hpp"
 #include "render/internal/RenderPassSpec.hpp"
+#include "render/internal/UniformBlocks.hpp"
 #include "render/render.hpp"
 
 #include <array>
@@ -236,6 +237,36 @@ struct BackendCommandBindFramebuffer
     FramebufferId framebufferId{};
 };
 
+struct BackendCommandSetGui2DUniforms
+{
+    Gui2DUniforms uniforms{};
+};
+
+struct BackendCommandSetStandardFrameUniforms
+{
+    StandardFrameUniforms uniforms{};
+};
+
+struct BackendCommandSetStandardObjectUniforms
+{
+    StandardObjectUniforms uniforms{};
+};
+
+struct BackendCommandSetBillboardUniforms
+{
+    BillboardUniforms uniforms{};
+};
+
+struct BackendCommandSetShadowDepthUniforms
+{
+    ShadowDepthUniforms uniforms{};
+};
+
+struct BackendCommandSetPostProcessUniforms
+{
+    PostProcessUniforms uniforms{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -270,7 +301,13 @@ using BackendCommand = std::variant<
     BackendCommandBeginRenderPass,
     BackendCommandBindDefaultFramebuffer,
     BackendCommandBindFramebuffer,
-    BackendCommandEndRenderPass>;
+    BackendCommandEndRenderPass,
+    BackendCommandSetGui2DUniforms,
+    BackendCommandSetStandardFrameUniforms,
+    BackendCommandSetStandardObjectUniforms,
+    BackendCommandSetBillboardUniforms,
+    BackendCommandSetShadowDepthUniforms,
+    BackendCommandSetPostProcessUniforms>;
 
 namespace Command
 {
@@ -487,6 +524,36 @@ inline BackendCommand beginRenderPass(RenderPassId renderPassId, RenColour clear
 inline BackendCommand endRenderPass()
 {
     return BackendCommandEndRenderPass{};
+}
+
+inline BackendCommand setGui2DUniforms(Gui2DUniforms uniforms)
+{
+    return BackendCommandSetGui2DUniforms{std::move(uniforms)};
+}
+
+inline BackendCommand setStandardFrameUniforms(StandardFrameUniforms uniforms)
+{
+    return BackendCommandSetStandardFrameUniforms{std::move(uniforms)};
+}
+
+inline BackendCommand setStandardObjectUniforms(StandardObjectUniforms uniforms)
+{
+    return BackendCommandSetStandardObjectUniforms{std::move(uniforms)};
+}
+
+inline BackendCommand setBillboardUniforms(BillboardUniforms uniforms)
+{
+    return BackendCommandSetBillboardUniforms{std::move(uniforms)};
+}
+
+inline BackendCommand setShadowDepthUniforms(ShadowDepthUniforms uniforms)
+{
+    return BackendCommandSetShadowDepthUniforms{std::move(uniforms)};
+}
+
+inline BackendCommand setPostProcessUniforms(PostProcessUniforms uniforms)
+{
+    return BackendCommandSetPostProcessUniforms{std::move(uniforms)};
 }
 
 } // namespace Command
