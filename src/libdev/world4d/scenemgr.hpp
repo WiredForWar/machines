@@ -9,6 +9,7 @@
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
 
+#include <functional>
 #include <memory>
 
 class BaseLogBuffer;
@@ -77,6 +78,10 @@ public:
     // i.e. inefficiently.  (It should be set except in test harnesses.)
     void domainAssignor(W4dDomainAssignor*);
     W4dDomainAssignor* domainAssignor() const;
+
+    using TerrainHeightFunc = std::function<MATHEX_SCALAR(MATHEX_SCALAR x, MATHEX_SCALAR y)>;
+    void setTerrainHeightFunction(TerrainHeightFunc fn);
+    const TerrainHeightFunc& terrainHeightFunction() const;
 
     // Every frame the back buffer can optionally be cleared to a flat colour.
     // Alternatively, meshes can be drawn as background objects.  If these
@@ -159,6 +164,10 @@ private:
     bool shakeCamera() const;
     void cancelCameraShake();
     void updateLights();
+
+    // Camera height above terrain using the registered callback, or
+    // above z=0 if no callback is set.
+    float cameraHeightAboveTerrain() const;
 
     // Estimate the closest visible ground point by intersecting the
     // camera's view-frustum edge rays with the ground plane (z=0).
