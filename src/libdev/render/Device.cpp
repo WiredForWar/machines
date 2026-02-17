@@ -75,6 +75,13 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
+static std::array<float, 16> toFloatArray(const glm::mat4& m)
+{
+    std::array<float, 16> result{};
+    std::memcpy(result.data(), glm::value_ptr(m), sizeof(float) * 16);
+    return result;
+}
+
 static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
 {
     if (id == Ren::NullTexId)
@@ -1070,8 +1077,12 @@ void RenDevice::blitPostProcess()
     recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxEmissiveAttr));
 
     recordCommand(Ren::Command::bindPipeline(postProcess_.id));
-    recordCommand(Ren::Command::setUniform1i(postProcess_.sceneTextureUniform, 0));
-    recordCommand(Ren::Command::setUniform1f(postProcess_.exposureUniform, 1.0f));
+    {
+        Ren::PostProcessUniforms ppu;
+        ppu.sceneTextureSampler = 0;
+        ppu.exposure = 1.0f;
+        recordCommand(Ren::Command::setPostProcessUniforms(std::move(ppu)));
+    }
 
     recordCommand(Ren::Command::bindTexture2D(
         postProcessColorTexture_, 0, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear));
@@ -2369,8 +2380,13 @@ void RenDevice::renderScreenspace(
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(texture), TextureUnit));
 
-    recordSetUniform1i(gui2D_.texSamplerUniform, TextureUnit);
-    recordSetUniform2f(gui2D_.screenspaceUniform, static_cast<float>(targetW), static_cast<float>(targetH));
+    {
+        Ren::Gui2DUniforms u;
+        u.screenspaceX = static_cast<float>(targetW);
+        u.screenspaceY = static_cast<float>(targetH);
+        u.textureSampler = TextureUnit;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(u)));
+    }
 
     recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
@@ -2430,7 +2446,9 @@ void RenDevice::renderSurface(
         = vertices[5].color = colour;
     if (targetW)
     {
-        recordSetUniform2f(gui2D_.screenspaceUniform, static_cast<float>(targetW), -static_cast<float>(targetH));
+        Ren::Gui2DUniforms guiU;
+        guiU.screenspaceX = static_cast<float>(targetW);
+        guiU.screenspaceY = -static_cast<float>(targetH);
 
         vertices[2].x = vertex_up_left[0];
         vertices[2].y = vertex_up_left[1];
@@ -2459,11 +2477,16 @@ void RenDevice::renderSurface(
         vertices[4].tv = uv_up_right[1];
         vertices[3].tu = uv_down_left[0];
         vertices[3].tv = uv_down_left[1];
+
+        guiU.textureSampler = 0;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(guiU)));
     }
     else
     {
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        recordSetUniform2f(gui2D_.screenspaceUniform, static_cast<float>(mode.width()), static_cast<float>(mode.height()));
+        Ren::Gui2DUniforms guiU;
+        guiU.screenspaceX = static_cast<float>(mode.width());
+        guiU.screenspaceY = static_cast<float>(mode.height());
 
         vertices[0].x = vertex_up_left[0];
         vertices[0].y = vertex_up_left[1];
@@ -2492,6 +2515,9 @@ void RenDevice::renderSurface(
         vertices[4].tv = uv_up_right[1];
         vertices[5].tu = uv_down_left[0];
         vertices[5].tv = uv_down_left[1];
+
+        guiU.textureSampler = 0;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(guiU)));
     }
 
     recordCommand(Ren::Command::bufferData(
@@ -2504,9 +2530,6 @@ void RenDevice::renderSurface(
     static const int TextureUnit = 0;
     const auto texFilter = pImpl_->smoothScaleEnabled_ ? Ren::TextureFilter::Linear : Ren::TextureFilter::Nearest;
     recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit, texFilter, texFilter));
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(gui2D_.texSamplerUniform, TextureUnit);
 
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
     enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
@@ -2539,72 +2562,79 @@ void RenDevice::renderPrimitive(
 
     if (standardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(standard_.viewUniform, view_);
-        recordSetUniformMatrix4fv(standard_.projUniform, projection_);
-        recordSetUniform3f(standard_.fogColourUniform, fogColour_.x, fogColour_.y, fogColour_.z);
-        recordSetUniform3f(standard_.fogParamsUniform, fogParams_.x, fogParams_.y, fogParams_.z);
+        Ren::StandardFrameUniforms fu;
+        fu.view = toFloatArray(view_);
+        fu.proj = toFloatArray(projection_);
+        fu.fogColourR = fogColour_.x;
+        fu.fogColourG = fogColour_.y;
+        fu.fogColourB = fogColour_.z;
+        fu.fogStartOrX = fogParams_.x;
+        fu.fogEndOrY = fogParams_.y;
+        fu.fogDensityOrZ = fogParams_.z;
+        recordCommand(Ren::Command::setStandardFrameUniforms(std::move(fu)));
         standardUniformsDirty_ = false;
     }
 
-    recordSetUniformMatrix4fv(standard_.modelUniform, model_);
-
-    recordSetUniform1i(standard_.gpuLightingUniform, gpuLighting ? 1 : 0);
-    if (gpuLighting)
     {
-        const auto& ld = pImpl_->gpuLightDir_;
-        const auto& lc = pImpl_->gpuLightColor_;
-        const auto& ac = pImpl_->gpuAmbientColor_;
-        recordSetUniform3f(standard_.lightDirUniform, ld.x, ld.y, ld.z);
-        recordSetUniform3f(standard_.lightColorUniform, lc.x, lc.y, lc.z);
-        recordSetUniform3f(standard_.ambientColorUniform, ac.x, ac.y, ac.z);
+        Ren::StandardObjectUniforms ou;
+        ou.model = toFloatArray(model_);
+        ou.gpuLighting = gpuLighting ? 1 : 0;
+        ou.textureSampler = 0;
 
-        const RenColour& md = mat.diffuse();
-        const RenColour& ma = mat.ambient();
-        const RenColour& me = mat.emissive();
-        recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
-        recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
-        recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
-
-        const RenColour& f = pImpl_->illuminator_->filter();
-        recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
-        recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
-
-        const int nPt = pImpl_->gpuNumPointLights_;
-        recordSetUniform1i(standard_.numPointLightsUniform, nPt);
-        if (nPt > 0)
+        if (gpuLighting)
         {
-            recordSetUniform3fv(standard_.pointLightPosUniform, &pImpl_->gpuPointLightPos_[0].x, nPt);
-            recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
-            recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
-            recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
-            recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
+            const auto& ld = pImpl_->gpuLightDir_;
+            const auto& lc = pImpl_->gpuLightColor_;
+            const auto& ac = pImpl_->gpuAmbientColor_;
+            ou.lightDirX = ld.x; ou.lightDirY = ld.y; ou.lightDirZ = ld.z;
+            ou.lightColorR = lc.x; ou.lightColorG = lc.y; ou.lightColorB = lc.z;
+            ou.ambientColorR = ac.x; ou.ambientColorG = ac.y; ou.ambientColorB = ac.z;
+
+            const RenColour& md = mat.diffuse();
+            const RenColour& ma = mat.ambient();
+            const RenColour& me = mat.emissive();
+            ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b();
+            ou.matAmbientR = ma.r(); ou.matAmbientG = ma.g(); ou.matAmbientB = ma.b();
+            ou.matEmissiveR = me.r(); ou.matEmissiveG = me.g(); ou.matEmissiveB = me.b();
+
+            const RenColour& f = pImpl_->illuminator_->filter();
+            ou.filterR = f.r(); ou.filterG = f.g(); ou.filterB = f.b();
+            ou.hasVtxMaterials = pImpl_->hasPerVertexMaterials_ ? 1 : 0;
+
+            const int nPt = pImpl_->gpuNumPointLights_;
+            ou.numPointLights = nPt;
+            if (nPt > 0)
+            {
+                ou.pointLightPos.assign(&pImpl_->gpuPointLightPos_[0].x, &pImpl_->gpuPointLightPos_[0].x + nPt * 3);
+                ou.pointLightColor.assign(&pImpl_->gpuPointLightColor_[0].x, &pImpl_->gpuPointLightColor_[0].x + nPt * 3);
+                ou.pointLightRange.assign(pImpl_->gpuPointLightRange_, pImpl_->gpuPointLightRange_ + nPt);
+                ou.pointLightAtten.assign(&pImpl_->gpuPointLightAtten_[0].x, &pImpl_->gpuPointLightAtten_[0].x + nPt * 3);
+                ou.pointLightOmni.assign(pImpl_->gpuPointLightOmni_, pImpl_->gpuPointLightOmni_ + nPt);
+            }
+
+            const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
+            ou.shadowEnabled = shadowEnabled ? 1 : 0;
+            if (shadowEnabled)
+            {
+                static const int ShadowFarTextureUnit = 1;
+                static const int ShadowNearTextureUnit = 2;
+                recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
+                recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
+                ou.shadowMapUnit = ShadowFarTextureUnit;
+                ou.shadowMapNearUnit = ShadowNearTextureUnit;
+                ou.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
+                ou.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
+                ou.shadowSplitDistance = pImpl_->shadowSplitDistance_;
+                ou.shadowStrength = pImpl_->shadowStrength_;
+            }
         }
 
-        // Shadow map uniforms (cascaded shadow maps)
-        const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
-        recordSetUniform1i(standard_.shadowEnabledUniform, shadowEnabled ? 1 : 0);
-        if (shadowEnabled)
-        {
-            static const int ShadowFarTextureUnit = 1;
-            static const int ShadowNearTextureUnit = 2;
-            recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
-            recordSetUniform1i(standard_.shadowMapUniform, ShadowFarTextureUnit);
-            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixUniform, pImpl_->lightSpaceMatrix_);
-            recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
-            recordSetUniform1i(standard_.shadowMapNearUniform, ShadowNearTextureUnit);
-            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixNearUniform, pImpl_->lightSpaceMatrixNear_);
-            const float splitDist = pImpl_->shadowSplitDistance_;
-            recordSetUniform1fv(standard_.shadowSplitDistanceUniform, &splitDist, 1);
-            recordSetUniform1fv(standard_.shadowStrengthUniform, &pImpl_->shadowStrength_, 1);
-        }
+        recordCommand(Ren::Command::setStandardObjectUniforms(std::move(ou)));
     }
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(standard_.texSamplerUniform, TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2659,72 +2689,79 @@ void RenDevice::renderIndexed(
 
     if (standardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(standard_.viewUniform, view_);
-        recordSetUniformMatrix4fv(standard_.projUniform, projection_);
-        recordSetUniform3f(standard_.fogColourUniform, fogColour_.x, fogColour_.y, fogColour_.z);
-        recordSetUniform3f(standard_.fogParamsUniform, fogParams_.x, fogParams_.y, fogParams_.z);
+        Ren::StandardFrameUniforms fu;
+        fu.view = toFloatArray(view_);
+        fu.proj = toFloatArray(projection_);
+        fu.fogColourR = fogColour_.x;
+        fu.fogColourG = fogColour_.y;
+        fu.fogColourB = fogColour_.z;
+        fu.fogStartOrX = fogParams_.x;
+        fu.fogEndOrY = fogParams_.y;
+        fu.fogDensityOrZ = fogParams_.z;
+        recordCommand(Ren::Command::setStandardFrameUniforms(std::move(fu)));
         standardUniformsDirty_ = false;
     }
 
-    recordSetUniformMatrix4fv(standard_.modelUniform, model_);
-
-    recordSetUniform1i(standard_.gpuLightingUniform, gpuLighting ? 1 : 0);
-    if (gpuLighting)
     {
-        const auto& ld = pImpl_->gpuLightDir_;
-        const auto& lc = pImpl_->gpuLightColor_;
-        const auto& ac = pImpl_->gpuAmbientColor_;
-        recordSetUniform3f(standard_.lightDirUniform, ld.x, ld.y, ld.z);
-        recordSetUniform3f(standard_.lightColorUniform, lc.x, lc.y, lc.z);
-        recordSetUniform3f(standard_.ambientColorUniform, ac.x, ac.y, ac.z);
+        Ren::StandardObjectUniforms ou;
+        ou.model = toFloatArray(model_);
+        ou.gpuLighting = gpuLighting ? 1 : 0;
+        ou.textureSampler = 0;
 
-        const RenColour& md = mat.diffuse();
-        const RenColour& ma = mat.ambient();
-        const RenColour& me = mat.emissive();
-        recordSetUniform3f(standard_.matDiffuseUniform, md.r(), md.g(), md.b());
-        recordSetUniform3f(standard_.matAmbientUniform, ma.r(), ma.g(), ma.b());
-        recordSetUniform3f(standard_.matEmissiveUniform, me.r(), me.g(), me.b());
-
-        const RenColour& f = pImpl_->illuminator_->filter();
-        recordSetUniform3f(standard_.filterUniform, f.r(), f.g(), f.b());
-        recordSetUniform1i(standard_.hasVtxMaterialsUniform, pImpl_->hasPerVertexMaterials_ ? 1 : 0);
-
-        const int nPt = pImpl_->gpuNumPointLights_;
-        recordSetUniform1i(standard_.numPointLightsUniform, nPt);
-        if (nPt > 0)
+        if (gpuLighting)
         {
-            recordSetUniform3fv(standard_.pointLightPosUniform, &pImpl_->gpuPointLightPos_[0].x, nPt);
-            recordSetUniform3fv(standard_.pointLightColorUniform, &pImpl_->gpuPointLightColor_[0].x, nPt);
-            recordSetUniform1fv(standard_.pointLightRangeUniform, pImpl_->gpuPointLightRange_, nPt);
-            recordSetUniform3fv(standard_.pointLightAttenUniform, &pImpl_->gpuPointLightAtten_[0].x, nPt);
-            recordSetUniform1fv(standard_.pointLightOmniUniform, pImpl_->gpuPointLightOmni_, nPt);
+            const auto& ld = pImpl_->gpuLightDir_;
+            const auto& lc = pImpl_->gpuLightColor_;
+            const auto& ac = pImpl_->gpuAmbientColor_;
+            ou.lightDirX = ld.x; ou.lightDirY = ld.y; ou.lightDirZ = ld.z;
+            ou.lightColorR = lc.x; ou.lightColorG = lc.y; ou.lightColorB = lc.z;
+            ou.ambientColorR = ac.x; ou.ambientColorG = ac.y; ou.ambientColorB = ac.z;
+
+            const RenColour& md = mat.diffuse();
+            const RenColour& ma = mat.ambient();
+            const RenColour& me = mat.emissive();
+            ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b();
+            ou.matAmbientR = ma.r(); ou.matAmbientG = ma.g(); ou.matAmbientB = ma.b();
+            ou.matEmissiveR = me.r(); ou.matEmissiveG = me.g(); ou.matEmissiveB = me.b();
+
+            const RenColour& f = pImpl_->illuminator_->filter();
+            ou.filterR = f.r(); ou.filterG = f.g(); ou.filterB = f.b();
+            ou.hasVtxMaterials = pImpl_->hasPerVertexMaterials_ ? 1 : 0;
+
+            const int nPt = pImpl_->gpuNumPointLights_;
+            ou.numPointLights = nPt;
+            if (nPt > 0)
+            {
+                ou.pointLightPos.assign(&pImpl_->gpuPointLightPos_[0].x, &pImpl_->gpuPointLightPos_[0].x + nPt * 3);
+                ou.pointLightColor.assign(&pImpl_->gpuPointLightColor_[0].x, &pImpl_->gpuPointLightColor_[0].x + nPt * 3);
+                ou.pointLightRange.assign(pImpl_->gpuPointLightRange_, pImpl_->gpuPointLightRange_ + nPt);
+                ou.pointLightAtten.assign(&pImpl_->gpuPointLightAtten_[0].x, &pImpl_->gpuPointLightAtten_[0].x + nPt * 3);
+                ou.pointLightOmni.assign(pImpl_->gpuPointLightOmni_, pImpl_->gpuPointLightOmni_ + nPt);
+            }
+
+            const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
+            ou.shadowEnabled = shadowEnabled ? 1 : 0;
+            if (shadowEnabled)
+            {
+                static const int ShadowFarTextureUnit = 1;
+                static const int ShadowNearTextureUnit = 2;
+                recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
+                recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
+                ou.shadowMapUnit = ShadowFarTextureUnit;
+                ou.shadowMapNearUnit = ShadowNearTextureUnit;
+                ou.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
+                ou.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
+                ou.shadowSplitDistance = pImpl_->shadowSplitDistance_;
+                ou.shadowStrength = pImpl_->shadowStrength_;
+            }
         }
 
-        // Shadow map uniforms (cascaded shadow maps)
-        const bool shadowEnabled = pImpl_->shadowMappingEnabled_;
-        recordSetUniform1i(standard_.shadowEnabledUniform, shadowEnabled ? 1 : 0);
-        if (shadowEnabled)
-        {
-            static const int ShadowFarTextureUnit = 1;
-            static const int ShadowNearTextureUnit = 2;
-            recordCommand(Ren::Command::bindTexture2D(shadowDepthTexture_, ShadowFarTextureUnit));
-            recordSetUniform1i(standard_.shadowMapUniform, ShadowFarTextureUnit);
-            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixUniform, pImpl_->lightSpaceMatrix_);
-            recordCommand(Ren::Command::bindTexture2D(shadowNearDepthTexture_, ShadowNearTextureUnit));
-            recordSetUniform1i(standard_.shadowMapNearUniform, ShadowNearTextureUnit);
-            recordSetUniformMatrix4fv(standard_.lightSpaceMatrixNearUniform, pImpl_->lightSpaceMatrixNear_);
-            const float splitDist = pImpl_->shadowSplitDistance_;
-            recordSetUniform1fv(standard_.shadowSplitDistanceUniform, &splitDist, 1);
-            recordSetUniform1fv(standard_.shadowStrengthUniform, &pImpl_->shadowStrength_, 1);
-        }
+        recordCommand(Ren::Command::setStandardObjectUniforms(std::move(ou)));
     }
 
     // Bind our texture in Texture Unit 0
     static const int TextureUnit = 0;
     recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(mat.texture().handle()), TextureUnit));
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(standard_.texSamplerUniform, TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2831,12 +2868,12 @@ void RenDevice::renderIndexedScreenspace(
 
     if (billboardUniformsDirty_)
     {
-        recordSetUniformMatrix4fv(billboard_.viewProjUniform, *pImpl_->projViewMatrix_);
+        Ren::BillboardUniforms bu;
+        bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
+        bu.textureSampler = TextureUnit;
+        recordCommand(Ren::Command::setBillboardUniforms(std::move(bu)));
         billboardUniformsDirty_ = false;
     }
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    recordSetUniform1i(billboard_.texSamplerUniform, TextureUnit);
 
     // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bufferData(
@@ -2872,6 +2909,7 @@ void RenDevice::beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpa
     else
         pImpl_->lightSpaceMatrix_ = lightSpaceMatrix;
 
+    pImpl_->activeShadowLightSpaceMatrix_ = lightSpaceMatrix;
     pImpl_->shadowPassActive_ = true;
     pImpl_->shadowMappingEnabled_ = true;
 
@@ -2892,7 +2930,12 @@ void RenDevice::beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpa
     recordCommand(Ren::Command::setPolygonOffset(0.5f, 1.0f));
 
     recordCommand(Ren::Command::bindPipeline(shadowDepth_.id));
-    recordSetUniformMatrix4fv(shadowDepth_.lightSpaceMatrixUniform, lightSpaceMatrix);
+    {
+        Ren::ShadowDepthUniforms sdu;
+        sdu.lightSpaceMatrix = toFloatArray(lightSpaceMatrix);
+        sdu.model = toFloatArray(glm::mat4(1.0f));
+        recordCommand(Ren::Command::setShadowDepthUniforms(std::move(sdu)));
+    }
 }
 
 void RenDevice::setShadowSplitDistance(float d)
@@ -2950,7 +2993,12 @@ void RenDevice::renderShadowDepth(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    recordSetUniformMatrix4fv(shadowDepth_.modelUniform, model_);
+    {
+        Ren::ShadowDepthUniforms sdu;
+        sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
+        sdu.model = toFloatArray(model_);
+        recordCommand(Ren::Command::setShadowDepthUniforms(std::move(sdu)));
+    }
 
     // Upload vertex data — only position is needed for depth.
     recordCommand(Ren::Command::bufferData(

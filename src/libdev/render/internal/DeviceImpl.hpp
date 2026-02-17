@@ -323,6 +323,7 @@ private:
     static constexpr int ShadowMapSizeFar = 2048;
     glm::mat4 lightSpaceMatrix_{};     // far cascade
     glm::mat4 lightSpaceMatrixNear_{}; // near cascade
+    glm::mat4 activeShadowLightSpaceMatrix_{}; // whichever cascade is currently being rendered
     float shadowSplitDistance_{200.0f}; // view-space distance for cascade selection
     bool shadowPassActive_{};
     bool shadowMappingEnabled_{};

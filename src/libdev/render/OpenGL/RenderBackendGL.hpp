@@ -147,6 +147,12 @@ private:
     void executeCommand(const BackendCommandEndRenderPass& command);
     void executeCommand(const BackendCommandBindDefaultFramebuffer& command);
     void executeCommand(const BackendCommandBindFramebuffer& command);
+    void executeCommand(const BackendCommandSetGui2DUniforms& command);
+    void executeCommand(const BackendCommandSetStandardFrameUniforms& command);
+    void executeCommand(const BackendCommandSetStandardObjectUniforms& command);
+    void executeCommand(const BackendCommandSetBillboardUniforms& command);
+    void executeCommand(const BackendCommandSetShadowDepthUniforms& command);
+    void executeCommand(const BackendCommandSetPostProcessUniforms& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;

@@ -1213,6 +1213,150 @@ void RenderBackendGL::executeCommand(const BackendCommandSetLineWidth& command)
     glLineWidth(command.width);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetGui2DUniforms& command)
+{
+    const auto& u = command.uniforms;
+    // Look up uniform locations from the currently bound program.
+    // The pipeline must already be bound via bindPipeline before this command.
+    const GLint locScreenspace = glGetUniformLocation(stateCache_.currentProgram_, "uScreenspace");
+    const GLint locSampler = glGetUniformLocation(stateCache_.currentProgram_, "uTextureSampler");
+    if (locScreenspace >= 0)
+        glUniform2f(locScreenspace, u.screenspaceX, u.screenspaceY);
+    if (locSampler >= 0)
+        glUniform1i(locSampler, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locV = glGetUniformLocation(prog, "uV");
+    const GLint locP = glGetUniformLocation(prog, "uP");
+    const GLint locFogColour = glGetUniformLocation(prog, "uFogColour");
+    const GLint locFogParams = glGetUniformLocation(prog, "uFogParams");
+    if (locV >= 0)
+        glUniformMatrix4fv(locV, 1, GL_FALSE, u.view.data());
+    if (locP >= 0)
+        glUniformMatrix4fv(locP, 1, GL_FALSE, u.proj.data());
+    if (locFogColour >= 0)
+        glUniform3f(locFogColour, u.fogColourR, u.fogColourG, u.fogColourB);
+    if (locFogParams >= 0)
+        glUniform3f(locFogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+
+    const GLint locM = glGetUniformLocation(prog, "uM");
+    if (locM >= 0)
+        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+
+    const GLint locGpu = glGetUniformLocation(prog, "uGpuLighting");
+    if (locGpu >= 0)
+        glUniform1i(locGpu, u.gpuLighting);
+
+    if (u.gpuLighting)
+    {
+        const GLint locLD = glGetUniformLocation(prog, "uLightDir");
+        const GLint locLC = glGetUniformLocation(prog, "uLightColor");
+        const GLint locAC = glGetUniformLocation(prog, "uAmbientColor");
+        const GLint locMD = glGetUniformLocation(prog, "uMatDiffuse");
+        const GLint locMA = glGetUniformLocation(prog, "uMatAmbient");
+        const GLint locME = glGetUniformLocation(prog, "uMatEmissive");
+        const GLint locF = glGetUniformLocation(prog, "uFilter");
+        const GLint locHV = glGetUniformLocation(prog, "uHasVtxMaterials");
+        if (locLD >= 0) glUniform3f(locLD, u.lightDirX, u.lightDirY, u.lightDirZ);
+        if (locLC >= 0) glUniform3f(locLC, u.lightColorR, u.lightColorG, u.lightColorB);
+        if (locAC >= 0) glUniform3f(locAC, u.ambientColorR, u.ambientColorG, u.ambientColorB);
+        if (locMD >= 0) glUniform3f(locMD, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
+        if (locMA >= 0) glUniform3f(locMA, u.matAmbientR, u.matAmbientG, u.matAmbientB);
+        if (locME >= 0) glUniform3f(locME, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
+        if (locF >= 0) glUniform3f(locF, u.filterR, u.filterG, u.filterB);
+        if (locHV >= 0) glUniform1i(locHV, u.hasVtxMaterials);
+
+        const GLint locNPL = glGetUniformLocation(prog, "uNumPointLights");
+        if (locNPL >= 0) glUniform1i(locNPL, u.numPointLights);
+        if (u.numPointLights > 0)
+        {
+            const GLint locPP = glGetUniformLocation(prog, "uPointLightPos");
+            const GLint locPC = glGetUniformLocation(prog, "uPointLightColor");
+            const GLint locPR = glGetUniformLocation(prog, "uPointLightRange");
+            const GLint locPA = glGetUniformLocation(prog, "uPointLightAtten");
+            const GLint locPO = glGetUniformLocation(prog, "uPointLightOmni");
+            if (locPP >= 0 && !u.pointLightPos.empty())
+                glUniform3fv(locPP, u.numPointLights, u.pointLightPos.data());
+            if (locPC >= 0 && !u.pointLightColor.empty())
+                glUniform3fv(locPC, u.numPointLights, u.pointLightColor.data());
+            if (locPR >= 0 && !u.pointLightRange.empty())
+                glUniform1fv(locPR, u.numPointLights, u.pointLightRange.data());
+            if (locPA >= 0 && !u.pointLightAtten.empty())
+                glUniform3fv(locPA, u.numPointLights, u.pointLightAtten.data());
+            if (locPO >= 0 && !u.pointLightOmni.empty())
+                glUniform1fv(locPO, u.numPointLights, u.pointLightOmni.data());
+        }
+
+        const GLint locSE = glGetUniformLocation(prog, "uShadowEnabled");
+        if (locSE >= 0) glUniform1i(locSE, u.shadowEnabled);
+        if (u.shadowEnabled)
+        {
+            const GLint locSM = glGetUniformLocation(prog, "uShadowMap");
+            const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
+            const GLint locSMN = glGetUniformLocation(prog, "uShadowMapNear");
+            const GLint locLSMN = glGetUniformLocation(prog, "uLightSpaceMatrixNear");
+            const GLint locSD = glGetUniformLocation(prog, "uShadowSplitDistance");
+            const GLint locSS = glGetUniformLocation(prog, "uShadowStrength");
+            if (locSM >= 0) glUniform1i(locSM, u.shadowMapUnit);
+            if (locLSM >= 0) glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
+            if (locSMN >= 0) glUniform1i(locSMN, u.shadowMapNearUnit);
+            if (locLSMN >= 0) glUniformMatrix4fv(locLSMN, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
+            if (locSD >= 0) glUniform1f(locSD, u.shadowSplitDistance);
+            if (locSS >= 0) glUniform1f(locSS, u.shadowStrength);
+        }
+    }
+
+    const GLint locTS = glGetUniformLocation(prog, "uTextureSampler2");
+    if (locTS >= 0)
+        glUniform1i(locTS, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetBillboardUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locVP = glGetUniformLocation(prog, "uVP");
+    const GLint locSampler = glGetUniformLocation(prog, "uTextureSampler");
+    if (locVP >= 0)
+        glUniformMatrix4fv(locVP, 1, GL_FALSE, u.viewProj.data());
+    if (locSampler >= 0)
+        glUniform1i(locSampler, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
+    const GLint locM = glGetUniformLocation(prog, "uM");
+    if (locLSM >= 0)
+        glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
+    if (locM >= 0)
+        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locScene = glGetUniformLocation(prog, "uSceneTexture");
+    const GLint locExposure = glGetUniformLocation(prog, "uExposure");
+    if (locScene >= 0)
+        glUniform1i(locScene, u.sceneTextureSampler);
+    if (locExposure >= 0)
+        glUniform1f(locExposure, u.exposure);
+}
+
 BackendTextureHandle RenderBackendGL::createTexture2D()
 {
     GLuint texture = 0;
