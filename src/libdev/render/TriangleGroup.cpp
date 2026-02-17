@@ -123,18 +123,13 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
     devImpl->setMaterialHandles(mat);
     const RenIVertex* lit = ill->applyMaterial(mat, vtx, indices_);
 
-    // Assume that the usual backface setting is on.
-    if (!backFace())
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(backFace()));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
     ASSERT(nIndicesUsed_ <= vtx.size(), "Indices used by group don't match mesh's vertices.");
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
-
-    if (!backFace())
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 // virtual
@@ -151,17 +146,13 @@ void RenIDistinctGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& m
 
     devImpl->setMaterialHandles(mat);
 
-    // Assume that the usual backface setting is on.
-    if (!backFace())
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(backFace()));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
     RenDevice::current()
         ->renderIndexed(vtx.get(), nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
-    if (!backFace())
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 // virtual
