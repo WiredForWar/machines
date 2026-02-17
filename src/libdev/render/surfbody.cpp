@@ -547,7 +547,6 @@ void RenISurfBody::drawText(
         }
     }
 
-    RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenISurfBody::releaseDC()
