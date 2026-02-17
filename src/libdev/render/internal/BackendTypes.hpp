@@ -95,6 +95,14 @@ enum class TextureWrap
     ClampToEdge,
 };
 
+struct Viewport
+{
+    int x{};
+    int y{};
+    int width{};
+    int height{};
+};
+
 enum class BackendClearFlag : std::uint32_t
 {
     Colour = 1u << 0,

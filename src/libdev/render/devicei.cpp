@@ -14,7 +14,7 @@
 #include "render/drivsel.hpp"
 #include "render/material.hpp"
 
-#include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/internal/IRenderBackend.hpp"
 
 #include "system/pathname.hpp"
 #include "render/internal/matmgr.hpp"
@@ -34,7 +34,7 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , materialFogMultiplier_(1.0)
     , debugX_(0)
     , debugY_(0)
-    , backend_(std::make_unique<Ren::OpenGL::RenderBackendGL>())
+    , backend_(Ren::IRenderBackend::create())
     , frameTimer_()
     , videoMemoryShared_(false)
     , videoMemorySharedInitialized_(false)
