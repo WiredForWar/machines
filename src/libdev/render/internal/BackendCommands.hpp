@@ -114,6 +114,12 @@ struct BackendCommandSetUniform1i
     int value{};
 };
 
+struct BackendCommandSetUniform1f
+{
+    UniformLocationId location{};
+    float value{};
+};
+
 struct BackendCommandSetUniform2f
 {
     UniformLocationId location{};
@@ -225,6 +231,11 @@ struct BackendCommandBindDefaultFramebuffer
 {
 };
 
+struct BackendCommandBindFramebuffer
+{
+    FramebufferId framebufferId{};
+};
+
 using BackendCommand = std::variant<
     BackendCommandClear,
     BackendCommandSetViewport,
@@ -241,6 +252,7 @@ using BackendCommand = std::variant<
     BackendCommandSetDepthFunc,
     BackendCommandSetDepthTest,
     BackendCommandSetUniform1i,
+    BackendCommandSetUniform1f,
     BackendCommandSetUniform1fv,
     BackendCommandSetUniform2f,
     BackendCommandSetUniform3f,
@@ -257,6 +269,7 @@ using BackendCommand = std::variant<
     BackendCommandSetLineWidth,
     BackendCommandBeginRenderPass,
     BackendCommandBindDefaultFramebuffer,
+    BackendCommandBindFramebuffer,
     BackendCommandEndRenderPass>;
 
 namespace Command
@@ -270,6 +283,11 @@ inline BackendCommand clear(RenColour colour, std::uint32_t mask)
 inline BackendCommand bindDefaultFramebuffer()
 {
     return BackendCommandBindDefaultFramebuffer{};
+}
+
+inline BackendCommand bindFramebuffer(FramebufferId id)
+{
+    return BackendCommandBindFramebuffer{id};
 }
 
 inline BackendCommand setViewport(Size size)
@@ -356,6 +374,11 @@ inline BackendCommand setDepthTest(bool enabled)
 inline BackendCommand setUniform1i(UniformLocationId location, int value)
 {
     return BackendCommandSetUniform1i{location, value};
+}
+
+inline BackendCommand setUniform1f(UniformLocationId location, float value)
+{
+    return BackendCommandSetUniform1f{location, value};
 }
 
 inline BackendCommand setUniform2f(UniformLocationId location, float x, float y)
