@@ -75,8 +75,7 @@ private:
     uint32_t frameNo_ = 0;
     RenDisplay::Mode lowestAllowedMode_;
     RenDisplay::Mode highestAllowedMode_;
-    bool supportsGammaCorrection_ = false;
-    double gammaCorrection_ = 0.0;
+    double gammaCorrection_ = 1.0;
     bool isPrimaryDriver_ = false;
 
     ctl_pvector<RenIDisplayModeObserver> observers_;

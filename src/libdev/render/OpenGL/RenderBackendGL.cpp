@@ -1445,10 +1445,13 @@ void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms&
     const GLuint prog = stateCache_.currentProgram_;
     const GLint locScene = glGetUniformLocation(prog, "uSceneTexture");
     const GLint locExposure = glGetUniformLocation(prog, "uExposure");
+    const GLint locGamma = glGetUniformLocation(prog, "uGamma");
     if (locScene >= 0)
         glUniform1i(locScene, u.sceneTextureSampler);
     if (locExposure >= 0)
         glUniform1f(locExposure, u.exposure);
+    if (locGamma >= 0)
+        glUniform1f(locGamma, u.gamma);
 }
 
 BackendTextureHandle RenderBackendGL::createTexture2D()
