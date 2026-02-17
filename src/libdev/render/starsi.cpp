@@ -166,9 +166,6 @@ void RenIStarsImpl::render(
         RenDevice::current()->renderPrimitive(vertexPtrs[i], sizes[i], emptyMat, Ren::PrimitiveTopology::Points);
     }
 
-    // Reset the previous states.
-    RenDevice::current()->recordCommand(Ren::Command::setBlendStateDisabled());
-
     TEST_INVARIANT;
 }
 

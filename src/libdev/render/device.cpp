@@ -859,7 +859,9 @@ void RenDevice::beginGeometryPass(bool clearBack)
         recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(internalCaps->minZBias()), 1.0f));
     }
 
+    recordCommand(Ren::Command::setDepthTest(true));
     recordCommand(Ren::Command::setDepthMaskWritable(true));
+    recordCommand(Ren::Command::setCullFace(true));
 
     // All the alpha polygons are drawn as a post-pass in endFrame, so we can
     // turn blending off for the main pass.
@@ -916,9 +918,11 @@ void RenDevice::flush3DAlpha()
     // being set correcly.
     recordCommand(Ren::Command::setAlphaTestEnabled(0.0f));
     recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    recordCommand(Ren::Command::setCullFace(true));
+    pImpl_->disableAlphaBlending();
     recordCommand(Ren::Command::setMultisample(true));
     recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
-    recordCommand(Ren::Command::setDepthMaskWritable(true));
 
     if (pImpl_->doingBackground_)
     {
@@ -931,7 +935,6 @@ void RenDevice::flush3DAlpha()
 
         // Likewise for the lighting, fog and alpha on the coplanar polys.
         enableLighting();
-        recordCommand(Ren::Command::setDepthMaskWritable(true));
     }
 
     // Inter-mesh coplanar polygons are drawn with normal settings.  They are
@@ -958,7 +961,6 @@ void RenDevice::flush3DAlpha()
 
         pImpl_->normalAlphaSorter_->render();
         pImpl_->disableAlphaBlending();
-        recordCommand(Ren::Command::setDepthMaskWritable(true));
     }
 
     recordCommand(Ren::Command::setAlphaTestDisabled());
@@ -1046,9 +1048,6 @@ void RenDevice::blitPostProcess()
 
     recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.posAttr));
     recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.uvAttr));
-
-    recordCommand(Ren::Command::setDepthTest(true));
-    recordCommand(Ren::Command::setDepthMaskWritable(true));
 }
 
 void RenDevice::commonEndFrame()
@@ -1552,9 +1551,6 @@ void RenDevice::graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, do
     recordCommand(Ren::Command::setDepthTest(false));
 
     renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
-
-    recordCommand(Ren::Command::setDepthTest(true));
-    recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
@@ -1598,9 +1594,6 @@ void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
     recordCommand(Ren::Command::setDepthTest(false));
 
     renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
-
-    recordCommand(Ren::Command::setDepthTest(true));
-    recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenDevice::addInterference()
@@ -2340,8 +2333,6 @@ void RenDevice::renderScreenspace(
     using BlendFactor = Ren::BackendBlendFactor;
     recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
-    recordCommand(Ren::Command::setBlendStateDisabled());
-    recordCommand(Ren::Command::setDepthTest(true));
 
     disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
@@ -2471,13 +2462,6 @@ void RenDevice::renderSurface(
     const auto [srcFactor, dstFactor] = blendFactorsForBlitMode(mode);
     recordCommand(Ren::Command::setBlendStateEnabled(srcFactor, dstFactor));
     recordCommand(Ren::Command::draw(Ren::PrimitiveTopology::Triangles, 0, 6));
-
-    using BlendFactor = Ren::BackendBlendFactor;
-    recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
-
-    recordCommand(Ren::Command::setBlendStateDisabled());
-
-    recordCommand(Ren::Command::setDepthTest(true));
 
     disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
