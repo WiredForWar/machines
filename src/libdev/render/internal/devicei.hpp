@@ -246,6 +246,16 @@ private:
     BillboardPipelineLocations billboard_{};
     ShadowDepthPipelineLocations shadowDepth_{};
 
+    struct PostProcessPipelineLocations
+    {
+        Ren::PipelineId id{};
+        Ren::AttributeLocationId posAttr{};
+        Ren::AttributeLocationId uvAttr{};
+        Ren::UniformLocationId sceneTextureUniform{};
+        Ren::UniformLocationId exposureUniform{};
+    };
+    PostProcessPipelineLocations postProcess_{};
+
     Ren::RenderPassId geometryRenderPass_{};
     Ren::RenderPassId uiRenderPass_{};
     Ren::RenderPassId shadowRenderPass_{};
@@ -268,6 +278,14 @@ private:
     Ren::BufferId glVertexDataBufferBillboardID_{};
     Ren::BufferId glElementBufferBillboardID_{};
     Ren::FramebufferId glOffscreenFrameBuffID_{};
+
+    // Post-process (tone mapping) resources.
+    Ren::FramebufferId postProcessFBO_{};
+    Ren::BackendTextureHandle postProcessColorTexture_{};
+    Ren::BufferId postProcessQuadVBO_{};
+    int postProcessWidth_{};
+    int postProcessHeight_{};
+    bool postProcessReady_{};
 
     Ren::BackendCommandBufferHandle frameCommandBuffer_{};
     Ren::BackendCommandBufferHandle immediateCommandBuffer_{};
