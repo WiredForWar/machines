@@ -127,7 +127,6 @@ void RenTTFPolygon::render(
     cen.z(cen.z() / w2);
     const MATHEX_SCALAR projectedScale = recipW * scale;
 
-    //  const GLenum tmpType = compose2DGeometry(pImpl_->vertices(), cen, projectedScale);
     MexPoint3d center = centre();
     const glm::mat4& modelMatrix = RenDevice::current()->getModelMatrix();
     glm::vec4 centerWorld = glm::vec4(center.x(), center.y(), center.z(), 1.0f);
