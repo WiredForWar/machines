@@ -68,6 +68,8 @@ set(RENDER_SOURCES
     internal/BackendCommands.hpp
     internal/BackendTypes.hpp
     internal/BmpFontCore.hpp
+    internal/DrawCallFactory.cpp
+    internal/DrawCallFactory.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
     internal/AlphaGroup.hpp
