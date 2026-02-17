@@ -183,12 +183,6 @@ public:
     static RenDevice* current();
 
     void recordCommand(Ren::BackendCommand command);
-    void recordSetUniform1i(Ren::UniformLocationId location, int value);
-    void recordSetUniform2f(Ren::UniformLocationId location, float x, float y);
-    void recordSetUniform1fv(Ren::UniformLocationId location, const float* data, int count);
-    void recordSetUniform3f(Ren::UniformLocationId location, float x, float y, float z);
-    void recordSetUniform3fv(Ren::UniformLocationId location, const float* data, int count);
-    void recordSetUniformMatrix4fv(Ren::UniformLocationId location, const glm::mat4& matrix);
     void recordEnableVertexAttribPointer(
         Ren::AttributeLocationId index,
         int size,
