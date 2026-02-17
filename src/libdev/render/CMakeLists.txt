@@ -65,6 +65,8 @@ set(RENDER_SOURCES
     inpoints.cpp
     internal/BackendCommands.hpp
     internal/BackendTypes.hpp
+    internal/DrawCallFactory.cpp
+    internal/DrawCallFactory.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
     internal/PipelineSpec.hpp

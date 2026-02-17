@@ -3,6 +3,7 @@
 #include "base/base.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/BackendCommands.hpp"
+#include "render/internal/DrawCallFactory.hpp"
 #include "render/render.hpp"
 #include "render/texture.hpp"
 
@@ -435,6 +436,10 @@ private:
     // is called.  Intended for drawing backgrounds.
     // PRE(hither < yon);
     void overrideClipping(double hither, double yon);
+
+    Ren::FrameState buildFrameState() const;
+    Ren::GpuLightingState buildGpuLightingState(bool gpuLighting) const;
+    Ren::StandardPipelineHandles buildStandardHandles() const;
 
     RenIDeviceImpl* pImpl_ { nullptr };
 
