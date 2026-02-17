@@ -93,13 +93,14 @@ set(RENDER_SOURCES
     internal/Illuminator.ipp
     internal/InternalLight.hpp
     internal/InternalLight.ipp
+    internal/InternalMap.hpp
     internal/InternalPoints.hpp
+    internal/LightBuffer.hpp
     internal/PipelineSpec.hpp
     internal/RenScopedImmediateCommands.hpp
     internal/RenderPassSpec.hpp
+    internal/UniformBlocks.hpp
     internal/internal.hpp
-    internal/InternalMap.hpp
-    internal/LightBuffer.hpp
     internal/LightBuffer.ipp
     internal/MaterialApply.hpp
     internal/MaterialBody.hpp
