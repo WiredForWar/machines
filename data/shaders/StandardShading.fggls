@@ -81,14 +81,14 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 
     float shadowSample = 0.0f;
 
-    // Try near cascade first.
-    if (viewDist < uShadowSplitDistance)
+    // Try near cascade first — it wins whenever the fragment is inside
+    // its light-space projection bounds.
     {
         vec4 lsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0f);
         vec3 projCoords = lsPos.xyz / lsPos.w * 0.5f + 0.5f;
         if (projCoords.x >= 0.0f && projCoords.x <= 1.0f &&
             projCoords.y >= 0.0f && projCoords.y <= 1.0f &&
-            projCoords.z <= 1.0f)
+            projCoords.z >= 0.0f && projCoords.z <= 1.0f)
         {
             shadowSample = sampleShadowPCF(uShadowMapNear, projCoords, bias, 1.0f / 4096.0f);
             return mix(1.0f, shadowSample, edgeFade);

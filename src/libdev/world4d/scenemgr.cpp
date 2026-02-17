@@ -333,11 +333,35 @@ void W4dSceneManager::render()
             const float heightAboveTerrain = cameraHeightAboveTerrain();
             const float heightT = std::clamp((heightAboveTerrain - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
             const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
-            const float farExtent = glm::mix(80.0f, 300.0f, heightT);
+            const float farExtent = glm::mix(200.0f, 300.0f, heightT);
 
-            const glm::vec3 up = (std::abs(glm::dot(glm::normalize(lightDir), glm::vec3(0, 0, 1))) > 0.99f)
+            // Align the shadow cascade square with the camera's horizontal
+            // forward direction so that the near cascade covers the area in
+            // front of the camera optimally (no wasted square corners to the
+            // sides while closer objects in front fall outside).
+            const glm::vec3 lightN = glm::normalize(lightDir);
+            const glm::vec3 defaultUp = (std::abs(glm::dot(lightN, glm::vec3(0, 0, 1))) > 0.99f)
                 ? glm::vec3(0, 1, 0)
                 : glm::vec3(0, 0, 1);
+
+            const MexVec3 camFwd = currentCamera_->globalTransform().xBasis();
+            const glm::vec3 camHorizRaw(
+                static_cast<float>(camFwd.x()),
+                static_cast<float>(camFwd.y()),
+                0.0f);
+            const float camHorizLen = glm::length(camHorizRaw);
+
+            glm::vec3 up = defaultUp;
+            if (camHorizLen > 0.001f)
+            {
+                const glm::vec3 camHoriz = camHorizRaw / camHorizLen;
+                // Project the camera's horizontal forward onto the plane
+                // perpendicular to the light direction.
+                const glm::vec3 projected = camHoriz - glm::dot(camHoriz, lightN) * lightN;
+                const float projLen = glm::length(projected);
+                if (projLen > 0.001f)
+                    up = projected / projLen;
+            }
 
             // The shader uses view-space distance (length(viewSpace)) to pick
             // the cascade.  The near cascade ortho box is 2*nearExtent wide,
@@ -974,45 +998,69 @@ float W4dSceneManager::cameraHeightAboveTerrain() const
 MexPoint3d W4dSceneManager::shadowFrustumCenter() const
 {
     CB_DEPIMPL_AUTO(currentCamera_);
+    CB_DEPIMPL_AUTO(terrainHeightFunc_);
 
     const MexTransform3d& camXform = currentCamera_->globalTransform();
     const MexPoint3d camPos = camXform.position();
     const MexVec3 camFwd = camXform.xBasis();
 
-    const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
-    const glm::vec3 fwd(camFwd.x(), camFwd.y(), camFwd.z());
+    const float eyeX = static_cast<float>(camPos.x());
+    const float eyeY = static_cast<float>(camPos.y());
+    const float eyeZ = static_cast<float>(camPos.z());
+    const float fwdX = static_cast<float>(camFwd.x());
+    const float fwdY = static_cast<float>(camFwd.y());
+    const float fwdZ = static_cast<float>(camFwd.z());
 
-    // Dynamic near cascade extent (must match the caller in render()).
-    const float heightAboveTerrain = cameraHeightAboveTerrain();
-    const float heightT = std::clamp((heightAboveTerrain - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+    // Ground height below the camera.  Using the actual terrain height
+    // (instead of a fixed z=0) keeps the cascade center at the correct
+    // altitude even when the camera is in a valley with negative Z.
+    const float groundZ = terrainHeightFunc_
+        ? static_cast<float>(terrainHeightFunc_(camPos.x(), camPos.y()))
+        : 0.0f;
+
+    // Height above the local terrain — drives cascade extent estimate.
+    const float heightAbove = std::max(eyeZ - groundZ, 2.0f);
+    const float heightT = std::clamp((heightAbove - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
     const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
 
+    // How much the camera looks downward: 0 = horizontal, 1 = straight down.
+    const float downward = std::clamp(-fwdZ, 0.0f, 1.0f);
+
     // Horizontal forward direction (XY only, normalized).
-    const glm::vec2 fwdXY(fwd.x, fwd.y);
-    const float fwdXYLen = glm::length(fwdXY);
-    const glm::vec2 fwdHoriz = (fwdXYLen > 0.001f)
-        ? fwdXY / fwdXYLen
-        : glm::vec2(1.0f, 0.0f);
+    const float fwdXYLen = std::sqrt(fwdX * fwdX + fwdY * fwdY);
+    const float hDirX = (fwdXYLen > 0.001f) ? fwdX / fwdXYLen : 1.0f;
+    const float hDirY = (fwdXYLen > 0.001f) ? fwdY / fwdXYLen : 0.0f;
 
-    // How horizontal is the view?  1 at horizon, 0 looking straight down.
-    const float horizontality = 1.0f - std::clamp(std::abs(fwd.z), 0.0f, 1.0f);
+    // --- Approach A: ground-plane intersection (good for zenith) ---
+    // Intersect the view ray with z=groundZ.  Clamped so it can't fly off.
+    float isectX = eyeX;
+    float isectY = eyeY;
+    const float dz = eyeZ - groundZ;
+    if (fwdZ < -0.01f && dz > 0.1f)
+    {
+        constexpr float kMaxRayDist = 500.0f;
+        const float tHit = std::min(dz / (-fwdZ), kMaxRayDist);
+        isectX = eyeX + fwdX * tHit;
+        isectY = eyeY + fwdY * tHit;
+    }
 
-    // Always offset the cascade center *horizontally* forward from the
-    // camera.  No terrain intersection — works at any height including
-    // caves.  The ortho shadow box projects from the light, so its
-    // world-space coverage is determined by the center's XY position.
-    //
-    //  - Horizon (horizontality ≈ 1): full nearExtent offset ahead.
-    //    The cascade covers the ground in front of the player.
-    //  - Zenith (horizontality ≈ 0): reduced offset.  The visible area
-    //    is a compact patch below the camera, well within the cascade.
-    const float offset = nearExtent * std::max(horizontality, 0.7f);
-    const glm::vec3 center(
-        eye.x + fwdHoriz.x * offset,
-        eye.y + fwdHoriz.y * offset,
-        eye.z);
+    // --- Approach B: horizontal forward offset (good for ground/FP) ---
+    // Push the center forward by nearExtent so the cascade covers the
+    // area in front of the camera rather than wasting half behind it.
+    const float horizX = eyeX + hDirX * nearExtent;
+    const float horizY = eyeY + hDirY * nearExtent;
 
-    return MexPoint3d(center.x, center.y, center.z);
+    // Blend: when looking straight down (downward ≈ 1) use ground
+    // intersection; when looking horizontally (downward ≈ 0) use the
+    // forward offset.  smoothstep gives a gentle transition.
+    const float t = glm::smoothstep(0.3f, 0.8f, downward);
+    const float centerX = glm::mix(horizX, isectX, t);
+    const float centerY = glm::mix(horizY, isectY, t);
+
+    // The cascade center sits at the local ground level so that the
+    // light's ortho projection covers the correct patch of terrain
+    // regardless of the light's oblique angle.
+    return MexPoint3d(centerX, centerY, groundZ);
 }
 
 /* End SCENEMGR.CPP *************************************************/
