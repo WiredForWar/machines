@@ -459,7 +459,6 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
             ++sIt;
         }
 
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -520,7 +519,6 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
             ++matIt;
         }
 
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -584,7 +582,6 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
             ++stIt;
         }
 
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
@@ -656,7 +653,6 @@ void RenMesh::render(
             ++matIt;
         }
 
-        RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
     }
 }
 
