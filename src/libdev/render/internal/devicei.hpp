@@ -21,8 +21,6 @@
 #include "render/internal/RenderPassSpec.hpp"
 #include "device/timer.hpp"
 
-#include <GL/glew.h>
-
 #include <memory>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>

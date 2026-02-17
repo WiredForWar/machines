@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string_view>
 
 struct SDL_Window;
@@ -18,6 +19,9 @@ class IRenderBackend
 {
 public:
     virtual ~IRenderBackend() = default;
+
+    // Factory: creates the default backend implementation.
+    static std::unique_ptr<IRenderBackend> create();
 
     virtual bool initialize(SDL_Window* window) = 0;
     virtual void shutdown() = 0;
@@ -62,6 +66,13 @@ public:
     virtual void recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command) = 0;
     virtual void endCommandBuffer(BackendCommandBufferHandle handle) = 0;
     virtual void submitCommandBuffer(BackendCommandBufferHandle handle) = 0;
+
+    // Query the current viewport dimensions.
+    virtual Viewport getViewport() const = 0;
+
+    // Set the viewport and clear the colour buffer to black.
+    // Used by the display layer after a mode change.
+    virtual void clearDisplay(int width, int height) = 0;
 
     // Synchronous readback — not a recorded command.
     virtual void readPixelsFloat(int x, int y, int width, int height, float* rgba) = 0;

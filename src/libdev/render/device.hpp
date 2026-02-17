@@ -120,6 +120,10 @@ public:
     // PRE(!rendering3D());
     void setViewport(int left, int top, int width, int height);
 
+    // Set the viewport to the given size and clear the colour buffer to black.
+    // Used by the display layer after a mode change.
+    void clearDisplay(int width, int height);
+
     // Use another camera.  At present, multiple viewports on one device
     // aren't supported, so you can't switch cameras mid-frame.
     // PRE(cam);

@@ -60,6 +60,9 @@ public:
     void pushFramebuffer() override;
     void popFramebuffer() override;
 
+    Viewport getViewport() const override;
+    void clearDisplay(int width, int height) override;
+
     void readPixelsFloat(int x, int y, int width, int height, float* rgba) override;
     void readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba) override;
 

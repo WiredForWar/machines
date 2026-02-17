@@ -39,8 +39,6 @@
 #include "render/mesh.hpp"
 #include "render/drivsel.hpp"
 
-#include "render/OpenGL/Utils.hpp"
-
 #include "render/internal/DrawCallFactory.hpp"
 #include "render/internal/IRenderBackend.hpp"
 #include "render/internal/devicei.hpp"
@@ -73,7 +71,6 @@
 
 #include <algorithm>
 
-#include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
 static std::array<float, 16> toFloatArray(const glm::mat4& m)
@@ -695,6 +692,11 @@ void RenDevice::setViewport(int left, int top, int width, int height)
     pImpl_->vpMapping_ = new RenIViewportMapping(width, height, left, top);
 
     RENDER_STREAM("Set viewport to (" << left << "," << top << ") " << width << "x" << height << "\n");
+}
+
+void RenDevice::clearDisplay(int width, int height)
+{
+    pImpl_->backend_->clearDisplay(width, height);
 }
 
 ////////////////////////////////// Frame delineation //////////////////////////
@@ -1883,12 +1885,11 @@ MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
     // Get the viewport dimensions
-    GLint viewPort[4];
-    glGetIntegerv(GL_VIEWPORT, viewPort);
-    double viewportPixelLeft(viewPort[0]);
-    double viewportPixelTop(viewPort[1]);
-    double viewportPixelWidth(viewPort[2]);
-    double viewportPixelHeight(viewPort[3]);
+    const Ren::Viewport viewPort = pImpl_->backend_->getViewport();
+    double viewportPixelLeft(viewPort.x);
+    double viewportPixelTop(viewPort.y);
+    double viewportPixelWidth(viewPort.width);
+    double viewportPixelHeight(viewPort.height);
 
     // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
@@ -1950,12 +1951,11 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
     // Get the viewport dimensions
-    GLint viewPort[4];
-    glGetIntegerv(GL_VIEWPORT, viewPort);
-    double viewportPixelLeft(viewPort[0]);
-    double viewportPixelTop(viewPort[1]);
-    double viewportPixelWidth(viewPort[2]);
-    double viewportPixelHeight(viewPort[3]);
+    const Ren::Viewport viewPort = pImpl_->backend_->getViewport();
+    double viewportPixelLeft(viewPort.x);
+    double viewportPixelTop(viewPort.y);
+    double viewportPixelWidth(viewPort.width);
+    double viewportPixelHeight(viewPort.height);
 
     // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
