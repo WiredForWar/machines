@@ -1953,56 +1953,6 @@ void RenDevice::recordCommand(Ren::BackendCommand command)
     pImpl_->backend_->recordCommand(handle, std::move(command));
 }
 
-void RenDevice::recordSetUniform1i(Ren::UniformLocationId location, int value)
-{
-    if (!location.isValid())
-        return;
-
-    recordCommand(Ren::Command::setUniform1i(location, value));
-}
-
-void RenDevice::recordSetUniform2f(Ren::UniformLocationId location, float x, float y)
-{
-    if (!location.isValid())
-        return;
-
-    recordCommand(Ren::Command::setUniform2f(location, x, y));
-}
-
-void RenDevice::recordSetUniform1fv(Ren::UniformLocationId location, const float* data, int count)
-{
-    if (!location.isValid() || count <= 0)
-        return;
-
-    recordCommand(Ren::Command::setUniform1fv(location, std::vector<float>(data, data + count)));
-}
-
-void RenDevice::recordSetUniform3f(Ren::UniformLocationId location, float x, float y, float z)
-{
-    if (!location.isValid())
-        return;
-
-    recordCommand(Ren::Command::setUniform3f(location, x, y, z));
-}
-
-void RenDevice::recordSetUniform3fv(Ren::UniformLocationId location, const float* data, int count)
-{
-    if (!location.isValid() || count <= 0)
-        return;
-
-    recordCommand(Ren::Command::setUniform3fv(location, std::vector<float>(data, data + count * 3)));
-}
-
-void RenDevice::recordSetUniformMatrix4fv(Ren::UniformLocationId location, const glm::mat4& matrix)
-{
-    if (!location.isValid())
-        return;
-
-    std::array<float, 16> values{};
-    std::memcpy(values.data(), glm::value_ptr(matrix), sizeof(float) * values.size());
-    recordCommand(Ren::Command::setUniformMatrix4fv(location, values, false));
-}
-
 void RenDevice::recordEnableVertexAttribPointer(
     Ren::AttributeLocationId index,
     int size,
