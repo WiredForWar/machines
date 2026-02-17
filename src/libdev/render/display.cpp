@@ -218,7 +218,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         SDL_SetWindowSize(window(), m.width(), m.height());
         SDL_SetWindowPosition(window(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
-    SDL_Delay(100); // TODO: Without it there seems to be a issue with small viewport/ glFlush
+    SDL_Delay(100); // TODO: Without it there seems to be a issue with small viewport
     SDL_ShowWindow(window());
 
     if (!success || (! pImpl_->modeChanged()))

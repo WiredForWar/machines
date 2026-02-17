@@ -266,16 +266,16 @@ private:
     Ren::FramebufferId shadowNearFramebuffer_{};
     Ren::BackendTextureHandle shadowNearDepthTexture_{};
 
-    Ren::BufferId gl2DVertexBufferID_{};
-    Ren::BufferId glVertexDataBufferID_{};
-    Ren::BufferId glNormalBufferID_{};
-    Ren::BufferId glVtxDiffuseBufferID_{};
-    Ren::BufferId glVtxAmbientBufferID_{};
-    Ren::BufferId glVtxEmissiveBufferID_{};
-    Ren::BufferId glElementBufferID_{};
-    Ren::BufferId glVertexDataBufferBillboardID_{};
-    Ren::BufferId glElementBufferBillboardID_{};
-    Ren::FramebufferId glOffscreenFrameBuffID_{};
+    Ren::BufferId vertexBuffer2D_{};
+    Ren::BufferId vertexDataBuffer_{};
+    Ren::BufferId normalBuffer_{};
+    Ren::BufferId vtxDiffuseBuffer_{};
+    Ren::BufferId vtxAmbientBuffer_{};
+    Ren::BufferId vtxEmissiveBuffer_{};
+    Ren::BufferId elementBuffer_{};
+    Ren::BufferId vertexDataBufferBillboard_{};
+    Ren::BufferId elementBufferBillboard_{};
+    Ren::FramebufferId offscreenFramebuffer_{};
 
     // Post-process (tone mapping) resources.
     Ren::FramebufferId postProcessFBO_{};
