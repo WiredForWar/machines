@@ -46,7 +46,10 @@ public:
     virtual void releaseFramebuffer(FramebufferId id) = 0;
 
     virtual void bindFramebuffer(FramebufferId id) = 0;
+    virtual void framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture) = 0;
     virtual void framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture) = 0;
+    virtual void framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height) = 0;
+    virtual bool isFramebufferComplete(FramebufferId fbo) = 0;
 
     virtual void endRenderToTexture() = 0;
 

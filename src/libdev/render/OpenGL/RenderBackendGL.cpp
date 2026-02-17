@@ -594,6 +594,56 @@ void RenderBackendGL::framebufferAttachDepthTexture(FramebufferId fbo, BackendTe
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void RenderBackendGL::framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+
+    const GLuint texHandle = colorTexture.isValid() ? colorTexture.value() : 0;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texHandle, 0);
+
+    if (texHandle != 0)
+    {
+        const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
+        {
+            spdlog::error("Color framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        }
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderBackendGL::framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+
+    GLuint rbo{};
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        spdlog::error("Framebuffer with depth renderbuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+    }
+
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+bool RenderBackendGL::isFramebufferComplete(FramebufferId fbo)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return status == GL_FRAMEBUFFER_COMPLETE;
+}
+
 void RenderBackendGL::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
@@ -932,6 +982,14 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
     glUniform1i(command.location.value(), command.value);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1f(command.location.value(), command.value);
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
 {
     if (!command.location.isValid())
@@ -1128,6 +1186,11 @@ void RenderBackendGL::executeCommand(const BackendCommandEndRenderPass& /*comman
 void RenderBackendGL::executeCommand(const BackendCommandBindDefaultFramebuffer& /*command*/)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindFramebuffer& command)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(command.framebufferId));
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
