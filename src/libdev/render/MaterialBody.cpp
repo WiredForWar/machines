@@ -85,18 +85,8 @@ void RenIMatBody::update()
 void RenIMatBody::updateTransparent()
 {
     const bool matTransparent = diffuse_.isTransparent();
-
-    // The transparent flag is not set if the current device doesn't support it.
-    // This reflection of the device capabilities strictly doesn't belong here.
-    // It is done anyway as an optimisation: the transparency capabilities are
-    // evaluated here so they don't have to be evaluated every time we apply
-    // a material for rendering purposes.
-    // TBD: this may fail in the presence of multiple devices.
-    const RenCapabilities& caps = RenIDeviceImpl::currentPimpl()->capabilities();
-    const bool stipple = caps.supportsStippledAlpha();
-    const bool alpha = caps.supportsFlatAlpha();
-    alphaTransparent_ = matTransparent && alpha;
-    transparent_ = matTransparent && (alpha || stipple);
+    alphaTransparent_ = matTransparent;
+    transparent_ = matTransparent;
 }
 
 bool RenIMatBody::operator==(const RenIMatBody& rhs) const

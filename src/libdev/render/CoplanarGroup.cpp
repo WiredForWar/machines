@@ -37,19 +37,14 @@ void RenIDelayedCoplanarGroup::render()
     glm::mat4* crufty = const_cast<glm::mat4*>(&xform_);
     RenDevice::current()->setModelMatrix(*crufty);
 
-    const RenICapabilities* caps = RenIDeviceImpl::currentPimpl()->capabilities().internal();
-    ASSERT(caps, "No internal device capabilities defined.");
-
-    // Apply a zBias value only if the device supports it (to avoid state changes).
-    if (caps->supportsZBias())
     {
         const int zBias = material_.coplanarPriority() - RenIMatManager::instance().minCoplanarValue();
         ASSERT_INFO(zBias);
         ASSERT_INFO(material_.coplanarPriority());
         ASSERT_INFO(RenIMatManager::instance().minCoplanarValue());
         ASSERT_INFO(RenIMatManager::instance().maxCoplanarValue());
-        ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in coplanar sorter.");
-        ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in coplanar sorter.");
+        ASSERT(zBias >= 0, "Illegal zbias value in coplanar sorter.");
+        ASSERT(zBias <= 16, "Illegal zbias value in coplanar sorter.");
 
         RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
         RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(-zBias), 1.0f));
