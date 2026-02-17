@@ -49,7 +49,10 @@ public:
     void releaseFramebuffer(FramebufferId id) override;
 
     void bindFramebuffer(FramebufferId id) override;
+    void framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture) override;
     void framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture) override;
+    void framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height) override;
+    bool isFramebufferComplete(FramebufferId fbo) override;
 
     void endRenderToTexture() override;
 
@@ -125,6 +128,7 @@ private:
     void executeCommand(const BackendCommandSetDepthFunc& command);
     void executeCommand(const BackendCommandSetDepthTest& command);
     void executeCommand(const BackendCommandSetUniform1i& command);
+    void executeCommand(const BackendCommandSetUniform1f& command);
     void executeCommand(const BackendCommandSetUniform1fv& command);
     void executeCommand(const BackendCommandSetUniform2f& command);
     void executeCommand(const BackendCommandSetUniform3f& command);
@@ -142,6 +146,7 @@ private:
     void executeCommand(const BackendCommandBeginRenderPass& command);
     void executeCommand(const BackendCommandEndRenderPass& command);
     void executeCommand(const BackendCommandBindDefaultFramebuffer& command);
+    void executeCommand(const BackendCommandBindFramebuffer& command);
 
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
