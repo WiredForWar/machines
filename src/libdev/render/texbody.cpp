@@ -9,9 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include "base/diag.hpp"
-#include "render/device.hpp"
 #include "render/colour.hpp"
-#include "render/capable.hpp"
 #include "render/internal/debug.hpp"
 #include "render/internal/devicei.hpp"
 
@@ -201,9 +199,8 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     ASSERT_INFO(requestedTextureName);
 
     const bool transparent = isTransparent(requestedTextureName);
-    const RenCapabilities& caps = RenDevice::current()->capabilities();
-    bilinear_ = bilinearRequired(requestedTextureName) && caps.supportsBilinear();
-    const bool colourKey = caps.supportsColourKey();
+    bilinear_ = bilinearRequired(requestedTextureName);
+    const bool colourKey = true;
 
     // Start with the resolved file path for loading.
     std::string loadPath = filePath;
@@ -212,7 +209,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     // If this is a transparent texture and the device supports alpha texture
     // and a special colour-only map exists, then load that in preference to
     // the named file given as the arg to this function.
-    if (transparent && caps.supportsTextureAlpha())
+    if (transparent)
     {
         const std::string resolvedColourName = Ren::resolveTextureFile(colourName.pathname());
         if (SysPathName::existsAsFile(resolvedColourName))
@@ -238,7 +235,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
         return false;
 
     // Use a separate alpha map file if it exists.
-    bool tryToLoadAlpha = transparent && caps.supportsTextureAlpha();
+    bool tryToLoadAlpha = transparent;
 
     // But prefer colour-keying if it's supported and bilinear is not required.
     if (colourKey && !bilinear_)
@@ -271,12 +268,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     //  alpha_ = transparent && alphaHandle;
     alpha_ = transparent && surfaceAlpha;
 
-    // If the HAL's colour model is set, that implies that 3D hardware is
-    // present, therefore create the main surface in video memory.
-    RenISurfBody::Residence residence = SYSTEM;
-
-    if (caps.hardware())
-        residence = TEXTURE;
+    RenISurfBody::Residence residence = TEXTURE;
 
     if (!allocateDDSurfaces(surface->w, surface->h, residence))
     {

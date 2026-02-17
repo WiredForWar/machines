@@ -27,10 +27,6 @@ set(RENDER_SOURCES
     animcurs.hpp
     camera.cpp
     camera.hpp
-    capable.cpp
-    capable.hpp
-    capablei.cpp
-    capable.ipp
     colour.cpp
     colour.hpp
     colour.ipp
@@ -77,8 +73,6 @@ set(RENDER_SOURCES
     internal/RenderPassSpec.hpp
     internal/UniformBlocks.hpp
     internal/alphagrp.hpp
-    internal/capablei.hpp
-    internal/capablei.ipp
     internal/colpack.hpp
     internal/coplagrp.hpp
     internal/cpfactry.ctp

@@ -3,14 +3,11 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-
-#include "render/capable.hpp"
 #include "render/internal/glmath.hpp"
 #include "render/internal/alphagrp.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/devicei.hpp"
-#include "render/internal/capablei.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/device.hpp"
 
@@ -58,24 +55,16 @@ void RenIDelayedAlphaGroup::render()
     glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
     RenDevice::current()->setModelMatrix(*crufty);
 
-    const RenICapabilities* caps = RenIDeviceImpl::currentPimpl()->capabilities().internal();
-    ASSERT(caps, "No internal device capabilities defined.");
-
-    // RENDER_STREAM("Rendering alpha group with " << material_ << "\n");
-
-    // Note that coplanar priority and alpha priority are not mutually exclusive.
-    // Apply a zBias value only if the device supports it (to avoid state changes).
-    const bool doZBias = material_.interMeshCoplanar() && caps->supportsZBias();
+    const bool doZBias = material_.interMeshCoplanar();
     if (doZBias)
     {
         const int zBias = material_.coplanarPriority() - RenIMatManager::instance().minCoplanarValue();
         ASSERT_INFO(zBias);
-        ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in alpha sorter.");
-        ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in alpha sorter.");
+        ASSERT(zBias >= 0, "Illegal zbias value in alpha sorter.");
+        ASSERT(zBias <= 16, "Illegal zbias value in alpha sorter.");
 
         RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
         RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(-zBias, 1.0f));
-        // RENDER_STREAM("  Set zBias=" << zBias << "\n");
     }
 
     if (!material_.usesBilinear() && !material_.texture().isEmpty()) // This fixes issue with gun barrels rendering
@@ -94,7 +83,7 @@ void RenIDelayedAlphaGroup::render()
     if (doZBias)
     {
         RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(false));
-        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(caps->minZBias(), 1.0f));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
     }
 }
 

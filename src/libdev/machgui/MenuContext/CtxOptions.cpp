@@ -19,7 +19,6 @@
 #include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
-#include "render/capable.hpp"
 #include "gui/restring.hpp"
 #include "gui/font.hpp"
 #include "gui/image.hpp"
@@ -220,8 +219,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pSoundVolume_->setValue(Config::soundVolume.get());
     pSoundVolume_->setValueChangedHandler([](float newValue) { Config::soundVolume.set(std::round(newValue)); });
 
-    const RenCapabilities& caps = W4dManager::instance().sceneManager()->pDevice()->capabilities();
-
     // Get current resolution
     int inGameResolutionWidth = pDisplay_->currentMode().width();
     int inGameResolutionHeight = pDisplay_->currentMode().height();
@@ -251,7 +248,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         // requirement.
         // if ( mode >= lowestMode and mode.bitDepth() == 16 and
         if (mode >= lowestMode
-            && caps.maxAvailableDisplayMemoryAfterTextures() >= 3 * mode.memoryRequired())
+            && 256000000 >= 3 * mode.memoryRequired())
         {
             // Construct a string to go in the drop down list box ( e.g. "640x480" )
             char buffer[30];
