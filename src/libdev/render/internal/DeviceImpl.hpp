@@ -221,7 +221,6 @@ private:
         Ren::UniformLocationId shadowStrengthUniform{};
         Ren::UniformLocationId shadowMapNearUniform{};
         Ren::UniformLocationId lightSpaceMatrixNearUniform{};
-        Ren::UniformLocationId shadowSplitDistanceUniform{};
     };
 
     struct BillboardPipelineLocations

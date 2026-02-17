@@ -1410,13 +1410,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUnifor
             const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
             const GLint locSMN = glGetUniformLocation(prog, "uShadowMapNear");
             const GLint locLSMN = glGetUniformLocation(prog, "uLightSpaceMatrixNear");
-            const GLint locSD = glGetUniformLocation(prog, "uShadowSplitDistance");
             const GLint locSS = glGetUniformLocation(prog, "uShadowStrength");
             if (locSM >= 0) glUniform1i(locSM, u.shadowMapUnit);
             if (locLSM >= 0) glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
             if (locSMN >= 0) glUniform1i(locSMN, u.shadowMapNearUnit);
             if (locLSMN >= 0) glUniformMatrix4fv(locLSMN, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
-            if (locSD >= 0) glUniform1f(locSD, u.shadowSplitDistance);
             if (locSS >= 0) glUniform1f(locSS, u.shadowStrength);
         }
     }

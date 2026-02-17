@@ -320,7 +320,7 @@ bool RenDevice::createGpuResources()
             "uNumPointLights",
             "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten", "uPointLightOmni",
             "uShadowMap", "uLightSpaceMatrix", "uShadowEnabled", "uShadowStrength",
-            "uShadowMapNear", "uLightSpaceMatrixNear", "uShadowSplitDistance",
+            "uShadowMapNear", "uLightSpaceMatrixNear",
             "uFogMode",
         };
         standard_.id = backend_->createPipeline(desc);
@@ -363,7 +363,6 @@ bool RenDevice::createGpuResources()
         standard_.shadowStrengthUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowStrength");
         standard_.shadowMapNearUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowMapNear");
         standard_.lightSpaceMatrixNearUniform = backend_->pipelineUniformLocation(standard_.id, "uLightSpaceMatrixNear");
-        standard_.shadowSplitDistanceUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowSplitDistance");
     }
 
     vertexDataBuffer_ = backend_->createBuffer();
