@@ -688,6 +688,20 @@ void RenderBackendGL::popFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, restore);
 }
 
+Viewport RenderBackendGL::getViewport() const
+{
+    GLint vp[4];
+    glGetIntegerv(GL_VIEWPORT, vp);
+    return {vp[0], vp[1], vp[2], vp[3]};
+}
+
+void RenderBackendGL::clearDisplay(int width, int height)
+{
+    glViewport(0, 0, width, height);
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void RenderBackendGL::readPixelsFloat(int x, int y, int width, int height, float* rgba)
 {
     glReadPixels(x, y, width, height, GL_RGBA, GL_FLOAT, rgba);
@@ -1489,5 +1503,10 @@ void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
 }
 
 } // namespace OpenGL
+
+std::unique_ptr<IRenderBackend> IRenderBackend::create()
+{
+    return std::make_unique<OpenGL::RenderBackendGL>();
+}
 
 } // namespace Ren
