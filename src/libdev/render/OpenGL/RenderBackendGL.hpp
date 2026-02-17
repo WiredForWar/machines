@@ -201,6 +201,8 @@ private:
     };
     StateCache stateCache_{};
 
+    GLuint currentFboColorAttachment_{};
+
     SDL_Window* window_{};
     SDL_GLContext glContext_{};
 };
