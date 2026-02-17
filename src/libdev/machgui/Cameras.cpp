@@ -197,6 +197,13 @@ void MachCameras::loadGame()
     cameraMoved_ = false;
     groundCameraMoved_ = true;
     resetFollowTarget();
+
+    // Provide terrain height to the shadow cascade placement logic.
+    pSceneManager_->setTerrainHeightFunction(
+        [](MATHEX_SCALAR x, MATHEX_SCALAR y) -> MATHEX_SCALAR
+        {
+            return MachLogPlanet::instance().surface()->terrainHeight(x, y);
+        });
 }
 
 void MachCameras::saveGame(PerOstream& outStream)
@@ -295,6 +302,8 @@ void MachCameras::loadSavedGame(PerIstream& inStream)
 
 void MachCameras::unloadGame()
 {
+    pSceneManager_->setTerrainHeightFunction(nullptr);
+
     pGroundControl_.reset();
     pFreeControl_.reset();
     pZenithControl_.reset();

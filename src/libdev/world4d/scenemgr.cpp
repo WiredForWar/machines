@@ -112,6 +112,8 @@ private:
     static double highEnoughFrameRateInit_;
 
     bool dynamicLightsEnabled_;
+
+    W4dSceneManager::TerrainHeightFunc terrainHeightFunc_;
 };
 
 // De-pimple everything in the class.
@@ -138,7 +140,8 @@ private:
     CB_DEPIMPL(double, highEnoughFrameRateInit_);                                                                      \
     CB_DEPIMPL(double, requestedMinFrameRate_);                                                                        \
     CB_DEPIMPL(double, highEnoughFrameRate_);                                                                          \
-    CB_DEPIMPL(bool, dynamicLightsEnabled_);
+    CB_DEPIMPL(bool, dynamicLightsEnabled_);                                                                           \
+    CB_DEPIMPL(W4dSceneManager::TerrainHeightFunc, terrainHeightFunc_);
 
 // static
 MATHEX_SCALAR W4dSceneManagerImpl::requestedMinFrameRateInit_ = 20;
@@ -324,11 +327,11 @@ void W4dSceneManager::render()
             const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
             const glm::vec3 center(frustumCenter.x(), frustumCenter.y(), frustumCenter.z());
 
-            // Dynamic cascade extents based on camera height (zoom level).
-            // Low cameras (z ≈ 2..5) get tight cascades; zenith (z ≈ 20..250)
-            // gets progressively larger ones.
-            const float camZ = static_cast<float>(camPos.z());
-            const float heightT = std::clamp((camZ - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+            // Dynamic cascade extents based on camera height above terrain.
+            // Low cameras (≈ 2..5 m above ground) get tight cascades;
+            // zenith (≈ 20..250 m above ground) gets progressively larger ones.
+            const float heightAboveTerrain = cameraHeightAboveTerrain();
+            const float heightT = std::clamp((heightAboveTerrain - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
             const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
             const float farExtent = glm::mix(80.0f, 300.0f, heightT);
 
@@ -337,10 +340,12 @@ void W4dSceneManager::render()
                 : glm::vec3(0, 0, 1);
 
             // The shader uses view-space distance (length(viewSpace)) to pick
-            // the cascade.  Compute the view-space distance from the camera to
-            // the edge of the near cascade frustum so the split is consistent.
-            const float distToCenter = glm::length(center - eye);
-            const float splitViewDist = distToCenter + nearExtent;
+            // the cascade.  The near cascade ortho box is 2*nearExtent wide,
+            // so any fragment within 2*nearExtent view distance can potentially
+            // be covered by it.  Use a fixed split independent of the center
+            // offset so the near cascade coverage doesn't shrink when the
+            // center is close to the camera.
+            const float splitViewDist = nearExtent * 2.0f;
             device_->setShadowSplitDistance(splitViewDist);
 
             // --- Near cascade: high-resolution shadows for close objects ---
@@ -938,6 +943,34 @@ void W4dSceneManager::dynamicLightsEnabled(bool enabled)
     pImpl_->dynamicLightsEnabled_ = enabled;
 }
 
+void W4dSceneManager::setTerrainHeightFunction(TerrainHeightFunc fn)
+{
+    pImpl_->terrainHeightFunc_ = std::move(fn);
+}
+
+const W4dSceneManager::TerrainHeightFunc& W4dSceneManager::terrainHeightFunction() const
+{
+    return pImpl_->terrainHeightFunc_;
+}
+
+// Compute the camera's height above terrain.  Falls back to camPos.z()
+// (i.e. assumes ground at z=0) when no terrain callback is registered.
+float W4dSceneManager::cameraHeightAboveTerrain() const
+{
+    CB_DEPIMPL_AUTO(currentCamera_);
+    CB_DEPIMPL_AUTO(terrainHeightFunc_);
+
+    const MexPoint3d camPos = currentCamera_->globalTransform().position();
+    const float camZ = static_cast<float>(camPos.z());
+
+    if (terrainHeightFunc_)
+    {
+        const float groundZ = static_cast<float>(terrainHeightFunc_(camPos.x(), camPos.y()));
+        return std::max(camZ - groundZ, 0.0f);
+    }
+    return std::max(camZ, 0.0f);
+}
+
 MexPoint3d W4dSceneManager::shadowFrustumCenter() const
 {
     CB_DEPIMPL_AUTO(currentCamera_);
@@ -945,66 +978,39 @@ MexPoint3d W4dSceneManager::shadowFrustumCenter() const
     const MexTransform3d& camXform = currentCamera_->globalTransform();
     const MexPoint3d camPos = camXform.position();
     const MexVec3 camFwd = camXform.xBasis();
-    const MexVec3 camUpBasis = camXform.yBasis();
-    const MexVec3 camRightBasis = camXform.zBasis();
 
     const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
     const glm::vec3 fwd(camFwd.x(), camFwd.y(), camFwd.z());
-    const glm::vec3 camUp(camUpBasis.x(), camUpBasis.y(), camUpBasis.z());
-    const glm::vec3 camRight(camRightBasis.x(), camRightBasis.y(), camRightBasis.z());
 
-    const double verticalFov = currentCamera_->verticalFOVAngle();
-    const double aspect = currentCamera_->horizontalFOVAngle() / verticalFov;
-    const float tanHalfVFov = static_cast<float>(std::tan(verticalFov * 0.5));
-    const float tanHalfHFov = tanHalfVFov * static_cast<float>(aspect);
+    // Dynamic near cascade extent (must match the caller in render()).
+    const float heightAboveTerrain = cameraHeightAboveTerrain();
+    const float heightT = std::clamp((heightAboveTerrain - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+    const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
 
-    const float camZ = static_cast<float>(camPos.z());
-    const float maxGroundDist = camZ + 200.0f;
+    // Horizontal forward direction (XY only, normalized).
+    const glm::vec2 fwdXY(fwd.x, fwd.y);
+    const float fwdXYLen = glm::length(fwdXY);
+    const glm::vec2 fwdHoriz = (fwdXYLen > 0.001f)
+        ? fwdXY / fwdXYLen
+        : glm::vec2(1.0f, 0.0f);
 
-    // Sample: center, right edge, top edge, bottom edge.
-    const std::array<glm::vec2, 4> sampleOffsets{{
-        {0.0f, 0.0f},
-        {1.0f, 0.0f},
-        {0.0f, 1.0f},
-        {0.0f, -1.0f},
-    }};
+    // How horizontal is the view?  1 at horizon, 0 looking straight down.
+    const float horizontality = 1.0f - std::clamp(std::abs(fwd.z), 0.0f, 1.0f);
 
-    float minGroundDist = std::numeric_limits<float>::max();
-    glm::vec3 groundHit = eye;
-    for (const auto& uv : sampleOffsets)
-    {
-        const glm::vec3 rayDir = glm::normalize(
-            fwd + camRight * (uv.x * tanHalfHFov) + camUp * (uv.y * tanHalfVFov));
-
-        if (rayDir.z >= -0.01f)
-            continue;
-
-        const float tHit = -eye.z / rayDir.z;
-        if (tHit <= 0.0f)
-            continue;
-
-        const float tClamped = std::min(tHit, maxGroundDist);
-        const glm::vec3 hit = eye + rayDir * tClamped;
-        const float dist = glm::length(hit - eye);
-        if (dist < minGroundDist)
-        {
-            minGroundDist = dist;
-            groundHit = hit;
-        }
-    }
-
-    // Fallback: if no frustum ray hits the ground (looking straight up),
-    // place the center slightly ahead on the ground.
-    glm::vec3 center;
-    if (minGroundDist < std::numeric_limits<float>::max())
-    {
-        center = groundHit;
-    }
-    else
-    {
-        const glm::vec3 fwdHoriz = glm::normalize(glm::vec3(fwd.x, fwd.y, 0.0f));
-        center = glm::vec3(eye.x, eye.y, 0.0f) + fwdHoriz * std::min(30.0f, maxGroundDist);
-    }
+    // Always offset the cascade center *horizontally* forward from the
+    // camera.  No terrain intersection — works at any height including
+    // caves.  The ortho shadow box projects from the light, so its
+    // world-space coverage is determined by the center's XY position.
+    //
+    //  - Horizon (horizontality ≈ 1): full nearExtent offset ahead.
+    //    The cascade covers the ground in front of the player.
+    //  - Zenith (horizontality ≈ 0): reduced offset.  The visible area
+    //    is a compact patch below the camera, well within the cascade.
+    const float offset = nearExtent * std::max(horizontality, 0.7f);
+    const glm::vec3 center(
+        eye.x + fwdHoriz.x * offset,
+        eye.y + fwdHoriz.y * offset,
+        eye.z);
 
     return MexPoint3d(center.x, center.y, center.z);
 }
