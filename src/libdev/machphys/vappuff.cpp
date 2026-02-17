@@ -10,8 +10,6 @@
 #include "mathex/transf3d.hpp"
 #include "phys/rampacce.hpp"
 
-#include "render/device.hpp"
-#include "render/capable.hpp"
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/colour.hpp"
@@ -386,19 +384,14 @@ MachPhysVapourPuff::Materials MachPhysVapourPuff::createMaterials(size_t missile
 
     Materials materials;
 
-    // See if textured alpha is available
-    bool hasTexturedAlpha = RenDevice::current()->capabilities().supportsTextureAlpha();
-
     // Add all the materials to the static variable
     uint nTextures = data->trailTextures().size();
     ASSERT(nTextures > 0, "")
     materials.reserve(nTextures);
-    MATHEX_SCALAR reciprocal = 1.0 / MATHEX_SCALAR(nTextures);
 
     for (size_t i = 0; i != nTextures; ++i)
     {
-        // Use alpha to fade it if textured alpha not available
-        MATHEX_SCALAR alpha = (hasTexturedAlpha ? 1.0 : 1.0 - MATHEX_SCALAR(i) * reciprocal);
+        MATHEX_SCALAR alpha = 1.0;
         RenTexture texture = data->trailTextures()[i];
         addMaterial(&materials, texture, alpha, data->trailColour());
     }

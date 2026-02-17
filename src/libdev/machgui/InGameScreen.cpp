@@ -97,7 +97,6 @@
 #include "world4d/soundman.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
-#include "render/capable.hpp"
 #include "afx/resource.hpp"
 #include "base/IProgressReporter.hpp"
 #include "machgui/internal/strings.hpp"
@@ -3111,7 +3110,7 @@ void MachInGameScreen::initiateScreenShot()
 
     // It's quite possible that other high-quality rendering options could
     // be turned on, in addition to anti-aliasing.
-    if (device.capabilities().supportsEdgeAntiAliasing() && !device.antiAliasingOn())
+    if (!device.antiAliasingOn())
     {
         device.antiAliasingOn(true);
         screenShotToggledAA_ = true;

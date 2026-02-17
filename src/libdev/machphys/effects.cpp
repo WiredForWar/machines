@@ -18,8 +18,6 @@
 #include "render/material.hpp"
 #include "render/matvec.hpp"
 #include "render/texmgr.hpp"
-#include "render/device.hpp"
-#include "render/capable.hpp"
 #include "ctl/nbvector.hpp"
 
 // static
@@ -159,13 +157,7 @@ const W4dMaterialPlanPtr& MachPhysEffects::smokeMaterialPlan(SmokeColour smokeCo
 // static
 W4dMaterialPlan* MachPhysEffects::createSmokeMaterialPlan(const RenColour& colour)
 {
-    // Get capabilities
-    const RenCapabilities& capabilities = RenDevice::current()->capabilities();
-
-    // Make the colour translucent if alpha not available
     RenColour myColour(colour);
-    if (! capabilities.supportsTextureAlpha() && capabilities.supportsStippledAlpha())
-        myColour.a(0.5);
 
     // Create a collection of material vectors based on the argument colour
     const Textures& textures = smokeTextures();
@@ -284,15 +276,6 @@ const W4dMaterialPlanPtr& MachPhysEffects::flameBallMaterialPlan()
 // static
 W4dMaterialPlan* MachPhysEffects::createFlameBallMaterialPlan()
 {
-    // Get capabilities
-    const RenCapabilities& capabilities = RenDevice::current()->capabilities();
-
-    // Make the colour translucent if alpha not available
-    /*    RenColour myColour( colour );
-    if( not capabilities.supportsTextureAlpha() and
-        capabilities.supportsStippledAlpha() )
-        myColour.a( 0.5 );
-*/
     // Create a collection of material vectors based on the argument colour
     const Textures& textures = flameBallTextures();
     uint nTextures = textures.size();

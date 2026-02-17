@@ -151,6 +151,7 @@ void RenISavedArea::restoreTo(RenSurface* dest, const RenSurface& front, Ren::Re
 //////////////////////////////////////////////////////////////////////////
 RenIDisplay::RenIDisplay(SDL_Window* wnd)
     : pWnd_(wnd)
+    , supportsGammaCorrection_(true)
     , gammaCorrection_(1.0)
 {
     observers_.reserve(4);

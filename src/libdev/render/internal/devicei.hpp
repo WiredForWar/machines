@@ -29,7 +29,6 @@ class RenDevice;
 class RenCamera;
 class RenDisplay;
 class RenSurface;
-class RenCapabilities;
 class RenStats;
 class RenMaterial;
 class RenIIlluminator;
@@ -78,8 +77,6 @@ public:
     bool rendering2D() const;
     bool rendering3D() const;
     bool idleRendering() const;
-
-    const RenCapabilities& capabilities() const;
 
     bool hasSharedVideoMemory() const;
     void hasSharedVideoMemory(bool);
@@ -136,7 +133,6 @@ private:
     bool rendering2D_;
     bool rendering3D_;
     RenColour background_;
-    RenCapabilities* caps_;
     RenStats* stats_;
     RenIIlluminator* illuminator_;
     int surfacesMayBeLost_;
