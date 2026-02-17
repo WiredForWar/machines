@@ -33,7 +33,6 @@
 #include "render/texture.hpp"
 #include "render/surface.hpp"
 #include "render/surfmgr.hpp"
-#include "render/capable.hpp"
 #include "render/stats.hpp"
 #include "render/material.hpp"
 #include "render/mesh.hpp"
@@ -56,7 +55,6 @@
 #include "render/internal/nonmmx.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfmgri.hpp"
-#include "render/internal/capablei.hpp"
 #include "render/internal/drivi.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
@@ -136,7 +134,6 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->normalAlphaSorter_ = new RenIDepthPostSorter;
     pImpl_->alphaSorter_ = nullptr;
     pImpl_->doingBackground_ = false;
-    pImpl_->caps_ = nullptr;
     pImpl_->stats_ = new RenStats;
     pImpl_->fogOn_ = false;
     pImpl_->fogStart_ = 1;
@@ -496,10 +493,6 @@ RenDevice::~RenDevice()
     {
         delete pImpl_->normalAlphaSorter_;
     }
-    if (pImpl_->caps_)
-    {
-        delete pImpl_->caps_;
-    }
     if (pImpl_->stats_)
     {
         delete pImpl_->stats_;
@@ -606,25 +599,7 @@ void RenDevice::initializeDisplay()
 {
     PRE(pImpl_->display_);
 
-    // Check the capabilities of the device, so that we can selectively enable
-    // special effects such as alpha textures.
-    if (pImpl_->caps_)
-    {
-        delete pImpl_->caps_;
-    }
-    pImpl_->caps_ = new RenCapabilities(this, true);
-    RENDER_STREAM(*pImpl_->caps_);
-
-    spdlog::info("Initializing OpenGL context...");
-    // we have to copy the gamma correction into display in order to implement
-    // asserts in gammaCorrection() methods, it's ugly.
-    pImpl_->display_->supportsGammaCorrection(pImpl_->caps_->supportsGammaCorrection());
-
-    // We assume that some form of texture transparency is supported.  All
-    // reasonable games apps. require transparency.
-    ASSERT(
-        pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(),
-        runtime_error("No transparency supported by D3D."));
+    spdlog::info("Initializing display...");
 
     createViewport();
     RenDisplay::Mode mode = pImpl_->display_->currentMode();
@@ -861,12 +836,8 @@ void RenDevice::beginGeometryPass(bool clearBack)
 
     setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 
-    if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
-    {
-        const auto* internalCaps = pImpl_->caps_->internal();
-        recordCommand(Ren::Command::setPolygonOffsetFill(false));
-        recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(internalCaps->minZBias()), 1.0f));
-    }
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
 
     recordCommand(Ren::Command::setDepthTest(true));
     recordCommand(Ren::Command::setDepthMaskWritable(true));
@@ -954,14 +925,9 @@ void RenDevice::flush3DAlpha()
     pImpl_->coplanarSorter_->render();
 
     // The coplanar sorter may leave the zBias in an arbitrary state.
-    if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
-    {
-        const auto* internalCaps = pImpl_->caps_->internal();
-        recordCommand(Ren::Command::setPolygonOffsetFill(false));
-        recordCommand(Ren::Command::setPolygonOffset(internalCaps->minZBias(), 1.0f));
-    }
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
 
-    if (pImpl_->caps_->supportsFlatAlpha() || pImpl_->caps_->supportsTextureAlpha())
     {
         // The whole raison-d'etre of the alpha sorter is drawing the polygons
         // without the z-buffer.
@@ -1297,32 +1263,16 @@ void RenDevice::overrideClipping(double hither, double yon)
 
 void RenDevice::setFog(float start, float end, float dense, const RenColour& colour)
 {
-    ASSERT(implies(pImpl_->fogOn_, pImpl_->caps_->supportsFog()), logic_error("Unsupported fog has been switched on."));
-
-    if (pImpl_->caps_->internal()->supportsTableFog())
+    if (pImpl_->fogOn_)
     {
-        if (pImpl_->fogOn_)
-        {
-            fogParams_ = glm::vec3(start, end, dense);
-        }
-        else
-        {
-            fogParams_ = glm::vec3(0, 0, 0);
-        }
+        fogParams_ = glm::vec3(start, end, dense);
     }
-    else if (pImpl_->caps_->internal()->supportsVertexFog())
+    else
     {
-        if (pImpl_->fogOn_)
-        {
-            fogParams_ = glm::vec3(start, end, dense);
-        }
-        else
-        {
-            fogParams_ = glm::vec3(0, 0, 0);
-        }
+        fogParams_ = glm::vec3(0, 0, 0);
     }
 
-    if (pImpl_->fogOn_ && pImpl_->caps_->supportsFog())
+    if (pImpl_->fogOn_)
     {
         // The fog colour needs to have the camera's filter applied to it.
         RenColour filteredCol = colour;
@@ -1354,11 +1304,8 @@ void RenDevice::fogOn(float start, float end, float density)
     pImpl_->fogEnd_ = end;
     pImpl_->fogDensity_ = density;
 
-    if (pImpl_->caps_->supportsFog())
-    {
-        pImpl_->fogOn_ = true;
-        setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
-    }
+    pImpl_->fogOn_ = true;
+    setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 }
 
 void RenDevice::fogOff()
@@ -1370,12 +1317,9 @@ void RenDevice::fogOff()
 
 void RenDevice::fogOn()
 {
-    if (pImpl_->caps_->supportsFog())
-    {
-        pImpl_->fogOn_ = true;
-        fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
-        standardUniformsDirty_ = true;
-    }
+    pImpl_->fogOn_ = true;
+    fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
+    standardUniformsDirty_ = true;
 }
 
 void RenDevice::disableFog()
@@ -1392,29 +1336,22 @@ void RenDevice::disableFog()
 
 void RenDevice::overrideFog(float start, float end, float density)
 {
-    if (pImpl_->caps_->supportsFog())
-        setFog(start, end, density, fogColour());
+    setFog(start, end, density, fogColour());
 }
 
 void RenDevice::overrideFog(float start, float end, float density, const RenColour& col)
 {
-    if (pImpl_->caps_->supportsFog())
-        setFog(start, end, density, col);
+    setFog(start, end, density, col);
 }
 
 void RenDevice::restoreFog()
 {
     pImpl_->fogOn_ = true;
-
-    if (pImpl_->caps_->supportsFog())
-    {
-        setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
-    }
+    setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 }
 
 bool RenDevice::isFogOn() const
 {
-    ASSERT(implies(pImpl_->fogOn_, pImpl_->caps_->supportsFog()), logic_error("Unsupported fog has been switched on."));
     return pImpl_->fogOn_;
 }
 
@@ -1869,9 +1806,7 @@ bool RenDevice::activate()
 bool RenDevice::setHighestAllowedDisplayMode()
 {
     PRE(pImpl_->display_);
-    PRE(pImpl_->caps_);
-
-    return pImpl_->display_->setHighestAllowedMode(pImpl_->caps_->maxAvailableDisplayMemoryAfterTextures());
+    return pImpl_->display_->setHighestAllowedMode(256000000);
 }
 
 MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
@@ -2206,12 +2141,6 @@ bool RenDevice::rendering3D() const
 bool RenDevice::idleRendering() const
 {
     return true; // rendering() and not rendering3D() and not rendering2D();
-}
-
-const RenCapabilities& RenDevice::capabilities() const
-{
-    PRE(pImpl_->caps_); // This is checked by the class invariant.
-    return *pImpl_->caps_;
 }
 
 RenStats* RenDevice::statistics()

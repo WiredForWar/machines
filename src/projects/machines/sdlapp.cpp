@@ -20,7 +20,6 @@
 #include "render/TextOptions.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
-#include "render/capable.hpp"
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/texset.hpp"
@@ -448,20 +447,9 @@ bool SDLApp::clientStartup()
     // Set up the texture search path.
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
 
-    // We set different search paths depending on the amount
-    // of video memory available for texture
-    //  bool doLoad2MBytesTexture = !manager_->pDevice()->capabilities().supports4MBytesTextureSet();
-    bool doLoad2MBytesTexture = false;
     // Check to see if texture4 directory even exists. The user may have done a minimum
-    // install in which case texture4 directory will not be available
-    if (! doLoad2MBytesTexture)
-    {
-        SysPathName texture4Dir("models/texture4");
-        if (! texture4Dir.existsAsDirectory())
-        {
-            doLoad2MBytesTexture = true;
-        }
-    }
+    // install in which case texture4 directory will not be available.
+    bool doLoad2MBytesTexture = !SysPathName("models/texture4").existsAsDirectory();
 
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.40, 0.71);
