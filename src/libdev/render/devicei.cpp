@@ -11,7 +11,6 @@
 #include "render/display.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"
-#include "render/drivsel.hpp"
 #include "render/material.hpp"
 
 #include "render/internal/IRenderBackend.hpp"
@@ -30,7 +29,6 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     : RenIDisplayModeObserver(dis)
     , parent_(parent)
     , alphaBlendingEnabled_(false)
-    , driverSelector_(nullptr)
     , materialFogMultiplier_(1.0)
     , debugX_(0)
     , debugY_(0)
@@ -44,12 +42,10 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     PRE(parent);
     frameTimer_.pause();
     frameTimer_.time(0);
-    driverSelector_ = new RenDriverSelector(dis);
 }
 
 RenIDeviceImpl::~RenIDeviceImpl()
 {
-    delete driverSelector_;
 }
 
 // virtual

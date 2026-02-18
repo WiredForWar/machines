@@ -12,7 +12,6 @@
 #include "system/pathname.hpp"
 #include "render/display.hpp"
 #include "render/render.hpp"
-#include "render/drivsel.hpp"
 #include "render/surface.hpp"
 #include "render/internal/displayi.hpp"
 

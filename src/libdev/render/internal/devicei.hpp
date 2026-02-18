@@ -35,8 +35,6 @@ class RenIIlluminator;
 class RenIViewportMapping;
 class RenIDepthPostSorter;
 class RenIPriorityPostSorter;
-class RenDriverSelector;
-
 namespace Ren
 {
 class IRenderBackend;
@@ -149,7 +147,6 @@ private:
     // Special support for rendering background objects.
     bool doingBackground_;
     RenIDepthPostSorter* normalAlphaSorter_;
-    RenDriverSelector* driverSelector_;
 
     // Any stuff streamed into here is printed after the 3D scene is drawn.
     // The statistics output is printed first.

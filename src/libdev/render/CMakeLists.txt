@@ -38,12 +38,6 @@ set(RENDER_SOURCES
     display.hpp
     displayi.cpp
     dlyspin.cpp
-    driv.cpp
-    driver.cpp
-    driv.hpp
-    drivi.cpp
-    drivsel.cpp
-    drivsel.hpp
     envirnmt.cpp
     envirnmt.hpp
     fixpt.cpp
@@ -79,8 +73,6 @@ set(RENDER_SOURCES
     internal/devicei.ipp
     internal/displayi.hpp
     internal/dlyspin.hpp
-    internal/driver.hpp
-    internal/drivi.hpp
     internal/fixpt.hpp
     internal/fixptvec.hpp
     internal/fn_stars.hpp
