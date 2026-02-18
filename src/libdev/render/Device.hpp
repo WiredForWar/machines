@@ -68,10 +68,14 @@ public:
     // PRE(rendering2D());
     void end2D();
 
-    // Sets the rendering parameters appropriately for the 3D world.
+    // Sets up the 3D rendering context (matrices, stats, illuminator).
+    // Shadow passes may be issued after this call and before beginGeometryPass().
     // PRE(idleRendering());
     // POST(rendering3D());
-    void start3D(bool clearBack = true);
+    void start3D();
+    // Opens the main geometry render pass (binds FBO, clears, sets fog/depth/blend).
+    // PRE(rendering3D());
+    void beginGeometryPass(bool clearBack = true);
     // PRE(rendering3D());
     void end3D();
 

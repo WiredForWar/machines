@@ -292,11 +292,12 @@ void W4dSceneManager::render()
     currentCamera_->adaptToEnvironment(environment());
     //  device_->out() << "Distance far clipping plane: " << currentCamera()->yonClipDistance() << " m" << std::endl;
 
-    device_->start3D(clearBg_);
+    device_->start3D();
 
-    // Shadow depth pass: render scene from the light's perspective into the shadow map.
-    // Must happen after start3D() (rendering state is initialised) but before the main
-    // geometry domainRender() so that the shadow map is ready for sampling.
+    // Shadow depth pass: render scene from the light's perspective into the
+    // shadow map.  Runs after start3D() (rendering context is ready) but
+    // before beginGeometryPass() so the shadow maps are complete before the
+    // main geometry pass samples them.
     const bool gpuLighting = Config::gfxLightingMode.get() != LightingMode::Legacy;
     const bool wantShadows = gpuLighting && Config::gfxShadowQuality.get() != ShadowQuality::Static;
     if (wantShadows)
@@ -373,6 +374,8 @@ void W4dSceneManager::render()
             }
         }
     }
+
+    device_->beginGeometryPass(clearBg_);
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
     currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
