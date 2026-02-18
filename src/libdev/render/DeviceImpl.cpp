@@ -55,7 +55,7 @@ void RenIDeviceImpl::prepareForModeChange(const RenDisplay::Mode&, const RenDisp
     // Ensure that any front and back surfaces release their COM ptrs.
     const RenIDisplay& dis = display_->displayImpl();
 
-    RENDER_STREAM("Releasing D3D stuff owned by RenDevice.\n");
+    RENDER_STREAM("Releasing render resources owned by RenDevice.\n");
     delete surfBackBuf_;
     surfBackBuf_ = nullptr;
     delete surfFrontBuf_;
