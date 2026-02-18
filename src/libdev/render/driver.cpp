@@ -8,7 +8,7 @@
 #include "base/diag.hpp"
 
 #include "render/display.hpp"
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
+
 #include <algorithm>
 
 RenIDriverInfo::~RenIDriverInfo()

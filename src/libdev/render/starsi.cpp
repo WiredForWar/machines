@@ -5,8 +5,6 @@
 
 ***********************************************************/
 
-// #include "render/internal/ren_pch.hpp"    // NB: pre-compiled header must come 1st
-
 #include "render/render.hpp"
 #include "render/colour.hpp"
 #include "render/camera.hpp"

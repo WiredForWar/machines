@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 #include "render/internal/illumine.hpp"
 
 #include "render/light.hpp"

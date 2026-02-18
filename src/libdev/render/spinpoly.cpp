@@ -3,8 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp" //  NB: this must come first.
-
 #include <cmath>
 #include "mathex/vec2.hpp"
 #include "mathex/tri2d.hpp"

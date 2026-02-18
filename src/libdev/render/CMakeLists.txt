@@ -95,7 +95,6 @@ set(RENDER_SOURCES
     internal/nonmmx.hpp
     internal/polysord.hpp
     internal/polysorp.hpp
-    internal/ren_pch.hpp
     internal/starsi.hpp
     internal/starsi.ipp
     internal/surfbody.hpp

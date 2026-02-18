@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1999. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 #include "render/internal/ttfpolyi.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "mathex/vec2.hpp"

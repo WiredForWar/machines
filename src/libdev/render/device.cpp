@@ -6,8 +6,8 @@
 // TODO: This god class needs refactoring.
 #include "render/device.hpp"
 #include "render/TextOptions.hpp"
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 
+#include <array>
 #include <cstdio>
 #include <iostream>
 #include <iomanip>

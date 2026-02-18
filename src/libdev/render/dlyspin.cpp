@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 #include "mathex/point3d.hpp"
 #include "render/internal/dlyspin.hpp"
 #include "render/internal/glmath.hpp"

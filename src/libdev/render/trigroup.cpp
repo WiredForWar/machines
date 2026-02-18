@@ -3,7 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 #include "mathex/point3d.hpp" // not used: only needed for templates
 #include "render/texture.hpp"
 #include "render/internal/trigroup.hpp"
