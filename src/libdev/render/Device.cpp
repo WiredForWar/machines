@@ -1593,6 +1593,7 @@ void RenDevice::displayImage(const SysPathName& pathName)
 
     Ren::Painter painter(backBuf);
     painter.blit(texture);
+    flushCommandBuffer();
     pImpl_->display_->flipBuffers();
 }
 
