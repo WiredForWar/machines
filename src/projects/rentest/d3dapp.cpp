@@ -56,8 +56,6 @@
 #include "render/envirnmt.hpp"
 #include "render/stars.hpp"
 #include "render/stats.hpp"
-#include "render/drivsel.hpp"
-
 #include "afx/resource.hpp"
 #include "afx/castfns.hpp"
 
@@ -1696,29 +1694,6 @@ bool D3DApp::clientStartup()
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);
 
     Ren::initialise();
-
-    // get and set the video driver
-    char* ddrawDriver = getenv("cb_ddrawdriver");
-    if (ddrawDriver)
-    {
-        SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
-        RenDriverSelector* driverSelector;
-        driverSelector = new RenDriverSelector();
-
-        bool driverFound = false;
-        for (RenDriverSelector::RenDrivers::const_iterator dDrawIt = driverSelector->dDrawDrivers().begin();
-             dDrawIt != driverSelector->dDrawDrivers().end() and not driverFound;
-             ++dDrawIt)
-        {
-            if ((*dDrawIt)->name() == ddrawDriver)
-            {
-                driverFound = true;
-                driverSelector->useDDrawDriver((*dDrawIt));
-                driverSelector->updateDriverRegistries();
-            }
-        }
-        delete driverSelector;
-    }
 
     display_ = new RenDisplay(window());
 
