@@ -53,7 +53,6 @@
 #include "render/internal/matmgr.hpp"
 #include "render/internal/illumine.hpp"
 #include "render/internal/nonmmx.hpp"
-#include "render/internal/mmx.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfmgri.hpp"
 #include "render/internal/capablei.hpp"

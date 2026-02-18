@@ -91,7 +91,6 @@ set(RENDER_SOURCES
     internal/meshfact.hpp
     internal/meshid.hpp
     internal/meshload.hpp
-    internal/mmx.hpp
     internal/modeobsv.hpp
     internal/nonmmx.hpp
     internal/polysord.hpp
@@ -134,7 +133,6 @@ set(RENDER_SOURCES
     meshinst.cpp
     meshinst.hpp
     meshload.cpp
-    mmx.cpp
     modeobsv.cpp
     node.cpp
     node.hpp
