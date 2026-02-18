@@ -36,6 +36,7 @@ struct RenderPassDesc
 {
     AttachmentDesc colorAttachment{};
     AttachmentDesc depthAttachment{};
+    bool hasColorAttachment{true};
     bool hasDepthAttachment{};
 };
 

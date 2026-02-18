@@ -540,6 +540,30 @@ void RenderBackendGL::bindFramebuffer(FramebufferId id)
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
+void RenderBackendGL::framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+
+    const GLuint texHandle = depthTexture.isValid() ? depthTexture.value() : 0;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texHandle, 0);
+
+    // Depth-only FBO: no color attachment
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+
+    if (texHandle != 0)
+    {
+        const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
+        {
+            spdlog::error("Depth-only framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        }
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void RenderBackendGL::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
@@ -1008,7 +1032,7 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& comman
     // Apply load operations
     GLbitfield clearMask{};
 
-    if (pass.desc.colorAttachment.loadOp == LoadOp::Clear)
+    if (pass.desc.hasColorAttachment && pass.desc.colorAttachment.loadOp == LoadOp::Clear)
     {
         if (command.overrideClearColor)
             glClearColor(command.clearR, command.clearG, command.clearB, command.clearA);
