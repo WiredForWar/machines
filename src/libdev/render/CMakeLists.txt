@@ -1,6 +1,8 @@
 
 set(RENDER_SOURCES
     Alignment.hpp
+    BmpFont.cpp
+    BmpFont.hpp
     Font.cpp
     Font.hpp
     FontsManager.cpp
@@ -56,6 +58,7 @@ set(RENDER_SOURCES
     inlight.cpp
     inpoints.cpp
     internal/BackendTypes.hpp
+    internal/BmpFontCore.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
     internal/alphagrp.hpp

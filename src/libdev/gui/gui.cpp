@@ -1,6 +1,6 @@
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
-#include "gui/font.hpp"
+#include "render/BmpFont.hpp"
 #include "render/Painter.hpp"
 #include "system/pathname.hpp"
 #include "system/vfs.hpp"
@@ -283,9 +283,9 @@ void Gui::setUiScaleFactor(MATHEX_SCALAR scale)
 
 /* //////////////////////////////////////////////////////////////// */
 
-static std::vector<GuiBmpFont>& getFontCache()
+static std::vector<Ren::BmpFont>& getFontCache()
 {
-    static std::vector<GuiBmpFont> fonts;
+    static std::vector<Ren::BmpFont> fonts;
     static bool firstTime = true;
     if (firstTime)
     {
@@ -295,7 +295,7 @@ static std::vector<GuiBmpFont>& getFontCache()
     return fonts;
 }
 
-GuiBmpFont Gui::getFont(const SysPathName& fontPath)
+Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
 {
     auto& fonts = getFontCache();
     size_t spacing = 1 * Gui::uiScaleFactor();
@@ -305,16 +305,16 @@ GuiBmpFont Gui::getFont(const SysPathName& fontPath)
     {
         if (cached.fontPath() == fontPath)
         {
-            GuiBmpFont font(cached);
-            font.fontType(GuiBmpFont::PROPORTIONAL);
+            Ren::BmpFont font(cached);
+            font.fontType(Ren::BmpFont::PROPORTIONAL);
             font.spaceCharWidth(spaceCharWidth);
             font.spacing(spacing);
             return font;
         }
     }
 
-    GuiBmpFont newFont(fontPath);
-    newFont.fontType(GuiBmpFont::PROPORTIONAL);
+    Ren::BmpFont newFont(fontPath);
+    newFont.fontType(Ren::BmpFont::PROPORTIONAL);
     newFont.spaceCharWidth(spaceCharWidth);
     newFont.spacing(spacing);
     fonts.push_back(newFont);

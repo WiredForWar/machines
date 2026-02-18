@@ -12,7 +12,6 @@
 #include "render/TextOptions.hpp"
 
 using strings = std::vector<std::string>;
-class GuiBmpFont;
 
 class MachGuiMenuText : public GuiDisplayable
 // Canonical form revoked

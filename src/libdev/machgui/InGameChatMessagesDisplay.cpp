@@ -97,8 +97,8 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
              iter != MachGuiInGameChatMessages::instance().messages().end();
              ++iter)
         {
-            shadowFont_.drawText(&textBmp_, *iter, Gui::Coord(1, 1 + (fontHeight * index)), width());
-            font_.drawText(&textBmp_, *iter, Gui::Coord(0, fontHeight * index), width());
+            shadowFont_.drawText(&textBmp_, *iter, Ren::Point(1, 1 + (fontHeight * index)), width());
+            font_.drawText(&textBmp_, *iter, Ren::Point(0, fontHeight * index), width());
             ++index;
         }
     }
