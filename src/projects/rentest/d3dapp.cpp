@@ -2006,7 +2006,8 @@ void D3DApp::loopCycle()
 
     if (device_->startFrame())
     {
-        device_->start3D(clearBack_);
+        device_->start3D();
+        device_->beginGeometryPass(clearBack_);
 
         // Draw the models.
         for (int i = 0; i != models_.size(); ++i)

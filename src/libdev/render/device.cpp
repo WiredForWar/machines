@@ -708,11 +708,10 @@ void RenDevice::end2D()
     RENDER_STREAM('}' << std::endl);
 }
 
-void RenDevice::start3D(bool clearBack)
+void RenDevice::start3D()
 {
     // A camera must have been specified.
     PRE(currentCamera());
-    //    PRE(device_);
     PRE(idleRendering());
 
     // Clear out any left-over unused material bodies, from eg a persistent load
@@ -734,6 +733,13 @@ void RenDevice::start3D(bool clearBack)
 
     // Viewpoint and/or camera parameters may have changed.
     updateMatrices();
+
+    POST(rendering3D());
+}
+
+void RenDevice::beginGeometryPass(bool clearBack)
+{
+    PRE(rendering3D());
 
     // The background colour needs to have the camera's filter applied to it.
     RenColour bgCol = pImpl_->background_;
@@ -768,8 +774,6 @@ void RenDevice::start3D(bool clearBack)
 
     // Enable alpha sorting.
     pImpl_->alphaSorter_ = pImpl_->normalAlphaSorter_;
-
-    POST(rendering3D());
 }
 
 void RenDevice::startBackground(double yon)
