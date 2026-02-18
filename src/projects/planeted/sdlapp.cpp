@@ -83,6 +83,7 @@ public:
         frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
+        RenDevice::current()->flushCommandBuffer();
         RenDevice::current()->display()->flipBuffers();
         frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
