@@ -15,6 +15,7 @@
 #include "render/DriverSelector.hpp"
 #include "render/Surface.hpp"
 #include "render/internal/DisplayImpl.hpp"
+#include "render/internal/DisplayImpl.hpp"
 
 #include <SDL3/SDL.h>
 
