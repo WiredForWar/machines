@@ -18,7 +18,7 @@ MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens
     , pRootParent_(pRootParent)
     , pStartupScreens_(pStartupScreens)
 {
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
     // Work out how may lines we can display in the chat window
     numLines() = height() / (font.height() + 1.0 /*spacing*/);
 
@@ -80,7 +80,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t)
 // virtual
 void MachGuiChatWindow::doDisplay()
 {
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
 
     size_t startY = absoluteBoundary().maxCorner().y();
     size_t loop = linesOfText().size();
@@ -97,7 +97,7 @@ void MachGuiChatWindow::doDisplay()
 // static
 void MachGuiChatWindow::addText(const std::string& text)
 {
-    const GuiBmpFont& font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    const GuiBmpFont& font = Gui::getFont(MachGui::Menu::smallFontLight());
     linesOfText() = MachGuiMenuText::chopUpText(text, chatWidth(), font);
 
     while (linesOfText().size() > numLines())

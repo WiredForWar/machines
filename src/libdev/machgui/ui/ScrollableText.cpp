@@ -23,7 +23,7 @@ MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui:
         pParent,
         box,
         columnWidth,
-        GuiBmpFont::getFont(fontName).height() + 1 * MachGui::menuScaleFactor(),
+        Gui::getFont(fontName).height() + 1 * MachGui::menuScaleFactor(),
         1)
 {
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
@@ -34,7 +34,7 @@ void MachGuiScrollableText::setText(const ResolvedUiString& text)
 {
     deleteAllChildren();
 
-    strings linesOfText = MachGuiMenuText::chopUpText(text, width(), GuiBmpFont::getFont(fontName));
+    strings linesOfText = MachGuiMenuText::chopUpText(text, width(), Gui::getFont(fontName));
 
     for (auto iter = linesOfText.begin(); iter != linesOfText.end(); ++iter)
     {

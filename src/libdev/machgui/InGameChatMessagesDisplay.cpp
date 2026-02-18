@@ -30,8 +30,8 @@ struct MachGuiInGameChatMessagesDisplayImpl
 };
 
 MachGuiInGameChatMessagesDisplayImpl::MachGuiInGameChatMessagesDisplayImpl()
-    : font_(GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp")))
-    , shadowFont_(GuiBmpFont::getFont(MachGui::getScaledImagePath("gui/menu/promdfnt.bmp")))
+    : font_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp")))
+    , shadowFont_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promdfnt.bmp")))
     , forceUpdate_(true)
     , pPassEventsTo_(nullptr)
 {

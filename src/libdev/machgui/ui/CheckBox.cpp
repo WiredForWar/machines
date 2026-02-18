@@ -26,7 +26,7 @@ MachGuiCheckBox::MachGuiCheckBox(
         box)
     , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
-    , font_(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()))
+    , font_(Gui::getFont(MachGui::Menu::smallFontLight()))
     , checkBmp_(MachGui::getScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
     , uncheckBmp_(MachGui::getScaledImage("gui/menu/uncheck.bmp", MachGui::menuScaleFactor()))
     , checkFocusBmp_(MachGui::getScaledImage("gui/menu/checkf.bmp", MachGui::menuScaleFactor()))

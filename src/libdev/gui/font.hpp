@@ -37,10 +37,7 @@ public:
         FIXED_SPACE
     };
 
-    static GuiBmpFont
-    getFont(const SysPathName& fontPath, FontType = PROPORTIONAL);
-
-    GuiBmpFont(); // Default constructor to satisfy ctl_vector. DO NOT USE!!!
+    GuiBmpFont(); // Default constructor to satisfy std::vector. DO NOT USE!!!
     GuiBmpFont(const GuiBmpFont&);
     GuiBmpFont& operator=(const GuiBmpFont&);
     ~GuiBmpFont();
@@ -85,8 +82,7 @@ public:
     // Return the display width of "text" without actually rendering the text.
     int horizontalAdvance(const std::string_view& text) const;
 
-    // Free's up all the memory used by the cached fonts.
-    static void releaseFontMemory();
+    const SysPathName& fontPath() const;
 
     static char redCharIndex();
     static char greenCharIndex();
@@ -114,6 +110,7 @@ protected:
 private:
     void CLASS_INVARIANT;
 
+    friend GuiBmpFont Gui::getFont(const SysPathName&);
     friend std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t);
 
     GuiBmpFontCore* pFontCore_ = nullptr;

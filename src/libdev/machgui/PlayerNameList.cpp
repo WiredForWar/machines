@@ -69,7 +69,7 @@ void MachGuiPlayerNameList::names(
     const std::string& player4)
 {
 
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
 
     uint spacing = font.height() + 2 * MachGui::menuScaleFactor();
     const uint maxWidth = (PNL_BOX_WIDTH - (PNL_INDENT * 2) - 10) * MachGui::menuScaleFactor();
@@ -134,7 +134,7 @@ void MachGuiPlayerNameList::CLASS_INVARIANT
 // static
 std::string MachGuiPlayerNameList::truncate(const std::string& name, uint maxWidth)
 {
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
     std::string truncatedName = name;
 
     const uint maxChars = maxWidth / font.maxCharWidth() + font.spacing();

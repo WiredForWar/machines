@@ -334,7 +334,7 @@ MachGuiDropDownList* MachGuiDropDownListBoxCreator::createDropDownList(
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -342,7 +342,7 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getFont()
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontWhite());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontWhite());
 
     return bmpFont;
 }
@@ -350,7 +350,7 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }

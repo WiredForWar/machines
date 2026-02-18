@@ -1,11 +1,13 @@
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
+#include "gui/font.hpp"
 #include "render/Painter.hpp"
 #include "system/pathname.hpp"
 #include "system/vfs.hpp"
 
 #include <cassert>
 #include <stdio.h>
+#include <vector>
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -277,6 +279,51 @@ void Gui::setUiScaleFactor(MATHEX_SCALAR scale)
 {
     s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
     s_uiScaleFactor = scale;
+}
+
+/* //////////////////////////////////////////////////////////////// */
+
+static std::vector<GuiBmpFont>& getFontCache()
+{
+    static std::vector<GuiBmpFont> fonts;
+    static bool firstTime = true;
+    if (firstTime)
+    {
+        firstTime = false;
+        fonts.reserve(10);
+    }
+    return fonts;
+}
+
+GuiBmpFont Gui::getFont(const SysPathName& fontPath)
+{
+    auto& fonts = getFontCache();
+    size_t spacing = 1 * Gui::uiScaleFactor();
+    size_t spaceCharWidth = 5 * Gui::uiScaleFactor();
+
+    for (auto& cached : fonts)
+    {
+        if (cached.fontPath() == fontPath)
+        {
+            GuiBmpFont font(cached);
+            font.fontType(GuiBmpFont::PROPORTIONAL);
+            font.spaceCharWidth(spaceCharWidth);
+            font.spacing(spacing);
+            return font;
+        }
+    }
+
+    GuiBmpFont newFont(fontPath);
+    newFont.fontType(GuiBmpFont::PROPORTIONAL);
+    newFont.spaceCharWidth(spaceCharWidth);
+    newFont.spacing(spacing);
+    fonts.push_back(newFont);
+    return newFont;
+}
+
+void Gui::releaseFontMemory()
+{
+    getFontCache().clear();
 }
 
 /* End **************************************************************/

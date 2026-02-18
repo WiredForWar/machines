@@ -87,7 +87,7 @@ size_t MachGuiSingleSelectionListBoxItem::reqHeight()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -95,7 +95,7 @@ GuiBmpFont MachGuiSingleSelectionListBoxItem::getFont()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }
@@ -103,7 +103,7 @@ GuiBmpFont MachGuiSingleSelectionListBoxItem::getHighlightFont()
 // static
 GuiBmpFont MachGuiSingleSelectionListBoxItem::getUnderlineFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
 
     bmpFont.underline(true);
 

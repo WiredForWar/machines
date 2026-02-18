@@ -220,7 +220,7 @@ MachGuiMenuText::MachGuiMenuText(
     , bitmapFontPath_(bitmapFontPath)
     , alignment_(alignment)
 {
-    const GuiBmpFont &font = GuiBmpFont::getFont(bitmapFontPath_);
+    const GuiBmpFont &font = Gui::getFont(bitmapFontPath_);
     fontHeight_ = font.height();
 
     strings_ = chopUpText(str, width(), font);
@@ -322,7 +322,7 @@ void MachGuiMenuText::doDisplay()
     }
     else
     {
-        const GuiBmpFont font(GuiBmpFont::getFont(bitmapFontPath_));
+        const GuiBmpFont font(Gui::getFont(bitmapFontPath_));
 
         auto textWidthCb = [&font](const std::string& text) -> int { return font.horizontalAdvance(text); };
         auto drawTextCb

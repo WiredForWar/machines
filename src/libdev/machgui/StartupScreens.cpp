@@ -2632,7 +2632,7 @@ void MachGuiStartupScreens::playSmackerAnimations()
 // static
 void MachGuiStartupScreens::releaseCachedMemory()
 {
-    GuiBmpFont::releaseFontMemory();
+    Gui::releaseFontMemory();
     MachGuiPlayerColour::releaseBmpMemory();
     MachGui::releaseMenuBmpMemory();
     MachGuiDatabase::instance().clearAllTextData();

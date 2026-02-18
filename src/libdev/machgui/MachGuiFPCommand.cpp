@@ -31,7 +31,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
         if (showText)
         {
             // RenSurface drawText doesn't work... :o
-            auto font = GuiBmpFont { GuiBmpFont::getFont(Gui::getScaledImagePath("gui/menu/largyfnt.bmp")) };
+            auto font = GuiBmpFont { Gui::getFont(Gui::getScaledImagePath("gui/menu/largyfnt.bmp")) };
             font.drawText(&surfaceNUM, std::to_string(NUM), Gui::Coord(0, 0), 32);
         }
 

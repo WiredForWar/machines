@@ -40,7 +40,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
     const Ren::Font& headingFont = MachGui::Menu::font();
-    const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    const GuiBmpFont textFont = Gui::getFont(MachGui::Menu::smallFontLight());
     const uint headingFontHeight = headingFont.height() + MachGui::menuScaleFactor() * 2;
     const uint textFontHeight = textFont.height() + MachGui::menuScaleFactor() * 1;
     const uint verticalSpacing = textFontHeight;
@@ -62,7 +62,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
 
 
     constexpr MachGui::KeysDisplayFormat displayFormat = MachGui::KeysDisplayFormat::Compact;
-    const GuiBmpFont actionFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    const GuiBmpFont actionFont = Gui::getFont(MachGui::Menu::smallFontLight());
     const std::vector<std::string> categoryNames = inputRegistry->getCategories();
     for (const std::string& categoryName : inputRegistry->getCategories())
     {

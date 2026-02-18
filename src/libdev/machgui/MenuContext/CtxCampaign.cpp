@@ -461,7 +461,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
             //          totalScore = itoa( nTotalScore, buffer, 10 );
         }
 
-        GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
+        GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
 
         Gui::Box scenarioTextBox(
             Gui::Coord(CURRENTSTATUS_MINX, CURRENTSTATUS_MINY),

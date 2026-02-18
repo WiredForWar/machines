@@ -189,7 +189,7 @@ MachGuiCtxImReady::MachGuiCtxImReady(MachGuiStartupScreens* pStartupScreens)
     // Chat window...
     pChatWindow_ = new MachGuiChatWindow(pStartupScreens, pStartupScreens, Gui::Box(31, 113, 345, 322) * MachGui::menuScaleFactor());
 
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
 
     pSingleLineEditBox_ = new MachGuiSingleLineEditBox(
         pStartupScreens,

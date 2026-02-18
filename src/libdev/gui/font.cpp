@@ -91,37 +91,9 @@ bool GuiBmpFontCore::endOfChar(int x)
     return colour.operator==(white);
 }
 
-// static
-// GuiBmpFonts& GuiBmpFont::getFontCache()
-//{
-//   static GuiBmpFonts fonts;
-//   return fonts;
-// }
-
-// This should be a private static member function as above but Watcoms crappy compiler
-// can't handle the template code.
-using GuiBmpFonts = ctl_vector<GuiBmpFont>;
-
-GuiBmpFonts& getFontCache()
+const SysPathName& GuiBmpFont::fontPath() const
 {
-    static GuiBmpFonts fonts;
-    static bool firstTime = true;
-    if (firstTime)
-    {
-        firstTime = false;
-        fonts.reserve(10);
-    }
-
-    return fonts;
-}
-
-// static
-void GuiBmpFont::releaseFontMemory()
-{
-    GuiBmpFonts& fonts = getFontCache();
-    // Remove all fonts from the cache. Assuming no other code is holding onto the
-    // font core memory then this will be released.
-    fonts.erase(fonts.begin(), fonts.end());
+    return pFontCore_->fontPath_;
 }
 
 char GuiBmpFont::arrowUpIndex()
@@ -187,35 +159,6 @@ char GuiBmpFont::blueCharIndex()
 char GuiBmpFont::yellowCharIndex()
 {
     return 0xAC;
-}
-
-// static
-GuiBmpFont GuiBmpFont::getFont(const SysPathName& fontPath, FontType fontType /*= PROPORTIONAL*/)
-{
-    typedef ctl_vector<GuiBmpFont> GuiBmpFonts;
-
-    GuiBmpFonts& fonts = getFontCache();
-    size_t spacing = 1 * Gui::uiScaleFactor();
-    size_t spaceCharWidth = 5 * Gui::uiScaleFactor();
-
-    for (GuiBmpFonts::iterator iter = fonts.begin(); iter != fonts.end(); ++iter)
-    {
-        if ((*iter).pFontCore_->fontPath_ == fontPath)
-        {
-            GuiBmpFont font(*iter);
-            font.fontType(fontType);
-            font.spaceCharWidth(spaceCharWidth);
-            font.spacing(spacing);
-            return font;
-        }
-    }
-
-    GuiBmpFont newFont(fontPath);
-    newFont.fontType(fontType);
-    newFont.spaceCharWidth(spaceCharWidth);
-    newFont.spacing(spacing);
-    fonts.push_back(newFont);
-    return newFont;
 }
 
 GuiBmpFont::GuiBmpFont()
