@@ -98,7 +98,6 @@ struct PostProcessUniforms
 {
     int sceneTextureSampler{};
     float exposure{};
-    float gamma{1.0f};
 };
 
 } // namespace Ren

@@ -1007,7 +1007,6 @@ void RenDevice::blitPostProcess()
         Ren::PostProcessUniforms ppu;
         ppu.sceneTextureSampler = 0;
         ppu.exposure = 1.0f;
-        ppu.gamma = static_cast<float>(pImpl_->display_->gammaCorrection());
         recordCommand(Ren::Command::setPostProcessUniforms(std::move(ppu)));
     }
 
