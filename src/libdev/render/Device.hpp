@@ -43,10 +43,9 @@ class IRenderBackend;
 class RenDevice final
 {
 public:
-    // Selects a D3D driver; uses the display to create front and back
-    // buffers; loads a palette, if necessary; possibly changes the display
-    // resolution; and generally sets everything up for 3D rendering.
-    // Calls useDevice(this).
+    // Uses the display to create front and back buffers; possibly changes
+    // the display resolution; and generally sets everything up for 3D
+    // rendering. Calls useDevice(this).
     // PRE(Ren::initialised());
     // PRE(MexCoordSystem::instance().isSet());
     RenDevice(RenDisplay*);
@@ -175,7 +174,7 @@ public:
     void enableLighting();
     bool lightingEnabled() const;
 
-    // Although there can be more than one Direct3D device in existance,
+    // Although there can be more than one render device in existence,
     // we should never need two simultaneously.  The client is expected to
     // set a current device before using any other rendering functionality.
     // N.B. a device *must* be set before loading meshes or textures.
