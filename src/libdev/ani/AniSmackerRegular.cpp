@@ -1,4 +1,5 @@
 #include "ani/AniSmackerRegular.hpp"
+#include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/Painter.hpp"
 #include "recorder/recorder.hpp"
@@ -240,6 +241,7 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         if (useFrontBuffer())
         {
             unpackBufferToSurface(pDevice->frontSurface(), surface_);
+            RenDevice::current()->flushCommandBuffer();
             pDevice->display()->flipBuffers();
         }
         else
