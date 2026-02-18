@@ -106,7 +106,7 @@ void MachGuiStatisticsBar::draw(bool update)
 void MachGuiStatisticsBar::showStatistic()
 {
     showStatistic_ = true;
-    GuiBmpFont font = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont font = Gui::getFont(MachGui::Menu::smallFontLight());
     uint statsBarWidth = 0;
 
     if (stat() >= 0)

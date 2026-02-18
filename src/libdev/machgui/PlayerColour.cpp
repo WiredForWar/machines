@@ -292,7 +292,7 @@ size_t MachGuiPlayerListItem::reqHeight()
 // static
 GuiBmpFont MachGuiPlayerListItem::getFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontLight());
 
     return bmpFont;
 }
@@ -300,7 +300,7 @@ GuiBmpFont MachGuiPlayerListItem::getFont()
 // static
 GuiBmpFont MachGuiPlayerListItem::getHighlightFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
 }

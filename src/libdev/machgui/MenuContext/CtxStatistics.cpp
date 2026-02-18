@@ -93,7 +93,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     }
 
     // Heading texts
-    GuiBmpFont font = GuiBmpFont::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont font = Gui::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
     GuiResourceString generalHeading(IDS_MENU_STSGENERAL);
 
     new MachGuiMenuText(

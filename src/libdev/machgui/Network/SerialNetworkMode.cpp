@@ -111,7 +111,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
     comSettings.push_back((void*)4);
 
     GuiResourceString comPortHeading(IDS_MENU_COMPORT);
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontLight()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
     const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
 
     MachGuiMenuText* pComPortText = new MachGuiMenuText(

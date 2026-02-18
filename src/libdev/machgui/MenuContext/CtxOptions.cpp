@@ -96,7 +96,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     // Display large headings
     const Ren::Font& font = MachGui::Menu::font();
-    GuiBmpFont smallFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
+    GuiBmpFont smallFont = Gui::getFont(MachGui::Menu::smallFontLight());
     GuiResourceString optionsHeading(IDS_MENULB_OPTIONS);
     new MachGuiMenuText(
         pStartupScreens,

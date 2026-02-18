@@ -43,7 +43,7 @@ MachGuiGeneralStatistics::MachGuiGeneralStatistics(
     : GuiDisplayable(pParent, Gui::Boundary(topLeft, Gui::Size(GS_BOX_WIDTH, 77) * MachGui::menuScaleFactor()))
     , statDisplay_(pParent, topLeft + Gui::Coord(1, 35) * MachGui::menuScaleFactor(), race)
 {
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
 
     // Create title text
     new MachGuiMenuText(
@@ -119,7 +119,7 @@ std::string MachGuiGeneralStatistics::truncate(const std::string& name)
 {
     constexpr int GS_INDENT = 6;
 
-    GuiBmpFont font(GuiBmpFont::getFont(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
     std::string truncatedName = name;
 
     const uint maxWidth = (GS_BOX_WIDTH - (GS_INDENT * 2) - 10) * MachGui::menuScaleFactor();

@@ -42,7 +42,7 @@ MachGuiDropDownListBoxItem::MachGuiDropDownListBoxItem(
 // static
 GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 {
-    GuiBmpFont bmpFont = GuiBmpFont::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
+    GuiBmpFont bmpFont = Gui::getFont(SysPathName(MachGui::Menu::smallFontWhite()));
 
     return bmpFont;
 }

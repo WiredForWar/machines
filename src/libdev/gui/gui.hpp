@@ -47,6 +47,7 @@ private:
 
 using GuiColour = RenColour;
 
+class GuiBmpFont;
 class GuiCoords;
 // class GuiBitmap;
 using GuiBitmap = RenSurface;
@@ -167,6 +168,11 @@ GuiBitmap requestScaledImage(std::string path, float scale = uiScaleFactor());
  * @return scaled image or HiDPI bitmap
  */
 GuiBitmap getScaledImage(std::string path, float scale = uiScaleFactor());
+
+GuiBmpFont getFont(const SysPathName& fontPath);
+
+// Free's up all the memory used by the cached fonts.
+void releaseFontMemory();
 
 }; // namespace Gui
 

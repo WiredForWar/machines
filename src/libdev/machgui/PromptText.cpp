@@ -38,8 +38,7 @@ class MachPromptTextImpl
 public:
     MachPromptTextImpl(
         const std::string& normalFont,
-        const std::string& shadowFont,
-        GuiBmpFont::FontType fontType);
+        const std::string& shadowFont);
 
     GuiBitmap promptBmp_;
     std::string cursorPromptText_; // The prompt displayed for mouse moves
@@ -71,10 +70,9 @@ constexpr int c_textScrollSpeed = 20;
 
 MachPromptTextImpl::MachPromptTextImpl(
     const std::string& normalFont,
-    const std::string& shadowFont,
-    GuiBmpFont::FontType fontType)
-    : font_(GuiBmpFont::getFont(normalFont, fontType))
-    , shadowFont_(GuiBmpFont::getFont(shadowFont, fontType))
+    const std::string& shadowFont)
+    : font_(Gui::getFont(normalFont))
+    , shadowFont_(Gui::getFont(shadowFont))
     , refresh_(true)
     , lightOn_(MachGui::getScaledImage("gui/misc/tplight2"))
     , lightOff_(MachGui::getScaledImage("gui/misc/tplight1"))
@@ -98,10 +96,9 @@ MachPromptText::MachPromptText(
 {
     std::string normalFont = MachGui::getScaledImagePath("gui/menu/promtfnt");
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
-    GuiBmpFont::FontType fontType = GuiBmpFont::PROPORTIONAL;
 
-    font_ = GuiBmpFont::getFont(normalFont, fontType);
-    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont, fontType);
+    font_ = Gui::getFont(normalFont);
+    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont);
 
     CB_DEPIMPL(GuiBitmap, promptBmp_);
     CB_DEPIMPL(MachCameras*, pCameras_);
