@@ -368,6 +368,7 @@ bool SDLApp::clientStartup()
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontBuffer.simpleBlit(waitBmp, {}, offset);
     }
@@ -380,6 +381,7 @@ bool SDLApp::clientStartup()
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
         frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontBuffer.simpleBlit(waitBmp, {}, offset);
     }
@@ -395,6 +397,7 @@ bool SDLApp::clientStartup()
         ASSERT(font, "Unable to get font");
         frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
     }

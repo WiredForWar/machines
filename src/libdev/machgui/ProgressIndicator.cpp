@@ -29,6 +29,7 @@ size_t ProgressIndicator::report(size_t done, size_t maxDone)
     const double displayWidth = std::min((percentComplete * width) + 5, width);
 
     RenDevice::current()->frontSurface().filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     // For double buffering do it twice to prevent bar from blinking
     RenDevice::current()->frontSurface().filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);

@@ -1548,6 +1548,7 @@ void RenDevice::displayImage(const SysPathName& pathName)
     }
 
     backBuf.simpleBlit(texture);
+    flushCommandBuffer();
     pImpl_->display_->flipBuffers();
 }
 

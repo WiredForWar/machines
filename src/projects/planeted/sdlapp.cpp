@@ -81,6 +81,7 @@ public:
         RenDevice::current()->frontSurface().filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
+        RenDevice::current()->flushCommandBuffer();
         RenDevice::current()->display()->flipBuffers();
         RenDevice::current()->frontSurface().filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),

@@ -482,6 +482,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
 
@@ -564,6 +565,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
 
@@ -718,6 +720,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
 
@@ -2874,6 +2877,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
 
