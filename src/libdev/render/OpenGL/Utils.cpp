@@ -34,6 +34,8 @@ GLenum toStorageFormat(TextureFormat format)
     {
     case TextureFormat::RGBA8_UNorm:
         return GL_RGBA8;
+    case TextureFormat::Depth16:
+        return GL_DEPTH_COMPONENT16;
     }
     return GL_RGBA8;
 }
@@ -44,8 +46,22 @@ GLenum toPixelFormat(TextureFormat format)
     {
     case TextureFormat::RGBA8_UNorm:
         return GL_RGBA;
+    case TextureFormat::Depth16:
+        return GL_DEPTH_COMPONENT;
     }
     return GL_RGBA;
+}
+
+GLenum toPixelDataType(TextureFormat format)
+{
+    switch (format)
+    {
+    case TextureFormat::RGBA8_UNorm:
+        return GL_UNSIGNED_BYTE;
+    case TextureFormat::Depth16:
+        return GL_UNSIGNED_SHORT;
+    }
+    return GL_UNSIGNED_BYTE;
 }
 
 GLenum toFilter(TextureFilter filter)

@@ -78,6 +78,7 @@ enum class BufferUsage
 enum class TextureFormat
 {
     RGBA8_UNorm,
+    Depth16,
 };
 
 enum class TextureFilter

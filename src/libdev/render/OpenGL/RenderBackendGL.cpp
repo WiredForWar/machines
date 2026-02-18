@@ -1078,7 +1078,8 @@ void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, i
 {
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexImage2D(
-        GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format), GL_UNSIGNED_BYTE, nullptr);
+        GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format),
+        toPixelDataType(format), nullptr);
 }
 
 void RenderBackendGL::textureSubImage2D(

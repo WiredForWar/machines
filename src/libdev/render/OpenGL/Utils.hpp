@@ -43,6 +43,7 @@ private:
 GLenum toDrawMode(Ren::PrimitiveTopology topology);
 GLenum toStorageFormat(TextureFormat format);
 GLenum toPixelFormat(TextureFormat format);
+GLenum toPixelDataType(TextureFormat format);
 GLenum toFilter(TextureFilter filter);
 GLenum toWrap(TextureWrap wrap);
 GLenum toIndexType(BackendIndexType type);
