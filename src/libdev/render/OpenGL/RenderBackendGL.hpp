@@ -28,18 +28,6 @@ public:
 
     bool setVSync(bool enabled) override;
 
-    ProgramId createProgramFromFiles(
-        std::string_view vertexShaderPath,
-        std::string_view fragmentShaderPath,
-        std::string_view vertexShaderDebugName,
-        std::string_view fragmentShaderDebugName) override;
-    void releaseProgram(ProgramId id) override;
-
-    void useProgram(ProgramId id) override;
-
-    UniformLocationId uniformLocation(ProgramId id, std::string_view name) const override;
-    AttributeLocationId attribLocation(ProgramId id, std::string_view name) const override;
-
     PipelineId createPipeline(const PipelineDesc& desc) override;
     void releasePipeline(PipelineId id) override;
     UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const override;
@@ -86,6 +74,16 @@ public:
     void textureGenerateMipmap(BackendTextureHandle handle) override;
 
 private:
+    ProgramId createProgramFromFiles(
+        std::string_view vertexShaderPath,
+        std::string_view fragmentShaderPath,
+        std::string_view vertexShaderDebugName,
+        std::string_view fragmentShaderDebugName);
+    void releaseProgram(ProgramId id);
+    void useProgram(ProgramId id);
+    UniformLocationId uniformLocation(ProgramId id, std::string_view name) const;
+    AttributeLocationId attribLocation(ProgramId id, std::string_view name) const;
+
     static std::string readTextFile(const std::string& path);
 
     static GLuint createProgramFromSources(
