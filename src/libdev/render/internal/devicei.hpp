@@ -170,9 +170,43 @@ private:
 
     bool smoothScaleEnabled_{};
 
-    Ren::PipelineId gui2DPipeline_{};
-    Ren::PipelineId standardPipeline_{};
-    Ren::PipelineId billboardPipeline_{};
+    struct Gui2DPipelineLocations
+    {
+        Ren::PipelineId id{};
+        Ren::AttributeLocationId posAttr{};
+        Ren::AttributeLocationId uvAttr{};
+        Ren::AttributeLocationId colAttr{};
+        Ren::UniformLocationId screenspaceUniform{};
+        Ren::UniformLocationId texSamplerUniform{};
+    };
+
+    struct StandardPipelineLocations
+    {
+        Ren::PipelineId id{};
+        Ren::AttributeLocationId posAttr{};
+        Ren::AttributeLocationId uvAttr{};
+        Ren::AttributeLocationId colAttr{};
+        Ren::UniformLocationId modelUniform{};
+        Ren::UniformLocationId viewUniform{};
+        Ren::UniformLocationId projUniform{};
+        Ren::UniformLocationId fogColourUniform{};
+        Ren::UniformLocationId fogParamsUniform{};
+        Ren::UniformLocationId texSamplerUniform{};
+    };
+
+    struct BillboardPipelineLocations
+    {
+        Ren::PipelineId id{};
+        Ren::AttributeLocationId posAttr{};
+        Ren::AttributeLocationId uvAttr{};
+        Ren::AttributeLocationId colAttr{};
+        Ren::UniformLocationId viewProjUniform{};
+        Ren::UniformLocationId texSamplerUniform{};
+    };
+
+    Gui2DPipelineLocations gui2D_{};
+    StandardPipelineLocations standard_{};
+    BillboardPipelineLocations billboard_{};
 
     Ren::RenderPassId geometryRenderPass_{};
     Ren::RenderPassId uiRenderPass_{};
