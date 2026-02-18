@@ -26,19 +26,6 @@ public:
 
     virtual bool setVSync(bool enabled) = 0;
 
-    virtual ProgramId createProgramFromFiles(
-        std::string_view vertexShaderPath,
-        std::string_view fragmentShaderPath,
-        std::string_view vertexShaderDebugName,
-        std::string_view fragmentShaderDebugName)
-        = 0;
-    virtual void releaseProgram(ProgramId id) = 0;
-
-    virtual void useProgram(ProgramId id) = 0;
-
-    virtual UniformLocationId uniformLocation(ProgramId id, std::string_view name) const = 0;
-    virtual AttributeLocationId attribLocation(ProgramId id, std::string_view name) const = 0;
-
     virtual PipelineId createPipeline(const PipelineDesc& desc) = 0;
     virtual void releasePipeline(PipelineId id) = 0;
     virtual UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const = 0;

@@ -312,8 +312,6 @@ RenDevice::~RenDevice()
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(0);
-
     backend_->releasePipeline(gui2DPipeline_);
     backend_->releasePipeline(standardPipeline_);
     backend_->releasePipeline(billboardPipeline_);
