@@ -17,7 +17,6 @@
 #include "render/internal/DisplayImpl.hpp"
 
 #include <SDL3/SDL.h>
-#include <GL/glew.h>
 
 #include "spdlog/spdlog.h"
 
@@ -240,10 +239,6 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     // window has been mapped, and until it is acknowledged the window is in
     // its windowed state.
     SDL_SyncWindow(window());
-
-    glViewport(0, 0, m.width(), m.height());
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     if (!success || (! pImpl_->modeChanged()))
     {
