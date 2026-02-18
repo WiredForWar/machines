@@ -5,6 +5,7 @@
 #include "recorder/Recorder.hpp"
 #include "recorder/private/RecorderPrivate.hpp"
 #include "device/Time.hpp"
+#include "render/Device.hpp"
 
 #include "sound/internal/ALSound.hpp"
 
@@ -235,6 +236,7 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         if (useFrontBuffer())
         {
             unpackBufferToSurface(pDevice->frontSurface(), surface_);
+            RenDevice::current()->flushCommandBuffer();
             pDevice->display()->flipBuffers();
         }
         else
