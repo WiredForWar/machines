@@ -8,6 +8,7 @@
 #include "Text.hpp"
 
 #include "gui/font.hpp"
+#include "gui/painter.hpp"
 #include "gui/root.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
@@ -35,10 +36,10 @@ void MachGuiText::setTextOffset(Gui::Coord offset)
 void MachGuiText::doDisplay()
 {
     // Draw list box item text
-    font_.drawText(
-        text_,
-        absoluteBoundary().minCorner() + textOffset_,
-        width());
+    {
+        Gui::Coord pos = absoluteBoundary().minCorner() + textOffset_;
+        font_.drawText(GuiPainter::instance(), text_, Ren::Point(pos.x(), pos.y()), width());
+    }
 }
 
 // static

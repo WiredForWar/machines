@@ -13,7 +13,6 @@ set(GUI_SOURCES
     editbox.hpp
     event.cpp
     event.hpp
-    font.cpp
     font.hpp
     gui.cpp
     gui.hpp

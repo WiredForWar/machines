@@ -3,123 +3,13 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-/*
-    GuiBmpFont
-
-    Support for bitmap fonts. Characters can be different widths so you can set the font as
-    proportional or fixed spacing. At present, this font only draws text in a single line, it
-    will ignore carridge return etc.
-*/
+// Compatibility header — GuiBmpFont is now Ren::BmpFont.
 
 #ifndef _GUI_FONT_HPP
 #define _GUI_FONT_HPP
 
-#include "base/base.hpp"
-#include "system/pathname.hpp"
+#include "render/BmpFont.hpp"
 #include "gui/gui.hpp"
-
-#include <string_view>
-
-class GuiBmpFontCore;
-
-class GuiBmpFont
-// Canonical form revoked
-{
-public:
-    enum Justification
-    {
-        LEFT_JUSTIFY,
-        RIGHT_JUSTIFY
-    };
-    enum FontType
-    {
-        PROPORTIONAL,
-        FIXED_SPACE
-    };
-
-    GuiBmpFont(); // Default constructor to satisfy std::vector. DO NOT USE!!!
-    GuiBmpFont(const GuiBmpFont&);
-    GuiBmpFont& operator=(const GuiBmpFont&);
-    ~GuiBmpFont();
-
-    size_t height() const;
-
-    size_t charWidth(char c) const;
-
-    // The maximum width of a character in the font. The spacing that will be used by
-    // Fixed space fonts
-    size_t maxCharWidth() const;
-
-    // Display text on screen.
-    void drawText(const std::string_view& text, const Gui::Coord& startPos, int maxWidth, Justification = LEFT_JUSTIFY)
-        const;
-
-    // Display text on bitmap.
-    void drawText(
-        GuiBitmap*,
-        const std::string_view& text,
-        const Gui::Coord& startPos,
-        int maxWidth,
-        Justification = LEFT_JUSTIFY) const;
-
-    // Get/Set font type ( proportional or fixed space ).
-    FontType fontType() const;
-    void fontType(FontType);
-
-    // Set/Get width of space character. Note that the "spacing" is still used after a space char is displayed.
-    size_t spaceCharWidth() const;
-    void spaceCharWidth(size_t);
-
-    // Set/Get spacing between characters
-    size_t spacing() const;
-    void spacing(size_t);
-
-    // Switch underline on/off
-    void underline(bool);
-    bool underline() const;
-    void underlineColour(const GuiColour&);
-
-    // Return the display width of "text" without actually rendering the text.
-    int horizontalAdvance(const std::string_view& text) const;
-
-    const SysPathName& fontPath() const;
-
-    static char redCharIndex();
-    static char greenCharIndex();
-    static char blueCharIndex();
-    static char yellowCharIndex();
-
-    static char arrowUpIndex();
-    static char arrowDownIndex();
-    static char arrowLeftIndex();
-    static char arrowRightIndex();
-
-    static char healthPointsIndex(); // 1980 // 0x9d
-    static char armorPointsIndex(); // 1990 // 0x80
-    static char bmuPointsIndex(); // 1991 // 0x81
-    static char bmuMinedPointsIndex(); // 1992 // 0x99
-    static char researchPointsIndex(); // 2012 // 0x9e
-
-protected:
-    GuiBmpFont(const SysPathName& fontPath);
-    void drawTextLeftJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextRightJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextLeftJustify(GuiBitmap*, const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
-    void drawTextRightJustify(GuiBitmap*, const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const;
-
-private:
-    void CLASS_INVARIANT;
-
-    friend GuiBmpFont Gui::getFont(const SysPathName&);
-    friend std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t);
-
-    GuiBmpFontCore* pFontCore_ = nullptr;
-    FontType fontType_ = PROPORTIONAL;
-    size_t spaceCharWidth_ = 0;
-    size_t spacing_ = 0;
-    bool underline_ = false;
-    GuiColour underlineColour_;
-};
 
 #endif
 

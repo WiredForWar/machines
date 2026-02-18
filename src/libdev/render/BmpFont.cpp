@@ -1,21 +1,22 @@
 /*
- * F O N T . C P P
+ * B M P F O N T . C P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/internal/fontcore.hpp"
+#include "render/BmpFont.hpp"
+#include "render/Painter.hpp"
+#include "render/internal/BmpFontCore.hpp"
+#include "render/surface.hpp"
 #include "base/diag.hpp"
 #include "base/persist.hpp"
 
-PER_DEFINE_PERSISTENT(GuiBmpFontCoreCharData);
+PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
-GuiBmpFontCore::GuiBmpFontCore(const SysPathName& fontPath)
+BmpFontCore::BmpFontCore(const SysPathName& fontPath)
 {
-    fontBmp_ = Gui::bitmap(fontPath);
+    fontBmp_ = RenSurface::createSharedSurface(fontPath.pathname());
     fontBmp_.enableColourKeying();
     fontPath_ = fontPath;
     coreCount_ = 1;
@@ -33,18 +34,18 @@ GuiBmpFontCore::GuiBmpFontCore(const SysPathName& fontPath)
     }
 }
 
-void GuiBmpFontCore::createFromBinaryFile(const SysPathName& persistFontPath)
+void BmpFontCore::createFromBinaryFile(const SysPathName& persistFontPath)
 {
-    DEBUG_STREAM(DIAG_NEIL, "GuiBmpFontCore::createFromBinaryFile " << persistFontPath << std::endl);
+    DEBUG_STREAM(DIAG_NEIL, "BmpFontCore::createFromBinaryFile " << persistFontPath << std::endl);
     std::ifstream str(persistFontPath.c_str(), std::ios::binary);
     PerIstream istr(str);
 
     istr >> charData_;
     istr >> maxCharWidth_;
-    DEBUG_STREAM(DIAG_NEIL, "GuiBmpFontCore::createFromBinaryFile exit maxCharWidth_ " << maxCharWidth_ << std::endl);
+    DEBUG_STREAM(DIAG_NEIL, "BmpFontCore::createFromBinaryFile exit maxCharWidth_ " << maxCharWidth_ << std::endl);
 }
 
-void GuiBmpFontCore::calculateProportionalFontWidthData(const SysPathName& persistFontPath)
+void BmpFontCore::calculateProportionalFontWidthData(const SysPathName& persistFontPath)
 {
     int bmpXPos = 0;
     maxCharWidth_ = 0;
@@ -53,12 +54,12 @@ void GuiBmpFontCore::calculateProportionalFontWidthData(const SysPathName& persi
     {
         int startXPos = bmpXPos;
 
-        while (bmpXPos < fontBmp_.width() && ! endOfChar(bmpXPos))
+        while (bmpXPos < fontBmp_.width() && !endOfChar(bmpXPos))
         {
             ++bmpXPos;
         }
 
-        GuiBmpFontCoreCharData newCharData;
+        BmpFontCoreCharData newCharData;
         newCharData.width_ = bmpXPos - startXPos;
         // If this is widest character then update maxCharWidth_
         maxCharWidth_ = std::max(maxCharWidth_, newCharData.width_);
@@ -76,14 +77,14 @@ void GuiBmpFontCore::calculateProportionalFontWidthData(const SysPathName& persi
 
     DEBUG_STREAM(
         DIAG_NEIL,
-        "GuiBmpFontCore::calculateProportionalFontWidthData ( num chars : " << charData_.size() << " ) maxCharWidth_ "
-                                                                            << maxCharWidth_ << std::endl);
+        "BmpFontCore::calculateProportionalFontWidthData ( num chars : " << charData_.size() << " ) maxCharWidth_ "
+                                                                         << maxCharWidth_ << std::endl);
 }
 
-bool GuiBmpFontCore::endOfChar(int x)
+bool BmpFontCore::endOfChar(int x)
 {
     RenColour colour;
-    RenColour white(Gui::WHITE());
+    static const RenColour white = RenColour::white();;
     int height = fontBmp_.height();
 
     fontBmp_.getPixel(x, height - 1, &colour);
@@ -91,91 +92,91 @@ bool GuiBmpFontCore::endOfChar(int x)
     return colour.operator==(white);
 }
 
-const SysPathName& GuiBmpFont::fontPath() const
+namespace Ren
+{
+
+const SysPathName& BmpFont::fontPath() const
 {
     return pFontCore_->fontPath_;
 }
 
-char GuiBmpFont::arrowUpIndex()
+char BmpFont::arrowUpIndex()
 {
     return 0x8D;
 }
 
-char GuiBmpFont::arrowDownIndex()
+char BmpFont::arrowDownIndex()
 {
     return 0x8E;
 }
 
-char GuiBmpFont::arrowLeftIndex()
+char BmpFont::arrowLeftIndex()
 {
     return 0x8F;
 }
 
-char GuiBmpFont::arrowRightIndex()
+char BmpFont::arrowRightIndex()
 {
     return 0x90;
 }
 
-char GuiBmpFont::healthPointsIndex()
+char BmpFont::healthPointsIndex()
 {
     return 0x9D;
 }
 
-char GuiBmpFont::armorPointsIndex()
+char BmpFont::armorPointsIndex()
 {
     return 0x80;
 }
 
-char GuiBmpFont::bmuPointsIndex()
+char BmpFont::bmuPointsIndex()
 {
     return 0x81;
 }
 
-char GuiBmpFont::bmuMinedPointsIndex()
+char BmpFont::bmuMinedPointsIndex()
 {
     return 0x99;
 }
 
-char GuiBmpFont::researchPointsIndex()
+char BmpFont::researchPointsIndex()
 {
     return 0x9E;
 }
 
-char GuiBmpFont::redCharIndex()
+char BmpFont::redCharIndex()
 {
     return 0xA9;
 }
 
-char GuiBmpFont::greenCharIndex()
+char BmpFont::greenCharIndex()
 {
     return 0xAA;
 }
 
-char GuiBmpFont::blueCharIndex()
+char BmpFont::blueCharIndex()
 {
     return 0xAB;
 }
 
-char GuiBmpFont::yellowCharIndex()
+char BmpFont::yellowCharIndex()
 {
     return 0xAC;
 }
 
-GuiBmpFont::GuiBmpFont()
+BmpFont::BmpFont()
 {
 }
 
-GuiBmpFont::GuiBmpFont(const SysPathName& fontPath)
+BmpFont::BmpFont(const SysPathName& fontPath)
 {
-    pFontCore_ = new GuiBmpFontCore(fontPath);
-
-    underlineColour_ = Gui::BLACK();
-    underline_ = false;
+    pFontCore_ = new BmpFontCore(fontPath);
 
     TEST_INVARIANT;
 }
 
-GuiBmpFont::~GuiBmpFont()
+BmpFont::~BmpFont()
 {
     TEST_INVARIANT;
 
@@ -189,7 +190,7 @@ GuiBmpFont::~GuiBmpFont()
     }
 }
 
-GuiBmpFont::GuiBmpFont(const GuiBmpFont& copy)
+BmpFont::BmpFont(const BmpFont& copy)
 {
     pFontCore_ = copy.pFontCore_;
     fontType_ = copy.fontType_;
@@ -204,7 +205,7 @@ GuiBmpFont::GuiBmpFont(const GuiBmpFont& copy)
     }
 }
 
-GuiBmpFont& GuiBmpFont::operator=(const GuiBmpFont& rhs)
+BmpFont& BmpFont::operator=(const BmpFont& rhs)
 {
     if (this != &rhs)
     {
@@ -224,26 +225,26 @@ GuiBmpFont& GuiBmpFont::operator=(const GuiBmpFont& rhs)
     return *this;
 }
 
-void GuiBmpFont::CLASS_INVARIANT
+void BmpFont::CLASS_INVARIANT
 {
     INVARIANT(this != nullptr);
 }
 
-std::ostream& operator<<(std::ostream& o, const GuiBmpFont& t)
+std::ostream& operator<<(std::ostream& o, const BmpFont& t)
 {
 
-    o << "GuiBmpFont " << static_cast<const void*>(&t) << " start" << std::endl;
-    o << "GuiBmpFont " << static_cast<const void*>(&t) << " end" << std::endl;
+    o << "BmpFont " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "BmpFont " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
 }
 
-size_t GuiBmpFont::height() const
+size_t BmpFont::height() const
 {
     return pFontCore_->charHeight_;
 }
 
-size_t GuiBmpFont::charWidth(char c) const
+size_t BmpFont::charWidth(char c) const
 {
     if (c == ' ')
     {
@@ -257,77 +258,77 @@ size_t GuiBmpFont::charWidth(char c) const
     return 0;
 }
 
-size_t GuiBmpFont::maxCharWidth() const
+size_t BmpFont::maxCharWidth() const
 {
     return pFontCore_->maxCharWidth_;
 }
 
-void GuiBmpFont::drawText(
+void BmpFont::drawText(
+    Painter& painter,
     const std::string_view& text,
-    const Gui::Coord& startPos,
+    const Ren::Point& startPos,
     int maxWidth,
     Justification justification /*= LEFT_JUSTIFY*/) const
 {
     switch (justification)
     {
-        case LEFT_JUSTIFY:
-            drawTextLeftJustify(text, startPos, maxWidth);
-            break;
-        case RIGHT_JUSTIFY:
-            drawTextRightJustify(text, startPos, maxWidth);
-            break;
-            DEFAULT_ASSERT_BAD_CASE(justification);
+    case LEFT_JUSTIFY:
+        drawTextLeftJustify(painter, text, startPos, maxWidth);
+        break;
+    case RIGHT_JUSTIFY:
+        drawTextRightJustify(painter, text, startPos, maxWidth);
+        break;
+        DEFAULT_ASSERT_BAD_CASE(justification);
     }
 }
 
-void GuiBmpFont::drawText(
-    GuiBitmap* pBmp,
+void BmpFont::drawText(
+    RenSurface* pBmp,
     const std::string_view& text,
-    const Gui::Coord& startPos,
+    const Ren::Point& startPos,
     int maxWidth,
     Justification justification /*= LEFT_JUSTIFY*/) const
 {
     switch (justification)
     {
-        case LEFT_JUSTIFY:
-            drawTextLeftJustify(pBmp, text, startPos, maxWidth);
-            break;
-        case RIGHT_JUSTIFY:
-            drawTextRightJustify(pBmp, text, startPos, maxWidth);
-            break;
-            DEFAULT_ASSERT_BAD_CASE(justification);
+    case LEFT_JUSTIFY:
+        drawTextLeftJustify(pBmp, text, startPos, maxWidth);
+        break;
+    case RIGHT_JUSTIFY:
+        drawTextRightJustify(pBmp, text, startPos, maxWidth);
+        break;
+        DEFAULT_ASSERT_BAD_CASE(justification);
     }
 }
 
-void GuiBmpFont::drawTextLeftJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const
+void BmpFont::drawTextLeftJustify(
+    Painter& painter, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
 {
-    Gui::Coord absPos = startPos;
-    Gui::XCoord endAbsPos = absPos.x() + maxWidth;
+    Ren::Point absPos = startPos;
+    int endAbsPos = absPos.x + maxWidth;
 
     for (int i = 0; i < text.length(); ++i)
     {
         if (text[i] == ' ') // Special handling for space character
         {
-            absPos.x(absPos.x() + spaceCharWidth_ + spacing_);
+            absPos.x += spaceCharWidth_ + spacing_;
         }
         else if (charWidth(text[i])) // Check that character is supported by bitmap
         {
-            if (absPos.x() + charWidth(text[i]) <= endAbsPos)
+            if (absPos.x + charWidth(text[i]) <= endAbsPos)
             {
                 // Blit character
-                GuiPainter::instance().blit(
+                painter.blit(
                     pFontCore_->fontBmp_,
-                    Gui::Box(
-                        Gui::Coord(pFontCore_->charData_[(unsigned char)text[i]].offset_, 0),
-                        charWidth(text[i]) + 1,
-                        height()),
+                    Ren::Rect(
+                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
                     absPos);
 
                 // Add spacing ready for next character blit
                 if (fontType_ == PROPORTIONAL)
-                    absPos.x(absPos.x() + charWidth(text[i]) + spacing_);
+                    absPos.x += charWidth(text[i]) + spacing_;
                 else
-                    absPos.x(absPos.x() + maxCharWidth() + spacing_);
+                    absPos.x += maxCharWidth() + spacing_;
             }
             else
             {
@@ -338,18 +339,19 @@ void GuiBmpFont::drawTextLeftJustify(const std::string_view& text, const Gui::Co
 
     if (underline_)
     {
-        GuiPainter::instance().line(
-            Gui::Coord(startPos.x(), startPos.y() + height() + 1),
-            Gui::Coord(absPos.x(), startPos.y() + height() + 1),
+        painter.line(
+            Ren::Point(startPos.x, startPos.y + height() + 1),
+            Ren::Point(absPos.x, startPos.y + height() + 1),
             underlineColour_,
             1);
     }
 }
 
-void GuiBmpFont::drawTextRightJustify(const std::string_view& text, const Gui::Coord& startPos, int maxWidth) const
+void BmpFont::drawTextRightJustify(
+    Painter& painter, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
 {
-    Gui::Coord absPos = startPos;
-    Gui::XCoord endAbsPos = absPos.x() - maxWidth;
+    Ren::Point absPos = startPos;
+    int endAbsPos = absPos.x - maxWidth;
 
     for (int i = text.length(); i > 0;)
     {
@@ -357,25 +359,23 @@ void GuiBmpFont::drawTextRightJustify(const std::string_view& text, const Gui::C
 
         if (text[i] == ' ') // Special handling for space character
         {
-            absPos.x(absPos.x() - spaceCharWidth_ - spacing_);
+            absPos.x -= spaceCharWidth_ + spacing_;
         }
         else if (charWidth(text[i])) // Check that character is supported by bitmap
         {
             // Add spacing ready for next character blit
             if (fontType_ == PROPORTIONAL)
-                absPos.x(absPos.x() - charWidth(text[i]) - spacing_);
+                absPos.x -= charWidth(text[i]) + spacing_;
             else
-                absPos.x(absPos.x() - maxCharWidth() - spacing_);
+                absPos.x -= maxCharWidth() + spacing_;
 
-            if (absPos.x() >= endAbsPos)
+            if (absPos.x >= endAbsPos)
             {
                 // Blit character
-                GuiPainter::instance().blit(
+                painter.blit(
                     pFontCore_->fontBmp_,
-                    Gui::Box(
-                        Gui::Coord(pFontCore_->charData_[(unsigned char)text[i]].offset_, 0),
-                        charWidth(text[i]) + 1,
-                        height()),
+                    Ren::Rect(
+                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
                     absPos);
             }
             else
@@ -387,45 +387,42 @@ void GuiBmpFont::drawTextRightJustify(const std::string_view& text, const Gui::C
 
     if (underline_)
     {
-        GuiPainter::instance().line(
-            Gui::Coord(startPos.x(), startPos.y() + height() + 1),
-            Gui::Coord(absPos.x(), startPos.y() + height() + 1),
+        painter.line(
+            Ren::Point(startPos.x, startPos.y + height() + 1),
+            Ren::Point(absPos.x, startPos.y + height() + 1),
             underlineColour_,
             1);
     }
 }
 
-void GuiBmpFont::drawTextLeftJustify(
-    GuiBitmap* pBmp,
-    const std::string_view& text,
-    const Gui::Coord& startPos,
-    int maxWidth) const
+void BmpFont::drawTextLeftJustify(
+    RenSurface* pBmp, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
 {
-    Gui::Coord absPos = startPos;
-    Gui::XCoord endAbsPos = absPos.x() + maxWidth;
+    Ren::Point absPos = startPos;
+    int endAbsPos = absPos.x + maxWidth;
 
     for (int i = 0; i < text.length(); ++i)
     {
         if (text[i] == ' ') // Special handling for space character
         {
-            absPos.x(absPos.x() + spaceCharWidth_ + spacing_);
+            absPos.x += spaceCharWidth_ + spacing_;
         }
         else if (charWidth(text[i])) // Check that character is supported by bitmap
         {
-            if (absPos.x() + charWidth(text[i]) <= endAbsPos)
+            if (absPos.x + charWidth(text[i]) <= endAbsPos)
             {
                 // Blit character
                 pBmp->simpleBlit(
                     pFontCore_->fontBmp_,
                     Ren::Rect(
                         pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    Ren::Point(absPos.x(), absPos.y()));
+                    Ren::Point(absPos.x, absPos.y));
 
                 // Add spacing ready for next character blit
                 if (fontType_ == PROPORTIONAL)
-                    absPos.x(absPos.x() + charWidth(text[i]) + spacing_);
+                    absPos.x += charWidth(text[i]) + spacing_;
                 else
-                    absPos.x(absPos.x() + maxCharWidth() + spacing_);
+                    absPos.x += maxCharWidth() + spacing_;
             }
             else
             {
@@ -437,20 +434,17 @@ void GuiBmpFont::drawTextLeftJustify(
     // TBD : underline on fonts render onto a bitmap
     // if ( underline_ )
     //{
-    //  GuiPainter::instance().line( Gui::Coord( startPos.x(), startPos.y() + charHeight() + 1 ),
-    //                               Gui::Coord( absPos.x(), startPos.y() + charHeight() + 1 ),
-    //                               underlineColour_, 1 );
+    //  painter.line( Ren::Point( startPos.x, startPos.y + charHeight() + 1 ),
+    //                Ren::Point( absPos.x, startPos.y + charHeight() + 1 ),
+    //                underlineColour_, 1 );
     //}
 }
 
-void GuiBmpFont::drawTextRightJustify(
-    GuiBitmap* pBmp,
-    const std::string_view& text,
-    const Gui::Coord& startPos,
-    int maxWidth) const
+void BmpFont::drawTextRightJustify(
+    RenSurface* pBmp, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
 {
-    Gui::Coord absPos = startPos;
-    Gui::XCoord endAbsPos = absPos.x() - maxWidth;
+    Ren::Point absPos = startPos;
+    int endAbsPos = absPos.x - maxWidth;
 
     for (int i = text.length(); i > 0;)
     {
@@ -458,24 +452,24 @@ void GuiBmpFont::drawTextRightJustify(
 
         if (text[i] == ' ') // Special handling for space character
         {
-            absPos.x(absPos.x() - spaceCharWidth_ - spacing_);
+            absPos.x -= spaceCharWidth_ + spacing_;
         }
         else if (charWidth(text[i])) // Check that character is supported by bitmap
         {
             // Add spacing ready for next character blit
             if (fontType_ == PROPORTIONAL)
-                absPos.x(absPos.x() - charWidth(text[i]) - spacing_);
+                absPos.x -= charWidth(text[i]) + spacing_;
             else
-                absPos.x(absPos.x() - maxCharWidth() - spacing_);
+                absPos.x -= maxCharWidth() + spacing_;
 
-            if (absPos.x() >= endAbsPos)
+            if (absPos.x >= endAbsPos)
             {
                 // Blit character
                 pBmp->simpleBlit(
                     pFontCore_->fontBmp_,
                     Ren::Rect(
                         pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    Ren::Point(absPos.x(), absPos.y()));
+                    Ren::Point(absPos.x, absPos.y));
             }
             else
             {
@@ -487,90 +481,92 @@ void GuiBmpFont::drawTextRightJustify(
     // TBD : underline on fonts render onto a bitmap
     // if ( underline_ )
     //{
-    //  GuiPainter::instance().line( Gui::Coord( startPos.x(), startPos.y() + charHeight() + 1 ),
-    //                               Gui::Coord( absPos.x(), startPos.y() + charHeight() + 1 ),
-    //                               underlineColour_, 1 );
+    //  painter.line( Ren::Point( startPos.x, startPos.y + charHeight() + 1 ),
+    //                Ren::Point( absPos.x, startPos.y + charHeight() + 1 ),
+    //                underlineColour_, 1 );
     //}
 }
 
-GuiBmpFont::FontType GuiBmpFont::fontType() const
+BmpFont::FontType BmpFont::fontType() const
 {
     return fontType_;
 }
 
-void GuiBmpFont::fontType(GuiBmpFont::FontType fontType)
+void BmpFont::fontType(BmpFont::FontType fontType)
 {
     fontType_ = fontType;
 }
 
-size_t GuiBmpFont::spaceCharWidth() const
+size_t BmpFont::spaceCharWidth() const
 {
     return spaceCharWidth_;
 }
 
-void GuiBmpFont::spaceCharWidth(size_t spaceCharWidth)
+void BmpFont::spaceCharWidth(size_t spaceCharWidth)
 {
     spaceCharWidth_ = spaceCharWidth;
 }
 
-size_t GuiBmpFont::spacing() const
+size_t BmpFont::spacing() const
 {
     return spacing_;
 }
 
-void GuiBmpFont::spacing(size_t spacing)
+void BmpFont::spacing(size_t spacing)
 {
     spacing_ = spacing;
 }
 
-void GuiBmpFont::underline(bool underl)
+void BmpFont::underline(bool underl)
 {
     underline_ = underl;
 }
 
-bool GuiBmpFont::underline() const
+bool BmpFont::underline() const
 {
     return underline_;
 }
 
-void GuiBmpFont::underlineColour(const GuiColour& colour)
+void BmpFont::underlineColour(const RenColour& colour)
 {
     underlineColour_ = colour;
 }
 
-int GuiBmpFont::horizontalAdvance(const std::string_view& text) const
+int BmpFont::horizontalAdvance(const std::string_view& text) const
 {
-    Gui::Coord absPos(0, 0);
+    int xPos = 0;
 
     for (int i = 0; i < text.length(); ++i)
     {
         if (text[i] == ' ') // Special handling for space character
         {
-            absPos.x(absPos.x() + spaceCharWidth_ + spacing_);
+            xPos += spaceCharWidth_ + spacing_;
         }
         else if (charWidth(text[i])) // Check that character is supported by bitmap
         {
             // Add character width and spacing width
             if (fontType_ == PROPORTIONAL)
-                absPos.x(absPos.x() + charWidth(text[i]) + spacing_);
+                xPos += charWidth(text[i]) + spacing_;
             else
-                absPos.x(absPos.x() + maxCharWidth() + spacing_);
+                xPos += maxCharWidth() + spacing_;
         }
     }
 
-    return absPos.x();
+    return xPos;
 }
 
-void perWrite(PerOstream& ostr, const GuiBmpFontCoreCharData& data)
+} // namespace Ren
+
+void perWrite(PerOstream& ostr, const BmpFontCoreCharData& data)
 {
     ostr << data.offset_;
     ostr << data.width_;
 }
 
-void perRead(PerIstream& istr, GuiBmpFontCoreCharData& data)
+void perRead(PerIstream& istr, BmpFontCoreCharData& data)
 {
     istr >> data.offset_;
     istr >> data.width_;
 }
 
-/* End FONT.CPP *****************************************************/
+/* End BMPFONT.CPP *****************************************************/

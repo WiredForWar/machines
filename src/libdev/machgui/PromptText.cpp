@@ -344,24 +344,24 @@ void MachPromptText::displayChatMessage()
         Gui::Coord shadowStartText = startText + Gui::Vec(1, 1) * Gui::uiScaleFactor();
 
         // Draw shadow and normal text
-        shadowFont_.drawText(&promptBmp_, chatMessageIntendedForStr_, shadowStartBeginningText, promptBmp_.width());
+        shadowFont_.drawText(&promptBmp_, chatMessageIntendedForStr_, Ren::Point(shadowStartBeginningText.x(), shadowStartBeginningText.y()), promptBmp_.width());
         shadowFont_.drawText(
             &promptBmp_,
             rightText(),
-            shadowStartText,
+            Ren::Point(shadowStartText.x(), shadowStartText.y()),
             promptBmp_.width() - caretPosition - 1 - beginningTextWidth_);
         shadowFont_.drawText(
             &promptBmp_,
             leftText(),
-            shadowStartText,
+            Ren::Point(shadowStartText.x(), shadowStartText.y()),
             caretPosition - beginningTextWidth_,
             GuiBmpFont::RIGHT_JUSTIFY);
-        font_.drawText(&promptBmp_, chatMessageIntendedForStr_, startBeginningText, promptBmp_.width());
-        font_.drawText(&promptBmp_, rightText(), startText, promptBmp_.width() - caretPosition - beginningTextWidth_);
+        font_.drawText(&promptBmp_, chatMessageIntendedForStr_, Ren::Point(startBeginningText.x(), startBeginningText.y()), promptBmp_.width());
+        font_.drawText(&promptBmp_, rightText(), Ren::Point(startText.x(), startText.y()), promptBmp_.width() - caretPosition - beginningTextWidth_);
         font_.drawText(
             &promptBmp_,
             leftText(),
-            startText,
+            Ren::Point(startText.x(), startText.y()),
             caretPosition - beginningTextWidth_,
             GuiBmpFont::RIGHT_JUSTIFY);
     }
@@ -406,8 +406,8 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
             Gui::Coord textPos(0, startY);
             Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * Gui::uiScaleFactor();
             pImpl_->shadowFont_
-                .drawText(&pImpl_->promptBmp_, line, shadowPos, pImpl_->promptBmp_.width() - shadowPos.x());
-            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, textPos, pImpl_->promptBmp_.width());
+                .drawText(&pImpl_->promptBmp_, line, Ren::Point(shadowPos.x(), shadowPos.y()), pImpl_->promptBmp_.width() - shadowPos.x());
+            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, Ren::Point(textPos.x(), textPos.y()), pImpl_->promptBmp_.width());
             startY += pImpl_->shadowFont_.height() + 1 * Gui::uiScaleFactor();
         }
 

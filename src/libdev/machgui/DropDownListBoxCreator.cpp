@@ -272,7 +272,7 @@ void MachGuiDropDownListBoxCreator::doDisplay()
                 Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
         }
-        getHighlightFont().drawText(currentText(), textPos, width() - offset2);
+        getHighlightFont().drawText(GuiPainter::instance(), currentText(), Ren::Point(textPos.x(), textPos.y()), width() - offset2);
     }
     else
     {
@@ -283,18 +283,18 @@ void MachGuiDropDownListBoxCreator::doDisplay()
                 Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
                 absoluteBoundary().minCorner());
 
-            getHighlightFont().drawText(currentText(), textPos, width() - offset2);
+            getHighlightFont().drawText(GuiPainter::instance(), currentText(), Ren::Point(textPos.x(), textPos.y()), width() - offset2);
         }
         else
         {
             // Draw list box item text
             if (whiteFont_)
             {
-                getWhiteFont().drawText(currentText(), textPos, width() - offset2);
+                getWhiteFont().drawText(GuiPainter::instance(), currentText(), Ren::Point(textPos.x(), textPos.y()), width() - offset2);
             }
             else
             {
-                getFont().drawText(currentText(), textPos, width() - offset2);
+                getFont().drawText(GuiPainter::instance(), currentText(), Ren::Point(textPos.x(), textPos.y()), width() - offset2);
             }
         }
     }

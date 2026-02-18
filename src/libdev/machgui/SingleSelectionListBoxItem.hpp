@@ -16,7 +16,7 @@
 #include "gui/root.hpp"
 #include "gui/sslistit.hpp"
 
-class GuiBmpFont;
+// GuiBmpFont is a using alias for Ren::BmpFont, declared in gui/gui.hpp
 class MachGuiStartupScreens;
 class MachGuiSingleSelectionListBox;
 

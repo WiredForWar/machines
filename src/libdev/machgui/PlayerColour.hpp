@@ -20,7 +20,7 @@
 
 class MachGuiStartupScreens;
 class GuiSimpleScrollableList;
-class GuiBmpFont;
+// GuiBmpFont is a using alias for Ren::BmpFont, declared in gui/gui.hpp
 class MachGuiPlayerListItem;
 class MachGuiDropDownListBox;
 

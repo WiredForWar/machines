@@ -1,6 +1,8 @@
 
 set(RENDER_SOURCES
     Alignment.hpp
+    BmpFont.cpp
+    BmpFont.hpp
     Font.cpp
     Font.hpp
     FogMode.cpp
@@ -55,6 +57,7 @@ set(RENDER_SOURCES
     illumine.cpp
     inlight.cpp
     inpoints.cpp
+    internal/BmpFontCore.hpp
     internal/BackendCommands.hpp
     internal/BackendTypes.hpp
     internal/DrawCallFactory.cpp

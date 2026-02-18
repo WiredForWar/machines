@@ -359,8 +359,9 @@ void MachGuiPlayerListItem::doDisplay()
 
         // Draw list box item text
         getHighlightFont().drawText(
+            GuiPainter::instance(),
             playerInfo_.name_,
-            Gui::Coord(
+            Ren::Point(
                 absoluteBoundary().minCorner().x() + MachGui::darkTickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
             width());
@@ -415,8 +416,9 @@ void MachGuiPlayerListItem::doDisplay()
 
         // Draw list box item text
         getFont().drawText(
+            GuiPainter::instance(),
             playerInfo_.name_,
-            Gui::Coord(
+            Ren::Point(
                 absoluteBoundary().minCorner().x() + MachGui::tickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
             width());

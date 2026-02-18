@@ -47,7 +47,6 @@ private:
 
 using GuiColour = RenColour;
 
-class GuiBmpFont;
 class GuiCoords;
 // class GuiBitmap;
 using GuiBitmap = RenSurface;
@@ -57,10 +56,13 @@ bool operator<(const GuiBitmap&, const GuiBitmap&);
 namespace Ren
 {
 
+class BmpFont;
 class Font;
 class TextOptions;
 
 } // namespace Ren
+
+using GuiBmpFont = Ren::BmpFont;
 
 namespace Gui
 {
@@ -169,7 +171,7 @@ GuiBitmap requestScaledImage(std::string path, float scale = uiScaleFactor());
  */
 GuiBitmap getScaledImage(std::string path, float scale = uiScaleFactor());
 
-GuiBmpFont getFont(const SysPathName& fontPath);
+Ren::BmpFont getFont(const SysPathName& fontPath);
 
 // Free's up all the memory used by the cached fonts.
 void releaseFontMemory();
