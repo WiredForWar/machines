@@ -47,6 +47,7 @@ public:
     void releaseFramebuffer(FramebufferId id) override;
 
     void bindFramebuffer(FramebufferId id) override;
+    void framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture) override;
 
     void endRenderToTexture() override;
 
