@@ -888,9 +888,9 @@ void RenDevice::flush3DAlpha()
 
     CB_DEPIMPL_AUTO(backend_);
 
-    // Make sure all the Direct3D parameters are set up correctly. This function
+    // Make sure all the render state parameters are set up correctly. This function
     // may be called after 2D update, therefore we can not rely on these parameters
-    // being set correcly.
+    // being set correctly.
     recordCommand(Ren::Command::setAlphaTestEnabled(0.0f));
     recordCommand(Ren::Command::setDepthTest(true));
     recordCommand(Ren::Command::setDepthMaskWritable(true));
@@ -1107,7 +1107,6 @@ void RenDevice::updateMatrices()
     billboardUniformsDirty_ = true;
 }
 
-// From the Direct3D tunnel sample:
 // Creates a matrix which is equivalent to having the camera at a
 // specified position. This matrix can be used to convert vertices to
 // camera coordinates.
@@ -1185,9 +1184,9 @@ void RenDevice::updateViewMatrix(glm::mat4& view)
 // Taken straight from the M$ samples.
 
 static void
-computePerspectiveProjection(glm::mat4* lpd3dMatrix, double dHalfHeight, double dFrontClipping, double dBackClipping)
+computePerspectiveProjection(glm::mat4* matrix, double dHalfHeight, double dFrontClipping, double dBackClipping)
 {
-    PRE(lpd3dMatrix);
+    PRE(matrix);
     PRE(dHalfHeight > 0);
     PRE(dFrontClipping > 0);
     PRE(dFrontClipping < dBackClipping);
@@ -1198,24 +1197,24 @@ computePerspectiveProjection(glm::mat4* lpd3dMatrix, double dHalfHeight, double 
     dTmp1 = dHalfHeight / dFrontClipping;
     dTmp2 = dBackClipping / (dBackClipping - dFrontClipping);
 
-    (*lpd3dMatrix)[0][0] = (0.8); //(1.0);
-    (*lpd3dMatrix)[0][1] = (0.0);
+    (*matrix)[0][0] = (0.8); //(1.0);
+    (*matrix)[0][1] = (0.0);
 
-    (*lpd3dMatrix)[0][2] = (0.0);
-    (*lpd3dMatrix)[0][3] = (0.0);
-    (*lpd3dMatrix)[1][0] = (0.0);
-    (*lpd3dMatrix)[1][1] = (1.0);
-    (*lpd3dMatrix)[1][2] = (0.0);
-    (*lpd3dMatrix)[1][3] = (0.0);
-    (*lpd3dMatrix)[2][0] = (0.0);
-    (*lpd3dMatrix)[2][1] = (0.0);
-    (*lpd3dMatrix)[2][2] = (dTmp1 * dTmp2);
-    (*lpd3dMatrix)[2][3] = (dTmp1);
-    (*lpd3dMatrix)[3][0] = (0.0);
-    (*lpd3dMatrix)[3][1] = (0.0);
+    (*matrix)[0][2] = (0.0);
+    (*matrix)[0][3] = (0.0);
+    (*matrix)[1][0] = (0.0);
+    (*matrix)[1][1] = (1.0);
+    (*matrix)[1][2] = (0.0);
+    (*matrix)[1][3] = (0.0);
+    (*matrix)[2][0] = (0.0);
+    (*matrix)[2][1] = (0.0);
+    (*matrix)[2][2] = (dTmp1 * dTmp2);
+    (*matrix)[2][3] = (dTmp1);
+    (*matrix)[3][0] = (0.0);
+    (*matrix)[3][1] = (0.0);
 
-    (*lpd3dMatrix)[3][2] = (-dHalfHeight * dTmp2);
-    (*lpd3dMatrix)[3][3] = (0.0);
+    (*matrix)[3][2] = (-dHalfHeight * dTmp2);
+    (*matrix)[3][3] = (0.0);
 }
 
 void RenDevice::updateProjMatrix(double hither, double yon, double h)
@@ -1249,11 +1248,6 @@ void RenDevice::overrideClipping(double hither, double yon)
 }
 
 ///////////////////////////////////// Fog support /////////////////////////////
-// There are two types of fog in Direct3D, each has a different set of states
-// which must be enabled separately.  Table fog is per-pixel depth-based fog
-// and is a function of the raster engine.  Alternatively, the lighting module
-// can calculate fog on a per-vertex basis, alter the vertex colours and have
-// them interpolated across the polygon.  Table is better.
 
 void RenDevice::setFog(float start, float end, float dense, const RenColour& colour)
 {
@@ -1766,7 +1760,6 @@ void RenDevice::displayImage(const SysPathName& pathName)
 
 bool RenDevice::canSee(const MexPoint3d& pt) const
 {
-    // Originally there was a DX call like viewport_->TransformVertices(1, &txData, D3DTRANSFORM_CLIPPED, &offScreen);
     return true;
 }
 

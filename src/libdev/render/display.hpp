@@ -18,8 +18,8 @@ class RenCursor2d;
 class RenIDisplay;
 struct SDL_Window;
 
-// When a Direct3D app goes into full-screen exculsive mode, this class
-// is used to set the mode.  Probably should be merged with DevDisplay?
+// When an app goes into full-screen exclusive mode, this class
+// is used to set the mode.
 class RenDisplay
 {
 public:
@@ -154,10 +154,6 @@ public:
     // pointers may become invalid.  There's not much that can be done
     // about this, apart from writing a very sophisticated version of
     // COMPtr which knows about the dependencies.
-    // LPDIRECTDRAWSURFACE  backBuffer();
-    // IDirectDrawSurface* backBuffer();
-    // IDirectDrawSurface* frontBuffer();
-
     void useCursor(const RenCursor2d*);
     const RenCursor2d* currentCursor() const;
 
