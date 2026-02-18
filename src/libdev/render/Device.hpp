@@ -188,6 +188,16 @@ public:
         std::size_t offset);
     void recordDisableVertexAttribPointer(Ren::AttributeLocationId index);
 
+    void enableVertexLayout(
+        Ren::AttributeLocationId posAttr,
+        int posComponents,
+        Ren::AttributeLocationId uvAttr,
+        Ren::AttributeLocationId colAttr);
+    void disableVertexLayout(
+        Ren::AttributeLocationId posAttr,
+        Ren::AttributeLocationId uvAttr,
+        Ren::AttributeLocationId colAttr);
+
     void beginImmediateCommands();
     void endImmediateCommands();
     bool immediateCommandsActive() const;
