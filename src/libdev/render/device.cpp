@@ -2002,6 +2002,32 @@ void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW
     }
 }
 
+void RenDevice::enableVertexLayout(
+    Ren::AttributeLocationId posAttr,
+    int posComponents,
+    Ren::AttributeLocationId uvAttr,
+    Ren::AttributeLocationId colAttr)
+{
+    recordEnableVertexAttribPointer(
+        posAttr, posComponents, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+    recordEnableVertexAttribPointer(
+        uvAttr, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
+    recordEnableVertexAttribPointer(
+        colAttr, 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
+}
+
+void RenDevice::disableVertexLayout(
+    Ren::AttributeLocationId posAttr,
+    Ren::AttributeLocationId uvAttr,
+    Ren::AttributeLocationId colAttr)
+{
+    recordDisableVertexAttribPointer(posAttr);
+    recordDisableVertexAttribPointer(uvAttr);
+    recordDisableVertexAttribPointer(colAttr);
+}
+
 void RenDevice::renderScreenspace(
     const RenIVertex* vertices,
     const size_t nVertices,
@@ -2028,28 +2054,8 @@ void RenDevice::renderScreenspace(
         nVertices * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
 
-    // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
-    recordEnableVertexAttribPointer(
-        gui2D_.posAttr, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
-
-    // 2nd attribute buffer : UVs
-    recordEnableVertexAttribPointer(
-        gui2D_.uvAttr,
-        2,
-        Ren::BackendVertexAttribType::Float,
-        false,
-        sizeof(RenIVertex),
-        sizeof(RenIVertex) - 2 * sizeof(float));
-
-    // 3rd attribute vertex colours
-    recordEnableVertexAttribPointer(
-        gui2D_.colAttr,
-        4,
-        Ren::BackendVertexAttribType::UnsignedByte,
-        true,
-        sizeof(RenIVertex),
-        3 * sizeof(float) + sizeof(uint32_t));
+    enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
     recordCommand(Ren::Command::setDepthTest(false));
 
@@ -2059,9 +2065,7 @@ void RenDevice::renderScreenspace(
     recordCommand(Ren::Command::setBlendStateDisabled());
     recordCommand(Ren::Command::setDepthTest(true));
 
-    recordDisableVertexAttribPointer(gui2D_.posAttr);
-    recordDisableVertexAttribPointer(gui2D_.uvAttr);
-    recordDisableVertexAttribPointer(gui2D_.colAttr);
+    disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
 
 void RenDevice::renderSurface(
@@ -2181,28 +2185,8 @@ void RenDevice::renderSurface(
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     recordSetUniform1i(gui2D_.texSamplerUniform, TextureUnit);
 
-    // 1rst attribute buffer : vertices
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_));
-    recordEnableVertexAttribPointer(
-        gui2D_.posAttr, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
-
-    // 2nd attribute buffer : UVs
-    recordEnableVertexAttribPointer(
-        gui2D_.uvAttr,
-        2,
-        Ren::BackendVertexAttribType::Float,
-        false,
-        sizeof(RenIVertex),
-        sizeof(RenIVertex) - 2 * sizeof(float));
-
-    // 3rd attribute buffer : vertex colours
-    recordEnableVertexAttribPointer(
-        gui2D_.colAttr,
-        4,
-        Ren::BackendVertexAttribType::UnsignedByte,
-        true,
-        sizeof(RenIVertex),
-        3 * sizeof(float) + sizeof(uint32_t));
+    enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
     recordCommand(Ren::Command::setDepthTest(false));
 
@@ -2217,9 +2201,7 @@ void RenDevice::renderSurface(
 
     recordCommand(Ren::Command::setDepthTest(true));
 
-    recordDisableVertexAttribPointer(gui2D_.posAttr);
-    recordDisableVertexAttribPointer(gui2D_.uvAttr);
-    recordDisableVertexAttribPointer(gui2D_.colAttr);
+    disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
 
 void RenDevice::renderPrimitive(
@@ -2263,32 +2245,11 @@ void RenDevice::renderPrimitive(
         nVertices * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
-    recordEnableVertexAttribPointer(
-        standard_.posAttr, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
-
-    // 2nd attribute buffer : UVs
-    recordEnableVertexAttribPointer(
-        standard_.uvAttr,
-        2,
-        Ren::BackendVertexAttribType::Float,
-        false,
-        sizeof(RenIVertex),
-        sizeof(RenIVertex) - 2 * sizeof(float));
-
-    // vertex colours
-    recordEnableVertexAttribPointer(
-        standard_.colAttr,
-        4,
-        Ren::BackendVertexAttribType::UnsignedByte,
-        true,
-        sizeof(RenIVertex),
-        3 * sizeof(float) + sizeof(uint32_t));
+    enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
 
     recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
-    recordDisableVertexAttribPointer(standard_.posAttr);
-    recordDisableVertexAttribPointer(standard_.uvAttr);
-    recordDisableVertexAttribPointer(standard_.colAttr);
+    disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }
 
 void RenDevice::renderIndexed(
@@ -2335,26 +2296,7 @@ void RenDevice::renderIndexed(
         nVertices * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferID_));
-    recordEnableVertexAttribPointer(
-        standard_.posAttr, 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
-
-    // 2nd attribute buffer : UVs
-    recordEnableVertexAttribPointer(
-        standard_.uvAttr,
-        2,
-        Ren::BackendVertexAttribType::Float,
-        false,
-        sizeof(RenIVertex),
-        sizeof(RenIVertex) - 2 * sizeof(float));
-
-    // vertex colours
-    recordEnableVertexAttribPointer(
-        standard_.colAttr,
-        4,
-        Ren::BackendVertexAttribType::UnsignedByte,
-        true,
-        sizeof(RenIVertex),
-        3 * sizeof(float) + sizeof(uint32_t));
+    enableVertexLayout(standard_.posAttr, 3, standard_.uvAttr, standard_.colAttr);
 
     // Index buffer
     recordCommand(Ren::Command::bufferData(
@@ -2367,9 +2309,7 @@ void RenDevice::renderIndexed(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    recordDisableVertexAttribPointer(standard_.posAttr);
-    recordDisableVertexAttribPointer(standard_.uvAttr);
-    recordDisableVertexAttribPointer(standard_.colAttr);
+    disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }
 
 void RenDevice::renderIndexedScreenspace(
@@ -2411,26 +2351,7 @@ void RenDevice::renderIndexedScreenspace(
         nVertices * sizeof(RenIVertex),
         Ren::BufferUsage::StreamDraw));
     recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, glVertexDataBufferBillboardID_));
-    recordEnableVertexAttribPointer(
-        billboard_.posAttr, 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
-
-    // 2nd attribute buffer : UVs
-    recordEnableVertexAttribPointer(
-        billboard_.uvAttr,
-        2,
-        Ren::BackendVertexAttribType::Float,
-        false,
-        sizeof(RenIVertex),
-        sizeof(RenIVertex) - 2 * sizeof(float));
-
-    // vertex colours
-    recordEnableVertexAttribPointer(
-        billboard_.colAttr,
-        4,
-        Ren::BackendVertexAttribType::UnsignedByte,
-        true,
-        sizeof(RenIVertex),
-        3 * sizeof(float) + sizeof(uint32_t));
+    enableVertexLayout(billboard_.posAttr, 4, billboard_.uvAttr, billboard_.colAttr);
 
     // Index buffer
     recordCommand(Ren::Command::bufferData(
@@ -2443,7 +2364,5 @@ void RenDevice::renderIndexedScreenspace(
     Ren::BackendCommand command = Ren::Command::drawIndexed(topology, Ren::BackendIndexType::UnsignedShort, nIndices);
     recordCommand(std::move(command));
 
-    recordDisableVertexAttribPointer(billboard_.posAttr);
-    recordDisableVertexAttribPointer(billboard_.uvAttr);
-    recordDisableVertexAttribPointer(billboard_.colAttr);
+    disableVertexLayout(billboard_.posAttr, billboard_.uvAttr, billboard_.colAttr);
 }
