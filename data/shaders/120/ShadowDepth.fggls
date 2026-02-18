@@ -1,0 +1,5 @@
+#version 120
+
+void main() {
+    // Depth is written automatically by the fixed-function pipeline.
+}
