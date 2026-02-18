@@ -207,12 +207,25 @@ private:
         Ren::UniformLocationId texSamplerUniform{};
     };
 
+    struct ShadowDepthPipelineLocations
+    {
+        Ren::PipelineId id{};
+        Ren::AttributeLocationId posAttr{};
+        Ren::UniformLocationId lightSpaceMatrixUniform{};
+        Ren::UniformLocationId modelUniform{};
+    };
+
     Gui2DPipelineLocations gui2D_{};
     StandardPipelineLocations standard_{};
     BillboardPipelineLocations billboard_{};
+    ShadowDepthPipelineLocations shadowDepth_{};
 
     Ren::RenderPassId geometryRenderPass_{};
     Ren::RenderPassId uiRenderPass_{};
+    Ren::RenderPassId shadowRenderPass_{};
+
+    Ren::FramebufferId shadowFramebuffer_{};
+    Ren::BackendTextureHandle shadowDepthTexture_{};
 
     Ren::BufferId gl2DVertexBufferID_{};
     Ren::BufferId glVertexDataBufferID_{};

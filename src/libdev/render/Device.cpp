@@ -91,8 +91,12 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(gui2D_);                                                                                           \
     CB_DEPIMPL_AUTO(standard_);                                                                                        \
     CB_DEPIMPL_AUTO(billboard_);                                                                                       \
+    CB_DEPIMPL_AUTO(shadowDepth_);                                                                                     \
     CB_DEPIMPL_AUTO(geometryRenderPass_);                                                                              \
     CB_DEPIMPL_AUTO(uiRenderPass_);                                                                                    \
+    CB_DEPIMPL_AUTO(shadowRenderPass_);                                                                                \
+    CB_DEPIMPL_AUTO(shadowFramebuffer_);                                                                               \
+    CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
     CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
     CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
     CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
@@ -324,7 +328,22 @@ bool RenDevice::createGpuResources()
         billboard_.texSamplerUniform = backend_->pipelineUniformLocation(billboard_.id, "uTextureSampler");
     }
 
-    const std::array<Ren::PipelineId, 3> pipelineIDs = { gui2D_.id, standard_.id, billboard_.id };
+    // Shadow depth pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "ShadowDepth";
+        desc.fragmentShader = "ShadowDepth";
+        desc.vertexAttributes = {
+            { "vertexPosition_modelspace", 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+        };
+        desc.uniformNames = { "uLightSpaceMatrix", "uM" };
+        shadowDepth_.id = backend_->createPipeline(desc);
+        shadowDepth_.posAttr = backend_->pipelineAttribLocation(shadowDepth_.id, "vertexPosition_modelspace");
+        shadowDepth_.lightSpaceMatrixUniform = backend_->pipelineUniformLocation(shadowDepth_.id, "uLightSpaceMatrix");
+        shadowDepth_.modelUniform = backend_->pipelineUniformLocation(shadowDepth_.id, "uM");
+    }
+
+    const std::array<Ren::PipelineId, 4> pipelineIDs = { gui2D_.id, standard_.id, billboard_.id, shadowDepth_.id };
     if (std::ranges::any_of(pipelineIDs, [](Ren::PipelineId value) { return value == 0; }))
         return false;
 
@@ -350,6 +369,28 @@ bool RenDevice::createGpuResources()
         uiRenderPass_ = backend_->createRenderPass(desc);
     }
 
+    // Shadow render pass: depth-only, clear depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.hasColorAttachment = false;
+        desc.hasDepthAttachment = true;
+        desc.depthAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.depthAttachment.storeOp = Ren::StoreOp::Store;
+        shadowRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // Shadow map resources
+    {
+        static constexpr int ShadowMapSize = 1024;
+        shadowDepthTexture_ = backend_->createTexture2D();
+        backend_->textureStorage2D(shadowDepthTexture_, ShadowMapSize, ShadowMapSize, Ren::TextureFormat::Depth16);
+        backend_->textureSetMinMagFilter(shadowDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
+        backend_->textureSetWrap(shadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+
+        shadowFramebuffer_ = backend_->createFramebuffer();
+        backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
+    }
+
     // Prepare framebuffer for offscreen rendering
     glOffscreenFrameBuffID_ = backend_->createFramebuffer();
 
@@ -367,9 +408,14 @@ void RenDevice::releaseGpuResources()
     backend_->releasePipeline(gui2D_.id);
     backend_->releasePipeline(standard_.id);
     backend_->releasePipeline(billboard_.id);
+    backend_->releasePipeline(shadowDepth_.id);
 
     backend_->releaseRenderPass(geometryRenderPass_);
     backend_->releaseRenderPass(uiRenderPass_);
+    backend_->releaseRenderPass(shadowRenderPass_);
+
+    backend_->destroyTexture2D(shadowDepthTexture_);
+    backend_->releaseFramebuffer(shadowFramebuffer_);
 
     backend_->releaseBuffer(gl2DVertexBufferID_);
     backend_->releaseBuffer(glVertexDataBufferID_);
