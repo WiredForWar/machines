@@ -22,6 +22,7 @@ uniform vec3 uLightDir;
 uniform vec3 uLightColor;
 uniform vec3 uAmbientColor;
 uniform vec3 uMatDiffuse;
+uniform float uMatDiffuseA;
 uniform vec3 uMatAmbient;
 uniform vec3 uMatEmissive;
 uniform vec3 uFilter;
@@ -164,7 +165,7 @@ void main() {
             shadow = calcShadow(fragWorldPos, N, L, viewDist) * uShadowStrength;
 
         vec3 lit = uFilter * ((1.0 - shadow) * lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
-        litColor = vec4(clamp(lit, 0.0, 1.0), 1.0);
+        litColor = vec4(clamp(lit, 0.0, 1.0), uMatDiffuseA);
     }
     else
     {

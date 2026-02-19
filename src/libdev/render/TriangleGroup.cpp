@@ -140,10 +140,6 @@ void RenIDistinctGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& m
 
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
-    // Pre-lit vertices already have CPU lighting baked in; disable GPU lighting
-    // so renderIndexed uses the legacy vertexColor path instead of stale normals.
-    devImpl->clearGpuLightingState();
-
     devImpl->setMaterialHandles(mat);
 
     RenDevice::current()->recordCommand(Ren::Command::setCullFace(backFace()));
@@ -230,9 +226,6 @@ void RenILineGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& mat) 
     PRE((indices_.size() % 2) == 0);
 
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
-
-    // Pre-lit vertices already have CPU lighting baked in; disable GPU lighting.
-    devImpl->clearGpuLightingState();
 
     devImpl->setMaterialHandles(mat);
 

@@ -48,6 +48,7 @@ struct StandardObjectUniforms
     float matDiffuseR{};
     float matDiffuseG{};
     float matDiffuseB{};
+    float matDiffuseA{1.0f};
     float matAmbientR{};
     float matAmbientG{};
     float matAmbientB{};
