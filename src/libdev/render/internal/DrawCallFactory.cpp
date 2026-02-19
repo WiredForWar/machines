@@ -37,7 +37,7 @@ StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
         const RenColour& md = mat.diffuse();
         const RenColour& ma = mat.ambient();
         const RenColour& me = mat.emissive();
-        ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b();
+        ou.matDiffuseR = md.r(); ou.matDiffuseG = md.g(); ou.matDiffuseB = md.b(); ou.matDiffuseA = md.a();
         ou.matAmbientR = ma.r(); ou.matAmbientG = ma.g(); ou.matAmbientB = ma.b();
         ou.matEmissiveR = me.r(); ou.matEmissiveG = me.g(); ou.matEmissiveB = me.b();
 

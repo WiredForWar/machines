@@ -15,11 +15,13 @@ RenIDelayedAlphaGroup::RenIDelayedAlphaGroup(
     const RenIMaterialGroup* g,
     RenI::LitVtxAPtr v,
     const RenMaterial& m,
-    const glm::mat4& x)
+    const glm::mat4& x,
+    RenI::GpuMeshLightingSnapshot gpuSnapshot)
     : RenIDepthSortedItem(m)
     , group_(g)
     , vertices_(std::move(v))
     , xform_(x)
+    , gpuSnapshot_(std::move(gpuSnapshot))
 {
     PRE(group_);
     PRE(vertices_.get());
@@ -54,6 +56,11 @@ void RenIDelayedAlphaGroup::render()
     // SetTransform is not const-correct w.r.t. its 2nd argument.
     glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
     RenDevice::current()->setModelMatrix(*crufty);
+
+    // Restore per-mesh GPU lighting arrays (normals + per-vertex materials)
+    // that were snapshotted when this delayed group was created.
+    if (gpuSnapshot_.normalsCount > 0)
+        RenIDeviceImpl::currentPimpl()->restoreGpuMeshSnapshot(gpuSnapshot_);
 
     const bool doZBias = material_.interMeshCoplanar();
     if (doZBias)
