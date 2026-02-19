@@ -156,53 +156,63 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
 
 bool W4dCameraVolume::canSee(const MexQuad3d& quad) const
 {
-    // For each frustum plane, check if all 4 vertices of the quad are on the
-    // outside. If so for any plane, the quad is entirely outside the frustum.
-    // Plane convention: dot product > 0 means outside, < 0 means inside.
+    // Test the portal quad against the full frustum (4 side planes + behind
+    // eye + far plane).  If all 4 vertices of the quad lie outside any single
+    // plane, the portal is entirely outside the frustum and we skip traversal.
+    //
+    // The near plane is deliberately skipped so that portals between the eye
+    // and the near clip plane are still traversed (e.g. the camera's own room
+    // boundary).
+    //
+    // Sign convention (same as intersects): for a side plane normal N,
+    //   dot(N, P - eyePoint) < 0  =>  P is on the inside (visible) side.
+    //   dot(N, P - eyePoint) >= 0 =>  P is on the outside (culled) side.
+    // For the line-of-sight direction:
+    //   dot(lineOfSight, P - eyePoint) < 0  =>  P is behind the camera.
+    //   dot(lineOfSight, P - farPlane) > 0   =>  P is beyond the far plane.
 
-    // Near clipping plane: normal is lineOfSight_, point is nearPlanePoint_.
+    // 1. Behind-camera test: reject if all vertices are behind the eye.
     {
-        bool allOutside = true;
-        for (uint i = 0; i < 4 && allOutside; ++i)
+        bool allBehind = true;
+        for (uint i = 0; i < 4 && allBehind; ++i)
         {
-            const MATHEX_SCALAR h = MexVec3(nearPlanePoint_, quad.vertex(i)).dotProduct(lineOfSight_);
+            const MATHEX_SCALAR h = MexVec3(eyePoint_, quad.vertex(i)).dotProduct(lineOfSight_);
             if (h >= 0.0)
-                allOutside = false;
+                allBehind = false;
         }
-        if (allOutside)
+        if (allBehind)
             return false;
     }
 
-    // Far clipping plane: normal is -lineOfSight_, point is farPlanePoint_.
+    // 2. Far plane test: reject if all vertices are beyond the yon clip plane.
     if (clipFarPlane_)
     {
-        bool allOutside = true;
-        for (uint i = 0; i < 4 && allOutside; ++i)
+        bool allBeyond = true;
+        for (uint i = 0; i < 4 && allBeyond; ++i)
         {
             const MATHEX_SCALAR h = MexVec3(farPlanePoint_, quad.vertex(i)).dotProduct(lineOfSight_);
             if (h <= 0.0)
-                allOutside = false;
+                allBeyond = false;
         }
-        if (allOutside)
+        if (allBeyond)
             return false;
     }
 
-    // Side planes: normal points inward, eye is on the plane.
-    // Test right, left, up, down frustum planes.
-    const MexVec3* sidePlanes[] = {
+    // 3. Four side frustum planes (left, right, up, down).
+    const MexVec3* planes[4] = {
         &horizontalRightNormal_,
         &horizontalLeftNormal_,
         &verticalUpNormal_,
         &verticalDownNormal_,
     };
 
-    for (const auto* normal : sidePlanes)
+    for (const MexVec3* plane : planes)
     {
         bool allOutside = true;
         for (uint i = 0; i < 4 && allOutside; ++i)
         {
-            const MATHEX_SCALAR h = MexVec3(eyePoint_, quad.vertex(i)).dotProduct(*normal);
-            if (h <= 0.0)
+            const MATHEX_SCALAR h = MexVec3(eyePoint_, quad.vertex(i)).dotProduct(*plane);
+            if (h < 0.0)
                 allOutside = false;
         }
         if (allOutside)
