@@ -62,6 +62,7 @@ set(RENDER_SOURCES
     internal/BmpFontCore.hpp
     internal/DrawCallFactory.cpp
     internal/DrawCallFactory.hpp
+    internal/GpuMeshLightingSnapshot.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
     internal/PipelineSpec.hpp

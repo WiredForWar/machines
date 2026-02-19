@@ -13,6 +13,7 @@
 
 #include "render/internal/modeobsv.hpp"
 #include "render/internal/internal.hpp"
+#include "render/internal/GpuMeshLightingSnapshot.hpp"
 #include "render/colour.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendTypes.hpp"
@@ -80,6 +81,9 @@ public:
     void hasSharedVideoMemory(bool);
 
     void clearGpuLightingState();
+
+    RenI::GpuMeshLightingSnapshot takeGpuMeshSnapshot() const;
+    void restoreGpuMeshSnapshot(const RenI::GpuMeshLightingSnapshot& snapshot);
 
     void enableAlphaBlending();
     void disableAlphaBlending();
