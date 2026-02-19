@@ -331,10 +331,15 @@ W4dEntity::RenderType W4dComposite::render(const W4dCamera& camera, W4dComplexit
     CB_W4dComposite_DEPIMPL();
     PRE_INFO(name());
 
-    // Calculate the effective range we are going to use for the composite
+    // Calculate the squared horizontal distance for LOD selection.
+    // Using 2D (X/Y) distance instead of 3D prevents the zenith camera's
+    // height from inflating the range and pushing ground-level composites
+    // beyond their LOD thresholds while they are still visible on screen.
     const MexPoint3d eyePos(camera.globalTransform().position());
     const MexPoint3d myPos(globalTransform().position());
-    const MATHEX_SCALAR effectiveRangeSqr = eyePos.sqrEuclidianDistance(myPos);
+    const MATHEX_SCALAR dx = eyePos.x() - myPos.x();
+    const MATHEX_SCALAR dy = eyePos.y() - myPos.y();
+    const MATHEX_SCALAR effectiveRangeSqr = dx * dx + dy * dy;
 
     // As an optimisation, maxRange_ holds the highest LOD range of any
     // mesh owned by this composite, its links or its children.  If we are

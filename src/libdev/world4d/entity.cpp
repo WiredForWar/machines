@@ -847,11 +847,15 @@ W4dEntity::RenderType W4dEntity::render(const W4dCamera& camera, W4dComplexity& 
     PRE_INFO(name());
     PRE(hasMesh());
 
-    // Compute the square of the camera to eye distance and search the mesh
-    // list for the appropriate mesh.
+    // Compute the squared horizontal distance for LOD selection.
+    // Using 2D (X/Y) distance instead of 3D prevents the zenith camera's
+    // height from inflating the range and pushing ground-level entities
+    // beyond their LOD thresholds while they are still visible on screen.
     const MexPoint3d eyePos(camera.globalTransform().position());
     const MexPoint3d myPos(globalTransform().position());
-    const W4dDistance effectiveRangeSqr = eyePos.sqrEuclidianDistance(myPos);
+    const MATHEX_SCALAR dx = eyePos.x() - myPos.x();
+    const MATHEX_SCALAR dy = eyePos.y() - myPos.y();
+    const W4dDistance effectiveRangeSqr = dx * dx + dy * dy;
 
     // Enable any colour filter attached to this entity.
     const RenColour& filter = (filterColourIsSet()) ? filterColour() : RenColour::white();
