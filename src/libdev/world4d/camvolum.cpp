@@ -9,6 +9,7 @@
 #include "world4d/composit.hpp"
 #include "world4d/camera.hpp"
 
+#include "mathex/quad3d.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/abox3d.hpp"
 
@@ -151,6 +152,64 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
     }
 
     return result;
+}
+
+bool W4dCameraVolume::canSee(const MexQuad3d& quad) const
+{
+    // For each frustum plane, check if all 4 vertices of the quad are on the
+    // outside. If so for any plane, the quad is entirely outside the frustum.
+    // Plane convention: dot product > 0 means outside, < 0 means inside.
+
+    // Near clipping plane: normal is lineOfSight_, point is nearPlanePoint_.
+    {
+        bool allOutside = true;
+        for (uint i = 0; i < 4 && allOutside; ++i)
+        {
+            const MATHEX_SCALAR h = MexVec3(nearPlanePoint_, quad.vertex(i)).dotProduct(lineOfSight_);
+            if (h >= 0.0)
+                allOutside = false;
+        }
+        if (allOutside)
+            return false;
+    }
+
+    // Far clipping plane: normal is -lineOfSight_, point is farPlanePoint_.
+    if (clipFarPlane_)
+    {
+        bool allOutside = true;
+        for (uint i = 0; i < 4 && allOutside; ++i)
+        {
+            const MATHEX_SCALAR h = MexVec3(farPlanePoint_, quad.vertex(i)).dotProduct(lineOfSight_);
+            if (h <= 0.0)
+                allOutside = false;
+        }
+        if (allOutside)
+            return false;
+    }
+
+    // Side planes: normal points inward, eye is on the plane.
+    // Test right, left, up, down frustum planes.
+    const MexVec3* sidePlanes[] = {
+        &horizontalRightNormal_,
+        &horizontalLeftNormal_,
+        &verticalUpNormal_,
+        &verticalDownNormal_,
+    };
+
+    for (const auto* normal : sidePlanes)
+    {
+        bool allOutside = true;
+        for (uint i = 0; i < 4 && allOutside; ++i)
+        {
+            const MATHEX_SCALAR h = MexVec3(eyePoint_, quad.vertex(i)).dotProduct(*normal);
+            if (h <= 0.0)
+                allOutside = false;
+        }
+        if (allOutside)
+            return false;
+    }
+
+    return true;
 }
 
 void W4dCameraVolume::isYonClippingEnabled(bool isIt)

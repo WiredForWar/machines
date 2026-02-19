@@ -18,6 +18,7 @@
 #include "mathex/vec3.hpp"
 
 // forward refs
+class MexQuad3d;
 class W4dCamera;
 class W4dEntity;
 
@@ -42,6 +43,10 @@ public:
 
     // True if the entity may intersect the camera's view volume
     bool intersects(const W4dEntity& entity) const;
+
+    // True if any part of the quad may be inside the camera's view volume.
+    // Used for portal visibility testing during domain traversal.
+    bool canSee(const MexQuad3d& quad) const;
 
     void CLASS_INVARIANT;
 

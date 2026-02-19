@@ -508,8 +508,7 @@ bool W4dCamera::canSee(const MexPoint3d& pt) const
 
 bool W4dCamera::canSee(const MexQuad3d& quad) const
 {
-    //    return camera_->canSee( quad );
-    return manager_->pDevice()->canSee(quad);
+    return pVolume_->canSee(quad);
 }
 
 uint W4dCamera::entitiesRendered() const
