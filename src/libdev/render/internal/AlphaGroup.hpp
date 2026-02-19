@@ -10,17 +10,17 @@
 #include "render/Material.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/PolySortedDraw.hpp"
+#include "render/internal/GpuMeshLightingSnapshot.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 class RenIMaterialGroup;
-class RenIVertexData;
 
 // A RenIMaterialGroup which cannot be drawn in order.  These are pushed onto a
 // list, then sorted and drawn after all other rendering is complete.
 class RenIDelayedAlphaGroup : public RenIDepthSortedItem
 {
 public:
-    RenIDelayedAlphaGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&);
+    RenIDelayedAlphaGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&, RenI::GpuMeshLightingSnapshot gpuSnapshot = {});
 
     ~RenIDelayedAlphaGroup() override;
     void render() override;
@@ -29,6 +29,7 @@ protected:
     const RenIMaterialGroup* group_;
     RenI::LitVtxAPtr vertices_;
     const glm::mat4 xform_;
+    RenI::GpuMeshLightingSnapshot gpuSnapshot_;
 
     // Operations deliberately revoked.
     RenIDelayedAlphaGroup(const RenIDelayedAlphaGroup&);

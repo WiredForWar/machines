@@ -103,6 +103,55 @@ void RenIDeviceImpl::clearGpuLightingState()
     hasPerVertexMaterials_ = false;
 }
 
+RenI::GpuMeshLightingSnapshot RenIDeviceImpl::takeGpuMeshSnapshot() const
+{
+    RenI::GpuMeshLightingSnapshot snap;
+    const size_t floatCount = expandedNormalsCount_ * 3;
+    snap.normalsCount = expandedNormalsCount_;
+
+    if (expandedNormalsCount_ > 0)
+    {
+        snap.normals.assign(expandedNormals_.data(), expandedNormals_.data() + floatCount);
+    }
+
+    snap.hasPerVertexMaterials = hasPerVertexMaterials_;
+    if (hasPerVertexMaterials_)
+    {
+        snap.vtxDiffuse.assign(expandedVtxDiffuse_.data(), expandedVtxDiffuse_.data() + floatCount);
+        snap.vtxAmbient.assign(expandedVtxAmbient_.data(), expandedVtxAmbient_.data() + floatCount);
+        snap.vtxEmissive.assign(expandedVtxEmissive_.data(), expandedVtxEmissive_.data() + floatCount);
+    }
+
+    return snap;
+}
+
+void RenIDeviceImpl::restoreGpuMeshSnapshot(const RenI::GpuMeshLightingSnapshot& snap)
+{
+    expandedNormalsCount_ = snap.normalsCount;
+    const size_t floatCount = snap.normalsCount * 3;
+
+    if (snap.normalsCount > 0)
+    {
+        if (expandedNormals_.size() < floatCount)
+            expandedNormals_.resize(floatCount);
+        std::copy(snap.normals.begin(), snap.normals.end(), expandedNormals_.begin());
+    }
+
+    hasPerVertexMaterials_ = snap.hasPerVertexMaterials;
+    if (snap.hasPerVertexMaterials)
+    {
+        if (expandedVtxDiffuse_.size() < floatCount)
+            expandedVtxDiffuse_.resize(floatCount);
+        if (expandedVtxAmbient_.size() < floatCount)
+            expandedVtxAmbient_.resize(floatCount);
+        if (expandedVtxEmissive_.size() < floatCount)
+            expandedVtxEmissive_.resize(floatCount);
+        std::copy(snap.vtxDiffuse.begin(), snap.vtxDiffuse.end(), expandedVtxDiffuse_.begin());
+        std::copy(snap.vtxAmbient.begin(), snap.vtxAmbient.end(), expandedVtxAmbient_.begin());
+        std::copy(snap.vtxEmissive.begin(), snap.vtxEmissive.end(), expandedVtxEmissive_.begin());
+    }
+}
+
 void RenIDeviceImpl::enableAlphaBlending()
 {
     PRE(parent_);

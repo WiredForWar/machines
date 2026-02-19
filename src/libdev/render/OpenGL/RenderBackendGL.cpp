@@ -1366,6 +1366,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUnifor
         const GLint locLC = glGetUniformLocation(prog, "uLightColor");
         const GLint locAC = glGetUniformLocation(prog, "uAmbientColor");
         const GLint locMD = glGetUniformLocation(prog, "uMatDiffuse");
+        const GLint locMDA = glGetUniformLocation(prog, "uMatDiffuseA");
         const GLint locMA = glGetUniformLocation(prog, "uMatAmbient");
         const GLint locME = glGetUniformLocation(prog, "uMatEmissive");
         const GLint locF = glGetUniformLocation(prog, "uFilter");
@@ -1374,6 +1375,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUnifor
         if (locLC >= 0) glUniform3f(locLC, u.lightColorR, u.lightColorG, u.lightColorB);
         if (locAC >= 0) glUniform3f(locAC, u.ambientColorR, u.ambientColorG, u.ambientColorB);
         if (locMD >= 0) glUniform3f(locMD, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
+        if (locMDA >= 0) glUniform1f(locMDA, u.matDiffuseA);
         if (locMA >= 0) glUniform3f(locMA, u.matAmbientR, u.matAmbientG, u.matAmbientB);
         if (locME >= 0) glUniform3f(locME, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
         if (locF >= 0) glUniform3f(locF, u.filterR, u.filterG, u.filterB);

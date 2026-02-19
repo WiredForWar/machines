@@ -10,16 +10,16 @@
 #include "render/Material.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/PolySortPriority.hpp"
+#include "render/internal/GpuMeshLightingSnapshot.hpp"
 
 class RenIMaterialGroup;
-class RenIVertexData;
 
 // A RenIMaterialGroup which cannot be drawn in order.  These are pushed onto a
 // list, then sorted and drawn after all other rendering is complete.
 class RenIDelayedCoplanarGroup : public RenIPrioritySortedItem
 {
 public:
-    RenIDelayedCoplanarGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&);
+    RenIDelayedCoplanarGroup(const RenIMaterialGroup*, RenI::LitVtxAPtr, const RenMaterial&, const glm::mat4&, RenI::GpuMeshLightingSnapshot gpuSnapshot = {});
 
     ~RenIDelayedCoplanarGroup() override;
     void render() override;
@@ -35,6 +35,7 @@ protected:
     const RenIMaterialGroup* group_;
     RenI::LitVtxAPtr vertices_;
     const glm::mat4 xform_;
+    RenI::GpuMeshLightingSnapshot gpuSnapshot_;
 };
 
 #endif
