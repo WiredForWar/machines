@@ -14,6 +14,7 @@
 #pragma once
 
 #include "base/base.hpp"
+#include "render/Alignment.hpp"
 #include "render/colour.hpp"
 #include "render/render.hpp"
 #include "system/pathname.hpp"
@@ -32,11 +33,6 @@ class BmpFont
 // Canonical form revoked
 {
 public:
-    enum Justification
-    {
-        LEFT_JUSTIFY,
-        RIGHT_JUSTIFY
-    };
     enum FontType
     {
         PROPORTIONAL,
@@ -57,21 +53,13 @@ public:
     // Fixed space fonts
     size_t maxCharWidth() const;
 
-    // Display text on screen via painter.
-    void drawText(
-        Painter& painter,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth,
-        Justification = LEFT_JUSTIFY) const;
+    // The font's glyph bitmap atlas.
+    const RenSurface& fontBitmap() const;
 
-    // Display text on bitmap.
-    void drawText(
-        RenSurface* pBmp,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth,
-        Justification = LEFT_JUSTIFY) const;
+    // Horizontal offset (in pixels) of glyph for character c in the atlas.
+    size_t charOffset(unsigned char c) const;
+
+    const RenColour& underlineColour() const;
 
     // Get/Set font type ( proportional or fixed space ).
     FontType fontType() const;
@@ -88,7 +76,7 @@ public:
     // Switch underline on/off
     void underline(bool);
     bool underline() const;
-    void underlineColour(const RenColour&);
+    void underlineColour(RenColour colour);
 
     // Return the display width of "text" without actually rendering the text.
     int horizontalAdvance(const std::string_view& text) const;
@@ -111,31 +99,10 @@ public:
     static char bmuMinedPointsIndex(); // 1992 // 0x99
     static char researchPointsIndex(); // 2012 // 0x9e
 
-protected:
-    void drawTextLeftJustify(
-        Painter& painter,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth) const;
-    void drawTextRightJustify(
-        Painter& painter,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth) const;
-    void drawTextLeftJustify(
-        RenSurface* pBmp,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth) const;
-    void drawTextRightJustify(
-        RenSurface* pBmp,
-        const std::string_view& text,
-        const Ren::Point& startPos,
-        int maxWidth) const;
-
 private:
     void CLASS_INVARIANT;
 
+    friend class Painter;
     friend std::ostream& operator<<(std::ostream& o, const BmpFont& t);
 
     BmpFontCore* pFontCore_ = nullptr;

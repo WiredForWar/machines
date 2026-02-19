@@ -358,12 +358,12 @@ void MachGuiPlayerListItem::doDisplay()
         }
 
         // Draw list box item text
-        getHighlightFont().drawText(
-            GuiPainter::instance(),
+        GuiPainter::instance().drawText(
             playerInfo_.name_,
             Ren::Point(
                 absoluteBoundary().minCorner().x() + MachGui::darkTickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
+            getHighlightFont(),
             width());
 
         // Only the host can control the names displayed in each slot ( i.e. change from human to computer, open or
@@ -415,12 +415,12 @@ void MachGuiPlayerListItem::doDisplay()
         }
 
         // Draw list box item text
-        getFont().drawText(
-            GuiPainter::instance(),
+        GuiPainter::instance().drawText(
             playerInfo_.name_,
             Ren::Point(
                 absoluteBoundary().minCorner().x() + MachGui::tickBmp().width() + 2 * MachGui::menuScaleFactor(),
                 absoluteBoundary().minCorner().y() + textYOffset),
+            getFont(),
             width());
     }
 

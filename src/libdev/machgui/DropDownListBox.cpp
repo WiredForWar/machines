@@ -50,7 +50,7 @@ GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 // virtual
 void MachGuiDropDownListBoxItem::doDisplay()
 {
-    const Gui::Coord textCoord(
+    const Ren::Point textCoord(
         absoluteBoundary().minCorner().x() + 2 * MachGui::menuScaleFactor(),
         absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor());
 
@@ -60,7 +60,7 @@ void MachGuiDropDownListBoxItem::doDisplay()
             MachGui::longGlowBmp(),
             Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
             absoluteBoundary().minCorner());
-        getUnderlineFont().drawText(GuiPainter::instance(), text(), Ren::Point(textCoord.x(), textCoord.y()), width());
+        GuiPainter::instance().drawText(text(), textCoord, getUnderlineFont(), width());
     }
     else if (isHighlighted())
     {
@@ -68,7 +68,7 @@ void MachGuiDropDownListBoxItem::doDisplay()
             MachGui::longGlowBmp(),
             Gui::Box(0, 0, width(), height() - 1 * MachGui::menuScaleFactor()),
             absoluteBoundary().minCorner());
-        getHighlightFont().drawText(GuiPainter::instance(), text(), Ren::Point(textCoord.x(), textCoord.y()), width());
+        GuiPainter::instance().drawText(text(), textCoord, getHighlightFont(), width());
     }
     else
     {
@@ -80,14 +80,7 @@ void MachGuiDropDownListBoxItem::doDisplay()
             1 * MachGui::menuScaleFactor());
 
         // Draw list box item text
-        if (whiteFont_)
-        {
-            getWhiteFont().drawText(GuiPainter::instance(), text(), Ren::Point(textCoord.x(), textCoord.y()), width());
-        }
-        else
-        {
-            getFont().drawText(GuiPainter::instance(), text(), Ren::Point(textCoord.x(), textCoord.y()), width());
-        }
+        GuiPainter::instance().drawText(text(), textCoord, whiteFont_ ? getWhiteFont() : getFont(), width());
     }
 }
 

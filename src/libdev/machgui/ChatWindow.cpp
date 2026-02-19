@@ -90,7 +90,7 @@ void MachGuiChatWindow::doDisplay()
     {
         --loop;
         startY -= font.height() + 1 * Gui::uiScaleFactor();
-        font.drawText(GuiPainter::instance(), linesOfText()[loop], Ren::Point(absoluteBoundary().minCorner().x(), startY), width());
+        GuiPainter::instance().drawText(linesOfText()[loop], Ren::Point(absoluteBoundary().minCorner().x(), startY), font, width());
     }
 }
 

@@ -148,7 +148,7 @@ void MachGuiSingleSelectionListBoxItem::doDisplay()
         }
     }
 
-    textFont.drawText(GuiPainter::instance(), text_, Ren::Point(textPos.x(), textPos.y()), static_cast<int>(width()));
+    GuiPainter::instance().drawText(text_, Ren::Point(textPos.x(), textPos.y()), textFont, static_cast<int>(width()));
 }
 
 bool MachGuiSingleSelectionListBoxItem::isHighlighted() const

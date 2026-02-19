@@ -93,12 +93,13 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
         int fontHeight = shadowFont_.height() + 1;
         int index = 0;
 
+        Ren::Painter bmpPainter(textBmp_);
         for (ctl_list<std::string>::const_iterator iter = MachGuiInGameChatMessages::instance().messages().begin();
              iter != MachGuiInGameChatMessages::instance().messages().end();
              ++iter)
         {
-            shadowFont_.drawText(&textBmp_, *iter, Ren::Point(1, 1 + (fontHeight * index)), width());
-            font_.drawText(&textBmp_, *iter, Ren::Point(0, fontHeight * index), width());
+            bmpPainter.drawText(*iter, Ren::Point(1, 1 + (fontHeight * index)), shadowFont_, width());
+            bmpPainter.drawText(*iter, Ren::Point(0, fontHeight * index), font_, width());
             ++index;
         }
     }
