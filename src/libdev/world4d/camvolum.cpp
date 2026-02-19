@@ -140,12 +140,10 @@ bool W4dCameraVolume::intersects(const W4dEntity& entity) const
                     h = v.dotProduct(verticalUpNormal_);
                     result = h < 0.0 || (h * h < sqrRadius);
 
-                    if (result)
-                    {
-                        // Check down vertical clipping
-                        h = v.dotProduct(verticalDownNormal_);
-                        result = h < 0.0 || (h * h < sqrRadius);
-                    }
+                    // The down vertical plane test is deliberately skipped.
+                    // For a zenith camera, this plane clips flat ground-level
+                    // entities whose bounding sphere centroid falls just outside
+                    // the plane.  The GPU handles actual screen-edge clipping.
                 }
             }
         }
