@@ -9,6 +9,9 @@
 #include "render/camera.hpp"
 #include "render/device.hpp"
 
+#include <algorithm>
+#include <queue>
+
 #include "world4d/domain.hpp"
 #include "world4d/portal.hpp"
 #include "world4d/root.hpp"
@@ -311,28 +314,57 @@ void W4dCamera::domainRender(const int maxDepth)
 }
 
 void W4dCamera::recursiveDomainRender(
-    W4dDomain* in, // what this call takes us into
-    int depth, // how many domains we've gone through
-    int maxDepth // stop after this many domains
+    W4dDomain* startDomain,
+    int /*depth*/,
+    int maxDepth
 )
 {
-    PRE(in);
+    PRE(startDomain);
+    PRE(startDomain->latestRenderPassId() != renderPassId());
 
-    // The domain traversal algorithm should ensure that we don't process
-    // the same domain twice.
-    PRE(in->latestRenderPassId() != renderPassId());
+    // BFS traversal: process domains breadth-first so that rooms closest
+    // (in graph distance) to the camera are rendered first.  This prevents
+    // the depth budget from being wasted going deep into one corridor chain
+    // before visiting nearby visible rooms.
 
-    CULL_STREAM("traversing into " << (W4dEntity*)in << " depth=" << depth << "\n");
-    CULL_INDENT(2);
-    CULL_TRACE(++domainsRendered_);
-
-    // Limit the rendering.
-    if (depth > maxDepth)
+    struct BfsEntry
     {
-        CULL_STREAM("reached maximum domain depth (" << maxDepth << ")\n");
-    }
-    else
+        W4dDomain* domain{};
+        int depth{};
+    };
+
+    std::queue<BfsEntry> bfsQueue;
+    bfsQueue.push({startDomain, 0});
+
+    // With proper 6-plane canSee culling (behind + far + 4 sides) and BFS,
+    // the frustum test is the real traversal limiter.  The budget is just a
+    // safety net against degenerate portal graphs.  Use a generous cap so
+    // that indoor maps with many small domains are fully rendered.
+    const int safetyCap = std::max(maxDepth * 4, 512);
+    int domainsProcessed = 0;
+
+    while (!bfsQueue.empty())
     {
+        const auto [in, depth] = bfsQueue.front();
+        bfsQueue.pop();
+
+        // Skip if already processed (could have been enqueued from multiple portals
+        // before being processed).
+        if (in != startDomain && in->latestRenderPassId() == renderPassId())
+            continue;
+
+        // Safety limit to prevent runaway traversal.
+        if (domainsProcessed > safetyCap)
+        {
+            CULL_STREAM("reached safety cap (" << safetyCap << ")\n");
+            continue;
+        }
+        ++domainsProcessed;
+
+        CULL_STREAM("traversing into " << (W4dEntity*)in << " depth=" << depth << "\n");
+        CULL_INDENT(2);
+        CULL_TRACE(++domainsRendered_);
+
         // Render the domain's subtree.
         // NB: also tags the domain with this camera's render pass Id.
         renderTree(in, DOMAIN_RENDER);
@@ -363,7 +395,7 @@ void W4dCamera::recursiveDomainRender(
             in->lightListForEdit().turnOffAll();
         }
 
-        // Recursively traverse to neighbouring domains.
+        // Enqueue neighbouring domains (BFS expansion).
         const W4dDomain::W4dPortals& portals = in->portals();
         for (W4dDomain::W4dPortals::const_iterator it = portals.begin(); it != portals.end(); ++it)
         {
@@ -380,33 +412,14 @@ void W4dCamera::recursiveDomainRender(
                 if (nextDomain->latestRenderPassId() != renderPassId())
                 {
                     CULL_STREAM("through " << portal->globalAperture() << " ");
-                    // Has the camera moved since the last render pass?
-                    if (lastRenderTransformKey() == globalTransform().key())
+                    if (canSee(portal->globalAperture()))
                     {
-                        // the camera has not moved, render the domain if it's been rendered at the last pass
-                        if (nextDomain->passId() == lastRenderPassId())
-                        {
-                            CULL_STREAM("visible (since visible at last pass and camera has not moved)\n");
-                            recursiveDomainRender(nextDomain, depth + 1, maxDepth);
-                        }
-                        else
-                        {
-                            CULL_STREAM("not visible (since not visible at last pass and camera has not moved)\n");
-                        }
+                        CULL_STREAM("visible — enqueued\n");
+                        bfsQueue.push({nextDomain, depth + 1});
                     }
                     else
                     {
-                        // Do the most expensive test last: is the portal in our FOV.
-                        if (canSee(portal->globalAperture()))
-                        {
-                            CULL_STREAM("visible\n");
-                            recursiveDomainRender(nextDomain, depth + 1, maxDepth);
-                        }
-
-                        else
-                        {
-                            CULL_STREAM("not visible\n");
-                        }
+                        CULL_STREAM("not visible\n");
                     }
                 }
                 else
@@ -415,10 +428,10 @@ void W4dCamera::recursiveDomainRender(
                 }
             }
         }
-    }
 
-    CULL_STREAM("leaving " << (W4dEntity*)in << " depth=" << depth << "\n\n");
-    CULL_INDENT(-2);
+        CULL_STREAM("leaving " << (W4dEntity*)in << " depth=" << depth << "\n\n");
+        CULL_INDENT(-2);
+    }
 }
 
 void W4dCamera::adaptToEnvironment(W4dEnvironment* env)
