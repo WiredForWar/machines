@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "render/Alignment.hpp"
 #include "render/render.hpp"
 
 #include <optional>
@@ -15,6 +16,7 @@ class RenSurface;
 
 namespace Ren {
 
+class BmpFont;
 class Font;
 class TextOptions;
 
@@ -37,6 +39,12 @@ public:
 
     // Text drawing
     void drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const;
+    void drawText(
+        std::string_view text,
+        const Point& startPos,
+        const BmpFont& font,
+        int maxWidth,
+        Alignment alignment = AlignLeft) const;
 
     // Blit operations
     void blit(const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {}, BlitMode mode = {}) const;

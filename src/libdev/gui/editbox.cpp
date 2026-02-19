@@ -98,7 +98,7 @@ void GuiSingleLineEditBox::doDisplay()
     }
     else
     {
-        font_.drawText(painter, text(), Ren::Point(startText.x(), startText.y()), maxWidth());
+        painter.drawText(text(), Ren::Point(startText.x(), startText.y()), font_, maxWidth());
     }
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this

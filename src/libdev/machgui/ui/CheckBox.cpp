@@ -81,7 +81,7 @@ void MachGuiCheckBox::doDisplay()
 
     {
         Gui::Coord pos = absoluteBoundary().topLeft() + textPos_;
-        font_.drawText(GuiPainter::instance(), label_, Ren::Point(pos.x(), pos.y()), font_.horizontalAdvance(label_));
+        GuiPainter::instance().drawText(label_, Ren::Point(pos.x(), pos.y()), font_, font_.horizontalAdvance(label_));
     }
 
     if (isChecked_)

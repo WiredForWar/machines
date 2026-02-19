@@ -335,35 +335,24 @@ void MachPromptText::displayChatMessage()
     {
         lastDisplayedChatMessage_ = displayChatMessageStr;
 
-        Ren::Painter(promptBmp_).clearRectangle(promptBmp_.size());
+        Ren::Painter bmpPainter(promptBmp_);
+        bmpPainter.clearRectangle(promptBmp_.size());
 
         // Work out starting position for text
-        Gui::Coord startBeginningText = Gui::Coord(0, startY);
-        Gui::Coord shadowStartBeginningText = startBeginningText + Gui::Vec(1, 1) * Gui::uiScaleFactor();
-        Gui::Coord startText = Gui::Coord(caretPosition, startY);
-        Gui::Coord shadowStartText = startText + Gui::Vec(1, 1) * Gui::uiScaleFactor();
+        Ren::Point startBeginningText = Ren::Point(0, startY);
+        Ren::Point shadowStartBeginningText = startBeginningText + Ren::Point(1, 1) * Gui::uiScaleFactor();
+        Ren::Point startText = Ren::Point(caretPosition, startY);
+        Ren::Point shadowStartText = startText + Ren::Point(1, 1) * Gui::uiScaleFactor();
 
         // Draw shadow and normal text
-        shadowFont_.drawText(&promptBmp_, chatMessageIntendedForStr_, Ren::Point(shadowStartBeginningText.x(), shadowStartBeginningText.y()), promptBmp_.width());
-        shadowFont_.drawText(
-            &promptBmp_,
-            rightText(),
-            Ren::Point(shadowStartText.x(), shadowStartText.y()),
-            promptBmp_.width() - caretPosition - 1 - beginningTextWidth_);
-        shadowFont_.drawText(
-            &promptBmp_,
-            leftText(),
-            Ren::Point(shadowStartText.x(), shadowStartText.y()),
-            caretPosition - beginningTextWidth_,
-            GuiBmpFont::RIGHT_JUSTIFY);
-        font_.drawText(&promptBmp_, chatMessageIntendedForStr_, Ren::Point(startBeginningText.x(), startBeginningText.y()), promptBmp_.width());
-        font_.drawText(&promptBmp_, rightText(), Ren::Point(startText.x(), startText.y()), promptBmp_.width() - caretPosition - beginningTextWidth_);
-        font_.drawText(
-            &promptBmp_,
-            leftText(),
-            Ren::Point(startText.x(), startText.y()),
-            caretPosition - beginningTextWidth_,
-            GuiBmpFont::RIGHT_JUSTIFY);
+        bmpPainter.drawText(chatMessageIntendedForStr_, shadowStartBeginningText, shadowFont_, promptBmp_.width());
+        bmpPainter.drawText(
+            rightText(), shadowStartText, shadowFont_, promptBmp_.width() - caretPosition - 1 - beginningTextWidth_);
+        bmpPainter.drawText(
+            leftText(), shadowStartText, shadowFont_, caretPosition - beginningTextWidth_, Ren::AlignRight);
+        bmpPainter.drawText(chatMessageIntendedForStr_, startBeginningText, font_, promptBmp_.width());
+        bmpPainter.drawText(rightText(), startText, font_, promptBmp_.width() - caretPosition - beginningTextWidth_);
+        bmpPainter.drawText(leftText(), startText, font_, caretPosition - beginningTextWidth_, Ren::AlignRight);
     }
 
     // Blit text.
@@ -390,7 +379,9 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
     {
         pImpl_->promptDisplayed_ = textType;
         pImpl_->refresh_ = false;
-        Ren::Painter(pImpl_->promptBmp_).clearRectangle(pImpl_->promptBmp_.size());
+
+        Ren::Painter bmpPainter(pImpl_->promptBmp_);
+        bmpPainter.clearRectangle(pImpl_->promptBmp_.size());
 
         // Render all the lines
         int startY = 0;
@@ -403,11 +394,10 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
 
         for (const std::string& line : textLines)
         {
-            Gui::Coord textPos(0, startY);
-            Gui::Coord shadowPos = textPos + Gui::Vec(1, 1) * Gui::uiScaleFactor();
-            pImpl_->shadowFont_
-                .drawText(&pImpl_->promptBmp_, line, Ren::Point(shadowPos.x(), shadowPos.y()), pImpl_->promptBmp_.width() - shadowPos.x());
-            pImpl_->font_.drawText(&pImpl_->promptBmp_, line, Ren::Point(textPos.x(), textPos.y()), pImpl_->promptBmp_.width());
+            Ren::Point textPos(0, startY);
+            Ren::Point shadowPos = textPos + Ren::Point(1, 1) * Gui::uiScaleFactor();
+            bmpPainter.drawText(line, shadowPos, pImpl_->shadowFont_, pImpl_->promptBmp_.width() - shadowPos.x);
+            bmpPainter.drawText(line, textPos, pImpl_->font_, pImpl_->promptBmp_.width());
             startY += pImpl_->shadowFont_.height() + 1 * Gui::uiScaleFactor();
         }
 
@@ -419,9 +409,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
 
     // Blit text.
     GuiPainter::instance().blit(
-        pImpl_->promptBmp_,
-        Gui::Box(0, 0, pImpl_->blitToX_, pImpl_->promptBmp_.height()),
-        getPromptTextAbsolutePosition());
+        pImpl_->promptBmp_, Gui::Size(pImpl_->blitToX_, pImpl_->promptBmp_.height()), getPromptTextAbsolutePosition());
 
     // Scroll text to new pos for next frame.
     if (pImpl_->blitToX_ != pImpl_->promptBmp_.width())

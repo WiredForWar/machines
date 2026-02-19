@@ -5,6 +5,7 @@
 
 #include "render/Painter.hpp"
 
+#include "render/BmpFont.hpp"
 #include "render/colour.hpp"
 #include "render/surface.hpp"
 #include "render/Font.hpp"
@@ -70,6 +71,89 @@ void Painter::verticalLine(const Point& start, int height, const RenColour& colo
 void Painter::drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const
 {
     target_.drawText(x, y, text, font, options);
+}
+
+void Painter::drawText(
+    std::string_view text, const Point& startPos, const BmpFont& font, int maxWidth, Alignment alignment) const
+{
+    const bool rightJustify = alignment & AlignRight;
+
+    Point absPos = startPos;
+
+    if (rightJustify)
+    {
+        int endAbsPos = absPos.x - maxWidth;
+
+        for (int i = text.length(); i > 0;)
+        {
+            --i;
+
+            if (text[i] == ' ')
+            {
+                absPos.x -= font.spaceCharWidth() + font.spacing();
+            }
+            else if (font.charWidth(text[i]))
+            {
+                if (font.fontType() == BmpFont::PROPORTIONAL)
+                    absPos.x -= font.charWidth(text[i]) + font.spacing();
+                else
+                    absPos.x -= font.maxCharWidth() + font.spacing();
+
+                if (absPos.x >= endAbsPos)
+                {
+                    blit(
+                        font.fontBitmap(),
+                        Rect(font.charOffset((unsigned char)text[i]), 0, font.charWidth(text[i]) + 1, font.height()),
+                        absPos);
+                }
+                else
+                {
+                    i = 0;
+                }
+            }
+        }
+    }
+    else
+    {
+        int endAbsPos = absPos.x + maxWidth;
+
+        for (int i = 0; i < text.length(); ++i)
+        {
+            if (text[i] == ' ')
+            {
+                absPos.x += font.spaceCharWidth() + font.spacing();
+            }
+            else if (font.charWidth(text[i]))
+            {
+                if (absPos.x + font.charWidth(text[i]) <= endAbsPos)
+                {
+                    blit(
+                        font.fontBitmap(),
+                        Rect(
+                            font.charOffset((unsigned char)text[i]), 0, font.charWidth(text[i]) + 1, font.height()),
+                        absPos);
+
+                    if (font.fontType() == BmpFont::PROPORTIONAL)
+                        absPos.x += font.charWidth(text[i]) + font.spacing();
+                    else
+                        absPos.x += font.maxCharWidth() + font.spacing();
+                }
+                else
+                {
+                    i = text.length();
+                }
+            }
+        }
+    }
+
+    if (font.underline())
+    {
+        line(
+            Point(startPos.x, startPos.y + font.height() + 1),
+            Point(absPos.x, startPos.y + font.height() + 1),
+            font.underlineColour(),
+            1);
+    }
 }
 
 void Painter::blit(

@@ -263,228 +263,21 @@ size_t BmpFont::maxCharWidth() const
     return pFontCore_->maxCharWidth_;
 }
 
-void BmpFont::drawText(
-    Painter& painter,
-    const std::string_view& text,
-    const Ren::Point& startPos,
-    int maxWidth,
-    Justification justification /*= LEFT_JUSTIFY*/) const
+const RenSurface& BmpFont::fontBitmap() const
 {
-    switch (justification)
-    {
-    case LEFT_JUSTIFY:
-        drawTextLeftJustify(painter, text, startPos, maxWidth);
-        break;
-    case RIGHT_JUSTIFY:
-        drawTextRightJustify(painter, text, startPos, maxWidth);
-        break;
-        DEFAULT_ASSERT_BAD_CASE(justification);
-    }
+    return pFontCore_->fontBmp_;
 }
 
-void BmpFont::drawText(
-    RenSurface* pBmp,
-    const std::string_view& text,
-    const Ren::Point& startPos,
-    int maxWidth,
-    Justification justification /*= LEFT_JUSTIFY*/) const
+size_t BmpFont::charOffset(unsigned char c) const
 {
-    switch (justification)
-    {
-    case LEFT_JUSTIFY:
-        drawTextLeftJustify(pBmp, text, startPos, maxWidth);
-        break;
-    case RIGHT_JUSTIFY:
-        drawTextRightJustify(pBmp, text, startPos, maxWidth);
-        break;
-        DEFAULT_ASSERT_BAD_CASE(justification);
-    }
+    if (c < pFontCore_->charData_.size())
+        return pFontCore_->charData_[c].offset_;
+    return 0;
 }
 
-void BmpFont::drawTextLeftJustify(
-    Painter& painter, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
+const RenColour& BmpFont::underlineColour() const
 {
-    Ren::Point absPos = startPos;
-    int endAbsPos = absPos.x + maxWidth;
-
-    for (int i = 0; i < text.length(); ++i)
-    {
-        if (text[i] == ' ') // Special handling for space character
-        {
-            absPos.x += spaceCharWidth_ + spacing_;
-        }
-        else if (charWidth(text[i])) // Check that character is supported by bitmap
-        {
-            if (absPos.x + charWidth(text[i]) <= endAbsPos)
-            {
-                // Blit character
-                painter.blit(
-                    pFontCore_->fontBmp_,
-                    Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    absPos);
-
-                // Add spacing ready for next character blit
-                if (fontType_ == PROPORTIONAL)
-                    absPos.x += charWidth(text[i]) + spacing_;
-                else
-                    absPos.x += maxCharWidth() + spacing_;
-            }
-            else
-            {
-                i = text.length();
-            }
-        }
-    }
-
-    if (underline_)
-    {
-        painter.line(
-            Ren::Point(startPos.x, startPos.y + height() + 1),
-            Ren::Point(absPos.x, startPos.y + height() + 1),
-            underlineColour_,
-            1);
-    }
-}
-
-void BmpFont::drawTextRightJustify(
-    Painter& painter, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
-{
-    Ren::Point absPos = startPos;
-    int endAbsPos = absPos.x - maxWidth;
-
-    for (int i = text.length(); i > 0;)
-    {
-        --i;
-
-        if (text[i] == ' ') // Special handling for space character
-        {
-            absPos.x -= spaceCharWidth_ + spacing_;
-        }
-        else if (charWidth(text[i])) // Check that character is supported by bitmap
-        {
-            // Add spacing ready for next character blit
-            if (fontType_ == PROPORTIONAL)
-                absPos.x -= charWidth(text[i]) + spacing_;
-            else
-                absPos.x -= maxCharWidth() + spacing_;
-
-            if (absPos.x >= endAbsPos)
-            {
-                // Blit character
-                painter.blit(
-                    pFontCore_->fontBmp_,
-                    Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    absPos);
-            }
-            else
-            {
-                i = 0;
-            }
-        }
-    }
-
-    if (underline_)
-    {
-        painter.line(
-            Ren::Point(startPos.x, startPos.y + height() + 1),
-            Ren::Point(absPos.x, startPos.y + height() + 1),
-            underlineColour_,
-            1);
-    }
-}
-
-void BmpFont::drawTextLeftJustify(
-    RenSurface* pBmp, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
-{
-    Ren::Point absPos = startPos;
-    int endAbsPos = absPos.x + maxWidth;
-
-    for (int i = 0; i < text.length(); ++i)
-    {
-        if (text[i] == ' ') // Special handling for space character
-        {
-            absPos.x += spaceCharWidth_ + spacing_;
-        }
-        else if (charWidth(text[i])) // Check that character is supported by bitmap
-        {
-            if (absPos.x + charWidth(text[i]) <= endAbsPos)
-            {
-                // Blit character
-                pBmp->simpleBlit(
-                    pFontCore_->fontBmp_,
-                    Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    Ren::Point(absPos.x, absPos.y));
-
-                // Add spacing ready for next character blit
-                if (fontType_ == PROPORTIONAL)
-                    absPos.x += charWidth(text[i]) + spacing_;
-                else
-                    absPos.x += maxCharWidth() + spacing_;
-            }
-            else
-            {
-                i = text.length();
-            }
-        }
-    }
-
-    // TBD : underline on fonts render onto a bitmap
-    // if ( underline_ )
-    //{
-    //  painter.line( Ren::Point( startPos.x, startPos.y + charHeight() + 1 ),
-    //                Ren::Point( absPos.x, startPos.y + charHeight() + 1 ),
-    //                underlineColour_, 1 );
-    //}
-}
-
-void BmpFont::drawTextRightJustify(
-    RenSurface* pBmp, const std::string_view& text, const Ren::Point& startPos, int maxWidth) const
-{
-    Ren::Point absPos = startPos;
-    int endAbsPos = absPos.x - maxWidth;
-
-    for (int i = text.length(); i > 0;)
-    {
-        --i;
-
-        if (text[i] == ' ') // Special handling for space character
-        {
-            absPos.x -= spaceCharWidth_ + spacing_;
-        }
-        else if (charWidth(text[i])) // Check that character is supported by bitmap
-        {
-            // Add spacing ready for next character blit
-            if (fontType_ == PROPORTIONAL)
-                absPos.x -= charWidth(text[i]) + spacing_;
-            else
-                absPos.x -= maxCharWidth() + spacing_;
-
-            if (absPos.x >= endAbsPos)
-            {
-                // Blit character
-                pBmp->simpleBlit(
-                    pFontCore_->fontBmp_,
-                    Ren::Rect(
-                        pFontCore_->charData_[(unsigned char)text[i]].offset_, 0, charWidth(text[i]) + 1, height()),
-                    Ren::Point(absPos.x, absPos.y));
-            }
-            else
-            {
-                i = 0;
-            }
-        }
-    }
-
-    // TBD : underline on fonts render onto a bitmap
-    // if ( underline_ )
-    //{
-    //  painter.line( Ren::Point( startPos.x, startPos.y + charHeight() + 1 ),
-    //                Ren::Point( absPos.x, startPos.y + charHeight() + 1 ),
-    //                underlineColour_, 1 );
-    //}
+    return underlineColour_;
 }
 
 BmpFont::FontType BmpFont::fontType() const
@@ -527,7 +320,7 @@ bool BmpFont::underline() const
     return underline_;
 }
 
-void BmpFont::underlineColour(const RenColour& colour)
+void BmpFont::underlineColour(RenColour colour)
 {
     underlineColour_ = colour;
 }

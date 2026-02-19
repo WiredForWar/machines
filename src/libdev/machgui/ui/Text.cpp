@@ -38,7 +38,7 @@ void MachGuiText::doDisplay()
     // Draw list box item text
     {
         Gui::Coord pos = absoluteBoundary().minCorner() + textOffset_;
-        font_.drawText(GuiPainter::instance(), text_, Ren::Point(pos.x(), pos.y()), width());
+        GuiPainter::instance().drawText(text_, Ren::Point(pos.x(), pos.y()), font_, width());
     }
 }
 
