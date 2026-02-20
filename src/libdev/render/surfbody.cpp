@@ -161,15 +161,6 @@ bool RenISurfBody::read(const std::string& bitmapName)
     return retval;
 }
 
-void RenISurfBody::setDDColourKey()
-{
-    //  PRE(surface_);
-
-    if (keyingOn())
-    {
-    }
-}
-
 void RenISurfBody::unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY)
 {
     unclippedBlit(source, srcArea, destX, destY, Ren::BlitMode::AlphaBlend);
@@ -549,18 +540,6 @@ void RenISurfBody::drawText(
 
 }
 
-void RenISurfBody::releaseDC()
-{
-    // Delete texture
-    if (nativeTexture2D_.isValid())
-    {
-        if (auto* backend = tryBackend())
-        {
-            backend->destroyTexture2D(nativeTexture2D_);
-        }
-        nativeTexture2D_ = Ren::BackendTextureHandle{};
-    }
-}
 
 static void computeScaleAndShift(unsigned long bitMask, int& shift, int& scale)
 {
@@ -655,22 +634,6 @@ bool RenISurfBody::copyFromBuffer(const uint* pixelsBuffer)
     Ren::IRenderBackend& backend = requireBackend();
     backend.textureSubImage2D(
         nativeTexture2D_, 0, 0, static_cast<int>(width_), static_cast<int>(height_), Ren::TextureFormat::RGBA8_UNorm, pixelsBuffer);
-    return true;
-}
-
-bool RenISurfBody::restoreToVRAM() const
-{
-
-    return true;
-}
-
-bool RenISurfBody::loadIntoVRAM() const
-{
-    return false;
-}
-
-bool RenISurfBody::recreateVRAMSurface()
-{
     return true;
 }
 
@@ -825,8 +788,5 @@ std::ostream& operator<<(std::ostream& o, const RenISurfBody& t)
     return o;
 }
 
-void RenISurfBody::updateDescr()
-{
-}
 
 /* End INSURFCE.CPP *************************************************/

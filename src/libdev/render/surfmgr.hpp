@@ -62,10 +62,6 @@ public:
     const PathNames& searchList();
     void searchList(const PathNames& newSearchList);
 
-    // When Alt-Tab is pressed, textures can get unloaded from a hardware
-    // device.  Calling this method reloads all managed textures.
-    bool restoreAll();
-
     // Statistics: what textures are loaded?  What textures were drawn
     // during the current frame?  Memory used may become a more complex
     // issue if textures can be swapped into or out of a graphics card.
@@ -78,9 +74,6 @@ public:
 
     RenISurfaceManagerImpl& impl();
     const RenISurfaceManagerImpl& impl() const;
-
-    // PRE(result);
-    static bool extractBMPText(const SysPathName& pathName, std::string* result);
 
 private:
     RenISurfaceManagerImpl* pImpl_;
