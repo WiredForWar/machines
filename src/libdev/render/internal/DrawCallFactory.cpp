@@ -103,6 +103,7 @@ void DrawCallFactory::emitStandard3DCommon(
         fu.fogStartOrX = frame.fogStartOrX;
         fu.fogEndOrY = frame.fogEndOrY;
         fu.fogDensityOrZ = frame.fogDensityOrZ;
+        fu.fogMode = frame.fogMode;
         out->push_back(Command::setStandardFrameUniforms(std::move(fu)));
     }
 

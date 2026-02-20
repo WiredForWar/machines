@@ -1342,6 +1342,9 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardFrameUniform
         glUniform3f(locFogColour, u.fogColourR, u.fogColourG, u.fogColourB);
     if (locFogParams >= 0)
         glUniform3f(locFogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
+    const GLint locFogMode = glGetUniformLocation(prog, "uFogMode");
+    if (locFogMode >= 0)
+        glUniform1i(locFogMode, u.fogMode);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUniforms& command)

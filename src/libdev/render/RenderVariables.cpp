@@ -1,5 +1,6 @@
 #include "RenderVariables.hpp"
 
+#include "FogMode.hpp"
 #include "LightingMode.hpp"
 #include "ShadowQuality.hpp"
 
@@ -30,6 +31,24 @@ std::optional<LightingMode> toValue(const std::string& asString)
 }
 
 template <>
+std::string toString(const FogMode& value)
+{
+    return std::string(::toString(value));
+}
+
+template <>
+std::optional<FogMode> toValue(const std::string& asString)
+{
+    for (FogMode mode : AllFogModes)
+    {
+        if (asString == ::toString(mode))
+            return mode;
+    }
+
+    return std::nullopt;
+}
+
+template <>
 std::string toString(const ShadowQuality& value)
 {
     return std::string(::toString(value));
@@ -49,11 +68,13 @@ std::optional<ShadowQuality> toValue(const std::string& asString)
 
 } // namespace Impl
 
+template class Config::Variable<FogMode>;
 template class Config::Variable<LightingMode>;
 template class Config::Variable<ShadowQuality>;
 
 Variable<LightingMode> gfxLightingMode("Options/Graphics Complexity/Lighting Mode", LightingMode::Legacy);
 Variable<ShadowQuality> gfxShadowQuality("Options/Graphics Complexity/Shadow Quality", ShadowQuality::Static);
 Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false);
+Variable<FogMode> gfxFogMode("Options/Graphics Complexity/Fog Mode", FogMode::Linear);
 
 } // namespace Config

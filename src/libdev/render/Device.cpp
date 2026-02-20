@@ -321,6 +321,7 @@ bool RenDevice::createGpuResources()
             "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten", "uPointLightOmni",
             "uShadowMap", "uLightSpaceMatrix", "uShadowEnabled", "uShadowStrength",
             "uShadowMapNear", "uLightSpaceMatrixNear", "uShadowSplitDistance",
+            "uFogMode",
         };
         standard_.id = backend_->createPipeline(desc);
         standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
@@ -339,6 +340,7 @@ bool RenDevice::createGpuResources()
         standard_.projUniform = backend_->pipelineUniformLocation(standard_.id, "uP");
         standard_.fogColourUniform = backend_->pipelineUniformLocation(standard_.id, "uFogColour");
         standard_.fogParamsUniform = backend_->pipelineUniformLocation(standard_.id, "uFogParams");
+        standard_.fogModeUniform = backend_->pipelineUniformLocation(standard_.id, "uFogMode");
         standard_.texSamplerUniform = backend_->pipelineUniformLocation(standard_.id, "uTextureSampler2");
         standard_.gpuLightingUniform = backend_->pipelineUniformLocation(standard_.id, "uGpuLighting");
         standard_.lightDirUniform = backend_->pipelineUniformLocation(standard_.id, "uLightDir");
@@ -2033,6 +2035,7 @@ Ren::FrameState RenDevice::buildFrameState() const
     fs.fogStartOrX = fogParams_.x;
     fs.fogEndOrY = fogParams_.y;
     fs.fogDensityOrZ = fogParams_.z;
+    fs.fogMode = static_cast<int>(Config::gfxFogMode.get());
     return fs;
 }
 
