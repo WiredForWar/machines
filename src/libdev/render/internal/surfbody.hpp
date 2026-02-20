@@ -11,7 +11,7 @@
 #include "render/render.hpp"
 #include "render/colour.hpp"
 #include "utility/property.hpp"
-#include "render/internal/IRenderBackend.hpp"
+#include "render/internal/BackendTypes.hpp"
 #include "render/internal/internal.hpp"
 
 #include <cstdint>
@@ -23,11 +23,6 @@ class SysPathname;
 class RenITexBody;
 class RenIFont;
 class RenDevice;
-
-namespace Ren::OpenGL
-{
-class RenderBackendGL;
-}
 
 namespace Ren
 {
@@ -141,7 +136,6 @@ private:
     // Only the surface manager can create internal surface objects.
     friend class RenSurfaceManager;
     friend class RenISurfaceManagerImpl;
-    friend class Ren::OpenGL::RenderBackendGL;
 
     // Allocates DirectDraw memory for textures and non-texture bitmaps. This
     // creates a writable surface.  The client must change it to read-only, if
