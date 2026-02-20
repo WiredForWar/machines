@@ -1,6 +1,8 @@
 
 set(RENDER_SOURCES
     Alignment.hpp
+    BackendFactory.cpp
+    BackendType.hpp
     BmpFont.cpp
     BmpFont.hpp
     Font.cpp
@@ -11,10 +13,6 @@ set(RENDER_SOURCES
     FontsManager.hpp
     LightingMode.cpp
     LightingMode.hpp
-    OpenGL/RenderBackendGL.cpp
-    OpenGL/RenderBackendGL.hpp
-    OpenGL/Utils.cpp
-    OpenGL/Utils.hpp
     Painter.cpp
     Painter.hpp
     PrimitiveTopology.hpp
@@ -218,6 +216,26 @@ target_link_libraries(render PUBLIC
 target_link_libraries(render PRIVATE
     SDL2::SDL2
     SDL2_image::SDL2_image
-    GLEW::GLEW
     Freetype::Freetype
 )
+
+if(TRUE)
+    add_library(render_backend_gl21 STATIC
+        OpenGL/RenderBackendGL.cpp
+        OpenGL/RenderBackendGL.hpp
+        OpenGL/Utils.cpp
+        OpenGL/Utils.hpp
+    )
+    target_include_directories(render_backend_gl21 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR/../..}")
+    target_link_libraries(render_backend_gl21 PRIVATE
+        LibDev::system
+
+        SDL2::SDL2
+        GLEW::GLEW
+        glm::glm
+        spdlog::spdlog
+    )
+    target_compile_definitions(render_backend_gl21 PUBLIC MACHINES_HAS_BACKEND_GL21)
+
+    target_link_libraries(render PRIVATE render_backend_gl21)
+endif()

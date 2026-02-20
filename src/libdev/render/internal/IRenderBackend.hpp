@@ -1,5 +1,6 @@
 #pragma once
 
+#include "render/BackendType.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/PipelineSpec.hpp"
@@ -9,6 +10,7 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include <vector>
 
 struct SDL_Window;
 
@@ -20,8 +22,14 @@ class IRenderBackend
 public:
     virtual ~IRenderBackend() = default;
 
-    // Factory: creates the default backend implementation.
-    static std::unique_ptr<IRenderBackend> create();
+    // Query which backends are compiled in and available on this system.
+    static std::vector<BackendType> availableBackends();
+
+    // Create a backend of the given type. Auto picks the best available.
+    static std::unique_ptr<IRenderBackend> create(BackendType type = BackendType::Auto);
+
+    // Which type this instance is.
+    virtual BackendType backendType() const = 0;
 
     virtual bool initialize(SDL_Window* window) = 0;
     virtual void shutdown() = 0;

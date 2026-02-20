@@ -24,6 +24,8 @@ class RenderBackendGL final : public IRenderBackend
 public:
     RenderBackendGL();
 
+    BackendType backendType() const override;
+
     bool initialize(SDL_Window* window) override;
     void shutdown() override;
 

@@ -6,8 +6,17 @@ enum class FogMode;
 enum class LightingMode;
 enum class ShadowQuality;
 
+namespace Ren
+{
+
+enum class BackendType;
+
+} // namespace Ren
+
 namespace Config
 {
+
+extern Variable<Ren::BackendType> gfxBackendType;
 
 extern Variable<LightingMode> gfxLightingMode;
 extern Variable<ShadowQuality> gfxShadowQuality;

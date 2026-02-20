@@ -57,6 +57,11 @@ RenderBackendGL::RenderBackendGL()
 {
 }
 
+BackendType RenderBackendGL::backendType() const
+{
+    return BackendType::GL21;
+}
+
 bool RenderBackendGL::initialize(SDL_Window* window)
 {
     if (initialized_)
@@ -1508,10 +1513,5 @@ void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
 }
 
 } // namespace OpenGL
-
-std::unique_ptr<IRenderBackend> IRenderBackend::create()
-{
-    return std::make_unique<OpenGL::RenderBackendGL>();
-}
 
 } // namespace Ren
