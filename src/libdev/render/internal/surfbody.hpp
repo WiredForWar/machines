@@ -64,12 +64,6 @@ public:
     size_t memoryUsed() const;
     bool isEmpty() const; // width == 0 || height == 0
 
-    // These are methods which would be private internal methods of RenSurface,
-    // however, they are placed here to reduce dependancies.
-    void filledRectangle(const Ren::Rect& area, uint colour);
-    void drawText(
-        int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
-
     uint refCount() const;
     void incRefCount();
     void decRefCount();
