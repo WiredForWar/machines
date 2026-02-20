@@ -10,7 +10,9 @@
 
 #include "render/PrimitiveTopology.hpp"
 
+#include <functional>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 class SysPathName;
 
@@ -104,6 +106,12 @@ public:
     void clearAllSurfaces(); // PRE(!rendering());
 
     bool switchBackend(Ren::BackendType type);
+
+    // Register a callback invoked after GPU resources are invalidated and
+    // reloaded (e.g. backend switch, scale factor change).  Listeners
+    // should release cached anonymous surfaces and rebuild their context.
+    void addResourcesInvalidatedCallback(std::function<void()> callback);
+    void fireResourcesInvalidatedCallbacks();
 
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
@@ -453,6 +461,8 @@ private:
 
     bool standardUniformsDirty_{};
     bool billboardUniformsDirty_{};
+
+    std::vector<std::function<void()>> resourcesInvalidatedCallbacks_{};
 
     // Operations deliberately revoked
     RenDevice(const RenDevice&);

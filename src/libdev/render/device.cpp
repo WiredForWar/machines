@@ -662,14 +662,33 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     // Re-upload all textures.
     RenSurfaceManager::instance().impl().reuploadAllTextures();
 
+    // Recreate font atlas textures on the new backend.
+    Ren::reloadFonts();
+
     // Restore VSync preference.
     if (!setVSync(vsyncEnabled_))
     {
         spdlog::warn("Failed to apply VSync preference ({}) during backend creation", vsyncEnabled_);
     }
 
+    fireResourcesInvalidatedCallbacks();
+
     spdlog::info("Backend switch complete");
     return true;
+}
+
+void RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
+{
+    resourcesInvalidatedCallbacks_.push_back(std::move(callback));
+}
+
+void RenDevice::fireResourcesInvalidatedCallbacks()
+{
+    for (auto& cb : resourcesInvalidatedCallbacks_)
+    {
+        if (cb)
+            cb();
+    }
 }
 
 void RenDevice::reset()
