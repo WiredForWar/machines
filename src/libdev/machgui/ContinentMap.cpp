@@ -325,17 +325,15 @@ void MachContinentMap::loadGame(const std::string& planet)
     // Unfog areas of Map which are unusable, e.g. if the Map is thin and long (not square)
     if (xOffset() != 0)
     {
-        visibleAreaPainter.filledRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()), Gui::MAGENTA());
-        visibleAreaPainter.filledRectangle(
-            RenSurface::Rect(mapBackground_.width() - xOffset(), 0, xOffset(), mapBackground_.height()),
-            Gui::MAGENTA());
+        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()));
+        visibleAreaPainter.clearRectangle(
+            RenSurface::Rect(mapBackground_.width() - xOffset(), 0, xOffset(), mapBackground_.height()));
     }
     else if (yOffset() != 0)
     {
-        visibleAreaPainter.filledRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()), Gui::MAGENTA());
-        visibleAreaPainter.filledRectangle(
-            RenSurface::Rect(0, mapBackground_.height() - yOffset(), mapBackground_.width(), yOffset()),
-            Gui::MAGENTA());
+        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()));
+        visibleAreaPainter.clearRectangle(
+            RenSurface::Rect(0, mapBackground_.height() - yOffset(), mapBackground_.width(), yOffset()));
     }
 
     // Create different scanner ranges ( used for unfogging ( note : fog of war NOT atmospheric fog ) ).
@@ -1949,7 +1947,7 @@ void MachContinentMap::loadSavedGame(const std::string& planet, PerIstream& inSt
     else
     {
         Ren::Painter mapVisiblePainter(mapVisibleArea_);
-        mapVisiblePainter.filledRectangle(mapVisibleArea_.size(), Gui::MAGENTA());
+        mapVisiblePainter.clearRectangle(mapVisibleArea_.size());
         mapVisiblePainter.stretchBlit(loadedVisibleArea);
     }
     mapVisibleArea_.enableColourKeying();

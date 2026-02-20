@@ -26,7 +26,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
         constexpr auto rectangle = Ren::Rect { 0, 0, 32, 32 };
 
         surfaceNUM.enableColourKeying();
-        Ren::Painter(surfaceNUM).filledRectangle(rectangle, Gui::MAGENTA());
+        Ren::Painter(surfaceNUM).clearRectangle(rectangle);
 
         if (showText)
         {

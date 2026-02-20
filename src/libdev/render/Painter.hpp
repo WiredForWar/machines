@@ -30,6 +30,7 @@ public:
 
     // Primitive drawing
     void filledRectangle(const Rect& area, const RenColour& colour) const;
+    void clearRectangle(const Rect& area) const;
     void hollowRectangle(const Rect& area, const RenColour& colour, int thickness) const;
     void ellipse(const Rect& area, const RenColour& outline, const RenColour& fill) const;
 

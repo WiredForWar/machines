@@ -86,8 +86,8 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
     {
         forceUpdate_ = false;
 
-        // Reset bitmap to magenta ( transparent )
-        Ren::Painter(textBmp_).filledRectangle(textBmp_.size(), Gui::MAGENTA());
+        // Reset bitmap to transparent
+        Ren::Painter(textBmp_).clearRectangle(textBmp_.size());
 
         // Render up to five lines of chat messages
         int fontHeight = shadowFont_.height() + 1;
