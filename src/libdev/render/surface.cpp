@@ -537,8 +537,12 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     unsigned char* screenPixels = _NEW_ARRAY(unsigned char, width() * height() * 4);
     if (screenPixels)
     {
-        // Read the pixels
+        // Ensure all pending render commands are submitted before reading
+        // back pixel data — callers may have issued blits that haven't
+        // been executed yet.
         RenDevice* dev = RenDevice::current();
+        dev->flushCommandBuffer();
+
         if (internals() && internals()->isOffscreen())
         {
             dev->renderToTextureMode(handle(), width(), height());
