@@ -46,6 +46,7 @@
 #include "render/ttftris.hpp"
 #include "render/spinpoly.hpp"
 #include "render/surface.hpp"
+#include "render/Painter.hpp"
 #include "render/fixdcurs.hpp"
 #include "render/animcurs.hpp"
 #include "render/uvtrans.hpp"
@@ -1893,8 +1894,7 @@ void D3DApp::loopCycle()
 
     if (frameNo < 2)
     {
-        RenSurface::Rect fillArea(0, 0, backBuf.width(), backBuf.height());
-        backBuf.filledRectangle(fillArea, RenColour(0.6));
+        Ren::Painter(backBuf).filledRectangle(backBuf.size(), RenColour(0.6));
 
         /*      RenSurface::Points pts1;
         pts1.push_back(MexPoint2d(79, 29));

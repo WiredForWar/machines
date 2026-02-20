@@ -72,6 +72,7 @@ inline constexpr bool cDemoVersion =
 #include "gui/event.hpp"
 #include "gui/manager.hpp"
 #include "gui/painter.hpp"
+#include "render/Painter.hpp"
 #include "gui/displaya.hpp"
 #include "gui/scrolist.hpp"
 #include "gui/editbox.hpp"
@@ -480,11 +481,11 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
     RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
@@ -563,11 +564,11 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
     RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
     if (getenv("CB_PROFILE_PLANET_LOADING"))
         ProProfiler::instance().enableProfiling();
@@ -718,11 +719,11 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
     RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
@@ -2120,9 +2121,10 @@ void MachGuiStartupScreens::prepareForAnimation()
 
     // Remove menu screen before app ends to stop it from flashing up momentarily
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-    RenDevice::current()->backSurface().filledRectangle(
-        Ren::Rect(0, 0, mode.width(), mode.height()),
-        RenColour::black());
+    {
+        RenSurface backBuf = RenDevice::current()->backSurface();
+        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
+    }
 
     // Clear the entire screen to stop previous screen from showing through black borders.
     RenDevice::current()->clearAllSurfaces(RenColour::black());
@@ -2427,9 +2429,10 @@ void MachGuiStartupScreens::contextFinish()
 
     // Remove menu screen before app ends to stop it from flashing up momentarily
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-    RenDevice::current()->backSurface().filledRectangle(
-        Ren::Rect(0, 0, mode.width(), mode.height()),
-        RenColour::black());
+    {
+        RenSurface backBuf = RenDevice::current()->backSurface();
+        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
+    }
 }
 
 void MachGuiStartupScreens::contextGame()
@@ -2875,11 +2878,11 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
     RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
-    frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 

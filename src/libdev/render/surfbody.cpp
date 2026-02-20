@@ -7,6 +7,7 @@
 
 #include "system/pathname.hpp"
 #include "render/Font.hpp"
+#include "render/Painter.hpp"
 #include "render/surface.hpp"
 #include "render/TextOptions.hpp"
 #include "render/texture.hpp"
@@ -529,15 +530,11 @@ void RenISurfBody::drawText(
     if (!underlineSegments.empty())
     {
         RenSurface surface = RenSurface::createFromInternal(this);
-        RenSurface::Points pts;
-        pts.reserve(2);
+        Ren::Painter painter(surface);
 
         for (const UnderlineSegment& seg : underlineSegments)
         {
-            pts.erase(pts.begin(), pts.end());
-            pts.push_back(MexPoint2d(seg.x1, seg.y));
-            pts.push_back(MexPoint2d(seg.x2, seg.y));
-            surface.polyLine(pts, options.color(), 1);
+            painter.line(Ren::Point(seg.x1, seg.y), Ren::Point(seg.x2, seg.y), options.color(), 1);
         }
     }
 

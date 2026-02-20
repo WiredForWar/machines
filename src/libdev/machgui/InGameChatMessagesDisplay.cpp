@@ -10,6 +10,7 @@
 #include "machgui/gui.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
+#include "render/Painter.hpp"
 #include "gui/event.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
@@ -86,7 +87,7 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
         forceUpdate_ = false;
 
         // Reset bitmap to magenta ( transparent )
-        textBmp_.filledRectangle(RenSurface::Rect(0, 0, textBmp_.width(), textBmp_.height()), Gui::MAGENTA());
+        Ren::Painter(textBmp_).filledRectangle(textBmp_.size(), Gui::MAGENTA());
 
         // Render up to five lines of chat messages
         int fontHeight = shadowFont_.height() + 1;

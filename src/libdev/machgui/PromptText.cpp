@@ -23,6 +23,7 @@
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
+#include "render/Painter.hpp"
 #include "render/surfmgr.hpp"
 #include "device/cd.hpp"
 
@@ -337,7 +338,7 @@ void MachPromptText::displayChatMessage()
     {
         lastDisplayedChatMessage_ = displayChatMessageStr;
 
-        promptBmp_.filledRectangle(RenSurface::Rect(0, 0, promptBmp_.width(), promptBmp_.height()), Gui::MAGENTA());
+        Ren::Painter(promptBmp_).filledRectangle(promptBmp_.size(), Gui::MAGENTA());
 
         // Work out starting position for text
         Gui::Coord startBeginningText = Gui::Coord(0, startY);
@@ -392,9 +393,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
     {
         pImpl_->promptDisplayed_ = textType;
         pImpl_->refresh_ = false;
-        pImpl_->promptBmp_.filledRectangle(
-            RenSurface::Rect(0, 0, pImpl_->promptBmp_.width(), pImpl_->promptBmp_.height()),
-            Gui::MAGENTA());
+        Ren::Painter(pImpl_->promptBmp_).filledRectangle(pImpl_->promptBmp_.size(), Gui::MAGENTA());
 
         // Render all the lines
         int startY = 0;

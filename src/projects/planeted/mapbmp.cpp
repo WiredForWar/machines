@@ -15,6 +15,7 @@
 #include "machphys/plansurf.hpp"
 
 #include "render/surface.hpp"
+#include "render/Painter.hpp"
 #include "render/render.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
@@ -123,6 +124,19 @@ void PedMapCreator::createBmp()
     W4dManager::instance().sceneManager()->out() << "Creating map '" << filename << "'. Please wait." << std::endl;
     W4dManager::instance().render();
 
+    Ren::Painter painter(surface);
+
+    auto drawPolyLine = [&painter](const PolyVerticies& pts, const RenColour& colour, int thickness)
+    {
+        for (size_t i = 1; i < pts.size(); ++i)
+        {
+            painter.line(
+                Ren::Point(pts[i - 1].x(), pts[i - 1].y()),
+                Ren::Point(pts[i].x(), pts[i].y()),
+                colour, thickness);
+        }
+    };
+
     if (! domainEditor_.polygonsHidden())
     {
         // Output solid domains...
@@ -132,7 +146,7 @@ void PedMapCreator::createBmp()
         {
             PolyVerticies verticies = (*polyIter)->verticies();
 
-            surface.filledRectangle(
+            painter.filledRectangle(
                 RenSurface::Rect(
                     verticies[0].x(),
                     verticies[0].y(),
@@ -146,42 +160,22 @@ void PedMapCreator::createBmp()
     // Lighter grid-lines every 100
     for (size_t y = 0; y < yMax; y += 10)
     {
-        PolyVerticies verticies;
-
-        verticies.push_back(MexPoint2d(0, y));
-        verticies.push_back(MexPoint2d(xMax, y));
-
-        surface.polyLine(verticies, RenColour(0.2, 0.2, 0.2), 1);
+        painter.line(Ren::Point(0, y), Ren::Point(xMax, y), RenColour(0.2, 0.2, 0.2), 1);
     }
 
     for (size_t x = 0; x < xMax; x += 10)
     {
-        PolyVerticies verticies;
-
-        verticies.push_back(MexPoint2d(x, 0));
-        verticies.push_back(MexPoint2d(x, yMax));
-
-        surface.polyLine(verticies, RenColour(0.2, 0.2, 0.2), 1);
+        painter.line(Ren::Point(x, 0), Ren::Point(x, yMax), RenColour(0.2, 0.2, 0.2), 1);
     }
 
     for (size_t y = 0; y < yMax; y += 100)
     {
-        PolyVerticies verticies;
-
-        verticies.push_back(MexPoint2d(0, y));
-        verticies.push_back(MexPoint2d(xMax, y));
-
-        surface.polyLine(verticies, RenColour(0.4, 0.4, 0.4), 1);
+        painter.line(Ren::Point(0, y), Ren::Point(xMax, y), RenColour(0.4, 0.4, 0.4), 1);
     }
 
     for (size_t x = 0; x < xMax; x += 100)
     {
-        PolyVerticies verticies;
-
-        verticies.push_back(MexPoint2d(x, 0));
-        verticies.push_back(MexPoint2d(x, yMax));
-
-        surface.polyLine(verticies, RenColour(0.4, 0.4, 0.4), 1);
+        painter.line(Ren::Point(x, 0), Ren::Point(x, yMax), RenColour(0.4, 0.4, 0.4), 1);
     }
 
     if (! domainEditor_.polygonsHidden())
@@ -194,7 +188,7 @@ void PedMapCreator::createBmp()
             PolyVerticies verticies = (*polyIter)->verticies();
             verticies.push_back(verticies[0]);
 
-            surface.polyLine(verticies, RenColour::blue(), 1);
+            drawPolyLine(verticies, RenColour::blue(), 1);
         }
     }
 
@@ -208,7 +202,7 @@ void PedMapCreator::createBmp()
             PolyVerticies verticies = (*polyIter)->verticies();
             verticies.push_back(verticies[0]);
 
-            surface.polyLine(verticies, RenColour::red(), 1);
+            drawPolyLine(verticies, RenColour::red(), 1);
         }
     }
 
@@ -222,7 +216,7 @@ void PedMapCreator::createBmp()
             PolyVerticies verticies = (*polyIter)->verticies();
             verticies.push_back(verticies[0]);
 
-            surface.polyLine(verticies, RenColour::cyan(), 1);
+            drawPolyLine(verticies, RenColour::cyan(), 1);
         }
     }
 
