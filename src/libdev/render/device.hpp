@@ -387,7 +387,8 @@ public:
         size_t nVertices,
         const Ren::VertexIdx* indices,
         size_t nIndices,
-        Ren::PrimitiveTopology topology);
+        Ren::PrimitiveTopology topology,
+        float alpha = 1.0f);
     void renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH);
 
     // private:

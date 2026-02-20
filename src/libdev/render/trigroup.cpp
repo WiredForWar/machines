@@ -110,15 +110,14 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
 
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
 
-    // Shadow depth pass: only write position to the depth buffer.
-    // Skip materials with alpha transparency — semi-transparent surfaces
-    // should not cast full opaque shadows.
+    // Shadow depth pass: write position to the depth buffer.
+    // Pass the material's diffuse alpha so the shadow depth shader can
+    // dither-discard fragments for semi-transparent casters.
     if (RenDevice::current()->isShadowPassActive())
     {
-        if (mat.hasAlphaTransparency())
-            return;
         RenDevice::current()->renderShadowDepth(
-            &vtx.front(), nIndicesUsed_, &(indices_.front()), indices_.size(), Ren::PrimitiveTopology::Triangles);
+            &vtx.front(), nIndicesUsed_, &(indices_.front()), indices_.size(),
+            Ren::PrimitiveTopology::Triangles, mat.diffuse().a());
         return;
     }
 

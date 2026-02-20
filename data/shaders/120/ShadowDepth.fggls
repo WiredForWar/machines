@@ -1,5 +1,35 @@
 #version 120
 
+uniform float uAlpha;
+
 void main() {
+    // Dithered discard for semi-transparent shadow casters.
+    // A 4x4 Bayer matrix threshold pattern produces stable, non-noisy
+    // results that blend smoothly with the existing PCF kernel.
+    if (uAlpha < 1.0)
+    {
+        int x = int(mod(gl_FragCoord.x, 4.0));
+        int y = int(mod(gl_FragCoord.y, 4.0));
+        // Bayer 4x4 thresholds (normalized to 0..1 range)
+        float threshold;
+        if      (x == 0 && y == 0) threshold =  0.0 / 16.0;
+        else if (x == 2 && y == 0) threshold =  8.0 / 16.0;
+        else if (x == 0 && y == 2) threshold = 12.0 / 16.0;
+        else if (x == 2 && y == 2) threshold =  4.0 / 16.0;
+        else if (x == 1 && y == 0) threshold =  2.0 / 16.0;
+        else if (x == 3 && y == 0) threshold = 10.0 / 16.0;
+        else if (x == 1 && y == 2) threshold = 14.0 / 16.0;
+        else if (x == 3 && y == 2) threshold =  6.0 / 16.0;
+        else if (x == 0 && y == 1) threshold =  3.0 / 16.0;
+        else if (x == 2 && y == 1) threshold = 11.0 / 16.0;
+        else if (x == 0 && y == 3) threshold = 15.0 / 16.0;
+        else if (x == 2 && y == 3) threshold =  7.0 / 16.0;
+        else if (x == 1 && y == 1) threshold =  1.0 / 16.0;
+        else if (x == 3 && y == 1) threshold =  9.0 / 16.0;
+        else if (x == 1 && y == 3) threshold = 13.0 / 16.0;
+        else                       threshold =  5.0 / 16.0;
+        if (uAlpha <= threshold)
+            discard;
+    }
     // Depth is written automatically by the fixed-function pipeline.
 }

@@ -91,6 +91,7 @@ struct ShadowDepthUniforms
 {
     std::array<float, 16> lightSpaceMatrix{};
     std::array<float, 16> model{};
+    float alpha{1.0f};
 };
 
 // Uniform block for the post-process pipeline.

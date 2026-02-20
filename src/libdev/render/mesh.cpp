@@ -220,9 +220,9 @@ inline void setMeshWorldMatrix(const MexTransform3d& world, glm::mat4& World, co
 
 // Shadow depth pass: set model matrix and submit only triangle positions — skip
 // lighting, materials, alpha sorting, TTF polygons, spin polygons, etc.
-// If a material override vector is provided, any group whose override material
-// has alpha transparency is skipped (semi-transparent surfaces should not cast
-// full opaque shadows).
+// If a material override vector is provided, use override materials so that
+// the shadow depth shader receives the correct diffuse alpha (e.g. from
+// W4dSolidFadedAlphaPlan) for dithered shadow attenuation.
 inline bool renderShadowDepthIfActive(
     const MexTransform3d& world,
     const RenScale& scale,
