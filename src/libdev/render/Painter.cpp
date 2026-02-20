@@ -23,22 +23,22 @@ namespace Ren {
 
 Painter::Painter(RenSurface& target)
     : target_(target)
+    , device_(RenDevice::current())
 {
 }
 
 void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
 {
     PRE(!target_.readOnly());
-    PRE(RenDevice::current());
-    PRE(RenDevice::current()->display());
+    PRE(device_);
+    PRE(device_->display());
 
     if (target_.isNull())
         return;
 
-    RenScopedImmediateCommands guard(RenDevice::current());
+    RenScopedImmediateCommands guard(device_);
     Rect srcArea(Size(1, 1));
     RenISurfBody emptySurf;
-    RenDevice* dev = RenDevice::current();
 
     uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
     const bool backgroundColour = packedColour == 0xFFFF00FF;
@@ -46,13 +46,13 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
 
     if (target_.isOffscreen())
     {
-        dev->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        dev->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), packedColour, blitMode);
-        dev->renderToTextureMode(NullTexId, 0, 0);
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+        device_->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), packedColour, blitMode);
+        device_->renderToTextureMode(NullTexId, 0, 0);
     }
     else
     {
-        dev->renderSurface(&emptySurf, srcArea, area, 0, 0, packedColour, blitMode);
+        device_->renderSurface(&emptySurf, srcArea, area, 0, 0, packedColour, blitMode);
     }
 }
 
@@ -94,7 +94,7 @@ void Painter::hollowRectangle(const Rect& area, const RenColour& colour, int thi
 void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColour& fill) const
 {
     PRE(!target_.readOnly());
-    RenScopedImmediateCommands guard(RenDevice::current());
+    RenScopedImmediateCommands guard(device_);
 
     int cx, cy, rx, ry;
     uint packedColour = packColour(fill.r(), fill.g(), fill.b(), fill.a());
@@ -119,23 +119,22 @@ void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColou
         i += inc;
     }
 
-    RenDevice::current()->recordCommand(Command::setCullFace(false));
-    RenDevice* dev = RenDevice::current();
+    device_->recordCommand(Command::setCullFace(false));
     if (target_.isOffscreen())
     {
-        dev->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        dev->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), -target_.height());
-        dev->renderToTextureMode(NullTexId, 0, 0);
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), -target_.height());
+        device_->renderToTextureMode(NullTexId, 0, 0);
     }
     else
-        dev->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), target_.height());
+        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), target_.height());
 }
 
 void Painter::line(const Point& from, const Point& to, const RenColour& colour, int thickness) const
 {
     PRE(!target_.readOnly());
     PRE(thickness > 0);
-    RenScopedImmediateCommands guard(RenDevice::current());
+    RenScopedImmediateCommands guard(device_);
 
     RenIVertex vtx[2]{};
     uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
@@ -156,17 +155,16 @@ void Painter::line(const Point& from, const Point& to, const RenColour& colour, 
     vtx[1].color = packedColour;
     vtx[1].specular = 0;
 
-    RenDevice* dev = RenDevice::current();
-    dev->recordCommand(Command::setLineWidth(static_cast<float>(thickness)));
+    device_->recordCommand(Command::setLineWidth(static_cast<float>(thickness)));
     if (target_.isOffscreen())
     {
-        dev->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        dev->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), -target_.height());
-        dev->renderToTextureMode(NullTexId, 0, 0);
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), -target_.height());
+        device_->renderToTextureMode(NullTexId, 0, 0);
     }
     else
-        dev->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), target_.height());
-    dev->recordCommand(Command::setLineWidth(1.0f));
+        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), target_.height());
+    device_->recordCommand(Command::setLineWidth(1.0f));
 }
 
 void Painter::horizontalLine(const Point& start, int length, const RenColour& colour, int thickness) const
@@ -189,7 +187,7 @@ void Painter::verticalLine(const Point& start, int height, const RenColour& colo
 
 void Painter::drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const
 {
-    RenScopedImmediateCommands guard(RenDevice::current());
+    RenScopedImmediateCommands guard(device_);
 
     struct UnderlineSegment
     {
@@ -419,8 +417,8 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
     if (vertices.empty())
         return;
 
-    RenDevice::current()->recordCommand(Command::setCullFace(false));
-    RenDevice::current()->renderScreenspace(
+    device_->recordCommand(Command::setCullFace(false));
+    device_->renderScreenspace(
         &vertices.front(),
         vertices.size(),
         PrimitiveTopology::Triangles,
