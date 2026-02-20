@@ -24,6 +24,7 @@
 #include "machlog/races.hpp"
 #include "system/pathname.hpp"
 #include "machgui/internal/strings.hpp"
+#include "gui/painter.hpp"
 #include "gui/restring.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"

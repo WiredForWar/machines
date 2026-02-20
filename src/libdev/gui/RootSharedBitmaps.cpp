@@ -1,16 +1,7 @@
-#include "gui/gui.hpp"
-#include "system/pathname.hpp"
 #include "gui/RootSharedBitmaps.hpp"
 
-GuiRootSharedBitmaps::GuiRootSharedBitmaps()
-    : GuiRootSharedBitmaps(GuiPainter::instance())
-{
-}
-
-GuiRootSharedBitmaps::GuiRootSharedBitmaps(const IGuiPainter& painter)
-    : guiPainter_(painter)
-{
-}
+#include "gui/painter.hpp"
+#include "system/pathname.hpp"
 
 GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
 {
@@ -74,7 +65,7 @@ void GuiRootSharedBitmaps::blitNamedBitmapFromArea(
 {
     if (bitmap)
     {
-        guiPainter_.blit(*bitmap, fnSourceAreaTransform(sourceArea), destination);
+        GuiPainter::instance().blit(*bitmap, fnSourceAreaTransform(sourceArea), destination);
     }
     else
     {
@@ -88,7 +79,7 @@ void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bit
 {
     if (bitmap)
     {
-        guiPainter_.blit(*bitmap, destination);
+        GuiPainter::instance().blit(*bitmap, destination);
     }
     else
     {

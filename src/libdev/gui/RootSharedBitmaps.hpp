@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <memory>
-#include "gui/painter.hpp"
+#include "gui/gui.hpp"
 
 //
 // Ideally, clients should utilize the named bitmaps feature
@@ -10,9 +10,7 @@
 class GuiRootSharedBitmaps final
 {
 public:
-    GuiRootSharedBitmaps();
-    explicit GuiRootSharedBitmaps(const IGuiPainter& painter);
-
+    GuiRootSharedBitmaps() = default;
     ~GuiRootSharedBitmaps();
 
     // Create or reassign a named bitmap, loading if necessary
@@ -43,8 +41,6 @@ public:
     int getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const;
 
 private:
-    const IGuiPainter& guiPainter_;
-
     std::unordered_map<std::string, std::shared_ptr<GuiBitmap>> sharedBitmaps_;
     std::unordered_map<std::string, std::string> namedBitmaps_;
 };

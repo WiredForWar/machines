@@ -90,7 +90,7 @@ void GuiSingleLineEditBox::doDisplay()
         absoluteBoundary().minCorner().x() + offset,
         absoluteBoundary().minCorner().y() + offset);
 
-    IGuiPainter& painter = GuiPainter::instance();
+    GuiPainter& painter = GuiPainter::instance();
 
     if (ttfFont_)
     {

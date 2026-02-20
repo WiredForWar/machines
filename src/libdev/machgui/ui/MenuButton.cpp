@@ -142,7 +142,7 @@ void MachGuiMenuButton::doDisplay()
     uint glowX = (glowWidth - width()) / 2.0;
     uint glowY = (glowHeight - height()) / 2.0;
 
-    IGuiPainter& p = GuiPainter::instance();
+    GuiPainter& p = GuiPainter::instance();
     // Draw background to button ( glow or normal backdrop ).
     if (flash_ || highlighted_)
     {

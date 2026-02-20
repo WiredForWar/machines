@@ -314,7 +314,7 @@ void MachGuiMenuText::doDisplay()
         auto textWidthCb = [&](const std::string& text) -> int { return font.horizontalAdvance(text, textOptions_); };
         auto drawTextCb = [&](const Gui::Coord& coord, const std::string& text)
         {
-            IGuiPainter& p = GuiPainter::instance();
+            GuiPainter& p = GuiPainter::instance();
             p.drawText(coord, text, textOptions_, font);
         };
 
