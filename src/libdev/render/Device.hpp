@@ -1,11 +1,12 @@
 #pragma once
 
 #include "base/base.hpp"
-#include "render/internal/BackendCommands.hpp"
-#include "render/internal/TriangleGroup.hpp"
-#include "render/internal/DrawCallFactory.hpp"
-#include "render/render.hpp"
+#include "render/BackendType.hpp"
 #include "render/Texture.hpp"
+#include "render/internal/BackendCommands.hpp"
+#include "render/internal/DrawCallFactory.hpp"
+#include "render/internal/TriangleGroup.hpp"
+#include "render/render.hpp"
 
 #include "render/PrimitiveTopology.hpp"
 
@@ -51,7 +52,10 @@ public:
     RenDevice(RenDisplay*);
     ~RenDevice();
 
-    bool initialize();
+    // One-time initialization: creates the render backend, sets up the display,
+    // allocates all GPU resources (pipelines, buffers, shadow maps, etc.).
+    // Must be called exactly once before any rendering.
+    bool initialize(Ren::BackendType backendType = Ren::BackendType::Auto);
 
     // We can fail to start the rendering in which case false is returned.  If
     // clearBack is false, then the back buffer isn't cleared (but z is).
@@ -113,9 +117,11 @@ public:
     void clearAllSurfaces(const RenColour&); // PRE(!rendering());
     void clearAllSurfaces(); // PRE(!rendering());
 
+    bool switchBackend(Ren::BackendType type);
+
     // Register a callback invoked after GPU resources are invalidated and
-    // reloaded (e.g. scale factor change).  Listeners should release cached
-    // anonymous surfaces and rebuild their context.
+    // reloaded (e.g. backend switch, scale factor change).  Listeners
+    // should release cached anonymous surfaces and rebuild their context.
     void addResourcesInvalidatedCallback(std::function<void()> callback);
     void fireResourcesInvalidatedCallbacks();
 

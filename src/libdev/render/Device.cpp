@@ -170,7 +170,7 @@ void RenDevice::renderScreenspace(
     renderScreenspace(vertices, nVertices, topology, targetW, targetH, mat.texture().handle());
 }
 
-bool RenDevice::initialize()
+bool RenDevice::initialize(Ren::BackendType backendType)
 {
     PRE(Ren::initialised());
     PRE(MexCoordSystem::instance().isSet());
@@ -178,16 +178,31 @@ bool RenDevice::initialize()
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
+    ASSERT(!backend_, "initialize() must only be called once");
+
     // There are two alpha sorters.  Only one is in use at a time.  The switch
     // is made by changing this pointer.
     pImpl_->alphaSorter_ = pImpl_->normalAlphaSorter_;
 
     fogColour(RenColour::white());
 
-    if (!initializeContext())
+    // Create and initialize the render backend.
+    if (backendType == Ren::BackendType::Auto)
+        backendType = Ren::IRenderBackend::resolveAutoBackend();
+
+    spdlog::info("Creating render backend of type {}", toString(backendType));
+
+    backend_ = Ren::IRenderBackend::create(backendType);
+    if (!backend_)
     {
-        // TBD: What shall i do then ?
-        ASSERT(false, "could not create surfaces ");
+        spdlog::error("Failed to create render backend of type {}", toString(backendType));
+        return false;
+    }
+
+    if (!backend_->initialize(pImpl_->display_->window()))
+    {
+        spdlog::error("Failed to initialize render backend");
+        backend_.reset();
         return false;
     }
 
@@ -553,6 +568,9 @@ void RenDevice::releaseGpuResources()
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
+    if (!backend_ || !backend_->isInitialized())
+        return;
+
     backend_->releasePipeline(gui2D_.id);
     backend_->releasePipeline(standard_.id);
     backend_->releasePipeline(billboard_.id);
@@ -612,6 +630,69 @@ void RenDevice::releaseGpuResources()
     postProcessWidth_ = {};
     postProcessHeight_ = {};
     postProcessReady_ = {};
+}
+
+bool RenDevice::switchBackend(Ren::BackendType type)
+{
+    PRE(!rendering());
+
+    CB_DEPIMPL_AUTO(backend_);
+
+    // switchBackend() is for runtime switching only — initialize() must have been called first.
+    ASSERT(backend_ && backend_->isInitialized(), "switchBackend() called before initialize()");
+
+    if (type == Ren::BackendType::Auto)
+        type = Ren::IRenderBackend::resolveAutoBackend();
+
+    if (backend_->backendType() == type)
+        return true;
+
+    spdlog::info("Switching render backend to type {}", toString(type));
+
+    // Tear down all GPU resources on the current backend.
+    releaseGpuResources();
+
+    // Tell the surface manager to release all native texture handles.
+    RenSurfaceManager::instance().impl().releaseAllTextures();
+
+    // Shut down and destroy the old backend.
+    backend_->shutdown();
+    backend_.reset();
+
+    // Create and initialize the new backend.
+    backend_ = Ren::IRenderBackend::create(type);
+    if (!backend_)
+    {
+        spdlog::error("Failed to create render backend of type {}", toString(type));
+        return false;
+    }
+
+    SDL_Window* window = pImpl_->display_->window();
+    if (!backend_->initialize(window))
+    {
+        spdlog::error("Failed to initialize new render backend");
+        backend_.reset();
+        return false;
+    }
+
+    // Recreate all GPU resources on the new backend.
+    if (!createGpuResources())
+    {
+        spdlog::error("Failed to recreate GPU resources on new backend");
+        return false;
+    }
+
+    // Re-upload all textures.
+    RenSurfaceManager::instance().impl().reuploadAllTextures();
+
+    // Restore VSync preference.
+    if (!setVSync(vsyncEnabled_))
+    {
+        spdlog::warn("Failed to apply VSync preference ({}) during backend creation", vsyncEnabled_);
+    }
+
+    spdlog::info("Backend switch complete");
+    return true;
 }
 
 void RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
@@ -685,19 +766,13 @@ bool RenDevice::initializeContext()
     CB_DEPIMPL_AUTO(backend_);
     CB_DEPIMPL_AUTO(display_);
 
-    if (backend_->isInitialized())
-    {
-        backend_->shutdown();
-    }
+    PRE(backend_);
+
+    backend_->shutdown();
     if (!backend_->initialize(display_->window()))
     {
-        spdlog::error("Render backend initialization failed");
+        spdlog::error("Render backend re-initialization failed");
         return false;
-    }
-
-    if (!setVSync(vsyncEnabled_))
-    {
-        spdlog::warn("Failed to apply VSync preference ({}) during context creation", vsyncEnabled_);
     }
 
     return true;

@@ -33,11 +33,9 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     , materialFogMultiplier_(1.0)
     , debugX_(0)
     , debugY_(0)
-    , backend_(Ren::IRenderBackend::create())
     , frameTimer_()
     , videoMemoryShared_(false)
     , videoMemorySharedInitialized_(false)
-
 {
     PRE(dis);
     PRE(parent);

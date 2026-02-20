@@ -4,6 +4,8 @@ set(RENDER_SOURCES
     AlphaGroup.cpp
     AnimCursor2d.cpp
     AnimCursor2d.hpp
+    BackendFactory.cpp
+    BackendType.hpp
     Background.cpp
     Background.hpp
     BmpFont.cpp
@@ -83,10 +85,6 @@ set(RENDER_SOURCES
     NonMMX.cpp
     NormalMap.cpp
     NormalMap.hpp
-    OpenGL/RenderBackendGL.cpp
-    OpenGL/RenderBackendGL.hpp
-    OpenGL/Utils.cpp
-    OpenGL/Utils.hpp
     Painter.cpp
     Painter.hpp
     PolySortedDraw.cpp
@@ -219,12 +217,6 @@ set(RENDER_SOURCES
 add_library(render ${GAME_COMPONENT_LIB_TYPE} ${RENDER_SOURCES})
 add_library(LibDev::render ALIAS render)
 
-if(TARGET OpenGL::OpenGL)
-    target_link_libraries(render PUBLIC OpenGL::OpenGL)
-else()
-    target_link_libraries(render PUBLIC OpenGL::GL)
-endif()
-
 target_link_libraries(render PUBLIC
     LibDev::system
     LibDev::mathex
@@ -235,6 +227,33 @@ target_link_libraries(render PUBLIC
 target_link_libraries(render PRIVATE
     SDL3::SDL3
     SDL3_image::SDL3_image
-    GLEW::GLEW
     Freetype::Freetype
 )
+
+if(TRUE)
+    add_library(render_backend_gl21 STATIC
+        OpenGL/BackendGL.hpp
+        OpenGL/RenderBackendGL.cpp
+        OpenGL/RenderBackendGL.hpp
+        OpenGL/Utils.cpp
+        OpenGL/Utils.hpp
+    )
+    target_include_directories(render_backend_gl21 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
+    target_link_libraries(render_backend_gl21 PRIVATE
+        LibDev::system
+
+        SDL3::SDL3
+        GLEW::GLEW
+        glm::glm
+        spdlog::spdlog
+    )
+    if(TARGET OpenGL::OpenGL)
+        target_link_libraries(render_backend_gl21 PRIVATE OpenGL::OpenGL)
+    else()
+        target_link_libraries(render_backend_gl21 PRIVATE OpenGL::GL)
+    endif()
+
+    target_compile_definitions(render_backend_gl21 PUBLIC MACHINES_HAS_BACKEND_GL21)
+
+    target_link_libraries(render PRIVATE render_backend_gl21)
+endif()
