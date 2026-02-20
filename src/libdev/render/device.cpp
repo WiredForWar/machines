@@ -2643,8 +2643,7 @@ void RenDevice::renderShadowDepth(
     const size_t nVertices,
     const Ren::VertexIdx* indices,
     const size_t nIndices,
-    Ren::PrimitiveTopology topology,
-    float alpha)
+    Ren::PrimitiveTopology topology)
 {
     PRE(vertices);
     PRE(indices);
@@ -2661,7 +2660,6 @@ void RenDevice::renderShadowDepth(
     Ren::ShadowDepthUniforms sdu;
     sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
     sdu.model = toFloatArray(model_);
-    sdu.alpha = alpha;
 
     Ren::DrawCallFactory::Commands cmds;
     Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
