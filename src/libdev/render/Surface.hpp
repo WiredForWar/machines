@@ -23,6 +23,7 @@ namespace Ren
 {
 
 class Font;
+class Painter;
 class TextOptions;
 
 } // namespace Ren
@@ -101,30 +102,15 @@ public:
     void blitInRequestedSize(const RenSurface& source, Point dest, Ren::BlitMode mode = {});
     void copyFromRGBABuffer(const uint* buff);
 
-    void hollowRectangle(const Rect&, const RenColour&, int thickness);
-    void filledRectangle(const Rect&, const RenColour&);
-
-    // OpenGL/DrawPrimitive style of line drawing API.
-    void startPolyLine(const RenColour&, int thickness); // PRE(!doingLine()); POST(doingLine());
-    void lineVertex(int x, int y); // PRE(doingLine());
-    void endPolyLine(); // PRE(doingLine()); POST(!doingLine());
-    bool doingLine();
-
-    // PRE(pts.size() > 1); PRE(thickness > 0);
-    using Points = ctl_vector<MexPoint2d>;
-    void polyLine(const Points& pts, const RenColour&, int thickness);
-
     void getPixel(int x, int y, RenColour*) const;
 
     void saveAsPng(const SysPathName&, const Rect& area = Rect()) const;
 
-    void ellipse(const Rect& area, const RenColour& outlineColour, const RenColour& fillColour);
-
     // Returns the actual size used, in case an exact match doesn't exist.
     static int getDefaultFontSize();
     static void setDefaultFontSize(int size);
-    void drawText(
-        int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
+
+    using Points = ctl_vector<MexPoint2d>;
 
     // Is source colour keying enabled for this image?
     bool isColourKeyingOn() const;
@@ -204,6 +190,7 @@ private:
 
     // Only the manager class can allocate Ids and create surfaces.
     // (A texture can create a surface corresponding to its own id.)
+    friend class Ren::Painter;
     friend class RenSurfaceManager;
     friend class RenISurfaceManagerImpl;
     friend class RenTexture;
