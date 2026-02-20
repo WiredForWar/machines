@@ -189,6 +189,7 @@ private:
         Ren::UniformLocationId projUniform{};
         Ren::UniformLocationId fogColourUniform{};
         Ren::UniformLocationId fogParamsUniform{};
+        Ren::UniformLocationId fogModeUniform{};
         Ren::UniformLocationId texSamplerUniform{};
         Ren::UniformLocationId gpuLightingUniform{};
         Ren::UniformLocationId lightDirUniform{};

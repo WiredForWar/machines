@@ -16,6 +16,7 @@ out vec4 outFragColor;
 uniform sampler2D uTextureSampler2;
 uniform vec3 uFogColour;
 uniform vec3 uFogParams;
+uniform int uFogMode;
 
 // Per-pixel lighting uniforms
 uniform int uGpuLighting;
@@ -106,16 +107,27 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 
 void main() {
     
-    // Per-pixel fog: compute from view-space distance and uniform parameters
-    float dist = length(viewSpace);
-    float fogStart = uFogParams[0];
-    float fogEnd = uFogParams[1];
-
+    // Per-pixel fog
+    float viewDist = length(viewSpace);
     float fogFactor = 0.0f;
+
     // fogEnd > 0 indicates that fog is turned on
-    if (fogEnd > 0.0f)
+    if (uFogParams[1] > 0.0f)
     {
-        fogFactor = (fogStart - dist) / (fogStart - fogEnd);
+        if (uFogMode == 1)
+        {
+            // Exponential squared fog
+            float density = uFogParams[2];
+            float dd = density * viewDist;
+            fogFactor = 1.0f - exp(-dd * dd);
+        }
+        else
+        {
+            // Linear fog (mode 0, default)
+            float fogStart = uFogParams[0];
+            float fogEnd = uFogParams[1];
+            fogFactor = (fogStart - viewDist) / (fogStart - fogEnd);
+        }
         fogFactor = clamp(fogFactor, 0.0f, 1.0f);
     }
 
@@ -151,7 +163,7 @@ void main() {
 
         float shadow = 0.0f;
         if (uShadowEnabled == 1)
-            shadow = calcShadow(fragWorldPos, N, L, dist) * uShadowStrength;
+            shadow = calcShadow(fragWorldPos, N, L, viewDist) * uShadowStrength;
 
         vec3 lit = uFilter * ((1.0f - shadow) * lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
         litColor = vec4(clamp(lit, 0.0f, 1.0f), 1.0f);
