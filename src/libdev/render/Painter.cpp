@@ -38,28 +38,67 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
         return;
 
     RenScopedImmediateCommands guard(device_);
-    Rect srcArea(Size(1, 1));
-    RenISurfBody emptySurf;
 
     uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
-    const bool backgroundColour = packedColour == 0xFFFF00FF;
-    const BlitMode blitMode = backgroundColour ? BlitMode::ZeroZero : BlitMode::AlphaBlend;
 
+    const float x0 = area.originX;
+    const float y0 = area.originY;
+    const float x1 = area.originX + area.width;
+    const float y1 = area.originY + area.height;
+
+    RenIVertex vtx[6]{};
+    for (auto& v : vtx)
+        v.color = packedColour;
+
+    // Triangle 1
+    vtx[0].x = x0; vtx[0].y = y0;
+    vtx[1].x = x1; vtx[1].y = y0;
+    vtx[2].x = x0; vtx[2].y = y1;
+    // Triangle 2
+    vtx[3].x = x1; vtx[3].y = y0;
+    vtx[4].x = x1; vtx[4].y = y1;
+    vtx[5].x = x0; vtx[5].y = y1;
+
+    device_->recordCommand(Command::setCullFace(false));
     if (target_.isOffscreen())
     {
         device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), packedColour, blitMode);
+        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), -target_.height());
         device_->renderToTextureMode(NullTexId, 0, 0);
     }
     else
     {
-        device_->renderSurface(&emptySurf, srcArea, area, 0, 0, packedColour, blitMode);
+        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), target_.height());
     }
 }
 
 void Painter::clearRectangle(const Rect& area) const
 {
-    filledRectangle(area, RenColour::magenta());
+    PRE(!target_.readOnly());
+    PRE(device_);
+    PRE(device_->display());
+
+    if (target_.isNull())
+        return;
+
+    RenScopedImmediateCommands guard(device_);
+    Rect srcArea(Size(1, 1));
+    RenISurfBody emptySurf;
+
+    // Vertex colour must have non-zero alpha; some drivers optimise away
+    // fully-transparent fragments before the blend stage, defeating ZeroZero.
+    static constexpr uint opaqueColour = 0xFFFFFFFF;
+
+    if (target_.isOffscreen())
+    {
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+        device_->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
+        device_->renderToTextureMode(NullTexId, 0, 0);
+    }
+    else
+    {
+        device_->renderSurface(&emptySurf, srcArea, area, 0, 0, opaqueColour, BlitMode::ZeroZero);
+    }
 }
 
 void Painter::hollowRectangle(const Rect& area, const RenColour& colour, int thickness) const
