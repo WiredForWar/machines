@@ -7,6 +7,7 @@
 
 #include "render/render.hpp"
 
+#include <optional>
 #include <string_view>
 
 class RenColour;
@@ -35,6 +36,13 @@ public:
 
     // Text drawing
     void drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const;
+
+    // Blit operations
+    void blit(const RenSurface& source, const std::optional<Rect>& srcArea = {}, Point dest = {}, BlitMode mode = {}) const;
+    void tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea) const;
+    void stretchBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea, BlitMode mode = {}) const;
+    void stretchBlit(const RenSurface& source, BlitMode mode = {}) const;
+    void blitInRequestedSize(const RenSurface& source, Point dest, BlitMode mode = {}) const;
 
 private:
     RenSurface& target_;

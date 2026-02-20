@@ -67,4 +67,31 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
     target_.drawText(x, y, text, font, options);
 }
 
+void Painter::blit(
+    const RenSurface& source, const std::optional<Rect>& srcArea, Point dest, BlitMode mode) const
+{
+    target_.simpleBlit(source, srcArea, dest, mode);
+}
+
+void Painter::tileBlit(const RenSurface& source, const Rect& srcArea, const Rect& destArea) const
+{
+    target_.tileBlit(source, srcArea, destArea);
+}
+
+void Painter::stretchBlit(
+    const RenSurface& source, const Rect& srcArea, const Rect& destArea, BlitMode mode) const
+{
+    target_.stretchBlit(source, srcArea, destArea, mode);
+}
+
+void Painter::stretchBlit(const RenSurface& source, BlitMode mode) const
+{
+    target_.stretchBlit(source, mode);
+}
+
+void Painter::blitInRequestedSize(const RenSurface& source, Point dest, BlitMode mode) const
+{
+    target_.blitInRequestedSize(source, dest, mode);
+}
+
 } // namespace Ren

@@ -22,25 +22,10 @@ public:
 
     ///////////////////////////////
 
-    // Blit bitmap to backbuffer
-    void blit(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Coord& dest) const;
-
-    // Same as above only sourceArea is entire area of the source GuiBitmap
-    void blit(const GuiBitmap& source, const Gui::Coord& dest) const;
-
-    // Same as above only dest is defaulted to (0,0)
-    void blit(const GuiBitmap& source) const;
-
-    void tile(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const;
-
-    void stretch(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const;
-
-    void stretch(const GuiBitmap& source, const Gui::Box& destArea) const;
-
-    void blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const;
-
-    ///////////////////////////////
-
+    using Ren::Painter::blit;
+    using Ren::Painter::tileBlit;
+    using Ren::Painter::stretchBlit;
+    using Ren::Painter::blitInRequestedSize;
     using Ren::Painter::filledRectangle;
     using Ren::Painter::hollowRectangle;
     using Ren::Painter::ellipse;
@@ -48,6 +33,16 @@ public:
     using Ren::Painter::horizontalLine;
     using Ren::Painter::verticalLine;
     using Ren::Painter::drawText;
+
+    ///////////////////////////////
+
+    // Blit overloads accepting Gui types
+    void blit(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Coord& dest) const;
+    void blit(const GuiBitmap& source, const Gui::Coord& dest) const;
+    void tile(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const;
+    void stretch(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const;
+    void stretch(const GuiBitmap& source, const Gui::Box& destArea) const;
+    void blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const;
 
     void filledRectangle(const Gui::Box&, const Gui::Colour&) const;
     void hollowRectangle(const Gui::Box&, const Gui::Colour&, unsigned thickness) const;

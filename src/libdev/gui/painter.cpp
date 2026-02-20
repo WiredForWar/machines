@@ -110,22 +110,17 @@ void GuiPainter::drawText(
 
 void GuiPainter::blit(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Coord& dest) const
 {
-    Gui::backBuffer().simpleBlit(source, map_GuiBox_to_RenSurfaceRect(sourceArea), Ren::Point(dest.x(), dest.y()));
+    Ren::Painter::blit(source, map_GuiBox_to_RenSurfaceRect(sourceArea), Ren::Point(dest.x(), dest.y()));
 }
 
 void GuiPainter::blit(const GuiBitmap& source, const Gui::Coord& dest) const
 {
-    Gui::backBuffer().simpleBlit(source, {}, Ren::Point(dest.x(), dest.y()));
-}
-
-void GuiPainter::blit(const GuiBitmap& source) const
-{
-    Gui::backBuffer().simpleBlit(source);
+    Ren::Painter::blit(source, {}, Ren::Point(dest.x(), dest.y()));
 }
 
 void GuiPainter::tile(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const
 {
-    Gui::backBuffer().tileBlit(
+    Ren::Painter::tileBlit(
         source,
         map_GuiBox_to_RenSurfaceRect(sourceArea),
         map_GuiBox_to_RenSurfaceRect(destArea));
@@ -133,7 +128,7 @@ void GuiPainter::tile(const GuiBitmap& source, const Gui::Box& sourceArea, const
 
 void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& sourceArea, const Gui::Box& destArea) const
 {
-    Gui::backBuffer().stretchBlit(
+    Ren::Painter::stretchBlit(
         source,
         map_GuiBox_to_RenSurfaceRect(sourceArea),
         map_GuiBox_to_RenSurfaceRect(destArea));
@@ -141,12 +136,12 @@ void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& sourceArea, co
 
 void GuiPainter::stretch(const GuiBitmap& source, const Gui::Box& destArea) const
 {
-    Gui::backBuffer().stretchBlit(source, source.size(), map_GuiBox_to_RenSurfaceRect(destArea));
+    Ren::Painter::stretchBlit(source, source.size(), map_GuiBox_to_RenSurfaceRect(destArea));
 }
 
 void GuiPainter::blitInRequestedSize(const GuiBitmap& source, const Gui::Coord& dest) const
 {
-    Gui::backBuffer().blitInRequestedSize(source, Ren::Point(dest.x(), dest.y()));
+    Ren::Painter::blitInRequestedSize(source, Ren::Point(dest.x(), dest.y()));
 }
 
 //////////////////////////////////////////////////////////////////////
