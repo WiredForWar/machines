@@ -787,7 +787,8 @@ void RenDevice::commonEndFrame()
         // RenSurface::AvailableFonts::Terminus);
         const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
-        surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, *font, yellowColour);
+        surf.filledRectangle(Ren::Rect(pImpl_->debugX_, pImpl_->debugY_, font->horizontalAdvance(concat) + 8, font->height() * 4 + 8), RenColour(0.1, 0.1, 0.1, 0.5));
+        surf.drawText(pImpl_->debugX_ + 4, pImpl_->debugY_ + 4, concat, *font, yellowColour);
     }
 
     pImpl_->extOut_.clear();
