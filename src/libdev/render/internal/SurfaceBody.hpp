@@ -68,20 +68,9 @@ public:
 
     // These are methods which would be private internal methods of RenSurface,
     // however, they are placed here to reduce dependancies.
-    void setDDColourKey();
     void filledRectangle(const Ren::Rect& area, uint colour);
     void drawText(
         int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
-
-    // When Alt-Tab is pressed, textures can get unloaded from a hardware
-    // device.  Calling this method reloads this image.
-    bool restoreToVRAM() const;
-    bool loadIntoVRAM() const;
-    bool recreateVRAMSurface();
-
-    // HDC getDC();
-    // HDC DC() const;
-    void releaseDC();
 
     uint refCount() const;
     void incRefCount();
@@ -177,9 +166,6 @@ private:
     // PRE(dev); PRE(t != NOT_DISPLAY);
     // POST(!sharable() && !readOnly()); POST(name().length() == 0);
     RenISurfBody(const RenDevice* dev, RenI::DisplayType t);
-
-    // Truly private, as opposed to available to friends.
-    void updateDescr();
 
     RenI::DisplayType displayType_;
     const RenDevice* device_{};
