@@ -51,17 +51,17 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
     // TODO is this renIStarsImplReserveVectorsOp implemented anywhere?
     // ctl_for_each(sectors_, renIStarsImplReserveVectorsOp);
 
-    RenIStarsImplD3DLVERTEXGen* pVertexGen = nullptr;
+    RenIStarsImplVertexGen* pVertexGen = nullptr;
     if (configuration() == RenStars::SPHERICAL)
-        pVertexGen = new RenIStarsImplSphericalD3DLVERTEXGen(radius_, STAR_COLOUR);
+        pVertexGen = new RenIStarsImplSphericalVertexGen(radius_, STAR_COLOUR);
     else if (configuration() == RenStars::HEMISPHERICAL)
-        pVertexGen = new RenIStarsImplHemisphericalD3DLVERTEXGen(radius_, STAR_COLOUR);
+        pVertexGen = new RenIStarsImplHemisphericalVertexGen(radius_, STAR_COLOUR);
     else
         ASSERT_FAIL("An invalid stars configuration was found in RenIStarsImpl ctor.");
 
     ASSERT(pVertexGen, "The allocation of the vertex generator failed.");
 
-    RenIStarsImplD3DLVERTEXInserterOp vertexInserter(&sectors_, N_SECTORS, SECTOR_WIDTH);
+    RenIStarsImplVertexInserterOp vertexInserter(&sectors_, N_SECTORS, SECTOR_WIDTH);
 
     // Create a set of random vertices in a particular configuration.
     for (int index = 0; index < nStars; ++index)
@@ -74,7 +74,7 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
     }
 
     // Give the vertices some random alpha values.
-    ctl_for_each(sectors_, RenIStarsImplD3DLVERTEXRandomiseAlphasOp(0.3, 1.0));
+    ctl_for_each(sectors_, RenIStarsImplRandomiseAlphasOp(0.3, 1.0));
 
     TEST_INVARIANT;
 }
@@ -102,7 +102,7 @@ void RenIStarsImpl::render(
         colourFilter_ = currentColourFilter;
     }
 
-    // Pointers to D3DLVERTEX arrays for Direct3D to draw with.
+    // Pointers to vertex arrays for rendering.
     ctl_vector<RenIVertex*> vertexPtrs;
     vertexPtrs.reserve(5);
     // The sizes of the arrays pointed to by the above.

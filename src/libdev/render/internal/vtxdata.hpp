@@ -21,11 +21,6 @@ class RenIVertexIntensities;
 class RenIVertexMaterials;
 template <class T> class ctl_vector;
 
-// NB: this is written to have the exact same layout as a D3DLVERTEX.  The
-// normalIndex member occupies the same space as the vertex colour in the
-// D3D struct.  This allows us to memcpy from RenIVertexData to a D3DLVERTEX
-// array.  It *could* break under future versions of DirectX.
-
 class RenIVertex
 {
 public:
@@ -98,10 +93,6 @@ public:
     const RenIVec3FixPtS0_7& normal(Base::const_iterator it) const;
     const RenIVec3FixPtS0_7& normal(const RenIVertex& v) const;
     RenIVec3FixPtS0_7& normal(const RenIVertex& v);
-
-    // Copy x, y, z, tu, and tv to the given array (which we must assume is
-    // long enough).
-    // void copyTo(D3DLVERTEX*);
 
     const RenIVertexIntensities* intensityMap() const
     {

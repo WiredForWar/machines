@@ -38,15 +38,14 @@ class RenIVertex;
 
 void renIStarsImplReserveVectorsOp(ctl_vector<RenIVertex>& sector);
 
-class RenIStarsImplD3DLVERTEXGen;
-class RenIStarsImplSphericalD3DLVERTEXGen;
-class RenIStarsImplHemisphericalD3DLVERTEXGen;
+class RenIStarsImplVertexGen;
+class RenIStarsImplSphericalVertexGen;
+class RenIStarsImplHemisphericalVertexGen;
 
-class RenIStarsImplD3DLVERTEXInserterOp;
+class RenIStarsImplVertexInserterOp;
 
-
-class RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp;
-class RenIStarsImplD3DLVERTEXRandomiseAlphasOp;
+class RenIStarsImplRandomiseAlphasAuxOp;
+class RenIStarsImplRandomiseAlphasOp;
 
 class RenIStarsImplVerticesColourOp;
 class RenIStarsImplVerticesColourAuxOp;
@@ -68,16 +67,16 @@ void RenIStarsImplReserveVectorsOp(ctl_vector<RenIVertex>& sector)
 
 ////////////////////////////////////////////////////////////
 
-class RenIStarsImplD3DLVERTEXGen
+class RenIStarsImplVertexGen
 {
 public:
     virtual RenIVertex operator()() = 0;
 };
 
-class RenIStarsImplSphericalD3DLVERTEXGen : public RenIStarsImplD3DLVERTEXGen
+class RenIStarsImplSphericalVertexGen : public RenIStarsImplVertexGen
 {
 public:
-    RenIStarsImplSphericalD3DLVERTEXGen(MATHEX_SCALAR radius, RenColour rgbColour)
+    RenIStarsImplSphericalVertexGen(MATHEX_SCALAR radius, RenColour rgbColour)
         : radius_(radius)
         , rgbColour_(rgbColour)
         , random_(MexBasicRandom::constructSeededFromTime())
@@ -94,14 +93,14 @@ public:
         vec.makeUnitVector();
         vec *= radius_;
 
-        RenIVertex d3dLVertex;
-        d3dLVertex.x = vec.x();
-        d3dLVertex.y = vec.y();
-        d3dLVertex.z = vec.z();
-        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
-        d3dLVertex.specular = 0;
+        RenIVertex vertex;
+        vertex.x = vec.x();
+        vertex.y = vec.y();
+        vertex.z = vec.z();
+        vertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
+        vertex.specular = 0;
 
-        return d3dLVertex;
+        return vertex;
     }
 
 private:
@@ -110,10 +109,10 @@ private:
     MexBasicRandom random_;
 };
 
-class RenIStarsImplHemisphericalD3DLVERTEXGen : public RenIStarsImplD3DLVERTEXGen
+class RenIStarsImplHemisphericalVertexGen : public RenIStarsImplVertexGen
 {
 public:
-    RenIStarsImplHemisphericalD3DLVERTEXGen(MATHEX_SCALAR radius, RenColour rgbColour)
+    RenIStarsImplHemisphericalVertexGen(MATHEX_SCALAR radius, RenColour rgbColour)
 
         : radius_(radius)
         , rgbColour_(rgbColour)
@@ -131,13 +130,13 @@ public:
         vec.makeUnitVector();
         vec *= radius_;
 
-        RenIVertex d3dLVertex;
-        d3dLVertex.x = vec.x();
-        d3dLVertex.y = vec.y();
-        d3dLVertex.z = vec.z();
-        d3dLVertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
-        d3dLVertex.specular = 0;
-        return d3dLVertex;
+        RenIVertex vertex;
+        vertex.x = vec.x();
+        vertex.y = vec.y();
+        vertex.z = vec.z();
+        vertex.color = packColour(rgbColour_.r(), rgbColour_.g(), rgbColour_.b(), 1.0);
+        vertex.specular = 0;
+        return vertex;
     }
 
 private:
@@ -148,10 +147,10 @@ private:
 
 ////////////////////////////////////////////////////////////
 
-class RenIStarsImplD3DLVERTEXInserterOp
+class RenIStarsImplVertexInserterOp
 {
 public:
-    RenIStarsImplD3DLVERTEXInserterOp(
+    RenIStarsImplVertexInserterOp(
         ctl_vector<ctl_vector<RenIVertex>>* const pSectors,
         int nSectors,
         MATHEX_SCALAR sectorWidth)
@@ -197,17 +196,17 @@ inline bool RenIStarsImplVertexHeightLesserOrEqual(const RenIVertex& lhs, const 
 
 ////////////////////////////////////////////////////////////
 
-class RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp
+class RenIStarsImplRandomiseAlphasAuxOp
 {
 public:
-    RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp(MATHEX_SCALAR lowerBound, MATHEX_SCALAR upperBound)
+    RenIStarsImplRandomiseAlphasAuxOp(MATHEX_SCALAR lowerBound, MATHEX_SCALAR upperBound)
         : random_(MexBasicRandom::constructSeededFromTime())
         , lowerBound_(lowerBound)
         , upperBound_(upperBound)
     {
     }
 
-    uint setD3DCOLORAlpha(uint colour, MATHEX_SCALAR alpha) const
+    uint setColourAlpha(uint colour, MATHEX_SCALAR alpha) const
     {
         PRE(alpha >= 0.0 && alpha <= 1.0);
 
@@ -218,7 +217,7 @@ public:
     {
         MATHEX_SCALAR randAlpha = mexRandomScalar(&random_, lowerBound_, upperBound_);
 
-        vertex.color = setD3DCOLORAlpha(vertex.color, randAlpha);
+        vertex.color = setColourAlpha(vertex.color, randAlpha);
     }
 
 private:
@@ -227,10 +226,10 @@ private:
     MATHEX_SCALAR upperBound_;
 };
 
-class RenIStarsImplD3DLVERTEXRandomiseAlphasOp
+class RenIStarsImplRandomiseAlphasOp
 {
 public:
-    RenIStarsImplD3DLVERTEXRandomiseAlphasOp(MATHEX_SCALAR lowerBound, MATHEX_SCALAR upperBound)
+    RenIStarsImplRandomiseAlphasOp(MATHEX_SCALAR lowerBound, MATHEX_SCALAR upperBound)
 
         : alphaRandomiser_(lowerBound, upperBound)
     {
@@ -244,7 +243,7 @@ public:
     void operator()(ctl_vector<RenIVertex>& sector) const { ctl_for_each(sector, alphaRandomiser_); }
 
 private:
-    RenIStarsImplD3DLVERTEXRandomiseAlphasAuxOp alphaRandomiser_;
+    RenIStarsImplRandomiseAlphasAuxOp alphaRandomiser_;
 };
 
 ////////////////////////////////////////////////////////////
@@ -356,11 +355,6 @@ public:
         // PRE(pSizes_->capacity() > 0);
     }
 
-    // I would like this to be a const parameter as I don't change the sequence at all.
-    // I do however put a pointer to an element into another sequence. This means that
-    // the type parameter to that sequence would need to be const D3DLVERTEX* and this
-    // breaks when a const_iterator is instantiated (if the iterator is a typedefed pointer).
-    //  void operator ()(ctl_vector<D3DLVERTEX>& sector) const
     void operator()(ctl_vector<RenIVertex>& sector) const
     {
         auto rimHeight = rimHeight_;

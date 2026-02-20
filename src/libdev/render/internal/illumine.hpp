@@ -82,14 +82,12 @@ public:
     // previously been called with the same in arg:
     // PRE(litData_ == &in);
     // PRE(litData_->size() == in.size()); PRE(validVertices_ == in.size());
-    // virtual const D3DLVERTEX* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&) =0;
     virtual const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, const Indices&) = 0;
 
     // Yet again, the same function, but applied to a sub-set of the vertices,
     // starting at the beginning and applied to nVertices many.
     // PRE(litData_ == &in);                PRE(nVertices <= in.size());
     // PRE(nVertices <= litData_->size());  PRE(nVertices <= validVertices_);
-    // const D3DLVERTEX* applyMaterial(const RenMaterial&, const RenIVertexData& in, size_t nVertices);
     const RenIVertex* applyMaterial(const RenMaterial&, const RenIVertexData& in, size_t nVertices);
 
     // Exactly the same as above, but applies to all the vertices.
