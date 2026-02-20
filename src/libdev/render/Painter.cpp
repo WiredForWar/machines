@@ -27,7 +27,31 @@ namespace Ren {
 Painter::Painter(RenSurface& target)
     : target_(target)
     , device_(RenDevice::current())
+    , commandGuard_(std::make_unique<RenScopedImmediateCommands>(device_))
 {
+    if (device_ && target_.isOffscreen())
+    {
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+    }
+}
+
+Painter::~Painter()
+{
+    if (device_ && target_.isOffscreen())
+    {
+        device_->renderToTextureMode(NullTexId, 0, 0);
+    }
+    // commandGuard_ destroyed here, submitting the command buffer
+}
+
+int Painter::screenspaceW() const
+{
+    return target_.width();
+}
+
+int Painter::screenspaceH() const
+{
+    return target_.isOffscreen() ? -static_cast<int>(target_.height()) : static_cast<int>(target_.height());
 }
 
 void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
@@ -38,8 +62,6 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
 
     if (target_.isNull())
         return;
-
-    RenScopedImmediateCommands guard(device_);
 
     uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
 
@@ -62,16 +84,7 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
     vtx[5].x = x0; vtx[5].y = y1;
 
     device_->recordCommand(Command::setCullFace(false));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-    {
-        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), target_.height());
-    }
+    device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, screenspaceW(), screenspaceH());
 }
 
 void Painter::clearRectangle(const Rect& area) const
@@ -83,7 +96,6 @@ void Painter::clearRectangle(const Rect& area) const
     if (target_.isNull())
         return;
 
-    RenScopedImmediateCommands guard(device_);
     Rect srcArea(Size(1, 1));
     RenISurfBody emptySurf;
 
@@ -93,9 +105,8 @@ void Painter::clearRectangle(const Rect& area) const
 
     if (target_.isOffscreen())
     {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
-        device_->renderToTextureMode(NullTexId, 0, 0);
+        device_->renderSurface(
+            &emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
     }
     else
     {
@@ -141,7 +152,6 @@ void Painter::hollowRectangle(const Rect& area, const RenColour& colour, int thi
 void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColour& fill) const
 {
     PRE(!target_.readOnly());
-    RenScopedImmediateCommands guard(device_);
 
     int cx, cy, rx, ry;
     uint packedColour = packColour(fill.r(), fill.g(), fill.b(), fill.a());
@@ -167,21 +177,13 @@ void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColou
     }
 
     device_->recordCommand(Command::setCullFace(false));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), target_.height());
+    device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, screenspaceW(), screenspaceH());
 }
 
 void Painter::line(const Point& from, const Point& to, const RenColour& colour, int thickness) const
 {
     PRE(!target_.readOnly());
     PRE(thickness > 0);
-    RenScopedImmediateCommands guard(device_);
 
     RenIVertex vtx[2]{};
     uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
@@ -203,14 +205,7 @@ void Painter::line(const Point& from, const Point& to, const RenColour& colour, 
     vtx[1].specular = 0;
 
     device_->recordCommand(Command::setLineWidth(static_cast<float>(thickness)));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), target_.height());
+    device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, screenspaceW(), screenspaceH());
     device_->recordCommand(Command::setLineWidth(1.0f));
 }
 
@@ -239,8 +234,6 @@ void Painter::drawText(std::string_view text, const Point& startPos, const Font&
 
 void Painter::drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const
 {
-    RenScopedImmediateCommands guard(device_);
-
     struct UnderlineSegment
     {
         int x1{};
@@ -474,8 +467,8 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
         &vertices.front(),
         vertices.size(),
         PrimitiveTopology::Triangles,
-        target_.width(),
-        target_.height(),
+        screenspaceW(),
+        screenspaceH(),
         fontImpl.textureId);
 
     if (options.underline() && lineEndX != lineStartX)
