@@ -2,10 +2,40 @@
 
 precision mediump float;
 
+uniform float uAlpha;
+
 out vec4 outFragColor;
 
 void main() {
+    // Dithered discard for semi-transparent shadow casters.
+    // A 4x4 Bayer matrix threshold pattern produces stable, non-noisy
+    // results that blend smoothly with the existing PCF kernel.
+    if (uAlpha < 1.0f)
+    {
+        int x = int(mod(gl_FragCoord.x, 4.0f));
+        int y = int(mod(gl_FragCoord.y, 4.0f));
+        // Bayer 4x4 thresholds (normalized to 0..1 range)
+        float threshold;
+        if      (x == 0 && y == 0) threshold =  0.0f / 16.0f;
+        else if (x == 2 && y == 0) threshold =  8.0f / 16.0f;
+        else if (x == 0 && y == 2) threshold = 12.0f / 16.0f;
+        else if (x == 2 && y == 2) threshold =  4.0f / 16.0f;
+        else if (x == 1 && y == 0) threshold =  2.0f / 16.0f;
+        else if (x == 3 && y == 0) threshold = 10.0f / 16.0f;
+        else if (x == 1 && y == 2) threshold = 14.0f / 16.0f;
+        else if (x == 3 && y == 2) threshold =  6.0f / 16.0f;
+        else if (x == 0 && y == 1) threshold =  3.0f / 16.0f;
+        else if (x == 2 && y == 1) threshold = 11.0f / 16.0f;
+        else if (x == 0 && y == 3) threshold = 15.0f / 16.0f;
+        else if (x == 2 && y == 3) threshold =  7.0f / 16.0f;
+        else if (x == 1 && y == 1) threshold =  1.0f / 16.0f;
+        else if (x == 3 && y == 1) threshold =  9.0f / 16.0f;
+        else if (x == 1 && y == 3) threshold = 13.0f / 16.0f;
+        else                       threshold =  5.0f / 16.0f;
+        if (uAlpha <= threshold)
+            discard;
+    }
     // Depth is written automatically.
     // A dummy output is required for GLSL ES 3.1 validation.
-    outFragColor = vec4(0.0);
+    outFragColor = vec4(0.0f);
 }

@@ -1433,10 +1433,13 @@ void RenderBackendGL::executeCommand(const BackendCommandSetShadowDepthUniforms&
     const GLuint prog = stateCache_.currentProgram_;
     const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
     const GLint locM = glGetUniformLocation(prog, "uM");
+    const GLint locA = glGetUniformLocation(prog, "uAlpha");
     if (locLSM >= 0)
         glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
     if (locM >= 0)
         glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+    if (locA >= 0)
+        glUniform1f(locA, u.alpha);
 }
 
 void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms& command)
