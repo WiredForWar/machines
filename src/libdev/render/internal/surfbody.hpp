@@ -13,7 +13,6 @@
 #include "utility/property.hpp"
 #include "render/internal/IRenderBackend.hpp"
 #include "render/internal/internal.hpp"
-#include "render/internal/pixelfmt.hpp"
 
 #include <cstdint>
 
@@ -59,11 +58,6 @@ public:
     UtlProperty<RenColour> keyColour; // default is purple
     UtlProperty<bool> keyingOn; // default is false
 
-    // This refers to the primary surface, i.e., the video memory copy if
-    // there is one, otherwise the system memory surface.
-    // const COMPTR(IDirectDrawSurface2)& surface() const        { return surface_; }
-
-    size_t bitDepth() const;
     size_t width() const;
     size_t height() const;
     Ren::Size size() const;
@@ -116,17 +110,6 @@ public:
     // POST(sharable() && readOnly());
     void makeReadOnlySharable();
 
-    // Apply the given DD palette to this surface (including any system memory
-    // backup).
-    // PRE(pixelFormat.isPalette());
-    // PRE(pixelFormat.RGBDepth() <= 8);
-    // void usePalette(const COMPTR(IDirectDrawPalette)&);
-
-    // Same pre-conditions extract a palette from the given bitmap and use it.
-    // void usePalette(HBITMAP bitmap);
-
-    const RenIPixelFormat& pixelFormat() const;
-
     void unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY);
     void unclippedStretchBlit(const RenISurfBody* source, const Ren::Rect& srcArea, const Ren::Rect& destArea);
     void unclippedBlit(const RenISurfBody* source, const Ren::Rect& srcArea, int destX, int destY, Ren::BlitMode mode);
@@ -136,18 +119,12 @@ public:
         const Ren::Rect& destArea,
         Ren::BlitMode mode);
 
-    // Copy an image using the GDI.  This can do conversions between numerous
-    // bit depths but can't do alpha or colour key emulation.
-    // bool copyUsingGDI(HBITMAP bitmap);
-
     // Initialise this surface using a second bitmap as an alpha map.
-    // PRE(pixelFormat().hasAlpha());
     bool copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha, bool createMipmaps = false);
 
     // Copy an image from a GDI Bitmap to a DirectDraw surface.  Whilst copying,
     // if any texel matches the given colour key, the alpha component of the
     // output texture will be appropriately set to transparent.
-    // PRE(pixelFormat().hasAlpha());
     bool copyWithColourKeyEmulation(SDL_Surface* surface, const RenColour& keyColour, bool createMipmaps = false);
     // Copy image from RGBA buffer of size width * height
     bool copyFromBuffer(const uint* pixelsBuffer);
@@ -169,8 +146,7 @@ protected:
         VIDEO
     };
 
-    // POST(width() == w && height() == h); POST(pixelFormat.isValid());
-    bool allocateDDSurfaces(size_t width, size_t height, const RenIPixelFormat&, Residence);
+    bool allocateDDSurfaces(size_t width, size_t height, Residence);
 
     static SDL_Surface *readFromFile(const char *fileName);
 
@@ -185,13 +161,7 @@ private:
     // appropriate, e.g., all textures are read-only.
     // POST(!sharable() && !readOnly());  POST(name().length() == 0);
     // POST(width() == w && height() == h); POST(pixelFormat.isValid());
-    RenISurfBody(size_t w, size_t h, const RenIPixelFormat&, Residence);
-
-    // Create an empty surface with the given pixel format.  Call read to
-    // subsequently allocate memory and load up some data.
-    // POST(width() == 0 && height() == 0); POST(!sharable() && !readOnly());
-    // POST(pixelFormat_.isValid()); POST(name().length() == 0);
-    RenISurfBody(const RenIPixelFormat&);
+    RenISurfBody(size_t w, size_t h, Residence);
 
     // This creates a surface corresponding to a display backbuffer.  Although
     // the display may be shared by multiple clients, it is not sharable in the
@@ -199,22 +169,13 @@ private:
     // order to aquire a display surface, you must go via a RenDisplay.
     // PRE(dev); PRE(t != NOT_DISPLAY);
     // POST(!sharable() && !readOnly()); POST(name().length() == 0);
-    // POST(pixelFormat.isValid());
     RenISurfBody(const RenDevice* dev, RenI::DisplayType t);
 
     // Truly private, as opposed to available to friends.
     void updateDescr();
 
-    // Like DirectDraw's blit with the DDBLT_WAIT flag set.  However, this fn
-    // does any necessary waiting and writes info about it onto the render stream.
-    // bool waitForBlit(RECT& dest, const RenISurfBody* source, RECT& src);
-
-    // NB: a COMPTR is *not* used for the device.  The surface gets released
-    // after the RenDevice is destroyed and releasing a COM pointer to the
-    // D3D device then appears to make Direct3D fall over.
     RenI::DisplayType displayType_;
     const RenDevice* device_{};
-    RenIPixelFormat pixelFormat_;
     Ren::BackendTextureHandle nativeTexture2D_{};
     uint width_, height_;
 

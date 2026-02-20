@@ -19,8 +19,6 @@ set(RENDER_SOURCES
     capable.hpp
     capablei.cpp
     capable.ipp
-    colmap.cpp
-    colmap.hpp
     colour.cpp
     colour.hpp
     colour.ipp
@@ -96,7 +94,6 @@ set(RENDER_SOURCES
     internal/mmx.hpp
     internal/modeobsv.hpp
     internal/nonmmx.hpp
-    internal/pixelfmt.hpp
     internal/polysord.hpp
     internal/polysorp.hpp
     internal/ren_pch.hpp
@@ -144,7 +141,6 @@ set(RENDER_SOURCES
     nonmmx.cpp
     normmap.cpp
     normmap.hpp
-    pixelfmt.cpp
     polysord.cpp
     polysorp.cpp
     render.cpp

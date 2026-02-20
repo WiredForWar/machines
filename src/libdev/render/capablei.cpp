@@ -5,7 +5,6 @@
 
 #include "render/internal/ren_pch.hpp" // NB: pre-compiled header must come 1st
 
-#include "render/internal/pixelfmt.hpp"
 #include "render/internal/capablei.hpp"
 #include "render/device.hpp"
 #include "render/internal/devicei.hpp"

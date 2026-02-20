@@ -15,7 +15,6 @@
 #include "render/Font.hpp"
 #include "render/surfmgr.hpp"
 #include "render/internal/surfbody.hpp"
-#include "render/internal/pixelfmt.hpp"
 #include "render/internal/surfmgri.hpp"
 #include "render/internal/colpack.hpp"
 #include "render/internal/vtxdata.hpp"

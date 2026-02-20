@@ -471,7 +471,7 @@ RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool crea
     if (createTex)
         body = new RenITexBody;
     else
-        body = new RenISurfBody(surf->pixelFormat());
+        body = new RenISurfBody;
 
     ASSERT(body, runtime_error("Out of memory."));
 

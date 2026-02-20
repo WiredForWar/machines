@@ -63,7 +63,7 @@ RenISurfBody::RenISurfBody()
     POST(name().length() == 0);
 }
 
-RenISurfBody::RenISurfBody(size_t rqWidth, size_t rqHeight, const RenIPixelFormat& format, Residence residence)
+RenISurfBody::RenISurfBody(size_t rqWidth, size_t rqHeight, Residence residence)
     : displayType_(RenI::NOT_DISPLAY)
     , width_(0)
     , height_(0)
@@ -74,29 +74,10 @@ RenISurfBody::RenISurfBody(size_t rqWidth, size_t rqHeight, const RenIPixelForma
     keyingOn(false);
     keyColour(RenColour::magenta());
 
-    allocateDDSurfaces(rqWidth, rqHeight, format, residence);
+    allocateDDSurfaces(rqWidth, rqHeight, residence);
 
     POST(!sharable() && !readOnly());
     POST(width() == rqWidth && height() == rqHeight);
-    //  POST(pixelFormat_.isValid());           // TBD: write operator==
-    POST(name().length() == 0);
-}
-
-RenISurfBody::RenISurfBody(const RenIPixelFormat& format)
-    : displayType_(RenI::NOT_DISPLAY)
-    , pixelFormat_(format)
-    , width_(0)
-    , height_(0)
-    , name_("") // NB: look at precondition on name set method.
-    , sharedLeaf_(true)
-{
-    // Initialise UltProperties.
-    keyingOn(false);
-    keyColour(RenColour::magenta());
-
-    POST(width() == 0 && height() == 0);
-    POST(!sharable() && !readOnly());
-    //  POST(pixelFormat_.isValid());           // TBD: write operator==
     POST(name().length() == 0);
 }
 
@@ -124,7 +105,6 @@ RenISurfBody::RenISurfBody(const RenDevice* dev, RenI::DisplayType type)
 bool RenISurfBody::allocateDDSurfaces(
     size_t rqWidth,
     size_t rqHeight,
-    const RenIPixelFormat& format,
     Residence residence)
 {
     Ren::IRenderBackend& backend = requireBackend();
@@ -173,7 +153,7 @@ bool RenISurfBody::read(const std::string& bitmapName)
     if (!surface)
         return false;
 
-    if (allocateDDSurfaces(surface->w, surface->h, pixelFormat_, SYSTEM))
+    if (allocateDDSurfaces(surface->w, surface->h, SYSTEM))
         retval = copyWithColourKeyEmulation(surface, RenColour::magenta());
 
     name(bitmapName);
@@ -696,9 +676,8 @@ bool RenISurfBody::isEmpty() const
 
 size_t RenISurfBody::memoryUsed() const
 {
-    // Conceivably, this might not be a 100% accurate figure depending on how
-    // the bits are packed.  (The texture could even use compressed storage.)
-    return (width() * height() * bitDepth()) / 8;
+    // Assume RGBA8 (4 bytes per pixel) for all surfaces.
+    return width() * height() * 4;
 }
 
 void RenISurfBody::incRefCount()
@@ -716,11 +695,6 @@ uint RenISurfBody::refCount() const
     return refCount_;
 }
 
-const RenIPixelFormat& RenISurfBody::pixelFormat() const
-{
-    return pixelFormat_;
-}
-
 size_t RenISurfBody::width() const
 {
     // return descr_.dwWidth;
@@ -736,11 +710,6 @@ size_t RenISurfBody::height() const
 Ren::Size RenISurfBody::size() const
 {
     return Ren::Size(width_, height_);
-}
-
-size_t RenISurfBody::bitDepth() const
-{
-    return pixelFormat().totalDepth();
 }
 
 const std::string& RenISurfBody::sharedName() const
@@ -837,7 +806,7 @@ void RenISurfBody::print(std::ostream& o) const
             break;
     }
 
-    o << "(" << width() << "x" << height() << "x" << bitDepth() << ")";
+    o << "(" << width() << "x" << height() << ")";
 }
 
 bool RenISurfBody::matches(const std::string& name) const

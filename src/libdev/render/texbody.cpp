@@ -15,7 +15,6 @@
 #include "render/colour.hpp"
 #include "render/capable.hpp"
 #include "render/internal/debug.hpp"
-#include "render/internal/pixelfmt.hpp"
 #include "render/internal/devicei.hpp"
 
 #ifndef _INLINE
@@ -41,72 +40,6 @@ RenITexBody::RenITexBody()
 RenITexBody::~RenITexBody()
 {
     TEST_INVARIANT;
-}
-
-using FindTextureData = struct
-{
-    RenIPixelFormat result, target;
-};
-
-static void chooseClosestFormat(FindTextureData& data, const RenIPixelFormat& candidate)
-{
-
-    const int d1 = data.result.RGBDepth() - data.target.RGBDepth();
-    const int d2 = candidate.RGBDepth() - data.target.RGBDepth();
-
-    RENDER_STREAM("    d1=" << d1 << ", d2=" << d2 << std::endl);
-
-    // If we are looking for an alpha format, we must still choose non-alpha
-    // if there is no alpha format.  In that case we must do the else clause.
-    //  if (data.targetAlpha > 0 && candidate.hasAlpha())
-    {
-        // If we don't already have a valid format, pick the first candidate.
-        //      if (!data.result.isValid())
-        {
-            data.result = candidate;
-            return;
-        }
-
-        // If we don't already have an alpha format, pick this one regardless.
-        // Otherwise, pick the alpha depth which is closest -- not necessarily
-        // greater than the requested one.  However, always pick an RGB depth
-        // which is *at least* what is requested.
-        if (data.result.alphaDepth() == 0)
-            data.result = candidate;
-        // else if (abs(ad2) < abs(ad1) && d2 >= 0 && abs(d2) < abs(d1))
-        // data.result = candidate;
-    }
-    //  else
-    {
-        //      if (data.targetAlpha > 0 && data.result.hasAlpha())
-        {
-            RENDER_STREAM("    rejected non-alpha format because a candidate with alpha exists." << std::endl);
-            return;
-        }
-
-        // Conceivably, we could use a format with alpha where none was
-        // required.  However, this is wasteful and where alpha is available
-        // there is typically a better choice of format without alpha.
-        //      if (candidate.hasAlpha())
-        {
-            RENDER_STREAM("    rejected format because it contains alpha." << std::endl);
-            return;
-        }
-
-        // If we don't already have a valid format, pick the first candidate.
-        //      if (!data.result.isValid())
-        {
-            data.result = candidate;
-            return;
-        }
-
-        // Prefer the closest format and always prefer a bit count which is
-        // greater than or equal to the one requested.
-        if (d2 >= 0 && abs(d2) < abs(d1))
-            data.result = candidate;
-        else if (d1 < 0 && d2 < 0 && abs(d2) < abs(d1))
-            data.result = candidate;
-    }
 }
 
 static bool isPowerOf2(int dimension)
@@ -304,7 +237,6 @@ bool RenITexBody::read(const std::string& nameAsString)
     if (colourKey && !bilinear_)
         tryToLoadAlpha = false;
 
-    RenIPixelFormat rqFormat;
     SDL_Surface* surfaceAlpha = nullptr;
     if (tryToLoadAlpha)
     {
@@ -339,7 +271,7 @@ bool RenITexBody::read(const std::string& nameAsString)
     if (caps.hardware())
         residence = TEXTURE;
 
-    if (!allocateDDSurfaces(surface->w, surface->h, rqFormat, residence))
+    if (!allocateDDSurfaces(surface->w, surface->h, residence))
     {
         // DeleteObject(handle);
         SDL_FreeSurface(surface);
@@ -425,7 +357,7 @@ const RenITexBody* RenITexBody::castToTexBody() const
 // virtual
 void RenITexBody::print(std::ostream& o) const
 {
-    o << "texture " << name() << " (" << width() << "x" << height() << "x" << bitDepth() << ")";
+    o << "texture " << name() << " (" << width() << "x" << height() << ")";
 }
 
 /* End TEXBODY.CPP **************************************************/

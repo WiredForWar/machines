@@ -62,8 +62,7 @@ RenSurface RenSurfaceManager::createAnonymousSurface(size_t width, size_t height
     if (width == 0 || height == 0)
         return RenSurface();
 
-    const RenIPixelFormat& rqFormat = entries_[takePixelFormatFrom.myId_]->pixelFormat();
-    RenISurfBody* newSurf = new RenISurfBody(width, height, rqFormat, RenISurfBody::SYSTEM);
+    RenISurfBody* newSurf = new RenISurfBody(width, height, RenISurfBody::SYSTEM);
 
     Ren::TexId newId = pImpl_->addAnonymousEntry(newSurf);
 
@@ -88,8 +87,7 @@ RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t h
     if (width == 0 || height == 0)
         return RenSurface();
 
-    const RenIPixelFormat& rqFormat = entries_[pixelFmt.myId_]->pixelFormat();
-    RenISurfBody* newSurf = new RenISurfBody(width, height, rqFormat, RenISurfBody::VIDEO);
+    RenISurfBody* newSurf = new RenISurfBody(width, height, RenISurfBody::VIDEO);
 
     Ren::TexId newId = pImpl_->addAnonymousEntry(newSurf);
 

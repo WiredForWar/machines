@@ -15,7 +15,6 @@
 class SysPathName;
 class RenColour;
 class RenISurfBody;
-class RenIPixelFormat;
 template <class T> class ctl_vector;
 // template <class T> class basic_string;
 // typedef basic_string< char > string;
