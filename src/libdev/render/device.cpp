@@ -99,8 +99,6 @@ static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
     CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
     CB_DEPIMPL_AUTO(shadowNearFramebuffer_);                                                                           \
     CB_DEPIMPL_AUTO(shadowNearDepthTexture_);                                                                          \
-    CB_DEPIMPL_AUTO(spotlightShadowFramebuffer_);                                                                      \
-    CB_DEPIMPL_AUTO(spotlightShadowDepthTexture_);                                                                     \
     CB_DEPIMPL_AUTO(vertexBuffer2D_);                                                                                  \
     CB_DEPIMPL_AUTO(vertexDataBuffer_);                                                                                \
     CB_DEPIMPL_AUTO(normalBuffer_);                                                                                    \
@@ -371,14 +369,6 @@ bool RenDevice::initialize()
         backend_->textureSetWrap(shadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
         shadowFramebuffer_ = backend_->createFramebuffer();
         backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
-
-        const int spotSz = RenIDeviceImpl::SpotlightShadowMapSize;
-        spotlightShadowDepthTexture_ = backend_->createTexture2D();
-        backend_->textureStorage2D(spotlightShadowDepthTexture_, spotSz, spotSz, Ren::TextureFormat::Depth16);
-        backend_->textureSetMinMagFilter(spotlightShadowDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
-        backend_->textureSetWrap(spotlightShadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
-        spotlightShadowFramebuffer_ = backend_->createFramebuffer();
-        backend_->framebufferAttachDepthTexture(spotlightShadowFramebuffer_, spotlightShadowDepthTexture_);
     }
 
     // Post-process pipeline (tone mapping)
@@ -541,8 +531,6 @@ RenDevice::~RenDevice()
     backend_->releaseFramebuffer(shadowFramebuffer_);
     backend_->destroyTexture2D(shadowNearDepthTexture_);
     backend_->releaseFramebuffer(shadowNearFramebuffer_);
-    backend_->destroyTexture2D(spotlightShadowDepthTexture_);
-    backend_->releaseFramebuffer(spotlightShadowFramebuffer_);
 
     backend_->releaseBuffer(vertexBuffer2D_);
     backend_->releaseBuffer(vertexDataBuffer_);
@@ -2027,16 +2015,6 @@ Ren::GpuLightingState RenDevice::buildGpuLightingState(bool gpuLighting) const
         ls.shadowDepthTexture = pImpl_->shadowDepthTexture_;
         ls.shadowNearDepthTexture = pImpl_->shadowNearDepthTexture_;
     }
-    ls.spotlightShadowEnabled = pImpl_->spotlightShadowEnabled_;
-    if (ls.spotlightShadowEnabled)
-    {
-        ls.spotlightLightSpaceMatrix = toFloatArray(pImpl_->spotlightLightSpaceMatrix_);
-        ls.spotlightPosX = pImpl_->spotlightPosition_.x;
-        ls.spotlightPosY = pImpl_->spotlightPosition_.y;
-        ls.spotlightPosZ = pImpl_->spotlightPosition_.z;
-        ls.spotlightRange = pImpl_->spotlightRange_;
-        ls.spotlightShadowDepthTexture = pImpl_->spotlightShadowDepthTexture_;
-    }
     return ls;
 }
 
@@ -2658,62 +2636,6 @@ void RenDevice::shadowStrength(float s)
 float RenDevice::shadowStrength() const
 {
     return pImpl_->shadowStrength_;
-}
-
-void RenDevice::beginSpotlightShadowPass(const glm::mat4& lightSpaceMatrix, const glm::vec3& lightPos, float range)
-{
-    CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
-
-    pImpl_->spotlightLightSpaceMatrix_ = lightSpaceMatrix;
-    pImpl_->spotlightPosition_ = lightPos;
-    pImpl_->spotlightRange_ = range;
-    pImpl_->spotlightShadowActive_ = true;
-    pImpl_->spotlightShadowEnabled_ = true;
-    // Reuse the directional shadow pass flag so that trigroup.cpp's
-    // isShadowPassActive() check routes geometry to renderShadowDepth().
-    pImpl_->shadowPassActive_ = true;
-
-    const int sz = RenIDeviceImpl::SpotlightShadowMapSize;
-    pImpl_->activeShadowLightSpaceMatrix_ = lightSpaceMatrix;
-
-    recordCommand(Ren::Command::setViewport(0, 0, sz, sz));
-    recordCommand(Ren::Command::beginRenderPass(shadowRenderPass_, spotlightShadowFramebuffer_));
-    recordCommand(Ren::Command::setDepthTest(true));
-    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::Less));
-    recordCommand(Ren::Command::setDepthMaskWritable(true));
-    recordCommand(Ren::Command::setCullFace(false));
-    recordCommand(Ren::Command::setPolygonOffsetFill(true));
-    recordCommand(Ren::Command::setPolygonOffset(1.0f, 2.0f));
-
-    recordCommand(Ren::Command::bindPipeline(shadowDepth_.id));
-    {
-        Ren::ShadowDepthUniforms sdu;
-        sdu.lightSpaceMatrix = toFloatArray(lightSpaceMatrix);
-        sdu.model = toFloatArray(glm::mat4(1.0f));
-        recordCommand(Ren::Command::setShadowDepthUniforms(std::move(sdu)));
-    }
-}
-
-void RenDevice::endSpotlightShadowPass()
-{
-    CB_RENDEVICE_DEPIMPL_GL();
-
-    pImpl_->spotlightShadowActive_ = false;
-    pImpl_->shadowPassActive_ = false;
-
-    recordCommand(Ren::Command::setPolygonOffsetFill(false));
-    recordCommand(Ren::Command::setCullFace(true));
-    recordCommand(Ren::Command::endRenderPass());
-
-    recordCommand(Ren::Command::bindDefaultFramebuffer());
-    const auto sz = windowSize();
-    recordCommand(Ren::Command::setViewport(0, 0, sz.width, sz.height));
-}
-
-void RenDevice::clearSpotlightShadow()
-{
-    pImpl_->spotlightShadowEnabled_ = false;
 }
 
 void RenDevice::renderShadowDepth(
