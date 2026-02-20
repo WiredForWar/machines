@@ -66,6 +66,9 @@ private:
     RenSurface createDisplaySurface(const RenDevice* dev, RenI::DisplayType t);
     void useDevice(const RenDevice* dev, RenI::UpdateType updateType);
 
+    void releaseAllTextures();
+    void reuploadAllTextures();
+
     // Internal convenience methods.
     // Search for existing named surfaces.
     friend class RenSurfaceManager;

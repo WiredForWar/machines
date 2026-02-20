@@ -138,6 +138,11 @@ public:
     bool isFront() const { return displayType_ == RenI::FRONT; }
     bool isOffscreen() const { return displayType_ == RenI::NOT_DISPLAY; }
 
+    Ren::BackendTextureHandle nativeTextureHandle() const { return nativeTexture2D_; }
+
+    void releaseNativeTexture();
+    virtual void reuploadFromDisk();
+
 protected:
     // Used by the surface manager to create surfaces is specific places. The = 2 is a
     // safety measure as the parameter used to be a bool.

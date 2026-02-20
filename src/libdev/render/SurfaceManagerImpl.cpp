@@ -488,4 +488,24 @@ RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool crea
     return body;
 }
 
+void RenISurfaceManagerImpl::releaseAllTextures()
+{
+    for (Ren::TexId id = firstValidId_; id != entries_.size(); ++id)
+    {
+        RenISurfBody* entry = entries_[id];
+        if (entry)
+            entry->releaseNativeTexture();
+    }
+}
+
+void RenISurfaceManagerImpl::reuploadAllTextures()
+{
+    for (Ren::TexId id = firstValidId_; id != entries_.size(); ++id)
+    {
+        RenISurfBody* entry = entries_[id];
+        if (entry && !entry->isEmpty() && entry->name().length() > 0)
+            entry->reuploadFromDisk();
+    }
+}
+
 /* End SURFMGR.CPP ***************************************************/

@@ -372,6 +372,9 @@ private:
     void uniformNoisePolygon(const Ren::Rect& area, double maxAlpha);
     void commonEndFrame();
 
+    bool createGpuResources();
+    void releaseGpuResources();
+
     bool setVSync(bool enabled);
 
     void syncSmoothFilters();

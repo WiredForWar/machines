@@ -174,55 +174,8 @@ bool RenDevice::initialize()
 
     initializeDisplay();
 
-    // Create and compile our GLSL programs from the shaders
-    glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
-
-    // Initialize VBO
-    gl2DVertexBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
-    glVertexUVID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexUV");
-    glVertexColour_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexColor");
-    glScreenspaceID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uScreenspace");
-    // Initialize uniforms' IDs
-    gl2DUniformID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
-
-    glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
-
-    // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uM");
-    glViewMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uV");
-    glProjectionMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uP");
-    glFogColourID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogColour");
-    glFogParamsID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogParams");
-    // VBO
-    glVertexDataBufferID_ = backend_->createBuffer();
-    glElementBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_modelspaceID_ =
-        backend_->attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = backend_->attribLocation(glProgramID_Standard_, "vertexColor");
-    glVertex_modelspaceUVID_ = backend_->attribLocation(glProgramID_Standard_, "vertexUV");
-    glTextureSamplerID_ = backend_->uniformLocation(glProgramID_Standard_, "uTextureSampler2");
-
-    glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
-
-    const std::array<Ren::ProgramId, 3> programIDs = { glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_ };
-    if (std::ranges::any_of(programIDs, [](Ren::ProgramId value) { return value == 0; }))
+    if (!createGpuResources())
         return false;
-
-    // VBO
-    glVertexDataBufferBillboardID_ = backend_->createBuffer();
-    glElementBufferBillboardID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uVP");
-    glVertexPosition_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexColor");
-    glVertex_BillboardUVID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexUV");
-    glTextureSamplerBillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uTextureSampler");
-
-    // Prepare framebuffer for offscreen rendering
-    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
 
     pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
 
@@ -288,6 +241,82 @@ RenDevice::~RenDevice()
     {
         delete pImpl_->surfFrontBuf_;
     }
+    releaseGpuResources();
+
+    pImpl_->backend_->shutdown();
+
+    delete pImpl_;
+
+    pImpl_ = nullptr;
+
+    RenDevice*& currentDeviceRef = RenIDeviceImpl::current();
+    if (currentDeviceRef == this)
+    {
+        currentDeviceRef = nullptr;
+        RenIDeviceImpl::currentPimpl() = nullptr;
+    }
+}
+
+bool RenDevice::createGpuResources()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+
+    // Create and compile our GLSL programs from the shaders
+    glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
+
+    // Initialize VBO
+    gl2DVertexBufferID_ = backend_->createBuffer();
+    // Get a handle for our buffers
+    glVertexPosition_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
+    glVertexUVID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexUV");
+    glVertexColour_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexColor");
+    glScreenspaceID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uScreenspace");
+    // Initialize uniforms' IDs
+    gl2DUniformID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
+
+    glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
+
+    // Get a handle for our "MVP" uniform
+    glModelMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uM");
+    glViewMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uV");
+    glProjectionMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uP");
+    glFogColourID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogColour");
+    glFogParamsID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogParams");
+    // VBO
+    glVertexDataBufferID_ = backend_->createBuffer();
+    glElementBufferID_ = backend_->createBuffer();
+    // Get a handle for our buffers
+    glVertexPosition_modelspaceID_ =
+        backend_->attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
+    glVertexColour_modelspaceID_ = backend_->attribLocation(glProgramID_Standard_, "vertexColor");
+    glVertex_modelspaceUVID_ = backend_->attribLocation(glProgramID_Standard_, "vertexUV");
+    glTextureSamplerID_ = backend_->uniformLocation(glProgramID_Standard_, "uTextureSampler2");
+
+    glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
+
+    const std::array<Ren::ProgramId, 3> programIDs = { glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_ };
+    if (std::ranges::any_of(programIDs, [](Ren::ProgramId value) { return value == 0; }))
+        return false;
+
+    // VBO
+    glVertexDataBufferBillboardID_ = backend_->createBuffer();
+    glElementBufferBillboardID_ = backend_->createBuffer();
+    // Get a handle for our buffers
+    glViewProjMatrix_BillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uVP");
+    glVertexPosition_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
+    glVertexColour_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexColor");
+    glVertex_BillboardUVID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexUV");
+    glTextureSamplerBillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uTextureSampler");
+
+    // Prepare framebuffer for offscreen rendering
+    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
+
+    return true;
+}
+
+void RenDevice::releaseGpuResources()
+{
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
@@ -305,19 +334,6 @@ RenDevice::~RenDevice()
     backend_->releaseBuffer(glVertexDataBufferBillboardID_);
     backend_->releaseBuffer(glElementBufferBillboardID_);
     backend_->releaseFramebuffer(glOffscreenFrameBuffID_);
-
-    backend_->shutdown();
-
-    delete pImpl_;
-
-    pImpl_ = nullptr;
-
-    RenDevice*& currentDeviceRef = RenIDeviceImpl::current();
-    if (currentDeviceRef == this)
-    {
-        currentDeviceRef = nullptr;
-        RenIDeviceImpl::currentPimpl() = nullptr;
-    }
 }
 
 void RenDevice::reset()
