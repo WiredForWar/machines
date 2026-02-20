@@ -12,6 +12,7 @@
 #include "system/pathname.hpp"
 #include "gui/painter.hpp"
 #include "gui/event.hpp"
+#include "render/Painter.hpp"
 #include "gui/restring.hpp"
 #include "render/device.hpp"
 #include "render/camera.hpp"
@@ -303,7 +304,7 @@ void MachContinentMap::loadGame(const std::string& planet)
     {
         GuiBitmap mapBitmap = Gui::bitmap(mapBmp);
         mapBackground_ = RenSurface::createAnonymousSurface(mapBitmap.size() * Gui::uiScaleFactor());
-        mapBackground_.stretchBlit(mapBitmap);
+        Ren::Painter(mapBackground_).stretchBlit(mapBitmap);
     }
     mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackground_.size());
     mapFrameTwo_ = RenSurface::createAnonymousSurface(mapFrameOne_.size());
@@ -311,9 +312,8 @@ void MachContinentMap::loadGame(const std::string& planet)
     // Set up visible area. This is used for "fog of war"
     mapVisibleArea_ = RenSurface::createAnonymousSurface(mapBackground_.size());
     // Initialise to nothing visible
-    mapVisibleArea_.filledRectangle(
-        RenSurface::Rect(0, 0, mapBackground_.width(), mapBackground_.height()),
-        Gui::BLACK());
+    Ren::Painter visibleAreaPainter(mapVisibleArea_);
+    visibleAreaPainter.filledRectangle(mapBackground_.size(), Gui::BLACK());
     // TODO: check this, not sure what exactly it does but creates a line of pixels without FOW on map
     //  mapVisibleArea_.hollowRectangle( RenSurface::Rect( 0, 0, mapBackground_.width() - 1, mapBackground_.height() - 1
     //  ), Gui::MAGENTA(), 1 );
@@ -325,15 +325,15 @@ void MachContinentMap::loadGame(const std::string& planet)
     // Unfog areas of Map which are unusable, e.g. if the Map is thin and long (not square)
     if (xOffset() != 0)
     {
-        mapVisibleArea_.filledRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()), Gui::MAGENTA());
-        mapVisibleArea_.filledRectangle(
+        visibleAreaPainter.filledRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()), Gui::MAGENTA());
+        visibleAreaPainter.filledRectangle(
             RenSurface::Rect(mapBackground_.width() - xOffset(), 0, xOffset(), mapBackground_.height()),
             Gui::MAGENTA());
     }
     else if (yOffset() != 0)
     {
-        mapVisibleArea_.filledRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()), Gui::MAGENTA());
-        mapVisibleArea_.filledRectangle(
+        visibleAreaPainter.filledRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()), Gui::MAGENTA());
+        visibleAreaPainter.filledRectangle(
             RenSurface::Rect(0, mapBackground_.height() - yOffset(), mapBackground_.width(), yOffset()),
             Gui::MAGENTA());
     }
@@ -349,8 +349,8 @@ void MachContinentMap::loadGame(const std::string& planet)
             = RenSurface::createAnonymousSurface(Ren::Size(scannerPixelDiameter, scannerPixelDiameter));
         //      scannerRangeImage_[i].filledRectangle( RenSurface::Rect( 0, 0, scannerPixelDiameter,
         //      scannerPixelDiameter ), Gui::BLACK() );
-        scannerRangeImage_[i].ellipse(
-            RenSurface::Rect(0, 0, scannerPixelDiameter, scannerPixelDiameter),
+        Ren::Painter(scannerRangeImage_[i]).ellipse(
+            Ren::Size(scannerPixelDiameter, scannerPixelDiameter),
             Gui::MAGENTA(),
             Gui::MAGENTA());
 
@@ -505,15 +505,17 @@ void MachContinentMap::updateMapBackground()
 {
     PRE(! pInGameScreen_->inFirstPerson());
 
+    Ren::Painter frameOnePainter(mapFrameOne_);
+
     // Blit map
     if (pTerrainOnOffButton_->mapOn() || currentBeacon_ == MachLog::NO_BEACON)
     {
-        mapFrameOne_.simpleBlit(mapBackground_);
+        frameOnePainter.blit(mapBackground_);
     }
     else
     {
         // No map terrain
-        mapFrameOne_.filledRectangle(RenSurface::Rect(0, 0, width() - 1, height() - 1), MachGui::VERYDARKGREY());
+        frameOnePainter.filledRectangle(Ren::Size(width() - 1, height() - 1), MachGui::VERYDARKGREY());
     }
 
     if (currentBeacon_ != MachLog::NO_BEACON)
@@ -522,58 +524,31 @@ void MachContinentMap::updateMapBackground()
         if (xOffset() != 0)
         {
             // Draw dark rectangles to show unused area of map
-            mapFrameOne_.filledRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()), Gui::DARKGREY());
-            mapFrameOne_.filledRectangle(
+            frameOnePainter.filledRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()), Gui::DARKGREY());
+            frameOnePainter.filledRectangle(
                 RenSurface::Rect(mapBackground_.width() - xOffset(), 0, xOffset(), mapBackground_.height()),
                 Gui::DARKGREY());
 
             // Draw lines to separate playable area from unplayable area of map
-            GuiBitmap::Points points;
-            points.reserve(2);
-
-            points.push_back(MexPoint2d(xOffset(), 0));
-            points.push_back(MexPoint2d(xOffset(), mapBackground_.height() - 1));
-            mapFrameOne_.polyLine(points, Gui::BLACK(), 1);
-
-            points.erase(points.begin(), points.end());
-
-            points.push_back(MexPoint2d(mapBackground_.width() - xOffset(), 0));
-            points.push_back(MexPoint2d(mapBackground_.width() - xOffset(), mapBackground_.height() - 1));
-            mapFrameOne_.polyLine(points, Gui::BLACK(), 1);
+            frameOnePainter.line(Ren::Point(xOffset(), 0), Ren::Point(xOffset(), mapBackground_.height() - 1), Gui::BLACK(), 1);
+            frameOnePainter.line(Ren::Point(mapBackground_.width() - xOffset(), 0), Ren::Point(mapBackground_.width() - xOffset(), mapBackground_.height() - 1), Gui::BLACK(), 1);
         }
         else if (yOffset() != 0)
         {
             // Draw dark rectangles to show unused area of map
-            mapFrameOne_.filledRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()), Gui::DARKGREY());
-            mapFrameOne_.filledRectangle(
+            frameOnePainter.filledRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()), Gui::DARKGREY());
+            frameOnePainter.filledRectangle(
                 RenSurface::Rect(0, mapBackground_.height() - yOffset(), mapBackground_.width(), yOffset()),
                 Gui::DARKGREY());
 
             // Draw lines to separate playable area from unplayable area of map
-            GuiBitmap::Points points;
-            points.reserve(2);
-
-            points.push_back(MexPoint2d(0, yOffset()));
-            points.push_back(MexPoint2d(mapBackground_.width() - 1, yOffset()));
-            mapFrameOne_.polyLine(points, Gui::BLACK(), 1);
-
-            points.erase(points.begin(), points.end());
-
-            points.push_back(MexPoint2d(0, mapBackground_.height() - yOffset()));
-            points.push_back(MexPoint2d(mapBackground_.width() - 1, mapBackground_.height() - yOffset()));
-            mapFrameOne_.polyLine(points, Gui::BLACK(), 1);
+            frameOnePainter.line(Ren::Point(0, yOffset()), Ren::Point(mapBackground_.width() - 1, yOffset()), Gui::BLACK(), 1);
+            frameOnePainter.line(Ren::Point(0, mapBackground_.height() - yOffset()), Ren::Point(mapBackground_.width() - 1, mapBackground_.height() - yOffset()), Gui::BLACK(), 1);
         }
 
         // Draw black rectangle surrounding map
-        GuiBitmap::Points points;
-        points.reserve(5);
-
-        points.push_back(MexPoint2d(0, 0));
-        points.push_back(MexPoint2d(0, mapFrameOne_.height() - 1));
-        points.push_back(MexPoint2d(mapFrameOne_.width() - 1, mapFrameOne_.height() - 1));
-        points.push_back(MexPoint2d(mapFrameOne_.width() - 1, 0));
-        points.push_back(MexPoint2d(0, 0));
-        mapFrameOne_.polyLine(points, Gui::BLACK(), 1);
+        frameOnePainter.hollowRectangle(
+            Ren::Size(mapFrameOne_.width() - 1, mapFrameOne_.height() - 1), Gui::BLACK(), 1);
     }
 }
 
@@ -581,7 +556,7 @@ void MachContinentMap::updateMapBackground2()
 {
     PRE(! pInGameScreen_->inFirstPerson());
 
-    mapFrameTwo_.simpleBlit(mapFrameOne_);
+    Ren::Painter(mapFrameTwo_).blit(mapFrameOne_);
 }
 
 void MachContinentMap::updateMapFrameOne(size_t loop)
@@ -591,6 +566,8 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
     PRE(! debrisImage().isEmpty());
     PRE(! artifactImage().isEmpty());
     PRE(! mapFrameOne_.isEmpty());
+
+    Ren::Painter frameOnePainter(mapFrameOne_);
 
     // Prepare actor for drawing on second frame
     if (actorPositions_[loop].actorState_ & ATTACKED)
@@ -607,48 +584,48 @@ void MachContinentMap::updateMapFrameOne(size_t loop)
         {
             // Draw pod...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedPodImage(race), {}, pos);
+                frameOnePainter.blit(selectedPodImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(podImage(race), {}, pos);
+                frameOnePainter.blit(podImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == MACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage(race), {}, pos);
+                frameOnePainter.blit(selectedMachineImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(machineImage(race), {}, pos);
+                frameOnePainter.blit(machineImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == CAMOUFLAGEDMACHINE && mapMode_ != RESOURCES_ONLY)
         {
             // Draw machine...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedMachineImage(playerRace_), {}, pos);
+                frameOnePainter.blit(selectedMachineImage(playerRace_), {}, pos);
             else
-                mapFrameOne_.simpleBlit(machineImage(playerRace_), {}, pos);
+                frameOnePainter.blit(machineImage(playerRace_), {}, pos);
         }
         else if (actorPositions_[loop].type_ == CONSTRUCTION && mapMode_ != RESOURCES_ONLY)
         {
             // Draw construction...
             if (actorPositions_[loop].actorState_ & SELECTED)
-                mapFrameOne_.simpleBlit(selectedConstructionImage(race), {}, pos);
+                frameOnePainter.blit(selectedConstructionImage(race), {}, pos);
             else
-                mapFrameOne_.simpleBlit(constructionImage(race), {}, pos);
+                frameOnePainter.blit(constructionImage(race), {}, pos);
         }
         else if (actorPositions_[loop].type_ == DEBRIS)
         {
             // Draw debris...
-            mapFrameOne_.simpleBlit(debrisImage(), {}, pos);
+            frameOnePainter.blit(debrisImage(), {}, pos);
         }
         else if (actorPositions_[loop].type_ == ORE)
         {
             // Draw ore...
-            mapFrameOne_.simpleBlit(oreImage(), {}, pos);
+            frameOnePainter.blit(oreImage(), {}, pos);
         }
         else if (actorPositions_[loop].type_ == ARTIFACT)
         {
             // Draw artifact...
-            mapFrameOne_.simpleBlit(artifactImage(), {}, pos);
+            frameOnePainter.blit(artifactImage(), {}, pos);
         }
     }
 
@@ -696,7 +673,7 @@ void MachContinentMap::updateVisibleAreas(size_t loop)
             scannerDrawPos.x(scannerDrawPos.x() - scannerRange_[actorPositions_[loop].scanner_ - 1]);
             scannerDrawPos.y(scannerDrawPos.y() - scannerRange_[actorPositions_[loop].scanner_ - 1]);
 
-            mapVisibleArea_.simpleBlit(
+            Ren::Painter(mapVisibleArea_).blit(
                 scannerRangeImage_[actorPositions_[loop].scanner_ - 1],
                 {},
                 Ren::Point(scannerDrawPos.x(), scannerDrawPos.y()),
@@ -809,11 +786,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked pods...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(podAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(podAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedPodAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(selectedPodAttackedImage, {}, pos);
             }
         }
         else if (
@@ -823,11 +800,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked machines...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(machineAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(machineAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedMachineAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(selectedMachineAttackedImage, {}, pos);
             }
         }
         else if (secondFrameActorPositions_[loop].type_ == CONSTRUCTION)
@@ -835,11 +812,11 @@ void MachContinentMap::updateMapFrameTwo(size_t loop)
             // Draw attacked constructions...
             if ((actorState & ATTACKED) && !(actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(constructionAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(constructionAttackedImage, {}, pos);
             }
             else if ((actorState & ATTACKED) && (actorState & SELECTED))
             {
-                mapFrameTwo_.simpleBlit(selectedConstructionAttackedImage, {}, pos);
+                Ren::Painter(mapFrameTwo_).blit(selectedConstructionAttackedImage, {}, pos);
             }
         }
     }
@@ -1105,7 +1082,7 @@ void MachContinentMap::forceUpdate()
 
     // Show only unfogged areas
     if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-        mapFrameOne_.simpleBlit(mapVisibleArea_);
+        Ren::Painter(mapFrameOne_).blit(mapVisibleArea_);
 
     drawCameraPos(&mapFrameOne_);
     updateMapBackground2();
@@ -1115,7 +1092,7 @@ void MachContinentMap::forceUpdate()
 
     // Show only unfogged areas
     if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-        mapFrameTwo_.simpleBlit(mapVisibleArea_);
+        Ren::Painter(mapFrameTwo_).blit(mapVisibleArea_);
 
     drawCameraPos(&mapFrameTwo_);
     updateScreen();
@@ -1407,7 +1384,7 @@ void MachContinentMap::refresh()
             {
                 // Show only unfogged areas
                 if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-                    mapFrameOne_.simpleBlit(mapVisibleArea_);
+                    Ren::Painter(mapFrameOne_).blit(mapVisibleArea_);
                 // Show camera
                 drawCameraPos(&mapFrameOne_);
                 // Copy from frame 1 to 2
@@ -1450,7 +1427,7 @@ void MachContinentMap::refreshLastFrame()
                 // If so then prepare second frame
                 // Show only unfogged areas
                 if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-                    mapFrameOne_.simpleBlit(mapVisibleArea_);
+                    Ren::Painter(mapFrameOne_).blit(mapVisibleArea_);
 
                 drawCameraPos(&mapFrameOne_);
 
@@ -1473,7 +1450,7 @@ void MachContinentMap::refreshLastFrame()
         // Finish off frame two
         // Show only unfogged areas
         if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-            mapFrameTwo_.simpleBlit(mapVisibleArea_);
+            Ren::Painter(mapFrameTwo_).blit(mapVisibleArea_);
 
         drawCameraPos(&mapFrameTwo_);
         // Instruct Gui to display map
@@ -1504,7 +1481,7 @@ void MachContinentMap::refreshFrame()
                 // If so then prepare second frame after final touches are added to frame one
                 // Show only unfogged areas
                 if (currentBeacon_ == MachLog::LEVEL_1_BEACON)
-                    mapFrameOne_.simpleBlit(mapVisibleArea_);
+                    Ren::Painter(mapFrameOne_).blit(mapVisibleArea_);
 
                 drawCameraPos(&mapFrameOne_);
 
@@ -1654,7 +1631,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
                 GuiBitmap mapBitmap = Gui::bitmap(mapPath_);
                 mapBackground_ = RenSurface::createAnonymousSurface(
                     mapBitmap.size() * Gui::uiScaleFactor());
-                mapBackground_.stretchBlit(mapBitmap);
+                Ren::Painter(mapBackground_).stretchBlit(mapBitmap);
             }
         }
     }
@@ -1944,8 +1921,9 @@ void MachContinentMap::saveGame(PerOstream& outStream)
     else
     {
         GuiBitmap visibleArea = RenSurface::createAnonymousSurface(mapVisibleArea_.size() / Gui::uiScaleFactor());
-        visibleArea.filledRectangle(visibleArea.size(), Gui::BLACK());
-        visibleArea.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
+        Ren::Painter visibleAreaPainter(visibleArea);
+        visibleAreaPainter.filledRectangle(visibleArea.size(), Gui::BLACK());
+        visibleAreaPainter.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
         visibleArea.write(outStream);
     }
 }
@@ -1964,10 +1942,9 @@ void MachContinentMap::loadSavedGame(const std::string& planet, PerIstream& inSt
     }
     else
     {
-        mapVisibleArea_.filledRectangle(
-            RenSurface::Rect(0, 0, mapVisibleArea_.width(), mapVisibleArea_.height()),
-            Gui::MAGENTA());
-        mapVisibleArea_.stretchBlit(loadedVisibleArea);
+        Ren::Painter mapVisiblePainter(mapVisibleArea_);
+        mapVisiblePainter.filledRectangle(mapVisibleArea_.size(), Gui::MAGENTA());
+        mapVisiblePainter.stretchBlit(loadedVisibleArea);
     }
     mapVisibleArea_.enableColourKeying();
 }

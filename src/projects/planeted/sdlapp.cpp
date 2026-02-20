@@ -15,6 +15,7 @@
 #include "device/time.hpp"
 #include "device/mouse.hpp"
 #include "render/Font.hpp"
+#include "render/Painter.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
 #include "render/surface.hpp"
@@ -77,11 +78,13 @@ public:
         const double green = 250.0 / 255.0;
         const double blue = 142.0 / 255.0;
 
-        RenDevice::current()->frontSurface().filledRectangle(
+        RenSurface frontBuf = RenDevice::current()->frontSurface();
+        Ren::Painter frontPainter(frontBuf);
+        frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
         RenDevice::current()->display()->flipBuffers();
-        RenDevice::current()->frontSurface().filledRectangle(
+        frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
         lastDone_ = done;

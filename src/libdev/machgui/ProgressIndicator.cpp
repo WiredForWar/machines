@@ -3,6 +3,7 @@
 #include "machlog/network.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
+#include "render/Painter.hpp"
 #include "system/winapi.hpp"
 
 namespace MachGui
@@ -28,10 +29,12 @@ size_t ProgressIndicator::report(size_t done, size_t maxDone)
     const double percentComplete = static_cast<double>(done) / static_cast<double>(maxDone) * limitRange + lowerLimit_;
     const double displayWidth = std::min((percentComplete * width) + 5, width);
 
-    RenDevice::current()->frontSurface().filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
+    RenSurface frontBuf = RenDevice::current()->frontSurface();
+    Ren::Painter frontPainter(frontBuf);
+    frontPainter.filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
     RenDevice::current()->display()->flipBuffers();
     // For double buffering do it twice to prevent bar from blinking
-    RenDevice::current()->frontSurface().filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
+    frontPainter.filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
     // If the game session has come out prematurely then the network connection may have been reset.
 
     // Incoming net message can reference something which is not-loaded-yet (e.g. a Race)

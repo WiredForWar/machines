@@ -2,6 +2,7 @@
 
 #include "system/pathname.hpp"
 #include "gui/painter.hpp"
+#include "render/Painter.hpp"
 #include "gui/font.hpp"
 #include "machlog/machine.hpp"
 #include "machgui/gui.hpp"
@@ -25,7 +26,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
         constexpr auto rectangle = Ren::Rect { 0, 0, 32, 32 };
 
         surfaceNUM.enableColourKeying();
-        surfaceNUM.filledRectangle(rectangle, Gui::MAGENTA());
+        Ren::Painter(surfaceNUM).filledRectangle(rectangle, Gui::MAGENTA());
 
         if (showText)
         {

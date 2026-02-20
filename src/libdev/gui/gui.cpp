@@ -1,5 +1,6 @@
 #include "gui/gui.hpp"
 #include "gui/displaya.hpp"
+#include "render/Painter.hpp"
 #include "system/pathname.hpp"
 #include "system/vfs.hpp"
 
@@ -130,10 +131,11 @@ GuiBitmap Gui::getScaledImage(std::string path, float scale)
     RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize());
 
     // Workaround artefacts in transparent pixels:
-    scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
+    Ren::Painter painter(scaledSurface);
+    painter.filledRectangle(image.requestedSize(), Gui::MAGENTA());
     scaledSurface.enableColourKeying();
 
-    scaledSurface.stretchBlit(image, Ren::BlitMode::Replace);
+    painter.stretchBlit(image, Ren::BlitMode::Replace);
 
     return scaledSurface;
 }

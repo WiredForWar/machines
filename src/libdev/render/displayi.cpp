@@ -8,6 +8,7 @@
 #include "base/diag.hpp"
 
 #include "render/render.hpp"
+#include "render/Painter.hpp"
 #include "render/surface.hpp"
 #include "render/cursor2d.hpp"
 #include "render/internal/displayi.hpp"
@@ -88,7 +89,7 @@ void RenISavedArea::save(RenSurface& surf, const Ren::Rect& rect)
 
     ASSERT(!original_.readOnly(), "");
     RENDER_STREAM("Saving cursor blit." << std::endl);
-    save_.simpleBlit(original_, area_);
+    Ren::Painter(save_).blit(original_, area_);
 }
 
 RenISavedArea::~RenISavedArea()
@@ -98,7 +99,7 @@ RenISavedArea::~RenISavedArea()
 void RenISavedArea::restore()
 {
     RENDER_STREAM("Restoring cursor blit." << std::endl);
-    original_.simpleBlit(save_, {}, Ren::Point{area_.originX, area_.originY});
+    Ren::Painter(original_).blit(save_, {}, Ren::Point{area_.originX, area_.originY});
 }
 
 static void intersectRects(Ren::Rect& r1, const Ren::Rect& r2)
@@ -256,7 +257,7 @@ void RenIDisplay::drawCursor(RenSurface& backBuf)
         // The saved area can reside in one of two places. Certain cards need
         // the saved area to by situated in different places.
         RenISavedArea::SaveTo saveTo = RenISavedArea::SYSTEM_MEMORY;
-        backBuf.simpleBlit(bm, {}, dstRect.origin());
+        Ren::Painter(backBuf).blit(bm, {}, dstRect.origin());
         // RenDevice::current()->renderSurface(bm, dstRect.originX, dstRect.originY);
     }
 }

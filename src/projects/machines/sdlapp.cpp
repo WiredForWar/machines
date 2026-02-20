@@ -25,6 +25,7 @@
 #include "render/texture.hpp"
 #include "render/texset.hpp"
 #include "render/Font.hpp"
+#include "render/Painter.hpp"
 #include "world4d/root.hpp"
 #include "world4d/scenemgr.hpp"
 #include "world4d/manager.hpp"
@@ -346,9 +347,10 @@ bool SDLApp::clientStartup()
     {
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
+        Ren::Painter frontPainter(frontBuffer);
+        frontPainter.filledRectangle(mode.size(), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath);
-        frontBuffer.simpleBlit(waitBmp, {}, offset);
+        frontPainter.blit(waitBmp, {}, offset);
 
         // Initialise lobby code
         NetNetwork::instance().instantiateLobby();
@@ -357,30 +359,32 @@ bool SDLApp::clientStartup()
         // Display progress loading screen.
         // Call it twice to ensure on both buffers.
         RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath);
-        frontBuffer.simpleBlit(waitBmp2, {}, offset);
+        frontPainter.blit(waitBmp2, {}, offset);
     }
     else
     {
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
+        Ren::Painter frontPainter(frontBuffer);
+        frontPainter.filledRectangle(mode.size(), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
-        frontBuffer.simpleBlit(waitBmp, {}, offset);
+        frontPainter.blit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.simpleBlit(waitBmp, {}, offset);
+        frontPainter.blit(waitBmp, {}, offset);
     }
 
     if (lobbyFlag)
     {
         // Display progress loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
+        Ren::Painter frontPainter(frontBuffer);
+        frontPainter.filledRectangle(mode.size(), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
-        frontBuffer.simpleBlit(waitBmp, {}, offset);
+        frontPainter.blit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.simpleBlit(waitBmp, {}, offset);
+        frontPainter.blit(waitBmp, {}, offset);
     }
     // Draw copyright note, store it in a way preventing from modification
     {
@@ -392,10 +396,11 @@ bool SDLApp::clientStartup()
 
         const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
-        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
+        Ren::Painter frontPainter(frontBuffer);
+        frontPainter.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
-        frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
+        frontPainter.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
     }
 
     Gui::Coord indicatorPos(98 + xOffset, 362 + yOffset);

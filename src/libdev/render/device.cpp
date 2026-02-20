@@ -5,6 +5,7 @@
 
 // TODO: This god class needs refactoring.
 #include "render/device.hpp"
+#include "render/Painter.hpp"
 #include "render/TextOptions.hpp"
 
 #include <array>
@@ -778,14 +779,15 @@ void RenDevice::commonEndFrame()
     if (concat.length() > 0 && ! isWhiteString(concat) && pImpl_->shouldBeginScene_)
     {
         RenSurface surf = backSurface();
+        Ren::Painter painter(surf);
         auto const& yellowColour { RenColour::yellow() };
         // >trusting incremental rebuilds
         // surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour, RenSurface::FontSizes::Statistics,
         // RenSurface::AvailableFonts::Terminus);
         const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
-        surf.filledRectangle(Ren::Rect(pImpl_->debugX_, pImpl_->debugY_, font->horizontalAdvance(concat) + 8, font->height() * 4 + 8), RenColour(0.1, 0.1, 0.1, 0.5));
-        surf.drawText(pImpl_->debugX_ + 4, pImpl_->debugY_ + 4, concat, *font, yellowColour);
+        painter.filledRectangle(Ren::Rect(pImpl_->debugX_, pImpl_->debugY_, font->horizontalAdvance(concat) + 8, font->height() * 4 + 8), RenColour(0.1, 0.1, 0.1, 0.5));
+        painter.drawText(pImpl_->debugX_ + 4, pImpl_->debugY_ + 4, concat, *font, yellowColour);
     }
 
     pImpl_->extOut_.clear();
@@ -1540,7 +1542,8 @@ void RenDevice::displayImage(const SysPathName& pathName)
         return;
     }
 
-    backBuf.simpleBlit(texture);
+    Ren::Painter painter(backBuf);
+    painter.blit(texture);
     pImpl_->display_->flipBuffers();
 }
 

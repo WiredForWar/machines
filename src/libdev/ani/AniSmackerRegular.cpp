@@ -1,5 +1,6 @@
 #include "ani/AniSmackerRegular.hpp"
 #include "render/display.hpp"
+#include "render/Painter.hpp"
 #include "recorder/recorder.hpp"
 #include "recorder/private/recpriv.hpp"
 #include "device/time.hpp"
@@ -453,16 +454,17 @@ void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& 
     {
         ASSERT(! isFinishedNoRecord(), "");
 
+        Ren::Painter dstPainter(dst);
         if(scaleFactor_ == 1)
         {
-            dst.simpleBlit(src, src.size(), Ren::Point(xCoordTo_, yCoordTo_));
+            dstPainter.blit(src, src.size(), Ren::Point(xCoordTo_, yCoordTo_));
         }
         else
         {
             Ren::Rect destRect(src.size() * scaleFactor_);
             destRect.originX = xCoordTo_;
             destRect.originY = yCoordTo_;
-            dst.stretchBlit(src, src.size(), destRect);
+            dstPainter.stretchBlit(src, src.size(), destRect);
         }
     }
 }
