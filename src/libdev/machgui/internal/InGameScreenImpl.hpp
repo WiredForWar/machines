@@ -122,6 +122,7 @@ public:
     MachGuiCameraScrollArea* pRightCameraScrollArea_{};
     bool resolutionChanged_{};
     bool renderingScreenShot_{};
+    bool screenShotToggledAA_{};
     MachInGameScreen::CorralStateBitfield corralState_{};
     MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_{};
     int redrawMapCounter_{}; // When ingame becomes GuiRoot the map needs to be redrawn every frame for 1st 4 frames to

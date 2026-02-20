@@ -3101,19 +3101,20 @@ void MachInGameScreen::initiateScreenShot()
 {
     CB_DEPIMPL_AUTO(pSceneManager_);
     CB_DEPIMPL_AUTO(renderingScreenShot_);
+    CB_DEPIMPL_AUTO(screenShotToggledAA_);
 
     RenDevice& device = *pSceneManager_->pDevice();
+
+    // Always defer the actual save to the next frame so that the 2D pass
+    // can skip overlays (e.g. "paused" bitmap) while rendering.
+    renderingScreenShot_ = true;
 
     // It's quite possible that other high-quality rendering options could
     // be turned on, in addition to anti-aliasing.
     if (device.capabilities().supportsEdgeAntiAliasing() && !device.antiAliasingOn())
     {
         device.antiAliasingOn(true);
-        renderingScreenShot_ = true;
-    }
-    else
-    {
-        saveScreenShot();
+        screenShotToggledAA_ = true;
     }
 }
 
@@ -3127,13 +3128,18 @@ void MachInGameScreen::finalizeScreenShot()
     PRE(isRenderingScreenShot());
     CB_DEPIMPL_AUTO(pSceneManager_);
     CB_DEPIMPL_AUTO(renderingScreenShot_);
+    CB_DEPIMPL_AUTO(screenShotToggledAA_);
 
     saveScreenShot();
 
     // This carefully avoids turning anti-aliasing off when some other client
     // of RenDevice has turned it on (perhaps at the player's behest).
-    RenDevice& device = *pSceneManager_->pDevice();
-    device.antiAliasingOn(false);
+    if (screenShotToggledAA_)
+    {
+        RenDevice& device = *pSceneManager_->pDevice();
+        device.antiAliasingOn(false);
+        screenShotToggledAA_ = false;
+    }
     renderingScreenShot_ = false;
 
     POST(!isRenderingScreenShot());
@@ -3144,8 +3150,8 @@ void MachInGameScreen::saveScreenShot()
     CB_DEPIMPL_AUTO(pSceneManager_);
 
     const RenDevice& device = *pSceneManager_->pDevice();
-    const RenSurface front = device.frontSurface();
-    front.saveAsPng(Gui::getNextAvailablePngFileName("mach"));
+    const RenSurface back = device.backSurface();
+    back.saveAsPng(Gui::getNextAvailablePngFileName("mach"));
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const

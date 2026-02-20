@@ -1700,11 +1700,11 @@ void MachGuiStartupScreens::loopCycleInGame()
         displayGui();
         pSceneManager_->pDevice()->end2D();
 
-        pSceneManager_->pDevice()->endFrame();
-
-        // If we just rendered a high-quality screen shot, we need to save it.
+        // Save the screen shot from the back buffer before endFrame swaps it.
         if (pInGameScreen_->isRenderingScreenShot())
             pInGameScreen_->finalizeScreenShot();
+
+        pSceneManager_->pDevice()->endFrame();
     }
 
     // Check for switch to in-game options, won or lost
