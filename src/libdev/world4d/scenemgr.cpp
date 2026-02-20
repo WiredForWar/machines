@@ -442,6 +442,50 @@ void W4dSceneManager::render()
         }
     }
 
+    // Spotlight shadow pass: render depth from the perspective of shadow-
+    // casting point lights.  Only one spotlight shadow map is supported per
+    // frame, so multiple nearby lights are merged into a single virtual
+    // light at their centroid (e.g. two constructor beams → one shadow).
+    device_->clearSpotlightShadow();
+    if (wantShadows)
+    {
+        glm::vec3 mergedPos(0.0f);
+        float mergedRange{};
+        int shadowLightCount{};
+
+        for (auto* light : lights_)
+        {
+            if (!light->isOn() || !light->castsShadow() || !light->hasBoundingSphere())
+                continue;
+            auto* ptLight = dynamic_cast<W4dPointLight*>(light);
+            if (!ptLight)
+                continue;
+            const MexPoint3d lp = ptLight->globalTransform().position();
+            mergedPos += glm::vec3(lp.x(), lp.y(), lp.z());
+            mergedRange = std::max(mergedRange, static_cast<float>(ptLight->maxRange()));
+            ++shadowLightCount;
+        }
+
+        if (shadowLightCount > 0)
+        {
+            mergedPos /= static_cast<float>(shadowLightCount);
+            const glm::vec3 lightPos = mergedPos;
+            const float range = mergedRange;
+
+            // Perspective projection looking downward from the merged light.
+            const glm::vec3 target = lightPos - glm::vec3(0, 0, range);
+            const glm::vec3 up(0, 1, 0);
+            const glm::mat4 view = glm::lookAt(lightPos, target, up);
+            const glm::mat4 proj = glm::perspective(
+                glm::radians(120.0f), 1.0f, 0.5f, range * 2.0f);
+            const glm::mat4 spotMatrix = proj * view;
+
+            device_->beginSpotlightShadowPass(spotMatrix, lightPos, range);
+            currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+            device_->endSpotlightShadowPass();
+        }
+    }
+
     device_->beginGeometryPass(clearBg_);
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.

@@ -57,6 +57,15 @@ struct GpuLightingState
     std::array<float, 16> lightSpaceMatrixNear{};
     BackendTextureHandle shadowDepthTexture{};
     BackendTextureHandle shadowNearDepthTexture{};
+
+    // Spotlight shadow (single shadow-casting point light).
+    bool spotlightShadowEnabled{};
+    std::array<float, 16> spotlightLightSpaceMatrix{};
+    float spotlightPosX{};
+    float spotlightPosY{};
+    float spotlightPosZ{};
+    float spotlightRange{};
+    BackendTextureHandle spotlightShadowDepthTexture{};
 };
 
 // Pipeline handles and buffer IDs needed to emit standard 3D draw commands.

@@ -384,6 +384,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
                 pLLight_->linearAttenuation(0.7);
                 pLLight_->quadraticAttenuation(0.3);
                 pLLight_->scope(W4dLight::DYNAMIC);
+                pLLight_->castsShadow(true);
 
                 MexTransform3d lightXform;
                 globalTransform().transformInverse(pLJet_->globalTransform(), &lightXform);
@@ -469,6 +470,7 @@ void MachPhysConstructor::startConstructing(const MachPhysConstruction& construc
                 pRLight_->linearAttenuation(0.7);
                 pRLight_->quadraticAttenuation(0.3);
                 pRLight_->scope(W4dLight::DYNAMIC);
+                pRLight_->castsShadow(true);
 
                 MexTransform3d lightXform;
                 globalTransform().transformInverse(pRJet_->globalTransform(), &lightXform);

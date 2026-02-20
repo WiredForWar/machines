@@ -595,6 +595,16 @@ bool W4dLight::hasBoundingSphere() const
     return pImpl_->hasBoundingSphere_;
 }
 
+void W4dLight::castsShadow(bool v)
+{
+    pImpl_->castsShadow_ = v;
+}
+
+bool W4dLight::castsShadow() const
+{
+    return pImpl_->castsShadow_;
+}
+
 void perWrite(PerOstream& ostr, const W4dPointLight& light)
 {
     const W4dEntity& base = light;

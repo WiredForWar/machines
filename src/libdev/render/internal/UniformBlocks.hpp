@@ -77,6 +77,14 @@ struct StandardObjectUniforms
     int textureSampler{};
     int shadowMapUnit{};
     int shadowMapNearUnit{};
+    // Spotlight shadow
+    int spotlightShadowEnabled{};
+    std::array<float, 16> spotlightLightSpaceMatrix{};
+    float spotlightPosX{};
+    float spotlightPosY{};
+    float spotlightPosZ{};
+    float spotlightRange{};
+    int spotlightShadowMapUnit{};
 };
 
 // Uniform block for the billboard pipeline.

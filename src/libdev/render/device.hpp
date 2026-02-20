@@ -382,6 +382,12 @@ public:
     bool isShadowMappingEnabled() const;
     void shadowStrength(float s);
     float shadowStrength() const;
+
+    // Spotlight shadow: a single perspective shadow map for one point light.
+    void beginSpotlightShadowPass(const glm::mat4& lightSpaceMatrix, const glm::vec3& lightPos, float range);
+    void endSpotlightShadowPass();
+    void clearSpotlightShadow(); // call at frame start to reset
+
     void renderShadowDepth(
         const RenIVertex* vertices,
         size_t nVertices,
