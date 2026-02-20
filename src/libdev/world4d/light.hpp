@@ -66,10 +66,6 @@ public:
     // up thru the tree checking all the flags until it comes to the root.
     bool hierarchicallyVisible() const;
 
-    // Whether this light should cast shadows via a spotlight shadow map.
-    void castsShadow(bool);
-    bool castsShadow() const;
-
     // Not all lights have bounding spheres.  The scene manager must be able
     // to tell the difference.  Ugh!
     bool hasBoundingSphere() const;

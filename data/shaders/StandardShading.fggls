@@ -50,13 +50,6 @@ uniform float uShadowSplitDistance;
 uniform int uShadowEnabled;
 uniform float uShadowStrength;
 
-// Spotlight shadow (single shadow-casting point light)
-uniform sampler2D uSpotlightShadowMap;
-uniform mat4 uSpotlightLightSpaceMatrix;
-uniform vec3 uSpotlightPos;
-uniform float uSpotlightRange;
-uniform int uSpotlightShadowEnabled;
-
 float sampleShadowPCF(sampler2D shadowMap, vec3 projCoords, float bias, float texelSize)
 {
     float currentDepth = projCoords.z;
@@ -190,20 +183,6 @@ void main() {
         vec3 diffuse = (uHasVtxMaterials == 1 && fragVtxDiffuse.r >= 0.0f) ? fragVtxDiffuse : uMatDiffuse;
         vec3 ambient = (uHasVtxMaterials == 1 && fragVtxAmbient.r >= 0.0f) ? fragVtxAmbient : uMatAmbient;
 
-        // Spotlight shadow factor: 0 = fully lit, 1 = fully shadowed.
-        float spotShadow = 0.0f;
-        if (uSpotlightShadowEnabled == 1)
-        {
-            float distToSpot = length(fragWorldPos - uSpotlightPos);
-            if (distToSpot < uSpotlightRange * 2.0f)
-            {
-                vec4 slsPos = uSpotlightLightSpaceMatrix * vec4(fragWorldPos, 1.0f);
-                vec3 sp = slsPos.xyz / slsPos.w * 0.5f + 0.5f;
-                if (sp.x >= 0.0f && sp.x <= 1.0f && sp.y >= 0.0f && sp.y <= 1.0f && sp.z <= 1.0f)
-                    spotShadow = sampleShadowPCF(uSpotlightShadowMap, sp, 0.005f, 1.0f / 1024.0f);
-            }
-        }
-
         // Point lights
         vec3 pointLightContrib = vec3(0.0f);
         for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
@@ -218,7 +197,6 @@ void main() {
             float NdotLp = mix(max(dot(N, Lp), 0.0f), 1.0f, uPointLightOmni[i]);
             pointLightContrib += att * NdotLp * uPointLightColor[i];
         }
-        pointLightContrib *= (1.0f - spotShadow);
 
         vec3 emissive = (uHasVtxMaterials == 1 && fragVtxEmissive.r >= 0.0f) ? fragVtxEmissive : uMatEmissive;
 

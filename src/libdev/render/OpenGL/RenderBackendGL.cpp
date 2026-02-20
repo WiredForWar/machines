@@ -1408,20 +1408,6 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUnifor
             if (locSD >= 0) glUniform1f(locSD, u.shadowSplitDistance);
             if (locSS >= 0) glUniform1f(locSS, u.shadowStrength);
         }
-
-        const GLint locSpotSE = glGetUniformLocation(prog, "uSpotlightShadowEnabled");
-        if (locSpotSE >= 0) glUniform1i(locSpotSE, u.spotlightShadowEnabled);
-        if (u.spotlightShadowEnabled)
-        {
-            const GLint locSpotSM = glGetUniformLocation(prog, "uSpotlightShadowMap");
-            const GLint locSpotLSM = glGetUniformLocation(prog, "uSpotlightLightSpaceMatrix");
-            const GLint locSpotPos = glGetUniformLocation(prog, "uSpotlightPos");
-            const GLint locSpotRange = glGetUniformLocation(prog, "uSpotlightRange");
-            if (locSpotSM >= 0) glUniform1i(locSpotSM, u.spotlightShadowMapUnit);
-            if (locSpotLSM >= 0) glUniformMatrix4fv(locSpotLSM, 1, GL_FALSE, u.spotlightLightSpaceMatrix.data());
-            if (locSpotPos >= 0) glUniform3f(locSpotPos, u.spotlightPosX, u.spotlightPosY, u.spotlightPosZ);
-            if (locSpotRange >= 0) glUniform1f(locSpotRange, u.spotlightRange);
-        }
     }
 
     const GLint locTS = glGetUniformLocation(prog, "uTextureSampler2");

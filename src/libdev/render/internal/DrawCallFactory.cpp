@@ -10,7 +10,6 @@ namespace Ren
 static constexpr int TextureUnit = 0;
 static constexpr int ShadowFarTextureUnit = 1;
 static constexpr int ShadowNearTextureUnit = 2;
-static constexpr int SpotlightShadowTextureUnit = 3;
 
 StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
     const std::array<float, 16>& model,
@@ -69,18 +68,6 @@ StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
             ou.lightSpaceMatrixNear = lighting.lightSpaceMatrixNear;
             ou.shadowSplitDistance = lighting.shadowSplitDistance;
             ou.shadowStrength = lighting.shadowStrength;
-        }
-
-        ou.spotlightShadowEnabled = lighting.spotlightShadowEnabled ? 1 : 0;
-        if (lighting.spotlightShadowEnabled)
-        {
-            out->push_back(Command::bindTexture2D(lighting.spotlightShadowDepthTexture, SpotlightShadowTextureUnit));
-            ou.spotlightShadowMapUnit = SpotlightShadowTextureUnit;
-            ou.spotlightLightSpaceMatrix = lighting.spotlightLightSpaceMatrix;
-            ou.spotlightPosX = lighting.spotlightPosX;
-            ou.spotlightPosY = lighting.spotlightPosY;
-            ou.spotlightPosZ = lighting.spotlightPosZ;
-            ou.spotlightRange = lighting.spotlightRange;
         }
     }
 
