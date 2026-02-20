@@ -1,4 +1,4 @@
-#include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/OpenGL/RenderBackendGL21.hpp"
 #include "render/OpenGL/Utils.hpp"
 
 #include "base/prepost.hpp"
@@ -49,7 +49,7 @@ bool compileShader(GLuint shaderID, const std::string& code)
 
 } // namespace
 
-RenderBackendGL::RenderBackendGL()
+RenderBackendGL21::RenderBackendGL21()
     : programs_{0,}
     , buffers_{0,}
     , framebuffers_{0,}
@@ -57,12 +57,12 @@ RenderBackendGL::RenderBackendGL()
 {
 }
 
-BackendType RenderBackendGL::backendType() const
+BackendType RenderBackendGL21::backendType() const
 {
     return BackendType::GL21;
 }
 
-bool RenderBackendGL::initialize(SDL_Window* window)
+bool RenderBackendGL21::initialize(SDL_Window* window)
 {
     if (initialized_)
         return false;
@@ -152,7 +152,7 @@ bool RenderBackendGL::initialize(SDL_Window* window)
     return true;
 }
 
-void RenderBackendGL::StateCache::reset()
+void RenderBackendGL21::StateCache::reset()
 {
     currentProgram_ = 0;
     enabledAttribs_.reset();
@@ -173,12 +173,12 @@ void RenderBackendGL::StateCache::reset()
     viewport_.reset();
 }
 
-void RenderBackendGL::StateCache::resetTextureUnits()
+void RenderBackendGL21::StateCache::resetTextureUnits()
 {
     textureUnits_ = {};
 }
 
-void RenderBackendGL::shutdown()
+void RenderBackendGL21::shutdown()
 {
     flushPendingDeletes();
 
@@ -200,12 +200,12 @@ void RenderBackendGL::shutdown()
     window_ = nullptr;
 }
 
-bool RenderBackendGL::isInitialized() const
+bool RenderBackendGL21::isInitialized() const
 {
     return initialized_;
 }
 
-bool RenderBackendGL::setVSync(bool enabled)
+bool RenderBackendGL21::setVSync(bool enabled)
 {
     if (!isInitialized())
     {
@@ -242,7 +242,7 @@ bool RenderBackendGL::setVSync(bool enabled)
     return success;
 }
 
-GLuint RenderBackendGL::programHandle(ProgramId id) const
+GLuint RenderBackendGL21::programHandle(ProgramId id) const
 {
     if (id == 0)
         return 0;
@@ -254,7 +254,7 @@ GLuint RenderBackendGL::programHandle(ProgramId id) const
     return programs_[idx];
 }
 
-GLuint RenderBackendGL::bufferHandle(BufferId id) const
+GLuint RenderBackendGL21::bufferHandle(BufferId id) const
 {
     if (id == 0)
         return 0;
@@ -266,7 +266,7 @@ GLuint RenderBackendGL::bufferHandle(BufferId id) const
     return buffers_[idx];
 }
 
-GLuint RenderBackendGL::framebufferHandle(FramebufferId id) const
+GLuint RenderBackendGL21::framebufferHandle(FramebufferId id) const
 {
     if (id == 0)
         return 0;
@@ -278,7 +278,7 @@ GLuint RenderBackendGL::framebufferHandle(FramebufferId id) const
     return framebuffers_[idx];
 }
 
-std::string RenderBackendGL::readTextFile(const std::string& path)
+std::string RenderBackendGL21::readTextFile(const std::string& path)
 {
     spdlog::debug("Loading file {}", path);
 
@@ -298,7 +298,7 @@ std::string RenderBackendGL::readTextFile(const std::string& path)
     return fileContents;
 }
 
-GLuint RenderBackendGL::createProgramFromSources(
+GLuint RenderBackendGL21::createProgramFromSources(
     const std::string& vertexShaderCode,
     const std::string& fragmentShaderCode,
     std::string_view vertexShaderDebugName,
@@ -353,7 +353,7 @@ GLuint RenderBackendGL::createProgramFromSources(
     return programID;
 }
 
-ProgramId RenderBackendGL::createProgramFromFiles(
+ProgramId RenderBackendGL21::createProgramFromFiles(
     std::string_view vertexShaderPath,
     std::string_view fragmentShaderPath,
     std::string_view vertexShaderDebugName,
@@ -382,7 +382,7 @@ ProgramId RenderBackendGL::createProgramFromFiles(
     return static_cast<ProgramId>(programs_.size() - 1);
 }
 
-void RenderBackendGL::useProgram(ProgramId id)
+void RenderBackendGL21::useProgram(ProgramId id)
 {
     const GLuint handle = programHandle(id);
     if (handle == stateCache_.currentProgram_)
@@ -391,17 +391,17 @@ void RenderBackendGL::useProgram(ProgramId id)
     glUseProgram(handle);
 }
 
-UniformLocationId RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
+UniformLocationId RenderBackendGL21::uniformLocation(ProgramId id, std::string_view name) const
 {
     return UniformLocationId(glGetUniformLocation(programHandle(id), std::string(name).c_str()));
 }
 
-AttributeLocationId RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
+AttributeLocationId RenderBackendGL21::attribLocation(ProgramId id, std::string_view name) const
 {
     return AttributeLocationId(glGetAttribLocation(programHandle(id), std::string(name).c_str()));
 }
 
-void RenderBackendGL::releaseProgram(ProgramId id)
+void RenderBackendGL21::releaseProgram(ProgramId id)
 {
     if (id == 0)
         return;
@@ -418,7 +418,7 @@ void RenderBackendGL::releaseProgram(ProgramId id)
     }
 }
 
-PipelineId RenderBackendGL::createPipeline(const PipelineDesc& desc)
+PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
 {
     // Resolve logical shader names to backend-specific file paths
     static constexpr const char* shadersDir = "data/shaders/120/";
@@ -455,7 +455,7 @@ PipelineId RenderBackendGL::createPipeline(const PipelineDesc& desc)
     return static_cast<PipelineId>(pipelines_.size());
 }
 
-void RenderBackendGL::releasePipeline(PipelineId id)
+void RenderBackendGL21::releasePipeline(PipelineId id)
 {
     if (id == 0 || id > pipelines_.size())
         return;
@@ -469,7 +469,7 @@ void RenderBackendGL::releasePipeline(PipelineId id)
     pipeline.programId = 0;
 }
 
-UniformLocationId RenderBackendGL::pipelineUniformLocation(PipelineId id, std::string_view name) const
+UniformLocationId RenderBackendGL21::pipelineUniformLocation(PipelineId id, std::string_view name) const
 {
     if (id == 0 || id > pipelines_.size())
         return UniformLocationId{};
@@ -484,7 +484,7 @@ UniformLocationId RenderBackendGL::pipelineUniformLocation(PipelineId id, std::s
     return UniformLocationId{};
 }
 
-AttributeLocationId RenderBackendGL::pipelineAttribLocation(PipelineId id, std::string_view name) const
+AttributeLocationId RenderBackendGL21::pipelineAttribLocation(PipelineId id, std::string_view name) const
 {
     if (id == 0 || id > pipelines_.size())
         return AttributeLocationId{};
@@ -498,7 +498,7 @@ AttributeLocationId RenderBackendGL::pipelineAttribLocation(PipelineId id, std::
     return AttributeLocationId{};
 }
 
-RenderPassId RenderBackendGL::createRenderPass(const RenderPassDesc& desc)
+RenderPassId RenderBackendGL21::createRenderPass(const RenderPassDesc& desc)
 {
     RenderPass pass;
     pass.alive = true;
@@ -508,7 +508,7 @@ RenderPassId RenderBackendGL::createRenderPass(const RenderPassDesc& desc)
     return static_cast<RenderPassId>(renderPasses_.size());
 }
 
-void RenderBackendGL::releaseRenderPass(RenderPassId id)
+void RenderBackendGL21::releaseRenderPass(RenderPassId id)
 {
     if (id == 0 || id > renderPasses_.size())
         return;
@@ -516,7 +516,7 @@ void RenderBackendGL::releaseRenderPass(RenderPassId id)
     renderPasses_[id - 1].alive = false;
 }
 
-BufferId RenderBackendGL::createBuffer()
+BufferId RenderBackendGL21::createBuffer()
 {
     GLuint buffer = 0;
     glGenBuffers(1, &buffer);
@@ -527,7 +527,7 @@ BufferId RenderBackendGL::createBuffer()
     return static_cast<BufferId>(buffers_.size() - 1);
 }
 
-void RenderBackendGL::bindBuffer(BufferTarget target, BufferId id)
+void RenderBackendGL21::bindBuffer(BufferTarget target, BufferId id)
 {
     const GLuint buffer = bufferHandle(id);
     if (target == BufferTarget::Array)
@@ -546,7 +546,7 @@ void RenderBackendGL::bindBuffer(BufferTarget target, BufferId id)
     glBindBuffer(glTarget, buffer);
 }
 
-void RenderBackendGL::bufferData(
+void RenderBackendGL21::bufferData(
     BufferTarget target, BufferId id, std::size_t sizeBytes, const void* data, BufferUsage usage)
 {
     bindBuffer(target, id);
@@ -556,7 +556,7 @@ void RenderBackendGL::bufferData(
     glBufferData(glTarget, static_cast<GLsizeiptr>(sizeBytes), data, glUsage);
 }
 
-void RenderBackendGL::releaseBuffer(BufferId id)
+void RenderBackendGL21::releaseBuffer(BufferId id)
 {
     if (id == 0)
         return;
@@ -573,7 +573,7 @@ void RenderBackendGL::releaseBuffer(BufferId id)
     }
 }
 
-FramebufferId RenderBackendGL::createFramebuffer()
+FramebufferId RenderBackendGL21::createFramebuffer()
 {
     GLuint framebuffer = 0;
     glGenFramebuffers(1, &framebuffer);
@@ -584,12 +584,12 @@ FramebufferId RenderBackendGL::createFramebuffer()
     return static_cast<FramebufferId>(framebuffers_.size() - 1);
 }
 
-void RenderBackendGL::bindFramebuffer(FramebufferId id)
+void RenderBackendGL21::bindFramebuffer(FramebufferId id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
-void RenderBackendGL::framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture)
+void RenderBackendGL21::framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture)
 {
     const GLuint fboHandle = framebufferHandle(fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
@@ -613,7 +613,7 @@ void RenderBackendGL::framebufferAttachDepthTexture(FramebufferId fbo, BackendTe
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void RenderBackendGL::framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture)
+void RenderBackendGL21::framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture)
 {
     const GLuint fboHandle = framebufferHandle(fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
@@ -633,7 +633,7 @@ void RenderBackendGL::framebufferAttachColorTexture(FramebufferId fbo, BackendTe
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void RenderBackendGL::framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height)
+void RenderBackendGL21::framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height)
 {
     const GLuint fboHandle = framebufferHandle(fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
@@ -654,7 +654,7 @@ void RenderBackendGL::framebufferAttachDepthRenderbuffer(FramebufferId fbo, int 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-bool RenderBackendGL::isFramebufferComplete(FramebufferId fbo)
+bool RenderBackendGL21::isFramebufferComplete(FramebufferId fbo)
 {
     const GLuint fboHandle = framebufferHandle(fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
@@ -663,7 +663,7 @@ bool RenderBackendGL::isFramebufferComplete(FramebufferId fbo)
     return status == GL_FRAMEBUFFER_COMPLETE;
 }
 
-void RenderBackendGL::endRenderToTexture()
+void RenderBackendGL21::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
     {
@@ -673,14 +673,14 @@ void RenderBackendGL::endRenderToTexture()
     popFramebuffer();
 }
 
-void RenderBackendGL::pushFramebuffer()
+void RenderBackendGL21::pushFramebuffer()
 {
     GLint current = 0;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current);
     framebufferStack_.push_back(static_cast<GLuint>(current));
 }
 
-void RenderBackendGL::popFramebuffer()
+void RenderBackendGL21::popFramebuffer()
 {
     if (framebufferStack_.empty())
     {
@@ -693,31 +693,31 @@ void RenderBackendGL::popFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, restore);
 }
 
-Viewport RenderBackendGL::getViewport() const
+Viewport RenderBackendGL21::getViewport() const
 {
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
     return {vp[0], vp[1], vp[2], vp[3]};
 }
 
-void RenderBackendGL::clearDisplay(int width, int height)
+void RenderBackendGL21::clearDisplay(int width, int height)
 {
     glViewport(0, 0, width, height);
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void RenderBackendGL::readPixelsFloat(int x, int y, int width, int height, float* rgba)
+void RenderBackendGL21::readPixelsFloat(int x, int y, int width, int height, float* rgba)
 {
     glReadPixels(x, y, width, height, GL_RGBA, GL_FLOAT, rgba);
 }
 
-void RenderBackendGL::readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba)
+void RenderBackendGL21::readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba)
 {
     glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 }
 
-void RenderBackendGL::releaseFramebuffer(FramebufferId id)
+void RenderBackendGL21::releaseFramebuffer(FramebufferId id)
 {
     if (id == 0)
         return;
@@ -735,7 +735,7 @@ void RenderBackendGL::releaseFramebuffer(FramebufferId id)
 }
 
 
-BackendCommandBufferHandle RenderBackendGL::createCommandBuffer()
+BackendCommandBufferHandle RenderBackendGL21::createCommandBuffer()
 {
     if (commandBuffers_.empty())
     {
@@ -762,7 +762,7 @@ BackendCommandBufferHandle RenderBackendGL::createCommandBuffer()
     return BackendCommandBufferHandle(static_cast<std::uint32_t>(commandBuffers_.size() - 1));
 }
 
-void RenderBackendGL::destroyCommandBuffer(BackendCommandBufferHandle handle)
+void RenderBackendGL21::destroyCommandBuffer(BackendCommandBufferHandle handle)
 {
     CommandBuffer* buffer = commandBufferFromHandle(handle);
     if (buffer == nullptr)
@@ -773,7 +773,7 @@ void RenderBackendGL::destroyCommandBuffer(BackendCommandBufferHandle handle)
     buffer->commands.clear();
 }
 
-void RenderBackendGL::beginCommandBuffer(BackendCommandBufferHandle handle)
+void RenderBackendGL21::beginCommandBuffer(BackendCommandBufferHandle handle)
 {
     CommandBuffer* buffer = commandBufferFromHandle(handle);
     if (buffer == nullptr)
@@ -783,7 +783,7 @@ void RenderBackendGL::beginCommandBuffer(BackendCommandBufferHandle handle)
     buffer->commands.clear();
 }
 
-void RenderBackendGL::recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command)
+void RenderBackendGL21::recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command)
 {
     if (!handle.isValid())
         return;
@@ -798,7 +798,7 @@ void RenderBackendGL::recordCommand(BackendCommandBufferHandle handle, BackendCo
         buffer->commands.push_back(std::move(command));
 }
 
-void RenderBackendGL::endCommandBuffer(BackendCommandBufferHandle handle)
+void RenderBackendGL21::endCommandBuffer(BackendCommandBufferHandle handle)
 {
     CommandBuffer* buffer = commandBufferFromHandle(handle);
     if (buffer == nullptr || !buffer->recording)
@@ -807,7 +807,7 @@ void RenderBackendGL::endCommandBuffer(BackendCommandBufferHandle handle)
     buffer->recording = false;
 }
 
-void RenderBackendGL::submitCommandBuffer(BackendCommandBufferHandle handle)
+void RenderBackendGL21::submitCommandBuffer(BackendCommandBufferHandle handle)
 {
     CommandBuffer* buffer = commandBufferFromHandle(handle);
     if (buffer == nullptr || buffer->recording)
@@ -826,7 +826,7 @@ void RenderBackendGL::submitCommandBuffer(BackendCommandBufferHandle handle)
         flushPendingDeletes();
 }
 
-void RenderBackendGL::flushPendingDeletes()
+void RenderBackendGL21::flushPendingDeletes()
 {
     PRE(activeCommandBufferCount() == 0);
 
@@ -842,7 +842,7 @@ void RenderBackendGL::flushPendingDeletes()
     }
 }
 
-std::size_t RenderBackendGL::activeCommandBufferCount() const
+std::size_t RenderBackendGL21::activeCommandBufferCount() const
 {
     std::size_t count{};
     for (const auto& buffer : commandBuffers_)
@@ -853,7 +853,7 @@ std::size_t RenderBackendGL::activeCommandBufferCount() const
     return count;
 }
 
-RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle)
+RenderBackendGL21::CommandBuffer* RenderBackendGL21::commandBufferFromHandle(BackendCommandBufferHandle handle)
 {
     if (!handle.isValid())
         return nullptr;
@@ -869,7 +869,7 @@ RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(Backend
     return &buffer;
 }
 
-const RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle) const
+const RenderBackendGL21::CommandBuffer* RenderBackendGL21::commandBufferFromHandle(BackendCommandBufferHandle handle) const
 {
     if (!handle.isValid())
         return nullptr;
@@ -885,12 +885,12 @@ const RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(B
     return &buffer;
 }
 
-void RenderBackendGL::executeCommand(const BackendCommand& command)
+void RenderBackendGL21::executeCommand(const BackendCommand& command)
 {
     std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandClear& command)
+void RenderBackendGL21::executeCommand(const BackendCommandClear& command)
 {
     const GLbitfield mask = toClearMask(command.mask);
     if (mask == 0)
@@ -912,7 +912,7 @@ void RenderBackendGL::executeCommand(const BackendCommandClear& command)
     }
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetViewport& command)
 {
     if (stateCache_.viewport_.has_value())
     {
@@ -924,7 +924,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
     glViewport(command.x, command.y, command.width, command.height);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetMultisample& command)
 {
     if (stateCache_.multisampleEnabled_ == command.enabled)
         return;
@@ -935,20 +935,20 @@ void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command
         glDisable(GL_MULTISAMPLE);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
+void RenderBackendGL21::executeCommand(const BackendCommandDraw& command)
 {
     const GLenum mode = toDrawMode(command.topology);
     glDrawArrays(mode, command.first, command.count);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandDrawIndexed& command)
+void RenderBackendGL21::executeCommand(const BackendCommandDrawIndexed& command)
 {
     const GLenum mode = toDrawMode(command.topology);
     const GLenum indexType = toIndexType(command.indexType);
     glDrawElements(mode, command.count, indexType, reinterpret_cast<const void*>(command.indexBufferOffset));
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetBlendState& command)
 {
     const GLenum src = command.enabled ? toBlendFactor(command.srcFactor) : 0;
     const GLenum dst = command.enabled ? toBlendFactor(command.dstFactor) : 0;
@@ -970,7 +970,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
     }
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetCullFace& command)
 {
     if (stateCache_.cullFaceEnabled_ == command.enabled)
         return;
@@ -981,7 +981,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
         glDisable(GL_CULL_FACE);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetCullFaceMode& command)
 {
     const GLenum mode = command.mode == BackendCullFaceMode::Front ? GL_FRONT : GL_BACK;
     if (stateCache_.cullFaceMode_ == mode)
@@ -990,7 +990,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& comman
     glCullFace(mode);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
 {
     if (stateCache_.polygonOffset_.has_value() && stateCache_.polygonOffset_->fillEnabled == command.enabled)
         return;
@@ -1004,7 +1004,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& c
         glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetPolygonOffset& command)
 {
     if (stateCache_.polygonOffset_.has_value()
         && stateCache_.polygonOffset_->factor == command.factor
@@ -1020,7 +1020,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& comma
     glPolygonOffset(command.factor, command.units);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetAlphaTest& command)
 {
     if (stateCache_.alphaTest_.has_value())
     {
@@ -1040,7 +1040,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
     }
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetDepthMask& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetDepthMask& command)
 {
     if (stateCache_.depthMaskWritable_ == command.writable)
         return;
@@ -1048,7 +1048,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthMask& command)
     glDepthMask(command.writable ? GL_TRUE : GL_FALSE);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetDepthFunc& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetDepthFunc& command)
 {
     const GLenum func = toDepthFunc(command.function);
     if (stateCache_.depthFunc_ == func)
@@ -1057,7 +1057,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthFunc& command)
     glDepthFunc(func);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetDepthTest& command)
 {
     if (stateCache_.depthTestEnabled_ == command.enabled)
         return;
@@ -1068,7 +1068,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
         glDisable(GL_DEPTH_TEST);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1i& command)
 {
     if (!command.location.isValid())
         return;
@@ -1076,7 +1076,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
     glUniform1i(command.location.value(), command.value);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform1f& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1f& command)
 {
     if (!command.location.isValid())
         return;
@@ -1084,7 +1084,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform1f& command)
     glUniform1f(command.location.value(), command.value);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform2f& command)
 {
     if (!command.location.isValid())
         return;
@@ -1092,7 +1092,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
     glUniform2f(command.location.value(), command.x, command.y);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform1fv& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1fv& command)
 {
     if (!command.location.isValid())
         return;
@@ -1100,7 +1100,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform1fv& command)
     glUniform1fv(command.location.value(), static_cast<GLsizei>(command.values.size()), command.values.data());
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform3f& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform3f& command)
 {
     if (!command.location.isValid())
         return;
@@ -1108,7 +1108,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform3f& command)
     glUniform3f(command.location.value(), command.x, command.y, command.z);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniform3fv& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniform3fv& command)
 {
     if (!command.location.isValid())
         return;
@@ -1116,7 +1116,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniform3fv& command)
     glUniform3fv(command.location.value(), static_cast<GLsizei>(command.values.size() / 3), command.values.data());
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
 {
     if (!command.location.isValid())
         return;
@@ -1124,7 +1124,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetUniformMatrix4fv& co
     glUniformMatrix4fv(command.location.value(), 1, command.transpose ? GL_TRUE : GL_FALSE, command.values.data());
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetVertexAttribPointer& command)
 {
     if (!command.index.isValid())
         return;
@@ -1156,12 +1156,12 @@ void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer&
     }
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetProgram& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetProgram& command)
 {
     useProgram(command.programId);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBindPipeline& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBindPipeline& command)
 {
     const PipelineId id = command.pipelineId;
     if (id == 0 || id > pipelines_.size())
@@ -1174,7 +1174,7 @@ void RenderBackendGL::executeCommand(const BackendCommandBindPipeline& command)
     useProgram(pipeline.programId);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBindTexture2D& command)
 {
     const GLuint textureHandle = command.textureHandle.isValid() ? command.textureHandle.value() : fallbackTexture2D_;
     const GLenum minF = toFilter(command.minFilter);
@@ -1202,17 +1202,17 @@ void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magF);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBufferData& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBufferData& command)
 {
     bufferData(command.target, command.bufferId, command.data.size(), command.data.data(), command.usage);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBindBuffer& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBindBuffer& command)
 {
     bindBuffer(command.target, command.bufferId);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBeginRenderToTexture& command)
 {
     if (command.framebufferId == 0 || !command.targetTexture.isValid())
         return;
@@ -1237,7 +1237,7 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& c
     }
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBeginRenderPass& command)
 {
     const RenderPassId id = command.renderPassId;
     if (id == 0 || id > renderPasses_.size())
@@ -1281,33 +1281,33 @@ void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& comman
         glClear(clearMask);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandEndRenderPass& /*command*/)
+void RenderBackendGL21::executeCommand(const BackendCommandEndRenderPass& /*command*/)
 {
     // In GL 2.1, ending a render pass is a no-op.
     // In Vulkan, this would end the VkRenderPass.
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBindDefaultFramebuffer& /*command*/)
+void RenderBackendGL21::executeCommand(const BackendCommandBindDefaultFramebuffer& /*command*/)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandBindFramebuffer& command)
+void RenderBackendGL21::executeCommand(const BackendCommandBindFramebuffer& command)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(command.framebufferId));
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
+void RenderBackendGL21::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
 {
     endRenderToTexture();
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetLineWidth& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetLineWidth& command)
 {
     glLineWidth(command.width);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetGui2DUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetGui2DUniforms& command)
 {
     const auto& u = command.uniforms;
     // Look up uniform locations from the currently bound program.
@@ -1320,7 +1320,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetGui2DUniforms& comma
         glUniform1i(locSampler, u.textureSampler);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
 {
     const auto& u = command.uniforms;
     const GLuint prog = stateCache_.currentProgram_;
@@ -1341,7 +1341,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardFrameUniform
         glUniform1i(locFogMode, u.fogMode);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
 {
     const auto& u = command.uniforms;
     const GLuint prog = stateCache_.currentProgram_;
@@ -1420,7 +1420,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUnifor
         glUniform1i(locTS, u.textureSampler);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetBillboardUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetBillboardUniforms& command)
 {
     const auto& u = command.uniforms;
     const GLuint prog = stateCache_.currentProgram_;
@@ -1432,7 +1432,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetBillboardUniforms& c
         glUniform1i(locSampler, u.textureSampler);
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
 {
     const auto& u = command.uniforms;
     const GLuint prog = stateCache_.currentProgram_;
@@ -1444,7 +1444,7 @@ void RenderBackendGL::executeCommand(const BackendCommandSetShadowDepthUniforms&
         glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
 }
 
-void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms& command)
+void RenderBackendGL21::executeCommand(const BackendCommandSetPostProcessUniforms& command)
 {
     const auto& u = command.uniforms;
     const GLuint prog = stateCache_.currentProgram_;
@@ -1456,14 +1456,14 @@ void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms&
         glUniform1f(locExposure, u.exposure);
 }
 
-BackendTextureHandle RenderBackendGL::createTexture2D()
+BackendTextureHandle RenderBackendGL21::createTexture2D()
 {
     GLuint texture = 0;
     glGenTextures(1, &texture);
     return BackendTextureHandle(texture);
 }
 
-void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
+void RenderBackendGL21::destroyTexture2D(BackendTextureHandle handle)
 {
     if (!handle.isValid())
         return;
@@ -1471,7 +1471,7 @@ void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
     pendingTextureDeletes_.push_back(handle.value());
 }
 
-void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
+void RenderBackendGL21::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
 {
     stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
@@ -1480,7 +1480,7 @@ void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, i
         toPixelDataType(format), nullptr);
 }
 
-void RenderBackendGL::textureSubImage2D(
+void RenderBackendGL21::textureSubImage2D(
     BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
 {
     stateCache_.resetTextureUnits();
@@ -1488,7 +1488,7 @@ void RenderBackendGL::textureSubImage2D(
     glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
 }
 
-void RenderBackendGL::textureSetMinMagFilter(
+void RenderBackendGL21::textureSetMinMagFilter(
     BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
 {
     stateCache_.resetTextureUnits();
@@ -1497,7 +1497,7 @@ void RenderBackendGL::textureSetMinMagFilter(
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(magFilter));
 }
 
-void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT)
+void RenderBackendGL21::textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT)
 {
     stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
@@ -1505,7 +1505,7 @@ void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wr
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(wrapT));
 }
 
-void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
+void RenderBackendGL21::textureGenerateMipmap(BackendTextureHandle handle)
 {
     stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());

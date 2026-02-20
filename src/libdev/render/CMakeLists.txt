@@ -221,8 +221,8 @@ target_link_libraries(render PRIVATE
 
 if(TRUE)
     add_library(render_backend_gl21 STATIC
-        OpenGL/RenderBackendGL.cpp
-        OpenGL/RenderBackendGL.hpp
+        OpenGL/RenderBackendGL21.cpp
+        OpenGL/RenderBackendGL21.hpp
         OpenGL/Utils.cpp
         OpenGL/Utils.hpp
     )
