@@ -186,6 +186,90 @@ bool RenDevice::initialize()
 
     initializeDisplay();
 
+    if (!createGpuResources())
+        return false;
+
+    pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
+
+    RenStats* pStats = statistics();
+    bool statsShown = true;
+
+    if (pStats == nullptr)
+    {
+        statsShown = false;
+    }
+    else
+    {
+        statsShown = pStats->shown();
+        pStats->hide();
+    }
+
+    if (statsShown)
+    {
+        pStats->show();
+    }
+
+    return true;
+}
+
+RenDevice::~RenDevice()
+{
+    // Note: the pImpl_->alphaSorter_ variable is set to point to either nullptr or to
+    // pImpl_->normalAlphaSorter_, depending on what's being rendered.  It should
+    // *not* be deleted.
+    if (pImpl_->coplanarSorter_)
+    {
+        delete pImpl_->coplanarSorter_;
+    }
+    if (pImpl_->normalAlphaSorter_)
+    {
+        delete pImpl_->normalAlphaSorter_;
+    }
+    if (pImpl_->stats_)
+    {
+        delete pImpl_->stats_;
+    }
+    if (pImpl_->vpMapping_)
+    {
+        delete pImpl_->vpMapping_;
+    }
+    if (pImpl_->projViewMatrix_)
+    {
+        delete pImpl_->projViewMatrix_;
+    }
+    if (pImpl_->illuminator_)
+    {
+        delete pImpl_->illuminator_;
+    }
+    if (pImpl_->surfBackBuf_)
+    {
+        delete pImpl_->surfBackBuf_;
+    }
+    if (pImpl_->surfFrontBuf_)
+    {
+        delete pImpl_->surfFrontBuf_;
+    }
+    releaseGpuResources();
+
+    pImpl_->backend_->shutdown();
+
+    delete pImpl_;
+
+    pImpl_ = nullptr;
+
+    RenDevice*& currentDeviceRef = RenIDeviceImpl::current();
+    if (currentDeviceRef == this)
+    {
+        currentDeviceRef = nullptr;
+        RenIDeviceImpl::currentPimpl() = nullptr;
+    }
+}
+
+bool RenDevice::createGpuResources()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+
     // GUI 2D pipeline
     {
         Ren::PipelineDesc desc;
@@ -455,73 +539,22 @@ bool RenDevice::initialize()
     // Prepare framebuffer for offscreen rendering
     offscreenFramebuffer_ = backend_->createFramebuffer();
 
-    pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
-
-    RenStats* pStats = statistics();
-    bool statsShown = true;
-
-    if (pStats == nullptr)
-    {
-        statsShown = false;
-    }
-    else
-    {
-        statsShown = pStats->shown();
-        pStats->hide();
-    }
-
-    if (statsShown)
-    {
-        pStats->show();
-    }
-
     return true;
 }
 
-RenDevice::~RenDevice()
+void RenDevice::releaseGpuResources()
 {
-    // Note: the pImpl_->alphaSorter_ variable is set to point to either nullptr or to
-    // pImpl_->normalAlphaSorter_, depending on what's being rendered.  It should
-    // *not* be deleted.
-    if (pImpl_->coplanarSorter_)
-    {
-        delete pImpl_->coplanarSorter_;
-    }
-    if (pImpl_->normalAlphaSorter_)
-    {
-        delete pImpl_->normalAlphaSorter_;
-    }
-    if (pImpl_->stats_)
-    {
-        delete pImpl_->stats_;
-    }
-    if (pImpl_->vpMapping_)
-    {
-        delete pImpl_->vpMapping_;
-    }
-    if (pImpl_->projViewMatrix_)
-    {
-        delete pImpl_->projViewMatrix_;
-    }
-    if (pImpl_->illuminator_)
-    {
-        delete pImpl_->illuminator_;
-    }
-    if (pImpl_->surfBackBuf_)
-    {
-        delete pImpl_->surfBackBuf_;
-    }
-    if (pImpl_->surfFrontBuf_)
-    {
-        delete pImpl_->surfFrontBuf_;
-    }
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
+
+    if (!backend_ || !backend_->isInitialized())
+        return;
 
     backend_->releasePipeline(gui2D_.id);
     backend_->releasePipeline(standard_.id);
     backend_->releasePipeline(billboard_.id);
     backend_->releasePipeline(shadowDepth_.id);
+    backend_->releasePipeline(postProcess_.id);
 
     backend_->releaseRenderPass(geometryRenderPass_);
     backend_->releaseRenderPass(uiRenderPass_);
@@ -543,18 +576,40 @@ RenDevice::~RenDevice()
     backend_->releaseBuffer(elementBufferBillboard_);
     backend_->releaseFramebuffer(offscreenFramebuffer_);
 
-    backend_->shutdown();
+    if (postProcessColorTexture_.isValid())
+        backend_->destroyTexture2D(postProcessColorTexture_);
+    backend_->releaseFramebuffer(postProcessFBO_);
+    backend_->releaseBuffer(postProcessQuadVBO_);
 
-    delete pImpl_;
-
-    pImpl_ = nullptr;
-
-    RenDevice*& currentDeviceRef = RenIDeviceImpl::current();
-    if (currentDeviceRef == this)
-    {
-        currentDeviceRef = nullptr;
-        RenIDeviceImpl::currentPimpl() = nullptr;
-    }
+    // Zero out all handles so they are not accidentally reused.
+    gui2D_ = {};
+    standard_ = {};
+    billboard_ = {};
+    shadowDepth_ = {};
+    postProcess_ = {};
+    geometryRenderPass_ = {};
+    uiRenderPass_ = {};
+    shadowRenderPass_ = {};
+    shadowFramebuffer_ = {};
+    shadowDepthTexture_ = {};
+    shadowNearFramebuffer_ = {};
+    shadowNearDepthTexture_ = {};
+    vertexBuffer2D_ = {};
+    vertexDataBuffer_ = {};
+    normalBuffer_ = {};
+    vtxDiffuseBuffer_ = {};
+    vtxAmbientBuffer_ = {};
+    vtxEmissiveBuffer_ = {};
+    elementBuffer_ = {};
+    vertexDataBufferBillboard_ = {};
+    elementBufferBillboard_ = {};
+    offscreenFramebuffer_ = {};
+    postProcessFBO_ = {};
+    postProcessColorTexture_ = {};
+    postProcessQuadVBO_ = {};
+    postProcessWidth_ = {};
+    postProcessHeight_ = {};
+    postProcessReady_ = {};
 }
 
 bool RenDevice::switchBackend(Ren::BackendType type)
@@ -567,6 +622,12 @@ bool RenDevice::switchBackend(Ren::BackendType type)
         return true;
 
     spdlog::info("Switching render backend to type {}", toString(type));
+
+    // Tear down all GPU resources on the current backend.
+    releaseGpuResources();
+
+    // Tell the surface manager to release all native texture handles.
+    RenSurfaceManager::instance().impl().releaseAllTextures();
 
     // Shut down and destroy the old backend.
     if (backend_)
@@ -586,11 +647,22 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     SDL_Window* window = pImpl_->display_->window();
     if (!backend_->initialize(window))
     {
-        spdlog::error("Render backend initialization failed");
+        spdlog::error("Failed to initialize new render backend");
         backend_.reset();
         return false;
     }
 
+    // Recreate all GPU resources on the new backend.
+    if (!createGpuResources())
+    {
+        spdlog::error("Failed to recreate GPU resources on new backend");
+        return false;
+    }
+
+    // Re-upload all textures.
+    RenSurfaceManager::instance().impl().reuploadAllTextures();
+
+    // Restore VSync preference.
     if (!setVSync(vsyncEnabled_))
     {
         spdlog::warn("Failed to apply VSync preference ({}) during backend creation", vsyncEnabled_);

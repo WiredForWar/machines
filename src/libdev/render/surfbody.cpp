@@ -135,6 +135,29 @@ RenISurfBody::~RenISurfBody()
     }
 }
 
+void RenISurfBody::releaseNativeTexture()
+{
+    // Just clear the handle — the old backend will destroy the GL object when it shuts down.
+    nativeTexture2D_ = Ren::BackendTextureHandle{};
+}
+
+// virtual
+void RenISurfBody::reuploadFromDisk()
+{
+    if (name_.empty())
+        return;
+
+    // Re-read the file and re-upload to the current backend.
+    SDL_Surface* surface = readFromFile(name_.c_str());
+    if (!surface)
+        return;
+
+    if (allocateDDSurfaces(surface->w, surface->h, SYSTEM))
+        copyWithColourKeyEmulation(surface, RenColour::magenta());
+
+    SDL_FreeSurface(surface);
+}
+
 // virtual
 bool RenISurfBody::read(const std::string& bitmapName)
 {
