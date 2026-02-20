@@ -12,6 +12,7 @@
 #include <string_view>
 
 class RenColour;
+class RenDevice;
 class RenSurface;
 
 namespace Ren {
@@ -25,6 +26,9 @@ class Painter
 {
 public:
     explicit Painter(RenSurface& target);
+
+    Painter(const Painter&) = delete;
+    Painter& operator=(const Painter&) = delete;
 
     // Primitive drawing
     void filledRectangle(const Rect& area, const RenColour& colour) const;
@@ -55,6 +59,7 @@ public:
 
 private:
     RenSurface& target_;
+    RenDevice* device_{};
 };
 
 } // namespace Ren
