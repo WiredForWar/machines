@@ -1,0 +1,10 @@
+#version 330 core
+
+in vec3 vertexPosition_modelspace;
+
+uniform mat4 uLightSpaceMatrix;
+uniform mat4 uM;
+
+void main() {
+    gl_Position = uLightSpaceMatrix * uM * vec4(vertexPosition_modelspace, 1);
+}

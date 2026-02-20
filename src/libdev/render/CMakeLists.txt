@@ -239,3 +239,23 @@ if(TRUE)
 
     target_link_libraries(render PRIVATE render_backend_gl21)
 endif()
+
+option(MACHINES_BACKEND_GL33 "Build OpenGL 3.3 render backend" ON)
+if(MACHINES_BACKEND_GL33)
+    add_library(render_backend_gl33 STATIC
+        OpenGL33/RenderBackendGL33.cpp
+        OpenGL33/RenderBackendGL33.hpp
+    )
+    target_include_directories(render_backend_gl33 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR/../..}")
+    target_link_libraries(render_backend_gl33 PRIVATE
+        LibDev::system
+
+        SDL2::SDL2
+        GLEW::GLEW
+        glm::glm
+        spdlog::spdlog
+    )
+    target_compile_definitions(render_backend_gl33 PUBLIC MACHINES_HAS_BACKEND_GL33)
+
+    target_link_libraries(render PRIVATE render_backend_gl33)
+endif()

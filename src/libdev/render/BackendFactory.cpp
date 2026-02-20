@@ -6,12 +6,19 @@
 #include "render/OpenGL/RenderBackendGL21.hpp"
 #endif
 
+#ifdef MACHINES_HAS_BACKEND_GL33
+#include "render/OpenGL33/RenderBackendGL33.hpp"
+#endif
+
 namespace Ren
 {
 
 std::vector<BackendType> IRenderBackend::availableBackends()
 {
     return {
+#ifdef MACHINES_HAS_BACKEND_GL33
+        BackendType::GL33,
+#endif
 #ifdef MACHINES_HAS_BACKEND_GL21
         BackendType::GL21,
 #endif
@@ -39,6 +46,13 @@ std::unique_ptr<IRenderBackend> IRenderBackend::create(BackendType type)
         spdlog::info("Creating {} render backend", toString(type));
         return std::make_unique<OpenGL::RenderBackendGL21>();
 #endif
+
+#ifdef MACHINES_HAS_BACKEND_GL33
+    case BackendType::GL33:
+        spdlog::info("Creating {} render backend", toString(type));
+        return std::make_unique<OpenGL33::RenderBackendGL33>();
+#endif
+
     default:
         spdlog::error("Requested render backend is not compiled in");
         return nullptr;

@@ -1,0 +1,23 @@
+#version 330 core
+
+in vec2 UV;
+out vec4 outFragColor;
+
+uniform sampler2D uSceneTexture;
+uniform float uExposure;
+
+// ACES filmic tone mapping (fitted curve by Krzysztof Narkowicz)
+vec3 acesToneMap(vec3 x) {
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
+
+void main() {
+    vec3 hdrColor = texture(uSceneTexture, UV).rgb;
+    vec3 mapped = acesToneMap(hdrColor * uExposure);
+    outFragColor = vec4(mapped, 1.0);
+}
