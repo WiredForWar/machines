@@ -27,7 +27,6 @@
 #include <SDL3_image/SDL_image.h>
 #include "render/internal/VertexData.hpp"
 #include "render/internal/ColourPack.hpp"
-#include "render/internal/RenScopedImmediateCommands.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -213,14 +212,9 @@ void RenISurfBody::unclippedBlit(
     PRE(destX + srcArea.width <= width());
     PRE(destY + srcArea.height <= height());
 
-    // If a cursor is displayed, all blits to the display surfaces must be
-    // bracketed by start-end frame calls.
     RenDevice* dev = RenDevice::current();
-    RenScopedImmediateCommands guard(dev);
-    PRE_DATA(const bool displayDest = displayType_ == RenI::FRONT || displayType_ == RenI::BACK);
     PRE(dev);
     PRE(dev->display());
-    //  PRE(implies(displayDest && dev->display()->currentCursor(), dev->rendering()));
 
     Ren::Rect dstArea;
     dstArea.originX = destX;
@@ -228,12 +222,12 @@ void RenISurfBody::unclippedBlit(
     dstArea.width = srcArea.width;
     dstArea.height = srcArea.height;
 
-    //  if( (displayType_ != RenI::FRONT) && (displayType_ != RenI::BACK) )
+    // The caller (Painter) is responsible for FBO binding.
+    // Pass target dimensions for offscreen surfaces so the shader
+    // uses the correct coordinate system (flipped Y for FBOs).
     if (displayType_ == RenI::NOT_DISPLAY)
     {
-        dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
         dev->renderSurface(source, srcArea, dstArea, width_, height_, 0xFFFFFFFF, mode);
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {
@@ -254,23 +248,16 @@ void RenISurfBody::unclippedStretchBlit(
 {
     PRE(source);
 
-    // If a cursor is displayed, all blits to the display surfaces must be
-    // bracketed by start-end frame calls.
     RenDevice* dev = RenDevice::current();
-    RenScopedImmediateCommands guard(dev);
-    PRE_DATA(const bool displayDest = displayType_ == RenI::FRONT || displayType_ == RenI::BACK);
     PRE(dev);
     PRE(dev->display());
-    // PRE(implies(displayDest && dev->display()->currentCursor(), dev->rendering()));
 
+    // The caller (Painter) is responsible for FBO binding.
     if (displayType_ == RenI::NOT_DISPLAY)
     {
-        dev->renderToTextureMode(RenSurface::createFromInternal(this).handle(), width_, height_);
-
         dev->setSmoothScaleEnabled(false);
         dev->renderSurface(source, srcArea, dstArea, width_, height_, 0xFFFFFFFF, mode);
         dev->setSmoothScaleEnabled(true);
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
     }
     else
     {

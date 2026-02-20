@@ -8,11 +8,13 @@
 #include "render/Alignment.hpp"
 #include "render/render.hpp"
 
+#include <memory>
 #include <optional>
 #include <string_view>
 
 class RenColour;
 class RenDevice;
+class RenScopedImmediateCommands;
 class RenSurface;
 
 namespace Ren {
@@ -26,6 +28,7 @@ class Painter
 {
 public:
     explicit Painter(RenSurface& target);
+    ~Painter();
 
     Painter(const Painter&) = delete;
     Painter& operator=(const Painter&) = delete;
@@ -59,8 +62,12 @@ public:
     void blitInRequestedSize(const RenSurface& source, Point dest, BlitMode mode = {}) const;
 
 private:
+    int screenspaceW() const;
+    int screenspaceH() const;
+
     RenSurface& target_;
     RenDevice* device_{};
+    std::unique_ptr<RenScopedImmediateCommands> commandGuard_;
 };
 
 } // namespace Ren
