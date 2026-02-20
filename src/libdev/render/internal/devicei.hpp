@@ -322,6 +322,16 @@ private:
     bool shadowMappingEnabled_{};
     float shadowStrength_{1.0f};
 
+    // Spotlight shadow map for a single shadow-casting point light.
+    static constexpr int SpotlightShadowMapSize = 1024;
+    Ren::FramebufferId spotlightShadowFramebuffer_{};
+    Ren::BackendTextureHandle spotlightShadowDepthTexture_{};
+    glm::mat4 spotlightLightSpaceMatrix_{};
+    glm::vec3 spotlightPosition_{};
+    float spotlightRange_{};
+    bool spotlightShadowActive_{}; // true while rendering the spotlight shadow pass
+    bool spotlightShadowEnabled_{}; // true if a spotlight shadow was rendered this frame
+
     DevTimer frameTimer_;
 
     bool videoMemoryShared_;

@@ -65,6 +65,7 @@ private:
     MexSphere3d* sphere_;
     bool dynamicEnabledOn_;
     bool hasBoundingSphere_;
+    bool castsShadow_{};
     uint nRepetations_;
 };
 
