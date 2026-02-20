@@ -8,13 +8,12 @@
 #include "machgui/WorldViewWindow.hpp"
 
 #include "machgui/IInputRegistry.hpp"
+#include "machgui/PausedImage.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/commands/command.hpp"
 #include "machgui/Cameras.hpp"
 #include "machgui/ControlPanelAddOn.hpp"
-#include "machgui/db/Database.hpp"
-#include "machgui/db/DbScenario.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machlog/races.hpp"
 #include "machlog/plandoms.hpp"
@@ -67,6 +66,8 @@ MachWorldViewWindow::MachWorldViewWindow(
     addTranslation(pKeyTranslator_, SELECT_ONSCREEN_CONSTRUCTIONS_KEEP_SEL, "add-visible-constructions"_bind);
 
     selectedEntities_.reserve(20);
+
+    new MachGuiPausedImage(this, pParent);
 
     useFastSecondDisplay(false);
 
@@ -667,61 +668,6 @@ void MachWorldViewWindow::doDisplay()
         pInGameScreen_->setGuiViewport();
     }
 
-    if (SimManager::instance().isSuspended())
-    {
-        GuiBitmap pausedBmp;
-
-        switch (pInGameScreen_->actualGameState())
-        {
-            case MachInGameScreen::WON:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/complete.bmp");
-                }
-                else
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/victory.bmp");
-                }
-                break;
-            case MachInGameScreen::LOST:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/failed.bmp");
-                }
-                else
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/defeat.bmp");
-                }
-                break;
-            default:
-                pausedBmp = Gui::getScaledImage("gui/misc/paused.bmp");
-                break;
-        }
-
-        pausedBmp.enableColourKeying();
-
-        Gui::Coord topLeftCoord = absoluteBoundary().minCorner();
-
-        RenDevice& device = *pInGameScreen_->sceneManager().pDevice();
-        const int w = device.windowWidth();
-        const int h = device.windowHeight();
-        int xPos = ((w - topLeftCoord.x()) / 2) - (pausedBmp.width() / 2);
-        int yPos = ((h - topLeftCoord.y()) / 2) - (pausedBmp.height() / 2);
-
-        GuiPainter::instance().blit(pausedBmp, Gui::Coord(xPos + topLeftCoord.x(), yPos + topLeftCoord.y()));
-    }
-    else if (pInGameScreen_->isNetworkStuffed())
-    {
-        // Display "Network Busy" message ( top right )
-        GuiBitmap pausedBmp = Gui::getScaledImage("gui/misc/netbusy.bmp");
-        pausedBmp.enableColourKeying();
-
-        RenDevice& device = *pInGameScreen_->sceneManager().pDevice();
-        const int w = device.windowWidth();
-        int xPos = w - pausedBmp.width();
-
-        GuiPainter::instance().blit(pausedBmp, Gui::Coord(xPos, 0));
-    }
 }
 
 bool MachWorldViewWindow::rubberBandSelectionHappening() const

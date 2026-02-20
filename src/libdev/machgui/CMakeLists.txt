@@ -174,6 +174,8 @@ set(MACHGUI_SOURCES
     NewResearchIcon.hpp
     NumPlayersDropDownListBoxCreator.cpp
     NumPlayersDropDownListBoxCreator.hpp
+    PausedImage.cpp
+    PausedImage.hpp
     PlayerColour.cpp
     PlayerColour.hpp
     PlayerNameList.cpp

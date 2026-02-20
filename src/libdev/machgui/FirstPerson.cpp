@@ -44,8 +44,6 @@
 #include "machgui/Radar.hpp"
 #include "machgui/InGameChatMessagesDisplay.hpp"
 #include "machgui/InGameChatMessages.hpp"
-#include "machgui/db/Database.hpp"
-#include "machgui/db/DbScenario.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/MachGuiFPCommand.hpp"
 #include "machphys/objdata.hpp"
@@ -55,6 +53,7 @@
 #include "system/registry.hpp"
 #include "device/time.hpp"
 #include "machgui/internal/SoundManager.hpp"
+#include "machgui/PausedImage.hpp"
 #include "sim/manager.hpp"
 
 #define WEAPON_DROPDOWN_TIME 0.7
@@ -62,82 +61,6 @@
 #define WEAPON_DROPDOWN_FRAMES 10
 #define STARTUP_SEQUENCE_TIME 0.5
 #define STARTUP_SEQUENCE_FRAMES 10
-
-class MachGuiPausedImage : public GuiDisplayable
-{
-public:
-    MachGuiPausedImage(GuiDisplayable* pParent, MachInGameScreen* pInGameScreen)
-        : GuiDisplayable(pParent, Gui::Box(0, 0, 0, 0), GuiDisplayable::LAYER5)
-        , pInGameScreen_(pInGameScreen)
-    {
-    }
-
-    void doDisplay() override
-    {
-        // Display "Paused" in centre of screen if game is paused
-        if (SimManager::instance().isSuspended())
-        {
-            // Get screen dimensions
-            RenDevice& device = *W4dManager::instance().sceneManager()->pDevice();
-            const int w = device.windowWidth();
-            const int h = device.windowHeight();
-
-            GuiBitmap pausedBmp;
-
-            switch (pInGameScreen_->actualGameState())
-            {
-            case MachInGameScreen::WON:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/complete.bmp");
-                }
-                else
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/victory.bmp");
-                }
-                break;
-            case MachInGameScreen::LOST:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/failed.bmp");
-                }
-                else
-                {
-                    pausedBmp = Gui::getScaledImage("gui/misc/defeat.bmp");
-                }
-                break;
-            default:
-                pausedBmp = Gui::getScaledImage("gui/misc/paused.bmp");
-                break;
-            }
-
-            pausedBmp.enableColourKeying();
-            int xPos = (w / 2) - (pausedBmp.width() / 2);
-            int yPos = (h / 2) - (pausedBmp.height() / 2);
-
-            GuiPainter::instance().blit(pausedBmp, Gui::Coord(xPos, yPos));
-        }
-        else if (pInGameScreen_->isNetworkStuffed())
-        {
-            // Get screen dimensions
-            RenDevice& device = *W4dManager::instance().sceneManager()->pDevice();
-            const int w = device.windowWidth();
-            const int h = device.windowHeight();
-
-            int borderHeight = h * 0.05;
-
-            // Display "Network Busy" message ( top right )
-            GuiBitmap pausedBmp = Gui::getScaledImage("gui/misc/netbusy.bmp");
-            pausedBmp.enableColourKeying();
-            int xPos = w - pausedBmp.width();
-
-            GuiPainter::instance().blit(pausedBmp, Gui::Coord(xPos, borderHeight + 2));
-        }
-    }
-
-private:
-    MachInGameScreen* pInGameScreen_;
-};
 
 class MachGuiFirstPersonImpl
 {
