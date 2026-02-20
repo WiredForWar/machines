@@ -517,11 +517,7 @@ bool RenSurface::isColourKeyingOn() const
 
 void RenSurface::enableColourKeying()
 {
-    if (!internals()->keyingOn())
-    {
-        internals()->keyingOn(true);
-        internals()->setDDColourKey();
-    }
+    internals()->keyingOn(true);
 }
 
 void RenSurface::disableColourKeying()
@@ -537,7 +533,6 @@ const RenColour& RenSurface::colourKey() const
 void RenSurface::colourKey(const RenColour& c)
 {
     internals()->keyColour(c);
-    internals()->setDDColourKey();
 }
 
 RenISurfBody* RenSurface::internals()
