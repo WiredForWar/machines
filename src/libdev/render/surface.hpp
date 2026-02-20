@@ -115,7 +115,6 @@ public:
     void polyLine(const Points& pts, const RenColour&, int thickness);
 
     void getPixel(int x, int y, RenColour*) const;
-    void setPixel(int x, int y, const RenColour&);
 
     void saveAsPng(const SysPathName&, const Rect& area = Rect()) const;
 

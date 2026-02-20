@@ -424,11 +424,6 @@ void RenSurface::getPixel(int x, int y, RenColour* colour) const
     colour->a(pixel[3]);
 }
 
-void RenSurface::setPixel(int x, int y, const RenColour& colour)
-{
-    PRE(!readOnly());
-    ASSERT_FAIL("Not implemented.");
-}
 
 void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickness)
 {
