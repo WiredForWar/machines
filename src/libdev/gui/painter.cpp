@@ -23,8 +23,8 @@ GuiPainter& GuiPainter::instance()
 /* //////////////////////////////////////////////////////////////// */
 
 GuiPainter::GuiPainter()
+    : Ren::Painter(Gui::staticBackBuffer())
 {
-    // Intentionally Empty
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ RenSurface::Rect map_GuiBox_to_RenSurfaceRect(const Gui::Box& b)
 
 void GuiPainter::filledRectangle(const Gui::Box& b, const Gui::Colour& col) const
 {
-    Gui::backBuffer().filledRectangle(map_GuiBox_to_RenSurfaceRect(b), col);
+    Ren::Painter::filledRectangle(map_GuiBox_to_RenSurfaceRect(b), col);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -45,35 +45,24 @@ void GuiPainter::hollowRectangle(const Gui::Box& b, const Gui::Colour& col, unsi
 {
     Ren::Rect area(b.minCorner().x(), b.minCorner().y(), b.width() - 1, b.height() - 1);
 
-    Gui::backBuffer().hollowRectangle(area, col, thickness);
+    Ren::Painter::hollowRectangle(area, col, thickness);
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 void GuiPainter::line(const Gui::Coord& c1, const Gui::Coord& c2, const Gui::Colour& col, unsigned thickness) const
 {
-    RenSurface::Points p;
-    p.reserve(2);
-    p.push_back(c1);
-    p.push_back(c2);
-    Gui::backBuffer().polyLine(p, col, thickness);
+    Ren::Painter::line(Ren::Point(c1.x(), c1.y()), Ren::Point(c2.x(), c2.y()), col, thickness);
 }
 
 void GuiPainter::horizontalLine(const Gui::Coord& c1, unsigned length, const Gui::Colour& col, unsigned thickness) const
 {
-    if (thickness > 1)
-    {
-        Gui::Coord c(c1);
-        c.y(c.y() - thickness / 2.0);
-        line(c, Gui::Coord(c.x() + length, c.y()), col, thickness);
-    }
-    else
-        line(c1, Gui::Coord(c1.x() + length, c1.y()), col, thickness);
+    Ren::Painter::horizontalLine(Ren::Point(c1.x(), c1.y()), length, col, thickness);
 }
 
 void GuiPainter::verticalLine(const Gui::Coord& c1, unsigned height, const Gui::Colour& col, unsigned thickness) const
 {
-    line(c1, Gui::Coord(c1.x(), c1.y() + height), col, thickness);
+    Ren::Painter::verticalLine(Ren::Point(c1.x(), c1.y()), height, col, thickness);
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -103,8 +92,7 @@ void GuiPainter::drawText(
     const Gui::TextOptions& options,
     const Ren::Font& font) const
 {
-    RenSurface backBuffer = Gui::backBuffer();
-    backBuffer.drawText(c.x(), c.y(), text, font, options);
+    Ren::Painter::drawText(c.x(), c.y(), text, font, options);
 }
 
 void GuiPainter::drawText(

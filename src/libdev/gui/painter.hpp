@@ -7,6 +7,7 @@
 #define _GUI_PAINTER_HPP
 
 #include "gui/gui.hpp"
+#include "render/Painter.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 
@@ -14,7 +15,7 @@ class GuiBorderMetrics;
 class GuiBorderDimensions;
 class GuiFilledBorderColours;
 
-class GuiPainter
+class GuiPainter : public Ren::Painter
 {
 public:
     static GuiPainter& instance();
@@ -40,6 +41,14 @@ public:
 
     ///////////////////////////////
 
+    using Ren::Painter::filledRectangle;
+    using Ren::Painter::hollowRectangle;
+    using Ren::Painter::ellipse;
+    using Ren::Painter::line;
+    using Ren::Painter::horizontalLine;
+    using Ren::Painter::verticalLine;
+    using Ren::Painter::drawText;
+
     void filledRectangle(const Gui::Box&, const Gui::Colour&) const;
     void hollowRectangle(const Gui::Box&, const Gui::Colour&, unsigned thickness) const;
 
@@ -54,8 +63,6 @@ public:
 
     void verticalLine(const Gui::Coord& c1, unsigned height, const Gui::Colour&, unsigned thickness) const;
 
-    ///////////////////////////////
-
     void drawText(
         const Gui::Coord& c,
         const std::string_view& text,
@@ -67,6 +74,7 @@ public:
         const std::string_view& text,
         const Gui::TextOptions& options,
         const Ren::Font& font) const;
+
     ///////////////////////////////
 
     void filledBorder(
