@@ -416,6 +416,9 @@ private:
     void blitPostProcess();
     void commonEndFrame();
 
+    bool createGpuResources();
+    void releaseGpuResources();
+
     bool setVSync(bool enabled);
 
     friend class Filter;
