@@ -220,11 +220,15 @@ inline void setMeshWorldMatrix(const MexTransform3d& world, glm::mat4& World, co
 
 // Shadow depth pass: set model matrix and submit only triangle positions — skip
 // lighting, materials, alpha sorting, TTF polygons, spin polygons, etc.
+// If a material override vector is provided, any group whose override material
+// has alpha transparency is skipped (semi-transparent surfaces should not cast
+// full opaque shadows).
 inline bool renderShadowDepthIfActive(
     const MexTransform3d& world,
     const RenScale& scale,
     const RenIVertexData* vertices,
-    const ctl_min_memory_vector<RenITriangleGroup*>& triangles)
+    const ctl_min_memory_vector<RenITriangleGroup*>& triangles,
+    const RenMaterialVec* matOverride = nullptr)
 {
     if (!RenDevice::current()->isShadowPassActive())
         return false;
@@ -237,8 +241,13 @@ inline bool renderShadowDepthIfActive(
 
     // Iterate triangle groups and call their render method; each group's
     // render will detect the active shadow pass and call renderShadowDepth.
+    size_t idx = 0;
     for (const auto* group : triangles)
-        group->render(*vertices, group->material());
+    {
+        const RenMaterial& mat = (matOverride && idx < matOverride->size()) ? (*matOverride)[idx] : group->material();
+        group->render(*vertices, mat);
+        ++idx;
+    }
 
     return true;
 }
@@ -464,7 +473,7 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
 
 void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, const RenScale& scale) const
 {
-    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_, mats))
         return;
 
     renderPreconditions();
@@ -591,7 +600,7 @@ void RenMesh::render(
     const RenUVTransform& anim,
     const RenScale& scale) const
 {
-    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_, mats))
         return;
 
     renderPreconditions();
