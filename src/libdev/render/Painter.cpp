@@ -26,6 +26,40 @@ Painter::Painter(RenSurface& target)
     : target_(target)
     , device_(RenDevice::current())
 {
+    beginOffscreen();
+}
+
+Painter::~Painter()
+{
+    endOffscreen();
+}
+
+void Painter::beginOffscreen()
+{
+    if (device_ && target_.isOffscreen())
+    {
+        RenScopedImmediateCommands guard(device_);
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+    }
+}
+
+void Painter::endOffscreen()
+{
+    if (device_ && target_.isOffscreen())
+    {
+        RenScopedImmediateCommands guard(device_);
+        device_->renderToTextureMode(NullTexId, 0, 0);
+    }
+}
+
+int Painter::screenspaceW() const
+{
+    return target_.width();
+}
+
+int Painter::screenspaceH() const
+{
+    return target_.isOffscreen() ? -static_cast<int>(target_.height()) : static_cast<int>(target_.height());
 }
 
 void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
@@ -60,16 +94,7 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
     vtx[5].x = x0; vtx[5].y = y1;
 
     device_->recordCommand(Command::setCullFace(false));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-    {
-        device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, target_.width(), target_.height());
-    }
+    device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, screenspaceW(), screenspaceH());
 }
 
 void Painter::clearRectangle(const Rect& area) const
@@ -91,9 +116,8 @@ void Painter::clearRectangle(const Rect& area) const
 
     if (target_.isOffscreen())
     {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderSurface(&emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
-        device_->renderToTextureMode(NullTexId, 0, 0);
+        device_->renderSurface(
+            &emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
     }
     else
     {
@@ -165,14 +189,7 @@ void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColou
     }
 
     device_->recordCommand(Command::setCullFace(false));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-        device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, target_.width(), target_.height());
+    device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, screenspaceW(), screenspaceH());
 }
 
 void Painter::line(const Point& from, const Point& to, const RenColour& colour, int thickness) const
@@ -201,14 +218,7 @@ void Painter::line(const Point& from, const Point& to, const RenColour& colour, 
     vtx[1].specular = 0;
 
     device_->recordCommand(Command::setLineWidth(static_cast<float>(thickness)));
-    if (target_.isOffscreen())
-    {
-        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
-        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), -target_.height());
-        device_->renderToTextureMode(NullTexId, 0, 0);
-    }
-    else
-        device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, target_.width(), target_.height());
+    device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, screenspaceW(), screenspaceH());
     device_->recordCommand(Command::setLineWidth(1.0f));
 }
 
@@ -472,8 +482,8 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
         &vertices.front(),
         vertices.size(),
         PrimitiveTopology::Triangles,
-        target_.width(),
-        target_.height(),
+        screenspaceW(),
+        screenspaceH(),
         fontImpl.textureId);
 
     if (options.underline() && lineEndX != lineStartX)

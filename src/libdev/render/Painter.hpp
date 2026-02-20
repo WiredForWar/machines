@@ -13,6 +13,7 @@
 
 class RenColour;
 class RenDevice;
+class RenScopedImmediateCommands;
 class RenSurface;
 
 namespace Ren {
@@ -26,6 +27,7 @@ class Painter
 {
 public:
     explicit Painter(RenSurface& target);
+    ~Painter();
 
     Painter(const Painter&) = delete;
     Painter& operator=(const Painter&) = delete;
@@ -59,6 +61,12 @@ public:
     void blitInRequestedSize(const RenSurface& source, Point dest, BlitMode mode = {}) const;
 
 private:
+    void beginOffscreen();
+    void endOffscreen();
+
+    int screenspaceW() const;
+    int screenspaceH() const;
+
     RenSurface& target_;
     RenDevice* device_{};
 };
