@@ -50,6 +50,9 @@ void MachGuiPausedImage::doDisplay()
                 }
                 break;
             default:
+                if (pInGameScreen_->isRenderingScreenShot())
+                    return;
+
                 pausedBmp = Gui::getScaledImage("gui/misc/paused.bmp");
                 break;
         }
