@@ -18,6 +18,7 @@
 #include "render/Painter.hpp"
 #include "render/Display.hpp"
 #include "render/Device.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/Surface.hpp"
 #include "render/Capabilities.hpp"
 #include "mathex/EulerAngles.hpp"
@@ -323,7 +324,7 @@ bool SDLApp::clientStartup()
     RenSurface::setDefaultFontSize(10 * Gui::uiScaleFactor());
 
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
-    if (!pDevice->initialize())
+    if (!pDevice->initialize(Config::gfxBackendType.get()))
         return false;
 
     manager_ = new W4dSceneManager(std::move(pDevice), root);

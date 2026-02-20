@@ -1,5 +1,6 @@
 #include "RenderVariables.hpp"
 
+#include "BackendType.hpp"
 #include "FogMode.hpp"
 #include "LightingMode.hpp"
 #include "ShadowQuality.hpp"
@@ -11,6 +12,24 @@ namespace Config
 
 namespace Impl
 {
+
+template <>
+std::string toString(const Ren::BackendType& value)
+{
+    return std::string(Ren::toString(value));
+}
+
+template <>
+std::optional<Ren::BackendType> toValue(const std::string& asString)
+{
+    for (Ren::BackendType type : Ren::AllBackendTypes)
+    {
+        if (asString == Ren::toString(type))
+            return type;
+    }
+
+    return std::nullopt;
+}
 
 template <>
 std::string toString(const LightingMode& value)
@@ -68,10 +87,12 @@ std::optional<ShadowQuality> toValue(const std::string& asString)
 
 } // namespace Impl
 
+template class Config::Variable<Ren::BackendType>;
 template class Config::Variable<FogMode>;
 template class Config::Variable<LightingMode>;
 template class Config::Variable<ShadowQuality>;
 
+Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", {});
 Variable<LightingMode> gfxLightingMode("Options/Graphics Complexity/Lighting Mode", LightingMode::Legacy);
 Variable<ShadowQuality> gfxShadowQuality("Options/Graphics Complexity/Shadow Quality", ShadowQuality::Static);
 Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false);

@@ -4,6 +4,7 @@
 
 #include "base/IProgressReporter.hpp"
 #include "base/Diag.hpp"
+#include "render/RenderVariables.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/PathName.hpp"
 #include "system/WindowsAPI.hpp"
@@ -280,7 +281,10 @@ bool SDLApp::clientStartup()
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
-    if (!pDevice->initialize())
+    backendHandle_ = Config::gfxBackendType.addListener([]()
+    { RenDevice::current()->switchBackend(Config::gfxBackendType.get()); });
+
+    if (!pDevice->initialize(Config::gfxBackendType.get()))
         return false;
 
     initializeGuiDevice(*pDevice);

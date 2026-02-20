@@ -1,4 +1,5 @@
 #include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/OpenGL/BackendGL.hpp"
 #include "render/OpenGL/Utils.hpp"
 
 #include "render/internal/SurfaceManagerImpl.hpp"
@@ -59,6 +60,11 @@ RenderBackendGL::RenderBackendGL()
     , framebuffers_{0,}
     , commandBuffers_{CommandBuffer{},}
 {
+}
+
+BackendType RenderBackendGL::backendType() const
+{
+    return BackendType::GL21;
 }
 
 bool RenderBackendGL::initialize(SDL_Window* window)
@@ -1521,11 +1527,11 @@ void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-} // namespace OpenGL
-
-std::unique_ptr<IRenderBackend> IRenderBackend::create()
+std::unique_ptr<IRenderBackend> createGL()
 {
-    return std::make_unique<OpenGL::RenderBackendGL>();
+    return std::make_unique<RenderBackendGL>();
 }
+
+} // namespace OpenGL
 
 } // namespace Ren
