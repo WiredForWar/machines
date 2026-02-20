@@ -25,6 +25,11 @@ void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
     target_.filledRectangle(area, colour);
 }
 
+void Painter::clearRectangle(const Rect& area) const
+{
+    filledRectangle(area, RenColour::magenta());
+}
+
 void Painter::hollowRectangle(const Rect& area, const RenColour& colour, int thickness) const
 {
     target_.hollowRectangle(area, colour, thickness);

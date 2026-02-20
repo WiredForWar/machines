@@ -132,7 +132,7 @@ GuiBitmap Gui::getScaledImage(std::string path, float scale)
 
     // Workaround artefacts in transparent pixels:
     Ren::Painter painter(scaledSurface);
-    painter.filledRectangle(image.requestedSize(), Gui::MAGENTA());
+    painter.clearRectangle(image.requestedSize());
     scaledSurface.enableColourKeying();
 
     painter.stretchBlit(image, Ren::BlitMode::Replace);

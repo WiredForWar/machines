@@ -338,7 +338,7 @@ void MachPromptText::displayChatMessage()
     {
         lastDisplayedChatMessage_ = displayChatMessageStr;
 
-        Ren::Painter(promptBmp_).filledRectangle(promptBmp_.size(), Gui::MAGENTA());
+        Ren::Painter(promptBmp_).clearRectangle(promptBmp_.size());
 
         // Work out starting position for text
         Gui::Coord startBeginningText = Gui::Coord(0, startY);
@@ -393,7 +393,7 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
     {
         pImpl_->promptDisplayed_ = textType;
         pImpl_->refresh_ = false;
-        Ren::Painter(pImpl_->promptBmp_).filledRectangle(pImpl_->promptBmp_.size(), Gui::MAGENTA());
+        Ren::Painter(pImpl_->promptBmp_).clearRectangle(pImpl_->promptBmp_.size());
 
         // Render all the lines
         int startY = 0;
