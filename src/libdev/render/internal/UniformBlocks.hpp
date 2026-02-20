@@ -26,6 +26,7 @@ struct StandardFrameUniforms
     float fogStartOrX{};
     float fogEndOrY{};
     float fogDensityOrZ{};
+    int fogMode{};
 };
 
 // Per-object uniforms for the standard 3D pipeline (set per draw call).

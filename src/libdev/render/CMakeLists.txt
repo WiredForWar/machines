@@ -5,6 +5,8 @@ set(RENDER_SOURCES
     BmpFont.hpp
     Font.cpp
     Font.hpp
+    FogMode.cpp
+    FogMode.hpp
     FontsManager.cpp
     FontsManager.hpp
     LightingMode.cpp
