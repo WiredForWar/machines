@@ -23,7 +23,6 @@ namespace Ren
 {
 
 class Font;
-class Painter;
 class TextOptions;
 
 } // namespace Ren
@@ -145,6 +144,7 @@ public:
     size_t height() const;
     Size size() const;
     bool isEmpty() const; // i.e., width() == 0 || height() == 0
+    bool isOffscreen() const;
 
     // Allows a body to get a handle corresponding to itself.
     // PRE(body);
@@ -190,7 +190,6 @@ private:
 
     // Only the manager class can allocate Ids and create surfaces.
     // (A texture can create a surface corresponding to its own id.)
-    friend class Ren::Painter;
     friend class RenSurfaceManager;
     friend class RenISurfaceManagerImpl;
     friend class RenTexture;

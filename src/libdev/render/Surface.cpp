@@ -408,6 +408,11 @@ bool RenSurface::isEmpty() const
     return width() == 0 || height() == 0;
 }
 
+bool RenSurface::isOffscreen() const
+{
+    return internals() && internals()->isOffscreen();
+}
+
 bool RenSurface::isColourKeyingOn() const
 {
     return (isNull()) ? false : internals()->keyingOn();
