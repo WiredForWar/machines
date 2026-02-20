@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base/base.hpp"
+#include "render/BackendType.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/DrawCallFactory.hpp"
@@ -101,6 +102,8 @@ public:
     // (or was) displayed any saved areas are discarded.
     void clearAllSurfaces(const RenColour&); // PRE(!rendering());
     void clearAllSurfaces(); // PRE(!rendering());
+
+    bool switchBackend(Ren::BackendType type);
 
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);

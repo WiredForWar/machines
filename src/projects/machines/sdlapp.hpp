@@ -105,6 +105,7 @@ private:
     size_t savedSampleVolume_{};
     size_t savedCDVolume_{};
 
+    Utils::HandleWithTriggerUPtr backendHandle_;
     Utils::HandleWithTriggerUPtr grabCursorHandle_;
     Utils::HandleWithTriggerUPtr vsyncHandle_;
 };

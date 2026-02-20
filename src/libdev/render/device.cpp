@@ -557,6 +557,49 @@ RenDevice::~RenDevice()
     }
 }
 
+bool RenDevice::switchBackend(Ren::BackendType type)
+{
+    PRE(!rendering());
+
+    CB_DEPIMPL_AUTO(backend_);
+
+    if (backend_ && backend_->backendType() == type)
+        return true;
+
+    spdlog::info("Switching render backend to type {}", toString(type));
+
+    // Shut down and destroy the old backend.
+    if (backend_)
+    {
+        backend_->shutdown();
+        backend_.reset();
+    }
+
+    // Create and initialize the new backend.
+    backend_ = Ren::IRenderBackend::create(type);
+    if (!backend_)
+    {
+        spdlog::error("Failed to create render backend of type {}", toString(type));
+        return false;
+    }
+
+    SDL_Window* window = pImpl_->display_->window();
+    if (!backend_->initialize(window))
+    {
+        spdlog::error("Render backend initialization failed");
+        backend_.reset();
+        return false;
+    }
+
+    if (!setVSync(vsyncEnabled_))
+    {
+        spdlog::warn("Failed to apply VSync preference ({}) during backend creation", vsyncEnabled_);
+    }
+
+    spdlog::info("Backend switch complete");
+    return true;
+}
+
 void RenDevice::reset()
 {
 }
@@ -622,11 +665,6 @@ bool RenDevice::initializeContext()
     {
         spdlog::error("Render backend initialization failed");
         return false;
-    }
-
-    if (!setVSync(vsyncEnabled_))
-    {
-        spdlog::warn("Failed to apply VSync preference ({}) during context creation", vsyncEnabled_);
     }
 
     return true;
