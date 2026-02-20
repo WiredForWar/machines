@@ -115,6 +115,22 @@ Each item is independently toggleable via config.
 - Config: part of `LightingMode::PerPixel`.
 - Effort: **small**.
 
+### Known Workarounds (to be resolved in Phase 2)
+
+- **Delayed group GPU lighting restore**: Coplanar and alpha-sorted material
+  groups are rendered via delayed paths that store pre-lit vertex copies.
+  The original code called `clearGpuLightingState()` before rendering these
+  groups, which disabled GPU lighting and shadows for them (e.g. landing pads).
+  Current workaround: delayed groups store a `const RenIVertexData*` to the
+  original mesh vertices and re-call `lightVertices()` before rendering to
+  restore expanded normals and GPU lighting uniforms. This re-runs the full
+  `lightVertices()` including redundant `copyCoords` + `computeLambertian`.
+  **Proper fix (Phase 2):** decouple GPU lighting uniform state (light
+  direction, shadow maps, per-frame UBO) from per-mesh vertex expansion.
+  With real UBOs, lighting uniforms are set once per frame, and the delayed
+  render path only needs to re-bind the correct vertex normals — no need to
+  re-run the entire illuminator.
+
 ### Phase 1 Remaining Order
 ```
 1.7 Fog (small, quick win)
