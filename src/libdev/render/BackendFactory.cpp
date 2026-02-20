@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 #ifdef MACHINES_HAS_BACKEND_GL21
-#include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/OpenGL/RenderBackendGL21.hpp"
 #endif
 
 namespace Ren
@@ -37,7 +37,7 @@ std::unique_ptr<IRenderBackend> IRenderBackend::create(BackendType type)
 #ifdef MACHINES_HAS_BACKEND_GL21
     case BackendType::GL21:
         spdlog::info("Creating {} render backend", toString(type));
-        return std::make_unique<OpenGL::RenderBackendGL>();
+        return std::make_unique<OpenGL::RenderBackendGL21>();
 #endif
     default:
         spdlog::error("Requested render backend is not compiled in");

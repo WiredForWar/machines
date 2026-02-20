@@ -19,10 +19,10 @@ namespace Ren
 namespace OpenGL
 {
 
-class RenderBackendGL final : public IRenderBackend
+class RenderBackendGL21 final : public IRenderBackend
 {
 public:
-    RenderBackendGL();
+    RenderBackendGL21();
 
     BackendType backendType() const override;
 
