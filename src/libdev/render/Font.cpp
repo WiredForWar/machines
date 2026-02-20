@@ -40,6 +40,16 @@ void cleanUpFonts()
     fontsManager.reset();
 }
 
+void reloadFonts()
+{
+    spdlog::info("Reloading font atlases...");
+    for (auto& font : s_fonts)
+    {
+        if (font)
+            font->reload();
+    }
+}
+
 FontImpl::~FontImpl() = default;
 
 /* Create texture atlasses for font sizes */
@@ -202,6 +212,12 @@ Font::~Font()
 bool Font::isValid() const
 {
     return pImpl_ && pImpl_->textureId;
+}
+
+void Font::reload()
+{
+    if (pImpl_)
+        pImpl_->prepareTexture();
 }
 
 int Font::pixelSize() const

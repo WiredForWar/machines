@@ -9,6 +9,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <functional>
+#include <vector>
+
 class SysPathName;
 
 class MexQuad3d;
@@ -105,6 +108,12 @@ public:
     // (or was) displayed any saved areas are discarded.
     void clearAllSurfaces(const RenColour&); // PRE(!rendering());
     void clearAllSurfaces(); // PRE(!rendering());
+
+    // Register a callback invoked after GPU resources are invalidated and
+    // reloaded (e.g. scale factor change).  Listeners should release cached
+    // anonymous surfaces and rebuild their context.
+    void addResourcesInvalidatedCallback(std::function<void()> callback);
+    void fireResourcesInvalidatedCallbacks();
 
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
@@ -407,6 +416,8 @@ private:
 
     bool standardUniformsDirty_{};
     bool billboardUniformsDirty_{};
+
+    std::vector<std::function<void()>> resourcesInvalidatedCallbacks_{};
 
     // Operations deliberately revoked
     RenDevice(const RenDevice&);

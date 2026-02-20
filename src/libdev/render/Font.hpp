@@ -15,6 +15,7 @@ class TextOptions;
 
 void initFonts();
 void cleanUpFonts();
+void reloadFonts();
 
 class Font
 // Canonical form revoked
@@ -26,6 +27,7 @@ public:
     virtual ~Font();
 
     bool isValid() const;
+    void reload();
     int pixelSize() const;
     int height() const;
 

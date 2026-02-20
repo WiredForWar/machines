@@ -284,6 +284,10 @@ MachContinentMap::MachContinentMap(
         pInGameScreen_);
 
     useFastSecondDisplay(false);
+
+    RenDevice::current()->addResourcesInvalidatedCallback([this]() {
+        updateBeacon(true);
+    });
 }
 
 void MachContinentMap::loadGame(const std::string& planet)

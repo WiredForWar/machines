@@ -336,6 +336,20 @@ void RenDevice::releaseGpuResources()
     backend_->releaseFramebuffer(glOffscreenFrameBuffID_);
 }
 
+void RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
+{
+    resourcesInvalidatedCallbacks_.push_back(std::move(callback));
+}
+
+void RenDevice::fireResourcesInvalidatedCallbacks()
+{
+    for (auto& cb : resourcesInvalidatedCallbacks_)
+    {
+        if (cb)
+            cb();
+    }
+}
+
 void RenDevice::reset()
 {
 }
