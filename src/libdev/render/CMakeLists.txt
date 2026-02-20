@@ -8,6 +8,8 @@ set(RENDER_SOURCES
     OpenGL/RenderBackendGL.cpp
     OpenGL/RenderBackendGL.hpp
     OpenGL/Utils.hpp
+    Painter.cpp
+    Painter.hpp
     PrimitiveTopology.hpp
     TextOptions.hpp
     alphagrp.cpp
