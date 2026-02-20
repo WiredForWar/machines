@@ -71,6 +71,8 @@ private:
 
     void setVSyncOptions();
     void initDefaultFontSize(float scaleFactor);
+    void applyPendingBackendSwitch();
+    void applyPendingScaleFactor();
     // Sound
     void initSound();
     void initMusic();
@@ -108,6 +110,9 @@ private:
     Utils::HandleWithTriggerUPtr backendHandle_;
     Utils::HandleWithTriggerUPtr grabCursorHandle_;
     Utils::HandleWithTriggerUPtr vsyncHandle_;
+    Utils::HandleWithTriggerUPtr scaleFactorHandle_;
+    bool pendingBackendSwitch_{};
+    bool pendingScaleFactorChange_{};
 };
 
 #endif

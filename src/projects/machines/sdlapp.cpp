@@ -294,8 +294,9 @@ bool SDLApp::clientStartup()
 
     spdlog::info("Initializing the rendering device...");
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
-    backendHandle_ = Config::gfxBackendType.addListener([]()
-    { RenDevice::current()->switchBackend(Config::gfxBackendType.get()); });
+    backendHandle_ = Config::gfxBackendType.addListener([this]() {
+        pendingBackendSwitch_ = true;
+    });
     pDevice->switchBackend(Config::gfxBackendType.get());
 
     if (!pDevice->initialize())

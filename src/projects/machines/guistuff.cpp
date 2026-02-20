@@ -3,7 +3,11 @@
 #include "machines/sdlapp.hpp"
 #include "world4d/scenemgr.hpp"
 #include "render/device.hpp"
+#include "render/display.hpp"
+#include "render/Font.hpp"
+#include "gui/gui.hpp"
 #include "gui/manager.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/MessageBroker.hpp"
 #include "machgui/StartupData.hpp"
@@ -19,6 +23,7 @@
 #include "machines/scrndump.hpp"
 #include "sim/manager.hpp"
 
+#include "render/RenderVariables.hpp"
 #include "system/ConfigVariables.hpp"
 
 #include "spdlog/spdlog.h"
@@ -45,6 +50,16 @@ void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter*
 
     HAL_STREAM("SDLApp::initialiseGui new MachGuiStartupScreens\n");
     pStartupScreens_ = new MachGuiStartupScreens(manager_, pRoot_, pReporter);
+
+    manager_->pDevice()->addResourcesInvalidatedCallback([this]() {
+        MachGuiStartupScreens::releaseCachedMemory();
+        pStartupScreens_->switchContext(pStartupScreens_->currentContext());
+    });
+
+    scaleFactorHandle_ = Config::uiScaleFactor.addListener([this]() {
+        pendingScaleFactorChange_ = true;
+    });
+
     if (startedFromLobby == LOBBY_START)
     {
         // have to verify that the system really is in a lobbied state and doesn't just think it is.
@@ -130,6 +145,9 @@ void SDLApp::loopCycle()
 
     checkFinishApp();
 
+    applyPendingBackendSwitch();
+    applyPendingScaleFactor();
+
     MachScreenDumper::instance().update();
 
     pStartupScreens_->loopCycle();
@@ -137,6 +155,42 @@ void SDLApp::loopCycle()
     MachScreenDumper::instance().dump();
 
     applyFrameRateLimit();
+}
+
+void SDLApp::applyPendingBackendSwitch()
+{
+    if (!pendingBackendSwitch_)
+        return;
+    pendingBackendSwitch_ = false;
+
+    manager_->pDevice()->switchBackend(Config::gfxBackendType.get());
+}
+
+void SDLApp::applyPendingScaleFactor()
+{
+    if (!pendingScaleFactorChange_)
+        return;
+    pendingScaleFactorChange_ = false;
+
+    const RenDisplay::Mode& mode = pDisplay_->currentMode();
+    int scaleFactorPercents = Config::uiScaleFactor.get();
+    if (scaleFactorPercents == 0)
+    {
+        scaleFactorPercents = (mode.width() > 1024 && mode.height() > 768) ? 200 : 100;
+    }
+    else if (scaleFactorPercents > 100 && (mode.width() < 1024 || mode.height() < 768))
+    {
+        spdlog::info("The scale factor from preferences does not fit in the window resolution");
+        scaleFactorPercents = 100;
+    }
+
+    const double scale = scaleFactorPercents / 100.0;
+    spdlog::info("Applying runtime scale factor {}%", scaleFactorPercents);
+    MachGui::setMenuScaleFactor(scale);
+    MachGui::setUiScaleFactor(scale);
+    initDefaultFontSize(Gui::uiScaleFactor());
+    Ren::reloadFonts();
+    manager_->pDevice()->fireResourcesInvalidatedCallbacks();
 }
 
 void SDLApp::applyFrameRateLimit()

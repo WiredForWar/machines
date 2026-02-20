@@ -180,6 +180,8 @@ public:
     // Change to new context. Note that a context can refuse to give up focus if mandatory info is missing for example.
     void switchContext(Context);
 
+    static void releaseCachedMemory();
+
     // Get the context that we are currently in.
     Context currentContext() const;
 
@@ -331,8 +333,6 @@ protected:
     void updateCdAudio();
 
     bool isContextFlic() const;
-
-    static void releaseCachedMemory();
 
     // Setup victory condition in MachLogGameCreationData. Basically converts from a MachGui enum
     // to a MachLog enum.
