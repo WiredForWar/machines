@@ -10,12 +10,12 @@ in vec3 fragVtxAmbient;
 in vec3 fragVtxEmissive;
 in vec3 fragWorldPos;
 in vec4 viewSpace;
-in vec4 fragmentFogColour;
-in vec3 fragmentFogParams;
 out vec4 outFragColor;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D uTextureSampler2;
+uniform vec3 uFogColour;
+uniform vec3 uFogParams;
 
 // Per-pixel lighting uniforms
 uniform int uGpuLighting;
@@ -106,18 +106,18 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 
 void main() {
     
-    // Distance used by fog
+    // Per-pixel fog: compute from view-space distance and uniform parameters
     float dist = length(viewSpace);
-    float fogStart = fragmentFogParams[0];
-    float fogEnd = fragmentFogParams[1];
-   
-   float fogFactor = 0.0f;
-   // fogEnd range value greater than zero indicates that fog is turned on
-   if(fogEnd > 0.0f)
-   {
-        fogFactor = (fogStart - dist)/(fogStart - fogEnd);
-        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
-   }
+    float fogStart = uFogParams[0];
+    float fogEnd = uFogParams[1];
+
+    float fogFactor = 0.0f;
+    // fogEnd > 0 indicates that fog is turned on
+    if (fogEnd > 0.0f)
+    {
+        fogFactor = (fogStart - dist) / (fogStart - fogEnd);
+        fogFactor = clamp(fogFactor, 0.0f, 1.0f);
+    }
 
     vec4 litColor;
     if (uGpuLighting == 1)
@@ -168,6 +168,6 @@ void main() {
     //Appy fog, if you inverse color in glsl mix function you have to
     //put 1.0 - fogFactor    
     float alpha = outFragColor[3];
-    outFragColor = outFragColor * (1.0f - fogFactor) + fragmentFogColour * (fogFactor); 
+    outFragColor = outFragColor * (1.0f - fogFactor) + vec4(uFogColour, 1.0f) * fogFactor;
     outFragColor[3] = alpha;
 }
