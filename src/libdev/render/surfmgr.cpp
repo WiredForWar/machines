@@ -51,11 +51,10 @@ RenSurfaceManager::~RenSurfaceManager()
 
 // As an anonymous surface, this cannot be shared, so we don't search for a
 // matching name in the existing surfaces.
-RenSurface RenSurfaceManager::createAnonymousSurface(size_t width, size_t height, const RenSurface& takePixelFormatFrom)
+RenSurface RenSurfaceManager::createAnonymousSurface(size_t width, size_t height)
 {
     CB_REN_SURFACE_MANAGER_DEPIMPL;
 
-    PRE(!takePixelFormatFrom.isNull());
     PRE(width > 0 && height > 0);
     TEST_INVARIANT;
 
@@ -75,9 +74,8 @@ RenSurface RenSurfaceManager::createAnonymousSurface(size_t width, size_t height
     return retval;
 }
 
-RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t height, const RenSurface& pixelFmt)
+RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t height)
 {
-    PRE(!pixelFmt.isNull());
     PRE(width > 0 && height > 0);
 
     CB_REN_SURFACE_MANAGER_DEPIMPL;
@@ -99,13 +97,13 @@ RenSurface RenSurfaceManager::createAnonymousVideoSurface(size_t width, size_t h
     return result;
 }
 
-RenSurface RenSurfaceManager::createSharedSurface(const std::string& name, const RenSurface& surf)
+RenSurface RenSurfaceManager::createSharedSurface(const std::string& name)
 {
     CB_REN_SURFACE_MANAGER_DEPIMPL;
 
     TEST_INVARIANT;
 
-    const Ren::TexId newId = pImpl_->createSurfOrTex(name, false, surf.internals());
+    const Ren::TexId newId = pImpl_->createSurfOrTex(name, false);
 
     RenSurface retval(newId);
     POST(retval.sharable() && retval.readOnly());
@@ -122,7 +120,7 @@ RenTexture RenSurfaceManager::createTexture(const std::string& pathName)
 
     std::string pathNameLower(pathName);
     std::transform(pathNameLower.begin(), pathNameLower.end(), pathNameLower.begin(), ::tolower);
-    const Ren::TexId newId = pImpl_->createSurfOrTex(pathNameLower, true, nullptr);
+    const Ren::TexId newId = pImpl_->createSurfOrTex(pathNameLower, true);
 
     RenTexture retval(newId);
     POST(retval.sharable() && retval.readOnly());

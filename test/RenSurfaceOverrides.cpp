@@ -3,7 +3,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-RenSurface RenSurface::createSharedSurface(const std::string& bitmapName, const RenSurface& surf)
+RenSurface RenSurface::createSharedSurface(const std::string& bitmapName)
 {
     RenSurface defaultSurface;
     return defaultSurface;

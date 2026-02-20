@@ -75,15 +75,15 @@ private:
     Ren::TexId findSharedSurface(const std::string& name) const;
 
     // Does the work common to createSharedSurface and createTexture.
-    Ren::TexId createSurfOrTex(const std::string& name, bool createTex, const RenISurfBody*);
+    Ren::TexId createSurfOrTex(const std::string& name, bool createTex);
 
     // Try and load the list of names in order.
     // POST(implies( createTex,  body->castToTexBody()));
     // POST(implies(!createTex, !body->castToTexBody()));
-    RenISurfBody* loadSurface(const PathNames& pathNames, bool createTex, const RenISurfBody*) const;
+    RenISurfBody* loadSurface(const PathNames& pathNames, bool createTex) const;
 
     // Explicitly load a surface or texture with given pathname.
-    RenISurfBody* loadActualSurface(const std::string& pathName, bool createTex, const RenISurfBody* surf) const;
+    RenISurfBody* loadActualSurface(const std::string& pathName, bool createTex) const;
 
     Ren::TexId findFreeSlot();
 

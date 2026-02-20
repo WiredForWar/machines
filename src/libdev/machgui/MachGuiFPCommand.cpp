@@ -17,7 +17,7 @@ template <int64_t NUM> static RenSurface* createNumberText(const bool showText =
 {
     // createNumberText<1>(), for example, would always give us a pointer to the same item
     static RenSurface surfaceNUM
-        = RenSurface::createAnonymousSurface(Ren::Size(32, 32), W4dManager::instance().sceneManager()->pDevice()->backSurface());
+        = RenSurface::createAnonymousSurface(Ren::Size(32, 32));
     static bool initializedNUM = false;
 
     if (! initializedNUM)

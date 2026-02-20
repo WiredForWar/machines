@@ -127,7 +127,7 @@ GuiBitmap Gui::getScaledImage(std::string path, float scale)
     if (image.requestedSize().isNull())
         return image;
 
-    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize(), image);
+    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize());
 
     // Workaround artefacts in transparent pixels:
     scaledSurface.filledRectangle(image.requestedSize(), Gui::MAGENTA());
@@ -229,14 +229,14 @@ GuiBitmap Gui::bitmap(const SysPathName& path)
     }
     ASSERT_FILE_EXISTS(pathName.c_str());
 
-    return GuiBitmap::createSharedSurface(pathName, Gui::backBuffer());
+    return GuiBitmap::createSharedSurface(pathName);
 }
 
 // static
 Gui::Box Gui::bitmapDimensions(const SysPathName& path)
 {
     PRE(path.existsAsFile());
-    GuiBitmap bmp = GuiBitmap::createSharedSurface(path.pathname(), Gui::backBuffer());
+    GuiBitmap bmp = GuiBitmap::createSharedSurface(path.pathname());
     return Gui::Box(0, 0, bmp.width(), bmp.height());
 }
 

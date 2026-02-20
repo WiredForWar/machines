@@ -29,27 +29,20 @@ static int sDefaultFontSize{10};
 
 //--------------------------------Creation & destruction--------------------------------
 // static
-RenSurface RenSurface::createAnonymousSurface(Size size, const RenSurface& surf)
+RenSurface RenSurface::createAnonymousSurface(Size size)
 {
     // This is pure delegation -- let the manager do the pre and post-conditions.
-    return RenSurfaceManager::instance().createAnonymousSurface(size.width, size.height, surf);
+    return RenSurfaceManager::instance().createAnonymousSurface(size.width, size.height);
 }
 
 // Static.
-RenSurface RenSurface::createAnonymousVideoSurface(Size size, const RenSurface& pixelFmt)
+RenSurface RenSurface::createAnonymousVideoSurface(Size size)
 {
-    // The pre and post-conditions are in the surface manager.
-    // PRE(!pixelFmt.isNull());
-    // PRE(width > 0 and height > 0);
-
-    return RenSurfaceManager::instance().createAnonymousVideoSurface(size.width, size.height, pixelFmt);
-
-    // POST(!result.sharable() and !result.readOnly());
-    // POST(name.length() == 0);
+    return RenSurfaceManager::instance().createAnonymousVideoSurface(size.width, size.height);
 }
 
 // static
-RenSurface RenSurface::createAnonymousSurface(PerIstream& inStream, const RenSurface& surf)
+RenSurface RenSurface::createAnonymousSurface(PerIstream& inStream)
 {
     size_t w, h;
 
@@ -57,7 +50,7 @@ RenSurface RenSurface::createAnonymousSurface(PerIstream& inStream, const RenSur
     PER_READ_RAW_OBJECT(inStream, h);
 
     // This is pure delegation -- let the manager do the pre and post-conditions.
-    RenSurface retVal = RenSurfaceManager::instance().createAnonymousSurface(w, h, surf);
+    RenSurface retVal = RenSurfaceManager::instance().createAnonymousSurface(w, h);
 
     retVal.read(inStream);
 
@@ -65,10 +58,10 @@ RenSurface RenSurface::createAnonymousSurface(PerIstream& inStream, const RenSur
 }
 
 // static
-WEAK_SYMBOL RenSurface RenSurface::createSharedSurface(const std::string& bitmapName, const RenSurface& surf)
+WEAK_SYMBOL RenSurface RenSurface::createSharedSurface(const std::string& bitmapName)
 {
     // This is pure delegation -- let the manager do the pre and post-conditions.
-    return RenSurfaceManager::instance().createSharedSurface(bitmapName, surf);
+    return RenSurfaceManager::instance().createSharedSurface(bitmapName);
 }
 
 // static
