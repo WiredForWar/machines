@@ -360,50 +360,6 @@ void RenSurface::copyFromRGBABuffer(const uint* buff)
     internals()->copyFromBuffer(buff);
 }
 
-//--------------------------------2D Drawing Primitives-----------------------------
-void RenSurface::filledRectangle(const Rect& area, const RenColour& colour)
-{
-    PRE(!readOnly());
-
-    if (internals())
-        internals()->filledRectangle(area, packColour(colour.r(), colour.g(), colour.b(), colour.a()));
-}
-
-void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, int thickness)
-{
-    PRE(!readOnly());
-    PRE(thickness > 0);
-
-    Ren::Rect orderedArea = area;
-
-    if (orderedArea.width < 0)
-    {
-        orderedArea.originX += orderedArea.width;
-        orderedArea.width = -orderedArea.width;
-    }
-
-    if (orderedArea.height < 0)
-    {
-        orderedArea.originY += orderedArea.height;
-        orderedArea.height = -orderedArea.height;
-    }
-
-    const int x = orderedArea.originX;
-    const int y = orderedArea.originY;
-    const int w = orderedArea.width;
-    const int h = orderedArea.height;
-    const int t = thickness;
-
-    // Top
-    filledRectangle(Ren::Rect(x, y, w, t), col);
-    // Bottom
-    filledRectangle(Ren::Rect(x, y + h - t, w, t), col);
-    // Left
-    filledRectangle(Ren::Rect(x, y + t, t, h - 2 * t), col);
-    // Right
-    filledRectangle(Ren::Rect(x + w - t, y + t, t, h - 2 * t), col);
-}
-
 void RenSurface::getPixel(int x, int y, RenColour* colour) const
 {
     PRE(colour);
@@ -435,59 +391,6 @@ void RenSurface::getPixel(int x, int y, RenColour* colour) const
 }
 
 
-void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickness)
-{
-    PRE(!readOnly());
-    PRE(pts.size() > 1);
-    PRE(thickness > 0);
-    RenScopedImmediateCommands guard(RenDevice::current());
-
-    static size_t nVertices = 30;
-    static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
-    static bool initialised = false;
-
-    if (nVertices < pts.size())
-    {
-        nVertices = pts.size() + 10;
-        vtx = std::vector<RenIVertex>(nVertices);
-        initialised = false;
-    }
-
-    if (! initialised)
-    {
-        initialised = true;
-
-        for (size_t i = 0; i != nVertices; ++i)
-        {
-            vtx[i].z = 0.0;
-            vtx[i].specular = 0;
-            vtx[i].w = 0.1;
-            vtx[i].tu = vtx[i].tv = 0.1;
-        }
-    }
-
-    uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
-
-    for (size_t i = 0; i < pts.size(); ++i)
-    {
-        vtx[i].x = static_cast<int>(pts[i].x());
-        vtx[i].y = static_cast<int>(pts[i].y());
-        vtx[i].color = packedColour;
-    }
-
-    RenDevice* dev = RenDevice::current();
-    dev->recordCommand(Ren::Command::setLineWidth(static_cast<float>(thickness)));
-    if (internals() && internals()->isOffscreen())
-    {
-        dev->renderToTextureMode(handle(), width(), height());
-        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-    }
-    else
-        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
-    dev->recordCommand(Ren::Command::setLineWidth(1.0f));
-}
-
 int RenSurface::getDefaultFontSize()
 {
     return sDefaultFontSize;
@@ -498,11 +401,6 @@ void RenSurface::setDefaultFontSize(int size)
     sDefaultFontSize = size;
 }
 
-void RenSurface::drawText(
-    int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options)
-{
-    internals()->drawText(x, y, text, font, options);
-}
 
 //-----------------------------Simple properties & delegations-----------------------
 bool RenSurface::isEmpty() const
@@ -719,46 +617,6 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     }
 
     TEST_INVARIANT;
-}
-
-void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const RenColour& brushColour)
-{
-    PRE(!readOnly());
-    RenScopedImmediateCommands guard(RenDevice::current());
-
-    int x, y, RX, RY;
-    uint packedColour = packColour(brushColour.r(), brushColour.g(), brushColour.b(), brushColour.a());
-    RX = area.width / 2;
-    RY = area.height / 2;
-    x = area.originX + RX;
-    y = area.originY + RY;
-    std::vector<RenIVertex> vertices;
-    vertices.reserve(10);
-
-    float i, inc, endAngle;
-    endAngle = 3.1415 * 2;
-    inc = endAngle / 10;
-    i = 0;
-    while (i <= endAngle)
-    {
-        RenIVertex vtx;
-        vtx.x = ((RX * cos(i) + x));
-        vtx.y = ((RY * sin(i) + y));
-        vtx.color = packedColour;
-        vertices.push_back(vtx);
-        i += inc;
-    }
-
-    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
-    RenDevice* dev = RenDevice::current();
-    if (internals() && internals()->isOffscreen())
-    {
-        dev->renderToTextureMode(handle(), width(), height());
-        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), -height());
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-    }
-    else
-        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), height());
 }
 
 // These read/write functions are used for fog of war in savegame and store alpha only
