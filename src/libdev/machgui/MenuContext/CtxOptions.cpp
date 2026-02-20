@@ -25,6 +25,9 @@
 #include "machphys/compmgr.hpp"
 #include "machphys/compitem.hpp"
 #include "machgui/VSyncMode.hpp"
+#include "render/BackendType.hpp"
+#include "render/RenderVariables.hpp"
+#include "render/internal/IRenderBackend.hpp"
 #include "machgui/InputLayout.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -289,6 +292,17 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     {
+        const auto backends = Ren::IRenderBackend::availableBackends();
+        GuiStrings backendNames;
+        backendNames.reserve(backends.size());
+        for (Ren::BackendType bt : backends)
+            backendNames.push_back(std::string(Ren::toString(bt)));
+
+        backendDropDown_ = addDropDown(IDS_RENDER_BACKEND);
+        backendDropDown_->setAvailText(backendNames);
+    }
+
+    {
         GuiStrings scaleNames = {
             ResolvedUiString(IDS_MENU_DEFAULT),
             "100%",
@@ -428,6 +442,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Config::gfxVSyncMode.set(selectedMode);
     });
 
+    backendDropDown_->setCurrentIndexChangedCallback([this]() {
+        const auto backends = Ren::IRenderBackend::availableBackends();
+        const int idx = backendDropDown_->currentIndex();
+        if (idx >= 0 && idx < static_cast<int>(backends.size()))
+        {
+            Config::gfxBackendType.set(backends.at(idx));
+        }
+    });
+
     TEST_INVARIANT;
 }
 
@@ -529,6 +552,20 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
         vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
+        {
+            const auto backends = Ren::IRenderBackend::availableBackends();
+            int idx = 0;
+            for (int i = 0; i < static_cast<int>(backends.size()); ++i)
+            {
+                if (backends[i] == savedBackendType_)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            backendDropDown_->setCurrentIndex(idx);
+            Config::gfxBackendType.set(savedBackendType_);
+        }
         // Only restore gamma correction if gamma correction is supported
         if (pGammaCorrection_)
         {
@@ -684,6 +721,21 @@ void MachGuiCtxOptions::readFromConfig()
 
     vsyncMode_ = Config::gfxVSyncMode.get();
     vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
+
+    savedBackendType_ = Config::gfxBackendType.get();
+    {
+        const auto backends = Ren::IRenderBackend::availableBackends();
+        int index = -1;
+        for (std::size_t i = 0; i < backends.size(); ++i)
+        {
+            if (backends[i] == savedBackendType_)
+            {
+                index = static_cast<int>(i);
+                break;
+            }
+        }
+        backendDropDown_->setCurrentIndex(index);
+    }
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
