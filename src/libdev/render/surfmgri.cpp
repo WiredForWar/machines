@@ -67,10 +67,9 @@ RenISurfaceManagerImpl::~RenISurfaceManagerImpl()
     }
 }
 
-Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool createTex, const RenISurfBody* surf)
+Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool createTex)
 {
     PRE(name.length() > 0);
-    PRE(implies(!createTex, surf));
 
     // const SysPathName pathName = name;
     const SysPathName pathName(name);
@@ -103,7 +102,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
     // no directory components.
     if (pathName.components().size() > 1)
     {
-        newBody = loadActualSurface(name, createTex, surf);
+        newBody = loadActualSurface(name, createTex);
         if (! newBody)
         {
             RENDER_STREAM("Could not load surface " << name << std::endl);
@@ -116,7 +115,7 @@ Ren::TexId RenISurfaceManagerImpl::createSurfOrTex(const std::string& name, bool
             (*i).combine(std::string(name));
         //(*i).combine(name);
 
-        newBody = loadSurface(texturePathNames, createTex, surf);
+        newBody = loadSurface(texturePathNames, createTex);
 
         if (! newBody)
         {
@@ -186,9 +185,8 @@ Ren::TexId RenISurfaceManagerImpl::findFreeSlot()
 }
 
 RenISurfBody*
-RenISurfaceManagerImpl::loadSurface(const PathNames& pathNames, bool createTex, const RenISurfBody* surf) const
+RenISurfaceManagerImpl::loadSurface(const PathNames& pathNames, bool createTex) const
 {
-    PRE(implies(!createTex, surf));
     TEST_INVARIANT;
 
     SysPathName texturePathName;
@@ -207,7 +205,7 @@ RenISurfaceManagerImpl::loadSurface(const PathNames& pathNames, bool createTex, 
 
     ASSERT(foundFile, "Did not find texture file");
 
-    RenISurfBody* body = loadActualSurface(texturePathName.pathname(), createTex, surf);
+    RenISurfBody* body = loadActualSurface(texturePathName.pathname(), createTex);
 
     POST(implies(body && !createTex, !body->castToTexBody()));
     POST(implies(body && createTex, body->castToTexBody()));
@@ -461,9 +459,8 @@ std::ostream& RenISurfaceManagerImpl::write(std::ostream& o)
 }
 
 RenISurfBody*
-RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool createTex, const RenISurfBody* surf) const
+RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool createTex) const
 {
-    PRE(implies(!createTex, surf));
     ASSERT_FILE_EXISTS(pathName.c_str());
     TEST_INVARIANT;
 

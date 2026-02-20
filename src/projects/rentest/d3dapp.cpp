@@ -964,10 +964,10 @@ void D3DApp::testCursor()
     DevMouse::instance().hide();
 
     RenSurface backBuf = device_->backSurface();
-    RenSurface surf1 = RenSurface::createSharedSurface("cursor/attack1.bmp", backBuf);
-    RenSurface surf2 = RenSurface::createSharedSurface("cursor/attack2.bmp", backBuf);
-    RenSurface surf3 = RenSurface::createSharedSurface("cursor/attack3.bmp", backBuf);
-    RenSurface surf4 = RenSurface::createSharedSurface("cursor/attack4.bmp", backBuf);
+    RenSurface surf1 = RenSurface::createSharedSurface("cursor/attack1.bmp");
+    RenSurface surf2 = RenSurface::createSharedSurface("cursor/attack2.bmp");
+    RenSurface surf3 = RenSurface::createSharedSurface("cursor/attack3.bmp");
+    RenSurface surf4 = RenSurface::createSharedSurface("cursor/attack4.bmp");
     surf1.enableColourKeying();
     surf2.enableColourKeying();
     surf3.enableColourKeying();

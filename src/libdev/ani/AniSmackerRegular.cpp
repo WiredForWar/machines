@@ -309,7 +309,7 @@ bool AniSmackerRegular::useFrontBuffer() const
 
 RenSurface AniSmackerRegular::createSmackerSurface(RenDevice* pDevice)
 {
-    return RenSurface::createAnonymousSurface(size(), pDevice->backSurface());
+    return RenSurface::createAnonymousSurface(size());
 }
 
 uint* AniSmackerRegular::fillBufferForCurrentFrame()

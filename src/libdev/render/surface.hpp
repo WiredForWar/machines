@@ -54,33 +54,24 @@ public:
 
     void swap(RenSurface&& other) { std::swap(other.myId_, myId_); }
 
-    // Create a surface of the given size with a pixel format which matches
-    // that of the given surface.  No data is copied form the given surface.
-    // Typically, the 2nd argument will be the back buffer.
-    // PRE(!surf.isNull()); PRE(width > 0 && height > 0);
+    // Create a surface of the given size.
+    // PRE(width > 0 && height > 0);
     // POST(!retval.sharable() && !retval.readOnly()); POST(name.length() == 0);
-    static RenSurface createAnonymousSurface(Size size, const RenSurface& surf);
+    static RenSurface createAnonymousSurface(Size size);
 
     // Create a non-texture surface in video memory.
-    static RenSurface createAnonymousVideoSurface(Size size, const RenSurface& pixelFmt);
-    // PRE(!pixelFmt.isNull());
     // PRE(width > 0 and height > 0);
     // POST(!retval.sharable() && !retval.readOnly()); POST(name.length() == 0);
+    static RenSurface createAnonymousVideoSurface(Size size);
 
-    // Create a surface with a pixel format which matches that of the given surface.
-    // The surface is initialised ( width, height, pixels ) with data stored in the
-    // persistent stream.
-    // PRE(!surf.isNull());
+    // Create a surface initialised with data stored in the persistent stream.
     // POST(!retval.sharable() && !retval.readOnly()); POST(name.length() == 0);
-    static RenSurface createAnonymousSurface(PerIstream&, const RenSurface& surf);
+    static RenSurface createAnonymousSurface(PerIstream&);
 
-    // Create a surface whose pixel format matches that of the given surface.
-    // The surface is initialised with data from the given named bitmap.  This
-    // uses the surface manager's search path to locate the named BMP file.
-    // Typically, the 2nd argument will be the back buffer.
-    // PRE(!surf.isNull());
+    // Create a shared surface initialised with data from the given named bitmap.
+    // Uses the surface manager's search path to locate the named BMP file.
     // POST(retval.sharable() && retval.readOnly());
-    static RenSurface createSharedSurface(const std::string& bitmapName, const RenSurface& surf);
+    static RenSurface createSharedSurface(const std::string& bitmapName);
 
     // Create a new surface whose area subsets the given one's area.  The result
     // shares the same representation & data, so the input must be sharable.

@@ -40,25 +40,23 @@ public:
     RenTexture createTexture(const std::string& pathName);
 
     // Create a surface which doesn't correspond to a named bitmap.  This can't
-    // be shared because it doesn't have a name.  The pixel format matches that
-    // of the given surface.
+    // be shared because it doesn't have a name.
     // POST(!retval.sharable() && !retval.readOnly()); POST(name().length() == 0);
     // POST(retval.width() == width && retval.height() == height);
-    RenSurface createAnonymousSurface(size_t width, size_t height, const RenSurface&);
+    RenSurface createAnonymousSurface(size_t width, size_t height);
 
     // Create a non-texture surface in video memory.
-    RenSurface createAnonymousVideoSurface(size_t width, size_t height, const RenSurface& pixelFmt);
-    // PRE(!pixelFmt.isNull());
     // PRE(width > 0 and height > 0);
     // POST(!result.sharable() and !result.readOnly());
     // POST(name.length() == 0);
+    RenSurface createAnonymousVideoSurface(size_t width, size_t height);
 
     // In terms of locating and sharing the data, this works just like
-    // createTexture, except that the pixel format is taken from the given surface.
-    // PRE(!surf.isNull()); PRE(name.length() > 0);
+    // createTexture.
+    // PRE(name.length() > 0);
     // POST(retval.sharable() && retval.readOnly());
     // POST(implies(!retval.isNull(), name().length() > 0));
-    RenSurface createSharedSurface(const std::string& name, const RenSurface& surf);
+    RenSurface createSharedSurface(const std::string& name);
 
     //  Maintains a list of directories to search for any given texture
     const PathNames& searchList();

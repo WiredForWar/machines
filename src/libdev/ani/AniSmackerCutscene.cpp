@@ -30,7 +30,7 @@ RenSurface AniSmackerCutscene::createSmackerSurface(RenDevice* pDevice)
     scaledVideoHeight_ = fullScreenWidth_ * size().height / size().width;
     yCoordTo_ = (fullScreenHeight_ - scaledVideoHeight_) / 2L;
 
-    return RenSurface::createAnonymousSurface(Ren::Size(fullScreenWidth_, scaledVideoHeight_), pDevice->backSurface());
+    return RenSurface::createAnonymousSurface(Ren::Size(fullScreenWidth_, scaledVideoHeight_));
 }
 
 void AniSmackerCutscene::copyCurrentVideoFrameToBuffer(RenSurface& renderSurface)

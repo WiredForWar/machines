@@ -56,11 +56,11 @@ RenISavedArea::RenISavedArea(RenSurface& getPixelFormatFrom, int width, int heig
     switch (saveTo)
     {
         case VIDEO_MEMORY:
-            save_ = RenSurface::createAnonymousVideoSurface(area_.size(), getPixelFormatFrom);
+            save_ = RenSurface::createAnonymousVideoSurface(area_.size());
             break;
 
         case SYSTEM_MEMORY:
-            save_ = RenSurface::createAnonymousSurface(area_.size(), getPixelFormatFrom);
+            save_ = RenSurface::createAnonymousSurface(area_.size());
             break;
 
         default:

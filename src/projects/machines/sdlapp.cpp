@@ -347,7 +347,7 @@ bool SDLApp::clientStartup()
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath, frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath);
         frontBuffer.simpleBlit(waitBmp, {}, offset);
 
         // Initialise lobby code
@@ -356,7 +356,7 @@ bool SDLApp::clientStartup()
 
         // Display progress loading screen.
         // Call it twice to ensure on both buffers.
-        RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
+        RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath);
         frontBuffer.simpleBlit(waitBmp2, {}, offset);
     }
     else
@@ -364,7 +364,7 @@ bool SDLApp::clientStartup()
         // Display a loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();
@@ -376,7 +376,7 @@ bool SDLApp::clientStartup()
         // Display progress loading screen.
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
         frontBuffer.filledRectangle(Ren::Rect(0, 0, mode.width(), mode.height()), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath, frontBuffer);
+        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontBuffer.simpleBlit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
         manager_->pDevice()->display()->flipBuffers();

@@ -52,11 +52,9 @@ public:
 
 MachGuiRadarImpl::MachGuiRadarImpl()
     : radarBackdropBmp_(RenSurface::createSharedSurface(
-        Gui::getScaledImagePath("gui/fstpersn/radar/rmmap.bmp"),
-        Gui::backBuffer()))
+        Gui::getScaledImagePath("gui/fstpersn/radar/rmmap.bmp")))
     , radarDomeBmp_(RenSurface::createSharedSurface(
-          Gui::getScaledImagePath("gui/fstpersn/radar/dome.bmp"),
-          Gui::backBuffer()))
+          Gui::getScaledImagePath("gui/fstpersn/radar/dome.bmp")))
 {
     radarBackdropBmp_.enableColourKeying();
     radarDomeBmp_.enableColourKeying();
