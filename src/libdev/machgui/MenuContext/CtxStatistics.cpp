@@ -130,7 +130,7 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
         MachGui::Menu::smallFontWhite(),
         Gui::AlignLeft);
 
-    const Render::Font& largeFont = MachGui::Menu::font();
+    const Ren::Font& largeFont = MachGui::Menu::font();
 
     GuiResourceString statsHeading(IDS_MENU_STATISTICS);
 

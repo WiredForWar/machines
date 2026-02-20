@@ -29,8 +29,8 @@ public:
         GuiDisplayable* pParent,
         const Gui::Box& box,
         const ResolvedUiString& str,
-        const Render::Font& font,
-        const Render::TextOptions& options,
+        const Ren::Font& font,
+        const Ren::TextOptions& options,
         Gui::Alignment alignment = Gui::AlignCenter);
     ~MachGuiMenuText() override;
 
@@ -38,7 +38,7 @@ public:
 
     static strings chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font);
     static strings chopUpText(
-        const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options);
+        const std::string& text, size_t maxWidth, const Ren::Font& font, const Ren::TextOptions& options);
 
 protected:
     void doDisplay() override;
@@ -51,8 +51,8 @@ private:
 
     SysPathName bitmapFontPath_;
     int fontHeight_{};
-    const Render::Font* font_{};
-    const Render::TextOptions textOptions_;
+    const Ren::Font* font_{};
+    const Ren::TextOptions textOptions_;
     strings strings_;
     Gui::Alignment alignment_{};
 };

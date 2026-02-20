@@ -353,7 +353,7 @@ MachGuiCtxScenario::MachGuiCtxScenario(MachGuiStartupScreens* pStartupScreens)
 
     // Display system list box heading
     GuiResourceString systemHeading(IDS_MENULB_SYSTEM);
-    const Render::Font& font(MachGui::Menu::font());
+    const Ren::Font& font(MachGui::Menu::font());
     MachGuiMenuText* pSystemText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(

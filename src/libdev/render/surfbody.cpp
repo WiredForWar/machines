@@ -282,7 +282,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
 }
 
 void RenISurfBody::drawText(
-    int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options)
+    int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options)
 {
     struct UnderlineSegment
     {
@@ -333,13 +333,13 @@ void RenISurfBody::drawText(
         outlineColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
     }
 
-    const Render::FontImpl& fontImpl = *Render::FontImpl::get(&font);
-    const Render::FontImpl::CharData* charData = nullptr;
+    const Ren::FontImpl& fontImpl = *Ren::FontImpl::get(&font);
+    const Ren::FontImpl::CharData* charData = nullptr;
 
     y += fontImpl.ascender();
 
     auto disabledCullFaceScope = Ren::OpenGL::ScopedDisable(GL_CULL_FACE);
-    if (options.alignment() & Render::AlignRight)
+    if (options.alignment() & Ren::AlignRight)
     {
         int textWidth = 0;
         int lineTextWidth = 0;

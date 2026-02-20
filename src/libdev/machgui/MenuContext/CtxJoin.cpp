@@ -74,7 +74,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     pCancelBtn->escapeControl(true);
     pShowGamesBtn_->defaultControl(true);
 
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
 
     // Display list box heading
     GuiResourceString currentGames(IDS_MENULB_GAMES);

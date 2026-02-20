@@ -72,7 +72,7 @@ public:
             GuiResourceString resString(stringId());
             std::string text = resString.asString();
 
-            const Render::Font& font = MachGui::Menu::font();
+            const Ren::Font& font = MachGui::Menu::font();
             size_t textWidth = font.horizontalAdvance(text);
             size_t textHeight = font.height();
 

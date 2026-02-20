@@ -28,8 +28,8 @@ public:
     GuiSingleLineEditBox(
         GuiDisplayable* pParent,
         const Gui::Box& box,
-        const Render::Font& font,
-        const Render::TextOptions& options);
+        const Ren::Font& font,
+        const Ren::TextOptions& options);
 
     GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     ~GuiSingleLineEditBox() override;
@@ -104,8 +104,8 @@ protected:
     std::string_view leftTextView_{};
     Gui::XCoord caretPos_ = 0;
     GuiBmpFont font_;
-    const Render::Font *ttfFont_{};
-    Render::TextOptions textOptions_;
+    const Ren::Font *ttfFont_{};
+    Ren::TextOptions textOptions_;
     bool showCaret_;
     size_t maxChars_ = 0;
     GuiColour backgroundColour_;

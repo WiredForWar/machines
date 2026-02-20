@@ -104,14 +104,14 @@ void GuiPainter::drawText(
     const Gui::Coord& c,
     const std::string_view& text,
     const Gui::TextOptions& options,
-    const Render::Font& font) const
+    const Ren::Font& font) const
 {
     RenSurface backBuffer = Gui::backBuffer();
     backBuffer.drawText(c.x(), c.y(), text, font, options);
 }
 
 void GuiPainter::drawText(
-    const Gui::Box& rect, const std::string_view& text, const Gui::TextOptions& options, const Render::Font& font) const
+    const Gui::Box& rect, const std::string_view& text, const Gui::TextOptions& options, const Ren::Font& font) const
 {
     std::size_t textWidth = font.horizontalAdvance(text, options);
     std::size_t textHeight = font.height();

@@ -192,7 +192,7 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
 
     // Display save list box heading
     GuiResourceString saveHeading(IDS_MENULB_SAVEGAME);
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pSaveText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(

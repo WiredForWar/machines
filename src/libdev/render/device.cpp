@@ -785,7 +785,7 @@ void RenDevice::commonEndFrame()
         // >trusting incremental rebuilds
         // surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour, RenSurface::FontSizes::Statistics,
         // RenSurface::AvailableFonts::Terminus);
-        const Render::Font* font = Render::Font::getFont(RenSurface::getDefaultFontSize());
+        const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
         surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, *font, yellowColour);
     }

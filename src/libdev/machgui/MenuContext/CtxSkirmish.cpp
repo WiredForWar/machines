@@ -269,7 +269,7 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         pScenarioDesc_);
 
     // Display mapsize list box heading
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pMapSizeText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(

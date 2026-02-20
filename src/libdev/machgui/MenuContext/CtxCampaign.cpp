@@ -162,7 +162,7 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
 
     // Display list box heading
     GuiResourceString players(IDS_MENULB_PLAYERS);
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
     MachGuiMenuText* pPlayersText = new MachGuiMenuText(
         pStartupScreens,
         Gui::Box(

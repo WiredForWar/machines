@@ -88,17 +88,17 @@ const Gui::Colour focusedTextColor()
     return c;
 }
 
-const Render::Font& font()
+const Ren::Font& font()
 {
     static const int pxSize = MachGui::menuScaleFactor() > 1 ? 35 : 18;
-    static const Render::Font *font = Render::Font::getFont("U001/u001con-bol", pxSize);
+    static const Ren::Font *font = Ren::Font::getFont("U001/u001con-bol", pxSize);
     ASSERT(font, "Unable to load menu font");
     return *font;
 }
 
-const Render::TextOptions& menuLightTextOptions()
+const Ren::TextOptions& menuLightTextOptions()
 {
-    static Render::TextOptions options(lightTextColor());
+    static Ren::TextOptions options(lightTextColor());
     options.setLetterSpacing(MachGui::menuScaleFactor() > 1 ? 3 : 1);
 
     return options;

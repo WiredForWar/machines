@@ -479,7 +479,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
         // Render the text
         Gui::Coord textPos(absoluteBoundary().minCorner());
-        Render::TextOptions options;
+        Ren::TextOptions options;
         options.setColor(MachGui::OFFWHITE());
         options.setShadow(1, 1, Gui::BLACK());
 

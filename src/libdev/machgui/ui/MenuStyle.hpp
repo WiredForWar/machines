@@ -17,8 +17,8 @@ const Gui::Colour highlightedTextColor();
 const Gui::Colour lightTextColor();
 const Gui::Colour focusedTextColor();
 
-const Render::Font& font();
-const Render::TextOptions& menuLightTextOptions();
+const Ren::Font& font();
+const Ren::TextOptions& menuLightTextOptions();
 
 void updateFonts();
 

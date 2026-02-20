@@ -135,7 +135,7 @@ MachGuiCtxLoad::MachGuiCtxLoad(MachGuiStartupScreens* pStartupScreens)
 
     // Display save list box heading
     GuiResourceString loadHeading(IDS_MENULB_LOADGAME);
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
 
     MachGuiMenuText* pLoadText = new MachGuiMenuText(
         pStartupScreens,

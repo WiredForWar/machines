@@ -23,7 +23,7 @@ class MachGuiSingleLineEditBox : public GuiSingleLineEditBox
 public:
     MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font);
     MachGuiSingleLineEditBox(
-        GuiDisplayable* pParent, const Gui::Box& box, const Render::Font& font, const Render::TextOptions& options);
+        GuiDisplayable* pParent, const Gui::Box& box, const Ren::Font& font, const Ren::TextOptions& options);
     ~MachGuiSingleLineEditBox() override;
 
     void clearTextOnNextChar(bool);

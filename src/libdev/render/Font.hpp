@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-namespace Render
+namespace Ren
 {
 
 class FontImpl;
@@ -38,10 +38,10 @@ public:
     static const std::string& getDefaultFontName();
 
 protected:
-    friend class Render::FontImpl;
+    friend class Ren::FontImpl;
     std::unique_ptr<FontImpl> pImpl_;
 };
 
-} // Render namespace
+} // namespace Ren
 
 #endif // RENDER_FONT_HPP

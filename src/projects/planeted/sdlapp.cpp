@@ -323,7 +323,7 @@ bool SDLApp::clientStartup()
         }
     }
 
-    Render::initFonts();
+    Ren::initFonts();
     RenSurface::setDefaultFontSize(10 * Gui::uiScaleFactor());
 
     std::unique_ptr<RenDevice> pDevice = std::make_unique<RenDevice>(pDisplay_);
@@ -516,7 +516,7 @@ void SDLApp::clientShutdown()
 {
     delete pEnvironment_;
 
-    Render::cleanUpFonts();
+    Ren::cleanUpFonts();
 
     DevMouse::instance().unhide();
     delete pRoot_;

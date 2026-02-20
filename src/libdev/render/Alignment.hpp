@@ -2,7 +2,7 @@
 
 #include "ctl/TFlag.hpp"
 
-namespace Render
+namespace Ren
 {
 
 // Use a namespace to import it in other namespaces (e.g. Gui)
@@ -28,4 +28,4 @@ namespace Align
 using namespace Align;
 using Alignment = TFlag<AlignmentFlag>;
 
-} // namespace Render
+} // namespace Ren

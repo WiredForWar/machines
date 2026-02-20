@@ -102,8 +102,8 @@ int barValueLineThickness();
 
 int iconIndexYOffset();
 
-const Render::Font& corralInfoFont();
-const Render::Font& navigationButtonNumberFont();
+const Ren::Font& corralInfoFont();
+const Ren::Font& navigationButtonNumberFont();
 
 double doubleClickInterval();
 

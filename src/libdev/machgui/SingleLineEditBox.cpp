@@ -19,7 +19,7 @@ MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(GuiDisplayable* pParent, cons
 }
 
 MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(
-    GuiDisplayable* pParent, const Gui::Box& box, const Render::Font& font, const Render::TextOptions& options)
+    GuiDisplayable* pParent, const Gui::Box& box, const Ren::Font& font, const Ren::TextOptions& options)
     : GuiSingleLineEditBox(pParent, box, font, options)
     , ignoreSpaceAtBeginning_(true)
 {

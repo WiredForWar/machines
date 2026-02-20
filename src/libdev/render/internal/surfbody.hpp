@@ -29,13 +29,13 @@ namespace Ren::OpenGL
 class RenderBackendGL;
 }
 
-namespace Render
+namespace Ren
 {
 
 class Font;
 class TextOptions;
 
-} // Render namespace
+} // namespace Ren
 
 // The internal data representation for RenSurface.
 class RenISurfBody
@@ -69,7 +69,7 @@ public:
     void setDDColourKey();
     void filledRectangle(const Ren::Rect& area, uint colour);
     void drawText(
-        int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options);
+        int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
 
     // When Alt-Tab is pressed, textures can get unloaded from a hardware
     // device.  Calling this method reloads this image.

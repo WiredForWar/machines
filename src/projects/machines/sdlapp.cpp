@@ -281,7 +281,7 @@ bool SDLApp::clientStartup()
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
-    Render::initFonts();
+    Ren::initFonts();
     initDefaultFontSize(Gui::uiScaleFactor());
 
     DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
@@ -391,7 +391,7 @@ bool SDLApp::clientStartup()
         const std::string_view note("NOT for sale, for testing purposes only.");
         RenSurface frontBuffer = manager_->pDevice()->frontSurface();
 
-        const Render::Font* font = Render::Font::getFont(RenSurface::getDefaultFontSize());
+        const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
         frontBuffer.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
@@ -588,7 +588,7 @@ void SDLApp::clientShutdown()
     //  moveWindow(10000, 10000);
 
     cleanUpGui();
-    Render::cleanUpFonts();
+    Ren::cleanUpFonts();
 
     DevMouse::instance().unhide();
     delete pRoot_;

@@ -53,13 +53,13 @@ using GuiBitmap = RenSurface;
 
 bool operator<(const GuiBitmap&, const GuiBitmap&);
 
-namespace Render
+namespace Ren
 {
 
 class Font;
 class TextOptions;
 
-} // Render namespace
+} // namespace Ren
 
 namespace Gui
 {
@@ -74,9 +74,9 @@ using Vec = MexVec2;
 using Boundary = MexAlignedBox2d;
 using Box = MexAlignedBox2d;
 using Size = MexSize2d;
-using namespace Render::Align;
-using Alignment = Render::Alignment;
-using TextOptions = Render::TextOptions;
+using namespace Ren::Align;
+using Alignment = Ren::Alignment;
+using TextOptions = Ren::TextOptions;
 
 inline Size toSize(const Ren::Size& size)
 {

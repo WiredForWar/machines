@@ -9,7 +9,7 @@
 
 class RenSurface;
 
-namespace Render
+namespace Ren
 {
 
 class Font;
@@ -65,4 +65,4 @@ protected:
     CharData charData_[256]; // character information
 };
 
-} // Render namespace
+} // namespace Ren

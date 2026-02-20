@@ -80,7 +80,7 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
         IDS_MENUBTN_CANCEL,
         MachGui::ButtonEvent::EXIT);
     pExitBtn->escapeControl(true);
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
     pSingleLineEditBox_ = new MachGuiSingleLineEditBox(
         pStartupScreens,
         Gui::Box(

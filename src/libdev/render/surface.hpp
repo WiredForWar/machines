@@ -19,13 +19,13 @@ template <class T> class ctl_vector;
 // template <class T> class basic_string;
 // typedef basic_string< char > string;
 
-namespace Render
+namespace Ren
 {
 
 class Font;
 class TextOptions;
 
-} // Render namespace
+} // namespace Ren
 
 // A class representing 2D images composed of pixels.  This interface can
 // represent visible display surfaces, textures or arbitrary images created
@@ -134,7 +134,7 @@ public:
     static int getDefaultFontSize();
     static void setDefaultFontSize(int size);
     void drawText(
-        int x, int y, const std::string_view& text, const Render::Font& font, const Render::TextOptions& options);
+        int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
 
     // Is source colour keying enabled for this image?
     bool isColourKeyingOn() const;

@@ -7,7 +7,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-namespace Render
+namespace Ren
 {
 
 class FontsManager
@@ -25,4 +25,4 @@ private:
     std::map<std::string, FT_Face> faces_;
 };
 
-} // namespace Render
+} // namespace Ren

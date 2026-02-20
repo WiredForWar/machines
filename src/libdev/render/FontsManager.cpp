@@ -4,7 +4,7 @@
 
 #include "spdlog/spdlog.h"
 
-namespace Render
+namespace Ren
 {
 
 FontsManager::FontsManager()
@@ -81,4 +81,4 @@ FT_Face FontsManager::getFace(const std::string& fontName)
     return face;
 }
 
-} // namespace Render
+} // namespace Ren

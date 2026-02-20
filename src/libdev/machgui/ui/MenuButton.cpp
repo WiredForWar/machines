@@ -152,7 +152,7 @@ void MachGuiMenuButton::doDisplay()
     GuiResourceString str(stringId_);
     std::string text = str.asString();
 
-    Render::TextOptions options = MachGui::Menu::menuLightTextOptions();
+    Ren::TextOptions options = MachGui::Menu::menuLightTextOptions();
 
     if (flash_ || highlighted_)
     {
@@ -169,7 +169,7 @@ void MachGuiMenuButton::doDisplay()
         options.setUnderline(true);
     }
 
-    const Render::Font& font = MachGui::Menu::font();
+    const Ren::Font& font = MachGui::Menu::font();
     std::size_t textWidth = font.horizontalAdvance(text, options);
     std::size_t textHeight = font.height();
 

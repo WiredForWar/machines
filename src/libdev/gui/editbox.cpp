@@ -26,8 +26,8 @@ GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::B
 GuiSingleLineEditBox::GuiSingleLineEditBox(
     GuiDisplayable* pParent,
     const Gui::Box& box,
-    const Render::Font& font,
-    const Render::TextOptions& options)
+    const Ren::Font& font,
+    const Ren::TextOptions& options)
     : GuiSingleLineEditBox(pParent, box)
 {
     ttfFont_ = &font;

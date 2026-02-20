@@ -60,14 +60,14 @@ public:
         const Gui::Coord& c,
         const std::string_view& text,
         const Gui::TextOptions& options,
-        const Render::Font& font) const
+        const Ren::Font& font) const
         = 0;
 
     virtual void drawText(
         const Gui::Box& rect,
         const std::string_view& text,
         const Gui::TextOptions& options,
-        const Render::Font& font) const
+        const Ren::Font& font) const
         = 0;
     ///////////////////////////////
 
@@ -126,13 +126,13 @@ public:
         const Gui::Coord& c,
         const std::string_view& text,
         const Gui::TextOptions& options,
-        const Render::Font& font) const override;
+        const Ren::Font& font) const override;
 
     void drawText(
         const Gui::Box& rect,
         const std::string_view& text,
         const Gui::TextOptions& options,
-        const Render::Font& font) const override;
+        const Ren::Font& font) const override;
     ///////////////////////////////
 
     void filledBorder(

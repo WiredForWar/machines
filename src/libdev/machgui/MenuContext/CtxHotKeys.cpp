@@ -39,7 +39,7 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     const uint HOTKEY_SEPARATION = MachGui::menuScaleFactor() * 2;
     const uint HOTKEY_2NDCOLUMN_X = HOTKEY_MIN_X + HOTKEY_ACTION_WIDTH + HOTKEY_KEY_WIDTH + HOTKEY_SEPARATION;
 
-    const Render::Font& headingFont = MachGui::Menu::font();
+    const Ren::Font& headingFont = MachGui::Menu::font();
     const GuiBmpFont textFont = GuiBmpFont::getFont(MachGui::Menu::smallFontLight());
     const uint headingFontHeight = headingFont.height() + MachGui::menuScaleFactor() * 2;
     const uint textFontHeight = textFont.height() + MachGui::menuScaleFactor() * 1;

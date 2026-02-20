@@ -18,7 +18,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-namespace Render
+namespace Ren
 {
 
 // Maximum font texture width
@@ -216,7 +216,7 @@ int Font::height() const
 
 int Font::charWidth(uint32_t character) const
 {
-    const Render::FontImpl::CharData* charData = pImpl_->getChar(character);
+    const Ren::FontImpl::CharData* charData = pImpl_->getChar(character);
     if (!charData)
         return 0;
 
@@ -225,8 +225,8 @@ int Font::charWidth(uint32_t character) const
 
 int Font::horizontalAdvance(const std::string_view& text, const TextOptions& options) const
 {
-    const Render::FontImpl& font = *pImpl_;
-    const Render::FontImpl::CharData* charData {};
+    const Ren::FontImpl& font = *pImpl_;
+    const Ren::FontImpl::CharData* charData {};
 
     int textWidth = 0;
     int lineTextWidth = 0;
@@ -271,7 +271,7 @@ const Font* Font::getFont(int pixelSize)
     return getFont(getDefaultFontName(), pixelSize);
 }
 
-const Render::Font* Font::getFont(const std::string& fontName, int pixelSize)
+const Ren::Font* Font::getFont(const std::string& fontName, int pixelSize)
 {
     const auto it = std::find_if(
         s_fonts.cbegin(),
@@ -324,4 +324,4 @@ const std::string& Font::getDefaultFontName()
     return fn;
 }
 
-} // Render namespace
+} // namespace Ren

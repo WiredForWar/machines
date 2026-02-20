@@ -4,7 +4,7 @@
 #include "Alignment.hpp"
 #include "colour.hpp"
 
-namespace Render
+namespace Ren
 {
 
 // Text render options
@@ -68,6 +68,6 @@ private:
     RenColour outlineColor_;
 };
 
-} // Render namespace
+} // namespace Ren
 
 #endif // RENDER_TEXT_OPTIONS_HPP

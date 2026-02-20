@@ -873,14 +873,14 @@ int navigationButtonNumberFontSize()
     return Gui::uiScaleFactor() == 1 ? 10 : 18;
 }
 
-const Render::Font& MachGui::corralInfoFont()
+const Ren::Font& MachGui::corralInfoFont()
 {
-    static const Render::Font *font = Render::Font::getFont(corralInfoFontSize());
+    static const Ren::Font *font = Ren::Font::getFont(corralInfoFontSize());
     return *font;
 }
 
-const Render::Font& MachGui::navigationButtonNumberFont()
+const Ren::Font& MachGui::navigationButtonNumberFont()
 {
-    static const Render::Font *font = Render::Font::getFont(navigationButtonNumberFontSize());
+    static const Ren::Font *font = Ren::Font::getFont(navigationButtonNumberFontSize());
     return *font;
 }

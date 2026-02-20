@@ -180,8 +180,8 @@ struct BmpFontMetrics
 
 struct TtfFontMetrics
 {
-    const Render::Font* pFont{};
-    const Render::TextOptions* pOptions{};
+    const Ren::Font* pFont{};
+    const Ren::TextOptions* pOptions{};
 
     std::size_t width(const std::string& text) const
     {
@@ -204,7 +204,7 @@ strings MachGuiMenuText::chopUpText(const std::string& text, size_t maxWidth, co
 }
 
 strings MachGuiMenuText::chopUpText(
-    const std::string& text, size_t maxWidth, const Render::Font& font, const Render::TextOptions& options)
+    const std::string& text, size_t maxWidth, const Ren::Font& font, const Ren::TextOptions& options)
 {
     const TtfFontMetrics metrics { &font, &options };
     return chopUpTextImpl(text, maxWidth, metrics);
@@ -232,8 +232,8 @@ MachGuiMenuText::MachGuiMenuText(
     GuiDisplayable* pParent,
     const Gui::Box& box,
     const ResolvedUiString& str,
-    const Render::Font& font,
-    const Render::TextOptions& options,
+    const Ren::Font& font,
+    const Ren::TextOptions& options,
     Gui::Alignment alignment)
     : GuiDisplayable(pParent, box)
     , font_(&font)
@@ -310,7 +310,7 @@ void MachGuiMenuText::doDisplay()
 
     if (font_)
     {
-        const Render::Font& font = *font_;
+        const Ren::Font& font = *font_;
         auto textWidthCb = [&](const std::string& text) -> int { return font.horizontalAdvance(text, textOptions_); };
         auto drawTextCb = [&](const Gui::Coord& coord, const std::string& text)
         {
