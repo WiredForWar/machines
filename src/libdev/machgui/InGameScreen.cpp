@@ -690,11 +690,6 @@ MachInGameScreen::Actors MachInGameScreen::getVisibleActors() const
 {
     ctl_pvector<W4dEntity> entities = pImpl_->pWorldViewWindow_->getEntitiesInView();
 
-    for (const W4dEntity* pEntity : entities)
-    {
-        std::cerr << pEntity->id() << " " << pEntity->name() << std::endl;
-    }
-
     Actors actors;
     actors.reserve(std::min<size_t>(12, entities.size()));
 
