@@ -454,7 +454,7 @@ void MachCameras::updateCameras()
                 MexTransform3d actorTrans = pFollowTarget_->globalTransform();
                 MexPoint3d actorPos = actorTrans.position();
 
-                pZenithControl_->snapTo(MexTransform3d(actorPos));
+                pZenithControl_->snapTo(actorPos);
 
                 pZenithControl_->frameTimerRef().time(frameTimer);
                 pZenithControl_->motionRef().heading(heading);
@@ -1006,7 +1006,6 @@ void MachCameras::use1stPersonCamera()
 
 void MachCameras::useGroundCamera()
 {
-
     if (! isGroundCameraActive())
     {
         // Switching from zenith camera, store it's position. If we switch straight
@@ -1040,15 +1039,21 @@ void MachCameras::useGroundCamera()
 
 void MachCameras::useZenithCamera()
 {
-    if (! isZenithCameraActive())
+    if (!isZenithCameraActive())
     {
         if (isGroundCameraActive())
         {
-            // If the ground camera hasn't moved then put zenith camera back to it's
-            // last position, else work out a new zenith position based on the new ground
-            // position.
-            if (! groundCameraMoved_)
+            if (pFollowTarget_)
             {
+                MexTransform3d actorTrans = pFollowTarget_->globalTransform();
+                MexPoint3d actorPos = actorTrans.position();
+                switchToZenith(actorPos);
+            }
+            else if (!groundCameraMoved_)
+            {
+                // If the ground camera hasn't moved then put zenith camera back to it's
+                // last position, else work out a new zenith position based on the new ground
+                // position.
                 restoreCamera(lastZenithPos_);
             }
             else
