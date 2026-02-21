@@ -1,5 +1,8 @@
 #version 120
 
+// Uncomment to visualize shadow cascade coverage (red=near, blue=far).
+//#define DEBUG_CASCADES
+
 // Interpolated values from the vertex shaders
 varying vec2 UV;
 varying vec4 fragmentColor;
@@ -60,8 +63,16 @@ float sampleShadowPCF(sampler2D shadowMap, vec3 projCoords, float bias, float te
     return shadow / 25.0;
 }
 
+#ifdef DEBUG_CASCADES
+vec4 debugColor;
+#endif
+
 float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 {
+#ifdef DEBUG_CASCADES
+    debugColor = vec4(0.0);
+#endif
+
     float NdotL = dot(normal, -lightDir);
 
     // Surfaces facing away from the light are in self-shadow by definition.
@@ -79,39 +90,56 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
 
     float shadowSample = 0.0;
 
-    // Far cascade — always computed as a fallback / cross-check.
+    // Near cascade coverage check.
+    vec4 nearLsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0);
+    vec3 nearProj = nearLsPos.xyz / nearLsPos.w * 0.5 + 0.5;
+    bool inNear = nearProj.x >= 0.0 && nearProj.x <= 1.0 &&
+        nearProj.y >= 0.0 && nearProj.y <= 1.0 &&
+        nearProj.z >= 0.0 && nearProj.z <= 1.0;
+
+    // Far cascade coverage check.
+    vec4 farLsPos = uLightSpaceMatrix * vec4(worldPos, 1.0);
+    vec3 farProj = farLsPos.xyz / farLsPos.w * 0.5 + 0.5;
+    bool inFar = farProj.x >= 0.0 && farProj.x <= 1.0 &&
+        farProj.y >= 0.0 && farProj.y <= 1.0 &&
+        farProj.z <= 1.0;
+
+    // Always sample the far cascade when available (used as cross-check).
     float farShadow = 0.0;
+    if (inFar)
+        farShadow = sampleShadowPCF(uShadowMap, farProj, bias, 1.0 / 2048.0);
+
+    if (inNear)
     {
-        vec4 lsPos = uLightSpaceMatrix * vec4(worldPos, 1.0);
-        vec3 projCoords = lsPos.xyz / lsPos.w * 0.5 + 0.5;
-        if (projCoords.x >= 0.0 && projCoords.x <= 1.0 &&
-            projCoords.y >= 0.0 && projCoords.y <= 1.0 &&
-            projCoords.z <= 1.0)
-        {
-            farShadow = sampleShadowPCF(uShadowMap, projCoords, bias, 1.0 / 2048.0);
-        }
+#ifdef DEBUG_CASCADES
+        float d = length(nearProj.xy - vec2(0.5)) / 0.5;
+        float center = 1.0 - smoothstep(0.0, 0.05, d);
+        float edge = smoothstep(0.92, 0.96, d) * (1.0 - smoothstep(0.96, 1.0, d));
+        float fill = 0.4 * (1.0 - d);
+        float intensity = max(max(center, edge), fill);
+        debugColor = vec4(intensity, intensity * 0.15, intensity * 0.15, 1.0);
+#endif
+        // Cross-check with far cascade so tall shadow casters that
+        // fall outside the near cascade's small ortho box still cast.
+        float nearShadow = sampleShadowPCF(uShadowMapNear, nearProj, bias, 1.0 / 4096.0);
+        shadowSample = max(nearShadow, farShadow);
+        return mix(1.0, shadowSample, edgeFade);
+    }
+    else if (inFar)
+    {
+#ifdef DEBUG_CASCADES
+        float d = length(farProj.xy - vec2(0.5)) / 0.5;
+        float center = 1.0 - smoothstep(0.0, 0.05, d);
+        float edge = smoothstep(0.92, 0.96, d) * (1.0 - smoothstep(0.96, 1.0, d));
+        float fill = 0.4 * (1.0 - d);
+        float intensity = max(max(center, edge), fill);
+        debugColor = vec4(intensity * 0.15, intensity * 0.15, intensity, 1.0);
+#endif
+        shadowSample = farShadow;
+        return mix(1.0, shadowSample, edgeFade);
     }
 
-    // Try near cascade — it wins whenever the fragment is inside
-    // its light-space projection bounds.  Because the near cascade
-    // has a small extent, tall shadow casters (cliffs) may fall
-    // outside its ortho box.  Cross-check with the far cascade so
-    // those missing shadows are filled in.
-    {
-        vec4 lsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0);
-        vec3 projCoords = lsPos.xyz / lsPos.w * 0.5 + 0.5;
-        if (projCoords.x >= 0.0 && projCoords.x <= 1.0 &&
-            projCoords.y >= 0.0 && projCoords.y <= 1.0 &&
-            projCoords.z >= 0.0 && projCoords.z <= 1.0)
-        {
-            float nearShadow = sampleShadowPCF(uShadowMapNear, projCoords, bias, 1.0 / 4096.0);
-            shadowSample = max(nearShadow, farShadow);
-            return mix(1.0, shadowSample, edgeFade);
-        }
-    }
-
-    shadowSample = farShadow;
-    return mix(1.0, shadowSample, edgeFade);
+    return 0.0;
 }
 
 void main() {
@@ -176,6 +204,10 @@ void main() {
 
         vec3 lit = uFilter * ((1.0 - shadow) * lambertian * diffuse + uAmbientColor * ambient + emissive + pointLightContrib * diffuse);
         litColor = vec4(clamp(lit, 0.0, 1.0), uMatDiffuseA);
+#ifdef DEBUG_CASCADES
+        if (debugColor.a > 0.0)
+            litColor = vec4(mix(litColor.rgb, debugColor.rgb, 0.85), 1.0);
+#endif
     }
     else
     {
