@@ -1,6 +1,5 @@
 
 set(PROFILER_SOURCES
-    anchor.cpp
     profiler.cpp
     profiler.hpp
     stktrace.cpp

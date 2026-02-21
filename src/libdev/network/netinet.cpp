@@ -3,7 +3,6 @@
 
 #include "base/diag.hpp"
 #include "device/time.hpp"
-#include "profiler/profiler.hpp"
 #include "ctl/algorith.hpp"
 #include "utility/linetok.hpp"
 

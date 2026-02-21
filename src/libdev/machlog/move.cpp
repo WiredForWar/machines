@@ -33,7 +33,6 @@
 
 #include "machlog/internal/movei.hpp"
 
-#include "profiler/profiler.hpp"
 #include "profiler/stktrace.hpp"
 
 /* //////////////////////////////////////////////////////////////// */

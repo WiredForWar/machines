@@ -16,7 +16,6 @@
 #include "device/cd.hpp"
 #include "network/netnet.hpp"
 #include "network/node.hpp"
-#include "profiler/profiler.hpp"
 #include "phys/phys.hpp"
 #include "render/TextOptions.hpp"
 #include "render/display.hpp"
@@ -676,17 +675,9 @@ void SDLApp::setVSyncOptions()
     manager_->pDevice()->setVSyncPreference(enable);
 }
 
-void SDLApp::initProfiling(IProgressReporter* pReporter)
+void SDLApp::initProfiling(IProgressReporter* /*pReporter*/)
 {
     spdlog::info("Initializing profiler...");
-
-    double profileInterval = 50.0;
-    char* pMs = getenv("PROFILE_RATE");
-    if (pMs)
-        profileInterval = atof(pMs);
-
-    ProProfiler::instance(pReporter);
-    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
 
     HAL_STREAM("SDLApp::clientStartup\n");
     char* pRate = getenv("MACH_RATE");

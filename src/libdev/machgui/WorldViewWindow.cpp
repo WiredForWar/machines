@@ -35,7 +35,6 @@
 #include "system/pathname.hpp"
 #include "gui/painter.hpp"
 #include "device/keytrans.hpp"
-#include "profiler/profiler.hpp"
 #include "render/camera.hpp"
 #include "sim/manager.hpp"
 

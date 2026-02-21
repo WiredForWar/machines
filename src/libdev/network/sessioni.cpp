@@ -1,4 +1,3 @@
-#include "profiler/profiler.hpp"
 #include "device/timer.hpp"
 #include "system/winapi.hpp"
 

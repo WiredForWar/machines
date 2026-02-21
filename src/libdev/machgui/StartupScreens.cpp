@@ -64,7 +64,6 @@ inline constexpr bool cDemoVersion =
 #include "machgui/MenuContext/CtxStatistics.hpp"
 
 #include "machgui/internal/strings.hpp"
-#include "profiler/profiler.hpp"
 #include "recorder/recorder.hpp"
 #include "mathex/random.hpp"
 #include "ani/AniSmacker.hpp"
@@ -567,9 +566,6 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     RenDevice::current()->display()->flipBuffers();
     frontBuffer.simpleBlit(loadingBmp, {}, menuPosition());
 
-    if (getenv("CB_PROFILE_PLANET_LOADING"))
-        ProProfiler::instance().enableProfiling();
-
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
     // Free up any cached memory used by menus.
@@ -689,9 +685,6 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     pInGameScreen_->becomeRoot();
     pInGameScreen_->activate();
     SimManager::instance().resume();
-
-    if (getenv("CB_PROFILE_PLANET_LOADING"))
-        ProProfiler::instance().disableProfiling();
 
     // Touch all our own allocated memory to avoid thrashing after the game starts
     cbTouchAll();
@@ -1588,54 +1581,6 @@ void MachGuiStartupScreens::loopCycleInGame()
 
     if (finishApp_)
         return;
-
-#ifndef PRODUCTION
-
-    /*
-    //CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_
-    // Note - shut your face, Armstrong.
-
-    const RecRecorder& recorder = RecRecorder::instance();
-    if( recorder.state() == RecRecorder::PLAYING
-        and recorder.percentageComplete() >= 99.97 )
-    {
-        ProProfiler::instance().enableProfiling();
-    }
-    //CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_CERI_CODE_
-    */
-
-    static bool firstTime = true;
-    static double proChugTime = 0.0;
-    static PhysAbsoluteTime cycleStartTime = Phys::time();
-    if (firstTime)
-    {
-        firstTime = false;
-        if (getenv("CB_CHUG") != nullptr)
-        {
-            proChugTime = atof(getenv("CB_CHUG")) / 1000.0;
-            ProProfiler::instance().isBufferingOutput(true);
-        }
-
-        if (getenv("CB_PROFILE_STARTGAME"))
-            ProProfiler::instance().enableProfiling();
-    }
-
-    if (proChugTime != 0.0)
-    {
-        PhysAbsoluteTime now = Phys::time();
-        if (ProProfiler::instance().isProfilingEnabled() && (now - cycleStartTime > proChugTime))
-        {
-            ProProfiler::instance().outputStream() << std::endl
-                                                   << "CHUG on frame " << W4dManager::instance().frameNumber()
-                                                   << " frame time " << (now - cycleStartTime) << std::endl;
-            ProProfiler::instance().writeBuffer(ProProfiler::instance().outputStream());
-        }
-        else
-            ProProfiler::instance().clearBuffer();
-
-        cycleStartTime = now;
-    }
-#endif // #ifndef PRODUCTION
 
     // Update world4d
     W4dManager& w4dManager = W4dManager::instance();

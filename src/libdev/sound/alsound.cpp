@@ -19,7 +19,6 @@
 #include "mathex/vec3.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/eulerang.hpp"
-#include "profiler/profiler.hpp"
 
 #include "al.h"
 

@@ -35,8 +35,6 @@
 #include "machlog/presspad.hpp"
 #include "machlog/minesite.hpp"
 
-#include "profiler/profiler.hpp"
-
 #include <memory>
 
 #ifndef _INLINE

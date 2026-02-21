@@ -2,8 +2,6 @@
 
 #include "base/diag.hpp"
 
-#include "profiler/profiler.hpp"
-
 #include "network/nodeuid.hpp"
 #include "network/sessuid.hpp"
 #include "network/session.hpp"
