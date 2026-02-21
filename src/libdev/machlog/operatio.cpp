@@ -16,8 +16,6 @@
 #include "machlog/inout.hpp"
 #include "machlog/grpmvinf.hpp"
 
-#include "profiler/profiler.hpp"
-
 /* //////////////////////////////////////////////////////////////// */
 PER_DEFINE_PERSISTENT_ABSTRACT(MachLogOperation);
 

@@ -126,7 +126,6 @@
 
 #include "device/timer.hpp"
 #include "base/IProgressReporter.hpp"
-#include "profiler/profiler.hpp"
 
 void MachPhysPreload::swPreload(MachPhysPreload::DoLoadingProgressUpdate doUpdate)
 {
@@ -1253,9 +1252,6 @@ void MachPhysPreload::registerSounds()
 void MachPhysPreload::persistentSave(MachPhysPreload::DoLoadingProgressUpdate /*doUpdate*/)
 {
     //    PER_LOG_ADDRESSES( true );
-
-    //  TBD: Remove this - Bob
-    //    ProProfiler::instance().enableProfiling();
 
     std::ofstream ofstr(persistentFileName().c_str(), std::ios::binary);
     PerOstream ostr(ofstr);

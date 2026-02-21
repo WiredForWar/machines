@@ -11,8 +11,6 @@
 #define _CODE_INLINE
 #endif
 
-#include "profiler/profiler.hpp"
-
 _CODE_INLINE
 MachLogGroupMoveInfo::MachLogGroupMoveInfo()
     : valid_(false)

@@ -3,8 +3,6 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "profiler/profiler.hpp"
-
 /* //////////////////////////////////////////////////////////////// */
 
 template <class ARC_ITEM, class VERTEX_ID, class WEIGHT>

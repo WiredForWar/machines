@@ -9,7 +9,6 @@
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"
 #include "device/butevent.hpp"
-#include "profiler/profiler.hpp"
 #include "mathex/point2d.hpp"
 #include "phys/phys.hpp"
 #include "phys/cspace2.hpp"
@@ -183,13 +182,6 @@ bool SDLApp::clientStartup()
     // Set coord system
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);
     ProgressIndicator progressIndicator;
-
-    // Initialise profiling
-    double profileInterval = 50.0;
-    char* pMs = getenv("PROFILE_RATE");
-    if (pMs)
-        profileInterval = atof(pMs);
-    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
 
     // The debug timer doesn't work if this environment var isn't set.
     // setenv("CHARYBDIS", "x", false);

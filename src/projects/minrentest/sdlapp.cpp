@@ -33,7 +33,6 @@
 
 #include "utility/percent.hpp"
 
-#include "profiler/profiler.hpp"
 
 static float randomOffsets[1000], randomRates[1000];
 // extern int globalCoplanarZbias;
@@ -130,13 +129,6 @@ bool SDLApp::clientStartup()
 
     putenv("CHARYBDIS");
     UtlDebugTimer::startCalibration();
-
-    // Initialise profiling
-    double profileInterval = 50.0;
-    char* pMs = getenv("PROFILE_RATE");
-    if (pMs)
-        profileInterval = atof(pMs);
-    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
 
     SysPathName::rootEnvironmentVariable("RENDER_ROOT");
 

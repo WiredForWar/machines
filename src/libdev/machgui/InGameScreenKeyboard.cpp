@@ -269,14 +269,6 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
                 pImpl_->pSceneManager_->autoAdjustFrameRate(true);
         }
 
-        if (e.key() == Device::KeyCode::F4 && e.isShiftPressed())
-        {
-            if (e.isCtrlPressed())
-                ProProfiler::instance().disableProfiling();
-            else
-                ProProfiler::instance().enableProfiling();
-        }
-
         if (e.key() == Device::KeyCode::F5 && e.isShiftPressed())
         {
             if (e.isCtrlPressed())

@@ -6,7 +6,7 @@
 /*
     ProProfiler
 
-    Allow the profiling to be set up.
+    Provides stack tracing and output stream facilities for diagnostics.
 */
 
 #ifndef _PROFILER_PROFILER_HPP
@@ -17,46 +17,17 @@
 #include <fstream>
 
 class BaseLogBuffer;
-class IProgressReporter;
 
 class ProProfiler
 // Canonical form revoked
 {
 public:
     //  Singleton class
-    static ProProfiler& instance(IProgressReporter* pReporter = nullptr);
+    static ProProfiler& instance();
     ~ProProfiler();
-
-    //  The default trace interval is 50ms
-    void traceInterval(double timeSeconds);
-    //  PRE( not traceIntervalFixed() );
-
-    //  Profiling is disabled by default
-
-    void enableProfiling();
-    //  POST( traceIntervalFixed() );
-    void disableProfiling();
-
-    // true iff profiling is enabled
-    bool isProfilingEnabled() const;
-
-    // Set/get the memory profiling flag. Purely a convenient flag for client use.
-    // Has no effect. Defaults to false.
-    void isMemoryProfilingEnabled(bool isEnabled);
-    bool isMemoryProfilingEnabled() const;
-
-    //  The trace interval cannot be changed once
-    //  profiling has been enabled
-    bool traceIntervalFixed() const;
-
-    //  Set the next time a trace will be done as an offset
-    //  from the current time
-    void nextTraceTime(double offsetSeconds);
 
     std::ostream& outputStream();
     void closeOutputStream();
-
-    // void    writeStack( ostream& ) const;
 
     // Prints the current call stack in standard form to outStream.
     // If doTraceAnchor is true, the name of the anchor function and its address is prepended.
@@ -92,7 +63,7 @@ public:
     void writeBuffer(std::ostream& outStream);
     // PRE( isBufferingOutput() );
 
-    // Set to induce acrash on a call to print the stack when profiling.
+    // Set to induce a crash on a call to print the stack when profiling.
     // Used to help trap hanging bugs.
     void crashOnPrint(bool crash);
     bool crashOnPrint();
@@ -108,32 +79,11 @@ private:
 
     ProProfiler();
 
-    void init(IProgressReporter* pReporter = nullptr);
-    bool isInitialized() const;
-
-    void setupTraceInterval() const;
-    void calibrate(IProgressReporter* pReporter);
-
-    friend void ProProfilerAnchor();
-    void registerAnchor(const char* anchorFunctionName);
-
-    //  Convert a double value into a 64 bit integer value
-    void doubleToUint64(double value, uint32* pLs, uint32* pMs) const;
-
-    double traceIntervalSeconds_ = 0;
-    double ticksPerSecond_ = 0;
-    bool traceIntervalFixed_ = false;
     std::ofstream outputStream_;
-    bool memoryProfilingOn_ = false;
 
-    //  Stored as a char* so I don't have to pull in the string class
-    char* anchorFunctionName_;
-    void* anchorFunctionAddress_;
-
-    bool isBufferingOutput_ = false;
-    BaseLogBuffer* pMemoryBuffer_ = nullptr;
-    bool crashOnPrint_ = false; // true if a crash should be induced on call from EPI/PRO to print the stack
-    long unsigned int threadId;
+    bool isBufferingOutput_{};
+    BaseLogBuffer* pMemoryBuffer_{};
+    bool crashOnPrint_{};
 };
 
 #endif

@@ -27,7 +27,6 @@
 #include "machlog/planet.hpp"
 #include "machphys/plansurf.hpp"
 
-#include "profiler/profiler.hpp"
 
 #include <fstream>
 
@@ -131,10 +130,6 @@ void PedPlanetEditor::preRenderUpdate()
             pMachineMode_->validate();
             pArtefactMode_->validate();
         }
-
-        // This makes it clear when the profiling is on.
-        if (ProProfiler::instance().isProfilingEnabled())
-            pSceneManager_->out() << "NOTE : Profiling is enabled" << std::endl;
 
         pCurrentMode_->displayModeInfo();
         displaySavedStatus();
@@ -419,16 +414,6 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
                 *_REINTERPRET_CAST(PedPolygonEditor*, pPortalMode_),
                 *_REINTERPRET_CAST(PedPolygonEditor*, pObstacleMode_));
             mapCreator.createBmp();
-        }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::HOME)
-        {
-            if (! ProProfiler::instance().isProfilingEnabled())
-                ProProfiler::instance().enableProfiling();
-        }
-        else if (devButtonEvent.scanCode() == Device::KeyCode::END)
-        {
-            if (ProProfiler::instance().isProfilingEnabled())
-                ProProfiler::instance().disableProfiling();
         }
     }
 

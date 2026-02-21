@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "ctl/pvector.hpp"
-#include "profiler/profiler.hpp"
 
 #include "mathex/line2d.hpp"
 #include "mathex/transf3d.hpp"

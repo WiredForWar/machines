@@ -30,7 +30,6 @@
 #include "machphys/wepdata.hpp"
 
 #include "ctl/countptr.hpp"
-#include "profiler/profiler.hpp"
 
 // data class
 class MachPhys1stPersonDriverImpl

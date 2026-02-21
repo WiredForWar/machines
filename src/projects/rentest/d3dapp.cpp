@@ -61,7 +61,6 @@
 
 #include "utility/percent.hpp"
 
-#include "profiler/profiler.hpp"
 
 #include "system/registry.hpp"
 
@@ -273,13 +272,6 @@ void D3DApp::processInput()
             case DevKey::KEY_F:
                 doFog_ = !doFog_;
                 break;
-            case DevKey::KEY_P:
-                if (ProProfiler::instance().isProfilingEnabled())
-                    ProProfiler::instance().disableProfiling();
-                else
-                    ProProfiler::instance().enableProfiling();
-                break;
-
             case DevKey::KEY_Y:
                 RENDER_STREAM("Toggling anti-aliasing.\n");
                 device_->antiAliasingOn(!device_->antiAliasingOn());
@@ -1675,13 +1667,6 @@ bool D3DApp::clientStartup()
     putenv("CHARYBDIS");
     UtlDebugTimer::startCalibration();
 
-    // Initialise profiling
-    double profileInterval = 50.0;
-    char* pMs = getenv("PROFILE_RATE");
-    if (pMs)
-        profileInterval = atof(pMs);
-    ProProfiler::instance().traceInterval(profileInterval / 1000.0);
-
     SysPathName::rootEnvironmentVariable("RENDER_ROOT");
 
     if (invokeArgs().size() != 4)
@@ -1859,9 +1844,6 @@ void D3DApp::loopCycle()
         MexEulerAngles params;
         eyeXform_.rotation(&params);
         device_->out() << "Eye at " << pos << ", " << params << std::endl;
-
-        if (ProProfiler::instance().isProfilingEnabled())
-            device_->out() << "++Profiling enabled.\n";
 
         if (device_->antiAliasingOn())
             device_->out() << "Edge anti-aliasing enabled.\n";

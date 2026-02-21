@@ -25,7 +25,6 @@
 #include "phys/rampacce.hpp"
 #include "phys/motplan.hpp"
 #include "phys/phys.hpp"
-#include "profiler/profiler.hpp"
 #include "ctl/list.hpp"
 
 #include "world4d/internal/planfuns.hpp"
