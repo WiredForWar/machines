@@ -335,32 +335,39 @@ void W4dSceneManager::render()
             const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
             const float farExtent = glm::mix(200.0f, 300.0f, heightT);
 
-            // Align the shadow cascade square with the camera's horizontal
-            // forward direction so that the near cascade covers the area in
-            // front of the camera optimally (no wasted square corners to the
-            // sides while closer objects in front fall outside).
+            // For ground/FP cameras, align the shadow cascade square with
+            // the camera's horizontal forward so coverage is optimal in
+            // front of the camera.  For zenith (looking steeply down),
+            // keep the fixed default up — the cascade is already centred
+            // on the view and rotation just wastes coverage.
             const glm::vec3 lightN = glm::normalize(lightDir);
             const glm::vec3 defaultUp = (std::abs(glm::dot(lightN, glm::vec3(0, 0, 1))) > 0.99f)
                 ? glm::vec3(0, 1, 0)
                 : glm::vec3(0, 0, 1);
 
             const MexVec3 camFwd = currentCamera_->globalTransform().xBasis();
-            const glm::vec3 camHorizRaw(
-                static_cast<float>(camFwd.x()),
-                static_cast<float>(camFwd.y()),
-                0.0f);
-            const float camHorizLen = glm::length(camHorizRaw);
+            const float fwdZ = static_cast<float>(camFwd.z());
+            // downward: 0 = horizontal, 1 = straight down.
+            const float downward = std::clamp(-fwdZ, 0.0f, 1.0f);
 
             glm::vec3 up = defaultUp;
-            if (camHorizLen > 0.001f)
+            if (downward < 0.7f)
             {
-                const glm::vec3 camHoriz = camHorizRaw / camHorizLen;
-                // Project the camera's horizontal forward onto the plane
-                // perpendicular to the light direction.
-                const glm::vec3 projected = camHoriz - glm::dot(camHoriz, lightN) * lightN;
-                const float projLen = glm::length(projected);
-                if (projLen > 0.001f)
-                    up = projected / projLen;
+                const glm::vec3 camHorizRaw(
+                    static_cast<float>(camFwd.x()),
+                    static_cast<float>(camFwd.y()),
+                    0.0f);
+                const float camHorizLen = glm::length(camHorizRaw);
+                if (camHorizLen > 0.001f)
+                {
+                    const glm::vec3 camHoriz = camHorizRaw / camHorizLen;
+                    // Project the camera's horizontal forward onto the plane
+                    // perpendicular to the light direction.
+                    const glm::vec3 projected = camHoriz - glm::dot(camHoriz, lightN) * lightN;
+                    const float projLen = glm::length(projected);
+                    if (projLen > 0.001f)
+                        up = projected / projLen;
+                }
             }
 
             // The shader uses view-space distance (length(viewSpace)) to pick
@@ -372,13 +379,40 @@ void W4dSceneManager::render()
             const float splitViewDist = nearExtent * 2.0f;
             device_->setShadowSplitDistance(splitViewDist);
 
+            // Stable cascade snapping: project the cascade center into
+            // light space, round to the nearest shadow-map texel, then
+            // project back.  This prevents the shadow map from shifting
+            // sub-texel amounts as the camera moves, eliminating shadow
+            // edge shimmer and pop-in.
+            auto snapCenter = [&](float extent, float mapSize) -> glm::vec3
+            {
+                // Build a reference view matrix looking along the light
+                // direction from an arbitrary origin — only the rotation
+                // matters for snapping.
+                const glm::mat4 refView = glm::lookAt(glm::vec3(0.0f), lightDir, up);
+                const glm::vec3 lsCenter = glm::vec3(refView * glm::vec4(center, 1.0f));
+
+                // World-space size of one shadow-map texel.
+                const float texelSize = (2.0f * extent) / mapSize;
+
+                // Snap X and Y in light space; leave Z untouched.
+                glm::vec3 snapped = lsCenter;
+                snapped.x = std::floor(snapped.x / texelSize) * texelSize;
+                snapped.y = std::floor(snapped.y / texelSize) * texelSize;
+
+                // Transform back to world space.
+                const glm::mat4 invRefView = glm::inverse(refView);
+                return glm::vec3(invRefView * glm::vec4(snapped, 1.0f));
+            };
+
             // --- Near cascade: high-resolution shadows for close objects ---
             // The light is placed well behind the center so that tall
             // geometry (cliffs, towers) above the ground-level center is
             // not clipped by the ortho near plane.
             {
-                const glm::vec3 nearLightPos = center - lightDir * (nearExtent * 4.0f);
-                const glm::mat4 nearView = glm::lookAt(nearLightPos, center, up);
+                const glm::vec3 nearCenter = snapCenter(nearExtent, 4096.0f);
+                const glm::vec3 nearLightPos = nearCenter - lightDir * (nearExtent * 4.0f);
+                const glm::mat4 nearView = glm::lookAt(nearLightPos, nearCenter, up);
                 const glm::mat4 nearProj = glm::ortho(
                     -nearExtent, nearExtent,
                     -nearExtent, nearExtent,
@@ -392,8 +426,9 @@ void W4dSceneManager::render()
 
             // --- Far cascade: lower-resolution shadows for distant objects ---
             {
-                const glm::vec3 farLightPos = center - lightDir * (farExtent * 4.0f);
-                const glm::mat4 farView = glm::lookAt(farLightPos, center, up);
+                const glm::vec3 farCenter = snapCenter(farExtent, 2048.0f);
+                const glm::vec3 farLightPos = farCenter - lightDir * (farExtent * 4.0f);
+                const glm::mat4 farView = glm::lookAt(farLightPos, farCenter, up);
                 const glm::mat4 farProj = glm::ortho(
                     -farExtent, farExtent,
                     -farExtent, farExtent,
