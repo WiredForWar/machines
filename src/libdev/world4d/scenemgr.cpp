@@ -373,13 +373,16 @@ void W4dSceneManager::render()
             device_->setShadowSplitDistance(splitViewDist);
 
             // --- Near cascade: high-resolution shadows for close objects ---
+            // The light is placed well behind the center so that tall
+            // geometry (cliffs, towers) above the ground-level center is
+            // not clipped by the ortho near plane.
             {
-                const glm::vec3 nearLightPos = center - lightDir * (nearExtent * 2.0f);
+                const glm::vec3 nearLightPos = center - lightDir * (nearExtent * 4.0f);
                 const glm::mat4 nearView = glm::lookAt(nearLightPos, center, up);
                 const glm::mat4 nearProj = glm::ortho(
                     -nearExtent, nearExtent,
                     -nearExtent, nearExtent,
-                    1.0f, nearExtent * 5.0f);
+                    1.0f, nearExtent * 8.0f);
                 const glm::mat4 nearMatrix = nearProj * nearView;
 
                 device_->beginShadowPass(RenDevice::ShadowCascade::Near, nearMatrix);
@@ -389,12 +392,12 @@ void W4dSceneManager::render()
 
             // --- Far cascade: lower-resolution shadows for distant objects ---
             {
-                const glm::vec3 farLightPos = center - lightDir * (farExtent * 2.0f);
+                const glm::vec3 farLightPos = center - lightDir * (farExtent * 4.0f);
                 const glm::mat4 farView = glm::lookAt(farLightPos, center, up);
                 const glm::mat4 farProj = glm::ortho(
                     -farExtent, farExtent,
                     -farExtent, farExtent,
-                    1.0f, farExtent * 2.5f);
+                    1.0f, farExtent * 8.0f);
                 const glm::mat4 farMatrix = farProj * farView;
 
                 device_->beginShadowPass(RenDevice::ShadowCascade::Far, farMatrix);
