@@ -621,17 +621,43 @@ bool PhysConfigSpace2d::updateFindPath(const FindPathId& id, const PhysRelativeT
     PhysCS2dImpl::FindPaths& findPathQueue = impl_.findPathQueue();
     if (findPathQueue.size() != 0)
     {
-        // Get first in queue and update it.
+        // Get highest-priority findpath in queue.
         PhysCS2dFindPath* pFindPath = pCurrentFindPath();
 
         CS2VGRA_INSPECT((void*)pFindPath);
         CS2VGRA_INSPECT((void*)pIdFindPath);
 
-        pFindPath->update(maxTime);
+        if (pFindPath == pIdFindPath)
+        {
+            // Caller IS the highest priority — give full time budget
+            pFindPath->update(maxTime);
+        }
+        else
+        {
+            // Split time: advance the highest-priority path, then the caller's own
+            const PhysRelativeTime half = maxTime * 0.5;
+            pFindPath->update(half);
 
-        // If complete, remove from queue
+            if (! pIdFindPath->isFinished())
+            {
+                const PhysRelativeTime remaining = maxTime - half;
+                if (remaining > 0)
+                    pIdFindPath->update(remaining);
+            }
+        }
+
+        // If the highest-priority path completed, remove from queue
         if (pFindPath->isFinished())
             removeCurrentFindPathFromQueue();
+
+        // If the caller's path also completed (and is different), remove it too
+        if (pFindPath != pIdFindPath && pIdFindPath->isFinished())
+        {
+            PhysCS2dImpl::FindPaths::iterator it
+                = std::find(findPathQueue.begin(), findPathQueue.end(), pIdFindPath);
+            if (it != findPathQueue.end())
+                findPathQueue.erase(it);
+        }
     }
 
     const bool result = pIdFindPath->isFinished();
@@ -1022,17 +1048,40 @@ bool PhysConfigSpace2d::updateDomainFindPath(const DomainFindPathId& id, const P
     PhysCS2dImpl::DomainFindPaths& domainFindPathQueue = impl_.domainFindPathQueue();
     if (domainFindPathQueue.size() != 0)
     {
-        // Get first in queue and update it.
+        // Get highest-priority domain findpath in queue.
         PhysCS2dDomainFindPath* pDomainFindPath = pCurrentDomainFindPath();
 
-        //        domainFindPathQueue.front();
+        if (pDomainFindPath == pIdDomainFindPath)
+        {
+            // Caller IS the highest priority — give full time budget
+            pDomainFindPath->update(maxTime);
+        }
+        else
+        {
+            // Split time: advance the highest-priority path, then the caller's own
+            const PhysRelativeTime half = maxTime * 0.5;
+            pDomainFindPath->update(half);
 
-        pDomainFindPath->update(maxTime);
+            if (! pIdDomainFindPath->isFinished())
+            {
+                const PhysRelativeTime remaining = maxTime - half;
+                if (remaining > 0)
+                    pIdDomainFindPath->update(remaining);
+            }
+        }
 
-        // If complete, remove from queue
+        // If the highest-priority path completed, remove from queue
         if (pDomainFindPath->isFinished())
             removeCurrentDomainFindPathFromQueue();
-        //            domainFindPathQueue.erase( domainFindPathQueue.begin() );
+
+        // If the caller's path also completed (and is different), remove it too
+        if (pDomainFindPath != pIdDomainFindPath && pIdDomainFindPath->isFinished())
+        {
+            PhysCS2dImpl::DomainFindPaths::iterator it
+                = std::find(domainFindPathQueue.begin(), domainFindPathQueue.end(), pIdDomainFindPath);
+            if (it != domainFindPathQueue.end())
+                domainFindPathQueue.erase(it);
+        }
     }
 
     return pIdDomainFindPath->isFinished();
