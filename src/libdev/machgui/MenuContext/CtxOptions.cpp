@@ -495,8 +495,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 {
     if (buttonEvent == MachGui::ButtonEvent::DUMMY_OK)
     {
-        int currentScaleFactorValue = Config::uiScaleFactor.get();
-
         writeToConfig();
 
         SysRegistry::instance().reload();
@@ -510,8 +508,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         const RenDisplay::Mode& pCurrentMode
             = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
 
-        int newScaleFactorValue = Config::uiScaleFactor.get();
-
         if (pScreenResolutionLock_->isChecked()
             && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
         {
@@ -524,12 +520,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
             {
                 idsMessage = IDS_MENUMESSAGE_RESOLUTION;
             }
-            bDisplayMessageBox = true;
-        }
-
-        if (!bDisplayMessageBox && (currentScaleFactorValue != newScaleFactorValue))
-        {
-            idsMessage = IDS_MENUMESSAGE_SCALE_FACTOR;
             bDisplayMessageBox = true;
         }
 
