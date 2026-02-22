@@ -44,17 +44,13 @@ else()
         /opt/local/lib
         DOC "The GLEW library"
     )
-endif(WIN32)
-
-if(GLEW_INCLUDE_PATH)
-    set(GLEW_FOUND 1 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
-else()
-    set(GLEW_FOUND 0 CACHE STRING "Set to 1 if GLEW is found, 0 otherwise")
 endif()
 
 mark_as_advanced(GLEW_INCLUDE_PATH)
 mark_as_advanced(GLEW_LIBRARY)
-mark_as_advanced(GLEW_FOUND)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(GLEW DEFAULT_MSG GLEW_LIBRARY GLEW_INCLUDE_PATH)
 
 if(GLEW_FOUND)
     if(NOT TARGET GLEW::GLEW)
