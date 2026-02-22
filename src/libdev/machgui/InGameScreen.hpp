@@ -247,6 +247,7 @@ public:
     // Switch FOW on or off. When playing skirmish levels or multiplayer
     // this is a setable option
     void fogOfWarOn(bool fog);
+    bool fogOfWarOn() const;
 
     // MachGuiStartupScreens should query this to find out if a key has been
     // pressed that causes the ingame menus to be displayed.

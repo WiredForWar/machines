@@ -2617,6 +2617,15 @@ void MachInGameScreen::fogOfWarOn(bool fog)
     pContinentMap_->fogOfWarOn(fog);
 }
 
+bool MachInGameScreen::fogOfWarOn() const
+{
+    CB_DEPIMPL_AUTO(pContinentMap_);
+
+    PRE(pContinentMap_);
+
+    return pContinentMap_->fogOfWarOn();
+}
+
 bool MachInGameScreen::switchToMenus() const
 {
     CB_DEPIMPL_AUTO(switchToMenus_);

@@ -242,6 +242,40 @@ void camLookatCommand(MachGuiStartupScreens* pStartup, const Request& request, C
 }
 
 // ============================================================
+// Fog of war command
+// ============================================================
+
+void fowCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
+    if (!pScreen)
+        return;
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        bool current = pScreen->fogOfWarOn();
+        console.writeLine(std::string("Fog of war is ") + (current ? "on" : "off") + ".");
+        return;
+    }
+
+    const std::string& arg = std::get<std::string>(request.arguments[0].value);
+    if (arg == "on")
+    {
+        pScreen->fogOfWarOn(true);
+        console.writeLine("Fog of war on.");
+    }
+    else if (arg == "off")
+    {
+        pScreen->fogOfWarOn(false);
+        console.writeLine("Fog of war off.");
+    }
+    else
+    {
+        console.writeLine("Usage: fow [on|off]. No argument toggles.");
+    }
+}
+
+// ============================================================
 // Resource commands
 // ============================================================
 
@@ -598,6 +632,14 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             },
         },
         [pStartup](const Request& request, Console& console) { camLookatCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            "fow",
+            "Get/set fog of war (on/off).",
+            { { "state", Arg::Identifier, true, "on or off. Omit to print current." } },
+        },
+        [pStartup](const Request& request, Console& console) { fowCommand(pStartup, request, console); });
 
     // ---- Resource commands ----
 
