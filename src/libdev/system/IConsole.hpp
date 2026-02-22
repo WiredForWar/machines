@@ -77,6 +77,7 @@ public:
     virtual void clearError() = 0;
 
     virtual void writeLine(std::string_view text) = 0;
+    virtual void clearOutput() = 0;
     [[nodiscard]] virtual const std::vector<std::string>& output() const = 0;
     [[nodiscard]] virtual std::string_view prompt() const = 0;
     virtual Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) = 0;

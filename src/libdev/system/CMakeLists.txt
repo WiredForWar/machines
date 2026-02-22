@@ -4,6 +4,8 @@ set(SYSTEM_SOURCES
     ConfigVariables.hpp
     Console.cpp
     Console.hpp
+    ConsoleBuiltins.cpp
+    ConsoleBuiltins.hpp
     Endian.hpp
     IConsole.hpp
     SysInfo.cpp

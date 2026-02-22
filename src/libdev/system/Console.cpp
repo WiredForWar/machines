@@ -413,6 +413,11 @@ void Console::writeLine(std::string_view text)
     appendOutputLine(text);
 }
 
+void Console::clearOutput()
+{
+    output_.clear();
+}
+
 const std::vector<std::string>& Console::output() const
 {
     return output_;
