@@ -21,6 +21,8 @@ extern Variable<int32_t> uiZenithCameraSpeedLimit;
 
 extern Variable<int32_t> uiGroundCameraAcceleration;
 
+extern Variable<bool> uiUse2DSelectionMarker;
+
 extern Variable<int32_t> uiScaleFactor;
 extern Variable<bool> grabCursor;
 

@@ -413,10 +413,12 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Retain original settings in case user cancels subsequent settings
     musicVolume_ = Config::musicVolume.get();
     soundVolume_ = Config::soundVolume.get();
+    use2DMarker_ = Config::uiUse2DSelectionMarker.get();
     grabCursor_ = Config::grabCursor.get();
 
     readFromConfig();
 
+    pCursorType_->setCallback([](MachGuiCheckBox* pBox) { Config::uiUse2DSelectionMarker.set(pBox->isChecked()); });
     pGrabMouse_->setCallback([](MachGuiCheckBox* pCheckBox) { Config::grabCursor.set(pCheckBox->isChecked()); });
 
     pWasdControls_->setCallback([](MachGuiCheckBox* pCheckBox) {
@@ -525,6 +527,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
     }
     else if (buttonEvent == MachGui::ButtonEvent::DUMMY_EXIT)
     {
+        pCursorType_->setChecked(use2DMarker_);
         pGrabMouse_->setChecked(grabCursor_);
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
@@ -667,15 +670,14 @@ void MachGuiCtxOptions::readFromConfig()
 
     pMusicVolume_->setValue(musicVolume_);
     pSoundVolume_->setValue(soundVolume_);
-    pGrabMouse_->setChecked(grabCursor_);
 
     // Set resolution lock on if it the first time the game is being run
     pScreenResolutionLock_->setChecked(Config::gfxLockResolution.get());
-    pCursorType_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D"));
+    pCursorType_->setChecked(use2DMarker_);
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));
 
-    pGrabMouse_->setChecked(Config::grabCursor.get());
+    pGrabMouse_->setChecked(grabCursor_);
     {
         using InputLayout = MachGui::InputLayout;
         pWasdControls_->setChecked(Config::inputBaseLayout.get() == InputLayout::WASD);

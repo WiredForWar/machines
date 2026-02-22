@@ -17,6 +17,8 @@ Variable<int32_t> uiZenithCameraSpeedLimit("Options/Zenith Camera/Speed Limit", 
 
 Variable<int32_t> uiGroundCameraAcceleration("Options/Ground Camera/Acceleration", 15);
 
+Variable<bool> uiUse2DSelectionMarker("Options/Cursor Type/2D", false);
+
 Variable<int32_t> uiScaleFactor("Options/Scale Factor/Value", 0);
 Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 

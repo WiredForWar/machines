@@ -80,6 +80,7 @@ private:
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_, gammaCorrection_;
+    bool use2DMarker_{};
     bool grabCursor_{};
     int32_t zenithCameraAcceleration_{};
     int32_t groundCameraAcceleration_{};

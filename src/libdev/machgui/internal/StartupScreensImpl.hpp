@@ -70,6 +70,7 @@ private:
     bool ignoreHostLostSystemMessage_;
     Utils::HandleWithTriggerUPtr soundVolumeHandle_;
     Utils::HandleWithTriggerUPtr musicVolumeHandle_;
+    Utils::HandleWithTriggerUPtr selectionMarkerTypeHandle_;
 
     friend class MachGuiStartupScreens;
 };

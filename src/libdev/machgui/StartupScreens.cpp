@@ -3421,8 +3421,13 @@ void MachGuiStartupScreens::initializeVolumes()
 
 void MachGuiStartupScreens::initializeCursorOptions()
 {
-    bool use2DCursor = SysRegistry::instance().queryIntegerValue("Options\\Cursor Type", "2D");
-    MachPhysMarker::setMarkerType(use2DCursor ? MachPhysMarker::MarkerType::TwoD : MachPhysMarker::MarkerType::ThreeD);
+    CB_DEPIMPL_AUTO(selectionMarkerTypeHandle_);
+    selectionMarkerTypeHandle_ = Config::uiUse2DSelectionMarker.addListener([] {
+        using MarkerType = MachPhysMarker::MarkerType;
+        const bool use2DCursor = Config::uiUse2DSelectionMarker.get();
+        MachPhysMarker::setMarkerType(use2DCursor ? MarkerType::TwoD : MarkerType::ThreeD);
+    });
+    selectionMarkerTypeHandle_->trigger();
 
     float lineWidth = MachGui::getPhysMarkerLineWidth();
     MachPhysMarker::setMarkerLineWidth(lineWidth);
