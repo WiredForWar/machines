@@ -433,6 +433,9 @@ private:
     bool hasCurrentFindPath_;
     PhysCS2dFindPath* pCurrentFindPath_;
 
+    size_t nActiveLocalFindPaths_{}; // Count of local findpaths currently in PATHFIND state
+    static constexpr size_t MAX_CONCURRENT_LOCAL_FINDPATHS = 8;
+
     bool bufferPolygonPortalUpdates_; // When false, portals will be updated wrt to obstacles after
                                       // every polygon is added/removed.
                                       // When true they'll only be updated when a pathfind is done.

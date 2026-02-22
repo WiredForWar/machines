@@ -279,6 +279,11 @@ void PhysCS2dFindPath::startPathSearch()
 
     PRE(state_ == PENDING_PATHFIND);
 
+    // Limit concurrent local pathfinds to avoid CPU spikes
+    PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
+    if (impl.nActiveLocalFindPaths_ >= PhysCS2dImpl::MAX_CONCURRENT_LOCAL_FINDPATHS)
+        return;
+
     // The clearance we use for the expansion space has to be greater than the clearance
     // asked for. This is because we use swept rectangles for each path segment. These
     // rectangles bound the actual swept path, which would be rounded at the ends, and therefore
@@ -288,7 +293,7 @@ void PhysCS2dFindPath::startPathSearch()
     expansionDistance_ = clearance_ * root2 * 1.01;
 
     // Create a per-findpath expansion space (no global contention)
-    PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
+    ++impl.nActiveLocalFindPaths_;
     pLocalExpansionSpace_ = new PhysCS2dExpansionSpace(impl.boundary(), expansionDistance_);
     pLocalExpansionSpace_->addClient();
     pVisibilitySpace_ = pLocalExpansionSpace_->pConfigSpace();
@@ -495,7 +500,10 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
     if (donePath)
     {
         CS2VGRA_WHERE;
-        // Destroy the per-findpath expansion space
+        // Destroy the per-findpath expansion space and release the concurrency slot
+        PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
+        ASSERT(impl.nActiveLocalFindPaths_ > 0, "");
+        --impl.nActiveLocalFindPaths_;
         delete pLocalExpansionSpace_;
         pLocalExpansionSpace_ = nullptr;
         pVisibilitySpace_ = nullptr;
