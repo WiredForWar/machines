@@ -40,6 +40,15 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+static PhysConfigSpace2d::ObjectIds sortedCopy(const PhysConfigSpace2d::ObjectIds& ids)
+{
+    auto sorted = ids;
+    std::sort(sorted.begin(), sorted.end());
+    return sorted;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
 PhysConfigSpace2d::PhysConfigSpace2d(
     const MexPoint2d& minPoint,
     const MexPoint2d& maxPoint,
@@ -1119,12 +1128,13 @@ bool PhysConfigSpace2d::add(
 
     // Check for intersections between the incoming chunk and each potentially
     // colliding existing chunk
+    const ObjectIds sortedIgnore = sortedCopy(ignoreIds);
     bool ok = true;
     for (size_t i = 0; i != n; ++i)
     {
         const PhysCS2dMotionChunk& holder = *(motionChunkHolders[i]);
 
-        const bool ignore = find(ignoreIds.begin(), ignoreIds.end(), holder.objectId()) != ignoreIds.end();
+        const bool ignore = std::binary_search(sortedIgnore.begin(), sortedIgnore.end(), holder.objectId());
 
         if (! ignore)
         {
@@ -1671,6 +1681,7 @@ bool PhysConfigSpace2d::add(
     ObjectId* pCollisionObjectId,
     PhysAbsoluteTime* pCollideTime)
 {
+    const ObjectIds sortedIgnore = sortedCopy(ignoreIds);
     bool ok = true;
 
     for (size_t i = 0; i != checkChunks.size(); ++i)
@@ -1678,7 +1689,7 @@ bool PhysConfigSpace2d::add(
         const MotionChunkId testMotionChunkId = checkChunks[i].collisionChunkId();
         const ObjectId testObjectId = checkChunks[i].collisionObjectId();
 
-        const bool ignore = find(ignoreIds.begin(), ignoreIds.end(), testObjectId) != ignoreIds.end();
+        const bool ignore = std::binary_search(sortedIgnore.begin(), sortedIgnore.end(), testObjectId);
 
         if (! ignore)
         {
@@ -1721,12 +1732,12 @@ void PhysConfigSpace2d::findIntersections(
     motionChunkHolders.reserve(64);
     const size_t n = motionChunkTree.overlapping(sausageBoundary, &motionChunkHolders);
 
+    const ObjectIds sortedIgnore = sortedCopy(ignoreObjectIds);
     for (size_t i = 0; i != n; ++i)
     {
         const PhysCS2dMotionChunk& holder = *(motionChunkHolders[i]);
 
-        const bool ignore
-            = find(ignoreObjectIds.begin(), ignoreObjectIds.end(), holder.objectId()) != ignoreObjectIds.end();
+        const bool ignore = std::binary_search(sortedIgnore.begin(), sortedIgnore.end(), holder.objectId());
 
         if (! ignore)
         {
@@ -1909,6 +1920,7 @@ void PhysConfigSpace2d::findIntersections(
 
     CONFIG_SPACE_INSPECT(n);
 
+    const ObjectIds sortedIgnore = sortedCopy(ignoreObjectIds);
     for (size_t i = 0; i != n; ++i)
     {
         const PhysCS2dMotionChunk& holder = *(motionChunkHolders[i]);
@@ -1931,7 +1943,7 @@ void PhysConfigSpace2d::findIntersections(
         if (! ignore)
         {
             CONFIG_SPACE_WHERE;
-            ignore = find(ignoreObjectIds.begin(), ignoreObjectIds.end(), holder.objectId()) != ignoreObjectIds.end();
+            ignore = std::binary_search(sortedIgnore.begin(), sortedIgnore.end(), holder.objectId());
         }
 
         if (! ignore)
