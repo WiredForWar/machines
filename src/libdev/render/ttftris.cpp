@@ -89,6 +89,10 @@ Ren::PrimitiveTopology RenTTFTriangles::compose2DGeometry(RenIVertex* vtx, const
     vtx[2].y = vtx[4].y = (y1);
     vtx[10].y = vtx[8].y = (y2);
 
+    const MATHEX_SCALAR z = centre.z();
+    for (int i = 0; i < 12; ++i)
+        vtx[i].z = z;
+
     return Ren::PrimitiveTopology::Triangles;
 }
 
