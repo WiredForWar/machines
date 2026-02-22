@@ -15,7 +15,6 @@
 #define _GRAPH_ASTARALG_HPP
 
 #include "base/base.hpp"
-#include "ctl/list.hpp"
 #include "ctl/vector.hpp"
 
 // GRA_GRAPH IS_A GraGraph
@@ -98,11 +97,18 @@ private:
     // Recursive method used to output vertices on best path in correct order
     void outputVertex(const VertexId& id, Vertices* pVertices) const;
 
+    // Heap comparator: returns true when lhs has HIGHER estimated total cost
+    // (i.e. lower priority), so the min-cost vertex ends up at the front.
+    bool heapGreater(const VertexId& lhs, const VertexId& rhs) const;
+
+    // Restore heap property after a vertex cost decrease
+    void reheapAfterDecrease();
+
     // Data members
     const Graph* pGraph_; // The graph over which we will do the search
     AStarVertices* pAStarVertices_; // Vertex map for current search
-    ctl_list<VertexId> openVertices_; // List of open vertices
-    POST_DATA(Vertices closedVertices_;) // List of open vertices
+    ctl_vector<VertexId> openVertices_; // Min-heap of open vertices by estimated total cost
+    POST_DATA(Vertices closedVertices_;) // List of closed vertices
     VertexId startVertexId_; // Start vertex id
     VertexId endVertexId_; // Goal vertex id
     State state_; // Current state

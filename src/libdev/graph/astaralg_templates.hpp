@@ -5,6 +5,8 @@
 
 //  Definitions of non-inline template methods
 
+#include <algorithm>
+
 #define GraAStarAlg__ GraAStarAlg<GRA_GRAPH, VERTEX_MAP>
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -52,12 +54,9 @@ template <class GRA_GRAPH, class VERTEX_MAP> std::ostream& operator<<(std::ostre
 
         // Write the open vertices
         o << "------------Open Vertices---------------" << std::endl;
-        for (typename ctl_list<typename GraAStarAlg__::GraphBase::VertexId>::const_iterator it
-             = t.openVertices_.begin();
-             it != t.openVertices_.end();
-             ++it)
+        for (size_t i = 0; i < t.openVertices_.size(); ++i)
         {
-            typename GraAStarAlg__::VertexId id = *it;
+            typename GraAStarAlg__::VertexId id = t.openVertices_[i];
             o << "(" << id << ") " << (*t.pAStarVertices_)[id];
         }
 
@@ -93,8 +92,7 @@ void GraAStarAlg__::start(const Graph& graph, const VertexId& startVertex, const
     // Clear away any old search data
     if (pAStarVertices_ != nullptr)
         delete pAStarVertices_;
-    if (openVertices_.size() != 0)
-        openVertices_.erase(openVertices_.begin(), openVertices_.end());
+    openVertices_.erase(openVertices_.begin(), openVertices_.end());
     POST_DATA(closedVertices_.erase(closedVertices_.begin(), closedVertices_.end());)
 
     // Store the data
@@ -147,9 +145,11 @@ template <class GRA_GRAPH, class VERTEX_MAP> typename GraAStarAlg__::State GraAS
         {
             AStarVertices& algVertices = *pAStarVertices_;
 
-            // Pop the front node from the open list
-            VertexId currentVertexId = openVertices_.front();
-            openVertices_.pop_front();
+            // Pop the minimum-cost node from the heap
+            std::pop_heap(openVertices_.begin(), openVertices_.end(),
+                [this](const VertexId& a, const VertexId& b) { return heapGreater(a, b); });
+            VertexId currentVertexId = openVertices_.back();
+            openVertices_.pop_back();
             AStarVertex& currentAStarVertex = algVertices[currentVertexId];
 
             // A_STAR_STREAM( "Next open id " << currentVertexId << std::endl );
@@ -294,38 +294,12 @@ void GraAStarAlg__::expand(const VertexId& expandId, const Weight& costToExpandV
 //////////////////////////////////////////////////////////////////////////////////////////
 
 template <class GRA_GRAPH, class VERTEX_MAP>
-void GraAStarAlg__::addOpenVertex(const VertexId& id, const Weight& estimatedTotalCost)
+void GraAStarAlg__::addOpenVertex(const VertexId& id, const Weight& /*estimatedTotalCost*/)
 {
-    // A_STAR_STREAM( "Enter addOpenVertex " << (void*)this << std::endl );
-    // A_STAR_INDENT( 2 );
-
-    // A_STAR_INSPECT( id );
-    // A_STAR_INSPECT( estimatedTotalCost );
-
-    AStarVertices& algVertices = *pAStarVertices_;
-
-    // Iterate along the existing list looking for first entry with estimated cost
-    // greater than the one supplied.
-    typename ctl_list<VertexId>::iterator it = openVertices_.begin();
-    for (; it != openVertices_.end(); ++it)
-    {
-        // Compute estimated cost for this item
-        VertexId oldId = *it;
-        AStarVertex& oldAStarVertex = algVertices[oldId];
-
-        ASSERT(vertexAvailable(pGraph_->vertex(oldId)), "");
-
-        Weight oldCost = oldAStarVertex.costFromStart() + oldAStarVertex.estimatedCostToEnd();
-
-        // Stop if found insert position
-        if (estimatedTotalCost < oldCost)
-            break;
-    }
-
-    openVertices_.insert(it, id);
-
-    // A_STAR_INDENT( -2 );
-    // A_STAR_STREAM( "Exit addOpenVertex " << (void*)this << std::endl );
+    // Add to heap with O(log N) insertion
+    openVertices_.push_back(id);
+    std::push_heap(openVertices_.begin(), openVertices_.end(),
+        [this](const VertexId& a, const VertexId& b) { return heapGreater(a, b); });
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -388,16 +362,9 @@ void GraAStarAlg__::propogateBetterPath(const VertexId& vertexId, const Weight& 
     }
     else if (vertexId != endVertexId_)
     {
-        // Open vertex. Remove from the open list and add it again to ensure it
-        // maintains its correct position
-        typename ctl_list<VertexId>::iterator it = find(openVertices_.begin(), openVertices_.end(), vertexId);
-        POST(it != openVertices_.end());
-        openVertices_.erase(it);
-
+        // Open vertex. Its cost decreased, so restore the heap property.
         ASSERT(vertexAvailable(pGraph_->vertex(vertexId)), "");
-
-        Weight estimatedTotalCost = costToVertex + inAStarVertex.estimatedCostToEnd();
-        addOpenVertex(vertexId, estimatedTotalCost);
+        reheapAfterDecrease();
     }
 
     // A_STAR_INDENT( -2 );
@@ -473,4 +440,25 @@ void GraAStarAlg__::outputVertex(const VertexId& id, Vertices* pVertices) const
     // A_STAR_STREAM( "Exit outputVertex " << (void*)this << std::endl );
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-/* End ASTARALG.CTP *************************************************/
+template <class GRA_GRAPH, class VERTEX_MAP>
+bool GraAStarAlg__::heapGreater(const VertexId& lhs, const VertexId& rhs) const
+{
+    const AStarVertices& algVertices = *pAStarVertices_;
+    const AStarVertex& lhsV = algVertices[lhs];
+    const AStarVertex& rhsV = algVertices[rhs];
+    const Weight lhsCost = lhsV.costFromStart() + lhsV.estimatedCostToEnd();
+    const Weight rhsCost = rhsV.costFromStart() + rhsV.estimatedCostToEnd();
+    return lhsCost > rhsCost;
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+template <class GRA_GRAPH, class VERTEX_MAP>
+void GraAStarAlg__::reheapAfterDecrease()
+{
+    // After a cost decrease on some vertex, rebuild the heap.
+    // std::make_heap is O(N) which is acceptable since propogateBetterPath is rare.
+    std::make_heap(openVertices_.begin(), openVertices_.end(),
+        [this](const VertexId& a, const VertexId& b) { return heapGreater(a, b); });
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+/* End ASTARALG.CTP */
