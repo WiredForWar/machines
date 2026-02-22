@@ -54,7 +54,9 @@ void MachGuiConsoleDropDown::setConsole(System::IConsole* console)
 
     if (pConsole_ != nullptr)
     {
-        outputListenerHandle_ = pConsole_->addOutputListener([this](std::string_view) { updateOutputFromConsole(); });
+        outputListenerHandle_ = pConsole_->addOutputListener([this](const System::IConsole::OutputEvent&) {
+            updateOutputFromConsole();
+        });
     }
 
     updatePromptSurface(pConsole_ ? pConsole_->prompt() : std::string_view{});

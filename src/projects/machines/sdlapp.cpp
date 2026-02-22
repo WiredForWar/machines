@@ -45,6 +45,7 @@
 #include "machgui/gui.hpp"
 
 #include "system/Console.hpp"
+#include "system/ConsoleBuiltins.hpp"
 #include "system/VFS.hpp"
 
 #include "spdlog/spdlog.h"
@@ -678,6 +679,7 @@ void SDLApp::setVSyncOptions()
 void SDLApp::initConsole()
 {
     console_ = std::make_unique<System::Console>();
+    System::registerConsoleBuiltins(*console_);
 
     console_->registerCommand(
         { .name = "exit", .description = "Immediately exit the game." },

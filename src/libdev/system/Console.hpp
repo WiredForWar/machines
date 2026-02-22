@@ -42,6 +42,7 @@ public:
     void clearError() override;
 
     void writeLine(std::string_view text) override;
+    void clearOutput() override;
     [[nodiscard]] const std::vector<std::string>& output() const override;
     [[nodiscard]] std::string_view prompt() const override;
     Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) override;

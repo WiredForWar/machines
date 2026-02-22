@@ -54,6 +54,18 @@ public:
         std::string rawLine{};
     };
 
+    struct OutputEvent
+    {
+        enum class Type
+        {
+            AppendLine,
+            Clear,
+        };
+
+        Type type{};
+        std::string_view text{};
+    };
+
     struct CompletionResult
     {
         std::vector<std::string> candidates{};
@@ -68,7 +80,7 @@ public:
         std::size_t argIndex,
         std::string_view partialValue,
         const std::vector<std::string>& precedingArgs)>;
-    using OutputListener = std::function<void(std::string_view)>;
+    using OutputListener = std::function<void(const OutputEvent&)>;
 
     virtual ~IConsole() = default;
 
@@ -96,6 +108,7 @@ public:
     virtual void clearError() = 0;
 
     virtual void writeLine(std::string_view text) = 0;
+    virtual void clearOutput() = 0;
     [[nodiscard]] virtual const std::vector<std::string>& output() const = 0;
     [[nodiscard]] virtual std::string_view prompt() const = 0;
     virtual Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) = 0;

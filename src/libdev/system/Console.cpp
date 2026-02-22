@@ -500,6 +500,17 @@ void Console::writeLine(std::string_view text)
     appendOutputLine(text);
 }
 
+void Console::clearOutput()
+{
+    output_.clear();
+
+    const OutputEvent event{OutputEvent::Type::Clear, {}};
+    for (const OutputListenerEntry& entry : outputListeners_)
+    {
+        entry.callback(event);
+    }
+}
+
 const std::vector<std::string>& Console::output() const
 {
     return output_;
@@ -556,9 +567,10 @@ void Console::appendOutputLine(std::string_view text)
         output_.emplace_back(text);
     }
 
+    const OutputEvent event{OutputEvent::Type::AppendLine, text};
     for (const OutputListenerEntry& entry : outputListeners_)
     {
-        entry.callback(text);
+        entry.callback(event);
     }
 }
 
