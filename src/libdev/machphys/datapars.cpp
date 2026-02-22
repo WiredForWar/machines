@@ -2612,7 +2612,10 @@ void MachPhysDataParser::parseGeneralData(UtlLineTokeniser* pParser)
         }
         else if (pParser->tokens()[0] == "INITIAL_MOVE_RETRY_INTERVAL")
         {
-            generalData.setInitialMoveRetryInterval(atof(pParser->tokens()[1].c_str()));
+            // Ignore `INITIAL_MOVE_RETRY_INTERVAL` for now, because it is only set together
+            // with `UPDATE_INTERVAL_FACTOR`, which makes the value radiculously small.
+
+            // generalData.setInitialMoveRetryInterval(atof(pParser->tokens()[1].c_str()));
         }
         else if (pParser->tokens()[0] == "UPDATE_INTERVAL_FACTOR")
         {
