@@ -1158,7 +1158,6 @@ bool PhysCS2dImpl::intersects(
 
 void PhysCS2dImpl::activeDomainFindPath(PhysCS2dDomainFindPath* pDomainFindPath)
 {
-    PRE(pDomainFindPath == nullptr || pActiveDomainFindPath_ == nullptr);
     pActiveDomainFindPath_ = pDomainFindPath;
 }
 

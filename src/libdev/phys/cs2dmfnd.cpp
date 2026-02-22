@@ -180,36 +180,32 @@ void PhysCS2dDomainFindPath::startMacroSearch()
     }
     else
     {
-        // If the domain graph can be locked, lock it
         PhysCS2dImpl& impl = *(pConfigSpace_->pImpl());
-        if (! impl.domainGraphInUse())
-        {
-            // Enter the macro search phase
-            state_ = MACRO;
 
-            // Ensure the domain vertex graph is up to date with respect to any permanent
-            // polygons that have been added
-            impl.updateDomainRegion();
+        // Enter the macro search phase
+        state_ = MACRO;
 
-            // Lock the graph and set this as the active macro findPath
-            impl.domainGraphInUse(true);
-            impl.activeDomainFindPath(this);
+        // Ensure the domain vertex graph is up to date with respect to any permanent
+        // polygons that have been added
+        impl.updateDomainRegion();
 
-            // Add domain vertices for the start and end points in their respective domains
-            startDomainVertexId_ = impl.addDomainVertex(startPoint_, clearance_, flags_);
-            endDomainVertexId_ = impl.addDomainVertex(endPoint_, clearance_, flags_);
+        // Register as a domain graph user (reference-counted)
+        impl.domainGraphInUse(true);
 
-            // Join these vertices to all other domain vertices in the same domain
-            impl.addDomainArcs(startDomainVertexId_, startDomainId_);
-            impl.addDomainArcs(endDomainVertexId_, endDomainId_);
+        // Add domain vertices for the start and end points in their respective domains
+        startDomainVertexId_ = impl.addDomainVertex(startPoint_, clearance_, flags_);
+        endDomainVertexId_ = impl.addDomainVertex(endPoint_, clearance_, flags_);
 
-            // Store the domainGraph version
-            domainGraphVersion_ = impl.domainGraph().version();
+        // Join these vertices to all other domain vertices in the same domain
+        impl.addDomainArcs(startDomainVertexId_, startDomainId_);
+        impl.addDomainArcs(endDomainVertexId_, endDomainId_);
 
-            // Construct an A* algorithm for the search
-            pDomainAlg_ = new DomainAStarAlg(clearance(), flags());
-            pDomainAlg_->start(impl.domainGraph(), startDomainVertexId_, endDomainVertexId_);
-        }
+        // Store the domainGraph version
+        domainGraphVersion_ = impl.domainGraph().version();
+
+        // Construct an A* algorithm for the search
+        pDomainAlg_ = new DomainAStarAlg(clearance(), flags());
+        pDomainAlg_->start(impl.domainGraph(), startDomainVertexId_, endDomainVertexId_);
     }
 
     CS2PATH_EXIT("startMacroSearch");
@@ -317,9 +313,8 @@ void PhysCS2dDomainFindPath::endMacroSearch()
     impl.removeDomainVertex(startDomainVertexId_);
     impl.removeDomainVertex(endDomainVertexId_);
 
-    // Unlock the graph, and clear this as the active domain findPath
+    // Release our reference on the domain graph
     impl.domainGraphInUse(false);
-    impl.activeDomainFindPath(nullptr);
 
     // Set state to finished.
     state_ = FINISHED;
