@@ -238,14 +238,14 @@ private:
         ObstacleFlags flagse) const;
 
     // True iff sausage (with specifed boundary) intersects any enabled polygons in polygonTree,
-    // which have already been expanded into the open expansion space using given expansion distance.
+    // which have already been expanded into the given expansion space.
     bool intersectsAnyExpanded(
         const MexSausage2d& sausage,
         const MexAlignedBox2d& sausageBoundary,
         const PolygonTree& polygonTree,
         Mathex::TouchingRule rule,
         ObstacleFlags flags,
-        MATHEX_SCALAR expansionDistance) const;
+        const PhysCS2dExpansionSpace& expansionSpace) const;
 
     // Return a list of the polygons which intersect the supplied box.
     // This list can be cached and used in some intersects functions

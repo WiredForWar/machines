@@ -15,6 +15,7 @@
 #include "phys/phys.hpp"
 #include "phys/internal/cs2impl.hpp"
 #include "phys/internal/cs2findp.hpp"
+#include "phys/internal/cs2expsp.hpp"
 #include "phys/internal/cs2vigra.hpp"
 
 #ifndef _INLINE
@@ -278,40 +279,33 @@ void PhysCS2dFindPath::startPathSearch()
 
     PRE(state_ == PENDING_PATHFIND);
 
-    // We must be able to open an expansion space. Only one allowed at a time
+    // The clearance we use for the expansion space has to be greater than the clearance
+    // asked for. This is because we use swept rectangles for each path segment. These
+    // rectangles bound the actual swept path, which would be rounded at the ends, and therefore
+    // include some space not strictly necessary. We also add 1% clearance so we don't get
+    // spurious collisions where the path touches the original rectangles.
+    MATHEX_SCALAR root2 = 1.414213562;
+    expansionDistance_ = clearance_ * root2 * 1.01;
+
+    // Create a per-findpath expansion space (no global contention)
     PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
-    if (! impl.expansionSpaceIsOpen())
-    {
-        // The clearance we use for the expansion space has to be greater than the clearance
-        // asked for. This is because we use swept rectangles for each path segment. These
-        // rectangles bound the actual swept path, which would be rounded at the ends, and therefore
-        // include some space not strictly necessary. We also add 1% clearance so we don't get
-        // spurious collisions where the path touches the original rectangles.
-        MATHEX_SCALAR root2 = 1.414213562;
-        expansionDistance_ = clearance_ * root2 * 1.01;
+    pLocalExpansionSpace_ = new PhysCS2dExpansionSpace(impl.boundary(), expansionDistance_);
+    pLocalExpansionSpace_->addClient();
+    pVisibilitySpace_ = pLocalExpansionSpace_->pConfigSpace();
 
-        // Open the expansion space
-        impl.expansionSpaceOpen(expansionDistance_);
-        POST(impl.expansionSpaceIsOpen(expansionDistance_));
+    // Ensure the space maintains a visibility graph
+    pVisibilitySpace_->isMaintainingVisibilityGraph(true, pConfigSpace_, pLocalExpansionSpace_, clearance_);
 
-        // Set this as the active findpath
-        impl.activeFindPath(this);
+    // Add all the polygons the initial subpath intersects to the expansion space
+    size_t nExtraPolygons;
+    checkPath(&nExtraPolygons);
 
-        // Ensure the space maintains a visibility graph
-        PhysConfigSpace2d* pVisibilitySpace = impl.expansionSpace(expansionDistance_);
-        pVisibilitySpace->isMaintainingVisibilityGraph(true, pConfigSpace_, &impl.expansionSpace(), clearance_);
+    // Set up the findPath search in the visibility graph of the expansion space
+    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace_->pImpl()->pVisibilityGraph();
+    pVisibilityGraph->setFindPath(startPoint_, endPoint_);
 
-        // Add all the polygons the initial subpath intersects to the expansion space
-        size_t nExtraPolygons;
-        checkPath(&nExtraPolygons);
-
-        // Set up the findPath search in the visibility graph of the expansion space
-        PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace->pImpl()->pVisibilityGraph();
-        pVisibilityGraph->setFindPath(startPoint_, endPoint_);
-
-        // Enter the state indicating running a subPath search
-        state_ = PATHFIND;
-    }
+    // Enter the state indicating running a subPath search
+    state_ = PATHFIND;
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
@@ -355,15 +349,16 @@ bool PhysCS2dFindPath::checkPath(size_t* nExtraPolygons)
             // Set flag indicating any section not contained
             contained = false;
 
-            // Add each polygon to the expansion space not already in it
+            // Add each polygon to the local expansion space not already in it
             for (PhysConfigSpace2d::PolygonIds::iterator it = polygonIds.begin(); it != polygonIds.end(); ++it)
             {
                 PhysConfigSpace2d::PolygonId id = *it;
-                if (! impl.expansionSpacePolygonExists(expansionDistance_, id))
+                if (! pLocalExpansionSpace_->polygonExists(id))
                 {
                     CS2VGRA_STREAM("  Path clash with unexpanded polygon id " << id << std::endl);
                     CS2VGRA_STREAM("  Adding polygon to expansion space id " << id.asScalar() << std::endl);
-                    impl.expansionSpaceAddPolygon(expansionDistance_, id);
+                    const PhysCS2dPolygon& polyHolder = *impl.polygons()[id];
+                    pLocalExpansionSpace_->addPolygon(polyHolder.polygon(), id, polyHolder.flags());
                     ++(*nExtraPolygons);
                 }
                 else
@@ -395,10 +390,7 @@ bool PhysCS2dFindPath::isPathSearchFinished() const
 
     PRE(state_ == PATHFIND);
 
-    // Get the expansion space and its visibility graph
-    PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
-    PhysConfigSpace2d* pVisibilitySpace = impl.expansionSpace(expansionDistance_);
-    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace->pImpl()->pVisibilityGraph();
+    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace_->pImpl()->pVisibilityGraph();
 
     CS2VGRA_STREAM(*this << std::endl);
     CS2VGRA_INDENT(-2);
@@ -416,10 +408,7 @@ void PhysCS2dFindPath::updatePathSearch(const PhysRelativeTime& maxTime)
 
     PRE(state_ == PATHFIND);
 
-    // Get the expansion space and its visibility graph
-    PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
-    PhysConfigSpace2d* pVisibilitySpace = impl.expansionSpace(expansionDistance_);
-    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace->pImpl()->pVisibilityGraph();
+    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace_->pImpl()->pVisibilityGraph();
 
     // Advance the search
     pVisibilityGraph->updateFindPath(maxTime, flags_);
@@ -438,10 +427,7 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
 
     PRE(state_ == PATHFIND);
 
-    // Get the expansion space and its visibility graph
-    PhysCS2dImpl& impl = *pConfigSpace_->pImpl();
-    PhysConfigSpace2d* pVisibilitySpace = impl.expansionSpace(expansionDistance_);
-    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace->pImpl()->pVisibilityGraph();
+    PhysCS2dVisibilityGraph* pVisibilityGraph = pVisibilitySpace_->pImpl()->pVisibilityGraph();
 
     // get the results, unless aborting the search
     bool donePath = false;
@@ -509,11 +495,10 @@ void PhysCS2dFindPath::endPathSearch(Abort forceAbort)
     if (donePath)
     {
         CS2VGRA_WHERE;
-        // Close the expansion space
-        impl.expansionSpaceClose(expansionDistance_);
-
-        // Clear this as the active subpath findpath
-        impl.activeFindPath(nullptr);
+        // Destroy the per-findpath expansion space
+        delete pLocalExpansionSpace_;
+        pLocalExpansionSpace_ = nullptr;
+        pVisibilitySpace_ = nullptr;
     }
 
     CS2VGRA_STREAM(*this << std::endl);

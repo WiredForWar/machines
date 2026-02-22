@@ -24,6 +24,8 @@
 #include "phys/internal/cs2dmgra.hpp"
 #include "phys/internal/cs2dmvtx.hpp"
 
+class PhysCS2dExpansionSpace;
+
 // Forward declarations
 
 // Orthodox canonical (revoked)
@@ -151,6 +153,8 @@ private:
     PhysConfigSpace2d* pConfigSpace_{}; // The config space through which we try to find the path
     Path fullPath_; // Full path for getting from start to end
     const PolygonIds* pIgnorePolygons_{}; // Pointer to polygons to be ignored. This does not own it.
+    PhysCS2dExpansionSpace* pLocalExpansionSpace_{}; // Per-findpath expansion space (owned)
+    PhysConfigSpace2d* pVisibilitySpace_{}; // The expansion config space for visibility graph
 
     ObstacleFlags flags_{}; // The obstacles that can be ignored for this find path
     PhysPathFindingPriority priority_;

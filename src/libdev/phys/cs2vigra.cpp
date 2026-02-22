@@ -981,7 +981,7 @@ bool PhysCS2dVisibilityGraph::originalSpaceContainsSausage(
         originalImpl.permanentPolygonTree(),
         Mathex::TOUCH_ISNT_INTERSECT,
         flags,
-        pExpansionSpace_->expansionDistance());
+        *pExpansionSpace_);
 
     CS2VGRA_INDENT(-2);
     CS2VGRA_STREAM("Exit originalSpaceContainsSausage " << result << std::endl);

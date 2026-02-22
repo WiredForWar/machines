@@ -1192,10 +1192,8 @@ bool PhysCS2dImpl::intersectsAnyExpanded(
     const PolygonTree& polygonTree,
     Mathex::TouchingRule rule,
     ObstacleFlags flags,
-    MATHEX_SCALAR expansionDistance) const
+    const PhysCS2dExpansionSpace& expansionSpace) const
 {
-    PRE(expansionSpaceIsOpen(expansionDistance));
-
     // Get a vector of all the polygons in the tree which might intersect the polygon
     PolygonTree::PItems polygonHolders;
     polygonHolders.reserve(512);
@@ -1206,7 +1204,7 @@ bool PhysCS2dImpl::intersectsAnyExpanded(
     for (size_t i = 0; ! hit && i != n; ++i)
     {
         const PhysCS2dPolygon& holder = *(polygonHolders[i]);
-        if (holder.isEnabled(flags) && expansionSpacePolygonExists(expansionDistance, holder.id())
+        if (holder.isEnabled(flags) && expansionSpace.polygonExists(holder.id())
             && sausage.intersects(holder.polygon(), rule))
         {
             CS2VGRA_STREAM("Clash with polygon id " << holder.id().asScalar() << std::endl);
