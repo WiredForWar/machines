@@ -103,15 +103,12 @@ MachPhysMarker::MachPhysMarker(
         static const MachPhysIHealthMaterials mats(20, sMarkerWidth, tex1, 0.7);
         const RenMaterial& mat = (permanent) ? mats.material(percentageHp) : mats.blueMaterial();
 
-        // For objects that are build buried in the ground, we don't want the
-        // marker to extend down into the ground.  Thus clamp the minimum z.
-        const MATHEX_SCALAR zMin = std::max(minCorner.z(), 0.0);
         const MATHEX_SCALAR width = maxCorner.x() - minCorner.x();
         const MATHEX_SCALAR depth = maxCorner.y() - minCorner.y();
-        MATHEX_SCALAR height = maxCorner.z() - zMin;
+        MATHEX_SCALAR height = maxCorner.z() - minCorner.z();
 
         const MATHEX_SCALAR minTTFWidth = 3.0;
-        const MATHEX_SCALAR minTTFHeight = 2.5;
+        const MATHEX_SCALAR minTTFHeight = 2.0;
 
         // Average the width and depth and use it as the 2D width.
         // Set a lower limit on the width of the overall TTF.
@@ -123,17 +120,10 @@ MachPhysMarker::MachPhysMarker(
         if (width > height)
             height = 0.25 * (3 * height + width);
 
-        // Set a lower limit on the overall height of the TTF.
-        const MATHEX_SCALAR ttfHeight = mexClamp(height, minTTFHeight, HUGE_VAL);
-
         // If we have artificially increased the TTF height, move the centre
         // up so the bottom edge isn't buried the ground.
         MexPoint3d centre = boundary.centroid();
-        if (ttfHeight > height)
-        {
-            const MATHEX_SCALAR newZ = centre.z() + (ttfHeight - height) / 2;
-            centre.z(newZ);
-        }
+        centre.z(minCorner.z() + minTTFHeight);
 
         RenTTFTriangles ttf;
         ttf.centre(centre);
@@ -170,7 +160,7 @@ MachPhysMarker::MachPhysMarker(
 
         const MATHEX_SCALAR xMin = minCorner.x() - 1.0;
         const MATHEX_SCALAR yMin = minCorner.y() - 1.0;
-        const MATHEX_SCALAR zMin = std::max(minCorner.z(), 0.0) + 0.5;
+        const MATHEX_SCALAR zMin = minCorner.z() + 0.5;
         const MATHEX_SCALAR xMax = maxCorner.x() + 1.0;
         const MATHEX_SCALAR yMax = maxCorner.y() + 1.0;
         const MATHEX_SCALAR zMax = maxCorner.z() + 0.5;
