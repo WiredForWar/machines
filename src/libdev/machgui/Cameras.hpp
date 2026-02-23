@@ -124,6 +124,21 @@ public:
     Gui::Coord positionOnTerrainThatZenithCameraIsLookingAt() const;
     // PRE( isZenithCameraActive() );
 
+    struct ZenithCameraData
+    {
+        MATHEX_SCALAR x{};
+        MATHEX_SCALAR y{};
+        MATHEX_SCALAR zoomDistance{};
+        MexRadians heading{};
+    };
+
+    ZenithCameraData zenithCameraData() const;
+    // PRE( isZenithCameraActive() );
+    void zenithCameraData(const ZenithCameraData& data);
+    // PRE( isZenithCameraActive() );
+
+    void setGroundCameraPosition(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z);
+
     // Configure pitch up/down keys for ground camera
     void reversePitchUpDownKeys(bool);
 

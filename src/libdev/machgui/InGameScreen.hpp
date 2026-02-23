@@ -40,6 +40,13 @@ class MachActor;
 class MachGuiControlPanel;
 template <class T> class ctl_pvector;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 // orthodox canonical (revoked)
 class MachInGameScreen
     : public GuiRoot
@@ -50,6 +57,8 @@ public:
     MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter* pReporter);
 
     ~MachInGameScreen() override;
+
+    void setConsole(System::IConsole* console);
 
     // Create the cameras, initialises button display values and map
     void loadGame(const std::string& planet, std::optional<PerIstream *> savedStream = std::nullopt);
@@ -238,6 +247,7 @@ public:
     // Switch FOW on or off. When playing skirmish levels or multiplayer
     // this is a setable option
     void fogOfWarOn(bool fog);
+    bool fogOfWarOn() const;
 
     // MachGuiStartupScreens should query this to find out if a key has been
     // pressed that causes the ingame menus to be displayed.
@@ -368,6 +378,8 @@ protected:
     // revealed, i.e. construction menu ).
     bool displayControlPanel() const;
 
+    void toggleConsoleDropDown();
+
 private:
     // When an actor is selected, this should be called to ensure that
     // the navigator is dismissed at the correct time
@@ -387,6 +399,7 @@ private:
 
     // Create/Update prompt text ( called after resolution change )
     void setupPromptText();
+    void updateConsoleDropDownViewport();
 
     void setupChatMessages();
 

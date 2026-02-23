@@ -27,6 +27,8 @@
 #include "render/surfmgr.hpp"
 #include "device/cd.hpp"
 
+#include "system/IConsole.hpp"
+
 #include <string>
 
 #define SYSTEM_MESSAGE 100
@@ -64,6 +66,7 @@ public:
     int standardMessageIndex_;
     int opponentIndex_;
     MachInGameScreen* pInGameScreen_;
+    System::IConsole *pConsole_{};
 };
 
 constexpr int c_textScrollSpeed = 20;
@@ -226,6 +229,12 @@ const std::string& MachPromptText::commandPromptText() const
     CB_DEPIMPL(std::string, commandPromptText_);
 
     return commandPromptText_;
+}
+
+void MachPromptText::setConsole(System::IConsole* console)
+{
+    CB_DEPIMPL_AUTO(pConsole_);
+    pConsole_ = console;
 }
 
 void MachPromptText::clearCommandPromptText()
@@ -643,23 +652,13 @@ void MachPromptText::submit()
     CB_DEPIMPL_AUTO(chatMessageIntendedForStr_);
     CB_DEPIMPL_AUTO(opponentIndex_);
     CB_DEPIMPL_AUTO(pInGameScreen_);
+    CB_DEPIMPL_AUTO(pConsole_);
 
     if (opponentIndex_ == SYSTEM_MESSAGE)
     {
-        if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 && text().length() > 5)
+        if (pConsole_)
         {
-            int track = atoi(&text().c_str()[5]);
-
-            if (track > 0 && // Valid track number entered
-                DevCD::instance().isAudioCDPresent() && // Audio CD is in CD-Rom
-                track < DevCD::instance().numberOfTracks()) // Track number is not outside the number of tracks on CD
-            {
-                DevCD::instance().play(track);
-            }
-        }
-        else if (strcasecmp(text().c_str(), "EXIT") == 0) // Instant Exit
-        {
-            pInGameScreen_->instantExit(true);
+            pConsole_->submit(text());
         }
 
         MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());

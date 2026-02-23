@@ -8,6 +8,7 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/HWResearchBank.hpp"
 #include "machgui/Cameras.hpp"
+#include "machgui/ConsoleDropDown.hpp"
 #include "machgui/SquadronBank.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/IconWithCounter.hpp"
@@ -106,6 +107,7 @@
 #include "device/time.hpp"
 #include "system/registry.hpp"
 #include "system/vfs.hpp"
+#include "system/Console.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -292,10 +294,18 @@ MachInGameScreen::~MachInGameScreen()
     DEBUG_STREAM(DIAG_NEIL, "MachInGameScreen::DTOR leave" << std::endl);
 }
 
+void MachInGameScreen::setConsole(System::IConsole* console)
+{
+    CB_DEPIMPL_AUTO(console_);
+    console_ = console;
+}
+
 void MachInGameScreen::doBecomeRoot()
 {
     CB_DEPIMPL_AUTO(pCursors2d_);
     CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
     CB_DEPIMPL_AUTO(pProductionBank_);
     CB_DEPIMPL_AUTO(pHWResearchBank_);
     CB_DEPIMPL_AUTO(resolutionChanged_);
@@ -328,6 +338,11 @@ void MachInGameScreen::doBecomeRoot()
         // Change context to same context but get code to recreate the
         // gui controls relevant to that context.
         currentContext(currentContext(), true);
+        if (pConsoleDropDown_)
+        {
+            pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+            updateConsoleDropDownViewport();
+        }
 
         // Reset resolution changed flag
         resolutionChanged_ = false;
@@ -1278,6 +1293,8 @@ void MachInGameScreen::asynchronousUpdate()
     CB_DEPIMPL_AUTO(pControlPanel_);
     CB_DEPIMPL_AUTO(pMapArea_);
     CB_DEPIMPL_AUTO(redrawMapCounter_);
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
     CB_DEPIMPL_AUTO(networkStuffedStartTime_);
 
 #ifndef PRODUCTION
@@ -1451,6 +1468,7 @@ void MachInGameScreen::update()
     CB_DEPIMPL_AUTO(controlPanelOn_);
     CB_DEPIMPL_AUTO(controlPanelXPos_);
     CB_DEPIMPL_AUTO(pControlPanel_);
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
     CB_DEPIMPL_AUTO(pMapArea_);
     CB_DEPIMPL_AUTO(redrawMapCounter_);
     CB_DEPIMPL_AUTO(networkStuffedStartTime_);
@@ -1506,6 +1524,8 @@ void MachInGameScreen::update()
     // Tell map area to update every frame
     pMapArea_->controlPanelSliding(controlPanelXPos_ != MachGui::controlPanelOutXPos());
     pMapArea_->changed(); // Force redraw of map area
+
+    updateConsoleDropDownViewport();
 
     // World view window is responsible for drawing rubber band when
     // selecting large numbers of actors.
@@ -2597,6 +2617,15 @@ void MachInGameScreen::fogOfWarOn(bool fog)
     pContinentMap_->fogOfWarOn(fog);
 }
 
+bool MachInGameScreen::fogOfWarOn() const
+{
+    CB_DEPIMPL_AUTO(pContinentMap_);
+
+    PRE(pContinentMap_);
+
+    return pContinentMap_->fogOfWarOn();
+}
+
 bool MachInGameScreen::switchToMenus() const
 {
     CB_DEPIMPL_AUTO(switchToMenus_);
@@ -2822,6 +2851,73 @@ bool MachInGameScreen::displayControlPanel() const
     return returnVal;
 }
 
+void MachInGameScreen::toggleConsoleDropDown()
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+    CB_DEPIMPL_AUTO(console_);
+
+    if (!pConsoleDropDown_)
+    {
+        pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(this);
+        pConsoleDropDown_->setConsole(console_);
+        pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+        consoleDropDownOffset_ = -static_cast<int>(pConsoleDropDown_->height());
+        positionChildRelative(pConsoleDropDown_.get(), Gui::Coord(0, consoleDropDownOffset_));
+        pConsoleDropDown_->setVisible(false);
+    }
+
+    pConsoleDropDown_->toggle();
+
+    if (pConsoleDropDown_->isOpen())
+    {
+        pConsoleDropDown_->setVisible(true);
+        pConsoleDropDown_->focusInput();
+    }
+    else
+    {
+        pConsoleDropDown_->blurInput();
+    }
+}
+
+void MachInGameScreen::updateConsoleDropDownViewport()
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+
+    if (!pConsoleDropDown_)
+        return;
+
+    const int hiddenOffset = -static_cast<int>(pConsoleDropDown_->height());
+    const bool isOpen = pConsoleDropDown_->isOpen();
+    const int targetOffset = isOpen ? 0 : hiddenOffset;
+    const int slideSpeed = MachGui::controlPanelSlideOutSpeed();
+
+    if (consoleDropDownOffset_ < targetOffset)
+    {
+        consoleDropDownOffset_ = std::min(consoleDropDownOffset_ + slideSpeed, targetOffset);
+    }
+    else if (consoleDropDownOffset_ > targetOffset)
+    {
+        consoleDropDownOffset_ = std::max(consoleDropDownOffset_ - slideSpeed, targetOffset);
+    }
+
+    positionChildRelative(pConsoleDropDown_.get(), Gui::Coord(0, consoleDropDownOffset_));
+
+    const bool fullyHidden = !isOpen && consoleDropDownOffset_ == hiddenOffset;
+    pConsoleDropDown_->setVisible(!fullyHidden);
+    if (fullyHidden)
+    {
+        pConsoleDropDown_->blurInput();
+    }
+    else
+    {
+        pConsoleDropDown_->updateInput();
+    }
+    pConsoleDropDown_->changed();
+}
+
 void MachInGameScreen::setupCameraScrollAreas()
 {
     CB_DEPIMPL_AUTO(pTopCameraScrollArea_);
@@ -2856,6 +2952,7 @@ void MachInGameScreen::setupPromptText()
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pPromptText_);
     CB_DEPIMPL_AUTO(controlPanelXPos_);
+    CB_DEPIMPL_AUTO(console_);
 
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
@@ -2869,6 +2966,7 @@ void MachInGameScreen::setupPromptText()
             Gui::Boundary(controlPanelXPos_, h + MachGui::promptTextYOffset(), w, h),
             pCameras_.get(),
             &worldViewWindow());
+        pPromptText_->setConsole(console_);
     }
 
     // Move prompt text

@@ -57,6 +57,7 @@ public:
 
     // Ability to switch "Fog Of War" on/off
     void fogOfWarOn(bool);
+    bool fogOfWarOn() const;
 
     // change map mode
     enum MapMode

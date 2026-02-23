@@ -21,6 +21,13 @@ class MachCameras;
 class MachPromptTextImpl;
 class MachInGameScreen;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 // orthodox canonical (revoked)
 class MachPromptText : public GuiSingleLineEditBox
 {
@@ -46,6 +53,8 @@ public:
     // Set/get the prompt text related to current command state
     void setCommandPromptText(const std::string& prompt);
     const std::string& commandPromptText() const;
+
+    void setConsole(System::IConsole* console);
 
     // Clear any prompt text associated with the current command state
     void clearCommandPromptText();
