@@ -32,6 +32,8 @@ public:
     // Do/Don't allow space characters to be entered at beginning of edit box.
     void ignoreSpaceAtBeginning(bool);
 
+    using GuiSingleLineEditBox::doHandleKeyEvent;
+
 protected:
     void drawBackground() override;
     bool doHandleCharEvent(const GuiCharEvent& e) override;
