@@ -156,25 +156,34 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
     if (event.state() != Gui::PRESSED)
         return true;
 
-    if (event.key() == Device::KeyCode::ENTER)
+    if (event.key() == Device::KeyCode::TAB)
     {
-        submit();
-    }
-    else if (event.key() == Device::KeyCode::ESCAPE)
-    {
-        toggle();
-    }
-    else if (event.key() == Device::KeyCode::UP_ARROW)
-    {
-        navigateHistory(-1);
-    }
-    else if (event.key() == Device::KeyCode::DOWN_ARROW)
-    {
-        navigateHistory(1);
+        handleTabCompletion();
     }
     else
     {
-        inputBox()->doHandleKeyEvent(event);
+        lastTabWasComplete_ = false;
+
+        if (event.key() == Device::KeyCode::ENTER)
+        {
+            submit();
+        }
+        else if (event.key() == Device::KeyCode::ESCAPE)
+        {
+            toggle();
+        }
+        else if (event.key() == Device::KeyCode::UP_ARROW)
+        {
+            navigateHistory(-1);
+        }
+        else if (event.key() == Device::KeyCode::DOWN_ARROW)
+        {
+            navigateHistory(1);
+        }
+        else
+        {
+            inputBox()->doHandleKeyEvent(event);
+        }
     }
 
     return true;
@@ -241,6 +250,56 @@ void MachGuiConsoleDropDown::navigateHistory(int direction)
             savedInput_.clear();
         }
     }
+}
+
+void MachGuiConsoleDropDown::handleTabCompletion()
+{
+    if (!pConsole_)
+        return;
+
+    const std::string prefix = inputText();
+    const std::vector<std::string> matches = pConsole_->suggestions(prefix);
+
+    if (matches.empty())
+        return;
+
+    if (lastTabWasComplete_)
+    {
+        // Second consecutive Tab: list all matches.
+        for (const std::string& match : matches)
+        {
+            pConsole_->writeLine(match);
+        }
+        lastTabWasComplete_ = false;
+        return;
+    }
+
+    if (matches.size() == 1)
+    {
+        // Unique match: complete fully and append a space.
+        setInputText(matches[0] + " ");
+        lastTabWasComplete_ = false;
+        return;
+    }
+
+    // Multiple matches: complete to the longest common prefix.
+    std::string lcp = matches[0];
+    for (std::size_t i = 1; i < matches.size(); ++i)
+    {
+        const std::string& m = matches[i];
+        std::size_t len = std::min(lcp.size(), m.size());
+        std::size_t j = 0;
+        while (j < len && lcp[j] == m[j])
+            ++j;
+        lcp.resize(j);
+    }
+
+    if (lcp.size() > prefix.size())
+    {
+        setInputText(lcp);
+    }
+
+    lastTabWasComplete_ = true;
 }
 
 void MachGuiConsoleDropDown::doLayout()
