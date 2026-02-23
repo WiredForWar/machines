@@ -1,3 +1,19 @@
+
+### v1.7.5
+
+- Ground camera height (z position) now always saved/restored on view save/restore
+- Following camera now persists when switching camera type (Ground <-> Zenith)
+- A number of pathfinding improvements (performance and responsiveness)
+- Screenshot capture is now more robust and the 'Paused' overlay is no longer included in screenshots
+- Optimized the game startup
+- Added models texture modding support
+- Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)
+- Fixed many cases when machines could stuck and lock each other
+- Fixed selection marker rendering (2D/3D and runtime switching)
+- Fixed rendering/culling issues that could cause missing world tiles / rooms not being rendered
+- Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers
+- Fixed nearest Lab lookup for Technicians
+
 ### v1.7.4
 
 (v1.7.3 had only pre-release builds)
