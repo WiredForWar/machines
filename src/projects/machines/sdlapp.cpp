@@ -679,7 +679,11 @@ void SDLApp::initConsole()
 {
     console_ = std::make_unique<System::Console>();
 
-    console_->registerCommand({ "exit", "Immediately exit the game." }, [this](auto) {
+    console_->registerCommand(
+        { .name = "exit", .description = "Immediately exit the game." },
+        [this](const System::IConsole::CommandRequest&, System::IConsole& console)
+    {
+        console.writeLine("Exiting...");
         pStartupScreens_->requestExit();
     });
 }

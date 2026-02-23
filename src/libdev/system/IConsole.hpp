@@ -8,6 +8,8 @@
 #include <variant>
 #include <vector>
 
+#include "utility/CallbackHandle.hpp"
+
 namespace System
 {
 
@@ -52,7 +54,8 @@ public:
         std::string rawLine{};
     };
 
-    using CommandHandler = std::function<void(const CommandRequest&)>;
+    using CommandHandler = std::function<void(const CommandRequest&, IConsole&)>;
+    using OutputListener = std::function<void(std::string_view)>;
 
     virtual ~IConsole() = default;
 
@@ -70,6 +73,11 @@ public:
 
     [[nodiscard]] virtual const std::string& lastError() const = 0;
     virtual void clearError() = 0;
+
+    virtual void writeLine(std::string_view text) = 0;
+    [[nodiscard]] virtual const std::vector<std::string>& output() const = 0;
+    [[nodiscard]] virtual std::string_view prompt() const = 0;
+    virtual Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) = 0;
 };
 
 } // namespace System

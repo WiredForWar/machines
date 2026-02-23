@@ -11,8 +11,21 @@ namespace System
 
 Console::Console(const ConsoleConfig& config)
     : config_(config)
+    , promptText_("> ")
 {
     history_.reserve(std::min<std::size_t>(config_.historyLimit, history_.capacity()));
+    output_.reserve(std::min<std::size_t>(config_.outputLimit, output_.capacity()));
+    listenerState_ = std::make_shared<OutputListenerState>();
+    listenerState_->console = this;
+}
+
+Console::~Console()
+{
+    if (listenerState_ != nullptr)
+    {
+        listenerState_->console = nullptr;
+    }
+    outputListeners_.clear();
 }
 
 bool Console::registerCommand(const CommandMetadata& metadata, CommandHandler handler)
@@ -87,6 +100,10 @@ bool Console::submit(std::string_view line)
 
     appendHistoryEntry(trimmed);
 
+    std::string submittedLine = promptText_;
+    submittedLine += trimmed;
+    writeLine(submittedLine);
+
     const std::vector<std::string> tokens = tokenize(trimmed);
     if (tokens.empty())
     {
@@ -113,7 +130,7 @@ bool Console::submit(std::string_view line)
     request.name = commandName;
     request.arguments = std::move(parsedArguments);
     request.rawLine = std::string(trimmed);
-    commandIterator->second.handler(request);
+    commandIterator->second.handler(request, *this);
     return true;
 }
 
@@ -363,6 +380,78 @@ void Console::appendHistoryEntry(const std::string& line)
 void Console::setError(std::string message)
 {
     lastError_ = std::move(message);
+}
+
+void Console::writeLine(std::string_view text)
+{
+    appendOutputLine(text);
+}
+
+const std::vector<std::string>& Console::output() const
+{
+    return output_;
+}
+
+std::string_view Console::prompt() const
+{
+    return promptText_;
+}
+
+class Console::OutputListenerHandleImpl : public Utils::CallbackHandle
+{
+public:
+    explicit OutputListenerHandleImpl(std::shared_ptr<OutputListenerState> state)
+        : state_(std::move(state))
+    {
+    }
+
+    ~OutputListenerHandleImpl() override
+    {
+        if (const std::shared_ptr<OutputListenerState> shared = state_.lock())
+        {
+            if (shared->console != nullptr)
+            {
+                shared->console->removeOutputListener(this);
+            }
+        }
+    }
+
+private:
+    std::weak_ptr<OutputListenerState> state_ {};
+};
+
+Utils::CallbackHandleUPtr Console::addOutputListener(OutputListener listener)
+{
+    if (listenerState_ == nullptr)
+    {
+        listenerState_ = std::make_shared<OutputListenerState>();
+        listenerState_->console = this;
+    }
+
+    auto handle = std::make_unique<OutputListenerHandleImpl>(listenerState_);
+    outputListeners_.push_back(OutputListenerEntry { handle.get(), std::move(listener) });
+    return handle;
+}
+
+void Console::appendOutputLine(std::string_view text)
+{
+    if (config_.outputLimit > 0)
+    {
+        if (output_.size() == config_.outputLimit)
+            output_.erase(output_.begin());
+
+        output_.emplace_back(text);
+    }
+
+    for (const OutputListenerEntry& entry : outputListeners_)
+    {
+        entry.callback(text);
+    }
+}
+
+void Console::removeOutputListener(const Utils::CallbackHandle* handle)
+{
+    std::erase_if(outputListeners_, [handle](const OutputListenerEntry& entry) { return entry.handle == handle; });
 }
 
 } // namespace System

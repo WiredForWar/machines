@@ -2,7 +2,9 @@
 
 #include "system/IConsole.hpp"
 
+#include <memory>
 #include <unordered_map>
+#include <vector>
 
 namespace System
 {
@@ -10,12 +12,14 @@ namespace System
 struct ConsoleConfig
 {
     std::size_t historyLimit { 64U };
+    std::size_t outputLimit { 256U };
 };
 
 class Console : public IConsole
 {
 public:
     explicit Console(const ConsoleConfig& config = {});
+    ~Console() override;
 
     bool registerCommand(const CommandMetadata& metadata, CommandHandler handler) override;
     bool unregisterCommand(std::string_view name) override;
@@ -31,6 +35,11 @@ public:
 
     [[nodiscard]] const std::string& lastError() const override;
     void clearError() override;
+
+    void writeLine(std::string_view text) override;
+    [[nodiscard]] const std::vector<std::string>& output() const override;
+    [[nodiscard]] std::string_view prompt() const override;
+    Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) override;
 
 private:
     struct CommandDefinition
@@ -52,10 +61,31 @@ private:
 
     void appendHistoryEntry(const std::string& line);
     void setError(std::string message);
+    void appendOutputLine(std::string_view text);
 
     ConsoleConfig config_{};
     CommandMap commands_{};
     std::vector<std::string> history_{};
+
+    class OutputListenerHandleImpl;
+
+    struct OutputListenerEntry
+    {
+        const Utils::CallbackHandle* handle{};
+        OutputListener callback{};
+    };
+
+    struct OutputListenerState
+    {
+        Console* console{};
+    };
+
+    void removeOutputListener(const Utils::CallbackHandle* handle);
+
+    std::vector<std::string> output_{};
+    std::string promptText_{};
+    std::vector<OutputListenerEntry> outputListeners_{};
+    std::shared_ptr<OutputListenerState> listenerState_{};
     std::string lastError_{};
 };
 
