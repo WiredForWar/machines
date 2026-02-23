@@ -42,6 +42,8 @@ public:
 
 private:
     std::string inputText() const;
+    void setInputText(const std::string& text);
+    void navigateHistory(int direction);
 
     MachGuiSingleLineEditBox* inputBox() const;
     void doLayout();
@@ -66,4 +68,7 @@ private:
     int inputAreaHeight_{};
     int inputPadding_{};
     bool open_{};
+
+    std::size_t historyIndex_{std::size_t(-1)};
+    std::string savedInput_{};
 };

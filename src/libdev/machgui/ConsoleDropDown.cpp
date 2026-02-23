@@ -78,6 +78,8 @@ void MachGuiConsoleDropDown::submit()
         pConsole_->submit(inputText());
     }
     inputBox()->clear();
+    historyIndex_ = std::size_t(-1);
+    savedInput_.clear();
 }
 
 void MachGuiConsoleDropDown::doDisplay()
@@ -151,6 +153,9 @@ bool MachGuiConsoleDropDown::isOpen() const
 
 bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
 {
+    if (event.state() != Gui::PRESSED)
+        return true;
+
     if (event.key() == Device::KeyCode::ENTER)
     {
         submit();
@@ -158,6 +163,14 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
     else if (event.key() == Device::KeyCode::ESCAPE)
     {
         toggle();
+    }
+    else if (event.key() == Device::KeyCode::UP_ARROW)
+    {
+        navigateHistory(-1);
+    }
+    else if (event.key() == Device::KeyCode::DOWN_ARROW)
+    {
+        navigateHistory(1);
     }
     else
     {
@@ -170,6 +183,64 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
 std::string MachGuiConsoleDropDown::inputText() const
 {
     return inputBox()->text();
+}
+
+void MachGuiConsoleDropDown::setInputText(const std::string& text)
+{
+    inputBox()->setText(text);
+    inputBox()->setCursorPosition(text.size());
+}
+
+void MachGuiConsoleDropDown::navigateHistory(int direction)
+{
+    if (!pConsole_)
+        return;
+
+    const auto& history = pConsole_->history();
+    if (history.empty())
+        return;
+
+    const std::size_t count = history.size();
+    const std::size_t npos = std::size_t(-1);
+
+    if (direction < 0)
+    {
+        // UP — go to older entry
+        if (historyIndex_ == npos)
+        {
+            // Start browsing: save current input, go to newest history entry
+            savedInput_ = inputText();
+            historyIndex_ = count - 1;
+        }
+        else if (historyIndex_ > 0)
+        {
+            --historyIndex_;
+        }
+        else
+        {
+            return;
+        }
+        setInputText(history[historyIndex_]);
+    }
+    else
+    {
+        // DOWN — go to newer entry
+        if (historyIndex_ == npos)
+            return;
+
+        if (historyIndex_ + 1 < count)
+        {
+            ++historyIndex_;
+            setInputText(history[historyIndex_]);
+        }
+        else
+        {
+            // Past newest entry: restore saved input
+            historyIndex_ = npos;
+            setInputText(savedInput_);
+            savedInput_.clear();
+        }
+    }
 }
 
 void MachGuiConsoleDropDown::doLayout()
