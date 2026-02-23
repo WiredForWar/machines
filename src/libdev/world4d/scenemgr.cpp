@@ -21,6 +21,9 @@
 #include "mathex/abox3d.hpp"
 
 #include "render/device.hpp"
+#include "render/LightingMode.hpp"
+#include "render/ShadowQuality.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/stats.hpp"
 #include "render/colour.hpp"
 
@@ -34,6 +37,8 @@
 #include "world4d/composit.hpp"
 #include "world4d/internal/complexi.hpp"
 #include "world4d/internal/lighti.hpp"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 // #define DO_CULL_TRACING
 #ifdef DO_CULL_TRACING
@@ -107,6 +112,8 @@ private:
     static double highEnoughFrameRateInit_;
 
     bool dynamicLightsEnabled_;
+
+    W4dSceneManager::TerrainHeightFunc terrainHeightFunc_;
 };
 
 // De-pimple everything in the class.
@@ -133,7 +140,8 @@ private:
     CB_DEPIMPL(double, highEnoughFrameRateInit_);                                                                      \
     CB_DEPIMPL(double, requestedMinFrameRate_);                                                                        \
     CB_DEPIMPL(double, highEnoughFrameRate_);                                                                          \
-    CB_DEPIMPL(bool, dynamicLightsEnabled_);
+    CB_DEPIMPL(bool, dynamicLightsEnabled_);                                                                           \
+    CB_DEPIMPL(W4dSceneManager::TerrainHeightFunc, terrainHeightFunc_);
 
 // static
 MATHEX_SCALAR W4dSceneManagerImpl::requestedMinFrameRateInit_ = 20;
@@ -287,7 +295,154 @@ void W4dSceneManager::render()
     currentCamera_->adaptToEnvironment(environment());
     //  device_->out() << "Distance far clipping plane: " << currentCamera()->yonClipDistance() << " m" << std::endl;
 
-    device_->start3D(clearBg_);
+    device_->start3D();
+
+    // Shadow depth pass: render scene from the light's perspective into the
+    // shadow map.  Runs after start3D() (rendering context is ready) but
+    // before beginGeometryPass() so the shadow maps are complete before the
+    // main geometry pass samples them.
+    const bool gpuLighting = Config::gfxLightingMode.get() != LightingMode::Legacy;
+    const bool wantShadows = gpuLighting && Config::gfxShadowQuality.get() != ShadowQuality::Static;
+    if (wantShadows)
+    {
+        // Find the first global directional light for the shadow caster.
+        W4dDirectionalLight* shadowLight{};
+        for (auto* light : lights_)
+        {
+            if (light->isGlobal() && light->isOn())
+            {
+                shadowLight = dynamic_cast<W4dDirectionalLight*>(light);
+                if (shadowLight)
+                    break;
+            }
+        }
+
+        if (shadowLight)
+        {
+            const MexVec3& dir = shadowLight->direction();
+            const glm::vec3 lightDir(dir.x(), dir.y(), dir.z());
+
+            const MexPoint3d camPos = currentCamera_->globalTransform().position();
+            const MexPoint3d frustumCenter = shadowFrustumCenter();
+            const glm::vec3 eye(camPos.x(), camPos.y(), camPos.z());
+            const glm::vec3 center(frustumCenter.x(), frustumCenter.y(), frustumCenter.z());
+
+            // Dynamic cascade extents based on camera height above terrain.
+            // Low cameras (≈ 2..5 m above ground) get tight cascades;
+            // zenith (≈ 20..250 m above ground) gets progressively larger ones.
+            const float heightAboveTerrain = cameraHeightAboveTerrain();
+            const float heightT = std::clamp((heightAboveTerrain - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+            const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
+            const float farExtent = glm::mix(200.0f, 300.0f, heightT);
+
+            // For ground/FP cameras, align the shadow cascade square with
+            // the camera's horizontal forward so coverage is optimal in
+            // front of the camera.  For zenith (looking steeply down),
+            // keep the fixed default up — the cascade is already centred
+            // on the view and rotation just wastes coverage.
+            const glm::vec3 lightN = glm::normalize(lightDir);
+            const glm::vec3 defaultUp = (std::abs(glm::dot(lightN, glm::vec3(0, 0, 1))) > 0.99f)
+                ? glm::vec3(0, 1, 0)
+                : glm::vec3(0, 0, 1);
+
+            const MexVec3 camFwd = currentCamera_->globalTransform().xBasis();
+            const float fwdZ = static_cast<float>(camFwd.z());
+            // downward: 0 = horizontal, 1 = straight down.
+            const float downward = std::clamp(-fwdZ, 0.0f, 1.0f);
+
+            glm::vec3 up = defaultUp;
+            if (downward < 0.7f)
+            {
+                const glm::vec3 camHorizRaw(
+                    static_cast<float>(camFwd.x()),
+                    static_cast<float>(camFwd.y()),
+                    0.0f);
+                const float camHorizLen = glm::length(camHorizRaw);
+                if (camHorizLen > 0.001f)
+                {
+                    const glm::vec3 camHoriz = camHorizRaw / camHorizLen;
+                    // Project the camera's horizontal forward onto the plane
+                    // perpendicular to the light direction.
+                    const glm::vec3 projected = camHoriz - glm::dot(camHoriz, lightN) * lightN;
+                    const float projLen = glm::length(projected);
+                    if (projLen > 0.001f)
+                        up = projected / projLen;
+                }
+            }
+
+            // The shader uses view-space distance (length(viewSpace)) to pick
+            // the cascade.  The near cascade ortho box is 2*nearExtent wide,
+            // so any fragment within 2*nearExtent view distance can potentially
+            // be covered by it.  Use a fixed split independent of the center
+            // offset so the near cascade coverage doesn't shrink when the
+            // center is close to the camera.
+            const float splitViewDist = nearExtent * 2.0f;
+            device_->setShadowSplitDistance(splitViewDist);
+
+            // Stable cascade snapping: project the cascade center into
+            // light space, round to the nearest shadow-map texel, then
+            // project back.  This prevents the shadow map from shifting
+            // sub-texel amounts as the camera moves, eliminating shadow
+            // edge shimmer and pop-in.
+            auto snapCenter = [&](float extent, float mapSize) -> glm::vec3
+            {
+                // Build a reference view matrix looking along the light
+                // direction from an arbitrary origin — only the rotation
+                // matters for snapping.
+                const glm::mat4 refView = glm::lookAt(glm::vec3(0.0f), lightDir, up);
+                const glm::vec3 lsCenter = glm::vec3(refView * glm::vec4(center, 1.0f));
+
+                // World-space size of one shadow-map texel.
+                const float texelSize = (2.0f * extent) / mapSize;
+
+                // Snap X and Y in light space; leave Z untouched.
+                glm::vec3 snapped = lsCenter;
+                snapped.x = std::floor(snapped.x / texelSize) * texelSize;
+                snapped.y = std::floor(snapped.y / texelSize) * texelSize;
+
+                // Transform back to world space.
+                const glm::mat4 invRefView = glm::inverse(refView);
+                return glm::vec3(invRefView * glm::vec4(snapped, 1.0f));
+            };
+
+            // --- Near cascade: high-resolution shadows for close objects ---
+            // The light is placed well behind the center so that tall
+            // geometry (cliffs, towers) above the ground-level center is
+            // not clipped by the ortho near plane.
+            {
+                const glm::vec3 nearCenter = snapCenter(nearExtent, 4096.0f);
+                const glm::vec3 nearLightPos = nearCenter - lightDir * (nearExtent * 4.0f);
+                const glm::mat4 nearView = glm::lookAt(nearLightPos, nearCenter, up);
+                const glm::mat4 nearProj = glm::ortho(
+                    -nearExtent, nearExtent,
+                    -nearExtent, nearExtent,
+                    1.0f, nearExtent * 8.0f);
+                const glm::mat4 nearMatrix = nearProj * nearView;
+
+                device_->beginShadowPass(RenDevice::ShadowCascade::Near, nearMatrix);
+                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                device_->endShadowPass();
+            }
+
+            // --- Far cascade: lower-resolution shadows for distant objects ---
+            {
+                const glm::vec3 farCenter = snapCenter(farExtent, 2048.0f);
+                const glm::vec3 farLightPos = farCenter - lightDir * (farExtent * 4.0f);
+                const glm::mat4 farView = glm::lookAt(farLightPos, farCenter, up);
+                const glm::mat4 farProj = glm::ortho(
+                    -farExtent, farExtent,
+                    -farExtent, farExtent,
+                    1.0f, farExtent * 8.0f);
+                const glm::mat4 farMatrix = farProj * farView;
+
+                device_->beginShadowPass(RenDevice::ShadowCascade::Far, farMatrix);
+                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                device_->endShadowPass();
+            }
+        }
+    }
+
+    device_->beginGeometryPass(clearBg_);
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
     currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
@@ -335,18 +490,22 @@ void W4dSceneManager::updateLights()
             ++nGlobalLights_;
         }
 
-        // If a light is local, disable it.  It will be enabled again during
-        // the render traversal.  Don't call lazyUpdate for the local lights.
-        // They will be updated when enabled.
-        if (light->isLocal())
+        // In PerPixel mode, treat LOCAL lights as DYNAMIC so they illuminate
+        // everything nearby via domain assignment instead of only their
+        // explicitly-assigned entities.
+        const bool promoteLocal = Config::gfxLightingMode.get() == LightingMode::PerPixel;
+
+        if (light->isLocal() && !promoteLocal)
         {
+            // Legacy path: disable local lights; they will be re-enabled
+            // per-entity during the render traversal.
             ++nLocalLights_;
             light->disable();
         }
 
         // If a client has defined a domain assignor, use it to give every
         // light domains.
-        if (light->isDynamic())
+        if (light->isDynamic() || (light->isLocal() && promoteLocal))
         {
             // Unfortunately, we must update the dynamic lights so that their
             // positions are correct for domain assignment.
@@ -844,6 +1003,102 @@ bool W4dSceneManager::dynamicLightsEnabled() const
 void W4dSceneManager::dynamicLightsEnabled(bool enabled)
 {
     pImpl_->dynamicLightsEnabled_ = enabled;
+}
+
+void W4dSceneManager::setTerrainHeightFunction(TerrainHeightFunc fn)
+{
+    pImpl_->terrainHeightFunc_ = std::move(fn);
+}
+
+const W4dSceneManager::TerrainHeightFunc& W4dSceneManager::terrainHeightFunction() const
+{
+    return pImpl_->terrainHeightFunc_;
+}
+
+// Compute the camera's height above terrain.  Falls back to camPos.z()
+// (i.e. assumes ground at z=0) when no terrain callback is registered.
+float W4dSceneManager::cameraHeightAboveTerrain() const
+{
+    CB_DEPIMPL_AUTO(currentCamera_);
+    CB_DEPIMPL_AUTO(terrainHeightFunc_);
+
+    const MexPoint3d camPos = currentCamera_->globalTransform().position();
+    const float camZ = static_cast<float>(camPos.z());
+
+    if (terrainHeightFunc_)
+    {
+        const float groundZ = static_cast<float>(terrainHeightFunc_(camPos.x(), camPos.y()));
+        return std::max(camZ - groundZ, 0.0f);
+    }
+    return std::max(camZ, 0.0f);
+}
+
+MexPoint3d W4dSceneManager::shadowFrustumCenter() const
+{
+    CB_DEPIMPL_AUTO(currentCamera_);
+    CB_DEPIMPL_AUTO(terrainHeightFunc_);
+
+    const MexTransform3d& camXform = currentCamera_->globalTransform();
+    const MexPoint3d camPos = camXform.position();
+    const MexVec3 camFwd = camXform.xBasis();
+
+    const float eyeX = static_cast<float>(camPos.x());
+    const float eyeY = static_cast<float>(camPos.y());
+    const float eyeZ = static_cast<float>(camPos.z());
+    const float fwdX = static_cast<float>(camFwd.x());
+    const float fwdY = static_cast<float>(camFwd.y());
+    const float fwdZ = static_cast<float>(camFwd.z());
+
+    // Ground height below the camera.  Using the actual terrain height
+    // (instead of a fixed z=0) keeps the cascade center at the correct
+    // altitude even when the camera is in a valley with negative Z.
+    const float groundZ = terrainHeightFunc_
+        ? static_cast<float>(terrainHeightFunc_(camPos.x(), camPos.y()))
+        : 0.0f;
+
+    // Height above the local terrain — drives cascade extent estimate.
+    const float heightAbove = std::max(eyeZ - groundZ, 2.0f);
+    const float heightT = std::clamp((heightAbove - 2.0f) / (250.0f - 2.0f), 0.0f, 1.0f);
+    const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
+
+    // How much the camera looks downward: 0 = horizontal, 1 = straight down.
+    const float downward = std::clamp(-fwdZ, 0.0f, 1.0f);
+
+    // Horizontal forward direction (XY only, normalized).
+    const float fwdXYLen = std::sqrt(fwdX * fwdX + fwdY * fwdY);
+    const float hDirX = (fwdXYLen > 0.001f) ? fwdX / fwdXYLen : 1.0f;
+    const float hDirY = (fwdXYLen > 0.001f) ? fwdY / fwdXYLen : 0.0f;
+
+    // --- Approach A: ground-plane intersection (good for zenith) ---
+    // Intersect the view ray with z=groundZ.  Clamped so it can't fly off.
+    float isectX = eyeX;
+    float isectY = eyeY;
+    const float dz = eyeZ - groundZ;
+    if (fwdZ < -0.01f && dz > 0.1f)
+    {
+        constexpr float kMaxRayDist = 500.0f;
+        const float tHit = std::min(dz / (-fwdZ), kMaxRayDist);
+        isectX = eyeX + fwdX * tHit;
+        isectY = eyeY + fwdY * tHit;
+    }
+
+    // --- Approach B: horizontal forward offset (good for ground/FP) ---
+    // Push the center forward by nearExtent so the cascade covers the
+    // area in front of the camera rather than wasting half behind it.
+    const float horizX = eyeX + hDirX * nearExtent;
+    const float horizY = eyeY + hDirY * nearExtent;
+
+    // Blend: when looking straight down (downward ≈ 1) use ground
+    // intersection; when looking horizontally (downward ≈ 0) use the
+    // forward offset.  smoothstep gives a gentle transition.
+    const float t = glm::smoothstep(0.3f, 0.8f, downward);
+    const float centerX = glm::mix(horizX, isectX, t);
+    const float centerY = glm::mix(horizY, isectY, t);
+
+    // The cascade center sits at the local ground level so that the
+    // light's ortho projection covers the correct patch of terrain
+    // regardless of the light's oblique angle.
+    return MexPoint3d(centerX, centerY, groundZ);
 }
 
 /* End SCENEMGR.CPP *************************************************/

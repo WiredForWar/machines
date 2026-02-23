@@ -2,6 +2,8 @@
 
 #include "base/base.hpp"
 #include "render/internal/trigroup.hpp"
+#include "render/internal/BackendCommands.hpp"
+#include "render/internal/DrawCallFactory.hpp"
 #include "render/render.hpp"
 #include "render/texture.hpp"
 
@@ -20,7 +22,6 @@ class RenColour;
 class RenCamera;
 class RenLight;
 class RenMaterial;
-class RenCapabilities;
 class RenStats;
 class RenSurface;
 class RenISurfBody;
@@ -39,10 +40,9 @@ class IRenderBackend;
 class RenDevice final
 {
 public:
-    // Selects a D3D driver; uses the display to create front and back
-    // buffers; loads a palette, if necessary; possibly changes the display
-    // resolution; and generally sets everything up for 3D rendering.
-    // Calls useDevice(this).
+    // Uses the display to create front and back buffers; possibly changes
+    // the display resolution; and generally sets everything up for 3D
+    // rendering. Calls useDevice(this).
     // PRE(Ren::initialised());
     // PRE(MexCoordSystem::instance().isSet());
     RenDevice(RenDisplay*);
@@ -64,10 +64,14 @@ public:
     // PRE(rendering2D());
     void end2D();
 
-    // Sets the rendering parameters appropriately for the 3D world.
+    // Sets up the 3D rendering context (matrices, stats, illuminator).
+    // Shadow passes may be issued after this call and before beginGeometryPass().
     // PRE(idleRendering());
     // POST(rendering3D());
-    void start3D(bool clearBack = true);
+    void start3D();
+    // Opens the main geometry render pass (binds FBO, clears, sets fog/depth/blend).
+    // PRE(rendering3D());
+    void beginGeometryPass(bool clearBack = true);
     // PRE(rendering3D());
     void end3D();
 
@@ -114,6 +118,10 @@ public:
     // PRE(!rendering3D());
     void setViewport(int left, int top, int width, int height);
 
+    // Set the viewport to the given size and clear the colour buffer to black.
+    // Used by the display layer after a mode change.
+    void clearDisplay(int width, int height);
+
     // Use another camera.  At present, multiple viewports on one device
     // aren't supported, so you can't switch cameras mid-frame.
     // PRE(cam);
@@ -149,12 +157,41 @@ public:
     void enableLighting();
     bool lightingEnabled() const;
 
-    // Although there can be more than one Direct3D device in existance,
+    // Although there can be more than one render device in existence,
     // we should never need two simultaneously.  The client is expected to
     // set a current device before using any other rendering functionality.
     // N.B. a device *must* be set before loading meshes or textures.
     static void useDevice(RenDevice* d);
     static RenDevice* current();
+
+    void recordCommand(Ren::BackendCommand command);
+    void recordEnableVertexAttribPointer(
+        Ren::AttributeLocationId index,
+        int size,
+        Ren::BackendVertexAttribType type,
+        bool normalized,
+        std::size_t stride,
+        std::size_t offset);
+    void recordDisableVertexAttribPointer(Ren::AttributeLocationId index);
+
+    void enableVertexLayout(
+        Ren::AttributeLocationId posAttr,
+        int posComponents,
+        Ren::AttributeLocationId uvAttr,
+        Ren::AttributeLocationId colAttr);
+    void disableVertexLayout(
+        Ren::AttributeLocationId posAttr,
+        Ren::AttributeLocationId uvAttr,
+        Ren::AttributeLocationId colAttr);
+
+    void beginImmediateCommands();
+    void endImmediateCommands();
+    bool immediateCommandsActive() const;
+
+    // Submit all pending frame commands so that subsequent GPU readbacks
+    // see up-to-date results.  A new command buffer is started for the
+    // remainder of the frame.  No-op if no frame buffer is recording.
+    void flushCommandBuffer();
 
     void backgroundColour(const RenColour&);
     const RenColour& backgroundColour() const;
@@ -261,9 +298,6 @@ public:
     RenStats* statistics();
     const RenStats* statistics() const;
 
-    // Features supported by this rendering system.
-    const RenCapabilities& capabilities() const;
-
     // colour filter
 
     class Filter
@@ -285,8 +319,6 @@ public:
 
     Ren::IRenderBackend& backend();
     const Ren::IRenderBackend& backend() const;
-
-    Ren::ProgramId loadShaders(const char* vertexPath, const char* fragmentPath);
 
     void renderScreenspace(
         const RenIVertex* vertices,
@@ -340,6 +372,22 @@ public:
     const glm::mat4& getProjectionMatrix() { return projection_; }
 
     const glm::mat4& getViewMatrix() { return view_; }
+
+    // Shadow mapping: render scene depth from the light's perspective.
+    enum class ShadowCascade { Near, Far };
+    void beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpaceMatrix);
+    void endShadowPass();
+    void setShadowSplitDistance(float d);
+    bool isShadowPassActive() const;
+    bool isShadowMappingEnabled() const;
+    void shadowStrength(float s);
+    float shadowStrength() const;
+    void renderShadowDepth(
+        const RenIVertex* vertices,
+        size_t nVertices,
+        const Ren::VertexIdx* indices,
+        size_t nIndices,
+        Ren::PrimitiveTopology topology);
     void renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH);
 
     // private:
@@ -362,11 +410,10 @@ private:
     void addInterference();
     void graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, double maxAlpha);
     void uniformNoisePolygon(const Ren::Rect& area, double maxAlpha);
+    void blitPostProcess();
     void commonEndFrame();
 
     bool setVSync(bool enabled);
-
-    void syncSmoothFilters();
 
     friend class Filter;
     void setFilter(const RenColour&);
@@ -382,6 +429,10 @@ private:
     // is called.  Intended for drawing backgrounds.
     // PRE(hither < yon);
     void overrideClipping(double hither, double yon);
+
+    Ren::FrameState buildFrameState() const;
+    Ren::GpuLightingState buildGpuLightingState(bool gpuLighting) const;
+    Ren::StandardPipelineHandles buildStandardHandles() const;
 
     RenIDeviceImpl* pImpl_ { nullptr };
 

@@ -5,24 +5,30 @@ set(RENDER_SOURCES
     BmpFont.hpp
     Font.cpp
     Font.hpp
+    FogMode.cpp
+    FogMode.hpp
     FontsManager.cpp
     FontsManager.hpp
+    LightingMode.cpp
+    LightingMode.hpp
     OpenGL/RenderBackendGL.cpp
     OpenGL/RenderBackendGL.hpp
+    OpenGL/Utils.cpp
     OpenGL/Utils.hpp
     Painter.cpp
     Painter.hpp
     PrimitiveTopology.hpp
+    RenScopedImmediateCommands.cpp
+    RenderVariables.cpp
+    RenderVariables.hpp
+    ShadowQuality.cpp
+    ShadowQuality.hpp
     TextOptions.hpp
     alphagrp.cpp
     animcurs.cpp
     animcurs.hpp
     camera.cpp
     camera.hpp
-    capable.cpp
-    capable.hpp
-    capablei.cpp
-    capable.ipp
     colour.cpp
     colour.hpp
     colour.ipp
@@ -36,12 +42,6 @@ set(RENDER_SOURCES
     display.hpp
     displayi.cpp
     dlyspin.cpp
-    driv.cpp
-    driver.cpp
-    driv.hpp
-    drivi.cpp
-    drivsel.cpp
-    drivsel.hpp
     envirnmt.cpp
     envirnmt.hpp
     fixpt.cpp
@@ -57,13 +57,19 @@ set(RENDER_SOURCES
     illumine.cpp
     inlight.cpp
     inpoints.cpp
+    internal/BackendCommands.hpp
     internal/BackendTypes.hpp
     internal/BmpFontCore.hpp
+    internal/DrawCallFactory.cpp
+    internal/DrawCallFactory.hpp
+    internal/GpuMeshLightingSnapshot.hpp
     internal/FontImpl.hpp
     internal/IRenderBackend.hpp
+    internal/PipelineSpec.hpp
+    internal/RenScopedImmediateCommands.hpp
+    internal/RenderPassSpec.hpp
+    internal/UniformBlocks.hpp
     internal/alphagrp.hpp
-    internal/capablei.hpp
-    internal/capablei.ipp
     internal/colpack.hpp
     internal/coplagrp.hpp
     internal/cpfactry.ctp
@@ -73,8 +79,6 @@ set(RENDER_SOURCES
     internal/devicei.ipp
     internal/displayi.hpp
     internal/dlyspin.hpp
-    internal/driver.hpp
-    internal/drivi.hpp
     internal/fixpt.hpp
     internal/fixptvec.hpp
     internal/fn_stars.hpp

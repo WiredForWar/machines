@@ -1,10 +1,13 @@
 #pragma once
 
-#include "render/internal/BackendTypes.hpp"
 #include "render/render.hpp"
+#include "render/internal/BackendCommands.hpp"
+#include "render/internal/PipelineSpec.hpp"
+#include "render/internal/RenderPassSpec.hpp"
 
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string_view>
 
 struct SDL_Window;
@@ -17,6 +20,9 @@ class IRenderBackend
 public:
     virtual ~IRenderBackend() = default;
 
+    // Factory: creates the default backend implementation.
+    static std::unique_ptr<IRenderBackend> create();
+
     virtual bool initialize(SDL_Window* window) = 0;
     virtual void shutdown() = 0;
 
@@ -24,18 +30,13 @@ public:
 
     virtual bool setVSync(bool enabled) = 0;
 
-    virtual ProgramId createProgramFromFiles(
-        std::string_view vertexShaderPath,
-        std::string_view fragmentShaderPath,
-        std::string_view vertexShaderDebugName,
-        std::string_view fragmentShaderDebugName)
-        = 0;
-    virtual void releaseProgram(ProgramId id) = 0;
+    virtual PipelineId createPipeline(const PipelineDesc& desc) = 0;
+    virtual void releasePipeline(PipelineId id) = 0;
+    virtual UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const = 0;
+    virtual AttributeLocationId pipelineAttribLocation(PipelineId id, std::string_view name) const = 0;
 
-    virtual void useProgram(ProgramId id) = 0;
-
-    virtual int uniformLocation(ProgramId id, std::string_view name) const = 0;
-    virtual int attribLocation(ProgramId id, std::string_view name) const = 0;
+    virtual RenderPassId createRenderPass(const RenderPassDesc& desc) = 0;
+    virtual void releaseRenderPass(RenderPassId id) = 0;
 
     virtual BufferId createBuffer() = 0;
     virtual void releaseBuffer(BufferId id) = 0;
@@ -49,15 +50,33 @@ public:
     virtual void releaseFramebuffer(FramebufferId id) = 0;
 
     virtual void bindFramebuffer(FramebufferId id) = 0;
-    virtual void framebufferTexture2D(FramebufferAttachment attachment, TexId texture) = 0;
+    virtual void framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture) = 0;
+    virtual void framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture) = 0;
+    virtual void framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height) = 0;
+    virtual bool isFramebufferComplete(FramebufferId fbo) = 0;
 
-    virtual bool beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture) = 0;
     virtual void endRenderToTexture() = 0;
 
     virtual void pushFramebuffer() = 0;
     virtual void popFramebuffer() = 0;
 
-    virtual void bindTexture2D(TexId id, std::uint32_t unit) = 0;
+    virtual BackendCommandBufferHandle createCommandBuffer() = 0;
+    virtual void destroyCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void beginCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command) = 0;
+    virtual void endCommandBuffer(BackendCommandBufferHandle handle) = 0;
+    virtual void submitCommandBuffer(BackendCommandBufferHandle handle) = 0;
+
+    // Query the current viewport dimensions.
+    virtual Viewport getViewport() const = 0;
+
+    // Set the viewport and clear the colour buffer to black.
+    // Used by the display layer after a mode change.
+    virtual void clearDisplay(int width, int height) = 0;
+
+    // Synchronous readback — not a recorded command.
+    virtual void readPixelsFloat(int x, int y, int width, int height, float* rgba) = 0;
+    virtual void readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba) = 0;
 
     virtual BackendTextureHandle createTexture2D() = 0;
     virtual void destroyTexture2D(BackendTextureHandle handle) = 0;

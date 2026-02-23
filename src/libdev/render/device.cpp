@@ -10,6 +10,7 @@
 
 #include <array>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <iomanip>
 
@@ -32,20 +33,15 @@
 #include "render/texture.hpp"
 #include "render/surface.hpp"
 #include "render/surfmgr.hpp"
-#include "render/capable.hpp"
 #include "render/stats.hpp"
 #include "render/material.hpp"
 #include "render/mesh.hpp"
-#include "render/drivsel.hpp"
-
-#include "render/OpenGL/Utils.hpp"
-
+#include "render/internal/DrawCallFactory.hpp"
 #include "render/internal/IRenderBackend.hpp"
 #include "render/internal/devicei.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/debug.hpp"
-#include "render/internal/driver.hpp"
 #include "render/internal/glmath.hpp"
 #include "render/internal/vpmap.hpp"
 #include "render/internal/polysord.hpp"
@@ -56,51 +52,70 @@
 #include "render/internal/nonmmx.hpp"
 #include "render/internal/displayi.hpp"
 #include "render/internal/surfmgri.hpp"
-#include "render/internal/capablei.hpp"
-#include "render/internal/drivi.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/colpack.hpp"
 #include "render/render.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/surfbody.hpp"
+#include "render/RenderUtils.hpp"
+#include "render/RenderVariables.hpp"
 #include "system/winapi.hpp"
 
 #include "spdlog/spdlog.h"
 
 #include <algorithm>
 
-#include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
+
+static std::array<float, 16> toFloatArray(const glm::mat4& m)
+{
+    std::array<float, 16> result{};
+    std::memcpy(result.data(), glm::value_ptr(m), sizeof(float) * 16);
+    return result;
+}
+
+static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
+{
+    if (id == Ren::NullTexId)
+        return {};
+
+    const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurfaceBody(id);
+    if (surfBody && !surfBody->isEmpty())
+        return surfBody->nativeTextureHandle();
+
+    return {};
+}
 
 #define CB_RENDEVICE_DEPIMPL_GL()                                                                                      \
     PRE(pImpl_);                                                                                                       \
-    CB_DEPIMPL_AUTO(glProgramID_GIU2D_);                                                                               \
-    CB_DEPIMPL_AUTO(glProgramID_Standard_);                                                                            \
-    CB_DEPIMPL_AUTO(glProgramID_Billboard_);                                                                           \
-    CB_DEPIMPL_AUTO(gl2DVertexBufferID_);                                                                              \
-    CB_DEPIMPL_AUTO(glVertexUVID_);                                                                                    \
-    CB_DEPIMPL_AUTO(glVertexPosition_screenspaceID_);                                                                  \
-    CB_DEPIMPL_AUTO(glVertexColour_screenspaceID_);                                                                    \
-    CB_DEPIMPL_AUTO(glScreenspaceID_);                                                                                 \
-    CB_DEPIMPL_AUTO(gl2DUniformID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glTextureSamplerID_);                                                                              \
-    CB_DEPIMPL_AUTO(glTextureSamplerBillboardID_);                                                                     \
-    CB_DEPIMPL_AUTO(glModelMatrixID_);                                                                                 \
-    CB_DEPIMPL_AUTO(glViewMatrixID_);                                                                                  \
-    CB_DEPIMPL_AUTO(glProjectionMatrixID_);                                                                            \
-    CB_DEPIMPL_AUTO(glFogColourID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glFogParamsID_);                                                                                   \
-    CB_DEPIMPL_AUTO(glVertexPosition_modelspaceID_);                                                                   \
-    CB_DEPIMPL_AUTO(glVertex_modelspaceUVID_);                                                                         \
-    CB_DEPIMPL_AUTO(glVertexColour_modelspaceID_);                                                                     \
-    CB_DEPIMPL_AUTO(glVertexDataBufferID_);                                                                            \
-    CB_DEPIMPL_AUTO(glElementBufferID_);                                                                               \
-    CB_DEPIMPL_AUTO(glViewProjMatrix_BillboardID_);                                                                    \
-    CB_DEPIMPL_AUTO(glVertexPosition_BillboardID_);                                                                    \
-    CB_DEPIMPL_AUTO(glVertex_BillboardUVID_);                                                                          \
-    CB_DEPIMPL_AUTO(glVertexColour_BillboardID_);                                                                      \
-    CB_DEPIMPL_AUTO(glVertexDataBufferBillboardID_);                                                                   \
-    CB_DEPIMPL_AUTO(glElementBufferBillboardID_);                                                                      \
-    CB_DEPIMPL_AUTO(glOffscreenFrameBuffID_);
+    CB_DEPIMPL_AUTO(gui2D_);                                                                                           \
+    CB_DEPIMPL_AUTO(standard_);                                                                                        \
+    CB_DEPIMPL_AUTO(billboard_);                                                                                       \
+    CB_DEPIMPL_AUTO(shadowDepth_);                                                                                     \
+    CB_DEPIMPL_AUTO(geometryRenderPass_);                                                                              \
+    CB_DEPIMPL_AUTO(uiRenderPass_);                                                                                    \
+    CB_DEPIMPL_AUTO(shadowRenderPass_);                                                                                \
+    CB_DEPIMPL_AUTO(shadowFramebuffer_);                                                                               \
+    CB_DEPIMPL_AUTO(shadowDepthTexture_);                                                                              \
+    CB_DEPIMPL_AUTO(shadowNearFramebuffer_);                                                                           \
+    CB_DEPIMPL_AUTO(shadowNearDepthTexture_);                                                                          \
+    CB_DEPIMPL_AUTO(vertexBuffer2D_);                                                                                  \
+    CB_DEPIMPL_AUTO(vertexDataBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(normalBuffer_);                                                                                    \
+    CB_DEPIMPL_AUTO(vtxDiffuseBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(vtxAmbientBuffer_);                                                                                \
+    CB_DEPIMPL_AUTO(vtxEmissiveBuffer_);                                                                               \
+    CB_DEPIMPL_AUTO(elementBuffer_);                                                                                   \
+    CB_DEPIMPL_AUTO(vertexDataBufferBillboard_);                                                                       \
+    CB_DEPIMPL_AUTO(elementBufferBillboard_);                                                                          \
+    CB_DEPIMPL_AUTO(offscreenFramebuffer_);                                                                            \
+    CB_DEPIMPL_AUTO(postProcess_);                                                                                     \
+    CB_DEPIMPL_AUTO(postProcessFBO_);                                                                                  \
+    CB_DEPIMPL_AUTO(postProcessColorTexture_);                                                                         \
+    CB_DEPIMPL_AUTO(postProcessQuadVBO_);                                                                              \
+    CB_DEPIMPL_AUTO(postProcessWidth_);                                                                                \
+    CB_DEPIMPL_AUTO(postProcessHeight_);                                                                               \
+    CB_DEPIMPL_AUTO(postProcessReady_);
 
 RenDevice::RenDevice(RenDisplay* display)
     : pImpl_(new RenIDeviceImpl(display, this))
@@ -115,7 +130,6 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->normalAlphaSorter_ = new RenIDepthPostSorter;
     pImpl_->alphaSorter_ = nullptr;
     pImpl_->doingBackground_ = false;
-    pImpl_->caps_ = nullptr;
     pImpl_->stats_ = new RenStats;
     pImpl_->fogOn_ = false;
     pImpl_->fogStart_ = 1;
@@ -136,8 +150,6 @@ RenDevice::RenDevice(RenDisplay* display)
     pImpl_->shouldBeginScene_ = true;
     pImpl_->antiAliasingOn_ = true;
 
-    pImpl_->smoothFilterMin_ = GL_LINEAR;
-    pImpl_->smoothFilterMag_ = GL_LINEAR;
 }
 
 void RenDevice::renderScreenspace(
@@ -174,55 +186,274 @@ bool RenDevice::initialize()
 
     initializeDisplay();
 
-    // Create and compile our GLSL programs from the shaders
-    glProgramID_GIU2D_ = loadShaders("2DShading.vxgls", "2DShading.fggls");
+    // GUI 2D pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "2DShading";
+        desc.fragmentShader = "2DShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_screenspace", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+        };
+        desc.uniformNames = { "uScreenspace", "uTextureSampler" };
+        gui2D_.id = backend_->createPipeline(desc);
+        gui2D_.posAttr = backend_->pipelineAttribLocation(gui2D_.id, "vertexPosition_screenspace");
+        gui2D_.uvAttr = backend_->pipelineAttribLocation(gui2D_.id, "vertexUV");
+        gui2D_.colAttr = backend_->pipelineAttribLocation(gui2D_.id, "vertexColor");
+        gui2D_.screenspaceUniform = backend_->pipelineUniformLocation(gui2D_.id, "uScreenspace");
+        gui2D_.texSamplerUniform = backend_->pipelineUniformLocation(gui2D_.id, "uTextureSampler");
+    }
 
-    // Initialize VBO
-    gl2DVertexBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexPosition_screenspace");
-    glVertexUVID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexUV");
-    glVertexColour_screenspaceID_ = backend_->attribLocation(glProgramID_GIU2D_, "vertexColor");
-    glScreenspaceID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uScreenspace");
-    // Initialize uniforms' IDs
-    gl2DUniformID_ = backend_->uniformLocation(glProgramID_GIU2D_, "uTextureSampler");
+    vertexBuffer2D_ = backend_->createBuffer();
 
-    glProgramID_Standard_ = loadShaders("StandardShading.vxgls", "StandardShading.fggls");
+    // Standard 3D pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "StandardShading";
+        desc.fragmentShader = "StandardShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_modelspace", 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+            { "vertexNormal", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxDiffuse", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxAmbient", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+            { "vtxEmissive", 3, Ren::BackendVertexAttribType::Float, false, 3 * sizeof(float), 0 },
+        };
+        desc.uniformNames = {
+            "uM", "uV", "uP", "uFogColour", "uFogParams", "uTextureSampler2",
+            "uGpuLighting", "uLightDir", "uLightColor", "uAmbientColor",
+            "uMatDiffuse", "uMatAmbient", "uMatEmissive", "uFilter",
+            "uHasVtxMaterials",
+            "uNumPointLights",
+            "uPointLightPos", "uPointLightColor", "uPointLightRange", "uPointLightAtten", "uPointLightOmni",
+            "uShadowMap", "uLightSpaceMatrix", "uShadowEnabled", "uShadowStrength",
+            "uShadowMapNear", "uLightSpaceMatrixNear", "uShadowSplitDistance",
+            "uFogMode",
+        };
+        standard_.id = backend_->createPipeline(desc);
+        standard_.posAttr = backend_->pipelineAttribLocation(standard_.id, "vertexPosition_modelspace");
+        standard_.uvAttr = backend_->pipelineAttribLocation(standard_.id, "vertexUV");
+        standard_.colAttr = backend_->pipelineAttribLocation(standard_.id, "vertexColor");
+        standard_.normalAttr = backend_->pipelineAttribLocation(standard_.id, "vertexNormal");
+        standard_.vtxDiffuseAttr = backend_->pipelineAttribLocation(standard_.id, "vtxDiffuse");
+        standard_.vtxAmbientAttr = backend_->pipelineAttribLocation(standard_.id, "vtxAmbient");
+        standard_.vtxEmissiveAttr = backend_->pipelineAttribLocation(standard_.id, "vtxEmissive");
+        spdlog::info("Standard pipeline attrib locations: pos={} uv={} col={} normal={} vtxDif={} vtxAmb={} vtxEmi={}",
+            standard_.posAttr.value(), standard_.uvAttr.value(), standard_.colAttr.value(),
+            standard_.normalAttr.value(), standard_.vtxDiffuseAttr.value(), standard_.vtxAmbientAttr.value(),
+            standard_.vtxEmissiveAttr.value());
+        standard_.modelUniform = backend_->pipelineUniformLocation(standard_.id, "uM");
+        standard_.viewUniform = backend_->pipelineUniformLocation(standard_.id, "uV");
+        standard_.projUniform = backend_->pipelineUniformLocation(standard_.id, "uP");
+        standard_.fogColourUniform = backend_->pipelineUniformLocation(standard_.id, "uFogColour");
+        standard_.fogParamsUniform = backend_->pipelineUniformLocation(standard_.id, "uFogParams");
+        standard_.fogModeUniform = backend_->pipelineUniformLocation(standard_.id, "uFogMode");
+        standard_.texSamplerUniform = backend_->pipelineUniformLocation(standard_.id, "uTextureSampler2");
+        standard_.gpuLightingUniform = backend_->pipelineUniformLocation(standard_.id, "uGpuLighting");
+        standard_.lightDirUniform = backend_->pipelineUniformLocation(standard_.id, "uLightDir");
+        standard_.lightColorUniform = backend_->pipelineUniformLocation(standard_.id, "uLightColor");
+        standard_.ambientColorUniform = backend_->pipelineUniformLocation(standard_.id, "uAmbientColor");
+        standard_.matDiffuseUniform = backend_->pipelineUniformLocation(standard_.id, "uMatDiffuse");
+        standard_.matAmbientUniform = backend_->pipelineUniformLocation(standard_.id, "uMatAmbient");
+        standard_.matEmissiveUniform = backend_->pipelineUniformLocation(standard_.id, "uMatEmissive");
+        standard_.filterUniform = backend_->pipelineUniformLocation(standard_.id, "uFilter");
+        standard_.hasVtxMaterialsUniform = backend_->pipelineUniformLocation(standard_.id, "uHasVtxMaterials");
+        standard_.numPointLightsUniform = backend_->pipelineUniformLocation(standard_.id, "uNumPointLights");
+        standard_.pointLightPosUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightPos");
+        standard_.pointLightColorUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightColor");
+        standard_.pointLightRangeUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightRange");
+        standard_.pointLightAttenUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightAtten");
+        standard_.pointLightOmniUniform = backend_->pipelineUniformLocation(standard_.id, "uPointLightOmni");
+        standard_.shadowMapUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowMap");
+        standard_.lightSpaceMatrixUniform = backend_->pipelineUniformLocation(standard_.id, "uLightSpaceMatrix");
+        standard_.shadowEnabledUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowEnabled");
+        standard_.shadowStrengthUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowStrength");
+        standard_.shadowMapNearUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowMapNear");
+        standard_.lightSpaceMatrixNearUniform = backend_->pipelineUniformLocation(standard_.id, "uLightSpaceMatrixNear");
+        standard_.shadowSplitDistanceUniform = backend_->pipelineUniformLocation(standard_.id, "uShadowSplitDistance");
+    }
 
-    // Get a handle for our "MVP" uniform
-    glModelMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uM");
-    glViewMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uV");
-    glProjectionMatrixID_ = backend_->uniformLocation(glProgramID_Standard_, "uP");
-    glFogColourID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogColour");
-    glFogParamsID_ = backend_->uniformLocation(glProgramID_Standard_, "uFogParams");
-    // VBO
-    glVertexDataBufferID_ = backend_->createBuffer();
-    glElementBufferID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glVertexPosition_modelspaceID_ =
-        backend_->attribLocation(glProgramID_Standard_, "vertexPosition_modelspace");
-    glVertexColour_modelspaceID_ = backend_->attribLocation(glProgramID_Standard_, "vertexColor");
-    glVertex_modelspaceUVID_ = backend_->attribLocation(glProgramID_Standard_, "vertexUV");
-    glTextureSamplerID_ = backend_->uniformLocation(glProgramID_Standard_, "uTextureSampler2");
+    vertexDataBuffer_ = backend_->createBuffer();
+    normalBuffer_ = backend_->createBuffer();
+    vtxDiffuseBuffer_ = backend_->createBuffer();
+    vtxAmbientBuffer_ = backend_->createBuffer();
+    vtxEmissiveBuffer_ = backend_->createBuffer();
+    elementBuffer_ = backend_->createBuffer();
 
-    glProgramID_Billboard_ = loadShaders("BillboardShading.vxgls", "2DShading.fggls");
+    // Billboard pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "BillboardShading";
+        desc.fragmentShader = "2DShading";
+        desc.vertexAttributes = {
+            { "vertexPosition_Billboard", 4, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), sizeof(RenIVertex) - 2 * sizeof(float) },
+            { "vertexColor", 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex), 3 * sizeof(float) + sizeof(uint32_t) },
+        };
+        desc.uniformNames = { "uVP", "uTextureSampler" };
+        billboard_.id = backend_->createPipeline(desc);
+        billboard_.posAttr = backend_->pipelineAttribLocation(billboard_.id, "vertexPosition_Billboard");
+        billboard_.uvAttr = backend_->pipelineAttribLocation(billboard_.id, "vertexUV");
+        billboard_.colAttr = backend_->pipelineAttribLocation(billboard_.id, "vertexColor");
+        billboard_.viewProjUniform = backend_->pipelineUniformLocation(billboard_.id, "uVP");
+        billboard_.texSamplerUniform = backend_->pipelineUniformLocation(billboard_.id, "uTextureSampler");
+    }
 
-    const std::array<Ren::ProgramId, 3> programIDs = { glProgramID_GIU2D_, glProgramID_Standard_, glProgramID_Billboard_ };
-    if (std::ranges::any_of(programIDs, [](Ren::ProgramId value) { return value == 0; }))
+    // Shadow depth pipeline
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "ShadowDepth";
+        desc.fragmentShader = "ShadowDepth";
+        desc.vertexAttributes = {
+            { "vertexPosition_modelspace", 3, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0 },
+        };
+        desc.uniformNames = { "uLightSpaceMatrix", "uM" };
+        shadowDepth_.id = backend_->createPipeline(desc);
+        shadowDepth_.posAttr = backend_->pipelineAttribLocation(shadowDepth_.id, "vertexPosition_modelspace");
+        shadowDepth_.lightSpaceMatrixUniform = backend_->pipelineUniformLocation(shadowDepth_.id, "uLightSpaceMatrix");
+        shadowDepth_.modelUniform = backend_->pipelineUniformLocation(shadowDepth_.id, "uM");
+    }
+
+    const std::array<Ren::PipelineId, 4> pipelineIDs = { gui2D_.id, standard_.id, billboard_.id, shadowDepth_.id };
+    if (std::ranges::any_of(pipelineIDs, [](Ren::PipelineId value) { return value == 0; }))
         return false;
 
-    // VBO
-    glVertexDataBufferBillboardID_ = backend_->createBuffer();
-    glElementBufferBillboardID_ = backend_->createBuffer();
-    // Get a handle for our buffers
-    glViewProjMatrix_BillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uVP");
-    glVertexPosition_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexPosition_Billboard");
-    glVertexColour_BillboardID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexColor");
-    glVertex_BillboardUVID_ = backend_->attribLocation(glProgramID_Billboard_, "vertexUV");
-    glTextureSamplerBillboardID_ = backend_->uniformLocation(glProgramID_Billboard_, "uTextureSampler");
+    vertexDataBufferBillboard_ = backend_->createBuffer();
+    elementBufferBillboard_ = backend_->createBuffer();
+
+    // Geometry render pass: clear color+depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.colorAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.colorAttachment.storeOp = Ren::StoreOp::Store;
+        desc.hasDepthAttachment = true;
+        desc.depthAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.depthAttachment.storeOp = Ren::StoreOp::Store;
+        geometryRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // UI render pass: load existing color, no depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.colorAttachment.loadOp = Ren::LoadOp::Load;
+        desc.colorAttachment.storeOp = Ren::StoreOp::Store;
+        uiRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // Shadow render pass: depth-only, clear depth
+    {
+        Ren::RenderPassDesc desc;
+        desc.hasColorAttachment = false;
+        desc.hasDepthAttachment = true;
+        desc.depthAttachment.loadOp = Ren::LoadOp::Clear;
+        desc.depthAttachment.storeOp = Ren::StoreOp::Store;
+        shadowRenderPass_ = backend_->createRenderPass(desc);
+    }
+
+    // Shadow map resources — two cascades: near (high-res) and far (lower-res).
+    {
+        const int nearSz = RenIDeviceImpl::ShadowMapSizeNear;
+        shadowNearDepthTexture_ = backend_->createTexture2D();
+        backend_->textureStorage2D(shadowNearDepthTexture_, nearSz, nearSz, Ren::TextureFormat::Depth16);
+        backend_->textureSetMinMagFilter(shadowNearDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
+        backend_->textureSetWrap(shadowNearDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+        shadowNearFramebuffer_ = backend_->createFramebuffer();
+        backend_->framebufferAttachDepthTexture(shadowNearFramebuffer_, shadowNearDepthTexture_);
+
+        const int farSz = RenIDeviceImpl::ShadowMapSizeFar;
+        shadowDepthTexture_ = backend_->createTexture2D();
+        backend_->textureStorage2D(shadowDepthTexture_, farSz, farSz, Ren::TextureFormat::Depth16);
+        backend_->textureSetMinMagFilter(shadowDepthTexture_, Ren::TextureFilter::Nearest, Ren::TextureFilter::Nearest);
+        backend_->textureSetWrap(shadowDepthTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+        shadowFramebuffer_ = backend_->createFramebuffer();
+        backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
+    }
+
+    // Post-process pipeline (tone mapping)
+    {
+        Ren::PipelineDesc desc;
+        desc.vertexShader = "PostProcess";
+        desc.fragmentShader = "PostProcess";
+        desc.vertexAttributes = {
+            { "vertexPosition", 2, Ren::BackendVertexAttribType::Float, false, 4 * sizeof(float), 0 },
+            { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, 4 * sizeof(float), 2 * sizeof(float) },
+        };
+        desc.uniformNames = { "uSceneTexture", "uExposure" };
+        postProcess_.id = backend_->createPipeline(desc);
+        if (postProcess_.id != 0)
+        {
+            postProcess_.posAttr = backend_->pipelineAttribLocation(postProcess_.id, "vertexPosition");
+            postProcess_.uvAttr = backend_->pipelineAttribLocation(postProcess_.id, "vertexUV");
+            postProcess_.sceneTextureUniform = backend_->pipelineUniformLocation(postProcess_.id, "uSceneTexture");
+            postProcess_.exposureUniform = backend_->pipelineUniformLocation(postProcess_.id, "uExposure");
+        }
+    }
+
+    // Post-process offscreen FBO (RGBA16F color + depth renderbuffer).
+    if (postProcess_.id != 0)
+    {
+        const RenDisplay::Mode mode = pImpl_->display_->currentMode();
+        const int w = mode.width();
+        const int h = mode.height();
+
+        postProcessColorTexture_ = backend_->createTexture2D();
+        postProcessFBO_ = backend_->createFramebuffer();
+
+        // Try RGBA16F first, fall back to RGBA8 if FBO is incomplete.
+        Ren::TextureFormat colorFormat = Ren::TextureFormat::RGBA16F;
+        backend_->textureStorage2D(postProcessColorTexture_, w, h, colorFormat);
+        backend_->textureSetMinMagFilter(
+            postProcessColorTexture_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
+        backend_->textureSetWrap(
+            postProcessColorTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+        backend_->framebufferAttachColorTexture(postProcessFBO_, postProcessColorTexture_);
+        backend_->framebufferAttachDepthRenderbuffer(postProcessFBO_, w, h);
+
+        if (!backend_->isFramebufferComplete(postProcessFBO_))
+        {
+            spdlog::warn("Post-process: RGBA16F FBO incomplete, falling back to RGBA8");
+            colorFormat = Ren::TextureFormat::RGBA8_UNorm;
+            backend_->destroyTexture2D(postProcessColorTexture_);
+            postProcessColorTexture_ = backend_->createTexture2D();
+            backend_->textureStorage2D(postProcessColorTexture_, w, h, colorFormat);
+            backend_->textureSetMinMagFilter(
+                postProcessColorTexture_, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear);
+            backend_->textureSetWrap(
+                postProcessColorTexture_, Ren::TextureWrap::ClampToEdge, Ren::TextureWrap::ClampToEdge);
+            backend_->framebufferAttachColorTexture(postProcessFBO_, postProcessColorTexture_);
+        }
+
+        const bool fboReady = backend_->isFramebufferComplete(postProcessFBO_);
+        const char* fmtName = (colorFormat == Ren::TextureFormat::RGBA16F) ? "RGBA16F" : "RGBA8";
+
+        postProcessQuadVBO_ = backend_->createBuffer();
+
+        // Fullscreen quad: 2 triangles covering [-1,1] with UV [0,1].
+        const float quadVertices[] = {
+            // pos.x, pos.y, uv.x, uv.y
+            -1.0f, -1.0f, 0.0f, 0.0f,
+             1.0f, -1.0f, 1.0f, 0.0f,
+             1.0f,  1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+             1.0f,  1.0f, 1.0f, 1.0f,
+            -1.0f,  1.0f, 0.0f, 1.0f,
+        };
+        backend_->bufferData(
+            Ren::BufferTarget::Array, postProcessQuadVBO_,
+            sizeof(quadVertices), quadVertices, Ren::BufferUsage::StreamDraw);
+
+        postProcessWidth_ = w;
+        postProcessHeight_ = h;
+        postProcessReady_ = fboReady;
+
+        spdlog::info("Post-process: {}x{} {} FBO, pipeline={}, ready={}",
+            w, h, fmtName, postProcess_.id, postProcessReady_);
+    }
 
     // Prepare framebuffer for offscreen rendering
-    glOffscreenFrameBuffID_ = backend_->createFramebuffer();
+    offscreenFramebuffer_ = backend_->createFramebuffer();
 
     pImpl_->illuminator_ = new RenINonMMXIlluminator(pImpl_);
 
@@ -260,10 +491,6 @@ RenDevice::~RenDevice()
     {
         delete pImpl_->normalAlphaSorter_;
     }
-    if (pImpl_->caps_)
-    {
-        delete pImpl_->caps_;
-    }
     if (pImpl_->stats_)
     {
         delete pImpl_->stats_;
@@ -291,20 +518,30 @@ RenDevice::~RenDevice()
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    // Delete shaders
+    backend_->releasePipeline(gui2D_.id);
+    backend_->releasePipeline(standard_.id);
+    backend_->releasePipeline(billboard_.id);
+    backend_->releasePipeline(shadowDepth_.id);
 
-    backend_->useProgram(0);
+    backend_->releaseRenderPass(geometryRenderPass_);
+    backend_->releaseRenderPass(uiRenderPass_);
+    backend_->releaseRenderPass(shadowRenderPass_);
 
-    backend_->releaseProgram(glProgramID_Standard_);
-    backend_->releaseProgram(glProgramID_GIU2D_);
-    backend_->releaseProgram(glProgramID_Billboard_);
+    backend_->destroyTexture2D(shadowDepthTexture_);
+    backend_->releaseFramebuffer(shadowFramebuffer_);
+    backend_->destroyTexture2D(shadowNearDepthTexture_);
+    backend_->releaseFramebuffer(shadowNearFramebuffer_);
 
-    backend_->releaseBuffer(gl2DVertexBufferID_);
-    backend_->releaseBuffer(glVertexDataBufferID_);
-    backend_->releaseBuffer(glElementBufferID_);
-    backend_->releaseBuffer(glVertexDataBufferBillboardID_);
-    backend_->releaseBuffer(glElementBufferBillboardID_);
-    backend_->releaseFramebuffer(glOffscreenFrameBuffID_);
+    backend_->releaseBuffer(vertexBuffer2D_);
+    backend_->releaseBuffer(vertexDataBuffer_);
+    backend_->releaseBuffer(normalBuffer_);
+    backend_->releaseBuffer(vtxDiffuseBuffer_);
+    backend_->releaseBuffer(vtxAmbientBuffer_);
+    backend_->releaseBuffer(vtxEmissiveBuffer_);
+    backend_->releaseBuffer(elementBuffer_);
+    backend_->releaseBuffer(vertexDataBufferBillboard_);
+    backend_->releaseBuffer(elementBufferBillboard_);
+    backend_->releaseFramebuffer(offscreenFramebuffer_);
 
     backend_->shutdown();
 
@@ -324,24 +561,6 @@ void RenDevice::reset()
 {
 }
 
-Ren::ProgramId RenDevice::loadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
-{
-    // Read the Vertex Shader code from the file
-    std::string shadersDir("data/shaders/");
-    // Check if GLSL is too old
-    // Unconditionally use GLSL 120 for now because the 310 ES version causes glitches
-    // (at least for some Windows users
-    if (true) // glGetString(GL_SHADING_LANGUAGE_VERSION)[0] < '3')
-        shadersDir.append("120/");
-
-    const std::string vertexShaderFile = shadersDir + vertexShaderPath;
-    const std::string fragmentShaderFile = shadersDir + fragmentShaderPath;
-
-    CB_DEPIMPL_AUTO(backend_);
-
-    return backend_->createProgramFromFiles(vertexShaderFile, fragmentShaderFile, vertexShaderPath, fragmentShaderPath);
-}
-
 void RenDevice::clearAllSurfaces(const RenColour& colour)
 {
     PRE(!rendering3D() && !rendering2D());
@@ -349,10 +568,8 @@ void RenDevice::clearAllSurfaces(const RenColour& colour)
     RENDER_STREAM(
         "Inside RenDevice::clearAllSurfaces( RenColour RGBA: " << colour.r() << ", " << colour.g() << ", " << colour.b()
                                                                << ", " << colour.a() << " )" << std::endl);
-    // Temporarily set, then reset the background colour.
-    glClearColor(colour.r(), colour.g(), colour.b(), colour.a());
+    pImpl_->background_ = colour;
     clearAllSurfaces();
-    glClearColor(colour.r(), pImpl_->background_.g(), pImpl_->background_.b(), pImpl_->background_.a());
 }
 
 void RenDevice::clearAllSurfaces()
@@ -380,25 +597,7 @@ void RenDevice::initializeDisplay()
 {
     PRE(pImpl_->display_);
 
-    // Check the capabilities of the device, so that we can selectively enable
-    // special effects such as alpha textures.
-    if (pImpl_->caps_)
-    {
-        delete pImpl_->caps_;
-    }
-    pImpl_->caps_ = new RenCapabilities(this, true);
-    RENDER_STREAM(*pImpl_->caps_);
-
-    spdlog::info("Initializing OpenGL context...");
-    // we have to copy the gamma correction into display in order to implement
-    // asserts in gammaCorrection() methods, it's ugly.
-    pImpl_->display_->supportsGammaCorrection(pImpl_->caps_->supportsGammaCorrection());
-
-    // We assume that some form of texture transparency is supported.  All
-    // reasonable games apps. require transparency.
-    ASSERT(
-        pImpl_->caps_->supportsColourKey() || pImpl_->caps_->supportsTextureAlpha(),
-        runtime_error("No transparency supported by D3D."));
+    spdlog::info("Initializing display...");
 
     createViewport();
     RenDisplay::Mode mode = pImpl_->display_->currentMode();
@@ -412,7 +611,6 @@ void RenDevice::initializeDisplay()
 
 bool RenDevice::initializeContext()
 {
-    CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
     CB_DEPIMPL_AUTO(display_);
 
@@ -430,11 +628,6 @@ bool RenDevice::initializeContext()
     {
         spdlog::warn("Failed to apply VSync preference ({}) during context creation", vsyncEnabled_);
     }
-
-    // glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return true;
 }
@@ -461,9 +654,7 @@ void RenDevice::setViewport(int left, int top, int width, int height)
 
     const double ratio = (double)width / height;
 
-    // glViewport( left, top, width, height );
-    //  NB: if the viewport is changed, these values *must* also
-    //  be updated.
+    // NB: if the viewport is changed, these values *must* also be updated.
     if (pImpl_->vpMapping_)
     {
         delete pImpl_->vpMapping_;
@@ -474,11 +665,17 @@ void RenDevice::setViewport(int left, int top, int width, int height)
     RENDER_STREAM("Set viewport to (" << left << "," << top << ") " << width << "x" << height << "\n");
 }
 
+void RenDevice::clearDisplay(int width, int height)
+{
+    pImpl_->backend_->clearDisplay(width, height);
+}
+
 ////////////////////////////////// Frame delineation //////////////////////////
 
 bool RenDevice::startFrame()
 {
     PRE(!rendering());
+    PRE(!pImpl_->immediateCommandBufferActive());
 
     // When the Window is activated this flag is set indicating that surface
     // memory could have been lost to another process.
@@ -519,6 +716,7 @@ bool RenDevice::startFrame()
     }
 
     pImpl_->useDevice(this, RenI::LAZY_UPDATE);
+    pImpl_->beginFrameCommandBuffer();
 
     RENDER_STREAM(std::endl << "RenDevice::startFrame() == true" << std::endl << '{' << std::endl);
     RENDER_INDENT(3);
@@ -543,6 +741,9 @@ void RenDevice::start2D()
     pImpl_->alphaSorter_ = nullptr;
     pImpl_->illuminator_->filter(RenColour::white());
 
+    CB_RENDEVICE_DEPIMPL_GL();
+    recordCommand(Ren::Command::beginRenderPass(uiRenderPass_));
+
     const double now = DEBUG_FRAME_TIME;
     RENDER_STREAM("RenDevice::start2D() at " << now << "(ms)\n{\n");
     RENDER_INDENT(3);
@@ -557,9 +758,16 @@ void RenDevice::end2D()
     // Needs to go here because smacker animations do not call RenDevice's frame lifecycle methods... -_-
     if (clearAll2D_)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        CB_DEPIMPL_AUTO(background_);
+        CB_DEPIMPL_AUTO(backend_);
+
+        using ClearFlag = Ren::BackendClearFlag;
+        Ren::BackendCommand command = Ren::Command::clear(background_, backendClearMask(ClearFlag::Colour));
+        recordCommand(std::move(command));
         clearAll2D_ = false;
     }
+
+    recordCommand(Ren::Command::endRenderPass());
 
     pImpl_->rendering2D_ = false;
 
@@ -571,11 +779,10 @@ void RenDevice::end2D()
     RENDER_STREAM('}' << std::endl);
 }
 
-void RenDevice::start3D(bool clearBack)
+void RenDevice::start3D()
 {
     // A camera must have been specified.
     PRE(currentCamera());
-    //    PRE(device_);
     PRE(idleRendering());
 
     // Clear out any left-over unused material bodies, from eg a persistent load
@@ -586,6 +793,7 @@ void RenDevice::start3D(bool clearBack)
     RENDER_INDENT(3);
 
     pImpl_->rendering3D_ = true;
+    pImpl_->shadowMappingEnabled_ = false;
 
     if (pImpl_->stats_)
     {
@@ -597,6 +805,13 @@ void RenDevice::start3D(bool clearBack)
     // Viewpoint and/or camera parameters may have changed.
     updateMatrices();
 
+    POST(rendering3D());
+}
+
+void RenDevice::beginGeometryPass(bool clearBack)
+{
+    PRE(rendering3D());
+
     // The background colour needs to have the camera's filter applied to it.
     RenColour bgCol = pImpl_->background_;
     bgCol.r(bgCol.r() * pImpl_->currentCamera_->colourFilter().r());
@@ -604,10 +819,14 @@ void RenDevice::start3D(bool clearBack)
     bgCol.b(bgCol.b() * pImpl_->currentCamera_->colourFilter().b());
 
     ASSERT(pImpl_->vpMapping_, "No viewport set; startFrame should set a default.");
-    glClearColor(bgCol.r(), bgCol.g(), bgCol.b(), bgCol.a());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // Inform the texture manager that a frame is starting.
-    // RenTexManager::instance().startFrame();
+
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    const bool postProcess = postProcessReady_ && Config::gfxToneMapping.get();
+    if (postProcess)
+        recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol, postProcessFBO_));
+    else
+        recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol));
 
     pImpl_->illuminator_->filter(pImpl_->currentCamera_->colourFilter());
     pImpl_->illuminator_->startFrame();
@@ -615,13 +834,12 @@ void RenDevice::start3D(bool clearBack)
 
     setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 
-    if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
-    {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
-    }
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
 
-    glDepthMask(GL_TRUE);
+    recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    recordCommand(Ren::Command::setCullFace(true));
 
     // All the alpha polygons are drawn as a post-pass in endFrame, so we can
     // turn blending off for the main pass.
@@ -629,8 +847,6 @@ void RenDevice::start3D(bool clearBack)
 
     // Enable alpha sorting.
     pImpl_->alphaSorter_ = pImpl_->normalAlphaSorter_;
-
-    POST(rendering3D());
 }
 
 void RenDevice::startBackground(double yon)
@@ -646,7 +862,9 @@ void RenDevice::startBackground(double yon)
     overrideClipping(pImpl_->currentCamera_->hitherClipDistance(), yon);
     disableLighting();
     disableFog();
-    glDepthMask(GL_FALSE);
+    CB_DEPIMPL_AUTO(backend_);
+
+    recordCommand(Ren::Command::setDepthMaskWritable(false));
 }
 
 inline bool isWhiteChar(char c)
@@ -671,15 +889,18 @@ void RenDevice::flush3DAlpha()
     const double now = DEBUG_FRAME_TIME;
     RENDER_STREAM("RenDevice::flush3DAlpha() at " << now << "(ms)\n");
 
-    // Make sure all the Direct3D parameters are set up correctly. This function
+    CB_DEPIMPL_AUTO(backend_);
+
+    // Make sure all the render state parameters are set up correctly. This function
     // may be called after 2D update, therefore we can not rely on these parameters
-    // being set correcly.
-    glEnable(GL_ALPHA_TEST);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glAlphaFunc(GL_GREATER, 0);
-    glDepthFunc(GL_LEQUAL);
-    glDepthMask(GL_TRUE);
+    // being set correctly.
+    recordCommand(Ren::Command::setAlphaTestEnabled(0.0f));
+    recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    recordCommand(Ren::Command::setCullFace(true));
+    pImpl_->disableAlphaBlending();
+    recordCommand(Ren::Command::setMultisample(true));
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
 
     if (pImpl_->doingBackground_)
     {
@@ -692,7 +913,6 @@ void RenDevice::flush3DAlpha()
 
         // Likewise for the lighting, fog and alpha on the coplanar polys.
         enableLighting();
-        glDepthMask(GL_TRUE);
     }
 
     // Inter-mesh coplanar polygons are drawn with normal settings.  They are
@@ -703,24 +923,20 @@ void RenDevice::flush3DAlpha()
     pImpl_->coplanarSorter_->render();
 
     // The coplanar sorter may leave the zBias in an arbitrary state.
-    if (pImpl_->caps_ && pImpl_->caps_->internal()->supportsZBias())
-    {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)pImpl_->caps_->internal()->minZBias(), 1.0);
-    }
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
 
-    if (pImpl_->caps_->supportsFlatAlpha() || pImpl_->caps_->supportsTextureAlpha())
     {
         // The whole raison-d'etre of the alpha sorter is drawing the polygons
         // without the z-buffer.
-        glDepthMask(GL_FALSE);
+        recordCommand(Ren::Command::setDepthMaskWritable(false));
         pImpl_->enableAlphaBlending();
 
         pImpl_->normalAlphaSorter_->render();
         pImpl_->disableAlphaBlending();
-        glDepthMask(GL_TRUE);
     }
-    glDisable(GL_ALPHA_TEST);
+
+    recordCommand(Ren::Command::setAlphaTestDisabled());
 }
 
 void RenDevice::end3D()
@@ -751,9 +967,64 @@ void RenDevice::end3D()
     RENDER_STREAM("  RenDevice::end3D() ends at " << now3 << "(ms)\n");
     RENDER_STREAM('}' << std::endl);
 
+    recordCommand(Ren::Command::endRenderPass());
+
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    if (postProcessReady_ && Config::gfxToneMapping.get())
+        blitPostProcess();
+
     pImpl_->rendering3D_ = false;
 
     POST(idleRendering());
+}
+
+void RenDevice::blitPostProcess()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    // Resolve the offscreen HDR buffer to the default framebuffer via tone mapping.
+    recordCommand(Ren::Command::bindDefaultFramebuffer());
+    recordCommand(Ren::Command::setViewport(0, 0, postProcessWidth_, postProcessHeight_));
+    recordCommand(Ren::Command::setDepthTest(false));
+    recordCommand(Ren::Command::setDepthMaskWritable(false));
+    recordCommand(Ren::Command::setBlendStateDisabled());
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setAlphaTestDisabled());
+
+    // Disable all vertex attribs left over from the 3D pipeline before
+    // binding the fullscreen-quad VBO which has a different layout.
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.posAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.uvAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.colAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.normalAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxDiffuseAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxAmbientAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(standard_.vtxEmissiveAttr));
+
+    recordCommand(Ren::Command::bindPipeline(postProcess_.id));
+    {
+        Ren::PostProcessUniforms ppu;
+        ppu.sceneTextureSampler = 0;
+        ppu.exposure = 1.0f;
+        recordCommand(Ren::Command::setPostProcessUniforms(std::move(ppu)));
+    }
+
+    recordCommand(Ren::Command::bindTexture2D(
+        postProcessColorTexture_, 0, Ren::TextureFilter::Linear, Ren::TextureFilter::Linear));
+
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, postProcessQuadVBO_));
+    recordCommand(Ren::Command::enableVertexAttribPointer(
+        postProcess_.posAttr, 2, Ren::BackendVertexAttribType::Float, false,
+        4 * sizeof(float), 0));
+    recordCommand(Ren::Command::enableVertexAttribPointer(
+        postProcess_.uvAttr, 2, Ren::BackendVertexAttribType::Float, false,
+        4 * sizeof(float), 2 * sizeof(float)));
+
+    recordCommand(Ren::Command::draw(Ren::PrimitiveTopology::Triangles, 0, 6));
+
+    recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.posAttr));
+    recordCommand(Ren::Command::disableVertexAttribPointer(postProcess_.uvAttr));
 }
 
 void RenDevice::commonEndFrame()
@@ -796,25 +1067,6 @@ void RenDevice::commonEndFrame()
     RENDER_STREAM("  RenDevice::endFrame() text done at " << now2 << "(ms)\n");
 }
 
-void RenDevice::syncSmoothFilters()
-{
-    if (pImpl_->smoothScaleEnabled_)
-    {
-        if (!pImpl_->smoothFilterApplied_)
-        {
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pImpl_->smoothFilterMin_);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pImpl_->smoothFilterMag_);
-            pImpl_->smoothFilterApplied_ = true;
-        }
-    }
-    else if (pImpl_->smoothFilterApplied_)
-    {
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        pImpl_->smoothFilterApplied_ = false;
-    }
-}
-
 void RenDevice::endFrame()
 {
     PRE(rendering());
@@ -822,8 +1074,8 @@ void RenDevice::endFrame()
     commonEndFrame();
     RenSurface backBuf = backSurface();
     pImpl_->display_->displayImpl().drawCursor(backBuf);
+    pImpl_->destroyFrameCommandBuffer();
     pImpl_->display_->flipBuffers();
-
     pImpl_->rendering_ = false;
 
     const double now = DEBUG_FRAME_TIME;
@@ -859,7 +1111,6 @@ void RenDevice::updateMatrices()
     billboardUniformsDirty_ = true;
 }
 
-// From the Direct3D tunnel sample:
 // Creates a matrix which is equivalent to having the camera at a
 // specified position. This matrix can be used to convert vertices to
 // camera coordinates.
@@ -937,9 +1188,9 @@ void RenDevice::updateViewMatrix(glm::mat4& view)
 // Taken straight from the M$ samples.
 
 static void
-computePerspectiveProjection(glm::mat4* lpd3dMatrix, double dHalfHeight, double dFrontClipping, double dBackClipping)
+computePerspectiveProjection(glm::mat4* matrix, double dHalfHeight, double dFrontClipping, double dBackClipping)
 {
-    PRE(lpd3dMatrix);
+    PRE(matrix);
     PRE(dHalfHeight > 0);
     PRE(dFrontClipping > 0);
     PRE(dFrontClipping < dBackClipping);
@@ -950,24 +1201,24 @@ computePerspectiveProjection(glm::mat4* lpd3dMatrix, double dHalfHeight, double 
     dTmp1 = dHalfHeight / dFrontClipping;
     dTmp2 = dBackClipping / (dBackClipping - dFrontClipping);
 
-    (*lpd3dMatrix)[0][0] = (0.8); //(1.0);
-    (*lpd3dMatrix)[0][1] = (0.0);
+    (*matrix)[0][0] = (0.8); //(1.0);
+    (*matrix)[0][1] = (0.0);
 
-    (*lpd3dMatrix)[0][2] = (0.0);
-    (*lpd3dMatrix)[0][3] = (0.0);
-    (*lpd3dMatrix)[1][0] = (0.0);
-    (*lpd3dMatrix)[1][1] = (1.0);
-    (*lpd3dMatrix)[1][2] = (0.0);
-    (*lpd3dMatrix)[1][3] = (0.0);
-    (*lpd3dMatrix)[2][0] = (0.0);
-    (*lpd3dMatrix)[2][1] = (0.0);
-    (*lpd3dMatrix)[2][2] = (dTmp1 * dTmp2);
-    (*lpd3dMatrix)[2][3] = (dTmp1);
-    (*lpd3dMatrix)[3][0] = (0.0);
-    (*lpd3dMatrix)[3][1] = (0.0);
+    (*matrix)[0][2] = (0.0);
+    (*matrix)[0][3] = (0.0);
+    (*matrix)[1][0] = (0.0);
+    (*matrix)[1][1] = (1.0);
+    (*matrix)[1][2] = (0.0);
+    (*matrix)[1][3] = (0.0);
+    (*matrix)[2][0] = (0.0);
+    (*matrix)[2][1] = (0.0);
+    (*matrix)[2][2] = (dTmp1 * dTmp2);
+    (*matrix)[2][3] = (dTmp1);
+    (*matrix)[3][0] = (0.0);
+    (*matrix)[3][1] = (0.0);
 
-    (*lpd3dMatrix)[3][2] = (-dHalfHeight * dTmp2);
-    (*lpd3dMatrix)[3][3] = (0.0);
+    (*matrix)[3][2] = (-dHalfHeight * dTmp2);
+    (*matrix)[3][3] = (0.0);
 }
 
 void RenDevice::updateProjMatrix(double hither, double yon, double h)
@@ -1001,40 +1252,19 @@ void RenDevice::overrideClipping(double hither, double yon)
 }
 
 ///////////////////////////////////// Fog support /////////////////////////////
-// There are two types of fog in Direct3D, each has a different set of states
-// which must be enabled separately.  Table fog is per-pixel depth-based fog
-// and is a function of the raster engine.  Alternatively, the lighting module
-// can calculate fog on a per-vertex basis, alter the vertex colours and have
-// them interpolated across the polygon.  Table is better.
 
 void RenDevice::setFog(float start, float end, float dense, const RenColour& colour)
 {
-    ASSERT(implies(pImpl_->fogOn_, pImpl_->caps_->supportsFog()), logic_error("Unsupported fog has been switched on."));
-
-    if (pImpl_->caps_->internal()->supportsTableFog())
+    if (pImpl_->fogOn_)
     {
-        if (pImpl_->fogOn_)
-        {
-            fogParams_ = glm::vec3(start, end, dense);
-        }
-        else
-        {
-            fogParams_ = glm::vec3(0, 0, 0);
-        }
+        fogParams_ = glm::vec3(start, end, dense);
     }
-    else if (pImpl_->caps_->internal()->supportsVertexFog())
+    else
     {
-        if (pImpl_->fogOn_)
-        {
-            fogParams_ = glm::vec3(start, end, dense);
-        }
-        else
-        {
-            fogParams_ = glm::vec3(0, 0, 0);
-        }
+        fogParams_ = glm::vec3(0, 0, 0);
     }
 
-    if (pImpl_->fogOn_ && pImpl_->caps_->supportsFog())
+    if (pImpl_->fogOn_)
     {
         // The fog colour needs to have the camera's filter applied to it.
         RenColour filteredCol = colour;
@@ -1066,11 +1296,8 @@ void RenDevice::fogOn(float start, float end, float density)
     pImpl_->fogEnd_ = end;
     pImpl_->fogDensity_ = density;
 
-    if (pImpl_->caps_->supportsFog())
-    {
-        pImpl_->fogOn_ = true;
-        setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
-    }
+    pImpl_->fogOn_ = true;
+    setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 }
 
 void RenDevice::fogOff()
@@ -1082,12 +1309,9 @@ void RenDevice::fogOff()
 
 void RenDevice::fogOn()
 {
-    if (pImpl_->caps_->supportsFog())
-    {
-        pImpl_->fogOn_ = true;
-        fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
-        standardUniformsDirty_ = true;
-    }
+    pImpl_->fogOn_ = true;
+    fogParams_ = glm::vec3(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_);
+    standardUniformsDirty_ = true;
 }
 
 void RenDevice::disableFog()
@@ -1104,29 +1328,22 @@ void RenDevice::disableFog()
 
 void RenDevice::overrideFog(float start, float end, float density)
 {
-    if (pImpl_->caps_->supportsFog())
-        setFog(start, end, density, fogColour());
+    setFog(start, end, density, fogColour());
 }
 
 void RenDevice::overrideFog(float start, float end, float density, const RenColour& col)
 {
-    if (pImpl_->caps_->supportsFog())
-        setFog(start, end, density, col);
+    setFog(start, end, density, col);
 }
 
 void RenDevice::restoreFog()
 {
     pImpl_->fogOn_ = true;
-
-    if (pImpl_->caps_->supportsFog())
-    {
-        setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
-    }
+    setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
 }
 
 bool RenDevice::isFogOn() const
 {
-    ASSERT(implies(pImpl_->fogOn_, pImpl_->caps_->supportsFog()), logic_error("Unsupported fog has been switched on."));
     return pImpl_->fogOn_;
 }
 
@@ -1273,11 +1490,10 @@ void RenDevice::graduatedNoisePolygon(const Ren::Rect& area, double minAlpha, do
     pts[4].color = pts[5].color = packColour(1, 1, 1, minAlpha);
     impl().setMaterialHandles(noiseMat);
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setDepthTest(false));
+
     renderScreenspace(pts, 6, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
@@ -1317,11 +1533,10 @@ void RenDevice::uniformNoisePolygon(const Ren::Rect& area, double maxAlpha)
 
     impl().setMaterialHandles(noiseMat);
 
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setDepthTest(false));
+
     renderScreenspace(pts, 4, noiseMat, Ren::PrimitiveTopology::TriangleStrip, area.width, area.height);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void RenDevice::addInterference()
@@ -1544,12 +1759,12 @@ void RenDevice::displayImage(const SysPathName& pathName)
 
     Ren::Painter painter(backBuf);
     painter.blit(texture);
+    flushCommandBuffer();
     pImpl_->display_->flipBuffers();
 }
 
 bool RenDevice::canSee(const MexPoint3d& pt) const
 {
-    // Originally there was a DX call like viewport_->TransformVertices(1, &txData, D3DTRANSFORM_CLIPPED, &offScreen);
     return true;
 }
 
@@ -1582,9 +1797,7 @@ bool RenDevice::activate()
 bool RenDevice::setHighestAllowedDisplayMode()
 {
     PRE(pImpl_->display_);
-    PRE(pImpl_->caps_);
-
-    return pImpl_->display_->setHighestAllowedMode(pImpl_->caps_->maxAvailableDisplayMemoryAfterTextures());
+    return pImpl_->display_->setHighestAllowedMode(256000000);
 }
 
 MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
@@ -1596,12 +1809,11 @@ MexPoint3d RenDevice::screenToCamera(const MexPoint2d& screenPosition) const
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
     // Get the viewport dimensions
-    GLint viewPort[4];
-    glGetIntegerv(GL_VIEWPORT, viewPort);
-    double viewportPixelLeft(viewPort[0]);
-    double viewportPixelTop(viewPort[1]);
-    double viewportPixelWidth(viewPort[2]);
-    double viewportPixelHeight(viewPort[3]);
+    const Ren::Viewport viewPort = pImpl_->backend_->getViewport();
+    double viewportPixelLeft(viewPort.x);
+    double viewportPixelTop(viewPort.y);
+    double viewportPixelWidth(viewPort.width);
+    double viewportPixelHeight(viewPort.height);
 
     // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
@@ -1663,12 +1875,11 @@ MexPoint2d RenDevice::cameraToScreen(const MexPoint3d& worldPosition) const
     double tanHalfVerticalFOVAngle = pImpl_->currentCamera_->tanHalfVerticalFOVAngle();
 
     // Get the viewport dimensions
-    GLint viewPort[4];
-    glGetIntegerv(GL_VIEWPORT, viewPort);
-    double viewportPixelLeft(viewPort[0]);
-    double viewportPixelTop(viewPort[1]);
-    double viewportPixelWidth(viewPort[2]);
-    double viewportPixelHeight(viewPort[3]);
+    const Ren::Viewport viewPort = pImpl_->backend_->getViewport();
+    double viewportPixelLeft(viewPort.x);
+    double viewportPixelTop(viewPort.y);
+    double viewportPixelWidth(viewPort.width);
+    double viewportPixelHeight(viewPort.height);
 
     // Compute the viewport dimensions in real world coordinates
     double realViewportHeight = 2.0 * projectionDistance * tanHalfVerticalFOVAngle;
@@ -1726,6 +1937,134 @@ RenDevice* RenDevice::current()
     return RenIDeviceImpl::current();
 }
 
+void RenDevice::recordCommand(Ren::BackendCommand command)
+{
+    PRE(pImpl_);
+    PRE(pImpl_->backend_);
+    const auto handle = pImpl_->currentCommandBufferHandle();
+    PRE(handle.isValid());
+
+    pImpl_->backend_->recordCommand(handle, std::move(command));
+}
+
+void RenDevice::recordEnableVertexAttribPointer(
+    Ren::AttributeLocationId index,
+    int size,
+    Ren::BackendVertexAttribType type,
+    bool normalized,
+    std::size_t stride,
+    std::size_t offset)
+{
+    if (!index.isValid())
+        return;
+
+    recordCommand(Ren::Command::enableVertexAttribPointer(index, size, type, normalized, stride, offset));
+}
+
+void RenDevice::recordDisableVertexAttribPointer(Ren::AttributeLocationId index)
+{
+    if (!index.isValid())
+        return;
+
+    recordCommand(Ren::Command::disableVertexAttribPointer(index));
+}
+
+Ren::FrameState RenDevice::buildFrameState() const
+{
+    Ren::FrameState fs;
+    fs.view = toFloatArray(view_);
+    fs.proj = toFloatArray(projection_);
+    fs.fogColourR = fogColour_.x;
+    fs.fogColourG = fogColour_.y;
+    fs.fogColourB = fogColour_.z;
+    fs.fogStartOrX = fogParams_.x;
+    fs.fogEndOrY = fogParams_.y;
+    fs.fogDensityOrZ = fogParams_.z;
+    fs.fogMode = static_cast<int>(Config::gfxFogMode.get());
+    return fs;
+}
+
+Ren::GpuLightingState RenDevice::buildGpuLightingState(bool gpuLighting) const
+{
+    Ren::GpuLightingState ls;
+    ls.enabled = gpuLighting;
+    if (!gpuLighting)
+        return ls;
+
+    ls.lightDir = pImpl_->gpuLightDir_;
+    ls.lightColor = pImpl_->gpuLightColor_;
+    ls.ambientColor = pImpl_->gpuAmbientColor_;
+    ls.filter = glm::vec3(
+        pImpl_->illuminator()->filter().r(),
+        pImpl_->illuminator()->filter().g(),
+        pImpl_->illuminator()->filter().b());
+    ls.hasPerVertexMaterials = pImpl_->hasPerVertexMaterials_;
+    ls.numPointLights = pImpl_->gpuNumPointLights_;
+    ls.pointLightPos = pImpl_->gpuPointLightPos_;
+    ls.pointLightColor = pImpl_->gpuPointLightColor_;
+    ls.pointLightRange = pImpl_->gpuPointLightRange_;
+    ls.pointLightAtten = pImpl_->gpuPointLightAtten_;
+    ls.pointLightOmni = pImpl_->gpuPointLightOmni_;
+    ls.shadowEnabled = pImpl_->shadowMappingEnabled_;
+    if (ls.shadowEnabled)
+    {
+        ls.shadowStrength = pImpl_->shadowStrength_;
+        ls.shadowSplitDistance = pImpl_->shadowSplitDistance_;
+        ls.lightSpaceMatrix = toFloatArray(pImpl_->lightSpaceMatrix_);
+        ls.lightSpaceMatrixNear = toFloatArray(pImpl_->lightSpaceMatrixNear_);
+        ls.shadowDepthTexture = pImpl_->shadowDepthTexture_;
+        ls.shadowNearDepthTexture = pImpl_->shadowNearDepthTexture_;
+    }
+    return ls;
+}
+
+Ren::StandardPipelineHandles RenDevice::buildStandardHandles() const
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    Ren::StandardPipelineHandles h;
+    h.pipelineId = standard_.id;
+    h.posAttr = standard_.posAttr;
+    h.uvAttr = standard_.uvAttr;
+    h.colAttr = standard_.colAttr;
+    h.normalAttr = standard_.normalAttr;
+    h.vtxDiffuseAttr = standard_.vtxDiffuseAttr;
+    h.vtxAmbientAttr = standard_.vtxAmbientAttr;
+    h.vtxEmissiveAttr = standard_.vtxEmissiveAttr;
+    h.vertexBuffer = vertexDataBuffer_;
+    h.normalBuffer = normalBuffer_;
+    h.vtxDiffuseBuffer = vtxDiffuseBuffer_;
+    h.vtxAmbientBuffer = vtxAmbientBuffer_;
+    h.vtxEmissiveBuffer = vtxEmissiveBuffer_;
+    h.elementBuffer = elementBuffer_;
+    return h;
+}
+
+void RenDevice::beginImmediateCommands()
+{
+    PRE(pImpl_);
+    pImpl_->beginImmediateCommandBuffer();
+}
+
+void RenDevice::endImmediateCommands()
+{
+    PRE(pImpl_);
+    PRE(pImpl_->immediateCommandBufferActive());
+    pImpl_->endImmediateCommandBuffer();
+}
+
+bool RenDevice::immediateCommandsActive() const
+{
+    PRE(pImpl_);
+    return pImpl_->immediateCommandBufferActive();
+}
+
+void RenDevice::flushCommandBuffer()
+{
+    PRE(pImpl_);
+    if (pImpl_->frameCommandBufferRecording_)
+        pImpl_->flushFrameCommandBuffer();
+}
+
 bool RenDevice::rendering() const
 {
     return pImpl_->rendering_;
@@ -1744,12 +2083,6 @@ bool RenDevice::rendering3D() const
 bool RenDevice::idleRendering() const
 {
     return true; // rendering() and not rendering3D() and not rendering2D();
-}
-
-const RenCapabilities& RenDevice::capabilities() const
-{
-    PRE(pImpl_->caps_); // This is checked by the class invariant.
-    return *pImpl_->caps_;
 }
 
 RenStats* RenDevice::statistics()
@@ -1876,27 +2209,47 @@ void RenDevice::setMaterialHandles(const RenMaterial& mat)
 void RenDevice::renderToTextureMode(Ren::TexId targetTexture, uint32_t viewPortW, uint32_t viewPortH)
 {
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
     // Bind FBO to texture
     if (targetTexture != Ren::NullTexId)
     {
-        if (backend_->beginRenderToTexture(glOffscreenFrameBuffID_, targetTexture))
-        {
-            glViewport(0, 0, viewPortW, viewPortH);
-        }
-        else
-        {
-            std::cerr << "Error when binding FBO" << std::endl;
-        }
+        recordCommand(Ren::Command::beginRenderToTexture(offscreenFramebuffer_, resolveTextureHandle(targetTexture)));
+        Ren::Size viewportSize(viewPortW, viewPortH);
+        recordCommand(Ren::Command::setViewport(viewportSize));
     }
     // Bind FBO to screen
     else
     {
-        backend_->endRenderToTexture();
+        recordCommand(Ren::Command::endRenderToTexture());
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        glViewport(0, 0, mode.width(), mode.height());
+        recordCommand(Ren::Command::setViewport(mode.size()));
     }
+}
+
+void RenDevice::enableVertexLayout(
+    Ren::AttributeLocationId posAttr,
+    int posComponents,
+    Ren::AttributeLocationId uvAttr,
+    Ren::AttributeLocationId colAttr)
+{
+    recordEnableVertexAttribPointer(
+        posAttr, posComponents, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0);
+    recordEnableVertexAttribPointer(
+        uvAttr, 2, Ren::BackendVertexAttribType::Float, false, sizeof(RenIVertex),
+        sizeof(RenIVertex) - 2 * sizeof(float));
+    recordEnableVertexAttribPointer(
+        colAttr, 4, Ren::BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex),
+        3 * sizeof(float) + sizeof(uint32_t));
+}
+
+void RenDevice::disableVertexLayout(
+    Ren::AttributeLocationId posAttr,
+    Ren::AttributeLocationId uvAttr,
+    Ren::AttributeLocationId colAttr)
+{
+    recordDisableVertexAttribPointer(posAttr);
+    recordDisableVertexAttribPointer(uvAttr);
+    recordDisableVertexAttribPointer(colAttr);
 }
 
 void RenDevice::renderScreenspace(
@@ -1910,63 +2263,36 @@ void RenDevice::renderScreenspace(
     CB_RENDEVICE_DEPIMPL_GL();
     CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_GIU2D_);
+    recordCommand(Ren::Command::bindPipeline(gui2D_.id));
 
-    // Bind texture
-    backend_->bindTexture2D(texture, 0);
+    static const int TextureUnit = 0;
+    recordCommand(Ren::Command::bindTexture2D(resolveTextureHandle(texture), TextureUnit));
 
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(gl2DUniformID_, 0);
+    {
+        Ren::Gui2DUniforms u;
+        u.screenspaceX = static_cast<float>(targetW);
+        u.screenspaceY = static_cast<float>(targetH);
+        u.textureSampler = TextureUnit;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(u)));
+    }
 
-    glUniform2f(glScreenspaceID_, (float)targetW, (float)targetH);
-
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
-        gl2DVertexBufferID_,
-        nVertices * sizeof(RenIVertex),
+        vertexBuffer2D_,
         &vertices[0],
-        Ren::BufferUsage::StreamDraw);
+        nVertices * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
 
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, vertexBuffer2D_));
+    enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
-    // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(
-        glVertexUVID_,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
+    recordCommand(Ren::Command::setDepthTest(false));
 
-    // 3rd attribute vertex colours
-    glEnableVertexAttribArray(glVertexColour_screenspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_screenspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    using BlendFactor = Ren::BackendBlendFactor;
+    recordCommand(Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
+    recordCommand(Ren::Command::draw(topology, 0, nVertices));
 
-    glEnable(GL_BLEND);
-    glDisable(GL_DEPTH_TEST);
-    //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    // Draw call
-    glDrawArrays(mode, 0, nVertices);
-
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-
-    glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glDisableVertexAttribArray(glVertexUVID_);
-    glDisableVertexAttribArray(glVertexColour_screenspaceID_);
+    disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
 
 void RenDevice::renderSurface(
@@ -2002,13 +2328,15 @@ void RenDevice::renderSurface(
     glm::vec2 uv_down_left = glm::vec2(uvX, uvY); //( 0.0f, 0.0f );
 
     // Bind shader
-    backend_->useProgram(glProgramID_GIU2D_);
+    recordCommand(Ren::Command::bindPipeline(gui2D_.id));
 
     vertices[0].color = vertices[1].color = vertices[2].color = vertices[3].color = vertices[4].color
         = vertices[5].color = colour;
     if (targetW)
     {
-        glUniform2f(glScreenspaceID_, (float)targetW, -(float)targetH);
+        Ren::Gui2DUniforms guiU;
+        guiU.screenspaceX = static_cast<float>(targetW);
+        guiU.screenspaceY = -static_cast<float>(targetH);
 
         vertices[2].x = vertex_up_left[0];
         vertices[2].y = vertex_up_left[1];
@@ -2037,11 +2365,16 @@ void RenDevice::renderSurface(
         vertices[4].tv = uv_up_right[1];
         vertices[3].tu = uv_down_left[0];
         vertices[3].tv = uv_down_left[1];
+
+        guiU.textureSampler = 0;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(guiU)));
     }
     else
     {
         const RenDisplay::Mode& mode = pImpl_->display()->currentMode();
-        glUniform2f(glScreenspaceID_, (float)mode.width(), (float)mode.height());
+        Ren::Gui2DUniforms guiU;
+        guiU.screenspaceX = static_cast<float>(mode.width());
+        guiU.screenspaceY = static_cast<float>(mode.height());
 
         vertices[0].x = vertex_up_left[0];
         vertices[0].y = vertex_up_left[1];
@@ -2070,78 +2403,32 @@ void RenDevice::renderSurface(
         vertices[4].tv = uv_up_right[1];
         vertices[5].tu = uv_down_left[0];
         vertices[5].tv = uv_down_left[1];
+
+        guiU.textureSampler = 0;
+        recordCommand(Ren::Command::setGui2DUniforms(std::move(guiU)));
     }
 
-    backend_->bufferData(
+    recordCommand(Ren::Command::bufferData(
         Ren::BufferTarget::Array,
-        gl2DVertexBufferID_,
-        6 * sizeof(RenIVertex),
+        vertexBuffer2D_,
         &vertices[0],
-        Ren::BufferUsage::StreamDraw);
+        6 * sizeof(RenIVertex),
+        Ren::BufferUsage::StreamDraw));
 
-    // Bind texture
-    backend_->bindTexture2D(RenSurface::createFromInternal(surf).handle(), 0);
-    syncSmoothFilters();
+    static const int TextureUnit = 0;
+    const auto texFilter = pImpl_->smoothScaleEnabled_ ? Ren::TextureFilter::Linear : Ren::TextureFilter::Nearest;
+    recordCommand(Ren::Command::bindTexture2D(surf->nativeTextureHandle(), TextureUnit, texFilter, texFilter));
 
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(gl2DUniformID_, 0);
+    recordCommand(Ren::Command::bindBuffer(Ren::BufferTarget::Array, vertexBuffer2D_));
+    enableVertexLayout(gui2D_.posAttr, 2, gui2D_.uvAttr, gui2D_.colAttr);
 
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_screenspaceID_);
-    backend_->bindBuffer(Ren::BufferTarget::Array, gl2DVertexBufferID_);
-    glVertexAttribPointer(glVertexPosition_screenspaceID_, 2, GL_FLOAT, GL_FALSE, sizeof(RenIVertex), (void*)nullptr);
+    recordCommand(Ren::Command::setDepthTest(false));
 
-    // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertexUVID_);
-    glVertexAttribPointer(
-        glVertexUVID_,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)));
+    const auto [srcFactor, dstFactor] = blendFactorsForBlitMode(mode);
+    recordCommand(Ren::Command::setBlendStateEnabled(srcFactor, dstFactor));
+    recordCommand(Ren::Command::draw(Ren::PrimitiveTopology::Triangles, 0, 6));
 
-    // 3rd attribute vertex colours
-    glEnableVertexAttribArray(glVertexColour_screenspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_screenspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
-
-    glEnable(GL_BLEND);
-    glDisable(GL_DEPTH_TEST);
-
-    switch (mode)
-    {
-    case Ren::BlitMode::AlphaBlend:
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        break;
-    case Ren::BlitMode::Replace:
-        glBlendFunc(GL_ONE, GL_ZERO);
-        break;
-    case Ren::BlitMode::DstMulOneMinusSrcAlpha:
-        glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-        break;
-    case Ren::BlitMode::ZeroZero:
-        glBlendFunc(GL_ZERO, GL_ZERO);
-        break;
-    }
-
-    // Draw call
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-
-    glDisableVertexAttribArray(glVertexPosition_screenspaceID_);
-    glDisableVertexAttribArray(glVertexUVID_);
-    glDisableVertexAttribArray(glVertexColour_screenspaceID_);
+    disableVertexLayout(gui2D_.posAttr, gui2D_.uvAttr, gui2D_.colAttr);
 }
 
 void RenDevice::renderPrimitive(
@@ -2154,94 +2441,29 @@ void RenDevice::renderPrimitive(
     PRE(nVertices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    // Use our shader
-    backend_->useProgram(glProgramID_Standard_);
+    const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
+
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitStandard3DDraw(
+        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices,
+        gpuLighting ? pImpl_->expandedNormals_.data() : nullptr,
+        nullptr, nullptr, nullptr,
+        topology, &cmds);
 
     if (standardUniformsDirty_)
-    {
-        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
-        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
         standardUniformsDirty_ = false;
-    }
 
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
-    // std::cout<<glm::to_string(MVP)<<std::endl;
-    // glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-    // glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
 
-    // glm::vec3 lightPos = glm::vec3(4,4,4);
-    // glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+    if (gpuLighting)
+        recordDisableVertexAttribPointer(standard_.normalAttr);
 
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, TextureUnit);
-
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    backend_->bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferID_,
-        nVertices * sizeof(RenIVertex),
-        vertices,
-        Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_modelspaceID_, // The attribute we want to configure
-        3, // size
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
-
-    // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_modelspaceUVID_);
-    glVertexAttribPointer(
-        glVertex_modelspaceUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
-
-    // vertex colours
-    glEnableVertexAttribArray(glVertexColour_modelspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_modelspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
-
-    /*// 3rd attribute buffer : normals
-    glEnableVertexAttribArray(vertexNormal_modelspaceID);
-    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-    glVertexAttribPointer(
-        vertexNormal_modelspaceID,    // The attribute we want to configure
-        3,                            // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );
-     */
-    // Draw the triangles !
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    glDrawArrays(mode, 0, nVertices);
-
-    glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glDisableVertexAttribArray(glVertex_modelspaceUVID_);
-    glDisableVertexAttribArray(glVertexColour_modelspaceID_);
-    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
+    disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }
 
 void RenDevice::renderIndexed(
@@ -2258,108 +2480,39 @@ void RenDevice::renderIndexed(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_Standard_);
-    // Compute the MVP matrix from keyboard and mouse input
+    const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    //    glm::mat4 MVP = (*pImpl_->projViewMatrix_) * model_;
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitStandard3DDrawIndexed(
+        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices, indices, nIndices,
+        gpuLighting ? pImpl_->expandedNormals_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxDiffuse_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxAmbient_.data() : nullptr,
+        gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxEmissive_.data() : nullptr,
+        topology, &cmds);
 
     if (standardUniformsDirty_)
-    {
-        glUniformMatrix4fv(glViewMatrixID_, 1, GL_FALSE, &view_[0][0]);
-        glUniformMatrix4fv(glProjectionMatrixID_, 1, GL_FALSE, &projection_[0][0]);
-        glUniform3fv(glFogColourID_, 1, &fogColour_[0]);
-        glUniform3fv(glFogParamsID_, 1, &fogParams_[0]);
         standardUniformsDirty_ = false;
+
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
+
+    if (gpuLighting)
+    {
+        recordDisableVertexAttribPointer(standard_.normalAttr);
+        if (pImpl_->hasPerVertexMaterials_)
+        {
+            recordDisableVertexAttribPointer(standard_.vtxDiffuseAttr);
+            recordDisableVertexAttribPointer(standard_.vtxAmbientAttr);
+            recordDisableVertexAttribPointer(standard_.vtxEmissiveAttr);
+        }
     }
 
-    glUniformMatrix4fv(glModelMatrixID_, 1, GL_FALSE, &model_[0][0]);
-    /*glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-    glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
-
-    glm::vec3 lightPos = glm::vec3(4,4,4);
-    glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);*/
-
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
-
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerID_, TextureUnit);
-
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_modelspaceID_);
-    backend_->bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferID_,
-        nVertices * sizeof(RenIVertex),
-        vertices,
-        Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_modelspaceID_, // The attribute we want to configure
-        3, // size - 3 for XYZ 4 for XYZW
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
-
-    // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_modelspaceUVID_);
-    glVertexAttribPointer(
-        glVertex_modelspaceUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
-
-    // vertex colours
-    glEnableVertexAttribArray(glVertexColour_modelspaceID_);
-    glVertexAttribPointer(
-        glVertexColour_modelspaceID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
-
-    // 3rd attribute buffer : normals
-    /*glEnableVertexAttribArray(vertexNormal_modelspaceID);
-    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-    glVertexAttribPointer(
-        vertexNormal_modelspaceID,    // The attribute we want to configure
-        3,                            // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );*/
-
-    // Index buffer
-    backend_->bufferData(
-        Ren::BufferTarget::ElementArray,
-        glElementBufferID_,
-        nIndices * sizeof(unsigned short),
-        indices,
-        Ren::BufferUsage::StreamDraw);
-
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    // Draw the triangles !
-    glDrawElements(
-        mode, // mode
-        nIndices, // count
-        GL_UNSIGNED_SHORT, // type
-        (void*)nullptr // element array buffer offset
-    );
-
-    glDisableVertexAttribArray(glVertexPosition_modelspaceID_);
-    glDisableVertexAttribArray(glVertex_modelspaceUVID_);
-    glDisableVertexAttribArray(glVertexColour_modelspaceID_);
-    // glDisableVertexAttribArray(vertexNormal_modelspaceID);
+    disableVertexLayout(standard_.posAttr, standard_.uvAttr, standard_.colAttr);
 }
 
 void RenDevice::renderIndexedScreenspace(
@@ -2376,79 +2529,144 @@ void RenDevice::renderIndexedScreenspace(
     PRE(nIndices < 5000);
 
     CB_RENDEVICE_DEPIMPL_GL();
-    CB_DEPIMPL_AUTO(backend_);
 
-    backend_->useProgram(glProgramID_Billboard_);
-    // Bind our texture in Texture Unit 0
-    static const int TextureUnit = 0;
-    backend_->bindTexture2D(mat.texture().handle(), TextureUnit);
+    Ren::BillboardPipelineHandles bh;
+    bh.pipelineId = billboard_.id;
+    bh.posAttr = billboard_.posAttr;
+    bh.uvAttr = billboard_.uvAttr;
+    bh.colAttr = billboard_.colAttr;
+    bh.vertexBuffer = vertexDataBufferBillboard_;
+    bh.elementBuffer = elementBufferBillboard_;
+
+    Ren::BillboardUniforms bu;
+    bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
+    bu.textureSampler = 0;
+
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitBillboardDrawIndexed(
+        bh, bu, billboardUniformsDirty_,
+        resolveTextureHandle(mat.texture().handle()),
+        vertices, nVertices, indices, nIndices,
+        topology, &cmds);
 
     if (billboardUniformsDirty_)
-    {
-        glUniformMatrix4fv(glViewProjMatrix_BillboardID_, 1, GL_FALSE, &(*pImpl_->projViewMatrix_)[0][0]);
         billboardUniformsDirty_ = false;
+
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
+
+    disableVertexLayout(billboard_.posAttr, billboard_.uvAttr, billboard_.colAttr);
+}
+
+void RenDevice::beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpaceMatrix)
+{
+    CB_RENDEVICE_DEPIMPL_GL();
+    CB_DEPIMPL_AUTO(backend_);
+
+    if (cascade == ShadowCascade::Near)
+        pImpl_->lightSpaceMatrixNear_ = lightSpaceMatrix;
+    else
+        pImpl_->lightSpaceMatrix_ = lightSpaceMatrix;
+
+    pImpl_->activeShadowLightSpaceMatrix_ = lightSpaceMatrix;
+    pImpl_->shadowPassActive_ = true;
+    pImpl_->shadowMappingEnabled_ = true;
+
+    const bool isNear = (cascade == ShadowCascade::Near);
+    const int sz = isNear ? RenIDeviceImpl::ShadowMapSizeNear : RenIDeviceImpl::ShadowMapSizeFar;
+    const auto fb = isNear ? shadowNearFramebuffer_ : shadowFramebuffer_;
+
+    recordCommand(Ren::Command::setViewport(0, 0, sz, sz));
+    recordCommand(Ren::Command::beginRenderPass(shadowRenderPass_, fb));
+    recordCommand(Ren::Command::setDepthTest(true));
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::Less));
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    // Disable face culling so single-sided geometry (terrain tiles) is
+    // written to the shadow map.  Use polygon-offset bias instead of
+    // front-face culling to avoid shadow acne.
+    recordCommand(Ren::Command::setCullFace(false));
+    recordCommand(Ren::Command::setPolygonOffsetFill(true));
+    recordCommand(Ren::Command::setPolygonOffset(0.5f, 1.0f));
+
+    recordCommand(Ren::Command::bindPipeline(shadowDepth_.id));
+    {
+        Ren::ShadowDepthUniforms sdu;
+        sdu.lightSpaceMatrix = toFloatArray(lightSpaceMatrix);
+        sdu.model = toFloatArray(glm::mat4(1.0f));
+        recordCommand(Ren::Command::setShadowDepthUniforms(std::move(sdu)));
     }
+}
 
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(glTextureSamplerBillboardID_, TextureUnit);
+void RenDevice::setShadowSplitDistance(float d)
+{
+    pImpl_->shadowSplitDistance_ = d;
+}
 
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(glVertexPosition_BillboardID_);
-    backend_->bufferData(
-        Ren::BufferTarget::Array,
-        glVertexDataBufferBillboardID_,
-        nVertices * sizeof(RenIVertex),
-        vertices,
-        Ren::BufferUsage::StreamDraw);
-    glVertexAttribPointer(
-        glVertexPosition_BillboardID_, // The attribute we want to configure
-        4, // size - 3 for XYZ 4 for XYZW
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)nullptr // array buffer offset
-    );
+void RenDevice::endShadowPass()
+{
+    CB_RENDEVICE_DEPIMPL_GL();
 
-    // 2nd attribute buffer : UVs
-    glEnableVertexAttribArray(glVertex_BillboardUVID_);
-    glVertexAttribPointer(
-        glVertex_BillboardUVID_, // The attribute we want to configure
-        2, // size : U+V => 2
-        GL_FLOAT, // type
-        GL_FALSE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(sizeof(RenIVertex) - 2 * sizeof(float)) // array buffer offset
-    );
+    pImpl_->shadowPassActive_ = false;
 
-    // vertex colours
-    glEnableVertexAttribArray(glVertexColour_BillboardID_);
-    glVertexAttribPointer(
-        glVertexColour_BillboardID_, // The attribute we want to configure
-        4, // size
-        GL_UNSIGNED_BYTE, // type
-        GL_TRUE, // normalized?
-        sizeof(RenIVertex), // stride
-        (void*)(3 * sizeof(float) + sizeof(uint32_t)) // array buffer offset
-    );
+    recordCommand(Ren::Command::setPolygonOffsetFill(false));
+    recordCommand(Ren::Command::setCullFace(true));
+    recordCommand(Ren::Command::endRenderPass());
 
-    // Index buffer
-    backend_->bufferData(
-        Ren::BufferTarget::ElementArray,
-        glElementBufferBillboardID_,
-        nIndices * sizeof(unsigned short),
-        indices,
-        Ren::BufferUsage::StreamDraw);
+    // Restore the default framebuffer and main viewport.
+    recordCommand(Ren::Command::bindDefaultFramebuffer());
+    const auto sz = windowSize();
+    recordCommand(Ren::Command::setViewport(0, 0, sz.width, sz.height));
+}
 
-    GLenum mode = Ren::OpenGL::getDrawMode(topology);
-    // Draw the triangles !
-    glDrawElements(
-        mode, // mode
-        nIndices, // count
-        GL_UNSIGNED_SHORT, // type
-        (void*)nullptr // element array buffer offset
-    );
+bool RenDevice::isShadowPassActive() const
+{
+    return pImpl_->shadowPassActive_;
+}
 
-    glDisableVertexAttribArray(glVertexPosition_BillboardID_);
-    glDisableVertexAttribArray(glVertex_BillboardUVID_);
-    glDisableVertexAttribArray(glVertexColour_BillboardID_);
+bool RenDevice::isShadowMappingEnabled() const
+{
+    return pImpl_->shadowMappingEnabled_;
+}
+
+void RenDevice::shadowStrength(float s)
+{
+    pImpl_->shadowStrength_ = s;
+}
+
+float RenDevice::shadowStrength() const
+{
+    return pImpl_->shadowStrength_;
+}
+
+void RenDevice::renderShadowDepth(
+    const RenIVertex* vertices,
+    const size_t nVertices,
+    const Ren::VertexIdx* indices,
+    const size_t nIndices,
+    Ren::PrimitiveTopology topology)
+{
+    PRE(vertices);
+    PRE(indices);
+    PRE(pImpl_->shadowPassActive_);
+
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    Ren::ShadowDepthPipelineHandles sh;
+    sh.pipelineId = shadowDepth_.id;
+    sh.posAttr = shadowDepth_.posAttr;
+    sh.vertexBuffer = vertexDataBuffer_;
+    sh.elementBuffer = elementBuffer_;
+
+    Ren::ShadowDepthUniforms sdu;
+    sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
+    sdu.model = toFloatArray(model_);
+
+    Ren::DrawCallFactory::Commands cmds;
+    Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
+        sh, sdu, vertices, nVertices, indices, nIndices, topology, &cmds);
+
+    for (auto& cmd : cmds)
+        recordCommand(std::move(cmd));
+
+    recordDisableVertexAttribPointer(shadowDepth_.posAttr);
 }

@@ -23,6 +23,6 @@ void main() {
 	
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
-    fragmentColor = vec4(vertexColor[2],vertexColor[1],vertexColor[0],vertexColor[3]);
+    fragmentColor = vertexColor;
 }
 

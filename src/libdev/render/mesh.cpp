@@ -218,6 +218,40 @@ inline void setMeshWorldMatrix(const MexTransform3d& world, glm::mat4& World, co
     RenDevice::current()->setModelMatrix(World);
 }
 
+// Shadow depth pass: set model matrix and submit only triangle positions — skip
+// lighting, materials, alpha sorting, TTF polygons, spin polygons, etc.
+// If a material override vector is provided, any group whose override material
+// has alpha transparency is skipped (semi-transparent surfaces should not cast
+// full opaque shadows).
+inline bool renderShadowDepthIfActive(
+    const MexTransform3d& world,
+    const RenScale& scale,
+    const RenIVertexData* vertices,
+    const ctl_min_memory_vector<RenITriangleGroup*>& triangles,
+    const RenMaterialVec* matOverride = nullptr)
+{
+    if (!RenDevice::current()->isShadowPassActive())
+        return false;
+
+    if (!vertices)
+        return true;
+
+    glm::mat4 glWorld;
+    setMeshWorldMatrix(world, glWorld, scale);
+
+    // Iterate triangle groups and call their render method; each group's
+    // render will detect the active shadow pass and call renderShadowDepth.
+    size_t idx = 0;
+    for (const auto* group : triangles)
+    {
+        const RenMaterial& mat = (matOverride && idx < matOverride->size()) ? (*matOverride)[idx] : group->material();
+        group->render(*vertices, mat);
+        ++idx;
+    }
+
+    return true;
+}
+
 inline void animateVertices(
     const RenIVertexData* in,
     std::unique_ptr<RenIVertexData>& out,
@@ -276,7 +310,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_);
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_, devImpl->takeGpuMeshSnapshot());
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -295,7 +329,7 @@ template <class T> void GroupRenderFunctor<T>::operator()(const T* group) const
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_);
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_, devImpl->takeGpuMeshSnapshot());
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
@@ -343,7 +377,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_);
+            RenIDelayedAlphaGroup* delayed = new RenIDelayedAlphaGroup(group, std::move(lit), mat, world_, devImpl->takeGpuMeshSnapshot());
 
             if (mat.intraMeshAlphaPriority())
                 delayed->meshId(RenMesh::meshId());
@@ -362,7 +396,7 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
     else if (mat.interMeshCoplanar())
     {
         RenI::LitVtxAPtr lit = group->light(vertices_, mat);
-        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_);
+        RenIDelayedCoplanarGroup* delayed = new RenIDelayedCoplanarGroup(group, std::move(lit), mat, world_, devImpl->takeGpuMeshSnapshot());
         std::unique_ptr<RenIPrioritySortedItem> item(delayed);
         devImpl->coplanarSorter().addItem(item);
     }
@@ -385,6 +419,9 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
 // Both the transform and the scaling functor are mandatory parameters.
 void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
 {
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+        return;
+
     renderPreconditions();
     PRE(implies(nTriangles() > 0, vertices_));
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
@@ -421,7 +458,7 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator sIt = stfps_.begin();
         while (sIt != stfps_.end())
@@ -431,12 +468,14 @@ void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
             ++sIt;
         }
 
-        glEnable(GL_CULL_FACE);
     }
 }
 
 void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, const RenScale& scale) const
 {
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_, mats))
+        return;
+
     renderPreconditions();
     PRE(implies(nTriangles() > 0, vertices_));
     PRE(mats);
@@ -478,7 +517,7 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -489,12 +528,14 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
             ++matIt;
         }
 
-        glEnable(GL_CULL_FACE);
     }
 }
 
 void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, const RenScale& scale) const
 {
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+        return;
+
     renderPreconditions();
     PRE(implies(nTriangles() > 0, vertices_));
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
@@ -540,7 +581,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -550,7 +591,6 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
             ++stIt;
         }
 
-        glEnable(GL_CULL_FACE);
     }
 }
 
@@ -560,6 +600,9 @@ void RenMesh::render(
     const RenUVTransform& anim,
     const RenScale& scale) const
 {
+    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_, mats))
+        return;
+
     renderPreconditions();
     PRE(implies(nTriangles() > 0, vertices_));
     PRE(mats);
@@ -608,7 +651,7 @@ void RenMesh::render(
 
     if (stfps_.size() > 0)
     {
-        glDisable(GL_CULL_FACE);
+        RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
 
         ctl_min_memory_vector<RenSpinTFPolygon*>::const_iterator stIt = stfps_.begin();
         while (stIt != stfps_.end())
@@ -619,7 +662,6 @@ void RenMesh::render(
             ++matIt;
         }
 
-        glEnable(GL_CULL_FACE);
     }
 }
 

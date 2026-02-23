@@ -1,14 +1,18 @@
 #include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/OpenGL/Utils.hpp"
 
-#include "render/internal/surfmgri.hpp"
-#include "render/internal/surfbody.hpp"
-#include "render/surfmgr.hpp"
+#include "base/prepost.hpp"
 
 #include "spdlog/spdlog.h"
 
 #include <SDL.h>
 
 #include <fstream>
+#include <variant>
+
+// Immediate mode is more performant, at least for the legacy renderer.
+// Yet we want to have this switch to debug commands buffer implementation.
+constexpr bool ImmediateExecution{true};
 
 namespace Ren
 {
@@ -18,51 +22,6 @@ namespace OpenGL
 
 namespace
 {
-GLenum toStorageFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA8;
-    }
-    return GL_RGBA8;
-}
-
-GLenum toPixelFormat(TextureFormat format)
-{
-    switch (format)
-    {
-    case TextureFormat::RGBA8_UNorm:
-        return GL_RGBA;
-    }
-    return GL_RGBA;
-}
-
-GLenum toFilter(TextureFilter filter)
-{
-    switch (filter)
-    {
-    case TextureFilter::Nearest:
-        return GL_NEAREST;
-    case TextureFilter::Linear:
-        return GL_LINEAR;
-    case TextureFilter::LinearMipmapLinear:
-        return GL_LINEAR_MIPMAP_LINEAR;
-    }
-    return GL_NEAREST;
-}
-
-GLenum toWrap(TextureWrap wrap)
-{
-    switch (wrap)
-    {
-    case TextureWrap::Repeat:
-        return GL_REPEAT;
-    case TextureWrap::ClampToEdge:
-        return GL_CLAMP_TO_EDGE;
-    }
-    return GL_REPEAT;
-}
 
 bool compileShader(GLuint shaderID, const std::string& code)
 {
@@ -94,6 +53,7 @@ RenderBackendGL::RenderBackendGL()
     : programs_{0,}
     , buffers_{0,}
     , framebuffers_{0,}
+    , commandBuffers_{CommandBuffer{},}
 {
 }
 
@@ -176,13 +136,47 @@ bool RenderBackendGL::initialize(SDL_Window* window)
     }
 
     glFrontFace(GL_CW);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    stateCache_.reset();
 
     initialized_ = true;
     return true;
 }
 
+void RenderBackendGL::StateCache::reset()
+{
+    currentProgram_ = 0;
+    enabledAttribs_.reset();
+
+    resetTextureUnits();
+
+    depthTestEnabled_.reset();
+    depthMaskWritable_.reset();
+    depthFunc_.reset();
+    blend_.reset();
+    cullFaceEnabled_.reset();
+    cullFaceMode_.reset();
+    alphaTest_.reset();
+    polygonOffset_.reset();
+    multisampleEnabled_.reset();
+    boundArrayBuffer_ = 0;
+    boundElementBuffer_ = 0;
+    viewport_.reset();
+}
+
+void RenderBackendGL::StateCache::resetTextureUnits()
+{
+    textureUnits_ = {};
+}
+
 void RenderBackendGL::shutdown()
 {
+    flushPendingDeletes();
+
     if (fallbackTexture2D_ != 0)
     {
         glDeleteTextures(1, &fallbackTexture2D_);
@@ -385,17 +379,21 @@ ProgramId RenderBackendGL::createProgramFromFiles(
 
 void RenderBackendGL::useProgram(ProgramId id)
 {
-    glUseProgram(programHandle(id));
+    const GLuint handle = programHandle(id);
+    if (handle == stateCache_.currentProgram_)
+        return;
+    stateCache_.currentProgram_ = handle;
+    glUseProgram(handle);
 }
 
-int RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
+UniformLocationId RenderBackendGL::uniformLocation(ProgramId id, std::string_view name) const
 {
-    return glGetUniformLocation(programHandle(id), std::string(name).c_str());
+    return UniformLocationId(glGetUniformLocation(programHandle(id), std::string(name).c_str()));
 }
 
-int RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
+AttributeLocationId RenderBackendGL::attribLocation(ProgramId id, std::string_view name) const
 {
-    return glGetAttribLocation(programHandle(id), std::string(name).c_str());
+    return AttributeLocationId(glGetAttribLocation(programHandle(id), std::string(name).c_str()));
 }
 
 void RenderBackendGL::releaseProgram(ProgramId id)
@@ -415,6 +413,104 @@ void RenderBackendGL::releaseProgram(ProgramId id)
     }
 }
 
+PipelineId RenderBackendGL::createPipeline(const PipelineDesc& desc)
+{
+    // Resolve logical shader names to backend-specific file paths
+    static constexpr const char* shadersDir = "data/shaders/120/";
+    static constexpr const char* vertexExt = ".vxgls";
+    static constexpr const char* fragmentExt = ".fggls";
+
+    const std::string vertexShaderFile = shadersDir + desc.vertexShader + vertexExt;
+    const std::string fragmentShaderFile = shadersDir + desc.fragmentShader + fragmentExt;
+
+    const ProgramId programId = createProgramFromFiles(
+        vertexShaderFile, fragmentShaderFile, desc.vertexShader, desc.fragmentShader);
+    if (programId == 0)
+        return 0;
+
+    Pipeline pipeline;
+    pipeline.alive = true;
+    pipeline.programId = programId;
+    pipeline.vertexAttributes = desc.vertexAttributes;
+
+    for (const auto& uniformName : desc.uniformNames)
+    {
+        const auto loc = uniformLocation(programId, uniformName);
+        if (!loc.isValid())
+            spdlog::warn("Uniform '{}' not found in shader program", uniformName);
+        pipeline.uniforms.emplace_back(uniformName, loc);
+    }
+
+    for (const auto& attr : desc.vertexAttributes)
+    {
+        pipeline.attributes.emplace_back(attr.name, attribLocation(programId, attr.name));
+    }
+
+    pipelines_.push_back(std::move(pipeline));
+    return static_cast<PipelineId>(pipelines_.size());
+}
+
+void RenderBackendGL::releasePipeline(PipelineId id)
+{
+    if (id == 0 || id > pipelines_.size())
+        return;
+
+    Pipeline& pipeline = pipelines_[id - 1];
+    if (!pipeline.alive)
+        return;
+
+    releaseProgram(pipeline.programId);
+    pipeline.alive = false;
+    pipeline.programId = 0;
+}
+
+UniformLocationId RenderBackendGL::pipelineUniformLocation(PipelineId id, std::string_view name) const
+{
+    if (id == 0 || id > pipelines_.size())
+        return UniformLocationId{};
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    for (const auto& [uniformName, location] : pipeline.uniforms)
+    {
+        if (uniformName == name)
+            return location;
+    }
+    spdlog::error("Uniform '{}' not registered in pipeline descriptor", name);
+    return UniformLocationId{};
+}
+
+AttributeLocationId RenderBackendGL::pipelineAttribLocation(PipelineId id, std::string_view name) const
+{
+    if (id == 0 || id > pipelines_.size())
+        return AttributeLocationId{};
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    for (const auto& [attrName, location] : pipeline.attributes)
+    {
+        if (attrName == name)
+            return location;
+    }
+    return AttributeLocationId{};
+}
+
+RenderPassId RenderBackendGL::createRenderPass(const RenderPassDesc& desc)
+{
+    RenderPass pass;
+    pass.alive = true;
+    pass.desc = desc;
+
+    renderPasses_.push_back(std::move(pass));
+    return static_cast<RenderPassId>(renderPasses_.size());
+}
+
+void RenderBackendGL::releaseRenderPass(RenderPassId id)
+{
+    if (id == 0 || id > renderPasses_.size())
+        return;
+
+    renderPasses_[id - 1].alive = false;
+}
+
 BufferId RenderBackendGL::createBuffer()
 {
     GLuint buffer = 0;
@@ -429,6 +525,18 @@ BufferId RenderBackendGL::createBuffer()
 void RenderBackendGL::bindBuffer(BufferTarget target, BufferId id)
 {
     const GLuint buffer = bufferHandle(id);
+    if (target == BufferTarget::Array)
+    {
+        if (stateCache_.boundArrayBuffer_ == buffer)
+            return;
+        stateCache_.boundArrayBuffer_ = buffer;
+    }
+    else
+    {
+        if (stateCache_.boundElementBuffer_ == buffer)
+            return;
+        stateCache_.boundElementBuffer_ = buffer;
+    }
     const GLenum glTarget = (target == BufferTarget::Array) ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER;
     glBindBuffer(glTarget, buffer);
 }
@@ -476,54 +584,87 @@ void RenderBackendGL::bindFramebuffer(FramebufferId id)
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(id));
 }
 
-void RenderBackendGL::framebufferTexture2D(FramebufferAttachment attachment, TexId texture)
+void RenderBackendGL::framebufferAttachDepthTexture(FramebufferId fbo, BackendTextureHandle depthTexture)
 {
-    const GLenum glAttachment
-        = (attachment == FramebufferAttachment::Color0) ? GL_COLOR_ATTACHMENT0 : GL_COLOR_ATTACHMENT0;
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 
-    GLuint textureHandle = 0;
-    if (texture != NullTexId)
+    const GLuint texHandle = depthTexture.isValid() ? depthTexture.value() : 0;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texHandle, 0);
+
+    // Depth-only FBO: no color attachment
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+
+    if (texHandle != 0)
     {
-        RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(texture);
-        if (surfBody && surfBody->nativeTexture2D_.isValid())
+        const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
         {
-            textureHandle = surfBody->nativeTexture2D_.value();
+            spdlog::error("Depth-only framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
         }
     }
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, glAttachment, GL_TEXTURE_2D, textureHandle, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-bool RenderBackendGL::beginRenderToTexture(FramebufferId framebuffer, TexId targetTexture)
+void RenderBackendGL::framebufferAttachColorTexture(FramebufferId fbo, BackendTextureHandle colorTexture)
 {
-    if (framebuffer == 0)
-        return false;
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 
-    if (targetTexture == NullTexId)
-        return false;
+    const GLuint texHandle = colorTexture.isValid() ? colorTexture.value() : 0;
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texHandle, 0);
 
-    pushFramebuffer();
-    bindFramebuffer(framebuffer);
-    framebufferTexture2D(FramebufferAttachment::Color0, targetTexture);
+    if (texHandle != 0)
+    {
+        const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
+        {
+            spdlog::error("Color framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        }
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderBackendGL::framebufferAttachDepthRenderbuffer(FramebufferId fbo, int width, int height)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+
+    GLuint rbo{};
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
     const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE)
     {
-        spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
-        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
-        popFramebuffer();
-        return false;
+        spdlog::error("Framebuffer with depth renderbuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
     }
 
-    return true;
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+bool RenderBackendGL::isFramebufferComplete(FramebufferId fbo)
+{
+    const GLuint fboHandle = framebufferHandle(fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return status == GL_FRAMEBUFFER_COMPLETE;
 }
 
 void RenderBackendGL::endRenderToTexture()
 {
     if (!framebufferStack_.empty())
     {
-        framebufferTexture2D(FramebufferAttachment::Color0, NullTexId);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
     }
+    currentFboColorAttachment_ = 0;
     popFramebuffer();
 }
 
@@ -547,6 +688,30 @@ void RenderBackendGL::popFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, restore);
 }
 
+Viewport RenderBackendGL::getViewport() const
+{
+    GLint vp[4];
+    glGetIntegerv(GL_VIEWPORT, vp);
+    return {vp[0], vp[1], vp[2], vp[3]};
+}
+
+void RenderBackendGL::clearDisplay(int width, int height)
+{
+    glViewport(0, 0, width, height);
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void RenderBackendGL::readPixelsFloat(int x, int y, int width, int height, float* rgba)
+{
+    glReadPixels(x, y, width, height, GL_RGBA, GL_FLOAT, rgba);
+}
+
+void RenderBackendGL::readPixelsUByte(int x, int y, int width, int height, unsigned char* rgba)
+{
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+}
+
 void RenderBackendGL::releaseFramebuffer(FramebufferId id)
 {
     if (id == 0)
@@ -564,18 +729,726 @@ void RenderBackendGL::releaseFramebuffer(FramebufferId id)
     }
 }
 
-void RenderBackendGL::bindTexture2D(TexId id, std::uint32_t unit)
-{
-    const RenISurfBody* surfBody = RenSurfaceManager::instance().impl().getSurface(id);
-    GLuint textureHandle = fallbackTexture2D_;
 
-    if (surfBody && !surfBody->isEmpty() && surfBody->nativeTexture2D_.isValid())
+BackendCommandBufferHandle RenderBackendGL::createCommandBuffer()
+{
+    if (commandBuffers_.empty())
     {
-        textureHandle = surfBody->nativeTexture2D_.value();
+        commandBuffers_.push_back(CommandBuffer{});
     }
 
-    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + unit));
+    for (std::size_t idx = 1; idx < commandBuffers_.size(); ++idx)
+    {
+        CommandBuffer& buffer = commandBuffers_[idx];
+        if (!buffer.alive)
+        {
+            buffer.alive = true;
+            buffer.recording = false;
+            buffer.commands.clear();
+            return BackendCommandBufferHandle(static_cast<std::uint32_t>(idx));
+        }
+    }
+
+    commandBuffers_.push_back(CommandBuffer{});
+    CommandBuffer& buffer = commandBuffers_.back();
+    buffer.alive = true;
+    buffer.recording = false;
+    buffer.commands.clear();
+    return BackendCommandBufferHandle(static_cast<std::uint32_t>(commandBuffers_.size() - 1));
+}
+
+void RenderBackendGL::destroyCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr)
+        return;
+
+    buffer->alive = false;
+    buffer->recording = false;
+    buffer->commands.clear();
+}
+
+void RenderBackendGL::beginCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr)
+        return;
+
+    buffer->recording = true;
+    buffer->commands.clear();
+}
+
+void RenderBackendGL::recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command)
+{
+    if (!handle.isValid())
+        return;
+
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || !buffer->recording)
+        return;
+
+    if constexpr (ImmediateExecution)
+        executeCommand(command);
+    else
+        buffer->commands.push_back(std::move(command));
+}
+
+void RenderBackendGL::endCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || !buffer->recording)
+        return;
+
+    buffer->recording = false;
+}
+
+void RenderBackendGL::submitCommandBuffer(BackendCommandBufferHandle handle)
+{
+    CommandBuffer* buffer = commandBufferFromHandle(handle);
+    if (buffer == nullptr || buffer->recording)
+        return;
+
+    for (const BackendCommand& command : buffer->commands)
+    {
+        std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+    }
+
+    buffer->commands.clear();
+
+    // Only flush pending deletes when no other buffer is still recording,
+    // to avoid deleting resources that queued commands may still reference.
+    if (activeCommandBufferCount() == 0)
+        flushPendingDeletes();
+}
+
+void RenderBackendGL::flushPendingDeletes()
+{
+    PRE(activeCommandBufferCount() == 0);
+
+    if (!pendingTextureDeletes_.empty())
+    {
+        glDeleteTextures(
+            static_cast<GLsizei>(pendingTextureDeletes_.size()),
+            pendingTextureDeletes_.data());
+        pendingTextureDeletes_.clear();
+
+        // Invalidate texture cache — GL may reuse deleted handles.
+        stateCache_.textureUnits_ = {};
+    }
+}
+
+std::size_t RenderBackendGL::activeCommandBufferCount() const
+{
+    std::size_t count{};
+    for (const auto& buffer : commandBuffers_)
+    {
+        if (buffer.alive && buffer.recording)
+            ++count;
+    }
+    return count;
+}
+
+RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle)
+{
+    if (!handle.isValid())
+        return nullptr;
+
+    const std::uint32_t idx = handle.value();
+    if (idx >= commandBuffers_.size())
+        return nullptr;
+
+    CommandBuffer& buffer = commandBuffers_[idx];
+    if (!buffer.alive)
+        return nullptr;
+
+    return &buffer;
+}
+
+const RenderBackendGL::CommandBuffer* RenderBackendGL::commandBufferFromHandle(BackendCommandBufferHandle handle) const
+{
+    if (!handle.isValid())
+        return nullptr;
+
+    const std::uint32_t idx = handle.value();
+    if (idx >= commandBuffers_.size())
+        return nullptr;
+
+    const CommandBuffer& buffer = commandBuffers_[idx];
+    if (!buffer.alive)
+        return nullptr;
+
+    return &buffer;
+}
+
+void RenderBackendGL::executeCommand(const BackendCommand& command)
+{
+    std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandClear& command)
+{
+    const GLbitfield mask = toClearMask(command.mask);
+    if (mask == 0)
+        return;
+
+    GLfloat previousClearColor[4]{};
+    const bool affectsColour = (mask & GL_COLOR_BUFFER_BIT) != 0;
+    if (affectsColour)
+    {
+        glGetFloatv(GL_COLOR_CLEAR_VALUE, previousClearColor);
+        glClearColor(command.r, command.g, command.b, command.a);
+    }
+
+    glClear(mask);
+
+    if (affectsColour)
+    {
+        glClearColor(previousClearColor[0], previousClearColor[1], previousClearColor[2], previousClearColor[3]);
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetViewport& command)
+{
+    if (stateCache_.viewport_.has_value())
+    {
+        const auto& v = *stateCache_.viewport_;
+        if (v.x == command.x && v.y == command.y && v.width == command.width && v.height == command.height)
+            return;
+    }
+    stateCache_.viewport_ = {command.x, command.y, command.width, command.height};
+    glViewport(command.x, command.y, command.width, command.height);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetMultisample& command)
+{
+    if (stateCache_.multisampleEnabled_ == command.enabled)
+        return;
+    stateCache_.multisampleEnabled_ = command.enabled;
+    if (command.enabled)
+        glEnable(GL_MULTISAMPLE);
+    else
+        glDisable(GL_MULTISAMPLE);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandDraw& command)
+{
+    const GLenum mode = toDrawMode(command.topology);
+    glDrawArrays(mode, command.first, command.count);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandDrawIndexed& command)
+{
+    const GLenum mode = toDrawMode(command.topology);
+    const GLenum indexType = toIndexType(command.indexType);
+    glDrawElements(mode, command.count, indexType, reinterpret_cast<const void*>(command.indexBufferOffset));
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetBlendState& command)
+{
+    const GLenum src = command.enabled ? toBlendFactor(command.srcFactor) : 0;
+    const GLenum dst = command.enabled ? toBlendFactor(command.dstFactor) : 0;
+    if (stateCache_.blend_.has_value())
+    {
+        const auto& b = *stateCache_.blend_;
+        if (b.enabled == command.enabled && b.srcFactor == src && b.dstFactor == dst)
+            return;
+    }
+    stateCache_.blend_ = {command.enabled, src, dst};
+    if (command.enabled)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(src, dst);
+    }
+    else
+    {
+        glDisable(GL_BLEND);
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetCullFace& command)
+{
+    if (stateCache_.cullFaceEnabled_ == command.enabled)
+        return;
+    stateCache_.cullFaceEnabled_ = command.enabled;
+    if (command.enabled)
+        glEnable(GL_CULL_FACE);
+    else
+        glDisable(GL_CULL_FACE);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetCullFaceMode& command)
+{
+    const GLenum mode = command.mode == BackendCullFaceMode::Front ? GL_FRONT : GL_BACK;
+    if (stateCache_.cullFaceMode_ == mode)
+        return;
+    stateCache_.cullFaceMode_ = mode;
+    glCullFace(mode);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffsetFill& command)
+{
+    if (stateCache_.polygonOffset_.has_value() && stateCache_.polygonOffset_->fillEnabled == command.enabled)
+        return;
+    if (!stateCache_.polygonOffset_.has_value())
+        stateCache_.polygonOffset_ = {command.enabled, 0.0f, 0.0f};
+    else
+        stateCache_.polygonOffset_->fillEnabled = command.enabled;
+    if (command.enabled)
+        glEnable(GL_POLYGON_OFFSET_FILL);
+    else
+        glDisable(GL_POLYGON_OFFSET_FILL);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetPolygonOffset& command)
+{
+    if (stateCache_.polygonOffset_.has_value()
+        && stateCache_.polygonOffset_->factor == command.factor
+        && stateCache_.polygonOffset_->units == command.units)
+        return;
+    if (!stateCache_.polygonOffset_.has_value())
+        stateCache_.polygonOffset_ = {false, command.factor, command.units};
+    else
+    {
+        stateCache_.polygonOffset_->factor = command.factor;
+        stateCache_.polygonOffset_->units = command.units;
+    }
+    glPolygonOffset(command.factor, command.units);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetAlphaTest& command)
+{
+    if (stateCache_.alphaTest_.has_value())
+    {
+        const auto& a = *stateCache_.alphaTest_;
+        if (a.enabled == command.enabled && (!command.enabled || a.reference == command.reference))
+            return;
+    }
+    stateCache_.alphaTest_ = {command.enabled, command.reference};
+    if (command.enabled)
+    {
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, command.reference);
+    }
+    else
+    {
+        glDisable(GL_ALPHA_TEST);
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetDepthMask& command)
+{
+    if (stateCache_.depthMaskWritable_ == command.writable)
+        return;
+    stateCache_.depthMaskWritable_ = command.writable;
+    glDepthMask(command.writable ? GL_TRUE : GL_FALSE);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetDepthFunc& command)
+{
+    const GLenum func = toDepthFunc(command.function);
+    if (stateCache_.depthFunc_ == func)
+        return;
+    stateCache_.depthFunc_ = func;
+    glDepthFunc(func);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetDepthTest& command)
+{
+    if (stateCache_.depthTestEnabled_ == command.enabled)
+        return;
+    stateCache_.depthTestEnabled_ = command.enabled;
+    if (command.enabled)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1i& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1i(command.location.value(), command.value);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1f(command.location.value(), command.value);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform2f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform2f(command.location.value(), command.x, command.y);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform1fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform1fv(command.location.value(), static_cast<GLsizei>(command.values.size()), command.values.data());
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform3f& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform3f(command.location.value(), command.x, command.y, command.z);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniform3fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniform3fv(command.location.value(), static_cast<GLsizei>(command.values.size() / 3), command.values.data());
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
+{
+    if (!command.location.isValid())
+        return;
+
+    glUniformMatrix4fv(command.location.value(), 1, command.transpose ? GL_TRUE : GL_FALSE, command.values.data());
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetVertexAttribPointer& command)
+{
+    if (!command.index.isValid())
+        return;
+
+    const GLuint index = static_cast<GLuint>(command.index.value());
+
+    if (command.enabled)
+    {
+        if (index < MaxVertexAttribs && !stateCache_.enabledAttribs_.test(index))
+        {
+            stateCache_.enabledAttribs_.set(index);
+            glEnableVertexAttribArray(index);
+        }
+        glVertexAttribPointer(
+            index,
+            command.size,
+            toVertexAttribType(command.type),
+            command.normalized ? GL_TRUE : GL_FALSE,
+            static_cast<GLsizei>(command.stride),
+            reinterpret_cast<const void*>(command.offset));
+    }
+    else
+    {
+        if (index < MaxVertexAttribs && stateCache_.enabledAttribs_.test(index))
+        {
+            stateCache_.enabledAttribs_.reset(index);
+            glDisableVertexAttribArray(index);
+        }
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetProgram& command)
+{
+    useProgram(command.programId);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindPipeline& command)
+{
+    const PipelineId id = command.pipelineId;
+    if (id == 0 || id > pipelines_.size())
+        return;
+
+    const Pipeline& pipeline = pipelines_[id - 1];
+    if (!pipeline.alive)
+        return;
+
+    useProgram(pipeline.programId);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindTexture2D& command)
+{
+    const GLuint textureHandle = command.textureHandle.isValid() ? command.textureHandle.value() : fallbackTexture2D_;
+    const GLenum minF = toFilter(command.minFilter);
+    const GLenum magF = toFilter(command.magFilter);
+    const int unit = static_cast<int>(command.unit);
+
+    ASSERT(
+        currentFboColorAttachment_ == 0 || textureHandle != currentFboColorAttachment_,
+        "Sampling from a texture that is the current FBO color attachment (GL feedback loop)");
+
+    if (unit < MaxTextureUnits)
+    {
+        StateCache::TextureUnitState& cached = stateCache_.textureUnits_[unit];
+        if (cached.texture == textureHandle && cached.minFilter == minF && cached.magFilter == magF)
+            return;
+
+        cached.texture = textureHandle;
+        cached.minFilter = minF;
+        cached.magFilter = magF;
+    }
+
+    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + command.unit));
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minF);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magF);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBufferData& command)
+{
+    bufferData(command.target, command.bufferId, command.data.size(), command.data.data(), command.usage);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindBuffer& command)
+{
+    bindBuffer(command.target, command.bufferId);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBeginRenderToTexture& command)
+{
+    if (command.framebufferId == 0 || !command.targetTexture.isValid())
+        return;
+
+    pushFramebuffer();
+    bindFramebuffer(command.framebufferId);
+
+    const GLuint textureHandle = command.targetTexture.value();
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
+
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        spdlog::error("Framebuffer incomplete (status=0x{:X})", static_cast<unsigned int>(status));
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);
+        currentFboColorAttachment_ = 0;
+        popFramebuffer();
+    }
+    else
+    {
+        currentFboColorAttachment_ = textureHandle;
+    }
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBeginRenderPass& command)
+{
+    const RenderPassId id = command.renderPassId;
+    if (id == 0 || id > renderPasses_.size())
+        return;
+
+    const RenderPass& pass = renderPasses_[id - 1];
+    if (!pass.alive)
+        return;
+
+    // Bind framebuffer (0 = default framebuffer)
+    if (command.framebufferId != 0)
+        bindFramebuffer(command.framebufferId);
+    else
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // Apply load operations
+    GLbitfield clearMask{};
+
+    if (pass.desc.hasColorAttachment && pass.desc.colorAttachment.loadOp == LoadOp::Clear)
+    {
+        if (command.overrideClearColor)
+            glClearColor(command.clearR, command.clearG, command.clearB, command.clearA);
+        else
+            glClearColor(
+                pass.desc.colorAttachment.clearR,
+                pass.desc.colorAttachment.clearG,
+                pass.desc.colorAttachment.clearB,
+                pass.desc.colorAttachment.clearA);
+        clearMask |= GL_COLOR_BUFFER_BIT;
+    }
+
+    if (pass.desc.hasDepthAttachment && pass.desc.depthAttachment.loadOp == LoadOp::Clear)
+    {
+        // GL requires depth writes enabled for glClear to affect the depth buffer.
+        stateCache_.depthMaskWritable_ = true;
+        glDepthMask(GL_TRUE);
+        clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+
+    if (clearMask != 0)
+        glClear(clearMask);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandEndRenderPass& /*command*/)
+{
+    // In GL 2.1, ending a render pass is a no-op.
+    // In Vulkan, this would end the VkRenderPass.
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindDefaultFramebuffer& /*command*/)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandBindFramebuffer& command)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, framebufferHandle(command.framebufferId));
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandEndRenderToTexture& /*command*/)
+{
+    endRenderToTexture();
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetLineWidth& command)
+{
+    glLineWidth(command.width);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetGui2DUniforms& command)
+{
+    const auto& u = command.uniforms;
+    // Look up uniform locations from the currently bound program.
+    // The pipeline must already be bound via bindPipeline before this command.
+    const GLint locScreenspace = glGetUniformLocation(stateCache_.currentProgram_, "uScreenspace");
+    const GLint locSampler = glGetUniformLocation(stateCache_.currentProgram_, "uTextureSampler");
+    if (locScreenspace >= 0)
+        glUniform2f(locScreenspace, u.screenspaceX, u.screenspaceY);
+    if (locSampler >= 0)
+        glUniform1i(locSampler, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locV = glGetUniformLocation(prog, "uV");
+    const GLint locP = glGetUniformLocation(prog, "uP");
+    const GLint locFogColour = glGetUniformLocation(prog, "uFogColour");
+    const GLint locFogParams = glGetUniformLocation(prog, "uFogParams");
+    if (locV >= 0)
+        glUniformMatrix4fv(locV, 1, GL_FALSE, u.view.data());
+    if (locP >= 0)
+        glUniformMatrix4fv(locP, 1, GL_FALSE, u.proj.data());
+    if (locFogColour >= 0)
+        glUniform3f(locFogColour, u.fogColourR, u.fogColourG, u.fogColourB);
+    if (locFogParams >= 0)
+        glUniform3f(locFogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
+    const GLint locFogMode = glGetUniformLocation(prog, "uFogMode");
+    if (locFogMode >= 0)
+        glUniform1i(locFogMode, u.fogMode);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+
+    const GLint locM = glGetUniformLocation(prog, "uM");
+    if (locM >= 0)
+        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+
+    const GLint locGpu = glGetUniformLocation(prog, "uGpuLighting");
+    if (locGpu >= 0)
+        glUniform1i(locGpu, u.gpuLighting);
+
+    if (u.gpuLighting)
+    {
+        const GLint locLD = glGetUniformLocation(prog, "uLightDir");
+        const GLint locLC = glGetUniformLocation(prog, "uLightColor");
+        const GLint locAC = glGetUniformLocation(prog, "uAmbientColor");
+        const GLint locMD = glGetUniformLocation(prog, "uMatDiffuse");
+        const GLint locMDA = glGetUniformLocation(prog, "uMatDiffuseA");
+        const GLint locMA = glGetUniformLocation(prog, "uMatAmbient");
+        const GLint locME = glGetUniformLocation(prog, "uMatEmissive");
+        const GLint locF = glGetUniformLocation(prog, "uFilter");
+        const GLint locHV = glGetUniformLocation(prog, "uHasVtxMaterials");
+        if (locLD >= 0) glUniform3f(locLD, u.lightDirX, u.lightDirY, u.lightDirZ);
+        if (locLC >= 0) glUniform3f(locLC, u.lightColorR, u.lightColorG, u.lightColorB);
+        if (locAC >= 0) glUniform3f(locAC, u.ambientColorR, u.ambientColorG, u.ambientColorB);
+        if (locMD >= 0) glUniform3f(locMD, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
+        if (locMDA >= 0) glUniform1f(locMDA, u.matDiffuseA);
+        if (locMA >= 0) glUniform3f(locMA, u.matAmbientR, u.matAmbientG, u.matAmbientB);
+        if (locME >= 0) glUniform3f(locME, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
+        if (locF >= 0) glUniform3f(locF, u.filterR, u.filterG, u.filterB);
+        if (locHV >= 0) glUniform1i(locHV, u.hasVtxMaterials);
+
+        const GLint locNPL = glGetUniformLocation(prog, "uNumPointLights");
+        if (locNPL >= 0) glUniform1i(locNPL, u.numPointLights);
+        if (u.numPointLights > 0)
+        {
+            const GLint locPP = glGetUniformLocation(prog, "uPointLightPos");
+            const GLint locPC = glGetUniformLocation(prog, "uPointLightColor");
+            const GLint locPR = glGetUniformLocation(prog, "uPointLightRange");
+            const GLint locPA = glGetUniformLocation(prog, "uPointLightAtten");
+            const GLint locPO = glGetUniformLocation(prog, "uPointLightOmni");
+            if (locPP >= 0 && !u.pointLightPos.empty())
+                glUniform3fv(locPP, u.numPointLights, u.pointLightPos.data());
+            if (locPC >= 0 && !u.pointLightColor.empty())
+                glUniform3fv(locPC, u.numPointLights, u.pointLightColor.data());
+            if (locPR >= 0 && !u.pointLightRange.empty())
+                glUniform1fv(locPR, u.numPointLights, u.pointLightRange.data());
+            if (locPA >= 0 && !u.pointLightAtten.empty())
+                glUniform3fv(locPA, u.numPointLights, u.pointLightAtten.data());
+            if (locPO >= 0 && !u.pointLightOmni.empty())
+                glUniform1fv(locPO, u.numPointLights, u.pointLightOmni.data());
+        }
+
+        const GLint locSE = glGetUniformLocation(prog, "uShadowEnabled");
+        if (locSE >= 0) glUniform1i(locSE, u.shadowEnabled);
+        if (u.shadowEnabled)
+        {
+            const GLint locSM = glGetUniformLocation(prog, "uShadowMap");
+            const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
+            const GLint locSMN = glGetUniformLocation(prog, "uShadowMapNear");
+            const GLint locLSMN = glGetUniformLocation(prog, "uLightSpaceMatrixNear");
+            const GLint locSD = glGetUniformLocation(prog, "uShadowSplitDistance");
+            const GLint locSS = glGetUniformLocation(prog, "uShadowStrength");
+            if (locSM >= 0) glUniform1i(locSM, u.shadowMapUnit);
+            if (locLSM >= 0) glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
+            if (locSMN >= 0) glUniform1i(locSMN, u.shadowMapNearUnit);
+            if (locLSMN >= 0) glUniformMatrix4fv(locLSMN, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
+            if (locSD >= 0) glUniform1f(locSD, u.shadowSplitDistance);
+            if (locSS >= 0) glUniform1f(locSS, u.shadowStrength);
+        }
+    }
+
+    const GLint locTS = glGetUniformLocation(prog, "uTextureSampler2");
+    if (locTS >= 0)
+        glUniform1i(locTS, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetBillboardUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locVP = glGetUniformLocation(prog, "uVP");
+    const GLint locSampler = glGetUniformLocation(prog, "uTextureSampler");
+    if (locVP >= 0)
+        glUniformMatrix4fv(locVP, 1, GL_FALSE, u.viewProj.data());
+    if (locSampler >= 0)
+        glUniform1i(locSampler, u.textureSampler);
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
+    const GLint locM = glGetUniformLocation(prog, "uM");
+    if (locLSM >= 0)
+        glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
+    if (locM >= 0)
+        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+}
+
+void RenderBackendGL::executeCommand(const BackendCommandSetPostProcessUniforms& command)
+{
+    const auto& u = command.uniforms;
+    const GLuint prog = stateCache_.currentProgram_;
+    const GLint locScene = glGetUniformLocation(prog, "uSceneTexture");
+    const GLint locExposure = glGetUniformLocation(prog, "uExposure");
+    if (locScene >= 0)
+        glUniform1i(locScene, u.sceneTextureSampler);
+    if (locExposure >= 0)
+        glUniform1f(locExposure, u.exposure);
 }
 
 BackendTextureHandle RenderBackendGL::createTexture2D()
@@ -590,20 +1463,22 @@ void RenderBackendGL::destroyTexture2D(BackendTextureHandle handle)
     if (!handle.isValid())
         return;
 
-    const GLuint texture = handle.value();
-    glDeleteTextures(1, &texture);
+    pendingTextureDeletes_.push_back(handle.value());
 }
 
 void RenderBackendGL::textureStorage2D(BackendTextureHandle handle, int width, int height, TextureFormat format)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexImage2D(
-        GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format), GL_UNSIGNED_BYTE, nullptr);
+        GL_TEXTURE_2D, 0, toStorageFormat(format), width, height, 0, toPixelFormat(format),
+        toPixelDataType(format), nullptr);
 }
 
 void RenderBackendGL::textureSubImage2D(
     BackendTextureHandle handle, int x, int y, int width, int height, TextureFormat format, const void* pixels)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, toPixelFormat(format), GL_UNSIGNED_BYTE, pixels);
 }
@@ -611,6 +1486,7 @@ void RenderBackendGL::textureSubImage2D(
 void RenderBackendGL::textureSetMinMagFilter(
     BackendTextureHandle handle, TextureFilter minFilter, TextureFilter magFilter)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toFilter(minFilter));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toFilter(magFilter));
@@ -618,6 +1494,7 @@ void RenderBackendGL::textureSetMinMagFilter(
 
 void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wrapS, TextureWrap wrapT)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(wrapS));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(wrapT));
@@ -625,10 +1502,16 @@ void RenderBackendGL::textureSetWrap(BackendTextureHandle handle, TextureWrap wr
 
 void RenderBackendGL::textureGenerateMipmap(BackendTextureHandle handle)
 {
+    stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 } // namespace OpenGL
+
+std::unique_ptr<IRenderBackend> IRenderBackend::create()
+{
+    return std::make_unique<OpenGL::RenderBackendGL>();
+}
 
 } // namespace Ren

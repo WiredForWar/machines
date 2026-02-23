@@ -587,6 +587,7 @@ void InputRegistry::initBinds()
     createBind(bcFirstPerson, "fpv-exit"_bind, IDS_EXIT);
     createBind(bcFirstPerson, "fpv-menus"_bind, IDS_MENUS);
 
+    createBind(bcGeneral, "gfx-toggle-rendering"_bind);
     createBind(bcGeneral, "ui-toggle-console"_bind);
 }
 
@@ -1043,6 +1044,10 @@ void InputRegistry::setLegacyDefaults()
     });
     setBinds("fpv-command-follow"_bind, {
         { KeyCode::INSERT },
+    });
+
+    setBinds("gfx-toggle-rendering"_bind, {
+        { KeyCode::F10 | KeyModifier::Ctrl | KeyModifier::Shift },
     });
 }
 

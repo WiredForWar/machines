@@ -17,10 +17,11 @@
 #include "render/internal/colpack.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/device.hpp"
+#include "render/internal/RenScopedImmediateCommands.hpp"
 
 #include <SDL2/SDL_image.h>
 
-#include <GL/glew.h>
+#include "render/internal/IRenderBackend.hpp"
 
 #include <stdio.h>
 
@@ -359,64 +360,29 @@ void RenSurface::copyFromRGBABuffer(const uint* buff)
     internals()->copyFromBuffer(buff);
 }
 
-//--------------------------------2D Drawing Primitives-----------------------------
-void RenSurface::filledRectangle(const Rect& area, const RenColour& colour)
-{
-    PRE(!readOnly());
-
-    if (internals())
-        internals()->filledRectangle(area, packColour(colour.r(), colour.g(), colour.b(), colour.a()));
-}
-
-void RenSurface::hollowRectangle(const Ren::Rect& area, const RenColour& col, int thickness)
-{
-    PRE(!readOnly());
-    PRE(thickness > 0);
-
-    Ren::Rect orderedArea = area;
-
-    if (orderedArea.width < 0)
-    {
-        orderedArea.originX += orderedArea.width;
-        orderedArea.width = -orderedArea.width;
-    }
-
-    if (orderedArea.height < 0)
-    {
-        orderedArea.originY += orderedArea.height;
-        orderedArea.height = -orderedArea.height;
-    }
-
-    const int x = orderedArea.originX;
-    const int y = orderedArea.originY;
-    const int w = orderedArea.width;
-    const int h = orderedArea.height;
-    const int t = thickness;
-
-    // Top
-    filledRectangle(Ren::Rect(x, y, w, t), col);
-    // Bottom
-    filledRectangle(Ren::Rect(x, y + h - t, w, t), col);
-    // Left
-    filledRectangle(Ren::Rect(x, y + t, t, h - 2 * t), col);
-    // Right
-    filledRectangle(Ren::Rect(x + w - t, y + t, t, h - 2 * t), col);
-}
-
 void RenSurface::getPixel(int x, int y, RenColour* colour) const
 {
     PRE(colour);
+    RenDevice* dev = RenDevice::current();
 
-    GLfloat pixel[4] = { 0, 0, 0, 0 };
+    float pixel[4] = { 0, 0, 0, 0 };
     if (internals() && internals()->isOffscreen())
     {
-        RenDevice* dev = RenDevice::current();
+        // Bind the offscreen FBO, read back, then unbind.  Each step
+        // uses its own immediate command buffer so the FBO bind is
+        // actually executed before the direct readPixelsFloat call.
+        dev->beginImmediateCommands();
         dev->renderToTextureMode(handle(), width(), height());
-        glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
+        dev->endImmediateCommands();
+
+        dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
+
+        dev->beginImmediateCommands();
         dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+        dev->endImmediateCommands();
     }
     else
-        glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, pixel);
+        dev->backend().readPixelsFloat(x, y, 1, 1, pixel);
 
     colour->r(pixel[0]);
     colour->g(pixel[1]);
@@ -424,58 +390,6 @@ void RenSurface::getPixel(int x, int y, RenColour* colour) const
     colour->a(pixel[3]);
 }
 
-
-void RenSurface::polyLine(const Points& pts, const RenColour& colour, int thickness)
-{
-    PRE(!readOnly());
-    PRE(pts.size() > 1);
-    PRE(thickness > 0);
-
-    static size_t nVertices = 30;
-    static std::vector<RenIVertex> vtx = std::vector<RenIVertex>(nVertices);
-    static bool initialised = false;
-
-    if (nVertices < pts.size())
-    {
-        nVertices = pts.size() + 10;
-        vtx = std::vector<RenIVertex>(nVertices);
-        initialised = false;
-    }
-
-    if (! initialised)
-    {
-        initialised = true;
-
-        for (size_t i = 0; i != nVertices; ++i)
-        {
-            vtx[i].z = 0.0;
-            vtx[i].specular = 0;
-            vtx[i].w = 0.1;
-            vtx[i].tu = vtx[i].tv = 0.1;
-        }
-    }
-
-    uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
-
-    for (size_t i = 0; i < pts.size(); ++i)
-    {
-        vtx[i].x = static_cast<int>(pts[i].x());
-        vtx[i].y = static_cast<int>(pts[i].y());
-        vtx[i].color = packedColour;
-    }
-
-    RenDevice* dev = RenDevice::current();
-    glLineWidth(static_cast<float>(thickness));
-    if (internals() && internals()->isOffscreen())
-    {
-        dev->renderToTextureMode(handle(), width(), height());
-        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), -height());
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-    }
-    else
-        dev->renderScreenspace(vtx.data(), pts.size(), Ren::PrimitiveTopology::LineStrip, width(), height());
-    glLineWidth(1.0);
-}
 
 int RenSurface::getDefaultFontSize()
 {
@@ -487,16 +401,16 @@ void RenSurface::setDefaultFontSize(int size)
     sDefaultFontSize = size;
 }
 
-void RenSurface::drawText(
-    int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options)
-{
-    internals()->drawText(x, y, text, font, options);
-}
 
 //-----------------------------Simple properties & delegations-----------------------
 bool RenSurface::isEmpty() const
 {
     return width() == 0 || height() == 0;
+}
+
+bool RenSurface::isOffscreen() const
+{
+    return internals() && internals()->isOffscreen();
 }
 
 bool RenSurface::isColourKeyingOn() const
@@ -506,11 +420,7 @@ bool RenSurface::isColourKeyingOn() const
 
 void RenSurface::enableColourKeying()
 {
-    if (!internals()->keyingOn())
-    {
-        internals()->keyingOn(true);
-        internals()->setDDColourKey();
-    }
+    internals()->keyingOn(true);
 }
 
 void RenSurface::disableColourKeying()
@@ -526,7 +436,6 @@ const RenColour& RenSurface::colourKey() const
 void RenSurface::colourKey(const RenColour& c)
 {
     internals()->keyColour(c);
-    internals()->setDDColourKey();
 }
 
 RenISurfBody* RenSurface::internals()
@@ -628,16 +537,20 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     unsigned char* screenPixels = _NEW_ARRAY(unsigned char, width() * height() * 4);
     if (screenPixels)
     {
-        // Read the pixels
+        // Ensure all pending render commands are submitted before reading
+        // back pixel data — callers may have issued blits that haven't
+        // been executed yet.
+        RenDevice* dev = RenDevice::current();
+        dev->flushCommandBuffer();
+
         if (internals() && internals()->isOffscreen())
         {
-            RenDevice* dev = RenDevice::current();
             dev->renderToTextureMode(handle(), width(), height());
-            glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
+            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
             dev->renderToTextureMode(Ren::NullTexId, 0, 0);
         }
         else
-            glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
+            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
         SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(
@@ -715,46 +628,6 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     TEST_INVARIANT;
 }
 
-void RenSurface::ellipse(const Rect& area, const RenColour& penColour, const RenColour& brushColour)
-{
-    PRE(!readOnly());
-
-    int x, y, RX, RY;
-    uint packedColour = packColour(brushColour.r(), brushColour.g(), brushColour.b(), brushColour.a());
-    RX = area.width / 2;
-    RY = area.height / 2;
-    x = area.originX + RX;
-    y = area.originY + RY;
-    std::vector<RenIVertex> vertices;
-    vertices.reserve(10);
-
-    float i, inc, endAngle;
-    endAngle = 3.1415 * 2;
-    inc = endAngle / 10;
-    i = 0;
-    while (i <= endAngle)
-    {
-        RenIVertex vtx;
-        vtx.x = ((RX * cos(i) + x));
-        vtx.y = ((RY * sin(i) + y));
-        vtx.color = packedColour;
-        vertices.push_back(vtx);
-        i += inc;
-    }
-
-    glDisable(GL_CULL_FACE);
-    RenDevice* dev = RenDevice::current();
-    if (internals() && internals()->isOffscreen())
-    {
-        dev->renderToTextureMode(handle(), width(), height());
-        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), -height());
-        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-    }
-    else
-        dev->renderScreenspace(vertices.data(), vertices.size(), Ren::PrimitiveTopology::TriangleFan, width(), height());
-    glEnable(GL_CULL_FACE);
-}
-
 // These read/write functions are used for fog of war in savegame and store alpha only
 void RenSurface::read(PerIstream& inStream)
 {
@@ -790,35 +663,47 @@ void RenSurface::read(PerIstream& inStream)
 
 void RenSurface::write(PerOstream& outStream)
 {
-    size_t w = width();
-    size_t h = height();
+    // Ensure all pending render commands are submitted before reading
+    // back pixel data — callers may have issued blits into the frame
+    // command buffer that haven't been executed yet.
+    RenDevice* dev = RenDevice::current();
+    dev->flushCommandBuffer();
+
+    const size_t w = width();
+    const size_t h = height();
 
     PER_WRITE_RAW_OBJECT(outStream, w);
     PER_WRITE_RAW_OBJECT(outStream, h);
 
-    size_t lineLength = w;
+    // Read the entire surface in one GPU call instead of per-pixel.
+    std::vector<unsigned char> rgba(w * h * 4);
 
-    char* image = _NEW_ARRAY(char, lineLength);
-
+    if (internals() && internals()->isOffscreen())
     {
-        for (size_t y = 0; y < h; ++y)
-        {
-            for (size_t x = 0; x < w; ++x)
-            {
-                RenColour col;
-                getPixel(x, y, &col);
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(handle(), w, h);
+        dev->endImmediateCommands();
 
-                //              image[ x * 3 ]         = GetBValue(colRef);
-                //              image[ ( x * 3 ) + 1 ] = GetGValue(colRef);
-                //              image[ ( x * 3 ) + 2 ] = GetRValue(colRef);
-                image[x] = (unsigned char)(col.a() * 0xFF);
-            }
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba.data());
 
-            PER_WRITE_RAW_DATA(outStream, image, w);
-        }
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+        dev->endImmediateCommands();
+    }
+    else
+    {
+        dev->backend().readPixelsUByte(0, 0, w, h, rgba.data());
     }
 
-    _DELETE_ARRAY(image);
+    std::vector<char> row(w);
+    for (size_t y = 0; y < h; ++y)
+    {
+        const size_t srcRow = y * w * 4;
+        for (size_t x = 0; x < w; ++x)
+            row[x] = static_cast<char>(rgba[srcRow + x * 4 + 3]);
+
+        PER_WRITE_RAW_DATA(outStream, row.data(), w);
+    }
 }
 
 // static

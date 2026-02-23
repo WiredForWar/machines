@@ -699,36 +699,37 @@ void MachContinentMap::drawCameraPos(GuiBitmap* pMapFrame)
         Gui::Coord imageCoord{cameraPos_ + cameraImageOffset};
         Ren::Point imagePos(imageCoord.x(), imageCoord.y());
         int cameraPolygonThickness = 1;
+        Ren::Painter framePainter(*pMapFrame);
         if (zenithCamera_)
         {
             // Draw box representing visible terrain area.
-            RenSurface::Points cameraFovPoints;
-            cameraFovPoints.reserve(5);
-            cameraFovPoints.push_back(cameraFov_[0]);
-            cameraFovPoints.push_back(cameraFov_[1]);
-            cameraFovPoints.push_back(cameraFov_[2]);
-            cameraFovPoints.push_back(cameraFov_[3]);
-            cameraFovPoints.push_back(cameraFov_[0]);
-            pMapFrame->polyLine(cameraFovPoints, Gui::LIGHTGREY(), cameraPolygonThickness);
+            for (int i = 0; i < 4; ++i)
+            {
+                const auto& p0 = cameraFov_[i];
+                const auto& p1 = cameraFov_[(i + 1) % 4];
+                framePainter.line(
+                    Ren::Point(p0.x(), p0.y()),
+                    Ren::Point(p1.x(), p1.y()),
+                    Gui::LIGHTGREY(), cameraPolygonThickness);
+            }
 
             // Draw camera pos
-            pMapFrame->simpleBlit(cameraPosImage_, {}, imagePos);
+            framePainter.blit(cameraPosImage_, {}, imagePos);
         }
         else
         {
             // Draw camera pos
-            pMapFrame->simpleBlit(cameraPosImage_, {}, imagePos);
+            framePainter.blit(cameraPosImage_, {}, imagePos);
 
             Gui::Vec vecToEndPos(cameraPos_, cameraEndPos_);
             vecToEndPos *= Gui::uiScaleFactor();
             Gui::Coord realEndPos = cameraPos_ + vecToEndPos;
 
             // Draw line of sight
-            RenSurface::Points lineOfSight;
-            lineOfSight.reserve(2);
-            lineOfSight.push_back(cameraPos_);
-            lineOfSight.push_back(realEndPos);
-            pMapFrame->polyLine(lineOfSight, Gui::LIGHTGREY(), cameraPolygonThickness);
+            framePainter.line(
+                Ren::Point(cameraPos_.x(), cameraPos_.y()),
+                Ren::Point(realEndPos.x(), realEndPos.y()),
+                Gui::LIGHTGREY(), cameraPolygonThickness);
         }
     }
 }
@@ -1924,9 +1925,14 @@ void MachContinentMap::saveGame(PerOstream& outStream)
     else
     {
         GuiBitmap visibleArea = RenSurface::createAnonymousSurface(mapVisibleArea_.size() / Gui::uiScaleFactor());
+
+        RenDevice* dev = RenDevice::current();
+        dev->beginImmediateCommands();
         Ren::Painter visibleAreaPainter(visibleArea);
         visibleAreaPainter.filledRectangle(visibleArea.size(), Gui::BLACK());
         visibleAreaPainter.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
+        dev->endImmediateCommands();
+
         visibleArea.write(outStream);
     }
 }

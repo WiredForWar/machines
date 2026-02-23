@@ -4,23 +4,23 @@
  */
 
 #include "render/device.hpp"
-#include "render/capable.hpp"
 #include "render/internal/coplagrp.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/devicei.hpp"
-#include "render/internal/capablei.hpp"
 #include "render/internal/matmgr.hpp"
 
 RenIDelayedCoplanarGroup::RenIDelayedCoplanarGroup(
     const RenIMaterialGroup* g,
     RenI::LitVtxAPtr v,
     const RenMaterial& m,
-    const glm::mat4& x)
+    const glm::mat4& x,
+    RenI::GpuMeshLightingSnapshot gpuSnapshot)
     : RenIPrioritySortedItem(m)
     , group_(g)
     , vertices_(std::move(v))
     , xform_(x)
+    , gpuSnapshot_(std::move(gpuSnapshot))
 {
     PRE(group_);
     PRE(vertices_.get());
@@ -37,22 +37,22 @@ void RenIDelayedCoplanarGroup::render()
     glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
     RenDevice::current()->setModelMatrix(*crufty);
 
-    const RenICapabilities* caps = RenIDeviceImpl::currentPimpl()->capabilities().internal();
-    ASSERT(caps, "No internal device capabilities defined.");
+    // Restore per-mesh GPU lighting arrays (normals + per-vertex materials)
+    // that were snapshotted when this delayed group was created.
+    if (gpuSnapshot_.normalsCount > 0)
+        RenIDeviceImpl::currentPimpl()->restoreGpuMeshSnapshot(gpuSnapshot_);
 
-    // Apply a zBias value only if the device supports it (to avoid state changes).
-    if (caps->supportsZBias())
     {
         const int zBias = material_.coplanarPriority() - RenIMatManager::instance().minCoplanarValue();
         ASSERT_INFO(zBias);
         ASSERT_INFO(material_.coplanarPriority());
         ASSERT_INFO(RenIMatManager::instance().minCoplanarValue());
         ASSERT_INFO(RenIMatManager::instance().maxCoplanarValue());
-        ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in coplanar sorter.");
-        ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in coplanar sorter.");
+        ASSERT(zBias >= 0, "Illegal zbias value in coplanar sorter.");
+        ASSERT(zBias <= 16, "Illegal zbias value in coplanar sorter.");
 
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(-(GLfloat)zBias, 1.0);
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(static_cast<float>(-zBias), 1.0f));
     }
 
     group_->render(vertices_, material_);

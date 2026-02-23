@@ -11,10 +11,9 @@
 #include "render/display.hpp"
 #include "render/texture.hpp"
 #include "render/surfmgr.hpp"
-#include "render/drivsel.hpp"
 #include "render/material.hpp"
 
-#include "render/OpenGL/RenderBackendGL.hpp"
+#include "render/internal/IRenderBackend.hpp"
 
 #include "system/pathname.hpp"
 #include "render/internal/matmgr.hpp"
@@ -30,11 +29,10 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     : RenIDisplayModeObserver(dis)
     , parent_(parent)
     , alphaBlendingEnabled_(false)
-    , driverSelector_(nullptr)
     , materialFogMultiplier_(1.0)
     , debugX_(0)
     , debugY_(0)
-    , backend_(std::make_unique<Ren::OpenGL::RenderBackendGL>())
+    , backend_(Ren::IRenderBackend::create())
     , frameTimer_()
     , videoMemoryShared_(false)
     , videoMemorySharedInitialized_(false)
@@ -44,12 +42,10 @@ RenIDeviceImpl::RenIDeviceImpl(RenDisplay* dis, RenDevice* parent)
     PRE(parent);
     frameTimer_.pause();
     frameTimer_.time(0);
-    driverSelector_ = new RenDriverSelector(dis);
 }
 
 RenIDeviceImpl::~RenIDeviceImpl()
 {
-    delete driverSelector_;
 }
 
 // virtual
@@ -58,7 +54,7 @@ void RenIDeviceImpl::prepareForModeChange(const RenDisplay::Mode&, const RenDisp
     // Ensure that any front and back surfaces release their COM ptrs.
     const RenIDisplay& dis = display_->displayImpl();
 
-    RENDER_STREAM("Releasing D3D stuff owned by RenDevice.\n");
+    RENDER_STREAM("Releasing render resources owned by RenDevice.\n");
     delete surfBackBuf_;
     surfBackBuf_ = nullptr;
     delete surfFrontBuf_;
@@ -100,6 +96,87 @@ void RenIDeviceImpl::hasSharedVideoMemory(bool setVideoMemoryShared)
     videoMemorySharedInitialized_ = true;
 }
 
+void RenIDeviceImpl::clearGpuLightingState()
+{
+    expandedNormalsCount_ = 0;
+    hasPerVertexMaterials_ = false;
+}
+
+RenI::GpuMeshLightingSnapshot RenIDeviceImpl::takeGpuMeshSnapshot() const
+{
+    RenI::GpuMeshLightingSnapshot snap;
+    const size_t floatCount = expandedNormalsCount_ * 3;
+    snap.normalsCount = expandedNormalsCount_;
+
+    if (expandedNormalsCount_ > 0)
+    {
+        snap.normals.assign(expandedNormals_.data(), expandedNormals_.data() + floatCount);
+    }
+
+    snap.hasPerVertexMaterials = hasPerVertexMaterials_;
+    if (hasPerVertexMaterials_)
+    {
+        snap.vtxDiffuse.assign(expandedVtxDiffuse_.data(), expandedVtxDiffuse_.data() + floatCount);
+        snap.vtxAmbient.assign(expandedVtxAmbient_.data(), expandedVtxAmbient_.data() + floatCount);
+        snap.vtxEmissive.assign(expandedVtxEmissive_.data(), expandedVtxEmissive_.data() + floatCount);
+    }
+
+    return snap;
+}
+
+void RenIDeviceImpl::restoreGpuMeshSnapshot(const RenI::GpuMeshLightingSnapshot& snap)
+{
+    expandedNormalsCount_ = snap.normalsCount;
+    const size_t floatCount = snap.normalsCount * 3;
+
+    if (snap.normalsCount > 0)
+    {
+        if (expandedNormals_.size() < floatCount)
+            expandedNormals_.resize(floatCount);
+        std::copy(snap.normals.begin(), snap.normals.end(), expandedNormals_.begin());
+    }
+
+    hasPerVertexMaterials_ = snap.hasPerVertexMaterials;
+    if (snap.hasPerVertexMaterials)
+    {
+        if (expandedVtxDiffuse_.size() < floatCount)
+            expandedVtxDiffuse_.resize(floatCount);
+        if (expandedVtxAmbient_.size() < floatCount)
+            expandedVtxAmbient_.resize(floatCount);
+        if (expandedVtxEmissive_.size() < floatCount)
+            expandedVtxEmissive_.resize(floatCount);
+        std::copy(snap.vtxDiffuse.begin(), snap.vtxDiffuse.end(), expandedVtxDiffuse_.begin());
+        std::copy(snap.vtxAmbient.begin(), snap.vtxAmbient.end(), expandedVtxAmbient_.begin());
+        std::copy(snap.vtxEmissive.begin(), snap.vtxEmissive.end(), expandedVtxEmissive_.begin());
+    }
+}
+
+void RenIDeviceImpl::enableAlphaBlending()
+{
+    PRE(parent_);
+    PRE(frameCommandBuffer_.isValid());
+
+    if (!alphaBlendingEnabled_)
+    {
+        using BlendFactor = Ren::BackendBlendFactor;
+        parent_->recordCommand(
+            Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
+        alphaBlendingEnabled_ = true;
+    }
+}
+
+void RenIDeviceImpl::disableAlphaBlending()
+{
+    PRE(parent_);
+    PRE(frameCommandBuffer_.isValid());
+
+    if (alphaBlendingEnabled_)
+    {
+        parent_->recordCommand(Ren::Command::setBlendStateDisabled());
+        alphaBlendingEnabled_ = false;
+    }
+}
+
 void RenIDeviceImpl::resetFrameTimer()
 {
     frameTimer_.time(0);
@@ -136,6 +213,78 @@ void RenIDeviceImpl::updateFogMultiplier(const RenMaterial& mat)
         materialFogMultiplier_ = 1.0;
         parent_->fogEnd(fogEnd_);
     }
+}
+
+void RenIDeviceImpl::beginFrameCommandBuffer()
+{
+    PRE(backend_);
+    PRE(!frameCommandBuffer_.isValid());
+    PRE(!frameCommandBufferRecording_);
+
+    frameCommandBuffer_ = backend_->createCommandBuffer();
+
+    backend_->beginCommandBuffer(frameCommandBuffer_);
+    frameCommandBufferRecording_ = true;
+}
+
+void RenIDeviceImpl::destroyFrameCommandBuffer()
+{
+    PRE(backend_);
+    PRE(frameCommandBufferRecording_);
+
+    backend_->endCommandBuffer(frameCommandBuffer_);
+    frameCommandBufferRecording_ = false;
+
+    backend_->submitCommandBuffer(frameCommandBuffer_);
+    backend_->destroyCommandBuffer(frameCommandBuffer_);
+    frameCommandBuffer_ = {};
+}
+
+void RenIDeviceImpl::flushFrameCommandBuffer()
+{
+    PRE(backend_);
+    PRE(frameCommandBufferRecording_);
+
+    backend_->endCommandBuffer(frameCommandBuffer_);
+    backend_->submitCommandBuffer(frameCommandBuffer_);
+    backend_->destroyCommandBuffer(frameCommandBuffer_);
+
+    frameCommandBuffer_ = backend_->createCommandBuffer();
+    backend_->beginCommandBuffer(frameCommandBuffer_);
+}
+
+void RenIDeviceImpl::beginImmediateCommandBuffer()
+{
+    PRE(backend_);
+    PRE(!immediateCommandBuffer_.isValid());
+
+    immediateCommandBuffer_ = backend_->createCommandBuffer();
+    backend_->beginCommandBuffer(immediateCommandBuffer_);
+}
+
+void RenIDeviceImpl::endImmediateCommandBuffer()
+{
+    PRE(backend_);
+    PRE(immediateCommandBuffer_.isValid());
+
+    backend_->endCommandBuffer(immediateCommandBuffer_);
+    backend_->submitCommandBuffer(immediateCommandBuffer_);
+    backend_->destroyCommandBuffer(immediateCommandBuffer_);
+    immediateCommandBuffer_ = {};
+}
+
+bool RenIDeviceImpl::immediateCommandBufferActive() const
+{
+    return immediateCommandBuffer_.isValid();
+}
+
+Ren::BackendCommandBufferHandle RenIDeviceImpl::currentCommandBufferHandle() const
+{
+    if (immediateCommandBuffer_.isValid())
+        return immediateCommandBuffer_;
+
+    PRE(frameCommandBufferRecording_);
+    return frameCommandBuffer_;
 }
 
 /* End DEVICEI.CPP ***************************************************/

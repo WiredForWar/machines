@@ -122,15 +122,6 @@ RenTexture RenSurfaceManager::createTexture(const std::string& pathName)
     std::transform(pathNameLower.begin(), pathNameLower.end(), pathNameLower.begin(), ::tolower);
     const Ren::TexId newId = pImpl_->createSurfOrTex(pathNameLower, true);
 
-    // The D3D handles are only updated if the current device changes.  If
-    // a texture is created and the device doesn't change before it is used,
-    // then it won't have the correct handle.
-    RenISurfBody* entry = entries_[newId];
-    if (entry && handleDevice_)
-    {
-        RenITexBody* tex = entry->castToTexBody();
-    }
-
     RenTexture retval(newId);
     POST(retval.sharable() && retval.readOnly());
     POST(implies(!retval.isNull(), retval.name().length() > 0));
@@ -194,25 +185,6 @@ void RenSurfaceManager::startFrame()
     TEST_INVARIANT;
 }
 
-bool RenSurfaceManager::restoreAll()
-{
-    CB_REN_SURFACE_MANAGER_DEPIMPL;
-
-    TEST_INVARIANT;
-
-    // Stop trying if any one of the textures does not reload.
-    bool success = true;
-    for (Ren::TexId id = firstValidId_; id != entries_.size() && success; ++id)
-    {
-        RenISurfBody* entry = entries_[id];
-        if (entry)
-            success = entry->restoreToVRAM();
-    }
-
-    TEST_INVARIANT;
-    return success;
-}
-
 const RenSurfaceManager::PathNames& RenSurfaceManager::searchList()
 {
     CB_REN_SURFACE_MANAGER_DEPIMPL;
@@ -263,26 +235,5 @@ const RenISurfaceManagerImpl& RenSurfaceManager::impl() const
     return *pImpl_;
 }
 
-inline bool myIsPrint(int c)
-{
-    return isprint(c) || isspace(c);
-}
-
-// static
-bool RenSurfaceManager::extractBMPText(const SysPathName& pathName, std::string* result)
-{
-    PRE(result);
-    const int END_OF_FILE = 0xFF;
-    std::string& resultString = *result;
-
-    FILE* imgFile = fopen(pathName.pathname().c_str(), "r+b");
-    if (!imgFile)
-    {
-        RENDER_STREAM("Failed to open file " << pathName << "\n");
-        return false;
-    }
-
-    return true;
-}
 
 /* End SURFMGR.CPP ***************************************************/

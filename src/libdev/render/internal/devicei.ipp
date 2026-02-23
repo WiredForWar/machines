@@ -109,28 +109,9 @@ bool RenIDeviceImpl::idleRendering() const
 }
 
 _CODE_INLINE
-const RenCapabilities& RenIDeviceImpl::capabilities() const
-{
-    PRE(caps_); // This is checked by the class invariant.
-    return *caps_;
-}
-
-_CODE_INLINE
 bool RenIDeviceImpl::fogMultiplierIsNeutral() const
 {
     return materialFogMultiplier_ == 1.0;
-}
-
-_CODE_INLINE
-void RenIDeviceImpl::enableAlphaBlending()
-{
-    glEnable(GL_BLEND);
-}
-
-_CODE_INLINE
-void RenIDeviceImpl::disableAlphaBlending()
-{
-    glDisable(GL_BLEND);
 }
 
 /* End DEVICEI.IPP **************************************************/

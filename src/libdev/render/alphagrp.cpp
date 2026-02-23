@@ -3,14 +3,11 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-
-#include "render/capable.hpp"
 #include "render/internal/glmath.hpp"
 #include "render/internal/alphagrp.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/devicei.hpp"
-#include "render/internal/capablei.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/device.hpp"
 
@@ -18,11 +15,13 @@ RenIDelayedAlphaGroup::RenIDelayedAlphaGroup(
     const RenIMaterialGroup* g,
     RenI::LitVtxAPtr v,
     const RenMaterial& m,
-    const glm::mat4& x)
+    const glm::mat4& x,
+    RenI::GpuMeshLightingSnapshot gpuSnapshot)
     : RenIDepthSortedItem(m)
     , group_(g)
     , vertices_(std::move(v))
     , xform_(x)
+    , gpuSnapshot_(std::move(gpuSnapshot))
 {
     PRE(group_);
     PRE(vertices_.get());
@@ -58,31 +57,28 @@ void RenIDelayedAlphaGroup::render()
     glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
     RenDevice::current()->setModelMatrix(*crufty);
 
-    const RenICapabilities* caps = RenIDeviceImpl::currentPimpl()->capabilities().internal();
-    ASSERT(caps, "No internal device capabilities defined.");
+    // Restore per-mesh GPU lighting arrays (normals + per-vertex materials)
+    // that were snapshotted when this delayed group was created.
+    if (gpuSnapshot_.normalsCount > 0)
+        RenIDeviceImpl::currentPimpl()->restoreGpuMeshSnapshot(gpuSnapshot_);
 
-    // RENDER_STREAM("Rendering alpha group with " << material_ << "\n");
-
-    // Note that coplanar priority and alpha priority are not mutually exclusive.
-    // Apply a zBias value only if the device supports it (to avoid state changes).
-    const bool doZBias = material_.interMeshCoplanar() && caps->supportsZBias();
+    const bool doZBias = material_.interMeshCoplanar();
     if (doZBias)
     {
         const int zBias = material_.coplanarPriority() - RenIMatManager::instance().minCoplanarValue();
         ASSERT_INFO(zBias);
-        ASSERT(zBias >= caps->minZBias(), "Illegal zbias value in alpha sorter.");
-        ASSERT(zBias <= caps->maxZBias(), "Illegal zbias value in alpha sorter.");
+        ASSERT(zBias >= 0, "Illegal zbias value in alpha sorter.");
+        ASSERT(zBias <= 16, "Illegal zbias value in alpha sorter.");
 
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(-(GLfloat)zBias, 1.0);
-        // RENDER_STREAM("  Set zBias=" << zBias << "\n");
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(true));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(-zBias, 1.0f));
     }
 
     if (!material_.usesBilinear() && !material_.texture().isEmpty()) // This fixes issue with gun barrels rendering
     {
-        glDepthMask(GL_TRUE);
+        RenDevice::current()->recordCommand(Ren::Command::setDepthMaskWritable(true));
         group_->render(vertices_, material_);
-        glDepthMask(GL_FALSE);
+        RenDevice::current()->recordCommand(Ren::Command::setDepthMaskWritable(false));
     }
     else
         group_->render(vertices_, material_);
@@ -93,8 +89,8 @@ void RenIDelayedAlphaGroup::render()
     // them for it to be worthwhile.
     if (doZBias)
     {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset((GLfloat)caps->minZBias(), 1.0);
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffsetFill(false));
+        RenDevice::current()->recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
     }
 }
 

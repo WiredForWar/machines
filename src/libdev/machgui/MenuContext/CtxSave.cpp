@@ -422,6 +422,7 @@ bool MachGuiCtxSave::saveGame(const std::string& saveDisplayName)
         Gui::Size backgroundSize(savingBmp.requestedSize().width, savingBmp.requestedSize().height);
         GuiPainter::instance().stretch(savingBmp, Gui::Box(coord, backgroundSize));
     }
+    RenDevice::current()->flushCommandBuffer();
     W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
     std::filesystem::create_directory("savegame");
 

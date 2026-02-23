@@ -79,6 +79,18 @@ bool W4dEntityImpl::isComposite() const
 }
 
 _CODE_INLINE
+void W4dEntityImpl::setShadow(bool isIt)
+{
+    isShadow_ = isIt;
+}
+
+_CODE_INLINE
+bool W4dEntityImpl::isShadow() const
+{
+    return isShadow_;
+}
+
+_CODE_INLINE
 void W4dEntityImpl::doNotLight(bool lightIt)
 {
     doNotLight_ = lightIt;
@@ -88,6 +100,18 @@ _CODE_INLINE
 bool W4dEntityImpl::doNotLight() const
 {
     return doNotLight_;
+}
+
+_CODE_INLINE
+void W4dEntityImpl::setNoShadowCast(bool v)
+{
+    noShadowCast_ = v;
+}
+
+_CODE_INLINE
+bool W4dEntityImpl::noShadowCast() const
+{
+    return noShadowCast_;
 }
 
 _CODE_INLINE

@@ -86,6 +86,7 @@ inline constexpr bool cDemoVersion =
 #include "world4d/soundman.hpp"
 #include "system/memcaps.hpp"
 #include "system/pathname.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/cursor2d.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
@@ -489,6 +490,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
@@ -571,6 +573,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
@@ -719,6 +722,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 
@@ -1747,8 +1751,15 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
             Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
         }
 
+        static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
+        if (toggleRendering.matches(e.keyWithMods()))
+        {
+            Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
+            processed = true;
+        }
+
         // Do we have a control with focus that can respond to the key press?
-        processed = doHandleFocusCapableControls(e);
+        processed = processed || doHandleFocusCapableControls(e);
 
         // Are we dismissing a message box?
         if (! processed && pMsgBox_)
@@ -2829,6 +2840,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
     // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 

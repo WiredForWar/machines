@@ -109,23 +109,31 @@ void RenIDistinctGroup::render(const RenIVertexData& vtx, const RenMaterial& mat
     PRE((indices_.size() % 3) == 0);
 
     RenIDeviceImpl* devImpl = RenIDeviceImpl::currentPimpl();
+
+    // Shadow depth pass: only write position to the depth buffer.
+    // Skip materials with alpha transparency — semi-transparent surfaces
+    // should not cast full opaque shadows.
+    if (RenDevice::current()->isShadowPassActive())
+    {
+        if (mat.hasAlphaTransparency())
+            return;
+        RenDevice::current()->renderShadowDepth(
+            &vtx.front(), nIndicesUsed_, &(indices_.front()), indices_.size(), Ren::PrimitiveTopology::Triangles);
+        return;
+    }
+
     RenIIlluminator* ill = devImpl->illuminator();
 
     devImpl->setMaterialHandles(mat);
     const RenIVertex* lit = ill->applyMaterial(mat, vtx, indices_);
 
-    // Assume that the usual backface setting is on.
-    if (!backFace())
-        glDisable(GL_CULL_FACE);
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(backFace()));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
     ASSERT(nIndicesUsed_ <= vtx.size(), "Indices used by group don't match mesh's vertices.");
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
-
-    if (!backFace())
-        glEnable(GL_CULL_FACE);
 }
 
 // virtual
@@ -138,17 +146,13 @@ void RenIDistinctGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& m
 
     devImpl->setMaterialHandles(mat);
 
-    // Assume that the usual backface setting is on.
-    if (!backFace())
-        glDisable(GL_CULL_FACE);
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(backFace()));
 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
     RenDevice::current()
         ->renderIndexed(vtx.get(), nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Triangles);
-    if (!backFace())
-        glEnable(GL_CULL_FACE);
 }
 
 // virtual
@@ -214,9 +218,9 @@ void RenILineGroup::render(const RenIVertexData& vtx, const RenMaterial& mat) co
     ASSERT(nIndicesUsed_ <= vtx.size(), "Indices used by group don't match mesh's vertices.");
 
     const float lineWidth = mat.lineWidth();
-    glLineWidth(lineWidth ? lineWidth : 1.0f);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(lineWidth ? lineWidth : 1.0f));
     RenDevice::current()->renderIndexed(lit, nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Lines);
-    glLineWidth(1.0f);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(1.0f));
 }
 
 // virtual
@@ -232,7 +236,10 @@ void RenILineGroup::render(const RenI::LitVtxAPtr& vtx, const RenMaterial& mat) 
     // We pass nIndicesUsed_ to Direct3D, rather than the true size of the lit array.
     // It is likely that nIndicesUsed_ will be smaller, so there's a possibility that
     // D3D will save time by processing less vertices.
+    const float lineWidth = mat.lineWidth();
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(lineWidth ? lineWidth : 1.0f));
     RenDevice::current()->renderIndexed(vtx.get(), nIndicesUsed_, &(indices_.front()), indices_.size(), mat, Ren::PrimitiveTopology::Lines);
+    RenDevice::current()->recordCommand(Ren::Command::setLineWidth(1.0f));
 }
 
 // virtual

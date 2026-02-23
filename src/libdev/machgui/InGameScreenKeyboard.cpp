@@ -28,8 +28,11 @@
 #include "machlog/mcmotseq.hpp"
 #include "machlog/vmman.hpp"
 #include "machphys/mcmovinf.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/surfmgr.hpp"
 #include "machlog/network.hpp"
+
+#include "system/ConfigVariables.hpp"
 
 #include <optional>
 
@@ -168,6 +171,13 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 initiateScreenShot();
                 processed = true;
             }
+
+            static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
+            if (e.state() == Gui::PRESSED && toggleRendering.matches(e.keyWithMods()))
+            {
+                Config::gfxModernRendering.set(!Config::gfxModernRendering.get());
+                processed = true;
+            }
             break;
         }
         case 11: // Command hot keys
@@ -242,6 +252,15 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
     {
         doHandleKeyEventHacks(e);
     }
+#else
+    if (e.state() == Gui::PRESSED)
+    {
+        if (e.key() == Device::KeyCode::F7 && e.isShiftPressed() && e.isCtrlPressed())
+        {
+            Config::debugShowRenderStats.set(!Config::debugShowRenderStats.get());
+            processed = true;
+        }
+    }
 #endif
 
     return processed;
@@ -292,14 +311,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
         if (e.key() == Device::KeyCode::F7 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            static bool showStats = false;
-
-            if (showStats)
-                pImpl_->pSceneManager_->hideStats();
-            else
-                pImpl_->pSceneManager_->showStats(0.333);
-
-            showStats = !showStats;
+            Config::debugShowRenderStats.set(!Config::debugShowRenderStats.get());
         }
 
         if (e.key() == Device::KeyCode::F8 && e.isShiftPressed() && e.isCtrlPressed())

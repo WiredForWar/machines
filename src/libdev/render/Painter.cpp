@@ -10,44 +10,216 @@
 #include "render/surface.hpp"
 #include "render/Font.hpp"
 #include "render/TextOptions.hpp"
+#include "render/device.hpp"
+#include "render/internal/surfbody.hpp"
+#include "render/internal/colpack.hpp"
+#include "render/internal/vtxdata.hpp"
+#include "render/internal/FontImpl.hpp"
+#include "render/internal/RenScopedImmediateCommands.hpp"
 
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp"
+#include <cmath>
+#include <vector>
 
 namespace Ren {
 
 Painter::Painter(RenSurface& target)
     : target_(target)
+    , device_(RenDevice::current())
 {
+    beginOffscreen();
+}
+
+Painter::~Painter()
+{
+    endOffscreen();
+}
+
+void Painter::beginOffscreen()
+{
+    if (device_ && target_.isOffscreen())
+    {
+        RenScopedImmediateCommands guard(device_);
+        device_->renderToTextureMode(target_.handle(), target_.width(), target_.height());
+    }
+}
+
+void Painter::endOffscreen()
+{
+    if (device_ && target_.isOffscreen())
+    {
+        RenScopedImmediateCommands guard(device_);
+        device_->renderToTextureMode(NullTexId, 0, 0);
+    }
+}
+
+int Painter::screenspaceW() const
+{
+    return target_.width();
+}
+
+int Painter::screenspaceH() const
+{
+    return target_.isOffscreen() ? -static_cast<int>(target_.height()) : static_cast<int>(target_.height());
 }
 
 void Painter::filledRectangle(const Rect& area, const RenColour& colour) const
 {
-    target_.filledRectangle(area, colour);
+    PRE(!target_.readOnly());
+    PRE(device_);
+    PRE(device_->display());
+
+    if (target_.isNull())
+        return;
+
+    RenScopedImmediateCommands guard(device_);
+
+    uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
+
+    const float x0 = area.originX;
+    const float y0 = area.originY;
+    const float x1 = area.originX + area.width;
+    const float y1 = area.originY + area.height;
+
+    RenIVertex vtx[6]{};
+    for (auto& v : vtx)
+        v.color = packedColour;
+
+    // Triangle 1
+    vtx[0].x = x0; vtx[0].y = y0;
+    vtx[1].x = x1; vtx[1].y = y0;
+    vtx[2].x = x0; vtx[2].y = y1;
+    // Triangle 2
+    vtx[3].x = x1; vtx[3].y = y0;
+    vtx[4].x = x1; vtx[4].y = y1;
+    vtx[5].x = x0; vtx[5].y = y1;
+
+    device_->recordCommand(Command::setCullFace(false));
+    device_->renderScreenspace(vtx, 6, PrimitiveTopology::Triangles, screenspaceW(), screenspaceH());
 }
 
 void Painter::clearRectangle(const Rect& area) const
 {
-    filledRectangle(area, RenColour::magenta());
+    PRE(!target_.readOnly());
+    PRE(device_);
+    PRE(device_->display());
+
+    if (target_.isNull())
+        return;
+
+    RenScopedImmediateCommands guard(device_);
+    Rect srcArea(Size(1, 1));
+    RenISurfBody emptySurf;
+
+    // Vertex colour must have non-zero alpha; some drivers optimise away
+    // fully-transparent fragments before the blend stage, defeating ZeroZero.
+    static constexpr uint opaqueColour = 0xFFFFFFFF;
+
+    if (target_.isOffscreen())
+    {
+        device_->renderSurface(
+            &emptySurf, srcArea, area, target_.width(), target_.height(), opaqueColour, BlitMode::ZeroZero);
+    }
+    else
+    {
+        device_->renderSurface(&emptySurf, srcArea, area, 0, 0, opaqueColour, BlitMode::ZeroZero);
+    }
 }
 
 void Painter::hollowRectangle(const Rect& area, const RenColour& colour, int thickness) const
 {
-    target_.hollowRectangle(area, colour, thickness);
+    PRE(!target_.readOnly());
+    PRE(thickness > 0);
+
+    Rect orderedArea = area;
+
+    if (orderedArea.width < 0)
+    {
+        orderedArea.originX += orderedArea.width;
+        orderedArea.width = -orderedArea.width;
+    }
+
+    if (orderedArea.height < 0)
+    {
+        orderedArea.originY += orderedArea.height;
+        orderedArea.height = -orderedArea.height;
+    }
+
+    const int x = orderedArea.originX;
+    const int y = orderedArea.originY;
+    const int w = orderedArea.width;
+    const int h = orderedArea.height;
+    const int t = thickness;
+
+    // Top
+    filledRectangle(Rect(x, y, w, t), colour);
+    // Bottom
+    filledRectangle(Rect(x, y + h - t, w, t), colour);
+    // Left
+    filledRectangle(Rect(x, y + t, t, h - 2 * t), colour);
+    // Right
+    filledRectangle(Rect(x + w - t, y + t, t, h - 2 * t), colour);
 }
 
 void Painter::ellipse(const Rect& area, const RenColour& outline, const RenColour& fill) const
 {
-    target_.ellipse(area, outline, fill);
+    PRE(!target_.readOnly());
+    RenScopedImmediateCommands guard(device_);
+
+    int cx, cy, rx, ry;
+    uint packedColour = packColour(fill.r(), fill.g(), fill.b(), fill.a());
+    rx = area.width / 2;
+    ry = area.height / 2;
+    cx = area.originX + rx;
+    cy = area.originY + ry;
+    std::vector<RenIVertex> vertices;
+    vertices.reserve(10);
+
+    float i, inc, endAngle;
+    endAngle = 3.1415f * 2;
+    inc = endAngle / 10;
+    i = 0;
+    while (i <= endAngle)
+    {
+        RenIVertex vtx;
+        vtx.x = rx * std::cos(i) + cx;
+        vtx.y = ry * std::sin(i) + cy;
+        vtx.color = packedColour;
+        vertices.push_back(vtx);
+        i += inc;
+    }
+
+    device_->recordCommand(Command::setCullFace(false));
+    device_->renderScreenspace(vertices.data(), vertices.size(), PrimitiveTopology::TriangleFan, screenspaceW(), screenspaceH());
 }
 
 void Painter::line(const Point& from, const Point& to, const RenColour& colour, int thickness) const
 {
-    RenSurface::Points pts;
-    pts.reserve(2);
-    pts.push_back(MexPoint2d(from.x, from.y));
-    pts.push_back(MexPoint2d(to.x, to.y));
-    target_.polyLine(pts, colour, thickness);
+    PRE(!target_.readOnly());
+    PRE(thickness > 0);
+    RenScopedImmediateCommands guard(device_);
+
+    RenIVertex vtx[2]{};
+    uint packedColour = packColour(colour.r(), colour.g(), colour.b(), colour.a());
+
+    vtx[0].x = from.x;
+    vtx[0].y = from.y;
+    vtx[0].z = 0.0;
+    vtx[0].w = 0.1;
+    vtx[0].tu = vtx[0].tv = 0.1;
+    vtx[0].color = packedColour;
+    vtx[0].specular = 0;
+
+    vtx[1].x = to.x;
+    vtx[1].y = to.y;
+    vtx[1].z = 0.0;
+    vtx[1].w = 0.1;
+    vtx[1].tu = vtx[1].tv = 0.1;
+    vtx[1].color = packedColour;
+    vtx[1].specular = 0;
+
+    device_->recordCommand(Command::setLineWidth(static_cast<float>(thickness)));
+    device_->renderScreenspace(vtx, 2, PrimitiveTopology::LineStrip, screenspaceW(), screenspaceH());
+    device_->recordCommand(Command::setLineWidth(1.0f));
 }
 
 void Painter::horizontalLine(const Point& start, int length, const RenColour& colour, int thickness) const
@@ -70,7 +242,258 @@ void Painter::verticalLine(const Point& start, int height, const RenColour& colo
 
 void Painter::drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const
 {
-    target_.drawText(x, y, text, font, options);
+    RenScopedImmediateCommands guard(device_);
+
+    struct UnderlineSegment
+    {
+        int x1{};
+        int x2{};
+        int y{};
+    };
+
+    std::vector<UnderlineSegment> underlineSegments;
+
+    std::vector<RenIVertex> vertices;
+    {
+        int passes = 1;
+        if (options.hasShadow())
+        {
+            passes += 1;
+        }
+        if (options.hasOutline())
+        {
+            const int thickness = options.outlineThickness();
+            int outlinePasses = 0;
+            for (int ring = 1; ring <= thickness; ++ring)
+            {
+                outlinePasses += ring * 8;
+            }
+            passes += outlinePasses;
+        }
+
+        int expectedVerticesNumber = text.size() * 6 * passes;
+        vertices.reserve(expectedVerticesNumber);
+    }
+
+    RenColour col = options.color();
+    uint fontColor = packColour(col.r(), col.g(), col.b(), 1.0);
+
+    uint secondColor = 0;
+
+    if (options.hasShadow())
+    {
+        RenColour unpacked = options.shadowColor();
+        secondColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+    }
+
+    uint outlineColor = 0;
+    if (options.hasOutline())
+    {
+        RenColour unpacked = options.outlineColor();
+        outlineColor = packColour(unpacked.r(), unpacked.g(), unpacked.b(), 1.0);
+    }
+
+    const FontImpl& fontImpl = *FontImpl::get(&font);
+    const FontImpl::CharData* charData = nullptr;
+
+    y += fontImpl.ascender();
+
+    if (options.alignment() & AlignRight)
+    {
+        int textWidth = 0;
+        int lineTextWidth = 0;
+        // Precalc the width
+        int usedSpacing = 0;
+        for (uint character : text)
+        {
+            if (character == '\n')
+            {
+                textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
+                usedSpacing = 0;
+                continue;
+            }
+
+            charData = fontImpl.getChar(character);
+            // Ignore missing characters
+            if (!charData)
+                continue;
+
+            /* Advance the cursor to the start of the next character */
+            lineTextWidth += charData->ax + options.letterSpacing();
+            usedSpacing = options.letterSpacing();
+        }
+        textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
+        if (options.hasShadow())
+        {
+            textWidth += options.shadowX();
+        }
+
+        x -= textWidth;
+
+        if (x < 0)
+        {
+            x = 0;
+        }
+    }
+
+    const int originX = x;
+
+    int lineStartX = originX;
+    int lineEndX = originX;
+    int lineBaselineY = y;
+
+    x = originX;
+    for (size_t i = 0; i < text.size(); ++i)
+    {
+        char character = text[i];
+        if (character == '\n')
+        {
+            if (options.underline() && lineEndX != lineStartX)
+            {
+                underlineSegments.push_back({
+                    lineStartX,
+                    lineEndX,
+                    lineBaselineY - fontImpl.descender() + 1,
+                });
+            }
+
+            x = originX;
+            y += fontImpl.lineHeight() + 2;
+
+            lineStartX = originX;
+            lineEndX = originX;
+            lineBaselineY = y;
+            continue;
+        }
+
+        charData = fontImpl.getChar(character);
+        // Ignore missing characters
+        if (!charData)
+            continue;
+
+        int x2 = x + charData->bl;
+        int y2 = y - charData->bt;
+        int w = charData->bw;
+        int h = charData->bh;
+
+        /* Advance the cursor to the start of the next character */
+        x += charData->ax + options.letterSpacing();
+        y += charData->ay;
+        lineEndX = x;
+
+        /* Skip glyphs that have no pixels */
+        if (w <= 0 || h <= 0)
+            continue;
+
+        // Calculate some common coordinate values
+        int x1 = x2 + w;
+        int y1 = y2 + h;
+        float tu1 = charData->tx;
+        float tv1 = charData->ty;
+        float tu2 = charData->tx2;
+        float tv2 = charData->ty2;
+
+        const auto addVertices
+            = [&vertices](uint color, int x1, int x2, int y1, int y2, float tu1, float tu2, float tv1, float tv2) {
+            RenIVertex vx;
+            vx.color = color;
+            vx.z = 0;
+            vx.x = x2;
+            vx.y = y2;
+            vx.tu = tu1;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y2;
+            vx.tu = tu2;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x2;
+            vx.y = y1;
+            vx.tu = tu1;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y2;
+            vx.tu = tu2;
+            vx.tv = tv1;
+            vertices.push_back(vx);
+            vx.x = x2;
+            vx.y = y1;
+            vx.tu = tu1;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+            vx.x = x1;
+            vx.y = y1;
+            vx.tu = tu2;
+            vx.tv = tv2;
+            vertices.push_back(vx);
+        };
+
+        if (options.hasShadow())
+        {
+            addVertices(
+                secondColor,
+                x1 + options.shadowX(),
+                x2 + options.shadowX(),
+                y1 + options.shadowY(),
+                y2 + options.shadowY(),
+                tu1,
+                tu2,
+                tv1,
+                tv2);
+        }
+
+        if (options.hasOutline())
+        {
+            const int thickness = options.outlineThickness();
+            for (int ring = 1; ring <= thickness; ++ring)
+            {
+                for (int ox = -ring; ox <= ring; ++ox)
+                {
+                    const int absOx = (ox < 0) ? -ox : ox;
+                    for (int oy = -ring; oy <= ring; ++oy)
+                    {
+                        const int absOy = (oy < 0) ? -oy : oy;
+                        const int maxAbs = (absOx > absOy) ? absOx : absOy;
+                        if (maxAbs != ring)
+                            continue;
+                        if (ox == 0 && oy == 0)
+                            continue;
+
+                        addVertices(outlineColor, x1 + ox, x2 + ox, y1 + oy, y2 + oy, tu1, tu2, tv1, tv2);
+                    }
+                }
+            }
+        }
+        addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
+    }
+    ASSERT(!vertices.empty(), "drawText called with text that produced no glyphs");
+    if (vertices.empty())
+        return;
+
+    device_->recordCommand(Command::setCullFace(false));
+    device_->renderScreenspace(
+        &vertices.front(),
+        vertices.size(),
+        PrimitiveTopology::Triangles,
+        screenspaceW(),
+        screenspaceH(),
+        fontImpl.textureId);
+
+    if (options.underline() && lineEndX != lineStartX)
+    {
+        underlineSegments.push_back({
+            lineStartX,
+            lineEndX,
+            lineBaselineY - fontImpl.descender() + 1,
+        });
+    }
+
+    for (const UnderlineSegment& seg : underlineSegments)
+    {
+        line(Point(seg.x1, seg.y), Point(seg.x2, seg.y), options.color(), 1);
+    }
 }
 
 void Painter::drawText(

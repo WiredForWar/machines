@@ -4,6 +4,10 @@
 
 #include "base/IProgressReporter.hpp"
 #include "base/diag.hpp"
+#include "render/FogMode.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
+#include "render/ShadowQuality.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/pathname.hpp"
 #include "system/winapi.hpp"
@@ -20,7 +24,6 @@
 #include "render/TextOptions.hpp"
 #include "render/display.hpp"
 #include "render/device.hpp"
-#include "render/capable.hpp"
 #include "render/texmgr.hpp"
 #include "render/texture.hpp"
 #include "render/texset.hpp"
@@ -306,6 +309,36 @@ bool SDLApp::clientStartup()
     manager_->useLevelOfDetail(
         !SysRegistry::instance().queryIntegerValue("Options\\Graphics Complexity\\LOD", "Value"));
 
+    Config::gfxModernRendering
+        .addListener([]
+    {
+        if (Config::gfxModernRendering.get() == true)
+        {
+            Config::gfxLightingMode.set(LightingMode::PerPixel);
+            Config::gfxShadowQuality.set(ShadowQuality::Soft);
+            Config::gfxFogMode.set(FogMode::Exponential2);
+        }
+        else
+        {
+            Config::gfxLightingMode.set(LightingMode::Legacy);
+            Config::gfxShadowQuality.set(ShadowQuality::Static);
+            Config::gfxFogMode.set(FogMode::Linear);
+        }
+
+        spdlog::info(
+            "Render settings: LightingMode::{}, ShadowQuality::{}, Fog: {}",
+            toString(Config::gfxLightingMode.get()),
+            toString(Config::gfxShadowQuality.get()),
+            toString(Config::gfxFogMode.get()));
+    }).release();
+
+    Config::gfxModernRendering.set(false);
+
+    Config::gfxLightingMode.set(LightingMode::Legacy);
+    Config::gfxShadowQuality.set(ShadowQuality::Static);
+    Config::gfxFogMode.set(FogMode::Linear);
+    Config::gfxToneMapping.set(false);
+
     vsyncHandle_ = Config::gfxVSyncMode.addListener([this]() { setVSyncOptions(); });
     vsyncHandle_->trigger();
 
@@ -374,6 +407,7 @@ bool SDLApp::clientStartup()
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontPainter.blit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontPainter.blit(waitBmp, {}, offset);
     }
@@ -387,6 +421,7 @@ bool SDLApp::clientStartup()
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontPainter.blit(waitBmp, {}, offset);
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontPainter.blit(waitBmp, {}, offset);
     }
@@ -403,6 +438,7 @@ bool SDLApp::clientStartup()
         Ren::Painter frontPainter(frontBuffer);
         frontPainter.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
         // Call it twice to draw on both front and back buffers
+        RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
         frontPainter.drawText(notePosition.x(), notePosition.y(), note, *font, RenColour::yellow());
     }
@@ -449,20 +485,9 @@ bool SDLApp::clientStartup()
     // Set up the texture search path.
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
 
-    // We set different search paths depending on the amount
-    // of video memory available for texture
-    //  bool doLoad2MBytesTexture = !manager_->pDevice()->capabilities().supports4MBytesTextureSet();
-    bool doLoad2MBytesTexture = false;
     // Check to see if texture4 directory even exists. The user may have done a minimum
-    // install in which case texture4 directory will not be available
-    if (! doLoad2MBytesTexture)
-    {
-        SysPathName texture4Dir("models/texture4");
-        if (! texture4Dir.existsAsDirectory())
-        {
-            doLoad2MBytesTexture = true;
-        }
-    }
+    // install in which case texture4 directory will not be available.
+    bool doLoad2MBytesTexture = !SysPathName("models/texture4").existsAsDirectory();
 
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.40, 0.71);

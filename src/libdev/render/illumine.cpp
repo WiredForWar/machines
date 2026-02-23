@@ -8,6 +8,8 @@
 #include "render/light.hpp"
 #include "render/mesh.hpp"
 #include "render/camera.hpp"
+#include "render/LightingMode.hpp"
+#include "render/RenderVariables.hpp"
 #include "render/internal/inlight.hpp"
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/lightbuf.hpp"
@@ -18,7 +20,10 @@
 #include "render/internal/colpack.hpp"
 #include "render/internal/matmgr.hpp"
 #include "render/internal/devicei.hpp"
+#include "render/litxform.hpp"
 #include "render/device.hpp"
+
+#include "spdlog/spdlog.h"
 
 #include <iostream>
 #include <iomanip>
@@ -254,6 +259,120 @@ void RenIIlluminator::lightVertices(
     // Not required now that memcpy is used to initialise lit vertices?
     // vtxBuffer_->setAllSpecular(RenColour::black());
     lightingBuffer_->copyCoords(in);
+
+    // When GPU lighting is active, expand normals into the device scratch buffer
+    // so that renderPrimitive/renderIndexed can upload them as a vertex attribute.
+    // Also extract light parameters for the shader uniforms.
+    const bool gpuLighting = Config::gfxLightingMode.get() != LightingMode::Legacy;
+    if (gpuLighting)
+    {
+        const size_t floatsNeeded = nVertices * 3;
+        if (devImpl_->expandedNormals_.size() < floatsNeeded)
+            devImpl_->expandedNormals_.resize(floatsNeeded);
+        in.expandNormals(devImpl_->expandedNormals_.data(), nVertices);
+        devImpl_->expandedNormalsCount_ = nVertices;
+
+        // Expand per-vertex material overrides into flat arrays.
+        // Vertices without per-vertex materials get a sentinel (-1) so the
+        // shader knows to use the group material uniform instead.
+        const RenIVertexMaterials* matMap = in.materialMap();
+        devImpl_->hasPerVertexMaterials_ = (matMap != nullptr);
+        if (matMap)
+        {
+            if (devImpl_->expandedVtxDiffuse_.size() < floatsNeeded)
+                devImpl_->expandedVtxDiffuse_.resize(floatsNeeded);
+            if (devImpl_->expandedVtxAmbient_.size() < floatsNeeded)
+                devImpl_->expandedVtxAmbient_.resize(floatsNeeded);
+            if (devImpl_->expandedVtxEmissive_.size() < floatsNeeded)
+                devImpl_->expandedVtxEmissive_.resize(floatsNeeded);
+
+            // Fill with sentinel (-1) meaning "use group material"
+            std::fill_n(devImpl_->expandedVtxDiffuse_.data(), floatsNeeded, -1.0f);
+            std::fill_n(devImpl_->expandedVtxAmbient_.data(), floatsNeeded, -1.0f);
+            std::fill_n(devImpl_->expandedVtxEmissive_.data(), floatsNeeded, -1.0f);
+
+            // Apply global material transform if present
+            const auto* matXform = globalMaterialTransform();
+            RenMaterial transformedMat(RenMaterial::NON_SHARABLE);
+
+            for (auto it = matMap->begin(); it != matMap->end(); ++it)
+            {
+                const Ren::VertexIdx idx = (*it).index();
+                if (idx >= nVertices)
+                    continue;
+
+                const RenMaterial* pMat = &(*it).material();
+                if (matXform)
+                {
+                    matXform->transform(*pMat, &transformedMat);
+                    pMat = &transformedMat;
+                }
+
+                const RenColour& d = pMat->diffuse();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 0] = d.r();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 1] = d.g();
+                devImpl_->expandedVtxDiffuse_[idx * 3 + 2] = d.b();
+
+                const RenColour& a = pMat->ambient();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 0] = a.r();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 1] = a.g();
+                devImpl_->expandedVtxAmbient_[idx * 3 + 2] = a.b();
+
+                const RenColour& e = pMat->emissive();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 0] = e.r();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 1] = e.g();
+                devImpl_->expandedVtxEmissive_[idx * 3 + 2] = e.b();
+            }
+        }
+
+        // Sum all directional light contributions into a single direction/color pair.
+        // For multiple directional lights, we accumulate colors and use the last direction.
+        // Attenuated lights (point + uniform) are collected into GPU arrays.
+        const auto* colourXform = RenILight::globalColourTransform();
+
+        devImpl_->gpuLightDir_ = glm::vec3(0.0f, -1.0f, 0.0f);
+        devImpl_->gpuLightColor_ = glm::vec3(0.0f);
+        int nPt = 0;
+        for (const RenILight* light : lightsOn_)
+        {
+            if (const auto* dirLight = dynamic_cast<const RenIDirectionalLight*>(light))
+            {
+                const MexVec3& dir = dirLight->direction();
+                devImpl_->gpuLightDir_ = glm::vec3(dir.x(), dir.y(), dir.z());
+                RenColour col = dirLight->colour();
+                if (colourXform)
+                    colourXform->transform(col, Ren::DIRECTIONAL, &col);
+                devImpl_->gpuLightColor_ += glm::vec3(col.r(), col.g(), col.b());
+            }
+            else if (const auto* attLight = dynamic_cast<const RenIAttenuatedLight*>(light))
+            {
+                if (nPt < RenIDeviceImpl::MaxGpuPointLights)
+                {
+                    const bool isUniform = dynamic_cast<const RenIUniformLight*>(light) != nullptr;
+                    const MexPoint3d& pos = attLight->position();
+                    devImpl_->gpuPointLightPos_[nPt] = glm::vec3(pos.x(), pos.y(), pos.z());
+                    RenColour col = attLight->colour();
+                    if (colourXform)
+                        colourXform->transform(col, isUniform ? Ren::UNIFORM : Ren::POINT, &col);
+                    devImpl_->gpuPointLightColor_[nPt] = glm::vec3(col.r(), col.g(), col.b());
+                    devImpl_->gpuPointLightRange_[nPt] = attLight->maxRange();
+                    devImpl_->gpuPointLightAtten_[nPt] = glm::vec3(
+                        attLight->constantAttenuation(),
+                        attLight->linearAttenuation(),
+                        attLight->quadraticAttenuation());
+                    devImpl_->gpuPointLightOmni_[nPt] = isUniform ? 1.0f : 0.0f;
+                    ++nPt;
+                }
+            }
+        }
+        devImpl_->gpuNumPointLights_ = nPt;
+        devImpl_->gpuAmbientColor_ = glm::vec3(ambient_.r(), ambient_.g(), ambient_.b());
+    }
+    else
+    {
+        devImpl_->expandedNormalsCount_ = 0;
+        devImpl_->hasPerVertexMaterials_ = false;
+    }
 
     if (!disabled())
         computeLambertian(in, mexWorld, pVolume);

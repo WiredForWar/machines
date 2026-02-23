@@ -51,14 +51,11 @@
 #include "render/animcurs.hpp"
 #include "render/uvtrans.hpp"
 #include "render/scale.hpp"
-#include "render/capable.hpp"
 #include "render/vertex.hpp"
 #include "render/hsv.hpp"
 #include "render/envirnmt.hpp"
 #include "render/stars.hpp"
 #include "render/stats.hpp"
-#include "render/drivsel.hpp"
-
 #include "afx/resource.hpp"
 #include "afx/castfns.hpp"
 
@@ -301,11 +298,6 @@ void D3DApp::processInput()
 
             case DevKey::F12:
                 {
-                    if (!device_->capabilities().supportsEdgeAntiAliasing())
-                    {
-                        saveScreenShot();
-                    }
-                    else
                     {
                         // Turn on anti-aliasing, render a frame then save the screen.
                         renderingForShot_ = true;
@@ -1012,8 +1004,6 @@ void D3DApp::exhaustTexMem()
     for (int i = 0; i != total && !failed; ++i)
     {
         RENDER_STREAM("Prior to allocating 256x256 no. " << i << std::endl);
-        RENDER_STREAM(device_->capabilities());
-
         std::ostringstream ostr;
         ostr << "big_" << i << ".bmp" << std::ends;
         textures[i] = RenTexManager::instance().createTexture(ostr.str());
@@ -1705,29 +1695,6 @@ bool D3DApp::clientStartup()
 
     Ren::initialise();
 
-    // get and set the video driver
-    char* ddrawDriver = getenv("cb_ddrawdriver");
-    if (ddrawDriver)
-    {
-        SysRegistry::instance().currentStubKey("SOFTWARE\\Acclaim Entertainment\\Machines");
-        RenDriverSelector* driverSelector;
-        driverSelector = new RenDriverSelector();
-
-        bool driverFound = false;
-        for (RenDriverSelector::RenDrivers::const_iterator dDrawIt = driverSelector->dDrawDrivers().begin();
-             dDrawIt != driverSelector->dDrawDrivers().end() and not driverFound;
-             ++dDrawIt)
-        {
-            if ((*dDrawIt)->name() == ddrawDriver)
-            {
-                driverFound = true;
-                driverSelector->useDDrawDriver((*dDrawIt));
-                driverSelector->updateDriverRegistries();
-            }
-        }
-        delete driverSelector;
-    }
-
     display_ = new RenDisplay(window());
 
     if (!windowMode)
@@ -1762,7 +1729,6 @@ bool D3DApp::clientStartup()
     // to find out how much memory is available for display
     bool highestModeSet = device_->setHighestAllowedDisplayMode();
     ASSERT(highestModeSet, "Could tot find a mode fitting in the amount of display memory available");
-    RENDER_STREAM(device_->capabilities());
     if (!windowMode)
         testCursor();
 
@@ -1788,8 +1754,6 @@ bool D3DApp::clientStartup()
     // loadLotsOfTexture3();
     // loadLotsOfTexture4();
     // loadLotsOfTexture5();
-
-    RENDER_STREAM(device_->capabilities());
 
     MexRadians a1 = MexDegrees(40);
     camera_ = new RenCamera();
@@ -1988,7 +1952,8 @@ void D3DApp::loopCycle()
 
     if (device_->startFrame())
     {
-        device_->start3D(clearBack_);
+        device_->start3D();
+        device_->beginGeometryPass(clearBack_);
 
         // Draw the models.
         for (int i = 0; i != models_.size(); ++i)

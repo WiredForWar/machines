@@ -11,7 +11,7 @@
 #include "render/render.hpp"
 #include "render/colour.hpp"
 #include "utility/property.hpp"
-#include "render/internal/IRenderBackend.hpp"
+#include "render/internal/BackendTypes.hpp"
 #include "render/internal/internal.hpp"
 
 #include <cstdint>
@@ -23,11 +23,6 @@ class SysPathname;
 class RenITexBody;
 class RenIFont;
 class RenDevice;
-
-namespace Ren::OpenGL
-{
-class RenderBackendGL;
-}
 
 namespace Ren
 {
@@ -63,23 +58,6 @@ public:
     Ren::Size size() const;
     size_t memoryUsed() const;
     bool isEmpty() const; // width == 0 || height == 0
-
-    // These are methods which would be private internal methods of RenSurface,
-    // however, they are placed here to reduce dependancies.
-    void setDDColourKey();
-    void filledRectangle(const Ren::Rect& area, uint colour);
-    void drawText(
-        int x, int y, const std::string_view& text, const Ren::Font& font, const Ren::TextOptions& options);
-
-    // When Alt-Tab is pressed, textures can get unloaded from a hardware
-    // device.  Calling this method reloads this image.
-    bool restoreToVRAM() const;
-    bool loadIntoVRAM() const;
-    bool recreateVRAMSurface();
-
-    // HDC getDC();
-    // HDC DC() const;
-    void releaseDC();
 
     uint refCount() const;
     void incRefCount();
@@ -136,6 +114,8 @@ public:
     bool isFront() const { return displayType_ == RenI::FRONT; }
     bool isOffscreen() const { return displayType_ == RenI::NOT_DISPLAY; }
 
+    Ren::BackendTextureHandle nativeTextureHandle() const { return nativeTexture2D_; }
+
 protected:
     // Used by the surface manager to create surfaces is specific places. The = 2 is a
     // safety measure as the parameter used to be a bool.
@@ -154,7 +134,6 @@ private:
     // Only the surface manager can create internal surface objects.
     friend class RenSurfaceManager;
     friend class RenISurfaceManagerImpl;
-    friend class Ren::OpenGL::RenderBackendGL;
 
     // Allocates DirectDraw memory for textures and non-texture bitmaps. This
     // creates a writable surface.  The client must change it to read-only, if
@@ -170,9 +149,6 @@ private:
     // PRE(dev); PRE(t != NOT_DISPLAY);
     // POST(!sharable() && !readOnly()); POST(name().length() == 0);
     RenISurfBody(const RenDevice* dev, RenI::DisplayType t);
-
-    // Truly private, as opposed to available to friends.
-    void updateDescr();
 
     RenI::DisplayType displayType_;
     const RenDevice* device_{};

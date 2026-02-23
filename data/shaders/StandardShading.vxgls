@@ -5,13 +5,20 @@ precision mediump float;
 in vec3 vertexPosition_modelspace;
 in vec2 vertexUV;
 in vec4 vertexColor;
+in vec3 vertexNormal;
+in vec3 vtxDiffuse;
+in vec3 vtxAmbient;
+in vec3 vtxEmissive;
 
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
 out vec4 fragmentColor;
+out vec3 fragWorldNormal;
+out vec3 fragVtxDiffuse;
+out vec3 fragVtxAmbient;
+out vec3 fragVtxEmissive;
+out vec3 fragWorldPos;
 out vec4 viewSpace;
-out vec4 fragmentFogColour;
-out vec3 fragmentFogParams;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 uM;
@@ -19,6 +26,9 @@ uniform mat4 uV;
 uniform mat4 uP;
 uniform vec3 uFogColour;
 uniform vec3 uFogParams;
+
+// GPU lighting uniforms
+uniform int uGpuLighting;
 
 void main() {
 
@@ -28,9 +38,43 @@ void main() {
 	
 	// UV of the vertex. No special space for this one.
     UV = vertexUV;
-    fragmentColor = vec4(vertexColor[2],vertexColor[1],vertexColor[0],vertexColor[3]);
-    viewSpace = uV * uM * vec4(vertexPosition_modelspace,1); 
-    fragmentFogColour = vec4(uFogColour,1);
-    fragmentFogParams = uFogParams;
+
+    if (uGpuLighting >= 1)
+    {
+        // Transform normal to world space and pass to fragment shader for per-pixel lighting
+        fragWorldNormal = normalize(mat3(uM) * vertexNormal);
+        fragWorldPos = (uM * vec4(vertexPosition_modelspace, 1.0)).xyz;
+        fragVtxDiffuse = vtxDiffuse;
+        fragVtxAmbient = vtxAmbient;
+        fragVtxEmissive = vtxEmissive;
+
+        // Debug modes still computed per-vertex for diagnostic purposes
+        if (uGpuLighting == 2)
+        {
+            vec3 lightDir = normalize(vec3(0.0, -1.0, 0.0));
+            float NdotL = max(dot(fragWorldNormal, -lightDir), 0.0);
+            fragmentColor = vec4(NdotL, NdotL, NdotL, 1.0);
+        }
+        else if (uGpuLighting == 3)
+        {
+            fragmentColor = vec4(fragWorldNormal * 0.5 + 0.5, 1.0);
+        }
+        else if (uGpuLighting == 4)
+        {
+            fragmentColor = vec4(0.0, 1.0, 0.0, 1.0);
+        }
+        else
+        {
+            // Per-pixel: fragment shader will compute lighting
+            fragmentColor = vec4(1.0);
+        }
+    }
+    else
+    {
+        fragWorldNormal = vec3(0.0);
+        fragmentColor = vertexColor;
+    }
+
+    viewSpace = uV * uM * vec4(vertexPosition_modelspace,1);
 }
 

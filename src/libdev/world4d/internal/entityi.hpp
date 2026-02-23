@@ -60,6 +60,9 @@ public:
     void doNotLight(bool lightIt);
     bool doNotLight() const;
 
+    void setNoShadowCast(bool v);
+    bool noShadowCast() const;
+
     // Any non-global lights which illuminate this object.
     bool hasLightList() const;
     W4dLocalLightList& lightListForEdit();
@@ -80,6 +83,9 @@ public:
     void isComposite(bool isIt);
     // true iff this is a composite
     bool isComposite() const;
+
+    void setShadow(bool isIt);
+    bool isShadow() const;
 
     const W4dEntity::W4dEntities& children() const;
     // Exports list of child entities
@@ -211,6 +217,7 @@ private:
     bool notScaled_ : 1{}; // True iff the lod 0 mesh has unity scale,
                          // and the entity has unity scale override.
     bool isComposite_ : 1{}; // True if this is a composite
+    bool isShadow_ : 1{}; // True if this is a static shadow entity (W4dShadow)
     bool isGarbage_ : 1{}; // True if added to the garbage collection list
     bool isOwnedByCountedPtr_ : 1{}; // True if a counted ptr references the entity.
                                      // In this case it must only be deleted when the
@@ -229,6 +236,7 @@ private:
     RenColour* pFilterColour_{};
     int nLinkedSounds_{}; // Count of sounds associated via W4dSoundManager
     bool doNotLight_{};
+    bool noShadowCast_{}; // True if this entity should not write to the shadow depth map.
     int clientData_{}; // To be used as clients of this class see fit.
 
     OBJECT_TRACKER(W4dEntityImpl);

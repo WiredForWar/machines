@@ -19,7 +19,6 @@
 #include "render/display.hpp"
 #include "render/device.hpp"
 #include "render/surface.hpp"
-#include "render/capable.hpp"
 #include "mathex/eulerang.hpp"
 #include "world4d/root.hpp"
 #include "world4d/scenemgr.hpp"
@@ -83,6 +82,7 @@ public:
         frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
             RenColour(red, green, blue));
+        RenDevice::current()->flushCommandBuffer();
         RenDevice::current()->display()->flipBuffers();
         frontPainter.filledRectangle(
             Ren::Rect(minx, miny, displayWidth, height),
@@ -360,25 +360,11 @@ bool SDLApp::clientStartup()
     // Set up the texture search path.
     RenTexManager::PathNames searchList = RenTexManager::instance().searchList();
 
-    // We set different search paths depending on the amount
-    // of video memory availbable after the display mode has been set
-    const bool canSupport4MegTexture = manager_->pDevice()->capabilities().supports4MBytesTextureSet();
-    if (! canSupport4MegTexture)
-    {
-        searchList.push_back(SysPathName("models/texture2"));
-        searchList.push_back(SysPathName("models/texture2/exp"));
-        searchList.push_back(SysPathName("models/texture2/fire"));
-        searchList.push_back(SysPathName("models/texture2/smoke"));
-        planetFileName = planetPath(planetName, "texture2", &searchList);
-    }
-    else
-    {
-        searchList.push_back(SysPathName("models/texture4"));
-        searchList.push_back(SysPathName("models/texture4/exp"));
-        searchList.push_back(SysPathName("models/texture4/fire"));
-        searchList.push_back(SysPathName("models/texture4/smoke"));
-        planetFileName = planetPath(planetName, "texture4", &searchList);
-    }
+    searchList.push_back(SysPathName("models/texture4"));
+    searchList.push_back(SysPathName("models/texture4/exp"));
+    searchList.push_back(SysPathName("models/texture4/fire"));
+    searchList.push_back(SysPathName("models/texture4/smoke"));
+    planetFileName = planetPath(planetName, "texture4", &searchList);
 
     RenTexManager::instance().searchList(searchList);
     // Used by PedTileEditor to cycle through the available *.lod file (tiles)
