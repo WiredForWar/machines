@@ -1,3 +1,12 @@
+
+### v1.7.5
+
+- Ground camera height (z position) now always saved/restored on view save/restore
+- The 'Paused' image is not skipped for screenshots
+- Optimized the game startup
+- Fixed 2D selection marker
+- Fixed missing tiles (even screen center sometimes was not rendered)
+
 ### v1.7.4
 
 (v1.7.3 had only pre-release builds)
