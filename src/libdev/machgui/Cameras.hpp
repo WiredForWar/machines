@@ -190,6 +190,7 @@ private:
 
         Saved saved_;
         MexTransform3d position_;
+        MATHEX_SCALAR heightDelta_{};
     };
 
     // Update CameraSave with the position etc of the currently selected camera.

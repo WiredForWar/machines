@@ -527,6 +527,7 @@ void MachCameras::saveCamera(CameraSave* pCameraSave)
     {
         pCameraSave->saved_ = CameraSave::GROUNDVIEW;
         pCameraSave->position_ = pGroundCamera_->globalTransform();
+        pCameraSave->heightDelta_ = pGroundConstraint_->zTerrainDelta();
     }
     else if (pZenithControl_->inputEnabled())
     {
@@ -552,6 +553,7 @@ void MachCameras::restoreCamera(const CameraSave& cameraSave)
     {
         restoreFog();
 
+        pGroundConstraint_->zTerrainDelta(cameraSave.heightDelta_);
         pGroundControl_->snapTo(cameraSave.position_);
         useCamera(pGroundCamera_.get());
         pGroundCamera_->update();
