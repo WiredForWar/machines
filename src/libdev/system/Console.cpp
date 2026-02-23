@@ -108,6 +108,7 @@ bool Console::submit(std::string_view line)
     if (tokens.empty())
     {
         setError("Unable to parse command.");
+        writeLine(lastError_);
         return false;
     }
 
@@ -116,6 +117,7 @@ bool Console::submit(std::string_view line)
     if (commandIterator == commands_.end())
     {
         setError("Unknown command: " + commandName);
+        writeLine(lastError_);
         return false;
     }
 
@@ -123,6 +125,7 @@ bool Console::submit(std::string_view line)
     std::vector<ArgumentValue> parsedArguments;
     if (!parseArguments(commandIterator->second.metadata, tokenArguments, parsedArguments))
     {
+        writeLine(lastError_);
         return false;
     }
 
