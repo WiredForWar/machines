@@ -5,10 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include <stdio.h>
+#include "phys/cspace2.hpp"
 
 #include "base/diag.hpp"
 
+#include "mathex/epsilon.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/poly2d.hpp"
 #include "mathex/cvexpgon.hpp"
@@ -19,7 +20,6 @@
 #include "mathex/line2d.hpp"
 #include "mathex/random.hpp"
 
-#include "phys/cspace2.hpp"
 #include "phys/internal/cs2impl.hpp"
 #include "phys/internal/cs2domai.hpp"
 #include "phys/internal/cs2findp.hpp"
@@ -33,6 +33,8 @@
 #include "utility/ascpict.hpp"
 
 #include <algorithm>
+
+#include <stdio.h>
 
 #ifndef _INLINE
 #include "phys/cspace2.ipp"
@@ -1530,6 +1532,61 @@ bool PhysConfigSpace2d::findSpace(
 
     return findSpace(startPoint, targetPoint, clearance, radius, flags, pResult);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+std::optional<MATHEX_SCALAR> PhysConfigSpace2d::domainGraphDistance(
+    const MexPoint2d& startPoint,
+    const MexPoint2d& endPoint,
+    MATHEX_SCALAR clearance,
+    ObstacleFlags flags) const
+{
+    // Trivially close points
+    const MATHEX_SCALAR directDist = startPoint.euclidianDistance(endPoint);
+    if (directDist < MexEpsilon::instance())
+        return 0.0;
+
+    // Both points must lie in a domain
+    DomainId startDomainId;
+    DomainId endDomainId;
+    if (!domain(startPoint, &startDomainId) || !domain(endPoint, &endDomainId))
+        return std::nullopt;
+
+    // Same domain — Euclidean is a reasonable estimate
+    if (startDomainId == endDomainId)
+        return directDist;
+
+    // Construct a domain find path and drive it to completion synchronously.
+    // PhysCS2dDomainFindPath manages its own temporary domain graph vertices.
+    // The domain graph is small (~100-200 vertices), so this completes quickly.
+    PhysCS2dDomainFindPath finder(
+        const_cast<PhysConfigSpace2d*>(this), startPoint, endPoint, clearance, flags, 0);
+
+    while (!finder.isFinished())
+        finder.update(1.0);
+
+    // Extract path cost: sum distances between consecutive portal waypoints
+    PortalPoints portalPoints;
+
+    if (!finder.output(&portalPoints))
+        return std::nullopt;
+
+    MATHEX_SCALAR totalCost = 0.0;
+    MexPoint2d prevPoint = startPoint;
+
+    for (const auto& [portalId, distance] : portalPoints)
+    {
+        const MexPoint2d waypoint = portalPoint(portalId, distance);
+        totalCost += prevPoint.euclidianDistance(waypoint);
+        prevPoint = waypoint;
+    }
+
+    totalCost += prevPoint.euclidianDistance(endPoint);
+
+    return totalCost;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 PhysCS2dDomainFindPath* PhysConfigSpace2d::pCurrentDomainFindPath()
 {

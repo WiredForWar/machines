@@ -19,6 +19,7 @@
 #include "ctl/utility.hpp"
 
 #include <memory>
+#include <optional>
 
 // Forward declarations
 class MexPoint2d;
@@ -565,6 +566,18 @@ public:
         MexPoint2d* pResult);
 
     /////////////////////////////////////////////////////////
+
+    // Synchronous domain-graph distance estimate between two points.
+    // Runs A* on the domain graph to completion (fast — the graph is small).
+    // Returns the path cost through the domain graph, which accounts for
+    // terrain connectivity (rivers, cliffs, etc.). Returns std::nullopt
+    // if the points are unreachable from each other.
+    // flags defines those obstacles which can be ignored (e.g. water for hover).
+    std::optional<MATHEX_SCALAR> domainGraphDistance(
+        const MexPoint2d& startPoint,
+        const MexPoint2d& endPoint,
+        MATHEX_SCALAR clearance,
+        ObstacleFlags flags) const;
 
     void CLASS_INVARIANT;
 
