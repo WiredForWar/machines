@@ -10,6 +10,8 @@
 #include "render/texture.hpp"
 #include "render/internal/texbody.hpp"
 #include "render/internal/surfbody.hpp"
+#include "system/pathname.hpp"
+#include "system/vfs.hpp"
 #include "utility/string.hpp"
 
 // static
@@ -196,7 +198,8 @@ RenISurfaceManagerImpl::loadSurface(const PathNames& pathNames, bool createTex) 
     for (PathNames::const_iterator i = pathNames.begin(); i != pathNames.end() && ! foundFile; ++i)
     {
         ASSERT_INFO(*i);
-        if ((*i).existsAsFile())
+        const std::string resolved = Ren::resolveTextureFile((*i).pathname());
+        if (SysPathName::existsAsFile(resolved))
         {
             texturePathName = (*i);
             foundFile = true;
@@ -461,7 +464,8 @@ std::ostream& RenISurfaceManagerImpl::write(std::ostream& o)
 RenISurfBody*
 RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool createTex) const
 {
-    ASSERT_FILE_EXISTS(pathName.c_str());
+    const std::string resolvedPath = Ren::resolveTextureFile(pathName);
+    ASSERT_FILE_EXISTS(resolvedPath.c_str());
     TEST_INVARIANT;
 
     RenISurfBody* body = nullptr;
@@ -472,8 +476,8 @@ RenISurfaceManagerImpl::loadActualSurface(const std::string& pathName, bool crea
 
     ASSERT(body, runtime_error("Out of memory."));
 
-    // Attempt to read the texture from file.
-    if (!body->read(pathName))
+    // Load from the resolved disk path but keep the original name for sharing/lookup.
+    if (!body->read(resolvedPath, pathName))
     {
         delete body;
         body = nullptr;

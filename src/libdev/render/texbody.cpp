@@ -182,17 +182,21 @@ static bool checkTextureSize(const SysPathName& fileName, const SDL_Surface* sur
     return true;
 }
 
-// Load a texture from a file by using windows functions to load
-// a bmp, then GDI functions to copy the image to the DD surface.
 // virtual
 bool RenITexBody::read(const std::string& nameAsString)
 {
-    PRE(! isAlpha(SysPathName(nameAsString)));
-    PRE(! isColour(SysPathName(nameAsString)));
+    return read(nameAsString, nameAsString);
+}
+
+bool RenITexBody::read(const std::string& filePath, const std::string& logicalName)
+{
+    PRE(! isAlpha(SysPathName(logicalName)));
+    PRE(! isColour(SysPathName(logicalName)));
     PRE(Ren::initialised());
     TEST_INVARIANT;
 
-    const SysPathName requestedTextureName(nameAsString);
+    // Use the logical name (.bmp) for naming convention checks.
+    const SysPathName requestedTextureName(logicalName);
     RENDER_STREAM("Trying to load texture " << requestedTextureName << ":" << std::endl);
     ASSERT_INFO(requestedTextureName);
 
@@ -201,27 +205,32 @@ bool RenITexBody::read(const std::string& nameAsString)
     bilinear_ = bilinearRequired(requestedTextureName) && caps.supportsBilinear();
     const bool colourKey = caps.supportsColourKey();
 
-    const char* fname = requestedTextureName.pathname().c_str();
+    // Start with the resolved file path for loading.
+    std::string loadPath = filePath;
     const SysPathName colourName = (transparent) ? colourMapName(requestedTextureName) : requestedTextureName;
 
     // If this is a transparent texture and the device supports alpha texture
     // and a special colour-only map exists, then load that in preference to
     // the named file given as the arg to this function.
-    if (transparent && caps.supportsTextureAlpha() && colourName.existsAsFile())
+    if (transparent && caps.supportsTextureAlpha())
     {
-        // However, if the texture is *not* bilinear blended and colour-keying
-        // *is* supported, load the colour-keyed version because it will
-        // typically be more efficient and avoids alpha sorting problems.  This
-        // should be the correct choice for architectures without colour-keying
-        //  (PowerVR) and for architectures with both alpha and keying (3Dfx).
-        if (bilinear_ || !colourKey)
+        const std::string resolvedColourName = Ren::resolveTextureFile(colourName.pathname());
+        if (SysPathName::existsAsFile(resolvedColourName))
         {
-            fname = colourName.pathname().c_str();
-            RENDER_STREAM("  Colour-only map exists, loading " << colourName << " instead." << std::endl);
+            // However, if the texture is *not* bilinear blended and colour-keying
+            // *is* supported, load the colour-keyed version because it will
+            // typically be more efficient and avoids alpha sorting problems.  This
+            // should be the correct choice for architectures without colour-keying
+            //  (PowerVR) and for architectures with both alpha and keying (3Dfx).
+            if (bilinear_ || !colourKey)
+            {
+                loadPath = resolvedColourName;
+                RENDER_STREAM("  Colour-only map exists, loading " << resolvedColourName << " instead." << std::endl);
+            }
         }
     }
 
-    SDL_Surface* surface = readFromFile(fname);
+    SDL_Surface* surface = readFromFile(loadPath.c_str());
     if (!surface)
         return false;
 
@@ -239,9 +248,10 @@ bool RenITexBody::read(const std::string& nameAsString)
     if (tryToLoadAlpha)
     {
         const SysPathName alphaName = alphaMapName(requestedTextureName);
+        const std::string resolvedAlphaName = Ren::resolveTextureFile(alphaName.pathname());
         RENDER_STREAM("  Looking for alpha map file " << alphaName);
 
-        if (!alphaName.existsAsFile())
+        if (!SysPathName::existsAsFile(resolvedAlphaName))
         {
             RENDER_STREAM(" (not found)" << std::endl);
         }
@@ -249,8 +259,7 @@ bool RenITexBody::read(const std::string& nameAsString)
         {
             RENDER_STREAM(" (found)" << std::endl);
 
-            const char* fname = alphaName.pathname().c_str();
-            surfaceAlpha = readFromFile(fname);
+            surfaceAlpha = readFromFile(resolvedAlphaName.c_str());
             if (!surfaceAlpha)
                 return false;
 
@@ -277,7 +286,8 @@ bool RenITexBody::read(const std::string& nameAsString)
         return false;
     }
 
-    name(nameAsString);
+    // Store the logical name for sharing/lookup purposes.
+    name(logicalName);
 
     // copy the bitmap to our surface
     bool retval;

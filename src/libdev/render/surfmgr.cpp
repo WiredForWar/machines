@@ -15,11 +15,39 @@
 #include "render/internal/devicei.hpp"
 
 #include "system/pathname.hpp"
-#include "afx/resource.hpp"
+#include "system/vfs.hpp"
 
 #include <stdio.h>
 #include <climits>
 #include <algorithm>
+
+static constexpr char s_PngTextureSuffix[] = ".png";
+static constexpr char s_BmpTextureSuffix[] = ".bmp";
+static constexpr auto s_BmpSuffixSize = sizeof(s_BmpTextureSuffix) - 1;
+
+namespace Ren
+{
+
+std::string resolveTextureFile(const std::string& path)
+{
+    const bool hasBmpExtension = path.size() > s_BmpSuffixSize
+        && path.substr(path.size() - s_BmpSuffixSize, s_BmpSuffixSize) == s_BmpTextureSuffix;
+
+    if (hasBmpExtension)
+    {
+        std::string pngPath = path;
+        const auto from = pngPath.end() - s_BmpSuffixSize;
+        pngPath.replace(from, pngPath.end(), s_PngTextureSuffix);
+
+        pngPath = System::findFile(pngPath);
+        if (SysPathName::existsAsFile(pngPath))
+            return pngPath;
+    }
+
+    return System::findFile(path);
+}
+
+} // namespace Ren
 
 ////////////////////////////////////////////////////////////
 

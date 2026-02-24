@@ -17,6 +17,13 @@ class RenSurface;
 class RenISurfaceManagerImpl;
 template <class T> class ctl_vector;
 
+namespace Ren
+{
+
+std::string resolveTextureFile(const std::string& path);
+
+} // namespace Ren
+
 class RenSurfaceManager
 {
 public:
