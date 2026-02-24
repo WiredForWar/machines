@@ -488,7 +488,6 @@ bool MachLogMine::assignToNearestMineralSite()
             HAL_STREAM("this one is ok so setting\n");
             closestSiteDistance = testDistance;
             pSite_ = pTestSite;
-            break;
         }
     }
 
@@ -517,7 +516,6 @@ bool MachLogMine::discoverAndAssignToNearestMineralSite(MachLogRace* pRace)
         {
             closestSiteDistance = testDistance;
             pSite_ = pTestSite;
-            break;
         }
     }
 
