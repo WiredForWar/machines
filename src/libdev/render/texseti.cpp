@@ -6,13 +6,16 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "render/internal/texseti.hpp"
-#include <string>
 #include "base/diag.hpp"
 #include "base/IProgressReporter.hpp"
 #include "system/pathname.hpp"
 #include "system/fileenum.hpp"
 #include "system/filedata.hpp"
 #include "render/surfmgr.hpp"
+
+#include <algorithm>
+#include <set>
+#include <string>
 
 #define TEXSET_STREAM(x) RENDER_STREAM(x)
 #define TEXSET_INDENT(x) RENDER_INDENT(x)
@@ -55,31 +58,38 @@ RenTextureSetImpl::~RenTextureSetImpl()
     TEXSET_INDENT(-2);
 }
 
-static bool isAlphaMap(const SysPathName& pathname)
+// Check for alpha/colour map naming conventions, supporting both .bmp and .png extensions.
+static bool endsWithCaseInsensitive(const std::string& str, const char* suffix, size_t suffixLen)
 {
-    bool result = false;
-    const std::string& texName = pathname.filename();
-    const std::string end = texName.substr(texName.length() - 6, 6);
-    if (strcasecmp(end.c_str(), "_a.bmp") == 0)
-        result = true;
-    const std::string end2 = texName.substr(texName.length() - 7, 7);
-    if (strcasecmp(end2.c_str(), "_ba.bmp") == 0)
-        result = true;
-    return result;
+    if (str.size() < suffixLen)
+        return false;
+    return strcasecmp(str.c_str() + str.size() - suffixLen, suffix) == 0;
 }
 
-bool isColourMap(const SysPathName& pathname)
+static bool isAlphaMap(const SysPathName& pathname)
 {
-    bool result = false;
     const std::string& texName = pathname.filename();
-    const std::string end = texName.substr(texName.length() - 6, 6);
-    if (strcasecmp(end.c_str(), "_c.bmp") == 0)
-        result = true;
-    const std::string end2 = texName.substr(texName.length() - 7, 7);
-    if (strcasecmp(end2.c_str(), "_bc.bmp") == 0)
-        result = true;
+    return endsWithCaseInsensitive(texName, "_a.bmp", 6)
+        || endsWithCaseInsensitive(texName, "_a.png", 6)
+        || endsWithCaseInsensitive(texName, "_ba.bmp", 7)
+        || endsWithCaseInsensitive(texName, "_ba.png", 7);
+}
 
-    return result;
+static bool isColourMap(const SysPathName& pathname)
+{
+    return endsWithCaseInsensitive(pathname.filename(), "_c.bmp", 6)
+        || endsWithCaseInsensitive(pathname.filename(), "_c.png", 6)
+        || endsWithCaseInsensitive(pathname.filename(), "_bc.bmp", 7)
+        || endsWithCaseInsensitive(pathname.filename(), "_bc.png", 7);
+}
+
+// Return the stem of a filename (without the last extension).
+static std::string filenameStem(const std::string& filename)
+{
+    auto dot = filename.rfind('.');
+    if (dot == std::string::npos)
+        return filename;
+    return filename.substr(0, dot);
 }
 
 void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pReporter)
@@ -90,19 +100,53 @@ void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pR
     TEXSET_INDENT(2);
     TEXSET_STREAM(RenSurfaceManager::instance());
 
-    SysFileEnumerator fileFinder(directory, "*.bmp");
-    fileFinder.examineSubdirectories(true);
-    fileFinder.find();
-    const SysFileEnumerator::FileDatas& files = fileFinder.files();
+    // Scan for .bmp files (the original game assets)
+    SysFileEnumerator bmpFinder(directory, "*.bmp");
+    bmpFinder.examineSubdirectories(true);
+    bmpFinder.find();
 
-    TEXSET_STREAM("Found " << files.size() << " .bmp files" << std::endl);
-    textures_.reserve(files.size());
+    // Also scan for .png files (mod replacements or new assets)
+    SysFileEnumerator pngFinder(directory, "*.png");
+    pngFinder.examineSubdirectories(true);
+    pngFinder.find();
+
+    const SysFileEnumerator::FileDatas& bmpFiles = bmpFinder.files();
+    const SysFileEnumerator::FileDatas& pngFiles = pngFinder.files();
+
+    TEXSET_STREAM("Found " << bmpFiles.size() << " .bmp and " << pngFiles.size() << " .png files" << std::endl);
+
+    // Collect all .bmp stems so we skip .png files that already have a .bmp counterpart
+    // (the .bmp will be resolved to .png by findTextureFile if appropriate).
+    std::set<std::string> bmpStems;
+    for (auto it = bmpFiles.begin(); it != bmpFiles.end(); ++it)
+    {
+        std::string stem = filenameStem((*it).pathName().filename());
+        std::transform(stem.begin(), stem.end(), stem.begin(), ::tolower);
+        bmpStems.insert(std::move(stem));
+    }
+
+    // Merge: all .bmp files + .png files that don't duplicate a .bmp
+    std::vector<SysPathName> filesToLoad;
+    filesToLoad.reserve(bmpFiles.size() + pngFiles.size());
+
+    for (auto it = bmpFiles.begin(); it != bmpFiles.end(); ++it)
+        filesToLoad.push_back((*it).pathName());
+
+    for (auto it = pngFiles.begin(); it != pngFiles.end(); ++it)
+    {
+        std::string stem = filenameStem((*it).pathName().filename());
+        std::transform(stem.begin(), stem.end(), stem.begin(), ::tolower);
+        if (bmpStems.find(stem) == bmpStems.end())
+            filesToLoad.push_back((*it).pathName());
+    }
+
+    textures_.reserve(filesToLoad.size());
 
     size_t filesRead = 0;
-    size_t numFiles = files.size();
+    size_t numFiles = filesToLoad.size();
     size_t reportWhenFilesRead = 1;
 
-    for (ctl_vector<SysFileData>::const_iterator it = files.begin(); it != files.end(); ++it)
+    for (auto it = filesToLoad.begin(); it != filesToLoad.end(); ++it)
     {
         if (pReporter)
         {
@@ -116,14 +160,11 @@ void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pR
             }
         }
 
-        const SysPathName& fileName = (*it).pathName();
-        // Check if the file has a _ba.bmp or _bc.bmp termination,
-        // in which only load if
-        // we are considering a color or a transparancy bitmap, do not load
-        // RenSurfBody::read will sort out which bitmap effectively needs to be loaded
+        const SysPathName& fileName = *it;
+        // Check if the file has alpha or colour map naming convention —
+        // RenITexBody::read will sort out which bitmap effectively needs to be loaded
         if (! isAlphaMap(fileName) && ! isColourMap(fileName))
         {
-
             TEXSET_STREAM(" (" << textures_.size() << ") preloading texture " << fileName.pathname() << std::endl);
             // load a texture and save the texture handle in textures_
             // Note: This call does not make use of the directory search
@@ -134,7 +175,7 @@ void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pR
         }
     }
 
-    TEXSET_STREAM("Loaded " << textures_.size() << " bitmaps files" << std::endl);
+    TEXSET_STREAM("Loaded " << textures_.size() << " texture files" << std::endl);
     isLoaded_ = true;
 
     TEXSET_STREAM(RenSurfaceManager::instance());
