@@ -204,6 +204,7 @@ private:
     ENetSocket lanDiscoveryClientSocket_{ENET_SOCKET_NULL};
     ENetAddress address_{};
     ENetHost* pHost_{};
+    uint32_t remoteVersion_{};
 
     bool deterministicPingDropoutAllowed_{};
 
