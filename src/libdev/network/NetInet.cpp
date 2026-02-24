@@ -32,7 +32,7 @@
 #define INITGUID
 
 static constexpr char DiscoveryMagic[4] = { 'W', 'F', 'W', '0' };
-static constexpr uint32_t DiscoveryVersion = 1;
+static constexpr uint32_t DiscoveryVersion = 2;
 static constexpr uint16_t GamePort = 1234;
 // Port 30583 means Wired for War
 static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
@@ -1234,7 +1234,7 @@ void NetINetwork::acceptLocalServersReplies()
         return;
     }
 
-    std::string address = makeAddress(buf, reply.port);
+    std::string address = makeAddress(buf, System::fromBigEndian(reply.port));
     const auto session = std::find_if(sessions_.begin(), sessions_.end(), [&address](const NetSessionInfo& info) {
         return info.address == address;
     });
@@ -1335,7 +1335,7 @@ void NetINetwork::replyToServerDiscoveryRequests()
     SDL_memcpy(reply.magic, DiscoveryMagic, sizeof(DiscoveryMagic));
     reply.version = System::toBigEndian(DiscoveryVersion);
     gameName_.copy(reply.serverName, sizeof(reply.serverName) - 1);
-    reply.port = pHost_->address.port;
+    reply.port = System::toBigEndian(pHost_->address.port);
 
     ENetBuffer sendbuf;
     sendbuf.data = &reply;
