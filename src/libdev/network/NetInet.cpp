@@ -64,6 +64,7 @@ struct InitPacket
 };
 #pragma pack(pop)
 
+
 NetINetwork::~NetINetwork()
 {
     NETWORK_STREAM("NetINetwork::~NetINetwork " << static_cast<const void*>(this) << std::endl);
@@ -357,6 +358,23 @@ void NetINetwork::pollMessages()
                         }
                         const auto& init = *reinterpret_cast<const InitPacket*>(event.packet->data);
                         const uint32_t remoteVersion = System::fromBigEndian(init.version);
+
+                        // Server: reject clients with incompatible version
+                        if (isLogicalHost_ && remoteVersion != machinesVersionNumber())
+                        {
+                            spdlog::info(
+                                "NetINetwork: Rejecting client: version mismatch (server={}, client={})",
+                                versionNumberToString(machinesVersionNumber()),
+                                versionNumberToString(remoteVersion));
+                            peers_.erase(
+                                std::remove(peers_.begin(), peers_.end(), event.peer),
+                                peers_.end());
+                            enet_peer_disconnect(
+                                event.peer,
+                                machinesVersionNumber());
+                            enet_packet_destroy(event.packet);
+                            break;
+                        }
 
                         // Store the player name
                         size_t nameLen = strnlen(init.playerName, sizeof(init.playerName));
