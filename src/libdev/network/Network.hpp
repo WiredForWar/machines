@@ -7,9 +7,10 @@
 #include "network/Message.hpp"
 #include "network/NetSessionInfo.hpp"
 
-#include <vector>
+#include <cstdint>
 #include <memory>
 #include <string>
+#include <vector>
 
 class NetNode;
 class NetNodeUid;
@@ -38,6 +39,7 @@ public:
         NETNET_MEMORYERROR,
         NETNET_SESSIONERROR,
         NETNET_NODEERROR,
+        NETNET_VERSIONMISMATCH,
     };
 
     enum class NetworkProtocol
@@ -115,6 +117,9 @@ public:
     void instantiateLobby();
 
     NetworkProtocol currentProtocol() const;
+
+    // Version number reported by the remote peer (server) during init handshake
+    uint32_t remoteVersionNumber() const;
 
     // Ip addresses may be in the form of numerical IP addresses or domain net
     const std::string& IPAddress() const;
