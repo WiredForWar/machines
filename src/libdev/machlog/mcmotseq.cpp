@@ -2080,9 +2080,36 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             }
         }
 
+        // Prefer going around the obstacle over forcing it to move.
+        // tryMoveSideways is cheaper and less disruptive than moveOutOfWay.
         if (! done)
         {
-            // See if the obstructing object is a machine
+            LOG_STREAM("Trying an avoidance move before moveOutOfWay" << std::endl);
+
+            nChunksReserved = tryMoveSideways();
+
+            if (nChunksReserved > 0)
+            {
+                pImpl_->movedOffPath_ = true;
+                motionInitiated = true;
+                done = true;
+            }
+        }
+
+        //  If we're being blocked by a machine that has the same
+        //  command id as we do don't try and force it out of the way
+        if (! done)
+        {
+            if (objectHasSameCommandId(collisionObjectId))
+            {
+                LOG_STREAM("Obstructing obstacle has same command id" << std::endl);
+                done = true;
+            }
+        }
+
+        // Last resort: ask the blocking machine to move out of the way
+        if (! done)
+        {
             MachLogRaces& races = MachLogRaces::instance();
             UtlId actorId = collisionObjectId.asScalar();
 
@@ -2117,32 +2144,6 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                     if (interval > 0)
                         done = true;
                 }
-            }
-        }
-
-        if (! done)
-        {
-            //  If we're being blocked by a machine that has the same
-            //  command id as we do don't try and move out of the way
-            if (objectHasSameCommandId(collisionObjectId))
-            {
-                LOG_STREAM("Obstructing obstacle has same command id" << std::endl);
-                done = true;
-            }
-        }
-
-        if (! done)
-        {
-            // Try an avoidance move
-
-            LOG_STREAM("Trying an avoidance move" << std::endl);
-
-            nChunksReserved = tryMoveSideways();
-
-            if (nChunksReserved > 0)
-            {
-                pImpl_->movedOffPath_ = true;
-                motionInitiated = true;
             }
         }
     }
