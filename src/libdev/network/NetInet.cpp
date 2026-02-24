@@ -23,6 +23,8 @@
 #include "system/Endian.hpp"
 #include "system/Registry.hpp"
 
+#include "MachinesVersion.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <memory>
@@ -51,6 +53,14 @@ struct ClientRequest
     char magic[sizeof(DiscoveryMagic)]{};
     uint32_t version{};
     char message[16]{};
+};
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+struct InitPacket
+{
+    uint32_t version{};
+    char playerName[128]{};
 };
 #pragma pack(pop)
 
@@ -336,18 +346,28 @@ void NetINetwork::pollMessages()
 
                 case ENET_EVENT_TYPE_RECEIVE:
                     NETWORK_STREAM("Got message from : " << event.peer->address.host << std::endl);
-                    // First packet is an peer name
+                    // First packet is a versioned init packet
                     if (!event.peer->data)
                     {
-                        static constexpr size_t MaxPlayerNameLen = 128;
-                        size_t nameLen = strnlen(
-                            (const char*)event.packet->data,
-                            std::min((size_t)event.packet->dataLength, MaxPlayerNameLen));
+                        if (event.packet->dataLength < sizeof(InitPacket))
+                        {
+                            spdlog::debug("NetINetwork: Init packet too small ({} bytes)", event.packet->dataLength);
+                            enet_packet_destroy(event.packet);
+                            break;
+                        }
+                        const auto& init = *reinterpret_cast<const InitPacket*>(event.packet->data);
+                        const uint32_t remoteVersion = System::fromBigEndian(init.version);
+
+                        // Store the player name
+                        size_t nameLen = strnlen(init.playerName, sizeof(init.playerName));
                         char* data = _NEW_ARRAY(char, nameLen + 1);
-                        memcpy(data, event.packet->data, nameLen);
+                        memcpy(data, init.playerName, nameLen);
                         data[nameLen] = '\0';
                         event.peer->data = data;
-                        NETWORK_STREAM("This is intruduction from: " << data << std::endl);
+                        spdlog::info(
+                            "NetINetwork: Introduction from '{}', version {}",
+                            data,
+                            versionNumberToString(remoteVersion));
                     }
                     else
                     {
@@ -475,13 +495,11 @@ NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
         return nullptr;
     }
 
-    // Introduce yourself - send a name packet
+    // Wait for connection
     ENetEvent event;
     if (enet_host_service(pHost_, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
     {
         NETWORK_STREAM("Joining session succeeded.\n");
-        // peers_.push_back(pPeer);
-
         sendInitPacket(pPeer);
     }
     else
@@ -491,6 +509,28 @@ NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
         currentStatus(NetNetwork::NETNET_SESSIONERROR);
         return nullptr;
     }
+
+    // Wait for server's init packet containing version and name
+    if (enet_host_service(pHost_, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_RECEIVE)
+    {
+        if (event.packet->dataLength >= sizeof(InitPacket))
+        {
+            const auto& init = *reinterpret_cast<const InitPacket*>(event.packet->data);
+            remoteVersion_ = System::fromBigEndian(init.version);
+
+            size_t nameLen = strnlen(init.playerName, sizeof(init.playerName));
+            char* data = _NEW_ARRAY(char, nameLen + 1);
+            memcpy(data, init.playerName, nameLen);
+            data[nameLen] = '\0';
+            event.peer->data = data;
+            spdlog::info(
+                "NetINetwork: Server '{}', version {}",
+                data,
+                versionNumberToString(remoteVersion_));
+        }
+        enet_packet_destroy(event.packet);
+    }
+
     return nullptr;
 }
 
@@ -1149,8 +1189,10 @@ bool NetINetwork::pingAllAllowed() const
 
 void NetINetwork::sendInitPacket(ENetPeer* pPeer)
 {
-    ENetPacket* packet
-        = enet_packet_create(localPlayerName_.c_str(), localPlayerName_.length() + 1, ENET_PACKET_FLAG_RELIABLE);
+    InitPacket init;
+    init.version = System::toBigEndian(machinesVersionNumber());
+    localPlayerName_.copy(init.playerName, sizeof(init.playerName) - 1);
+    ENetPacket* packet = enet_packet_create(&init, sizeof(init), ENET_PACKET_FLAG_RELIABLE);
     enet_peer_send(pPeer, 0, packet);
 }
 
