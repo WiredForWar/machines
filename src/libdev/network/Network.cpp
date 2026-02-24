@@ -252,6 +252,11 @@ NetNetwork::NetworkProtocol NetNetwork::currentProtocol() const
     return pNetINetwork_->currentProtocol();
 }
 
+uint32_t NetNetwork::remoteVersionNumber() const
+{
+    return pNetINetwork_->remoteVersion_;
+}
+
 const std::string& NetNetwork::IPAddress() const
 {
     return pNetINetwork_->IPAddress();
