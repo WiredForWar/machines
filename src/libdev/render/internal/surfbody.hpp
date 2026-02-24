@@ -51,6 +51,8 @@ public:
 
     // This is a concrete base class.  The only intended derived class is RenITexBody.
     virtual bool read(const std::string& name);
+    // Load from filePath on disk but store logicalName for sharing/lookup purposes.
+    virtual bool read(const std::string& filePath, const std::string& logicalName);
     virtual RenITexBody* castToTexBody();
     virtual const RenITexBody* castToTexBody() const;
     virtual void print(std::ostream&) const;

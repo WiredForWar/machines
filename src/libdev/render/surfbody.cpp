@@ -144,18 +144,24 @@ RenISurfBody::~RenISurfBody()
 // virtual
 bool RenISurfBody::read(const std::string& bitmapName)
 {
-    PRE(bitmapName.length() > 0);
-    //  PRE(pixelFormat_.isValid());    // Use the ctor which initialises the format.
+    return read(bitmapName, bitmapName);
+}
+
+// virtual
+bool RenISurfBody::read(const std::string& filePath, const std::string& logicalName)
+{
+    PRE(filePath.length() > 0);
+    PRE(logicalName.length() > 0);
 
     bool retval = false;
-    SDL_Surface* surface = readFromFile(bitmapName.c_str());
+    SDL_Surface* surface = readFromFile(filePath.c_str());
     if (!surface)
         return false;
 
     if (allocateDDSurfaces(surface->w, surface->h, SYSTEM))
         retval = copyWithColourKeyEmulation(surface, RenColour::magenta());
 
-    name(bitmapName);
+    name(logicalName);
     SDL_FreeSurface(surface);
 
     return retval;

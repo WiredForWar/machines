@@ -25,6 +25,7 @@ public:
     // pixel format for a texture.  It also handles alpha maps and recognises
     // naming conventions for colour-keying, alpha and bilinear blending.
     bool read(const std::string& name) override;
+    bool read(const std::string& filePath, const std::string& logicalName) override;
     RenITexBody* castToTexBody() override;
     const RenITexBody* castToTexBody() const override;
     void print(std::ostream&) const override;
