@@ -3240,10 +3240,20 @@ void MachLogMachineMotionSequencer::advancePathProgress()
         // Clear this path
         clearPath();
 
-        // Check for having arrived at portal points, if any
+        // Check for having arrived at portal points, if any.
+        //
+        // A portal is considered crossed if:
+        //  (a) the machine is within 0.25m of the portal line segment, OR
+        //  (b) the machine is within 0.25m of its assigned on-portal waypoint
+        //      (handles group-move offset waypoints placed off the line), OR
+        //  (c) the machine has passed to the destination side of the portal line
+        //      (handles adjacent portals that are physically crossed in one move).
+        //
+        // The destination-side test uses the cross product of the portal
+        // direction with the vector from the portal start to the point.
+        // If the sign matches the destination, the point is on the same side.
         while (nPortalPointsDone_ < domainPath_.size())
         {
-            // Check for being within 1 metre of the portal line
             const PortalPoint& portalPoint = domainPath_[nPortalPointsDone_];
             PhysConfigSpace2d::PortalId portalId = portalPoint.first;
 
@@ -3252,18 +3262,35 @@ void MachLogMachineMotionSequencer::advancePathProgress()
             MexPoint2d portalStart(pConfigSpace_->portalPoint(portalId, 0.0));
             MexPoint2d portalEnd(pConfigSpace_->portalPoint(portalId, portalLength));
 
-            // Get square of distance from the portal
+            // Get square of distance from the portal line segment
             MATHEX_SCALAR sqrDistanceFromPortal
                 = MexLine2d::sqrEuclidianDistance(portalStart, portalEnd, portalLength, nowPoint);
 
-            // If within 0.25 metres, treat as arrived
-            if (sqrDistanceFromPortal < 0.0625)
+            // Check if machine has passed to the destination side of the portal.
+            // Cross product of portal direction with (portalStart -> point) gives
+            // the signed side.  Same sign as destination means same side means crossed.
+            MATHEX_SCALAR dx = portalEnd.x() - portalStart.x();
+            MATHEX_SCALAR dy = portalEnd.y() - portalStart.y();
+            MATHEX_SCALAR crossNow  = dx * (nowPoint.y() - portalStart.y())
+                                    - dy * (nowPoint.x() - portalStart.x());
+            MATHEX_SCALAR crossDest = dx * (destinationPoint_.y() - portalStart.y())
+                                    - dy * (destinationPoint_.x() - portalStart.x());
+            bool pastPortal = (crossNow * crossDest > 0)
+                && sqrDistanceFromPortal > 0.0625;
+
+            bool nearLine = sqrDistanceFromPortal < 0.0625;
+            bool nearWaypoint = pImpl_->hasOnPortalPoint_
+                && onPortalPoint_.sqrEuclidianDistance(nowPoint) < 0.0625;
+
+            if (nearLine || nearWaypoint || pastPortal)
             {
                 ++nPortalPointsDone_;
                 pImpl_->hasOnPortalPoint_ = false;
             }
             else
+            {
                 break;
+            }
         }
     }
 }
