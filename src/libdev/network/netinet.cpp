@@ -621,8 +621,6 @@ void NetINetwork::chooseProtocol(NetNetwork::NetworkProtocol protocol, NetNetwor
                 // return EXIT_FAILURE;
                 return;
             }
-
-            atexit(enet_deinitialize);
         }
         RecRecorder::instance().recordingAllowed(true);
     }
