@@ -2524,14 +2524,15 @@ void MachInGameScreen::updateGameState()
     CB_DEPIMPL(MachInGameScreen::GameState, gameState_);
     CB_DEPIMPL_AUTO(gameStateTimer_);
 
-    if (gameState_ == PLAYING) // Only interested in switching the state if the game has not yet been won/lost
+    // Only interested in switching the state if the game has not yet been won/lost
+    if (MachGuiDatabase::instance().hasCurrentScenario() && (gameState_ == PLAYING))
     {
         MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
         if (MachLogRaces::instance().hasLost(playerRace))
         {
             // Keep host working on until ctrl is pressed TODO: another elegant solution?
             if (MachLogNetwork::instance().isNetworkGame() && MachLogNetwork::instance().isNodeLogicalHost()
-                && ! DevKeyboard::instance().ctrlPressed())
+                && !DevKeyboard::instance().ctrlPressed())
                 return;
             gameState_ = LOST;
             gameStateTimer_ = Phys::time();

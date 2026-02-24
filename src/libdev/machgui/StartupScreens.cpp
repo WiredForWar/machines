@@ -2120,7 +2120,8 @@ void MachGuiStartupScreens::updateCdAudio()
     // either victory or defeat music.
     if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
     {
-        if (! MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+        const MachGuiDatabase& db = MachGuiDatabase::instance();
+        if (db.hasCurrentScenario() && !db.currentScenario().isTrainingScenario())
         {
             if (pInGameScreen_->actualGameState() == MachInGameScreen::WON)
             {

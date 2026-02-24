@@ -92,6 +92,9 @@ bool MachGuiDatabaseHandler::isFlagSet(const std::string& flag, const std::strin
 // virtual
 uint MachGuiDatabaseHandler::nTasksInCurrentScenario() const
 {
+    if (!MachGuiDatabase::instance().hasCurrentScenario())
+        return 0;
+
     return MachGuiDatabase::instance().currentScenario().textData().nTasks();
 }
 
