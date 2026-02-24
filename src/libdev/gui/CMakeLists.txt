@@ -1,5 +1,7 @@
 
 set(GUI_SOURCES
+    Clipboard.cpp
+    Clipboard.hpp
     ResolvedUiString.cpp
     ResolvedUiString.hpp
     StringId.hpp
