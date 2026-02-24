@@ -339,8 +339,13 @@ void NetINetwork::pollMessages()
                     // First packet is an peer name
                     if (!event.peer->data)
                     {
-                        char* data = _NEW_ARRAY(char, strlen((char*)event.packet->data) + 1);
-                        strcpy(data, (char*)event.packet->data);
+                        static constexpr size_t MaxPlayerNameLen = 128;
+                        size_t nameLen = strnlen(
+                            (const char*)event.packet->data,
+                            std::min((size_t)event.packet->dataLength, MaxPlayerNameLen));
+                        char* data = _NEW_ARRAY(char, nameLen + 1);
+                        memcpy(data, event.packet->data, nameLen);
+                        data[nameLen] = '\0';
                         event.peer->data = data;
                         NETWORK_STREAM("This is intruduction from: " << data << std::endl);
                     }
