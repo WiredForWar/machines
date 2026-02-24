@@ -311,8 +311,11 @@ bool MachLogNetwork::joinSession(const std::string& address, const std::string& 
     NetNetwork::instance().joinAppSession(address);
 
     NetNetwork::instance().setLocalPlayerName(playerName);
-    isNetworkGame_ = true;
-    return true;
+    if (NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
+    {
+        isNetworkGame_ = true;
+    }
+    return isNetworkGame_;
 }
 
 void MachLogNetwork::resetSession()
