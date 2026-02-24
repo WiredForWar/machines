@@ -37,6 +37,7 @@ static constexpr uint16_t GamePort = 1234;
 // Port 30583 means Wired for War
 static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
 
+#pragma pack(push, 1)
 struct ServerReply
 {
     char magic[sizeof(DiscoveryMagic)]{};
@@ -51,6 +52,7 @@ struct ClientRequest
     uint32_t version{};
     char message[16]{};
 };
+#pragma pack(pop)
 
 NetINetwork::~NetINetwork()
 {
