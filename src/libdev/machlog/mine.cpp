@@ -32,6 +32,8 @@
 #include "machlog/vmdata.hpp"
 #include "machlog/vmman.hpp"
 
+#include <optional>
+
 #ifndef _INLINE
 #include "machlog/mine.ipp"
 #endif
@@ -462,14 +464,12 @@ bool MachLogMine::assignToNearestMineralSite()
 {
     HAL_STREAM("(" << id() << ") MachLogMine::assignToNearestMineralSite\n");
     HAL_INDENT(2);
-    bool found = false;
     pSite_ = nullptr;
 
     MATHEX_SCALAR maxMineralDistance = sqrMaxMineralDistance(level());
     HAL_STREAM("maxMineralDistance " << maxMineralDistance << std::endl);
 
-    MATHEX_SCALAR closestSiteDistance = 999999999;
-    MATHEX_SCALAR testDistance = 0;
+    std::optional<MATHEX_SCALAR> closestSiteDistance;
 
     for (MachLogPlanet::Sites::const_iterator i = MachLogPlanet::instance().sites().begin();
          i != MachLogPlanet::instance().sites().end();
@@ -479,55 +479,53 @@ bool MachLogMine::assignToNearestMineralSite()
         HAL_STREAM(
             "checking against mineral site " << pTestSite->position() << " position.sqrEuclid "
                                              << position().sqrEuclidianDistance(pTestSite->position()) << " ");
-        HAL_STREAM("closestSiteDistance " << closestSiteDistance << std::endl);
+        HAL_STREAM("closestSiteDistance " << closestSiteDistance.value_or(-1) << std::endl);
+        const MATHEX_SCALAR testDistance = position().sqrEuclidianDistance(pTestSite->position());
         if (pTestSite->hasBeenDiscovered() && pTestSite->amountOfOre() > 0
-            && (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
+            && (!closestSiteDistance || testDistance < *closestSiteDistance)
             && testDistance < maxMineralDistance)
         {
             HAL_STREAM("this one is ok so setting\n");
             closestSiteDistance = testDistance;
             pSite_ = pTestSite;
-            found = true;
             break;
         }
     }
 
     HAL_INDENT(-2);
     HAL_STREAM("(" << id() << ") MachLogMine::assignToNearestMineralSite\n");
-    return found;
+    return pSite_ != nullptr;
 }
 
 bool MachLogMine::discoverAndAssignToNearestMineralSite(MachLogRace* pRace)
 {
-    bool found = false;
     pSite_ = nullptr;
 
     MATHEX_SCALAR maxMineralDistance = sqrMaxMineralDistance(level());
 
-    MATHEX_SCALAR closestSiteDistance = 999999999;
-    MATHEX_SCALAR testDistance = 0;
+    std::optional<MATHEX_SCALAR> closestSiteDistance;
 
     for (MachLogPlanet::Sites::const_iterator i = MachLogPlanet::instance().sites().begin();
          i != MachLogPlanet::instance().sites().end();
          ++i)
     {
         MachLogMineralSite* pTestSite = *i;
+        const MATHEX_SCALAR testDistance = position().sqrEuclidianDistance(pTestSite->position());
         if (pTestSite->amountOfOre() > 0
-            && (testDistance = position().sqrEuclidianDistance(pTestSite->position())) < closestSiteDistance
+            && (!closestSiteDistance || testDistance < *closestSiteDistance)
             && testDistance < maxMineralDistance)
         {
             closestSiteDistance = testDistance;
             pSite_ = pTestSite;
-            found = true;
             break;
         }
     }
 
-    if (found)
+    if (pSite_)
         if (! pSite_->hasBeenDiscovered())
             pSite_->beDiscoveredBy(pRace->race());
 
-    return found;
+    return pSite_ != nullptr;
 }
 
 void MachLogMine::mineralSiteIsExhausted()
