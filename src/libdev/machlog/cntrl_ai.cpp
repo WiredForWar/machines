@@ -475,14 +475,22 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
             case HARDWARE:
                 {
                     // find the closest hardware lab that has free stations.
-                    MATHEX_SCALAR sqrRange = 1000000000;
+                    const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+                    const MATHEX_SCALAR clearance = obj->highClearence();
+                    const PhysConfigSpace2d::ObstacleFlags obsFlags = obj->obstacleFlags();
+                    const MexPoint2d objPos(obj->position());
+
+                    std::optional<MATHEX_SCALAR> bestDistance;
                     MachLogRaces::HardwareLabs::iterator j = races.hardwareLabs(myRace).begin();
                     for (MachLogRaces::HardwareLabs::iterator i = races.hardwareLabs(myRace).begin();
                          i != races.hardwareLabs(myRace).end();
                          ++i)
                     {
                         MachLogHardwareLab* pCandidateLab = (*i);
-                        if (obj->position().sqrEuclidianDistance(pCandidateLab->position()) < sqrRange
+                        const MexPoint2d labPos(pCandidateLab->position());
+                        auto dist = configSpace
+                            .domainGraphDistance(objPos, labPos, clearance, obsFlags);
+                        if (dist && (!bestDistance || *dist < *bestDistance)
                             && pCandidateLab->availableResearchItems().size() > 0)
                         {
                             MachPhysStation* pStation;
@@ -493,7 +501,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                             if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                             {
                                 j = i;
-                                sqrRange = obj->position().sqrEuclidianDistance(pCandidateLab->position());
+                                bestDistance = dist;
                             }
                         }
                     }

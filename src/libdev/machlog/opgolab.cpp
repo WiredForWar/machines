@@ -13,7 +13,10 @@
 #include "machphys/harddata.hpp"
 // #include "machphys/softdata.hpp"
 
+#include "phys/cspace2.hpp"
+
 #include "machlog/opgolab.hpp"
+#include "machlog/planet.hpp"
 #include "machlog/technici.hpp"
 #include "machlog/inout.hpp"
 #include "machlog/races.hpp"
@@ -67,7 +70,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
         return 2.0;
 
     // find the nearest lab with free stations and active research and proceed there...
-    MATHEX_SCALAR sqrRange = 1000000000;
+    std::optional<MATHEX_SCALAR> bestDistance;
     bool found = false;
     if (MachLogRaces::instance().hardwareLabs(pActor_->race()).size() == 0) // and
     //      MachLogRaces::instance().softwareLabs( pActor_->race() ).size() == 0 )
@@ -79,6 +82,11 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
     MachLogConstruction* pCon = nullptr;
     MachPhysStation* pActualStation = nullptr;
 
+    const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+    const MATHEX_SCALAR clearance = pActor_->highClearence();
+    const PhysConfigSpace2d::ObstacleFlags obsFlags = pActor_->obstacleFlags();
+    const MexPoint2d actorPos(pActor_->position());
+
     if (MachLogRaces::instance().hardwareLabs(pActor_->race()).size() > 0)
     {
         MachLogRaces::HardwareLabs::iterator j = MachLogRaces::instance().hardwareLabs(pActor_->race()).begin();
@@ -86,8 +94,11 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
         for (MachLogRaces::HardwareLabs::iterator i = MachLogRaces::instance().hardwareLabs(pActor_->race()).begin();
              i != MachLogRaces::instance().hardwareLabs(pActor_->race()).end();
              ++i)
-            if (pActor_->position().sqrEuclidianDistance((*i)->position()) < sqrRange
-                && (*i)->currentResearchQueue().size())
+        {
+            const MexPoint2d labPos((*i)->position());
+            auto dist = configSpace
+                .domainGraphDistance(actorPos, labPos, clearance, obsFlags);
+            if (dist && (!bestDistance || *dist < *bestDistance) && (*i)->currentResearchQueue().size())
             {
                 MachPhysStation* pStation;
                 // MachPhysConstructionData& conData = _STATIC_CAST( MachPhysConstructionData&, (*i)->constructionData()
@@ -98,11 +109,12 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
                 if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                 {
                     j = i;
-                    sqrRange = pActor_->position().sqrEuclidianDistance((*i)->position());
+                    bestDistance = dist;
                     pActualStation = pStation;
                     found = true;
                 }
             }
+        }
         if (found)
             pCon = *j;
     }
