@@ -432,6 +432,9 @@ NetAppSession* NetINetwork::createAppSession(const std::string& gameName)
     deinitServersDiscoverySocket();
     initHost(true);
 
+    if (pHost_ == nullptr)
+        return nullptr;
+
     gameName_ = gameName;
 
     registerServer();
