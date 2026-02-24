@@ -98,6 +98,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
                 if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                 {
                     j = i;
+                    sqrRange = pActor_->position().sqrEuclidianDistance((*i)->position());
                     pActualStation = pStation;
                     found = true;
                 }
