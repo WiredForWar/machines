@@ -24,6 +24,8 @@
 #include "machphys/rescarr.hpp"
 #include "machphys/random.hpp"
 
+#include "phys/cspace2.hpp"
+
 #include "machlog/cntrl.hpp"
 #include "machlog/debris.hpp"
 #include "machlog/mine.hpp"
@@ -410,8 +412,14 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
 
     MachLogConstruction* bestSmeltingBuilding = nullptr;
 
+    const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+    const MATHEX_SCALAR clearance = highClearence();
+    const PhysConfigSpace2d::ObstacleFlags obsFlags = obstacleFlags();
+
     auto checkSmeltingBuilding
-        = [&bestSmeltingBuilding, &lowestDistanceFound, &suppliers_](MachLogConstruction* candidateBuilding) {
+        = [&bestSmeltingBuilding, &lowestDistanceFound, &suppliers_, &configSpace, clearance, obsFlags,
+           maxAllowedDistance](
+            MachLogConstruction* candidateBuilding) {
         // don't consider smelters that are incomplete or dead
         if (!candidateBuilding->isComplete() || candidateBuilding->isDead())
             return;
@@ -425,8 +433,11 @@ bool MachLogResourceCarrier::findBestSmeltingBuilding()
             // don't bother taking this supplier into account if it's a currently-dormant mine
             if (supplierConstruction->objectType() != MachLog::MINE || supplierConstruction->asMine().worthVisiting())
             {
-                MATHEX_SCALAR smelterDistanceFromThisSupplier
-                    = supplierConstruction->position().euclidianDistance(candidateBuilding->position());
+                const MexPoint2d supplierPos(supplierConstruction->position());
+                const MexPoint2d smelterPos(candidateBuilding->position());
+                MATHEX_SCALAR smelterDistanceFromThisSupplier = configSpace
+                    .domainGraphDistance(supplierPos, smelterPos, clearance, obsFlags)
+                    .value_or(maxAllowedDistance);
 
                 totalDistance += smelterDistanceFromThisSupplier;
                 if (smelterDistanceFromThisSupplier < maxAllowedDistance)
@@ -490,6 +501,10 @@ void MachLogResourceCarrier::reorderTransportRoute()
     // quite possibly be full up long before it finished its route, and nearest-first will outperform optimal TSP
     // in most of these cases
 
+    const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+    const MATHEX_SCALAR clearance = highClearence();
+    const PhysConfigSpace2d::ObstacleFlags obsFlags = obstacleFlags();
+
     Suppliers reorderedSuppliers;
 
     int nSuppliers = suppliers_.size();
@@ -506,19 +521,20 @@ void MachLogResourceCarrier::reorderTransportRoute()
 
     while (reorderedSuppliers.size() < nSuppliers)
     {
-        MATHEX_SCALAR lowestDistanceFound = 100000000;
+        std::optional<MATHEX_SCALAR> lowestDistanceFound;
 
         Suppliers::iterator iNextClosestSupplier = suppliers_.end();
 
         for (Suppliers::iterator iSup = suppliers_.begin(); iSup != suppliers_.end(); ++iSup)
         {
-            MATHEX_SCALAR sqrDistanceFromCurrentCheckPosition
-                = currentCheckPosition.sqrEuclidianDistance((*iSup)->position());
+            const MexPoint2d supPos((*iSup)->position());
+            auto dist = configSpace
+                    .domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
 
-            if (sqrDistanceFromCurrentCheckPosition < lowestDistanceFound)
+            if (dist && (!lowestDistanceFound || *dist < *lowestDistanceFound))
             {
                 iNextClosestSupplier = iSup;
-                lowestDistanceFound = sqrDistanceFromCurrentCheckPosition;
+                lowestDistanceFound = dist;
             }
         }
 
@@ -754,6 +770,10 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
     {
         // must be a normal transporter....try to assign a transport task.
 
+        const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+        const MATHEX_SCALAR clearance = obj->highClearence();
+        const PhysConfigSpace2d::ObstacleFlags obsFlags = obj->obstacleFlags();
+
         const MachPhys::Race race = obj->race();
         MachLogRaces::Mines& mines = races.mines(race);
         MachLogRaces::Smelters& smelters = races.smelters(race);
@@ -797,7 +817,8 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                     // as the first of your chosen group (this ensures carriers placed in specific locations at the
                     // start of a scenario will always choose the nearest mine.....for a while)
 
-                    iFirst = MachLogResourceCarrierImpl::iNearestSupplier(poolOfWorthwhileMines, obj->position());
+                    iFirst = MachLogResourceCarrierImpl::iNearestSupplier(
+                        poolOfWorthwhileMines, obj->position(), configSpace, clearance, obsFlags);
                 }
                 else
                 {
@@ -821,20 +842,21 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
 
                 while (approvedItineraryList.size() < nMinesToVisit)
                 {
-                    MATHEX_SCALAR lowestDistanceFound = 100000000;
+                    std::optional<MATHEX_SCALAR> lowestDistanceFound;
 
                     Suppliers::iterator iNextClosestSupplier = poolOfWorthwhileMines.end();
 
                     for (Suppliers::iterator iSup = poolOfWorthwhileMines.begin(); iSup != poolOfWorthwhileMines.end();
                          ++iSup)
                     {
-                        MATHEX_SCALAR sqrDistanceFromCurrentCheckPosition
-                            = currentCheckPosition.sqrEuclidianDistance((*iSup)->position());
+                        const MexPoint2d supPos((*iSup)->position());
+                        auto dist = configSpace
+                            .domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
 
-                        if (sqrDistanceFromCurrentCheckPosition < lowestDistanceFound)
+                        if (dist && (!lowestDistanceFound || *dist < *lowestDistanceFound))
                         {
                             iNextClosestSupplier = iSup;
-                            lowestDistanceFound = sqrDistanceFromCurrentCheckPosition;
+                            lowestDistanceFound = dist;
                         }
                     }
 
@@ -873,31 +895,30 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                 // Nope..find a mine with some ore and go and get it.
                 if (nMyTotalMines > 0)
                 {
-                    MATHEX_SCALAR closestPointDistance = 1000000000;
-                    MATHEX_SCALAR testPointDistance;
+                    std::optional<MATHEX_SCALAR> closestPointDistance;
 
                     Suppliers poolOfWorthwhileMines;
                     MachLogMine* pNearestMine = nullptr;
-                    bool found = false;
 
+                    const MexPoint2d objPos(obj->position());
                     for (MachLogRaces::Mines::const_iterator i = mines.begin(); i != mines.end(); ++i)
                     {
                         MachLogMine* pCandidateMine = (*i);
 
                         if (pCandidateMine->worthVisiting())
                         {
-                            testPointDistance = obj->position().sqrEuclidianDistance(pCandidateMine->position())
-                                < closestPointDistance;
-                            if (testPointDistance < closestPointDistance)
+                            const MexPoint2d minePos(pCandidateMine->position());
+                            auto dist = configSpace
+                                .domainGraphDistance(objPos, minePos, clearance, obsFlags);
+                            if (dist && (!closestPointDistance || *dist < *closestPointDistance))
                             {
-                                closestPointDistance = testPointDistance;
+                                closestPointDistance = dist;
                                 pNearestMine = pCandidateMine;
-                                found = true;
                             }
                         }
                     }
 
-                    if (found)
+                    if (pNearestMine)
                     {
                         poolOfWorthwhileMines.push_back(pNearestMine);
                         obj->setSuppliers(poolOfWorthwhileMines);

@@ -22,6 +22,7 @@
 #include "mathex/point2d.hpp"
 
 class MachLogSmelter;
+class PhysConfigSpace2d;
 
 class MachLogResourceCarrierImpl
 // Canonical form revoked
@@ -37,7 +38,12 @@ public:
     PER_FRIEND_READ_WRITE(MachLogResourceCarrierImpl);
 
     // returns nearest supplier from listOfCandidateSuppliers to position
-    static Suppliers::iterator iNearestSupplier(Suppliers& listOfCandidateSuppliers, const MexPoint2d& position);
+    static Suppliers::iterator iNearestSupplier(
+        Suppliers& listOfCandidateSuppliers,
+        const MexPoint2d& position,
+        const PhysConfigSpace2d& configSpace,
+        MATHEX_SCALAR clearance,
+        uint32 obstacleFlags);
     // PRE( not listOfCandidateSuppliers.empty() );
     // POST( iNearestSupplierFound != listOfCandidateSuppliers.end() );
 

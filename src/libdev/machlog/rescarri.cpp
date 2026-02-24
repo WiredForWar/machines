@@ -9,6 +9,8 @@
 
 #include "mathex/point3d.hpp"
 
+#include "phys/cspace2.hpp"
+
 #include "machlog/smelter.hpp"
 #include "machlog/mine.hpp"
 
@@ -78,22 +80,28 @@ void perRead(PerIstream& istr, MachLogResourceCarrierImpl& actorImpl)
 
 // static
 MachLogResourceCarrierImpl::Suppliers::iterator
-MachLogResourceCarrierImpl::iNearestSupplier(Suppliers& listOfCandidateSuppliers, const MexPoint2d& position)
+MachLogResourceCarrierImpl::iNearestSupplier(
+    Suppliers& listOfCandidateSuppliers,
+    const MexPoint2d& position,
+    const PhysConfigSpace2d& configSpace,
+    MATHEX_SCALAR clearance,
+    uint32 obstacleFlags)
 {
     PRE(! listOfCandidateSuppliers.empty());
 
-    MATHEX_SCALAR lowestDistanceFound = 100000000;
+    std::optional<MATHEX_SCALAR> lowestDistanceFound;
 
     Suppliers::iterator iNearestSupplierFound = listOfCandidateSuppliers.end(); // default assignment
 
     for (Suppliers::iterator iSup = listOfCandidateSuppliers.begin(); iSup != listOfCandidateSuppliers.end(); ++iSup)
     {
-        MATHEX_SCALAR sqrDistanceFromposition = position.sqrEuclidianDistance((*iSup)->position());
+        const MexPoint2d supPos((*iSup)->position());
+        std::optional<MATHEX_SCALAR> dist = configSpace.domainGraphDistance(position, supPos, clearance, obstacleFlags);
 
-        if (sqrDistanceFromposition < lowestDistanceFound)
+        if (dist && (!lowestDistanceFound || *dist < *lowestDistanceFound))
         {
             iNearestSupplierFound = iSup;
-            lowestDistanceFound = sqrDistanceFromposition;
+            lowestDistanceFound = dist;
         }
     }
 
