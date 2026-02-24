@@ -1094,27 +1094,33 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
             MATHEX_SCALAR sqrScavengingRange = sqr(scavengingRange);
             // let's take a shoofty about and see if there's any debris in range to go and pick up.
 
-            MATHEX_SCALAR sqrClosestFoundSoFar = 99999999;
+            const PhysConfigSpace2d& configSpace = MachLogPlanet::instance().configSpace();
+            const MATHEX_SCALAR myClearance = highClearence();
+            const PhysConfigSpace2d::ObstacleFlags obsFlags = obstacleFlags();
+            const MexPoint2d myPos(position());
+
+            std::optional<MATHEX_SCALAR> closestFoundSoFar;
             MachLogDebris* pChosenDebris = nullptr;
             const MachLogPlanet::DebrisSites& sites = MachLogPlanet::instance().debrisSites();
-
-            bool found = false;
 
             for (MachLogPlanet::DebrisSites::const_iterator i = sites.begin(); i != sites.end(); ++i)
             {
                 MachLogDebris* pCandidateDebris = (*i);
                 MexPoint2d candidateDebrisPosition = pCandidateDebris->position();
-                MATHEX_SCALAR sqrDistanceToCandidate = position().sqrEuclidianDistance(candidateDebrisPosition);
-                if (sqrDistanceToCandidate < sqrScavengingRange && sqrDistanceToCandidate < sqrClosestFoundSoFar
+                // Euclidean pre-filter: skip debris that's definitely out of range
+                if (myPos.sqrEuclidianDistance(candidateDebrisPosition) >= sqrScavengingRange)
+                    continue;
+                auto dist = configSpace
+                    .domainGraphDistance(myPos, candidateDebrisPosition, myClearance, obsFlags);
+                if (dist && (!closestFoundSoFar || *dist < *closestFoundSoFar)
                     && MachLogSpacialManipulation::pointIsFree(candidateDebrisPosition, 2.0))
                 {
-                    sqrClosestFoundSoFar = sqrDistanceToCandidate;
+                    closestFoundSoFar = dist;
                     pChosenDebris = pCandidateDebris;
-                    found = true;
                 }
             }
 
-            if (found && ! strategy().isUninterruptable())
+            if (pChosenDebris && ! strategy().isUninterruptable())
             {
                 // let's go and scavenge the fella!
                 strategy().changeToScavengeMode(pChosenDebris);
