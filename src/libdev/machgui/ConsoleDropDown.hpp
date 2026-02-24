@@ -46,6 +46,7 @@ private:
     void setInputText(const std::string& text);
     void navigateHistory(int direction);
     void handleTabCompletion();
+    void handlePaste();
 
     MachGuiSingleLineEditBox* inputBox() const;
     void doLayout();

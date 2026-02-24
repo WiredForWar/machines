@@ -8,6 +8,8 @@
 #include "system/IConsole.hpp"
 #include "utility/String.hpp"
 
+#include "gui/Clipboard.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <string>
@@ -169,7 +171,11 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
     {
         lastTabWasComplete_ = false;
 
-        if (event.key() == Device::KeyCode::ENTER)
+        if (event.isCtrlPressed() && event.key() == Device::KeyCode::KEY_V)
+        {
+            handlePaste();
+        }
+        else if (event.key() == Device::KeyCode::ENTER)
         {
             submit();
         }
@@ -300,6 +306,77 @@ void MachGuiConsoleDropDown::handleTabCompletion()
     }
 
     lastTabWasComplete_ = true;
+}
+
+void MachGuiConsoleDropDown::handlePaste()
+{
+    const std::string clipboard = GuiClipboard::instance().getText();
+    if (clipboard.empty())
+        return;
+
+    constexpr std::size_t maxLines = 16;
+    constexpr std::size_t maxCharsPerLine = 255;
+
+    // Split into lines, handling \r\n, \r, and \n
+    std::vector<std::string> lines;
+    std::string current;
+    for (std::size_t i = 0; i < clipboard.size() && lines.size() < maxLines; ++i)
+    {
+        const char c = clipboard[i];
+        if (c == '\r')
+        {
+            // \r\n counts as one line break
+            if (i + 1 < clipboard.size() && clipboard[i + 1] == '\n')
+                ++i;
+            lines.push_back(std::move(current));
+            current.clear();
+        }
+        else if (c == '\n')
+        {
+            lines.push_back(std::move(current));
+            current.clear();
+        }
+        else
+        {
+            current += c;
+        }
+    }
+
+    // If the clipboard text didn't end with a newline, keep the remainder as a partial line
+    // (it won't be submitted automatically)
+    if (lines.size() >= maxLines)
+    {
+        current.clear();
+    }
+
+    // First line: append to whatever is already in the input box
+    if (!lines.empty())
+    {
+        std::string firstLine = inputText() + lines[0];
+        if (firstLine.size() > maxCharsPerLine)
+            firstLine.resize(maxCharsPerLine);
+        setInputText(firstLine);
+        submit();
+
+        // Remaining complete lines
+        for (std::size_t i = 1; i < lines.size(); ++i)
+        {
+            std::string line = lines[i];
+            if (line.size() > maxCharsPerLine)
+                line.resize(maxCharsPerLine);
+            setInputText(line);
+            submit();
+        }
+    }
+
+    // Insert any trailing text (no newline at end) into the input box
+    if (!current.empty())
+    {
+        std::string partial = inputText() + current;
+        if (partial.size() > maxCharsPerLine)
+            partial.resize(maxCharsPerLine);
+        setInputText(partial);
+    }
 }
 
 void MachGuiConsoleDropDown::doLayout()
