@@ -73,6 +73,9 @@ bool MachGuiNetworkProtocolMode::connectionSetHelper(NetNetwork::NetNetworkStatu
         case NetNetwork::NETNET_NODEERROR:
             error = IDS_MENUMSG_NETNODEERROR;
             break;
+        case NetNetwork::NETNET_VERSIONMISMATCH:
+            error = IDS_MENUMSG_NETVERSIONMISMATCH;
+            break;
         case NetNetwork::NETNET_OK:
             error = IDS_MENUMSG_NETSUCCESS;
             valid = true;

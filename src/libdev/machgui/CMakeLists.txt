@@ -364,4 +364,5 @@ target_link_libraries(machgui PUBLIC
     LibDev::gui
     LibDev::machlog
     LibDev::network
+    LibDev::version
 )

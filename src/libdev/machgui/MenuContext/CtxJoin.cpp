@@ -34,6 +34,8 @@
 #include "network/Network.hpp"
 #include "render/Font.hpp"
 
+#include "MachinesVersion.hpp"
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 #define JOINGAME_LB_MINX 48
@@ -362,7 +364,17 @@ bool MachGuiCtxJoin::okayToSwitchContext()
 
             if (NetNetwork::currentStatus() != NetNetwork::NETNET_OK)
             {
-                pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(NetNetwork::currentStatus()));
+                if (NetNetwork::currentStatus() == NetNetwork::NETNET_VERSIONMISMATCH)
+                {
+                    GuiStrings strs;
+                    strs.push_back(versionNumberToString(NetNetwork::instance().remoteVersionNumber()));
+                    strs.push_back(machinesVersion());
+                    pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETVERSIONMISMATCH, strs);
+                }
+                else
+                {
+                    pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(NetNetwork::currentStatus()));
+                }
                 NetNetwork::instance().resetStatus();
                 return false;
             }
