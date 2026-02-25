@@ -15,6 +15,7 @@
 #include "render/Painter.hpp"
 #include "gui/restring.hpp"
 #include "render/device.hpp"
+#include "render/internal/IRenderBackend.hpp"
 #include "render/camera.hpp"
 #include "world4d/manager.hpp"
 #include "world4d/scenemgr.hpp"
@@ -1950,6 +1951,58 @@ void MachContinentMap::loadSavedGame(const std::string& planet, PerIstream& inSt
         mapVisiblePainter.stretchBlit(loadedVisibleArea);
     }
     mapVisibleArea_.enableColourKeying();
+
+    // Reconstruct the logical fog-of-war grid from the loaded visual bitmap.
+    // Bulk-read all pixels from the loaded 1x surface in one GPU readback.
+    const std::size_t bmpWidth = loadedVisibleArea.width();
+    const std::size_t bmpHeight = loadedVisibleArea.height();
+    std::vector<unsigned char> rgba(bmpWidth * bmpHeight * 4);
+    {
+        RenDevice* dev = RenDevice::current();
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(loadedVisibleArea.handle(), bmpWidth, bmpHeight);
+        dev->endImmediateCommands();
+
+        dev->backend().readPixelsUByte(0, 0, bmpWidth, bmpHeight, rgba.data());
+
+        dev->beginImmediateCommands();
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+        dev->endImmediateCommands();
+    }
+
+    // Compute the 1x coordinate mapping from pBeenHere_ cells to loaded bitmap pixels.
+    const MATHEX_SCALAR planetX = MachLogPlanet::instance().surface()->xMax();
+    const MATHEX_SCALAR planetY = MachLogPlanet::instance().surface()->yMax();
+    const MATHEX_SCALAR bmpW = bmpWidth - 2; // -2 border, same as updateMapToWorldMetrics
+    const MATHEX_SCALAR bmpH = bmpHeight - 2;
+    const MATHEX_SCALAR ratio1x = std::max(planetX / bmpW, planetY / bmpH);
+    const MATHEX_SCALAR xOff1x = (bmpWidth - (planetX / ratio1x)) / 2.0;
+    const MATHEX_SCALAR yOff1x = (bmpHeight - (planetY / ratio1x)) / 2.0;
+
+    for (std::size_t cy = 0; cy < BEENHERE_ARRAYHEIGHT; ++cy)
+    {
+        for (std::size_t cx = 0; cx < BEENHERE_ARRAYWIDTH; ++cx)
+        {
+            // Cell center in world coordinates
+            const MATHEX_SCALAR worldX = (cx + 0.5) * beenHereXRatio_;
+            const MATHEX_SCALAR worldY = (cy + 0.5) * beenHereYRatio_;
+
+            // Map to 1x bitmap pixel
+            const int pixX = static_cast<int>(worldX / ratio1x + xOff1x);
+            const int pixY = static_cast<int>(worldY / ratio1x + yOff1x);
+
+            if (pixX >= 0 && pixX < static_cast<int>(bmpWidth)
+                && pixY >= 0 && pixY < static_cast<int>(bmpHeight))
+            {
+                const unsigned char alpha = rgba[(pixY * bmpWidth + pixX) * 4 + 3];
+                if (alpha == 0) // alpha == 0 means discovered (transparent = no fog)
+                {
+                    pBeenHere_[cy * BEENHERE_ARRAYWIDTH + cx] = 5; // Max scanner to suppress re-unfogging
+                    visibilityGrid_[cy * BEENHERE_ARRAYWIDTH + cx] = 1;
+                }
+            }
+        }
+    }
 }
 
 /* End MAP.CPP ******************************************************/
