@@ -5,6 +5,8 @@
 
 #include "render/Device.hpp"
 #include "render/Background.hpp"
+#include "render/internal/VertexData.hpp"
+#include "render/internal/ColourPack.hpp"
 
 RenBackground::RenBackground()
     : vertices_(_NEW_ARRAY(RenIVertex, 4))
