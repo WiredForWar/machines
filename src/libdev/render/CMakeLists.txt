@@ -1,54 +1,37 @@
 
 set(RENDER_SOURCES
     Alignment.hpp
-    BmpFont.cpp
-    BmpFont.hpp
-    Font.cpp
-    Font.hpp
-    FogMode.cpp
-    FogMode.hpp
-    FontsManager.cpp
-    FontsManager.hpp
-    LightingMode.cpp
-    LightingMode.hpp
-    OpenGL/RenderBackendGL.cpp
-    OpenGL/RenderBackendGL.hpp
-    OpenGL/Utils.cpp
-    OpenGL/Utils.hpp
-    Painter.cpp
-    Painter.hpp
-    PrimitiveTopology.hpp
-    RenScopedImmediateCommands.cpp
-    RenderVariables.cpp
-    RenderVariables.hpp
-    ShadowQuality.cpp
-    ShadowQuality.hpp
-    TextOptions.hpp
     AlphaGroup.cpp
     AnimCursor2d.cpp
     AnimCursor2d.hpp
+    Background.cpp
+    Background.hpp
+    BmpFont.cpp
+    BmpFont.hpp
     Camera.cpp
     Camera.hpp
     Capabilities.cpp
     Capabilities.hpp
-    CapabilitiesImpl.cpp
     Capabilities.ipp
+    CapabilitiesImpl.cpp
     Colour.cpp
     Colour.hpp
     Colour.ipp
+    ColourHSV.cpp
+    ColourHSV.hpp
     CoplanarGroup.cpp
     Cursor2d.cpp
     Cursor2d.hpp
+    DelayedSpinPolygon.cpp
     Device.cpp
     Device.hpp
     DeviceImpl.cpp
     Display.cpp
     Display.hpp
     DisplayImpl.cpp
-    DelayedSpinPolygon.cpp
     Driver.cpp
-    DriverDeprecated.cpp
     Driver.hpp
+    DriverDeprecated.cpp
     DriverImpl.cpp
     DriverSelector.cpp
     DriverSelector.hpp
@@ -56,101 +39,40 @@ set(RENDER_SOURCES
     Environment.hpp
     FixedPoint.cpp
     FixedPointVec.cpp
+    FogMode.cpp
+    FogMode.hpp
+    Font.cpp
+    Font.hpp
+    FontsManager.cpp
+    FontsManager.hpp
     GLMath.cpp
     GXMeshLoader.cpp
     HierarchyBuilder.cpp
     HierarchyBuilder.hpp
     HierarchyLoader.cpp
     HierarchyLoader.hpp
-    ColourHSV.cpp
-    ColourHSV.hpp
     Illuminator.cpp
     InternalLight.cpp
-    InternalPoints.cpp
-    internal/BackendCommands.hpp
-    internal/BackendTypes.hpp
-    internal/BmpFontCore.hpp
-    internal/DrawCallFactory.cpp
-    internal/DrawCallFactory.hpp
-    internal/GpuMeshLightingSnapshot.hpp
-    internal/FontImpl.hpp
-    internal/IRenderBackend.hpp
-    internal/AlphaGroup.hpp
-    internal/CapabilitiesImpl.hpp
-    internal/CapabilitiesImpl.ipp
-    internal/ColourPack.hpp
-    internal/CoplanarGroup.hpp
-    internal/CoplanarFactory.ctp
-    internal/CoplanarFactory.hpp
-    internal/Debug.hpp
-    internal/DeviceImpl.hpp
-    internal/DeviceImpl.ipp
-    internal/DisplayImpl.hpp
-    internal/DelayedSpinPolygon.hpp
-    internal/DriverDeprecated.hpp
-    internal/DriverImpl.hpp
-    internal/FixedPoint.hpp
-    internal/FixedPointVec.hpp
-    internal/FnStars.hpp
-    internal/GLMath.hpp
-    internal/GXMeshLoader.hpp
-    internal/Illuminator.hpp
-    internal/Illuminator.ipp
-    internal/InternalLight.hpp
-    internal/InternalLight.ipp
-    internal/InternalMap.hpp
-    internal/InternalPoints.hpp
-    internal/LightBuffer.hpp
-    internal/PipelineSpec.hpp
-    internal/RenScopedImmediateCommands.hpp
-    internal/RenderPassSpec.hpp
-    internal/UniformBlocks.hpp
-    internal/internal.hpp
-    internal/LightBuffer.ipp
-    internal/MaterialApply.hpp
-    internal/MaterialBody.hpp
-    internal/MaterialBody.ipp
-    internal/MaterialManager.hpp
-    internal/MeshFactory.hpp
-    internal/MeshId.hpp
-    internal/MeshLoader.hpp
-    internal/ModeObserver.hpp
-    internal/NonMMX.hpp
-    internal/PolySortedDraw.hpp
-    internal/PolySortPriority.hpp
-    internal/StarsImpl.hpp
-    internal/StarsImpl.ipp
-    internal/SurfaceBody.hpp
-    internal/SurfaceManagerImpl.hpp
-    internal/TextureBody.hpp
-    internal/TextureBody.ipp
-    internal/TextureSetImpl.hpp
-    internal/TLPolygon.hpp
-    internal/TriangleGroup.hpp
-    internal/TriangleGroup.ipp
-    internal/TTFPolygonImpl.hpp
-    internal/TTFPolygonImpl.ipp
-    internal/ViewportMapping.hpp
-    internal/ViewportMapping.ipp
-    internal/VertexData.hpp
-    internal/VertexMaterial.hpp
     InternalMap.cpp
-    LightBuffer.cpp
+    InternalPoints.cpp
     Light.cpp
     Light.hpp
+    LightBuffer.cpp
     LightColourTransform.hpp
-    MaterialApply.cpp
-    MaterialBody.cpp
+    LightingMode.cpp
+    LightingMode.hpp
     Material.cpp
     Material.hpp
     Material.ipp
-    MaterialMap.hpp
+    MaterialApply.cpp
+    MaterialBody.cpp
     MaterialManager.cpp
+    MaterialMap.hpp
     MaterialVec.cpp
     MaterialVec.hpp
     Mesh.cpp
-    MeshFactory.cpp
     Mesh.hpp
+    MeshFactory.cpp
     MeshId.cpp
     MeshInstance.cpp
     MeshInstance.hpp
@@ -161,13 +83,26 @@ set(RENDER_SOURCES
     NonMMX.cpp
     NormalMap.cpp
     NormalMap.hpp
+    OpenGL/RenderBackendGL.cpp
+    OpenGL/RenderBackendGL.hpp
+    OpenGL/Utils.cpp
+    OpenGL/Utils.hpp
+    Painter.cpp
+    Painter.hpp
     PolySortedDraw.cpp
     PolySortPriority.cpp
+    PrimitiveTopology.hpp
     render.cpp
     render.hpp
+    RenderUtils.hpp
+    RenderVariables.cpp
+    RenderVariables.hpp
+    RenScopedImmediateCommands.cpp
     Scale.cpp
     Scale.hpp
     Scale.ipp
+    ShadowQuality.cpp
+    ShadowQuality.hpp
     SpinPolygon.cpp
     SpinPolygon.hpp
     Stars.cpp
@@ -182,13 +117,14 @@ set(RENDER_SOURCES
     SurfaceManager.cpp
     SurfaceManager.hpp
     SurfaceManagerImpl.cpp
+    TextOptions.hpp
+    Texture.cpp
+    Texture.hpp
     TextureBody.cpp
     TextureManager.hpp
     TextureSet.cpp
     TextureSet.hpp
     TextureSetImpl.cpp
-    Texture.cpp
-    Texture.hpp
     TLPolygon.cpp
     Triangle.cpp
     Triangle.hpp
@@ -200,17 +136,84 @@ set(RENDER_SOURCES
     TTFPolygonImpl.cpp
     TTFTriangles.cpp
     TTFTriangles.hpp
-    UVTransform.cpp
-    UVTransform.hpp
     UVFlip.cpp
     UVFlip.hpp
+    UVTransform.cpp
+    UVTransform.hpp
     UVTranslation.cpp
     UVTranslation.hpp
     Vertex.cpp
     Vertex.hpp
-    ViewportMapping.cpp
     VertexData.cpp
     VertexMaterial.cpp
+    ViewportMapping.cpp
+    internal/AlphaGroup.hpp
+    internal/BackendCommands.hpp
+    internal/BackendTypes.hpp
+    internal/BmpFontCore.hpp
+    internal/CapabilitiesImpl.hpp
+    internal/CapabilitiesImpl.ipp
+    internal/ColourPack.hpp
+    internal/CoplanarFactory.ctp
+    internal/CoplanarFactory.hpp
+    internal/CoplanarGroup.hpp
+    internal/Debug.hpp
+    internal/DelayedSpinPolygon.hpp
+    internal/DeviceImpl.hpp
+    internal/DeviceImpl.ipp
+    internal/DisplayImpl.hpp
+    internal/DrawCallFactory.cpp
+    internal/DrawCallFactory.hpp
+    internal/DriverDeprecated.hpp
+    internal/DriverImpl.hpp
+    internal/FixedPoint.hpp
+    internal/FixedPointVec.hpp
+    internal/FnStars.hpp
+    internal/FontImpl.hpp
+    internal/GLMath.hpp
+    internal/GpuMeshLightingSnapshot.hpp
+    internal/GXMeshLoader.hpp
+    internal/Illuminator.hpp
+    internal/Illuminator.ipp
+    internal/internal.hpp
+    internal/InternalLight.hpp
+    internal/InternalLight.ipp
+    internal/InternalMap.hpp
+    internal/InternalPoints.hpp
+    internal/IRenderBackend.hpp
+    internal/LightBuffer.hpp
+    internal/LightBuffer.ipp
+    internal/MaterialApply.hpp
+    internal/MaterialBody.hpp
+    internal/MaterialBody.ipp
+    internal/MaterialManager.hpp
+    internal/MeshFactory.hpp
+    internal/MeshId.hpp
+    internal/MeshLoader.hpp
+    internal/ModeObserver.hpp
+    internal/NonMMX.hpp
+    internal/PipelineSpec.hpp
+    internal/PolySortedDraw.hpp
+    internal/PolySortPriority.hpp
+    internal/RenderPassSpec.hpp
+    internal/RenScopedImmediateCommands.hpp
+    internal/StarsImpl.hpp
+    internal/StarsImpl.ipp
+    internal/SurfaceBody.hpp
+    internal/SurfaceManagerImpl.hpp
+    internal/TextureBody.hpp
+    internal/TextureBody.ipp
+    internal/TextureSetImpl.hpp
+    internal/TLPolygon.hpp
+    internal/TriangleGroup.hpp
+    internal/TriangleGroup.ipp
+    internal/TTFPolygonImpl.hpp
+    internal/TTFPolygonImpl.ipp
+    internal/UniformBlocks.hpp
+    internal/VertexData.hpp
+    internal/VertexMaterial.hpp
+    internal/ViewportMapping.hpp
+    internal/ViewportMapping.ipp
 )
 
 add_library(render ${GAME_COMPONENT_LIB_TYPE} ${RENDER_SOURCES})

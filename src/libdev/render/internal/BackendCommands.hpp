@@ -4,6 +4,7 @@
 
 #include "render/Colour.hpp"
 #include "render/PrimitiveTopology.hpp"
+#include "render/Colour.hpp"
 #include "render/internal/BackendTypes.hpp"
 #include "render/internal/PipelineSpec.hpp"
 #include "render/internal/RenderPassSpec.hpp"

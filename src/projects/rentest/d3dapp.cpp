@@ -47,7 +47,6 @@
 #include "render/SpinPolygon.hpp"
 #include "render/Surface.hpp"
 #include "render/Painter.hpp"
-#include "render/fixdcurs.hpp"
 #include "render/AnimCursor2d.hpp"
 #include "render/UVTranslation.hpp"
 #include "render/Scale.hpp"

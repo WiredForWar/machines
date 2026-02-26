@@ -6,7 +6,7 @@
 #ifndef _REN_RENERROR_HPP
 #define _REN_RENERROR_HPP
 
-#include "render/dxerror.hpp"
+#include "render/RenError.hpp"
 
 // A DirectX error handler which takes Render library specific actions
 // when errors occur.
