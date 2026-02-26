@@ -492,8 +492,20 @@ void W4dSceneManager::updateLights()
 
         // In PerPixel mode, treat LOCAL lights as DYNAMIC so they illuminate
         // everything nearby via domain assignment instead of only their
-        // explicitly-assigned entities.
-        const bool promoteLocal = Config::gfxLightingMode.get() == LightingMode::PerPixel;
+        // explicitly-assigned entities.  Skip promotion for lights inside
+        // interior domains (whose parent is a construction, not the root)
+        // to prevent interior building lights from bleeding onto terrain.
+        bool promoteLocal = false;
+        if (light->isLocal() && Config::gfxLightingMode.get() == LightingMode::PerPixel)
+        {
+            W4dDomain* domain{};
+            if (light->hasContainingDomain(&domain))
+            {
+                // Terrain domains are direct children of the root (no grandparent).
+                // Interior domains are children of a construction entity.
+                promoteLocal = !domain->pParent()->hasParent();
+            }
+        }
 
         if (light->isLocal() && !promoteLocal)
         {
