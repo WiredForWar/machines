@@ -166,7 +166,7 @@ RenID3DMeshLoader::MeshMap* RenID3DMeshLoader::load(const SysPathName& pathName)
             files_.insert(newValue);
         }
     }
-    catch (XFile::DeadlyImportError err)
+    catch (const XFile::DeadlyImportError& err)
     {
         std::cerr << "Could not parse the .x file: " << err.what() << std::endl;
     }
