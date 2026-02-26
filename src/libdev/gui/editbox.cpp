@@ -86,38 +86,32 @@ void GuiSingleLineEditBox::doDisplay()
 
     int offset = border_ ? 2 * Gui::uiScaleFactor() : 0;
 
-    Gui::Coord startText = Gui::Coord(
-        absoluteBoundary().minCorner().x() + offset,
-        absoluteBoundary().minCorner().y() + offset);
+    Ren::Point startText = Ren::Point(absoluteBoundary().left() + offset, absoluteBoundary().top() + offset);
 
     GuiPainter& painter = GuiPainter::instance();
 
     if (ttfFont_)
     {
-        painter.drawText(startText, text(), textOptions_, *ttfFont_);
+        painter.drawText(text(), startText, *ttfFont_, textOptions_);
     }
     else
     {
-        painter.drawText(text(), Ren::Point(startText.x(), startText.y()), font_, maxWidth());
+        painter.drawText(text(), startText, font_, maxWidth());
     }
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
         && showCaret_) // Only show caret if we have focus
     {
-        GuiPainter::instance().line(
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + caretPos_ + offset,
-                absoluteBoundary().minCorner().y() + offset),
-            Gui::Coord(
-                absoluteBoundary().minCorner().x() + caretPos_ + offset,
-                absoluteBoundary().maxCorner().y() - offset),
+        painter.line(
+            Ren::Point(absoluteBoundary().left() + caretPos_ + offset, absoluteBoundary().top() + offset),
+            Ren::Point(absoluteBoundary().left() + caretPos_ + offset, absoluteBoundary().bottom() - offset),
             caretColour_,
             1 * Gui::uiScaleFactor());
     }
 
     if (border_)
     {
-        GuiPainter::instance().hollowRectangle(absoluteBoundary(), borderColour_, 1 * Gui::uiScaleFactor());
+        painter.hollowRectangle(absoluteBoundary(), borderColour_, 1 * Gui::uiScaleFactor());
     }
 }
 
