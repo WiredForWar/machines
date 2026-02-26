@@ -117,18 +117,17 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
                 // the list of the domains having an intersect relation with  pEntity
                 W4dEntity::W4dDomains domains = pEntity->intersectingDomains();
 
-                if (domains.size() != 0)
+                if (!domains.empty())
                 {
-                    W4dEntity::W4dDomains::iterator itDomain = domains.begin();
-                    while (++itDomain != domains.end())
-                    {
-                        W4dDomain* pDomain = *itDomain;
+                    for (W4dDomain* pDomain : domains)
                         pLight->illuminate(pDomain);
-                    }
                 }
                 else
                 {
-                    pLight->illuminate(pEntity->pParent());
+                    // No intersecting domains — illuminate only this entity
+                    // to prevent interior lights from bleeding through
+                    // building walls onto exterior terrain.
+                    pLight->illuminate(pEntity);
                 }
 
                 break;
@@ -142,23 +141,21 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
                 // the list of the domains having an intersect relation with  pEntity
                 W4dEntity::W4dDomains domains = pEntity->intersectingDomains();
 
-                if (domains.size() != 0)
+                if (!domains.empty())
                 {
-                    W4dEntity::W4dDomains::iterator itDomain = domains.begin();
-                    while (++itDomain != domains.end())
+                    for (W4dDomain* pDomain : domains)
                     {
-                        W4dDomain* pDomain = *itDomain;
-                        const W4dEntity::W4dEntities& entities = (pDomain)->intersectingEntities();
-                        for (W4dEntity::W4dEntities::const_iterator it = entities.begin(); it != entities.end(); ++it)
-                        {
-                            W4dEntity* pEntityInDomain = *it;
+                        const W4dEntity::W4dEntities& entities = pDomain->intersectingEntities();
+                        for (W4dEntity* pEntityInDomain : entities)
                             pLight->illuminate(pEntityInDomain);
-                        }
                     }
                 }
                 else
                 {
-                    pLight->illuminate(pEntity->pParent());
+                    // No intersecting domains — illuminate only this entity
+                    // to prevent interior lights from bleeding through
+                    // building walls onto exterior terrain.
+                    pLight->illuminate(pEntity);
                 }
                 break;
             }
