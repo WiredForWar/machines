@@ -154,11 +154,11 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     W4dGenericComposite* pSharedTracksB
         = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeB/xtrb.cdf"));
 
-    W4dGenericComposite* pSharedTracksF
-        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeF/xtrf.cdf"));
+    // W4dGenericComposite* pSharedTracksF
+    //     = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeF/xtrf.cdf"));
 
-    W4dGenericComposite* pSharedTracksG
-        = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeG/xtrg.cdf"));
+    // W4dGenericComposite* pSharedTracksG
+    //     = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeG/xtrg.cdf"));
 
     W4dGenericComposite* pSharedTracksH
         = new W4dGenericComposite(&tempRoot, MexTransform3d(), SysPathName("models/shared/tracks/typeH/xtrh.cdf"));
@@ -499,8 +499,8 @@ void MachPhysPreload::preloadMachines(MachPhysPreload::DoLoadingProgressUpdate d
     delete pSharedWheels;
     delete pSharedTracksA;
     delete pSharedTracksB;
-    delete pSharedTracksF;
-    delete pSharedTracksG;
+    // delete pSharedTracksF;
+    // delete pSharedTracksG;
     delete pSharedTracksH;
     delete pSharedTracksI;
     delete pSharedTracksJ;
