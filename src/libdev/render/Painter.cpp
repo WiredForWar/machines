@@ -68,6 +68,11 @@ void Painter::verticalLine(const Point& start, int height, const RenColour& colo
     line(start, Point { start.x, start.y + height }, colour, thickness);
 }
 
+void Painter::drawText(std::string_view text, const Point& startPos, const Font& font, const TextOptions& options) const
+{
+    drawText(startPos.x, startPos.y, text, font, options);
+}
+
 void Painter::drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const
 {
     target_.drawText(x, y, text, font, options);

@@ -38,6 +38,7 @@ public:
     void verticalLine(const Point& start, int height, const RenColour& colour, int thickness) const;
 
     // Text drawing
+    void drawText(std::string_view text, const Point& startPos, const Font& font, const TextOptions& options) const;
     void drawText(int x, int y, std::string_view text, const Font& font, const TextOptions& options) const;
     void drawText(
         std::string_view text,
