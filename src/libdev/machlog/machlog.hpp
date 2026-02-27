@@ -3,8 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#ifndef _MACH_MACHLOG_HPP
-#define _MACH_MACHLOG_HPP
+#pragma once
 
 #include "base/persist.hpp"
 #include "machphys/machphys.hpp"
@@ -13,8 +12,7 @@
 class MachActor;
 using MachLogCommsId = MachActor*;
 
-// Dummy namespace
-struct MachLog
+namespace MachLog
 {
     enum ObjectType : unsigned char
     {
@@ -205,7 +203,3 @@ PER_ENUM_PERSISTENT(MachLog::TechnologyLevel);
 PER_ENUM_PERSISTENT(MachLog::VictoryCondition);
 PER_ENUM_PERSISTENT(MachLog::GameType);
 /* //////////////////////////////////////////////////////////////// */
-
-#endif /* #ifndef _MACH_MACHLOG_HPP    */
-
-/* End MACHLOG.HPP ***************************************************/

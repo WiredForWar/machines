@@ -26,17 +26,17 @@ using W4dLOD = int;
 using W4dTransform3d = MexTransform3d;
 
 // Namespace declarations
-class W4d
+namespace W4d
 {
-public:
-    // The explicit values allow enumeration objects to be used to index into
-    // vectors, points etc, and are guaranteed not to change.
-    enum Axis
-    {
-        X_AXIS = 0,
-        Y_AXIS = 1,
-        Z_AXIS = 2
-    };
+// The explicit values allow enumeration objects to be used to index into
+// vectors, points etc, and are guaranteed not to change.
+enum Axis
+{
+    X_AXIS = 0,
+    Y_AXIS = 1,
+    Z_AXIS = 2
 };
+
+}; // namespace W4d
 
 #endif

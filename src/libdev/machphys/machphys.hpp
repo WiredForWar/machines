@@ -3,14 +3,13 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#ifndef _MACHPHYS_MACHPHYS_HPP
-#define _MACHPHYS_MACHPHYS_HPP
+#pragma once
 
 #include "phys/phys.hpp"
 #include "base/persist.hpp"
 
 // Dummy namespace
-struct MachPhys
+namespace MachPhys
 {
     // added type to fix persistence
     enum Race : unsigned char
@@ -223,7 +222,7 @@ struct MachPhys
         NOT_CONSTRUCTION
     };
 
-    using DemolitionType = struct
+    struct DemolitionType
     {
         ObjectType objectType;
         ConstructionType constructionType;
@@ -337,7 +336,3 @@ PER_ENUM_PERSISTENT(MachPhys::StrikeType);
 PER_ENUM_PERSISTENT(MachPhysPuffType);
 PER_ENUM_PERSISTENT(MachPhysFireballType);
 PER_ENUM_PERSISTENT(MachPhys::AnimationIds);
-
-#endif
-
-/* End MACHPHYS.HPP ***************************************************/
