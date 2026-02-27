@@ -69,6 +69,8 @@ private:
     GuiSimpleScrollableList* pReadOnlySettings_;
     DevTimer* pCreationTimer_;
     DevTimer* pHasCDTransmissionTimer_;
+    bool joinCompleted_{};
+    bool joinFailed_{};
 };
 
 #endif

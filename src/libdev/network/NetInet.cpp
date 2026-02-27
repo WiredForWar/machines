@@ -669,11 +669,11 @@ void NetINetwork::updateJoin()
 
 void NetINetwork::abortJoin()
 {
-    if (joinState_ == JoinState::Idle || joinState_ == JoinState::Done)
+    if (joinState_ == JoinState::Idle)
         return;
 
-    spdlog::info("NetINetwork: Aborting async join");
-    if (joinPeer_)
+    spdlog::info("NetINetwork: Aborting async join (state={})", static_cast<int>(joinState_));
+    if (joinPeer_ && joinState_ != JoinState::Done)
     {
         enet_peer_reset(joinPeer_);
         joinPeer_ = nullptr;
