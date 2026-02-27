@@ -340,7 +340,6 @@ bool MachGuiCtxJoin::okayToSwitchContext()
     else if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::JOIN)
     {
         std::string ipAddress = NetNetwork::instance().IPAddress();
-        bool isHost = false;
         if (ipAddress.empty())
         {
             // Display message box. Must choose game to join.
@@ -354,37 +353,10 @@ bool MachGuiCtxJoin::okayToSwitchContext()
         //      }
         else
         {
-            if (!MachLogNetwork::instance().joinSession(ipAddress, pStartupScreens_->startupData()->playerName()))
-                if (!MachLogNetwork::instance().joinSession(ipAddress, pStartupScreens_->startupData()->playerName()))
-                {
-                    pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETSESSIONERROR);
-                    NetNetwork::instance().resetStatus();
-                    return false;
-                }
-
-            if (NetNetwork::currentStatus() != NetNetwork::NETNET_OK)
-            {
-                if (NetNetwork::currentStatus() == NetNetwork::NETNET_VERSIONMISMATCH)
-                {
-                    GuiStrings strs;
-                    strs.push_back(versionNumberToString(NetNetwork::instance().remoteVersionNumber()));
-                    strs.push_back(machinesVersion());
-                    pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETVERSIONMISMATCH, strs);
-                }
-                else
-                {
-                    pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(NetNetwork::currentStatus()));
-                }
-                NetNetwork::instance().resetStatus();
-                return false;
-            }
-            // Reset join game incase player cancels "I'm Ready" context and wants to join a different game.
+            // Initiate non-blocking join — connection completes in CtxImReady::update
+            MachLogNetwork::instance().beginJoinSession(ipAddress, pStartupScreens_->startupData()->playerName());
             pStartupScreens_->startupData()->resetData();
             pStartupScreens_->startupData()->hostGame(false);
-            // Send join message so that host can update availablePlayers list etc.
-            pStartupScreens_->messageBroker().sendJoinMessage(
-                pStartupScreens_->startupData()->playerName(),
-                pStartupScreens_->startupData()->uniqueMachineNumber());
             return true;
         }
     }

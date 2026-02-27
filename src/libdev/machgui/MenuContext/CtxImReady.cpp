@@ -38,6 +38,8 @@
 #include "render/Font.hpp"
 #include "system/WindowsAPI.hpp"
 
+#include "MachinesVersion.hpp"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 class MachGuiImReadyButton : public MachGuiMenuButton
@@ -304,6 +306,70 @@ void MachGuiCtxImReady::update()
     pSingleLineEditBox_->update();
     animations_.update();
 
+    // Deferred context switch after join failure msgbox was dismissed.
+    // update() is only called when pMsgBox_ is null, so if we get here
+    // with joinFailed_ set the user has already dismissed the error dialog.
+    if (joinFailed_)
+    {
+        // Reset join state so a subsequent join attempt can start fresh
+        NetNetwork::instance().abortJoin();
+        // Simulate EXIT button so the normal transition table handles the animation
+        pStartupScreens_->buttonAction(MachGui::ButtonEvent::EXIT);
+        return;
+    }
+
+    // Poll async join state machine
+    NetNetwork::instance().updateJoin();
+
+    const auto joinState = NetNetwork::instance().joinState();
+    const bool joining = joinState == NetNetwork::JoinState::Connecting
+        || joinState == NetNetwork::JoinState::WaitingInit;
+
+    // Disable interactive buttons while connection is in progress
+    if (joining)
+    {
+        pImReadyButton_->disabled(true);
+        pStartButton_->disabled(true);
+        pSettingsButton_->disabled(true);
+        pSingleLineEditBox_->setEnabled(false);
+    }
+
+    // Handle async join completion (once)
+    if (!joinCompleted_ && joinState == NetNetwork::JoinState::Done)
+    {
+        joinCompleted_ = true;
+
+        if (NetNetwork::currentStatus() == NetNetwork::NETNET_OK)
+        {
+            // Connection succeeded — send join message so host updates player list
+            pStartupScreens_->messageBroker().sendJoinMessage(
+                pStartupScreens_->startupData()->playerName(),
+                pStartupScreens_->startupData()->uniqueMachineNumber());
+        }
+        else
+        {
+            // Connection failed — show error, defer context switch to next update()
+            const auto failStatus = NetNetwork::currentStatus();
+            NetNetwork::instance().resetStatus();
+            MachLogNetwork::instance().resetSession();
+            startupData().resetPlayers();
+            joinFailed_ = true;
+
+            if (failStatus == NetNetwork::NETNET_VERSIONMISMATCH)
+            {
+                GuiStrings strs;
+                strs.push_back(versionNumberToString(NetNetwork::instance().remoteVersionNumber()));
+                strs.push_back(versionNumberToString(machinesVersionNumber()));
+                pStartupScreens_->displayMsgBox(IDS_MENUMSG_NETVERSIONMISMATCH, strs);
+            }
+            else
+            {
+                pStartupScreens_->displayMsgBox(MachGui::convertNetworkError(failStatus));
+            }
+            return;
+        }
+    }
+
     NetNetwork::instance().update();
 
     if (MachLogNetwork::instance().isNetworkGame() && ! startupData().terminalMultiPlayerGameProblem())
@@ -480,6 +546,7 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
     pStartButton_->disabled(! startupData().canStartMultiPlayerGame());
 
     pSettingsButton_->disabled(startupData().terminalMultiPlayerGameProblem());
+    pSingleLineEditBox_->setEnabled(true);
 }
 
 // virtual
@@ -549,6 +616,10 @@ bool MachGuiCtxImReady::okayToSwitchContext()
     if (pStartupScreens_->lastButtonEvent() == MachGui::ButtonEvent::EXIT)
     {
         NETWORK_STREAM("lastButtonEvent was EXIT so doing some stuff\n");
+
+        // Abort any pending async join
+        NetNetwork::instance().abortJoin();
+
         if (MachLogNetwork::instance().isNetworkGame())
         {
             // if we got into this screen via a lobby session then we need to terminate correctly at this point.
