@@ -62,6 +62,9 @@ bool MachGuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
         "MachGuiSingleLineEditBox::doHandleCharEvent " << e.getChar() << " " << static_cast<int>(e.getChar())
                                                        << std::endl);
 
+    if (!isEnabled())
+        return false;
+
     if (ignoreSpaceAtBeginning_ && leftText().empty() && e.getChar() == ' ')
     {
         return true;
