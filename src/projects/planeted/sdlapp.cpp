@@ -16,6 +16,7 @@
 #include "device/Mouse.hpp"
 #include "render/Font.hpp"
 #include "render/Painter.hpp"
+#include "window_support/sdl/SDLWindowAdapter.hpp"
 #include "render/Display.hpp"
 #include "render/Device.hpp"
 #include "render/RenderVariables.hpp"
@@ -264,7 +265,8 @@ bool SDLApp::clientStartup()
 
     W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
-    pDisplay_ = new RenDisplay(window());
+    windowAdapter_ = std::make_unique<Ren::SDLWindowAdapter>(window());
+    pDisplay_ = new RenDisplay(windowAdapter_.get());
 
     ErrorHandler::instance().pDisplay(pDisplay_);
     pDisplay_->buildDisplayModesList();

@@ -7,6 +7,13 @@
 
 #include <memory>
 
+namespace Ren
+{
+
+class IWindowAdapter;
+
+} // namespace Ren
+
 class IProgressReporter;
 class RenDevice;
 class RenDisplay;
@@ -95,6 +102,7 @@ private:
 
     int winWidth_, winHeight_;
     double runTime_;
+    std::unique_ptr<Ren::IWindowAdapter> windowAdapter_{};
     RenDisplay* pDisplay_{};
     W4dRoot* pRoot_{};
     std::unique_ptr<System::IConsole> console_;

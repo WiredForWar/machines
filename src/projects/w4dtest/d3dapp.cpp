@@ -18,6 +18,7 @@
 #include "mathex/Quaternion.hpp"
 #include "mathex/CoordSystem.hpp"
 
+#include "window_support/sdl/SDLWindowAdapter.hpp"
 #include "render/Display.hpp"
 #include "render/Device.hpp"
 #include "render/TextureManager.hpp"
@@ -276,7 +277,8 @@ static void usage()
 
 void D3DApp::pickDisplayMode(bool windowMode, int width, int height)
 {
-    display_ = new RenDisplay(window());
+    windowAdapter_ = std::make_unique<Ren::SDLWindowAdapter>(window());
+    display_ = new RenDisplay(windowAdapter_.get());
 
     if (!windowMode)
     {

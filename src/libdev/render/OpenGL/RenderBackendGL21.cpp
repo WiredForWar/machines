@@ -10,8 +10,6 @@
 
 #include "spdlog/spdlog.h"
 
-#include <SDL3/SDL.h>
-
 #include <fstream>
 #include <variant>
 
@@ -67,34 +65,27 @@ BackendType RenderBackendGL21::backendType() const
     return BackendType::GL21;
 }
 
-bool RenderBackendGL21::initialize(SDL_Window* window)
+bool RenderBackendGL21::initialize(IRenderSurface* surface)
 {
     if (initialized_)
         return false;
 
-    if (window == nullptr)
-        return false;
-
-    window_ = window;
-
-    constexpr int contextMajorVersion = 2;
-    constexpr int contextMinorVersion = 1;
-    constexpr int contextProfile = 0; // Also consider SDL_GL_CONTEXT_PROFILE_CORE (1)
-
-    spdlog::info("Context version: {}.{} (SDL profile: {})", contextMajorVersion, contextMinorVersion, contextProfile);
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, contextMajorVersion);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, contextMinorVersion);
-    if (contextProfile)
+    auto* gl = dynamic_cast<IGLRenderSurface*>(surface);
+    if (!gl)
     {
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, contextProfile);
+        spdlog::error("RenderBackendGL21: surface cannot provide an OpenGL context");
+        return false;
     }
 
-    glContext_ = SDL_GL_CreateContext(window_);
-    if (glContext_ == nullptr)
+    glSurface_ = gl;
+
+    if (!glSurface_->createGLContext({
+            .majorVersion = 2,
+            .minorVersion = 1,
+        }))
     {
-        spdlog::error("Fatal in SDL_GL_CreateContext: {}", SDL_GetError());
-        window_ = nullptr;
+        spdlog::error("RenderBackendGL21: createGLContext() failed");
+        glSurface_ = nullptr;
         return false;
     }
 
@@ -129,7 +120,7 @@ bool RenderBackendGL21::initialize(SDL_Window* window)
 
     if (!GLEW_VERSION_2_1)
     {
-        spdlog::error("GLEW reports that OpengGL 2.1 is not available");
+        spdlog::error("GLEW reports that OpenGL 2.1 is not available");
         shutdown();
         return false;
     }
@@ -161,6 +152,7 @@ bool RenderBackendGL21::initialize(SDL_Window* window)
     stateCache_.reset();
 
     initialized_ = true;
+    spdlog::info("RenderBackendGL21 initialized ({}x{})", glSurface_->width(), glSurface_->height());
     return true;
 }
 
@@ -202,14 +194,11 @@ void RenderBackendGL21::shutdown()
 
     initialized_ = false;
 
-    if (glContext_ != nullptr)
+    if (glSurface_)
     {
-        SDL_GL_MakeCurrent(nullptr, nullptr);
-        SDL_GL_DestroyContext(glContext_);
-        glContext_ = nullptr;
+        glSurface_->destroyGLContext();
+        glSurface_ = nullptr;
     }
-
-    window_ = nullptr;
 }
 
 bool RenderBackendGL21::isInitialized() const
@@ -225,22 +214,26 @@ bool RenderBackendGL21::setVSync(bool enabled)
         return false;
     }
 
+    if (!glSurface_)
+        return false;
+
+    using VSyncMode = IRenderSurface::VSyncMode;
     bool success{};
 
     if (enabled)
     {
-        if (SDL_GL_SetSwapInterval(-1))
+        if (glSurface_->setVSyncMode(VSyncMode::Adaptive))
         {
             spdlog::info("Adaptive VSync enabled");
             success = true;
         }
-        else if (SDL_GL_SetSwapInterval(1))
+        else if (glSurface_->setVSyncMode(VSyncMode::On))
         {
-            spdlog::info("Standard VSync enabled (adaptive unavailable: {})", SDL_GetError());
+            spdlog::info("Standard VSync enabled (adaptive unavailable)");
             success = true;
         }
     }
-    else if (SDL_GL_SetSwapInterval(0))
+    else if (glSurface_->setVSyncMode(VSyncMode::Off))
     {
         spdlog::info("VSync disabled");
         success = true;
@@ -248,7 +241,7 @@ bool RenderBackendGL21::setVSync(bool enabled)
 
     if (!success)
     {
-        spdlog::warn("Failed to apply VSync setting (enabled={}): {}", enabled, SDL_GetError());
+        spdlog::warn("Failed to apply VSync setting (enabled={})", enabled);
     }
 
     return success;
@@ -1525,6 +1518,11 @@ void RenderBackendGL21::textureGenerateMipmap(BackendTextureHandle handle)
     stateCache_.resetTextureUnits();
     glBindTexture(GL_TEXTURE_2D, handle.value());
     glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+bool canUseGL21(IRenderSurface* surface)
+{
+    return dynamic_cast<IGLRenderSurface*>(surface) != nullptr;
 }
 
 std::unique_ptr<IRenderBackend> createGL21()

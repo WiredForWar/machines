@@ -140,6 +140,7 @@ add_subdirectory(libdev/recorder)
 add_subdirectory(libdev/world4d)
 add_subdirectory(libdev/network)
 add_subdirectory(libdev/render)
+add_subdirectory(libdev/window_support/sdl)
 add_subdirectory(libdev/gui)
 add_subdirectory(libdev/sim)
 add_subdirectory(libdev/machphys)
@@ -191,7 +192,10 @@ set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE "${MACHINES_STRIP_L
 set_target_properties(machines PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
-target_link_libraries(machines libs)
+target_link_libraries(machines
+    libs
+    LibDev::window_support_sdl
+)
 
 if(MSVC)
     # The application manifest is embedded via machines.rc; keep the linker
@@ -208,5 +212,8 @@ if(BUILD_PLANETED)
     set_target_properties(planeted PROPERTIES
         COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
     )
-    target_link_libraries(planeted libs)
+    target_link_libraries(planeted
+        libs
+        LibDev::window_support_sdl
+    )
 endif()

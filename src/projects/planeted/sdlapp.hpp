@@ -7,6 +7,15 @@
 #include "render/TextureManager.hpp"
 #include "afx/AfxSdlApp.hpp"
 
+#include <memory>
+
+namespace Ren
+{
+
+class IWindowAdapter;
+
+} // namespace Ren
+
 // class DevButtonEvent;
 class RenDisplay;
 class W4dEntity;
@@ -60,6 +69,7 @@ private:
     int winWidth_, winHeight_;
     double runTime_;
     MachLogPlanet* pPlanet_{};
+    std::unique_ptr<Ren::IWindowAdapter> windowAdapter_{};
     RenDisplay* pDisplay_{};
     W4dRoot* pRoot_{};
     W4dSceneManager* manager_ {};

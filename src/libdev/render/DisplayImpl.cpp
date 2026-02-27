@@ -8,6 +8,7 @@
 #include "base/Diag.hpp"
 
 #include "render/render.hpp"
+#include "render/IWindowAdapter.hpp"
 #include "render/Painter.hpp"
 #include "render/Surface.hpp"
 #include "render/Cursor2d.hpp"
@@ -150,11 +151,13 @@ void RenISavedArea::restoreTo(RenSurface* dest, const RenSurface& front, Ren::Re
 }
 
 //////////////////////////////////////////////////////////////////////////
-RenIDisplay::RenIDisplay(SDL_Window* wnd)
-    : pWnd_(wnd)
-    , supportsGammaCorrection_(true)
+RenIDisplay::RenIDisplay(Ren::IWindowAdapter* adapter)
+    : adapter_(adapter)
+    , supportsGammaCorrection_(false)
     , gammaCorrection_(1.0)
 {
+    if (adapter_)
+        currentMode_ = RenDisplay::Mode(adapter_->width(), adapter_->height(), 0);
     observers_.reserve(4);
     TEST_INVARIANT;
 }
@@ -331,8 +334,7 @@ void RenIDisplay::useCursor(const RenCursor2d* c)
 
 const RenCursor2d* RenIDisplay::currentCursor() const
 {
-    const SDL_Window *window = SDL_GetMouseFocus();
-    if (window == nullptr)
+    if (!adapter_ || !adapter_->hasMouseFocus())
         return nullptr;
 
     return cursor_;

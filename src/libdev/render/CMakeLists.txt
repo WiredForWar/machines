@@ -55,6 +55,8 @@ set(RENDER_SOURCES
     HierarchyLoader.hpp
     Illuminator.cpp
     InternalLight.cpp
+    IRenderSurface.hpp
+    IWindowAdapter.hpp
     InternalMap.cpp
     InternalPoints.cpp
     Light.cpp
@@ -242,7 +244,6 @@ if(TRUE)
     target_link_libraries(render_backend_gl21 PRIVATE
         LibDev::system
 
-        SDL3::SDL3
         GLEW::GLEW
         glm::glm
         spdlog::spdlog
