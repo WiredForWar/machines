@@ -1357,19 +1357,10 @@ MachPhys::WeaponCombo MachLogScenario::weaponCombo(const std::string& weaponComb
 // static
 MachPhys::Race MachLogScenario::machPhysRace(const std::string& race)
 {
-    if (race == "RED")
-        return MachPhys::RED;
-    if (race == "BLUE")
-        return MachPhys::BLUE;
-    if (race == "GREEN")
-        return MachPhys::GREEN;
-    if (race == "YELLOW")
-        return MachPhys::YELLOW;
-    if (race == "N_RACES")
-        return MachPhys::N_RACES;
+    std::optional<MachPhys::Race> r = MachPhys::toRace(race);
     ASSERT_INFO(race);
-    ASSERT(false, " Unknown Race token Combo\n");
-    return MachPhys::RED;
+    ASSERT(r.has_value(), " Unknown Race token Combo\n");
+    return r.value_or(MachPhys::RED);
 }
 
 // static
