@@ -318,6 +318,15 @@ bool MachLogNetwork::joinSession(const std::string& address, const std::string& 
     return isNetworkGame_;
 }
 
+void MachLogNetwork::beginJoinSession(const std::string& address, const std::string& playerName)
+{
+    CB_MachLogNetwork_DEPIMPL();
+
+    NetNetwork::instance().setLocalPlayerName(playerName);
+    NetNetwork::instance().beginJoinAppSession(address);
+    isNetworkGame_ = true;
+}
+
 void MachLogNetwork::resetSession()
 {
     NetNetwork::instance().resetAppSession();

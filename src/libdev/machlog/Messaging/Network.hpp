@@ -70,6 +70,7 @@ public:
 
     bool hostSession(const std::string& gameName, const std::string& playerName);
     bool joinSession(const std::string& address, const std::string& playerName);
+    void beginJoinSession(const std::string& address, const std::string& playerName);
     void resetSession();
     bool launchFromLobbyInfo();
     void setNodeCompoundStatus(bool);
