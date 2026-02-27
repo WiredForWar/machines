@@ -172,12 +172,6 @@ NetAppSession* NetNetwork::createAppSession(const std::string& gameName)
     return pNetINetwork_->createAppSession(gameName);
 }
 
-NetAppSession* NetNetwork::joinAppSession(const std::string& addressStr)
-{
-    PRE(isValidNoRecord());
-    return pNetINetwork_->joinAppSession(addressStr);
-}
-
 void NetNetwork::beginJoinAppSession(const std::string& addressStr)
 {
     PRE(isValidNoRecord());
