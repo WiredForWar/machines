@@ -8,6 +8,9 @@
 #include "phys/phys.hpp"
 #include "base/persist.hpp"
 
+#include <optional>
+#include <string_view>
+
 // Dummy namespace
 namespace MachPhys
 {
@@ -29,6 +32,9 @@ namespace MachPhys
         Race::YELLOW,
     };
 
+    std::string_view toString(Race race);
+    std::optional<Race> toRace(std::string_view str);
+
     enum MachineType : unsigned char
     {
         AGGRESSOR,
@@ -40,6 +46,10 @@ namespace MachPhys
         APC,
         TECHNICIAN
     };
+
+    std::string_view toString(MachineType type);
+    std::optional<MachineType> toMachineType(std::string_view str);
+
     enum ConstructionType : unsigned char
     {
         HARDWARE_LAB, /*SOFTWARE_LAB, WEAPONS_LAB,*/
@@ -51,6 +61,9 @@ namespace MachPhys
         BEACON,
         POD
     };
+
+    std::string_view toString(ConstructionType type);
+    std::optional<ConstructionType> toConstructionType(std::string_view str);
 
     enum DoorType : unsigned char
     {
@@ -66,18 +79,30 @@ namespace MachPhys
         BALLISTA,
         NINJA
     };
+
+    std::string_view toString(AggressorSubType type);
+    std::optional<AggressorSubType> toAggressorSubType(std::string_view str);
+
     enum TechnicianSubType : unsigned char
     {
         LAB_TECH,
         TECH_BOY,
         BRAIN_BOX
     };
+
+    std::string_view toString(TechnicianSubType type);
+    std::optional<TechnicianSubType> toTechnicianSubType(std::string_view str);
+
     enum ConstructorSubType : unsigned char
     {
         DOZER,
         BUILDER,
         BEHEMOTH
     };
+
+    std::string_view toString(ConstructorSubType type);
+    std::optional<ConstructorSubType> toConstructorSubType(std::string_view str);
+
     enum AdministratorSubType : unsigned char
     {
         BOSS,
@@ -85,16 +110,27 @@ namespace MachPhys
         COMMANDER
     };
 
+    std::string_view toString(AdministratorSubType type);
+    std::optional<AdministratorSubType> toAdministratorSubType(std::string_view str);
+
     enum FactorySubType : unsigned char
     {
         CIVILIAN,
         MILITARY
     };
+
+    std::string_view toString(FactorySubType type);
+    std::optional<FactorySubType> toFactorySubType(std::string_view str);
+
     enum HardwareLabSubType : unsigned char
     {
         LAB_CIVILIAN,
         LAB_MILITARY
     };
+
+    std::string_view toString(HardwareLabSubType type);
+    std::optional<HardwareLabSubType> toHardwareLabSubType(std::string_view str);
+
     enum MissileEmplacementSubType : unsigned char
     {
         TURRET,
@@ -102,6 +138,9 @@ namespace MachPhys
         LAUNCHER,
         ICBM
     };
+
+    std::string_view toString(MissileEmplacementSubType type);
+    std::optional<MissileEmplacementSubType> toMissileEmplacementSubType(std::string_view str);
 
     enum LocomotionType : unsigned char
     {
@@ -154,6 +193,9 @@ namespace MachPhys
         N_WEAPON_TYPES
     };
 
+    std::string_view toString(WeaponType type);
+    std::optional<WeaponType> toWeaponType(std::string_view str);
+
     // Variant weapon mounting positions
     enum Mounting : unsigned char
     {
@@ -162,6 +204,9 @@ namespace MachPhys
         TOP,
         N_MOUNTINGS
     };
+
+    std::string_view toString(Mounting type);
+    std::optional<Mounting> toMounting(std::string_view str);
 
     // The weapon mounting combinations in use
     // L/R/T stand for LEFT RIGHT TOP
@@ -207,6 +252,9 @@ namespace MachPhys
         N_WEAPON_COMBOS
     };
 
+    std::string_view toString(WeaponCombo type);
+    std::optional<WeaponCombo> toWeaponCombo(std::string_view str);
+
     // Denotes type of a weapon projectile strike
     enum StrikeType : unsigned char
     {
@@ -243,6 +291,9 @@ namespace MachPhys
         AT_REST,
         IN_MOTION
     };
+
+    std::string_view toString(FinalState type);
+
     enum AnimationIds : unsigned char
     {
         CONSTRUCTION_WORKING = 1,
