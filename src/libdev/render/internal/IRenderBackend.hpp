@@ -1,6 +1,7 @@
 #pragma once
 
 #include "render/BackendType.hpp"
+#include "render/IRenderSurface.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/PipelineSpec.hpp"
@@ -12,8 +13,6 @@
 #include <string_view>
 #include <vector>
 
-struct SDL_Window;
-
 namespace Ren
 {
 
@@ -22,17 +21,29 @@ class IRenderBackend
 public:
     virtual ~IRenderBackend() = default;
 
-    // Query which backends are compiled in and available on this system.
+    // Which backends are compiled in, regardless of whether the host can
+    // present them.
     static std::vector<BackendType> availableBackends();
-    static BackendType resolveAutoBackend();
 
-    // Create a backend of the given type. Auto picks the best available.
-    static std::unique_ptr<IRenderBackend> create(BackendType type = BackendType::Auto);
+    // Which of those the given surface can actually present, and the best of
+    // them. A null surface means "compiled in", i.e. the unfiltered list.
+    static std::vector<BackendType> supportedBackends(IRenderSurface* surface);
+    static BackendType resolveAutoBackend(IRenderSurface* surface);
+
+    // Create a backend of the given type. Auto picks the best the surface
+    // supports. Returns nullptr if the type is not compiled in or the surface
+    // cannot present it.
+    static std::unique_ptr<IRenderBackend> create(IRenderSurface* surface, BackendType type = BackendType::Auto);
 
     // Which type this instance is.
     virtual BackendType backendType() const = 0;
 
-    virtual bool initialize(SDL_Window* window) = 0;
+    // Initialize the backend against the surface it was created for. The
+    // backend dynamic_casts to the subinterface it needs -- IGLRenderSurface
+    // for the GL backends -- so the check belongs to the backend, not the
+    // factory.
+    virtual bool initialize(IRenderSurface* surface) = 0;
+
     virtual void shutdown() = 0;
 
     virtual bool isInitialized() const = 0;

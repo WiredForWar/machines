@@ -17,6 +17,7 @@
 #include "network/Network.hpp"
 #include "phys/phys.hpp"
 #include "render/TextOptions.hpp"
+#include "window_support/sdl/SDLWindowAdapter.hpp"
 #include "render/Display.hpp"
 #include "render/Device.hpp"
 #include "render/Capabilities.hpp"
@@ -161,7 +162,8 @@ bool SDLApp::clientStartup()
 
     W4dRoot* root = pRoot_ = new W4dRoot(W4dRoot::W4dRootId());
 
-    pDisplay_ = new RenDisplay(window());
+    windowAdapter_ = std::make_unique<Ren::SDLWindowAdapter>(window());
+    pDisplay_ = new RenDisplay(windowAdapter_.get());
 
     ErrorHandler::instance().pDisplay(pDisplay_);
 

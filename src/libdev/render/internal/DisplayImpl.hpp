@@ -18,6 +18,8 @@
 #include "render/Display.hpp"
 #include "render/render.hpp"
 
+namespace Ren { class IWindowAdapter; }
+
 class SysPathName;
 class RenSurface;
 class RenCursor2d;
@@ -55,7 +57,7 @@ public:
 private:
     friend class RenDisplay;
     friend class RenDDEnumerator;
-    RenIDisplay(SDL_Window* wnd);
+    explicit RenIDisplay(Ren::IWindowAdapter* adapter);
 
     void restoreUnderCursor();
     bool blitTest();
@@ -65,7 +67,7 @@ private:
     RenIDisplay(const RenIDisplay&);
     RenIDisplay& operator=(const RenIDisplay&);
 
-    SDL_Window* pWnd_ = nullptr;
+    Ren::IWindowAdapter* adapter_{};
     std::vector<RenDisplay::Mode> modeList_;
     RenDisplay::Mode currentMode_;
     bool fullscreen_ = false;

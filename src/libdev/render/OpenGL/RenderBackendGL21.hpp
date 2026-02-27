@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include <SDL3/SDL.h>
-
 #include <GL/glew.h>
 
 namespace Ren
@@ -26,7 +24,7 @@ public:
 
     BackendType backendType() const override;
 
-    bool initialize(SDL_Window* window) override;
+    bool initialize(IRenderSurface* surface) override;
     void shutdown() override;
 
     bool isInitialized() const override;
@@ -253,8 +251,7 @@ private:
 
     GLuint currentFboColorAttachment_{};
 
-    SDL_Window* window_{};
-    SDL_GLContext glContext_{};
+    IGLRenderSurface* glSurface_{};
 };
 
 } // namespace OpenGL

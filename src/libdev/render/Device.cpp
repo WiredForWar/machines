@@ -38,6 +38,7 @@
 #include "render/Material.hpp"
 #include "render/Mesh.hpp"
 #include "render/DriverSelector.hpp"
+#include "render/IWindowAdapter.hpp"
 
 #include "render/internal/DrawCallFactory.hpp"
 #include "render/internal/IRenderBackend.hpp"
@@ -187,19 +188,20 @@ bool RenDevice::initialize(Ren::BackendType backendType)
     fogColour(RenColour::white());
 
     // Create and initialize the render backend.
+    Ren::IRenderSurface* surface = pImpl_->display_->adapter();
     if (backendType == Ren::BackendType::Auto)
-        backendType = Ren::IRenderBackend::resolveAutoBackend();
+        backendType = Ren::IRenderBackend::resolveAutoBackend(surface);
 
     spdlog::info("Creating render backend of type {}", toString(backendType));
 
-    backend_ = Ren::IRenderBackend::create(backendType);
+    backend_ = Ren::IRenderBackend::create(surface, backendType);
     if (!backend_)
     {
         spdlog::error("Failed to create render backend of type {}", toString(backendType));
         return false;
     }
 
-    if (!backend_->initialize(pImpl_->display_->window()))
+    if (!backend_->initialize(surface))
     {
         spdlog::error("Failed to initialize render backend");
         backend_.reset();
@@ -642,7 +644,7 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     ASSERT(backend_ && backend_->isInitialized(), "switchBackend() called before initialize()");
 
     if (type == Ren::BackendType::Auto)
-        type = Ren::IRenderBackend::resolveAutoBackend();
+        type = Ren::IRenderBackend::resolveAutoBackend(pImpl_->display_->adapter());
 
     if (backend_->backendType() == type)
         return true;
@@ -660,15 +662,15 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     backend_.reset();
 
     // Create and initialize the new backend.
-    backend_ = Ren::IRenderBackend::create(type);
+    Ren::IRenderSurface* surface = pImpl_->display_->adapter();
+    backend_ = Ren::IRenderBackend::create(surface, type);
     if (!backend_)
     {
         spdlog::error("Failed to create render backend of type {}", toString(type));
         return false;
     }
 
-    SDL_Window* window = pImpl_->display_->window();
-    if (!backend_->initialize(window))
+    if (!backend_->initialize(surface))
     {
         spdlog::error("Failed to initialize new render backend");
         backend_.reset();
@@ -769,7 +771,7 @@ bool RenDevice::initializeContext()
     PRE(backend_);
 
     backend_->shutdown();
-    if (!backend_->initialize(display_->window()))
+    if (!backend_->initialize(display_->adapter()))
     {
         spdlog::error("Render backend re-initialization failed");
         return false;

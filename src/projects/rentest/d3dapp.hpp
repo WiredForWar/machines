@@ -6,6 +6,11 @@
 #include "rentest/target.hpp"
 #include "render/render.hpp"
 #include "device/Timer.hpp"
+
+#include <memory>
+
+namespace Ren { class IWindowAdapter; }
+
 #include "mathex/Transform3d.hpp"
 #include "ctl/CountedPtr.hpp"
 #include "ctl/PtrVector.hpp"
@@ -94,6 +99,7 @@ private:
     ControlTargetVector<ControlledLight> lights_;
 
     DevTimer animTimer_;
+    std::unique_ptr<Ren::IWindowAdapter> windowAdapter_{};
     RenDisplay* display_;
     RenDevice* device_;
     RenCursor2d* cursor_;

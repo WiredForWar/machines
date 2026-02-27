@@ -33,6 +33,7 @@
 
 #include "phys/MotionControl/FlyControl.hpp"
 
+#include "window_support/sdl/SDLWindowAdapter.hpp"
 #include "render/Display.hpp"
 #include "render/Device.hpp"
 #include "render/Light.hpp"
@@ -1697,7 +1698,8 @@ bool D3DApp::clientStartup()
 
     Ren::initialise();
 
-    display_ = new RenDisplay(window());
+    windowAdapter_ = std::make_unique<Ren::SDLWindowAdapter>(window());
+    display_ = new RenDisplay(windowAdapter_.get());
 
     if (!windowMode)
     {

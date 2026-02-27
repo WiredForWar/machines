@@ -9,6 +9,11 @@
 #include "device/Timer.hpp"
 #include "render/render.hpp"
 #include "afx/osapp.hpp"
+
+#include <memory>
+
+namespace Ren { class IWindowAdapter; }
+
 #include "world4d/Entity/CompositePlan.hpp"
 #include "w4dtest/averager.hpp"
 
@@ -90,6 +95,7 @@ private:
     ctl_vector<ModelData*> models_;
     int controledModel_;
 
+    std::unique_ptr<Ren::IWindowAdapter> windowAdapter_{};
     RenDisplay* display_;
     RenDevice* device_;
     W4dComposite* animSequence_;

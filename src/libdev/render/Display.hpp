@@ -11,19 +11,21 @@
 
 #include <vector>
 
+namespace Ren { class IWindowAdapter; }
+
 template <class T> class ctl_list;
 class SysPathName;
 class RenSurface;
 class RenCursor2d;
 class RenIDisplay;
-struct SDL_Window;
 
 // When an app goes into full-screen exclusive mode, this class
 // is used to set the mode.
 class RenDisplay
 {
 public:
-    RenDisplay(SDL_Window* wnd);
+    // The display does NOT own the adapter; the caller manages its lifetime.
+    explicit RenDisplay(Ren::IWindowAdapter* adapter);
     ~RenDisplay();
 
     // Go to full-screen exclusive mode.  Returns true to indicate success.
@@ -65,6 +67,7 @@ public:
         // Only RenDisplay can create modes.  Thus, clients are prevented from
         // requesting modes that aren't actually possible.
         friend class RenDisplay;
+        friend class RenIDisplay;
         friend class RenDDEnumerator;
         Mode(int w, int h, int r)
             : width_(w)
@@ -168,7 +171,8 @@ public:
 
     uint32_t frameNumber() const;
 
-    SDL_Window* window();
+    Ren::IWindowAdapter* adapter();
+    const Ren::IWindowAdapter* adapter() const;
 
     RenIDisplay& displayImpl();
     const RenIDisplay& displayImpl() const;
