@@ -304,20 +304,6 @@ bool MachLogNetwork::hostSession(const std::string& gameName, const std::string&
     return true;
 }
 
-bool MachLogNetwork::joinSession(const std::string& address, const std::string& playerName)
-{
-    CB_MachLogNetwork_DEPIMPL();
-
-    NetNetwork::instance().joinAppSession(address);
-
-    NetNetwork::instance().setLocalPlayerName(playerName);
-    if (NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
-    {
-        isNetworkGame_ = true;
-    }
-    return isNetworkGame_;
-}
-
 void MachLogNetwork::beginJoinSession(const std::string& address, const std::string& playerName)
 {
     CB_MachLogNetwork_DEPIMPL();

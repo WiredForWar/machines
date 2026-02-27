@@ -75,7 +75,6 @@ public:
     ///////////////////////////////
 
     NetAppSession* createAppSession(const std::string& gameName);
-    NetAppSession* joinAppSession(const std::string& addressStr);
     void beginJoinAppSession(const std::string& addressStr);
     void updateJoin();
     void abortJoin();

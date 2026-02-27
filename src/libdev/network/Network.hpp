@@ -95,9 +95,6 @@ public:
     const Sessions& sessions() const;
     // If hosting conventional game then use createAppSession
     NetAppSession* createAppSession(const std::string& gameName);
-    // If joining a conventional game then use joinAppSession (blocking)
-    NetAppSession* joinAppSession(const std::string& addressStr);
-    // Non-blocking join: call beginJoinAppSession then poll joinState via updateJoin
     void beginJoinAppSession(const std::string& addressStr);
     void updateJoin();
     void abortJoin();

@@ -39,6 +39,8 @@ static constexpr uint16_t GamePort = 1234;
 // Port 30583 means Wired for War
 static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
 
+static constexpr double JoinTimeoutSeconds = 5.0;
+
 #pragma pack(push, 1)
 struct ServerReply
 {
@@ -489,79 +491,12 @@ NetAppSession* NetINetwork::createAppSession(const std::string& gameName)
     return nullptr;
 }
 
-NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
-{
-    PRE(isValidNoRecord());
-
-    spdlog::info("NetINetwork: Connecting to {}", addressStr);
-    initHost();
-
-    std::string ipAddress = std::string(getHost(addressStr));
-    std::optional<uint16_t> port = getPort(addressStr);
-
-    // c. Connect and user service
-    ENetAddress address;
-    enet_address_set_host(&address, ipAddress.c_str());
-    address.port = port.value_or(GamePort);
-
-    ENetPeer* pPeer;
-    pPeer = enet_host_connect(pHost_, &address, 2, 0);
-
-    if (pPeer == nullptr)
-    {
-        std::cerr << "No available peers for initializing an ENet connection" << std::endl;
-        // exit(EXIT_FAILURE);
-        currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
-        return nullptr;
-    }
-
-    // Wait for connection
-    ENetEvent event;
-    if (enet_host_service(pHost_, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
-    {
-        NETWORK_STREAM("Joining session succeeded.\n");
-        sendInitPacket(pPeer);
-    }
-    else
-    {
-        enet_peer_reset(pPeer);
-        NETWORK_STREAM("Could not join session.\n");
-        currentStatus(NetNetwork::NETNET_SESSIONERROR);
-        return nullptr;
-    }
-
-    // Wait for server's init packet containing version and name
-    if (enet_host_service(pHost_, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_RECEIVE)
-    {
-        if (event.packet->dataLength >= sizeof(InitPacket))
-        {
-            const auto& init = *reinterpret_cast<const InitPacket*>(event.packet->data);
-            remoteVersion_ = System::fromBigEndian(init.version);
-
-            size_t nameLen = strnlen(init.playerName, sizeof(init.playerName));
-            char* data = _NEW_ARRAY(char, nameLen + 1);
-            memcpy(data, init.playerName, nameLen);
-            data[nameLen] = '\0';
-            event.peer->data = data;
-            spdlog::info(
-                "NetINetwork: Server '{}', version {}",
-                data,
-                versionNumberToString(remoteVersion_));
-        }
-        enet_packet_destroy(event.packet);
-    }
-
-    return nullptr;
-}
-
-static constexpr double JoinTimeoutSeconds = 5.0;
-
 void NetINetwork::beginJoinAppSession(const std::string& addressStr)
 {
     PRE(isValidNoRecord());
     PRE(joinState_ == JoinState::Idle);
 
-    spdlog::info("NetINetwork: Async connecting to {}", addressStr);
+    spdlog::info("NetINetwork: Connecting to {}", addressStr);
     initHost();
 
     std::string ipAddress = std::string(getHost(addressStr));
