@@ -102,7 +102,7 @@ void GuiSingleLineEditBox::doDisplay()
     }
 
     if (GuiManager::instance().charFocusExists() && &GuiManager::instance().charFocus() == this
-        && showCaret_) // Only show caret if we have focus
+        && showCaret_ && isEnabled()) // Only show caret if we have focus
     {
         painter.line(
             Ren::Point(absoluteBoundary().left() + caretPos_ + offset, absoluteBoundary().top() + offset),
@@ -135,6 +135,9 @@ void GuiSingleLineEditBox::update()
 // virtual
 bool GuiSingleLineEditBox::doHandleCharEvent(const GuiCharEvent& e)
 {
+    if (!isEnabled())
+        return false;
+
     // Check that char is usable
     if (ttfFont_)
     {
