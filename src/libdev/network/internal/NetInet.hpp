@@ -43,6 +43,14 @@ public:
         Yes,
     };
 
+    enum class JoinState
+    {
+        Idle,
+        Connecting,
+        WaitingInit,
+        Done,
+    };
+
     enum ObjectActionType
     {
         RETURN,
@@ -68,6 +76,10 @@ public:
 
     NetAppSession* createAppSession(const std::string& gameName);
     NetAppSession* joinAppSession(const std::string& addressStr);
+    void beginJoinAppSession(const std::string& addressStr);
+    void updateJoin();
+    void abortJoin();
+    JoinState joinState() const;
     NetAppSession* connectAppSession();
     void resetAppSession();
 
@@ -205,6 +217,9 @@ private:
     ENetAddress address_{};
     ENetHost* pHost_{};
     uint32_t remoteVersion_{};
+    JoinState joinState_{JoinState::Idle};
+    ENetPeer* joinPeer_{};
+    double joinStartTime_{};
 
     bool deterministicPingDropoutAllowed_{};
 

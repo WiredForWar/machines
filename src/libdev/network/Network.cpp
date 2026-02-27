@@ -178,6 +178,39 @@ NetAppSession* NetNetwork::joinAppSession(const std::string& addressStr)
     return pNetINetwork_->joinAppSession(addressStr);
 }
 
+void NetNetwork::beginJoinAppSession(const std::string& addressStr)
+{
+    PRE(isValidNoRecord());
+    pNetINetwork_->beginJoinAppSession(addressStr);
+}
+
+void NetNetwork::updateJoin()
+{
+    pNetINetwork_->updateJoin();
+}
+
+void NetNetwork::abortJoin()
+{
+    pNetINetwork_->abortJoin();
+}
+
+NetNetwork::JoinState NetNetwork::joinState() const
+{
+    // Map internal state to public enum
+    switch (pNetINetwork_->joinState())
+    {
+        case NetINetwork::JoinState::Idle:
+            return JoinState::Idle;
+        case NetINetwork::JoinState::Connecting:
+            return JoinState::Connecting;
+        case NetINetwork::JoinState::WaitingInit:
+            return JoinState::WaitingInit;
+        case NetINetwork::JoinState::Done:
+            return JoinState::Done;
+    }
+    return JoinState::Idle;
+}
+
 NetAppSession* NetNetwork::connectAppSession()
 {
     PRE(isValidNoRecord());

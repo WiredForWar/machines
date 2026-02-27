@@ -554,6 +554,138 @@ NetAppSession* NetINetwork::joinAppSession(const std::string& addressStr)
     return nullptr;
 }
 
+static constexpr double JoinTimeoutSeconds = 5.0;
+
+void NetINetwork::beginJoinAppSession(const std::string& addressStr)
+{
+    PRE(isValidNoRecord());
+    PRE(joinState_ == JoinState::Idle);
+
+    spdlog::info("NetINetwork: Async connecting to {}", addressStr);
+    initHost();
+
+    std::string ipAddress = std::string(getHost(addressStr));
+    std::optional<uint16_t> port = getPort(addressStr);
+
+    ENetAddress address;
+    enet_address_set_host(&address, ipAddress.c_str());
+    address.port = port.value_or(GamePort);
+
+    joinPeer_ = enet_host_connect(pHost_, &address, 2, 0);
+    if (joinPeer_ == nullptr)
+    {
+        spdlog::warn("NetINetwork: No available peers for connection");
+        currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+        joinState_ = JoinState::Done;
+        return;
+    }
+
+    joinStartTime_ = DevTime::instance().time();
+    joinState_ = JoinState::Connecting;
+}
+
+void NetINetwork::updateJoin()
+{
+    if (joinState_ == JoinState::Idle || joinState_ == JoinState::Done)
+        return;
+
+    const double elapsed = DevTime::instance().time() - joinStartTime_;
+
+    ENetEvent event;
+    while (enet_host_service(pHost_, &event, 0) > 0)
+    {
+        if (joinState_ == JoinState::Connecting && event.type == ENET_EVENT_TYPE_CONNECT)
+        {
+            NETWORK_STREAM("Async joining: connected, sending init packet.\n");
+            sendInitPacket(joinPeer_);
+            joinState_ = JoinState::WaitingInit;
+            continue;
+        }
+
+        if (joinState_ == JoinState::WaitingInit && event.type == ENET_EVENT_TYPE_RECEIVE)
+        {
+            if (event.packet->dataLength >= sizeof(InitPacket))
+            {
+                const auto& init = *reinterpret_cast<const InitPacket*>(event.packet->data);
+                remoteVersion_ = System::fromBigEndian(init.version);
+
+                size_t nameLen = strnlen(init.playerName, sizeof(init.playerName));
+                char* data = _NEW_ARRAY(char, nameLen + 1);
+                memcpy(data, init.playerName, nameLen);
+                data[nameLen] = '\0';
+                event.peer->data = data;
+                spdlog::info(
+                    "NetINetwork: Server '{}', version {}",
+                    data,
+                    versionNumberToString(remoteVersion_));
+            }
+            enet_packet_destroy(event.packet);
+            joinState_ = JoinState::Done;
+            spdlog::info("NetINetwork: Async join completed successfully");
+            return;
+        }
+
+        if (event.type == ENET_EVENT_TYPE_DISCONNECT)
+        {
+            joinPeer_ = nullptr;
+            if (event.data != 0)
+            {
+                // Non-zero data carries the server's version number (version mismatch rejection)
+                remoteVersion_ = event.data;
+                spdlog::warn(
+                    "NetINetwork: Server rejected connection: version mismatch (client={}, server={})",
+                    versionNumberToString(machinesVersionNumber()),
+                    versionNumberToString(remoteVersion_));
+                currentStatus(NetNetwork::NETNET_VERSIONMISMATCH);
+            }
+            else
+            {
+                spdlog::warn("NetINetwork: Disconnected during async join");
+                currentStatus(NetNetwork::NETNET_SESSIONERROR);
+            }
+            joinState_ = JoinState::Done;
+            return;
+        }
+
+        // Unexpected event during join — ignore
+        if (event.type == ENET_EVENT_TYPE_RECEIVE)
+            enet_packet_destroy(event.packet);
+    }
+
+    // Timeout check
+    if (elapsed > JoinTimeoutSeconds)
+    {
+        spdlog::warn("NetINetwork: Async join timed out after {:.1f}s in state {}",
+            elapsed, static_cast<int>(joinState_));
+        if (joinPeer_)
+        {
+            enet_peer_reset(joinPeer_);
+            joinPeer_ = nullptr;
+        }
+        currentStatus(NetNetwork::NETNET_SESSIONERROR);
+        joinState_ = JoinState::Done;
+    }
+}
+
+void NetINetwork::abortJoin()
+{
+    if (joinState_ == JoinState::Idle || joinState_ == JoinState::Done)
+        return;
+
+    spdlog::info("NetINetwork: Aborting async join");
+    if (joinPeer_)
+    {
+        enet_peer_reset(joinPeer_);
+        joinPeer_ = nullptr;
+    }
+    joinState_ = JoinState::Idle;
+}
+
+NetINetwork::JoinState NetINetwork::joinState() const
+{
+    return joinState_;
+}
+
 NetAppSession* NetINetwork::connectAppSession()
 {
     NETWORK_STREAM("NetINetwork::connectAppSession()\n");
