@@ -39,6 +39,9 @@ static void loading(MachGuiDbSystem& system, W4dSceneManager* pSceneManager)
         for (uint kSce = 0; kSce < nScenarios; ++kSce)
         {
             const std::string& planetName = planet.scenario(kSce).planetFile();
+            if (planetName == "guns")
+                continue;
+
             MachLogRaces::instance().loadPlanet(pSceneManager, planetName, &reporter);
             MachLogRaces::instance().unloadGame();
 
