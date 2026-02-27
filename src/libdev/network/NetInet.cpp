@@ -43,7 +43,8 @@ static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
 struct ServerReply
 {
     char magic[sizeof(DiscoveryMagic)]{};
-    uint32_t version{};
+    uint32_t discoveryVersion{};
+    uint32_t gameVersion{};
     char serverName[64]{};
     uint16_t port{};
 };
@@ -51,7 +52,8 @@ struct ServerReply
 struct ClientRequest
 {
     char magic[sizeof(DiscoveryMagic)]{};
-    uint32_t version{};
+    uint32_t discoveryVersion{};
+    uint32_t gameVersion{};
     char message[16]{};
 };
 #pragma pack(pop)
@@ -1247,7 +1249,8 @@ void NetINetwork::sendLocalServersDiscoveryBroadcast()
     ClientRequest request;
     static_assert(sizeof(request.magic) == sizeof(DiscoveryMagic));
     SDL_memcpy(request.magic, DiscoveryMagic, sizeof(DiscoveryMagic));
-    request.version = System::toBigEndian(DiscoveryVersion);
+    request.discoveryVersion = System::toBigEndian(DiscoveryVersion);
+    request.gameVersion = System::toBigEndian(machinesVersionNumber());
     const char message[] = "DiscoverServers";
     static_assert(sizeof(request.message) == sizeof(message));
     SDL_memcpy(request.message, message, sizeof(message));
@@ -1294,12 +1297,13 @@ void NetINetwork::acceptLocalServersReplies()
         return;
     }
 
-    const uint32_t replyVersion = System::fromBigEndian(reply.version);
+    const uint32_t replyVersion = System::fromBigEndian(reply.discoveryVersion);
     if (replyVersion != DiscoveryVersion)
     {
         spdlog::warn("NetINetwork: Unexpected discovery reply version {}", replyVersion);
         return;
     }
+    const uint32_t gameVersion = System::fromBigEndian(reply.gameVersion);
 
     std::string address = makeAddress(buf, System::fromBigEndian(reply.port));
     const auto session = std::find_if(sessions_.begin(), sessions_.end(), [&address](const NetSessionInfo& info) {
@@ -1308,12 +1312,14 @@ void NetINetwork::acceptLocalServersReplies()
     if (session != sessions_.end())
     {
         session->serverName = reply.serverName;
+        session->gameVersion = gameVersion;
         return;
     }
 
     sessions_.emplace_back(NetSessionInfo {
         .address = address,
         .serverName = reply.serverName,
+        .gameVersion = gameVersion,
     });
 }
 
@@ -1390,7 +1396,7 @@ void NetINetwork::replyToServerDiscoveryRequests()
         spdlog::debug("NetINetwork: Invalid discovery request");
         return;
     }
-    const uint32_t reqVersion = System::fromBigEndian(request.version);
+    const uint32_t reqVersion = System::fromBigEndian(request.discoveryVersion);
     if (reqVersion != DiscoveryVersion)
     {
         spdlog::warn("NetINetwork: Unexpected discovery request version {}", reqVersion);
@@ -1400,7 +1406,8 @@ void NetINetwork::replyToServerDiscoveryRequests()
     ServerReply reply;
     static_assert(sizeof(reply.magic) == sizeof(DiscoveryMagic));
     SDL_memcpy(reply.magic, DiscoveryMagic, sizeof(DiscoveryMagic));
-    reply.version = System::toBigEndian(DiscoveryVersion);
+    reply.discoveryVersion = System::toBigEndian(DiscoveryVersion);
+    reply.gameVersion = System::toBigEndian(machinesVersionNumber());
     gameName_.copy(reply.serverName, sizeof(reply.serverName) - 1);
     reply.port = System::toBigEndian(pHost_->address.port);
 
