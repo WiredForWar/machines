@@ -11,6 +11,7 @@ target_include_directories(format_support_iface INTERFACE
 
 # Loader submodules
 add_subdirectory(agt)
+add_subdirectory(gltf)
 add_subdirectory(xfile)
 
 # Factory that instantiates available loaders

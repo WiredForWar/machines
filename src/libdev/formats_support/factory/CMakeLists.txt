@@ -20,5 +20,6 @@ target_link_libraries(mesh_loader_factory PUBLIC
 # which the factory .cpp uses via #ifdef.
 target_link_libraries(mesh_loader_factory PRIVATE
     FormatSupport::agt
+    FormatSupport::gltf
     FormatSupport::xfile
 )
