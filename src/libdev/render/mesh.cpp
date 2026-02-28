@@ -5,7 +5,6 @@
 
 #include "base/diag.hpp"
 #include "render/mesh.hpp"
-#include "gxin/gxmesh.hpp"
 #include "utility/factory.hpp"
 #include "utility/indent.hpp"
 #include "mathex/point3d.hpp"
@@ -21,7 +20,6 @@
 #include "render/stats.hpp"
 #include "render/vertex.hpp"
 #include "render/internal/glmath.hpp"
-#include "render/internal/gxmeshload.hpp"
 #include "render/internal/meshfact.hpp"
 #include "render/render.hpp"
 #include "formats_support/IMeshLoader.hpp"
@@ -1151,30 +1149,6 @@ bool RenMesh::read(const SysPathName& pathName, const std::string& meshName, dou
         }
     }
 
-    // Fallback: try to load an agt file via the old embedded loader
-    SysPathName withExtAGT(pathName);
-    withExtAGT.extension("agt");
-    if (withExtAGT.existsAsFile())
-    {
-        DBG_LOAD0("Loading mesh " << meshName << " from " << pathName << std::endl);
-        RenStreamIndenter indenter;
-
-        GXMesh* gxmesh = RenIGXMeshLoader::instance().load(withExtAGT, meshName);
-        if (!gxmesh)
-            return false;
-        DBG_LOAD3("Loaded AGT mesh {" << *gxmesh << "}" << std::endl);
-
-        if (!buildFromGXMesh(gxmesh))
-            return false;
-
-        DBG_LOAD0("Conversion to the RenMesh format succeeded" << std::endl);
-
-        pathName_ = withExtAGT.pathname();
-        meshName_ = meshName;
-        isDirty_ = true;
-        return true;
-    }
-
     // No loader succeeded for any supported format.
     RENDER_STREAM("RenMesh::read() ; Could not read any supported format for " << pathName << std::endl);
     return false;
@@ -2063,322 +2037,6 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     return true;
 }
 
-bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
-{
-
-    // array containing the indexes (in the GXMesh) of polygons having the same color
-    typedef ctl_vector<int> PolygonIndexes;
-    // map of polygon index (each element correspond to polygon having the same material)
-    // this map is used to perform the grouping job
-    typedef ctl_map<GXMat, PolygonIndexes, std::less<GXMat>> GXPolygonMap;
-    GXPolygonMap gxPSetMap;
-
-    // map containing the indexes correspondance (Gx vertex <-> render vertex index)
-    typedef ctl_map<GXPolyVert3, Ren::VertexIdx, std::less<GXPolyVert3>> IndexesMap;
-
-    IndexesMap renIndexesMap;
-    int renNumVertices = 0;
-
-    GXPolygon3 gxPolygon;
-    GXPolyVert3 gxVertex;
-    GXUVCoords gxUV;
-
-    int gxNormalIndex;
-    int gxVertexIndex;
-    Ren::VertexIdx renVertexIndex;
-
-    DBG_LOAD0("The AGT mesh " << gxmesh->name() << " is now being converted to the RenMesh format" << std::endl);
-
-    // We perform a first sweep of the polygons data structures, in which:
-    // 1) the number of polygon groups is counted and the indexes of the polygons
-    //    in each group is recorded (a group being caracterised by the material)
-    // 2) the number of render vertices is counted
-    //    (number of different gxmesh pairs vertex/normal)
-    DBG_LOAD0("--Gathering information on:" << std::endl);
-    DBG_LOAD0(" - the number of triangle groups" << std::endl);
-    DBG_LOAD0(" - the sets of polygons for each group" << std::endl);
-    DBG_LOAD0(" - the number of vertices--" << std::endl);
-    for (int gxPolygonIndex = 0; gxPolygonIndex < gxmesh->numPolygons(); ++gxPolygonIndex)
-    {
-        gxPolygon = gxmesh->polygon(gxPolygonIndex);
-        GXMat gxPolygonMat(gxPolygon.mat());
-
-        if (!gxPolygon.hasOneColor())
-        {
-            DBG_LOAD3("Polygon having index " << gxPolygonIndex << " is shaded" << std::endl);
-            DBG_LOAD3("Its texture Id is " << gxPolygonMat.textureId() << std::endl);
-
-            // Try to find an entry of gxPSetMap having the same texture as the shaded polygon
-            // if one is find, insert the polygon in that polygon set, if not... create a new
-            // entry corrensponding to the fisrt vertex
-            // TODO: Warning, this could yield more than one triangles_ set for a given texture
-            bool textureNotFound = true;
-            GXMat gxPSetKey;
-            GXPolygonMap::iterator gxPSetMapIt;
-
-            gxPSetMapIt = gxPSetMap.begin();
-            while (gxPSetMapIt != gxPSetMap.end() && textureNotFound)
-            {
-                gxPSetKey = (*gxPSetMapIt).first;
-                if (gxPSetKey.textureId() == gxPolygonMat.textureId())
-                {
-                    textureNotFound = false;
-                }
-                else
-                {
-                    ++gxPSetMapIt;
-                }
-            }
-
-            if (textureNotFound == false)
-            {
-                ASSERT((*gxPSetMapIt).first.textureId() == gxPolygonMat.textureId(), "");
-                // an entry has been found with the same texture
-
-                DBG_LOAD3("A group exists for material {" << gxPolygonMat << "}" << std::endl);
-                DBG_LOAD3("the polygon index " << gxPolygonIndex << " is registered to it" << std::endl);
-
-                (*gxPSetMapIt).second.push_back(gxPolygonIndex);
-            }
-            else
-            {
-                // no entry has been found with the texture
-                // set the material color to the color of the first vertex and create an entry
-                ASSERT(gxPolygon.numVertices() > 0, runtime_error("the polygon has no vertices"));
-
-                // This also set the hasOneColor flag of gxPolygonMat to true so that the
-                // created entry can be used by future one color polygons
-                gxPolygonMat.diffuseColor(gxPolygon.vertex(0).color());
-
-                DBG_LOAD3("A new group of polygons is created for the material {" << gxPolygonMat << "}" << std::endl);
-                DBG_LOAD3("the polygon index " << gxPolygonIndex << " is registered to it" << std::endl);
-
-                PolygonIndexes initSet(1, gxPolygonIndex);
-                GXPolygonMap::value_type newVal(gxPolygonMat, initSet);
-                gxPSetMap.insert(newVal);
-            }
-        }
-        else // polygon has one color
-        {
-            // first record polygon index in the group of
-            // polygons having the same material
-            if (gxPSetMap.find(gxPolygonMat) == gxPSetMap.end())
-            {
-                DBG_LOAD3("A new group of polygons is created for the material {" << gxPolygonMat << "}" << std::endl);
-                DBG_LOAD3("the polygon index " << gxPolygonIndex << " is registered to it" << std::endl);
-                // No entry exists for color, create a new one
-                PolygonIndexes initSet(1, gxPolygonIndex);
-                GXPolygonMap::value_type newVal(gxPolygonMat, initSet);
-                gxPSetMap.insert(newVal);
-            }
-            else
-            {
-                // entry exists
-                DBG_LOAD3("A group exists for material {" << gxPolygonMat << "}" << std::endl);
-                DBG_LOAD3("the polygon index " << gxPolygonIndex << " is registered to it" << std::endl);
-                gxPSetMap[gxPolygonMat].push_back(gxPolygonIndex);
-            }
-        } // if (! gxPolygon.hasOneColor())
-
-        // Second, records polygon points and normals
-        // A gamut-x vertex is recorded several times in the render library
-        // sweep the GX polygon vertices, record them in the vertex array
-        for (int gxPolygonVertexIndex = 0; gxPolygonVertexIndex < gxPolygon.numVertices(); ++gxPolygonVertexIndex)
-        {
-            gxVertex = gxPolygon.vertex(gxPolygonVertexIndex);
-            if (renIndexesMap.find(gxVertex) == renIndexesMap.end())
-            {
-                // the pair gx-vertex/gx-normal has not been recorded, record it
-                // with a corresponding render index null : this one will be set
-                // when the vertices are added to vertices_
-                ++renNumVertices;
-                IndexesMap::value_type new_val(gxVertex, 0);
-                renIndexesMap.insert(new_val);
-            }
-        } // for (int gxPolygonVertexIndex...
-    } // for (int gxPolygonIndex=0;
-
-    ASSERT(renNumVertices == renIndexesMap.size(), logic_error(""));
-
-    DBG_LOAD0("AGT mesh number of vertices is " << gxmesh->numPoints() << std::endl);
-    DBG_LOAD0("Render mesh number of vertices is " << renNumVertices << std::endl);
-    DBG_LOAD0("Render mesh number of triangle groups is " << gxPSetMap.size() << std::endl);
-    DBG_LOAD0("(respectively");
-    for (GXPolygonMap::const_iterator gxPSetMapIt = gxPSetMap.begin(); gxPSetMapIt != gxPSetMap.end(); ++gxPSetMapIt)
-    {
-        DBG_LOAD0(", " << (*gxPSetMapIt).second.size());
-    }
-    DBG_LOAD0(" triangles)" << std::endl);
-
-    // end of the first sweep of the polygons, perform allocation of data, according
-    // to the information gathered
-
-    DBG_LOAD0("--Creation of the vertices_ structure--" << std::endl);
-    vertices_ = std::make_unique<RenIVertexData>(renNumVertices);
-    // perform a sweep of the renIndexesMap and record the vertices coordinates in vertices_
-    // update the correspondance table between the points indexes in gxmesh and vertices_
-    DBG_LOAD3(std::endl << "Indexes correspondance table" << std::endl);
-    for (IndexesMap::iterator renMapIt = renIndexesMap.begin(); renMapIt != renIndexesMap.end(); ++renMapIt)
-    {
-        gxVertex = (*renMapIt).first;
-        gxVertexIndex = gxVertex.pointIndex();
-        gxNormalIndex = gxVertex.normalIndex();
-        // flip the yz coordinates
-        MexPoint3d renVertex(
-            gxmesh->point(gxVertexIndex).x(),
-            gxmesh->point(gxVertexIndex).z(),
-            gxmesh->point(gxVertexIndex).y());
-        MexVec3 renNormal(
-            gxmesh->normal(gxNormalIndex).x(),
-            gxmesh->normal(gxNormalIndex).z(),
-            gxmesh->normal(gxNormalIndex).y());
-        MexPoint2d renUV(gxVertex.uv().u(), 1 - gxVertex.uv().v());
-
-        renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
-
-        // It may be nonsensical, but 3d Studio appears to create zero
-        // vector normals for some polygons.  The addVertex code chokes
-        // on these, so filter out the zeros.
-        static const MexVec3 almostZeroVec(0, 0, 1.2 * MexEpsilon::instance());
-        if (renNormal.isZeroVector())
-            vertices_->addVertex(renVertex, almostZeroVec, renUV);
-        else
-            vertices_->addVertex(renVertex, renNormal, renUV);
-
-        (*renMapIt).second = renVertexIndex;
-        DBG_LOAD3("AGT mesh vertex (" << (*renMapIt).first << ")" << std::endl);
-        DBG_LOAD3("Corresponding index in render mesh " << (*renMapIt).second << std::endl);
-        // Set vertex color... if the polygon is shaded
-        if (gxVertex.hasColor())
-        {
-            DBG_LOAD0(
-                "Warning: multi-color polygon will not be inserted in triangles_, although it is handled by vertices_"
-                << std::endl);
-            GXColor gxVertexColor(gxVertex.color());
-            RenMaterial renVertexMat;
-            renVertexMat.diffuse(RenColour(
-                (gxVertexColor.red()) / 255.,
-                (gxVertexColor.green()) / 255.,
-                (gxVertexColor.blue()) / 255.,
-                1.0));
-            if (!vertices_->materialMap())
-            {
-                vertices_->createMaterialMap();
-            }
-            RenIVertexMaterials* renVerticesMat = vertices_->materialMap();
-            renVerticesMat->insert(renVertexIndex, renVertexMat);
-        }
-
-    } // for (renMapIt=renIndexesMap.begin()...
-
-    // sweep the groups of polygons and copy them in triangles_
-    DBG_LOAD0("--Creation of the triangles_ structure--" << std::endl);
-    for (GXPolygonMap::const_iterator gxPSetMapIt = gxPSetMap.begin(); gxPSetMapIt != gxPSetMap.end(); ++gxPSetMapIt)
-    {
-
-        GXMat gxMat((*gxPSetMapIt).first);
-        PolygonIndexes gxPolygonSet((*gxPSetMapIt).second);
-        DBG_LOAD3(
-            "Creating group of polygons (" << gxPolygonSet.size() << " elements) for material { " << gxMat << "}"
-                                           << std::endl);
-
-        RenMaterial renMat;
-        renMat.diffuse(RenColour(
-            (gxMat.diffuseColor().red()) / 255.,
-            (gxMat.diffuseColor().green()) / 255.,
-            (gxMat.diffuseColor().blue()) / 255.,
-            (100 - gxMat.transparancy()) / 100.));
-        // Get the texture name of the current polygon
-        if (gxMat.hasValidTexture())
-        {
-
-            GXIdPos gxTxId = gxMat.textureId();
-            GXTexture gxTx = gxmesh->texture(gxTxId);
-            std::string txName = gxTx.name().str();
-            RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);
-            renMat.texture(renTex);
-        }
-        RenIDistinctGroup* triangleGroup = new RenIDistinctGroup(renMat, gxPolygonSet.size());
-        for (int gxPSetIndex = 0; gxPSetIndex < gxPolygonSet.size(); ++gxPSetIndex)
-        {
-            // sweep polygons of the group
-            int gxPolygonIndex = gxPolygonSet[gxPSetIndex];
-            GXPolygon3 gxPolygon(gxmesh->polygon(gxPolygonIndex));
-            ASSERT(gxPolygon.numVertices() == 3, runtime_error("Can only read triangles from .x files."));
-            DBG_LOAD3("Inserting polygon " << gxPolygonIndex << " {" << gxPolygon << "}" << std::endl);
-
-            int gxPolygonVertexIndex = 0;
-            gxVertex = gxPolygon.vertex(gxPolygonVertexIndex);
-            Ren::VertexIdx renVertex1Index = renIndexesMap[gxVertex];
-            DBG_LOAD3(
-                "First GX vertex: " << gxVertex << " corresponding render index: " << renVertex1Index << std::endl);
-            // chexk that the coordinates of the points are the same at
-            // gxVertexIndex position in gxmesh and renVertexIndex position in vertices_
-            ASSERT_DATA(GXPoint3 DBgxVertex(gxmesh->point(gxVertex.pointIndex())));
-            ASSERT_DATA(RenIVertex DBrenVertex((*vertices_)[renVertex1Index]));
-            ASSERT(
-                DBrenVertex.x == DBgxVertex.x(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DBrenVertex.y == DBgxVertex.z(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DBrenVertex.z == DBgxVertex.y(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-
-            ++gxPolygonVertexIndex;
-            gxVertex = gxPolygon.vertex(gxPolygonVertexIndex);
-            Ren::VertexIdx renVertex2Index = renIndexesMap[gxVertex];
-            DBG_LOAD3(
-                "Second GX vertex: " << gxVertex << " corresponding render index: " << renVertex2Index << std::endl);
-            ASSERT_DATA(GXPoint3 DB2gxVertex(gxmesh->point(gxVertex.pointIndex())));
-            ASSERT_DATA(RenIVertex DB2renVertex((*vertices_)[renVertex2Index]));
-            ASSERT(
-                DB2renVertex.x == DB2gxVertex.x(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DB2renVertex.y == DB2gxVertex.z(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DB2renVertex.z == DB2gxVertex.y(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-
-            ++gxPolygonVertexIndex;
-            gxVertex = gxPolygon.vertex(gxPolygonVertexIndex);
-            Ren::VertexIdx renVertex3Index = renIndexesMap[gxVertex];
-            DBG_LOAD3(
-                "Third GX vertex: " << gxVertex << " corresponding render index: " << renVertex3Index << std::endl);
-            ASSERT_DATA(GXPoint3 DB3gxVertex(gxmesh->point(gxVertex.pointIndex())));
-            ASSERT_DATA(RenIVertex DB3renVertex((*vertices_)[renVertex3Index]));
-            ASSERT(
-                DB3renVertex.x == DB3gxVertex.x(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DB3renVertex.y == DB3gxVertex.z(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-            ASSERT(
-                DB3renVertex.z == DB3gxVertex.y(),
-                runtime_error("Vertex coordinate mismatch between vertices_ and gxmesh"));
-
-            // also flip the second and third vertex of the polygon
-            triangleGroup->addTriangle(
-                (Ren::VertexIdx)renVertex1Index,
-                (Ren::VertexIdx)renVertex3Index,
-                (Ren::VertexIdx)renVertex2Index);
-            DBG_LOAD3("End insertion polygon" << std::endl);
-        }
-        // add group of triangles to triangles_
-        DBG_LOAD3("Insertion of group of polygons in triangles_" << std::endl);
-        triangles_.push_back(triangleGroup);
-        DBG_LOAD3("End creation group of polygons" << std::endl);
-    } // for (gxPSetMapIt=gxPSetMap.begin()...
-
-    checkMaxVertices(vertices_.get(), maxVertices_);
-
-    DBG_LOAD0("Conversion succeded" << std::endl);
-    return true;
-}
-
 static RenMaterial buildRenMaterial(const RenI::MeshMaterial& md)
 {
     RenMaterial renMat;
@@ -2564,13 +2222,10 @@ bool RenMesh::buildFromMeshData(const RenI::MeshData& data)
     return true;
 }
 
-// static
 void RenMesh::emptyCache()
 {
     for (const std::unique_ptr<IMeshLoader>& loader : Ren::meshLoaders())
         loader->deleteAll();
-
-    RenIGXMeshLoader::instance().deleteAll();
 }
 
 // static

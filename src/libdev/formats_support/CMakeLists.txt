@@ -10,6 +10,7 @@ target_include_directories(format_support_iface INTERFACE
 )
 
 # Loader submodules
+add_subdirectory(agt)
 add_subdirectory(xfile)
 
 add_subdirectory(factory)

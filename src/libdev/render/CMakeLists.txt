@@ -47,7 +47,6 @@ set(RENDER_SOURCES
     fixpt.cpp
     fixptvec.cpp
     glmath.cpp
-    gxmeshload.cpp
     hierbuil.cpp
     hierbuil.hpp
     hierload.cpp
@@ -79,7 +78,6 @@ set(RENDER_SOURCES
     internal/fixptvec.hpp
     internal/fn_stars.hpp
     internal/glmath.hpp
-    internal/gxmeshload.hpp
     internal/illumine.hpp
     internal/illumine.ipp
     internal/inlight.hpp

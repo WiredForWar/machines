@@ -53,7 +53,6 @@ private:
     // Operation deliberately revoked
     bool operator==(const RenHierarchyBuilder&);
 
-    friend class RenIGXMeshLoader;
     friend class RenHierarchyLoader;
 
     //  Add a frame without a mesh to the hierarchy

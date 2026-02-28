@@ -19,5 +19,6 @@ target_link_libraries(mesh_loader_factory PUBLIC
 # Each sets an INTERFACE compile definition (HAS_XFILE_LOADER, etc.)
 # which the factory .cpp uses via #ifdef.
 target_link_libraries(mesh_loader_factory PRIVATE
+    FormatSupport::agt
     FormatSupport::xfile
 )

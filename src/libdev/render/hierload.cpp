@@ -13,7 +13,6 @@
 #include "mathex/point3d.hpp"
 #include "system/pathname.hpp"
 #include "render/hierbuil.hpp"
-#include "render/internal/gxmeshload.hpp"
 #include "render/internal/meshid.hpp"
 #include "render/render.hpp"
 #include "formats_support/IMeshLoader.hpp"
@@ -72,16 +71,6 @@ void RenHierarchyLoader::load(const SysPathName& pathName, RenHierarchyBuilder* 
                 return;
             }
         }
-    }
-
-    ASSERT((pathName.extension() != "agt"), "Unsupported file type");
-    SysPathName withExtAGT(pathName);
-    withExtAGT.extension("agt");
-
-    ASSERT(withExtAGT.existsAsFile(), "");
-    if (withExtAGT.existsAsFile())
-    {
-        RenIGXMeshLoader::instance().load(withExtAGT, pBuilder);
     }
 }
 
