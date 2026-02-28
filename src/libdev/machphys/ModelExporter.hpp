@@ -52,6 +52,21 @@ public:
         const RenMeshInstance& meshInst,
         const std::string& indent);
 
+    // Write a .glb (binary glTF) file for one LOD level of a composite.
+    // Returns the leaf filename written, or "" if LOD is empty.
+    static std::string writeGltfFile(
+        const W4dComposite& composite,
+        const SysPathName& outputDir,
+        const std::string& baseName,
+        W4dLOD lod);
+
+    // Write a .glb file for a collection of named mesh instances (shared models).
+    // meshes: vector of (meshName, RenMeshInstance*) pairs.
+    static void writeSharedGltfFile(
+        const SysPathName& outputDir,
+        const std::string& baseName,
+        const std::vector<std::pair<std::string, const RenMeshInstance*>>& meshes);
+
 private:
     MachPhysModelExporter() = delete;
 

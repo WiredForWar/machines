@@ -534,3 +534,11 @@ target_link_libraries(machphys PUBLIC
     LibDev::render
     LibDev::sim
 )
+
+target_sources(machphys PRIVATE
+    GltfExporter.cpp
+)
+
+target_link_libraries(machphys PRIVATE
+    tinygltf::tinygltf
+)

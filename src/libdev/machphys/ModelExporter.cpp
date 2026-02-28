@@ -804,6 +804,9 @@ void MachPhysModelExporter::exportComposite(
         std::string xFileName = writeXFile(composite, outputDir, lodBaseName, lod);
         xFileNames.push_back(xFileName);
 
+        // Also export glTF alongside .x
+        writeGltfFile(composite, outputDir, lodBaseName, lod);
+
         // Get the LOD distance from the composite itself (or first link that has this LOD)
         double dist = HUGE_VAL;
         if (composite.hasMesh(lod))
@@ -1591,6 +1594,9 @@ void MachPhysModelExporter::exportSharedModels(const SysPathName& outputDir, con
                 xfs.close();
                 std::cout << "ModelExporter: Wrote shared " << xPath << " (" << it->second.size() << " meshes)" << std::endl;
             }
+
+            // Also export glTF alongside .x
+            writeSharedGltfFile(SysPathName(outDir), entry.xBaseName, it->second);
         }
         else
         {
