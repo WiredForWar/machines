@@ -2255,6 +2255,35 @@ RenMeshInstance& W4dEntity::mesh(W4dLOD id)
     return *((*meshes_)[id].mesh);
 }
 
+W4dEntity::W4dDistance W4dEntity::meshDistance(W4dLOD id) const
+{
+    CB_W4dEntity_DEPIMPL();
+    PRE(meshes_ && id < meshes_->size());
+    return (*meshes_)[id].distance;
+}
+
+size_t W4dEntity::nLightData() const
+{
+    return pImpl_->pAnimationLightDataPtrs_ ? pImpl_->pAnimationLightDataPtrs_->size() : 0;
+}
+
+const W4dLightData& W4dEntity::lightData(size_t i) const
+{
+    PRE(i < nLightData());
+    return static_cast<const W4dLightData&>(*(*pImpl_->pAnimationLightDataPtrs_)[i]);
+}
+
+size_t W4dEntity::nAnimationData() const
+{
+    return pImpl_->pAnimationDataPtrs_ ? pImpl_->pAnimationDataPtrs_->size() : 0;
+}
+
+const W4dAnimationData& W4dEntity::animationData(size_t i) const
+{
+    PRE(i < nAnimationData());
+    return *(*pImpl_->pAnimationDataPtrs_)[i];
+}
+
 void perWrite(PerOstream& ostr, const W4dEntity& entity)
 {
     ostr << entity.pImpl_.get();

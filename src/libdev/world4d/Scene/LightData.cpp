@@ -274,6 +274,48 @@ const W4dLightData::Type& W4dLightData::type() const
     return type_;
 }
 
+const W4dLightData::Scope& W4dLightData::scope() const
+{
+    return scope_;
+}
+
+const RenColour& W4dLightData::colour() const
+{
+    return colour_;
+}
+
+const MexPoint3d& W4dLightData::position() const
+{
+    return position_;
+}
+
+const MexVec3& W4dLightData::direction() const
+{
+    return direction_;
+}
+
+void W4dLightData::attenuations(MATHEX_SCALAR* a1, MATHEX_SCALAR* a2, MATHEX_SCALAR* a3) const
+{
+    *a1 = attenuations_[0];
+    *a2 = attenuations_[1];
+    *a3 = attenuations_[2];
+}
+
+MATHEX_SCALAR W4dLightData::maxRange() const
+{
+    return maxRange_;
+}
+
+const ctl_vector<MATHEX_SCALAR>& W4dLightData::times() const
+{
+    return times_;
+}
+
+const ctl_vector<MATHEX_SCALAR>& W4dLightData::intensities() const
+{
+    return intensities_;
+}
+
 void W4dLightData::times(const ctl_vector<MATHEX_SCALAR>& timeIntervals)
 {
     times_ = timeIntervals;

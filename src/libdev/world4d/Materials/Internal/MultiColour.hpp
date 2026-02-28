@@ -37,6 +37,8 @@ public:
 
     void add(W4dColourPulseData* pData);
 
+    const ctl_pvector<W4dColourPulseData>& colourPulseDataVec() const { return colourPulseDataVec_; }
+
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dMultiColourPulseData);

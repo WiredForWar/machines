@@ -31,6 +31,8 @@ public:
     // apply the uv animation to pEntity  start at statTime
     void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
 
+    const MexVec2& speedVec() const { return speedVec_; }
+
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dUVTranslateData);

@@ -439,6 +439,18 @@ bool W4dComposite::findCompositePlan(const std::string& name, W4dCompositePlanPt
     return planFound;
 }
 
+size_t W4dComposite::listCompositePlans(ctl_list<std::string>* planList) const
+{
+    CB_W4dComposite_DEPIMPL();
+    size_t count = 0;
+    for (const auto& plan : compositePlans_)
+    {
+        planList->push_back(plan->name());
+        ++count;
+    }
+    return count;
+}
+
 // This cycles through the animation sequences of a plan if it has any.
 bool W4dComposite::cycleAnims(W4dCompositePlanPtr* pPlanPtr) const
 {

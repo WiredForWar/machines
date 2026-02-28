@@ -277,6 +277,22 @@ public:
     const RenMeshInstance& mesh(W4dLOD LODid = 0) const;
     // PRE( hasMesh( LODiD ) )
 
+    // returns the LOD transition distance for the given LOD
+    MexDouble meshDistance(W4dLOD LODid) const;
+    // PRE( LODid < nLODs() )
+
+    // returns the number of light animation data entries, or 0 if none
+    size_t nLightData() const;
+    // returns the i-th light animation data entry
+    const class W4dLightData& lightData(size_t i) const;
+    // PRE( i < nLightData() )
+
+    // returns the number of non-light animation data entries, or 0 if none
+    size_t nAnimationData() const;
+    // returns the i-th non-light animation data entry
+    const class W4dAnimationData& animationData(size_t i) const;
+    // PRE( i < nAnimationData() )
+
     bool visible() const;
     void visible(bool vis);
 

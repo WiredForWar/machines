@@ -39,6 +39,8 @@ public:
 
     void add(W4dCycleTextureData* pData);
 
+    const ctl_pvector<W4dCycleTextureData>& cycleTextureDataVec() const { return cycleTextureDataVec_; }
+
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_VIRTUAL(W4dCycleMultiTextureData);

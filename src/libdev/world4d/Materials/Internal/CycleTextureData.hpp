@@ -31,6 +31,11 @@ public:
 
     virtual ~W4dCycleTextureData();
 
+    const std::string& textureName() const { return textureName_; }
+    size_t startTexture() const { return startTexture_; }
+    size_t endTexture() const { return endTexture_; }
+    size_t nRepetations() const { return nRepetations_; }
+
     PER_MEMBER_PERSISTENT(W4dCycleTextureData);
     PER_FRIEND_READ_WRITE(W4dCycleTextureData);
 

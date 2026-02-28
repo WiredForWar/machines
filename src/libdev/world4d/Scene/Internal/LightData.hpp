@@ -59,6 +59,14 @@ public:
     void intensities(const ctl_vector<MATHEX_SCALAR>& intensities);
 
     const Type& type() const;
+    const Scope& scope() const;
+    const RenColour& colour() const;
+    const MexPoint3d& position() const;
+    const MexVec3& direction() const;
+    void attenuations(MATHEX_SCALAR* a1, MATHEX_SCALAR* a2, MATHEX_SCALAR* a3) const;
+    MATHEX_SCALAR maxRange() const;
+    const ctl_vector<MATHEX_SCALAR>& times() const;
+    const ctl_vector<MATHEX_SCALAR>& intensities() const;
 
     // apply the uv animation to pEntity  start at statTime
     void apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime) override;
