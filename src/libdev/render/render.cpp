@@ -1,5 +1,8 @@
 #include "render/render.hpp"
 
+#include "formats_support/IMeshLoader.hpp"
+#include "formats_support/factory/MeshLoaderFactory.hpp"
+
 #include "system/pathname.hpp"
 #include "render/device.hpp"
 #include "render/texmgr.hpp"
@@ -17,11 +20,25 @@
 // static
 static bool renInitialised = false;
 
+// Mesh loader storage -- populated once during initialise().
+static std::vector<std::unique_ptr<IMeshLoader>> meshLoaders_;
+static std::vector<std::string> supportedExtensions_;
+
 // static
 std::ostream& Ren::out()
 {
     PRE(RenDevice::current());
     return RenDevice::current()->out();
+}
+
+const std::vector<std::unique_ptr<IMeshLoader>>& Ren::meshLoaders()
+{
+    return meshLoaders_;
+}
+
+const std::vector<std::string>& Ren::supportedMeshExtensions()
+{
+    return supportedExtensions_;
 }
 
 // Impose a construction order on various Singletons in the render
@@ -40,6 +57,17 @@ void Ren::initialise()
     RenIMatManager::instance();
     RenID3DMeshLoader::instance();
     RenIMeshFactory::instance();
+
+    // Populate the mesh loader registry from the factory.
+    meshLoaders_ = FormatSupport::createMeshLoaders();
+
+    // Collect all supported extensions in priority order.
+    supportedExtensions_.clear();
+    for (const auto& loader : meshLoaders_)
+    {
+        for (const auto& ext : loader->supportedExtensions())
+            supportedExtensions_.push_back(ext);
+    }
 
     //  Register all of the derived classes we wish to read
     //  via base class pointers

@@ -26,6 +26,10 @@
 #include "xin/XFileHelper.hpp"
 
 #include "render/internal/meshfact.hpp"
+#include "render/render.hpp"
+#include "formats_support/IMeshLoader.hpp"
+#include "formats_support/MeshData.hpp"
+
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/vtxmat.hpp"
 #include "render/internal/trigroup.hpp"
@@ -1125,6 +1129,31 @@ bool RenMesh::read(const SysPathName& pathName, const std::string& meshName, dou
 
     PRE(meshName.length() > 0); // a valid mesh name must be supplied
     PRE(RenIDeviceImpl::current());
+
+    // Try each registered mesh loader in priority order.
+    for (const auto& loader : Ren::meshLoaders())
+    {
+        for (const auto& ext : loader->supportedExtensions())
+        {
+            SysPathName candidate(pathName);
+            candidate.extension(ext);
+
+            if (!candidate.existsAsFile())
+                continue;
+
+            DBG_LOAD0("Loading mesh " << meshName << " from " << candidate << std::endl);
+            RenStreamIndenter indenter;
+
+            RenI::MeshData meshData = loader->loadMesh(candidate, meshName);
+            if (!meshData.primitives.empty() && buildFromMeshData(meshData))
+            {
+                pathName_ = candidate.pathname();
+                meshName_ = meshName;
+                isDirty_ = true;
+                return true;
+            }
+        }
+    }
 
     SysPathName withExtDX(pathName);
     withExtDX.extension("x");
@@ -2543,9 +2572,197 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
     return true;
 }
 
+static RenMaterial buildRenMaterial(const RenI::MeshMaterial& md)
+{
+    RenMaterial renMat;
+
+    if (md.emissiveFactor > 0.03f)
+    {
+        RenColour emissive(
+            md.diffuseR * md.emissiveFactor,
+            md.diffuseG * md.emissiveFactor,
+            md.diffuseB * md.emissiveFactor);
+        renMat.emissive(emissive);
+        renMat.diffuse(RenColour(0, 0, 0, md.diffuseA));
+    }
+    else
+    {
+        renMat.diffuse(RenColour(md.diffuseR, md.diffuseG, md.diffuseB, md.diffuseA));
+    }
+
+    switch (md.sortMode)
+    {
+        case RenI::SortMode::InterMeshCoplanar:
+            renMat.interMeshCoplanar(true);
+            renMat.coplanarPriority(md.sortPriority);
+            break;
+        case RenI::SortMode::IntraMeshAlpha:
+            renMat.intraMeshAlphaPriority(true);
+            renMat.alphaPriority(md.sortPriority);
+            break;
+        case RenI::SortMode::AbsoluteAlphaNegative:
+            renMat.absoluteAlphaPriority(true);
+            renMat.alphaPriority(static_cast<short>(-md.sortPriority));
+            break;
+        case RenI::SortMode::AbsoluteAlphaPositive:
+            renMat.absoluteAlphaPriority(true);
+            renMat.alphaPriority(md.sortPriority);
+            break;
+        case RenI::SortMode::None:
+            break;
+    }
+
+    if (!md.textureName.empty() && md.textureName.length() > 4)
+    {
+        RenTexture renTex = RenSurfaceManager::instance().createTexture(md.textureName);
+        renMat.texture(renTex);
+    }
+
+    return renMat;
+}
+
+bool RenMesh::buildFromMeshData(const RenI::MeshData& data)
+{
+    // First pass: count total vertices across all primitives.
+    size_t totalVerts = 0;
+    for (const auto& prim : data.primitives)
+        totalVerts += prim.vertices.size();
+
+    if (totalVerts == 0)
+        return false;
+
+    vertices_ = std::make_unique<RenIVertexData>(totalVerts);
+
+    static const MexVec3 defaultNormal(0, 0, 1.2 * MexEpsilon::instance());
+
+    size_t vertexOffset = 0;
+
+    for (const auto& prim : data.primitives)
+    {
+        size_t primVerts = prim.vertices.size();
+
+        // Add vertices
+        for (const auto& v : prim.vertices)
+        {
+            MexPoint3d pos(v.px, v.py, v.pz);
+            MexVec3 norm(v.nx, v.ny, v.nz);
+
+            if (norm.modulus() > 1)
+                norm.makeUnitVector();
+            if (norm.isZeroVector())
+                norm = defaultNormal;
+
+            MexPoint2d uv(v.tu, v.tv);
+            vertices_->addVertex(pos, norm, uv);
+        }
+
+        // Resolve material
+        RenMaterial renMat;
+        RenI::SpinAxis spinAxis{};
+        bool backfaceCull = true;
+
+        if (prim.materialIndex >= 0 && prim.materialIndex < static_cast<int>(data.materials.size()))
+        {
+            const auto& md = data.materials[prim.materialIndex];
+            renMat = buildRenMaterial(md);
+            spinAxis = md.spinAxis;
+            backfaceCull = md.backfaceCull;
+        }
+
+        // Determine if this primitive is an STF polygon group
+        MexVec3 stfDir(0, 0, 0);
+        switch (spinAxis)
+        {
+            case RenI::SpinAxis::X: stfDir = MexVec3(1, 0, 0); break;
+            case RenI::SpinAxis::Y: stfDir = MexVec3(0, 1, 0); break;
+            case RenI::SpinAxis::Z: stfDir = MexVec3(0, 0, 1); break;
+            case RenI::SpinAxis::None: break;
+        }
+
+        if (stfDir.isZeroVector())
+        {
+            // Regular triangle group
+            RenIDistinctGroup* triGroup = new RenIDistinctGroup(renMat);
+            if (!backfaceCull)
+                triGroup->backFace(false);
+
+            for (size_t t = 0; t + 2 < prim.indices.size(); t += 3)
+            {
+                triGroup->addTriangle(
+                    static_cast<Ren::VertexIdx>(vertexOffset + prim.indices[t]),
+                    static_cast<Ren::VertexIdx>(vertexOffset + prim.indices[t + 1]),
+                    static_cast<Ren::VertexIdx>(vertexOffset + prim.indices[t + 2]));
+            }
+
+            triangles_.push_back(triGroup);
+        }
+        else
+        {
+            // STF polygon group -- reconstruct RenSpinTFPolygon objects.
+            size_t nFaces = prim.indices.size() / 3;
+            std::vector<bool> consumed(nFaces, false);
+
+            for (size_t fi = 0; fi < nFaces; ++fi)
+            {
+                if (consumed[fi])
+                    continue;
+
+                int i1 = static_cast<int>(vertexOffset + prim.indices[fi * 3]);
+                int i2 = static_cast<int>(vertexOffset + prim.indices[fi * 3 + 1]);
+                int i3 = static_cast<int>(vertexOffset + prim.indices[fi * 3 + 2]);
+
+                bool match = false;
+                int m = 0;
+
+                for (size_t fj = fi + 1; fj < nFaces && !match; ++fj)
+                {
+                    if (consumed[fj])
+                        continue;
+
+                    int i4 = static_cast<int>(vertexOffset + prim.indices[fj * 3]);
+                    int i5 = static_cast<int>(vertexOffset + prim.indices[fj * 3 + 1]);
+                    int i6 = static_cast<int>(vertexOffset + prim.indices[fj * 3 + 2]);
+
+                    match = findMatch(*vertices_, i1, i2, i3, i4, i5, i6, m);
+                    if (match)
+                        consumed[fj] = true;
+                }
+
+                RenSpinTFPolygon stfPoly;
+
+                ctl_vector<MexPoint2d> verts;
+                verts.reserve(4);
+                ctl_vector<MexPoint2d> uvs;
+                uvs.reserve(4);
+                MexPoint3d basePoint;
+
+                spinPolyElements(*vertices_, i1, i2, i3, m, match, verts, uvs, basePoint, stfDir);
+
+                stfPoly.uv(uvs);
+                stfPoly.vertices(verts);
+                stfPoly.material(renMat);
+                stfPoly.spinAxis(RenSpinTFPolygon::SpinAxis(basePoint, stfDir));
+                stfPoly.normalType(RenSpinTFPolygon::USE_AXIS);
+                addSpinTFPolygon(stfPoly);
+            }
+        }
+
+        vertexOffset += primVerts;
+    }
+
+    checkMaxVertices(vertices_.get(), maxVertices_);
+
+    std::sort(triangles_.begin(), triangles_.end(), CompMatGroups());
+
+    return true;
+}
+
 // static
 void RenMesh::emptyCache()
 {
+    for (const std::unique_ptr<IMeshLoader>& loader : Ren::meshLoaders())
+        loader->deleteAll();
+
     RenID3DMeshLoader::instance().deleteAll();
 }
 

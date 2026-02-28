@@ -8,3 +8,5 @@ target_sources(format_support_iface INTERFACE
 target_include_directories(format_support_iface INTERFACE
     ${CMAKE_SOURCE_DIR}/src/libdev
 )
+
+add_subdirectory(factory)

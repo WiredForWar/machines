@@ -31,6 +31,11 @@ struct Scene;
 struct Mesh;
 }; // namespace XFile
 
+namespace RenI
+{
+struct MeshData;
+} // namespace RenI
+
 class RenDevice;
 class RenMaterial;
 class RenNormalMap;
@@ -235,6 +240,7 @@ private:
     Ren::VertexIdx addOrFindVertex(const MexPoint3d&, double epsilon);
     bool buildFromXMesh(XFile::Scene*, XFile::Mesh*);
     bool buildFromGXMesh(GXMesh*);
+    bool buildFromMeshData(const RenI::MeshData& data);
     void createTextures();
 
     // Called when the data is dirty (because the mesh has been edited)

@@ -216,4 +216,5 @@ target_link_libraries(render PRIVATE
     SDL2_image::SDL2_image
     GLEW::GLEW
     Freetype::Freetype
+    FormatSupport::factory
 )

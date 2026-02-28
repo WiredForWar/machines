@@ -8,6 +8,10 @@
 
 #include "base/base.hpp"
 
+#include <memory>
+#include <vector>
+
+class IMeshLoader;
 class RenMesh;
 class RenMaterialVec;
 class RenUVTransform;
@@ -33,6 +37,11 @@ namespace Ren
     // PRE(MexCoordSystem::instance().isSet());
     void initialise();
     bool initialised(); // a pre-condition for many things
+
+    // Mesh loader registry -- populated by initialise() from the factory.
+    const std::vector<std::unique_ptr<IMeshLoader>>& meshLoaders();
+    // Collected list of all file extensions the registered loaders handle.
+    const std::vector<std::string>& supportedMeshExtensions();
 
     using VertexIdx = ushort;
     using TriangleIdx = ushort;

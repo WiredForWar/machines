@@ -17,10 +17,15 @@
 class SysPathName;
 class RenHierarchyBuilder;
 
+namespace RenI { struct HierarchyNode; }
+
 class RenHierarchyLoader
 {
 public:
     static void load(const SysPathName& pathName, RenHierarchyBuilder* pBuilder);
+
+    // Convert a HierarchyNode tree into RenHierarchyBuilder::addFrame calls.
+    static void buildFrame(const RenI::HierarchyNode& node, RenHierarchyBuilder* builder);
 
     void CLASS_INVARIANT;
 
