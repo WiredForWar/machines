@@ -1312,10 +1312,10 @@ void MachPhysPlanetSurface::loadPlanet(const SysPathName& pathname)
         makePortals();
 
         // save the planet in persistent form
-        std::ofstream ofstr(persistentPathname.c_str(), std::ios::binary);
-        PerOstream ostr(ofstr);
+        // std::ofstream ofstr(persistentPathname.c_str(), std::ios::binary);
+        // PerOstream ostr(ofstr);
 
-        ostr << (*this);
+        // ostr << (*this);
     }
 
     // Swap the domains across to the scene manager's root.
