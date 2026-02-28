@@ -13,7 +13,6 @@
 #include "render/ttftris.hpp"
 #include "render/internal/trigroup.hpp"
 #include "render/internal/matmgr.hpp"
-#include "render/internal/meshload.hpp"
 #include "render/internal/meshfact.hpp"
 #include "mathex/coordsys.hpp"
 
@@ -55,7 +54,6 @@ void Ren::initialise()
 
     RenTexManager::instance();
     RenIMatManager::instance();
-    RenID3DMeshLoader::instance();
     RenIMeshFactory::instance();
 
     // Populate the mesh loader registry from the factory.

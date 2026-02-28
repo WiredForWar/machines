@@ -157,7 +157,6 @@ target_sources(libs
     $<TARGET_OBJECTS:profiler>
     $<TARGET_OBJECTS:device>
     $<TARGET_OBJECTS:gxin>
-    $<TARGET_OBJECTS:xin>
     $<TARGET_OBJECTS:stdlib>
     $<TARGET_OBJECTS:phys>
     $<TARGET_OBJECTS:recorder>

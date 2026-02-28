@@ -26,10 +26,7 @@
 class IDirect3DRMMeshBuilder;
 class MexTransform3d;
 class GXMesh;
-namespace XFile {
-struct Scene;
-struct Mesh;
-}; // namespace XFile
+namespace RenI { struct MeshData; }
 
 namespace RenI
 {
@@ -238,7 +235,7 @@ private:
     bool read(const SysPathName& path, const std::string& mesh, double scale = 1.0);
     bool copyFromMeshBuilder(IDirect3DRMMeshBuilder*);
     Ren::VertexIdx addOrFindVertex(const MexPoint3d&, double epsilon);
-    bool buildFromXMesh(XFile::Scene*, XFile::Mesh*);
+    bool buildFromMeshData(const RenI::MeshData& data);
     bool buildFromGXMesh(GXMesh*);
     bool buildFromMeshData(const RenI::MeshData& data);
     void createTextures();

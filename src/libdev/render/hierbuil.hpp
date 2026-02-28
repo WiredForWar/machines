@@ -53,7 +53,6 @@ private:
     // Operation deliberately revoked
     bool operator==(const RenHierarchyBuilder&);
 
-    friend class RenID3DMeshLoader;
     friend class RenIGXMeshLoader;
     friend class RenHierarchyLoader;
 

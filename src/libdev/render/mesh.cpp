@@ -21,15 +21,11 @@
 #include "render/stats.hpp"
 #include "render/vertex.hpp"
 #include "render/internal/glmath.hpp"
-#include "render/internal/meshload.hpp"
 #include "render/internal/gxmeshload.hpp"
-#include "xin/XFileHelper.hpp"
-
 #include "render/internal/meshfact.hpp"
 #include "render/render.hpp"
 #include "formats_support/IMeshLoader.hpp"
 #include "formats_support/MeshData.hpp"
-
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/vtxmat.hpp"
 #include "render/internal/trigroup.hpp"
@@ -1155,36 +1151,7 @@ bool RenMesh::read(const SysPathName& pathName, const std::string& meshName, dou
         }
     }
 
-    SysPathName withExtDX(pathName);
-    withExtDX.extension("x");
-
-    if (withExtDX.existsAsFile())
-    {
-
-        // Create a temporary Retained Mode mesh builder to read the .x file.
-        DBG_LOAD0("Loading mesh " << meshName << " from " << pathName << std::endl);
-        RenStreamIndenter indenter;
-
-        RenID3DMeshLoader::MeshData meshData = RenID3DMeshLoader::instance().load(withExtDX, meshName);
-        ASSERT_INFO(meshName);
-
-        if (!meshData.mesh)
-            return false;
-
-        //    if (!TRYRENDX(builder->Scale(scale, scale, scale)))
-        //      return false;
-
-        if (!buildFromXMesh(meshData.scene, meshData.mesh))
-            return false;
-
-        // Initialise these iff everything loaded correctly.
-        pathName_ = withExtDX.pathname();
-        meshName_ = meshName;
-        isDirty_ = true;
-        return true;
-    }
-
-    // No .X file, try to load an agt file
+    // Fallback: try to load an agt file via the old embedded loader
     SysPathName withExtAGT(pathName);
     withExtAGT.extension("agt");
     if (withExtAGT.existsAsFile())
@@ -1208,8 +1175,8 @@ bool RenMesh::read(const SysPathName& pathName, const std::string& meshName, dou
         return true;
     }
 
-    // file was neither .agt nor .x
-    RENDER_STREAM("RenMesh::read() ; Could not read file " << withExtDX << " or file " << withExtAGT << std::endl);
+    // No loader succeeded for any supported format.
+    RENDER_STREAM("RenMesh::read() ; Could not read any supported format for " << pathName << std::endl);
     return false;
 }
 
@@ -2096,166 +2063,6 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     return true;
 }
 
-bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
-{
-    PRE(mesh->mPosFaces.size() == mesh->mNormFaces.size());
-    PRE(mesh->mPosFaces.size() == mesh->mFaceMaterials.size());
-
-    Ren::VertexIdx renVertexIndex;
-    vertices_ = std::make_unique<RenIVertexData>(mesh->mPositions.size());
-
-    for (uint i = 0; i < mesh->mPositions.size(); ++i)
-    {
-        MexPoint3d renVertex(mesh->mPositions[i].x, mesh->mPositions[i].y, mesh->mPositions[i].z);
-        // each face has corresponding 3*vertex index and 3*normal index from separate tables
-        // this is not handled correctly now
-        // number of normals is greater or equal number of vericies
-        // if not then the first one is used multiple times
-        MexVec3 renNormal(mesh->mNormals[0].x, mesh->mNormals[0].y, mesh->mNormals[0].z);
-        if (mesh->mNormals.size() >= mesh->mPositions.size())
-        {
-            renNormal = MexVec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
-        }
-
-        MexPoint2d renUV;
-        // Add texture coordinates if file have them defined
-        if (mesh->mPositions.size() == mesh->mTexCoords[0].size())
-            renUV = MexPoint2d(mesh->mTexCoords[0][i].x, mesh->mTexCoords[0][i].y);
-
-        renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
-        if (renNormal.modulus() > 1)
-            renNormal.makeUnitVector();
-
-        // It may be nonsensical, but 3d Studio appears to create zero
-        // vector normals for some polygons.  The addVertex code chokes
-        // on these, so filter out the zeros.
-        static const MexVec3 almostZeroVec(0, 0, 1.2 * MexEpsilon::instance());
-        if (renNormal.isZeroVector())
-            vertices_->addVertex(renVertex, almostZeroVec, renUV);
-        else
-            vertices_->addVertex(renVertex, renNormal, renUV);
-    }
-
-    /////////////////////////
-    std::vector<RenIDistinctGroup*> triangles;
-    std::vector<XFile::Material>::iterator it = mesh->mMaterials.begin();
-    while (it != mesh->mMaterials.end())
-    {
-        RenMaterial renMat;
-        XFile::Material* material;
-        if (it->mIsReference)
-            material = scene->mGlobalMaterials[it->sceneIndex];
-        else
-            material = &(*it);
-
-        float red = material->mDiffuse.r;
-        float green = material->mDiffuse.g;
-        float blue = material->mDiffuse.b;
-        float alpha = material->mDiffuse.a;
-        renMat.diffuse(RenColour(red, green, blue, alpha));
-
-        if (material->mTextures.size() > 0 && material->mTextures[0].mName.size() > 4)
-        {
-            std::string txName = material->mTextures[0].mName;
-            RenTexture renTex = RenSurfaceManager::instance().createTexture(txName);
-            renMat.texture(renTex);
-        }
-
-        float r = material->mEmissiveCtrl.r;
-        float g = material->mEmissiveCtrl.g;
-        const short shortPower = _STATIC_CAST(short, material->mSortPriority);
-
-        // Coplanar and special alpha sorting aren't actually mutually exclusive.
-        // Fortunately the one current example where we need both (shadows)
-        // is hardcoded in world4d.
-        if (r > 0.5 && r <= 1.5)
-        {
-            // Check the limits on the coplanar priority but *only* for inter-mesh coplanar.
-            renMat.interMeshCoplanar(true);
-            RenIMatManager::instance().checkCoplanarValue(renMat.coplanarPriority());
-            renMat.coplanarPriority(shortPower);
-            DBG_LOAD0("Set inter-mesh priority=" << shortPower << " for " << renMat << "\n");
-        }
-        else if (r > 1.5 && r <= 2.5)
-        {
-            renMat.intraMeshAlphaPriority(true);
-            renMat.alphaPriority(shortPower);
-            DBG_LOAD0("Set intra-mesh alpha priority=" << shortPower << " for " << renMat << "\n");
-        }
-        else if (r > 2.5 && r <= 3.5)
-        {
-            // If the flag is 3, negate the priority.
-            renMat.absoluteAlphaPriority(true);
-            renMat.alphaPriority(_STATIC_CAST(short, -shortPower));
-            DBG_LOAD0("Set absolute alpha priority=" << -shortPower << " for " << renMat << "\n");
-        }
-        else if (r > 3.5 && r <= 4.5)
-        {
-            renMat.absoluteAlphaPriority(true);
-            renMat.alphaPriority(shortPower);
-            DBG_LOAD0("Set absolute alpha priority=" << shortPower << " for " << renMat << "\n");
-        }
-
-        // The polygon's diffuse colour is multiplied by the green component
-        // of the emissive value and the result is used as the emissive material.
-        RenColour emissive(g * red, g * green, g * blue);
-        renMat.emissive(emissive);
-
-        // If the polygon is emissive, set the diffuse colour to black.
-        // Otherwise, we get lighting overflows for every emissive poly.
-        // Is this tollerance OK?
-        if (g > 0.03)
-        {
-            renMat.diffuse(RenColour(0, 0, 0, alpha));
-            DBG_LOAD0("Set emissive for " << renMat << "\n");
-        }
-
-        RenIDistinctGroup* triangleGroup = new RenIDistinctGroup(renMat);
-
-        // mFlags.r >= 6.0 disables backface culling for this triangle group.
-        if (material->mFlags.r >= 6.0)
-            triangleGroup->backFace(false);
-
-        triangles_.push_back(triangleGroup);
-        triangles.push_back(triangleGroup);
-        ++it;
-    }
-
-    for (uint i = 0; i < mesh->mPosFaces.size(); ++i)
-    {
-        size_t groupNum = mesh->mFaceMaterials[i];
-        RenIDistinctGroup* triangleGroup = triangles[groupNum];
-        ASSERT(mesh->mPosFaces[i].mIndices.size() == 3, "Can only read triangles from .x files.");
-        triangleGroup->addTriangle(
-            (Ren::VertexIdx)mesh->mPosFaces[i].mIndices[0],
-            (Ren::VertexIdx)mesh->mPosFaces[i].mIndices[1],
-            (Ren::VertexIdx)mesh->mPosFaces[i].mIndices[2]);
-    }
-
-    checkMaxVertices(vertices_.get(), maxVertices_);
-
-    // Sort the distinct polygon groups for correct coplanar ordering.
-    PRE_INFO(triangles_.size());
-
-    PRE_INFO(triangles_.end() - triangles_.begin());
-    std::sort(triangles_.begin(), triangles_.end(), CompMatGroups());
-
-    DBG_LOAD1(std::endl << "New sorted mesh has " << triangles_.size() << " groups:" << std::endl);
-    ctl_min_memory_vector<RenITriangleGroup*>::const_iterator dIt = triangles_.begin();
-    while (dIt != triangles_.end())
-    {
-        const RenITriangleGroup* group = *dIt;
-        const size_t nTri = group->nTriangles();
-        const RenMaterial& mat = group->material();
-        DBG_LOAD1("   Created new group with " << nTri << " tris and " << mat << std::endl);
-        DBG_LOAD1("   Set coplanar priorty to " << mat.coplanarPriority() << std::endl);
-        ++dIt;
-    }
-    DBG_LOAD1(std::endl);
-
-    return true;
-}
-
 bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
 {
 
@@ -2763,7 +2570,7 @@ void RenMesh::emptyCache()
     for (const std::unique_ptr<IMeshLoader>& loader : Ren::meshLoaders())
         loader->deleteAll();
 
-    RenID3DMeshLoader::instance().deleteAll();
+    RenIGXMeshLoader::instance().deleteAll();
 }
 
 // static

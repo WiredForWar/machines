@@ -14,3 +14,10 @@ target_include_directories(mesh_loader_factory PUBLIC
 target_link_libraries(mesh_loader_factory PUBLIC
     format_support_iface
 )
+
+# Link the concrete loader targets.
+# Each sets an INTERFACE compile definition (HAS_XFILE_LOADER, etc.)
+# which the factory .cpp uses via #ifdef.
+target_link_libraries(mesh_loader_factory PRIVATE
+    FormatSupport::xfile
+)
