@@ -37,6 +37,11 @@ void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChil
     addNode(new Node(pCurrentNode_, transform, nChildren));
 }
 
+void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren, const std::string& instanceName)
+{
+    addNode(new Node(pCurrentNode_, transform, nChildren, instanceName));
+}
+
 void RenHierarchyBuilder::addFrame(const MexTransform3d& transform, size_t nChildren, const RenIMeshID& meshId)
 {
     addNode(new Node(pCurrentNode_, transform, nChildren, meshId));

@@ -82,9 +82,9 @@ struct Material
     std::string mName;
     bool mIsReference{}; // if true, mName holds a name by which the actual material can be found in the material list
     XFile::Color4D mDiffuse;
-    float mSortPriority{}; ///< .x "specularExponent" — coplanar / alpha sort priority value
-    XFile::Color3D mFlags; ///< .x "specular" — r >= 6.0 disables backface culling; g,b unused
-    XFile::Color3D mEmissiveCtrl; ///< .x "emissive" — r: sort-mode selector (0–4), g: emissive intensity multiplier, b: unused
+    float mSortPriority{}; ///< .x "specularExponent" -- coplanar / alpha sort priority value
+    XFile::Color3D mFlags; ///< .x "specular" -- r >= 6.0 disables backface culling; g,b unused
+    XFile::Color3D mEmissiveCtrl; ///< .x "emissive" -- r: sort-mode selector (0-4), g: emissive intensity multiplier, b: unused
     std::vector<TexEntry> mTextures;
     size_t sceneIndex{SIZE_MAX}; ///< the index under which it was stored in the scene's material list
 };

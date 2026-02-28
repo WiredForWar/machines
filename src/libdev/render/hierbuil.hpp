@@ -55,9 +55,13 @@ private:
 
     friend class RenID3DMeshLoader;
     friend class RenIGXMeshLoader;
+    friend class RenHierarchyLoader;
 
     //  Add a frame without a mesh to the hierarchy
     void addFrame(const MexTransform3d&, size_t nChildren);
+
+    //  Add a frame without a mesh but with a link name
+    void addFrame(const MexTransform3d&, size_t nChildren, const std::string& instanceName);
 
     //  Add a frame with a mesh to the hierarchy
     void addFrame(const MexTransform3d&, size_t nChildren, const RenIMeshID& meshId);

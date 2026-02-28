@@ -631,7 +631,7 @@ bool PhysConfigSpace2d::updateFindPath(const FindPathId& id, const PhysRelativeT
 
         if (pFindPath == pIdFindPath)
         {
-            // Caller IS the highest priority — give full time budget
+            // Caller IS the highest priority -- give full time budget
             pFindPath->update(maxTime);
         }
         else
@@ -1055,7 +1055,7 @@ bool PhysConfigSpace2d::updateDomainFindPath(const DomainFindPathId& id, const P
 
         if (pDomainFindPath == pIdDomainFindPath)
         {
-            // Caller IS the highest priority — give full time budget
+            // Caller IS the highest priority -- give full time budget
             pDomainFindPath->update(maxTime);
         }
         else
@@ -1552,7 +1552,7 @@ std::optional<MATHEX_SCALAR> PhysConfigSpace2d::domainGraphDistance(
     if (!domain(startPoint, &startDomainId) || !domain(endPoint, &endDomainId))
         return std::nullopt;
 
-    // Same domain — Euclidean is a reasonable estimate
+    // Same domain -- Euclidean is a reasonable estimate
     if (startDomainId == endDomainId)
         return directDist;
 

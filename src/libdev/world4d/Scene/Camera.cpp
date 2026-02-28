@@ -414,7 +414,7 @@ void W4dCamera::recursiveDomainRender(
                     CULL_STREAM("through " << portal->globalAperture() << " ");
                     if (canSee(portal->globalAperture()))
                     {
-                        CULL_STREAM("visible — enqueued\n");
+                        CULL_STREAM("visible -- enqueued\n");
                         bfsQueue.push({nextDomain, depth + 1});
                     }
                     else

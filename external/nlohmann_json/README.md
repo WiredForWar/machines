@@ -140,9 +140,9 @@ Here are some examples to give you an idea how to use the class.
 
 Besides the examples below, you may want to:
 
-→ Check the [documentation](https://json.nlohmann.me/)\
-→ Browse the [standalone example files](https://github.com/nlohmann/json/tree/develop/docs/mkdocs/docs/examples)\
-→ Read the full [API Documentation](https://json.nlohmann.me/api/basic_json/) with self-contained examples for every function
+-> Check the [documentation](https://json.nlohmann.me/)\
+-> Browse the [standalone example files](https://github.com/nlohmann/json/tree/develop/docs/mkdocs/docs/examples)\
+-> Read the full [API Documentation](https://json.nlohmann.me/api/basic_json/) with self-contained examples for every function
 
 ### Read JSON from a file
 

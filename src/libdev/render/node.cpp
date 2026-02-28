@@ -31,6 +31,17 @@ RenHierarchyBuilder::Node::Node(Node* pParent, const MexTransform3d& transform, 
     reserve(nChildren);
 }
 
+RenHierarchyBuilder::Node::Node(Node* pParent, const MexTransform3d& transform, size_t nChildren, const std::string& instanceName)
+    : pParent_(pParent)
+    , transform_(transform)
+    , nChildren_(nChildren)
+    , instanceName_(instanceName)
+    , root_(false)
+    , scale_(1.0)
+{
+    reserve(nChildren);
+}
+
 RenHierarchyBuilder::Node::Node(Node* pParent, const MexTransform3d& transform, size_t nChildren, const RenIMeshID& id)
     : pParent_(pParent)
     , transform_(transform)

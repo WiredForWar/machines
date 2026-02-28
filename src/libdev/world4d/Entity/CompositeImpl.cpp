@@ -508,10 +508,14 @@ void W4dCompositeImpl::buildHierarchy(
 
             bool linkFound = findLink(pNode->instanceName(), &pLink);
 
-            pEntity = pLink;
+            if (!linkFound)
+            {
+                // Lower-LOD models may contain frames that do not exist
+                // in the primary hierarchy -- just skip them.
+                return;
+            }
 
-            ASSERT_INFO(pNode->instanceName());
-            ASSERT(linkFound, "could not find link");
+            pEntity = pLink;
         }
 
         if (pEntity != nullptr)

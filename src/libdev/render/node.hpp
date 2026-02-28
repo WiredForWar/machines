@@ -51,6 +51,7 @@ private:
     Node(Node* pParent, const MexTransform3d& transform);
 
     Node(Node* pParent, const MexTransform3d& transform, size_t nChildren);
+    Node(Node* pParent, const MexTransform3d& transform, size_t nChildren, const std::string& instanceName);
     Node(Node* pParent, const MexTransform3d& transform, size_t nChildren, const RenIMeshID& id);
 
     bool allChildrenSupplied() const;

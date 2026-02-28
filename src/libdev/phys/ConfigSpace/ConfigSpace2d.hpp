@@ -568,7 +568,7 @@ public:
     /////////////////////////////////////////////////////////
 
     // Synchronous domain-graph distance estimate between two points.
-    // Runs A* on the domain graph to completion (fast — the graph is small).
+    // Runs A* on the domain graph to completion (fast -- the graph is small).
     // Returns the path cost through the domain graph, which accounts for
     // terrain connectivity (rivers, cliffs, etc.). Returns std::nullopt
     // if the points are unreachable from each other.

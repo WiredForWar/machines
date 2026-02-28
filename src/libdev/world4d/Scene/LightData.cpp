@@ -124,7 +124,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
                 }
                 else
                 {
-                    // No intersecting domains — illuminate only this entity
+                    // No intersecting domains -- illuminate only this entity
                     // to prevent interior lights from bleeding through
                     // building walls onto exterior terrain.
                     pLight->illuminate(pEntity);
@@ -152,7 +152,7 @@ void W4dLightData::apply(W4dEntity* pEntity, const PhysAbsoluteTime& startTime)
                 }
                 else
                 {
-                    // No intersecting domains — illuminate only this entity
+                    // No intersecting domains -- illuminate only this entity
                     // to prevent interior lights from bleeding through
                     // building walls onto exterior terrain.
                     pLight->illuminate(pEntity);

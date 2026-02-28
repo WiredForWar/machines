@@ -161,7 +161,7 @@ void RenTextureSetImpl::load(const SysPathName& directory, IProgressReporter* pR
         }
 
         const SysPathName& fileName = *it;
-        // Check if the file has alpha or colour map naming convention —
+        // Check if the file has alpha or colour map naming convention --
         // RenITexBody::read will sort out which bitmap effectively needs to be loaded
         if (! isAlphaMap(fileName) && ! isColourMap(fileName))
         {
