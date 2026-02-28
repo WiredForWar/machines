@@ -5,6 +5,7 @@
 
 #include "render/internal/meshfact.hpp"
 #include "render/mesh.hpp"
+#include "render/MeshOverrides.hpp"
 
 // static
 RenIMeshFactory& RenIMeshFactory::instance()
@@ -30,6 +31,11 @@ Ren::ConstMeshPtr RenIMeshFactory::doCreatePart(const RenIMeshID& id)
     ASSERT_INFO(id.pathName());
     ASSERT_INFO(id.combinedName());
     ASSERT_INFO(id.scale());
+
+    // Check if an override .x file exists for this mesh path.
+    std::optional<SysPathName> override = RenMeshOverrides::instance().findOverride(id.pathName());
+    if (override)
+        return RenMesh::createUnique(*override, id.combinedName(), id.scale());
 
     return RenMesh::createUnique(id.pathName(), id.combinedName(), id.scale());
 }

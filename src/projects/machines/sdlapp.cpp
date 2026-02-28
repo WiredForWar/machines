@@ -39,6 +39,7 @@
 #include "machines/errorhnd.hpp"
 #include "machines/leaktrak.hpp"
 #include "render/colour.hpp"
+#include "render/MeshOverrides.hpp"
 #include "machgui/MenuContext/CtxOptions.hpp"
 #include "machgui/ProgressIndicator.hpp"
 #include "machgui/VSyncMode.hpp"
@@ -512,6 +513,9 @@ bool SDLApp::clientStartup()
 
     progressIndicator.setLimits(0.71, 0.96);
 
+    // Scan for mesh override files before loading any models.
+    RenMeshOverrides::instance().scanDirectory("mods/meshes");
+
     // Preload the models if required
     if (preloadModels)
     {
@@ -523,6 +527,7 @@ bool SDLApp::clientStartup()
                 DevTimer t1;
                 DevTimer t2;
                 MachPhysPreload::persistentPreload(MachPhysPreload::ECHO_PROGRESS, &progressIndicator);
+                RenMeshOverrides::instance().applyPendingOverrides();
                 std::cout << "Time for persistent preload " << t1.time() << std::endl;
 
                 t1.time(0.0);
@@ -543,7 +548,7 @@ bool SDLApp::clientStartup()
             MachPhysPreload::swPreload(MachPhysPreload::ECHO_PROGRESS);
             std::cout << "Time for total preload " << t1.time() << std::endl;
             t1.time(0.0);
-            MachPhysPreload::persistentSave(MachPhysPreload::ECHO_PROGRESS);
+            // MachPhysPreload::persistentSave(MachPhysPreload::ECHO_PROGRESS);
             std::cout << "Time for persistent save " << t1.time() << std::endl;
         }
     }

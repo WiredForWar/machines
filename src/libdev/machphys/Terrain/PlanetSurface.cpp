@@ -29,6 +29,7 @@
 #include "ctl/list.hpp"
 #include "render/texmgr.hpp"
 #include "render/mesh.hpp"
+#include "render/MeshOverrides.hpp"
 #include "render/surfmgr.hpp"
 #include "render/texset.hpp"
 #include "world4d/Scene/Domain.hpp"
@@ -1299,6 +1300,7 @@ void MachPhysPlanetSurface::loadPlanet(const SysPathName& pathname)
         PerIstream istr(ifstr);
 
         istr >> (*this);
+        RenMeshOverrides::instance().applyPendingOverrides();
     }
     else
     {

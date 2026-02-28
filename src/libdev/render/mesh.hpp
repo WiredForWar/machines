@@ -42,6 +42,7 @@ class RenUVTransform;
 class RenScale;
 class RenVertex;
 
+class RenMeshInstance;
 class RenIVertexData;
 class RenITriangleGroup;
 class RenIDistinctGroup;
@@ -197,6 +198,11 @@ public:
     const RenIVertexData* vertices() const { return vertices_.get(); }
 
     void CLASS_INVARIANT;
+
+    // Replace this mesh's geometry by loading from the given .x file.
+    // Existing vertices, triangles, TTFs, etc. are destroyed first.
+    // Returns true on success.
+    bool reloadFromFile(const SysPathName& path);
 
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenMesh);
     PER_FRIEND_READ_WRITE(RenMesh);

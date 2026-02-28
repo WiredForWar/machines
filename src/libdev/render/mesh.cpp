@@ -5,6 +5,7 @@
 
 #include "base/diag.hpp"
 #include "render/mesh.hpp"
+#include "render/meshinst.hpp"
 #include "utility/factory.hpp"
 #include "utility/indent.hpp"
 #include "mathex/point3d.hpp"
@@ -24,6 +25,8 @@
 #include "render/render.hpp"
 #include "formats_support/IMeshLoader.hpp"
 #include "formats_support/MeshData.hpp"
+#include "render/MeshOverrides.hpp"
+
 #include "render/internal/vtxdata.hpp"
 #include "render/internal/vtxmat.hpp"
 #include "render/internal/trigroup.hpp"
@@ -193,6 +196,35 @@ RenMesh::~RenMesh()
     delete pVertexTexture_;
 
     --meshCount_;
+}
+
+bool RenMesh::reloadFromFile(const SysPathName& path)
+{
+    // Destroy existing geometry.
+    for (RenITriangleGroup* p : triangles_)
+        delete p;
+    triangles_.erase(triangles_.begin(), triangles_.end());
+
+    for (RenTTFPolygon* p : ttfs_)
+        delete p;
+    ttfs_.erase(ttfs_.begin(), ttfs_.end());
+
+    for (RenSpinTFPolygon* p : stfps_)
+        delete p;
+    stfps_.erase(stfps_.begin(), stfps_.end());
+
+    for (RenILineGroup* p : lines_)
+        delete p;
+    lines_.erase(lines_.begin(), lines_.end());
+
+    delete pVertexTexture_;
+    pVertexTexture_ = nullptr;
+
+    vertices_.reset();
+    uvAnimated_.reset();
+
+    // Re-read from the override file, keeping the original mesh name.
+    return read(path, meshName_);
 }
 
 //-----------------------------------------------------------------------------
@@ -2037,6 +2069,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
     return true;
 }
 
+// Build a RenMaterial from the format-agnostic RenI::MeshMaterial description.
 static RenMaterial buildRenMaterial(const RenI::MeshMaterial& md)
 {
     RenMaterial renMat;
@@ -2382,6 +2415,21 @@ void perRead(PerIstream& istr, RenMesh& mesh)
     istr >> mesh.pVertexTexture_;
 
     checkMaxVertices(mesh.vertices_.get(), RenMesh::maxVertices_);
+
+    if (!mesh.pathName_.set())
+        return;
+
+    // Check if an override .x file exists for this mesh.  The override
+    // cannot be applied immediately because the persistence system is still
+    // active and destroying deserialized triangle groups / materials would
+    // corrupt the ref-counted material bodies.  Defer to after the stream
+    // is fully read.
+    std::optional<SysPathName> override = RenMeshOverrides::instance().findOverride(mesh.pathName_);
+    if (override)
+    {
+        RENDER_STREAM("RenMesh override: deferring " << mesh.pathName_ << " -> " << *override << std::endl);
+        RenMeshOverrides::instance().markForOverride(&mesh, *override);
+    }
 }
 
 void RenMesh::CLASS_INVARIANT

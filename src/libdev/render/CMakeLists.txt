@@ -7,6 +7,8 @@ set(RENDER_SOURCES
     Font.hpp
     FontsManager.cpp
     FontsManager.hpp
+    MeshOverrides.cpp
+    MeshOverrides.hpp
     OpenGL/RenderBackendGL.cpp
     OpenGL/RenderBackendGL.hpp
     OpenGL/Utils.hpp

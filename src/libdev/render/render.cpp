@@ -48,7 +48,6 @@ const std::vector<std::string>& Ren::supportedMeshExtensions()
 void Ren::initialise()
 {
     PRE(MexCoordSystem::instance().isSet());
-    //    ASSERT( sizeof( Ren::VertexIdx ) == sizeof( WORD ), "Ren::VertexIdx is the wrong size" );
 
     renInitialised = true;
 

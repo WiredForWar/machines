@@ -36,6 +36,7 @@
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/Preload.hpp"
 #include "envirnmt/planet.hpp"
+#include "render/MeshOverrides.hpp"
 #include "planeted/errorhnd.hpp"
 #include "planeted/leaktrak.hpp"
 #include "planeted/availods.hpp"
@@ -462,6 +463,9 @@ bool SDLApp::clientStartup()
         }
     }
 
+    // Scan for mesh override files before loading any models.
+    RenMeshOverrides::instance().scanDirectory("mods/meshes");
+
     // Load model data for constructions/machines
     if (!getenv("CB_NOPRELOAD"))
     {
@@ -474,6 +478,7 @@ bool SDLApp::clientStartup()
         if (MachPhysPreload::persistentFileName().existsAsFile())
         {
             MachPhysPreload::persistentPreload(MachPhysPreload::ECHO_PROGRESS, &progressIndicator);
+            RenMeshOverrides::instance().applyPendingOverrides();
         }
         else
         {

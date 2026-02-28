@@ -16,22 +16,22 @@
 
 class SysPathName;
 class RenHierarchyBuilder;
-
-namespace RenI { struct HierarchyNode; }
+namespace RenI {
+struct HierarchyNode;
+} // namespace RenI
 
 class RenHierarchyLoader
 {
 public:
     static void load(const SysPathName& pathName, RenHierarchyBuilder* pBuilder);
 
-    // Convert a HierarchyNode tree into RenHierarchyBuilder::addFrame calls.
-    static void buildFrame(const RenI::HierarchyNode& node, RenHierarchyBuilder* builder);
-
     void CLASS_INVARIANT;
 
     friend std::ostream& operator<<(std::ostream& o, const RenHierarchyLoader& t);
 
 private:
+    static void buildFrame(const RenI::HierarchyNode& node, RenHierarchyBuilder* builder);
+
     // Operation deliberately revoked
     RenHierarchyLoader();
 
