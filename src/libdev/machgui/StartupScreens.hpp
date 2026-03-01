@@ -273,6 +273,10 @@ public:
     void toggleConsoleDropDown();
     void updateConsoleDropDown();
 
+    // Directly set context_ to an in-game value without triggering the full switchContext() flow.
+    // Used by console commands that load a game without going through the normal menu flow.
+    void setContextForGame(Context context);
+
     void contextFinish();
     // the lobbying code exits in a special way hence the specific function.
     void contextFinishFromLobby();

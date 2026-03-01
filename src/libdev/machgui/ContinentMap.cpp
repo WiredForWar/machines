@@ -1585,6 +1585,11 @@ void MachContinentMap::fogOfWarOn(bool fog)
     forceUpdate();
 }
 
+bool MachContinentMap::fogOfWarOn() const
+{
+    return fogOfWarOn_;
+}
+
 void MachContinentMap::mapMode(MapMode mapMode)
 {
     mapMode_ = mapMode;

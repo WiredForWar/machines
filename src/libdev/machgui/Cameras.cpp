@@ -1078,6 +1078,36 @@ Gui::Coord MachCameras::positionOnTerrainThatZenithCameraIsLookingAt() const
     return pos;
 }
 
+MachCameras::ZenithCameraData MachCameras::zenithCameraData() const
+{
+    PRE(isZenithCameraActive());
+
+    ZenithCameraData data{};
+    pZenithConstraint_->cameraPositionData(&data.zoomDistance, &data.x, &data.y, &data.heading);
+    return data;
+}
+
+void MachCameras::zenithCameraData(const ZenithCameraData& data)
+{
+    PRE(isZenithCameraActive());
+
+    pZenithConstraint_->cameraPositionData(data.zoomDistance, data.x, data.y, data.heading);
+    pZenithCamera_->update();
+}
+
+void MachCameras::setGroundCameraPosition(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z)
+{
+    MachPhysPlanetSurface* pSurface = MachLogPlanet::instance().surface();
+    const MATHEX_SCALAR terrainZ = pSurface->terrainHeight(x, y, pGroundCamera_->floors());
+    const MATHEX_SCALAR delta = z - terrainZ;
+    pGroundConstraint_->zTerrainDelta(delta);
+
+    MexTransform3d xform = pGroundCamera_->globalTransform();
+    xform.position(MexPoint3d(x, y, z));
+    pGroundControl_->snapTo(xform);
+    pGroundCamera_->update();
+}
+
 void MachCameras::reversePitchUpDownKeys(bool newValue)
 {
     pGroundControl_->reversePitchUpDownKeys(newValue);

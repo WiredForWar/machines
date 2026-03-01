@@ -3805,6 +3805,15 @@ void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
     ignoreHostLostSystemMessage_ = value;
 }
 
+void MachGuiStartupScreens::setContextForGame(Context context)
+{
+    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
+
+    PRE(context == CTX_GAME || context == CTX_SKIRMISH_GAME || context == CTX_MULTI_GAME);
+
+    context_ = context;
+}
+
 void MachGuiStartupScreens::changeLogoImage(std::string_view image)
 {
     std::string waitFilePath = System::findFile(image);
