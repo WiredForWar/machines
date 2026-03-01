@@ -170,6 +170,8 @@ void XFileParser::ParseFile()
         // parse specific object
         if (objectName == "template")
             ParseDataObjectTemplate();
+        else if (objectName == "Header")
+            ParseUnknownDataObject();
         else if (objectName == "Frame")
             ParseDataObjectFrame(nullptr);
         else if (objectName == "Mesh")
