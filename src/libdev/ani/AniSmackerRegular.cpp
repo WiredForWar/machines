@@ -192,8 +192,7 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         smk_first(pSmack_);
         // One frame time in ms
         smk_info_all(pSmack_, nullptr, nullptr, &frameTime_);
-        // frameTime_ = 0.000001 * frameTime_;
-        frameTime_ *= 0.000000826;
+        frameTime_ *= 0.000001;
         surface_ = this->createSmackerSurface(pDevice);
         pBuffer_ = new uint[size_.width * size_.height];
 
