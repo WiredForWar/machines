@@ -253,8 +253,6 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         {
             getNextFrame();
         }
-
-        advanceToNextFrame_ = true;
     }
     ++frame_;
 }
