@@ -22,6 +22,7 @@ public:
     std::vector<std::string> supportedExtensions() const override;
     RenI::MeshData loadMesh(const SysPathName& path, const std::string& meshName) override;
     RenI::HierarchyData loadHierarchy(const SysPathName& path) override;
+    RenI::AnimationData loadAnimations(const SysPathName& path, const std::string& animationName) override;
     void deleteAll() override;
 
 private:

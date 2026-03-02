@@ -373,6 +373,167 @@ RenI::HierarchyData XFileMeshLoader::loadHierarchy(const SysPathName& pathName)
     return result;
 }
 
+// Strip "x3ds_" prefix and truncate at 'X' to extract the link name
+// from an .x animation bone reference. This matches the old composii.cpp logic.
+static std::string sanitizeLinkName(const std::string& raw)
+{
+    std::string name = raw;
+    if (name.size() > 5 && name.substr(0, 5) == "x3ds_")
+        name = name.substr(5);
+
+    size_t length = 0;
+    while (length < name.size() && name[length] != 'X')
+        ++length;
+    return name.substr(0, length);
+}
+
+RenI::AnimationData XFileMeshLoader::loadAnimations(
+    const SysPathName& pathName,
+    const std::string& animationName)
+{
+    RenI::AnimationData result;
+
+    auto fileIt = files_.find(pathName.pathname());
+    FileEntry* entry = nullptr;
+
+    if (fileIt != files_.end())
+        entry = fileIt->second.get();
+    else
+        entry = loadFile(pathName);
+
+    if (!entry || !entry->scene)
+        return result;
+
+    XFile::Scene* scene = entry->scene;
+    const bool rightHanded = (MexCoordSystem::instance() == MexCoordSystem::RIGHT_HANDED);
+
+    for (const XFile::Animation* anim : scene->mAnims)
+    {
+        if (!animationName.empty() && anim->mName != animationName)
+            continue;
+
+        RenI::AnimationSet animSet;
+        animSet.name = anim->mName;
+
+        for (const XFile::AnimBone* bone : anim->mAnims)
+        {
+            std::string linkName = sanitizeLinkName(bone->mBoneName);
+            if (linkName.empty())
+                continue;
+
+            RenI::AnimationChannel chan;
+            chan.linkName = linkName;
+
+            // The .x file stores rotation and position keys separately with
+            // potentially different frame counts. We merge them into unified
+            // keyframes using frame-index-based lookup (matching the old
+            // composii.cpp merging logic in makeAnimationPlan).
+            //
+            // Ticks per second from the .x file defines the time base.
+            double ticksPerSecond = scene->mAnimTicksPerSecond > 0
+                ? static_cast<double>(scene->mAnimTicksPerSecond)
+                : 1.0;
+
+            // Collect all unique time values
+            std::map<double, std::pair<int, int>> timeToIndices; // time -> (rotIdx, posIdx)
+            for (size_t i = 0; i < bone->mRotKeys.size(); ++i)
+                timeToIndices[bone->mRotKeys[i].mTime].first = static_cast<int>(i);
+            for (size_t i = 0; i < bone->mPosKeys.size(); ++i)
+                timeToIndices[bone->mPosKeys[i].mTime].second = static_cast<int>(i);
+
+            // Fill in missing indices with nearest
+            int lastRot = -1, lastPos = -1;
+            for (auto& [t, indices] : timeToIndices)
+            {
+                if (indices.first >= 0)
+                    lastRot = indices.first;
+                else if (lastRot >= 0)
+                    indices.first = lastRot;
+
+                if (indices.second >= 0)
+                    lastPos = indices.second;
+                else if (lastPos >= 0)
+                    indices.second = lastPos;
+            }
+            // Backward pass for entries before the first key
+            lastRot = -1;
+            lastPos = -1;
+            for (auto it = timeToIndices.rbegin(); it != timeToIndices.rend(); ++it)
+            {
+                if (it->second.first >= 0)
+                    lastRot = it->second.first;
+                else if (lastRot >= 0)
+                    it->second.first = lastRot;
+
+                if (it->second.second >= 0)
+                    lastPos = it->second.second;
+                else if (lastPos >= 0)
+                    it->second.second = lastPos;
+            }
+
+            chan.keyframes.reserve(timeToIndices.size());
+
+            for (const auto& [t, indices] : timeToIndices)
+            {
+                RenI::AnimationKeyframe kf;
+                kf.time = static_cast<float>(t / ticksPerSecond);
+
+                // Rotation: .x QuatKey stores (w, x, y, z).
+                // Old composii.cpp reads: s=token[2], vx=token[3], vy=token[4], vz=token[5]
+                // which maps to (s, vx, vy, vz) = (w, x, y, z) from QuatKey.
+                // Then if right-handed: swap(vy, vz), s = -s
+                // Then: params.set(-vx, -vy, -vz, s)
+                if (indices.first >= 0 && indices.first < static_cast<int>(bone->mRotKeys.size()))
+                {
+                    const auto& rk = bone->mRotKeys[indices.first];
+                    float s = rk.mValue.w;
+                    float vx = rk.mValue.x;
+                    float vy = rk.mValue.y;
+                    float vz = rk.mValue.z;
+
+                    if (rightHanded)
+                    {
+                        std::swap(vy, vz);
+                        s = -s;
+                    }
+
+                    kf.qx = -vx;
+                    kf.qy = -vy;
+                    kf.qz = -vz;
+                    kf.qw = s;
+                }
+
+                // Position: .x VectorKey stores (x, y, z).
+                // If right-handed: swap(y, z)
+                if (indices.second >= 0 && indices.second < static_cast<int>(bone->mPosKeys.size()))
+                {
+                    const auto& pk = bone->mPosKeys[indices.second];
+                    float x = pk.mValue.x;
+                    float y = pk.mValue.y;
+                    float z = pk.mValue.z;
+
+                    if (rightHanded)
+                        std::swap(y, z);
+
+                    kf.tx = x;
+                    kf.ty = y;
+                    kf.tz = z;
+                }
+
+                chan.keyframes.push_back(kf);
+            }
+
+            if (chan.keyframes.size() >= 2)
+                animSet.channels.push_back(std::move(chan));
+        }
+
+        if (!animSet.channels.empty())
+            result.animations.push_back(std::move(animSet));
+    }
+
+    return result;
+}
+
 XFileMeshLoader::FileEntry* XFileMeshLoader::loadFile(const SysPathName& pathName)
 {
     auto entry = std::make_unique<FileEntry>();

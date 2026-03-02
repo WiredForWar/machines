@@ -65,12 +65,6 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const W4dCompositeImpl& t);
     W4dCompositeImpl& operator=(const W4dCompositeImpl&);
 
-    bool readAnimation(
-        const SysPathName& fileName,
-        const std::string& animationName,
-        W4dCompositePlan* pCompositePlan,
-        MATHEX_SCALAR framesPerSecond) const;
-
     void parseModel(const SysPathName& directoryname, UtlLineTokeniser* pParser, W4dLOD id);
     void parseMeshRanges(const SysPathName& directoryname, UtlLineTokeniser* pParser);
     void parseShadow(const SysPathName& directoryname, UtlLineTokeniser* pParser);
@@ -83,12 +77,6 @@ private:
 
     void buildHierarchy(W4dEntity* pParent, const RenHierarchyBuilder::Node* pNode, double distance, W4dLOD id);
     void addEmptyMeshes(double distance, W4dLOD id);
-
-    bool parseLinkAnimation(
-        UtlLineTokeniser* pParser,
-        MATHEX_SCALAR framesPerSecond,
-        const std::string& linkName,
-        PhysMotionPlanPtr* pPlanPtr) const;
 
     bool animationValid(
         const std::string& linkName,

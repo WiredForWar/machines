@@ -439,19 +439,6 @@ bool W4dComposite::findCompositePlan(const std::string& name, W4dCompositePlanPt
     return planFound;
 }
 
-bool W4dComposite::readAnimation(
-    const SysPathName& fileName,
-    const std::string& animationName,
-    W4dCompositePlan* pCompositePlan,
-    MATHEX_SCALAR framesPerSecond) const
-{
-    // Check arguments
-    PRE(pCompositePlan != nullptr);
-    PRE_INFO(fileName);
-    PRE(fileName.existsAsFile());
-    return compositeImpl().readAnimation(fileName, animationName, pCompositePlan, framesPerSecond);
-}
-
 // This cycles through the animation sequences of a plan if it has any.
 bool W4dComposite::cycleAnims(W4dCompositePlanPtr* pPlanPtr) const
 {

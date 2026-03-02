@@ -209,18 +209,6 @@ protected:
     // for this composite
     // PRE( pathname.existsAsFile() );
 
-    // True if successfully reads an animation called animationName from xanFileName ,
-    // Updating pCompositePlan with corresponding animations
-    // bool readXANAnimation( const SysPathName& xanFileName,
-    //                        const std::string& animationName,
-    //                        W4dCompositePlan* pCompositePlan ) const;
-
-    bool readAnimation(
-        const SysPathName& fileName,
-        const std::string& animationName,
-        W4dCompositePlan* pCompositePlan,
-        MATHEX_SCALAR framesPerSecond) const;
-
     void doDebugOutput(std::ostream& ostr) override;
     // Write out the details of 'this' for debugging purposes.
 
