@@ -2255,6 +2255,227 @@ bool RenMesh::buildFromMeshData(const RenI::MeshData& data)
     return true;
 }
 
+// static
+RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
+{
+    RenI::MeshData data;
+
+    Ren::ConstMeshPtr pMesh = meshInst.mesh();
+    if (!pMesh.isDefined())
+        return data;
+
+    const RenMesh& mesh = *pMesh;
+    const RenIVertexData* vtxData = mesh.vertices();
+    if (!vtxData || vtxData->size() == 0)
+        return data;
+
+    data.name = mesh.meshName();
+    if (data.name.empty())
+        data.name = "mesh";
+
+    const size_t nBaseVerts = vtxData->size();
+    const auto& triGroups = mesh.triangleGroups();
+
+    // Helper: extract MeshMaterial from a RenMaterial + STF/backface flags.
+    auto extractMaterial = [](const RenMaterial& mat, RenI::SpinAxis axis, bool backface) -> RenI::MeshMaterial
+    {
+        RenI::MeshMaterial md;
+        const RenColour& diff = mat.diffuse();
+        const RenColour& emis = mat.emissive();
+
+        md.diffuseR = diff.r();
+        md.diffuseG = diff.g();
+        md.diffuseB = diff.b();
+        md.diffuseA = diff.a();
+        md.emissiveR = emis.r();
+        md.emissiveG = emis.g();
+        md.emissiveB = emis.b();
+        md.spinAxis = axis;
+        md.backfaceCull = backface;
+
+        // Reconstruct sort flags
+        if (mat.interMeshCoplanar())
+        {
+            md.sortMode = RenI::SortMode::InterMeshCoplanar;
+            md.sortPriority = mat.coplanarPriority();
+        }
+        else if (mat.intraMeshAlphaPriority())
+        {
+            md.sortMode = RenI::SortMode::IntraMeshAlpha;
+            md.sortPriority = mat.alphaPriority();
+        }
+        else if (mat.absoluteAlphaPriority())
+        {
+            short ap = mat.alphaPriority();
+            if (ap < 0)
+            {
+                md.sortMode = RenI::SortMode::AbsoluteAlphaNegative;
+                md.sortPriority = static_cast<short>(-ap);
+            }
+            else
+            {
+                md.sortMode = RenI::SortMode::AbsoluteAlphaPositive;
+                md.sortPriority = ap;
+            }
+        }
+
+        // Recover emissive factor
+        bool isDiffuseBlack = (diff.r() < 0.01f && diff.g() < 0.01f && diff.b() < 0.01f);
+        bool hasEmissive = (emis.r() > 0.01f || emis.g() > 0.01f || emis.b() > 0.01f);
+
+        if (isDiffuseBlack && hasEmissive)
+        {
+            md.diffuseR = emis.r();
+            md.diffuseG = emis.g();
+            md.diffuseB = emis.b();
+            md.emissiveFactor = 1.0f;
+        }
+        else if (hasEmissive)
+        {
+            float maxFactor = 0.0f;
+            if (diff.r() > 0.01f)
+                maxFactor = std::max(maxFactor, emis.r() / diff.r());
+            if (diff.g() > 0.01f)
+                maxFactor = std::max(maxFactor, emis.g() / diff.g());
+            if (diff.b() > 0.01f)
+                maxFactor = std::max(maxFactor, emis.b() / diff.b());
+            md.emissiveFactor = maxFactor;
+        }
+
+        const RenTexture& tex = mat.texture();
+        if (tex.name().length() > 0)
+            md.textureName = tex.name();
+
+        return md;
+    };
+
+    // Regular triangle groups
+    for (const auto* group : triGroups)
+    {
+        if (group->nTriangles() == 0)
+            continue;
+
+        int matIdx = static_cast<int>(data.materials.size());
+        data.materials.push_back(extractMaterial(group->material(), RenI::SpinAxis::None, group->backFace()));
+
+        RenI::MeshPrimitive prim;
+        prim.materialIndex = matIdx;
+
+        // Collect unique vertex indices used by this group
+        std::map<uint32_t, uint32_t> vertexRemap;
+
+        for (size_t t = 0; t < group->nTriangles(); ++t)
+        {
+            Ren::VertexIdx v1, v2, v3;
+            group->triangle(t, &v1, &v2, &v3);
+
+            for (Ren::VertexIdx vi : {v1, v2, v3})
+            {
+                if (vertexRemap.find(vi) == vertexRemap.end())
+                {
+                    uint32_t newIdx = static_cast<uint32_t>(vertexRemap.size());
+                    vertexRemap[vi] = newIdx;
+
+                    const RenIVertex& v = (*vtxData)[vi];
+                    RenIVec3FixPtS0_7 fixNorm = vtxData->normal(v);
+                    MexVec3 norm;
+                    fixNorm.convertToMex(&norm);
+
+                    RenI::MeshVertex mv;
+                    mv.px = v.x;
+                    mv.py = v.y;
+                    mv.pz = v.z;
+                    mv.nx = static_cast<float>(norm.x());
+                    mv.ny = static_cast<float>(norm.y());
+                    mv.nz = static_cast<float>(norm.z());
+                    mv.tu = v.tu;
+                    mv.tv = v.tv;
+                    prim.vertices.push_back(mv);
+                }
+            }
+
+            prim.indices.push_back(vertexRemap[v1]);
+            prim.indices.push_back(vertexRemap[v2]);
+            prim.indices.push_back(vertexRemap[v3]);
+        }
+
+        data.primitives.push_back(std::move(prim));
+    }
+
+    // STF polygons
+    int nSTF = mesh.nSpinTFPolygons();
+    for (int si = 0; si < nSTF; ++si)
+    {
+        const RenSpinTFPolygon& stf = mesh.spinTFPolygon(si);
+        const RenIVertexData* svd = stf.vertices();
+        if (!svd || svd->size() < 3)
+            continue;
+
+        const MexVec3& dir = stf.spinAxis().direction();
+        const MexPoint3d& base = stf.spinAxis().base();
+
+        // Determine SpinAxis from spin axis direction
+        float ax = std::fabs(static_cast<float>(dir.x()));
+        float ay = std::fabs(static_cast<float>(dir.y()));
+        float az = std::fabs(static_cast<float>(dir.z()));
+        RenI::SpinAxis axis = (ax >= ay && ax >= az) ? RenI::SpinAxis::X
+            : (ay >= ax && ay >= az) ? RenI::SpinAxis::Y
+            : RenI::SpinAxis::Z;
+
+        int matIdx = static_cast<int>(data.materials.size());
+        data.materials.push_back(extractMaterial(stf.material(), axis, true));
+
+        RenI::MeshPrimitive prim;
+        prim.materialIndex = matIdx;
+
+        // Reconstruct 3D vertices from STF 2D data
+        for (size_t vi = 0; vi < svd->size(); ++vi)
+        {
+            const RenIVertex& sv = (*svd)[vi];
+            RenI::MeshVertex mv;
+
+            if (ax >= ay && ax >= az)
+            {
+                mv.px = static_cast<float>(base.x());
+                mv.py = static_cast<float>(base.y()) + sv.x;
+                mv.pz = static_cast<float>(base.z()) + sv.y;
+            }
+            else if (ay >= ax && ay >= az)
+            {
+                mv.px = static_cast<float>(base.x()) + sv.x;
+                mv.py = static_cast<float>(base.y());
+                mv.pz = static_cast<float>(base.z()) + sv.y;
+            }
+            else
+            {
+                mv.px = static_cast<float>(base.x()) - sv.y;
+                mv.py = static_cast<float>(base.y());
+                mv.pz = static_cast<float>(base.z()) + sv.x;
+            }
+
+            mv.nx = static_cast<float>(dir.x());
+            mv.ny = static_cast<float>(dir.y());
+            mv.nz = static_cast<float>(dir.z());
+            mv.tu = sv.tu;
+            mv.tv = sv.tv;
+            prim.vertices.push_back(mv);
+        }
+
+        // Fan triangulation
+        for (size_t t = 0; t + 2 < svd->size(); ++t)
+        {
+            prim.indices.push_back(0);
+            prim.indices.push_back(static_cast<uint32_t>(t + 1));
+            prim.indices.push_back(static_cast<uint32_t>(t + 2));
+        }
+
+        data.primitives.push_back(std::move(prim));
+    }
+
+    return data;
+}
+
+// static
 void RenMesh::emptyCache()
 {
     for (const std::unique_ptr<IMeshLoader>& loader : Ren::meshLoaders())

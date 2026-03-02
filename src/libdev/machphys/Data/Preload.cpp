@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
+
+#include <cstdlib>
+
 #include "sound/soundmix.hpp"
 #include "sound/sndwavid.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
@@ -19,6 +22,7 @@
 #include "world4d/Entity/GenericComposite.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
+#include "machphys/ModelExporter.hpp"
 #include "machphys/Data/Preload.hpp"
 #include "machphys/Persistence/Persistence.hpp"
 #include "machphys/Effects/Effects.hpp"
@@ -1274,6 +1278,12 @@ void MachPhysPreload::persistentPreload(
     istr >> MachPhysPersistence::instance();
     doLoadingProgressUpdate(doUpdate);
     extrasPreload(doUpdate);
+
+    // If MACHINES_EXPORT_MODELS is set, export all loaded models to that directory
+    if (const char* exportDir = std::getenv("MACHINES_EXPORT_MODELS"))
+    {
+        MachPhysModelExporter::exportAll(SysPathName(exportDir));
+    }
 }
 
 void MachPhysPreload::doLoadingProgressUpdate(MachPhysPreload::DoLoadingProgressUpdate doUpdate)

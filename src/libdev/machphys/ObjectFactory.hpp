@@ -45,6 +45,8 @@ public:
 
     PART& part(const ID& id, size_t index);
 
+    const W4dRoot& root() const { return root_; }
+
     PER_MEMBER_PERSISTENT(MachPhysObjectFactory);
     PER_FRIEND_READ_WRITE(MachPhysObjectFactory);
 

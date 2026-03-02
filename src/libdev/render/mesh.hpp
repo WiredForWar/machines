@@ -159,6 +159,10 @@ public:
     void backFace(const RenMaterial&, bool);
     bool backFace(const RenMaterial&) const;
 
+    // Extract a format-agnostic MeshData from a RenMeshInstance.
+    // Used by exporters to convert render-internal data back to MeshData.
+    static RenI::MeshData extractMeshData(const RenMeshInstance& meshInst);
+
     // The contents of mesh files are cached when read, so that successive
     // reads from the same file do not require parsing it twice.  This fn.
     // should be called when the client has finished reading meshes, so that
@@ -196,6 +200,9 @@ public:
     static ushort meshId();
 
     const RenIVertexData* vertices() const { return vertices_.get(); }
+
+    // Read-only access to the internal triangle groups (for export/inspection).
+    const ctl_min_memory_vector<RenITriangleGroup*>& triangleGroups() const { return triangles_; }
 
     void CLASS_INVARIANT;
 

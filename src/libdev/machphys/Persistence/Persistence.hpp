@@ -17,6 +17,7 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 
+class SysPathName;
 class MachPhysMachinePersistence;
 class MachPhysConstructionPersistence;
 class MachPhysWeaponPersistence;
@@ -45,6 +46,10 @@ public:
     //  Allow the others to be persisted independently of everything else
     const MachPhysOtherPersistence& others() const;
     MachPhysOtherPersistence& others();
+
+    // Export all loaded exemplar composites to the given output directory.
+    // Call after persistence load is complete.
+    void exportAllModels(const SysPathName& outputDir);
 
     void CLASS_INVARIANT;
 

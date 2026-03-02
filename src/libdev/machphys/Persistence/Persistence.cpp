@@ -6,6 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/Persistence/Persistence.hpp"
+#include "machphys/ModelExporter.hpp"
+#include "machphys/Persistence/WeaponPersistence.hpp"
+#include "machphys/Persistence/OtherPersistence.hpp"
 
 #include "mathex/transf3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
@@ -376,6 +379,14 @@ void perRead(PerIstream& istr, MachPhysPersistence& per)
     istr >> per.constructions();
     istr >> per.weapons();
     istr >> per.others();
+}
+
+void MachPhysPersistence::exportAllModels(const SysPathName& outputDir)
+{
+    machines().exportModels(outputDir);
+    constructions().exportModels(outputDir);
+    MachPhysExportFromRoot(*weapons().pRoot(), outputDir, "weapon");
+    MachPhysExportFromRoot(*others().pRoot(), outputDir, "other");
 }
 
 /* End PERSIST.CPP **************************************************/

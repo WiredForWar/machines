@@ -48,6 +48,9 @@
 #include "machphys/Terrain/TileData.hpp"
 #include "machphys/Effects/MachineExplosion.hpp"
 #include "machphys/Terrain/DomainAssignor.hpp"
+#include "machphys/ModelExporter.hpp"
+
+#include <cstdlib>
 
 #include "machphys/Terrain/Internal/PlanetSurfaceImpl.hpp"
 
@@ -1316,6 +1319,12 @@ void MachPhysPlanetSurface::loadPlanet(const SysPathName& pathname)
         // PerOstream ostr(ofstr);
 
         // ostr << (*this);
+    }
+
+    // If MACHINES_EXPORT_MODELS is set, export terrain tile .lod + .x files
+    if (const char* exportDir = std::getenv("MACHINES_EXPORT_MODELS"))
+    {
+        MachPhysModelExporter::exportTerrainTiles(*this, SysPathName(exportDir));
     }
 
     // Swap the domains across to the scene manager's root.

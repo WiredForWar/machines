@@ -15,6 +15,8 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 
+class SysPathName;
+
 class MachPhysConstructionPersistence
 // Canonical form revoked
 {
@@ -22,6 +24,8 @@ public:
     //  Singleton class
     static MachPhysConstructionPersistence& instance();
     ~MachPhysConstructionPersistence();
+
+    void exportModels(const SysPathName& outputDir) const;
 
     void CLASS_INVARIANT;
 

@@ -341,6 +341,8 @@ set(MACHPHYS_SOURCES
     Marker.hpp
     MaterialConverter.cpp
     MaterialConverter.hpp
+    ModelExporter.cpp
+    ModelExporter.hpp
     MoveIndicator.cpp
     MoveIndicator.hpp
     ObjectFactory.ctf
