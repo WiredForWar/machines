@@ -214,6 +214,7 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
             alSourcePlay(alSource_);
             alTestError("start play source smacker");
         }
+        lastFrameTime_ = DevTime::instance().time();
     } // FIRST FRAME
 
     bool shouldRender = true;
