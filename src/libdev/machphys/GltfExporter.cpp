@@ -11,8 +11,17 @@
 #include "ctl/vector.hpp"
 
 #include "world4d/Entity/Composite.hpp"
+#include "world4d/Entity/CompositePlan.hpp"
+#include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/Link.hpp"
+#include "world4d/Entity/CompositePlanEntry.hpp"
+
+#include "mathex/quatern.hpp"
+#include "mathex/point3d.hpp"
+
+#include "ctl/list.hpp"
+#include "phys/phys.hpp"
 
 #include "system/pathname.hpp"
 
@@ -301,6 +310,170 @@ static std::vector<double> transformToMatrix(const MexTransform3d& t)
     };
 }
 
+// Write all composite plan animations into the glTF model.
+// nodeNameToIndex maps link/root name -> glTF node index.
+// Requires that all nodes have already been added to the model.
+static void addGltfAnimations(
+    tinygltf::Model& model,
+    int bufferIndex,
+    std::vector<unsigned char>& bufferData,
+    const W4dComposite& composite,
+    const std::map<std::string, int>& nodeNameToIndex)
+{
+    ctl_list<std::string> planNames;
+    composite.listCompositePlans(&planNames);
+    if (planNames.empty())
+        return;
+
+    // Collect link id->name mapping
+    std::map<W4dLinkId, std::string> linkIdToName;
+    for (const W4dLink* link : composite.links())
+    {
+        if (link && !link->name().empty())
+            linkIdToName[link->id()] = link->name();
+    }
+
+    constexpr double sampleFps = 30.0;
+
+    for (const auto& planName : planNames)
+    {
+        W4dCompositePlanPtr planPtr;
+        if (!composite.findCompositePlan(planName, &planPtr))
+            continue;
+
+        tinygltf::Animation gltfAnim;
+        gltfAnim.name = planName;
+
+        const auto& entries = planPtr->entries();
+        for (const W4dCompositePlanEntry* entry : entries)
+        {
+            W4dLinkId linkId = entry->id();
+            const W4dEntityPlan& entityPlan = entry->plan();
+
+            if (!entityPlan.hasMotionPlan())
+                continue;
+
+            // Find link name and corresponding glTF node index
+            std::string linkName;
+            auto nameIt = linkIdToName.find(linkId);
+            if (nameIt != linkIdToName.end())
+                linkName = nameIt->second;
+            else
+                continue;
+
+            auto nodeIt = nodeNameToIndex.find(linkName);
+            if (nodeIt == nodeNameToIndex.end())
+                continue;
+            int targetNodeIdx = nodeIt->second;
+
+            // Sample the motion plan
+            PhysRelativeTime duration = entityPlan.endTime();
+            if (duration <= 0.0)
+                continue;
+
+            int nFrames = static_cast<int>(std::ceil(duration * sampleFps)) + 1;
+            if (nFrames < 2)
+                nFrames = 2;
+
+            std::vector<float> times;
+            std::vector<float> rotations; // xyzw quaternions
+            std::vector<float> translations; // xyz
+
+            for (int f = 0; f < nFrames; ++f)
+            {
+                double t = (f * duration) / (nFrames - 1);
+                MexTransform3d xform;
+                uint nObsolete = 0;
+                auto state = entityPlan.transform(PhysAbsoluteTime(t), &xform, &nObsolete);
+                if (state != W4dEntityPlan::DEFINED)
+                    continue;
+
+                times.push_back(static_cast<float>(t));
+
+                // Convert engine transform to glTF coordinate space (Y<->Z swap).
+                MexQuaternion eq = xform.rotationAsQuaternion();
+                MexPoint3d ep = xform.position();
+
+                // Engine quat (vx,vy,vz,s) -> glTF quat with Y<->Z swap:
+                // glTF(x,y,z,w) = engine(vx,vz,vy,s)
+                rotations.push_back(static_cast<float>(eq.vector().x()));
+                rotations.push_back(static_cast<float>(eq.vector().z()));
+                rotations.push_back(static_cast<float>(eq.vector().y()));
+                rotations.push_back(static_cast<float>(eq.scalar()));
+
+                // Engine pos (x,y,z) -> glTF (x,z,y)
+                translations.push_back(static_cast<float>(ep.x()));
+                translations.push_back(static_cast<float>(ep.z()));
+                translations.push_back(static_cast<float>(ep.y()));
+            }
+
+            if (times.empty())
+                continue;
+
+            size_t nKeys = times.size();
+
+            // Time accessor (shared between rotation and translation channels)
+            // Compute min/max for the time accessor
+            int timeAcc = addAccessor(
+                model, bufferIndex,
+                times.data(), nKeys * sizeof(float),
+                TINYGLTF_COMPONENT_TYPE_FLOAT, TINYGLTF_TYPE_SCALAR,
+                nKeys, bufferData);
+            model.accessors[timeAcc].minValues = {times.front()};
+            model.accessors[timeAcc].maxValues = {times.back()};
+
+            // Rotation accessor (VEC4 quaternion)
+            int rotAcc = addAccessor(
+                model, bufferIndex,
+                rotations.data(), nKeys * 4 * sizeof(float),
+                TINYGLTF_COMPONENT_TYPE_FLOAT, TINYGLTF_TYPE_VEC4,
+                nKeys, bufferData);
+
+            // Translation accessor (VEC3)
+            int transAcc = addAccessor(
+                model, bufferIndex,
+                translations.data(), nKeys * 3 * sizeof(float),
+                TINYGLTF_COMPONENT_TYPE_FLOAT, TINYGLTF_TYPE_VEC3,
+                nKeys, bufferData);
+
+            // Rotation sampler + channel
+            {
+                tinygltf::AnimationSampler sampler;
+                sampler.input = timeAcc;
+                sampler.output = rotAcc;
+                sampler.interpolation = "LINEAR";
+                int samplerIdx = static_cast<int>(gltfAnim.samplers.size());
+                gltfAnim.samplers.push_back(std::move(sampler));
+
+                tinygltf::AnimationChannel channel;
+                channel.sampler = samplerIdx;
+                channel.target_node = targetNodeIdx;
+                channel.target_path = "rotation";
+                gltfAnim.channels.push_back(std::move(channel));
+            }
+
+            // Translation sampler + channel
+            {
+                tinygltf::AnimationSampler sampler;
+                sampler.input = timeAcc;
+                sampler.output = transAcc;
+                sampler.interpolation = "LINEAR";
+                int samplerIdx = static_cast<int>(gltfAnim.samplers.size());
+                gltfAnim.samplers.push_back(std::move(sampler));
+
+                tinygltf::AnimationChannel channel;
+                channel.sampler = samplerIdx;
+                channel.target_node = targetNodeIdx;
+                channel.target_path = "translation";
+                gltfAnim.channels.push_back(std::move(channel));
+            }
+        }
+
+        if (!gltfAnim.channels.empty())
+            model.animations.push_back(std::move(gltfAnim));
+    }
+}
+
 std::string MachPhysModelExporter::writeGltfFile(
     const W4dComposite& composite,
     const SysPathName& outputDir,
@@ -361,6 +534,9 @@ std::string MachPhysModelExporter::writeGltfFile(
         return addGltfMesh(model, bufferIndex, bufferData, meshData, materialMap);
     };
 
+    // Map node name -> glTF node index (for animation targeting)
+    std::map<std::string, int> nodeNameToIndex;
+
     // Recursive lambda to create nodes for links
     std::function<int(const W4dLink&)> addLinkNode;
     addLinkNode = [&](const W4dLink& link) -> int
@@ -375,6 +551,7 @@ std::string MachPhysModelExporter::writeGltfFile(
 
         int nodeIdx = static_cast<int>(model.nodes.size());
         model.nodes.push_back(std::move(node));
+        nodeNameToIndex[link.name()] = nodeIdx;
 
         // Add children
         auto childIt = linkTree.find(&link);
@@ -400,8 +577,10 @@ std::string MachPhysModelExporter::writeGltfFile(
     if (rootMeshIdx >= 0)
         rootNode.mesh = rootMeshIdx;
 
+    std::string rootNodeName = rootNode.name;
     int rootNodeIdx = static_cast<int>(model.nodes.size());
     model.nodes.push_back(std::move(rootNode));
+    nodeNameToIndex[rootNodeName] = rootNodeIdx;
 
     // Add direct children of the composite
     auto rootChildIt = linkTree.find(&composite);
@@ -413,6 +592,9 @@ std::string MachPhysModelExporter::writeGltfFile(
             model.nodes[rootNodeIdx].children.push_back(childNodeIdx);
         }
     }
+
+    // Animations (sample composite plans into glTF animation channels)
+    addGltfAnimations(model, bufferIndex, bufferData, composite, nodeNameToIndex);
 
     // Scene
     tinygltf::Scene scene;
