@@ -18,6 +18,8 @@
 #include "mathex/mathex.hpp"
 #include "machphys/plansurf.hpp"
 
+#include <optional>
+
 class MachLogConstruction;
 class PhysConfigSpace2d;
 class MexPolygon2d;
@@ -143,6 +145,16 @@ private:
 };
 
 PER_ENUM_PERSISTENT(MachLogCamera::Type);
+
+namespace MachLog
+{
+
+using CameraType = MachLogCamera::Type;
+
+std::string_view toString(CameraType value);
+std::optional<CameraType> toCameraType(std::string_view str);
+
+} // namespace MachLog
 
 #endif
 
