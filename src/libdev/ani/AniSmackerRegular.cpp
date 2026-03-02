@@ -202,18 +202,15 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
         // Start playing the first chunk
         if (alSource_)
         {
-            // Fill bufers with WAV data
+            // Queue first frame's audio into one buffer, keep remaining buffers free for subsequent frames
             const unsigned char* pAudioBuffer = smk_get_audio(pSmack_, 0);
             unsigned long audioSize = smk_get_audio_size(pSmack_, 0);
 
-            ALsizei size = audioSize / BUFFERS_NUM;
-            for (int i = 0; i < BUFFERS_NUM; ++i)
-            {
-                const ALvoid* data = &pAudioBuffer[i * size];
-                alBufferData(alBuffers_[i], alFormat_, data, size, alFrequency_);
-                alTestError("start buffer data smacker on start");
-            }
-            alSourceQueueBuffers(alSource_, BUFFERS_NUM, &alBuffers_[0]);
+            alBufferData(alBuffers_[0], alFormat_, pAudioBuffer, audioSize, alFrequency_);
+            alTestError("start buffer data smacker on start");
+            alSourceQueueBuffers(alSource_, 1, &alBuffers_[0]);
+            for (int i = 1; i < BUFFERS_NUM; ++i)
+                freedBuffers_.push_back(alBuffers_[i]);
             alSourcePlay(alSource_);
             alTestError("start play source smacker");
         }
