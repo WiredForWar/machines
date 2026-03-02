@@ -409,8 +409,6 @@ set(MACHPHYS_SOURCES
     subid.hpp
     surfchk.cpp
     surfchk.hpp
-    symparse.cpp
-    symparse.hpp
     techdata.cpp
     techdata.hpp
     technici.cpp
