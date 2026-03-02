@@ -106,8 +106,6 @@ public:
     void damageSmoke1Type(const MachPhysPuffType& type1);
     void damageSmoke2Type(const MachPhysPuffType& type2);
 
-    void convertMaterials(const MachPhysConstructionData& data, MachPhys::Race);
-
     // Does this machine have an associated MachPhysCanAttack
     bool hasCanAttack() const;
     // Return the associated MachPhysCanAttack
@@ -207,6 +205,9 @@ private:
 
     // adjust the pad position on an uneven terrain
     void layPadOnTerrain(const MachPhysPlanetSurface& terrain, W4dLink& pad);
+
+    void convertExteriorMaterials(const MachPhysConstructionData& data, MachPhys::Race);
+    void convertInteriorMaterials(MachPhys::Race race);
 
     MachPhysMissileEmplacement& asMissileEmplacement() const;
     // PRE( constructionData().constructionType() == MachPhys::MISSILE_EMPLACEMENT );

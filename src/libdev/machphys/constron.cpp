@@ -37,6 +37,9 @@
 #include "machphys/weapon.hpp"
 
 #include "render/colour.hpp"
+#include "render/matmap.hpp"
+
+#include "machphys/internal/racechbo.hpp"
 
 #include "system/pathname.hpp"
 
@@ -132,7 +135,7 @@ MachPhysConstruction::MachPhysConstruction(
     }
 
     if (race_ != MachPhys::RED)
-        convertMaterials(copyMe.pImpl_->constructionData_, race_);
+        convertExteriorMaterials(copyMe.pImpl_->constructionData_, race_);
 
     if (copyMe.hasInterior())
     {
@@ -142,6 +145,9 @@ MachPhysConstruction::MachPhysConstruction(
 
         pInteriorComposite_
             = new W4dGenericComposite(*copyMe.pImpl_->pInteriorComposite_, pInteriorDomain_, identityTransform);
+
+        if (race_ != MachPhys::RED)
+            convertInteriorMaterials(race_);
     }
 
     setupEntrances();
@@ -549,12 +555,47 @@ void MachPhysConstruction::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-void MachPhysConstruction::convertMaterials(const MachPhysConstructionData& data, MachPhys::Race r)
+void MachPhysConstruction::convertExteriorMaterials(const MachPhysConstructionData& data, MachPhys::Race r)
 {
     // Use the race changer to do the job
     const W4dCompositeMaterialVecChanger& changer = MachPhysRaceChanger::instance().changer(*this, data, r);
 
     changer.applyOverrides(this);
+}
+
+void MachPhysConstruction::convertInteriorMaterials(MachPhys::Race race)
+{
+    if (!hasInterior())
+        return;
+
+    CB_DEPIMPL(W4dGenericComposite*, pInteriorComposite_);
+
+    const MachPhysRaceChangerBody::Textures& fromTextures = MachPhysRaceChangerBody::keyTextures();
+    const MachPhysRaceChangerBody::TexturesVec& toTexturesVec = MachPhysRaceChangerBody::texturesVec();
+
+    MachPhysRaceChangerBody raceChangerBody;
+    double fromHue = raceChangerBody.hue(MachPhys::RED);
+    ctl_vector<double> toHues{ raceChangerBody.hue(race) };
+    std::unique_ptr<RenMaterialMap> materialMap(new RenMaterialMap);
+    ctl_pvector<RenMaterialMap> materialMaps{ materialMap.get() };
+
+    W4dCompositeMaterialVecChanger::TexturesVec singleToTexturesVec;
+    singleToTexturesVec.reserve(toTexturesVec.size());
+    for (const auto& textures : toTexturesVec)
+    {
+        W4dCompositeMaterialVecChanger::Textures singleTextures;
+        singleTextures.reserve(1);
+        size_t raceIndex = static_cast<size_t>(race);
+        singleTextures.push_back(textures[raceIndex]);
+        singleToTexturesVec.push_back(singleTextures);
+    }
+
+    W4dCompositeMaterialVecChanger::fillMaterialMaps(
+        *pInteriorComposite_, fromHue, toHues, fromTextures, singleToTexturesVec, materialMaps);
+
+    W4dMaterialVecPtrSet materialVecPtrSet;
+    W4dCompositeMaterialVecChanger changer(*pInteriorComposite_, *materialMaps[0], &materialVecPtrSet);
+    changer.applyOverrides(pInteriorComposite_);
 }
 
 bool MachPhysConstruction::hasCanAttack() const
@@ -780,7 +821,8 @@ void MachPhysConstruction::changeRace(MachPhys::Race newRace)
     CB_DEPIMPL(MachPhys::Race, race_);
     YUEAI_STREAM(" old race = " << race_ << " newRace = " << newRace << std::endl);
     race_ = newRace;
-    convertMaterials(constructionData(), race_);
+    convertExteriorMaterials(constructionData(), race_);
+    convertInteriorMaterials(race_);
 
     // also change the race of the weapon(s)
     if (hasCanAttack())
@@ -795,7 +837,8 @@ void MachPhysConstruction::changeRace(MachPhys::Race newRace)
 
 void MachPhysConstruction::changeColour(MachPhys::Race newRace)
 {
-    convertMaterials(constructionData(), newRace);
+    convertExteriorMaterials(constructionData(), newRace);
+    convertInteriorMaterials(newRace);
 
     // also change the colour of the weapon(s)
     if (hasCanAttack())
