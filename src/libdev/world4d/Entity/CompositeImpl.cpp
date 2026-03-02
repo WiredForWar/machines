@@ -18,8 +18,9 @@
 
 #include "render/hierload.hpp"
 #include "render/node.hpp"
+#include "render/render.hpp"
 
-#include "formats_support/MeshData.hpp"
+#include "formats_support/IMeshLoader.hpp"
 
 #include "world4d/Entity/CompositePlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
@@ -249,18 +250,48 @@ void W4dCompositeImpl::parseAnimation(const SysPathName& directoryName, UtlLineT
     PRE(pParser->tokens().size() == 5);
 
     std::string planName = pParser->tokens()[1];
-
-    SysPathName fileName(directoryName);
-    fileName.combine(pParser->tokens()[2]);
-    fileName.extension("x");
-
+    std::string fileBase = pParser->tokens()[2];
     std::string animationName = pParser->tokens()[3];
-
     MATHEX_SCALAR framesPerSecond = atof(pParser->tokens()[4].c_str());
 
     W4dCompositePlan* pCompositePlan = new W4dCompositePlan(planName);
 
-    bool animationRead = readAnimation(fileName, animationName, pCompositePlan, framesPerSecond);
+    bool animationRead = false;
+
+    // Try each registered mesh loader to find an animation file
+    // (e.g. .glb alongside the .x file).
+    SysPathName baseFileName(directoryName);
+    baseFileName.combine(fileBase);
+
+    for (const auto& loader : Ren::meshLoaders())
+    {
+        for (const auto& ext : loader->supportedExtensions())
+        {
+            SysPathName tryPath(baseFileName);
+            tryPath.extension(ext);
+            if (tryPath.existsAsFile())
+            {
+                RenI::AnimationData animData = loader->loadAnimations(tryPath, animationName);
+                if (!animData.animations.empty())
+                {
+                    animationRead = readAnimationData(animData, animationName, pCompositePlan);
+                    if (animationRead)
+                        break;
+                }
+            }
+        }
+        if (animationRead)
+            break;
+    }
+
+    // Fall back to the legacy .x animation parser
+    if (!animationRead)
+    {
+        SysPathName xFileName(baseFileName);
+        xFileName.extension("x");
+        if (xFileName.existsAsFile())
+            animationRead = readAnimation(xFileName, animationName, pCompositePlan, framesPerSecond);
+    }
 
     if (compositePlans_.size() == 0)
         compositePlans_.reserve(4);
