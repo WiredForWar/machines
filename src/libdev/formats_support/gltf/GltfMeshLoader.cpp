@@ -13,8 +13,10 @@
 #include "tiny_gltf.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <iostream>
+#include <map>
 #include <string>
 
 // ---------------------------------------------------------------------------
@@ -504,6 +506,199 @@ RenI::HierarchyData GltfMeshLoader::loadHierarchy(const SysPathName& pathName)
             result.roots.push_back(buildNode(nodeIdx));
     }
 
+    return result;
+}
+
+RenI::AnimationData GltfMeshLoader::loadAnimations(
+    const SysPathName& pathName,
+    const std::string& animationName)
+{
+    RenI::AnimationData result;
+
+    auto fileIt = files_.find(pathName.pathname());
+    if (fileIt == files_.end())
+        loadFile(pathName);
+
+    fileIt = files_.find(pathName.pathname());
+    if (fileIt == files_.end())
+        return result;
+
+    FileEntry& entry = *fileIt->second;
+    tinygltf::Model& model = *entry.model;
+
+    // Find the requested animation by name (or use the first one if name is empty)
+    const tinygltf::Animation* gltfAnim = nullptr;
+    for (const auto& anim : model.animations)
+    {
+        if (animationName.empty() || anim.name == animationName)
+        {
+            gltfAnim = &anim;
+            break;
+        }
+    }
+    if (!gltfAnim)
+        return result;
+
+    // Build a per-node map: node index -> (times+rotations, times+translations)
+    struct ChannelData
+    {
+        std::vector<float> rotTimes;
+        std::vector<float> rotValues; // xyzw per key
+        std::vector<float> transTimes;
+        std::vector<float> transValues; // xyz per key
+    };
+    std::map<int, ChannelData> nodeChannels;
+
+    for (const auto& channel : gltfAnim->channels)
+    {
+        if (channel.target_node < 0)
+            continue;
+
+        const auto& sampler = gltfAnim->samplers[channel.sampler];
+
+        // Read time values
+        struct Scalar { float v; };
+        std::vector<Scalar> times = readAccessor<Scalar>(model, sampler.input);
+
+        if (channel.target_path == "rotation")
+        {
+            struct Vec4 { float x, y, z, w; };
+            std::vector<Vec4> values = readAccessor<Vec4>(model, sampler.output);
+
+            auto& cd = nodeChannels[channel.target_node];
+            cd.rotTimes.reserve(times.size());
+            cd.rotValues.reserve(values.size() * 4);
+            for (size_t i = 0; i < times.size() && i < values.size(); ++i)
+            {
+                cd.rotTimes.push_back(times[i].v);
+                cd.rotValues.push_back(values[i].x);
+                cd.rotValues.push_back(values[i].y);
+                cd.rotValues.push_back(values[i].z);
+                cd.rotValues.push_back(values[i].w);
+            }
+        }
+        else if (channel.target_path == "translation")
+        {
+            struct Vec3 { float x, y, z; };
+            std::vector<Vec3> values = readAccessor<Vec3>(model, sampler.output);
+
+            auto& cd = nodeChannels[channel.target_node];
+            cd.transTimes.reserve(times.size());
+            cd.transValues.reserve(values.size() * 3);
+            for (size_t i = 0; i < times.size() && i < values.size(); ++i)
+            {
+                cd.transTimes.push_back(times[i].v);
+                cd.transValues.push_back(values[i].x);
+                cd.transValues.push_back(values[i].y);
+                cd.transValues.push_back(values[i].z);
+            }
+        }
+    }
+
+    // Convert per-node channel data into AnimationChannels with merged keyframes.
+    // glTF is Y-up right-handed; engine is Z-up left-handed.
+    // Coordinate conversion: engine(x,y,z) = glTF(x,z,y)
+    // Quaternion conversion: engine(vx,vy,vz,s) = glTF(x,z,y,w)
+    RenI::AnimationSet animSet;
+    animSet.name = gltfAnim->name;
+
+    for (const auto& [nodeIdx, cd] : nodeChannels)
+    {
+        if (nodeIdx < 0 || nodeIdx >= static_cast<int>(model.nodes.size()))
+            continue;
+
+        RenI::AnimationChannel chan;
+        chan.linkName = model.nodes[nodeIdx].name;
+
+        // Merge rotation and translation keyframes.
+        // Since the exporter writes both channels at the same sample times,
+        // they should match. If they don't, use the larger set of times and
+        // interpolate the other channel (simple nearest-neighbor for now).
+        const std::vector<float>& rTimes = cd.rotTimes;
+        const std::vector<float>& tTimes = cd.transTimes;
+        size_t nRot = rTimes.size();
+        size_t nTrans = tTimes.size();
+
+        // Collect all unique times in order
+        std::vector<float> allTimes;
+        allTimes.reserve(nRot + nTrans);
+        size_t ri = 0, ti = 0;
+        while (ri < nRot && ti < nTrans)
+        {
+            if (rTimes[ri] < tTimes[ti] - 1e-6f)
+                allTimes.push_back(rTimes[ri++]);
+            else if (tTimes[ti] < rTimes[ri] - 1e-6f)
+                allTimes.push_back(tTimes[ti++]);
+            else
+            {
+                allTimes.push_back(rTimes[ri]);
+                ++ri;
+                ++ti;
+            }
+        }
+        while (ri < nRot)
+            allTimes.push_back(rTimes[ri++]);
+        while (ti < nTrans)
+            allTimes.push_back(tTimes[ti++]);
+
+        // Helper: find nearest rotation keyframe for a given time
+        auto nearestRot = [&](float t, float& qx, float& qy, float& qz, float& qw)
+        {
+            if (nRot == 0) { qx = 0; qy = 0; qz = 0; qw = 1; return; }
+            size_t best = 0;
+            float bestDist = std::fabs(rTimes[0] - t);
+            for (size_t i = 1; i < nRot; ++i)
+            {
+                float d = std::fabs(rTimes[i] - t);
+                if (d < bestDist) { best = i; bestDist = d; }
+            }
+            qx = cd.rotValues[best * 4];
+            qy = cd.rotValues[best * 4 + 1];
+            qz = cd.rotValues[best * 4 + 2];
+            qw = cd.rotValues[best * 4 + 3];
+        };
+
+        auto nearestTrans = [&](float t, float& tx, float& ty, float& tz)
+        {
+            if (nTrans == 0) { tx = 0; ty = 0; tz = 0; return; }
+            size_t best = 0;
+            float bestDist = std::fabs(tTimes[0] - t);
+            for (size_t i = 1; i < nTrans; ++i)
+            {
+                float d = std::fabs(tTimes[i] - t);
+                if (d < bestDist) { best = i; bestDist = d; }
+            }
+            tx = cd.transValues[best * 3];
+            ty = cd.transValues[best * 3 + 1];
+            tz = cd.transValues[best * 3 + 2];
+        };
+
+        chan.keyframes.reserve(allTimes.size());
+        for (float t : allTimes)
+        {
+            float gQx{}, gQy{}, gQz{}, gQw{1};
+            float gTx{}, gTy{}, gTz{};
+            nearestRot(t, gQx, gQy, gQz, gQw);
+            nearestTrans(t, gTx, gTy, gTz);
+
+            RenI::AnimationKeyframe kf;
+            kf.time = t;
+            // glTF quat (x,y,z,w) -> engine quat (x,z,y,w) [Y<->Z swap]
+            kf.qx = gQx;
+            kf.qy = gQz;
+            kf.qz = gQy;
+            kf.qw = gQw;
+            // glTF pos (x,y,z) -> engine pos (x,z,y)
+            kf.tx = gTx;
+            kf.ty = gTz;
+            kf.tz = gTy;
+            chan.keyframes.push_back(kf);
+        }
+
+        animSet.channels.push_back(std::move(chan));
+    }
+
+    result.animations.push_back(std::move(animSet));
     return result;
 }
 
