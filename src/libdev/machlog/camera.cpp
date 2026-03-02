@@ -33,6 +33,8 @@
 #include "machlog/machine.hpp"
 #include "profiler/stktrace.hpp"
 
+#include <type_traits>
+
 MachLogCamera::MachLogCamera(
     W4dSceneManager* pMgr,
     W4dEntity* pParent,
@@ -770,6 +772,38 @@ const MachPhysPlanetSurface::Floors& MachLogCamera::floors() const
     CB_MachLogCamera_DEPIMPL();
 
     return floors_;
+}
+
+std::string_view MachLog::toString(CameraType value)
+{
+    switch (value)
+    {
+    case MachLogCamera::GROUND:
+        return "GROUND";
+    case MachLogCamera::FREE_MOVING:
+        return "FREE_MOVING";
+    case MachLogCamera::ZENITH:
+        return "ZENITH";
+    case MachLogCamera::THIRD_PERSON:
+        return "THIRD_PERSON";
+    case MachLogCamera::FIRST_PERSON:
+        return "FIRST_PERSON";
+    }
+
+    return {};
+}
+
+std::optional<MachLog::CameraType> MachLog::toCameraType(std::string_view str)
+{
+    using Underlying = std::underlying_type_t<CameraType>;
+
+    for (Underlying i = 0; i <= static_cast<Underlying>(CameraType::FIRST_PERSON); ++i)
+    {
+        CameraType v = static_cast<CameraType>(i);
+        if (toString(v) == str)
+            return v;
+    }
+    return {};
 }
 
 /* End CAMERA.CPP ***************************************************/
