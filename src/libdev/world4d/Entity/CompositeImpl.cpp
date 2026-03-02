@@ -19,6 +19,8 @@
 #include "render/hierload.hpp"
 #include "render/node.hpp"
 
+#include "formats_support/MeshData.hpp"
+
 #include "world4d/Entity/CompositePlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Scene/Shadow.hpp"
@@ -178,6 +180,66 @@ void W4dCompositeImpl::parseShadow(const SysPathName& directoryName, UtlLineToke
     }
 
     pParser->parseNextLine();
+}
+
+// Build a W4dCompositePlan from format-agnostic AnimationData.
+// Returns true if any valid animation channels were added.
+bool W4dCompositeImpl::readAnimationData(
+    const RenI::AnimationData& animData,
+    const std::string& animationName,
+    W4dCompositePlan* pCompositePlan) const
+{
+    for (const auto& animSet : animData.animations)
+    {
+        if (!animationName.empty() && animSet.name != animationName)
+            continue;
+
+        bool anyValid = false;
+
+        for (const auto& chan : animSet.channels)
+        {
+            if (chan.keyframes.size() < 2)
+                continue;
+
+            W4dLink* pLink = nullptr;
+            if (!findLink(chan.linkName, &pLink) || !pLink)
+                continue;
+
+            // Build orientation + location keyframe vectors
+            KeyFrameOrientations orientations;
+            KeyFrameLocations locations;
+            orientations.reserve(chan.keyframes.size());
+            locations.reserve(chan.keyframes.size());
+
+            MATHEX_SCALAR fps = 1.0; // times are already in seconds
+            for (size_t i = 0; i < chan.keyframes.size(); ++i)
+            {
+                const auto& kf = chan.keyframes[i];
+                MexQuaternion q;
+                q.set(kf.qx, kf.qy, kf.qz, kf.qw);
+                orientations.push_back(KeyFrameOrientation(i, q));
+                locations.push_back(KeyFrameLocation(i, MexVec3(kf.tx, kf.ty, kf.tz)));
+            }
+
+            // Compute fps from time span so that frameId/fps = actual time
+            MATHEX_SCALAR duration = chan.keyframes.back().time - chan.keyframes.front().time;
+            if (duration > 0 && chan.keyframes.size() > 1)
+                fps = static_cast<MATHEX_SCALAR>(chan.keyframes.size() - 1) / duration;
+
+            if (animationValid(chan.linkName, orientations, locations))
+            {
+                PhysMotionPlanPtr planPtr = makeAnimationPlan(orientations, locations, fps);
+                W4dEntityPlan entityPlan;
+                entityPlan.absoluteMotion(planPtr, PhysAbsoluteTime(0), 0);
+                pCompositePlan->linkPlan(pLink->id(), entityPlan);
+                anyValid = true;
+            }
+        }
+
+        if (anyValid)
+            return true;
+    }
+    return false;
 }
 
 //  ANIMATION   <animation name> <filename> <animation set name> <frames per second>

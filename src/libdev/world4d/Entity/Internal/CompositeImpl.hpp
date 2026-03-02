@@ -30,6 +30,8 @@ class UtlLineTokeniser;
 class W4dCompositePlan;
 class W4dComposite;
 
+namespace RenI { struct AnimationData; }
+
 class W4dCompositeImpl
 // Canonical form revoked
 {
@@ -73,6 +75,11 @@ private:
     void parseMeshRanges(const SysPathName& directoryname, UtlLineTokeniser* pParser);
     void parseShadow(const SysPathName& directoryname, UtlLineTokeniser* pParser);
     void parseAnimation(const SysPathName& directoryname, UtlLineTokeniser* pParser);
+
+    bool readAnimationData(
+        const RenI::AnimationData& animData,
+        const std::string& animationName,
+        W4dCompositePlan* pCompositePlan) const;
 
     void buildHierarchy(W4dEntity* pParent, const RenHierarchyBuilder::Node* pNode, double distance, W4dLOD id);
     void addEmptyMeshes(double distance, W4dLOD id);
