@@ -307,6 +307,11 @@ void GuiSingleLineEditBox::caretColour(const GuiColour& colour)
     caretColour_ = colour;
 }
 
+void GuiSingleLineEditBox::clear()
+{
+    setText({});
+}
+
 void GuiSingleLineEditBox::setTextChangedCallback(Callback callback)
 {
     textChangedCallback_ = callback;
