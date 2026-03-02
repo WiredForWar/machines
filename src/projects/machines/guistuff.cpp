@@ -4,6 +4,7 @@
 #include "world4d/Scene/SceneManager.hpp"
 #include "render/Device.hpp"
 #include "gui/Manager.hpp"
+#include "machgui/ConsoleCommands.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/MessageBroker.hpp"
 #include "machgui/StartupData.hpp"
@@ -45,6 +46,7 @@ void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter*
 
     HAL_STREAM("SDLApp::initialiseGui new MachGuiStartupScreens\n");
     pStartupScreens_ = new MachGuiStartupScreens(manager_, pRoot_, console_.get(), pReporter);
+    MachGui::registerConsoleCommands(*console_, pStartupScreens_);
 
     if (startedFromLobby == LOBBY_START)
     {

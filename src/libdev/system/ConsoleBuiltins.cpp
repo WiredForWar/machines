@@ -77,25 +77,25 @@ void registerConsoleBuiltins(IConsole& console)
 {
     console.registerCommand(
         {
-            "help",
-            "List all commands or show help for a specific command.",
-            { { "command", IConsole::ArgumentType::String, true, "Command name to get help for." } },
+            .name = "help",
+            .description = "List all commands or show help for a specific command.",
+            .arguments = { { .name = "command", .type = IConsole::ArgumentType::String, .optional = true, .description = "Command name to get help for." } },
         },
         helpCommand,
         console.commandNameCompleter());
 
     console.registerCommand(
         {
-            "clear",
-            "Clear the console output.",
+            .name = "clear",
+            .description = "Clear the console output.",
         },
         clearCommand);
 
     console.registerCommand(
         {
-            "echo",
-            "Print text to the console.",
-            { { "text", IConsole::ArgumentType::String, false, "Text to print." } },
+            .name = "echo",
+            .description = "Print text to the console.",
+            .arguments = { { .name = "text", .type = IConsole::ArgumentType::String, .optional = false, .description = "Text to print." } },
         },
         echoCommand);
 }
