@@ -1089,61 +1089,22 @@ void MachLogScenario::CLASS_INVARIANT
 // static
 MachLog::ObjectType MachLogScenario::objectType(const std::string& type)
 {
-    // Check for machine types
-    if (type == "ADMINISTRATOR")
-        return MachLog::ADMINISTRATOR;
-    if (type == "AGGRESSOR")
-        return MachLog::AGGRESSOR;
-    if (type == "APC")
-        return MachLog::APC;
-    if (type == "CONSTRUCTOR")
-        return MachLog::CONSTRUCTOR;
-    if (type == "GEO_LOCATOR")
-        return MachLog::GEO_LOCATOR;
-    if (type == "RESOURCE_CARRIER")
-        return MachLog::RESOURCE_CARRIER;
-    if (type == "SPY_LOCATOR")
-        return MachLog::SPY_LOCATOR;
-    if (type == "TECHNICIAN")
-        return MachLog::TECHNICIAN;
-
-    // check for building types
-    if (type == "BEACON")
-        return MachLog::BEACON;
-    if (type == "FACTORY")
-        return MachLog::FACTORY;
-    if (type == "GARRISON")
-        return MachLog::GARRISON;
-    if (type == "HARDWARE_LAB")
-        return MachLog::HARDWARE_LAB;
-    if (type == "HWLAB")
-        return MachLog::HARDWARE_LAB;
-    if (type == "ORE_HOLOGRAPH")
-        return MachLog::ORE_HOLOGRAPH;
-    if (type == "MINE")
-        return MachLog::MINE;
-    if (type == "MISSILE_EMPLACEMENT")
-        return MachLog::MISSILE_EMPLACEMENT;
-    if (type == "MISSILE")
-        return MachLog::MISSILE_EMPLACEMENT;
-    if (type == "POD")
-        return MachLog::POD;
-    if (type == "SMELTER")
-        return MachLog::SMELTER;
-    if (type == "SOFTWARE_LAB")
-        return MachLog::SOFTWARE_LAB;
-    if (type == "SWLAB")
-        return MachLog::SOFTWARE_LAB;
-    if (type == "ARTEFACT")
-        return MachLog::ARTEFACT;
-    if (type == "ARTIFACT")
-        return MachLog::ARTEFACT;
-    if (type == "LAND_MINE")
-        return MachLog::LAND_MINE;
-
+    std::optional<MachLog::ObjectType> r = MachLog::toObjectType(type);
+    if (!r.has_value())
+    {
+        // Legacy aliases used in scenario files
+        if (type == "HWLAB")
+            return MachLog::HARDWARE_LAB;
+        if (type == "MISSILE")
+            return MachLog::MISSILE_EMPLACEMENT;
+        if (type == "SWLAB")
+            return MachLog::SOFTWARE_LAB;
+        if (type == "ARTIFACT")
+            return MachLog::ARTEFACT;
+    }
     ASSERT_INFO(type);
-    ASSERT(false, "Unknown object string for matching\n");
-    return MachLog::ADMINISTRATOR;
+    ASSERT(r.has_value(), "Unknown object string for matching\n");
+    return r.value_or(MachLog::ADMINISTRATOR);
 }
 // static
 int MachLogScenario::objectSubType(MachLog::ObjectType type, const std::string& subType)
@@ -1175,183 +1136,75 @@ int MachLogScenario::objectSubType(MachLog::ObjectType type, const std::string& 
 // static
 MachPhys::TechnicianSubType MachLogScenario::technicianSubType(const std::string& subType)
 {
-    if (subType == "LAB_TECH")
-        return MachPhys::LAB_TECH;
-    if (subType == "TECH_BOY")
-        return MachPhys::TECH_BOY;
-    if (subType == "BRAIN_BOX")
-        return MachPhys::BRAIN_BOX;
+    std::optional<MachPhys::TechnicianSubType> r = MachPhys::toTechnicianSubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::LAB_TECH;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::LAB_TECH);
 }
 // static
 MachPhys::ConstructorSubType MachLogScenario::constructorSubType(const std::string& subType)
 {
-    if (subType == "DOZER")
-        return MachPhys::DOZER;
-    if (subType == "BUILDER")
-        return MachPhys::BUILDER;
-    if (subType == "BEHEMOTH")
-        return MachPhys::BEHEMOTH;
+    std::optional<MachPhys::ConstructorSubType> r = MachPhys::toConstructorSubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::DOZER;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::DOZER);
 }
 // static
 MachPhys::AggressorSubType MachLogScenario::aggressorSubType(const std::string& subType)
 {
-    if (subType == "GRUNT")
-        return MachPhys::GRUNT;
-    if (subType == "ASSASSIN")
-        return MachPhys::ASSASSIN;
-    if (subType == "KNIGHT")
-        return MachPhys::KNIGHT;
-    if (subType == "BALLISTA")
-        return MachPhys::BALLISTA;
-    if (subType == "NINJA")
-        return MachPhys::NINJA;
+    std::optional<MachPhys::AggressorSubType> r = MachPhys::toAggressorSubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::GRUNT;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::GRUNT);
 }
 // static
 MachPhys::AdministratorSubType MachLogScenario::administratorSubType(const std::string& subType)
 {
-    if (subType == "BOSS")
-        return MachPhys::BOSS;
-    if (subType == "OVERSEER")
-        return MachPhys::OVERSEER;
-    if (subType == "COMMANDER")
-        return MachPhys::COMMANDER;
+    std::optional<MachPhys::AdministratorSubType> r = MachPhys::toAdministratorSubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::BOSS;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::BOSS);
 }
 // static
 MachPhys::FactorySubType MachLogScenario::factorySubType(const std::string& subType)
 {
-    if (subType == "CIVILIAN")
-        return MachPhys::CIVILIAN;
-    if (subType == "MILITARY")
-        return MachPhys::MILITARY;
+    std::optional<MachPhys::FactorySubType> r = MachPhys::toFactorySubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::CIVILIAN;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::CIVILIAN);
 }
 // static
 MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const std::string& subType)
 {
-    if (subType == "CIVILIAN")
-        return MachPhys::LAB_CIVILIAN;
-    if (subType == "LAB_CIVILIAN")
-        return MachPhys::LAB_CIVILIAN;
-    if (subType == "MILITARY")
-        return MachPhys::LAB_MILITARY;
-    if (subType == "LAB_MILITARY")
-        return MachPhys::LAB_MILITARY;
+    std::optional<MachPhys::HardwareLabSubType> r = MachPhys::toHardwareLabSubType(subType);
+    if (!r.has_value())
+    {
+        // Legacy aliases: scenario files may use "CIVILIAN"/"MILITARY" instead of "LAB_CIVILIAN"/"LAB_MILITARY"
+        if (subType == "CIVILIAN")
+            return MachPhys::LAB_CIVILIAN;
+        if (subType == "MILITARY")
+            return MachPhys::LAB_MILITARY;
+    }
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::LAB_CIVILIAN;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::LAB_CIVILIAN);
 }
 // static
 MachPhys::MissileEmplacementSubType MachLogScenario::missileEmplacementSubType(const std::string& subType)
 {
-    if (subType == "TURRET")
-        return MachPhys::TURRET;
-    if (subType == "SENTRY")
-        return MachPhys::SENTRY;
-    if (subType == "LAUNCHER")
-        return MachPhys::LAUNCHER;
-    if (subType == "ICBM")
-        return MachPhys::ICBM;
+    std::optional<MachPhys::MissileEmplacementSubType> r = MachPhys::toMissileEmplacementSubType(subType);
     ASSERT_INFO(subType);
-    ASSERT(false, " Unknown subtype\n");
-    return MachPhys::ICBM;
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::ICBM);
 }
 
 // static
-MachPhys::WeaponCombo MachLogScenario::weaponCombo(const std::string& weaponCombo)
+MachPhys::WeaponCombo MachLogScenario::weaponCombo(const std::string& weaponComboStr)
 {
-    if (weaponCombo == "L_BOLTER")
-        return MachPhys::L_BOLTER;
-    if (weaponCombo == "T_ION_ORBITAL_CANNON")
-        return MachPhys::T_ION_ORBITAL_CANNON;
-    if (weaponCombo == "L_ELECTRIC_CHARGE")
-        return MachPhys::L_ELECTRIC_CHARGE;
-    if (weaponCombo == "R_BOLTER")
-        return MachPhys::R_BOLTER;
-    if (weaponCombo == "R_ELECTRIC_CHARGE")
-        return MachPhys::R_ELECTRIC_CHARGE;
-    if (weaponCombo == "LR_PULSE_RIFLE_X2")
-        return MachPhys::LR_PULSE_RIFLE_X2;
-    if (weaponCombo == "L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED")
-        return MachPhys::L_PULSE_RIFLE_R_SUPERCHARGE_ADVANCED;
-    if (weaponCombo == "LR_PLASMA_RIFLE_X2")
-        return MachPhys::LR_PLASMA_RIFLE_X2;
-    if (weaponCombo == "L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER")
-        return MachPhys::L_MULTI_LAUNCHER5_R_SUPERCHARGE_SUPER;
-    if (weaponCombo == "L_MULTI_LAUNCHER5_R_TREACHERY")
-        return MachPhys::L_MULTI_LAUNCHER5_R_TREACHERY;
-    if (weaponCombo == "LR_PULSE_CANNON_X2")
-        return MachPhys::LR_PULSE_CANNON_X2;
-    if (weaponCombo == "L_PULSE_CANNON_R_SUPERCHARGE_SUPER")
-        return MachPhys::L_PULSE_CANNON_R_SUPERCHARGE_SUPER;
-    if (weaponCombo == "L_PULSE_CANNON_R_VIRUS")
-        return MachPhys::L_PULSE_CANNON_R_VIRUS;
-    if (weaponCombo == "L_FLAME_THROWER2")
-        return MachPhys::L_FLAME_THROWER2;
-    if (weaponCombo == "LR_HEAVY_BOLTER1_X2")
-        return MachPhys::LR_HEAVY_BOLTER1_X2;
-    if (weaponCombo == "L_MULTI_LAUNCHER7_T_GORILLA_PUNCH_R_MULTI_LAUNCHER7")
-        return MachPhys::L_MULTI_LAUNCHER7_T_GORILLA_PUNCH_R_MULTI_LAUNCHER7;
-    //  if( weaponCombo == "LR_GRENADE_LAUNCHER_X2" )
-    //        return MachPhys::LR_GRENADE_LAUNCHER_X2;
-    if (weaponCombo == "L_AUTO_CANNON")
-        return MachPhys::L_AUTO_CANNON;
-    if (weaponCombo == "L_PLASMA_RIFLE")
-        return MachPhys::L_PLASMA_RIFLE;
-    if (weaponCombo == "LR_AUTO_CANNON_X2")
-        return MachPhys::LR_AUTO_CANNON_X2;
-    if (weaponCombo == "T_NUCLEAR_MISSILE")
-        return MachPhys::T_NUCLEAR_MISSILE;
-    if (weaponCombo == "T_MULTI_LAUNCHER1")
-        return MachPhys::T_MULTI_LAUNCHER1;
-    if (weaponCombo == "T_VORTEX")
-        return MachPhys::T_VORTEX;
-    if (weaponCombo == "LR_MULTI_LAUNCHER2_X2")
-        return MachPhys::LR_MULTI_LAUNCHER2_X2;
-    if (weaponCombo == "LR_HEAVY_BOLTER2_X2")
-        return MachPhys::LR_HEAVY_BOLTER2_X2;
-    if (weaponCombo == "LR_PLASMA_CANNON1_X2")
-        return MachPhys::LR_PLASMA_CANNON1_X2;
-    if (weaponCombo == "LR_MULTI_LAUNCHER3_X2")
-        return MachPhys::LR_MULTI_LAUNCHER3_X2;
-    if (weaponCombo == "LR_PLASMA_CANNON2_X2")
-        return MachPhys::LR_PLASMA_CANNON2_X2;
-    if (weaponCombo == "LRT_MULTI_LAUNCHER4_X3")
-        return MachPhys::LRT_MULTI_LAUNCHER4_X3;
-    if (weaponCombo == "LRT_PLASMA_CANNON2_X3")
-        return MachPhys::LRT_PLASMA_CANNON2_X3;
-    if (weaponCombo == "T_FLAME_THROWER1")
-        return MachPhys::T_FLAME_THROWER1;
-    if (weaponCombo == "LR_MULTI_LAUNCHER5_X2")
-        return MachPhys::LR_MULTI_LAUNCHER5_X2;
-    if (weaponCombo == "LR_MULTI_LAUNCHER6_X2")
-        return MachPhys::LR_MULTI_LAUNCHER6_X2;
-    if (weaponCombo == "LR_LARGE_MISSILE_X2")
-        return MachPhys::LR_LARGE_MISSILE_X2;
-    if (weaponCombo == "LR_MULTI_LAUNCHER7_X2")
-        return MachPhys::LR_MULTI_LAUNCHER7_X2;
-    if (weaponCombo == "T_WASP_LIGHT_STING")
-        return MachPhys::T_WASP_LIGHT_STING;
-    if (weaponCombo == "T_WASP_METAL_STING")
-        return MachPhys::T_WASP_METAL_STING;
-    if (weaponCombo == "T_BEE_BOMB")
-        return MachPhys::T_BEE_BOMB;
-    ASSERT_INFO(weaponCombo);
-    ASSERT(false, " Unknown Weapon Combo\n");
-    return MachPhys::L_BOLTER;
+    std::optional<MachPhys::WeaponCombo> r = MachPhys::toWeaponCombo(weaponComboStr);
+    ASSERT_INFO(weaponComboStr);
+    ASSERT(r.has_value(), " Unknown Weapon Combo\n");
+    return r.value_or(MachPhys::L_BOLTER);
 }
 
 // static
@@ -1392,57 +1245,42 @@ MachLog::ObjectType MachLogScenario::physConstructionToLogObject(MachPhys::Const
 }
 
 // static
-MachLogCamera::Type MachLogScenario::cameraType(const std::string& cameraType)
+MachLogCamera::Type MachLogScenario::cameraType(const std::string& cameraTypeStr)
 {
-    if (cameraType == "ZENITH")
-        return MachLogCamera::ZENITH;
-    if (cameraType == "GROUND")
-        return MachLogCamera::GROUND;
-    if (cameraType == "FREE_MOVING")
-        return MachLogCamera::FREE_MOVING;
-    if (cameraType == "THIRD_PERSON")
-        return MachLogCamera::THIRD_PERSON;
-    ASSERT_INFO(cameraType);
-    ASSERT(false, " Unknown cameraType\n");
-    return MachLogCamera::GROUND;
+    std::optional<MachLog::CameraType> r = MachLog::toCameraType(cameraTypeStr);
+    ASSERT_INFO(cameraTypeStr);
+    ASSERT(r.has_value(), " Unknown cameraType\n");
+    return r.value_or(MachLogCamera::GROUND);
 }
 
 // static
 MachLog::BeaconType MachLogScenario::virtualBeaconType(const std::string& beaconType)
 {
-    if (beaconType == "NO_BEACON")
-        return MachLog::NO_BEACON;
-    if (beaconType == "LEVEL_1_BEACON")
-        return MachLog::LEVEL_1_BEACON;
-    if (beaconType == "LEVEL_3_BEACON")
-        return MachLog::LEVEL_3_BEACON;
+    std::optional<MachLog::BeaconType> r = MachLog::toBeaconType(beaconType);
     ASSERT_INFO(beaconType);
-    ASSERT(false, " Unknown beaconType\n");
-    return MachLog::NO_BEACON;
+    ASSERT(r.has_value(), " Unknown beaconType\n");
+    return r.value_or(MachLog::NO_BEACON);
 }
 
 // static
 MachLog::ResourcesAvailable MachLogScenario::resourceAvailable(const std::string& resourceType)
 {
-    if (resourceType == "RES_DEFAULT")
-        return MachLog::RES_DEFAULT;
-    if (resourceType == "DEFAULT")
-        return MachLog::RES_DEFAULT;
-    if (resourceType == "RES_LOW")
-        return MachLog::RES_LOW;
-    if (resourceType == "LOW")
-        return MachLog::RES_LOW;
-    if (resourceType == "RES_MEDIUM")
-        return MachLog::RES_MEDIUM;
-    if (resourceType == "MEDIUM")
-        return MachLog::RES_MEDIUM;
-    if (resourceType == "RES_HIGH")
-        return MachLog::RES_HIGH;
-    if (resourceType == "HIGH")
-        return MachLog::RES_HIGH;
+    std::optional<MachLog::ResourcesAvailable> r = MachLog::toResourcesAvailable(resourceType);
+    if (!r.has_value())
+    {
+        // Legacy aliases without RES_ prefix
+        if (resourceType == "DEFAULT")
+            return MachLog::RES_DEFAULT;
+        if (resourceType == "LOW")
+            return MachLog::RES_LOW;
+        if (resourceType == "MEDIUM")
+            return MachLog::RES_MEDIUM;
+        if (resourceType == "HIGH")
+            return MachLog::RES_HIGH;
+    }
     ASSERT_INFO(resourceType);
-    ASSERT(false, "Unknown resource type marker\n");
-    return MachLog::RES_DEFAULT;
+    ASSERT(r.has_value(), "Unknown resource type marker\n");
+    return r.value_or(MachLog::RES_DEFAULT);
 }
 
 // static
@@ -1475,17 +1313,14 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
     PRE(parser.tokens()[1] == "RACE");
     MachLogRaces& races = MachLogRaces::instance();
 
-    MachPhys::Race race;
+    MachPhys::Race race{};
     std::string raceString = parser.tokens()[2];
     bool doAI = true;
-    if (raceString == "RED")
-        race = MachPhys::RED;
-    else if (raceString == "BLUE")
-        race = MachPhys::BLUE;
-    else if (raceString == "GREEN")
-        race = MachPhys::GREEN;
-    else if (raceString == "YELLOW")
-        race = MachPhys::YELLOW;
+    std::optional<MachPhys::Race> parsedRace = MachPhys::toRace(raceString);
+    if (parsedRace.has_value())
+    {
+        race = parsedRace.value();
+    }
     else if (raceString == "AI")
     {
         doAI = true;
