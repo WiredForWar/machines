@@ -15,7 +15,6 @@
 #include "machphys/levels.hpp"
 #include "machphys/levindmp.hpp"
 #include "machphys/machphys.hpp"
-#include "machphys/symparse.hpp"
 #include "machphys/internal/consdati.hpp"
 
 // Machine type data classes
@@ -51,6 +50,65 @@
 #include <memory>
 
 #include <stdio.h>
+
+namespace
+{
+
+size_t parseConstructionLevel(const std::string& token)
+{
+    if (token == "LEVEL_1")
+        return 1;
+    if (token == "LEVEL_2")
+        return 2;
+    if (token == "LEVEL_3")
+        return 3;
+    if (token == "LEVEL_4")
+        return 4;
+    if (token == "LEVEL_5")
+        return 5;
+
+    ASSERT_INFO(token);
+    ASSERT_FAIL("Illegal level token");
+    return 0;
+}
+
+int constructionSubType(MachPhys::ConstructionType type, const std::string& subType)
+{
+    switch (type)
+    {
+    case MachPhys::HARDWARE_LAB:
+    {
+        // Data files use "CIVILIAN"/"MILITARY" (not "LAB_CIVILIAN"/"LAB_MILITARY")
+        if (subType == "CIVILIAN")
+            return MachPhys::LAB_CIVILIAN;
+        if (subType == "MILITARY")
+            return MachPhys::LAB_MILITARY;
+        std::optional<MachPhys::HardwareLabSubType> r = MachPhys::toHardwareLabSubType(subType);
+        ASSERT_INFO(subType);
+        ASSERT(r.has_value(), " Unknown subtype\n");
+        return r.value_or(MachPhys::LAB_CIVILIAN);
+    }
+    case MachPhys::FACTORY:
+    {
+        std::optional<MachPhys::FactorySubType> r = MachPhys::toFactorySubType(subType);
+        ASSERT_INFO(subType);
+        ASSERT(r.has_value(), " Unknown subtype\n");
+        return r.value_or(MachPhys::CIVILIAN);
+    }
+    case MachPhys::MISSILE_EMPLACEMENT:
+    {
+        std::optional<MachPhys::MissileEmplacementSubType> r = MachPhys::toMissileEmplacementSubType(subType);
+        ASSERT_INFO(subType);
+        ASSERT(r.has_value(), " Unknown subtype\n");
+        return r.value_or(MachPhys::TURRET);
+    }
+    default:
+        ASSERT(subType == "VOID", " Unknown subtype. Should be VOID if type has no subtypes.\n");
+        return 0;
+    }
+}
+
+} // namespace
 
 // static
 MachPhysDataParser& MachPhysDataParser::instance()
@@ -1084,7 +1142,10 @@ void MachPhysDataParser::parseAggressorBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "AGGRESSOR");
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::AggressorSubType subType = MachPhysSymbolParser::aggressorSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::AggressorSubType> opt = MachPhys::toAggressorSubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown aggressor sub type");
+    MachPhys::AggressorSubType subType = opt.value_or(MachPhys::GRUNT);
 
     pParser->parseNextLine();
 
@@ -1154,7 +1215,10 @@ void MachPhysDataParser::parseAdministratorBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "ADMINISTRATOR")
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::AdministratorSubType subType = MachPhysSymbolParser::administratorSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::AdministratorSubType> opt = MachPhys::toAdministratorSubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown administrator sub type");
+    MachPhys::AdministratorSubType subType = opt.value_or(MachPhys::BOSS);
 
     pParser->parseNextLine();
 
@@ -1490,7 +1554,10 @@ void MachPhysDataParser::parseTechnicianBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "TECHNICIAN")
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::TechnicianSubType subType = MachPhysSymbolParser::technicianSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::TechnicianSubType> opt = MachPhys::toTechnicianSubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown technician sub type");
+    MachPhys::TechnicianSubType subType = opt.value_or(MachPhys::LAB_TECH);
 
     pParser->parseNextLine();
 
@@ -1540,7 +1607,10 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "CONSTRUCTOR")
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::ConstructorSubType subType = MachPhysSymbolParser::constructorSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::ConstructorSubType> opt = MachPhys::toConstructorSubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown constructor sub type");
+    MachPhys::ConstructorSubType subType = opt.value_or(MachPhys::DOZER);
 
     pParser->parseNextLine();
 
@@ -1597,8 +1667,11 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
 
                 for (size_t hwIndex = 0; hwIndex < nHardwareLevels; ++hwIndex)
                 {
-                    MachPhys::ConstructionType consType
-                        = MachPhysSymbolParser::constructionType(pParser->tokens()[hwIndex + 1]);
+                    std::optional<MachPhys::ConstructionType> consTypeOpt
+                        = MachPhys::toConstructionType(pParser->tokens()[hwIndex + 1]);
+                    ASSERT_INFO(pParser->tokens()[hwIndex + 1]);
+                    ASSERT(consTypeOpt.has_value(), "Unknown construction type");
+                    MachPhys::ConstructionType consType = consTypeOpt.value_or(MachPhys::BEACON);
                     size_t hardwareLevel = MachPhysLevels::instance().hardwareLevel(subType, hwIndex);
 
                     for (size_t swIndex = 0; swIndex < nSoftwareLevels; ++swIndex)
@@ -1626,7 +1699,7 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
                         = _CONST_CAST(const MachPhysConstructorData*, (*pStore)[hardwareLevel][firstSoftwareLevel])
                               ->mostAdvancedConstructionType();
 
-                    consSubType = MachPhysSymbolParser::constructionSubType(CT, pParser->tokens()[hwIndex + 1].c_str());
+                    consSubType = constructionSubType(CT, pParser->tokens()[hwIndex + 1]);
 
                     for (size_t swIndex = 0; swIndex < nSoftwareLevels; ++swIndex)
                     {
@@ -1644,7 +1717,7 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
                 for (size_t hwIndex = 0; hwIndex < nHardwareLevels; ++hwIndex)
                 {
                     size_t constructionLevel
-                        = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[hwIndex + 1].c_str());
+                        = parseConstructionLevel(pParser->tokens()[hwIndex + 1].c_str());
                     size_t hardwareLevel = MachPhysLevels::instance().hardwareLevel(subType, hwIndex);
 
                     for (size_t swIndex = 0; swIndex < nSoftwareLevels; ++swIndex)
@@ -1794,7 +1867,18 @@ void MachPhysDataParser::parseHardwareLabBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "HARDWARE_LAB");
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::HardwareLabSubType subType = MachPhysSymbolParser::hardwareLabSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::HardwareLabSubType> opt = MachPhys::toHardwareLabSubType(pParser->tokens()[2]);
+    if (!opt.has_value())
+    {
+        // Data files use "CIVILIAN"/"MILITARY" (not "LAB_CIVILIAN"/"LAB_MILITARY")
+        if (pParser->tokens()[2] == "CIVILIAN")
+            opt = MachPhys::LAB_CIVILIAN;
+        else if (pParser->tokens()[2] == "MILITARY")
+            opt = MachPhys::LAB_MILITARY;
+    }
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown hardware lab sub type");
+    MachPhys::HardwareLabSubType subType = opt.value_or(MachPhys::LAB_CIVILIAN);
     size_t nHardwareLevels = MachPhysLevels::instance().nHardwareLevels(subType);
 
     pParser->parseNextLine();
@@ -1861,7 +1945,7 @@ void MachPhysDataParser::parseSmelterBlock(UtlLineTokeniser* pParser)
         {
             MATHEX_SCALAR fl[4];
             ASSERT(pParser->tokens().size() == 4, "Wrong number of tokens on put down point line.\n")
-            size_t hardwareLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1].c_str());
+            size_t hardwareLevel = parseConstructionLevel(pParser->tokens()[1].c_str());
             for (int i = 2; i < 4; ++i)
                 sscanf(pParser->tokens()[i].c_str(), "%lf", &fl[i - 2]);
             pData_->smelterData_[hardwareLevel]->addPutDownPoint(MexPoint2d(fl[0], fl[1]));
@@ -1883,7 +1967,10 @@ void MachPhysDataParser::parseFactoryBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "FACTORY");
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::FactorySubType subType = MachPhysSymbolParser::factorySubType(pParser->tokens()[2]);
+    std::optional<MachPhys::FactorySubType> opt = MachPhys::toFactorySubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown factory sub type");
+    MachPhys::FactorySubType subType = opt.value_or(MachPhys::CIVILIAN);
     size_t nHardwareLevels = MachPhysLevels::instance().nHardwareLevels(subType);
 
     pParser->parseNextLine();
@@ -1922,7 +2009,10 @@ void MachPhysDataParser::parseMissileEmplacementBlock(UtlLineTokeniser* pParser)
     PRE(pParser->tokens()[1] == "MISSILE_EMPLACEMENT");
     PRE(pParser->tokens().size() == 3);
 
-    MachPhys::MissileEmplacementSubType subType = MachPhysSymbolParser::missileEmplacementSubType(pParser->tokens()[2]);
+    std::optional<MachPhys::MissileEmplacementSubType> opt = MachPhys::toMissileEmplacementSubType(pParser->tokens()[2]);
+    ASSERT_INFO(pParser->tokens()[2]);
+    ASSERT(opt.has_value(), "Unknown missile emplacement sub type");
+    MachPhys::MissileEmplacementSubType subType = opt.value_or(MachPhys::TURRET);
     size_t nHardwareLevels = MachPhysLevels::instance().nHardwareLevels(subType);
 
     pParser->parseNextLine();
@@ -2055,7 +2145,7 @@ void MachPhysDataParser::parseMineBlock(UtlLineTokeniser* pParser)
         else if (pParser->tokens()[0] == "PICKUP")
         {
             ASSERT(pParser->tokens().size() == 4, "Wrong number of tokens on pick up point line.\n")
-            size_t level = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1].c_str());
+            size_t level = parseConstructionLevel(pParser->tokens()[1].c_str());
 
             pData_->mineData_[level]->addPickUpPoint(
                 MexPoint2d(atof(pParser->tokens()[2].c_str()), atof(pParser->tokens()[3].c_str())));
@@ -2134,7 +2224,7 @@ void MachPhysDataParser::parsePodBlock(UtlLineTokeniser* pParser)
         {
             MATHEX_SCALAR fl[4];
             ASSERT(pParser->tokens().size() == 4, "Wrong number of tokens on put down point line.\n")
-            size_t hardwareLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1].c_str());
+            size_t hardwareLevel = parseConstructionLevel(pParser->tokens()[1].c_str());
             for (int i = 2; i < 4; ++i)
                 sscanf(pParser->tokens()[i].c_str(), "%lf", &fl[i - 2]);
             pData_->podData_[hardwareLevel]->addPutDownPoint(MexPoint2d(fl[0], fl[1]));
@@ -2197,7 +2287,7 @@ bool MachPhysDataParser::parseCommonConstructionToken(
     {
         ASSERT(pParser->tokens().size() == 6, "Wrong number of tokens on boundary line.\n")
         MATHEX_SCALAR fl[4];
-        size_t hwLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1]);
+        size_t hwLevel = parseConstructionLevel(pParser->tokens()[1]);
         size_t hwIndex = levelIndexMap.index(hwLevel);
 
         for (size_t i = 2; i < 6; ++i)
@@ -2208,7 +2298,7 @@ bool MachPhysDataParser::parseCommonConstructionToken(
     else if (pParser->tokens()[0] == "ENTRANCE")
     {
         ASSERT(pParser->tokens().size() == 10, "Wrong number of tokens on entrance line.\n")
-        size_t hwLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1]);
+        size_t hwLevel = parseConstructionLevel(pParser->tokens()[1]);
         size_t hwIndex = levelIndexMap.index(hwLevel);
 
         MexPoint2d externalPoint(atof(pParser->tokens()[2].c_str()), atof(pParser->tokens()[3].c_str()));
@@ -2255,7 +2345,7 @@ void MachPhysDataParser::parseInteriorBoundary(
     PRE(pParser->tokens().size());
     PRE(pParser->tokens().size() == 6);
 
-    size_t hwLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1]);
+    size_t hwLevel = parseConstructionLevel(pParser->tokens()[1]);
     size_t hwIndex = levelIndexMap.index(hwLevel);
 
     MexPoint2d minCorner(atof(pParser->tokens()[2].c_str()), atof(pParser->tokens()[3].c_str()));
@@ -2272,7 +2362,7 @@ void MachPhysDataParser::parseInteriorObstacle(
     PRE(pParser->tokens().size());
     PRE(pParser->tokens().size() % 2 == 0);
 
-    size_t hwLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1]);
+    size_t hwLevel = parseConstructionLevel(pParser->tokens()[1]);
     size_t hwIndex = levelIndexMap.index(hwLevel);
 
     ctl_vector<MexPoint2d> points;
@@ -2297,7 +2387,7 @@ void MachPhysDataParser::parseInteriorStation(
     PRE(pParser->tokens().size());
     PRE(pParser->tokens().size() == 5);
 
-    size_t hwLevel = MachPhysSymbolParser::parseConstructionLevel(pParser->tokens()[1]);
+    size_t hwLevel = parseConstructionLevel(pParser->tokens()[1]);
     size_t hwIndex = levelIndexMap.index(hwLevel);
 
     MexPoint2d position(atof(pParser->tokens()[2].c_str()), atof(pParser->tokens()[3].c_str()));
