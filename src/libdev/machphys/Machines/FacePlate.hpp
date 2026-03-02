@@ -41,7 +41,7 @@ private:
     // Operation deliberately revoked
     bool operator==(const MachPhysFacePlate&);
 
-    SysPathName compositeFileName(size_t brainLevel) const;
+    static SysPathName compositeFileName(size_t brainLevel);
 };
 
 PER_READ_WRITE(MachPhysFacePlate);

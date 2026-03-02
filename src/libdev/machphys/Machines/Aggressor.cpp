@@ -78,7 +78,7 @@ MachPhys::AggressorSubType MachPhysAggressor::subType() const
     return subType_;
 }
 
-SysPathName MachPhysAggressor::compositeFileName(MachPhys::AggressorSubType subType, size_t bodyLevel) const
+SysPathName MachPhysAggressor::compositeFileName(MachPhys::AggressorSubType subType, size_t bodyLevel)
 {
     SysPathName result;
 

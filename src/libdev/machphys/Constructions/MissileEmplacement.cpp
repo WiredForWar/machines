@@ -155,7 +155,7 @@ const MachPhysMissileEmplacementData& MachPhysMissileEmplacement::data() const
 }
 
 SysPathName
-MachPhysMissileEmplacement::compositeFileName(MachPhys::MissileEmplacementSubType subType, size_t level) const
+MachPhysMissileEmplacement::compositeFileName(MachPhys::MissileEmplacementSubType subType, size_t level)
 {
     SysPathName result;
 
@@ -242,7 +242,7 @@ MachPhysMissileEmplacement::compositeFileName(MachPhys::MissileEmplacementSubTyp
 }
 
 SysPathName
-MachPhysMissileEmplacement::wireframeFileName(MachPhys::MissileEmplacementSubType subType, size_t level) const
+MachPhysMissileEmplacement::wireframeFileName(MachPhys::MissileEmplacementSubType subType, size_t level)
 {
     SysPathName result;
 

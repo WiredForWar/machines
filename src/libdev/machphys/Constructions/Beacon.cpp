@@ -106,7 +106,7 @@ const MachPhysBeaconData& MachPhysBeacon::data() const
     return *pData_;
 }
 
-SysPathName MachPhysBeacon::compositeFileName(size_t level) const
+SysPathName MachPhysBeacon::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -134,7 +134,7 @@ SysPathName MachPhysBeacon::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysBeacon::wireframeFileName(size_t level) const
+SysPathName MachPhysBeacon::wireframeFileName(size_t level)
 {
     SysPathName result;
 

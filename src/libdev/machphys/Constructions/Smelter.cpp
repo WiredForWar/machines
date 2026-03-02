@@ -123,7 +123,7 @@ const MachPhysSmelterData& MachPhysSmelter::data() const
     return *pData_;
 }
 
-SysPathName MachPhysSmelter::compositeFileName(size_t level) const
+SysPathName MachPhysSmelter::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -146,7 +146,7 @@ SysPathName MachPhysSmelter::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysSmelter::wireframeFileName(size_t level) const
+SysPathName MachPhysSmelter::wireframeFileName(size_t level)
 {
     SysPathName result;
 
@@ -168,7 +168,7 @@ SysPathName MachPhysSmelter::wireframeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysSmelter::interiorCompositeFileName(size_t level) const
+SysPathName MachPhysSmelter::interiorCompositeFileName(size_t level)
 {
     SysPathName result;
 

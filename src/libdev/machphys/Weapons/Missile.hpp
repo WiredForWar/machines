@@ -76,6 +76,7 @@ private:
     friend class MachPhysObjectFactory<size_t, MachPhysMissile>;
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysConstructionPersistence;
     friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
     friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
@@ -86,7 +87,7 @@ private:
     //  only constructor that actually builds a missile from scratch
     MachPhysMissile(W4dEntity* pParent, size_t level);
 
-    SysPathName compositeFileName(size_t level) const;
+    static SysPathName compositeFileName(size_t level);
 
     ////////////////////////////////////////////////////////////
     // Inherited from MachPhysLinearProjectile

@@ -49,8 +49,8 @@ private:
     // friend MachPhysWeaponsLab& Factory::part( const ID&, size_t );
 
     static MachPhysWeaponsLab& factory(size_t level);
-    SysPathName compositeFileName(size_t level) const;
-    SysPathName interiorCompositeFileName(size_t level) const;
+    static SysPathName compositeFileName(size_t level);
+    static SysPathName interiorCompositeFileName(size_t level);
     void initialiseLevel1();
 
     //  This is the constructor that is used by the factory. It is the

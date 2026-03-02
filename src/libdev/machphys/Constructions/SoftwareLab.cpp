@@ -76,7 +76,7 @@ const MachPhysSoftwareLabData& MachPhysSoftwareLab::data() const
     return *pData_;
 }
 
-SysPathName MachPhysSoftwareLab::compositeFileName(size_t level) const
+SysPathName MachPhysSoftwareLab::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -95,7 +95,7 @@ SysPathName MachPhysSoftwareLab::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysSoftwareLab::wireframeFileName(size_t level) const
+SysPathName MachPhysSoftwareLab::wireframeFileName(size_t level)
 {
     SysPathName result;
 
@@ -113,7 +113,7 @@ SysPathName MachPhysSoftwareLab::wireframeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysSoftwareLab::interiorCompositeFileName(size_t level) const
+SysPathName MachPhysSoftwareLab::interiorCompositeFileName(size_t level)
 {
     SysPathName result;
 

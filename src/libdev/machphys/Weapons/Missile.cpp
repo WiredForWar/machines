@@ -92,7 +92,7 @@ MachPhysMissile::~MachPhysMissile()
     W4dSoundManager::instance().stop(this);
 }
 
-SysPathName MachPhysMissile::compositeFileName(size_t level) const
+SysPathName MachPhysMissile::compositeFileName(size_t level)
 {
     SysPathName result;
 

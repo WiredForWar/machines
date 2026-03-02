@@ -78,9 +78,10 @@ private:
     //  This constructor for use by the factory only
     MachPhysAPC(W4dEntity* pParent, Id bodyLevel);
 
-    SysPathName compositeFileName(size_t bodyLevel) const;
+    static SysPathName compositeFileName(size_t bodyLevel);
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysMachinePersistence;
     friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
     friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 

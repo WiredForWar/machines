@@ -76,7 +76,7 @@ const MachPhysWeaponsLabData& MachPhysWeaponsLab::data() const
     return *pData_;
 }
 
-SysPathName MachPhysWeaponsLab::compositeFileName(size_t level) const
+SysPathName MachPhysWeaponsLab::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -94,7 +94,7 @@ SysPathName MachPhysWeaponsLab::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysWeaponsLab::interiorCompositeFileName(size_t level) const
+SysPathName MachPhysWeaponsLab::interiorCompositeFileName(size_t level)
 {
     SysPathName result;
 

@@ -122,7 +122,7 @@ const MachPhysMineData& MachPhysMine::data() const
     return *pData_;
 }
 
-SysPathName MachPhysMine::compositeFileName(size_t level) const
+SysPathName MachPhysMine::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -149,7 +149,7 @@ SysPathName MachPhysMine::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysMine::wireframeFileName(size_t level) const
+SysPathName MachPhysMine::wireframeFileName(size_t level)
 {
     SysPathName result;
 

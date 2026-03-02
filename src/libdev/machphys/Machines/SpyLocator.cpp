@@ -72,7 +72,7 @@ MachPhysSpyLocator::~MachPhysSpyLocator()
     delete pImpl_;
 }
 
-SysPathName MachPhysSpyLocator::compositeFileName(size_t bodyLevel) const
+SysPathName MachPhysSpyLocator::compositeFileName(size_t bodyLevel)
 {
     SysPathName result;
 

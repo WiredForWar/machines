@@ -81,7 +81,7 @@ MachPhys::AdministratorSubType MachPhysAdministrator::subType() const
     return subType_;
 }
 
-SysPathName MachPhysAdministrator::compositeFileName(MachPhys::AdministratorSubType subType, size_t bodyLevel) const
+SysPathName MachPhysAdministrator::compositeFileName(MachPhys::AdministratorSubType subType, size_t bodyLevel)
 {
     SysPathName result;
 

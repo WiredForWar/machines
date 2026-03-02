@@ -156,7 +156,7 @@ const MachPhysHardwareLabData& MachPhysHardwareLab::data() const
     return *pData_;
 }
 
-SysPathName MachPhysHardwareLab::compositeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
+SysPathName MachPhysHardwareLab::compositeFileName(MachPhys::HardwareLabSubType subType, size_t level)
 {
     SysPathName result;
 
@@ -208,7 +208,7 @@ SysPathName MachPhysHardwareLab::compositeFileName(MachPhys::HardwareLabSubType 
     return result;
 }
 
-SysPathName MachPhysHardwareLab::wireframeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
+SysPathName MachPhysHardwareLab::wireframeFileName(MachPhys::HardwareLabSubType subType, size_t level)
 {
     SysPathName result;
 
@@ -260,7 +260,7 @@ SysPathName MachPhysHardwareLab::wireframeFileName(MachPhys::HardwareLabSubType 
     return result;
 }
 
-SysPathName MachPhysHardwareLab::interiorCompositeFileName(MachPhys::HardwareLabSubType subType, size_t level) const
+SysPathName MachPhysHardwareLab::interiorCompositeFileName(MachPhys::HardwareLabSubType subType, size_t level)
 {
     SysPathName result;
 

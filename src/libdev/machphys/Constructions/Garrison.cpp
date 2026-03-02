@@ -91,7 +91,7 @@ const MachPhysGarrisonData& MachPhysGarrison::data() const
     return *pData_;
 }
 
-SysPathName MachPhysGarrison::compositeFileName(size_t level) const
+SysPathName MachPhysGarrison::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -110,7 +110,7 @@ SysPathName MachPhysGarrison::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysGarrison::wireframeFileName(size_t level) const
+SysPathName MachPhysGarrison::wireframeFileName(size_t level)
 {
     SysPathName result;
 
@@ -128,7 +128,7 @@ SysPathName MachPhysGarrison::wireframeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysGarrison::interiorCompositeFileName(size_t level) const
+SysPathName MachPhysGarrison::interiorCompositeFileName(size_t level)
 {
     SysPathName result;
 

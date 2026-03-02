@@ -171,7 +171,7 @@ const MachPhysFactoryData& MachPhysFactory::data() const
     return *pData_;
 }
 
-SysPathName MachPhysFactory::compositeFileName(MachPhys::FactorySubType subType, size_t level) const
+SysPathName MachPhysFactory::compositeFileName(MachPhys::FactorySubType subType, size_t level)
 {
     SysPathName result;
 
@@ -236,10 +236,71 @@ SysPathName MachPhysFactory::compositeFileName(MachPhys::FactorySubType subType,
     return result;
 }
 
-SysPathName MachPhysFactory::wireframeFileName(MachPhys::FactorySubType subType, size_t level) const
+SysPathName MachPhysFactory::wireframeFileName(MachPhys::FactorySubType subType, size_t level)
 {
     // Wire frames are obsolete
     SysPathName result;
+    return result;
+}
+
+SysPathName MachPhysFactory::interiorCompositeFileName(MachPhys::FactorySubType subType, size_t level)
+{
+    SysPathName result;
+
+    switch (subType)
+    {
+        case MachPhys::MILITARY:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/factory/military/level1/interior/fam1i.cdf";
+                        break;
+
+                    case 3:
+                        result = "models/factory/military/level3/interior/fam3i.cdf";
+                        break;
+
+                    case 4:
+                        result = "models/factory/military/level4/interior/fam4i.cdf";
+                        break;
+
+                    case 5:
+                        result = "models/factory/military/level5/interior/fam5i.cdf";
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            }
+
+        case MachPhys::CIVILIAN:
+            {
+                switch (level)
+                {
+                    case 1:
+                        result = "models/factory/civilian/level1/interior/fac1i.cdf";
+                        break;
+
+                    case 3:
+                        result = "models/factory/civilian/level3/interior/fac3i.cdf";
+                        break;
+
+                    case 5:
+                        result = "models/factory/civilian/level5/interior/fac5i.cdf";
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+            }
+
+        default:
+            break;
+    }
+
     return result;
 }
 

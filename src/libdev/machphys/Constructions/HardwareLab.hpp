@@ -69,6 +69,7 @@ private:
     friend class MachPhysObjectFactory<Id, MachPhysHardwareLab>;
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysConstructionPersistence;
     friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
     friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
@@ -76,9 +77,9 @@ private:
     static MachPhysHardwareLab& part(MachPhys::HardwareLabSubType, size_t level);
     static Factory& factory();
 
-    SysPathName compositeFileName(MachPhys::HardwareLabSubType, size_t level) const;
-    SysPathName wireframeFileName(MachPhys::HardwareLabSubType, size_t level) const;
-    SysPathName interiorCompositeFileName(MachPhys::HardwareLabSubType, size_t level) const;
+    static SysPathName compositeFileName(MachPhys::HardwareLabSubType, size_t level);
+    static SysPathName wireframeFileName(MachPhys::HardwareLabSubType, size_t level);
+    static SysPathName interiorCompositeFileName(MachPhys::HardwareLabSubType, size_t level);
 
     // Inherited from MachPhysConstruction
     void doWorking(bool isWorking) override;

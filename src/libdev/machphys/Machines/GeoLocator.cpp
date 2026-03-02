@@ -93,7 +93,7 @@ MachPhysGeoLocator::~MachPhysGeoLocator()
     delete pImpl_;
 }
 
-SysPathName MachPhysGeoLocator::compositeFileName(size_t bodyLevel) const
+SysPathName MachPhysGeoLocator::compositeFileName(size_t bodyLevel)
 {
     SysPathName result;
 

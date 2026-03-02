@@ -71,7 +71,7 @@ MachPhysResourceCarrier::MachPhysResourceCarrier(PerConstructor con)
 {
 }
 
-SysPathName MachPhysResourceCarrier::compositeFileName(size_t bodyLevel) const
+SysPathName MachPhysResourceCarrier::compositeFileName(size_t bodyLevel)
 {
     SysPathName result;
 

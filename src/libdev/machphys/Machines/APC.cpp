@@ -63,7 +63,7 @@ MachPhysAPC::MachPhysAPC(PerConstructor con)
 {
 }
 
-SysPathName MachPhysAPC::compositeFileName(size_t bodyLevel) const
+SysPathName MachPhysAPC::compositeFileName(size_t bodyLevel)
 {
     SysPathName result;
 

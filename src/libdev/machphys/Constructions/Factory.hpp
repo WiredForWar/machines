@@ -69,15 +69,16 @@ private:
     friend class MachPhysObjectFactory<Id, MachPhysFactory>;
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysConstructionPersistence;
     friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
     friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
     static MachPhysFactory& part(MachPhys::FactorySubType subType, size_t level);
     static Factory& factory();
 
-    SysPathName compositeFileName(MachPhys::FactorySubType subType, size_t level) const;
-    SysPathName wireframeFileName(MachPhys::FactorySubType subType, size_t level) const;
-    SysPathName interiorCompositeFileName(MachPhys::FactorySubType subType, size_t level) const;
+    static SysPathName compositeFileName(MachPhys::FactorySubType subType, size_t level);
+    static SysPathName wireframeFileName(MachPhys::FactorySubType subType, size_t level);
+    static SysPathName interiorCompositeFileName(MachPhys::FactorySubType subType, size_t level);
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a factory from scratch

@@ -31,7 +31,7 @@ MachPhysFacePlate::~MachPhysFacePlate()
     TEST_INVARIANT;
 }
 
-SysPathName MachPhysFacePlate::compositeFileName(size_t brainLevel) const
+SysPathName MachPhysFacePlate::compositeFileName(size_t brainLevel)
 {
     PRE(1 <= brainLevel && brainLevel <= 10);
 

@@ -135,7 +135,7 @@ const MachPhysPodData& MachPhysPod::data() const
     return *pData_;
 }
 
-SysPathName MachPhysPod::compositeFileName(size_t level) const
+SysPathName MachPhysPod::compositeFileName(size_t level)
 {
     SysPathName result;
 
@@ -153,13 +153,13 @@ SysPathName MachPhysPod::compositeFileName(size_t level) const
     return result;
 }
 
-SysPathName MachPhysPod::wireframeFileName(size_t) const
+SysPathName MachPhysPod::wireframeFileName(size_t)
 {
     // Pods are not built so do not have wireframes
     return SysPathName();
 }
 
-SysPathName MachPhysPod::interiorCompositeFileName(size_t level) const
+SysPathName MachPhysPod::interiorCompositeFileName(size_t level)
 {
     SysPathName result;
 

@@ -58,15 +58,16 @@ private:
     friend class MachPhysObjectFactory<Id, MachPhysGarrison>;
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysConstructionPersistence;
     friend void perWrite(PerOstream&, const MachPhysConstructionPersistence&);
     friend void perRead(PerIstream&, MachPhysConstructionPersistence&);
 
     static MachPhysGarrison& part(size_t level);
     static Factory& factory();
 
-    SysPathName compositeFileName(size_t level) const;
-    SysPathName wireframeFileName(size_t level) const;
-    SysPathName interiorCompositeFileName(size_t level) const;
+    static SysPathName compositeFileName(size_t level);
+    static SysPathName wireframeFileName(size_t level);
+    static SysPathName interiorCompositeFileName(size_t level);
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a garrison from scratch

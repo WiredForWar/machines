@@ -89,10 +89,11 @@ private:
     MachPhysResourceCarrier(W4dEntity* pParent, size_t bodyLevel);
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysMachinePersistence;
     friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
     friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
-    SysPathName compositeFileName(size_t bodyLevel) const;
+    static SysPathName compositeFileName(size_t bodyLevel);
     static MachPhysResourceCarrier& part(size_t bodyLevel);
     static Factory& factory();
 

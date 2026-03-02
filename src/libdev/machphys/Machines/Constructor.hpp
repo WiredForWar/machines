@@ -85,6 +85,7 @@ private:
     friend class MachPhysObjectFactory<Id, MachPhysConstructor>;
 
     //  Necessary to allow the persistence mechanism write out the factory
+    friend class MachPhysMachinePersistence;
     friend void perWrite(PerOstream&, const MachPhysMachinePersistence&);
     friend void perRead(PerIstream&, MachPhysMachinePersistence&);
 
@@ -93,7 +94,7 @@ private:
 
     void createExplosionData();
 
-    SysPathName compositeFileName(MachPhys::ConstructorSubType subType, size_t bodyLevel) const;
+    static SysPathName compositeFileName(MachPhys::ConstructorSubType subType, size_t bodyLevel);
 
     //  This is the constructor that is used by the factory. It is the
     //  only constructor that actually builds a constructor from scratch

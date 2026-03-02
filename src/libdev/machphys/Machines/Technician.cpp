@@ -72,7 +72,7 @@ MachPhys::TechnicianSubType MachPhysTechnician::subType() const
     return subType_;
 }
 
-SysPathName MachPhysTechnician::compositeFileName(MachPhys::TechnicianSubType subType, size_t bodyLevel) const
+SysPathName MachPhysTechnician::compositeFileName(MachPhys::TechnicianSubType subType, size_t bodyLevel)
 {
     SysPathName result;
 

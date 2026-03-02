@@ -153,7 +153,7 @@ const MachPhysConstructorData& MachPhysConstructor::data() const
     return MachPhysData::instance().constructorData(subType_, bodyLevel(), brainLevel());
 }
 
-SysPathName MachPhysConstructor::compositeFileName(MachPhys::ConstructorSubType subType, size_t bodyLevel) const
+SysPathName MachPhysConstructor::compositeFileName(MachPhys::ConstructorSubType subType, size_t bodyLevel)
 {
     SysPathName result;
 
