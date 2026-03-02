@@ -40,6 +40,9 @@ namespace MachLog
         ARTEFACT,
         N_OBJECT_TYPES
     };
+
+    std::string_view toString(ObjectType type);
+    std::optional<ObjectType> toObjectType(std::string_view str);
     enum Message : unsigned char
     {
         TELEPORTED_OUT_OF_WORLD,
@@ -77,6 +80,8 @@ namespace MachLog
         DEFCON_LOW
     };
 
+    std::string_view toString(DefCon type);
+
     enum TargetSystemType : unsigned char
     {
         TARGET_NORMAL,
@@ -89,6 +94,8 @@ namespace MachLog
         DONT_TARGET_AIR_UNITS
     };
 
+    std::string_view toString(TargetSystemType type);
+
     enum SpecialParameters
     {
         DONTCARE = 999
@@ -100,12 +107,17 @@ namespace MachLog
         FULLY_SELECTABLE
     };
 
+    std::string_view toString(SelectableType type);
+
     enum BeaconType : unsigned char
     {
         NO_BEACON,
         LEVEL_1_BEACON,
         LEVEL_3_BEACON
     };
+
+    std::string_view toString(BeaconType type);
+    std::optional<BeaconType> toBeaconType(std::string_view str);
 
     //  Types of obstacles that some machines can travel over
     //  Make sure that OBSTACLE_ALL is the OR of all other obstacles.
@@ -122,6 +134,9 @@ namespace MachLog
         RANDOM_START_LOCATIONS,
         FIXED_START_LOCATIONS
     };
+
+    std::string_view toString(RandomStarts type);
+
     enum PlayerType : unsigned char
     {
         PC_LOCAL,
@@ -130,6 +145,8 @@ namespace MachLog
         AI_REMOTE,
         NOT_DEFINED
     };
+
+    std::string_view toString(PlayerType type);
     enum ResourcesAvailable : unsigned char
     {
         RES_DEFAULT,
@@ -137,6 +154,9 @@ namespace MachLog
         RES_MEDIUM,
         RES_HIGH
     };
+
+    std::string_view toString(ResourcesAvailable type);
+    std::optional<ResourcesAvailable> toResourcesAvailable(std::string_view str);
     enum StartingResources : unsigned char
     {
         STARTING_RESOURCES_DEFAULT,
@@ -146,6 +166,9 @@ namespace MachLog
         STARTING_RESOURCES_VERY_HIGH,
         STARTING_RESOURCES_SUPER_HIGH
     };
+
+    std::string_view toString(StartingResources type);
+
     enum VictoryCondition : unsigned char
     {
         VICTORY_DEFAULT,
@@ -153,6 +176,9 @@ namespace MachLog
         VICTORY_POD,
         VICTORY_TIMER
     };
+
+    std::string_view toString(VictoryCondition type);
+
     enum TechnologyLevel : unsigned char
     {
         TECH_LEVEL_DEFAULT,
@@ -160,6 +186,8 @@ namespace MachLog
         TECH_LEVEL_MEDIUM,
         TECH_LEVEL_HIGH
     };
+
+    std::string_view toString(TechnologyLevel type);
     enum ForceRemove : unsigned char
     {
         FORCE_REMOVE,
@@ -171,6 +199,8 @@ namespace MachLog
         SKIRMISH_SINGLE_PLAYER,
         MULTIPLAYER
     };
+
+    std::string_view toString(GameType type);
 };
 
 std::ostream& operator<<(std::ostream&, const MachLog::ObjectType&);
