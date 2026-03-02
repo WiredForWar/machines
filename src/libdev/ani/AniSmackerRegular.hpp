@@ -4,6 +4,8 @@
 #include "system/pathname.hpp"
 #include "render/surface.hpp"
 
+#include <vector>
+
 #include "al.h"
 
 using smk = struct smk_t*;
@@ -48,7 +50,9 @@ protected:
     float scaleFactor_{};
 
 private:
-    void copyCurrentFrameToBuffer(RenSurface& dst);
+    static constexpr int AudioBufferCount = 8;
+
+    void feedAudioBuffers();
     void unpackBufferToSurface(RenSurface dst, const RenSurface& src);
 
     bool isFinishedNoRecord() const;
@@ -72,10 +76,12 @@ private:
     SysPathName fileName_;
     bool finished_{};
 
-    // Sound
+    // Sound — separate smk instance for audio-only streaming
+    smk pSmackAudio_{};
+    bool audioFinished_{};
     ALsizei alFrequency_{};
     ALenum alFormat_{};
-    ALuint alBuffers_[8]{};
+    ALuint alBuffers_[AudioBufferCount]{};
     ALuint alSource_{};
     std::vector<ALuint> freedBuffers_;
 };

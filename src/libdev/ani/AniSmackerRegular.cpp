@@ -1,4 +1,5 @@
 #include "ani/AniSmackerRegular.hpp"
+
 #include "render/display.hpp"
 #include "render/Painter.hpp"
 #include "recorder/recorder.hpp"
@@ -10,7 +11,6 @@
 #include "smacker.h"
 
 //////////////////////////////////////////////////////////////////////
-#define BUFFERS_NUM 6
 
 static inline ALenum toALformat(short channels, short samples)
 {
@@ -54,11 +54,13 @@ AniSmackerRegular::~AniSmackerRegular()
     if (pSmack_)
         smk_close(pSmack_);
 
+    if (pSmackAudio_)
+        smk_close(pSmackAudio_);
+
     if (alSource_)
     {
         alDeleteSources(1, &alSource_);
-        for (int i = 0; i < BUFFERS_NUM; ++i)
-            alDeleteBuffers(1, &alBuffers_[i]);
+        alDeleteBuffers(AudioBufferCount, alBuffers_);
     }
 }
 
@@ -136,81 +138,74 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
 
     if (surface_.isNull())
     {
-        // Turn on audio track 0 if present and prepare audio buffers
-        unsigned char a_tracks, a_channels[7], a_bitdepth[7];
-        unsigned long a_rate[7];
-        smk_info_audio(pSmack_, &a_tracks, a_channels, a_bitdepth, a_rate);
-        if (a_tracks & (1 << 0))
+        // Open a separate smk instance for audio-only streaming
+        pSmackAudio_ = smk_open_file(fileName_.pathname().c_str(), SMK_MODE_MEMORY);
+        if (pSmackAudio_)
         {
-            smk_enable_audio(pSmack_, 0, 1);
-            // OpenAL stuff
-            alFormat_ = toALformat(a_channels[0], a_bitdepth[0]);
-            alFrequency_ = a_rate[0];
-
-            alGenSources(1, &alSource_);
-            alTestError("gen source smacker");
-            alSourcef(alSource_, AL_PITCH, 1);
-            ALfloat fVol = SndMixer::instance().masterSampleVolume() / 100.0f;
-            alSourcef(alSource_, AL_GAIN, fVol);
-            alSource3f(alSource_, AL_VELOCITY, 0, 0, 0);
-            // alSourcei(alSource_, AL_LOOPING, AL_TRUE);
-            alSourcei(alSource_, AL_SOURCE_RELATIVE, AL_TRUE);
-            alSource3f(alSource_, AL_POSITION, 0.0f, 0.0f, 0.0f);
-            // Create the buffers
-            alGenBuffers(BUFFERS_NUM, &alBuffers_[0]);
-            alTestError("gen buffer smacker");
-
-            /*// Get audio all samples - testcode
-            unsigned char* audioBuffer;
-            unsigned int audioBufferSize = 0;
-            do
+            unsigned char a_tracks, a_channels[7], a_bitdepth[7];
+            unsigned long a_rate[7];
+            smk_info_audio(pSmackAudio_, &a_tracks, a_channels, a_bitdepth, a_rate);
+            if (a_tracks & (1 << 0))
             {
-                const unsigned char* pAudioBuffer =   smk_get_audio(pSmack_, 0);
-                unsigned long audioSize =       smk_get_audio_size(pSmack_, 0);
-                unsigned char* tmpBuff = _NEW_ARRAY(unsigned char, audioSize + audioBufferSize);
-                if(audioBufferSize > 0)
-                {
-                    memcpy(tmpBuff, audioBuffer, audioBufferSize);
-                    _DELETE_ARRAY(audioBuffer);
-                }
-                memcpy(&tmpBuff[audioBufferSize], pAudioBuffer, audioSize);
-                audioBufferSize += audioSize;
-                audioBuffer = tmpBuff;
-            }
-            while(smk_next( pSmack_ ) != SMK_DONE);
+                alFormat_ = toALformat(a_channels[0], a_bitdepth[0]);
+                alFrequency_ = a_rate[0];
 
-            smk_enable_audio(pSmack_, 0, 0);
-            alBufferData(alBuffers_[0], alFormat_, audioBuffer, audioBufferSize, alFrequency_);
-            alSourcei(alSource_, AL_BUFFER, alBuffers_[0]);
-            _DELETE_ARRAY(audioBuffer);*/
+                smk_enable_audio(pSmackAudio_, 0, 1);
+                smk_enable_video(pSmackAudio_, 0);
+                smk_first(pSmackAudio_);
+
+                // Set up OpenAL source and queue buffers
+                alGenSources(1, &alSource_);
+                alTestError("gen source smacker");
+                alSourcef(alSource_, AL_PITCH, 1);
+                ALfloat fVol = SndMixer::instance().masterSampleVolume() / 100.0f;
+                alSourcef(alSource_, AL_GAIN, fVol);
+                alSource3f(alSource_, AL_VELOCITY, 0, 0, 0);
+                alSourcei(alSource_, AL_SOURCE_RELATIVE, AL_TRUE);
+                alSource3f(alSource_, AL_POSITION, 0.0f, 0.0f, 0.0f);
+                alGenBuffers(AudioBufferCount, alBuffers_);
+                alTestError("gen buffers smacker");
+
+                // Pre-fill all queue buffers from the audio stream
+                for (int i = 0; i < AudioBufferCount && !audioFinished_; ++i)
+                {
+                    const unsigned char* pAudioBuffer = smk_get_audio(pSmackAudio_, 0);
+                    unsigned long audioSize = smk_get_audio_size(pSmackAudio_, 0);
+                    if (audioSize > 0)
+                    {
+                        alBufferData(alBuffers_[i], alFormat_, pAudioBuffer, audioSize, alFrequency_);
+                        alTestError("pre-fill buffer smacker");
+                        alSourceQueueBuffers(alSource_, 1, &alBuffers_[i]);
+                    }
+                    else
+                    {
+                        freedBuffers_.push_back(alBuffers_[i]);
+                    }
+
+                    if (smk_next(pSmackAudio_) == SMK_DONE)
+                        audioFinished_ = true;
+                }
+            }
+            else
+            {
+                smk_close(pSmackAudio_);
+                pSmackAudio_ = nullptr;
+            }
         }
 
-        // Turn on decoding for palette, video
+        // Set up video-only on the main instance
         smk_enable_video(pSmack_, 1);
-
-        // Get a pointer to first frame
         smk_first(pSmack_);
-        // One frame time in ms
+
         smk_info_all(pSmack_, nullptr, nullptr, &frameTime_);
         frameTime_ *= 0.000001;
         surface_ = this->createSmackerSurface(pDevice);
         pBuffer_ = new uint[size_.width * size_.height];
 
-        // TBD: replace this assertion with something more reasonable
         ASSERT(pBuffer_ != nullptr, "");
 
-        // Start playing the first chunk
         if (alSource_)
         {
-            // Queue first frame's audio into one buffer, keep remaining buffers free for subsequent frames
-            const unsigned char* pAudioBuffer = smk_get_audio(pSmack_, 0);
-            unsigned long audioSize = smk_get_audio_size(pSmack_, 0);
-
-            alBufferData(alBuffers_[0], alFormat_, pAudioBuffer, audioSize, alFrequency_);
-            alTestError("start buffer data smacker on start");
-            alSourceQueueBuffers(alSource_, 1, &alBuffers_[0]);
-            for (int i = 1; i < BUFFERS_NUM; ++i)
-                freedBuffers_.push_back(alBuffers_[i]);
             alSourcePlay(alSource_);
             alTestError("start play source smacker");
         }
@@ -223,10 +218,13 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
     double timeNow = DevTime::instance().time();
     advanceToNextFrame_ = (timeNow - lastFrameTime_ >= frameTime_);
 
+    // Keep the audio stream ahead of playback
+    feedAudioBuffers();
+
     // Copy next frame from smacker file to the buffer.
     if (advanceToNextFrame_ || fast_)
     {
-        copyCurrentFrameToBuffer(surface_);
+        copyCurrentVideoFrameToBuffer(surface_);
         lastFrameTime_ = timeNow;
         shouldRender = true;
     }
@@ -346,94 +344,6 @@ void AniSmackerRegular::copyCurrentVideoFrameToBuffer(RenSurface& renderSurface)
     renderSurface.copyFromRGBABuffer(fillBufferForCurrentFrame());
 }
 
-void AniSmackerRegular::copyCurrentFrameToBuffer(RenSurface& dst)
-{
-    /*
-    const unsigned char *pal = smk_get_palette(pSmack_);
-    const unsigned char *image_data = smk_get_video(pSmack_);
-    uint *img_buff = pBuffer_;
-
-    // Prepare a RGBA colours palette, TODO: this can be called once after file is loaded
-    uint    col_palette[256];
-    for (int i = 0; i < 256; i++)
-    {
-        uint    colour = 0xFF00;
-        colour |= pal[(i * 3) + 2];
-        colour <<= 8;
-        colour |= pal[(i * 3) + 1];
-        colour <<= 8;
-        colour |= pal[(i * 3) + 0];
-        col_palette[i] = colour;
-    }
-
-    // Fill image buffer
-    unsigned int pixel = 0;
-    for (unsigned int i = 0; i < height_; ++i)
-    {
-        for (unsigned int j = 0; j < width_; ++j)
-        {
-            img_buff[pixel] = col_palette[image_data[i * width_ + j]];
-            ++pixel;
-        }
-    }
-    dst.copyFromRGBABuffer(img_buff);
-    */
-    copyCurrentVideoFrameToBuffer(dst);
-
-    // Fill audio buffer
-    if (alSource_)
-    {
-        // Check for finished buffers, fill them with data and/or add to vector
-        ALint val;
-        alGetSourcei(alSource_, AL_BUFFERS_PROCESSED, &val);
-
-        ALuint uiBuffer = 0;
-        if (val <= 0)
-        {
-            if (freedBuffers_.empty())
-            {
-                // std::cout << "SKIPPING sample - all buffers in use" << std::endl;
-                return;
-            }
-            else
-            {
-                uiBuffer = freedBuffers_.back();
-                freedBuffers_.pop_back();
-            }
-        }
-        else
-        {
-            ALuint buffs[BUFFERS_NUM] = { 0 };
-            alSourceUnqueueBuffers(alSource_, val, &buffs[0]);
-            uiBuffer = buffs[0];
-            for (int i = 1; i < val; ++i)
-                freedBuffers_.push_back(buffs[i]);
-
-            // if(val > 1) std::cout << "Empty space: "<< val << std::endl;
-        }
-        // Fill bufer with WAV data
-        const unsigned char* pAudioBuffer = smk_get_audio(pSmack_, 0);
-        unsigned long audioSize = smk_get_audio_size(pSmack_, 0);
-
-        ALsizei size = audioSize;
-        const ALvoid* data = pAudioBuffer;
-
-        // alBufferData(alBuffer_, alFormat_, data, size, alFrequency_);
-        alBufferData(uiBuffer, alFormat_, data, size, alFrequency_);
-        alTestError("buffer data smacker");
-
-        alSourceQueueBuffers(alSource_, 1, &uiBuffer);
-        // alSourcei(alSource_, AL_BUFFER, alBuffer_);
-
-        alGetSourcei(alSource_, AL_SOURCE_STATE, &val);
-        if (val != AL_PLAYING)
-        {
-            alSourcePlay(alSource_);
-            alTestError("play source smacker");
-            // std::cout << "stopped" << std::endl;
-        }
-    }
-}
 
 void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& src)
 {
@@ -474,6 +384,50 @@ bool AniSmackerRegular::isPenultimateFrame() const
     unsigned long frame, frame_count;
     smk_info_all(pSmack_, &frame, &frame_count, nullptr);
     return frame == frame_count - 1;
+}
+
+void AniSmackerRegular::feedAudioBuffers()
+{
+    if (!alSource_)
+        return;
+
+    // Reclaim finished buffers
+    ALint processed;
+    alGetSourcei(alSource_, AL_BUFFERS_PROCESSED, &processed);
+    if (processed > 0)
+    {
+        ALuint buffs[AudioBufferCount]{};
+        alSourceUnqueueBuffers(alSource_, processed, buffs);
+        for (int i = 0; i < processed; ++i)
+            freedBuffers_.push_back(buffs[i]);
+    }
+
+    // Fill free buffers by advancing the audio stream
+    while (!freedBuffers_.empty() && !audioFinished_)
+    {
+        const unsigned char* pAudioBuffer = smk_get_audio(pSmackAudio_, 0);
+        unsigned long audioSize = smk_get_audio_size(pSmackAudio_, 0);
+        if (audioSize > 0)
+        {
+            ALuint buf = freedBuffers_.back();
+            freedBuffers_.pop_back();
+            alBufferData(buf, alFormat_, pAudioBuffer, audioSize, alFrequency_);
+            alTestError("buffer data smacker");
+            alSourceQueueBuffers(alSource_, 1, &buf);
+        }
+
+        if (smk_next(pSmackAudio_) == SMK_DONE)
+            audioFinished_ = true;
+    }
+
+    // Restart playback if the source has starved
+    ALint state;
+    alGetSourcei(alSource_, AL_SOURCE_STATE, &state);
+    if (state != AL_PLAYING)
+    {
+        alSourcePlay(alSource_);
+        alTestError("play source smacker");
+    }
 }
 
 void AniSmackerRegular::getNextFrame()
