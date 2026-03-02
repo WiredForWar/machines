@@ -22,6 +22,12 @@ public:
     // Load the scene hierarchy from a file. Returns an empty HierarchyData (no roots) on failure.
     virtual RenI::HierarchyData loadHierarchy(const SysPathName& path) = 0;
 
+    // Load animations from a file. Returns an empty AnimationData (no animations) by default.
+    virtual RenI::AnimationData loadAnimations(const SysPathName& /*path*/, const std::string& /*animationName*/)
+    {
+        return {};
+    }
+
     // Release all cached data.
     virtual void deleteAll() = 0;
 };

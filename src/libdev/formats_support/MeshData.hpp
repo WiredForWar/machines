@@ -120,4 +120,45 @@ struct HierarchyData
     std::vector<HierarchyNode> roots;
 };
 
+// ---------------------------------------------------------------------------
+// Animation intermediate representation.
+// ---------------------------------------------------------------------------
+
+// A single keyframe for a link animation channel.
+struct AnimationKeyframe
+{
+    float time{}; // seconds
+
+    // Rotation as quaternion (x, y, z, w).
+    float qx{};
+    float qy{};
+    float qz{};
+    float qw{1.0f};
+
+    // Translation.
+    float tx{};
+    float ty{};
+    float tz{};
+};
+
+// Animation channel for one link/node.
+struct AnimationChannel
+{
+    std::string linkName;
+    std::vector<AnimationKeyframe> keyframes;
+};
+
+// A named animation (corresponds to one W4dCompositePlan).
+struct AnimationSet
+{
+    std::string name;
+    std::vector<AnimationChannel> channels;
+};
+
+// All animations loaded from a file.
+struct AnimationData
+{
+    std::vector<AnimationSet> animations;
+};
+
 } // namespace RenI
