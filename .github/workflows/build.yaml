@@ -87,6 +87,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         path: "sources"
+        fetch-tags: true
 
     - name: Prepare the system (Linux)
       if: contains(matrix.os, 'ubuntu')
