@@ -90,7 +90,19 @@ function(git_get_commit)
             WORKING_DIRECTORY "${ARGS_WORKING_DIRECTORY}"
             OUTPUT_VARIABLE COMMIT_INFO
             OUTPUT_STRIP_TRAILING_WHITESPACE
+            RESULT_VARIABLE GIT_RESULT
         )
+        if(GIT_RESULT OR "${COMMIT_INFO}" STREQUAL "")
+            execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+                WORKING_DIRECTORY "${ARGS_WORKING_DIRECTORY}"
+                OUTPUT_VARIABLE COMMIT_INFO
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                RESULT_VARIABLE GIT_RESULT
+            )
+            if(GIT_RESULT OR "${COMMIT_INFO}" STREQUAL "")
+                set(COMMIT_INFO "unknown")
+            endif()
+        endif()
     endif()
     set(${ARGS_OUTPUT} "${COMMIT_INFO}" PARENT_SCOPE)
 endfunction()
