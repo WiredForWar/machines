@@ -149,13 +149,6 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
 
-    PRE_DATA(Gui::Box newBoundary(absCoord, width(), height()));
-    PRE_DATA(Gui::Box parentBoundary = isRoot() ? absoluteBoundary() : parent()->absoluteBoundary());
-    PRE_INFO(absCoord);
-    PRE_INFO(newBoundary);
-    PRE_INFO(parentBoundary);
-    PRE(implies(! isRoot() && isVisible(), parentBoundary.contains(newBoundary)));
-
     // Construct the displacement vector
     MexVec2 diff(absoluteBox_.minCorner(), absCoord);
 
