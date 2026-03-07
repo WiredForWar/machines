@@ -154,6 +154,14 @@ public:
 
     void deleteAllChildren();
 
+    // Move pChild from its current parent (if any) into this displayable at the given layer.
+    // No-op if pChild is already a child of this.
+    void reparentChild(GuiDisplayable* pChild, Layer layer);
+
+    // Remove this displayable from its parent's child list and clear its parent pointer.
+    // No-op if this has no parent.
+    void detachFromParent();
+
     bool hasChild(const GuiDisplayable*) const;
     bool recursivelyHasChild(const GuiDisplayable*) const;
 

@@ -329,6 +329,37 @@ void GuiDisplayable::removeChild(GuiDisplayable* pChild)
     POST(! hasChild(pChild));
 }
 
+void GuiDisplayable::reparentChild(GuiDisplayable* pChild, Layer layer)
+{
+    PRE(pChild != nullptr);
+
+    GuiDisplayable* pOldParent = pChild->parent();
+    if (pOldParent == this)
+        return;
+
+    if (pOldParent != nullptr)
+    {
+        pOldParent->removeChild(pChild);
+        pChild->pImpl_->pParent_ = nullptr;
+    }
+
+    addChild(pChild, layer);
+    pChild->pImpl_->pParent_ = this;
+
+    POST(hasChild(pChild));
+}
+
+void GuiDisplayable::detachFromParent()
+{
+    CB_GUIDISPLAYABLE_DEPIMPL();
+
+    if (pParent_ != nullptr)
+    {
+        pParent_->removeChild(this);
+        pParent_ = nullptr;
+    }
+}
+
 void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
 {
     CB_GUIDISPLAYABLE_DEPIMPL();
