@@ -915,6 +915,28 @@ void pauseCommand(MachGuiStartupScreens* pStartup, const Request& request, Conso
     console.writeLine(std::string("Game ") + (pause ? "paused." : "resumed."));
 }
 
+void setTimeCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    if (!getInGameScreen(pStartup, console))
+        return;
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        console.writeLine("Current simulation time: " + formatFloat(SimManager::instance().currentTime(), 2));
+        return;
+    }
+
+    const double time = std::get<double>(request.arguments[0].value);
+    if (time < 0.0)
+    {
+        console.writeLine("Time must be non-negative.");
+        return;
+    }
+
+    SimManager::instance().setSimulationTime(time);
+    console.writeLine("Simulation time set to " + formatFloat(time, 2) + ".");
+}
+
 // ============================================================
 // Tab-completion helpers
 // ============================================================
@@ -1409,6 +1431,18 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             },
         },
         [pStartup](const Request& request, Console& console) { pauseCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "time",
+            .description = "Get/set current simulation time used by stars, satellites, and other time-based systems.",
+            .arguments = {
+               {.name = "time", .type = Arg::Float, .optional = true, .description = "Absolute simulation time in seconds. Omit to print current time."}
+            },
+            .cheat = true,
+        },
+        [pStartup](const Request& request, Console& console)
+        { setTimeCommand(pStartup, request, console); });
 
     // ---- Save/Load commands ----
 
