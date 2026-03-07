@@ -1431,6 +1431,8 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
         MexPoint3d p2(finishX, finishY, finishZ);
 
         MexVec3 xBasis(p1, p2);
+        if (xBasis.isZeroVector())
+            xBasis = MexVec3(1, 0, 0);
         pProfile->push_back(MexTransform3d(MexTransform3d::X_XZ, xBasis, normal, p1));
         pProfile->push_back(pProfile->back());
         pProfile->back().position(p2);
