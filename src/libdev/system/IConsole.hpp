@@ -60,11 +60,19 @@ public:
     };
 
     using CommandHandler = std::function<void(const CommandRequest&, IConsole&)>;
+    using CompletionProvider = std::function<std::vector<std::string>(
+        const CommandMetadata& metadata,
+        std::size_t argIndex,
+        std::string_view partialValue,
+        const std::vector<std::string>& precedingArgs)>;
     using OutputListener = std::function<void(std::string_view)>;
 
     virtual ~IConsole() = default;
 
     virtual bool registerCommand(const CommandMetadata& metadata, CommandHandler handler) = 0;
+    virtual bool
+    registerCommand(const CommandMetadata& metadata, CommandHandler handler, CompletionProvider completer)
+        = 0;
     virtual bool unregisterCommand(std::string_view name) = 0;
     [[nodiscard]] virtual bool hasCommand(std::string_view name) const = 0;
     [[nodiscard]] virtual std::vector<CommandMetadata> commands() const = 0;

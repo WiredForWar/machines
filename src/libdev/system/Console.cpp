@@ -30,6 +30,11 @@ Console::~Console()
 
 bool Console::registerCommand(const CommandMetadata& metadata, CommandHandler handler)
 {
+    return registerCommand(metadata, std::move(handler), nullptr);
+}
+
+bool Console::registerCommand(const CommandMetadata& metadata, CommandHandler handler, CompletionProvider completer)
+{
     if (metadata.name.empty() || !handler)
     {
         setError("Command metadata invalid.");
@@ -53,6 +58,7 @@ bool Console::registerCommand(const CommandMetadata& metadata, CommandHandler ha
     definition.metadata = metadata;
     definition.metadata.name = trimmed;
     definition.handler = std::move(handler);
+    definition.completer = std::move(completer);
 
     commands_.emplace(definition.metadata.name, std::move(definition));
     clearError();
@@ -197,6 +203,68 @@ const std::vector<std::string>& Console::history() const
 
 Console::CompletionResult Console::suggestions(std::string_view prefix) const
 {
+    // Tokenize the input so far to determine if the user is completing a command name or an argument.
+    const std::vector<std::string> tokens = tokenize(prefix);
+    const bool endsWithSpace = !prefix.empty() && std::isspace(static_cast<unsigned char>(prefix.back()));
+
+    // If we have a recognized command and the cursor is past the command name, try argument completion.
+    if (!tokens.empty())
+    {
+        const auto it = commands_.find(tokens[0]);
+        if (it != commands_.end() && (tokens.size() > 1 || endsWithSpace))
+        {
+            const CommandDefinition& def = it->second;
+            if (!def.completer)
+                return {};
+
+            // argIndex: which argument position is being completed
+            // partialValue: the partially-typed argument text (empty if cursor is after a space)
+            const std::size_t argIndex = endsWithSpace ? tokens.size() - 1 : tokens.size() - 2;
+            const std::string_view partialValue = endsWithSpace ? std::string_view{} : tokens.back();
+
+            // Build the prefix that precedes the argument being completed
+            std::string linePrefix;
+            {
+                const std::size_t completedTokens = endsWithSpace ? tokens.size() : tokens.size() - 1;
+                for (std::size_t i = 0; i < completedTokens; ++i)
+                {
+                    if (!linePrefix.empty())
+                        linePrefix += ' ';
+                    linePrefix += tokens[i];
+                }
+                linePrefix += ' ';
+            }
+
+            // Collect the fully-typed argument tokens that precede the one being completed.
+            std::vector<std::string> precedingArgs;
+            {
+                // Argument tokens start at index 1 (index 0 is the command name).
+                const std::size_t argTokenEnd = endsWithSpace ? tokens.size() : tokens.size() - 1;
+                for (std::size_t i = 1; i < argTokenEnd; ++i)
+                    precedingArgs.push_back(tokens[i]);
+            }
+
+            std::vector<std::string> argMatches
+                = def.completer(def.metadata, argIndex, partialValue, precedingArgs);
+
+            // Prefix each suggestion with the already-typed command + preceding args
+            // so the tab handler can replace the whole input line.
+            std::vector<std::string> results;
+            results.reserve(argMatches.size());
+            for (const std::string& m : argMatches)
+            {
+                results.push_back(linePrefix + m);
+            }
+
+            if (results.size() > config_.suggestionLimit)
+                results.resize(config_.suggestionLimit);
+
+            std::sort(results.begin(), results.end());
+            return results;
+        }
+    }
+
+    // Default: complete command names.
     std::vector<std::string> matches;
     matches.reserve(config_.suggestionLimit);
 

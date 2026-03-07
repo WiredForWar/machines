@@ -23,6 +23,8 @@ public:
     ~Console() override;
 
     bool registerCommand(const CommandMetadata& metadata, CommandHandler handler) override;
+    bool
+    registerCommand(const CommandMetadata& metadata, CommandHandler handler, CompletionProvider completer) override;
     bool unregisterCommand(std::string_view name) override;
     [[nodiscard]] bool hasCommand(std::string_view name) const override;
     [[nodiscard]] std::vector<CommandMetadata> commands() const override;
@@ -55,6 +57,7 @@ private:
     {
         CommandMetadata metadata{};
         CommandHandler handler{};
+        CompletionProvider completer{};
     };
 
     using CommandMap = std::unordered_map<std::string, CommandDefinition>;
