@@ -16,6 +16,8 @@
 
 #include "render/colour.hpp"
 
+#include "utility/string.hpp"
+
 #include "world4d/domain.hpp"
 #include "world4d/scenemgr.hpp"
 
@@ -800,7 +802,7 @@ std::optional<MachLog::CameraType> MachLog::toCameraType(std::string_view str)
     for (Underlying i = 0; i <= static_cast<Underlying>(CameraType::FIRST_PERSON); ++i)
     {
         CameraType v = static_cast<CameraType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
