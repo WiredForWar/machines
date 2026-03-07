@@ -11,6 +11,7 @@
 #include "ctl/pvector.hpp"
 #include "ctl/list.hpp"
 #include "utility/linetok.hpp"
+#include "utility/string.hpp"
 
 #include "mathex/transf3d.hpp"
 #include "mathex/degrees.hpp"
@@ -1093,13 +1094,13 @@ MachLog::ObjectType MachLogScenario::objectType(const std::string& type)
     if (!r.has_value())
     {
         // Legacy aliases used in scenario files
-        if (type == "HWLAB")
+        if (Utils::caseInsensitiveEqual(type, "HWLAB"))
             return MachLog::HARDWARE_LAB;
-        if (type == "MISSILE")
+        if (Utils::caseInsensitiveEqual(type, "MISSILE"))
             return MachLog::MISSILE_EMPLACEMENT;
-        if (type == "SWLAB")
+        if (Utils::caseInsensitiveEqual(type, "SWLAB"))
             return MachLog::SOFTWARE_LAB;
-        if (type == "ARTIFACT")
+        if (Utils::caseInsensitiveEqual(type, "ARTIFACT"))
             return MachLog::ARTEFACT;
     }
     ASSERT_INFO(type);
@@ -1180,9 +1181,9 @@ MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const std::stri
     if (!r.has_value())
     {
         // Legacy aliases: scenario files may use "CIVILIAN"/"MILITARY" instead of "LAB_CIVILIAN"/"LAB_MILITARY"
-        if (subType == "CIVILIAN")
+        if (Utils::caseInsensitiveEqual(subType, "CIVILIAN"))
             return MachPhys::LAB_CIVILIAN;
-        if (subType == "MILITARY")
+        if (Utils::caseInsensitiveEqual(subType, "MILITARY"))
             return MachPhys::LAB_MILITARY;
     }
     ASSERT_INFO(subType);

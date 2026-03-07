@@ -5,6 +5,8 @@
 
 #include "machphys/machphys.hpp"
 
+#include "utility/string.hpp"
+
 #include <ostream>
 #include <type_traits>
 
@@ -33,7 +35,7 @@ std::string_view MachPhys::toString(Race race)
 std::optional<MachPhys::Race> MachPhys::toRace(std::string_view str)
 {
     for (Race r : AllRaces)
-        if (toString(r) == str)
+        if (Utils::caseInsensitiveEqual(toString(r), str))
             return r;
     return {};
 }
@@ -76,7 +78,7 @@ std::optional<MachPhys::MachineType> MachPhys::toMachineType(std::string_view st
     for (Underlying i = 0; i <= TECHNICIAN; ++i)
     {
         MachineType v = static_cast<MachineType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -120,7 +122,7 @@ std::optional<MachPhys::ConstructionType> MachPhys::toConstructionType(std::stri
     for (Underlying i = 0; i <= POD; ++i)
     {
         ConstructionType v = static_cast<ConstructionType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -158,7 +160,7 @@ std::optional<MachPhys::AggressorSubType> MachPhys::toAggressorSubType(std::stri
     for (Underlying i = 0; i <= NINJA; ++i)
     {
         AggressorSubType v = static_cast<AggressorSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -192,7 +194,7 @@ std::optional<MachPhys::AdministratorSubType> MachPhys::toAdministratorSubType(s
     for (Underlying i = 0; i <= COMMANDER; ++i)
     {
         AdministratorSubType v = static_cast<AdministratorSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -226,7 +228,7 @@ std::optional<MachPhys::TechnicianSubType> MachPhys::toTechnicianSubType(std::st
     for (Underlying i = 0; i <= BRAIN_BOX; ++i)
     {
         TechnicianSubType v = static_cast<TechnicianSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -260,7 +262,7 @@ std::optional<MachPhys::ConstructorSubType> MachPhys::toConstructorSubType(std::
     for (Underlying i = 0; i <= BEHEMOTH; ++i)
     {
         ConstructorSubType v = static_cast<ConstructorSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -292,7 +294,7 @@ std::optional<MachPhys::FactorySubType> MachPhys::toFactorySubType(std::string_v
     for (Underlying i = 0; i <= MILITARY; ++i)
     {
         FactorySubType v = static_cast<FactorySubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -324,7 +326,7 @@ std::optional<MachPhys::HardwareLabSubType> MachPhys::toHardwareLabSubType(std::
     for (Underlying i = 0; i <= LAB_MILITARY; ++i)
     {
         HardwareLabSubType v = static_cast<HardwareLabSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -360,7 +362,7 @@ std::optional<MachPhys::MissileEmplacementSubType> MachPhys::toMissileEmplacemen
     for (Underlying i = 0; i <= ICBM; ++i)
     {
         MissileEmplacementSubType v = static_cast<MissileEmplacementSubType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -454,7 +456,7 @@ std::optional<MachPhys::WeaponType> MachPhys::toWeaponType(std::string_view str)
     for (Underlying i = 0; i < N_WEAPON_TYPES; ++i)
     {
         WeaponType v = static_cast<WeaponType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -490,7 +492,7 @@ std::optional<MachPhys::Mounting> MachPhys::toMounting(std::string_view str)
     for (Underlying i = 0; i < N_MOUNTINGS; ++i)
     {
         Mounting v = static_cast<Mounting>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -594,7 +596,7 @@ std::optional<MachPhys::WeaponCombo> MachPhys::toWeaponCombo(std::string_view st
     for (Underlying i = 0; i < N_WEAPON_COMBOS; ++i)
     {
         WeaponCombo v = static_cast<WeaponCombo>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};

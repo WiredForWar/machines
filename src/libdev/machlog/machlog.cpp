@@ -5,6 +5,8 @@
 
 #include "machlog/machlog.hpp"
 
+#include "utility/string.hpp"
+
 #include <fstream>
 #include <type_traits>
 
@@ -71,7 +73,7 @@ std::optional<MachLog::ObjectType> MachLog::toObjectType(std::string_view str)
     for (Underlying i = 0; i < N_OBJECT_TYPES; ++i)
     {
         ObjectType v = static_cast<ObjectType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -157,7 +159,7 @@ std::optional<MachLog::BeaconType> MachLog::toBeaconType(std::string_view str)
     for (Underlying i = 0; i <= LEVEL_3_BEACON; ++i)
     {
         BeaconType v = static_cast<BeaconType>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
@@ -256,7 +258,7 @@ std::optional<MachLog::ResourcesAvailable> MachLog::toResourcesAvailable(std::st
     for (Underlying i = 0; i <= RES_HIGH; ++i)
     {
         ResourcesAvailable v = static_cast<ResourcesAvailable>(i);
-        if (toString(v) == str)
+        if (Utils::caseInsensitiveEqual(toString(v), str))
             return v;
     }
     return {};
