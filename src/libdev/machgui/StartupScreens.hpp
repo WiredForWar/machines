@@ -33,6 +33,13 @@ class MexTransform3d;
 class MachGuiFocusCapableControl;
 class MachGuiDbScenario;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 namespace MachGui
 {
 
@@ -76,7 +83,8 @@ class MachGuiStartupScreens : public GuiRoot
 // Canonical form revoked
 {
 public:
-    MachGuiStartupScreens(W4dSceneManager* pSceneManager, W4dRoot* pRoot, IProgressReporter*);
+    MachGuiStartupScreens(
+        W4dSceneManager* pSceneManager, W4dRoot* pRoot, System::IConsole* console, IProgressReporter*);
     ~MachGuiStartupScreens() override;
 
     void setGuiViewport();
@@ -261,6 +269,9 @@ public:
     bool handleHostMessage();
     bool handleDestroyPlayerMessage(const std::string&);
     bool handleSessionLostMessage();
+
+    void toggleConsoleDropDown();
+    void updateConsoleDropDown();
 
     void contextFinish();
     // the lobbying code exits in a special way hence the specific function.

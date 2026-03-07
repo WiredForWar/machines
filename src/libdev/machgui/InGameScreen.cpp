@@ -323,11 +323,6 @@ void MachInGameScreen::doBecomeRoot()
         // Change context to same context but get code to recreate the
         // gui controls relevant to that context.
         currentContext(currentContext(), true);
-        if (pConsoleDropDown_)
-        {
-            pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
-            updateConsoleDropDownViewport();
-        }
 
         // Reset resolution changed flag
         resolutionChanged_ = false;
@@ -349,10 +344,28 @@ void MachInGameScreen::doBecomeRoot()
 
     // Configure pitch up/down keys for ground camera
     pCameras_->reversePitchUpDownKeys(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
+
+    // Attach the shared console dropdown to this root
+    if (pConsoleDropDown_)
+    {
+        reparentChild(pConsoleDropDown_, GuiDisplayable::LAYER5);
+        pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+        consoleDropDownOffset_ = pConsoleDropDown_->isOpen()
+            ? 0
+            : -static_cast<int>(pConsoleDropDown_->height());
+        positionChildAbsolute(pConsoleDropDown_, Gui::Coord(0, consoleDropDownOffset_));
+        pConsoleDropDown_->setVisible(pConsoleDropDown_->isOpen());
+    }
 }
 
 void MachInGameScreen::doBecomeNotRoot()
 {
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+
+    // Detach the shared console dropdown so it isn't destroyed with this root's children
+    if (pConsoleDropDown_)
+        pConsoleDropDown_->detachFromParent();
+
     // Stop all playing sounds
     W4dSoundManager::instance().stopAll();
     // Clean up any gui sounds that are currently playing
@@ -2828,22 +2841,24 @@ bool MachInGameScreen::displayControlPanel() const
     return returnVal;
 }
 
+void MachInGameScreen::setConsole(System::IConsole* console)
+{
+    CB_DEPIMPL_AUTO(console_);
+    console_ = console;
+}
+
+void MachInGameScreen::setConsoleDropDown(MachGuiConsoleDropDown* pDropDown)
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    pConsoleDropDown_ = pDropDown;
+}
+
 void MachInGameScreen::toggleConsoleDropDown()
 {
     CB_DEPIMPL_AUTO(pConsoleDropDown_);
-    CB_DEPIMPL_AUTO(pSceneManager_);
-    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
-    CB_DEPIMPL_AUTO(console_);
 
     if (!pConsoleDropDown_)
-    {
-        pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(this);
-        pConsoleDropDown_->setConsole(console_);
-        pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
-        consoleDropDownOffset_ = -static_cast<int>(pConsoleDropDown_->height());
-        positionChildRelative(pConsoleDropDown_.get(), Gui::Coord(0, consoleDropDownOffset_));
-        pConsoleDropDown_->setVisible(false);
-    }
+        return;
 
     pConsoleDropDown_->toggle();
 
@@ -2880,9 +2895,10 @@ void MachInGameScreen::updateConsoleDropDownViewport()
         consoleDropDownOffset_ = std::max(consoleDropDownOffset_ - slideSpeed, targetOffset);
     }
 
-    positionChildRelative(pConsoleDropDown_.get(), Gui::Coord(0, consoleDropDownOffset_));
-
     const bool fullyHidden = !isOpen && consoleDropDownOffset_ == hiddenOffset;
+
+    positionChildAbsolute(pConsoleDropDown_, Gui::Coord(0, consoleDropDownOffset_));
+
     pConsoleDropDown_->setVisible(!fullyHidden);
     if (fullyHidden)
     {
@@ -2929,6 +2945,7 @@ void MachInGameScreen::setupPromptText()
     CB_DEPIMPL_AUTO(pCameras_);
     CB_DEPIMPL_AUTO(pPromptText_);
     CB_DEPIMPL_AUTO(controlPanelXPos_);
+    CB_DEPIMPL_AUTO(console_);
 
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();

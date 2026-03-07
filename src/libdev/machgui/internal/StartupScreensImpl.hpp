@@ -15,10 +15,13 @@
 #include "machgui/StartupScreens.hpp"
 #include "utility/CallbackHandle.hpp"
 
+#include <memory>
+
 class RenCursor2d;
 class MachGuiMessageBox;
 class MachGuiStartupScreenContext;
 class MachGuiDispositionChangeNotifiable;
+class MachGuiConsoleDropDown;
 
 namespace MachGui
 {
@@ -36,6 +39,7 @@ private:
     // Data members...
     RenCursor2d* pMenuCursor_;
     W4dSceneManager* pSceneManager_;
+    System::IConsole* console_{};
     MachGuiStartupScreens::Context context_;
     MachGuiStartupScreens::Context contextAfterFlic_;
     MachGuiStartupScreens::Context contextBeforeFlic_;
@@ -73,6 +77,8 @@ private:
     Utils::HandleWithTriggerUPtr soundVolumeHandle_;
     Utils::HandleWithTriggerUPtr musicVolumeHandle_;
     Utils::HandleWithTriggerUPtr selectionMarkerTypeHandle_;
+    std::unique_ptr<MachGuiConsoleDropDown> pConsoleDropDown_{};
+    int consoleDropDownOffset_{};
 
     friend class MachGuiStartupScreens;
 };

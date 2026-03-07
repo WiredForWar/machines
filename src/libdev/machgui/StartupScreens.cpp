@@ -4,6 +4,7 @@
  */
 
 #include "machgui/StartupScreens.hpp"
+#include "machgui/ConsoleDropDown.hpp"
 #include "machgui/gui.hpp"
 
 inline constexpr bool cDemoVersion =
@@ -150,6 +151,7 @@ public:
 #define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
     CB_DEPIMPL(RenCursor2d*, pMenuCursor_);                                                                            \
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);                                                                      \
+    CB_DEPIMPL_AUTO(console_);                                                                                         \
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);                                                              \
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);                                                     \
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);                                                    \
@@ -178,9 +180,7 @@ public:
     CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
 
 MachGuiStartupScreens::MachGuiStartupScreens(
-    W4dSceneManager* pSceneManager,
-    W4dRoot* pRoot,
-    IProgressReporter* pReporter)
+    W4dSceneManager* pSceneManager, W4dRoot* pRoot, System::IConsole* console, IProgressReporter* pReporter)
     : GuiRoot(Gui::toSize(pSceneManager->pDevice()->windowSize()))
     , pImpl_(nullptr)
 {
@@ -189,6 +189,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     CB_MachGuiStartupScreens_DEPIMPL();
 
     pSceneManager_ = pSceneManager;
+    console_ = console;
     pBackdrop_ = nullptr;
     finishApp_ = false;
     switchGuiRoot_ = false;
@@ -222,6 +223,18 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp", scaleFactor);
 
     pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
+    pInGameScreen_->setConsole(console_);
+
+    // Create the shared console dropdown — it will be attached to whichever
+    // root is active via doBecomeRoot/doBecomeNotRoot.
+    {
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(nullptr);
+        pConsoleDropDown_->setConsole(console_);
+        pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager->pDevice()->windowSize()));
+        pConsoleDropDown_->setVisible(false);
+        pInGameScreen_->setConsoleDropDown(pConsoleDropDown_.get());
+    }
 
     pReporter->report(70, 100); // 70% of gui stuff done
 
@@ -275,6 +288,9 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
     MachLogRecentEventsManager::instance().setCameras(nullptr);
 
     unloadGame();
+
+    if (pImpl_->pConsoleDropDown_)
+        pImpl_->pConsoleDropDown_->detachFromParent();
 
     // Bullet proof function - doesn't matter if notifiable has already been unregistered.
     MachLogRaces::instance().unregisterDispositionChangeNotifiable(pDispositionNotifiable_);
@@ -1235,6 +1251,15 @@ void MachGuiStartupScreens::switchContext(Context newContext)
             break;
     }
 
+    // Detach the console dropdown before destroying children so it survives
+    // context switches — it is owned by pConsoleDropDown_ (unique_ptr), not
+    // by the GUI child list.
+    {
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        if (pConsoleDropDown_)
+            pConsoleDropDown_->detachFromParent();
+    }
+
     // Clean up controls from last context
     deleteAllChildren();
     delete pCurrContext_;
@@ -1373,6 +1398,13 @@ void MachGuiStartupScreens::switchContext(Context newContext)
             break;
     }
 
+    // Re-attach the console dropdown (if any) so it renders on top of the new context.
+    {
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        if (pConsoleDropDown_)
+            reparentChild(pConsoleDropDown_.get(), GuiDisplayable::LAYER5);
+    }
+
     // Reset context timer. This times how long you've been in a particular context.
     contextTimer_ = Phys::time();
     NETWORK_INDENT(-2);
@@ -1411,6 +1443,8 @@ void MachGuiStartupScreens::update()
 
     if (pMsgBox_)
         pMsgBox_->update();
+
+    updateConsoleDropDown();
 }
 
 // virtual
@@ -1445,11 +1479,36 @@ void MachGuiStartupScreens::doBecomeRoot()
     }
 
     absoluteCoord(Gui::Coord(xMenuOffset(), yMenuOffset()));
+
+    // Attach the shared console dropdown to this root
+    {
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+        if (pConsoleDropDown_)
+        {
+            reparentChild(pConsoleDropDown_.get(), GuiDisplayable::LAYER5);
+            pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+            consoleDropDownOffset_ = pConsoleDropDown_->isOpen()
+                ? 0
+                : -static_cast<int>(pConsoleDropDown_->height());
+            positionChildAbsolute(
+                pConsoleDropDown_.get(),
+                Gui::Coord(0, consoleDropDownOffset_));
+            pConsoleDropDown_->setVisible(pConsoleDropDown_->isOpen());
+        }
+    }
 }
 
 // virtual
 void MachGuiStartupScreens::doBecomeNotRoot()
 {
+    // Detach the shared console dropdown so it isn't destroyed with this root's children
+    {
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        if (pConsoleDropDown_)
+            pConsoleDropDown_->detachFromParent();
+    }
+
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
     CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
@@ -1763,6 +1822,24 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+
+    // Console toggle/input handling — takes priority over everything else
+    if (e.state() == Gui::PRESSED)
+    {
+        static const auto& consoleTrigger = MachGui::inputRegistry()->getBinds("ui-toggle-console"_bind);
+        if (consoleTrigger.matches(e.keyWithMods()))
+        {
+            toggleConsoleDropDown();
+            return true;
+        }
+
+        if (pConsoleDropDown_ && pConsoleDropDown_->isOpen())
+        {
+            pConsoleDropDown_->doHandleKeyEvent(e);
+            return true;
+        }
+    }
 
     bool processed = false;
 
@@ -3759,6 +3836,66 @@ int MachGuiStartupScreens::yMenuOffset()
 Ren::Point MachGuiStartupScreens::menuPosition()
 {
     return { xMenuOffset(), yMenuOffset() };
+}
+
+void MachGuiStartupScreens::toggleConsoleDropDown()
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+
+    if (!pConsoleDropDown_)
+        return;
+
+    pConsoleDropDown_->toggle();
+
+    if (pConsoleDropDown_->isOpen())
+    {
+        pConsoleDropDown_->setVisible(true);
+        pConsoleDropDown_->focusInput();
+    }
+    else
+    {
+        pConsoleDropDown_->blurInput();
+    }
+}
+
+void MachGuiStartupScreens::updateConsoleDropDown()
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+
+    if (!pConsoleDropDown_)
+        return;
+
+    const int hiddenOffset = -static_cast<int>(pConsoleDropDown_->height());
+    const bool isOpen = pConsoleDropDown_->isOpen();
+    const int targetOffset = isOpen ? 0 : hiddenOffset;
+    const int slideSpeed = MachGui::controlPanelSlideOutSpeed();
+
+    if (consoleDropDownOffset_ < targetOffset)
+    {
+        consoleDropDownOffset_ = std::min(consoleDropDownOffset_ + slideSpeed, targetOffset);
+    }
+    else if (consoleDropDownOffset_ > targetOffset)
+    {
+        consoleDropDownOffset_ = std::max(consoleDropDownOffset_ - slideSpeed, targetOffset);
+    }
+
+    const bool fullyHidden = !isOpen && consoleDropDownOffset_ == hiddenOffset;
+
+    positionChildAbsolute(
+        pConsoleDropDown_.get(),
+        Gui::Coord(0, consoleDropDownOffset_));
+
+    pConsoleDropDown_->setVisible(!fullyHidden);
+    if (fullyHidden)
+    {
+        pConsoleDropDown_->blurInput();
+    }
+    else
+    {
+        pConsoleDropDown_->updateInput();
+    }
+    pConsoleDropDown_->changed();
 }
 
 /* End STARTUP.CPP **************************************************/

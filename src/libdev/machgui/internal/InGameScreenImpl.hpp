@@ -57,6 +57,13 @@ class MachGuiCameraScrollArea;
 class MachGuiInGameChatMessagesDisplay;
 class MachLogRecentEventsManager;
 
+namespace System
+{
+
+class IConsole;
+
+} // namespace System
+
 class MachInGameScreenImpl
 {
 public:
@@ -68,6 +75,7 @@ public:
 
     W4dSceneManager* pSceneManager_{}; // The 3d window scene maanger
     W4dRoot* pRoot_{};
+    System::IConsole* console_{};
     MachWorldViewWindow* pWorldViewWindow_{};
     MachGuiBmuButton* pBmuButton_{};
     Actors selectedActors_; // The collection of currently selected actors
@@ -115,7 +123,7 @@ public:
     bool controlPanelOn_{};
     int controlPanelXPos_{};
     MachGuiControlPanel* pControlPanel_{};
-    std::unique_ptr<MachGuiConsoleDropDown> pConsoleDropDown_{};
+    MachGuiConsoleDropDown* pConsoleDropDown_{};
     int consoleDropDownOffset_{};
     MachGuiMapArea* pMapArea_{};
     MachGuiCameraScrollArea* pTopCameraScrollArea_{};
