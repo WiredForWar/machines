@@ -9,6 +9,7 @@
 
 #include "base/diag.hpp"
 
+#include "utility/string.hpp"
 #include "machphys/machphys.hpp"
 #include <algorithm>
 
@@ -157,7 +158,8 @@ std::string MachActorBitmaps::name(
     appendHwLevel(retVal, hwLevel);
     appendWeaponCombo(retVal, wc);
 
-    std::transform(retVal.begin(), retVal.end(), retVal.begin(), ::tolower);
+    Utils::toLowerInPlace(&retVal);
+    retVal += ".bmp";
     ASSERT_FILE_EXISTS(retVal.c_str());
 
     return retVal;
@@ -444,8 +446,6 @@ void MachActorBitmaps::appendWeaponCombo(std::string& s, MachPhys::WeaponCombo w
         default:
             break;
     }
-
-    s += ".bmp";
 }
 
 /* End ACTBMPNM.CPP *************************************************/
