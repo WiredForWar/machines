@@ -13,6 +13,8 @@
 #include "device/butevent.hpp"
 #include "render/Font.hpp"
 
+#include <cctype>
+
 GuiSingleLineEditBox::GuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box)
     : GuiDisplayable(pParent, box)
     , showCaret_(true)
@@ -165,20 +167,21 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
 
     if (e.buttonEvent().action() == DevButtonEvent::PRESS)
     {
+        const bool ctrl = e.isCtrlPressed();
         processed = true;
         switch (e.buttonEvent().scanCode())
         {
             case Device::KeyCode::LEFT_ARROW:
-                leftArrowEvent();
+                ctrl ? wordLeftEvent() : leftArrowEvent();
                 break;
             case Device::KeyCode::RIGHT_ARROW:
-                rightArrowEvent();
+                ctrl ? wordRightEvent() : rightArrowEvent();
                 break;
             case Device::KeyCode::BACK_SPACE:
-                backspaceEvent();
+                ctrl ? deleteWordBackwardEvent() : backspaceEvent();
                 break;
             case Device::KeyCode::DELETE:
-                deleteEvent();
+                ctrl ? deleteWordForwardEvent() : deleteEvent();
                 break;
             case Device::KeyCode::HOME:
                 homeEvent();
@@ -248,6 +251,68 @@ void GuiSingleLineEditBox::deleteEvent()
     if (cursorIndex_ < text_.length())
     {
         text_.erase(cursorIndex_, 1);
+        onTextChanged();
+    }
+}
+
+std::size_t GuiSingleLineEditBox::wordBoundaryLeft() const
+{
+    if (cursorIndex_ == 0)
+        return 0;
+
+    std::size_t pos = cursorIndex_;
+    // Skip non-alnum characters
+    while (pos > 0 && !std::isalnum(static_cast<unsigned char>(text_[pos - 1])))
+        --pos;
+    // Skip alnum characters
+    while (pos > 0 && std::isalnum(static_cast<unsigned char>(text_[pos - 1])))
+        --pos;
+    return pos;
+}
+
+std::size_t GuiSingleLineEditBox::wordBoundaryRight() const
+{
+    const std::size_t len = text_.length();
+    if (cursorIndex_ >= len)
+        return len;
+
+    std::size_t pos = cursorIndex_;
+    // Skip non-alnum characters
+    while (pos < len && !std::isalnum(static_cast<unsigned char>(text_[pos])))
+        ++pos;
+    // Skip alnum characters
+    while (pos < len && std::isalnum(static_cast<unsigned char>(text_[pos])))
+        ++pos;
+    return pos;
+}
+
+void GuiSingleLineEditBox::wordLeftEvent()
+{
+    setCursorPosition(wordBoundaryLeft());
+}
+
+void GuiSingleLineEditBox::wordRightEvent()
+{
+    setCursorPosition(wordBoundaryRight());
+}
+
+void GuiSingleLineEditBox::deleteWordBackwardEvent()
+{
+    const std::size_t boundary = wordBoundaryLeft();
+    if (boundary < cursorIndex_)
+    {
+        text_.erase(boundary, cursorIndex_ - boundary);
+        cursorIndex_ = boundary;
+        onTextChanged();
+    }
+}
+
+void GuiSingleLineEditBox::deleteWordForwardEvent()
+{
+    const std::size_t boundary = wordBoundaryRight();
+    if (boundary > cursorIndex_)
+    {
+        text_.erase(cursorIndex_, boundary - cursorIndex_);
         onTextChanged();
     }
 }

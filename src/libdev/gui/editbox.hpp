@@ -75,6 +75,13 @@ protected:
     void backspaceEvent();
     void deleteEvent();
 
+    std::size_t wordBoundaryLeft() const;
+    std::size_t wordBoundaryRight() const;
+    void wordLeftEvent();
+    void wordRightEvent();
+    void deleteWordBackwardEvent();
+    void deleteWordForwardEvent();
+
     void onTextChanged();
     void forceRedraw();
     void updateTextViews();
