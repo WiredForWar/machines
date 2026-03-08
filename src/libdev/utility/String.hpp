@@ -46,4 +46,16 @@ inline bool caseInsensitiveEqual(std::string_view a, std::string_view b)
     return true;
 }
 
+inline bool startsWithCaseInsensitive(std::string_view text, std::string_view prefix)
+{
+    if (text.size() < prefix.size())
+        return false;
+    for (std::size_t i = 0; i < prefix.size(); ++i)
+    {
+        if (std::tolower(static_cast<unsigned char>(text[i])) != std::tolower(static_cast<unsigned char>(prefix[i])))
+            return false;
+    }
+    return true;
+}
+
 } // namespace Utils
