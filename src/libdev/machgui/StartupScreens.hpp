@@ -87,6 +87,7 @@ public:
     void updateGui();
     void displayGui();
 
+    void requestExit();
     bool finishApp();
 
     void loopCycle();

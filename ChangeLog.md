@@ -14,6 +14,7 @@
 - Fixed rendering/culling issues that could cause missing world tiles / rooms not being rendered
 - Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers
 - Fixed nearest Lab lookup for Technicians
+- Fixed crash on close by Alt+F4
 
 ### v1.7.4
 

@@ -396,6 +396,12 @@ void MachGuiStartupScreens::displayGui()
         pInGameScreen_->setWorldViewViewport();
 }
 
+void MachGuiStartupScreens::requestExit()
+{
+    CB_DEPIMPL(bool, finishApp_);
+    finishApp_ = true;
+}
+
 void MachGuiStartupScreens::checkSwitchGuiRoot()
 {
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
@@ -1640,6 +1646,13 @@ void MachGuiStartupScreens::loopCycleInGame()
             pInGameScreen_->updateCameras();
 
             updateGui();
+        }
+
+        // Skip the rest of the frame to avoid asserts from subsystems.
+        if (finishApp_)
+        {
+            pSceneManager_->pDevice()->endFrame();
+            return;
         }
 
         // Render the scene

@@ -40,7 +40,6 @@ void AfxSdlApp::finish()
     {
         finishing_ = true;
         finished_ = true;
-        SDL_Quit();
     }
 }
 

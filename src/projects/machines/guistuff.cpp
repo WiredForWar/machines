@@ -129,6 +129,8 @@ void SDLApp::loopCycle()
     }
 
     checkFinishApp();
+    if (isFinished())
+        return;
 
     MachScreenDumper::instance().update();
 
