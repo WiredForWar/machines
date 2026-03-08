@@ -36,6 +36,9 @@ public:
     void setHistoryLimit(std::size_t limit) override;
     [[nodiscard]] const std::vector<std::string>& history() const override;
 
+    void setCheatsEnabled(bool enabled) override;
+    [[nodiscard]] bool cheatsEnabled() const override;
+
     [[nodiscard]] CompletionResult suggestions(std::string_view line, std::size_t cursorPos) const override;
 
     [[nodiscard]] const std::string& lastError() const override;
@@ -101,6 +104,7 @@ private:
     std::vector<OutputListenerEntry> outputListeners_{};
     std::shared_ptr<OutputListenerState> listenerState_{};
     std::string lastError_{};
+    bool cheatsEnabled_{};
 };
 
 } // namespace System

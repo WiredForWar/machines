@@ -16,6 +16,9 @@ IConsole::CompletionProvider IConsole::commandNameCompleter() const
         std::vector<std::string> matches;
         for (const CommandMetadata& cmd : commands())
         {
+            if (cmd.cheat && !cheatsEnabled())
+                continue;
+
             if (partialValue.empty() || Utils::startsWith(cmd.name, partialValue))
             {
                 matches.push_back(cmd.name);

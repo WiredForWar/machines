@@ -166,6 +166,13 @@ bool Console::executeCommand(std::string_view line, EchoCommandLine echo)
         return false;
     }
 
+    if (commandIterator->second.metadata.cheat && !cheatsEnabled_)
+    {
+        setError("Command disabled: " + commandName + " requires cheats to be enabled.");
+        writeLine(lastError_);
+        return false;
+    }
+
     const std::vector<std::string> tokenArguments(tokens.begin() + 1, tokens.end());
     std::vector<ArgumentValue> parsedArguments;
     if (!parseArguments(commandIterator->second.metadata, tokenArguments, parsedArguments))
@@ -199,6 +206,16 @@ void Console::setHistoryLimit(std::size_t limit)
 const std::vector<std::string>& Console::history() const
 {
     return history_;
+}
+
+void Console::setCheatsEnabled(bool enabled)
+{
+    cheatsEnabled_ = enabled;
+}
+
+bool Console::cheatsEnabled() const
+{
+    return cheatsEnabled_;
 }
 
 Console::CompletionResult Console::suggestions(std::string_view line, std::size_t cursorPos) const
