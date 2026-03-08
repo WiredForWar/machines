@@ -272,6 +272,8 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
 
     MachLogRecentEventsManager::instance().setCameras(nullptr);
 
+    unloadGame();
+
     // Bullet proof function - doesn't matter if notifiable has already been unregistered.
     MachLogRaces::instance().unregisterDispositionChangeNotifiable(pDispositionNotifiable_);
     delete pDispositionNotifiable_;
