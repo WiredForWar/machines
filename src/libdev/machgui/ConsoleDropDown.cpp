@@ -175,6 +175,11 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
         {
             handlePaste();
         }
+        else if (event.isCtrlPressed() && event.key() == Device::KeyCode::KEY_L)
+        {
+            if (pConsole_ != nullptr)
+                pConsole_->clearOutput();
+        }
         else if (event.key() == Device::KeyCode::ENTER)
         {
             submit();
