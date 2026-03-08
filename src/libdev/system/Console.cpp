@@ -99,10 +99,49 @@ bool Console::submit(std::string_view line)
     }
 
     appendHistoryEntry(trimmed);
+    return executeCommand(trimmed, EchoCommandLine::Yes);
+}
 
-    std::string submittedLine = promptText_;
-    submittedLine += trimmed;
-    writeLine(submittedLine);
+bool Console::executeScript(std::string_view scriptSource)
+{
+    clearError();
+    std::istringstream stream{std::string(scriptSource)};
+    std::string line;
+    bool allSucceeded = true;
+
+    while (std::getline(stream, line))
+    {
+        const std::string trimmed = Utils::trimWhitespace(line);
+        if (trimmed.empty() || trimmed.starts_with("//"))
+        {
+            continue;
+        }
+
+        if (!executeCommand(trimmed, EchoCommandLine::No))
+        {
+            allSucceeded = false;
+        }
+    }
+
+    return allSucceeded;
+}
+
+bool Console::executeCommand(std::string_view line, EchoCommandLine echo)
+{
+    clearError();
+
+    const std::string trimmed = Utils::trimWhitespace(line);
+    if (trimmed.empty())
+    {
+        return false;
+    }
+
+    if (echo == EchoCommandLine::Yes)
+    {
+        std::string submittedLine = promptText_;
+        submittedLine += trimmed;
+        writeLine(submittedLine);
+    }
 
     const std::vector<std::string> tokens = tokenize(trimmed);
     if (tokens.empty())
@@ -132,30 +171,6 @@ bool Console::submit(std::string_view line)
     request.rawLine = std::string(trimmed);
     commandIterator->second.handler(request, *this);
     return true;
-}
-
-bool Console::executeScript(std::string_view scriptSource)
-{
-    clearError();
-    std::istringstream stream{std::string(scriptSource)};
-    std::string line;
-    bool allSucceeded = true;
-
-    while (std::getline(stream, line))
-    {
-        const std::string trimmed = Utils::trimWhitespace(line);
-        if (trimmed.empty() || trimmed.starts_with("//"))
-        {
-            continue;
-        }
-
-        if (!submit(trimmed))
-        {
-            allSucceeded = false;
-        }
-    }
-
-    return allSucceeded;
 }
 
 void Console::clearHistory()

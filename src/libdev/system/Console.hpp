@@ -42,6 +42,12 @@ public:
     Utils::CallbackHandleUPtr addOutputListener(OutputListener listener) override;
 
 private:
+    enum class EchoCommandLine
+    {
+        No,
+        Yes,
+    };
+
     struct CommandDefinition
     {
         CommandMetadata metadata{};
@@ -58,6 +64,7 @@ private:
         const std::vector<std::string>& tokenArguments,
         std::vector<ArgumentValue>& parsedArguments);
     bool convertToken(ArgumentType type, const std::string& token, ArgumentValue& value);
+    bool executeCommand(std::string_view line, EchoCommandLine echo);
 
     void appendHistoryEntry(const std::string& line);
     void setError(std::string message);
