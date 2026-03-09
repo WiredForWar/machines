@@ -4,7 +4,7 @@
  */
 
 #include "rentest/target.hpp"
-#include "phys/mcfly.hpp"
+#include "phys/MotionControl/FlyControl.hpp"
 #include "render/mesh.hpp"
 #include "render/light.hpp"
 #include "render/uvanim.hpp"

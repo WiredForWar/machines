@@ -1,0 +1,71 @@
+/*
+ * O P E V A D E I . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machlog/Internal/EvadeOperationImpl.hpp"
+
+#include "sim/manager.hpp"
+
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
+
+#include "mathex/point2d.hpp"
+
+PER_DEFINE_PERSISTENT(MachLogEvadeOperationImpl);
+
+MachLogEvadeOperationImpl::MachLogEvadeOperationImpl(MachLogMachine* pActor)
+    : pActor_(pActor)
+    , finished_(false)
+    , currentEvadeOpType_(MachLogEvadeOperation::SEEK_SAFER_GROUND)
+{
+    lastTimeIHadStrongThreat_ = SimManager::instance().currentTime();
+    TEST_INVARIANT;
+}
+
+MachLogEvadeOperationImpl::~MachLogEvadeOperationImpl()
+{
+    TEST_INVARIANT;
+}
+
+void MachLogEvadeOperationImpl::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachLogEvadeOperationImpl& t)
+{
+
+    o << "MachLogEvadeOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogEvadeOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+void perWrite(PerOstream& ostr, const MachLogEvadeOperationImpl& evadeOpImpl)
+{
+    ostr << evadeOpImpl.pActor_;
+    ostr << evadeOpImpl.finished_;
+    ostr << evadeOpImpl.pCachedOperation_.get();
+    ostr << evadeOpImpl.currentEvadeOpType_;
+    ostr << evadeOpImpl.lastTimeIHadStrongThreat_;
+}
+
+void perRead(PerIstream& istr, MachLogEvadeOperationImpl& evadeOpImpl)
+{
+    istr >> evadeOpImpl.pActor_;
+    istr >> evadeOpImpl.finished_;
+    MachLogOperation *operation{};
+    istr >> operation;
+    evadeOpImpl.pCachedOperation_.reset(operation);
+    istr >> evadeOpImpl.currentEvadeOpType_;
+    istr >> evadeOpImpl.lastTimeIHadStrongThreat_;
+}
+
+MachLogEvadeOperationImpl::MachLogEvadeOperationImpl(PerConstructor)
+{
+}
+
+/* End OPEVADEI.CPP ***************************************************/

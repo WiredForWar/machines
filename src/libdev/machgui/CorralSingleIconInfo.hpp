@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/displaya.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 class MachActor;
 class MachGuiCorralResource;

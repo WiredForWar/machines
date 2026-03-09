@@ -14,7 +14,7 @@
 #define _MACHGUI_PRODBANK_HPP
 
 #include "base/base.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 #include "gui/displaya.hpp"
 
 // Forward refs

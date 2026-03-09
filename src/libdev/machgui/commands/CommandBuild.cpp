@@ -9,8 +9,8 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "ctl/pvector.hpp"
 
 MachGuiBuildCommand::MachGuiBuildCommand(MachInGameScreen* pInGameScreen)

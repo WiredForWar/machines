@@ -14,14 +14,14 @@
 
 #include "ctl/algorith.hpp"
 
-#include "world4d/domain.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/opadsupc.hpp"
-#include "machlog/opsupcon.hpp"
-#include "machlog/races.hpp"
-#include "machlog/squad.hpp"
-#include "machlog/machvman.hpp"
+#include "world4d/Scene/Domain.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Operations/AdminSuperConstructOperation.hpp"
+#include "machlog/Operations/SuperConstructOperation.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Squadron.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
 
 MachGuiCaptureCommand::MachGuiCaptureCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-capture"_bind)

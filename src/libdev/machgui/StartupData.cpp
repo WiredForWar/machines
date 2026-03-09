@@ -21,7 +21,7 @@
 #include "machgui/db/DbScenario.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/InGameChatMessages.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "machgui/Network/NetworkVariables.hpp"
 #include "afx/resource.hpp"
 #include "machgui/internal/strings.hpp"

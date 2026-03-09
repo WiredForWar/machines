@@ -4,7 +4,7 @@
  */
 
 #include "envirnmt/orbit.hpp"
-#include "phys/rampacce.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
 #include "ctl/countptr.hpp"
 #include "ctl/vector.hpp"
 #include "mathex/vec3.hpp"
@@ -12,14 +12,14 @@
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"
 
-#include "phys/linemoti.hpp"
-#include "phys/timeangl.hpp"
-#include "phys/linetrav.hpp"
+#include "phys/Plans/LinearMotionPlan.hpp"
+#include "phys/Plans/TimedAnglePlan.hpp"
+#include "phys/Plans/LinearTravelPlan.hpp"
 
-#include "world4d/entity.hpp"
-#include "world4d/generic.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/entyplan.hpp"
+#include "world4d/Entity/Entity.hpp"
+#include "world4d/Entity/Generic.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Entity/EntityPlan.hpp"
 
 #include <cmath>
 #include <limits.h>

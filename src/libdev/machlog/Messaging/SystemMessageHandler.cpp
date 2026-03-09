@@ -1,0 +1,70 @@
+/*
+ * S Y S M E S S . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "ctl/list.hpp"
+#include "machlog/Messaging/SystemMessageHandler.hpp"
+#include "machlog/Messaging/Network.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Actor.hpp"
+
+MachLogSystemMessageHandler::MachLogSystemMessageHandler()
+{
+
+    TEST_INVARIANT;
+}
+
+MachLogSystemMessageHandler::~MachLogSystemMessageHandler()
+{
+    TEST_INVARIANT;
+}
+
+void MachLogSystemMessageHandler::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachLogSystemMessageHandler& t)
+{
+
+    o << "MachLogSystemMessageHandler " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogSystemMessageHandler " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+// virtual
+bool MachLogSystemMessageHandler::handleHostMessage()
+{
+    return false;
+}
+
+// virtual
+bool MachLogSystemMessageHandler::handleDestroyPlayerMessage(const std::string& /*playerString*/)
+{
+    return false;
+}
+
+// virtual
+bool MachLogSystemMessageHandler::handleSessionLostMessage()
+{
+    return false;
+}
+
+bool MachLogSystemMessageHandler::logicalHandleDestroyPlayerMessage(MachPhys::Race r)
+{
+    // someone has fallen out of the network so destroy all their objects
+    //   if( MachLogNetwork::instance().isNodeLogicalHost() )
+    {
+        for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().raceObjects(r).begin();
+             i != MachLogRaces::instance().raceObjects(r).end();
+             ++i)
+            (*i)->beHit(10000);
+    }
+    return true;
+}
+
+/* End SYSMESS.CPP **************************************************/

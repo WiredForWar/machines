@@ -17,7 +17,7 @@
 #include "system/pathname.hpp"
 #include <stdio.h>
 
-#include "world4d/stars.hpp"
+#include "world4d/Scene/Stars.hpp"
 
 #include <fstream>
 

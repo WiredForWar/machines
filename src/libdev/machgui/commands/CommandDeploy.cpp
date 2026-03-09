@@ -9,11 +9,11 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/apc.hpp"
-#include "machlog/opdapc.hpp"
-#include "machlog/vmman.hpp"
-#include "machlog/vmdata.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/APC.hpp"
+#include "machlog/Operations/DeployAPCOperation.hpp"
+#include "machlog/Messaging/VoiceMailManager.hpp"
+#include "machlog/Messaging/VoiceMailData.hpp"
 #include "ctl/pvector.hpp"
 
 MachGuiDeployCommand::MachGuiDeployCommand(MachInGameScreen* pInGameScreen)

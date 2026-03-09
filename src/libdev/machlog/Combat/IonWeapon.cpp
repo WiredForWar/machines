@@ -1,0 +1,86 @@
+/*
+ * V O R T W E A P . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "mathex/transf3d.hpp"
+
+#include "machphys/Weapons/Weapon.hpp"
+#include "machphys/Weapons/WeaponData.hpp"
+#include "machphys/Data/Data.hpp"
+
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Combat/IonWeapon.hpp"
+#include "machlog/Combat/IonBeam.hpp"
+#include "machlog/Race.hpp"
+#include "machlog/Races.hpp"
+
+PER_DEFINE_PERSISTENT(MachLogIonWeapon);
+
+MachLogIonWeapon::MachLogIonWeapon(MachLogRace* pRace, MachPhysWeapon* pPhysWeapon, MachActor* pOwner)
+    : MachLogWeapon(pRace, pPhysWeapon, pOwner)
+{
+    HAL_STREAM("MLIonWeapon::CTOR owner.id " << pOwner->id() << std::endl);
+
+    TEST_INVARIANT;
+}
+
+MachLogIonWeapon::~MachLogIonWeapon()
+{
+    HAL_STREAM("MLIonWeapon::DTOR race " << std::endl);
+    TEST_INVARIANT;
+}
+
+void MachLogIonWeapon::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+// virtual
+void MachLogIonWeapon::doFire(MachActor* pTarget, const MachLogFireData&)
+{
+    MachLogIonWeapon::doFire(pTarget->position());
+}
+
+// virtual
+void MachLogIonWeapon::doFire(const MexPoint3d& position)
+{
+    // create pulse blobs (the logical entites here).
+    PhysRelativeTime timeOffset = 0;
+    int launchOffset = 0;
+    new MachLogIonBeam(&logRace(), position, physWeapon().weaponData(), &owner());
+}
+
+std::ostream& operator<<(std::ostream& o, const MachLogIonWeapon& t)
+{
+
+    o << "MachLogIonWeapon " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogIonWeapon " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+/////////////////////////////////////////////////// persistence /////////////////////////////////////////////////////
+
+void perWrite(PerOstream& ostr, const MachLogIonWeapon& weapon)
+{
+    const MachLogWeapon& base1 = weapon;
+
+    ostr << base1;
+}
+
+void perRead(PerIstream& istr, MachLogIonWeapon& weapon)
+{
+    MachLogWeapon& base1 = weapon;
+
+    istr >> base1;
+}
+
+MachLogIonWeapon::MachLogIonWeapon(PerConstructor con)
+    : MachLogWeapon(con)
+{
+}
+
+/* End PULSEWEP.CPP *************************************************/

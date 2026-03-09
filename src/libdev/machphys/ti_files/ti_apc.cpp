@@ -3,13 +3,13 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
 #include "ctl/map.hpp"
 // #include "ctl/map.ctp"
 
-#include "machphys/apc.hpp"
+#include "machphys/Machines/APC.hpp"
 
 using MachPhysAPCId = MachPhysAPC::Id;
 

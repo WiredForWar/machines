@@ -8,7 +8,7 @@
 #include "stdlib/memory.hpp"
 #include "mathex/poly2d.hpp"
 #include "ftl/seripmap.hpp"
-#include "phys/cspace2.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 void ti5()
 {

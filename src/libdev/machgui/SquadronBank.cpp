@@ -5,10 +5,10 @@
 
 #include "mathex/point2d.hpp"
 #include "mathex/random.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/races.hpp"
-#include "machlog/squad.hpp"
-#include "machlog/administ.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Squadron.hpp"
+#include "machlog/Actors/Administrator.hpp"
 
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/Cameras.hpp"

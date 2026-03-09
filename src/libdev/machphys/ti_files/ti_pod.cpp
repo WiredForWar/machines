@@ -6,13 +6,13 @@
 // #include "utility/basfact.hpp"
 // #include "utility/basfact.ctp"
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
 #include "ctl/fixedvec.hpp"
 // #include "ctl/fixedvec.ctp"
 
-#include "machphys/pod.hpp"
+#include "machphys/Constructions/Pod.hpp"
 
 using MachPhysPodId = MachPhysPod::Id;
 

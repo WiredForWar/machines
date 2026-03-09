@@ -1,0 +1,73 @@
+/*
+ * E L E C T R O . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "world4d/Scene/Domain.hpp"
+#include "machphys/Weapons/Weapon.hpp"
+#include "machphys/Weapons/WeaponData.hpp"
+#include "machlog/Combat/Electro.hpp"
+#include "machlog/World/PlanetDomains.hpp"
+// #include "machlog/Races.hpp"
+// #include "machlog/Actors/Actor.hpp"
+// #include "machlog/World/SpacialManipulation.hpp"
+
+PER_DEFINE_PERSISTENT(MachLogElectro);
+
+MachLogElectro::MachLogElectro(
+    MachLogRace* pRace,
+    MachPhysLinearProjectile* pPhysProjectile,
+    MachActor* pOwner,
+    const MachPhysWeaponData& weaponData)
+    : MachLogLinearProjectile(pRace, pPhysProjectile, pOwner, weaponData)
+{
+    HAL_STREAM("MLElectro::CTOR\n");
+    TEST_INVARIANT;
+}
+
+MachLogElectro::~MachLogElectro()
+{
+    TEST_INVARIANT;
+}
+
+void MachLogElectro::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachLogElectro& t)
+{
+
+    o << "MachLogElectro " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogElectro " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+void MachLogElectro::doBeDestroyed()
+{
+    checkForDamage(3.0, MachLogLinearProjectile::CONSTANT_DAMAGE, MachPhys::ELECTRIC_CHARGE);
+}
+
+void perWrite(PerOstream& ostr, const MachLogElectro& actor)
+{
+    const MachLogLinearProjectile& base1 = actor;
+
+    ostr << base1;
+}
+
+void perRead(PerIstream& istr, MachLogElectro& actor)
+{
+    MachLogLinearProjectile& base1 = actor;
+
+    istr >> base1;
+}
+
+MachLogElectro::MachLogElectro(PerConstructor con)
+    : MachLogLinearProjectile(con)
+{
+}
+
+/* End PULSEBLB.CPP *************************************************/

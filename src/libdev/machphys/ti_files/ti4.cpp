@@ -6,7 +6,7 @@
 // #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "stdlib/memory.hpp"
-#include "machphys/mcmovinf.hpp"
+#include "machphys/Machines/MachineMoveInfo.hpp"
 
 #include "stdlib/memory.itp"
 

@@ -6,12 +6,12 @@
 // #include "utility/basfact.hpp"
 // #include "utility/basfact.ctp"
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
-#include "machphys/subid.hpp"
-// #include "machphys/subid.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
+#include "machphys/SubId.hpp"
+// #include "machphys/SubId.ctp"
 
-#include "machphys/factory.hpp"
+#include "machphys/Constructions/Factory.hpp"
 
 using MachPhysFactoryId = MachPhysFactory::Id;
 

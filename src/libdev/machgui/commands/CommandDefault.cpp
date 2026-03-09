@@ -30,13 +30,13 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/Cameras.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/canattac.hpp"
-#include "machlog/races.hpp"
-#include "machlog/planet.hpp"
-#include "machlog/machine.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/CanAttack.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/World/Planet.hpp"
+#include "machlog/Actors/Machine.hpp"
 
-#include "phys/cspace2.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 MachGuiDefaultCommand::MachGuiDefaultCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
     : MachGuiCommand(pInGameScreen, triggerBindId)

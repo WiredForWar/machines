@@ -5,7 +5,7 @@
 #include "machgui/MenuContext/CtxOptions.hpp"
 #include "sound/soundmix.hpp"
 #include "sound/sndparam.hpp"
-#include "world4d/soundman.hpp"
+#include "world4d/Sound/SoundManager.hpp"
 #include "recorder/recorder.hpp"
 #include "device/cd.hpp"
 #include "system/registry.hpp"

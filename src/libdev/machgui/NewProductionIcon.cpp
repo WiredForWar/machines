@@ -11,9 +11,9 @@
 #include "machgui/ActorStringIdRestorer.hpp"
 #include "machgui/InGameScreen.hpp"
 
-#include "machlog/produnit.hpp"
-#include "machlog/restree.hpp"
-#include "machlog/resitem.hpp"
+#include "machlog/ProductionUnit.hpp"
+#include "machlog/Tech/ResearchTree.hpp"
+#include "machlog/Tech/ResearchItem.hpp"
 
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
@@ -97,8 +97,8 @@ Gui::Box MachGuiNewProductionIcon::exteriorRelativeBoundary(
 // ******************************************* Code for MachProductionIcon *************************************
 //////
 
-#include "machlog/produnit.hpp"
-#include "machlog/races.hpp"
+#include "machlog/ProductionUnit.hpp"
+#include "machlog/Races.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 

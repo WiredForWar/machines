@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "world4d/custom.hpp"
+#include "world4d/Entity/Custom.hpp"
 
 #include "mathex/point2d.hpp"
 

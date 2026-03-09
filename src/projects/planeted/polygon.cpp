@@ -7,7 +7,7 @@
 
 #include "planeted/polygon.hpp"
 
-#include "machlog/planet.hpp"
+#include "machlog/World/Planet.hpp"
 
 #include "render/device.hpp"
 #include "render/mesh.hpp"

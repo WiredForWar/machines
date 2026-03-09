@@ -20,18 +20,18 @@
 
 #include "render/device.hpp"
 
-#include "world4d/camera.hpp"
-#include "world4d/scenemgr.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/domain.hpp"
+#include "world4d/Scene/Camera.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/Domain.hpp"
 
-#include "machlog/camera.hpp"
-#include "machlog/planet.hpp"
+#include "machlog/World/Camera.hpp"
+#include "machlog/World/Planet.hpp"
 
-#include "phys/mczenith.hpp"
-#include "phys/mcfly.hpp"
-#include "phys/mczenith.hpp"
-#include "phys/mcground.hpp"
+#include "phys/MotionControl/ZenithFlyControl.hpp"
+#include "phys/MotionControl/FlyControl.hpp"
+#include "phys/MotionControl/ZenithFlyControl.hpp"
+#include "phys/MotionControl/GroundFlyControl.hpp"
 
 #include "planeted/planeted.hpp"
 

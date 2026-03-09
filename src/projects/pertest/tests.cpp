@@ -4,7 +4,7 @@
 #include "stdlib/string.hpp"
 // #include "render/internal/trigroup.hpp"
 #include "pertest/class1.hpp"
-#include "machphys/ofactory.hpp"
+#include "machphys/ObjectFactory.hpp"
 
 // PER_DEFINE_PERSISTENT_T2( MachPhysObjectFactory, size_t,  string);
 // PER_PRIVATE_READ_WRITE_PERSISTENT_T2(MachPhysObjectFactory, size_t,  string)

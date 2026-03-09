@@ -16,7 +16,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/ui/ScrollArea.hpp"
 
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 #include "system/pathname.hpp"
 #include "ctl/list.hpp"

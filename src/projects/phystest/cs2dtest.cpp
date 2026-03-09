@@ -17,9 +17,9 @@
 #include "mathex/double.hpp"
 #include "mathex/cvexpgon.hpp"
 
-#include "phys/cspace2.hpp"
-#include "phys/rampacce.hpp"
-#include "phys/motchunk.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/MotionChunk.hpp"
 #include "phystest/cs2dtest.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////

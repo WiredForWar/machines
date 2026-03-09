@@ -16,7 +16,7 @@
 
 #include "mathex/point2d.hpp"
 
-#include "world4d/custom.hpp"
+#include "world4d/Entity/Custom.hpp"
 
 #include "ctl/vector.hpp"
 

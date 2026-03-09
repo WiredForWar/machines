@@ -15,7 +15,7 @@
 #include "planeted/editactor.hpp"
 #include "ctl/pvector.hpp"
 #include "ctl/vector.hpp"
-#include "world4d/genrepos.hpp"
+#include "world4d/Entity/GenericRepository.hpp"
 #include "machphys/machphys.hpp"
 #include "mathex/degrees.hpp"
 

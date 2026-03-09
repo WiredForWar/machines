@@ -16,8 +16,8 @@
 
 #include "system/pathname.hpp"
 #include "machgui/ActorBitmaps.hpp"
-#include "machlog/canattac.hpp"
-#include "machlog/machine.hpp"
+#include "machlog/Actors/CanAttack.hpp"
+#include "machlog/Actors/Machine.hpp"
 #include <cassert>
 
 static GuiBitmap& privateLongGlowBmp()

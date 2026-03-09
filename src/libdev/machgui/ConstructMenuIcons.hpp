@@ -16,7 +16,7 @@
 #include "gui/scrolist.hpp"
 #include "gui/gui.hpp"
 
-#include "machlog/mlnotif.hpp"
+#include "machlog/World/Notifiable.hpp"
 
 // Forward refs
 class MachInGameScreen;

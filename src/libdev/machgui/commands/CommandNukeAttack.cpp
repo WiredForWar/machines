@@ -10,18 +10,18 @@
 #include "ctl/pvector.hpp"
 #include "mathex/transf3d.hpp"
 
-#include "machphys/genedata.hpp"
+#include "machphys/Data/GeneralData.hpp"
 #include "machphys/machphys.hpp"
-#include "machphys/mphydata.hpp"
+#include "machphys/Data/Data.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/attack.hpp"
-#include "machlog/missilem.hpp"
-#include "machlog/opnukeat.hpp"
-#include "machlog/races.hpp"
-#include "machlog/vmdata.hpp"
-#include "machlog/vmman.hpp"
-#include "machlog/weapon.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Operations/AttackOperation.hpp"
+#include "machlog/Actors/MissileEmplacement.hpp"
+#include "machlog/Operations/NukeAttackOperation.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Messaging/VoiceMailData.hpp"
+#include "machlog/Messaging/VoiceMailManager.hpp"
+#include "machlog/Combat/Weapon.hpp"
 
 #include "machgui/InGameScreen.hpp"
 

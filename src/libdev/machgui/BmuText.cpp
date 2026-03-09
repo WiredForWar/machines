@@ -11,7 +11,7 @@
 #include "machgui/InGameScreen.hpp"
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/races.hpp"
+#include "machlog/Races.hpp"
 #include "machphys/machphys.hpp"
 #include "gui/painter.hpp"
 #include "machgui/internal/SoundManager.hpp"

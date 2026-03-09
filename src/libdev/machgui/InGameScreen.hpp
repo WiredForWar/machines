@@ -13,7 +13,7 @@
 #define _MACHGUI_INGAME_HPP
 
 #include "base/base.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 #include "gui/root.hpp"
 #include "gui/ResolvedUiString.hpp"
 #include "machgui/gui.hpp"

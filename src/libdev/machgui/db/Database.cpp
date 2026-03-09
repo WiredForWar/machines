@@ -9,7 +9,7 @@
 #include "base/error.hpp"
 #include "utility/linetok.hpp"
 
-#include "machlog/scenario.hpp"
+#include "machlog/World/Scenario.hpp"
 #include "machgui/db/Database.hpp"
 #include "machgui/db/internal/DbIDatabase.hpp"
 #include "machgui/internal/strings.hpp"

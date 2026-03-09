@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "machlog/actor.hpp"
+#include "machlog/Actors/Actor.hpp"
 #include "machlog/reductio.hpp"
 
 /* //////////////////////////////////////////////////////////////// */

@@ -8,7 +8,7 @@
 #include "gui/manager.hpp"
 #include "gui/painter.hpp"
 
-#include "machphys/objdata.hpp"
+#include "machphys/Data/ObjectData.hpp"
 
 #include "machgui/NewCorralIcon.hpp"
 #include "machgui/gui.hpp"
@@ -21,16 +21,16 @@
 #include "machgui/ControlPanel.hpp"
 #include "machgui/NavigatorBase.hpp"
 
-#include "machlog/apc.hpp"
-#include "machlog/canattac.hpp"
-#include "machlog/construc.hpp"
-#include "machlog/factory.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/races.hpp"
-#include "machlog/rescarr.hpp"
-#include "machlog/spy.hpp"
-#include "machlog/vmman.hpp"
-#include "machlog/pod.hpp"
+#include "machlog/Actors/APC.hpp"
+#include "machlog/Actors/CanAttack.hpp"
+#include "machlog/Actors/Constructor.hpp"
+#include "machlog/Actors/Factory.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/ResourceCarrier.hpp"
+#include "machlog/Actors/SpyLocator.hpp"
+#include "machlog/Messaging/VoiceMailManager.hpp"
+#include "machlog/Actors/Pod.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 SysPathName MachGuiCorralResource_hack(const MachActor* pActor)

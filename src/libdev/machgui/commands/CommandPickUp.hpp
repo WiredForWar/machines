@@ -13,13 +13,13 @@
 #define _MACHGUI_CMDPICKU_HPP
 
 #include "machgui/commands/command.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 #include "mathex/point3d.hpp"
 
 #include "ctl/pvector.hpp"
 
-#include "machlog/rescarr.hpp"
+#include "machlog/Actors/ResourceCarrier.hpp"
 
 // Forward refs
 class MachActor;

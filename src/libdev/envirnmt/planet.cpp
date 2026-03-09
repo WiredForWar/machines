@@ -14,12 +14,12 @@
 #include "envirnmt/internal/satparam.hpp"
 #include "envirnmt/internal/skydecl.hpp"
 
-#include "world4d/generic.hpp"
-#include "world4d/root.hpp"
-#include "world4d/scenemgr.hpp"
-#include "world4d/shadow.hpp"
-#include "world4d/light.hpp"
-#include "world4d/stars.hpp"
+#include "world4d/Entity/Generic.hpp"
+#include "world4d/Entity/Root.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Scene/Shadow.hpp"
+#include "world4d/Scene/Light.hpp"
+#include "world4d/Scene/Stars.hpp"
 
 #include "render/device.hpp"
 #include "render/camera.hpp"

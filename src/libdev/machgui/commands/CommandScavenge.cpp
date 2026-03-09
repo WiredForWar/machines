@@ -7,14 +7,14 @@
 
 #include "CommandScavenge.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/debris.hpp"
-#include "machlog/move.hpp"
-#include "machlog/opscav.hpp"
-#include "machlog/races.hpp"
-#include "machlog/rescarr.hpp"
-#include "machlog/vmman.hpp"
-#include "machlog/vmdata.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Debris.hpp"
+#include "machlog/Operations/MoveOperation.hpp"
+#include "machlog/Operations/ScavengeOperation.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/ResourceCarrier.hpp"
+#include "machlog/Messaging/VoiceMailManager.hpp"
+#include "machlog/Messaging/VoiceMailData.hpp"
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"

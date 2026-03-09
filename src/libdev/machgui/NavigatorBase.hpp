@@ -89,7 +89,7 @@ private:
     A brief description of the class should go in here
 */
 
-#include "machlog/mlnotif.hpp"
+#include "machlog/World/Notifiable.hpp"
 
 class MachLogResearchTree;
 
@@ -186,7 +186,7 @@ private:
     A brief description of the class should go in here
 */
 
-#include "machlog/mlnotif.hpp"
+#include "machlog/World/Notifiable.hpp"
 
 class MachLogConstructionTree;
 

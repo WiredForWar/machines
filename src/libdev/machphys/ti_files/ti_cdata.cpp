@@ -4,7 +4,7 @@
  */
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "machphys/consdata.hpp"
+#include "machphys/Constructions/ConstructionData.hpp"
 
 void MachDummyFunctionConstructionData()
 {

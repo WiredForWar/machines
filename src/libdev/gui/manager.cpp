@@ -15,8 +15,8 @@
 #include "render/display.hpp"
 
 #ifndef PRODUCTION
-#include "world4d/scenemgr.hpp"
-#include "world4d/manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Manager.hpp"
 #endif
 
 #define CB_GUIMANAGER_DEPIMPL()                                                                                        \

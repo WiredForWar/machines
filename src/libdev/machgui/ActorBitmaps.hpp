@@ -13,7 +13,7 @@
 #define _MACHGUI_ACTBMPNM_HPP
 
 #include "base/base.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "machphys/machphys.hpp"
 
 // static public methods only

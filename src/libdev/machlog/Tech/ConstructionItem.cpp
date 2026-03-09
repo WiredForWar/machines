@@ -1,0 +1,228 @@
+/*
+ * C O N S I T E M . C P P
+ * (c) Charybdis Limited, 1998. All Rights Conserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machlog/Tech/ConstructionItem.hpp"
+#include "machlog/Tech/Internal/ConstructionItemImpl.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Tech/ConstructionTree.hpp"
+
+#include "machphys/machphys.hpp"
+
+#include "machphys/Data/Data.hpp"
+#include "machphys/Constructions/BeaconData.hpp"
+#include "machphys/Constructions/HardwareLabData.hpp"
+#include "machphys/Constructions/MineData.hpp"
+#include "machphys/Constructions/PodData.hpp"
+#include "machphys/Constructions/SmelterData.hpp"
+#include "machphys/Constructions/MissileEmplacementData.hpp"
+#include "machphys/Constructions/GarrisonData.hpp"
+#include "machphys/Constructions/FactoryData.hpp"
+
+PER_DEFINE_PERSISTENT(MachLogConstructionItem);
+
+/* //////////////////////////////////////////////////////////////////////////// */
+
+MachLogConstructionItem::MachLogConstructionItem(
+    MachLog::ObjectType consType,
+    int subType,
+    size_t hwLevel,
+    MachPhys::WeaponCombo wc)
+    : pImpl_(new MachLogConstructionItemImpl())
+{
+    CB_MachLogConstructionItem_DEPIMPL();
+
+    constructionType_ = consType;
+    subType_ = subType;
+    hwLevel_ = hwLevel;
+    weaponCombo_ = wc;
+
+    for (int i = 0; i < MachPhys::N_RACES; ++i)
+    {
+        activated_[i] = false;
+        activationLocked_[i] = false;
+    }
+
+    if (wc != MachPhys::N_WEAPON_COMBOS)
+        hasWeaponCombo_ = true;
+
+    switch (consType)
+    {
+        case MachLog::BEACON:
+            buildingCost_ = MachPhysData::instance().beaconData(hwLevel).cost();
+            break;
+        case MachLog::FACTORY:
+            buildingCost_ = MachPhysData::instance().factoryData((MachPhys::FactorySubType)subType, hwLevel).cost();
+            break;
+        case MachLog::GARRISON:
+            buildingCost_ = MachPhysData::instance().garrisonData(hwLevel).cost();
+            break;
+        case MachLog::HARDWARE_LAB:
+            buildingCost_
+                = MachPhysData::instance().hardwareLabData((MachPhys::HardwareLabSubType)subType, hwLevel).cost();
+            break;
+        case MachLog::POD:
+            buildingCost_ = MachPhysData::instance().podData(hwLevel).cost();
+            break;
+        case MachLog::MINE:
+            buildingCost_ = MachPhysData::instance().mineData(hwLevel).cost();
+            break;
+        case MachLog::MISSILE_EMPLACEMENT:
+            buildingCost_ = MachPhysData::instance()
+                                .missileEmplacementData((MachPhys::MissileEmplacementSubType)subType, hwLevel)
+                                .cost();
+            break;
+        case MachLog::SMELTER:
+            buildingCost_ = MachPhysData::instance().smelterData(hwLevel).cost();
+            break;
+            DEFAULT_ASSERT_BAD_CASE(consType);
+    }
+
+    TEST_INVARIANT;
+}
+
+/* //////////////////////////////////////////////////////////////////////////// */
+
+MachLogConstructionItem::~MachLogConstructionItem()
+{
+    TEST_INVARIANT;
+
+    delete pImpl_;
+}
+
+/* //////////////////////////////////////////////////////////////////////////// */
+
+const MachLog::ObjectType& MachLogConstructionItem::constructionType() const
+{
+    CB_DEPIMPL(MachLog::ObjectType, constructionType_);
+
+    return constructionType_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+int MachLogConstructionItem::subType() const
+{
+    CB_DEPIMPL(int, subType_);
+
+    return subType_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+size_t MachLogConstructionItem::hwLevel() const
+{
+    CB_DEPIMPL(size_t, hwLevel_);
+
+    return hwLevel_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+MachPhys::BuildingMaterialUnits MachLogConstructionItem::buildingCost() const
+{
+    CB_DEPIMPL(MachPhys::BuildingMaterialUnits, buildingCost_);
+
+    return buildingCost_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+const MachPhys::WeaponCombo MachLogConstructionItem::weaponCombo() const
+{
+    CB_DEPIMPL(MachPhys::WeaponCombo, weaponCombo_);
+
+    return weaponCombo_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+bool MachLogConstructionItem::hasWeaponCombo() const
+{
+    CB_DEPIMPL(bool, hasWeaponCombo_);
+
+    return hasWeaponCombo_;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+bool MachLogConstructionItem::activated(MachPhys::Race race) const
+{
+    CB_DEPIMPL_ARRAY(bool, activated_);
+
+    return activated_[race];
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+void MachLogConstructionItem::activate(MachPhys::Race race)
+{
+    CB_DEPIMPL_ARRAY(bool, activated_);
+    CB_DEPIMPL_ARRAY(bool, activationLocked_);
+    if (! activationLocked_[race])
+        activated_[race] = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+std::ostream& operator<<(std::ostream& o, const MachLogConstructionItem& t)
+{
+
+    o << "MachLogConstructionItem " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << " ConstructionType " << t.constructionType() << std::endl;
+    o << " subType " << t.subType() << std::endl;
+    o << " hwLevel " << t.hwLevel() << std::endl;
+    o << " weapon combo " << t.weaponCombo() << " hasWC defined " << t.hasWeaponCombo() << std::endl;
+    // for( MachPhys::Race i = 0; i != MachPhys::N_RACES; ++((int&)i) )
+    for (MachPhys::Race i : MachPhys::AllRaces)
+    {
+        o << " activated[" << i << "] " << t.activated(i) << " activation locked " << t.activationLocked(i)
+          << std::endl;
+    }
+    o << "MachLogConstructionItem " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+void MachLogConstructionItem::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+void MachLogConstructionItem::activationLocked(MachPhys::Race race, bool newValue)
+{
+    CB_DEPIMPL_ARRAY(bool, activationLocked_);
+    CB_DEPIMPL_ARRAY(bool, activated_);
+    activationLocked_[race] = newValue;
+    if (newValue && activated_[race])
+        activated_[race] = false;
+}
+
+bool MachLogConstructionItem::activationLocked(MachPhys::Race race) const
+{
+    CB_DEPIMPL_ARRAY(bool, activationLocked_);
+    return activationLocked_[race];
+}
+
+void perWrite(PerOstream& ostr, const MachLogConstructionItem& consItem)
+{
+    ostr << consItem.pImpl_;
+}
+
+void perRead(PerIstream& istr, MachLogConstructionItem& consItem)
+{
+    istr >> consItem.pImpl_;
+}
+
+MachLogConstructionItem::MachLogConstructionItem(PerConstructor)
+{
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+/* End CONSITEM.CPP **************************************************/

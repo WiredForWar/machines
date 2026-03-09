@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "device/KeyBind.hpp"
 #include "machgui/BindId.hpp"
-#include "machlog/machop.hpp"
+#include "machlog/Operations/MachineOperation.hpp"
 
 class MachInGameScreen;
 

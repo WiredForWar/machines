@@ -31,7 +31,7 @@
 #include "mathex/degrees.hpp"
 #include "mathex/radians.hpp"
 
-#include "phys/mcfly.hpp"
+#include "phys/MotionControl/FlyControl.hpp"
 
 #include "render/display.hpp"
 #include "render/device.hpp"

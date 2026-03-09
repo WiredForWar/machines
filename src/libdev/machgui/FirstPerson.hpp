@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "gui/root.hpp"
-#include "world4d/observer.hpp"
-#include "world4d/subject.hpp"
+#include "world4d/Subject/Observer.hpp"
+#include "world4d/Subject/Subject.hpp"
 #include "machphys/machphys.hpp"
 
 class W4dSceneManager;

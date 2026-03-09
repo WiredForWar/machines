@@ -15,17 +15,17 @@
 
 #include "system/pathname.hpp"
 
-#include "world4d/domain.hpp"
+#include "world4d/Scene/Domain.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/constron.hpp"
-#include "machlog/opadsupc.hpp"
-#include "machlog/opsupcon.hpp"
-#include "machlog/squad.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Actors/Construction.hpp"
+#include "machlog/Operations/AdminSuperConstructOperation.hpp"
+#include "machlog/Operations/SuperConstructOperation.hpp"
+#include "machlog/Actors/Squadron.hpp"
 
-#include "machphys/objdata.hpp"
+#include "machphys/Data/ObjectData.hpp"
 
 MachGuiRepairCommand::MachGuiRepairCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-repair"_bind)

@@ -13,7 +13,7 @@
 #define _MACHGUI_DBHANDLR_HPP
 
 #include "base/base.hpp"
-#include "machlog/dbhandlr.hpp"
+#include "machlog/World/DatabaseHandler.hpp"
 
 class MachGuiDatabaseHandler : public MachLogDatabaseHandler
 // Canonical form revoked

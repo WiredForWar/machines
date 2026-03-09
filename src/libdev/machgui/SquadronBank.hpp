@@ -9,7 +9,7 @@
 #include "device/butevent.hpp"
 #include "gui/icon.hpp"
 #include "gui/scrolist.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 #include "machgui/gui.hpp"
 
 /*

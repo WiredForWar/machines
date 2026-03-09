@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "base/persist.hpp"
-#include "machlog/produnit.hpp" //Fairly cheap to include - avoids clients defining ctl_vector having to
+#include "machlog/ProductionUnit.hpp" //Fairly cheap to include - avoids clients defining ctl_vector having to
 
 #include <string>
 

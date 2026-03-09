@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "gui/gui.hpp"
 #include "ctl/pvector.hpp"
-#include "world4d/domain.hpp"
+#include "world4d/Scene/Domain.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 

@@ -23,7 +23,7 @@
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/Text.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "gui/manager.hpp"
 #include "gui/event.hpp"
 #include "gui/scrolist.hpp"

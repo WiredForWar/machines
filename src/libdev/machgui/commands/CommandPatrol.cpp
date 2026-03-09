@@ -10,9 +10,9 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/patrol.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/PatrolOperation.hpp"
 #include "mathex/transf3d.hpp"
 #include "system/pathname.hpp"
 

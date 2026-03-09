@@ -9,11 +9,11 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "world4d/domain.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/smelter.hpp"
-#include "machlog/oprecycl.hpp"
+#include "world4d/Scene/Domain.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Actors/Smelter.hpp"
+#include "machlog/Operations/RecycleOperation.hpp"
 
 MachGuiRecycleCommand::MachGuiRecycleCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-recycle"_bind)

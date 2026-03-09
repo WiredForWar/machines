@@ -1,0 +1,98 @@
+/*
+ * T O R C H . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machphys/Effects/Torch.hpp"
+#include "machphys/Persistence/WeaponPersistence.hpp"
+
+#include "world4d/Entity/Root.hpp"
+// #include "world4d/Plans/SimpleScalePlan.hpp"
+#include "world4d/Entity/EntityPlan.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/GeneralUniformScalePlan.hpp"
+
+#include "mathex/transf3d.hpp"
+
+#include "system/pathname.hpp"
+
+#include "ctl/vector.hpp"
+
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/AcceleratedScalarPlan.hpp"
+
+PER_DEFINE_PERSISTENT(MachPhysTorch);
+
+// One-time ctor
+MachPhysTorch::MachPhysTorch()
+    : W4dComposite(MachPhysWeaponPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::SOLID)
+{
+    // Load the model
+    readCompositeFile(SysPathName("models/construc/torch/torch.cdf"));
+    TEST_INVARIANT;
+}
+
+// public ctor
+MachPhysTorch::MachPhysTorch(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dComposite(exemplar(), pParent, localTransform)
+{
+
+    TEST_INVARIANT;
+}
+
+MachPhysTorch::~MachPhysTorch()
+{
+    TEST_INVARIANT;
+}
+
+// static
+const MachPhysTorch& MachPhysTorch::exemplar()
+{
+    // Use the one time constructor
+    static MachPhysTorch& torch = *new MachPhysTorch;
+    return torch;
+}
+
+void MachPhysTorch::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysTorch& t)
+{
+
+    o << "MachPhysTorch " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysTorch " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+// virtual
+bool MachPhysTorch::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
+{
+    return false;
+}
+
+void perWrite(PerOstream& ostr, const MachPhysTorch& sphere)
+{
+    const W4dComposite& base = sphere;
+
+    ostr << base;
+}
+
+void perRead(PerIstream& istr, MachPhysTorch& sphere)
+{
+    W4dComposite& base = sphere;
+
+    istr >> base;
+}
+
+MachPhysTorch::MachPhysTorch(PerConstructor c)
+    : W4dComposite(c)
+{
+    // Intentionally Empty
+}
+
+/* End TORCH.CPP *************************************************/

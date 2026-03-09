@@ -7,8 +7,8 @@
 
 #include "base/base.hpp"
 
-#include "world4d/manager.hpp"
-#include "world4d/subject.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Subject/Subject.hpp"
 
 #include "phys/phys.hpp"
 

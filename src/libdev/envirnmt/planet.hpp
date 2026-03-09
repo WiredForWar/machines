@@ -7,7 +7,7 @@
 #define _ENVIRNMT_PLANET_HPP
 
 #include "base/base.hpp"
-#include "world4d/envirnmt.hpp"
+#include "world4d/Scene/Environment.hpp"
 #include "render/colour.hpp"
 #include "render/stars.hpp"
 #include "ctl/pvector.hpp"

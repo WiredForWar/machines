@@ -8,10 +8,10 @@
 #include "stdlib/tipch.hpp"
 
 #include "mathex/point2d.hpp"
-#include "phys/cspace2.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "machlog/artefact.hpp"
-#include "machlog/internal/artsdata.hpp"
+#include "machlog/Actors/Artefact.hpp"
+#include "machlog/Internal/ArtefactsData.hpp"
 
 // class MexPoint2d;
 // class MachLogArtefactSubType;

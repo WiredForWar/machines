@@ -2,7 +2,7 @@
 #ifndef _MACHLOG_ACTNAMID_HPP
 #define _MACHLOG_ACTNAMID_HPP
 
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "machphys/machphys.hpp"
 
 #include "gui/StringId.hpp"

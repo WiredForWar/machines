@@ -7,20 +7,20 @@
 // #define _INSTANTIATE_TEMPLATE_FUNCTIONS
 
 #include "base/base.hpp"
-#include "phys/eulertx.hpp"
-#include "phys/rampacce.hpp"
+#include "phys/Plans/EulerTransform3d.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/countptr.hpp"
 #include "mathex/point2d.hpp"
 #include "mathex/poly2d.hpp"
 #include "mathex/transf3d.hpp"
 // #include "phys/boundvol.hpp"
-#include "phys/motplan.hpp"
-#include "phys/linemoti.hpp"
-#include "phys/internal/linemtii.hpp"
-#include "phys/timespin.hpp"
-#include "phys/accetumb.hpp"
-#include "phys/asclplan.hpp"
+#include "phys/Plans/MotionPlan.hpp"
+#include "phys/Plans/LinearMotionPlan.hpp"
+#include "phys/Plans/Internal/LinearMotionPlanImpl.hpp"
+#include "phys/Plans/TimedSpinPlan.hpp"
+#include "phys/Plans/AccelerateTumblePlan.hpp"
+#include "phys/Plans/AcceleratedScalarPlan.hpp"
 
 #include <memory>
 // Forward refs

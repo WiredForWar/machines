@@ -1,2 +1,2 @@
-// #include "machphys/internal/mexidata.hpp"
-#include "machphys/mexpdata.hpp"
+// #include "machphys/Machines/Internal/IMachineExplosionData.hpp"
+#include "machphys/Machines/MachineExplosionData.hpp"

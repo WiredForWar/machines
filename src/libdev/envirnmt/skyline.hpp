@@ -6,7 +6,7 @@
 #ifndef _ENVIRNMT_SKYLINE_HPP
 #define _ENVIRNMT_SKYLINE_HPP
 
-#include "world4d/matplan.hpp"
+#include "world4d/Plans/MaterialPlan.hpp"
 #include "ctl/countptr.hpp"
 
 class W4dEntity;

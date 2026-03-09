@@ -9,7 +9,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
-#include "machlog/hwlab.hpp"
+#include "machlog/Actors/HardwareLab.hpp"
 #include "gui/manager.hpp"
 #include "ctl/pvector.hpp"
 

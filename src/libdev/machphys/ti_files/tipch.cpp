@@ -11,21 +11,21 @@
 
 #include "ctl/vector.hpp"
 
-#include "phys/motplan.hpp"
+#include "phys/Plans/MotionPlan.hpp"
 #include "mathex/point3d.hpp"
 
 #include "render/material.hpp"
 
-#include "world4d/compplan.hpp"
-#include "world4d/visplan.hpp"
-#include "world4d/valplan.hpp"
+#include "world4d/Entity/CompositePlan.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/FloatValuePlan.hpp"
 
-#include "machphys/tiledata.hpp"
-#include "machphys/mccospec.hpp"
-#include "machphys/tileboun.hpp"
-#include "machphys/tiledata.hpp"
+#include "machphys/Terrain/TileData.hpp"
+#include "machphys/Machines/MachineSpec.hpp"
+#include "machphys/Terrain/TileBoundary.hpp"
+#include "machphys/Terrain/TileData.hpp"
 #include "machphys/machphys.hpp"
-#include "machphys/mccospec.hpp"
+#include "machphys/Machines/MachineSpec.hpp"
 
 class W4dDomain;
 class MachPhysTerrainTile;

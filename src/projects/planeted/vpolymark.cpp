@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/vpolymark.hpp"
-#include "world4d/entity.hpp"
+#include "world4d/Entity/Entity.hpp"
 #include "render/render.hpp"
 #include "render/device.hpp"
 #include "render/mesh.hpp"
@@ -17,8 +17,8 @@
 #include "mathex/transf3d.hpp"
 #include "mathex/double.hpp"
 #include "mathex/point3d.hpp"
-#include "machphys/surfchk.hpp"
-#include "machlog/planet.hpp"
+#include "machphys/Terrain/PlanetSurfaceChecker.hpp"
+#include "machlog/World/Planet.hpp"
 
 PedVerticalPolygonMarker::PedVerticalPolygonMarker(
     W4dEntity* pParent,

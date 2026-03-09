@@ -6,10 +6,10 @@
 // #include "utility/basfact.hpp"
 // #include "utility/basfact.ctp"
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
-#include "machphys/swlab.hpp"
+#include "machphys/Constructions/SoftwareLab.hpp"
 
 typedef MachPhysSoftwareLab::Id MachPhysSoftwareLabId;
 

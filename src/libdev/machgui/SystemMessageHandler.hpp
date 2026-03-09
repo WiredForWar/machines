@@ -14,7 +14,7 @@
 #define _MACHGUI_SYSMESS_HPP
 
 #include "base/base.hpp"
-#include "machlog/sysmess.hpp"
+#include "machlog/Messaging/SystemMessageHandler.hpp"
 
 class MachGuiStartupScreens;
 

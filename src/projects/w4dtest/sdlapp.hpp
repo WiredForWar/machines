@@ -9,7 +9,7 @@
 #include "device/timer.hpp"
 #include "render/render.hpp"
 #include "afx/osapp.hpp"
-#include "world4d/compplan.hpp"
+#include "world4d/Entity/CompositePlan.hpp"
 #include "w4dtest/averager.hpp"
 
 class W4dComposite;

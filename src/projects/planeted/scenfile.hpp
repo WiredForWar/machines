@@ -20,7 +20,7 @@
 #include "mathex/point3d.hpp"
 #include "mathex/degrees.hpp"
 #include "machphys/machphys.hpp"
-#include "machlog/camera.hpp"
+#include "machlog/World/Camera.hpp"
 
 // class UtlLineTokeniser;
 class SysPathName;

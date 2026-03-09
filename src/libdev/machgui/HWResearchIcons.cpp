@@ -10,10 +10,10 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
-#include "machlog/hwlab.hpp"
-#include "machlog/races.hpp"
-#include "machlog/resitem.hpp"
-#include "machlog/restree.hpp"
+#include "machlog/Actors/HardwareLab.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Tech/ResearchItem.hpp"
+#include "machlog/Tech/ResearchTree.hpp"
 #include "ctl/pvector.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */

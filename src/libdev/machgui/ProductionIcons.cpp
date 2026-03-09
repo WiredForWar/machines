@@ -13,8 +13,8 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
-#include "machlog/factory.hpp"
-#include "machlog/produnit.hpp"
+#include "machlog/Actors/Factory.hpp"
+#include "machlog/ProductionUnit.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 

@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "ctl/vector.hpp"
-#include "machlog/produnit.hpp"
+#include "machlog/ProductionUnit.hpp"
 
 // forward refs
 class MachGuiDbScenario;

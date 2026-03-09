@@ -21,16 +21,16 @@
 #include "mathex/eulerang.hpp"
 #include "mathex/quatern.hpp"
 
-#include "world4d/domain.hpp"
-#include "world4d/entity.hpp"
-#include "world4d/scenemgr.hpp"
-#include "world4d/camera.hpp"
+#include "world4d/Scene/Domain.hpp"
+#include "world4d/Entity/Entity.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Scene/Camera.hpp"
 
 #include "render/device.hpp"
 
-#include "machlog/planet.hpp"
+#include "machlog/World/Planet.hpp"
 
-#include "machphys/plansurf.hpp"
+#include "machphys/Terrain/PlanetSurface.hpp"
 
 #include "utility/linetok.hpp"
 

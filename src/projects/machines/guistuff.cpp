@@ -1,7 +1,7 @@
 #include <cstdio>
 #include "base/diag.hpp"
 #include "machines/sdlapp.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "render/device.hpp"
 #include "gui/manager.hpp"
 #include "machgui/StartupScreens.hpp"
@@ -11,7 +11,7 @@
 #include "machgui/db/DbPlanet.hpp"
 #include "machgui/db/DbScenario.hpp"
 #include "machgui/db/DbSystem.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "network/netnet.hpp"
 #include "recorder/recorder.hpp"
 #include "device/timer.hpp"

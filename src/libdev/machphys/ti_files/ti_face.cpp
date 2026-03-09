@@ -3,17 +3,17 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "machphys/ofactory.hpp"
-#include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+#include "machphys/ObjectFactory.ctp"
 //
 // #include "ctl/map.hpp"
 // #include "ctl/map.ctp"
 
 // #include <ospace/stl/map.cc>
 
-#include "machphys/machine.hpp"
+#include "machphys/Machines/Machine.hpp"
 
-#include "machphys/facepl.hpp"
+#include "machphys/Machines/FacePlate.hpp"
 
 void MachDummyFunctionFacePlate()
 {

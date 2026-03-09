@@ -16,7 +16,7 @@
 #include "device/butevent.hpp"
 #include "planeted/editmode.hpp"
 #include "machphys/machphys.hpp"
-#include "world4d/entity.hpp"
+#include "world4d/Entity/Entity.hpp"
 
 class PedVertexMarker;
 class W4dEntity;

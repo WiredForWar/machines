@@ -17,11 +17,11 @@ class MachActor;
 #include "utility/bidpmap.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
-#include "phys/rampacce.hpp"
-#include "phys/motplan.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/MotionPlan.hpp"
 #include "phys/phys.hpp"
-#include "world4d/entity.hpp"
-#include "machlog/internal/grpmovei.hpp"
+#include "world4d/Entity/Entity.hpp"
+#include "machlog/Internal/GroupSimpleMoveImpl.hpp"
 
 class W4dEntity;
 class PhysConfigSpace2d;

@@ -23,8 +23,8 @@
 #include "base/base.hpp"
 #include "base/persist.hpp"
 #include "phys/phys.hpp"
-#include "world4d/subject.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Subject.hpp"
+#include "world4d/Subject/Observer.hpp"
 #include "sim/sim.hpp"
 
 // Forward declarations

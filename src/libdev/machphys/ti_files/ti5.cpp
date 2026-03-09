@@ -8,8 +8,8 @@
 #include "ctl/vector.hpp"
 #include "ctl/vector.ctp"
 
-#include "machphys/station.hpp"
-#include "machphys/plansurf.hpp"
+#include "machphys/Constructions/Station.hpp"
+#include "machphys/Terrain/PlanetSurface.hpp"
 #include "mathex/transf3d.hpp"
 #include "mathex/point3d.hpp"
 #include "render/texture.hpp"

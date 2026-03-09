@@ -17,7 +17,7 @@
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
 #include "device/timer.hpp"
-#include "machlog/camera.hpp"
+#include "machlog/World/Camera.hpp"
 
 #include "gui/gui.hpp"
 

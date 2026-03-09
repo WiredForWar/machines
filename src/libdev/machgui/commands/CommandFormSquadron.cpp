@@ -9,8 +9,8 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/World/MachLog.hpp"
 
 MachGuiFormSquadronCommand::MachGuiFormSquadronCommand(MachInGameScreen* pInGameScreen)
     : MachGuiDefaultCommand(pInGameScreen, "commands-form-squadron"_bind)

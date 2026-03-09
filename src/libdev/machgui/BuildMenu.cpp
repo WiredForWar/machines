@@ -9,8 +9,8 @@
 #include "machgui/BuildMenuIcons.hpp"
 #include "machgui/ProductionBank.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "machlog/factory.hpp"
-#include "world4d/subject.hpp"
+#include "machlog/Actors/Factory.hpp"
+#include "world4d/Subject/Subject.hpp"
 #include "ctl/pvector.hpp"
 
 MachBuildMenu::MachBuildMenu(

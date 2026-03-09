@@ -16,7 +16,7 @@
 #include "ctl/vector.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/Network/ConnectionType.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "network/netnet.hpp"
 
 #include <optional>

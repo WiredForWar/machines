@@ -9,7 +9,7 @@
 #include "ctl/vector.hpp"
 #include "mathex/line2d.hpp"
 
-#include "phys/absp2d.hpp"
+#include "phys/Plans/AlignedBSPTree2d.hpp"
 class MexPolygon2d;
 
 void PhysDummyFunction3()

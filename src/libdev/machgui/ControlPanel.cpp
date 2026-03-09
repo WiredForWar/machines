@@ -8,8 +8,8 @@
 #include "machgui/ControlPanel.hpp"
 #include "machgui/internal/ControlPanelImpl.hpp"
 #include "system/pathname.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "render/device.hpp"
 #include "gui/painter.hpp"
 #include "gui/button.hpp"
@@ -19,7 +19,7 @@
 #include "gui/restring.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "machlog/races.hpp"
+#include "machlog/Races.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 

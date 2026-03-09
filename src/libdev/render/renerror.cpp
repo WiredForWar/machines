@@ -4,7 +4,7 @@
  */
 
 #include "render/renerror.hpp"
-// #include "world4d/manager.hpp"
+// #include "world4d/Manager.hpp"
 
 RenDXErrorHandler::RenDXErrorHandler()
 {

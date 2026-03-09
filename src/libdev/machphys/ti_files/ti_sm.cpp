@@ -6,10 +6,10 @@
 // #include "utility/basfact.hpp"
 // #include "utility/basfact.ctp"
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
-#include "machphys/smelter.hpp"
+#include "machphys/Constructions/Smelter.hpp"
 
 PER_DEFINE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysSmelter);
 PER_PRIVATE_READ_WRITE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysSmelter);

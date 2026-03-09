@@ -7,12 +7,12 @@
 
 #include "render/device.hpp"
 
-#include "world4d/composit.hpp"
-#include "world4d/camera.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Entity/Composite.hpp"
+#include "world4d/Scene/Camera.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 
-#include "phys/mcfly.hpp"
-#include "phys/mcground.hpp"
+#include "phys/MotionControl/FlyControl.hpp"
+#include "phys/MotionControl/GroundFlyControl.hpp"
 
 static void toggleFog(RenDevice* dev)
 {

@@ -1,0 +1,98 @@
+/*
+ * S P L A T . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "mathex/point2d.hpp"
+#include "machphys/Effects/GroundSplat.hpp"
+
+#include "machphys/Persistence/OtherPersistence.hpp"
+
+#include "world4d/Entity/Root.hpp"
+// #include "world4d/Plans/SimpleScalePlan.hpp"
+#include "world4d/Entity/EntityPlan.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/GeneralUniformScalePlan.hpp"
+
+#include "mathex/transf3d.hpp"
+
+#include "system/pathname.hpp"
+
+#include "ctl/vector.hpp"
+
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/AcceleratedScalarPlan.hpp"
+
+PER_DEFINE_PERSISTENT(MachPhysGroundSplat);
+
+// One-time ctor
+MachPhysGroundSplat::MachPhysGroundSplat()
+    : W4dEntity(MachPhysOtherPersistence::instance().pRoot(), MexTransform3d(), W4dEntity::NOT_SOLID)
+{
+    // Load the mesh data
+    readLODFile(SysPathName("models/destroy/splat/splat.lod"));
+    TEST_INVARIANT;
+}
+
+// public ctor
+MachPhysGroundSplat::MachPhysGroundSplat(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(exemplar(), pParent, localTransform)
+{
+    // make invisible until required
+    visible(false);
+    TEST_INVARIANT;
+}
+
+MachPhysGroundSplat::MachPhysGroundSplat(PerConstructor con)
+    : W4dEntity(con)
+{
+}
+
+MachPhysGroundSplat::~MachPhysGroundSplat()
+{
+    TEST_INVARIANT;
+}
+
+// static
+const MachPhysGroundSplat& MachPhysGroundSplat::exemplar()
+{
+    return MachPhysOtherPersistence::instance().groundSplatExemplar();
+}
+
+void MachPhysGroundSplat::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysGroundSplat& t)
+{
+
+    o << "MachPhysGroundSplat " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysGroundSplat " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+// virtual
+bool MachPhysGroundSplat::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
+{
+    return false;
+}
+
+void perWrite(PerOstream& ostr, const MachPhysGroundSplat& scorch)
+{
+    const W4dEntity& base = scorch;
+
+    ostr << base;
+}
+
+void perRead(PerIstream& istr, MachPhysGroundSplat& scorch)
+{
+    W4dEntity& base = scorch;
+
+    istr >> base;
+}
+
+/* End SPLAT.CPP *************************************************/
