@@ -6,6 +6,7 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/ConsoleDropDown.hpp"
 #include "machgui/gui.hpp"
+#include "system/IConsole.hpp"
 
 inline constexpr bool cDemoVersion =
 #ifdef DEMO
@@ -1215,6 +1216,7 @@ void MachGuiStartupScreens::switchContext(Context newContext)
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
     CB_DEPIMPL(PhysAbsoluteTime, contextTimer_);
     CB_DEPIMPL(bool, isGamePaused_);
+    CB_DEPIMPL_AUTO(console_);
 
     NETWORK_STREAM(
         "MachGuiStartupScreens::switchContext current " << context_ << " new context " << newContext << std::endl);
@@ -1268,6 +1270,9 @@ void MachGuiStartupScreens::switchContext(Context newContext)
     // Stop playing any animation
     stopPlayingAnimation();
     clearAllSmackerAnimations();
+
+    MachLogNetwork& network = MachLogNetwork::instance();
+    console_->setCheatsEnabled(!network.isNetworkGame());
 
     // Set new context
     context_ = newContext;
