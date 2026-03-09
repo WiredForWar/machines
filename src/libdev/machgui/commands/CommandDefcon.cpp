@@ -10,9 +10,9 @@
 #include "mathex/point3d.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "world4d/domain.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machine.hpp"
+#include "world4d/Scene/Domain.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
 
 // Statics
 bool MachGuiDefconCommand::defconLow_ = false;

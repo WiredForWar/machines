@@ -9,10 +9,10 @@
 #include "ctl/vector.ctp"
 
 #include "mathex/transf3d.hpp"
-#include "machphys/smokplum.hpp"
-#include "world4d/entity.hpp"
-#include "world4d/visplan.hpp"
-#include "world4d/valplan.hpp"
+#include "machphys/Effects/SmokePlume.hpp"
+#include "world4d/Entity/Entity.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/FloatValuePlan.hpp"
 #include "render/texture.hpp"
 
 class MachPhysEntrance;

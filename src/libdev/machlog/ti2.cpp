@@ -10,7 +10,7 @@
 #include "ctl/list.ctp"
 #include "ctl/vector.hpp"
 #include "ctl/vector.ctp"
-#include "machlog/creatdat.hpp"
+#include "machlog/World/GameCreationData.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 

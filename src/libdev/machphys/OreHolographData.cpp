@@ -1,0 +1,33 @@
+/*
+ * O R E H D A T A . C P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machphys/OreHolographData.hpp"
+
+MachPhysOreHolographData::MachPhysOreHolographData()
+{
+    TEST_INVARIANT;
+}
+
+MachPhysOreHolographData::~MachPhysOreHolographData()
+{
+    TEST_INVARIANT;
+}
+
+void MachPhysOreHolographData::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysOreHolographData& t)
+{
+
+    o << "OreHolograph is empty " << std::endl;
+
+    return o;
+}
+
+/* End OREHDATA.CPP *************************************************/

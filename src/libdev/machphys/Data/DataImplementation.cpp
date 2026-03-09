@@ -1,0 +1,649 @@
+/*
+ * D A T A I M P L . C P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machphys/Data/Internal/DataImplementation.hpp"
+#include "machphys/Data/Internal/DataParser.hpp"
+#include "machphys/Data/Internal/DataImplementation.ctf"
+
+#include "machphys/Data/Levels.hpp"
+
+#include "system/pathname.hpp"
+
+// Machine type data classes
+#include "machphys/Machines/AggressorData.hpp"
+#include "machphys/Machines/AdministratorData.hpp"
+#include "machphys/Machines/APCData.hpp"
+#include "machphys/Machines/ResourceCarrierData.hpp"
+#include "machphys/Machines/GeoLocatorData.hpp"
+#include "machphys/Machines/SpyLocatorData.hpp"
+#include "machphys/Machines/TechnicianData.hpp"
+#include "machphys/Machines/ConstructorData.hpp"
+// Construction type data classes
+#include "machphys/Constructions/HardwareLabData.hpp"
+#include "machphys/Constructions/SmelterData.hpp"
+#include "machphys/Constructions/FactoryData.hpp"
+#include "machphys/Constructions/MissileEmplacementData.hpp"
+#include "machphys/Constructions/GarrisonData.hpp"
+#include "machphys/Constructions/MineData.hpp"
+#include "machphys/Constructions/BeaconData.hpp"
+#include "machphys/Constructions/PodData.hpp"
+// Specials
+#include "machphys/OreHolographData.hpp"
+#include "machphys/Weapons/WeaponData.hpp"
+#include "machphys/Data/GeneralData.hpp"
+
+// static
+MachPhysDataImplementation& MachPhysDataImplementation::instance()
+{
+    static MachPhysDataImplementation instance_;
+    return instance_;
+}
+
+MachPhysDataImplementation::MachPhysDataImplementation()
+    : administratorBossData_(
+        STORE_HARDWARE_SIZE,
+        ctl_fixed_vector<MachPhysAdministratorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , administratorOverseerData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysAdministratorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , administratorCommanderData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysAdministratorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , aggressorGruntData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysAggressorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , aggressorAssassinData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysAggressorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , aggressorKnightData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysAggressorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , aggressorBallistaData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysAggressorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , aggressorNinjaData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysAggressorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , constructorDozerData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysConstructorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , constructorBuilderData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysConstructorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , constructorBehemothData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysConstructorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , geoLocatorData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysGeoLocatorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , APCData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysAPCData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , resourceCarrierData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysResourceCarrierData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , spyLocatorData_(STORE_HARDWARE_SIZE, ctl_fixed_vector<MachPhysSpyLocatorData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , technicianLabTechData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysTechnicianData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , technicianTechBoyData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysTechnicianData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , technicianBrainBoxData_(
+          STORE_HARDWARE_SIZE,
+          ctl_fixed_vector<MachPhysTechnicianData*>(STORE_SOFTWARE_SIZE, nullptr))
+    , hardwareLabCivilianData_(STORE_HARDWARE_SIZE, nullptr)
+    , hardwareLabMilitaryData_(STORE_HARDWARE_SIZE, nullptr)
+    , smelterData_(STORE_HARDWARE_SIZE, nullptr)
+    , mineData_(STORE_HARDWARE_SIZE, nullptr)
+    , garrisonData_(STORE_HARDWARE_SIZE, nullptr)
+    , beaconData_(STORE_HARDWARE_SIZE, nullptr)
+    , podData_(STORE_HARDWARE_SIZE, nullptr)
+    , factoryCivilianData_(STORE_HARDWARE_SIZE, nullptr)
+    , factoryMilitaryData_(STORE_HARDWARE_SIZE, nullptr)
+    , missileEmplacementTurretData_(STORE_HARDWARE_SIZE, nullptr)
+    , missileEmplacementSentryData_(STORE_HARDWARE_SIZE, nullptr)
+    , missileEmplacementLauncherData_(STORE_HARDWARE_SIZE, nullptr)
+    , missileEmplacementICBMData_(STORE_HARDWARE_SIZE, nullptr)
+    , weaponData_(MachPhys::N_WEAPON_TYPES, nullptr)
+    , pGeneralData_(nullptr)
+{
+    MachPhysDataParser::instance().read("data/parmdata.dat", this);
+
+    TEST_INVARIANT;
+}
+
+MachPhysDataImplementation::~MachPhysDataImplementation()
+{
+    TEST_INVARIANT;
+
+    delete2D(administratorBossData_);
+    delete2D(administratorOverseerData_);
+    delete2D(administratorCommanderData_);
+    delete2D(aggressorGruntData_);
+    delete2D(aggressorAssassinData_);
+    delete2D(aggressorKnightData_);
+    delete2D(aggressorBallistaData_);
+    delete2D(aggressorNinjaData_);
+    delete2D(constructorDozerData_);
+    delete2D(constructorBuilderData_);
+    delete2D(constructorBehemothData_);
+    delete2D(geoLocatorData_);
+    delete2D(APCData_);
+    delete2D(resourceCarrierData_);
+    delete2D(spyLocatorData_);
+    delete2D(technicianLabTechData_);
+    delete2D(technicianTechBoyData_);
+    delete2D(technicianBrainBoxData_);
+
+    delete1D(hardwareLabCivilianData_);
+    delete1D(hardwareLabMilitaryData_);
+    delete1D(smelterData_);
+    delete1D(mineData_);
+    delete1D(garrisonData_);
+    delete1D(beaconData_);
+    delete1D(podData_);
+    delete1D(factoryCivilianData_);
+    delete1D(factoryMilitaryData_);
+    delete1D(missileEmplacementTurretData_);
+    delete1D(missileEmplacementSentryData_);
+    delete1D(missileEmplacementLauncherData_);
+    delete1D(missileEmplacementICBMData_);
+    delete1D(weaponData_);
+    delete pGeneralData_;
+}
+
+void MachPhysDataImplementation::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysDataImplementation& t)
+{
+
+    o << "MachPhysDataImplementation " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysDataImplementation " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+const MachPhysAggressorData&
+MachPhysDataImplementation::aggressorData(MachPhys::AggressorSubType subType, size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+
+    return *((*pDataStore(subType))[hwLevel][swLevel]);
+}
+
+const MachPhysAdministratorData& MachPhysDataImplementation::administratorData(
+    MachPhys::AdministratorSubType subType,
+    size_t hwLevel,
+    size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+
+    return *((*pDataStore(subType))[hwLevel][swLevel]);
+}
+
+const MachPhysAPCData& MachPhysDataImplementation::APCData(size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::APC, hwLevel, swLevel));
+
+    return *APCData_[hwLevel][swLevel];
+}
+
+const MachPhysResourceCarrierData& MachPhysDataImplementation::resourceCarrierData(size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::RESOURCE_CARRIER, hwLevel, swLevel));
+
+    return *resourceCarrierData_[hwLevel][swLevel];
+}
+
+const MachPhysGeoLocatorData& MachPhysDataImplementation::geoLocatorData(size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::GEO_LOCATOR, hwLevel, swLevel));
+
+    return *geoLocatorData_[hwLevel][swLevel];
+}
+
+const MachPhysSpyLocatorData& MachPhysDataImplementation::spyLocatorData(size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::SPY_LOCATOR, hwLevel, swLevel));
+
+    return *spyLocatorData_[hwLevel][swLevel];
+}
+
+const MachPhysConstructorData&
+MachPhysDataImplementation::constructorData(MachPhys::ConstructorSubType subType, size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+
+    return *((*pDataStore(subType))[hwLevel][swLevel]);
+}
+
+const MachPhysTechnicianData&
+MachPhysDataImplementation::technicianData(MachPhys::TechnicianSubType subType, size_t hwLevel, size_t swLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel, swLevel));
+
+    return *((*pDataStore(subType))[hwLevel][swLevel]);
+}
+
+const MachPhysHardwareLabData&
+MachPhysDataImplementation::hardwareLabData(MachPhys::HardwareLabSubType subType, size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+
+    return *((*pDataStore(subType))[hwLevel]);
+}
+
+const MachPhysSmelterData& MachPhysDataImplementation::smelterData(size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::SMELTER, hwLevel));
+
+    return *smelterData_[hwLevel];
+}
+
+const MachPhysFactoryData&
+MachPhysDataImplementation::factoryData(MachPhys::FactorySubType subType, size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+
+    return *((*pDataStore(subType))[hwLevel]);
+}
+
+const MachPhysMissileEmplacementData&
+MachPhysDataImplementation::missileEmplacementData(MachPhys::MissileEmplacementSubType subType, size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(subType, hwLevel));
+
+    return *((*pDataStore(subType))[hwLevel]);
+}
+
+const MachPhysGarrisonData& MachPhysDataImplementation::garrisonData(size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::GARRISON, hwLevel));
+
+    return *garrisonData_[hwLevel];
+}
+
+const MachPhysMineData& MachPhysDataImplementation::mineData(size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::MINE, hwLevel));
+
+    return *mineData_[hwLevel];
+}
+
+const MachPhysBeaconData& MachPhysDataImplementation::beaconData(size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::BEACON, hwLevel));
+
+    return *beaconData_[hwLevel];
+}
+
+const MachPhysPodData& MachPhysDataImplementation::podData(size_t hwLevel) const
+{
+    PRE(MachPhysLevels::instance().levelValid(MachPhys::POD, hwLevel));
+
+    return *podData_[hwLevel];
+}
+
+const MachPhysOreHolographData& MachPhysDataImplementation::oreHolographData() const
+{
+    PRE(pOreHolographData_ != nullptr);
+
+    return *pOreHolographData_;
+}
+
+const MachPhysDataImplementation::AdministratorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::AdministratorSubType subType) const
+{
+    const AdministratorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::BOSS:
+            pStore = &administratorBossData_;
+            break;
+        case MachPhys::OVERSEER:
+            pStore = &administratorOverseerData_;
+            break;
+        case MachPhys::COMMANDER:
+            pStore = &administratorCommanderData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::AggressorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::AggressorSubType subType) const
+{
+    const AggressorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::GRUNT:
+            pStore = &aggressorGruntData_;
+            break;
+        case MachPhys::ASSASSIN:
+            pStore = &aggressorAssassinData_;
+            break;
+        case MachPhys::KNIGHT:
+            pStore = &aggressorKnightData_;
+            break;
+        case MachPhys::BALLISTA:
+            pStore = &aggressorBallistaData_;
+            break;
+        case MachPhys::NINJA:
+            pStore = &aggressorNinjaData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::ConstructorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::ConstructorSubType subType) const
+{
+    const ConstructorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::DOZER:
+            pStore = &constructorDozerData_;
+            break;
+        case MachPhys::BUILDER:
+            pStore = &constructorBuilderData_;
+            break;
+        case MachPhys::BEHEMOTH:
+            pStore = &constructorBehemothData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::TechnicianDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::TechnicianSubType subType) const
+{
+    const TechnicianDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::LAB_TECH:
+            pStore = &technicianLabTechData_;
+            break;
+        case MachPhys::TECH_BOY:
+            pStore = &technicianTechBoyData_;
+            break;
+        case MachPhys::BRAIN_BOX:
+            pStore = &technicianBrainBoxData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::FactoryDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::FactorySubType subType) const
+{
+    const FactoryDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::MILITARY:
+            pStore = &factoryMilitaryData_;
+            break;
+        case MachPhys::CIVILIAN:
+            pStore = &factoryCivilianData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::HardwareLabDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::HardwareLabSubType subType) const
+{
+    const HardwareLabDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::LAB_MILITARY:
+            pStore = &hardwareLabMilitaryData_;
+            break;
+        case MachPhys::LAB_CIVILIAN:
+            pStore = &hardwareLabCivilianData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysDataImplementation::MissileEmplacementDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::MissileEmplacementSubType subType) const
+{
+    const MissileEmplacementDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::TURRET:
+            pStore = &missileEmplacementTurretData_;
+            break;
+        case MachPhys::SENTRY:
+            pStore = &missileEmplacementSentryData_;
+            break;
+        case MachPhys::LAUNCHER:
+            pStore = &missileEmplacementLauncherData_;
+            break;
+        case MachPhys::ICBM:
+            pStore = &missileEmplacementICBMData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::AdministratorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::AdministratorSubType subType)
+{
+    AdministratorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::BOSS:
+            pStore = &administratorBossData_;
+            break;
+        case MachPhys::OVERSEER:
+            pStore = &administratorOverseerData_;
+            break;
+        case MachPhys::COMMANDER:
+            pStore = &administratorCommanderData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::AggressorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::AggressorSubType subType)
+{
+    AggressorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::GRUNT:
+            pStore = &aggressorGruntData_;
+            break;
+        case MachPhys::ASSASSIN:
+            pStore = &aggressorAssassinData_;
+            break;
+        case MachPhys::KNIGHT:
+            pStore = &aggressorKnightData_;
+            break;
+        case MachPhys::BALLISTA:
+            pStore = &aggressorBallistaData_;
+            break;
+        case MachPhys::NINJA:
+            pStore = &aggressorNinjaData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::ConstructorDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::ConstructorSubType subType)
+{
+    ConstructorDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::DOZER:
+            pStore = &constructorDozerData_;
+            break;
+        case MachPhys::BUILDER:
+            pStore = &constructorBuilderData_;
+            break;
+        case MachPhys::BEHEMOTH:
+            pStore = &constructorBehemothData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::TechnicianDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::TechnicianSubType subType)
+{
+    TechnicianDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::LAB_TECH:
+            pStore = &technicianLabTechData_;
+            break;
+        case MachPhys::TECH_BOY:
+            pStore = &technicianTechBoyData_;
+            break;
+        case MachPhys::BRAIN_BOX:
+            pStore = &technicianBrainBoxData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::FactoryDataStore* MachPhysDataImplementation::pDataStore(MachPhys::FactorySubType subType)
+{
+    FactoryDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::MILITARY:
+            pStore = &factoryMilitaryData_;
+            break;
+        case MachPhys::CIVILIAN:
+            pStore = &factoryCivilianData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::HardwareLabDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::HardwareLabSubType subType)
+{
+    HardwareLabDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::LAB_MILITARY:
+            pStore = &hardwareLabMilitaryData_;
+            break;
+        case MachPhys::LAB_CIVILIAN:
+            pStore = &hardwareLabCivilianData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+MachPhysDataImplementation::MissileEmplacementDataStore*
+MachPhysDataImplementation::pDataStore(MachPhys::MissileEmplacementSubType subType)
+{
+    MissileEmplacementDataStore* pStore = nullptr;
+
+    switch (subType)
+    {
+        case MachPhys::TURRET:
+            pStore = &missileEmplacementTurretData_;
+            break;
+        case MachPhys::SENTRY:
+            pStore = &missileEmplacementSentryData_;
+            break;
+        case MachPhys::LAUNCHER:
+            pStore = &missileEmplacementLauncherData_;
+            break;
+        case MachPhys::ICBM:
+            pStore = &missileEmplacementICBMData_;
+            break;
+        default:
+            ASSERT_BAD_CASE_INFO(subType);
+            break;
+    }
+    return pStore;
+}
+
+const MachPhysWeaponData& MachPhysDataImplementation::weaponData(MachPhys::WeaponType type) const
+{
+    PRE(type < MachPhys::N_WEAPON_TYPES);
+    PRE(weaponData_[type] != nullptr);
+
+    return *weaponData_[type];
+}
+
+MachPhysWeaponData* MachPhysDataImplementation::pWeaponData(MachPhys::WeaponType type)
+{
+    PRE(type < MachPhys::N_WEAPON_TYPES);
+    PRE(weaponData_[type] != nullptr);
+
+    return weaponData_[type];
+}
+
+MachPhysDataImplementation::WeaponDataStore* MachPhysDataImplementation::pWeaponDataStore()
+{
+    return &weaponData_;
+}
+
+MachPhysGeneralData** MachPhysDataImplementation::pGeneralDataStore()
+{
+    return &pGeneralData_;
+}
+
+const MachPhysGeneralData& MachPhysDataImplementation::generalData()
+{
+    return *pGeneralData_;
+}
+/* End DATAIMPL.CPP *************************************************/

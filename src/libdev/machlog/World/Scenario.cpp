@@ -1,0 +1,1400 @@
+/*
+ * S C E N A R I O . C P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+//  TBD: This should be in mcmotseq.hpp, it will cause big recompiles though - Bob
+#include <memory>
+
+#include "ctl/pvector.hpp"
+#include "ctl/list.hpp"
+#include "utility/linetok.hpp"
+#include "utility/string.hpp"
+
+#include "mathex/transf3d.hpp"
+#include "mathex/degrees.hpp"
+#include "mathex/eulerang.hpp"
+#include "mathex/poly2d.hpp"
+#include "mathex/circle2d.hpp"
+
+#include "network/netnet.hpp"
+
+#include "phys/Plans/MotionChunk.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
+
+#include "world4d/Entity/Generic.hpp"
+#include "world4d/Scene/Domain.hpp"
+
+#include "sim/manager.hpp"
+#include "sim/conditim.hpp"
+
+#include "machphys/Machines/Machine.hpp"
+#include "machphys/Constructions/Construction.hpp"
+#include "machlog/Race.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/World/Scenario.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Actors/Aggressor.hpp"
+#include "machlog/Actors/Beacon.hpp"
+#include "machlog/Actors/Constructor.hpp"
+#include "machlog/Controllers/AIController.hpp"
+#include "machlog/Controllers/PCController.hpp"
+#include "machlog/Actors/Factory.hpp"
+#include "machlog/Actors/Garrison.hpp"
+#include "machlog/Actors/HardwareLab.hpp"
+#include "machlog/Actors/GeoLocator.hpp"
+#include "machlog/Actors/Mine.hpp"
+#include "machlog/World/MineralSite.hpp"
+#include "machlog/Actors/MissileEmplacement.hpp"
+#include "machlog/Actors/OreHolograph.hpp"
+#include "machlog/World/PlanetDomains.hpp"
+#include "machlog/World/Planet.hpp"
+#include "machlog/Actors/Pod.hpp"
+#include "machlog/ProductionUnit.hpp"
+#include "machlog/Actors/Smelter.hpp"
+#include "machlog/Actors/ResourceCarrier.hpp"
+#include "machlog/Actors/Technician.hpp"
+#include "machlog/Actors/MotionSequencer.hpp"
+#include "machlog/World/SpacialManipulation.hpp"
+#include "machlog/Actors/SpyLocator.hpp"
+#include "machlog/Actors/APC.hpp"
+#include "machlog/Tech/ResearchItem.hpp"
+#include "machlog/Stats.hpp"
+#include "machlog/Messaging/Network.hpp"
+#include "machlog/Actors/ActorMaker.hpp"
+#include "machlog/World/Artefacts.hpp"
+#include "machlog/Actions/Actions.hpp"
+#include "machlog/Actors/Squadron.hpp"
+#include "machlog/World/GameCreationData.hpp"
+#include "machlog/Tech/ConstructionItem.hpp"
+#include "machlog/Tech/ConstructionTree.hpp"
+
+#include "system/vfs.hpp"
+
+// static
+void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGameCreationData& gameData)
+{
+    MachLogRaces& races = MachLogRaces::instance();
+    SysPathName fullPath(System::findFile("data/" + scenarioFilePath.pathname()));
+
+    ASSERT_INFO(scenarioFilePath);
+    ASSERT_INFO(fullPath);
+
+    const SysPathName factoryItemsPath(System::findFile("data/factory.bld"));
+
+    ASSERT_FILE_EXISTS(fullPath.c_str());
+    std::unique_ptr<std::istream> pIstream
+        = std::unique_ptr<std::istream>(new std::ifstream(fullPath.c_str(), std::ios::in));
+
+    UtlLineTokeniser parser(*pIstream, fullPath);
+
+    // Read definitions until finished
+    bool doneRace[MachPhys::N_RACES] = { false, false, false, false };
+    bool doneMineralSites = false;
+    std::string researchItemsPath[MachLog::TECH_LEVEL_HIGH + 1];
+    NETWORK_STREAM("MLScenario::load\nGame creation data\n" << gameData << std::endl);
+    // Construct a non-race for the artefacts etc
+    races.race(MachPhys::NORACE, new MachLogRace(MachPhys::NORACE), MachLogRaces::CREATE_SQUADRONS);
+
+    MachPhys::Race loadingRemappedRace[MachPhys::N_RACES]
+        = { MachPhys::RED, MachPhys::BLUE, MachPhys::GREEN, MachPhys::YELLOW };
+
+    // counter that is incremented every time a genuine new construction (i.e. not an alternative site entry)
+    // is encountered for a race. Starts at -1 which is an illegal number, incremented by the first genuine construction
+    // to 0, and thus usable as a test to check for alternative sites - cannot have an alternative site when no
+    // genuine sites have yet been encountered in the file.
+    int constructionId = -1;
+
+    // pointer to last genuine new construction production unit
+    MachLogProductionUnit* pLastProd = nullptr;
+
+    // this is used for safety checking - no "alternative site" should be specified for a construction
+    // that is going to be actually built rather than stored as a production unit
+    bool lastEncounteredWasUnbuiltConstruction = false;
+
+    const MachLogGameCreationData::PlayersCreationData& playersCreationData = gameData.playersCreationData();
+    MachLog::RandomStarts randomStarts = gameData.randomStarts();
+    MachLog::ResourcesAvailable resources = gameData.resourcesAvailable();
+
+    // if we have defined player creation data then we have to use it to override whatever is specified in the scenario
+    // file. The new format files must specify the RACES keyword.
+    ASSERT_INFO(playersCreationData.size());
+    // assert for the correct number of entires in the players creation data array.
+    // if a player has not been defined then the entry for that race should indicate this by the NOT_DEFINED marker.
+    ASSERT(
+        playersCreationData.size() == 0 || playersCreationData.size() == 4,
+        "Defined players data must have 0 or 4 entries\n");
+    bool useCreationData = playersCreationData.size() > 0;
+    if (! useCreationData)
+        races.gameType(MachLog::CAMPAIGN_SINGLE_PLAYER);
+    else if (MachLogNetwork::instance().isNetworkGame())
+        races.gameType(MachLog::MULTIPLAYER);
+    else
+        races.gameType(MachLog::SKIRMISH_SINGLE_PLAYER);
+
+    // Need to know whether to assert all races have assembly points defined, or just ai races
+    bool checkAllRacesHaveAssemblyPoints = useCreationData;
+    bool hadAggressorAssemblyPoint = false;
+    bool hadAdministratorAssemblyPoint = false;
+
+    // set up default array data.
+    MachLogGameCreationData::PlayersCreationData defaultData;
+    defaultData.reserve(MachPhys::N_RACES);
+    MachLogGameCreationData::PlayersCreationData useData;
+    useData.reserve(MachPhys::N_RACES);
+
+    // all defaults to not defined.
+    for (MachPhys::Race i : MachPhys::AllRaces)
+    {
+        MachLogGameCreationData::PlayerCreationData data;
+        data.colour_ = i;
+        data.type_ = MachLog::NOT_DEFINED;
+        defaultData.push_back(data);
+        useData.push_back(data);
+    }
+
+    // get the default races data from the beginning of the file
+    // look for races token
+    while (!(parser.tokens()[0] == "RACES_DEFAULT"))
+        parser.parseNextLine();
+
+    bool racesFinished = false;
+    while (!(parser.tokens()[0] == "ENDRACES_DEFAULT"))
+    {
+        const std::string& token = parser.tokens()[0];
+        if (token == "RED" || token == "BLUE" || token == "GREEN" || token == "YELLOW")
+        {
+            MachPhys::Race r = machPhysRace(token);
+            const std::string& typeToken = parser.tokens()[1];
+            if (typeToken == "PC_LOCAL" || typeToken == "PC")
+                defaultData[r].type_ = MachLog::PC_LOCAL;
+            else if (typeToken == "AI_LOCAL" || typeToken == "AI")
+                defaultData[r].type_ = MachLog::AI_LOCAL;
+        }
+        parser.parseNextLine();
+    }
+
+    for (MachPhys::Race i : MachPhys::AllRaces)
+    {
+        if (useCreationData)
+        {
+            useData[i].type_ = playersCreationData[i].type_;
+            useData[i].colour_ = playersCreationData[i].colour_;
+        }
+        else
+        {
+            useData[i].type_ = defaultData[i].type_;
+        }
+        HAL_STREAM("MachLogScenario::Load useData element " << i << " " << useData[i] << std::endl);
+    }
+    // we now have the actual data specified in the useData array now we must look for races marked as active
+    // that have not been defined by the scenario file. The scenario file data is stored in the defaultData array.
+    // handle random starts to fixed start locations in different ways.
+    {
+        // first things first set up an array of booleans as a short hand for which races have been marked as used
+        bool gotRace[MachPhys::N_RACES] = { false, false, false, false };
+        bool usedRace[MachPhys::N_RACES] = { false, false, false, false };
+        for (MachPhys::Race i : MachPhys::AllRaces)
+        {
+            if (defaultData[i].type_ != MachLog::NOT_DEFINED)
+                gotRace[i] = true;
+        }
+        // TBD: Fix this - Hal
+        //      if( randomStarts == MachLog::FIXED_START_LOCATIONS )
+        {
+            // go through each of the races and mark which ones we have matches for already
+            for (MachPhys::Race i : MachPhys::AllRaces)
+                if (useData[i].type_ != MachLog::NOT_DEFINED && gotRace[i])
+                    usedRace[i] = true;
+            // now go through each of the races and see if a useData does not have usedRace marked.
+            for (MachPhys::Race i : MachPhys::AllRaces)
+                if (useData[i].type_ != MachLog::NOT_DEFINED && ! usedRace[i])
+                {
+                    // we need to allocate this useData element to a race which has been defined by the scenario file
+                    for (MachPhys::Race j : MachPhys::AllRaces)
+                    {
+                        // match to first unused race.
+                        if (!usedRace[j])
+                        {
+                            // swap elements around.
+                            useData[j].colour_ = useData[i].colour_;
+                            useData[j].type_ = useData[i].type_;
+                            useData[i].type_ = MachLog::NOT_DEFINED;
+                            usedRace[j] = true;
+                            break;
+                        }
+                    }
+                }
+        }
+    }
+
+    HAL_STREAM("MachLogScneario::Load useData after processing\n");
+    for (MachPhys::Race i : MachPhys::AllRaces)
+    {
+        HAL_STREAM("MachLogScenario::Load useData element " << i << " " << useData[i] << std::endl);
+    }
+
+    MachLogNetwork& network = MachLogNetwork::instance();
+
+    while (! parser.finished())
+    {
+        if (MachLogNetwork::instance().isNetworkGame())
+            NetNetwork::instance().pollMessages();
+
+        size_t lineSize = parser.tokens().size();
+        bool running = true;
+        bool stopProcessingRace = false;
+        bool instantiateObjects = true;
+        W4dEntity* pAnyDomain;
+        W4dEntity* pPhysObject;
+        MexTransform3d localTransform;
+        MachLogRace* pRace;
+        MachLogController* pCtl;
+        MachLogAIController* pAICtl;
+        MachPhys::Race race;
+        bool doingAIRace = false;
+
+        while (! parser.finished()
+               && !(
+                   parser.tokens()[0] == "RACE" || parser.tokens()[0] == "MINERAL"
+                   || parser.tokens()[0] == "RESEARCH_ITEMS" || parser.tokens()[0] == "ARTEFACTS"
+                   || parser.tokens()[0] == "CONDITIONS" || parser.tokens()[0] == "RESTRICT_CONSTRUCTION"))
+        {
+            parser.parseNextLine();
+            HAL_STREAM("Token 0 : " << parser.tokens()[0] << std::endl);
+        }
+
+        pRace = nullptr;
+
+        bool parsingMineralSites = false;
+
+        if (parser.tokens()[0] == "ARTEFACTS")
+        {
+            parser.parseNextLine();
+            if (network.isNetworkGame())
+            {
+                if (network.isNodeLogicalHost())
+                    races.artefacts().parseArtefactsSection(&parser, MachLogArtefacts::CREATE_ARTEFACT_INSTANCES);
+            }
+            else
+                races.artefacts().parseArtefactsSection(&parser, MachLogArtefacts::CREATE_ARTEFACT_INSTANCES);
+            stopProcessingRace = true;
+        }
+        else if (parser.tokens()[0] == "CONDITIONS")
+        {
+            if (gameData.victoryCondition() == MachLog::VICTORY_DEFAULT)
+                MachLogActions::parseActionsSection(&parser);
+            stopProcessingRace = true;
+        }
+        else if (
+            parser.tokens()[1] == "RED" || parser.tokens()[1] == "BLUE" || parser.tokens()[1] == "GREEN"
+            || parser.tokens()[1] == "YELLOW")
+        {
+            hadAggressorAssemblyPoint = false;
+            hadAdministratorAssemblyPoint = false;
+
+            MachPhys::Race parsedRace = machPhysRace(parser.tokens()[1]);
+            HAL_STREAM("parsed Race " << parsedRace << " which maps to ");
+            race = useData[parsedRace].colour_;
+            HAL_STREAM(race << std::endl);
+            HAL_STREAM("MachLogScenario::Load processing race " << race << std::endl);
+            HAL_STREAM(" useData " << race << " " << useData[parsedRace] << std::endl);
+            // TBD:
+            //  ***************************************************************************************************
+            // this bit here needs recoding to cope with all kinds of bollocks to do with paced in vector of colours
+            // and giggling around to say if rem\pped colur is MachPhys::_NRACES then don't do any work
+            // I shall do all this tomorrow
+            // um my thinking has changed - left comment in to remind myself anyway.
+            //  ***************************************************************************************************
+
+            if (useData[parsedRace].type_ != MachLog::NOT_DEFINED)
+            {
+                ASSERT(! doneRace[race], runtime_error());
+                doneRace[race] = true;
+                pRace = new MachLogRace(race);
+                ASSERT(pRace != nullptr, runtime_error());
+
+                races.race(race, pRace, MachLogRaces::CREATE_SQUADRONS);
+
+                pAnyDomain = MachLogPlanetDomains::pDomainPosition(MexPoint3d(0, 0, 0), 0, &localTransform);
+                pPhysObject = new W4dGeneric(pAnyDomain, localTransform);
+            }
+            // create PC controller if No AI is indicated
+            if (useData[parsedRace].type_ == MachLog::NOT_DEFINED)
+            {
+                stopProcessingRace = true;
+            }
+            else if (useData[parsedRace].type_ == MachLog::PC_LOCAL)
+            {
+                MachLogPCController* pPCController;
+                pCtl = pPCController = new MachLogPCController(pRace, pPhysObject);
+                if (! network.isNetworkGame() || network.localRace() == race)
+                {
+                    races.setPcController(pPCController);
+                    if (network.isNetworkGame())
+                        network.remoteStatus(race, MachLogNetwork::LOCAL_PROCESS);
+                }
+                races.defCon(race, MachLog::DEFCON_NORMAL);
+                doingAIRace = false;
+                pRace->priority(races.stats().pcPriority());
+                instantiateObjects = true;
+            }
+            else if (useData[parsedRace].type_ == MachLog::PC_REMOTE)
+            {
+
+                // register the controller abstract class.
+                MachLogPCController* pPCController;
+                pCtl = pPCController = new MachLogPCController(pRace, pPhysObject);
+                races.setController(race, pCtl);
+                pRace->toBeUpdated(SimProcess::MANAGER_NOT_UPDATE);
+                stopProcessingRace = true;
+                network.remoteStatus(race, MachLogNetwork::REMOTE_PROCESS);
+                races.defCon(race, MachLog::DEFCON_NORMAL);
+                doingAIRace = false;
+                pRace->priority(races.stats().pcPriority());
+                instantiateObjects = false;
+            }
+            else if (useData[parsedRace].type_ == MachLog::AI_LOCAL || useData[parsedRace].type_ == MachLog::AI_REMOTE)
+            {
+                pCtl = new MachLogAIController(pRace, pPhysObject, parser.tokens()[2]);
+                pAICtl = (MachLogAIController*)pCtl;
+                pAICtl->checkForDynamicAllies(false);
+                // if use creation data is true then we came from skirmish/multiplayer
+                if (useCreationData)
+                {
+                    // if dynamic allies have not been explicitly revoked...
+                    if (!getenv("CB_NO_AI_ALLY"))
+                        pAICtl->checkForDynamicAllies(true);
+                }
+                races.setController(race, pCtl);
+                races.defCon(race, MachLog::DEFCON_LOW);
+                doingAIRace = true;
+                pRace->priority(races.stats().aiPriority());
+                if (network.isNetworkGame())
+                {
+                    if (network.isNodeLogicalHost())
+                    {
+                        network.ready(race, true);
+                        network.remoteStatus(race, MachLogNetwork::LOCAL_PROCESS);
+                        instantiateObjects = true;
+                    }
+                    else
+                    {
+                        pRace->toBeUpdated(SimProcess::MANAGER_NOT_UPDATE);
+                        instantiateObjects = false;
+                        network.remoteStatus(race, MachLogNetwork::REMOTE_PROCESS);
+                    }
+                }
+            }
+            HAL_STREAM(" doing " << race << " race\n");
+        }
+        else if (parser.tokens()[1] == "SITES")
+        {
+            ASSERT(! doneMineralSites, runtime_error());
+
+            doneMineralSites = true;
+            parsingMineralSites = true;
+        }
+        else if (parser.tokens()[0] == "RESEARCH_ITEMS")
+        {
+            researchItemsPath[MachLog::TECH_LEVEL_DEFAULT] = parser.tokens()[1];
+            researchItemsPath[MachLog::TECH_LEVEL_LOW] = parser.tokens()[1];
+            researchItemsPath[MachLog::TECH_LEVEL_MEDIUM] = parser.tokens()[1];
+            researchItemsPath[MachLog::TECH_LEVEL_HIGH] = parser.tokens()[1];
+            lineSize = parser.tokens().size();
+            if (lineSize > 2)
+                researchItemsPath[MachLog::TECH_LEVEL_LOW] = parser.tokens()[2];
+            if (lineSize > 3)
+                researchItemsPath[MachLog::TECH_LEVEL_MEDIUM] = parser.tokens()[3];
+            if (lineSize > 4)
+                researchItemsPath[MachLog::TECH_LEVEL_HIGH] = parser.tokens()[4];
+        }
+        else if (parser.tokens()[0] == "RESTRICT_CONSTRUCTION")
+        {
+            parseRestrictConstruction(parser);
+            stopProcessingRace = true;
+        }
+        else
+        {
+            // Bad race
+            ASSERT(false, "");
+        }
+        HAL_STREAM("parser.parseNextLine - parser.finished " << parser.finished() << std::endl);
+        parser.parseNextLine();
+        lineSize = parser.tokens().size();
+        running = !stopProcessingRace;
+        //        running = true;
+        bool parsingMachines = false;
+        bool parsingConstructions = false;
+        bool displayAsOtherRace = false;
+        MachPhys::Race displayAsRace = MachPhys::RED;
+
+        while (running)
+        {
+            lineSize = parser.tokens().size();
+#ifndef NDEBUG
+            if (lineSize < 1 || lineSize > 10)
+            {
+                // Bad line
+                ASSERT_INFO(lineSize);
+                ASSERT(false, "LineSize is unknown size in scenario.\n");
+            }
+#endif
+
+            if (lineSize == 1)
+            {
+                if (parser.tokens()[0] == "MACHINES")
+                {
+                    parsingMachines = true;
+                    parsingConstructions = false;
+                    parsingMineralSites = false;
+                }
+                else if (parser.tokens()[0] == "CONSTRUCTIONS")
+                {
+                    parsingMachines = false;
+                    parsingConstructions = true;
+                    parsingMineralSites = false;
+                }
+                else if (parser.tokens()[0] == "ENDDISPLAY")
+                {
+                    displayAsOtherRace = false;
+                }
+            }
+            else if (lineSize == 2)
+            {
+                if (parser.tokens()[0] == "NBMU")
+                {
+                    int nBMU = atol(parser.tokens()[1].c_str());
+                    HAL_STREAM("MLScenario::NBMU line " << nBMU << " for race " << race << std::endl);
+                    // Override this if the game data says don't use default starting resources
+                    if (gameData.startingResources() == MachLog::STARTING_RESOURCES_DEFAULT)
+                        races.nBuildingMaterialUnits(race, nBMU);
+                    else
+                        races.nBuildingMaterialUnits(race, startingResourcesToInt(gameData.startingResources()));
+                }
+                if (parser.tokens()[0] == "SCORE")
+                {
+                    if (parser.tokens()[1] == "OFF")
+                        races.scoreShouldBeDisplayed(race, false);
+                }
+                else if (parser.tokens()[0] == "NORE")
+                {
+                    int nOre = atol(parser.tokens()[1].c_str());
+                    HAL_STREAM("MLScenario::NORE line " << nOre << " for race " << race << std::endl);
+                    races.nOre(race) = nOre;
+                }
+                else if (parser.tokens()[0] == "ALLY")
+                {
+                    MachPhys::Race allyRace = machPhysRace(parser.tokens()[1]);
+                    races.dispositionToRace(race, allyRace, MachLogRaces::ALLY);
+                }
+                else if (parser.tokens()[0] == "VIRTUAL_BEACON")
+                {
+                    MachLog::BeaconType beaconType = virtualBeaconType(parser.tokens()[1]);
+                    races.virtualBeacon(race, beaconType);
+                }
+            }
+            else if (lineSize == 3)
+            {
+                if (parser.tokens()[0] == "DISPLAY")
+                {
+                    displayAsOtherRace = true;
+                    displayAsRace = machPhysRace(parser.tokens()[2]);
+                }
+            }
+            else if (lineSize == 4)
+            {
+                if (parser.tokens()[0] == "ASSEMBLY")
+                {
+                    MexPoint2d pos(atof(parser.tokens()[2].c_str()), atof(parser.tokens()[3].c_str()));
+
+                    // Check a valid position
+                    MexCircle2d testCircle(pos, 1.0);
+                    PhysConfigSpace2d::PolygonId badId;
+                    ASSERT_INFO(pos);
+                    ASSERT(
+                        MachLogPlanet::instance().configSpace().contains(testCircle, 0, &badId),
+                        "Assembly point off planet or in obstacle");
+
+                    if (parser.tokens()[1] == "AGGRESSOR")
+                    {
+                        hadAggressorAssemblyPoint = true;
+                        races.addAggressorAssemblyPoint(race, pos);
+                    }
+                    else if (parser.tokens()[1] == "ADMINISTRATOR")
+                    {
+                        hadAdministratorAssemblyPoint = true;
+                        races.addAdministratorAssemblyPoint(race, pos);
+                    }
+                    else
+                    {
+                        ASSERT_INFO(parser.tokens()[1]);
+                        ASSERT(false, "Unknown assembly point type. Not agg or add\n");
+                    }
+                }
+            }
+            else if ((lineSize >= 6 && lineSize <= 10) && parsingMachines)
+            {
+                if (instantiateObjects)
+                {
+                    // Parse machine details
+                    std::string machineType = parser.tokens()[0];
+                    size_t hwLevel = atoi(parser.tokens()[1].c_str());
+                    size_t swLevel = atoi(parser.tokens()[2].c_str());
+                    ASSERT(hwLevel <= 10, runtime_error());
+                    ASSERT(swLevel <= 10, runtime_error());
+                    MATHEX_SCALAR xPos = atof(parser.tokens()[3].c_str());
+                    MATHEX_SCALAR yPos = atof(parser.tokens()[4].c_str());
+                    MATHEX_SCALAR zPos = atof(parser.tokens()[5].c_str());
+                    HAL_STREAM(" machine " << machineType << std::endl);
+                    MachLog::ObjectType ot = objectType(parser.tokens()[0]);
+                    MachLogMachine* pMachine = nullptr;
+                    int squadId = -1; // special case value - if +ve then machine will get added to squadron directly
+
+                    if (doingAIRace)
+                        for (std::size_t i = 0; i < parser.tokens().size(); ++i)
+                            if (parser.tokens()[i] == "SQUAD")
+                                squadId = atol(parser.tokens()[i + 1].c_str());
+
+                    if (ot == MachLog::GEO_LOCATOR || ot == MachLog::SPY_LOCATOR || ot == MachLog::RESOURCE_CARRIER
+                        || ot == MachLog::APC)
+                    {
+                        pMachine = MachLogActorMaker::newLogMachine(
+                            ot,
+                            0,
+                            hwLevel,
+                            swLevel,
+                            pRace->race(),
+                            MexPoint3d(xPos, yPos, zPos),
+                            MachPhys::N_WEAPON_COMBOS);
+                    }
+                    else if (ot == MachLog::TECHNICIAN)
+                    {
+                        pMachine = MachLogActorMaker::newLogMachine(
+                            ot,
+                            technicianSubType(parser.tokens()[6]),
+                            hwLevel,
+                            swLevel,
+                            pRace->race(),
+                            MexPoint3d(xPos, yPos, zPos),
+                            MachPhys::N_WEAPON_COMBOS);
+                    }
+                    else if (ot == MachLog::CONSTRUCTOR)
+                    {
+                        pMachine = MachLogActorMaker::newLogMachine(
+                            ot,
+                            constructorSubType(parser.tokens()[6]),
+                            hwLevel,
+                            swLevel,
+                            pRace->race(),
+                            MexPoint3d(xPos, yPos, zPos),
+                            MachPhys::N_WEAPON_COMBOS);
+                    }
+                    else if (ot == MachLog::AGGRESSOR)
+                    {
+                        pMachine = MachLogActorMaker::newLogMachine(
+                            ot,
+                            aggressorSubType(parser.tokens()[6]),
+                            hwLevel,
+                            swLevel,
+                            pRace->race(),
+                            MexPoint3d(xPos, yPos, zPos),
+                            weaponCombo(parser.tokens()[7]));
+                    }
+                    else if (ot == MachLog::ADMINISTRATOR)
+                    {
+                        pMachine = MachLogActorMaker::newLogMachine(
+                            ot,
+                            administratorSubType(parser.tokens()[6]),
+                            hwLevel,
+                            swLevel,
+                            pRace->race(),
+                            MexPoint3d(xPos, yPos, zPos),
+                            weaponCombo(parser.tokens()[7]));
+                    }
+                    else
+                    {
+                        // Bad Machine type
+                        ASSERT_INFO(machineType);
+                        ASSERT(false, "Unreconginised machine type\n");
+                    }
+                    if (displayAsOtherRace)
+                    {
+                        pMachine->displayAsRace(displayAsRace);
+                    }
+
+                    if (squadId != -1)
+                    {
+                        pMachine->setSquadron(races.squadrons(race)[squadId]);
+                    }
+                }
+            }
+            else if ((lineSize >= 5 && lineSize <= 10) && parsingConstructions)
+            {
+                bool isAlternativeSite = false;
+                MachLog::ObjectType ot;
+                MATHEX_SCALAR xPos;
+                MATHEX_SCALAR yPos;
+                MATHEX_SCALAR zPos;
+                MATHEX_SCALAR orientation;
+                bool needRebuild = false;
+                bool notBuilt = false;
+                size_t buildingLevel;
+
+                // Parse building details
+                std::string buildingType = parser.tokens()[0];
+                if (buildingType == "ALTERNATIVE_SITE")
+                {
+                    ASSERT(lineSize == 5, "Incorrect number of tokens for ALTERNATIVE_SITE line.");
+
+                    xPos = atof(parser.tokens()[1].c_str());
+                    yPos = atof(parser.tokens()[2].c_str());
+                    zPos = atof(parser.tokens()[3].c_str());
+                    orientation = atof(parser.tokens()[4].c_str());
+                    isAlternativeSite = true;
+                }
+                else
+                {
+                    ot = objectType(buildingType);
+                    buildingLevel = atoi(parser.tokens()[1].c_str());
+                    ASSERT(buildingLevel <= 10, runtime_error());
+                    xPos = atof(parser.tokens()[2].c_str());
+                    yPos = atof(parser.tokens()[3].c_str());
+                    zPos = atof(parser.tokens()[4].c_str());
+                    orientation = atof(parser.tokens()[5].c_str());
+                    for (std::size_t i = 0; i < parser.tokens().size(); ++i)
+                    {
+                        if (parser.tokens()[i] == "REBUILD")
+                            needRebuild = true;
+                        if (parser.tokens()[i] == "NOT_BUILT")
+                            notBuilt = true;
+                    }
+                }
+
+                ASSERT_INFO(fabs(orientation));
+                ASSERT(
+                    fabs(orientation) == 0 || fabs(orientation) == 90 || fabs(orientation) == 180
+                        || fabs(orientation) == 270,
+                    " Incorrect builing orientation detected\n");
+
+                int constructionSubType = 0;
+                if (! isAlternativeSite)
+                {
+                    // work out the subtype on a by-case basis
+                    switch (ot)
+                    {
+                        case MachLog::BEACON:
+                        case MachLog::GARRISON:
+                        case MachLog::MINE:
+                        case MachLog::SMELTER:
+                        case MachLog::POD:
+                            constructionSubType = 0;
+                            break;
+
+                        case MachLog::HARDWARE_LAB:
+                            constructionSubType = hardwareLabSubType(parser.tokens()[6]);
+                            break;
+
+                        case MachLog::FACTORY:
+                            constructionSubType = factorySubType(parser.tokens()[6]);
+                            break;
+
+                        case MachLog::MISSILE_EMPLACEMENT:
+                            constructionSubType = missileEmplacementSubType(parser.tokens()[6]);
+                            break;
+
+                        default:
+                            ASSERT(false, runtime_error());
+                    }
+                }
+
+                if (isAlternativeSite)
+                {
+
+                    if (doingAIRace)
+                    {
+                        ASSERT(
+                            lastEncounteredWasUnbuiltConstruction,
+                            "Cannot specify an alternative site for a construction that will actually be built at "
+                            "the beginning of the game.");
+                        ASSERT(
+                            constructionId >= 0,
+                            "Must have specified a construction plan (NOT_BUILT) in order to specify an alternative "
+                            "site.");
+                        ASSERT(pLastProd, "Unexpected NULL pointer for pLastProd.");
+
+                        // copy details from last construction production unit encountered - this includes its
+                        // construction ID.
+                        MachLogProductionUnit* prod = new MachLogProductionUnit(*pLastProd);
+
+                        // Adjust the height for the terrain
+                        const MexPoint3d location
+                            = MachLogSpacialManipulation::heightAdjustedLocation(MexPoint3d(xPos, yPos, zPos));
+                        // const MexPoint3d& loc2 = location;
+
+                        MexDegrees degrees(orientation);
+                        MexRadians radians(degrees);
+                        const MexEulerAngles eulers(radians);
+                        // const MexEulerAngles& eulers2 = eulers;
+
+                        // remember, this production unit has already inherited the rebuild flag, construction id etc.
+                        // of the site it was copied from. But the new transform must obviously be set independently.
+
+                        MexTransform3d globalTransform(eulers, location);
+                        prod->globalTransform(globalTransform);
+                        races.AIController(pRace->race()).addConstructionProductionUnit(prod);
+                    }
+                }
+                else if (notBuilt)
+                {
+                    if (doingAIRace)
+                    {
+                        // don't actually build a new construction - store it as a production unit plan instead.
+
+                        MachLogProductionUnit* prod
+                            = new MachLogProductionUnit(ot, constructionSubType, buildingLevel, 0, 0);
+
+                        // Adjust the height for the terrain
+                        const MexPoint3d location
+                            = MachLogSpacialManipulation::heightAdjustedLocation(MexPoint3d(xPos, yPos, zPos));
+                        // const MexPoint3d& loc2 = location;
+
+                        MexDegrees degrees(orientation);
+                        MexRadians radians(degrees);
+                        const MexEulerAngles eulers(radians);
+                        // const MexEulerAngles& eulers2 = eulers;
+
+                        MexTransform3d globalTransform(eulers, location);
+                        prod->globalTransform(globalTransform);
+
+                        ++constructionId;
+
+                        prod->constructionId(constructionId);
+
+                        // ensure that the construction would be rebuilt once again if destroyed after this rebuild if
+                        // applicable
+                        if (needRebuild)
+                            prod->needRebuild(true);
+
+                        // Commented out so the order of constructions can be handled from the spl file.
+                        // if( ot == MachLog::HARDWARE_LAB or ot == MachLog::FACTORY /*or ot == MachLog::SMELTER */)
+                        //   prod->priority( 2 );
+
+                        races.AIController(pRace->race()).addConstructionProductionUnit(prod);
+
+                        // now store this as the last construction production unit encountered
+                        pLastProd = prod;
+                    }
+                    lastEncounteredWasUnbuiltConstruction = true;
+                }
+                else
+                {
+                    if (instantiateObjects)
+                    {
+                        // actually build a new construction
+
+                        MachLogConstruction* pConstruction = nullptr;
+
+                        pConstruction = MachLogActorMaker::newLogConstruction(
+                            ot,
+                            constructionSubType,
+                            buildingLevel,
+                            MexPoint3d(xPos, yPos, zPos),
+                            MexDegrees(orientation),
+                            pRace->race());
+                        ASSERT(pConstruction, "Unexpected NULL pointer for pConstruction");
+
+                        // special shenanigens for pods with their ion cannons
+                        if (ot == MachLog::POD)
+                        {
+                            bool callActivateIonCannon = false;
+                            for (std::size_t i = 0; i < parser.tokens().size(); ++i)
+                                if (parser.tokens()[i] == "ACTIVATE_ION_CANNON")
+                                    callActivateIonCannon = true;
+
+                            if (callActivateIonCannon)
+                                pConstruction->asPod().activateIonCannon();
+                        }
+
+                        HAL_STREAM(" construction " << buildingType << std::endl);
+
+                        pConstruction->makeComplete(MachLogConstruction::FULL_HP_STRENGTH);
+                        if (displayAsOtherRace)
+                        {
+                            pConstruction->displayAsRace(displayAsRace);
+                        }
+
+                        if (doingAIRace && needRebuild)
+                        {
+                            pConstruction->needRebuild(true);
+                        }
+                    }
+
+                    lastEncounteredWasUnbuiltConstruction = false;
+                }
+            }
+            else if ((lineSize == 6 || lineSize == 7) && parsingMineralSites)
+            {
+                ASSERT(parser.tokens()[0] == "SITE", "Expectine SITE token in scenario file.\n");
+                MachPhys::MineralGrade grade = atol(parser.tokens()[1].c_str());
+                MachPhys::BuildingMaterialUnits amount = atol(parser.tokens()[2].c_str());
+                MATHEX_SCALAR xPos = atof(parser.tokens()[3].c_str());
+                MATHEX_SCALAR yPos = atof(parser.tokens()[4].c_str());
+                MATHEX_SCALAR zPos = atof(parser.tokens()[5].c_str());
+                MachLog::ResourcesAvailable thisResource = MachLog::RES_DEFAULT;
+                if (lineSize == 7)
+                    thisResource = resourceAvailable(parser.tokens()[6]);
+                ASSERT_INFO(grade);
+                ASSERT_INFO(amount);
+                ASSERT(grade > 0 && grade < 5, "bad grade for mineral site in scenario file.\n");
+                ASSERT(amount > 0, "bad amount for mineral site in scenario file.\n");
+                bool processSite = false; //( resources == MachLogRaces::RES_DEFAULT );
+
+                if (resources == thisResource || thisResource == MachLog::RES_DEFAULT)
+                    processSite = true;
+                else
+                    processSite = false;
+
+                if (processSite)
+                    new MachLogMineralSite(grade, amount, MexPoint3d(xPos, yPos, zPos));
+            }
+            else if (lineSize == 8)
+            {
+                ASSERT(parser.tokens()[0] == "CAMERA_POS", "Expecting CAMERA_POS token in scenario file.\n");
+                MATHEX_SCALAR xPos = atof(parser.tokens()[1].c_str());
+                MATHEX_SCALAR yPos = atof(parser.tokens()[2].c_str());
+                MATHEX_SCALAR zPos = atof(parser.tokens()[3].c_str());
+                MexDegrees azimuth = atof(parser.tokens()[4].c_str());
+                MexDegrees elevation = atof(parser.tokens()[5].c_str());
+                MexDegrees roll = atof(parser.tokens()[6].c_str());
+                MachLogCamera::Type raceCameraType = cameraType(parser.tokens()[7]);
+                races.cameraInfo(
+                    race,
+                    MexTransform3d(MexEulerAngles(azimuth, elevation, roll), MexPoint3d(xPos, yPos, zPos)),
+                    raceCameraType);
+            }
+
+            if (parser.tokens()[0] != "ENDRESEARCH_ITEMS")
+                parser.parseNextLine();
+
+            if (parser.tokens()[0] == "ENDRACE" || parser.tokens()[0] == "ENDSITES"
+                || parser.tokens()[0] == "ENDRESEARCH_ITEMS")
+            {
+                if (parser.tokens()[0] == "ENDRACE")
+                {
+                    // Check we have had the assembly points if required
+                    if (doingAIRace || checkAllRacesHaveAssemblyPoints)
+                    {
+                        ASSERT(hadAggressorAssemblyPoint, " No aggressor assembly point defined");
+                        ASSERT(hadAdministratorAssemblyPoint, " No administrator assembly point defined");
+                    }
+                }
+                if (! parser.finished())
+                    parser.parseNextLine();
+                running = false;
+            }
+
+            if (parser.finished())
+                running = false;
+        }
+    }
+
+    if (network.isNetworkGame())
+    {
+        network.ready(network.localRace(), true);
+    }
+
+    if (gameData.victoryCondition() != MachLog::VICTORY_DEFAULT)
+    {
+        bool doCreate = true;
+        if (gameData.victoryCondition() == MachLog::VICTORY_POD)
+        {
+            doCreate = false;
+            for (MachPhys::Race i : MachPhys::AllRaces)
+            {
+                if (races.raceInGame(i) && races.pods(i).size() > 0)
+                    doCreate = true;
+            }
+        }
+        if (doCreate)
+            MachLogActions::createDynamically(gameData.victoryCondition(), gameData.timerTickAt());
+        else
+            MachLogActions::createDynamically(MachLog::VICTORY_ANNIHILATION, 0);
+    }
+
+    if (SimManager::instance().conditionsManager().actions().size() == 0)
+    {
+        NETWORK_STREAM("No actions so creating VICTORY_ANNIHILATION\n");
+        MachLogActions::createDynamically(MachLog::VICTORY_ANNIHILATION, 0);
+    }
+
+    for (MachPhys::Race i : MachPhys::AllRaces)
+        if (! doneRace[i])
+            MachLogNetwork::instance().ready(i, true);
+
+    const SysPathName RSI(System::findFile(researchItemsPath[gameData.technologyLevel()]));
+
+    ASSERT_FILE_EXISTS(RSI.c_str());
+    std::unique_ptr<std::istream> pIstream2
+        = std::unique_ptr<std::istream>(new std::ifstream(RSI.c_str(), std::ios::in));
+
+    UtlLineTokeniser riParser(*pIstream2, RSI);
+    bool doForRace[MachPhys::N_RACES] = { false, false, false, false };
+    MachPhys::Race race = MachPhys::NORACE;
+    bool doAI = true;
+    HAL_STREAM("MLScenario processing RSI file " << RSI << std::endl);
+    while (! riParser.finished())
+    {
+        if (riParser.tokens().size() > 0)
+        {
+            if (riParser.tokens()[0] == "RACE")
+            {
+                HAL_STREAM("Race Token detected " << riParser.tokens()[1] << std::endl);
+                if (riParser.tokens()[1] == "RED")
+                    race = MachPhys::RED;
+                else if (riParser.tokens()[1] == "BLUE")
+                    race = MachPhys::BLUE;
+                else if (riParser.tokens()[1] == "GREEN")
+                    race = MachPhys::GREEN;
+                else if (riParser.tokens()[1] == "YELLOW")
+                    race = MachPhys::YELLOW;
+                else if (riParser.tokens()[1] == "AI")
+                {
+                    HAL_STREAM("AI Race only\n");
+                    doAI = true;
+                    race = MachPhys::NORACE;
+                }
+                else if (riParser.tokens()[1] == "PC")
+                {
+                    HAL_STREAM("PC Race only\n");
+                    race = MachPhys::NORACE;
+                    doAI = false;
+                }
+                else
+                {
+                    race = MachPhys::N_RACES;
+                }
+
+                // reset the construction id counter, last genuine construction production unit pointer
+                // and "built construction/stored as plan" type-checking flag for the new race
+                constructionId = -1;
+                pLastProd = nullptr;
+                lastEncounteredWasUnbuiltConstruction = false;
+            }
+            if (riParser.tokens()[0] == "MACHINE" || riParser.tokens()[0] == "CONSTRUCTION")
+            {
+                bool researched = riParser.tokens()[1] == "RESEARCHED";
+                MachLog::ObjectType type = objectType(riParser.tokens()[2]);
+                int hwLevel = atoi(riParser.tokens()[3].c_str());
+                int subType = 0;
+                MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS;
+                MachPhys::ResearchUnits overrideResearchCost = 0;
+                MachPhys::BuildingMaterialUnits overrideBuildingCost = 0;
+                for (std::size_t i = 0; i < riParser.tokens().size(); ++i)
+                {
+                    if (riParser.tokens()[i] == "SUB")
+                        subType = objectSubType(type, riParser.tokens()[i + 1]);
+                    else if (riParser.tokens()[i] == "WCOMBO")
+                        wc = weaponCombo(riParser.tokens()[i + 1]);
+                    else if (riParser.tokens()[i] == "RESEARCH_COST")
+                        overrideResearchCost = atol(riParser.tokens()[i + 1].c_str());
+                    else if (riParser.tokens()[i] == "BUILDING_COST")
+                        overrideBuildingCost = atol(riParser.tokens()[i + 1].c_str());
+                }
+                HAL_STREAM(
+                    " found a machine Token " << type << " sub " << subType << " hw " << hwLevel << " wc " << wc
+                                              << " researched " << researched << std::endl);
+                MachLogResearchItem& ri = races.researchTree().researchItem(type, subType, hwLevel, wc);
+                HAL_STREAM(
+                    " ri objectTYpe " << ri.objectType() << " ri.sub " << ri.subType() << " ri.hwLevel " << ri.hwLevel()
+                                      << " ri.wc " << ri.weaponCombo() << std::endl);
+                for (MachPhys::Race ridx : MachPhys::AllRaces)
+                {
+                    bool doWork = false;
+                    doWork = false;
+                    if (race == ridx)
+                        doWork = true;
+                    if (race == MachPhys::N_RACES)
+                    {
+                        doWork = true;
+                    }
+                    if (race == MachPhys::NORACE)
+                    {
+                        doWork = true;
+                        if (doAI)
+                        {
+                            if (races.raceInGame(ridx)
+                                && races.controller(ridx).type() != MachLogController::AI_CONTROLLER)
+                            {
+                                doWork = false;
+                            }
+                        }
+                        else
+                        {
+                            if (races.raceInGame(ridx)
+                                && races.controller(ridx).type() == MachLogController::AI_CONTROLLER)
+                            {
+                                doWork = false;
+                            }
+                        }
+                        HAL_STREAM(
+                            "Race == NORACE, doAI " << doAI << " check against race " << ridx << " doWork is  now "
+                                                    << doWork << std::endl);
+                    }
+                    if (doWork)
+                    {
+                        ri.isAvailable(ridx, true);
+                        ri.researched(ridx, researched);
+                        ri.swAvailable(ridx, 1, true);
+                        ri.swResearched(ridx, 1, researched);
+                        for (int i = 1; i < 6; ++i)
+                            if (ri.swTechnologyLevel(i) < 4)
+                                ri.swAvailable(ridx, i, true);
+                        // ri.swLevel( ridx, 1 );
+                        if (overrideResearchCost)
+                            ri.setResearchCost(overrideResearchCost);
+                        if (overrideBuildingCost)
+                            ri.setBuildingCost(overrideBuildingCost);
+                        if (! researched)
+                        {
+                            ASSERT_INFO(riParser.line());
+                            ASSERT(
+                                ri.researchCost() > 0,
+                                "You may not specify an item to be researched if it has zero cost\n");
+                        }
+                    }
+                }
+            }
+        }
+        riParser.parseNextLine();
+    }
+    races.cascadeUpdateForResearch(MachPhys::RED);
+    races.cascadeUpdateForResearch(MachPhys::BLUE);
+    races.cascadeUpdateForResearch(MachPhys::GREEN);
+    races.cascadeUpdateForResearch(MachPhys::YELLOW);
+    HAL_STREAM("MLScenario::load exit\n");
+}
+
+MachLogScenario::~MachLogScenario()
+{
+    TEST_INVARIANT;
+}
+
+void MachLogScenario::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+// static
+MachLog::ObjectType MachLogScenario::objectType(const std::string& type)
+{
+    std::optional<MachLog::ObjectType> r = MachLog::toObjectType(type);
+    if (!r.has_value())
+    {
+        // Legacy aliases used in scenario files
+        if (Utils::caseInsensitiveEqual(type, "HWLAB"))
+            return MachLog::HARDWARE_LAB;
+        if (Utils::caseInsensitiveEqual(type, "MISSILE"))
+            return MachLog::MISSILE_EMPLACEMENT;
+        if (Utils::caseInsensitiveEqual(type, "SWLAB"))
+            return MachLog::SOFTWARE_LAB;
+        if (Utils::caseInsensitiveEqual(type, "ARTIFACT"))
+            return MachLog::ARTEFACT;
+    }
+    ASSERT_INFO(type);
+    ASSERT(r.has_value(), "Unknown object string for matching\n");
+    return r.value_or(MachLog::ADMINISTRATOR);
+}
+// static
+int MachLogScenario::objectSubType(MachLog::ObjectType type, const std::string& subType)
+{
+    switch (type)
+    {
+        case MachLog::ADMINISTRATOR:
+            return administratorSubType(subType);
+        case MachLog::AGGRESSOR:
+            return aggressorSubType(subType);
+        case MachLog::TECHNICIAN:
+            return technicianSubType(subType);
+        case MachLog::CONSTRUCTOR:
+            return constructorSubType(subType);
+        case MachLog::FACTORY:
+            return factorySubType(subType);
+        case MachLog::MISSILE_EMPLACEMENT:
+            return missileEmplacementSubType(subType);
+        case MachLog::HARDWARE_LAB:
+            return hardwareLabSubType(subType);
+        case MachLog::POD:
+            return 0;
+        default:
+            ASSERT_INFO(type);
+            ASSERT_BAD_CASE;
+    }
+    return 0;
+}
+// static
+MachPhys::TechnicianSubType MachLogScenario::technicianSubType(const std::string& subType)
+{
+    std::optional<MachPhys::TechnicianSubType> r = MachPhys::toTechnicianSubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::LAB_TECH);
+}
+// static
+MachPhys::ConstructorSubType MachLogScenario::constructorSubType(const std::string& subType)
+{
+    std::optional<MachPhys::ConstructorSubType> r = MachPhys::toConstructorSubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::DOZER);
+}
+// static
+MachPhys::AggressorSubType MachLogScenario::aggressorSubType(const std::string& subType)
+{
+    std::optional<MachPhys::AggressorSubType> r = MachPhys::toAggressorSubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::GRUNT);
+}
+// static
+MachPhys::AdministratorSubType MachLogScenario::administratorSubType(const std::string& subType)
+{
+    std::optional<MachPhys::AdministratorSubType> r = MachPhys::toAdministratorSubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::BOSS);
+}
+// static
+MachPhys::FactorySubType MachLogScenario::factorySubType(const std::string& subType)
+{
+    std::optional<MachPhys::FactorySubType> r = MachPhys::toFactorySubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::CIVILIAN);
+}
+// static
+MachPhys::HardwareLabSubType MachLogScenario::hardwareLabSubType(const std::string& subType)
+{
+    std::optional<MachPhys::HardwareLabSubType> r = MachPhys::toHardwareLabSubType(subType);
+    if (!r.has_value())
+    {
+        // Legacy aliases: scenario files may use "CIVILIAN"/"MILITARY" instead of "LAB_CIVILIAN"/"LAB_MILITARY"
+        if (Utils::caseInsensitiveEqual(subType, "CIVILIAN"))
+            return MachPhys::LAB_CIVILIAN;
+        if (Utils::caseInsensitiveEqual(subType, "MILITARY"))
+            return MachPhys::LAB_MILITARY;
+    }
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::LAB_CIVILIAN);
+}
+// static
+MachPhys::MissileEmplacementSubType MachLogScenario::missileEmplacementSubType(const std::string& subType)
+{
+    std::optional<MachPhys::MissileEmplacementSubType> r = MachPhys::toMissileEmplacementSubType(subType);
+    ASSERT_INFO(subType);
+    ASSERT(r.has_value(), " Unknown subtype\n");
+    return r.value_or(MachPhys::ICBM);
+}
+
+// static
+MachPhys::WeaponCombo MachLogScenario::weaponCombo(const std::string& weaponComboStr)
+{
+    std::optional<MachPhys::WeaponCombo> r = MachPhys::toWeaponCombo(weaponComboStr);
+    ASSERT_INFO(weaponComboStr);
+    ASSERT(r.has_value(), " Unknown Weapon Combo\n");
+    return r.value_or(MachPhys::L_BOLTER);
+}
+
+// static
+MachPhys::Race MachLogScenario::machPhysRace(const std::string& race)
+{
+    std::optional<MachPhys::Race> r = MachPhys::toRace(race);
+    ASSERT_INFO(race);
+    ASSERT(r.has_value(), " Unknown Race token Combo\n");
+    return r.value_or(MachPhys::RED);
+}
+
+// static
+MachLog::ObjectType MachLogScenario::physConstructionToLogObject(MachPhys::ConstructionType CT)
+{
+    switch (CT)
+    {
+        case MachPhys::HARDWARE_LAB:
+            return MachLog::HARDWARE_LAB;
+        case MachPhys::SMELTER:
+            return MachLog::SMELTER;
+        case MachPhys::FACTORY:
+            return MachLog::FACTORY;
+        case MachPhys::MISSILE_EMPLACEMENT:
+            return MachLog::MISSILE_EMPLACEMENT;
+        case MachPhys::GARRISON:
+            return MachLog::GARRISON;
+        case MachPhys::MINE:
+            return MachLog::MINE;
+        case MachPhys::BEACON:
+            return MachLog::BEACON;
+        case MachPhys::POD:
+            return MachLog::POD;
+        default:
+            ASSERT_INFO(CT);
+            ASSERT_BAD_CASE;
+    }
+    return MachLog::POD; // this is never executed
+}
+
+// static
+MachLogCamera::Type MachLogScenario::cameraType(const std::string& cameraTypeStr)
+{
+    std::optional<MachLog::CameraType> r = MachLog::toCameraType(cameraTypeStr);
+    ASSERT_INFO(cameraTypeStr);
+    ASSERT(r.has_value(), " Unknown cameraType\n");
+    return r.value_or(MachLogCamera::GROUND);
+}
+
+// static
+MachLog::BeaconType MachLogScenario::virtualBeaconType(const std::string& beaconType)
+{
+    std::optional<MachLog::BeaconType> r = MachLog::toBeaconType(beaconType);
+    ASSERT_INFO(beaconType);
+    ASSERT(r.has_value(), " Unknown beaconType\n");
+    return r.value_or(MachLog::NO_BEACON);
+}
+
+// static
+MachLog::ResourcesAvailable MachLogScenario::resourceAvailable(const std::string& resourceType)
+{
+    std::optional<MachLog::ResourcesAvailable> r = MachLog::toResourcesAvailable(resourceType);
+    if (!r.has_value())
+    {
+        // Legacy aliases without RES_ prefix
+        if (resourceType == "DEFAULT")
+            return MachLog::RES_DEFAULT;
+        if (resourceType == "LOW")
+            return MachLog::RES_LOW;
+        if (resourceType == "MEDIUM")
+            return MachLog::RES_MEDIUM;
+        if (resourceType == "HIGH")
+            return MachLog::RES_HIGH;
+    }
+    ASSERT_INFO(resourceType);
+    ASSERT(r.has_value(), "Unknown resource type marker\n");
+    return r.value_or(MachLog::RES_DEFAULT);
+}
+
+// static
+int MachLogScenario::startingResourcesToInt(MachLog::StartingResources res)
+{
+    switch (res)
+    {
+        case MachLog::STARTING_RESOURCES_DEFAULT:
+            return -1;
+        case MachLog::STARTING_RESOURCES_RES_LOW:
+            return 0;
+        case MachLog::STARTING_RESOURCES_MEDIUM:
+            return 100;
+        case MachLog::STARTING_RESOURCES_HIGH:
+            return 500;
+        case MachLog::STARTING_RESOURCES_VERY_HIGH:
+            return 1000;
+        case MachLog::STARTING_RESOURCES_SUPER_HIGH:
+            return 10000;
+        default:
+            ASSERT_INFO(res);
+            ASSERT_BAD_CASE;
+    }
+    return 0;
+}
+
+// static
+void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
+{
+    PRE(parser.tokens()[1] == "RACE");
+    MachLogRaces& races = MachLogRaces::instance();
+
+    MachPhys::Race race{};
+    std::string raceString = parser.tokens()[2];
+    bool doAI = true;
+    std::optional<MachPhys::Race> parsedRace = MachPhys::toRace(raceString);
+    if (parsedRace.has_value())
+    {
+        race = parsedRace.value();
+    }
+    else if (raceString == "AI")
+    {
+        doAI = true;
+        race = MachPhys::NORACE;
+    }
+    else if (raceString == "PC")
+    {
+        race = MachPhys::NORACE;
+        doAI = false;
+    }
+    else
+    {
+        race = MachPhys::N_RACES;
+    }
+
+    size_t lineSize = parser.tokens().size();
+    MachLog::ObjectType type;
+    int subType = 0;
+    size_t hwLevel = 0;
+    MachPhys::WeaponCombo weaponCombo = MachPhys::N_WEAPON_COMBOS;
+
+    ASSERT_INFO(lineSize);
+    ASSERT(
+        (lineSize == 7 || lineSize == 6 || lineSize == 5),
+        "Wrong number of tokens in RESTRICT_CONSTRUCTION line.\n");
+
+    type = MachLogScenario::objectType(parser.tokens()[3]);
+    if (lineSize >= 6)
+    {
+        subType = MachLogScenario::objectSubType(type, parser.tokens()[4]);
+        // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 5 ].c_str() ) );
+        hwLevel = atoi(parser.tokens()[5].c_str());
+    }
+    else
+    {
+        subType = 0;
+        // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 4 ].c_str() ) );
+        hwLevel = atoi(parser.tokens()[4].c_str());
+    }
+
+    MachLogConstructionItem& consItem
+        = races.constructionTree().constructionItem((MachPhys::ConstructionType)type, subType, hwLevel, weaponCombo);
+    for (MachPhys::Race i : MachPhys::AllRaces)
+    {
+        bool doWork = false;
+        doWork = false;
+        if (race == i)
+            doWork = true;
+        if (race == MachPhys::N_RACES)
+        {
+            doWork = true;
+        }
+        if (race == MachPhys::NORACE)
+        {
+            doWork = true;
+            if (doAI)
+            {
+                if (races.raceInGame(i) && races.controller(i).type() != MachLogController::AI_CONTROLLER)
+                {
+                    doWork = false;
+                }
+            }
+            else
+            {
+                if (races.raceInGame(i) && races.controller(i).type() == MachLogController::AI_CONTROLLER)
+                {
+                    doWork = false;
+                }
+            }
+        }
+        if (doWork)
+            consItem.activationLocked(i, true);
+    }
+}
+
+/* End SCENARIO.CPP *************************************************/

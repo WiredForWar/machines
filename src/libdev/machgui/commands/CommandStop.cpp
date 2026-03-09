@@ -10,13 +10,13 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/commands/CommandSelfDestruct.hpp"
 #include "machgui/internal/strings.hpp"
-#include "world4d/domain.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/strategy.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/races.hpp"
-#include "machlog/squad.hpp"
+#include "world4d/Scene/Domain.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Operations/Strategy.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Squadron.hpp"
 
 MachGuiStopCommand::MachGuiStopCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-stop"_bind)

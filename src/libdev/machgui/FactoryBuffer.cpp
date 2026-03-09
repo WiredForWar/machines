@@ -10,9 +10,9 @@
 #include "machgui/NewProductionIcon.hpp"
 #include "machgui/gui.hpp"
 
-#include "machlog/machlog.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/factory.hpp"
+#include "machlog/World/MachLog.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Actors/Factory.hpp"
 #include "gui/gui.hpp"
 
 MachGuiFactoryBuffer::MachGuiFactoryBuffer(

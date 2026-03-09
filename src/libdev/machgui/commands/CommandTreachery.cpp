@@ -9,13 +9,13 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/move.hpp"
-#include "machlog/optreach.hpp"
-#include "machlog/patrol.hpp"
-#include "machlog/races.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/MoveOperation.hpp"
+#include "machlog/Operations/TreacheryReachOperation.hpp"
+#include "machlog/Operations/PatrolOperation.hpp"
+#include "machlog/Races.hpp"
 
 MachGuiTreacheryCommand::MachGuiTreacheryCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-treachery"_bind)

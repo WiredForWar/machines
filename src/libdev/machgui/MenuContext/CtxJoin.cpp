@@ -22,7 +22,7 @@
 #include "machgui/db/DbSystem.hpp"
 #include "machgui/db/DbPlanet.hpp"
 #include "machgui/db/DbScenario.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "machgui/Network/NetworkProtocolMode.hpp"
 #include "machgui/Network/SerialNetworkMode.hpp"
 #include "machgui/Network/ModemNetworkMode.hpp"

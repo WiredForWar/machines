@@ -3,10 +3,10 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
-#include "machphys/rescarr.hpp"
+#include "machphys/Machines/ResourceCarrier.hpp"
 
 using MachPhysResourceCarrierId = MachPhysResourceCarrier::Id;
 

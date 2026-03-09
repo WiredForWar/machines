@@ -11,8 +11,8 @@
 #include "machgui/db/DbSystem.hpp"
 #include "machgui/db/DbPlanet.hpp"
 #include "machgui/db/Database.hpp"
-#include "machlog/races.hpp"
-#include "machlog/artfacts.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/World/Artefacts.hpp"
 
 #include "spdlog/spdlog.h"
 

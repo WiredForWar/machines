@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/StringId.hpp"
-#include "machlog/dispnoti.hpp"
+#include "machlog/World/DispositionNotifiable.hpp"
 
 class MachGuiStartupScreens;
 

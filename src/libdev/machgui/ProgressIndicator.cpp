@@ -1,6 +1,6 @@
 #include "ProgressIndicator.hpp"
 
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
 #include "render/Painter.hpp"

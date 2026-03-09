@@ -6,8 +6,8 @@
 // #include <conio.h>
 #include <fstream>
 #include <ctime>
-#include "phys/rampacce.hpp"
-#include "phys/eulertx.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/EulerTransform3d.hpp"
 #include "ctl/vector.hpp"
 #include "ctl/countptr.hpp"
 #include "base/base.hpp"
@@ -19,12 +19,12 @@
 #include "mathex/point3d.hpp"
 #include "mathex/line2d.hpp"
 #include "mathex/random.hpp"
-#include "phys/linemoti.hpp"
-#include "phys/linetrav.hpp"
-#include "phys/timespin.hpp"
-#include "phys/accetumb.hpp"
-#include "phys/absp2d.hpp"
-#include "phys/motchunk.hpp"
+#include "phys/Plans/LinearMotionPlan.hpp"
+#include "phys/Plans/LinearTravelPlan.hpp"
+#include "phys/Plans/TimedSpinPlan.hpp"
+#include "phys/Plans/AccelerateTumblePlan.hpp"
+#include "phys/Plans/AlignedBSPTree2d.hpp"
+#include "phys/Plans/MotionChunk.hpp"
 #include "phystest/phytest.hpp"
 #include "phystest/cs2dtest.hpp"
 #include <algorithm>

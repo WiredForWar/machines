@@ -6,9 +6,9 @@
 
 #include "ctl/vector.hpp"
 #include "phys/phys.hpp"
-#include "machlog/machop.hpp"
-#include "machlog/produnit.hpp"
-#include "machlog/internal/grpmvutl.hpp"
+#include "machlog/Operations/MachineOperation.hpp"
+#include "machlog/ProductionUnit.hpp"
+#include "machlog/Internal/GroupMoveUtility.hpp"
 
 void ti8()
 {

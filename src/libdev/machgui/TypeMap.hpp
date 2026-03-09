@@ -6,7 +6,7 @@
 #ifndef _MACHLOG_TYPEMAP_HPP
 #define _MACHLOG_TYPEMAP_HPP
 
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "machphys/machphys.hpp"
 
 //////////////////////////////////////////////////////////////////////

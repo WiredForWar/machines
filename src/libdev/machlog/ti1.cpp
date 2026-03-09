@@ -13,14 +13,14 @@
 
 #include "mathex/point2d.hpp"
 
-#include "machlog/artefact.hpp"
-#include "machlog/buildpnt.hpp"
-#include "machlog/internal/artsdata.hpp"
-#include "machlog/internal/seqdata.hpp"
+#include "machlog/Actors/Artefact.hpp"
+#include "machlog/World/BuildPoint.hpp"
+#include "machlog/Internal/ArtefactsData.hpp"
+#include "machlog/Internal/SequencerData.hpp"
 ////#include "machlog/consdata.hpp"
 
-#include "phys/motchunk.hpp"
-#include "machphys/mcmovinf.hpp"
+#include "phys/Plans/MotionChunk.hpp"
+#include "machphys/Machines/MachineMoveInfo.hpp"
 
 class MachOperation;
 class MachLogMachine;

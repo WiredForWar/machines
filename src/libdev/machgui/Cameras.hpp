@@ -18,7 +18,7 @@
 #include "device/timer.hpp"
 #include "gui/gui.hpp"
 
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 // class DevButtonEvent;
 class DevKeyToCommandTranslator;

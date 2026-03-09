@@ -3,10 +3,10 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
 
-#include "machphys/missile.hpp"
+#include "machphys/Weapons/Missile.hpp"
 
 PER_DEFINE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysMissile);
 PER_PRIVATE_READ_WRITE_PERSISTENT_T2(MachPhysObjectFactory, size_t, MachPhysMissile);

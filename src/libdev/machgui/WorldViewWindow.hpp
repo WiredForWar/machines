@@ -19,7 +19,7 @@
 #include "gui/displaya.hpp"
 #include "utility/id.hpp"
 #include "world4d/world4d.hpp"
-#include "world4d/bbxselec.hpp"
+#include "world4d/Entity/BoundingBoxSelector.hpp"
 
 // Forward refs
 class MachInGameScreen;

@@ -10,7 +10,7 @@
 #include "machgui/BuildProgressBar.hpp"
 #include "machgui/ActorStringIdRestorer.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "machlog/resitem.hpp"
+#include "machlog/Tech/ResearchItem.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"
 #include "gui/restring.hpp"

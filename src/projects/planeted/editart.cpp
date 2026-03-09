@@ -17,10 +17,10 @@
 #include "mathex/transf3d.hpp"
 #include "mathex/degrees.hpp"
 #include "mathex/eulerang.hpp"
-#include "machphys/marker.hpp"
-#include "machphys/artefact.hpp"
-#include "machphys/terrtile.hpp"
-#include "world4d/scenemgr.hpp"
+#include "machphys/Marker.hpp"
+#include "machphys/Artefact.hpp"
+#include "machphys/Terrain/TerrainTile.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "planeted/scenfile.hpp"
 
 PedArtefactEditor::PedArtefactEditor()

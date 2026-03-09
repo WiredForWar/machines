@@ -9,8 +9,8 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/MessageBroker.hpp"
-#include "machlog/network.hpp"
-#include "world4d/soundman.hpp"
+#include "machlog/Messaging/Network.hpp"
+#include "world4d/Sound/SoundManager.hpp"
 #include "system/winapi.hpp"
 
 MachGuiExitToInternetMessageBoxResponder::MachGuiExitToInternetMessageBoxResponder(

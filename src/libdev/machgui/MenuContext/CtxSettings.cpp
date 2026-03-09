@@ -24,7 +24,7 @@
 #include "machgui/StartupData.hpp"
 #include "machgui/DropDownListBoxCreator.hpp"
 #include "machgui/ui/Text.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "gui/scrolbut.hpp"
 #include "gui/font.hpp"
 #include "gui/painter.hpp"

@@ -9,7 +9,7 @@
 
 #include "machgui/gui.hpp"
 #include "network/netnet.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "system/pathname.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/db/Database.hpp"
@@ -17,7 +17,7 @@
 #include "machgui/ExitToInternetMessageBoxResponder.hpp"
 #include "machgui/internal/strings.hpp"
 
-#include "world4d/soundman.hpp"
+#include "world4d/Sound/SoundManager.hpp"
 
 MachGuiCtxInGameOptions::MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("se", pStartupScreens)

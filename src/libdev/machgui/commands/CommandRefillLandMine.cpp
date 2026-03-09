@@ -10,10 +10,10 @@
 #include "mathex/point3d.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/oprefill.hpp"
-#include "machlog/administ.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/RefillLandMinesOperation.hpp"
+#include "machlog/Actors/Administrator.hpp"
 
 MachGuiRefillLandMineCommand::MachGuiRefillLandMineCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-refill-land-mine"_bind)

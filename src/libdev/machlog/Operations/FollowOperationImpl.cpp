@@ -1,0 +1,73 @@
+/*
+ * A T T A C K I . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machlog/Internal/FollowOperationImpl.hpp"
+
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
+
+#include "mathex/point2d.hpp"
+
+PER_DEFINE_PERSISTENT(MachLogFollowOperationImpl);
+
+MachLogFollowOperationImpl::MachLogFollowOperationImpl(
+    MachLogMachine* pActor,
+    MachLogMachine* pTarget,
+    const MexPoint2d& offset,
+    MachLogFollowOperation::CamouflagedOp camoStatus,
+    MachLogFollowOperation::TerminateFlag terminateFlag)
+    : pActor_(pActor)
+    , pTarget_(pTarget)
+    , offset_(offset)
+    , camoStatus_(camoStatus)
+    , terminateFlag_(terminateFlag)
+{
+    TEST_INVARIANT;
+}
+
+MachLogFollowOperationImpl::~MachLogFollowOperationImpl()
+{
+    TEST_INVARIANT;
+}
+
+void MachLogFollowOperationImpl::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachLogFollowOperationImpl& t)
+{
+
+    o << "MachLogFollowOperationImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachLogFollowOperationImpl " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+void perWrite(PerOstream& ostr, const MachLogFollowOperationImpl& followOpImpl)
+{
+    ostr << followOpImpl.pActor_;
+    ostr << followOpImpl.pTarget_;
+    ostr << followOpImpl.offset_;
+    ostr << followOpImpl.camoStatus_;
+    ostr << followOpImpl.terminateFlag_;
+}
+
+void perRead(PerIstream& istr, MachLogFollowOperationImpl& followOpImpl)
+{
+    istr >> followOpImpl.pActor_;
+    istr >> followOpImpl.pTarget_;
+    istr >> followOpImpl.offset_;
+    istr >> followOpImpl.camoStatus_;
+    istr >> followOpImpl.terminateFlag_;
+}
+
+MachLogFollowOperationImpl::MachLogFollowOperationImpl(PerConstructor)
+{
+}
+
+/* End FOLLOWI.CPP ***************************************************/

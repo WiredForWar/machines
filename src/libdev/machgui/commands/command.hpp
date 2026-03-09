@@ -20,7 +20,7 @@
 #include "gui/StringId.hpp"
 #include "machgui/BindId.hpp"
 #include "machgui/gui.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 
 #include <memory>
 

@@ -1,0 +1,210 @@
+/*
+ * L O A D I N G . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machphys/Effects/ResourceLoading.hpp"
+
+#include "ctl/countptr.hpp"
+#include "system/pathname.hpp"
+#include "mathex/transf3d.hpp"
+#include "phys/Plans/LinearScalarPlan.hpp"
+#include "render/scale.hpp"
+#include "render/colour.hpp"
+#include "render/mesh.hpp"
+#include "render/meshinst.hpp"
+#include "world4d/Entity/Entity.hpp"
+#include "world4d/Plans/SimpleAlphaPlan.hpp"
+#include "world4d/Entity/EntityPlan.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/GeneralUniformScalePlan.hpp"
+#include "world4d/Plans/SimpleScalePlan.hpp"
+#include "world4d/Scene/Light.hpp"
+
+#include "machphys/Effects/LoadingLight.hpp"
+#include "machphys/Effects/LoadingOver.hpp"
+#include "machphys/Effects/LoadingUnder.hpp"
+
+PER_DEFINE_PERSISTENT(MachPhysResourceLoading);
+
+// public constructor
+MachPhysResourceLoading::MachPhysResourceLoading(W4dEntity* pParent, const MexTransform3d& localTransform)
+    : W4dEntity(pParent, localTransform, W4dEntity::NOT_SOLID)
+{
+    TEST_INVARIANT;
+}
+
+MachPhysResourceLoading::~MachPhysResourceLoading()
+{
+    TEST_INVARIANT;
+}
+
+void MachPhysResourceLoading::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysResourceLoading& t)
+{
+
+    o << "MachPhysResourceLoading " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysResourceLoading " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+// virtual
+bool MachPhysResourceLoading::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, Accuracy) const
+{
+    return false;
+}
+
+static const MATHEX_SCALAR frameRate()
+{
+    static const MATHEX_SCALAR rate = 22.0;
+    return rate;
+}
+
+static const MATHEX_SCALAR& defaultSize()
+{
+    static const MATHEX_SCALAR SIZE_OVER = 3.563743 * 2.0; // read from .x file
+    return SIZE_OVER;
+}
+
+static PhysScalarPlanPtr scalarPlanPtr(const PhysRelativeTime& time1, const PhysRelativeTime& time2)
+{
+    PRE(time2 > time1);
+
+    PhysLinearScalarPlan::ScalarVec times;
+    times.reserve(2);
+    times.push_back(time1);
+    times.push_back(time2);
+
+    PhysLinearScalarPlan::ScalarVec scales;
+    scales.reserve(3);
+    scales.push_back(1.0);
+    scales.push_back(1.0);
+    scales.push_back(0);
+
+    PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
+
+    return PhysScalarPlanPtr(pPlan);
+}
+
+const PhysRelativeTime
+MachPhysResourceLoading::startLoading(const PhysAbsoluteTime& startTime, const MATHEX_SCALAR& size)
+{
+    MachPhysLoadingUnder* pUnder = new MachPhysLoadingUnder(this, MexTransform3d());
+
+    const PhysRelativeTime duration = 22.0 / frameRate();
+
+    // visibility plan
+    W4dVisibilityPlanPtr visibilityPlanPtr(new W4dVisibilityPlan(true));
+    visibilityPlanPtr->add(false, duration);
+
+    pUnder->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
+
+    // scale plan
+    const MATHEX_SCALAR a = size / defaultSize();
+    const MATHEX_SCALAR c = 2.0 * a;
+    W4dScalePlanPtr scalePlanPtr(new W4dSimpleUniformScalePlan(1, c, duration));
+
+    pUnder->propogateScalePlan(scalePlanPtr, startTime);
+
+    // alpha plan
+    PhysScalarPlanPtr alphaPlanPtr = scalarPlanPtr(2.0 / frameRate(), duration);
+
+    W4dSimpleAlphaPlan::makePlan(pUnder, startTime, alphaPlanPtr, 1);
+
+    MachPhysLoadingOver* pOver = new MachPhysLoadingOver(this, MexTransform3d());
+    pOver->entityPlanForEdit().visibilityPlan(visibilityPlanPtr, startTime);
+    pOver->propogateScalePlan(scalePlanPtr, startTime);
+    W4dSimpleAlphaPlan::makePlan(pOver, startTime, alphaPlanPtr, 1);
+
+    MachPhysLoadingLight* pLightLoading = new MachPhysLoadingLight(this, MexTransform3d());
+    const PhysRelativeTime lightDuration = 12.0 / frameRate();
+
+    // visibility plan
+    W4dVisibilityPlanPtr lightVisibilityPlanPtr(new W4dVisibilityPlan(true));
+    lightVisibilityPlanPtr->add(false, lightDuration);
+
+    pLightLoading->entityPlanForEdit().visibilityPlan(lightVisibilityPlanPtr, startTime);
+
+    // scale plan
+    const MATHEX_SCALAR b = 0.5;
+    W4dScalePlanPtr lightScalePlanPtr(new W4dSimpleUniformScalePlan(a, b, lightDuration));
+
+    pLightLoading->propogateScalePlan(lightScalePlanPtr, startTime);
+
+    // alpha plan
+    static PhysScalarPlanPtr lightAlphaPlanPtr = scalarPlanPtr(2.0 / frameRate(), lightDuration);
+    W4dSimpleAlphaPlan::makePlan(pLightLoading, startTime, lightAlphaPlanPtr, 1);
+
+    // create a light
+
+    W4dPointLight* pLight = new W4dPointLight(this, MexVec3(0, 0, 1), 20.0);
+
+    pLight->colour(RenColour(2.0, 2.24, 2.0));
+    pLight->constantAttenuation(0);
+    pLight->linearAttenuation(0.177);
+    pLight->quadraticAttenuation(0.823);
+    pLight->scope(W4dLight::DYNAMIC);
+    pLight->visible(false);
+
+    // visibility plan
+    const PhysRelativeTime pointLightDuration = 10.0 / frameRate();
+
+    W4dVisibilityPlanPtr visPlanPtr(new W4dVisibilityPlan(true));
+    visPlanPtr->add(false, pointLightDuration);
+
+    pLight->entityPlanForEdit().visibilityPlan(visPlanPtr, startTime);
+
+    // intensity plan
+    PhysScalarPlanPtr intensityPlanPtr;
+    bool justOnce = true;
+
+    if (justOnce)
+    {
+        justOnce = false;
+
+        PhysLinearScalarPlan::ScalarVec times;
+        times.reserve(1);
+        times.push_back(pointLightDuration);
+
+        PhysLinearScalarPlan::ScalarVec scales;
+        scales.reserve(2);
+        scales.push_back(4.0);
+        scales.push_back(0);
+
+        PhysLinearScalarPlan* pPlan = new PhysLinearScalarPlan(times, scales);
+
+        intensityPlanPtr = pPlan;
+    }
+
+    pLight->intensityPlan(intensityPlanPtr, startTime);
+
+    return duration;
+}
+
+MachPhysResourceLoading::MachPhysResourceLoading(PerConstructor con)
+    : W4dEntity(con)
+{
+}
+
+void perWrite(PerOstream& ostr, const MachPhysResourceLoading& scorch)
+{
+    const W4dEntity& base = scorch;
+
+    ostr << base;
+}
+
+void perRead(PerIstream& istr, MachPhysResourceLoading& scorch)
+{
+    W4dEntity& base = scorch;
+
+    istr >> base;
+}
+
+/* End LOADING.CPP *************************************************/

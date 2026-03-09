@@ -14,16 +14,16 @@
 
 #include "system/pathname.hpp"
 
-#include "world4d/domain.hpp"
+#include "world4d/Scene/Domain.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/opadsupc.hpp"
-#include "machlog/opsupcon.hpp"
-#include "machlog/races.hpp"
-#include "machlog/squad.hpp"
-#include "machlog/stats.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/AdminSuperConstructOperation.hpp"
+#include "machlog/Operations/SuperConstructOperation.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Squadron.hpp"
+#include "machlog/Stats.hpp"
 
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"

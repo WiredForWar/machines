@@ -10,9 +10,9 @@
 #include "ctl/stack.hpp"
 #include "ctl/map.hpp"
 
-#include "phys/cspace2.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "machlog/vmdata.hpp"
+#include "machlog/Messaging/VoiceMailData.hpp"
 #include "string.hpp"
 
 class MachOperation;

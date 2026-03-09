@@ -7,7 +7,7 @@
 
 #include "planeted/vetxmrkr.hpp"
 
-#include "machlog/planet.hpp"
+#include "machlog/World/Planet.hpp"
 
 #include "render/device.hpp"
 #include "render/colour.hpp"

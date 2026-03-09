@@ -13,7 +13,7 @@
 #define _MACHGUI_LSGEXTRA_HPP
 
 #include "base/base.hpp"
-#include "machlog/lsgextra.hpp"
+#include "machlog/World/LoadSaveGameExtras.hpp"
 
 class MachInGameScreen;
 

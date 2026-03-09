@@ -19,11 +19,11 @@
 
 #include "gui/restring.hpp"
 
-#include "machlog/network.hpp"
-#include "machlog/races.hpp"
-#include "machlog/race.hpp"
-#include "machlog/cntrl.hpp"
-#include "machlog/actor.hpp"
+#include "machlog/Messaging/Network.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Race.hpp"
+#include "machlog/Controllers/Controller.hpp"
+#include "machlog/Actors/Actor.hpp"
 
 #include "machgui/internal/strings.hpp"
 #include "machgui/SystemMessageHandler.hpp"

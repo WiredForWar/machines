@@ -9,7 +9,7 @@
 #include "machgui/internal/strings.hpp"
 #include "network/netnet.hpp"
 #include "machgui/StartupScreens.hpp"
-#include "machlog/network.hpp"
+#include "machlog/Messaging/Network.hpp"
 
 MachGuiNetworkProtocolMode::MachGuiNetworkProtocolMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : pParent_(pParent)

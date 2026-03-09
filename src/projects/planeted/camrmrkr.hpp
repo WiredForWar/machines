@@ -13,9 +13,9 @@
 #define _PLANETED_CAMRMARK_HPP
 
 #include "base/base.hpp"
-#include "world4d/custom.hpp"
+#include "world4d/Entity/Custom.hpp"
 #include "render/colour.hpp"
-#include "machlog/camera.hpp"
+#include "machlog/World/Camera.hpp"
 
 class W4dEntity;
 class MexTransform3d;

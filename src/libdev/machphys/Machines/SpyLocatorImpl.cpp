@@ -1,0 +1,53 @@
+/*
+ * S P Y L O C A I . C P P
+ * (c) Charybdis Limited, 1998. All Rights Reserved
+ */
+
+//  Definitions of non-inline non-template methods and global functions
+
+#include "machphys/Machines/Internal/SpyLocatorImpl.hpp"
+
+PER_DEFINE_PERSISTENT(MachPhysSpyLocatorImpl);
+
+MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl()
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
+{
+
+    TEST_INVARIANT;
+}
+
+MachPhysSpyLocatorImpl::~MachPhysSpyLocatorImpl()
+{
+    TEST_INVARIANT;
+}
+
+void MachPhysSpyLocatorImpl::CLASS_INVARIANT
+{
+    INVARIANT(this != nullptr);
+}
+
+std::ostream& operator<<(std::ostream& o, const MachPhysSpyLocatorImpl& t)
+{
+
+    o << "MachPhysSpyLocatorImpl " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "MachPhysSpyLocatorImpl " << static_cast<const void*>(&t) << " end" << std::endl;
+
+    return o;
+}
+
+MachPhysSpyLocatorImpl::MachPhysSpyLocatorImpl(PerConstructor)
+    : isLocating_(false)
+    , locatingPlanEndTime_(0)
+{
+}
+
+void perWrite(PerOstream&, const MachPhysSpyLocatorImpl&)
+{
+}
+
+void perRead(PerIstream&, MachPhysSpyLocatorImpl&)
+{
+}
+
+/* End SPYLOCAI.CPP *************************************************/

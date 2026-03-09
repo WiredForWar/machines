@@ -9,7 +9,7 @@
 #include "base/base.hpp"
 #include "ctl/countptr.hpp"
 #include "render/render.hpp"
-#include "world4d/matplan.hpp"
+#include "world4d/Plans/MaterialPlan.hpp"
 
 class EnvSatellite;
 class EnvElevationColourTable;

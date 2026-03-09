@@ -13,9 +13,9 @@
 #include "system/memcaps.hpp"
 #include "sound/soundmix.hpp"
 
-#include "world4d/soundman.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Sound/SoundManager.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "render/Font.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"
@@ -23,8 +23,8 @@
 #include "gui/restring.hpp"
 #include "gui/font.hpp"
 #include "gui/image.hpp"
-#include "machphys/compmgr.hpp"
-#include "machphys/compitem.hpp"
+#include "machphys/ComplexityManager.hpp"
+#include "machphys/ComplexityItem.hpp"
 #include "machgui/VSyncMode.hpp"
 #include "machgui/InputLayout.hpp"
 #include "machgui/gui.hpp"
@@ -39,8 +39,8 @@
 #include "machgui/ui/CheckBox.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/races.hpp"
-#include "machlog/actor.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Actor.hpp"
 
 #define OPTIONS_AREA_MINX 95
 #define OPTIONS_AREA_MINY 50

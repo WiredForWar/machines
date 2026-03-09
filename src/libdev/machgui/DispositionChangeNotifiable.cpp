@@ -11,8 +11,8 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/InGameChatMessages.hpp"
-#include "machlog/cntrl.hpp"
-#include "machlog/races.hpp"
+#include "machlog/Controllers/Controller.hpp"
+#include "machlog/Races.hpp"
 #include "machgui/internal/strings.hpp"
 
 MachGuiDispositionChangeNotifiable::MachGuiDispositionChangeNotifiable(MachGuiStartupScreens* pStartupScreens)

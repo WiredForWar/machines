@@ -12,8 +12,8 @@
 #include "machgui/db/DbScenario.hpp"
 #include "render/device.hpp"
 #include "sim/manager.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 
 MachGuiPausedImage::MachGuiPausedImage(GuiDisplayable* pParent, MachInGameScreen* pInGameScreen)
     : GuiDisplayable(pParent, {}, GuiDisplayable::LAYER5)

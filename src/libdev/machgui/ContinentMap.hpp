@@ -20,7 +20,7 @@
 #include "system/pathname.hpp"
 #include "gui/displaya.hpp"
 #include "machphys/machphys.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 
 #include <vector>
 

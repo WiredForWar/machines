@@ -10,9 +10,9 @@
 #include "machgui/ProductionIcons.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "machlog/machlog.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/factory.hpp"
+#include "machlog/World/MachLog.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Actors/Factory.hpp"
 #include "gui/gui.hpp"
 #include "device/butevent.hpp"
 

@@ -8,7 +8,7 @@
 #include "base/persist.hpp"
 #include "machgui/LoadSaveGameExtras.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "machlog/races.hpp"
+#include "machlog/Races.hpp"
 
 MachGuiLoadSaveGameExtras::MachGuiLoadSaveGameExtras(MachInGameScreen* pInGameScreen)
     : pInGameScreen_(pInGameScreen)

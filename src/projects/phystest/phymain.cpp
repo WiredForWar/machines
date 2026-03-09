@@ -5,9 +5,9 @@
 
 #include "phystest/phytest.hpp"
 
-#include "phys/rampacce.hpp"
-#include "phys/timespin.hpp"
-#include "phys/motchunk.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/TimedSpinPlan.hpp"
+#include "phys/Plans/MotionChunk.hpp"
 
 #include "mathex/utility.hpp"
 #include "mathex/random.hpp"

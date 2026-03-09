@@ -15,7 +15,7 @@
 
 #include "base/base.hpp"
 #include "gui/icon.hpp"
-#include "machlog/machlog.hpp"
+#include "machlog/World/MachLog.hpp"
 #include "machphys/machphys.hpp"
 
 // Forward refs

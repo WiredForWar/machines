@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "phys/cspace2.hpp"
+#include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 // Forward refs
 // class ostream;

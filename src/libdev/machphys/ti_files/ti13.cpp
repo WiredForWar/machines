@@ -8,13 +8,13 @@
 #include "ctl/map.hpp"
 #include "ctl/set.hpp"
 #include "ctl/countptr.hpp"
-#include "phys/rampacce.hpp"
-#include "phys/motplan.hpp"
+#include "phys/Plans/RampAcceleration.hpp"
+#include "phys/Plans/MotionPlan.hpp"
 #include "mathex/point3d.hpp"
 #include "mathex/transf3d.hpp"
-#include "machphys/tiledata.hpp"
-#include "machphys/mccospec.hpp"
-#include "machphys/mexpdata.hpp"
+#include "machphys/Terrain/TileData.hpp"
+#include "machphys/Machines/MachineSpec.hpp"
+#include "machphys/Machines/MachineExplosionData.hpp"
 
 class MachPhysTerrainTile;
 class W4dCompositeMaterialVecChanger;

@@ -18,10 +18,10 @@
 #include "gui/restring.hpp"
 #include "render/TextOptions.hpp"
 #include "system/pathname.hpp"
-#include "machlog/machlog.hpp"
-#include "machlog/races.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/apc.hpp"
+#include "machlog/World/MachLog.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Actors/APC.hpp"
 #include "machphys/machphys.hpp"
 #include "device/keyboard.hpp"
 #include "device/keytrans.hpp"
@@ -913,7 +913,7 @@ void MachGuiSelectAllNavButton::doBeReleased(const GuiMouseEvent& event)
 // *************************************
 //////
 
-#include "machlog/constree.hpp"
+#include "machlog/Tech/ConstructionTree.hpp"
 
 MachGuiConstructionNavigator::MachGuiConstructionNavigator(
     GuiDisplayable* pParent,
@@ -1309,7 +1309,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiConstructionNavigator& t)
 // ******************************************* Code for MachGuiMachineNavigator *************************************
 //////
 
-#include "machlog/restree.hpp"
+#include "machlog/Tech/ResearchTree.hpp"
 
 MachGuiMachineNavigator::MachGuiMachineNavigator(
     GuiDisplayable* pParent,

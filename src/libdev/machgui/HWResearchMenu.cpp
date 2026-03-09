@@ -8,8 +8,8 @@
 #include "machgui/HWResearchIcons.hpp"
 #include "machgui/HWResearchBank.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "machlog/hwlab.hpp"
-#include "world4d/subject.hpp"
+#include "machlog/Actors/HardwareLab.hpp"
+#include "world4d/Subject/Subject.hpp"
 #include "ctl/pvector.hpp"
 
 MachHWResearchMenu::MachHWResearchMenu(

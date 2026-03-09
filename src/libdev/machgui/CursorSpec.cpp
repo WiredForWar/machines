@@ -10,7 +10,7 @@
 #include "machgui/gui.hpp"
 
 #include "gui/gui.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "render/animcurs.hpp"
 #include "render/device.hpp"
 #include "render/display.hpp"

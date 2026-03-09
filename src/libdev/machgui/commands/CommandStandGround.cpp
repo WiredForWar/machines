@@ -10,12 +10,12 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 
-#include "world4d/domain.hpp"
+#include "world4d/Scene/Domain.hpp"
 
-#include "machlog/actor.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/opstandg.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/StandGroundOperation.hpp"
 
 MachGuiStandGroundCommand::MachGuiStandGroundCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-stand-ground"_bind)

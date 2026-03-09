@@ -13,7 +13,7 @@
 #define _MACHGUI_CMDSCAV_HPP
 
 #include "machgui/commands/command.hpp"
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 #include "ctl/pvector.hpp"
 

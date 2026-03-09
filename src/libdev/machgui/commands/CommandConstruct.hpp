@@ -19,7 +19,7 @@
 #include "mathex/abox2d.hpp"
 #include "mathex/point3d.hpp"
 
-#include "world4d/observer.hpp"
+#include "world4d/Subject/Observer.hpp"
 
 #include "machgui/gui.hpp"
 

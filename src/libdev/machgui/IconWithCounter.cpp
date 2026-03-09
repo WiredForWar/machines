@@ -13,8 +13,8 @@
 #include "machgui/IconWithCounter.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "system/pathname.hpp"
-#include "machlog/races.hpp"
-#include "machlog/squad.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Actors/Squadron.hpp"
 #include "ctl/pvector.hpp"
 #include "machgui/internal/SoundManager.hpp"
 

@@ -7,8 +7,8 @@
 
 #include "planeted/editmode.hpp"
 #include "mathex/transf3d.hpp"
-#include "world4d/scenemgr.hpp"
-#include "world4d/camera.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Scene/Camera.hpp"
 #include "render/device.hpp"
 
 PedEditorMode::PedEditorMode()

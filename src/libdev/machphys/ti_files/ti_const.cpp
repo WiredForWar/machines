@@ -3,12 +3,12 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "machphys/ofactory.hpp"
-// #include "machphys/ofactory.ctp"
-#include "machphys/subid.hpp"
-// #include "machphys/subid.ctp"
+#include "machphys/ObjectFactory.hpp"
+// #include "machphys/ObjectFactory.ctp"
+#include "machphys/SubId.hpp"
+// #include "machphys/SubId.ctp"
 
-#include "machphys/construc.hpp"
+#include "machphys/Machines/Constructor.hpp"
 
 using MachPhysConstructorId = MachPhysConstructor::Id;
 

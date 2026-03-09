@@ -2,7 +2,7 @@
 
 #include <map>
 #include "gui/displaya.hpp"
-#include "machlog/p1handlr.hpp"
+#include "machlog/Messaging/FirstPersonHandler.hpp"
 
 class MachGuiFPCommand : public GuiDisplayable
 {

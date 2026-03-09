@@ -17,15 +17,15 @@
 
 #include "mathex/transf3d.hpp"
 #include "mathex/point2d.hpp"
-#include "world4d/compplan.hpp"
-#include "world4d/visplan.hpp"
-#include "world4d/valplan.hpp"
+#include "world4d/Entity/CompositePlan.hpp"
+#include "world4d/Plans/VisibilityPlan.hpp"
+#include "world4d/Plans/FloatValuePlan.hpp"
 
 #include "render/material.hpp"
-#include "machphys/tileboun.hpp"
-#include "machphys/tiledata.hpp"
+#include "machphys/Terrain/TileBoundary.hpp"
+#include "machphys/Terrain/TileData.hpp"
 #include "machphys/machphys.hpp"
-#include "machphys/surfchk.hpp"
+#include "machphys/Terrain/PlanetSurfaceChecker.hpp"
 
 class W4dDomain;
 class W4dLink;

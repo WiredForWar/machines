@@ -9,8 +9,8 @@
 #include "machgui/internal/MapAreaImpl.hpp"
 #include "system/pathname.hpp"
 #include "render/device.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "gui/painter.hpp"
 #include "machgui/gui.hpp"
 

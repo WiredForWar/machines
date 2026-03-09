@@ -10,8 +10,8 @@
 #include "machgui/InGameScreen.hpp"
 #include "device/time.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machvman.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
 
 MachGuiSelfDestructCommand::MachGuiSelfDestructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiDefaultCommand(pInGameScreen, "commands-self-destruct"_bind)

@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/wdebug.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 
 wdebug::wdebug(W4dSceneManager* pSourceSceneManager)
 {

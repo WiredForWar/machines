@@ -13,9 +13,9 @@
 #include "render/mesh.hpp"
 #include "render/vertex.hpp"
 
-#include "world4d/custom.hpp"
-#include "world4d/scenemgr.hpp"
-#include "world4d/stars.hpp"
+#include "world4d/Entity/Custom.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Scene/Stars.hpp"
 
 #include "system/pathname.hpp"
 

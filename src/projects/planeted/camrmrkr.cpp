@@ -6,9 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/camrmrkr.hpp"
-#include "machlog/planet.hpp"
-#include "machlog/camera.hpp"
-#include "world4d/entity.hpp"
+#include "machlog/World/Planet.hpp"
+#include "machlog/World/Camera.hpp"
+#include "world4d/Entity/Entity.hpp"
 #include "render/render.hpp"
 #include "render/device.hpp"
 #include "render/mesh.hpp"

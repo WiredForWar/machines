@@ -9,12 +9,12 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/administ.hpp"
-#include "machlog/move.hpp"
-#include "machlog/machvman.hpp"
-#include "machlog/opheal.hpp"
-#include "machlog/opadheal.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Administrator.hpp"
+#include "machlog/Operations/MoveOperation.hpp"
+#include "machlog/Messaging/MachineVoiceMailManager.hpp"
+#include "machlog/Operations/HealOperation.hpp"
+#include "machlog/Operations/AdminHealOperation.hpp"
 #include "ctl/pvector.hpp"
 
 MachGuiHealCommand::MachGuiHealCommand(MachInGameScreen* pInGameScreen)

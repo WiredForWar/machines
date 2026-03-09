@@ -9,11 +9,11 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
-#include "machlog/actor.hpp"
-#include "machlog/machine.hpp"
-#include "machlog/races.hpp"
-#include "machlog/network.hpp"
-#include "world4d/domain.hpp"
+#include "machlog/Actors/Actor.hpp"
+#include "machlog/Actors/Machine.hpp"
+#include "machlog/Races.hpp"
+#include "machlog/Messaging/Network.hpp"
+#include "world4d/Scene/Domain.hpp"
 
 MachGuiCamouflageCommand::MachGuiCamouflageCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-camouflage"_bind)

@@ -10,9 +10,9 @@
 #include "planeted/editpoly.hpp"
 #include "planeted/polygon.hpp"
 
-#include "machlog/planet.hpp"
+#include "machlog/World/Planet.hpp"
 
-#include "machphys/plansurf.hpp"
+#include "machphys/Terrain/PlanetSurface.hpp"
 
 #include "render/surface.hpp"
 #include "render/Painter.hpp"
@@ -21,8 +21,8 @@
 #include "render/device.hpp"
 #include "render/colour.hpp"
 
-#include "world4d/scenemgr.hpp"
-#include "world4d/manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
+#include "world4d/Manager.hpp"
 
 PedMapCreator::PedMapCreator(
     const PedPolygonEditor& domainEditor,

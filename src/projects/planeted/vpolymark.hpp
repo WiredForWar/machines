@@ -13,7 +13,7 @@
 #define _PLANETED_VPOLYMARK_HPP
 
 #include "base/base.hpp"
-#include "world4d/custom.hpp"
+#include "world4d/Entity/Custom.hpp"
 #include "mathex/point3d.hpp"
 
 class W4dEntity;

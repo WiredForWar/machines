@@ -4,12 +4,12 @@
 #include "gui/painter.hpp"
 #include "render/Painter.hpp"
 #include "gui/font.hpp"
-#include "machlog/machine.hpp"
+#include "machlog/Actors/Machine.hpp"
 #include "machgui/gui.hpp"
-#include "world4d/manager.hpp"
-#include "world4d/scenemgr.hpp"
+#include "world4d/Manager.hpp"
+#include "world4d/Scene/SceneManager.hpp"
 #include "render/device.hpp"
-#include "machlog/MachLog1stPersonActiveSquad.hpp"
+#include "machlog/Messaging/MachLog1stPersonActiveSquad.hpp"
 
 // Helpers ////////////////////////////////////////////////////////////////////////////////////////
 
