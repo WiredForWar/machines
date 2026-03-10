@@ -1313,6 +1313,11 @@ void RenderBackendGL::executeCommand(const BackendCommandSetLineWidth& command)
     glLineWidth(command.width);
 }
 
+void RenderBackendGL::executeCommand(const BackendCommandSetPointSize& command)
+{
+    glPointSize(command.size);
+}
+
 void RenderBackendGL::executeCommand(const BackendCommandSetGui2DUniforms& command)
 {
     const auto& u = command.uniforms;
