@@ -15,6 +15,7 @@
 #include "render/internal/DeviceImpl.hpp"
 #include "render/Device.hpp"
 #include "render/internal/BackendCommands.hpp"
+#include "render/internal/ColourPack.hpp"
 
 #include "ctl/Algorithm.hpp"
 
@@ -33,6 +34,96 @@
 #include "render/internal/StarsImpl.ipp"
 #endif
 
+// Attempt to match the Planck blackbody locus: maps a stellar temperature
+// in Kelvin to an RGB triplet normalised so the brightest channel is 1.0.
+// Based on Tanner Helland's approximation of the CIE 1964 colour-matching
+// data, tweaked for visual punch rather than scientific accuracy.
+static void starTemperatureToRGB(float kelvin, float& r, float& g, float& b)
+{
+    float temp = kelvin / 100.0f;
+
+    // Red channel
+    if (temp <= 66.0f)
+    {
+        r = 1.0f;
+    }
+    else
+    {
+        float x = temp - 60.0f;
+        r = 1.292936f * std::pow(x, -0.1332047f);
+    }
+
+    // Green channel
+    if (temp <= 66.0f)
+    {
+        g = 0.3900816f * std::log(temp) - 0.6318414f;
+    }
+    else
+    {
+        float x = temp - 60.0f;
+        g = 1.129891f * std::pow(x, -0.0755148f);
+    }
+
+    // Blue channel
+    if (temp >= 66.0f)
+    {
+        b = 1.0f;
+    }
+    else if (temp <= 19.0f)
+    {
+        b = 0.0f;
+    }
+    else
+    {
+        float x = temp - 10.0f;
+        b = 0.5432068f * std::log(x) - 1.1962541f;
+    }
+
+    r = std::clamp(r, 0.0f, 1.0f);
+    g = std::clamp(g, 0.0f, 1.0f);
+    b = std::clamp(b, 0.0f, 1.0f);
+
+    // Normalise so the brightest channel is 1.0 — preserves hue saturation.
+    float peak = std::max({ r, g, b });
+    if (peak > 0.0f)
+    {
+        r /= peak;
+        g /= peak;
+        b /= peak;
+    }
+}
+
+// Sample a random star temperature from a distribution inspired by real
+// spectral-type abundances. The night sky is dominated by K and M dwarfs
+// (cool/orange-red) with fewer hot O/B stars, but the brightest naked-eye
+// stars include many A/F types. We bias slightly toward variety so the
+// sky looks interesting.
+//   O  (~40000 K) :  1%     B  (~20000 K) :  3%
+//   A  (~9000 K)  : 10%     F  (~7000 K)  : 15%
+//   G  (~5800 K)  : 20%     K  (~4500 K)  : 30%
+//   M  (~3200 K)  : 18%     Red giant (~3000 K, rare bright) : 3%
+static float randomStarTemperature(MexBasicRandom* rng)
+{
+    float roll = mexRandomScalar(rng, 0.0f, 1.0f);
+
+    if (roll < 0.03f)          // Red giant / deep red
+        return mexRandomScalar(rng, 2500.0f, 3200.0f);
+    if (roll < 0.21f)          // M dwarf
+        return mexRandomScalar(rng, 3200.0f, 3900.0f);
+    if (roll < 0.51f)          // K
+        return mexRandomScalar(rng, 3900.0f, 5300.0f);
+    if (roll < 0.71f)          // G (Sun-like)
+        return mexRandomScalar(rng, 5300.0f, 6000.0f);
+    if (roll < 0.86f)          // F
+        return mexRandomScalar(rng, 6000.0f, 7500.0f);
+    if (roll < 0.96f)          // A
+        return mexRandomScalar(rng, 7500.0f, 10000.0f);
+    if (roll < 0.99f)          // B
+        return mexRandomScalar(rng, 10000.0f, 28000.0f);
+    // O
+    return mexRandomScalar(rng, 28000.0f, 40000.0f);
+}
+
 static const int N_SECTORS = 16;
 static const MATHEX_SCALAR SECTOR_WIDTH = 2 * Mathex::PI / N_SECTORS;
 static const RenColour STAR_COLOUR = RenColour::white();
@@ -44,7 +135,6 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
     : configuration_(config)
     , nStars_(nStars)
     , radius_(radius)
-    , colourFilter_(RenColour::white())
     , sectors_(N_SECTORS)
 {
     PRE(radius_ >= 1.0);
@@ -95,6 +185,14 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
             twinkleSectors_[s][i].frequency = mexRandomScalar(&twinkleRng, 0.5f, 2.5f);
             // Faint stars twinkle more noticeably, bright stars are steadier.
             twinkleSectors_[s][i].amplitude = 0.15f + 0.30f * (1.0f - alpha);
+
+            // Assign stellar colour from a blackbody temperature curve.
+            float kelvin = randomStarTemperature(&twinkleRng);
+            starTemperatureToRGB(
+                kelvin,
+                twinkleSectors_[s][i].baseR,
+                twinkleSectors_[s][i].baseG,
+                twinkleSectors_[s][i].baseB);
         }
     }
     TEST_INVARIANT;
@@ -115,16 +213,8 @@ void RenIStarsImpl::render(
 
     RenColour currentColourFilter = devImpl->currentCamera()->colourFilter();
 
-    // The stars colour is the same as the RGB of the colour filter of the current camera.
-    // Update this in a lazy fashion.
-    if (colourFilter_ != currentColourFilter)
-    {
-        ctl_for_each(sectors_, RenIStarsImplVerticesColourOp(currentColourFilter));
-        colourFilter_ = currentColourFilter;
-    }
-
-    // Animate star alpha values for twinkling.
-    updateTwinkle();
+    // Animate star alpha (twinkling) and apply per-star colour * camera filter.
+    updateTwinkle(currentColourFilter);
 
     // Pointers to vertex arrays for rendering.
     ctl_vector<RenIVertex*> vertexPtrs;
@@ -342,9 +432,12 @@ void RenIStarsImpl::cullSectors(
     }
 }
 
-void RenIStarsImpl::updateTwinkle()
+void RenIStarsImpl::updateTwinkle(const RenColour& colourFilter)
 {
     float elapsed = static_cast<float>(W4dManager::instance().time());
+    float filterR = mexClamp(colourFilter.r(), 0.0f, 1.0f);
+    float filterG = mexClamp(colourFilter.g(), 0.0f, 1.0f);
+    float filterB = mexClamp(colourFilter.b(), 0.0f, 1.0f);
 
     for (int s = 0; s < N_SECTORS; ++s)
     {
@@ -355,8 +448,11 @@ void RenIStarsImpl::updateTwinkle()
             float amp = twinkle[i].amplitude;
             float modulated = twinkle[i].baseAlpha
                 * ((1.0f - amp) + amp * std::sin(elapsed * twinkle[i].frequency + twinkle[i].phase));
-            uint32_t alphaByte = static_cast<uint32_t>(modulated * 255.0f) << 24;
-            sector[i].color = (sector[i].color & 0x00ffffffu) | alphaByte;
+
+            float r = twinkle[i].baseR * filterR;
+            float g = twinkle[i].baseG * filterG;
+            float b = twinkle[i].baseB * filterB;
+            sector[i].color = packColour(r, g, b, modulated);
         }
     }
 }

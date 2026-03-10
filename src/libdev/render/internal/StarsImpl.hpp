@@ -87,9 +87,7 @@ private:
     RenStars::Configuration configuration_;
     uint nStars_;
     MATHEX_SCALAR radius_;
-    RenColour colourFilter_;
-
-    void updateTwinkle();
+    void updateTwinkle(const RenColour& colourFilter);
 
     struct TwinkleParams
     {
@@ -97,6 +95,9 @@ private:
         float phase{};
         float frequency{};
         float amplitude{};
+        float baseR{1.0f};
+        float baseG{1.0f};
+        float baseB{1.0f};
     };
 
     // The actual store of the vertices that represent stars. The points are sorted
