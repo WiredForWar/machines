@@ -23,6 +23,8 @@
 
 #include "ctl/Vector.hpp"
 
+#include <vector>
+
 class UtlPercentage;
 
 class MexTransform3d;
@@ -87,9 +89,21 @@ private:
     MATHEX_SCALAR radius_;
     RenColour colourFilter_;
 
+    void updateTwinkle();
+
+    struct TwinkleParams
+    {
+        float baseAlpha{};
+        float phase{};
+        float frequency{};
+    };
+
     // The actual store of the vertices that represent stars. The points are sorted
     // by their azimuthal angle into sectors.
     ctl_vector<ctl_vector<RenIVertex>> sectors_;
+
+    // Parallel to sectors_: per-star twinkle parameters.
+    std::vector<std::vector<TwinkleParams>> twinkleSectors_;
 };
 
 #ifdef _INLINE
