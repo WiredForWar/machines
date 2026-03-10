@@ -18,7 +18,10 @@
 
 #include "ctl/Algorithm.hpp"
 
+#include "world4d/Manager.hpp"
+
 #include <algorithm>
+#include <cmath>
 
 #include "mathex/Angle.hpp"
 #include "mathex/EulerAngles.hpp"
@@ -77,6 +80,21 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
     // Give the vertices some random alpha values.
     ctl_for_each(sectors_, RenIStarsImplRandomiseAlphasOp(0.3, 1.0));
 
+    // Build per-star twinkle parameters (parallel to sorted sectors).
+    MexBasicRandom twinkleRng = MexBasicRandom::constructSeededFromTime();
+    twinkleSectors_.resize(N_SECTORS);
+    for (int s = 0; s < N_SECTORS; ++s)
+    {
+        const size_t count = sectors_[s].size();
+        twinkleSectors_[s].resize(count);
+        for (size_t i = 0; i < count; ++i)
+        {
+            float alpha = static_cast<float>((sectors_[s][i].color >> 24) & 0xff) / 255.0f;
+            twinkleSectors_[s][i].baseAlpha = alpha;
+            twinkleSectors_[s][i].phase = mexRandomScalar(&twinkleRng, 0.0f, Mathex::PI_2);
+            twinkleSectors_[s][i].frequency = mexRandomScalar(&twinkleRng, 0.5f, 2.5f);
+        }
+    }
     TEST_INVARIANT;
 }
 
@@ -102,6 +120,9 @@ void RenIStarsImpl::render(
         ctl_for_each(sectors_, RenIStarsImplVerticesColourOp(currentColourFilter));
         colourFilter_ = currentColourFilter;
     }
+
+    // Animate star alpha values for twinkling.
+    updateTwinkle();
 
     // Pointers to vertex arrays for rendering.
     ctl_vector<RenIVertex*> vertexPtrs;
@@ -316,6 +337,24 @@ void RenIStarsImpl::cullSectors(
     {
         if (sectorClip(antiWall, clockWall))
             pSectorPtrs->push_back(&(sectors_[sectorIndex]));
+    }
+}
+
+void RenIStarsImpl::updateTwinkle()
+{
+    float elapsed = static_cast<float>(W4dManager::instance().time());
+
+    for (int s = 0; s < N_SECTORS; ++s)
+    {
+        ctl_vector<RenIVertex>& sector = sectors_[s];
+        const std::vector<TwinkleParams>& twinkle = twinkleSectors_[s];
+        for (size_t i = 0; i < sector.size(); ++i)
+        {
+            float modulated = twinkle[i].baseAlpha
+                * (0.7f + 0.3f * std::sin(elapsed * twinkle[i].frequency + twinkle[i].phase));
+            uint32_t alphaByte = static_cast<uint32_t>(modulated * 255.0f) << 24;
+            sector[i].color = (sector[i].color & 0x00ffffffu) | alphaByte;
+        }
     }
 }
 
