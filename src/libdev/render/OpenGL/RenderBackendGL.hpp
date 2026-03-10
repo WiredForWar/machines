@@ -147,6 +147,7 @@ private:
     void executeCommand(const BackendCommandBeginRenderToTexture& command);
     void executeCommand(const BackendCommandEndRenderToTexture& command);
     void executeCommand(const BackendCommandSetLineWidth& command);
+    void executeCommand(const BackendCommandSetPointSize& command);
     void executeCommand(const BackendCommandBeginRenderPass& command);
     void executeCommand(const BackendCommandEndRenderPass& command);
     void executeCommand(const BackendCommandBindDefaultFramebuffer& command);

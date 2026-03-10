@@ -193,6 +193,14 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
                 twinkleSectors_[s][i].baseR,
                 twinkleSectors_[s][i].baseG,
                 twinkleSectors_[s][i].baseB);
+
+            // Assign size class based on brightness: brighter stars are bigger.
+            if (alpha >= 0.7f)
+                twinkleSectors_[s][i].sizeClass = 2;
+            else if (alpha >= 0.4f)
+                twinkleSectors_[s][i].sizeClass = 1;
+            else
+                twinkleSectors_[s][i].sizeClass = 0;
         }
     }
     TEST_INVARIANT;
@@ -269,15 +277,58 @@ void RenIStarsImpl::render(
     RenDevice::current()->recordCommand(
         Ren::Command::setBlendStateEnabled(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha));
 
-    // Render the vertices.
+    // Sort visible vertices into size-class buckets for multi-pass rendering.
     static const RenMaterial emptyMat;
-    ASSERT_INFO(vertexPtrs.size());
-    ASSERT_INFO(sizes.size());
-    ASSERT(vertexPtrs.size() == sizes.size(), "Vertices count calculation went wrong");
+    static constexpr float sizeClassPointSize[N_SIZE_CLASSES] = { 1.0f, 1.5f, 2.5f };
+    std::vector<RenIVertex> sizeClassVertices[N_SIZE_CLASSES];
+
     for (std::size_t i = 0; i < vertexPtrs.size(); ++i)
     {
-        RenDevice::current()->renderPrimitive(vertexPtrs[i], sizes[i], emptyMat, Ren::PrimitiveTopology::Points);
+        RenIVertex* base = vertexPtrs[i];
+        int count = sizes[i];
+
+        // Find which sector this pointer belongs to.
+        int sectorIdx = -1;
+        std::size_t vertexOffset = 0;
+        for (int s = 0; s < N_SECTORS; ++s)
+        {
+            RenIVertex* sectorBegin = sectors_[s].data();
+            RenIVertex* sectorEnd = sectorBegin + sectors_[s].size();
+            if (base >= sectorBegin && base < sectorEnd)
+            {
+                sectorIdx = s;
+                vertexOffset = static_cast<std::size_t>(base - sectorBegin);
+                break;
+            }
+        }
+
+        if (sectorIdx < 0)
+            continue;
+
+        const std::vector<TwinkleParams>& twinkle = twinkleSectors_[sectorIdx];
+        for (int v = 0; v < count; ++v)
+        {
+            int cls = twinkle[vertexOffset + v].sizeClass;
+            sizeClassVertices[cls].push_back(base[v]);
+        }
     }
+
+    // Render each size class with its point size.
+    for (int cls = 0; cls < N_SIZE_CLASSES; ++cls)
+    {
+        if (sizeClassVertices[cls].empty())
+            continue;
+
+        RenDevice::current()->recordCommand(Ren::Command::setPointSize(sizeClassPointSize[cls]));
+        RenDevice::current()->renderPrimitive(
+            sizeClassVertices[cls].data(),
+            sizeClassVertices[cls].size(),
+            emptyMat,
+            Ren::PrimitiveTopology::Points);
+    }
+
+    // Restore default point size.
+    RenDevice::current()->recordCommand(Ren::Command::setPointSize(1.0f));
 
     TEST_INVARIANT;
 }

@@ -216,6 +216,11 @@ struct BackendCommandSetLineWidth
     float width{};
 };
 
+struct BackendCommandSetPointSize
+{
+    float size{};
+};
+
 struct BackendCommandBeginRenderPass
 {
     RenderPassId renderPassId{};
@@ -301,6 +306,7 @@ using BackendCommand = std::variant<
     BackendCommandBeginRenderToTexture,
     BackendCommandEndRenderToTexture,
     BackendCommandSetLineWidth,
+    BackendCommandSetPointSize,
     BackendCommandBeginRenderPass,
     BackendCommandBindDefaultFramebuffer,
     BackendCommandBindFramebuffer,
@@ -511,6 +517,11 @@ inline BackendCommand endRenderToTexture()
 inline BackendCommand setLineWidth(float width)
 {
     return BackendCommandSetLineWidth{ width };
+}
+
+inline BackendCommand setPointSize(float size)
+{
+    return BackendCommandSetPointSize{ size };
 }
 
 inline BackendCommand beginRenderPass(RenderPassId renderPassId, FramebufferId framebufferId = 0)

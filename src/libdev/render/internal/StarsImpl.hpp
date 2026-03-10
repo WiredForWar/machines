@@ -89,6 +89,8 @@ private:
     MATHEX_SCALAR radius_;
     void updateTwinkle(const RenColour& colourFilter);
 
+    static constexpr int N_SIZE_CLASSES = 3;
+
     struct TwinkleParams
     {
         float baseAlpha{};
@@ -98,6 +100,7 @@ private:
         float baseR{1.0f};
         float baseG{1.0f};
         float baseB{1.0f};
+        int sizeClass{};
     };
 
     // The actual store of the vertices that represent stars. The points are sorted
