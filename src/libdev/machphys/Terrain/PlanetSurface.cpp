@@ -419,7 +419,7 @@ void MachPhysPlanetSurface::parseTile(const SysPathName& directoryname, UtlLineT
 
         //  The rotation stored in the file has positive going anti
         //  clockwise, we use positive going clockwise internally
-        rotation.set(zAxis, -rotationAngle * 90.0 * 3.1415926535 / 180.0);
+        rotation.set(zAxis, -rotationAngle * Mathex::PI_DIV_2);
 
         MexTransform3d transform;
         transform.position(newPosition);
