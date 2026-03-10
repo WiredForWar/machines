@@ -26,10 +26,11 @@
 #include "ctl/Algorithm.hpp"
 #include "ctl/Vector.hpp"
 
-#include <numeric>
-#include <iterator>
-#include <functional>
 #include <algorithm>
+#include <cmath>
+#include <functional>
+#include <iterator>
+#include <numeric>
 
 #include "utility/Percentage.hpp"
 
@@ -215,7 +216,10 @@ public:
 
     void operator()(RenIVertex& vertex)
     {
-        MATHEX_SCALAR randAlpha = mexRandomScalar(&random_, lowerBound_, upperBound_);
+        // Power-law distribution: most stars faint, few bright.
+        MATHEX_SCALAR uniform = mexRandomScalar(&random_, 0.0, 1.0);
+        MATHEX_SCALAR skewed = std::pow(uniform, 2.5);
+        MATHEX_SCALAR randAlpha = lowerBound_ + skewed * (upperBound_ - lowerBound_);
 
         vertex.color = setColourAlpha(vertex.color, randAlpha);
     }

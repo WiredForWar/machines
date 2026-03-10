@@ -93,6 +93,8 @@ RenIStarsImpl::RenIStarsImpl(RenStars::Configuration config, MATHEX_SCALAR radiu
             twinkleSectors_[s][i].baseAlpha = alpha;
             twinkleSectors_[s][i].phase = mexRandomScalar(&twinkleRng, 0.0f, Mathex::PI_2);
             twinkleSectors_[s][i].frequency = mexRandomScalar(&twinkleRng, 0.5f, 2.5f);
+            // Faint stars twinkle more noticeably, bright stars are steadier.
+            twinkleSectors_[s][i].amplitude = 0.15f + 0.30f * (1.0f - alpha);
         }
     }
     TEST_INVARIANT;
@@ -350,8 +352,9 @@ void RenIStarsImpl::updateTwinkle()
         const std::vector<TwinkleParams>& twinkle = twinkleSectors_[s];
         for (size_t i = 0; i < sector.size(); ++i)
         {
+            float amp = twinkle[i].amplitude;
             float modulated = twinkle[i].baseAlpha
-                * (0.7f + 0.3f * std::sin(elapsed * twinkle[i].frequency + twinkle[i].phase));
+                * ((1.0f - amp) + amp * std::sin(elapsed * twinkle[i].frequency + twinkle[i].phase));
             uint32_t alphaByte = static_cast<uint32_t>(modulated * 255.0f) << 24;
             sector[i].color = (sector[i].color & 0x00ffffffu) | alphaByte;
         }
