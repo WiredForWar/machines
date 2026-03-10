@@ -96,6 +96,7 @@ private:
         float baseAlpha{};
         float phase{};
         float frequency{};
+        float amplitude{};
     };
 
     // The actual store of the vertices that represent stars. The points are sorted
