@@ -24,7 +24,7 @@
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/Link.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/LinearMotionPlan.hpp"
 

@@ -13,10 +13,10 @@
 #define _REN_ENTITY_HPP
 
 #include "base/base.hpp"
-#include "base/tracker.hpp"
-#include "base/persist.hpp"
+#include "base/Tracker.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
-#include "render/matmap.hpp"
+#include "render/MaterialMap.hpp"
 #include "render/render.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/ForwardPlans.hpp"

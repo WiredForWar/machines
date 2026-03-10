@@ -6,8 +6,8 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "stdlib/memory.hpp"
-#include "mathex/poly2d.hpp"
-#include "ftl/seripmap.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "ftl/SerialPMap.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 void ti5()

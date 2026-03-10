@@ -6,19 +6,19 @@
 //  Definitions of non-inline non-template methods and global functions
 #include <stdio.h>
 
-#include "ctl/bitvec.hpp"
+#include "ctl/BitVector.hpp"
 
-#include "base/diag.hpp"
-#include "mathex/grid2d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/plane3d.hpp"
-#include "mathex/intersec.hpp"
-#include "mathex/utility.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Grid2d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Plane3d.hpp"
+#include "mathex/Intersections.hpp"
+#include "mathex/Utility.hpp"
 #include "machphys/Terrain/TileData.hpp"
 
-#include "render/mesh.hpp"
+#include "render/Mesh.hpp"
 
 #ifndef _INLINE
 #include "machphys/Terrain/TileData.ipp"

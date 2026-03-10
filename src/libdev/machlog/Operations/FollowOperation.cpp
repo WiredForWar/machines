@@ -16,7 +16,7 @@
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Races.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogFollowOperation);
 

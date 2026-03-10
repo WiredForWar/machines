@@ -3,10 +3,10 @@
 
 #define MOST_DERIVED_APP SDLApp
 
-#include "mathex/transf3d.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
-#include "device/timer.hpp"
+#include "mathex/Transform3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
+#include "device/Timer.hpp"
 #include "render/render.hpp"
 #include "afx/osapp.hpp"
 #include "world4d/Entity/CompositePlan.hpp"

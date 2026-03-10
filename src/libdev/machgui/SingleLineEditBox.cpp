@@ -7,8 +7,8 @@
 
 #include "machgui/SingleLineEditBox.hpp"
 
-#include "base/diag.hpp"
-#include "device/butevent.hpp"
+#include "base/Diag.hpp"
+#include "device/ButtonEvent.hpp"
 
 MachGuiSingleLineEditBox::MachGuiSingleLineEditBox(GuiDisplayable* pParent, const Gui::Box& box, const GuiBmpFont& font)
     : GuiSingleLineEditBox(pParent, box, font)

@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 

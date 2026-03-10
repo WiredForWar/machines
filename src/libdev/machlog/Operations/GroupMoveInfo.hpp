@@ -14,7 +14,7 @@
 #define _MACHLOG_GRPMVINF_HPP
 
 #include "base/base.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Vec2.hpp"
 
 class MachLogGroupMoveInfo
 // Memberwise canonical

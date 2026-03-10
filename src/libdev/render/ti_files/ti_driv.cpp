@@ -1,10 +1,10 @@
-#include "ctl/countptr.hpp"
-#include "ctl/countptr.ctp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/CountedPtr.ctp"
 
-#include "ctl/list.hpp"
-#include "ctl/list.ctp"
+#include "ctl/List.hpp"
+#include "ctl/List.ctp"
 
-#include "render/driv.hpp"
+#include "render/Driver.hpp"
 
 // class RenDriver;
 

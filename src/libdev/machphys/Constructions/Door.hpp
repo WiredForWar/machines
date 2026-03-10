@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/phys.hpp"
 
 // forward decls

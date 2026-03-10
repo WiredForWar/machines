@@ -2,7 +2,7 @@
 #define RENDER_TEXT_OPTIONS_HPP
 
 #include "Alignment.hpp"
-#include "colour.hpp"
+#include "render/Colour.hpp"
 
 namespace Ren
 {

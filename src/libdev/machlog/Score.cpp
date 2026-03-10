@@ -4,7 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 #include "machlog/Score.hpp"
 #include "machlog/Internal/ScoreImpl.hpp"
 #include "machlog/Actors/Actor.hpp"

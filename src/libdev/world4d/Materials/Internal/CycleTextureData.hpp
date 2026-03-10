@@ -13,11 +13,11 @@
 #define _WORLD4D_TEXDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
-#include "ctl/vector.hpp"
-#include "render/texture.hpp"
+#include "ctl/Vector.hpp"
+#include "render/Texture.hpp"
 
 class W4dCycleTextureData
 // Canonical form revoked

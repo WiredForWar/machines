@@ -17,7 +17,7 @@
 #define _LOCOMOTI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 

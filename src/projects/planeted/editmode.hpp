@@ -13,9 +13,9 @@
 #define _PLANETED_EDITMODE_HPP
 
 #include "base/base.hpp"
-#include "device/butevent.hpp"
-#include "mathex/line3d.hpp"
-#include "ctl/vector.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Line3d.hpp"
+#include "ctl/Vector.hpp"
 #include <fstream>
 
 class W4dSceneManager;

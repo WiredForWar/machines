@@ -1,5 +1,5 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 #include <string.hpp>
 
 class EnvOrbit;

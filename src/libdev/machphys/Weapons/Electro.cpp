@@ -5,25 +5,25 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Weapons/Electro.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/scale.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Scale.hpp"
 
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "mathex/line3d.hpp"
+#include "mathex/Line3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysElectro);
 

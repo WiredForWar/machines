@@ -14,7 +14,7 @@
 /* //////////////////////////////////////////////////////////////// */
 
 #include "base/base.hpp"
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "phys/phys.hpp"
 

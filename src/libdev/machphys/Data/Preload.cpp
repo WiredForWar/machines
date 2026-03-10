@@ -6,15 +6,15 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
-#include "sound/soundmix.hpp"
-#include "sound/sndwavid.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/WaveformId.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "render/texture.hpp"
-#include "render/device.hpp"
-#include "render/mesh.hpp"
-#include "render/colour.hpp"
+#include "render/Texture.hpp"
+#include "render/Device.hpp"
+#include "render/Mesh.hpp"
+#include "render/Colour.hpp"
 
-#include "system/memcaps.hpp"
+#include "system/MemoryCaps.hpp"
 
 #include "world4d/Entity/GenericComposite.hpp"
 #include "world4d/Sound/SoundManager.hpp"
@@ -124,7 +124,7 @@
 #include "machphys/Effects/Scavenger.hpp"
 #include "machphys/Locator.hpp"
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 #include "base/IProgressReporter.hpp"
 
 void MachPhysPreload::swPreload(MachPhysPreload::DoLoadingProgressUpdate doUpdate)

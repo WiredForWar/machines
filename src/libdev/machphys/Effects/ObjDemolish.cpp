@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/map.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Map.hpp"
+#include "ctl/CountedPtr.hpp"
 
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "render/matvec.hpp"
-#include "render/material.hpp"
-#include "render/colour.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Plans/SimpleScalePlan.hpp"
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
@@ -24,8 +24,8 @@
 #include "machphys/Effects/ObjDemolish.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "system/pathname.hpp"
+#include "mathex/Transform3d.hpp"
+#include "system/PathName.hpp"
 
 const std::string genericDemolitionFileName = "models/destroy/demolish/demolish.cdf";
 

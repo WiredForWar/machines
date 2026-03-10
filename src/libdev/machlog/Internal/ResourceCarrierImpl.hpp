@@ -13,13 +13,13 @@
 #define _MACHLOG_RESCARRI_HPP
 
 #include "base/base.hpp"
-// #include "ctl/list.hpp"
+// #include "ctl/List.hpp"
 
 #include "machlog/Actors/ResourceCarrier.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MachLogSmelter;
 class PhysConfigSpace2d;

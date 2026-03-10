@@ -13,7 +13,7 @@
 #define _WORLD4D_ANIMDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 

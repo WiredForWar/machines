@@ -12,7 +12,7 @@
 #ifndef _TESTLIST_HPP
 #define _TESTLIST_HPP
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 #include "base/base.hpp"
 #include "testh/soaktest.hpp"

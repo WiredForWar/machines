@@ -5,12 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "utility/linetok.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Scene/Domain.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Effects/ObjectExplosion.hpp"
 #include "machlog/Actions/ExplosionAction.hpp"
 #include "machlog/World/PlanetDomains.hpp"

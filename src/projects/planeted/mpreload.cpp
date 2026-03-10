@@ -7,10 +7,10 @@
  *
  */
 
-#include "base/diag.hpp"
-#include "render/device.hpp"
+#include "base/Diag.hpp"
+#include "render/Device.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "machphys/Effects/VapourPuff.hpp"
 #include "planeted/mpreload.hpp"
@@ -31,11 +31,11 @@
 #include "machphys/Constructions/MissileEmplacement.hpp"
 #include "machphys/Constructions/Smelter.hpp"
 #include "machphys/Effects/Fireball.hpp"
-#include "render/mesh.hpp"
+#include "render/Mesh.hpp"
 #include "world4d/Entity/GenericComposite.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machlog/World/Planet.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 //////////////////////////////////////////////////////////////////////
 

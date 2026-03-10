@@ -3,20 +3,20 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "device/time.hpp"
+#include "device/Time.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/SceneManager.hpp"
@@ -33,7 +33,7 @@
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Actors/Machine.hpp"
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 
 #include <type_traits>
 

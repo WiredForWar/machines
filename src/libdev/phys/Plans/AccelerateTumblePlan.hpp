@@ -14,7 +14,7 @@
 #define _PHYS_ACCETUMB_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "mathex/mathex.hpp"
 

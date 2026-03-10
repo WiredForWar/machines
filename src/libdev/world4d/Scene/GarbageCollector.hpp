@@ -21,8 +21,8 @@
 
 #include "base/base.hpp"
 #include "phys/phys.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
 
 // forward refs
 class W4dEntity;

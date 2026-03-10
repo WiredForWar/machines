@@ -15,7 +15,7 @@
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"
 #include "machlog/Operations/HealOperation.hpp"
 #include "machlog/Operations/AdminHealOperation.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachGuiHealCommand::MachGuiHealCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-heal"_bind)

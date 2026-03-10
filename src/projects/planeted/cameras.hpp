@@ -13,10 +13,10 @@
 #define _MACHGUI_CAMERAS_HPP
 
 #include "base/base.hpp"
-#include "device/butevent.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "device/timer.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "device/Timer.hpp"
 #include "machlog/World/Camera.hpp"
 
 #include "gui/gui.hpp"

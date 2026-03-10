@@ -10,9 +10,9 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
 #include "machgui/ui/MenuStyle.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
 #include "machgui/menus_helper.hpp"
 
 MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(

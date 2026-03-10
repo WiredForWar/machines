@@ -4,7 +4,7 @@
  */
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/phys.hpp"
 #include "machlog/Operations/MachineOperation.hpp"
 #include "machlog/ProductionUnit.hpp"

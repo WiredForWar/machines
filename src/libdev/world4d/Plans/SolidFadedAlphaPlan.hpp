@@ -14,10 +14,10 @@
 
 #include "base/base.hpp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
 #include "render/render.hpp"
-#include "render/material.hpp"
+#include "render/Material.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 
 // forward refs

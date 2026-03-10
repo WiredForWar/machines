@@ -14,9 +14,9 @@
 #define _PHYS_ABSP2D_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 // Forward declarations
 class mexPoint2d;

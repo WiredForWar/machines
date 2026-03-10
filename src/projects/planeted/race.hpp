@@ -13,7 +13,7 @@
 
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 // #include <strfwd.hpp>
 
 using string = std::string;

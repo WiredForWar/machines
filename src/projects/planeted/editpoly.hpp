@@ -13,9 +13,9 @@
 #define _PLANETED_EDITPOLY_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
+#include "mathex/Point2d.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "planeted/editmode.hpp"
 
 class PedVertexMarker;

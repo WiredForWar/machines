@@ -13,9 +13,9 @@
 #define _TERRTILE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 

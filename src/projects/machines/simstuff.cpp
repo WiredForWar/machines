@@ -1,5 +1,5 @@
 #include "machines/sdlapp.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 void debugTiming(const char*, bool);
 

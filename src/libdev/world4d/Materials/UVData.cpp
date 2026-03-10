@@ -11,8 +11,8 @@
 #include "world4d/Plans/UVPlan.hpp"
 #include "world4d/Plans/UVTranslation.hpp"
 
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 PER_DEFINE_PERSISTENT(W4dUVTranslateData);
 

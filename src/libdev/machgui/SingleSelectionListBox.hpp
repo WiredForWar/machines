@@ -13,10 +13,10 @@
 #define _MACHGUI_SSLISTBX_HPP
 
 #include "base/base.hpp"
-#include "gui/root.hpp"
-#include "gui/sslistbx.hpp"
+#include "gui/Root.hpp"
+#include "gui/SingleSelectionListBox.hpp"
 #include "machgui/FocusCapableControl.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include <optional>
 

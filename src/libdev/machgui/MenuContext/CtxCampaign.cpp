@@ -7,7 +7,7 @@
 
 #include "machgui/MenuContext/CtxCampaign.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "gui/gui.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -25,11 +25,11 @@
 #include "machgui/db/DbPlayerScenario.hpp"
 #include "machgui/db/DbScenario.hpp"
 #include "render/Font.hpp"
-#include "system/registry.hpp"
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
+#include "system/Registry.hpp"
+#include "gui/Font.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>

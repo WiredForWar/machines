@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "utility/linetok.hpp"
-#include "sim/manager.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Actions/EnableActionAction.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogEnableActionAction);

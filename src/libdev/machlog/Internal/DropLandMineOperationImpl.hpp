@@ -16,12 +16,12 @@
 #include "machlog/Operations/DropLandMineOperation.hpp"
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 // forward declarations
 

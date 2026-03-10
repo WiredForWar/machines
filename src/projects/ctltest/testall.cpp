@@ -5,20 +5,20 @@
 
 #include <algorithm>
 
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 #include "ctl/queue.hpp"
-#include "ctl/list.hpp"
-#include "ctl/deque.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/nbvector.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Deque.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/NoBoundsVector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "ctl/set.hpp"
-#include "ctl/map.hpp"
-#include "ctl/mmvector.hpp"
+#include "ctl/Map.hpp"
+#include "ctl/MinMemoryVector.hpp"
 
 #include "ctl/testh/dummy.hpp"
 
-#include "mathex/double.hpp"
+#include "mathex/Double.hpp"
 
 void testDeque();
 void testQueue();

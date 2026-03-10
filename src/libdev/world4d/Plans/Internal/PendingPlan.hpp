@@ -14,7 +14,7 @@
 #define _WORLD4D_PENDPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 // forward decl
 template <class PLAN_TYPE> class W4dPendingPlan;

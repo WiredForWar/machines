@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-// #include "mathex/epsilon.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/poly2d.hpp"
+// #include "mathex/Epsilon.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Polygon2d.hpp"
 
 #include "phys/Trace.hpp"
 #include "phys/phys.hpp"

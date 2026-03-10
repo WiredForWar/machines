@@ -11,10 +11,10 @@
 #include "machgui/StatisticsBar.hpp"
 #include "machgui/ui/MenuText.hpp"
 
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machphys/machphys.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 float MachGuiStatisticsDisplay::initialTime_ = 0;
 float MachGuiStatisticsDisplay::ratioComplete_ = 0;

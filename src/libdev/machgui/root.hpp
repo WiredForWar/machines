@@ -6,7 +6,7 @@
 #ifndef _GUITEST_ROOT_HPP
 #define _GUITEST_ROOT_HPP
 
-#include "gui/root.hpp"
+#include "gui/Root.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 

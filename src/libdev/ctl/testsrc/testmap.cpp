@@ -1,7 +1,7 @@
 #include <string.hpp>
 // #include <function.hpp>
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 
 void testMap();
 void testMultiMap();

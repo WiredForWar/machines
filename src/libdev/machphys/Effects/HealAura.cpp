@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/HealAura.hpp"
 #include "machphys/Effects/HealHelix.hpp"
 #include "machphys/Machines/Machine.hpp"
@@ -16,20 +16,20 @@
 #include "world4d/Plans/SimpleScalePlan.hpp"
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
-#include "render/scale.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/colour.hpp"
-#include "render/material.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "render/Scale.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Colour.hpp"
+#include "render/Material.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/degrees.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Degrees.hpp"
+#include "ctl/Vector.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysHealAura);
 

@@ -16,8 +16,8 @@
 #include "base/base.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/ForwardMaterials.hpp"
-#include "render/texture.hpp"
-#include "ctl/vector.hpp"
+#include "render/Texture.hpp"
+#include "ctl/Vector.hpp"
 
 // forward refs
 class W4dComposite;

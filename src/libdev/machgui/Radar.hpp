@@ -13,7 +13,7 @@
 #define _MACHGUI_RADAR_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
 class MachGuiRadarImpl;
 class MachActor;

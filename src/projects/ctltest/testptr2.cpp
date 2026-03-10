@@ -1,9 +1,9 @@
 #include "base/base.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/fixedvec.hpp"
-#include "ctl/mmvector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/MinMemoryVector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 void testPtr2(int* pInt)
 {

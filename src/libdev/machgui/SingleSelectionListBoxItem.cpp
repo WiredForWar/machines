@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "gui/sslistit.hpp"
+#include "gui/SingleSelectionListBoxItem.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
 #include "machgui/SingleSelectionListBox.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/gui.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 

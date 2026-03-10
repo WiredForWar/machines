@@ -13,7 +13,7 @@
 #define _MACHLOG_SQUADI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machlog/Actors/Squadron.hpp"
 
 class MachLogSquadronImpl

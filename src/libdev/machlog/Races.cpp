@@ -3,20 +3,20 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 #include "machlog/Races.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/eulerang.hpp"
-#include "ctl/algorith.hpp"
-#include "ctl/erase.hpp"
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
-#include "utility/bidpmap.hpp"
-#include "utility/bndidgen.hpp"
-#include "utility/linetok.hpp"
-#include "network/netnet.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/Erase.hpp"
+#include "ctl/Vector.hpp"
+#include "system/PathName.hpp"
+#include "utility/BoundedIdPMap.hpp"
+#include "utility/BoundedIdGenerator.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "network/Network.hpp"
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Manager.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Machines/ConstructorData.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"
 #include "machphys/Random.hpp"
@@ -70,7 +70,7 @@
 
 #include "base/IProgressReporter.hpp"
 
-#include "system/vfs.hpp"
+#include "system/VFS.hpp"
 
 #include <memory>
 #include <cstdio>

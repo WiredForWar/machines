@@ -14,8 +14,8 @@
 #include "machlog/Actors/Factory.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machlog/Races.hpp"
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
+#include "gui/Font.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 

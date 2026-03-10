@@ -7,8 +7,8 @@
 
 #include "machphys/Effects/MushroomEdge.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMushroomEdge);
 

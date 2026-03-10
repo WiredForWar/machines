@@ -13,7 +13,7 @@
 #define _MACHLOG_SYSMESS_HPP
 
 #include "base/base.hpp"
-#include "network/sysmess.hpp"
+#include "network/SystemMessageHandler.hpp"
 #include "machphys/machphys.hpp"
 
 class MachLogSystemMessageHandler : public NetSystemMessageHandler

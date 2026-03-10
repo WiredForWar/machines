@@ -7,7 +7,7 @@
 
 #include "machlog/Tech/Internal/ResearchItemImpl.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogResearchItemImpl)
 

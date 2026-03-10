@@ -10,26 +10,26 @@
 #include "planeted/domain.hpp"
 #include "planeted/vetxmrkr.hpp"
 
-#include "device/keyboard.hpp"
-#include "device/eventq.hpp"
-#include "device/mouse.hpp"
+#include "device/Keyboard.hpp"
+#include "device/EventQueue.hpp"
+#include "device/Mouse.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/quatern.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quaternion.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Scene/Camera.hpp"
 
-#include "render/device.hpp"
+#include "render/Device.hpp"
 
 #include "machlog/World/Planet.hpp"
 
 #include "machphys/Terrain/PlanetSurface.hpp"
 
-#include "utility/linetok.hpp"
-#include "utility/tostring.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "utility/ToString.hpp"
 
 PedDomainEditor::PedDomainEditor()
 {

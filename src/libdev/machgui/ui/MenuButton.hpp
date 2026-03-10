@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machgui/FocusCapableControl.hpp"
 
 class GuiRoot;

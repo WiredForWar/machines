@@ -12,9 +12,9 @@
 #ifndef _MACHLOG_MINESITE_HPP
 #define _MACHLOG_MINESITE_HPP
 
-// #include "ctl/pvector.hpp"
+// #include "ctl/PtrVector.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machphys/machphys.hpp"
 

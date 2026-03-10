@@ -16,7 +16,7 @@
 #define _MACHLOG_MISSHOLD_HPP
 
 #include "base/base.hpp"
-#include "sim/projecti.hpp"
+#include "sim/Projectile.hpp"
 
 class MachPhysMissile;
 

@@ -8,28 +8,28 @@ set(SYSTEM_SOURCES
     Variable.cpp
     Variable.hpp
     Variable_p.hpp
-    filedata.cpp
-    filedata.hpp
-    filedate.cpp
-    filedate.hpp
-    fileenum.cpp
-    fileenum.hpp
-    filefind.cpp
-    filefind.hpp
-    filetime.cpp
-    filetime.hpp
-    internal/metafili.hpp
-    internal/pathnami.hpp
-    memcaps.cpp
-    memcaps.hpp
-    pathname.cpp
-    pathname.hpp
-    registry.cpp
-    registry.hpp
-    vfs.cpp
-    vfs.hpp
-    winapi.cpp
-    winapi.hpp
+    FileData.cpp
+    FileData.hpp
+    FileDate.cpp
+    FileDate.hpp
+    FileEnumerator.cpp
+    FileEnumerator.hpp
+    FileFinder.cpp
+    FileFinder.hpp
+    FileTime.cpp
+    FileTime.hpp
+    internal/MetaFileImpl.hpp
+    internal/PathNameImpl.hpp
+    MemoryCaps.cpp
+    MemoryCaps.hpp
+    PathName.cpp
+    PathName.hpp
+    Registry.cpp
+    Registry.hpp
+    VFS.cpp
+    VFS.hpp
+    WindowsAPI.cpp
+    WindowsAPI.hpp
 )
 
 add_library(system ${GAME_COMPONENT_LIB_TYPE} ${SYSTEM_SOURCES})

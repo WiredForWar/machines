@@ -9,20 +9,20 @@
 #include "machphys/Effects/Helix.hpp"
 #include "machphys/Effects/Effects.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "render/texture.hpp"
-#include "sim/manager.hpp"
+#include "render/Texture.hpp"
+#include "sim/Manager.hpp"
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/MaterialSequencePlan.hpp"
-#include "render/colour.hpp"
-#include "render/material.hpp"
-#include "render/scale.hpp"
-#include "render/matvec.hpp"
+#include "render/Colour.hpp"
+#include "render/Material.hpp"
+#include "render/Scale.hpp"
+#include "render/MaterialVec.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysHealHelix);
 

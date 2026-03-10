@@ -16,7 +16,7 @@
 #include <string>
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class SoakTestAssert
 {

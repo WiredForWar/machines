@@ -8,10 +8,10 @@
 #include <stdio.h>
 #include <iomanip>
 
-#include "device/time.hpp"
+#include "device/Time.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Effects/SmokePlume.hpp"
@@ -20,7 +20,7 @@
 #include "world4d/Plans/SimpleScalePlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/LinearMotionPlan.hpp"
 

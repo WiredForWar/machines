@@ -4,17 +4,17 @@
  */
 // #include "windows.h"
 #include "render/Font.hpp"
-#include "system/pathname.hpp"
-#include "network/netnet.hpp"
+#include "system/PathName.hpp"
+#include "network/Network.hpp"
 
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "gui/gui.hpp"
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machgui/ActorBitmaps.hpp"
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Machine.hpp"

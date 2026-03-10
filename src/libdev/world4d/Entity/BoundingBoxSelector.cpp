@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "world4d/Entity/BoundingBoxSelector.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Scene/Domain.hpp"
@@ -13,10 +13,10 @@
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Entity/Composite.hpp"
 
-#include "render/device.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "render/Device.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 W4dBoundingBoxSelector::W4dBoundingBoxSelector(const W4dCamera& camera, const MexQuad3d& boundingBox)
     : pCamera_(&camera)

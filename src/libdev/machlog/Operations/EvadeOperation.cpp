@@ -7,10 +7,10 @@
 
 #include "machlog/Internal/EvadeOperationImpl.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Polygon2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

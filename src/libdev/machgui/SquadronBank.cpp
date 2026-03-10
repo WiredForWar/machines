@@ -3,8 +3,8 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "mathex/point2d.hpp"
-#include "mathex/random.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Random.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Actors/Squadron.hpp"
@@ -16,9 +16,9 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/SquadronBank.hpp"
 #include "machgui/IconWithCounter.hpp"
-#include "gui/painter.hpp"
-#include "device/butevent.hpp"
-#include "device/keytrans.hpp"
+#include "gui/GuiPainter.hpp"
+#include "device/ButtonEvent.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 SysPathName MachGuiCorralResource_hack(const MachActor* pActor); // Defined in NewCorralIcon.cpp

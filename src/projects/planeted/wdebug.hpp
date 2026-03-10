@@ -13,7 +13,7 @@
 #define _WDEBUG_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dSceneManager;
 

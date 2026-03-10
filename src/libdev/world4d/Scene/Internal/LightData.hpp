@@ -13,14 +13,14 @@
 #define _WORLD4D_LIGHTDAT_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/Materials/Internal/AnimationData.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/point3d.hpp"
-#include "render/colour.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point3d.hpp"
+#include "render/Colour.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dEntity;
 class W4dComposite;

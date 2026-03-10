@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 
-#include "gui/icon.hpp"
-#include "gui/listobvr.hpp"
+#include "gui/Icon.hpp"
+#include "gui/ListObserver.hpp"
 
 // Forward refs
 class MachInGameScreen;

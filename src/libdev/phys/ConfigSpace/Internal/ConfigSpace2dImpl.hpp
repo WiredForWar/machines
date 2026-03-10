@@ -15,14 +15,14 @@
 #define _PHYS_CS2DATA_HPP
 
 #include "base/base.hpp"
-#include "ctl/utility.hpp"
-#include "ctl/pvector.hpp"
-#include "ftl/serialid.hpp"
-#include "ftl/seripmap.hpp"
-#include "ftl/seriamap.hpp"
-#include "ftl/reuidgen.hpp"
+#include "ctl/Utility.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ftl/SerialId.hpp"
+#include "ftl/SerialPMap.hpp"
+#include "ftl/SerialMap.hpp"
+#include "ftl/ReusingIdGenerator.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/Plans/AlignedBSPTree2d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"

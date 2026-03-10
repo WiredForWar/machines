@@ -13,11 +13,11 @@
 #define _MACHPHYS_WHEELSI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Locomotion/Internal/LocomotionMethodImpl.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/radians.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/Radians.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dLink;
 class MachPhysWheels;

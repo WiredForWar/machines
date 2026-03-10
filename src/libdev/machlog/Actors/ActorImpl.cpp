@@ -7,9 +7,9 @@
 
 #include "machlog/Internal/ActorImpl.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Race.hpp"
 #include "machlog/Races.hpp"

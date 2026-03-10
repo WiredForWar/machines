@@ -5,20 +5,20 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-// #include "utility/id.hpp"
+// #include "utility/Id.hpp"
 
-#include "base/diag.hpp"
-#include "mathex/point2d.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "network/message.hpp"
-#include "network/session.hpp"
-#include "network/nodeuid.hpp"
-#include "network/netnet.hpp"
-#include "network/sysmess.hpp"
+#include "network/Message.hpp"
+#include "network/Session.hpp"
+#include "network/NodeUid.hpp"
+#include "network/Network.hpp"
+#include "network/SystemMessageHandler.hpp"
 
 #include "phys/phys.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Messaging/Network.hpp"

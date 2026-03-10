@@ -6,9 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/Cameras.hpp"
-#include "device/keytrans.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 #include "machgui/IInputRegistry.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Polygon2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Entity/MotionControlledEntity.hpp"
@@ -29,11 +29,11 @@
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Machines/MachineData.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
-#include "envirnmt/planet.hpp"
-#include "render/device.hpp"
-#include "utility/linetok.hpp"
-#include "gui/event.hpp"
-#include "system/vfs.hpp"
+#include "envirnmt/PlanetEnvironment.hpp"
+#include "render/Device.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "gui/Event.hpp"
+#include "system/VFS.hpp"
 
 #include <memory>
 #include <ranges>

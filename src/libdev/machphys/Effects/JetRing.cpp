@@ -4,22 +4,22 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machphys/Effects/JetRing.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 #include "machphys/Effects/JetRingPlan.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "render/scale.hpp"
+#include "render/Scale.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Entity/Link.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysJetRing);
 

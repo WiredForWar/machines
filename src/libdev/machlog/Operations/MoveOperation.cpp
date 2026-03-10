@@ -11,14 +11,14 @@
 
 #include "phys/Plans/MotionChunk.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Vec2.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/MachineMoveInfo.hpp"
 
@@ -33,7 +33,7 @@
 
 #include "machlog/Internal/MoveOperationImpl.hpp"
 
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 PER_DEFINE_PERSISTENT(MachLogMoveToOperation);

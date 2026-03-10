@@ -7,8 +7,8 @@
 
 #include "machgui/internal/PlayerNameList.hpp"
 #include "gui/gui.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/MenuStyle.hpp"

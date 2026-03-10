@@ -13,14 +13,14 @@
 #define _WORLD4D_MULTITEX_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 #include "render/render.hpp"
-#include "render/texture.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/countptr.hpp"
+#include "render/Texture.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "world4d/Materials/Internal/AnimationData.hpp"
 
 class W4dEntity;

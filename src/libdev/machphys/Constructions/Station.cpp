@@ -7,7 +7,7 @@
 
 #include "machphys/Constructions/Station.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 MachPhysStation::MachPhysStation(const MexPoint2d& position, Type type)
     : position_(position)

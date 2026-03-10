@@ -5,8 +5,8 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/map.hpp"
-#include "ctl/map.ctp"
+#include "ctl/Map.hpp"
+#include "ctl/Map.ctp"
 
 class SimCondition;
 

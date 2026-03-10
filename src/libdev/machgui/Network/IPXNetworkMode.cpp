@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/Network/IPXNetworkMode.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 MachGuiIPXNetworkMode::MachGuiIPXNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)

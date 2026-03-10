@@ -14,7 +14,7 @@
 #define _MACHGUI_DBPLANET_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machgui/db/DbElement.hpp"
 
 // forward refs

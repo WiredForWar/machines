@@ -7,10 +7,10 @@
 
 #include "machines/leaktrak.hpp"
 
-#include "device/keyboard.hpp"
-#include "sim/manager.hpp"
+#include "device/Keyboard.hpp"
+#include "sim/Manager.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 void LeakTracker::update(Action action, SampleRate rate)
 {

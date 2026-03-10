@@ -7,12 +7,12 @@
 
 #include "machlog/Internal/EvadeOperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Machine.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogEvadeOperationImpl);
 

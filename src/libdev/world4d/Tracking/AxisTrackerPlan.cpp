@@ -7,12 +7,12 @@
 
 #include <cmath>
 
-#include "mathex/vec3.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 #include "world4d/Tracking/AxisTrackerPlan.hpp"
 #include "world4d/Manager.hpp"

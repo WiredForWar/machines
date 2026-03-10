@@ -13,7 +13,7 @@
 #define _RACE_HPP
 
 #include "base/base.hpp"
-#include "sim/process.hpp"
+#include "sim/Process.hpp"
 #include "machphys/machphys.hpp"
 
 // Orthodox canonical (revoked)

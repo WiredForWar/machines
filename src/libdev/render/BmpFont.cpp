@@ -8,9 +8,9 @@
 #include "render/BmpFont.hpp"
 #include "render/Painter.hpp"
 #include "render/internal/BmpFontCore.hpp"
-#include "render/surface.hpp"
-#include "base/diag.hpp"
-#include "base/persist.hpp"
+#include "render/Surface.hpp"
+#include "base/Diag.hpp"
+#include "base/Persistence.hpp"
 
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 

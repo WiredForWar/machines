@@ -14,8 +14,8 @@
 #define _WORLD4D_CAMVOLUM_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
 
 // forward refs
 class MexQuad3d;

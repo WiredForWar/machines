@@ -6,10 +6,10 @@
 
 #include "machlog/Internal/AdminMoveOperationImpl.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

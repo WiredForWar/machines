@@ -19,7 +19,7 @@
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Data/Data.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Combat/ExpandingBlast.hpp"

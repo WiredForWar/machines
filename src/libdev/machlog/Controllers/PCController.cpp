@@ -3,14 +3,14 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 #include "base/base.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Controllers/PCController.hpp"
 #include "machlog/Actors/Machine.hpp"

@@ -8,7 +8,7 @@
 #include "machphys/Persistence/WeaponPersistence.hpp"
 #include "world4d/Entity/Generic.hpp"
 #include "machphys/Weapons/Weapon.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/Weapons/PlasmaWeapon.hpp"
 #include "machphys/Weapons/FlameThrower.hpp"
 #include "machphys/Weapons/Bolter.hpp"

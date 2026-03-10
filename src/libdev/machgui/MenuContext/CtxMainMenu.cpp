@@ -15,8 +15,8 @@
 #include "machgui/Animation.hpp"
 #include "machgui/MessageBoxResponder.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/font.hpp"
-#include "system/pathname.hpp"
+#include "gui/Font.hpp"
+#include "system/PathName.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 

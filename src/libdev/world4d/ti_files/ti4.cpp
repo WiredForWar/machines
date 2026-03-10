@@ -1,11 +1,11 @@
 // These don't appear to be required?
-// #include "ctl/vector.hpp"
-// #include "ctl/vector.ctp"
+// #include "ctl/Vector.hpp"
+// #include "ctl/Vector.ctp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/countptr.ctp"
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/CountedPtr.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
 #include "world4d/Entity/CompositePlan.hpp"
 

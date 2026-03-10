@@ -17,7 +17,7 @@
 #include "machgui/BindId.hpp"
 
 #include "phys/MotionControl/Motion.hpp"
-#include "device/keytrans.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 
 class PhysMotionControlWithTrans : public PhysMotionControl
 // Canonical form revoked

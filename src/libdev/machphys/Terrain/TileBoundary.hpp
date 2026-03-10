@@ -19,9 +19,9 @@
 #define _TILEBOUN_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 // Forward declarations
 class MexPoint3d;

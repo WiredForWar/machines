@@ -14,7 +14,7 @@
 #define _MACHLOG_OPCONSTI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/Operations/ConstructOperation.hpp"
 
 // forward declarations

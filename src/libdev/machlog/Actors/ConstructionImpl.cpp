@@ -8,7 +8,7 @@
 #include "machlog/Internal/ConstructionImpl.hpp"
 
 #include "machlog/Actors/Constructor.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogConstructionImpl);
 

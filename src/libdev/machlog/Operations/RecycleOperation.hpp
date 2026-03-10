@@ -13,7 +13,7 @@
 #define _MACHLOG_OPRECYCL_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Operations/Operation.hpp"
 
 class MachLogMachine;

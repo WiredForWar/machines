@@ -18,9 +18,9 @@
 #define _WORLD4D_AXISTRAK_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "world4d/world4d.hpp"
 

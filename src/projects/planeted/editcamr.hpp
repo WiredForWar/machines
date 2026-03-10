@@ -13,8 +13,8 @@
 #define _PLANETED_EDITCAMR_HPP
 
 #include "base/base.hpp"
-#include "device/butevent.hpp"
-#include "render/colour.hpp"
+#include "device/ButtonEvent.hpp"
+#include "render/Colour.hpp"
 #include "machphys/machphys.hpp"
 #include "planeted/editmode.hpp"
 

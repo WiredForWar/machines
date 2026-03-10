@@ -3,10 +3,10 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
-#include "ctl/list.hpp"
-#include "ctl/list.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
+#include "ctl/List.hpp"
+#include "ctl/List.ctp"
 
 class MotionControl;
 class ModelData;

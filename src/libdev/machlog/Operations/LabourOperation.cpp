@@ -9,14 +9,14 @@
 #include "machlog/Internal/LabourOperationImpl.hpp"
 
 // #include "machphys/Terrain/PlanetSurface.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Data/Data.hpp"
 #include "machphys/Machines/ConstructorData.hpp"

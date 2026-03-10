@@ -1,9 +1,9 @@
 #include "gui/gui.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "render/BmpFont.hpp"
 #include "render/Painter.hpp"
-#include "system/pathname.hpp"
-#include "system/vfs.hpp"
+#include "system/PathName.hpp"
+#include "system/VFS.hpp"
 
 #include <cassert>
 #include <stdio.h>

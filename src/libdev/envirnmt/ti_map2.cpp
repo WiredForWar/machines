@@ -1,6 +1,6 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
-#include "ctl/map.hpp"
-#include "mathex/angle.hpp"
+#include "ctl/Map.hpp"
+#include "mathex/Angle.hpp"
 
 class EnvElevationColourTable;
 

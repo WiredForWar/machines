@@ -13,11 +13,11 @@
 #define _WORLD4D_UVDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/Materials/Internal/AnimationData.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Vec2.hpp"
 
 class W4dEntity;
 

@@ -6,12 +6,12 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "world4d/Scene/CameraShake.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/random.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Random.hpp"
 
 #include "phys/Plans/LinearMotionPlan.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
 #include "world4d/Manager.hpp"
 

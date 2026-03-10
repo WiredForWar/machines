@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

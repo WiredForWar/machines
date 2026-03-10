@@ -7,17 +7,17 @@
 
 #include "machphys/Constructions/Smelter.hpp"
 
-#include "ctl/countptr.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/ObjectFactory.hpp"
 #include "machphys/Constructions/Entrance.hpp"
@@ -27,7 +27,7 @@
 #include "machphys/Effects/SmokePlume.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysSmelter);
 

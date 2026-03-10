@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/cvexpgon.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "machphys/Constructions/ConstructionData.hpp"
 #include "machphys/Constructions/Stations.hpp"

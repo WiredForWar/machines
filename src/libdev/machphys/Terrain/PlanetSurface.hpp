@@ -14,15 +14,15 @@
 #define _PLANSURF_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "system/pathname.hpp"
+#include "base/Persistence.hpp"
+#include "system/PathName.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/abox2d.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/utility.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Utility.hpp"
 
 class EnvPlanetEnvironment;
 class MachPhysTerrainTile;

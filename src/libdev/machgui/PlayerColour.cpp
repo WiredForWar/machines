@@ -7,17 +7,17 @@
 
 #include "machgui/PlayerColour.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/MessageBroker.hpp"
 #include "machgui/DropDownListBox.hpp"
 #include "machgui/ui/MenuStyle.hpp"
-#include "gui/scrolist.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
+#include "gui/ScrollableList.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
 #include "machgui/menus_helper.hpp"
 
 // virtual

@@ -12,7 +12,7 @@
 #ifndef _TESTVEC_HPP
 #define _TESTVEC_HPP
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "base/base.hpp"
 #include "testh/soaktest.hpp"

@@ -4,13 +4,13 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/Beam.hpp"
 
-#include "ctl/vector.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Transform3d.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
@@ -20,12 +20,12 @@
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "mathex/angle.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Angle.hpp"
+#include "mathex/Degrees.hpp"
 
-#include "render/scale.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
+#include "render/Scale.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/Link.hpp"

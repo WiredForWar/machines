@@ -13,11 +13,11 @@
 #define _MACHPHYS_MINE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "machphys/Constructions/Construction.hpp"
 #include "world4d/Entity/Link.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class MachPhysMineData;
 class MachPhysConstructionPersistence;

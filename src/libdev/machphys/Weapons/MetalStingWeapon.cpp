@@ -7,9 +7,9 @@
 
 #include "machphys/Weapons/MetalStingWeapon.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

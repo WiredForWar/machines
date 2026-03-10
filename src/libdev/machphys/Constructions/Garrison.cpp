@@ -8,10 +8,10 @@
 #include "machphys/Constructions/Garrison.hpp"
 #include "machphys/ObjectFactory.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Transform3d.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Constructions/GarrisonData.hpp"
 #include "machphys/Constructions/Entrance.hpp"
 #include "machphys/Data/Data.hpp"

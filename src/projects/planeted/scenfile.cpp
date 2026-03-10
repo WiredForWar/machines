@@ -7,15 +7,15 @@
 
 #include "planeted/scenfile.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "planeted/race.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/degrees.hpp"
-#include "system/winapi.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Degrees.hpp"
+#include "system/WindowsAPI.hpp"
 
 const string PedScenarioFile::artefactToken_ = "ARTEFACTS";
 const string PedScenarioFile::endArtefactToken_ = "ENDARTEFACTS";

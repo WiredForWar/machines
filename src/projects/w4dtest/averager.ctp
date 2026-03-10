@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 
 template <class X>
 UtlAverager<X>::UtlAverager()

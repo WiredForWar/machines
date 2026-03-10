@@ -8,21 +8,21 @@
 #include <algorithm>
 #include <stdio.h>
 
-#include "base/diag.hpp"
-#include "ctl/list.hpp"
+#include "base/Diag.hpp"
+#include "ctl/List.hpp"
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/sphere3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Sphere3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "render/device.hpp"
-#include "render/stats.hpp"
-#include "render/colour.hpp"
+#include "render/Device.hpp"
+#include "render/Stats.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Scene/Camera.hpp"

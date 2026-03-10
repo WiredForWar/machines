@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "world4d/Scene/Domain.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Weapons/TreacheryWeapon.hpp"
 #include "machphys/Weapons/TreacheryOrb.hpp"
 #include "machphys/Weapons/Weapon.hpp"

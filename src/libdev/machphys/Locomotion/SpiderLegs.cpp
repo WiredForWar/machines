@@ -5,26 +5,26 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "base/base.hpp"
 
-#include "ctl/countptr.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Locomotion/SpiderLegs.hpp"
 #include "machphys/Locomotion/Internal/SpiderLegsImpl.hpp"
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 
-#include "mathex/utility.hpp"
+#include "mathex/Utility.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

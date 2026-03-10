@@ -15,9 +15,9 @@
 #include "machgui/commands/command.hpp"
 #include "world4d/Subject/Observer.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machlog/Actors/ResourceCarrier.hpp"
 

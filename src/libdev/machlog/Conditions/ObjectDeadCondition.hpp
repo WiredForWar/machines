@@ -18,7 +18,7 @@
 
 #include "base/base.hpp"
 #include "phys/phys.hpp"
-#include "sim/conditio.hpp"
+#include "sim/Condition.hpp"
 #include "machlog/World/MachLog.hpp"
 
 class UtlLineTokeniser;

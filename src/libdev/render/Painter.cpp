@@ -6,13 +6,13 @@
 #include "render/Painter.hpp"
 
 #include "render/BmpFont.hpp"
-#include "render/colour.hpp"
-#include "render/surface.hpp"
+#include "render/Colour.hpp"
+#include "render/Surface.hpp"
 #include "render/Font.hpp"
 #include "render/TextOptions.hpp"
 
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point2d.hpp"
 
 namespace Ren {
 

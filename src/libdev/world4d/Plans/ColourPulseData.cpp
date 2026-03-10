@@ -7,8 +7,8 @@
 
 #include "world4d/Plans/ColourPulseData.hpp"
 
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 PER_DEFINE_PERSISTENT(W4dColourPulseData);
 

@@ -1,5 +1,5 @@
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machgui/ActorStringIdRestorer.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/ArtefactData.hpp"
@@ -10,8 +10,8 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/Actors/CanAttack.hpp"
-#include "gui/restring.hpp"
-#include "ctl/vector.hpp"
+#include "gui/ResourceString.hpp"
+#include "ctl/Vector.hpp"
 
 MachLogActorStringIdRestorer::MachLogActorStringIdRestorer()
 {

@@ -7,8 +7,8 @@
 
 #include "machlog/Internal/CollisionInfo.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 MachLogCollisionInfo::MachLogCollisionInfo()
     : valid_(false)

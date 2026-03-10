@@ -6,17 +6,17 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
-#include "mathex/eulerang.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/coordsys.hpp"
-#include "device/keyboard.hpp"
-#include "device/butevent.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/CoordSystem.hpp"
+#include "device/Keyboard.hpp"
+#include "device/ButtonEvent.hpp"
 #include "phys/MotionControl/Motion.hpp"
-#include "device/keytrans.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 
 ///////////////////////////////////////////////////////////////////////////
 // static

@@ -7,8 +7,8 @@
 
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
 
 #include "world4d/Entity/Generic.hpp"
 

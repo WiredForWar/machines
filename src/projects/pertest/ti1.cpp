@@ -6,16 +6,16 @@
 
 #include "pertest/tclass1.hpp"
 
-// #include "ctl/countptr.hpp"
-// #include "ctl/countptr.ctp"
-// #include "ctl/vector.hpp"
-// #include "ctl/vector.ctp"
-// #include "ctl/mmvector.hpp"
-// #include "ctl/mmvector.ctp"
-// #include "ctl/fixedvec.hpp"
-// #include "ctl/fixedvec.ctp"
-// #include "ctl/list.hpp"
-// #include "ctl/list.ctp"
+// #include "ctl/CountedPtr.hpp"
+// #include "ctl/CountedPtr.ctp"
+// #include "ctl/Vector.hpp"
+// #include "ctl/Vector.ctp"
+// #include "ctl/MinMemoryVector.hpp"
+// #include "ctl/MinMemoryVector.ctp"
+// #include "ctl/FixedVector.hpp"
+// #include "ctl/FixedVector.ctp"
+// #include "ctl/List.hpp"
+// #include "ctl/List.ctp"
 // #include "pertest/class8.hpp"
 
 void dummyFunction()

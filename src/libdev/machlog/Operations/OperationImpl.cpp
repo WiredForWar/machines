@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/OperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogOperationImpl);
 

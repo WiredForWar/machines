@@ -11,7 +11,7 @@
 
 #include "machphys/Data/Levels.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 // Machine type data classes
 #include "machphys/Machines/AggressorData.hpp"

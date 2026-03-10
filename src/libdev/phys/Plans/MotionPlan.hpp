@@ -14,7 +14,7 @@
 #define _MOTPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 
 class MexTransform3d;

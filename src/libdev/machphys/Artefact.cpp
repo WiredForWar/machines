@@ -7,19 +7,19 @@
 
 #include "machphys/Artefact.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machphys/ArtefactData.hpp"
 #include "machphys/Effects/EntityDamage.hpp"
 #include "machphys/Effects/ObjectExplosion.hpp"
 
-#include "ctl/countptr.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #ifndef _INLINE
 #include "machphys/Artefact.ipp"

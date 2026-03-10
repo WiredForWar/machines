@@ -16,8 +16,8 @@
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
 #include "gui/gui.hpp"
-#include "gui/displaya.hpp"
-#include "utility/id.hpp"
+#include "gui/Displayable.hpp"
+#include "utility/Id.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/Entity/BoundingBoxSelector.hpp"
 

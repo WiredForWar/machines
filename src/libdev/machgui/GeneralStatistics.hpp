@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/gui.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machgui/Statistics.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/StatisticsDisplay.hpp"

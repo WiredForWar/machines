@@ -15,8 +15,8 @@
 #define _WORLD4D_CUSTOM_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/pvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/PtrVector.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 // forward refs

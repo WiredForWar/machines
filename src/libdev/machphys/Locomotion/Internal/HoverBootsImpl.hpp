@@ -13,9 +13,9 @@
 #define _MACHPHYS_HOVERI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Locomotion/Internal/LocomotionMethodImpl.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Radians.hpp"
 
 class MachPhysHoverBoots;
 class W4dLink;

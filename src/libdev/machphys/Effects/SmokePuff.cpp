@@ -7,17 +7,17 @@
 
 #include <iostream>
 
-#include "device/time.hpp"
-#include "mathex/degrees.hpp"
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/colour.hpp"
+#include "device/Time.hpp"
+#include "mathex/Degrees.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/Colour.hpp"
 #include "machphys/Effects/SmokePuff.hpp"
 #include "machphys/Random.hpp"
 
 // #include "machphys/Persistence/DataStr.hpp"
-// #include "system/pathname.hpp"
-// #include "ctl/vector.hpp"
+// #include "system/PathName.hpp"
+// #include "ctl/Vector.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysSmokePuff);
 

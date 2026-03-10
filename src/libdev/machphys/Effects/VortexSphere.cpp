@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/VortexSphere.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "system/pathname.hpp"
+#include "mathex/Transform3d.hpp"
+#include "system/PathName.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"
 

@@ -13,10 +13,10 @@
 #define _MACHPHYS_MACHINEI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/countptr.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Radians.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
@@ -24,7 +24,7 @@
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Machines/Machine.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dLink;
 class MachPhysLocomotionMethod;

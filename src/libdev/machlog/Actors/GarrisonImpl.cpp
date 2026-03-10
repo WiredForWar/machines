@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/Internal/GarrisonImpl.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogGarrisonImpl);
 

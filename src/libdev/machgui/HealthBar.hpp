@@ -8,7 +8,7 @@
 
 //////////////////////////////////////////////////////////////////////
 
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machphys/machphys.hpp"
 
 class MachGuiHealthBar : public GuiDisplayable

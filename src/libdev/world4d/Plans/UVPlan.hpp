@@ -6,7 +6,7 @@
 #ifndef _WORLD4D_UVPLAN_HPP
 #define _WORLD4D_UVPLAN_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "render/render.hpp"
 #include "world4d/world4d.hpp"

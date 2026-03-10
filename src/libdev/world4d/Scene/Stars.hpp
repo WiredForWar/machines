@@ -9,16 +9,16 @@
 #define _WORLD4D_STARS_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 
 #include "mathex/mathex.hpp"
 
-#include "render/colour.hpp"
-#include "render/stars.hpp"
+#include "render/Colour.hpp"
+#include "render/Stars.hpp"
 
-#include "utility/percent.hpp"
+#include "utility/Percentage.hpp"
 
 class MexRadians;
 

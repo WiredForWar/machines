@@ -5,7 +5,7 @@
 
 #include "machlog/Operations/AdminLocateOperation.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machlog/Internal/AdminLocateOperationImpl.hpp"
 

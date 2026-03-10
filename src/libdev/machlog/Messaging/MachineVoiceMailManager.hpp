@@ -13,9 +13,9 @@
 #ifndef _MACHLOG_MACHVMAN_HPP
 #define _MACHLOG_MACHVMAN_HPP
 
-#include "utility/id.hpp"
+#include "utility/Id.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"

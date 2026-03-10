@@ -13,9 +13,9 @@
 #define _WORLD4D_DOMAINI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/Portal.hpp"

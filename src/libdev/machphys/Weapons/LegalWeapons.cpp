@@ -7,7 +7,7 @@
 
 #include "machphys/Weapons/LegalWeapons.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 // static
 MachPhysLegalWeapons& MachPhysLegalWeapons::instance()

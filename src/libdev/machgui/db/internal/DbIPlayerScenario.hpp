@@ -13,8 +13,8 @@
 #define _MACHGUI_DBPLYSCI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/vector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/Vector.hpp"
 #include "machlog/ProductionUnit.hpp"
 
 // forward refs

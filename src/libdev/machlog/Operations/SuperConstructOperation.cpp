@@ -7,9 +7,9 @@
 
 #include "machlog/Operations/SuperConstructOperation.hpp"
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

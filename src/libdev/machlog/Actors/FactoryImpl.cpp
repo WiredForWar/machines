@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/Internal/FactoryImpl.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/ProductionUnit.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogFactoryImpl);

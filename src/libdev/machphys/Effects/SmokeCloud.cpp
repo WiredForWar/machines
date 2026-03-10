@@ -7,12 +7,12 @@
 
 #include "machphys/Effects/SmokeCloud.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
-#include "render/matvec.hpp"
+#include "render/MaterialVec.hpp"
 #include "world4d/Entity/Sprite3d.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/SimpleScalePlan.hpp"

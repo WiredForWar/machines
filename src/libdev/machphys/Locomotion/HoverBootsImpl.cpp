@@ -4,14 +4,14 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Locomotion/Internal/HoverBootsImpl.hpp"
 
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
 #include "machphys/Locomotion/HoverBoots.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Machines/Machine.hpp"

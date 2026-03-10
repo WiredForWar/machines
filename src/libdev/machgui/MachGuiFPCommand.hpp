@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machlog/Messaging/FirstPersonHandler.hpp"
 
 class MachGuiFPCommand : public GuiDisplayable

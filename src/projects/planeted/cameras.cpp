@@ -7,11 +7,11 @@
 
 #include "planeted/cameras.hpp"
 
-#include "base/diag.hpp"
-#include "device/butevent.hpp"
-#include "device/keytrans.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/poly2d.hpp"
+#include "base/Diag.hpp"
+#include "device/ButtonEvent.hpp"
+#include "device/KeyToCommandTranslator.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Polygon2d.hpp"
 #include "phys/MotionControl/FlyControl.hpp"
 #include "phys/MotionControl/GroundFlyControl.hpp"
 #include "phys/MotionControl/ZenithFlyControl.hpp"
@@ -30,9 +30,9 @@
 #include "machphys/Locomotion/LocomotionMethod.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 
-#include "render/device.hpp"
-#include "utility/linetok.hpp"
-#include "gui/event.hpp"
+#include "render/Device.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "gui/Event.hpp"
 
 static void
 readZenithDataFile(MATHEX_SCALAR* pZenithMinHeight, MATHEX_SCALAR* pZenithMaxHeight, MATHEX_SCALAR* pZenithElevation);

@@ -13,7 +13,7 @@
 #define _WORLD4D_SCALPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 
 // Forward refs

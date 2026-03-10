@@ -10,11 +10,11 @@
 
 // This file must be included before mexpdata.hpp to avoid
 // instantiation errors.  No idea why.
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Machines/APCData.hpp"

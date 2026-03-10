@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "phys/ConfigSpace/Internal/Portal.hpp"
 #include "phys/ConfigSpace/Internal/DomainGraph.hpp"
-#include "ctl/erase.hpp"
+#include "ctl/Erase.hpp"
 
 #ifndef _INLINE
 #include "phys/ConfigSpace/Internal/Portal.ipp"

@@ -1,8 +1,8 @@
 #include "render/OpenGL/RenderBackendGL.hpp"
 
-#include "render/internal/surfmgri.hpp"
-#include "render/internal/surfbody.hpp"
-#include "render/surfmgr.hpp"
+#include "render/internal/SurfaceManagerImpl.hpp"
+#include "render/internal/SurfaceBody.hpp"
+#include "render/SurfaceManager.hpp"
 
 #include "spdlog/spdlog.h"
 

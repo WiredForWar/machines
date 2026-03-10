@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/World/Artefacts.hpp"
 #include "machlog/Internal/ArtefactsImpl.hpp"
-#include "system/pathname.hpp"
-#include "utility/linetok.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/transf3d.hpp"
+#include "system/PathName.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/GenericRepository.hpp"
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Entity/GenericComposite.hpp"

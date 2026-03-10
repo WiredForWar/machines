@@ -13,9 +13,9 @@
 #define _MACHGUI_CAMERAS_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "device/timer.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "device/Timer.hpp"
 #include "gui/gui.hpp"
 
 #include "world4d/Subject/Observer.hpp"

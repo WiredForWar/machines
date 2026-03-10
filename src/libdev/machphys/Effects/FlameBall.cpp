@@ -6,22 +6,22 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/Effects/FlameBall.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/double.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Double.hpp"
+#include "mathex/Vec2.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/ttfpoly.hpp"
-#include "render/colour.hpp"
-#include "render/device.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/TTFPolygon.hpp"
+#include "render/Colour.hpp"
+#include "render/Device.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/Entity.hpp"

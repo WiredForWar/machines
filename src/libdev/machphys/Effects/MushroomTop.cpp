@@ -6,11 +6,11 @@
 //  Definitions of non-inline non-template methods and global functions
 #include "machphys/Effects/MushroomTop.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "ctl/list.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMushroomTop);
 

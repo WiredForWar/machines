@@ -7,7 +7,7 @@
 
 #include "world4d/Tracking/AxisTurnerPlan.hpp"
 
-#include "mathex/eulerang.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "world4d/Manager.hpp"
 
 W4dAxisTurnerPlan::W4dAxisTurnerPlan(

@@ -9,10 +9,10 @@
 #include "machgui/gui.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/ui/MenuStyle.hpp"
-#include "gui/painter.hpp"
-#include "gui/font.hpp"
-#include "gui/manager.hpp"
-#include "device/time.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Font.hpp"
+#include "gui/Manager.hpp"
+#include "device/Time.hpp"
 
 MachGuiDropDownListBoxItem::MachGuiDropDownListBoxItem(
     MachGuiStartupScreens* pStartupScreens,

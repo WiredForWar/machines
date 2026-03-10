@@ -7,12 +7,12 @@
 
 #include "machphys/Effects/LightningHaloMaterialPlan.hpp"
 
-#include "system/pathname.hpp"
-#include "render/material.hpp"
-#include "render/matvec.hpp"
-#include "render/colour.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "system/PathName.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Colour.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 #include "phys/Plans/LinearScalarPlan.hpp"
 

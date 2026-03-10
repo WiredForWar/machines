@@ -6,9 +6,9 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include <utility.hpp>
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "ctl/stack.hpp"
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

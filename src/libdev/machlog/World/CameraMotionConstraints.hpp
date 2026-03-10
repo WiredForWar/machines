@@ -15,8 +15,8 @@
 #define _MACHLOG_MOTCONST_HPP
 
 #include "base/base.hpp"
-#include "device/butevent.hpp"
-#include "mathex/radians.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/phys.hpp"
 #include "phys/MotionControl/GroundFlyControl.hpp"
 #include "phys/MotionControl/ZenithFlyControl.hpp"

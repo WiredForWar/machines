@@ -4,8 +4,8 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/radians.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Locomotion/Glider.hpp"
@@ -22,18 +22,18 @@
 #include "world4d/Scene/GarbageCollector.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/quatern.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quaternion.hpp"
+#include "ctl/Vector.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysGlider);
 

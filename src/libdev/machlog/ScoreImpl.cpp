@@ -1,6 +1,6 @@
 #include "machlog/Internal/ScoreImpl.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogScoreImpl);
 

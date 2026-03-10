@@ -13,12 +13,12 @@
 #define _MOVESPII_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
 
 class PhysMoveSpinPlanImpl
 // Canonical form revoked

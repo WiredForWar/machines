@@ -6,7 +6,7 @@
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Plans/MeshPlan.hpp"
 #include "world4d/Entity/Generic.hpp"
-#include "mathex/double.hpp"
+#include "mathex/Double.hpp"
 
 PER_DEFINE_PERSISTENT(W4dMeshPlan);
 

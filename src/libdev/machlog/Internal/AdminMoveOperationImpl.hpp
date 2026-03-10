@@ -16,10 +16,10 @@
 #include "machlog/Operations/AdminMoveOperation.hpp"
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/list.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point3d.hpp"
 
 // forward declarations
 

@@ -13,9 +13,9 @@
 #define _MACHGUI_BMUTEXT_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
-#include "gui/icon.hpp"
-#include "system/pathname.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Icon.hpp"
+#include "system/PathName.hpp"
 
 class MachContinentMap;
 class MachInGameScreen;

@@ -7,9 +7,9 @@
 
 #include "machlog/World/DatabaseHandler.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp" //required for instantiation only
+#include "ctl/List.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point2d.hpp" //required for instantiation only
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Races.hpp"

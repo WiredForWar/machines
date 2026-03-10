@@ -16,8 +16,8 @@
 #define _MACHPHYS_JETRINGP_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "mathex/point3d.hpp"
+#include "base/Persistence.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
 

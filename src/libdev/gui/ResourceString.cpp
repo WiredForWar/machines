@@ -1,0 +1,192 @@
+/*
+ * R E S T R I N G . C P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+#include "gui/ResourceString.hpp"
+#include "ctl/Vector.hpp"
+
+#include <ctype.h>
+
+#include "afx/resource.hpp"
+
+//////////////////////////////////////////////////////////////////////
+
+GuiResourceString::GuiResourceString(Gui::StringId id)
+{
+    PRE(hasResource());
+
+    insertionString_ = GuiResourceString::map_Id_to_string(id);
+}
+
+GuiResourceString::GuiResourceString(Gui::StringId id, const GuiString& str)
+{
+    PRE(hasResource());
+
+    insertionString_ = GuiResourceString::map_Id_to_string(id);
+    GuiStrings inserts(1, str);
+    insert(inserts);
+}
+
+GuiResourceString::GuiResourceString(Gui::StringId id, const GuiStrings& inserts)
+{
+    PRE(hasResource());
+
+    insertionString_ = GuiResourceString::map_Id_to_string(id);
+    insert(inserts);
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void GuiResourceString::insert(const GuiStrings& inserts)
+// <ins str> ::= { <esc seq> | <non-percent-character> }
+// <esc seq> ::= <number esc seq> | <percent esc seq>
+// <percent esc seq> ::= <%> <%>
+// <number esc seq> ::=  <%> <number> [ <%> ]
+// <number>         ::= <leadingdigit> { <digit> }
+// <leadingdigit>   ::= <1> - <9>
+// <digit>          ::= <0> - <9>
+{
+    for (size_t i = 0; i < insertionString_.length(); ++i)
+    {
+        if (insertionString_[i] == '%')
+        {
+            size_t j = 1;
+            if (i + j == insertionString_.length())
+                break;
+            else if (insertionString_[i + j] == '%')
+                // insertionString_.remove( i, 1 );
+                insertionString_.erase(i, 1);
+            else
+            {
+                unsigned n = 0;
+                while (i + j < insertionString_.length() && isdigit(insertionString_[i + j]))
+                {
+                    n *= 10;
+                    n += insertionString_[i + j] - '0';
+                    ++j;
+                }
+
+                if (i + j < insertionString_.length() && insertionString_[i + j] == '%')
+                    ++j;
+
+                // insertionString_.remove( i, j );
+                insertionString_.erase(i, j);
+
+                if (n <= inserts.size())
+                    insertionString_.insert(i, inserts[n - 1]);
+            }
+        }
+    }
+}
+
+const GuiString& GuiResourceString::asString() const
+{
+    return insertionString_;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+std::ostream& operator<<(std::ostream& o, const GuiResourceString& t)
+{
+    o << "GuiResourceString " << static_cast<const void*>(&t) << " start" << std::endl;
+    o << "GuiResourceString " << static_cast<const void*>(&t) << " end" << std::endl;
+    return o;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+// static
+GuiString GuiResourceString::map_Id_to_string(Gui::StringId id)
+{
+    PRE(hasResource());
+    GuiString result = resource().getString(id);
+    POST(isInsertionString(result));
+    return result;
+}
+
+// static
+bool GuiResourceString::hasResource()
+{
+    return pResource() != nullptr;
+}
+
+// static
+AfxResourceLib& GuiResourceString::resource()
+{
+    PRE(hasResource());
+    return *pResource();
+}
+
+// static
+void GuiResourceString::resource(AfxResourceLib* pLib)
+{
+    PRE(pLib != nullptr);
+    pResource() = pLib;
+    POST(hasResource());
+}
+
+// static
+void GuiResourceString::clearResource()
+{
+    pResource() = nullptr;
+    POST(! hasResource());
+}
+
+// static
+GuiResourceString::ResourcePtr& GuiResourceString::pResource()
+{
+    static AfxResourceLib* pResult_ = nullptr;
+    return pResult_;
+}
+
+// debug-only functions //////////////////////////////////////////////
+
+#ifndef NDEBUG
+
+// static
+bool GuiResourceString::isInsertionString(const GuiString& insertionString)
+{
+    // <ins str> ::= { <esc seq> | <non-percent-character> }
+    // <esc seq> ::= <number esc seq> | <percent esc seq>
+    // <percent esc seq> ::= <%> <%>
+    // <number esc seq> ::=  <%> <number> [ <%> ]
+    // <number>         ::= <leadingdigit> { <digit> }
+    // <leadingdigit>   ::= <1> - <9>
+    // <digit>          ::= <0> - <9>
+
+    bool valid = true;
+    for (size_t i = 0; i < insertionString.length() && valid; ++i)
+    {
+        if (insertionString[i] == '%')
+        {
+            ++i;
+            if (i == insertionString.length())
+                valid = false;
+            else if (insertionString[i] == '%')
+                ++i;
+            else
+            {
+                valid = isdigit(insertionString[i]) && insertionString[i] != '0';
+
+                if (valid)
+                {
+                    ++i;
+                    while (i < insertionString.length() && isdigit(insertionString[i]))
+                        ++i;
+
+                    if (i < insertionString.length() && insertionString[i] == '%')
+                        ++i;
+                }
+            }
+        }
+    }
+
+    return valid;
+}
+
+#endif // #ifndef NDEBUG
+
+// end debug-only functions //////////////////////////////////////////
+
+/* End RESTRING.CPP *************************************************/

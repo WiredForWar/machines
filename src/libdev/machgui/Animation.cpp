@@ -8,9 +8,9 @@
 #include "machgui/Animation.hpp"
 
 #include "gui/gui.hpp"
-#include "gui/painter.hpp"
-#include "device/time.hpp"
-#include "system/pathname.hpp"
+#include "gui/GuiPainter.hpp"
+#include "device/Time.hpp"
+#include "system/PathName.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include <fstream>
 

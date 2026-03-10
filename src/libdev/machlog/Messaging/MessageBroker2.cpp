@@ -2,25 +2,25 @@
 
 #include "machlog/Internal/Messages.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
-#include "mathex/angle.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Angle.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Polygon2d.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 
-#include "network/message.hpp"
-#include "network/session.hpp"
-#include "network/nodeuid.hpp"
+#include "network/Message.hpp"
+#include "network/Session.hpp"
+#include "network/NodeUid.hpp"
 
 #include "world4d/Scene/GarbageCollector.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Effects/BeeBombExplosion.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"

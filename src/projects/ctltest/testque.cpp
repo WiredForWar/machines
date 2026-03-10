@@ -2,9 +2,9 @@
 // #include <function.hpp>
 
 #include "ctl/queue.hpp"
-#include "ctl/list.hpp"
-#include "ctl/deque.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Deque.hpp"
+#include "ctl/Vector.hpp"
 
 void testQueue();
 void testPriorityQueue();

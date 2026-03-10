@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/phys.hpp"
 #include "world4d/Tracking/AxisTrackerPlan.hpp"
 #include "world4d/Tracking/AxisTurnerPlan.hpp"

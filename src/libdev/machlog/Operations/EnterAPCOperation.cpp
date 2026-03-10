@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/angle.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Angle.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "machlog/Operations/EnterAPCOperation.hpp"
 

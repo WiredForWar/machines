@@ -5,7 +5,7 @@
 
 //  Definitions of inline non-template methods and inline global functions
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
 #ifdef _INLINE
 #define _CODE_INLINE inline

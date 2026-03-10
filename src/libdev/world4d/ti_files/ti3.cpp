@@ -1,6 +1,6 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 #include "string.hpp";
 
 W4dDummyFunction3()
@@ -8,10 +8,10 @@ W4dDummyFunction3()
     ctl_map<string, uint, less<string>> dummySoundIDMap;
 }
 
-// #include "ctl/vector.hpp"
-// #include "ctl/vector.ctp"
-// #include "ctl/countptr.hpp"
-// #include "ctl/countptr.ctp"
+// #include "ctl/Vector.hpp"
+// #include "ctl/Vector.ctp"
+// #include "ctl/CountedPtr.hpp"
+// #include "ctl/CountedPtr.ctp"
 //
 // #include "phys/Plans/MotionPlan.hpp"
 // #include "world4d/Plans/MaterialPlan.hpp"

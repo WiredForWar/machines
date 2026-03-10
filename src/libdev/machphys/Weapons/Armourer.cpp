@@ -28,7 +28,7 @@
 
 #include "world4d/Entity/Composite.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 // static
 MachPhysWeapon* MachPhysArmourer::newWeapon(

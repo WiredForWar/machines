@@ -5,16 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/map.hpp"
-#include "system/pathname.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Map.hpp"
+#include "system/PathName.hpp"
 
-#include "render/matvec.hpp"
-#include "render/matmap.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 #include "world4d/ForwardMaterials.hpp"
@@ -27,7 +27,7 @@
 #include "machphys/Constructions/ConstructionData.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include <memory>
 

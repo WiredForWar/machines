@@ -5,18 +5,18 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "render/matvec.hpp"
-#include "render/material.hpp"
-#include "render/colour.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Generic.hpp"

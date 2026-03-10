@@ -13,9 +13,9 @@
 #define _MACHGUI_SCRLAREA_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
-#include "system/pathname.hpp"
-#include "gui/icon.hpp"
+#include "gui/Displayable.hpp"
+#include "system/PathName.hpp"
+#include "gui/Icon.hpp"
 
 class MachGuiScrollBar;
 class GuiSimpleScrollableList;

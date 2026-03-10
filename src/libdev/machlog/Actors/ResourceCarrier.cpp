@@ -8,14 +8,14 @@
 
 #include <iostream>
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Sound/SoundManager.hpp"

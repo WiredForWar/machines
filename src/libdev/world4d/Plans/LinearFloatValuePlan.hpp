@@ -14,7 +14,7 @@
 #define _WORLD4D_LINVPLAN_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "world4d/Plans/FloatValuePlan.hpp"
 

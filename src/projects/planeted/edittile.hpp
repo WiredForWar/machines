@@ -16,11 +16,11 @@
 
 #include "planeted/editmode.hpp"
 
-#include "system/pathname.hpp"
-#include "device/butevent.hpp"
-#include "mathex/line3d.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "system/PathName.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Line3d.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 class PedArtefactEditor;
 

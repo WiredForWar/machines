@@ -6,13 +6,13 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "phys/Plans/RampAcceleration.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Constructions/Door.hpp"
 

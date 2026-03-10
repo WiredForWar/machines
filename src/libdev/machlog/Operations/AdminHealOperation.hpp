@@ -11,7 +11,7 @@
 #define _MACHLOG_OPADHEAL_HPP
 
 #include "phys/phys.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Operations/Operation.hpp"
 

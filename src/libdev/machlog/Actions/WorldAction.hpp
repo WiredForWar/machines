@@ -14,7 +14,7 @@
 #define _MACHLOG_ACTWinOrLose_HPP
 
 #include "base/base.hpp"
-#include "sim/action.hpp"
+#include "sim/Action.hpp"
 #include "machphys/machphys.hpp"
 
 #include <memory>

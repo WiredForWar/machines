@@ -1,0 +1,246 @@
+/*
+ * C O L O U R . C P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+#include <cmath>
+#include "render/Colour.hpp"
+
+#ifndef _INLINE
+#include "render/Colour.ipp"
+#endif
+
+namespace
+{
+
+int fromHex(char c)
+{
+    if (c >= '0' && c <= '9')
+        return c - '0';
+    if (c >= 'a' && c <= 'f')
+        return 10 + (c - 'a');
+    if (c >= 'A' && c <= 'F')
+        return 10 + (c - 'A');
+    return -1;
+}
+
+static inline int hex2int(const char* s, int n)
+{
+    if (n < 0)
+        return -1;
+    int result = 0;
+    for (; n > 0; --n)
+    {
+        result = result * 16;
+        const int h = fromHex(*s++);
+        if (h < 0)
+            return -1;
+        result += h;
+    }
+    return result;
+}
+
+std::optional<RenColour> colorFromString(const char* str, std::size_t length)
+{
+    PRE(str)
+
+    if (length == 0 || str[0] != '#')
+        return std::nullopt;
+
+    ++str;
+    --length;
+    auto toFloat = [](int value) { return static_cast<float>(value) / 255.0f; };
+
+    const char* ptr = str;
+    int rInt = -1, gInt = -1, bInt = -1, aInt = 0xff;
+
+    if (length == 8) // #RRGGBBAA
+    {
+        rInt = hex2int(ptr, 2);
+        gInt = hex2int(ptr + 2, 2);
+        bInt = hex2int(ptr + 4, 2);
+        aInt = hex2int(ptr + 6, 2);
+    }
+    else if (length == 6) // #RRGGBB
+    {
+        rInt = hex2int(ptr, 2);
+        gInt = hex2int(ptr + 2, 2);
+        bInt = hex2int(ptr + 4, 2);
+    }
+    else if (length == 3) // #RGB
+    {
+        const int rHalfByte = fromHex(ptr[0]);
+        const int gHalfByte = fromHex(ptr[1]);
+        const int bHalfByte = fromHex(ptr[2]);
+        if (rHalfByte < 0 || gHalfByte < 0 || bHalfByte < 0)
+            return std::nullopt;
+
+        rInt = (rHalfByte << 4) | rHalfByte;
+        gInt = (gHalfByte << 4) | gHalfByte;
+        bInt = (bHalfByte << 4) | bHalfByte;
+    }
+    else
+    {
+        return std::nullopt;
+    }
+
+    if (rInt < 0 || gInt < 0 || bInt < 0 || aInt < 0)
+        return std::nullopt;
+
+    return RenColour(toFloat(rInt), toFloat(gInt), toFloat(bInt), toFloat(aInt));
+}
+
+} // namespace
+
+PER_DEFINE_PERSISTENT(RenColour);
+
+std::optional<RenColour> RenColour::fromString(const std::string_view& str)
+{
+    return colorFromString(str.data(), str.size());
+}
+
+RenColour& RenColour::linearInterpolate(float i, const RenColour& c1, float i1, const RenColour& c2, float i2)
+{
+    TEST_INVARIANT;
+    *this = c2;
+    *this -= c1;
+    *this *= ((i - i1) / (i2 - i1));
+    *this += c1;
+
+    TEST_INVARIANT;
+    return *this;
+}
+
+void RenColour::CLASS_INVARIANT
+{
+    // The alpha value is packed into the MS byte of a ulong.  The other three
+    // bytes should be zero.
+    INVARIANT((rep_.a_ & 0xffffff) == 0);
+}
+
+std::ostream& operator<<(std::ostream& o, const RenColour& t)
+{
+    // Don't print alpha if it's set to the default, opaque value.
+    const std::ios::fmtflags oldFlags = o.flags();
+    const int oldPrecision = o.precision();
+
+    o.precision(2);
+    o.setf(std::ios::fixed, std::ios::floatfield);
+
+    if (t.rep_.a_ < 255)
+        o << "RenColour: (" << t.rep_.r_ << "," << t.rep_.g_ << "," << t.rep_.b_ << ", a=" << t.a() << ")";
+    else
+        o << "RenColour: (" << t.rep_.r_ << "," << t.rep_.g_ << "," << t.rep_.b_ << ")";
+
+    o.precision(oldPrecision);
+    o.setf(oldFlags);
+
+    return o;
+}
+
+#define EXPECT(expected)                                                                                               \
+    i >> c;                                                                                                            \
+    if (c != expected)                                                                                                 \
+        return i;
+
+std::istream& operator>>(std::istream& i, RenColour& t)
+{
+    char c;
+
+    EXPECT('(');
+    i >> t.rep_.r_;
+    EXPECT(',');
+    i >> t.rep_.g_;
+    EXPECT(',');
+    i >> t.rep_.b_;
+    EXPECT(')');
+
+    // TBD: add logic to deal with alpha in the input.
+    return i;
+}
+
+bool RenColour::operator==(const RenColour& c) const
+{
+    // A tollerance of 1/255 should be satisfactory for all applications.
+    const float epsilon = 0.001;
+    return fabs(rep_.r_ - c.rep_.r_) < epsilon && fabs(rep_.g_ - c.rep_.g_) < epsilon
+        && fabs(rep_.b_ - c.rep_.b_) < epsilon && rep_.a_ == c.rep_.a_;
+}
+
+bool RenColour::operator!=(const RenColour& c) const
+{
+    return !(*this == c);
+}
+
+// static
+const RenColour& RenColour::black()
+{
+    static constexpr RenColour c(0);
+    return c;
+}
+
+// static
+const RenColour& RenColour::white()
+{
+    static constexpr RenColour c(1);
+    return c;
+}
+
+// static
+const RenColour& RenColour::red()
+{
+    static constexpr RenColour c(1, 0, 0);
+    return c;
+}
+
+// static
+const RenColour& RenColour::green()
+{
+    static constexpr RenColour c(0, 1, 0);
+    return c;
+}
+
+// static
+const RenColour& RenColour::blue()
+{
+    static constexpr RenColour c(0, 0, 1);
+    return c;
+}
+
+// static
+const RenColour& RenColour::yellow()
+{
+    static constexpr RenColour c(1, 1, 0);
+    return c;
+}
+
+// static
+const RenColour& RenColour::cyan()
+{
+    static constexpr RenColour c(0, 1, 1);
+    return c;
+}
+
+// static
+const RenColour& RenColour::magenta()
+{
+    static constexpr RenColour c(1, 0, 1);
+    return c;
+}
+
+void perWrite(PerOstream& ostr, const RenColour& colour)
+{
+    PER_WRITE_RAW_DATA(ostr, &colour.rep_, sizeof(RenColour::IColour));
+}
+
+void perRead(PerIstream& istr, RenColour& colour)
+{
+    PER_READ_RAW_DATA(istr, &colour.rep_, sizeof(RenColour::IColour));
+}
+
+// virtual
+RenColourTransform::~RenColourTransform()
+{
+}
+
+/* End COLOUR.CPP ***************************************************/

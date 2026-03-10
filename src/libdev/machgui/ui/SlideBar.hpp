@@ -13,7 +13,7 @@
 #define _MACHGUI_SLIDEBAR_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machgui/FocusCapableControl.hpp"
 
 #include <functional>

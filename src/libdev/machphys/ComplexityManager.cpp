@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "envirnmt/planet.hpp"
+#include "envirnmt/PlanetEnvironment.hpp"
 #include "machphys/ComplexityManager.hpp"
 #include "machphys/ComplexityItem.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"

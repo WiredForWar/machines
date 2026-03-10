@@ -8,7 +8,7 @@
 
 #include "machphys/Locomotion/LocomotionMethod.hpp"
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class W4dLink;
 class MachPhysITrack;

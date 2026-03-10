@@ -4,11 +4,11 @@
  */
 
 #include "machphys/Terrain/DomainAssignor.hpp"
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Scene/Domain.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include <algorithm>
 

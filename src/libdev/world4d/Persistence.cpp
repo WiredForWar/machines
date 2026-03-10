@@ -36,7 +36,7 @@
 #include "world4d/Scene/Internal/LightData.hpp"
 #include "world4d/Plans/Internal/PendingPlan.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
 

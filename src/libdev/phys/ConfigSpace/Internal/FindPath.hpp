@@ -14,11 +14,11 @@
 #define _PHYS_CS2FINDP_HPP
 
 #include "base/base.hpp"
-#include "ctl/nbvector.hpp"
+#include "ctl/NoBoundsVector.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
-#include "graph/astarvtx.hpp"
-#include "graph/astaralg.hpp"
+#include "mathex/Point2d.hpp"
+#include "graph/AStarVertex.hpp"
+#include "graph/AStarAlgorithm.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/ConfigSpace/Internal/DomainGraph.hpp"

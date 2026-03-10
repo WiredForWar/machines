@@ -9,21 +9,21 @@
 #include "machlog/Internal/ConstructionImpl.hpp"
 
 #include "machlog/World/BuildPoint.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 
-#include "mathex/circle2d.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/Circle2d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
-// #include "mathex/line3d.hpp"
+// #include "mathex/Line3d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Manager.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Constructions/Construction.hpp"
 #include "machphys/Marker.hpp"
 #include "machphys/Data/Data.hpp"

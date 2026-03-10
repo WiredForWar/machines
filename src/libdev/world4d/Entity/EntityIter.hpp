@@ -15,7 +15,7 @@
 #define _WORLD4D_ENTYITER_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 // forward refs
 class W4dEntity;

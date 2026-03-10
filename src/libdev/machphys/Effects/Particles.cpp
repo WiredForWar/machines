@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/Particles.hpp"
 #include "machphys/Random.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
@@ -16,20 +16,20 @@
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/GeneralUniformScalePlan.hpp"
 
-#include "render/meshinst.hpp"
-#include "render/mesh.hpp"
-#include "render/spinpoly.hpp"
-#include "render/colour.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
-#include "render/device.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Mesh.hpp"
+#include "render/SpinPolygon.hpp"
+#include "render/Colour.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Device.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/double.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Double.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"

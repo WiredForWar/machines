@@ -16,7 +16,7 @@
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Races.hpp"
 #include "machphys/machphys.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachConstructMenuIcons::MachConstructMenuIcons(
     GuiDisplayable* pParent,

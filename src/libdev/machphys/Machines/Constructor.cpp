@@ -12,7 +12,7 @@
 
 #include "machphys/Machines/MachineExplosionData.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Data/Data.hpp"
 #include "machphys/Machines/ConstructorData.hpp"
@@ -24,11 +24,11 @@
 #include "machphys/Effects/JetRing.hpp"
 #include "machphys/Locomotion/OrientationAndPositionPlan.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Entity/Link.hpp"
@@ -37,7 +37,7 @@
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Entity/Composite.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysConstructor);
 

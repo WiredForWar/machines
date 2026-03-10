@@ -14,7 +14,7 @@
 #define _MACHLOG_ATTACKI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/Operations/AttackOperation.hpp"
 
 // forward declarations

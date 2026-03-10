@@ -7,13 +7,13 @@
 
 #include "machphys/Effects/MushroomShaft.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
 
-#include "system/pathname.hpp"
-#include "ctl/list.hpp"
+#include "system/PathName.hpp"
+#include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMushroomShaft);
 

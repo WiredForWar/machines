@@ -13,8 +13,8 @@
 #define _MACHLOG_ACTExplosion_HPP
 
 #include "base/base.hpp"
-#include "sim/action.hpp"
-#include "mathex/point2d.hpp"
+#include "sim/Action.hpp"
+#include "mathex/Point2d.hpp"
 
 #include <memory>
 

@@ -15,9 +15,9 @@
 
 #include "base/base.hpp"
 #include "render/Alignment.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 #include "render/render.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include <string_view>
 

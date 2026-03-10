@@ -6,8 +6,8 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/line2d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Line2d.hpp"
 
 #include "phys/Plans/AlignedBSPTree2d.hpp"
 class MexPolygon2d;

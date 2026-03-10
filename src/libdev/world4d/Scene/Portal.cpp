@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "ctl/list.hpp"
+#include "base/Diag.hpp"
+#include "ctl/List.hpp"
 #include "world4d/Scene/Portal.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/Domain.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 PER_DEFINE_PERSISTENT(W4dPortal);
 

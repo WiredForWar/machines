@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "gui/displaya.hpp"
-#include "gui/font.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Font.hpp"
 
 class GuiRoot;
 

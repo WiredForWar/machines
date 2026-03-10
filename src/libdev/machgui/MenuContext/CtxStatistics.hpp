@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "machgui/GameMenuContext.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 class MachGuiStatistics;
 

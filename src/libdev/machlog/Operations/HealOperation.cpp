@@ -5,13 +5,13 @@
 
 #include <iostream>
 
-#include "ctl/pvector.hpp"
-#include "ctl/countptr.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/poly2d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Polygon2d.hpp"
 #include "world4d/Subject/Subject.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"

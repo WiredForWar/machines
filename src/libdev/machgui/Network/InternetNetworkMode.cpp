@@ -8,15 +8,15 @@
 #include "machgui/Network/InternetNetworkMode.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "gui/gui.hpp"
-#include "gui/font.hpp"
-#include "gui/manager.hpp"
+#include "gui/Font.hpp"
+#include "gui/Manager.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/SingleLineEditBox.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 class MachGuiInternetNetworkModeImpl
 {

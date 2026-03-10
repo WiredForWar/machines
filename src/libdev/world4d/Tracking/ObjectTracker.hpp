@@ -14,11 +14,11 @@
 #define _WORLD4D_OBJTRACK_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/countptr.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/phys.hpp"
 
 // forward refs

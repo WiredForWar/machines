@@ -13,7 +13,7 @@
 #define _MACHLOG_CAMERAI_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 // #include "ctl/stack.hpp"
 #include "machlog/World/Camera.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"

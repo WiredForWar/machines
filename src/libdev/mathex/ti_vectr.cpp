@@ -7,16 +7,16 @@
 
 #include "base/base.hpp"
 #include <vector>
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
-#include "mathex/outcode.hpp"
+#include "mathex/Outcode.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/grid2d.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Grid2d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Transform3d.hpp"
 
 void MathexDummyFunction1()
 {

@@ -1,10 +1,10 @@
 #include "machphys/Effects/Internal/FireballImpl.hpp"
 
-#include "system/pathname.hpp"
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/matvec.hpp"
-#include "render/colour.hpp"
+#include "system/PathName.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Colour.hpp"
 #include "render/render.hpp"
 
 #include "world4d/Plans/MaterialSequencePlan.hpp"

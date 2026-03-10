@@ -6,19 +6,19 @@
 
 #include "base/base.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "device/time.hpp"
-#include "device/keyboard.hpp"
-#include "device/mouse.hpp"
-#include "device/eventq.hpp"
+#include "device/Time.hpp"
+#include "device/Keyboard.hpp"
+#include "device/Mouse.hpp"
+#include "device/EventQueue.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/line3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Line3d.hpp"
 
-#include "render/device.hpp"
+#include "render/Device.hpp"
 
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Scene/SceneManager.hpp"

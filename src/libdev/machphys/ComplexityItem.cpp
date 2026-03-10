@@ -7,7 +7,7 @@
 
 #include "machphys/ComplexityItem.hpp"
 
-#include "system/registry.hpp"
+#include "system/Registry.hpp"
 
 #include <stdio.h>
 

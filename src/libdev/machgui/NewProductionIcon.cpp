@@ -15,9 +15,9 @@
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/restring.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/ResourceString.hpp"
 
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"

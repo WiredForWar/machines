@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "world4d/Entity/Custom.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 class W4dEntity;
 class MexTransform3d;

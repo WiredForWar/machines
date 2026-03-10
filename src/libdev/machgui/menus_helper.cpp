@@ -1,6 +1,6 @@
 #include "machgui/menus_helper.hpp"
-#include "render/display.hpp"
-#include "render/device.hpp"
+#include "render/Display.hpp"
+#include "render/Device.hpp"
 
 int machgui::helper::menus::x_from_screen_left(int distance, int divisor)
 {

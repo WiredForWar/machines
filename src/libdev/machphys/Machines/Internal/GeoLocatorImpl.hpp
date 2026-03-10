@@ -13,7 +13,7 @@
 #define _MACHPHYS_GEOLOCAI_HPP
 
 #include "base/base.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "phys/phys.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 

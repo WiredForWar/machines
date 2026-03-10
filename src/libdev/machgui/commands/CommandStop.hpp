@@ -16,8 +16,8 @@
 
 #include "machgui/gui.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Point3d.hpp"
 
 // Forward refs
 class MachLogAdministrator;

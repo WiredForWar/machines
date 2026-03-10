@@ -13,10 +13,10 @@
 #define _PLANETED_EDITCONSTR_HPP
 
 #include "planeted/editactor.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
-#include "device/butevent.hpp"
-#include "mathex/degrees.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Degrees.hpp"
 #include "planeted/scenfile.hpp"
 
 class MachPhysConstruction;

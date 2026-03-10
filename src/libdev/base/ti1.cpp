@@ -1,17 +1,17 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "base/lessptr.hpp"
+#include "base/LessPtr.hpp"
 
 #include <string.hpp>
 #include <fstream>
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 #include "ctl/set.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/utility.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Utility.hpp"
 
-#include "base/persist.hpp"
-#include "internal/perolog.hpp"
+#include "base/Persistence.hpp"
+#include "internal/PersistLog.hpp"
 
 CTL_QUAD(Data, string, name, double, time, size_t, count, size_t, recursionCount);
 

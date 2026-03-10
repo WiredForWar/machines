@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "world4d/Subject/Observer.hpp"
-#include "gui/root.hpp"
+#include "gui/Root.hpp"
 #include "gui/ResolvedUiString.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/CursorSpec.hpp"

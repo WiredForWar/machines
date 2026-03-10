@@ -13,7 +13,7 @@
 #define _MACHPHYS_SMOKPUFF_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "world4d/Entity/Sprite3d.hpp"
 

@@ -16,10 +16,10 @@
 #include <fstream>
 
 #include "base/base.hpp"
-#include "base/private/pertypes.hpp"
+#include "base/private/PersistTypes.hpp"
 
-#include "base/ostr.hpp"
-#include "base/istr.hpp"
+#include "base/PerOstream.hpp"
+#include "base/PerIstream.hpp"
 
 class PersistenceImplementationWrite;
 class PersistenceImplementationRead;

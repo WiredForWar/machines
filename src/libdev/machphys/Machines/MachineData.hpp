@@ -15,7 +15,7 @@
 #define _MACHPHYS_MACHDATA_HPP
 
 #include "machphys/Data/ObjectData.hpp"
-#include "mathex/angle.hpp"
+#include "mathex/Angle.hpp"
 #include "machphys/Locomotion/EvasionPriorityPlan.hpp"
 
 class MachPhysMachineData : public MachPhysObjectData

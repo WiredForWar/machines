@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "world4d/ForwardMaterials.hpp"
 #include "machphys/machphys.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 
 // forward refs
 template <class T> class ctl_vector;

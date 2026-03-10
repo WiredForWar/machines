@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp" //Only needed for template instantiation
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp" //Only needed for template instantiation
 
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"

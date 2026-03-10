@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machgui/MenuContext/CtxJoin.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -28,10 +28,10 @@
 #include "machgui/Network/ModemNetworkMode.hpp"
 #include "machgui/Network/InternetNetworkMode.hpp"
 #include "machgui/Network/IPXNetworkMode.hpp"
-#include "gui/restring.hpp"
-#include "gui/manager.hpp"
+#include "gui/ResourceString.hpp"
+#include "gui/Manager.hpp"
 #include "machgui/internal/strings.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 #include "render/Font.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////

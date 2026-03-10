@@ -12,13 +12,13 @@
 #ifndef _WORLD4D_COMPOIMPL_HPP
 #define _WORLD4D_COMPOIMPL_HPP
 
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/double.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Double.hpp"
 
-#include "render/hierbuil.hpp"
+#include "render/HierarchyBuilder.hpp"
 
 #include "world4d/world4d.hpp"
 #include "world4d/ForwardPlans.hpp"

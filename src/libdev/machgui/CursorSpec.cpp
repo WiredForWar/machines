@@ -11,11 +11,11 @@
 
 #include "gui/gui.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "render/animcurs.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
-#include "render/surface.hpp"
-#include "system/pathname.hpp"
+#include "render/AnimCursor2d.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
+#include "render/Surface.hpp"
+#include "system/PathName.hpp"
 
 #include <stdlib.h>
 

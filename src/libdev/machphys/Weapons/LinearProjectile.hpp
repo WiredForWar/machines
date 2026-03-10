@@ -14,7 +14,7 @@
 #define _MACHPHYS_LINEPROJ_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/Machines/Machine.hpp"

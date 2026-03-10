@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
 
 #include "machphys/Weapons/Weapon.hpp"
@@ -13,7 +13,7 @@
 #include "machphys/Weapons/PunchWeapon.hpp"
 #include "machphys/Effects/PunchBlast.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/World/Planet.hpp"

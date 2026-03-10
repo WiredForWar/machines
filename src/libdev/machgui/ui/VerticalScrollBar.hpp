@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "gui/scrolbar.hpp"
+#include "gui/ScrollBar.hpp"
 
 class MachGuiVerticalScrollBar : public GuiVerticalScrollBar
 {

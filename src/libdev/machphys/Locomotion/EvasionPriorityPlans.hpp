@@ -16,7 +16,7 @@
 #ifndef _MACHPHYS_EPPs_HPP
 #define _MACHPHYS_EPPs_HPP
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "base/base.hpp"
 
 /* //////////////////////////////////////////////////////////////// */

@@ -6,7 +6,7 @@
 #ifndef _MACH_ANIMATIO_HPP
 #define _MACH_ANIMATIO_HPP
 
-#include "mathex/radians.hpp"
+#include "mathex/Radians.hpp"
 
 #include "machphys/machphys.hpp"
 

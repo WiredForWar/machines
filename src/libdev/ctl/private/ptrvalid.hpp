@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "base/tracker.hpp"
+#include "base/Tracker.hpp"
 
 template <class T> bool ctlCountedPtrPointerValid(T* ptr)
 {

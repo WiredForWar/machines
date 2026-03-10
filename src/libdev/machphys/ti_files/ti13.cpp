@@ -5,13 +5,13 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 #include "ctl/set.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/MotionPlan.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/Terrain/TileData.hpp"
 #include "machphys/Machines/MachineSpec.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"

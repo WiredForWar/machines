@@ -13,7 +13,7 @@
 #define _MACHLOG_HWLABI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machlog/Actors/HardwareLab.hpp"
 
 class MachLogHardwareLabImpl

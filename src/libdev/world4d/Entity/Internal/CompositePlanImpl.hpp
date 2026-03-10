@@ -13,8 +13,8 @@
 #define _WORLD4D_COMPPLAI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/list.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/List.hpp"
 #include "phys/phys.hpp"
 
 #include "world4d/Entity/CompositePlan.hpp"

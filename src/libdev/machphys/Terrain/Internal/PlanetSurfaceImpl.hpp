@@ -13,7 +13,7 @@
 #define _MACHPHYS_PLANSURI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
 
 class W4dRoot;

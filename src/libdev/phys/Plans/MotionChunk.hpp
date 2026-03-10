@@ -25,8 +25,8 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/double.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Double.hpp"
 
 #include "phys/phys.hpp"
 #include "phys/Plans/RampAcceleration.hpp"

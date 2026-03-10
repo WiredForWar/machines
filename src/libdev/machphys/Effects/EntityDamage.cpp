@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 #include "machphys/Effects/EntityDamage.hpp"
 #include "machphys/Effects/Internal/EntityDamageImpl.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 #include "machphys/Effects/Effects.hpp"
 #include "machphys/Random.hpp"
 #include "machphys/machphys.hpp"
@@ -15,27 +15,27 @@
 #include "machphys/Effects/GroundSplat.hpp"
 #include "machphys/Constructions/Construction.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/degrees.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "render/render.hpp"
-#include "render/meshinst.hpp"
-#include "render/mesh.hpp"
-#include "render/vertex.hpp"
-#include "render/scale.hpp"
-#include "render/colour.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Mesh.hpp"
+#include "render/Vertex.hpp"
+#include "render/Scale.hpp"
+#include "render/Colour.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysEntityDamage);
 

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/MotionControl/ZenithFlyControl.hpp"
 
 #include "system/ConfigVariables.hpp"

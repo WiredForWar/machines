@@ -7,8 +7,8 @@
 
 #include "CommandNukeAttack.hpp"
 
-#include "ctl/pvector.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "machphys/Data/GeneralData.hpp"
 #include "machphys/machphys.hpp"
@@ -27,8 +27,8 @@
 
 #include "machgui/internal/strings.hpp"
 
-#include "gui/restring.hpp"
-#include "gui/font.hpp"
+#include "gui/ResourceString.hpp"
+#include "gui/Font.hpp"
 
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-nuke-attack"_bind)

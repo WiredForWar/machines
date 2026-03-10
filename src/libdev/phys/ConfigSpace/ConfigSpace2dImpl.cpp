@@ -5,20 +5,20 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-#include "mathex/poly2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/sausag2d.hpp"
-#include "mathex/circle2d.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Sausage2d.hpp"
+#include "mathex/Circle2d.hpp"
 #include "phys/ConfigSpace/Internal/ConfigSpace2dImpl.hpp"
 #include "phys/ConfigSpace/Internal/VisibilityGraph.hpp"
 #include "phys/ConfigSpace/Internal/ExpansionSpace.hpp"
 #include "phys/ConfigSpace/Internal/DomainGraph.hpp"
 #include "phys/ConfigSpace/Internal/DomainFindPath.hpp"
 
-#include "utility/indent.hpp"
+#include "utility/Indent.hpp"
 
 #ifndef _INLINE
 #include "phys/ConfigSpace/Internal/ConfigSpace2dImpl.ipp"

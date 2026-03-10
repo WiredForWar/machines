@@ -9,12 +9,12 @@
 
 #include "stdlib/tipch.hpp";
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "render/material.hpp"
+#include "render/Material.hpp"
 
 #include "world4d/Entity/CompositePlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

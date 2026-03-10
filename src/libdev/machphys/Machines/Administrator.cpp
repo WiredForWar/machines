@@ -16,9 +16,9 @@
 #include "machphys/Data/Levels.hpp"
 #include "machphys/Weapons/Armourer.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysAdministrator);
 

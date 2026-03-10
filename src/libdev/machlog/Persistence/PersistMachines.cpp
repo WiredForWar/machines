@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Persistence/PersistMachines.hpp"
 #include "machlog/Actors/Administrator.hpp"
 #include "machlog/Actors/Aggressor.hpp"

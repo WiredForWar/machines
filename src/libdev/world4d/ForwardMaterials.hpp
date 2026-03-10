@@ -11,8 +11,8 @@
 #define _WORLD4D_FWMATERI_HPP
 
 #include "render/render.hpp"
-#include "render/material.hpp"
-#include "render/matmap.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialMap.hpp"
 
 template <class T> class ctl_vector;
 template <class KEY, class T, class COMPARE> class ctl_map;

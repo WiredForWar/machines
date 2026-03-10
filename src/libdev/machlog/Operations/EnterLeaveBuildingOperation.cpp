@@ -4,12 +4,12 @@
  */
 
 #include <iostream>
-#include "ctl/list.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Constructions/Station.hpp"
 #include "machphys/Machines/MachineData.hpp"
@@ -33,10 +33,10 @@
 #include "machlog/Controllers/Controller.hpp"
 #include "machlog/Races.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/circle2d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Circle2d.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogEnterBuildingOperation);
 /* //////////////////////////////////////////////////////////////// */

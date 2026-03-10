@@ -18,7 +18,7 @@
 #define _MACHPHYS_MACHDMG_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class MachPhysMachine;
 class MachPhysDoublesidedFlame;

@@ -6,8 +6,8 @@
 #ifndef _MACH_ACTOR_HPP
 #define _MACH_ACTOR_HPP
 
-#include "utility/id.hpp"
-#include "sim/actor.hpp"
+#include "utility/Id.hpp"
+#include "sim/Actor.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Actors/Destroy.hpp"

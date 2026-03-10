@@ -4,18 +4,18 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "base/error.hpp"
-#include "ctl/list.hpp"
+#include "base/Error.hpp"
+#include "ctl/List.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Tech/Internal/ResearchTreeImpl.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include "machlog/World/Notifiable.hpp"
 #include "machlog/World/Scenario.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 
-#include "system/vfs.hpp"
+#include "system/VFS.hpp"
 
 #include <memory>
 #include <sstream>

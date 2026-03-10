@@ -4,24 +4,24 @@
  */
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 #undef _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
-#include "ctl/pvector.hpp"
-// #include "ctl/list.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
+#include "ctl/PtrVector.hpp"
+// #include "ctl/List.hpp"
 
-// #include "ctl/vector.ctp"
+// #include "ctl/Vector.ctp"
 // #include <ospace/stl/vector.cc>
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/FloatValuePlan.hpp"
 
-#include "render/material.hpp"
+#include "render/Material.hpp"
 #include "machphys/Terrain/TileBoundary.hpp"
 #include "machphys/Terrain/TileData.hpp"
 #include "machphys/machphys.hpp"

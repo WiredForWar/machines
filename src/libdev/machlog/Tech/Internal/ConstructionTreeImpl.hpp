@@ -13,7 +13,7 @@
 #define _MACHLOG_CONSTREI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machlog/Tech/ConstructionTree.hpp"
 
 class MachLogConstructionTreeImpl

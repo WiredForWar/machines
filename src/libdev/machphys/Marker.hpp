@@ -14,7 +14,7 @@
 #define _MACHPHYS_MARKER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Custom.hpp"
 
 // Forward refs

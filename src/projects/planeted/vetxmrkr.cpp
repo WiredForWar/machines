@@ -9,10 +9,10 @@
 
 #include "machlog/World/Planet.hpp"
 
-#include "render/device.hpp"
-#include "render/colour.hpp"
-#include "render/mesh.hpp"
-#include "mathex/double.hpp"
+#include "render/Device.hpp"
+#include "render/Colour.hpp"
+#include "render/Mesh.hpp"
+#include "mathex/Double.hpp"
 
 PedVertexMarker::PedVertexMarker(size_t x, size_t y, bool highlight)
     : W4dCustom(MachLogPlanet::instance().pWorld(), W4dTransform3d(), W4dEntity::NOT_SOLID, W4dDistance(10000))

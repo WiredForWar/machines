@@ -13,9 +13,9 @@
 #define _MACHPHYS_LINEPRJI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "mathex/line3d.hpp"
+#include "mathex/Line3d.hpp"
 #include "phys/phys.hpp"
 
 #include "machphys/Weapons/LinearProjectile.hpp"

@@ -5,7 +5,7 @@
 
 #include "CommandIcons.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/IconWithCounter.hpp"
 #include "machgui/InGameScreen.hpp"
@@ -15,7 +15,7 @@
 #include "machgui/commands/CommandIonAttack.hpp"
 #include "machgui/commands/CommandNukeAttack.hpp"
 #include "machgui/ControlPanel.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 static constexpr int MaxCommandsNumber = 14;

@@ -11,7 +11,7 @@
 #define _MACHPHYS_FLAMEBAL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "phys/phys.hpp"
 #include "machphys/Weapons/LinearProjectile.hpp"

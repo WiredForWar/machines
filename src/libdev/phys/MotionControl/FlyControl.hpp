@@ -7,10 +7,10 @@
 #define _PHYS_MCFLY_HPP
 
 #include "base/base.hpp"
-#include "ctl/list.hpp"
-#include "utility/property.hpp"
-#include "device/timer.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/List.hpp"
+#include "utility/Property.hpp"
+#include "device/Timer.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/MotionControl/MotionControlWithTrans.hpp"
 
 // class ostream;

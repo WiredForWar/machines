@@ -5,12 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "render/matmap.hpp"
-#include "render/hsv.hpp"
-#include "render/colour.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/ColourHSV.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 #include "world4d/Materials/EntityMaterialVecChanger.hpp"

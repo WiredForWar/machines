@@ -7,8 +7,8 @@
 
 #include "CommandDefault.hpp"
 
-#include "gui/event.hpp"
-#include "mathex/point3d.hpp"
+#include "gui/Event.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/InputRegistry.hpp"
 #include "machgui/IntelligentCursorOnActor.hpp"
 #include "machgui/commands/CommandAttack.hpp"

@@ -5,14 +5,14 @@
 
 // #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
 #include "machphys/Constructions/Station.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "render/texture.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "render/Texture.hpp"
 #include <memory>
 #include <memory.ctp>
 

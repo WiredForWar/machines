@@ -11,9 +11,9 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 

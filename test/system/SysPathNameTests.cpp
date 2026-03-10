@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 /** * *
  * I decided to pick something "simple" like the pathname stuff to setup Google Test.

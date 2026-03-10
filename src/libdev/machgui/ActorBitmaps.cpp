@@ -7,9 +7,9 @@
 
 #include "machgui/ActorBitmaps.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 #include "machphys/machphys.hpp"
 #include <algorithm>
 

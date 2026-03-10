@@ -5,17 +5,17 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/line3d.hpp"
-#include "device/time.hpp"
-#include "system/pathname.hpp"
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "device/Time.hpp"
+#include "system/PathName.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
 #include "render/Painter.hpp"
-#include "gui/restring.hpp"
-#include "render/device.hpp"
-#include "render/camera.hpp"
+#include "gui/ResourceString.hpp"
+#include "render/Device.hpp"
+#include "render/Camera.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Sound/SoundManager.hpp"
@@ -36,7 +36,7 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 using SysPathNames = std::pair<SysPathName, SysPathName>;
 

@@ -3,11 +3,11 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "world4d/Scene/Camera.hpp"
 
-#include "render/camera.hpp"
-#include "render/device.hpp"
+#include "render/Camera.hpp"
+#include "render/Device.hpp"
 
 #include <algorithm>
 #include <queue>

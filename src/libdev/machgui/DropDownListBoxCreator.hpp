@@ -13,10 +13,10 @@
 #define _MACHGUI_DROPDWNC_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "gui/displaya.hpp"
-#include "gui/restring.hpp"
-#include "gui/root.hpp"
+#include "ctl/Vector.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/ResourceString.hpp"
+#include "gui/Root.hpp"
 #include "machgui/DropDownListBox.hpp"
 
 #include <functional>

@@ -7,12 +7,12 @@
 
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "render/render.hpp"
-#include "render/texture.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
-#include "render/texmgr.hpp"
-#include "render/device.hpp"
+#include "render/Texture.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Device.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/Sprite3d.hpp"
 #include "world4d/Plans/MaterialSequencePlan.hpp"
@@ -23,7 +23,7 @@
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/Generic.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Weapons/PlasmaBolt.hpp"
 #include "machphys/Effects/Effects.hpp"

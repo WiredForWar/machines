@@ -13,7 +13,7 @@
 #define _MACHLOG_CONVYOFF_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MachLogConvoyOffsets
 {

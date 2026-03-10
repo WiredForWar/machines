@@ -7,7 +7,7 @@
 
 #include "machgui/MenuContext/CtxMultiplayer.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/StartupData.hpp"
@@ -17,12 +17,12 @@
 #include "machgui/SingleLineEditBox.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/manager.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/restring.hpp"
-#include "network/session.hpp"
-#include "network/netnet.hpp"
+#include "gui/Manager.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/ResourceString.hpp"
+#include "network/Session.hpp"
+#include "network/Network.hpp"
 #include "render/Font.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////

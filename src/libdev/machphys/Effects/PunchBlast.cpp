@@ -4,12 +4,12 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/PunchBlast.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
-#include "mathex/line2d.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Line2d.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
 #include "world4d/Scene/GarbageCollector.hpp"

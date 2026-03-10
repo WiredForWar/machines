@@ -14,9 +14,9 @@
 
 #include "base/base.hpp"
 
-#include "sim/projecti.hpp"
+#include "sim/Projectile.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"

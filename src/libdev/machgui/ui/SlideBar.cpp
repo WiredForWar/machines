@@ -7,11 +7,11 @@
 
 #include "machgui/ui/SlideBar.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "machgui/gui.hpp"
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
 
 constexpr float BorderWidth{2};
 

@@ -6,10 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/leaktrak.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 // #include <windows.h>
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 void LeakTracker::update(Action action, SampleRate rate)
 {

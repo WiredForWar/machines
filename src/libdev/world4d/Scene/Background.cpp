@@ -6,11 +6,11 @@
 #include "world4d/Scene/Background.hpp"
 
 #include "world4d/Entity/Generic.hpp"
-#include "system/pathname.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/angle.hpp"
+#include "system/PathName.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Angle.hpp"
 
 // This auxilliary function reads a tree of generic entities to use as
 // backgound objects.  The objects fall into three animation categories:

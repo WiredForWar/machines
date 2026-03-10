@@ -5,18 +5,18 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "phys/phys.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Constructions/HardwareLab.hpp"
 #include "machphys/Constructions/HardwareLabData.hpp"

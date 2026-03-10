@@ -1,11 +1,11 @@
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
-#include "ctl/list.hpp"
-#include "ctl/list.ctp"
+#include "ctl/List.hpp"
+#include "ctl/List.ctp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 

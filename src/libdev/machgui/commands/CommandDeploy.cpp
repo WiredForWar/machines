@@ -14,7 +14,7 @@
 #include "machlog/Operations/DeployAPCOperation.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachGuiDeployCommand::MachGuiDeployCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-deploy"_bind)

@@ -17,7 +17,7 @@
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class PhysAcceleratedScalarPlanImpl
 // Canonical form revoked

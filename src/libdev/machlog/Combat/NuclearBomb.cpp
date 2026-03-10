@@ -8,7 +8,7 @@
 #include "machlog/Combat/NuclearBomb.hpp"
 #include "machlog/Internal/NuclearBombImpl.hpp"
 
-#include "mathex/line3d.hpp"
+#include "mathex/Line3d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
@@ -23,7 +23,7 @@
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Data/Data.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Combat/ExpandingBlast.hpp"

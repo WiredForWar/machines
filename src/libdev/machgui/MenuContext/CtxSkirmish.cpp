@@ -28,7 +28,7 @@
 #include "machgui/NumPlayersDropDownListBoxCreator.hpp"
 #include "machgui/internal/strings.hpp"
 #include "render/Font.hpp"
-#include "system/registry.hpp"
+#include "system/Registry.hpp"
 
 #include <stdarg.h>
 

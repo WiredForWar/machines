@@ -4,13 +4,13 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "base/PersistenceFlagsInBool.hpp"
 #include <functional>
 #include <algorithm>
-#include "mathex/point3d.hpp"
-#include "utility/linetok.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Point3d.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Machines/Machine.hpp"
 #include "machlog/Actions/ReinforcementsAction.hpp"
 #include "machlog/ProductionUnit.hpp"

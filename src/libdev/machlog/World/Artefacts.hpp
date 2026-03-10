@@ -13,7 +13,7 @@
 #define _MACHLOG_ARTFACTS_HPP
 
 #include "base/base.hpp"
-#include "utility/id.hpp"
+#include "utility/Id.hpp"
 #include "mathex/mathex.hpp"
 #include "machphys/machphys.hpp"
 

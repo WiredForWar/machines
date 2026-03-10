@@ -7,9 +7,9 @@
 
 #include "MenuText.hpp"
 
-#include "gui/font.hpp"
+#include "gui/Font.hpp"
 #include "gui/gui.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "render/Font.hpp"

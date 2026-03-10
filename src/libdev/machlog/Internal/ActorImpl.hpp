@@ -14,9 +14,9 @@
 #define _MACHLOG_ACTORI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/pvector.hpp"
-#include "mathex/point3d.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Actors/Actor.hpp"
 
 class MachActorImpl

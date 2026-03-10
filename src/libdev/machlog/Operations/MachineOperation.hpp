@@ -14,8 +14,8 @@
 #define _MACHLOG_MACHOP_HPP
 
 #include "base/base.hpp"
-#include "ctl/utility.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Utility.hpp"
+#include "ctl/Vector.hpp"
 
 class MachLogMachine;
 class MachLogOperation;

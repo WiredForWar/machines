@@ -7,7 +7,7 @@
 
 #include "machgui/Network/NetworkProtocolMode.hpp"
 #include "machgui/internal/strings.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machlog/Messaging/Network.hpp"
 

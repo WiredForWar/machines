@@ -15,19 +15,19 @@
 #include "base/base.hpp"
 
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/phys.hpp"
 
-#include "sound/smphandl.hpp"
+#include "sound/SampleHandle.hpp"
 #include "sound/snd.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/map.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Map.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Sound/SoundManager.hpp"
 

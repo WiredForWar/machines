@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/vector.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/tri2d.hpp"
-#include "mathex/plane3d.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Triangle2d.hpp"
+#include "mathex/Plane3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machphys/Terrain/TileBoundary.hpp"
 

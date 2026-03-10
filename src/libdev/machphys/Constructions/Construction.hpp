@@ -13,11 +13,11 @@
 #define _MACHPHYS_CONSTRON_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Composite.hpp"
 
 #include "machphys/machphys.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 // Forward decls
 class MachPhysEntrance;

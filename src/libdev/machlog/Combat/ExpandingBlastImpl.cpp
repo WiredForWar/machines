@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Internal/ExpandingBlastImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/machphys.hpp"
 #include "machphys/Data/Data.hpp"

@@ -14,8 +14,8 @@
 #define _MACHLOG_ACTRACEC_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
-#include "sim/action.hpp"
+#include "mathex/Point2d.hpp"
+#include "sim/Action.hpp"
 #include "machphys/machphys.hpp"
 
 #include <memory>

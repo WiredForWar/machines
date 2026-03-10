@@ -7,9 +7,9 @@
 
 #include "world4d/Scene/Internal/LightData.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/countptr.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/List.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 

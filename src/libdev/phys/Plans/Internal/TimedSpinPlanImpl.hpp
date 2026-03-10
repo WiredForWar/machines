@@ -13,14 +13,14 @@
 #define _PHYS_TIMESPNI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Vec3.hpp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
 

@@ -15,11 +15,11 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "ftl/seriamap.hpp"
-#include "ftl/reuidgen.hpp"
-#include "graph/graph.hpp"
-#include "graph/vertex.hpp"
-#include "graph/arc.hpp"
+#include "ftl/SerialMap.hpp"
+#include "ftl/ReusingIdGenerator.hpp"
+#include "graph/Graph.hpp"
+#include "graph/Vertex.hpp"
+#include "graph/Arc.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/ConfigSpace/Internal/DomainArc.hpp"

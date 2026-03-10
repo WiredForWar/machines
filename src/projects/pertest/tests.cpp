@@ -1,8 +1,8 @@
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/mmvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/MinMemoryVector.hpp"
 #include "stdlib/string.hpp"
-// #include "render/internal/trigroup.hpp"
+// #include "render/internal/TriangleGroup.hpp"
 #include "pertest/class1.hpp"
 #include "machphys/ObjectFactory.hpp"
 

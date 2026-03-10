@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/line2d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

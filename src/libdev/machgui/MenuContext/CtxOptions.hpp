@@ -14,8 +14,8 @@
 
 #include "machgui/GameMenuContext.hpp"
 
-#include "ctl/pvector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "machgui/StartupScreens.hpp"
 
 #define GAMMA_REG_MULTIPLIER 0x19999999

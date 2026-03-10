@@ -7,13 +7,13 @@
 
 #include "machphys/Effects/VapourTrail.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Effects/VapourPuff.hpp"
 #include "machphys/Effects/Fireball.hpp"

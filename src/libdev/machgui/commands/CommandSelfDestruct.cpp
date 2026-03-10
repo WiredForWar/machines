@@ -8,7 +8,7 @@
 #include "CommandSelfDestruct.hpp"
 
 #include "machgui/InGameScreen.hpp"
-#include "device/time.hpp"
+#include "device/Time.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"

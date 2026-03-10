@@ -6,12 +6,12 @@
 #include "machgui/PausedImage.hpp"
 
 #include "gui/gui.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/db/Database.hpp"
 #include "machgui/db/DbScenario.hpp"
-#include "render/device.hpp"
-#include "sim/manager.hpp"
+#include "render/Device.hpp"
+#include "sim/Manager.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 

@@ -7,11 +7,11 @@
 
 #include "machgui/MapArea.hpp"
 #include "machgui/internal/MapAreaImpl.hpp"
-#include "system/pathname.hpp"
-#include "render/device.hpp"
+#include "system/PathName.hpp"
+#include "render/Device.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/gui.hpp"
 
 class MachGuiMapAreaMagic : public GuiDisplayable

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "render/device.hpp"
-#include "render/surface.hpp"
+#include "render/Device.hpp"
+#include "render/Surface.hpp"
 
 class AniSmacker
 {

@@ -15,8 +15,8 @@
 #define _MACHLOG_ACTActivateSquadrons_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "sim/action.hpp"
+#include "ctl/Vector.hpp"
+#include "sim/Action.hpp"
 #include "machphys/machphys.hpp"
 
 #include <memory>

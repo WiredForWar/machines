@@ -15,7 +15,7 @@
 #define _WORLD4D_MATPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "render/render.hpp"
 #include "world4d/world4d.hpp"

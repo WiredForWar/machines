@@ -1,6 +1,6 @@
 #include "RecentEventsManager.hpp"
 
-#include "gui/event.hpp"
+#include "gui/Event.hpp"
 #include "machgui/Cameras.hpp"
 #include "machlog/Messaging/MachineVoiceMailEventID.hpp"
 #include "machlog/Actors/Actor.hpp"

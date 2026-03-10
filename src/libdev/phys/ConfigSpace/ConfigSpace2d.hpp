@@ -14,9 +14,9 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "ftl/serialid.hpp"
+#include "ftl/SerialId.hpp"
 #include "phys/phys.hpp"
-#include "ctl/utility.hpp"
+#include "ctl/Utility.hpp"
 
 #include <memory>
 #include <optional>

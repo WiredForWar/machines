@@ -15,11 +15,11 @@
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 // #include <time.h>
 // removed HA // RP 3/12/97  I'm the only person using this

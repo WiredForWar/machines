@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "phys/phys.hpp"
-#include "sim/projecti.hpp"
+#include "sim/Projectile.hpp"
 #include "world4d/world4d.hpp"
 
 // forward declarations

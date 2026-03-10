@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include <map>
 

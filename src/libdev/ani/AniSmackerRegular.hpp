@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ani/AniSmacker.hpp"
-#include "system/pathname.hpp"
-#include "render/surface.hpp"
+#include "system/PathName.hpp"
+#include "render/Surface.hpp"
 
 #include <vector>
 

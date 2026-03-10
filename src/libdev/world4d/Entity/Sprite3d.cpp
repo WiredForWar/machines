@@ -5,12 +5,12 @@
 
 #include "world4d/Entity/Sprite3d.hpp"
 
-#include "render/mesh.hpp"
-#include "render/ttfpoly.hpp"
-#include "render/meshinst.hpp"
+#include "render/Mesh.hpp"
+#include "render/TTFPolygon.hpp"
+#include "render/MeshInstance.hpp"
 
-#include "mathex/double.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Double.hpp"
+#include "mathex/Vec2.hpp"
 
 PER_DEFINE_PERSISTENT(W4dSprite3d);
 

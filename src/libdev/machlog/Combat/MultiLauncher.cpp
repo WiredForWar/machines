@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"

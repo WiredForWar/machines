@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "base/diag.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/random.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Random.hpp"
 
 #include "phys/phys.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
@@ -31,7 +31,7 @@
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Effects/MachineExplosion.hpp"

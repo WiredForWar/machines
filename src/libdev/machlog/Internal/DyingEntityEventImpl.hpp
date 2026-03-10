@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "machlog/World/DyingEntityEvent.hpp"
-#include "ctl/nbvector.hpp"
+#include "ctl/NoBoundsVector.hpp"
 
 class MachLogDyingEntityEventImpl
 // Canonical form revoked

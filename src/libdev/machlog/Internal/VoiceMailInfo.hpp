@@ -3,7 +3,7 @@
 
 #include "machlog/Messaging/VoiceMailData.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "phys/phys.hpp"
 

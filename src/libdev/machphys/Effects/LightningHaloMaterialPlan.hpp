@@ -14,8 +14,8 @@
 #define _MACHPHYS_HALOMPLN_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "render/render.hpp"
 #include "machphys/Effects/LightningHalo.hpp"
 #include "phys/Plans/ScalarPlan.hpp"

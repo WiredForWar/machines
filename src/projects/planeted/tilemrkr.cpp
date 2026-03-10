@@ -7,13 +7,13 @@
 
 #include "planeted/tilemrkr.hpp"
 
-#include "render/device.hpp"
-#include "render/material.hpp"
-#include "render/colour.hpp"
-#include "render/mesh.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/double.hpp"
+#include "render/Device.hpp"
+#include "render/Material.hpp"
+#include "render/Colour.hpp"
+#include "render/Mesh.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Double.hpp"
 
 PedTileMarker::PedTileMarker(
     W4dEntity* pParent,

@@ -6,10 +6,10 @@
 #ifndef _WORLD4D_SHADOW_HPP
 #define _WORLD4D_SHADOW_HPP
 
-#include "base/persist.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/angle.hpp"
+#include "base/Persistence.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Angle.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 class W4dDirectionalLight;

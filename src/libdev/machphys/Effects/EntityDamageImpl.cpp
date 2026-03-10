@@ -15,7 +15,7 @@
 #include "machphys/Constructions/ConstructionData.hpp"
 #include "machphys/Random.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysEntityDamageImpl);
 

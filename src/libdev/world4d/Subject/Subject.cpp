@@ -9,8 +9,8 @@
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Subject/Internal/SubjectImpl.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #define TEST_INVARIANTS
 

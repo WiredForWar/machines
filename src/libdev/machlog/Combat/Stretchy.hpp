@@ -17,11 +17,11 @@
 
 #include "base/base.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
-#include "sim/projecti.hpp"
+#include "sim/Projectile.hpp"
 
 class MexPoint3d;
 class MachPhysStretchy;

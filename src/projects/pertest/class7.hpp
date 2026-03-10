@@ -5,7 +5,7 @@
 #ifndef _PER_CLASS7_HPP
 #define _PER_CLASS7_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "pertest/class5.hpp"
 #include "pertest/class6.hpp"

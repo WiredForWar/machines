@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "phys/Plans/Internal/AccelerateTumblePlanImpl.hpp"

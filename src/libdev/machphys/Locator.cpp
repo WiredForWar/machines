@@ -5,16 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "machphys/Locator.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Degrees.hpp"
 
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"

@@ -13,8 +13,8 @@
 #define _MACHGUI_CHATWIND_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
-#include "gui/root.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Root.hpp"
 
 class MachGuiStartupScreens;
 

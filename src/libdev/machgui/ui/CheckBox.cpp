@@ -8,9 +8,9 @@
 #include "machgui/ui/CheckBox.hpp"
 
 #include "gui/gui.hpp"
-#include "system/pathname.hpp"
-#include "gui/event.hpp"
-#include "gui/painter.hpp"
+#include "system/PathName.hpp"
+#include "gui/Event.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 

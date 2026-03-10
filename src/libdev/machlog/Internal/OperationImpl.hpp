@@ -14,7 +14,7 @@
 #define _MACHLOG_OPERATII_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/Operations/Operation.hpp"
 #include "machlog/Operations/GroupMoveInfo.hpp"
 

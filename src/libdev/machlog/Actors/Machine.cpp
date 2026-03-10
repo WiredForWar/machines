@@ -3,13 +3,13 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/circle2d.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Circle2d.hpp"
+#include "mathex/Polygon2d.hpp"
 
-// #include "render/colour.hpp"            //for fading
+// #include "render/Colour.hpp"            //for fading
 
 // #include "world4d/Plans/SolidFadedAlphaPlan.hpp"         //for fading
 // #include "world4d/Entity/EntityIter.hpp"         //for fading
@@ -20,9 +20,9 @@
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
-#include "envirnmt/planet.hpp"
+#include "envirnmt/PlanetEnvironment.hpp"
 
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Machines/Administrator.hpp"

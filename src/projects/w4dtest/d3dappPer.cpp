@@ -6,24 +6,24 @@
 // #include <env.h>                  // for setenv
 #include <limits.h> // for UINT_MAX
 
-#include "system/pathname.hpp"
-#include "device/time.hpp"
-#include "device/timer.hpp"
-#include "device/mouse.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/quad3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/coordsys.hpp"
+#include "system/PathName.hpp"
+#include "device/Time.hpp"
+#include "device/Timer.hpp"
+#include "device/Mouse.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quad3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/CoordSystem.hpp"
 
-#include "render/display.hpp"
-#include "render/device.hpp"
-#include "render/texmgr.hpp"
-#include "render/mesh.hpp"
-#include "render/stats.hpp"
-#include "render/colour.hpp"
+#include "render/Display.hpp"
+#include "render/Device.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Mesh.hpp"
+#include "render/Stats.hpp"
+#include "render/Colour.hpp"
 
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
@@ -44,20 +44,20 @@
 #include "world4d/Entity/MotionControlledEntity.hpp"
 #include "world4d/Persistence.hpp"
 
-#include "utility/time.hpp"
-#include "utility/linetok.hpp"
+#include "utility/DebugTimer.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include "afx/castfns.hpp"
 
 #include "machphys/Persistence/Persistence.hpp"
 #include "machphys/Data/Preload.hpp"
 #include "base/istrrep.hpp"
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machphys/Data/Data.hpp"
 #include "system/metafile.hpp"
 #include "world4d/Sound/SoundManager.hpp"
-#include "sound/sndparam.hpp"
-#include "sound/soundmix.hpp"
+#include "sound/MixerParameters.hpp"
+#include "sound/Mixer.hpp"
 
 D3DApp::D3DApp()
     : device_(NULL)

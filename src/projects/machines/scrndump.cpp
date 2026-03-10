@@ -7,17 +7,17 @@
 
 #include "machines/scrndump.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "device/keyboard.hpp"
+#include "device/Keyboard.hpp"
 
-#include "recorder/recorder.hpp"
+#include "recorder/Recorder.hpp"
 
 #include "render/render.hpp"
-#include "render/device.hpp"
-#include "render/surface.hpp"
+#include "render/Device.hpp"
+#include "render/Surface.hpp"
 
-#include "utility/tostring.hpp"
+#include "utility/ToString.hpp"
 
 // Static.
 MachScreenDumper& MachScreenDumper::instance()

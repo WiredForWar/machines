@@ -13,8 +13,8 @@
 #define _MACHLOG_APCI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Actors/APC.hpp"
 
 class MachLogAPCImpl

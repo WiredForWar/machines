@@ -7,20 +7,20 @@
 
 #include "machphys/Effects/Effects.hpp"
 
-#include "system/pathname.hpp"
-#include "render/texture.hpp"
+#include "system/PathName.hpp"
+#include "render/Texture.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 #include "world4d/Plans/MaterialSequencePlan.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityIter.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
-#include "render/colour.hpp"
-#include "render/material.hpp"
-#include "render/matvec.hpp"
-#include "render/texmgr.hpp"
-#include "render/device.hpp"
-#include "render/capable.hpp"
-#include "ctl/nbvector.hpp"
+#include "render/Colour.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Device.hpp"
+#include "render/Capabilities.hpp"
+#include "ctl/NoBoundsVector.hpp"
 
 // static
 void MachPhysEffects::flashObject(

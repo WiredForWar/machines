@@ -15,8 +15,8 @@
 #include "machgui/commands/command.hpp"
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point3d.hpp"
 
 // Forward refs
 class MachLogConstruction;

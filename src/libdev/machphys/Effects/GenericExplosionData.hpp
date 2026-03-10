@@ -13,7 +13,7 @@
 #define _MACHPHYS_EXPHOLDR_HPP
 
 #include "base/base.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
 class MachPhysConstructionExplosionData;
 

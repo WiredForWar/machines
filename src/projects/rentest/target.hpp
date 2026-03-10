@@ -7,11 +7,11 @@
 #define _RENDER_TARGET_HPP
 
 #include "render/render.hpp"
-#include "mathex/transf3d.hpp"
-#include "device/keyboard.hpp"
-#include "device/butevent.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
+#include "mathex/Transform3d.hpp"
+#include "device/Keyboard.hpp"
+#include "device/ButtonEvent.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
 #include "stdlib/string.hpp"
 
 class DevButtonEvent;

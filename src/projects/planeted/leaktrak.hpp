@@ -13,7 +13,7 @@
 #define _LEAKTRAK_HPP
 
 #include "base/base.hpp"
-#include "device/keyboard.hpp"
+#include "device/Keyboard.hpp"
 
 // static methods only
 class LeakTracker

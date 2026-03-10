@@ -14,9 +14,9 @@
 
 #include "base/base.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Operations/Operation.hpp"
 
 class MachLogGeoLocator;

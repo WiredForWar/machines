@@ -7,17 +7,17 @@
 
 #include "world4d/Entity/Internal/CompositeImpl.hpp"
 
-#include "ctl/pvector.hpp"
-#include "utility/linetok.hpp"
+#include "ctl/PtrVector.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "mathex/coordsys.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/CoordSystem.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "render/hierload.hpp"
-#include "render/node.hpp"
+#include "render/HierarchyLoader.hpp"
+#include "render/Node.hpp"
 
 #include "world4d/Entity/CompositePlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"

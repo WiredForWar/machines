@@ -10,9 +10,9 @@
 #include "machlog/Operations/Operation.hpp"
 #include "machlog/Internal/GroupMoveUtility.hpp"
 #include "machlog/Operations/GroupMoveInfo.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
 
 //  Helper class just to keep MachLogGroupMoverUtility out of
 //  the public interface

@@ -13,7 +13,7 @@
 #define _PLANETED_AVAILODS_HPP
 
 #include "base/base.hpp"
-#include "system/fileenum.hpp"
+#include "system/FileEnumerator.hpp"
 
 class PedAvailableTileLods : public SysFileEnumerator
 {

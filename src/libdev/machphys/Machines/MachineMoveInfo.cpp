@@ -8,11 +8,11 @@
 #include <numeric>
 
 #include "machphys/Machines/MachineMoveInfo.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/utility.hpp"
-#include "mathex/quatern.hpp"
-#include "utility/indent.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Utility.hpp"
+#include "mathex/Quaternion.hpp"
+#include "utility/Indent.hpp"
 
 #ifndef _INLINE
 #include "machphys/Machines/MachineMoveInfo.ipp"

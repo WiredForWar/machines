@@ -11,7 +11,7 @@
 #ifndef _MACHLOG_CNTRL_PC_HPP
 #define _MACHLOG_CNTRL_PC_HPP
 
-#include "sim/actor.hpp"
+#include "sim/Actor.hpp"
 
 #include "machphys/machphys.hpp"
 

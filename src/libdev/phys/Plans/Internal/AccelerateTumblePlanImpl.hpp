@@ -13,18 +13,18 @@
 #define _PHYS_ACCETUMI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "mathex/mathex.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "phys/Plans/EulerTransform3d.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/AccelerateTumblePlan.hpp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
 
 class PhysAccelerateTumblePlanImpl
 // Canonical form revoked

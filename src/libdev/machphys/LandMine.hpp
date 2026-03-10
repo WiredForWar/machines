@@ -13,7 +13,7 @@
 #define _MACHPHYS_LMINE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "machphys/CanBeDestroyed.hpp"
 #include "machphys/machphys.hpp"

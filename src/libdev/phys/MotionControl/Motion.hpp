@@ -7,12 +7,12 @@
 #define _PHYS_MCMOTION_HPP
 
 #include "base/base.hpp"
-#include "ctl/list.hpp"
-#include "utility/property.hpp"
-#include "device/timer.hpp"
-#include "device/butevent.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/vec3.hpp"
+#include "ctl/List.hpp"
+#include "utility/Property.hpp"
+#include "device/Timer.hpp"
+#include "device/ButtonEvent.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Vec3.hpp"
 
 #include <memory>
 

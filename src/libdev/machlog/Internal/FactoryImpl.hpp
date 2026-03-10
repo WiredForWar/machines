@@ -13,8 +13,8 @@
 #define _MACHLOG_FACTORYI_HPP
 
 #include "base/base.hpp"
-#include "ctl/list.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Actors/Factory.hpp"
 
 class MachLogFactoryImpl

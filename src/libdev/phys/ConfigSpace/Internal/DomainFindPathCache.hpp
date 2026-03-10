@@ -13,10 +13,10 @@
 #define _PHYS_CS2DMCAC_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
-#include "ctl/utility.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/nbvector.hpp"
+#include "mathex/Point2d.hpp"
+#include "ctl/Utility.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/NoBoundsVector.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 class PhysCS2dDomainFindPathCache

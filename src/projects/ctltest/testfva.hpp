@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 
 #include "testh/soaktest.hpp"
 #include "testh/testfvec.hpp"

@@ -7,8 +7,8 @@
 
 #include "machlog/Messaging/RemoteFirstPersonManager.hpp"
 
-#include "ctl/pvector.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Messaging/FirstPersonHandler.hpp"
 #include "machlog/Messaging/FirstPersonMachineHandler.hpp"
 #include "machlog/Races.hpp"

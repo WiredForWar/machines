@@ -8,7 +8,7 @@
 #include "world4d/Entity/EntityIter.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 W4dEntityIter::W4dEntityIter(W4dEntity* pEntity)
 {

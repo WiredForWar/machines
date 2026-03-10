@@ -13,11 +13,11 @@
 #define _MACHGUI_STRTDATA_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/Network/ConnectionType.hpp"
 #include "machlog/World/MachLog.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 #include <optional>
 

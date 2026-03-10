@@ -5,15 +5,15 @@
 
 // #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/Effects/SmokePlume.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/FloatValuePlan.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 
 class MachPhysEntrance;
 

@@ -6,15 +6,15 @@
 #ifndef _GUI_GUI_HPP
 #define _GUI_GUI_HPP
 
-#include "device/mouse.hpp"
+#include "device/Mouse.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Vec2.hpp"
 
 #include "render/Alignment.hpp"
-#include "render/colour.hpp"
-#include "render/surface.hpp"
+#include "render/Colour.hpp"
+#include "render/Surface.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 

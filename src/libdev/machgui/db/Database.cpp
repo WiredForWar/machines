@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/persist.hpp"
-#include "base/error.hpp"
-#include "utility/linetok.hpp"
+#include "base/Persistence.hpp"
+#include "base/Error.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include "machlog/World/Scenario.hpp"
 #include "machgui/db/Database.hpp"

@@ -7,7 +7,7 @@
 
 #include "machphys/Weapons/ElectroCharger.hpp"
 #include "machphys/Data/SoundData.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 #include "machphys/Weapons/Electro.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
@@ -33,17 +33,17 @@
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "render/scale.hpp"
-#include "render/colour.hpp"
+#include "render/Scale.hpp"
+#include "render/Colour.hpp"
 
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysElectroCharger);
 

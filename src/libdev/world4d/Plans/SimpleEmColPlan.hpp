@@ -13,17 +13,17 @@
 #define _WORLD4D_EMCOLPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/phys.hpp"
 
 #include "render/render.hpp"
 
-#include "render/material.hpp"
+#include "render/Material.hpp"
 
 #include "world4d/Plans/ColourPlanData.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"

@@ -7,8 +7,8 @@
 
 #include "machgui/StartupData.hpp"
 
-#include "base/diag.hpp"
-#include "system/registry.hpp"
+#include "base/Diag.hpp"
+#include "system/Registry.hpp"
 #include "machgui/db/DbScenario.hpp"
 #include "machgui/MenuContext/CtxImReady.hpp"
 #include "machgui/StartupScreens.hpp"
@@ -26,8 +26,8 @@
 #include "afx/resource.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "gui/restring.hpp"
-#include "mathex/random.hpp"
+#include "gui/ResourceString.hpp"
+#include "mathex/Random.hpp"
 
 MachGuiStartupData::PlayerInfo::PlayerInfo()
 {

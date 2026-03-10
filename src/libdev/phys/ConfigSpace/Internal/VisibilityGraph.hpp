@@ -18,15 +18,15 @@
 #define _PHYS_CS2VIGRA_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp"
-#include "ftl/serialid.hpp"
-#include "ftl/seriamap.hpp"
-#include "graph/vertex.hpp"
-#include "graph/arc.hpp"
-#include "graph/graph.hpp"
-#include "graph/astarvtx.hpp"
-#include "graph/astaralg.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point2d.hpp"
+#include "ftl/SerialId.hpp"
+#include "ftl/SerialMap.hpp"
+#include "graph/Vertex.hpp"
+#include "graph/Arc.hpp"
+#include "graph/Graph.hpp"
+#include "graph/AStarVertex.hpp"
+#include "graph/AStarAlgorithm.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

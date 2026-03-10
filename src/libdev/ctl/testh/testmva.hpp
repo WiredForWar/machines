@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "ctl/mmvector.hpp"
+#include "ctl/MinMemoryVector.hpp"
 
 #include "ctl/testh/soaktest.hpp"
 // #include "ctl/testh/testmvec.hpp"

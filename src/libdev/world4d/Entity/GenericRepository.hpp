@@ -14,9 +14,9 @@
 #define _WORLD4D_GENREPOS_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/vector.hpp"
-#include "utility/linetok.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/Vector.hpp"
+#include "utility/LineTokeniser.hpp"
 
 class MexTransform3d;
 class W4dRoot;

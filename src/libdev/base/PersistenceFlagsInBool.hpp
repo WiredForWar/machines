@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "base/prepost.hpp"
-#include "base/persist.hpp"
+#include "base/PrePost.hpp"
+#include "base/Persistence.hpp"
 
 // Booleans are stored as 32-bit unsigned number which gives us some
 // space to store extra info in a way compatible with old save files

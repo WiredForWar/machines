@@ -13,7 +13,7 @@
 #define _WORLD4D_ENTSCALE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 // Forward refs
 class MexPoint3d;

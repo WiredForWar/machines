@@ -7,7 +7,7 @@
 #define _MACHLOG_VOICEMAIL_DATA
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 enum VoiceMailType
 {

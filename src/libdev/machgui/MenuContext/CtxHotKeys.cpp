@@ -7,8 +7,8 @@
 
 #include "machgui/MenuContext/CtxHotKeys.hpp"
 
-#include "gui/font.hpp"
-#include "system/pathname.hpp"
+#include "gui/Font.hpp"
+#include "system/PathName.hpp"
 #include "machgui/InputRegistry.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
@@ -17,13 +17,13 @@
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "render/Font.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
-#include "device/cd.hpp"
+#include "device/CD.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include <algorithm>
 #include <fstream>

@@ -13,8 +13,8 @@
 #define _MACHGUI_PLAYERIT_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
-#include "gui/root.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Root.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/AutoDeleteDisplayable.hpp"
 

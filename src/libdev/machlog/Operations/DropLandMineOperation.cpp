@@ -9,7 +9,7 @@
 
 #include "machlog/Internal/DropLandMineOperationImpl.hpp"
 
-#include "mathex/line2d.hpp"
+#include "mathex/Line2d.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

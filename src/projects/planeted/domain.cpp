@@ -8,12 +8,12 @@
 #include "planeted/domain.hpp"
 #include "planeted/portal.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "mathex/mathex.hpp"
-#include "mathex/line2d.hpp"
+#include "mathex/Line2d.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 // For std::swap<>().
 #include <algorithm>

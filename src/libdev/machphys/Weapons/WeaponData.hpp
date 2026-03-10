@@ -13,13 +13,13 @@
 #define _MACHPHYS_WEPDATA_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/phys.hpp"
-#include "render/colour.hpp"
-#include "render/texture.hpp"
+#include "render/Colour.hpp"
+#include "render/Texture.hpp"
 
 class MachPhysWeaponData
 // Canonical form revoked

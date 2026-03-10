@@ -8,7 +8,7 @@
 #include "command.hpp"
 #include "commandi.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/InGameScreen.hpp"
@@ -22,14 +22,14 @@
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/GeneralData.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/circle2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
-#include "gui/event.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Circle2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
+#include "gui/Event.hpp"
 #include "gui/ResolvedUiString.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId triggerBindId)
     : isExecuted_(false)

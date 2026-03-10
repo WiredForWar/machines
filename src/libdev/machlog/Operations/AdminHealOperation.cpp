@@ -3,9 +3,9 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machphys/Machines/MachineData.hpp"
 #include "machphys/Random.hpp"

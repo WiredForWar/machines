@@ -1,7 +1,7 @@
 #include "gui/RootSharedBitmaps.hpp"
 
-#include "gui/painter.hpp"
-#include "system/pathname.hpp"
+#include "gui/GuiPainter.hpp"
+#include "system/PathName.hpp"
 
 GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
 {

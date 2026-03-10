@@ -5,8 +5,8 @@
 
 #include "machlog/Operations/Operation.hpp"
 
-// #include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+// #include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
 #include "machlog/Internal/OperationImpl.hpp"
 

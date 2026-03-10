@@ -8,9 +8,9 @@
 #include "VerticalScrollBar.hpp"
 
 #include "machgui/gui.hpp"
-#include "gui/painter.hpp"
-#include "gui/border.hpp"
-#include "gui/scrolbut.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Border.hpp"
+#include "gui/ScrollButton.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 MachGuiVerticalScrollBar::MachGuiVerticalScrollBar(

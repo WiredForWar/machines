@@ -1,10 +1,10 @@
 #ifndef _SDLAPP_HPP
 #define _SDLAPP_HPP
 
-#include "system/pathname.hpp"
-#include "device/timer.hpp"
-#include "device/butevent.hpp"
-#include "render/texmgr.hpp"
+#include "system/PathName.hpp"
+#include "device/Timer.hpp"
+#include "device/ButtonEvent.hpp"
+#include "render/TextureManager.hpp"
 #include "afx/AfxSdlApp.hpp"
 
 // class DevButtonEvent;

@@ -13,7 +13,7 @@
 #define _PERSIST_CLASS10_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "pertest/class9.hpp"
 
 class Class10 : public Class9<int>

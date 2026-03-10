@@ -16,9 +16,9 @@
 #include "machlog/Operations/AdminLocateOperation.hpp"
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 // forward declarations
 

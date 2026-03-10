@@ -13,14 +13,14 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Machines/Machine.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/vec2.hpp"
-#include "device/keytrans.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Vec2.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 #include "world4d/Scene/Domain.hpp"
 
-#include "render/camera.hpp"
+#include "render/Camera.hpp"
 
 MachLogGroundCameraMotionConstraint::MachLogGroundCameraMotionConstraint(MachLogCamera* pCamera)
     : pCamera_(pCamera)

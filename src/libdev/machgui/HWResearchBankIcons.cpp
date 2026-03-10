@@ -10,8 +10,8 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
 #include "machlog/Actors/HardwareLab.hpp"
-#include "gui/manager.hpp"
-#include "ctl/pvector.hpp"
+#include "gui/Manager.hpp"
+#include "ctl/PtrVector.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 

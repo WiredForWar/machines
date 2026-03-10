@@ -17,7 +17,7 @@
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machphys/machphys.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachBuildMenuIcons::MachBuildMenuIcons(
     GuiDisplayable* pParent,

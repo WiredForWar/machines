@@ -13,11 +13,11 @@
 #define _WORLD4D_VISPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/phys.hpp"
 

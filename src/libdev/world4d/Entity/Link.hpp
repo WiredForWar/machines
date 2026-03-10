@@ -13,7 +13,7 @@
 #define _LINK_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/world4d.hpp"
 #include "world4d/Entity/Entity.hpp"
 

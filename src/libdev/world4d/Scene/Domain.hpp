@@ -14,7 +14,7 @@
 #define _REN_DOMAIN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Subject/SubjectForward.hpp"
 #include "world4d/Subject/ObserverForward.hpp"
 #include "world4d/Entity/Entity.hpp"

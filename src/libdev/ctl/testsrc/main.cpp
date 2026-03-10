@@ -1,10 +1,10 @@
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/fixedvec.hpp"
-#include "ctl/mmvector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/MinMemoryVector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 // #include "testh/testveca.hpp"
 // #include "testh/testlsta.hpp"

@@ -11,10 +11,10 @@
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
-#include "render/matvec.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialVec.hpp"
 
 #include <algorithm>
 

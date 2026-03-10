@@ -4,17 +4,17 @@
  */
 #include "machlog/Actors/SpyLocator.hpp"
 
-#include "ctl/algorith.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Random.hpp"
 #include "machphys/Machines/SpyLocator.hpp"

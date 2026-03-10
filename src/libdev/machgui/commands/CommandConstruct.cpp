@@ -7,25 +7,25 @@
 
 #include "CommandConstruct.hpp"
 
-#include "gui/event.hpp"
+#include "gui/Event.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Degrees.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/Root.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "device/butevent.hpp"
-#include "device/time.hpp"
+#include "device/ButtonEvent.hpp"
+#include "device/Time.hpp"
 
 #include "machphys/Constructions/Construction.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"

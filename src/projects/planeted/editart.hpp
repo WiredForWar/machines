@@ -13,11 +13,11 @@
 #define _EDITART_HPP
 
 #include "planeted/editactor.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
 #include "world4d/Entity/GenericRepository.hpp"
 #include "machphys/machphys.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Degrees.hpp"
 
 class MachPhysArtefact;
 class MachPhysTerrainTile;

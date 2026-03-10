@@ -8,7 +8,7 @@
 #include "machphys/Weapons/LinearProjectile.hpp"
 #include "machphys/Weapons/Internal/LinearProjectileImpl.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/phys.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
@@ -16,10 +16,10 @@
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysLinearProjectile);

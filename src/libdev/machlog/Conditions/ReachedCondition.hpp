@@ -16,9 +16,9 @@
 #define _MACHLOG_CONDREAC_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/phys.hpp"
-#include "sim/conditio.hpp"
+#include "sim/Condition.hpp"
 #include "machlog/World/MachLog.hpp"
 
 class UtlLineTokeniser;

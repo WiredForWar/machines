@@ -4,8 +4,8 @@
  */
 
 #include "world4d/Plans/UVTranslation.hpp"
-#include "render/uvanim.hpp"
-#include "render/uvtrans.hpp"
+#include "render/UVTransform.hpp"
+#include "render/UVTranslation.hpp"
 
 PER_DEFINE_PERSISTENT(W4dUVTranslation);
 

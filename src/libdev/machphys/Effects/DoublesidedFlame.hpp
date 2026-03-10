@@ -13,13 +13,13 @@
 #define _MACHPHYS_DBLFLAME_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "render/render.hpp"
-#include "render/matvec.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "render/MaterialVec.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 class MachPhysDoublesidedFlame : public W4dEntity
 // Canonical form revoked

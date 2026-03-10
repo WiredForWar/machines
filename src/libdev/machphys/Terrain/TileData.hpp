@@ -15,16 +15,16 @@
 #define _MACHPHYS_TILEDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/nbvector.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/utility.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/grid2d.hpp"
+#include "ctl/NoBoundsVector.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Utility.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Grid2d.hpp"
 
 // Forward refs
 class RenMesh;

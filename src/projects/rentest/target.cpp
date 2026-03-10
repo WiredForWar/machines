@@ -5,11 +5,11 @@
 
 #include "rentest/target.hpp"
 #include "phys/MotionControl/FlyControl.hpp"
-#include "render/mesh.hpp"
-#include "render/light.hpp"
-#include "render/uvanim.hpp"
-#include "render/colour.hpp"
-#include "mathex/eulerang.hpp"
+#include "render/Mesh.hpp"
+#include "render/Light.hpp"
+#include "render/UVTransform.hpp"
+#include "render/Colour.hpp"
+#include "mathex/EulerAngles.hpp"
 
 class TestUVAnim : public RenUVTransform
 {

@@ -11,7 +11,7 @@
 #define _CODE_INLINE
 #endif
 
-#include "mathex/epsilon.hpp"
+#include "mathex/Epsilon.hpp"
 
 _CODE_INLINE
 const MexTransform3d& MachPhysMachineMoveInfo::startTransform() const

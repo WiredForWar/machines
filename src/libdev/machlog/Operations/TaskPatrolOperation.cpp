@@ -3,16 +3,16 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 #include "machphys/Machines/MachineData.hpp"
 #include "machphys/Random.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Administrator.hpp"
 #include "machlog/Operations/PatrolOperation.hpp"

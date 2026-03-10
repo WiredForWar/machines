@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 
-#include "device/butevent.hpp"
-#include "system/pathname.hpp"
+#include "device/ButtonEvent.hpp"
+#include "system/PathName.hpp"
 #include "planeted/scenfile.hpp"
 
 class W4dSceneManager;

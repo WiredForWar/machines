@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/CounterattackOperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Random.hpp"
 
@@ -16,7 +16,7 @@
 #include "machlog/Operations/CounterattackOperation.hpp"
 #include "machlog/Operations/Operation.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogCounterattackOperationImpl);
 

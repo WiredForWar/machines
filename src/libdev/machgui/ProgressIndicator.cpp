@@ -1,10 +1,10 @@
 #include "ProgressIndicator.hpp"
 
 #include "machlog/Messaging/Network.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
 #include "render/Painter.hpp"
-#include "system/winapi.hpp"
+#include "system/WindowsAPI.hpp"
 
 namespace MachGui
 {

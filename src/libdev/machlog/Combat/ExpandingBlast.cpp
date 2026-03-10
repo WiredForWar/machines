@@ -8,16 +8,16 @@
 #include "machlog/Combat/ExpandingBlast.hpp"
 #include "machlog/Internal/ExpandingBlastImpl.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/poly2d.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Vec2.hpp"
 
-#include "utility/id.hpp"
-#include "utility/bndidgen.hpp"
+#include "utility/Id.hpp"
+#include "utility/BoundedIdGenerator.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
@@ -29,7 +29,7 @@
 #include "machphys/Data/Data.hpp"
 #include "machphys/Constructions/Construction.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Artefact.hpp"
 #include "machlog/Actors/Construction.hpp"

@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/radians.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/Internal/LinearMotionPlanImpl.hpp"
 

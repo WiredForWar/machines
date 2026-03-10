@@ -13,11 +13,11 @@
 #define _MACHPHYS_VAPPUFF_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/vector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/Vector.hpp"
 
 #include "world4d/Entity/Sprite3d.hpp"
-#include "render/material.hpp"
+#include "render/Material.hpp"
 #include "render/render.hpp"
 #include "world4d/Plans/ScalePlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

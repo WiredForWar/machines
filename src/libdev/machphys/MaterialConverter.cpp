@@ -7,12 +7,12 @@
 
 #include "machphys/MaterialConverter.hpp"
 
-#include "ctl/countptr.hpp"
-#include "render/hsv.hpp"
-#include "render/colour.hpp"
-#include "render/matmap.hpp"
-#include "render/matvec.hpp"
-#include "render/material.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "render/ColourHSV.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 #include "world4d/Materials/CompositeMaterialVecChanger.hpp"

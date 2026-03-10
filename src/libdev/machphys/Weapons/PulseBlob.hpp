@@ -13,7 +13,7 @@
 #define _MACHPHYS_PULSEBLB_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "render/render.hpp"
 
 #include "machphys/Weapons/LinearProjectile.hpp"

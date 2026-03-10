@@ -7,13 +7,13 @@
 
 #include "machgui/StatisticsBar.hpp"
 
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/gui.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
-#include "gui/font.hpp"
+#include "gui/Font.hpp"
 
 #include <stdlib.h>
 

@@ -7,7 +7,7 @@
 
 #include "planeted/obstacle.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 #include <fstream>
 

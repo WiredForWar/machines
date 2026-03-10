@@ -14,8 +14,8 @@
 
 #include "machgui/commands/command.hpp"
 
-#include "ctl/vector.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point2d.hpp"
 
 // Forward refs
 class MachActor;

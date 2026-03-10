@@ -7,11 +7,11 @@
 #define _W4D_LIGHT_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "phys/phys.hpp"
-#include "utility/property.hpp"
+#include "utility/Property.hpp"
 
 class RenLight;
 class RenDirectionalLight;

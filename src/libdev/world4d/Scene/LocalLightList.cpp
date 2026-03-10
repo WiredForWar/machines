@@ -8,7 +8,7 @@
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include <algorithm>
 
 PER_DEFINE_PERSISTENT(W4dLocalLightList);

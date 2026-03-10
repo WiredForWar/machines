@@ -7,11 +7,11 @@
 
 #include "machphys/Weapons/BeeBomber.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Degrees.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

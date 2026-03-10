@@ -8,8 +8,8 @@
 #include "phys/Plans/AlignedBSPTree2d.hpp"
 
 #include <iostream>
-#include "mathex/point2d.hpp"
-#include "mathex/epsilon.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Epsilon.hpp"
 
 #ifndef _INLINE
 #include "phys/Plans/AlignedBSPTree2d.itp"

@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/Effects/JetRingPlan.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysJetRingPlan);

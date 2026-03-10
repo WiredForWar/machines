@@ -13,7 +13,7 @@
 #include "world4d/Subject/Internal/SubjectImpl.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/Internal/DomainImpl.hpp"
-#include "mathex/line3d.hpp"
+#include "mathex/Line3d.hpp"
 
 #define CB_W4dDomain_DEPIMPL()                                                                                         \
     CB_DEPIMPL(W4dPortals, portals_);                                                                                  \

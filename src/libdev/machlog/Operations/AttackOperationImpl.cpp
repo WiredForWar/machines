@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/AttackOperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Administrator.hpp"

@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "world4d/Entity/Custom.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 #include "machlog/World/Camera.hpp"
 
 class W4dEntity;

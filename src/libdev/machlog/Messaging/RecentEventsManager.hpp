@@ -1,7 +1,7 @@
 #ifndef MACHLOG_RecentEventsManager_HPP
 #define MACHLOG_RecentEventsManager_HPP
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
 
 #include <vector>

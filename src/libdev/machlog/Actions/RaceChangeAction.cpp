@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "ctl/list.hpp"
-#include "utility/linetok.hpp"
-#include "sim/manager.hpp"
+#include "base/Diag.hpp"
+#include "ctl/List.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Actions/RaceChangeAction.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Races.hpp"

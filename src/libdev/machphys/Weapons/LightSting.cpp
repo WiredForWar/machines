@@ -4,16 +4,16 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machphys/Weapons/LightSting.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/random.hpp"
+#include "ctl/Vector.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Random.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"

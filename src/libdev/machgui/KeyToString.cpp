@@ -1,8 +1,8 @@
 #include "KeyToString.hpp"
 
 #include "gui/ResolvedUiString.hpp"
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
+#include "gui/Font.hpp"
+#include "gui/ResourceString.hpp"
 
 #include "machgui/internal/strings.hpp"
 

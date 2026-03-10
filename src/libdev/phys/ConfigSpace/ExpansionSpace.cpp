@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/abox2d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/ConfigSpace/Internal/ExpansionSpace.hpp"

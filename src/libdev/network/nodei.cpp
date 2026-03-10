@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "network/internal/nodei.hpp"
+#include "network/internal/NodeImpl.hpp"
 
 NetNodeImpl::NetNodeImpl()
     : pingString_("Ping")

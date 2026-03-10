@@ -7,8 +7,8 @@
 
 #include "CommandAssemblyPoint.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/Scene/Domain.hpp"

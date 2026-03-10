@@ -4,13 +4,13 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "ctl/list.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Scene/Domain.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Persistence/Persist.hpp"
 #include "machlog/Persistence/PersistMachines.hpp"

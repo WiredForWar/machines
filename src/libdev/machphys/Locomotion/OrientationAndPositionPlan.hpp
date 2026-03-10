@@ -15,10 +15,10 @@
 #define _MACHPHYS_ORIENTPL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "phys/Plans/MotionPlan.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 class W4dEntity;
 

@@ -4,15 +4,15 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "phys/Plans/AccelerateTumblePlan.hpp"
 #include "phys/Plans/Internal/AccelerateTumblePlanImpl.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 PER_DEFINE_PERSISTENT(PhysAccelerateTumblePlan);
 

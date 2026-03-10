@@ -1,14 +1,14 @@
 #include "machgui/MachGuiFPCommand.hpp"
 
-#include "system/pathname.hpp"
-#include "gui/painter.hpp"
+#include "system/PathName.hpp"
+#include "gui/GuiPainter.hpp"
 #include "render/Painter.hpp"
-#include "gui/font.hpp"
+#include "gui/Font.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machgui/gui.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "render/device.hpp"
+#include "render/Device.hpp"
 #include "machlog/Messaging/MachLog1stPersonActiveSquad.hpp"
 
 // Helpers ////////////////////////////////////////////////////////////////////////////////////////

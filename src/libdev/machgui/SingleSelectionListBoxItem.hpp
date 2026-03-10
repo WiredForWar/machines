@@ -13,8 +13,8 @@
 #define _MACHGUI_SSLISTIT_HPP
 
 #include "base/base.hpp"
-#include "gui/root.hpp"
-#include "gui/sslistit.hpp"
+#include "gui/Root.hpp"
+#include "gui/SingleSelectionListBoxItem.hpp"
 
 // GuiBmpFont is a using alias for Ren::BmpFont, declared in gui/gui.hpp
 class MachGuiStartupScreens;

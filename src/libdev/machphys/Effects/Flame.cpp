@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
-#include "mathex/point3d.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
 
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

@@ -7,10 +7,10 @@
 
 #include "machphys/Persistence/DataStr.hpp"
 
-#include "utility/linetok.hpp"
-#include "system/pathname.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 // static
 ctl_vector<double> MachPhysDataStream::data(const SysPathName& fileName)

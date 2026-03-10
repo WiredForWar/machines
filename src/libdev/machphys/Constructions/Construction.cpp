@@ -6,12 +6,12 @@
 #include "machphys/Constructions/Construction.hpp"
 #include "machphys/Constructions/Internal/ConstructionImpl.hpp"
 
-#include "base/diag.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/plane3d.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Plane3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Scene/Domain.hpp"
@@ -22,7 +22,7 @@
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Entity/Link.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Constructions/Entrance.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"
@@ -36,12 +36,12 @@
 #include "machphys/Weapons/CanAttack.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 
-#include "render/colour.hpp"
-#include "render/matmap.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialMap.hpp"
 
 #include "machphys/Effects/Internal/RaceChangerBody.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT_ABSTRACT(MachPhysConstruction);
 

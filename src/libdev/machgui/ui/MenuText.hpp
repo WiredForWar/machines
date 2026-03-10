@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "gui/ResolvedUiString.hpp"
 #include "render/TextOptions.hpp"
 

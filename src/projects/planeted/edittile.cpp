@@ -8,19 +8,19 @@
 #include "planeted/availods.hpp"
 #include "planeted/tilemrkr.hpp"
 
-#include "device/keyboard.hpp"
-#include "device/mouse.hpp"
-#include "device/eventq.hpp"
+#include "device/Keyboard.hpp"
+#include "device/Mouse.hpp"
+#include "device/EventQueue.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/quatern.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quaternion.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Scene/Camera.hpp"
 
-#include "render/device.hpp"
+#include "render/Device.hpp"
 
 #include "machlog/World/Planet.hpp"
 
@@ -29,9 +29,9 @@
 #include "machphys/Terrain/TileData.hpp"
 #include "machphys/Marker.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "planeted/editart.hpp"
 
 PedTileEditor::PedTileEditor(PedArtefactEditor& artefactEditor)

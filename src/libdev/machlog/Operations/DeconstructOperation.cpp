@@ -7,13 +7,13 @@
 
 #include "machlog/Operations/DeconstructOperation.hpp"
 
-// #include "ctl/algorith.hpp"
+// #include "ctl/Algorithm.hpp"
 
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/ConstructorData.hpp"
 #include "machphys/Data/Data.hpp"

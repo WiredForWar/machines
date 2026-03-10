@@ -9,9 +9,9 @@
 #include "machphys/Persistence/OtherPersistence.hpp"
 
 #include "world4d/Entity/Root.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "system/pathname.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysHelix);
 

@@ -7,7 +7,7 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "base/error.hpp"
+#include "base/Error.hpp"
 #include "planeted/availods.hpp"
 
 // static

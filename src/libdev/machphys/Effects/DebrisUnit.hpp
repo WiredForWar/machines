@@ -13,7 +13,7 @@
 #define _DEBRISUN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "machphys/machphys.hpp"
 #include "machphys/Effects/SmokePlume.hpp"
@@ -23,7 +23,7 @@
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 class MachPhysDebrisUnit : public W4dEntity
 {

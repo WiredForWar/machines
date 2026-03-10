@@ -1,11 +1,11 @@
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/quatern.hpp"
-#include "render/material.hpp"
-#include "render/texture.hpp"
+#include "mathex/Quaternion.hpp"
+#include "render/Material.hpp"
+#include "render/Texture.hpp"
 #include "world4d/Plans/LinearFloatValuePlan.hpp"
 #include <string.hpp>
 #include "internal/animdata.hpp"

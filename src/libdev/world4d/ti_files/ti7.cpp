@@ -1,10 +1,10 @@
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "internal/entityi.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 
 class W4dCompositePlan;
 

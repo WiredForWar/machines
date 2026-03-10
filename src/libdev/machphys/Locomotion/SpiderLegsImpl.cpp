@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "machphys/Locomotion/Internal/SpiderLegsImpl.hpp"
 
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Vec3.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 #include "machphys/Locomotion/SpiderLegs.hpp"

@@ -6,10 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "phys/MotionControl/MotionControlWithTrans.hpp"
-#include "device/keytrans.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "device/KeyToCommandTranslator.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "machgui/IInputRegistry.hpp"
 

@@ -13,7 +13,7 @@
 #define _EDITACTOR_HPP
 
 // #include "base/base.hpp"
-#include "device/butevent.hpp"
+#include "device/ButtonEvent.hpp"
 #include "planeted/editmode.hpp"
 #include "machphys/machphys.hpp"
 #include "world4d/Entity/Entity.hpp"

@@ -6,12 +6,12 @@
 // #define _INSTANTIATE_TEMPLATE_CLASSES
 //  #define _INSTANTIATE_TEMPLATE_FUNCTIONS
 
-#include "ctl/list.hpp"
-#include "ctl/list.ctp"
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/List.hpp"
+#include "ctl/List.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machlog/Actors/Artefact.hpp"
 #include "machlog/World/BuildPoint.hpp"

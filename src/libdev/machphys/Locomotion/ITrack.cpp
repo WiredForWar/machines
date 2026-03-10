@@ -4,7 +4,7 @@
  */
 
 #include "machphys/Locomotion/Internal/ITrack.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Vec2.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/UVTranslation.hpp"

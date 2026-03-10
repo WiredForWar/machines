@@ -13,9 +13,9 @@
 #define _MACHLOG_CONDANYA_HPP
 
 #include "base/base.hpp"
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 #include "phys/phys.hpp"
-#include "sim/conditio.hpp"
+#include "sim/Condition.hpp"
 
 #include <string>
 

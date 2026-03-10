@@ -13,7 +13,7 @@
 #define _MACHPHYS_MISSEMP_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "machphys/Constructions/Construction.hpp"
 #include "machphys/Weapons/CanAttack.hpp"

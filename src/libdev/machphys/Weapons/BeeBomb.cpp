@@ -8,20 +8,20 @@
 #include "machphys/Weapons/BeeBomb.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/line3d.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Line3d.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
@@ -39,7 +39,7 @@
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Effects/VapourTrail.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysBeeBomb);
 

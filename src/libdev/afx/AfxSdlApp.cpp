@@ -1,15 +1,15 @@
 #include "afx/AfxSdlApp.hpp"
 
-#include "base/diag.hpp"
-#include "device/mouse.hpp"
-#include "device/keyboard.hpp"
+#include "base/Diag.hpp"
+#include "device/Mouse.hpp"
+#include "device/Keyboard.hpp"
 
-#include "device/private/sdlkeybd.hpp"
+#include "device/private/SdlKeyboard.hpp"
 
-#include "device/eventq.hpp"
-#include "device/time.hpp"
+#include "device/EventQueue.hpp"
+#include "device/Time.hpp"
 
-#include "recorder/recorder.hpp"
+#include "recorder/Recorder.hpp"
 
 #include "system/SysInfo.hpp"
 

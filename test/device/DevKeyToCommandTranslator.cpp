@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "device/KeyWithModifiers.hpp"
-#include "device/keytrans.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 
 using ::testing::TypedEq;
 using ::testing::Return;

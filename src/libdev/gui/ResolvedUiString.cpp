@@ -1,6 +1,6 @@
 #include "ResolvedUiString.hpp"
 
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 
 ResolvedUiString::ResolvedUiString(Gui::StringId stringId) :
     id_(stringId)

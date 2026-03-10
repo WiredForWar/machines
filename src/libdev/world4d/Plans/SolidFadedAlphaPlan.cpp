@@ -7,8 +7,8 @@
 
 #include "world4d/Plans/SolidFadedAlphaPlan.hpp"
 #include "world4d/Manager.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
 
 W4dSolidFadedAlphaPlan::W4dSolidFadedAlphaPlan(
     uint nFadedFrames,

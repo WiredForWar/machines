@@ -7,14 +7,14 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/quatern.hpp"
-#include "device/keyboard.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "device/Keyboard.hpp"
 #include "phys/MotionControl/FlyControl.hpp"
 
 PhysFlyControl::PhysFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)

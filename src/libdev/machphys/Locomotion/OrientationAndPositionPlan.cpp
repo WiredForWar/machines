@@ -7,7 +7,7 @@
 
 #include "machphys/Locomotion/OrientationAndPositionPlan.hpp"
 #include "world4d/Entity/Entity.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysOrientationAndPositionPlan);
 

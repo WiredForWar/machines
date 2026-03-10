@@ -13,12 +13,12 @@
 #define _MACHGUI_MAP_HPP
 
 #include "base/base.hpp"
-#include "ctl/fixedvec.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/line3d.hpp"
-#include "utility/id.hpp"
-#include "system/pathname.hpp"
-#include "gui/displaya.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Line3d.hpp"
+#include "utility/Id.hpp"
+#include "system/PathName.hpp"
+#include "gui/Displayable.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/MachLog.hpp"
 

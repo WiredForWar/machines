@@ -1,0 +1,30 @@
+/*
+ * DLYSPIN . H P P
+ * (c) Charybdis Limited, 1997. All Rights Reserved
+ */
+
+#pragma once
+
+#include "base/base.hpp"
+#include "render/Material.hpp"
+#include "render/internal/PolySortedDraw.hpp"
+#include "render/internal/internal.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+
+class RenIDelayedSpinPolygon : public RenIDepthSortedItem
+{
+public:
+    // PRE(nVtx >= 3);
+    RenIDelayedSpinPolygon(RenI::LitVtxAPtr vertices, size_t nVtx, const RenMaterial& mat, const glm::mat4&);
+
+    ~RenIDelayedSpinPolygon() override;
+    void render() override;
+    void print(std::ostream&) const override;
+
+private:
+    RenI::LitVtxAPtr vertices_;
+    const glm::mat4 xform_;
+    const size_t nVertices_;
+};
+
+/* End DLYSPIN.HPP ***************************************************/

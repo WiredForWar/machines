@@ -7,9 +7,9 @@
 
 #include "machgui/ui/ScrollableText.hpp"
 
-#include "base/diag.hpp"
-#include "gui/font.hpp"
-#include "gui/root.hpp"
+#include "base/Diag.hpp"
+#include "gui/Font.hpp"
+#include "gui/Root.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/menus_helper.hpp"
 #include "machgui/ui/MenuStyle.hpp"

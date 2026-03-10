@@ -3,8 +3,8 @@
 #include "ctl/set.hpp"
 // #include "ctl/set.ctp"
 
-#include "render/mesh.hpp"
-#include "render/uvtrans.hpp"
+#include "render/Mesh.hpp"
+#include "render/UVTranslation.hpp"
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 #include "world4d/ForwardMaterials.hpp"
 

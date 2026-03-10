@@ -4,7 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Locomotion/HoverBoots.hpp"
@@ -18,9 +18,9 @@
 
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysHoverBoots);
 

@@ -7,9 +7,9 @@
 #define _REN_VOXEL_HPP
 
 // #include "ctl/nvector.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Vec3.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 //////////////////////////////////////////////////////////////////////
 

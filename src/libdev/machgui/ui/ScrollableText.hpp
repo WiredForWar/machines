@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "gui/scrolist.hpp"
+#include "gui/ScrollableList.hpp"
 #include "gui/ResolvedUiString.hpp"
 
 class GuiRoot;

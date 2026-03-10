@@ -13,10 +13,10 @@
 #include "world4d/Plans/ColourPulseData.hpp"
 #include "world4d/Plans/ColourPulsePlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
-#include "render/matvec.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialVec.hpp"
 
 PER_DEFINE_PERSISTENT(W4dMultiColourPulseData);
 

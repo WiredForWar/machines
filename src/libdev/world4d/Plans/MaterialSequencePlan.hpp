@@ -15,9 +15,9 @@
 #define _WORLD4D_MATSEQPL_HPP
 
 #include "base/base.hpp"
-#include "render/texture.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "render/Texture.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "render/render.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 

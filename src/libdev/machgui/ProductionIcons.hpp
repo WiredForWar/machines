@@ -13,7 +13,7 @@
 #define _MACHGUI_PRODICNS_HPP
 
 #include "base/base.hpp"
-#include "gui/scrolist.hpp"
+#include "gui/ScrollableList.hpp"
 #include "gui/gui.hpp"
 
 // Forward refs

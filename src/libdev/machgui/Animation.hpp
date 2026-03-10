@@ -13,9 +13,9 @@
 #define _MACHGUI_ANIMATIO_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "gui/gui.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include <memory>
 

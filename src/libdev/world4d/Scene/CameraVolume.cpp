@@ -9,9 +9,9 @@
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Scene/Camera.hpp"
 
-#include "mathex/quad3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Quad3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 W4dCameraVolume::W4dCameraVolume(const W4dCamera& camera)
     : pCamera_(&camera)

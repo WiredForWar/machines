@@ -8,8 +8,8 @@
 #include "machlog/Combat/VortexBomb.hpp"
 #include "machlog/Internal/VortexBombImpl.hpp"
 
-#include "mathex/line3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
@@ -23,7 +23,7 @@
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Construction.hpp"

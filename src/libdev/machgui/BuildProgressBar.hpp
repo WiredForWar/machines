@@ -13,7 +13,7 @@
 #define _MACHGUI_BUILDBAR_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machphys/machphys.hpp"
 
 class MachGuiBuildProgressBar : public GuiDisplayable

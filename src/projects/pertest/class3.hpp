@@ -5,10 +5,10 @@
 #ifndef _PER_CLASS3_HPP
 #define _PER_CLASS3_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "pertest/class1.hpp"
 #include "pertest/class2.hpp"
-#include "utility/property.hpp"
+#include "utility/Property.hpp"
 
 class Class3
     : public Class1

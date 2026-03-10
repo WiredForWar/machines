@@ -13,10 +13,10 @@
 #define _MACHPHYS_VAPTRAIL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "ctl/pvector.hpp"
+#include "mathex/Point3d.hpp"
+#include "ctl/PtrVector.hpp"
 #include "phys/phys.hpp"
 
 class MexTransform3d;

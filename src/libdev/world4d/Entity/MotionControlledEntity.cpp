@@ -7,8 +7,8 @@
 
 #include "world4d/Entity/MotionControlledEntity.hpp"
 #include "world4d/Entity/Entity.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Point3d.hpp"
 
 void W4dMotionControlledEntity::CLASS_INVARIANT
 {

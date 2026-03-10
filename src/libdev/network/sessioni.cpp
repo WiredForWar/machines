@@ -1,15 +1,15 @@
-#include "device/timer.hpp"
-#include "system/winapi.hpp"
+#include "device/Timer.hpp"
+#include "system/WindowsAPI.hpp"
 
-#include "network/session.hpp"
-#include "network/node.hpp"
-#include "network/internal/netinet.hpp"
+#include "network/Session.hpp"
+#include "network/Node.hpp"
+#include "network/internal/NetInet.hpp"
 #include "network/internal/mapping.hpp"
-#include "network/internal/sessioni.hpp"
-#include "network/internal/recorder.hpp"
-#include "recorder/recorder.hpp"
+#include "network/internal/SessionImpl.hpp"
+#include "network/internal/Recorder.hpp"
+#include "recorder/Recorder.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 const int MAXPLAYERS = 10;
 

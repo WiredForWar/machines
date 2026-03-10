@@ -8,7 +8,7 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 EXISTS(W4dEntity);
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/Camera.hpp"
@@ -34,22 +34,22 @@ EXISTS(W4dEntity);
 #include "world4d/Subject/Internal/SubjectImpl.hpp"
 #include "world4d/Internal/Complexity.hpp"
 
-#include "render/meshinst.hpp"
-#include "render/mesh.hpp"
-#include "render/scale.hpp"
-#include "render/colour.hpp"
-#include "render/device.hpp"
-#include "render/uvanim.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Mesh.hpp"
+#include "render/Scale.hpp"
+#include "render/Colour.hpp"
+#include "render/Device.hpp"
+#include "render/UVTransform.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "mathex/line3d.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Vec2.hpp"
 
 #include <algorithm>
 

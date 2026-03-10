@@ -11,7 +11,7 @@
 #include "machgui/InGameScreen.hpp"
 #include "machlog/Actors/Factory.hpp"
 #include "world4d/Subject/Subject.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachBuildMenu::MachBuildMenu(
     GuiDisplayable* pParent,

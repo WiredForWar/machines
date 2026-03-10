@@ -5,16 +5,16 @@
 
 #include <iostream>
 
-#include "base/diag.hpp"
-#include "ctl/pvector.hpp"
+#include "base/Diag.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/cvexpgon.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Subject/Subject.hpp"
 

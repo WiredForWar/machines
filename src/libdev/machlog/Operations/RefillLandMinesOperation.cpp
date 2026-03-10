@@ -7,9 +7,9 @@
 
 #include "machlog/Operations/RefillLandMinesOperation.hpp"
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/line2d.hpp"
+#include "mathex/Line2d.hpp"
 
 #include "machphys/Data/Data.hpp"
 #include "machphys/Machines/SpyLocatorData.hpp"

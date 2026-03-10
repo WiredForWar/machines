@@ -13,7 +13,7 @@
 #define _MACHGUI_DBSYSTEM_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machgui/db/DbElement.hpp"
 
 // forward refs

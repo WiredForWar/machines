@@ -15,8 +15,8 @@
 #include "CommandDefault.hpp"
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/CommandIcons.hpp"
 
 // Forward refs

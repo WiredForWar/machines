@@ -5,19 +5,19 @@
 
 #include "machphys/Constructions/Mine.hpp"
 
-#include "ctl/countptr.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/vec3.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Vec3.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/ObjectFactory.hpp"
 #include "machphys/Data/Data.hpp"
@@ -25,7 +25,7 @@
 #include "machphys/Data/Levels.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMine);
 

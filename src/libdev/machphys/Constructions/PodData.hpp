@@ -13,7 +13,7 @@
 #define _PODDATA_HPP
 
 #include "machphys/Constructions/ConstructionData.hpp"
-#include "mathex/angle.hpp"
+#include "mathex/Angle.hpp"
 
 class MexTransform3d;
 

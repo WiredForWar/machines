@@ -13,8 +13,8 @@
 #define _PERTEST_CLASS14_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/mmvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/MinMemoryVector.hpp"
 
 class Class14 : public ctl_min_memory_vector<int>
 // Canonical form revoked

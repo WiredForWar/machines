@@ -13,7 +13,7 @@
 #define _WORLD4D_LLLIST_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 template <class T> class ctl_pvector;
 class W4dLight;

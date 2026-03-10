@@ -13,9 +13,9 @@
 #define _MACHINES_STARTUP_HPP
 
 #include "base/base.hpp"
-#include "device/keyboard.hpp"
-#include "gui/root.hpp"
-#include "gui/restring.hpp"
+#include "device/Keyboard.hpp"
+#include "gui/Root.hpp"
+#include "gui/ResourceString.hpp"
 
 class MachGuiStartupScreensImpl;
 class W4dSceneManager;

@@ -13,8 +13,8 @@
 #define _MACHGUI_DBSCENAI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/nbvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/NoBoundsVector.hpp"
 #include "machphys/machphys.hpp"
 
 // forward refs

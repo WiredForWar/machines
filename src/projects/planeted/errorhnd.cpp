@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/errorhnd.hpp"
-#include "render/display.hpp"
+#include "render/Display.hpp"
 
 // static
 ErrorHandler& ErrorHandler::instance()

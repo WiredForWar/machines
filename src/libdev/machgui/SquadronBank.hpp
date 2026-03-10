@@ -6,9 +6,9 @@
 #ifndef _MACHGUI_SQUADRON_HPP
 #define _MACHGUI_SQUADRON_HPP
 
-#include "device/butevent.hpp"
-#include "gui/icon.hpp"
-#include "gui/scrolist.hpp"
+#include "device/ButtonEvent.hpp"
+#include "gui/Icon.hpp"
+#include "gui/ScrollableList.hpp"
 #include "world4d/Subject/Observer.hpp"
 #include "machgui/gui.hpp"
 

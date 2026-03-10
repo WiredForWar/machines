@@ -5,11 +5,11 @@
 
 #include <iostream>
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 #include "world4d/Scene/Domain.hpp"
 
 #include "machphys/Machines/GeoLocator.hpp"

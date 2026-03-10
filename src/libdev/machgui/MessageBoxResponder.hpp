@@ -13,8 +13,8 @@
 #define _MACHGUI_MSGBOX_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
-#include "gui/restring.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/Animation.hpp"
 
 class MachGuiStartupScreens;

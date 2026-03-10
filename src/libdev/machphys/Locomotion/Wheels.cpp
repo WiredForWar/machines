@@ -4,24 +4,24 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/radians.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Locomotion/Wheels.hpp"
 #include "machphys/Locomotion/Internal/WheelsImpl.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Manager.hpp"
 #include "phys/Plans/LinearTravelPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/TimedSpinPlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysWheels);
 

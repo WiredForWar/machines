@@ -17,7 +17,7 @@
 #define _PERTEST_TCLASS1_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 template <class T1, class T2> class TClass1
 // Canonical form revoked

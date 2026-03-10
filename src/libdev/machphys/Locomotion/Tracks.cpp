@@ -12,7 +12,7 @@
 
 #include "machphys/Locomotion/Internal/ITrack.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysTracks);
 

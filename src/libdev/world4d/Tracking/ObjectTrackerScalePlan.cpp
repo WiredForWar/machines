@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "world4d/Tracking/ObjectTrackerScalePlan.hpp"
-#include "render/scale.hpp"
+#include "render/Scale.hpp"
 
 PER_DEFINE_PERSISTENT(W4dObjectTrackerScalePlan);
 

@@ -6,7 +6,7 @@
 #ifndef _GENERIC_HPP
 #define _GENERIC_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 class SysPathname;

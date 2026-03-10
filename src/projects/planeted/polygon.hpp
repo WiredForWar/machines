@@ -14,11 +14,11 @@
 
 #include "base/base.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "world4d/Entity/Custom.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 using PolyVerticies = ctl_vector<MexPoint2d>;
 

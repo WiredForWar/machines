@@ -6,9 +6,9 @@
 #ifndef _PER_CLASS2_HPP
 #define _PER_CLASS2_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "pertest/class1.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "stdlib/string.hpp"
 
 class Class2

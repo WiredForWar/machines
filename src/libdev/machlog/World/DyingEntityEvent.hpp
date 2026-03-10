@@ -13,9 +13,9 @@
 #define _MACHLOG_DYINGENT_HPP
 
 #include "base/base.hpp"
-#include "sim/disevent.hpp"
+#include "sim/DiscreteEvent.hpp"
 #include "phys/phys.hpp"
-#include "ftl/serialid.hpp"
+#include "ftl/SerialId.hpp"
 
 // #include "machlog/Actors/Actor.hpp"
 #include "world4d/Entity/Entity.hpp"

@@ -4,8 +4,8 @@
  */
 
 #include <iostream>
-#include "ctl/pvector.hpp"
-#include "sim/manager.hpp"
+#include "ctl/PtrVector.hpp"
+#include "sim/Manager.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "machphys/Machines/MachineData.hpp"
 #include "machlog/Actors/Aggressor.hpp"

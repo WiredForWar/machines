@@ -14,8 +14,8 @@
 #define _MACHLOG_ARTSDATA_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machphys/ArtefactData.hpp"
 
 // forward refs

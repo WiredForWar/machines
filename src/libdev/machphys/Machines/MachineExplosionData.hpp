@@ -13,7 +13,7 @@
 #define _MACHPHYS_MEXPDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"

@@ -3,17 +3,17 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/MachineData.hpp"
 #include "machphys/Random.hpp"

@@ -1,6 +1,6 @@
-#include "ctl/mmvector.hpp"
-// #include "ctl/mmvector.ctp"
-#include "envirnmt/elevclut.hpp"
+#include "ctl/MinMemoryVector.hpp"
+// #include "ctl/MinMemoryVector.ctp"
+#include "envirnmt/ElevationColourTable.hpp"
 
 void envDummyFunction1()
 {

@@ -12,7 +12,7 @@
 #include "machlog/Actors/MissileEmplacement.hpp"
 #include "machlog/World/Entrance.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Effects/HealAura.hpp"
 #include "machphys/Constructions/Station.hpp"

@@ -4,16 +4,16 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/Blast.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 #include "machphys/Effects/PunchBlast.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
@@ -22,10 +22,10 @@
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/SimpleScalePlan.hpp"
 
-#include "render/matvec.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysBlast);
 

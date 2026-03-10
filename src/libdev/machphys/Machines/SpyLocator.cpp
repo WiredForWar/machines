@@ -9,16 +9,16 @@
 #include "machphys/Machines/SpyLocator.hpp"
 #include "machphys/Machines/Internal/SpyLocatorImpl.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
 #include "machphys/Machines/SpyLocatorData.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/Levels.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 // I don't know why ctl/list.hpp must be included after the other #include
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysSpyLocator);
 

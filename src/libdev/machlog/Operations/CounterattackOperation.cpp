@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/CounterattackOperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

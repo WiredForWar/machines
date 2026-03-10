@@ -13,11 +13,11 @@
 #define _MACHLOG_CONDVIEW_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/angle.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Angle.hpp"
 #include "phys/phys.hpp"
 
-#include "sim/conditio.hpp"
+#include "sim/Condition.hpp"
 
 class UtlLineTokeniser;
 

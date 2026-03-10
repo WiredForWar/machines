@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
 #include "world4d/Entity/Entity.hpp"
@@ -11,18 +11,18 @@
 #include "world4d/Sound/Internal/SoundData.hpp"
 #include "world4d/Sound/Internal/SoundManagerImpl.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "sound/sndwavid.hpp"
+#include "sound/WaveformId.hpp"
 // #include "sound/smpparams.hpp"
-#include "sound/smpparam.hpp"
-#include "sound/soundmix.hpp"
+#include "sound/SampleParameters.hpp"
+#include "sound/Mixer.hpp"
 #include "sound/snd.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include <memory>
 

@@ -13,7 +13,7 @@
 #define _MACHGUI_DROPDOWN_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
 #include "machgui/SingleSelectionListBox.hpp"
 #include "machgui/AutoDeleteDisplayable.hpp"

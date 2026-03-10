@@ -10,7 +10,7 @@
 #include "machgui/InGameScreen.hpp"
 #include "machlog/Actors/HardwareLab.hpp"
 #include "world4d/Subject/Subject.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachHWResearchMenu::MachHWResearchMenu(
     GuiDisplayable* pParent,

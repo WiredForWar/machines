@@ -14,12 +14,12 @@
 
 #include "machphys/Terrain/PlanetSurface.hpp"
 
-#include "render/surface.hpp"
+#include "render/Surface.hpp"
 #include "render/Painter.hpp"
 #include "render/render.hpp"
-#include "render/display.hpp"
-#include "render/device.hpp"
-#include "render/colour.hpp"
+#include "render/Display.hpp"
+#include "render/Device.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Manager.hpp"

@@ -8,7 +8,7 @@
 #include "machgui/NumPlayersDropDownListBoxCreator.hpp"
 #include "machgui/MenuContext/CtxSkirmish.hpp"
 #include "machgui/internal/strings.hpp"
-#include "system/registry.hpp"
+#include "system/Registry.hpp"
 
 #include <cstring>
 

@@ -11,8 +11,8 @@
 #define _MACHLOG_OPTSKDRM_HPP
 
 #include "phys/phys.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Operations/TaskOperation.hpp"
 

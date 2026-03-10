@@ -7,7 +7,7 @@
 
 #include "CommandAttack.hpp"
 
-#include "gui/event.hpp"
+#include "gui/Event.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machphys/machphys.hpp"
 #include "machgui/internal/strings.hpp"
@@ -24,8 +24,8 @@
 #include "machlog/Operations/PatrolOperation.hpp"
 #include "machlog/Actors/Pod.hpp"
 #include "machlog/Actors/Squadron.hpp"
-#include "device/butevent.hpp"
-#include "ctl/pvector.hpp"
+#include "device/ButtonEvent.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachGuiAttackCommand::MachGuiAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-attack"_bind)

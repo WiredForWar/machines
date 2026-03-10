@@ -10,7 +10,7 @@
 
 #include "world4d/Manager.hpp"
 #include "world4d/Tracking/ObjectTracker.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysLinearWeapon);
 

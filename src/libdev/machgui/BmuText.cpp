@@ -9,11 +9,11 @@
 #include "machgui/ContinentMap.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/Races.hpp"
 #include "machphys/machphys.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 MachGuiBmuText::MachGuiBmuText(GuiDisplayable* pParent, const Gui::Coord& relPos)

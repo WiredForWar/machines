@@ -15,8 +15,8 @@
 #define _MACHGUI_EDITBOX_HPP
 
 #include "base/base.hpp"
-#include "gui/root.hpp"
-#include "gui/editbox.hpp"
+#include "gui/Root.hpp"
+#include "gui/EditBox.hpp"
 
 class MachGuiSingleLineEditBox : public GuiSingleLineEditBox
 {

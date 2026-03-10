@@ -15,7 +15,7 @@
 #define _MACHPHYS_PERSIST_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class MachPhysMachinePersistence;
 class MachPhysConstructionPersistence;

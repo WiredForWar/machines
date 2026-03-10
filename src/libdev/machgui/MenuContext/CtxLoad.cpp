@@ -18,9 +18,9 @@
 #include "machgui/MessageBoxResponder.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/VerticalScrollBar.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 #include "render/Font.hpp"
 
 #include <stdio.h>

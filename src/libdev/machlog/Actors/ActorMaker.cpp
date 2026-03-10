@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/eulerang.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 #include "machphys/Constructions/Beacon.hpp"
 #include "machphys/Constructions/Factory.hpp"

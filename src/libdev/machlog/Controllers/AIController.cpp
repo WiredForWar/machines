@@ -5,17 +5,17 @@
 
 #include "base/base.hpp"
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "mathex/cvexpgon.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machphys/Data/Data.hpp"

@@ -13,7 +13,7 @@
 #define _PERTEST_CLASS11_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class Class11;
 PER_READ_WRITE(Class11);

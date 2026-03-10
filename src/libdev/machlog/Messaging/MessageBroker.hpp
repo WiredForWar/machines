@@ -12,9 +12,9 @@
 #ifndef _MACHLOG_MESSBROK_HPP
 #define _MACHLOG_MESSBROK_HPP
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "utility/id.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "utility/Id.hpp"
 #include "phys/phys.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 
@@ -22,9 +22,9 @@
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machlog/World/MachLog.hpp"
 
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 class MexRadians;
 class MexLine3d;

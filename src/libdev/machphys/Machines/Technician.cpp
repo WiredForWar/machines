@@ -9,16 +9,16 @@
 #include "machphys/SubId.hpp"
 #include "machphys/Machines/Technician.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Machines/TechnicianData.hpp"
 #include "machphys/Data/Levels.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysTechnician);
 

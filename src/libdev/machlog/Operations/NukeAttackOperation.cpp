@@ -7,12 +7,12 @@
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "mathex/cvexpgon.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Subject/Subject.hpp"
 #include "world4d/Entity/Entity.hpp"

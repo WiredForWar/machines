@@ -6,8 +6,8 @@
 #ifndef _MACH_COMMBANK_HPP
 #define _MACH_COMMBANK_HPP
 
-#include "gui/icon.hpp"
-#include "gui/iconseq.hpp"
+#include "gui/Icon.hpp"
+#include "gui/IconSequence.hpp"
 
 #include "machgui/gui.hpp"
 

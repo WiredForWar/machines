@@ -22,15 +22,15 @@
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machlog/World/Planet.hpp"
-#include "mathex/poly2d.hpp"
-#include "sim/manager.hpp"
-#include "mathex/sausag2d.hpp"
-#include "mathex/random.hpp"
-#include "mathex/eulerang.hpp"
-#include "device/time.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "sim/Manager.hpp"
+#include "mathex/Sausage2d.hpp"
+#include "mathex/Random.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "device/Time.hpp"
 #include "machlog/Internal/CollisionInfo.hpp"
 
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 
 //  These are purely to allow testing of alternative strategies.
 static size_t nCallsReserveChunk = 0;

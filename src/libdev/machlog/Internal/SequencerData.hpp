@@ -13,18 +13,18 @@
 #define _MACHLOG_SEQDATA_HPP
 
 #include "base/base.hpp"
-#include "base/logbuff.hpp"
+#include "base/LogBuffer.hpp"
 #include "phys/Plans/MotionChunk.hpp"
-#include "ctl/utility.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Utility.hpp"
+#include "ctl/PtrVector.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Operations/GroupMoveInfo.hpp"
-#include "utility/indent.hpp"
-#include "system/pathname.hpp"
+#include "utility/Indent.hpp"
+#include "system/PathName.hpp"
 
 #include <string>
 

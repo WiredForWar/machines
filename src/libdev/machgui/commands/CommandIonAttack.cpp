@@ -16,8 +16,8 @@
 #include "machlog/Operations/PodAttackOperation.hpp"
 #include "machlog/Actors/Pod.hpp"
 #include "machlog/Combat/Weapon.hpp"
-#include "mathex/transf3d.hpp"
-#include "ctl/pvector.hpp"
+#include "mathex/Transform3d.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachGuiIonAttackCommand::MachGuiIonAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-ion-attack"_bind)

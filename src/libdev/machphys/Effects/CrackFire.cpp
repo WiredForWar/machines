@@ -4,22 +4,22 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machphys/Effects/CrackFire.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 #include "machphys/Effects/Internal/CrackFireImpl.hpp"
 
-#include "ctl/vector.hpp"
-#include "mathex/point3d.hpp"
-#include "system/pathname.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point3d.hpp"
+#include "system/PathName.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "render/matvec.hpp"
-#include "render/scale.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Scale.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
 
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 #include "world4d/Entity/Entity.hpp"
@@ -36,7 +36,7 @@
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Effects/PunchBlast.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 PER_DEFINE_PERSISTENT(MachPhysCrackFire);
 
 // One-time ctor

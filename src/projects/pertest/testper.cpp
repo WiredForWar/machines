@@ -2,16 +2,16 @@
 #include <time.h>
 
 #include <string>
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "pertest/master.hpp"
 // #include "pertest/class8.hpp"
 #include "pertest/class3.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "utility/time.hpp"
+#include "utility/DebugTimer.hpp"
 
 void registerDerivedClasses();
 void testNonPersistent();

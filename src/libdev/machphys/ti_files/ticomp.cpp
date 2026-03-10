@@ -3,8 +3,8 @@
  * (c) Charybdis Limited, 1996. All Rights Reserved.
  */
 
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
 class MachPhysComplexityBooleanItem;
 class MachPhysComplexityChoiceItem;

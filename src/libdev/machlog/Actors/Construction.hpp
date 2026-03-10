@@ -13,12 +13,12 @@
 #define _MACHLOG_CONSTRON_HPP
 
 #include "base/base.hpp"
-// #include "ctl/vector.hpp"
+// #include "ctl/Vector.hpp"
 #include "phys/phys.hpp"
 // #include "machlog/World/BuildPoint.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Actors/Actor.hpp"
-#include "ftl/serialid.hpp"
+#include "ftl/SerialId.hpp"
 
 // Forward declarations
 class MachLogRace;

@@ -6,10 +6,10 @@
 #ifndef _MACH_CORRAL_HPP
 #define _MACH_CORRAL_HPP
 
-#include "gui/displaya.hpp"
-#include "gui/icon.hpp"
-#include "gui/iconseq.hpp"
-#include "gui/scrolist.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Icon.hpp"
+#include "gui/IconSequence.hpp"
+#include "gui/ScrollableList.hpp"
 
 #include "machphys/machphys.hpp"
 
@@ -18,9 +18,9 @@
 
 #include "world4d/Subject/Observer.hpp"
 
-#include "system/pathname.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "system/PathName.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 //////////////////////////////////////////////////////////////////////
 

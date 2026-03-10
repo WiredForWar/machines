@@ -15,7 +15,7 @@
 #define _WORLD4D_SNDDATA_HPP
 
 #include "base/base.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "mathex/mathex.hpp"
 
 class W4dSoundData

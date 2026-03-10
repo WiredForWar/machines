@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device/key.hpp"
+#include "device/Key.hpp"
 
 class KeyModifierFlags
 {

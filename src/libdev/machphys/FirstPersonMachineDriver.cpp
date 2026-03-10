@@ -7,17 +7,17 @@
 
 #include "machphys/FirstPersonMachineDriver.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Scene/Domain.hpp"
 
-#include "sim/manager.hpp"
-#include "ctl/list.hpp"
+#include "sim/Manager.hpp"
+#include "ctl/List.hpp"
 
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Machines/MachineData.hpp"

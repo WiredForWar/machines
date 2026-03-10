@@ -1,8 +1,8 @@
 #pragma once
 
-#include "network/nodeuid.hpp"
+#include "network/NodeUid.hpp"
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 
 struct NetPingInformation
 {

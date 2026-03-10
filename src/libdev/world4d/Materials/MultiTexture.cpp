@@ -12,13 +12,13 @@
 #include "world4d/Materials/Internal/CycleTextureData.hpp"
 #include "world4d/Plans/MaterialFramePlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
-#include "render/matvec.hpp"
-#include "render/texmgr.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/TextureManager.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include <algorithm>
 

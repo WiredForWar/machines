@@ -15,10 +15,10 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-// #include "mathex/transf3d.hpp"
-#include "mathex/ctrans3d.hpp"
-// #include "mathex/radians.hpp"
+#include "mathex/Point3d.hpp"
+// #include "mathex/Transform3d.hpp"
+#include "mathex/CompressedTransform3d.hpp"
+// #include "mathex/Radians.hpp"
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 

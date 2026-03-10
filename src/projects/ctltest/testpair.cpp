@@ -2,13 +2,13 @@
 
 #include "base/base.hpp"
 // #include "stdlib/utility.hpp"
-#include "ctl/utility.hpp"
-#include "ctl/vector.hpp"
-// #include "ctl/vector.ctp"
-#include "ctl/map.hpp"
-// #include "ctl/map.ctp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/Utility.hpp"
+#include "ctl/Vector.hpp"
+// #include "ctl/Vector.ctp"
+#include "ctl/Map.hpp"
+// #include "ctl/Map.ctp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 
 void testPair()
 {

@@ -13,7 +13,7 @@
 #define _CANADMIN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/Messaging/Message.hpp"
 

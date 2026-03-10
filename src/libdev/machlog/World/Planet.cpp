@@ -5,24 +5,24 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/map.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Map.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 
 #include "machlog/World/Planet.hpp"
 #include "machlog/Internal/PlanetImpl.hpp"
 
 #include "base/IProgressReporter.hpp"
 
-#include "system/pathname.hpp"
-#include "utility/linetok.hpp"
+#include "system/PathName.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "mathex/point2d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/Root.hpp"

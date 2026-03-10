@@ -7,7 +7,7 @@
 
 #include "machgui/IntelligentCursorOnActor.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machphys/Data/ObjectData.hpp"
 #include "machphys/Constructions/Construction.hpp"

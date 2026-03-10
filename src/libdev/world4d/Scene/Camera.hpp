@@ -8,7 +8,7 @@
 
 #include "base/base.hpp"
 #include "world4d/Entity/Entity.hpp"
-#include "mathex/t3dkey.hpp"
+#include "mathex/Transform3dKey.hpp"
 
 class MexPoint3d;
 class MexQuad3d;

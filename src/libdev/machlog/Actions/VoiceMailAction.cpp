@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/map.hpp"
-#include "utility/linetok.hpp"
-#include "sim/manager.hpp"
+#include "ctl/Map.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Actions/VoiceMailAction.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/World/Scenario.hpp"

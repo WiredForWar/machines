@@ -7,12 +7,12 @@
 
 #include "machphys/Effects/DebrisUnit.hpp"
 
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/scale.hpp"
-#include "ctl/vector.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/Scale.hpp"
+#include "ctl/Vector.hpp"
 
 #include "machphys/Random.hpp"
 #include "machphys/Effects/Flame.hpp"
@@ -25,11 +25,11 @@
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Plans/MaterialFramePlan.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysDebrisUnit);
 

@@ -5,16 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "world4d/Materials/EntityMaterialVecChanger.hpp"
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 
-#include "render/matmap.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
 #include "world4d/Entity/Entity.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 W4dEntityMaterialVecChanger::W4dEntityMaterialVecChanger(
     const W4dEntity& patternEntity,

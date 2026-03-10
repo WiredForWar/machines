@@ -9,10 +9,10 @@
 
 #include "machlog/Internal/DeployAPCOperationImpl.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"

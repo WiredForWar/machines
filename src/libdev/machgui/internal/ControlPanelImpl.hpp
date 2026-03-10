@@ -13,7 +13,7 @@
 #define _MACHGUI_CONTROLI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "gui/gui.hpp"
 
 class MachGuiControlPanelImpl

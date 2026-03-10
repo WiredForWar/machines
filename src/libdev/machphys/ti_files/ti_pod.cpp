@@ -9,8 +9,8 @@
 #include "machphys/ObjectFactory.hpp"
 // #include "machphys/ObjectFactory.ctp"
 
-#include "ctl/fixedvec.hpp"
-// #include "ctl/fixedvec.ctp"
+#include "ctl/FixedVector.hpp"
+// #include "ctl/FixedVector.ctp"
 
 #include "machphys/Constructions/Pod.hpp"
 

@@ -31,7 +31,7 @@ typedef MexFix16Pt16 MATHEX_SCALAR;
 #endif
 #endif
 
-#include "mathex/epsilon.hpp"
+#include "mathex/Epsilon.hpp"
 
 //////////////////////////////////////////////////////////////////////
 
@@ -138,7 +138,7 @@ template <class T1> T1 mexClamp(const T1& inputValue, const T1& lowerLimit, cons
 // PRE( lowerLimit <= upperLimit );
 // POST( lowerLimit <= result and result <= upperLimit );
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 template <class SCALAR> class MexXCoord
 {

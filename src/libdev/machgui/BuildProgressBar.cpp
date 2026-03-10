@@ -7,8 +7,8 @@
 
 #include "machgui/BuildProgressBar.hpp"
 #include "machgui/gui.hpp"
-#include "gui/manager.hpp"
-#include "gui/painter.hpp"
+#include "gui/Manager.hpp"
+#include "gui/GuiPainter.hpp"
 
 MachGuiBuildProgressBar::MachGuiBuildProgressBar(GuiDisplayable* pParent, const Gui::Coord& rel, size_t width)
     : GuiDisplayable(pParent, Gui::Box(rel, width, MachGuiBuildProgressBar::height()))

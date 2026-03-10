@@ -11,10 +11,10 @@
 
 #pragma once
 
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "machgui/FocusCapableControl.hpp"
 
-#include "gui/font.hpp"
+#include "gui/Font.hpp"
 #include "gui/ResolvedUiString.hpp"
 
 class MachGuiCheckBox

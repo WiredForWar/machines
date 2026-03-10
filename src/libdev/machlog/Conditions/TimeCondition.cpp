@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "sim/manager.hpp"
-#include "utility/linetok.hpp"
+#include "base/Diag.hpp"
+#include "sim/Manager.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/Conditions/TimeCondition.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogTimerCondition);

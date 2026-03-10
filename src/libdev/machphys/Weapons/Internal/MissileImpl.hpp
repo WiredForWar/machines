@@ -13,9 +13,9 @@
 #define _MACHPHYS_MISSILEI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Vec3.hpp"
 
 class MachPhysVapourTrail;
 class W4dLink;

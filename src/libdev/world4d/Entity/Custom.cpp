@@ -5,9 +5,9 @@
 
 #include "world4d/Entity/Custom.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "mathex/double.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "mathex/Double.hpp"
 
 #ifndef _INLINE
 #include "world4d/Entity/Custom.ipp"

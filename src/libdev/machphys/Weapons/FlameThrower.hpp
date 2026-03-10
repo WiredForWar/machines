@@ -13,7 +13,7 @@
 #define _MACHPHYS_FLAMETHR_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/LinearWeapon.hpp"
 
 class W4dEntity;

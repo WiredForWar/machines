@@ -8,9 +8,9 @@
 #include "machgui/EditBoxListBoxItem.hpp"
 #include "machgui/SingleSelectionListBox.hpp"
 #include "machgui/gui.hpp"
-#include "gui/editbox.hpp"
-#include "gui/manager.hpp"
-#include "gui/painter.hpp"
+#include "gui/EditBox.hpp"
+#include "gui/Manager.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 class MachGuiEditBoxItem : public GuiSingleLineEditBox

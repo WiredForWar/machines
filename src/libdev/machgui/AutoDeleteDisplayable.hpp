@@ -13,7 +13,7 @@
 #define _MACHGUI_AUTODEL_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
 class MachGuiStartupScreens;
 

@@ -13,8 +13,8 @@
 #define _PHYS_CMOTCHUN_HPP
 
 #include "base/base.hpp"
-#include "mathex/cpoint2d.hpp"
-#include "mathex/double.hpp"
+#include "mathex/CompressedPoint2d.hpp"
+#include "mathex/Double.hpp"
 #include "phys/phys.hpp"
 #include "phys/Plans/CompressedRampAcceleration.hpp"
 

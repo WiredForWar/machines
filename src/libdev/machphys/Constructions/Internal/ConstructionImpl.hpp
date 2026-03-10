@@ -13,10 +13,10 @@
 #define _MACHPHYS_CONSTROI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/transf3d.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"

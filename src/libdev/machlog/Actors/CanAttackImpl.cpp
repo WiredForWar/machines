@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/CanAttackImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Combat/Weapon.hpp"

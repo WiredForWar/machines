@@ -14,7 +14,7 @@
 #include "machgui/commands/command.hpp"
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machgui/gui.hpp"
 

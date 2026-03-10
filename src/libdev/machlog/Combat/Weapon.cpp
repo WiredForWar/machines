@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Random.hpp"

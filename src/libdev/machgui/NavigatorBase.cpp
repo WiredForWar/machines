@@ -11,23 +11,23 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/Cameras.hpp"
 #include "machgui/gui.hpp"
-#include "gui/icon.hpp"
+#include "gui/Icon.hpp"
 
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
-#include "gui/restring.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
+#include "gui/ResourceString.hpp"
 #include "render/TextOptions.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/APC.hpp"
 #include "machphys/machphys.hpp"
-#include "device/keyboard.hpp"
-#include "device/keytrans.hpp"
+#include "device/Keyboard.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 #include "machgui/internal/strings.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 //////
@@ -742,7 +742,7 @@ private:
 // ******************************************* Code for MachGuiNavButton *************************************
 //////
 
-#include "gui/iconseq.hpp"
+#include "gui/IconSequence.hpp"
 
 class MachGuiNavRow : public GuiIconSequence
 // Canonical form revoked

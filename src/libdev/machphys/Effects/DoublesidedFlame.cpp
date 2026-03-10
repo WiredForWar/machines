@@ -7,23 +7,23 @@
 
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "render/scale.hpp"
-#include "render/texture.hpp"
-#include "render/matvec.hpp"
-#include "render/colour.hpp"
+#include "render/Scale.hpp"
+#include "render/Texture.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/MaterialFramePlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "machphys/Effects/DoublesidedFlame.hpp"
 #include "machphys/Effects/Effects.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysDoublesidedFlame);
 

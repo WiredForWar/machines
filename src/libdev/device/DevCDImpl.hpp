@@ -8,8 +8,8 @@ typedef struct alureStream alureStream;
 typedef unsigned int ALuint;
 #endif
 
-#include "device/cdlist.hpp"
-#include "mathex/random.hpp"
+#include "device/CDPlayList.hpp"
+#include "mathex/Random.hpp"
 
 void eosCallback(void*, ALuint);
 

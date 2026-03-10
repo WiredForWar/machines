@@ -13,7 +13,7 @@
 #define _MACHPHYS_WATERFAL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 class MachPhysWaterfall : public W4dEntity

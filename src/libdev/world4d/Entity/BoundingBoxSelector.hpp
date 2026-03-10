@@ -14,10 +14,10 @@
 #define _WORLD4D_BBXSELEC_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
-#include "mathex/quad3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Quad3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
 
 // forward refs
 class W4dCamera;

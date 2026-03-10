@@ -1,9 +1,9 @@
 #pragma once
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "world4d/Entity/Sprite3d.hpp"
-#include "render/material.hpp"
+#include "render/Material.hpp"
 #include "render/render.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 

@@ -6,9 +6,9 @@
 #ifndef _MACHLOG_PATROL_HPP
 #define _MACHLOG_PATROL_HPP
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machlog/Operations/AnimationOperation.hpp"
 #include "machlog/Operations/Operation.hpp"

@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "gui/restring.hpp"
-#include "gui/font.hpp"
+#include "gui/ResourceString.hpp"
+#include "gui/Font.hpp"
 #include "machgui/DispositionChangeNotifiable.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"

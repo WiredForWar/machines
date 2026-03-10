@@ -13,8 +13,8 @@
 #define _EDITMACH_HPP
 
 #include "planeted/editactor.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
 #include "planeted/scenfile.hpp"
 
 class MachPhysMachine;

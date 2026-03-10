@@ -5,15 +5,15 @@
 
 #include <iostream>
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/Constructor.hpp"
 #include "machphys/Machines/MachineData.hpp"

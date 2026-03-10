@@ -10,14 +10,14 @@
 
 #include "world4d/Internal/Complexity.hpp"
 
-#include "render/hsv.hpp"
-#include "render/device.hpp"
-#include "render/matmap.hpp"
-#include "render/colour.hpp"
+#include "render/ColourHSV.hpp"
+#include "render/Device.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/Colour.hpp"
 
-#include "system/pathname.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
+#include "system/PathName.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
 
 const W4dDirectionalLight* W4dShadow::light_ = nullptr;
 MexVec3 W4dShadow::globalLightDir_(0, 0, -1);

@@ -7,14 +7,14 @@
 
 #include "machgui/internal/SoundManager.hpp"
 
-#include "base/diag.hpp"
-#include "sound/smphandl.hpp"
+#include "base/Diag.hpp"
+#include "sound/SampleHandle.hpp"
 // Inclusion in here to stop compilation error
-#include "sound/soundmix.hpp"
-#include "sound/sndwavid.hpp"
-#include "sound/smpparam.hpp"
-#include "system/pathname.hpp"
-#include "ctl/list.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/WaveformId.hpp"
+#include "sound/SampleParameters.hpp"
+#include "system/PathName.hpp"
+#include "ctl/List.hpp"
 
 class MachGuiSoundManagerImpl
 {

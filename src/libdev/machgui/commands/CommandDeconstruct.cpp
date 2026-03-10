@@ -7,12 +7,12 @@
 
 #include "CommandDeconstruct.hpp"
 
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
+#include "gui/Font.hpp"
+#include "gui/ResourceString.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 

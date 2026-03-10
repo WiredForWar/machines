@@ -15,7 +15,7 @@
 
 #include "base/base.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MachPhysMachineMoveInfo;
 class MexTransform3d;

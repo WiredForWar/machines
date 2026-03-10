@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/Actors/MachineConvoy.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Polygon2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "machlog/Internal/MachineConvoyImpl.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"

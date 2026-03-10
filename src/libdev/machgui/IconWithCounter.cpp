@@ -3,19 +3,19 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "gui/manager.hpp"
+#include "gui/Manager.hpp"
 
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
-#include "gui/restring.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/IconWithCounter.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Actors/Squadron.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 MachGuiIconWithCounter::MachGuiIconWithCounter(

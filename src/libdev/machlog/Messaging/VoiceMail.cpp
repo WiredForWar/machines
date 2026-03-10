@@ -5,17 +5,17 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
+#include "base/Diag.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
+#include "system/PathName.hpp"
 #include "machlog/Internal/VoiceMail.hpp"
 #include "machlog/Internal/VoiceMailImpl.hpp"
 #include "machlog/Internal/VoiceMailInfo.hpp"
-#include "mathex/point3d.hpp"
-#include "sound/soundmix.hpp"
-#include "sound/sndwavid.hpp"
-#include "sound/smpparam.hpp"
+#include "mathex/Point3d.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/WaveformId.hpp"
+#include "sound/SampleParameters.hpp"
 
 MachLogVoiceMail::~MachLogVoiceMail()
 {

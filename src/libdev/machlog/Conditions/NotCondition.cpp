@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/map.hpp"
-#include "sim/manager.hpp"
-#include "utility/linetok.hpp"
+#include "ctl/Map.hpp"
+#include "sim/Manager.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/Conditions/NotCondition.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogNotCondition);

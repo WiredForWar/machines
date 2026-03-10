@@ -13,7 +13,7 @@
 #define _MACHPHYS_BEEBOMB_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/TrailedProjectile.hpp"
 
 class W4dLink;

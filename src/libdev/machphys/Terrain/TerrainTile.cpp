@@ -7,25 +7,25 @@
 
 #include "machphys/Terrain/TerrainTile.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/map.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Map.hpp"
+#include "ctl/Vector.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 
-#include "render/mesh.hpp"
-#include "render/matmap.hpp"
-#include "render/meshinst.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "render/Mesh.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Plans/MaterialFramePlan.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Terrain/TileData.hpp"
 // #include "machphys/Effects/Waterfall.hpp"
 
@@ -38,7 +38,7 @@ PER_DEFINE_PERSISTENT(MachPhysTerrainTile);
 using TerrainExemplarMap = ctl_map<std::string, MachPhysTerrainTile*, std::less<std::string>>;
 static TerrainExemplarMap& exemplarTileMap();
 
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 MachPhysTerrainTile::MachPhysTerrainTile(
     W4dEntity* pParent,
     const SysPathName& lodFileName,

@@ -6,16 +6,16 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "base/base.hpp"
-#include "device/keyboard.hpp"
-#include "device/time.hpp"
+#include "device/Keyboard.hpp"
+#include "device/Time.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/degrees.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/MotionControl/GroundFlyControl.hpp"
-#include "device/keytrans.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 
 #include "system/ConfigVariables.hpp"
 

@@ -1,14 +1,14 @@
 #include "machines/sdlapp.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "machgui/MenuContext/CtxOptions.hpp"
-#include "sound/soundmix.hpp"
-#include "sound/sndparam.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/MixerParameters.hpp"
 #include "world4d/Sound/SoundManager.hpp"
-#include "recorder/recorder.hpp"
-#include "device/cd.hpp"
-#include "system/registry.hpp"
+#include "recorder/Recorder.hpp"
+#include "device/CD.hpp"
+#include "system/Registry.hpp"
 
 #include "spdlog/spdlog.h"
 

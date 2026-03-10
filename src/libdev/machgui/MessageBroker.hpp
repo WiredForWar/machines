@@ -13,7 +13,7 @@
 #define _MACHGUI_MESSBROK_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 
 struct MachGuiChatMessage;

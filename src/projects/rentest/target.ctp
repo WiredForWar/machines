@@ -1,5 +1,5 @@
 #include "phys/MotionControl/FlyControl.hpp"
-#include "device/butevent.hpp"
+#include "device/ButtonEvent.hpp"
 
 template <class T>
 ControlTargetVector<T>::ControlTargetVector(DevKey::ScanCode key)

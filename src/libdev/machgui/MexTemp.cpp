@@ -7,8 +7,8 @@
 
 #include "machgui/MexTemp.hpp"
 
-#include "mathex/abox2d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Point2d.hpp"
 
 MexTemp::MexTemp()
 {

@@ -5,10 +5,10 @@
 
 #include "phys/Plans/MotionPlan.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #ifndef _INLINE
 #include "phys/Plans/MotionPlan.ipp"

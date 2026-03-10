@@ -5,8 +5,8 @@
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/World/Planet.hpp"
 

@@ -5,12 +5,12 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
-#include "render/material.hpp"
-#include "render/colour.hpp"
+#include "render/Material.hpp"
+#include "render/Colour.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Plans/SimpleScalePlan.hpp"

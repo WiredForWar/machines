@@ -13,8 +13,8 @@
 #define _MACHGUI_DBTEXDAI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/vector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/Vector.hpp"
 
 class MachGuiDbITextData
 // Canonical form revoked

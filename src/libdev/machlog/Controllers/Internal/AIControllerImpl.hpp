@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "machlog/Controllers/AIController.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 class MachLogAIControllerImpl
 // Canonical form revoked

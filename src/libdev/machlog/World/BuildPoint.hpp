@@ -19,7 +19,7 @@
 
 #include "machphys/machphys.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MachLogBuildPoint
 {

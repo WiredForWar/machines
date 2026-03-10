@@ -10,7 +10,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/ActorStringIdRestorer.hpp"
 #include "machgui/ActorBitmaps.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/Data/ObjectData.hpp"
 #include "machphys/Machines/MachineData.hpp"
@@ -19,14 +19,14 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Messaging/FirstPersonMachineHandler.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "system/pathname.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "system/PathName.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "render/device.hpp"
+#include "render/Device.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "device/time.hpp"
+#include "device/Time.hpp"
 
 #define RADAR_ANIMATION_FRAMES 10
 #define RADAR_ANIMATION_TIME 0.5

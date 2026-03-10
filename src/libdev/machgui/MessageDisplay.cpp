@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/MessageDisplay.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 // static
 MachGuiMessageDisplay& MachGuiMessageDisplay::instance()

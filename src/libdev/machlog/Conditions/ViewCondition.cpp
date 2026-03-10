@@ -8,8 +8,8 @@
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "sim/manager.hpp"
-#include "utility/linetok.hpp"
+#include "sim/Manager.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/Conditions/ViewCondition.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogCameraViewCondition);

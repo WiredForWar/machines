@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include "device/butevent.hpp"
+#include "device/ButtonEvent.hpp"
 
-#include "device/butevent.cpp"
+#include "device/ButtonEvent.cpp"
 
 using ::testing::AtLeast;
 using ::testing::Return;

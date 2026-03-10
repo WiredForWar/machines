@@ -6,8 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "world4d/Plans/SimpleIntensityPlan.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
 
 W4dSimpleIntensityPlan::W4dSimpleIntensityPlan(
     const RenMaterial& mat,

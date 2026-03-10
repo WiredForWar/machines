@@ -7,9 +7,9 @@
 
 #include "machlog/Internal/GroupSimpleMoveImpl.hpp"
 
-#include "ctl/list.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/circle2d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Circle2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Operations/MoveOperation.hpp"

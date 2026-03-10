@@ -13,7 +13,7 @@
 #define _MACHPHYS_NUCLWEAP_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/LinearWeapon.hpp"
 
 class MachPhysConstruction;

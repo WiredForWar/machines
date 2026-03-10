@@ -11,9 +11,9 @@
 
 #include "mathex/mathex.hpp"
 
-#include "mathex/vec2.hpp"
+#include "mathex/Vec2.hpp"
 // #include "mathex/box2.hpp"
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 void MathexDummyFunction()
 {

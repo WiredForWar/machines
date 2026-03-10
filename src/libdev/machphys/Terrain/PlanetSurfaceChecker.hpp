@@ -13,10 +13,10 @@
 #define _MACHPHYS_SURFCHK_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/utility.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/degrees.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Utility.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Degrees.hpp"
 
 class MachPhysPlanetSurface;
 class PhysConfigSpace2d;

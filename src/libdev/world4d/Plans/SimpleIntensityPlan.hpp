@@ -14,10 +14,10 @@
 #define _WORLD4D_SIMINTPL_HPP
 
 #include "base/base.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "phys/Plans/ScalarPlan.hpp"
 #include "render/render.hpp"
-#include "render/material.hpp"
+#include "render/Material.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 
 // forward refs

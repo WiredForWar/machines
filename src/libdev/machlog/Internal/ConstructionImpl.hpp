@@ -15,8 +15,8 @@
 #include "base/base.hpp"
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/World/BuildPoint.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 class MachLogConstructionImpl
 // Canonical form revoked

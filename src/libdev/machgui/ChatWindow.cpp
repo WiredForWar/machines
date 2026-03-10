@@ -9,8 +9,8 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/menus_helper.hpp"
 
 MachGuiChatWindow::MachGuiChatWindow(GuiRoot* pRootParent, MachGuiStartupScreens* pStartupScreens, const Gui::Box& box)

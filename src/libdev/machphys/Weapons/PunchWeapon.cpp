@@ -8,7 +8,7 @@
 #include "machphys/Weapons/PunchWeapon.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "machphys/machphys.hpp"
 #include "machphys/Effects/PunchBlast.hpp"
@@ -25,9 +25,9 @@
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
 
-#include "render/colour.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "render/Colour.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysPunchWeapon);
 

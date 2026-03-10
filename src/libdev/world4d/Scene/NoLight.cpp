@@ -5,8 +5,8 @@
 
 #include "world4d/Scene/Internal/NoLight.hpp"
 #include "world4d/Entity/Entity.hpp"
-#include "render/matmap.hpp"
-#include "render/material.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/Material.hpp"
 
 bool w4dNeedsLighting(const W4dEntity* entity)
 {

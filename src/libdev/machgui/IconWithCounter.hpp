@@ -6,8 +6,8 @@
 #ifndef _MACH_GUICTRL_HPP
 #define _MACH_GUICTRL_HPP
 
-#include "gui/displaya.hpp"
-#include "gui/icon.hpp"
+#include "gui/Displayable.hpp"
+#include "gui/Icon.hpp"
 #include "machgui/gui.hpp"
 
 class MachInGameScreen;

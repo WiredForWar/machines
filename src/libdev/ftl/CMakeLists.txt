@@ -1,17 +1,17 @@
 
 set(FTL_SOURCES
-    collect.hpp
-    contain.hpp
+    Collection.hpp
+    Container.hpp
     ftl.hpp
-    map.hpp
-    reuidgen.hpp
-    serialid.hpp
-    seriamap.ctp
-    seriamap.hpp
-    seriamap.itp
-    seripmap.ctp
-    seripmap.hpp
-    seripmap.itp
+    Map.hpp
+    ReusingIdGenerator.hpp
+    SerialId.hpp
+    SerialMap.ctp
+    SerialMap.hpp
+    SerialMap.itp
+    SerialPMap.ctp
+    SerialPMap.hpp
+    SerialPMap.itp
 )
 
 add_library(ftl INTERFACE)

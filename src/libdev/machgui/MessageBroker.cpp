@@ -8,16 +8,16 @@
 #include "machgui/MessageBroker.hpp"
 
 #include <stdlib.h>
-#include "base/diag.hpp"
-#include "gui/restring.hpp"
-#include "network/message.hpp"
+#include "base/Diag.hpp"
+#include "gui/ResourceString.hpp"
+#include "network/Message.hpp"
 #include "machgui/MessageDisplay.hpp"
 #include "machgui/ChatWindow.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/InGameChatMessages.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #pragma pack(push, 1)
 struct MachGuiChatMessage

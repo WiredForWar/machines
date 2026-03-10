@@ -13,7 +13,7 @@
 #define _MACHPHYS_IONWEAP_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 
 class W4dGeneric;

@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 TEST(ColourTests, ColourFromString)
 {

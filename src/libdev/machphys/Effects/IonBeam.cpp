@@ -4,16 +4,16 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machphys/Effects/IonBeam.hpp"
 
-#include "base/diag.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/transf3d.hpp"
+#include "base/Diag.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
-#include "system/pathname.hpp"
-#include "render/texture.hpp"
+#include "system/PathName.hpp"
+#include "render/Texture.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"

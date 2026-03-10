@@ -7,13 +7,13 @@
 
 #include "planeted/editcamr.hpp"
 #include <fstream>
-#include "device/butevent.hpp"
-#include "system/pathname.hpp"
+#include "device/ButtonEvent.hpp"
+#include "system/PathName.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/degrees.hpp"
-#include "render/colour.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Degrees.hpp"
+#include "render/Colour.hpp"
 #include "machlog/World/Camera.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "planeted/cameras.hpp"

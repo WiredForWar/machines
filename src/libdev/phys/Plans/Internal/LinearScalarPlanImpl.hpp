@@ -16,7 +16,7 @@
 #include "phys/Plans/ScalarPlan.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class PhysLinearScalarPlanImpl
 // Canonical form revoked

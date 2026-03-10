@@ -11,7 +11,7 @@
 #define _CODE_INLINE
 #endif
 
-#include "mathex/angle.hpp"
+#include "mathex/Angle.hpp"
 
 _CODE_INLINE
 RenStars::Configuration W4dStars::configuration() const

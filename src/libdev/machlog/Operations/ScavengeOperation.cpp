@@ -8,10 +8,10 @@
 #include "machlog/Operations/ScavengeOperation.hpp"
 #include "machlog/Internal/ScavengeOperationImpl.hpp"
 
-#include "ctl/algorith.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Sound/SoundManager.hpp"
 

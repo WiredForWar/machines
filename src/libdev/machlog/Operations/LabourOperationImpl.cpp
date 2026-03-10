@@ -7,13 +7,13 @@
 
 #include "machlog/Internal/LabourOperationImpl.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/Constructor.hpp"
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/World/BuildPoint.hpp"
 
-// #include "mathex/point2d.hpp"
+// #include "mathex/Point2d.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogLabourOperationImpl);
 

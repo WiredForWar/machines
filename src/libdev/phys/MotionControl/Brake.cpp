@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "phys/MotionControl/Brake.hpp"
-#include "mathex/epsilon.hpp"
+#include "mathex/Epsilon.hpp"
 
 Brake::Brake(MATHEX_SCALAR minValue, MATHEX_SCALAR maxValue, MATHEX_SCALAR brakeBandFraction)
     : minValue_(minValue)

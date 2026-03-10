@@ -6,10 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 // #include "machphys/Terrain/PlanetSurface.hpp"
-// #include "ctl/algorith.hpp"
-#include "sim/manager.hpp"
+// #include "ctl/Algorithm.hpp"
+#include "sim/Manager.hpp"
 
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

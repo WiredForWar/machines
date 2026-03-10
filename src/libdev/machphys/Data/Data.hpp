@@ -14,7 +14,7 @@
 #define _MACHPHYS_MPHYDATA_HPP
 
 #include "machphys/machphys.hpp"
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 
 class MachPhysAggressorData;
 class MachPhysAdministratorData;

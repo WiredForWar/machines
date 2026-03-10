@@ -8,8 +8,8 @@
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Machines/Internal/MachineImpl.hpp"
 
-#include "base/diag.hpp"
-#include "render/colour.hpp" //for fading
+#include "base/Diag.hpp"
+#include "render/Colour.hpp" //for fading
 
 #include "world4d/Plans/SolidFadedAlphaPlan.hpp" //for fading
 #include "world4d/Entity/EntityIter.hpp" //for fading
@@ -23,17 +23,17 @@
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/LinearTravelPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/EulerTransform3d.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/epsilon.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Epsilon.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Machines/MachineData.hpp"
 #include "machphys/Locomotion/HoverBoots.hpp"

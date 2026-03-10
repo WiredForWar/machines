@@ -6,9 +6,9 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "phys/MotionControl/ThirdPerson.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 PhysThirdPerson::PhysThirdPerson()
 {

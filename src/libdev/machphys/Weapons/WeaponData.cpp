@@ -11,8 +11,8 @@
 #include "machphys/Weapons/WeaponData.ipp"
 #endif
 
-#include "system/pathname.hpp"
-#include "render/texmgr.hpp"
+#include "system/PathName.hpp"
+#include "render/TextureManager.hpp"
 #include "machphys/Effects/Effects.hpp"
 
 MachPhysWeaponData::MachPhysWeaponData()

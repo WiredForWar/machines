@@ -10,18 +10,18 @@
 #include "machphys/Data/SoundData.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/UVTranslation.hpp"
 #include "world4d/Plans/UVPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "render/uvanim.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
-#include "system/pathname.hpp"
-#include "sim/manager.hpp"
+#include "render/UVTransform.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
+#include "system/PathName.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysWaterfall);
 

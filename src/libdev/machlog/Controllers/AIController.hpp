@@ -13,10 +13,10 @@
 #ifndef _MACHLOG_CONTROLR_AI_HPP
 #define _MACHLOG_CONTROLR_AI_HPP
 
-// #include "ctl/pvector.hpp"
-// #include "ctl/list.hpp"
+// #include "ctl/PtrVector.hpp"
+// #include "ctl/List.hpp"
 
-// #include "utility/linetok.hpp"
+// #include "utility/LineTokeniser.hpp"
 #include "machphys/machphys.hpp"
 
 #include "machlog/Messaging/Message.hpp"

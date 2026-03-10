@@ -15,8 +15,8 @@
 
 #include "base/base.hpp"
 
-#include "mathex/point3d.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/Point3d.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/phys.hpp"
 
 class MachPhysConstructionExplosionData

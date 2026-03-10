@@ -5,13 +5,13 @@
 
 #include "world4d/Entity/Composite.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 // Note: unfortunately there are #include order dependencies due to forward
 // declarations of templates.  These includes must come before compplan.hpp.
 #include "phys/Plans/LinearMotionPlan.hpp" // before compplan.hpp
 #include "phys/Plans/RampAcceleration.hpp" // before compplan.hpp
-#include "mathex/transf3d.hpp" // before compplan.hpp
+#include "mathex/Transform3d.hpp" // before compplan.hpp
 
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Entity/Root.hpp"
@@ -28,20 +28,20 @@
 #include "world4d/Internal/Complexity.hpp"
 #include "world4d/Entity/Internal/EntityImpl.hpp"
 
-#include "mathex/line3d.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/coordsys.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/double.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/CoordSystem.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Double.hpp"
 
-#include "render/scale.hpp"
-#include "render/device.hpp"
-#include "render/colour.hpp"
+#include "render/Scale.hpp"
+#include "render/Device.hpp"
+#include "render/Colour.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -318,7 +318,7 @@ void W4dComposite::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-// cmake   #include "render/device.hpp"         // TBD: temporary optimisation stuff.
+// cmake   #include "render/Device.hpp"         // TBD: temporary optimisation stuff.
 
 inline float square(float v)
 {

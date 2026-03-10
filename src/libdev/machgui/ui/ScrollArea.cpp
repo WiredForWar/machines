@@ -9,8 +9,8 @@
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
-#include "gui/scrolist.hpp"
-#include "gui/painter.hpp"
+#include "gui/ScrollableList.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 MachGuiScrollButton::MachGuiScrollButton(

@@ -13,9 +13,9 @@
 #define _MACHGUI_PROMTEXT_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "gui/gui.hpp"
-#include "gui/editbox.hpp"
+#include "gui/EditBox.hpp"
 
 class MachCameras;
 class MachPromptTextImpl;

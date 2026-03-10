@@ -11,7 +11,7 @@
 #ifndef _MACHLOG_AGGRESSR_HPP
 #define _MACHLOG_AGGRESSR_HPP
 
-#include "mathex/radians.hpp"
+#include "mathex/Radians.hpp"
 
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Machine.hpp"

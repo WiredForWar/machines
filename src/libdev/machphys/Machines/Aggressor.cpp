@@ -6,8 +6,8 @@
 #include "machphys/ObjectFactory.hpp"
 #include "machphys/SubId.hpp"
 
-#include "system/pathname.hpp"
-#include "mathex/point3d.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machphys/Machines/Aggressor.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"

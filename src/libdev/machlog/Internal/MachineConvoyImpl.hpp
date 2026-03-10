@@ -13,7 +13,7 @@
 #define _MACHLOG_MCCONVOI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machlog/Actors/MachineConvoy.hpp"
 
 class MachLogMachineConvoyImpl

@@ -3,6 +3,6 @@
 // universally.  The PCH mechanism appears to clash with templates, so
 // there is no ctl stuff here.
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "world4d/Entity/Entity.hpp"

@@ -13,7 +13,7 @@
 #define _MACHPHYS_WEPLINE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 
 class MachPhysLinearWeapon : public MachPhysWeapon

@@ -1,6 +1,6 @@
 #include "Variable_p.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include <cstdint>
 #include <unordered_map>

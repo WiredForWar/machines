@@ -11,27 +11,27 @@
 #include <sstream>
 #include <algorithm>
 
-#include "utility/time.hpp"
+#include "utility/DebugTimer.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "device/time.hpp"
-#include "device/mouse.hpp"
-#include "device/keyboard.hpp"
-#include "device/eventq.hpp"
-#include "device/keytrans.hpp"
+#include "device/Time.hpp"
+#include "device/Mouse.hpp"
+#include "device/Keyboard.hpp"
+#include "device/EventQueue.hpp"
+#include "device/KeyToCommandTranslator.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/quad3d.hpp"
-#include "mathex/coordsys.hpp"
-#include "mathex/degrees.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Quad3d.hpp"
+#include "mathex/CoordSystem.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/Radians.hpp"
 
 #include "afx/resource.hpp"
 #include "afx/castfns.hpp"
 
-#include "utility/percent.hpp"
+#include "utility/Percentage.hpp"
 
 
 static float randomOffsets[1000], randomRates[1000];

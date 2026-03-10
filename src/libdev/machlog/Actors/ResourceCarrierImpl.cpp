@@ -7,7 +7,7 @@
 
 #include "machlog/Internal/ResourceCarrierImpl.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

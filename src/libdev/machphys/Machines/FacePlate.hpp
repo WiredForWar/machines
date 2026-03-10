@@ -16,8 +16,8 @@
 #define _MACHPHYS_FACEPLATE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "system/pathname.hpp"
+#include "base/Persistence.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Entity/Generic.hpp"
 

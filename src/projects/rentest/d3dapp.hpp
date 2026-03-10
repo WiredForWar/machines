@@ -5,10 +5,10 @@
 
 #include "rentest/target.hpp"
 #include "render/render.hpp"
-#include "device/timer.hpp"
-#include "mathex/transf3d.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
+#include "device/Timer.hpp"
+#include "mathex/Transform3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
 #include "afx/osapp.hpp"
 
 class SysPathName;

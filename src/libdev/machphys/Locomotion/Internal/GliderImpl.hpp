@@ -13,9 +13,9 @@
 #define _MACHPHYS_GLIDERI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Locomotion/Internal/LocomotionMethodImpl.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 class MachPhysGlider;
 

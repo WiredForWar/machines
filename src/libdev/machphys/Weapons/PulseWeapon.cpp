@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 #include "machphys/Weapons/PulseWeapon.hpp"
 #include "machphys/Effects/Effects.hpp"
 #include "machphys/Constructions/Construction.hpp"
@@ -29,12 +29,12 @@
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 
-#include "render/colour.hpp"
-#include "render/material.hpp"
+#include "render/Colour.hpp"
+#include "render/Material.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #ifndef _INLINE
 #include "machphys/Weapons/PulseWeapon.ipp"

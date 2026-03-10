@@ -1,12 +1,12 @@
 #ifndef _MACHLOG_MESSAGES_HPP
 #define _MACHLOG_MESSAGES_HPP
 
-#include "mathex/line3d.hpp"
-#include "mathex/cabox2d.hpp"
-#include "mathex/ctrans3d.hpp"
-#include "mathex/cpoint3d.hpp"
-#include "mathex/cvec3.hpp"
-#include "mathex/cline3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/CompressedAlignedBox2d.hpp"
+#include "mathex/CompressedTransform3d.hpp"
+#include "mathex/CompressedPoint3d.hpp"
+#include "mathex/CompressedVec3.hpp"
+#include "mathex/CompressedLine3d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "machphys/FirstPersonDriver.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"

@@ -4,15 +4,15 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "utility/linetok.hpp"
-#include "mathex/point2d.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "sim/action.hpp"
-#include "sim/conditio.hpp"
-#include "sim/conditim.hpp"
-#include "sim/manager.hpp"
+#include "sim/Action.hpp"
+#include "sim/Condition.hpp"
+#include "sim/ConditionsManager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Persistence/PersistOther.hpp"
 

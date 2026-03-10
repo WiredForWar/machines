@@ -7,17 +7,17 @@
 
 #include "machphys/Constructions/Pod.hpp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/ObjectFactory.hpp"
 #include "machphys/Constructions/Entrance.hpp"
 #include "machphys/Data/Data.hpp"
@@ -26,7 +26,7 @@
 #include "machphys/Weapons/Armourer.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysPod);
 

@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/grid2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Grid2d.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 

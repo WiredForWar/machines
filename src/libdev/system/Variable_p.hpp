@@ -2,7 +2,7 @@
 
 #include "Variable.hpp"
 
-#include "system/registry.hpp"
+#include "system/Registry.hpp"
 
 namespace Config
 {

@@ -12,10 +12,10 @@
 #ifndef _MACHGUI_STATDISP_HPP
 #define _MACHGUI_STATDISP_HPP
 
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
 #include "machphys/machphys.hpp"
 #include "gui/gui.hpp"
 

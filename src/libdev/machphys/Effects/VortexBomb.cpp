@@ -24,14 +24,14 @@
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
-#include "mathex/angle.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Angle.hpp"
+#include "mathex/Degrees.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/AcceleratedScalarPlan.hpp"
@@ -39,9 +39,9 @@
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "render/device.hpp"
-// #include "render/capable.hpp"
-#include "render/colour.hpp"
+#include "render/Device.hpp"
+// #include "render/Capabilities.hpp"
+#include "render/Colour.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysVortexBomb);
 

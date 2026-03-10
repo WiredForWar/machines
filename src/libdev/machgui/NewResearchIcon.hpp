@@ -13,7 +13,7 @@
 
 #include "base/base.hpp"
 
-#include "gui/icon.hpp"
+#include "gui/Icon.hpp"
 #include "machlog/World/MachLog.hpp"
 
 #include "machphys/machphys.hpp"

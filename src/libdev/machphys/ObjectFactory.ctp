@@ -43,6 +43,6 @@ template <class ID, class PART> void MachPhysObjectFactory<ID, PART>::CLASS_INVA
     INVARIANT(this != nullptr);
 }
 
-// #include "ctl/fixedvec.ctp"
+// #include "ctl/FixedVector.ctp"
 
 /* End OFACTORY.CTP **************************************************/

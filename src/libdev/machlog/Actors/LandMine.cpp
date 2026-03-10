@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machphys/LandMine.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"
 #include "machphys/Data/Data.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actors/LandMine.hpp"
 #include "machlog/Actors/Machine.hpp"

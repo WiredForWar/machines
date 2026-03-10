@@ -16,13 +16,13 @@
 #define _MACHPHYS_MCMOVINF_HPP
 
 #include "base/base.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/phys.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 #include "machphys/machphys.hpp"
 

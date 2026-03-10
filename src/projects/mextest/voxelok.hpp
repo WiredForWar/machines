@@ -9,11 +9,11 @@
 
 #include "ctl/nvector.hpp"
 #error Here
-#include "mathex/vec3.hpp"
+#include "mathex/Vec3.hpp"
 #error Here
 #include "mathex/mathex.hpp"
 #error Here
-#include "mathex/abox3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 #error Here
 
 //////////////////////////////////////////////////////////////////////

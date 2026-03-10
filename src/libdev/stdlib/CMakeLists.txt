@@ -1,7 +1,7 @@
 
 set(STDLIB_SOURCES
-    exceptio.cpp
-    exceptio.hpp
+    Exceptions.cpp
+    Exceptions.hpp
 )
 
 add_library(stdlib ${GAME_COMPONENT_LIB_TYPE} ${STDLIB_SOURCES})

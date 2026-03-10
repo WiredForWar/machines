@@ -6,15 +6,15 @@
 #ifndef _MACH_OPERATIO_HPP
 #define _MACH_OPERATIO_HPP
 
-#include "base/tracker.hpp"
+#include "base/Tracker.hpp"
 #include "phys/phys.hpp"
 
 #include "world4d/Subject/Observer.hpp"
 
 #include "machlog/World/MachLog.hpp"
 
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include <memory>
 #include <string>

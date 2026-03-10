@@ -13,11 +13,11 @@
 #define _WORLD4D_COLDATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
-#include "render/colour.hpp"
-#include "render/texture.hpp"
+#include "render/Colour.hpp"
+#include "render/Texture.hpp"
 
 class W4dColourPulseData
 // Canonical form revoked

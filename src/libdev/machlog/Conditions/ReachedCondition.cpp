@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
-#include "sim/manager.hpp"
-#include "utility/linetok.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
+#include "sim/Manager.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Conditions/ReachedCondition.hpp"
 #include "machlog/Races.hpp"

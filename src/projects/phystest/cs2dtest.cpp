@@ -8,14 +8,14 @@
 // #include <conio.h>
 #include <fstream>
 
-#include "ctl/nbvector.hpp"
+#include "ctl/NoBoundsVector.hpp"
 
-#include "device/time.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/double.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "device/Time.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Double.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"

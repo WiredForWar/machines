@@ -9,12 +9,12 @@
 
 #include "machlog/World/Planet.hpp"
 
-#include "render/device.hpp"
-#include "render/mesh.hpp"
+#include "render/Device.hpp"
+#include "render/Mesh.hpp"
 
-#include "mathex/cvexpgon.hpp"
-#include "mathex/double.hpp"
-#include "render/colour.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Double.hpp"
+#include "render/Colour.hpp"
 #include <fstream>
 
 PedPolygon::PedPolygon(const PolyVerticies& verticies, MATHEX_SCALAR z, bool selected)

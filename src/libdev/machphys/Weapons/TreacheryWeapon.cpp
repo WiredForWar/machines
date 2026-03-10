@@ -21,9 +21,9 @@
 #include "machphys/Weapons/TreacheryOrb.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
 #include "machphys/Data/SoundData.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysTreacheryWeapon);
 

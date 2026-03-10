@@ -9,14 +9,14 @@
 #define _MACH_ACTOR_HPP
 class MachActor;
 
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 #include "ctl/stack.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/utility.hpp"
-#include "utility/bidpmap.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Utility.hpp"
+#include "utility/BoundedIdPMap.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/phys.hpp"

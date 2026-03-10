@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Sound/SoundManager.hpp"
@@ -22,8 +22,8 @@
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
 #include "machphys/Data/SoundData.hpp"
-#include "render/colour.hpp"
-#include "sim/manager.hpp"
+#include "render/Colour.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysPlasmaWeapon);
 

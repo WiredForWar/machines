@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "base/prepost.hpp"
+#include "base/PrePost.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/PromptText.hpp"
@@ -14,18 +14,18 @@
 #include "machgui/InGameScreen.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "machlog/Races.hpp"
-#include "gui/manager.hpp"
-#include "gui/event.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
-#include "gui/restring.hpp"
+#include "gui/Manager.hpp"
+#include "gui/Event.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "render/device.hpp"
+#include "render/Device.hpp"
 #include "render/Painter.hpp"
-#include "render/surfmgr.hpp"
-#include "device/cd.hpp"
+#include "render/SurfaceManager.hpp"
+#include "device/CD.hpp"
 
 #include <string>
 

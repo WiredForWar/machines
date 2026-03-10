@@ -14,10 +14,10 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 // Forward refs
 class PhysCS2dDomainGraph;

@@ -8,11 +8,11 @@
 #include "machphys/Effects/BeeBombWave.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "render/matvec.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
@@ -21,11 +21,11 @@
 #include "world4d/Plans/SimpleScalePlan.hpp"
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/LinearScalarPlan.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysBeeBombWave);
 

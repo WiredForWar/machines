@@ -7,9 +7,9 @@
 
 // string.hpp included to avoid compilation errors with the
 // inclusion of machine.hpp
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "machphys/Weapons/MultiLauncher.hpp"
@@ -22,8 +22,8 @@
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Machines/MachineData.hpp"
 
-#include "render/colour.hpp"
-#include "sim/manager.hpp"
+#include "render/Colour.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMultiLauncher);
 

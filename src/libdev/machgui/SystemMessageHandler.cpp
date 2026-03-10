@@ -9,15 +9,15 @@
 #undef PRODUCTION
 #endif
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
-#include "sim/process.hpp"
-#include "sim/disevent.hpp"
-#include "sim/manager.hpp"
+#include "sim/Process.hpp"
+#include "sim/DiscreteEvent.hpp"
+#include "sim/Manager.hpp"
 
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 
 #include "machlog/Messaging/Network.hpp"
 #include "machlog/Races.hpp"

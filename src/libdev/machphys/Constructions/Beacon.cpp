@@ -7,11 +7,11 @@
 
 #include "machphys/Constructions/Beacon.hpp"
 
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "world4d/Sound/SoundManager.hpp"
@@ -24,7 +24,7 @@
 #include "machphys/Data/SoundData.hpp"
 #include "machphys/ObjectFactory.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/TimedAnglePlan.hpp"
 

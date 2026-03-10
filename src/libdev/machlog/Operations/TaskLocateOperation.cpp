@@ -3,9 +3,9 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

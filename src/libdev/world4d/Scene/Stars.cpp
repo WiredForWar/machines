@@ -8,15 +8,15 @@
 #include "world4d/Scene/Stars.hpp"
 #include "world4d/Scene/Camera.hpp"
 
-#include "render/stars.hpp"
+#include "render/Stars.hpp"
 #include "render/render.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/double.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Double.hpp"
 
 #ifndef _INLINE
 #include "world4d/Scene/Stars.ipp"

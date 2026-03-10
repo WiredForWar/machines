@@ -7,18 +7,18 @@
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
-#include "mathex/epsilon.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/poly2d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/sausag2d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/circle2d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/random.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Sausage2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Circle2d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Random.hpp"
 
 #include "phys/ConfigSpace/Internal/ConfigSpace2dImpl.hpp"
 #include "phys/ConfigSpace/Internal/Domain.hpp"
@@ -29,8 +29,8 @@
 #include "phys/ConfigSpace/Internal/MotionChunk.hpp"
 #include "phys/ConfigSpace/Internal/Portal.hpp"
 
-#include "utility/indent.hpp"
-#include "utility/ascpict.hpp"
+#include "utility/Indent.hpp"
+#include "utility/AsciiPicture.hpp"
 
 #include <algorithm>
 

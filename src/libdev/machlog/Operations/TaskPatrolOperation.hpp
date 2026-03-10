@@ -12,9 +12,9 @@
 #ifndef _MACHLOG_OPTSKPAT_HPP
 #define _MACHLOG_OPTSKPAT_HPP
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/phys.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Operations/TaskOperation.hpp"
 

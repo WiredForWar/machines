@@ -9,18 +9,18 @@
 #include "machphys/Machines/GeoLocator.hpp"
 #include "machphys/Machines/Internal/GeoLocatorImpl.hpp"
 
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
 #include "phys/Plans/LinearScalarPlan.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
@@ -37,7 +37,7 @@
 #include "machphys/Data/Levels.hpp"
 #include "machphys/Locator.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysGeoLocator);
 

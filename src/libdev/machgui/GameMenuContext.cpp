@@ -1,7 +1,7 @@
 #include "GameMenuContext.hpp"
 
 #include "machgui/gui.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 namespace MachGui
 {

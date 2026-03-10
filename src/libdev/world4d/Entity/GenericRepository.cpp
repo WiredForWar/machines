@@ -11,7 +11,7 @@
 #include "world4d/Entity/GenericComposite.hpp"
 #include "world4d/Entity/Entity.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #ifndef _INLINE
 #include "world4d/Entity/GenericRepository.ipp"

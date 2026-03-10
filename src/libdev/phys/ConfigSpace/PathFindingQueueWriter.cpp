@@ -6,8 +6,8 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "phys/ConfigSpace/PathFindingQueueWriter.hpp"
-#include "mathex/poly2d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/ConfigSpace/Internal/ConfigSpace2dImpl.hpp"
 #include "phys/ConfigSpace/Internal/DomainFindPath.hpp"

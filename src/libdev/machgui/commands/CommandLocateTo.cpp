@@ -7,7 +7,7 @@
 
 #include "CommandLocateTo.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
@@ -17,8 +17,8 @@
 #include "machlog/Actors/Administrator.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
-#include "ctl/pvector.hpp"
-#include "system/pathname.hpp"
+#include "ctl/PtrVector.hpp"
+#include "system/PathName.hpp"
 
 MachGuiLocateToCommand::MachGuiLocateToCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-locate"_bind)

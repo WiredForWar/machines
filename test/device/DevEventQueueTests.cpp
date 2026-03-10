@@ -1,9 +1,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "device/eventq.hpp"
-#include "device/butevent.cpp"
-#include "device/eventq.cpp"
+#include "device/EventQueue.hpp"
+#include "device/ButtonEvent.cpp"
+#include "device/EventQueue.cpp"
 
 using ::testing::Return;
 

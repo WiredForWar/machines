@@ -9,22 +9,22 @@
 #include "machphys/SubId.hpp"
 #include "machphys/Constructions/Factory.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
-#include "render/material.hpp"
-#include "render/texture.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
+#include "render/Texture.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
@@ -39,9 +39,9 @@
 #include "machphys/Effects/SmokePlume.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/EulerAngles.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysFactory);
 

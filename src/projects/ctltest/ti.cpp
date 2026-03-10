@@ -7,9 +7,9 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "ctl/mmvector.hpp"
+#include "ctl/MinMemoryVector.hpp"
 
 void CtlTestDummyFunction0()
 {

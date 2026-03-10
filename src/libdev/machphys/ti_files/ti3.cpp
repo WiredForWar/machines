@@ -6,7 +6,7 @@
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
 #include "phys/Plans/MotionPlan.hpp"
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
 
 void MachDummyFunction10()

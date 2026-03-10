@@ -12,10 +12,10 @@
 #ifndef _MACHPHYS_MEXIDATA_HPP
 #define _MACHPHYS_MEXIDATA_HPP
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "mathex/point3d.hpp"
+#include "base/Persistence.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/phys.hpp"
 #include "machphys/Machines/MachineExplosionData.hpp"
 

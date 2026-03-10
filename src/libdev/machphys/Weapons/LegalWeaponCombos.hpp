@@ -13,7 +13,7 @@
 #define _MACHPHYS_LEGCOMBO_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machphys/machphys.hpp"
 
 class MachPhysLegalWeaponCombos

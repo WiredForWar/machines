@@ -4,8 +4,8 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "mathex/point2d.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Point2d.hpp"
+#include "sim/Manager.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "machlog/World/DyingEntityEvent.hpp"
 #include "machlog/Internal/DyingEntityEventImpl.hpp"

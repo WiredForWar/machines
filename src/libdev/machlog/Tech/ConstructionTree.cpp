@@ -8,7 +8,7 @@
 #include "machlog/World/Notifiable.hpp"
 #include "machlog/Tech/ConstructionItem.hpp"
 #include "machlog/Tech/ConstructionTree.hpp"
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/World/Scenario.hpp"
 #include "machlog/Tech/ConstructionItem.hpp"
 #include "machlog/World/Notifiable.hpp"
@@ -16,7 +16,7 @@
 #include "machlog/Messaging/VoiceMailData.hpp"
 #include "machlog/Tech/Internal/ConstructionTreeImpl.hpp"
 
-#include "system/vfs.hpp"
+#include "system/VFS.hpp"
 
 #include <memory>
 

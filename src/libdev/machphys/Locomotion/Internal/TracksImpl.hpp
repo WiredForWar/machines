@@ -13,7 +13,7 @@
 #define _MACHPHYS_TRACKSI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Locomotion/Internal/LocomotionMethodImpl.hpp"
 
 class MachPhysTracks;

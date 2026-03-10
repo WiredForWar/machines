@@ -10,15 +10,15 @@
 
 #include "machphys/machphys.hpp"
 
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/material.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Material.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
@@ -28,11 +28,11 @@
 #include "world4d/Plans/SimpleScalePlan.hpp"
 #include "world4d/Plans/SimpleAlphaPlan.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 
 #include "phys/Plans/LinearScalarPlan.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysBurstWave);
 

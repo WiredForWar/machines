@@ -13,10 +13,10 @@
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "mathex/vec2.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 
 MachLogPressurePads::MachLogPressurePads(const MexPoint2d& minBound, const MexPoint2d& maxBound)
 {

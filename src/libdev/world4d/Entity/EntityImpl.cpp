@@ -5,16 +5,16 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/line3d.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Vec2.hpp"
 
-#include "render/meshinst.hpp"
-#include "render/mesh.hpp"
-#include "render/scale.hpp"
-#include "render/colour.hpp"
-#include "render/device.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Mesh.hpp"
+#include "render/Scale.hpp"
+#include "render/Colour.hpp"
+#include "render/Device.hpp"
 
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Scene/Domain.hpp"

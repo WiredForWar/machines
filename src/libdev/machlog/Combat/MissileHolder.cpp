@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
 #include "machlog/Combat/MissileHolder.hpp"

@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "testh/testvec.hpp"
 

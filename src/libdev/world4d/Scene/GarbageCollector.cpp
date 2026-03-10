@@ -7,7 +7,7 @@
 
 #include "world4d/Scene/GarbageCollector.hpp"
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Entity/Entity.hpp"
 

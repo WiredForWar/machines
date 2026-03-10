@@ -1,7 +1,7 @@
 #ifndef _D3DAPP_HPP
 #define _D3DAPP_HPP
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 #include "afx/AfxSdlApp.hpp"
 #include "utility/CallbackHandle.hpp"
 

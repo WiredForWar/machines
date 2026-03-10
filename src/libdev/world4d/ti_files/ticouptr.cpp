@@ -1,15 +1,15 @@
-#include "ctl/countptr.hpp"
-#include "ctl/countptr.ctp"
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/CountedPtr.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
 
 // The files marked "accidental" shouldn't be necessary.  They must be included
 // because Watcom is trying to instantiate everything it sees.
-#include "mathex/transf3d.hpp" // accidental
+#include "mathex/Transform3d.hpp" // accidental
 #include "phys/Plans/RampAcceleration.hpp" // accidental
 
 #include "phys/Plans/MotionPlan.hpp"
-#include "render/matvec.hpp"
+#include "render/MaterialVec.hpp"
 #include "world4d/Tracking/ObjectTracker.hpp"
 #include "internal/animdata.hpp"
 #include "world4d/Plans/ColourPlanData.hpp"

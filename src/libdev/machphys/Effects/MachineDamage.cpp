@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 #include "machphys/Effects/MachineDamage.hpp"
 #include "machphys/Machines/Machine.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 #include "machphys/Effects/Effects.hpp"
 #include "machphys/Random.hpp"
 #include "machphys/machphys.hpp"
@@ -17,11 +17,11 @@
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/Composite.hpp"
 
-#include "mathex/degrees.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMachineDamage);
 

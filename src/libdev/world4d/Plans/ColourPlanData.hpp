@@ -12,14 +12,14 @@
 #define _WORLD4D_COLODATA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/phys.hpp"
 
 #include "world4d/world4d.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 class W4dColourPlanData
 // Canonical form revoked

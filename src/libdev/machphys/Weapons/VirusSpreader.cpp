@@ -8,9 +8,9 @@
 #include "machphys/Weapons/VirusSpreader.hpp"
 #include "machphys/Persistence/WeaponPersistence.hpp"
 
-#include "render/texture.hpp"
-#include "render/scale.hpp"
-#include "render/colour.hpp"
+#include "render/Texture.hpp"
+#include "render/Scale.hpp"
+#include "render/Colour.hpp"
 
 #include "machphys/Weapons/Electro.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
@@ -36,12 +36,12 @@
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysVirusSpreader);
 

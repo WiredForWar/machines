@@ -1,33 +1,33 @@
 
 set(SOUND_SOURCES
-    alsample.cpp
-    alsound.cpp
-    internal/alsample.hpp
-    internal/alsample.ipp
-    internal/alsound.hpp
+    ALSample.cpp
+    ALSound.cpp
+    internal/ALSample.hpp
+    internal/ALSample.ipp
+    internal/ALSound.hpp
     internal/dxs.hpp
-    internal/sample.hpp
-    internal/sample.ipp
-    internal/wavefmt.hpp
-    internal/wavefmt.ipp
-    internal/waveform.hpp
-    internal/waveman.hpp
-    sample.cpp
-    smphandl.hpp
-    smpid.hpp
-    smpparam.cpp
-    smpparam.hpp
+    internal/Sample.hpp
+    internal/Sample.ipp
+    internal/WaveFormat.hpp
+    internal/WaveFormat.ipp
+    internal/Waveform.hpp
+    internal/WaveManager.hpp
+    Sample.cpp
+    SampleHandle.hpp
+    SampleId.hpp
+    SampleParameters.cpp
+    SampleParameters.hpp
     snd.cpp
     snd.hpp
-    sndparam.cpp
-    sndparam.hpp
-    sndwavid.cpp
-    sndwavid.hpp
-    soundmix.cpp
-    soundmix.hpp
-    wavefmt.cpp
-    waveform.cpp
-    waveman.cpp
+    MixerParameters.cpp
+    MixerParameters.hpp
+    WaveformId.cpp
+    WaveformId.hpp
+    Mixer.cpp
+    Mixer.hpp
+    WaveFormat.cpp
+    Waveform.cpp
+    WaveManager.cpp
 )
 
 add_library(sound ${GAME_COMPONENT_LIB_TYPE} ${SOUND_SOURCES})

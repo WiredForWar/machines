@@ -7,7 +7,7 @@
 
 #include "stdlib/tipch.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 #include "machlog/Actors/Artefact.hpp"

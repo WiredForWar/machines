@@ -4,7 +4,7 @@
  */
 
 #include "machphys/Effects/Internal/IHealthMaterials.hpp"
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 MachPhysIHealthMaterials::MachPhysIHealthMaterials(int nMats, float lineWidth, const RenTexture& t, double alpha)
     : nMats_(nMats)

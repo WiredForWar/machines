@@ -14,7 +14,7 @@
 #define _MACHLOG_OPLABOUI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/Operations/LabourOperation.hpp"
 
 // forward declarations

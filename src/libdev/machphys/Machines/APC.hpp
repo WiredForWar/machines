@@ -13,7 +13,7 @@
 #define _MACHPHYS_APC_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/machphys.hpp"

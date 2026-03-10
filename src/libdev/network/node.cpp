@@ -1,22 +1,22 @@
 
-#include "profiler/profiler.hpp"
-#include "system/winapi.hpp"
+#include "profiler/Profiler.hpp"
+#include "system/WindowsAPI.hpp"
 
-#include "network/node.hpp"
-#include "network/nodeuid.hpp"
-#include "network/sessuid.hpp"
-#include "network/session.hpp"
-#include "network/message.hpp"
-#include "network/sysmess.hpp"
+#include "network/Node.hpp"
+#include "network/NodeUid.hpp"
+#include "network/SessionUid.hpp"
+#include "network/Session.hpp"
+#include "network/Message.hpp"
+#include "network/SystemMessageHandler.hpp"
 
 #include "network/internal/mapping.hpp"
-#include "network/internal/sessioni.hpp"
-#include "network/internal/netinet.hpp"
-#include "network/internal/recorder.hpp"
-#include "network/internal/compound.hpp"
-#include "network/internal/nodei.hpp"
+#include "network/internal/SessionImpl.hpp"
+#include "network/internal/NetInet.hpp"
+#include "network/internal/Recorder.hpp"
+#include "network/internal/CompoundMessage.hpp"
+#include "network/internal/NodeImpl.hpp"
 
-#include "recorder/recorder.hpp"
+#include "recorder/Recorder.hpp"
 
 // extern void outputDPErrorToStream( ostream& o, char* sFormat, HRESULT hr );
 

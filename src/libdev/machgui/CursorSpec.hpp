@@ -13,7 +13,7 @@
 #define _MACHGUI_IGCURS2D_HPP
 
 #include "base/base.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machgui/gui.hpp"
 
 // Forward refs

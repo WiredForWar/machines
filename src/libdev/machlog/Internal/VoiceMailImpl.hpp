@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "phys/phys.hpp"
-#include "mathex/point3d.hpp"
-#include "sound/smphandl.hpp"
+#include "mathex/Point3d.hpp"
+#include "sound/SampleHandle.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
 #include "machlog/Internal/VoiceMailInfo.hpp"
 

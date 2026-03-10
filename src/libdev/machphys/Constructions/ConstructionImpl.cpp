@@ -7,7 +7,7 @@
 
 #include "machphys/Constructions/Internal/ConstructionImpl.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/GenericComposite.hpp"
 #include "world4d/Entity/Link.hpp"

@@ -7,9 +7,9 @@
 #define _WORLD4D_WORLD4D_HPP
 
 #include "base/base.hpp"
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "mathex/mathex.hpp"
-#include "utility/id.hpp"
+#include "utility/Id.hpp"
 
 class MexDouble;
 class MexTransform3d;

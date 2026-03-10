@@ -1,8 +1,8 @@
 #include "machphys/MoveIndicator.hpp"
 
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
-#include "render/colour.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Colour.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMoveIndicator);

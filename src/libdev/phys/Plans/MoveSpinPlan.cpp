@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/MoveSpinPlan.hpp"
 #include "phys/Plans/Internal/MoveSpinPlanImpl.hpp"
 

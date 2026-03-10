@@ -7,11 +7,11 @@
 
 #include "CommandDropLandMine.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Operations/DropLandMineOperation.hpp"
 #include "machlog/Operations/LocateOperation.hpp"
@@ -20,7 +20,7 @@
 #include "machlog/Actors/Administrator.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 MachGuiDropLandMineCommand::MachGuiDropLandMineCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-drop-land-mine"_bind)

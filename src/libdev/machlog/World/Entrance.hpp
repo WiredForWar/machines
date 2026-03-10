@@ -13,7 +13,7 @@
 #define _MACHLOG_ENTRANCE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "machphys/Constructions/ConstructionData.hpp"
 

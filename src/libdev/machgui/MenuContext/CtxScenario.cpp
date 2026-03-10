@@ -7,7 +7,7 @@
 
 #include "machgui/MenuContext/CtxScenario.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
@@ -25,17 +25,17 @@
 #include "machgui/ui/ScrollableText.hpp"
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "machgui/gui.hpp"
-#include "gui/restring.hpp"
-#include "gui/painter.hpp"
-#include "gui/event.hpp"
+#include "gui/ResourceString.hpp"
+#include "gui/GuiPainter.hpp"
+#include "gui/Event.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/image.hpp"
+#include "gui/Image.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
 #include "render/Font.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
-#include "device/cd.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
+#include "device/CD.hpp"
 #include "machgui/menus_helper.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////

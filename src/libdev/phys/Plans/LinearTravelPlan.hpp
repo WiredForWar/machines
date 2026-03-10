@@ -16,7 +16,7 @@
 #define _LINETRAV_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
 

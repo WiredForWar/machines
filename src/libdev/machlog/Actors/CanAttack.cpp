@@ -1,16 +1,16 @@
 #include "machlog/Internal/FireData.hpp"
 
-#include "ctl/algorith.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/Vector.hpp"
 
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Entity/Composite.hpp"
 
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"

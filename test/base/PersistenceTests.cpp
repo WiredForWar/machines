@@ -1,10 +1,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "base/internal/persist.hpp"
-#include "base/persist.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/vector.hpp"
+#include "base/internal/Persistence.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Vector.hpp"
 
 constexpr PerIdentifier initialId = 100;
 using ClampedSizeType = uint32_t;

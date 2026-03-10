@@ -7,14 +7,14 @@
 
 #include <iostream>
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Subject/Subject.hpp"
 #include "world4d/Entity/Entity.hpp"

@@ -1,11 +1,11 @@
 #include "w4dtest/sdlapp.hpp"
 
-#include "device/timer.hpp"
-#include "device/eventq.hpp"
-#include "device/butevent.hpp"
-// #include "ctl/countptr.hpp"
+#include "device/Timer.hpp"
+#include "device/EventQueue.hpp"
+#include "device/ButtonEvent.hpp"
+// #include "ctl/CountedPtr.hpp"
 
-#include "render/device.hpp"
+#include "render/Device.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Scene/Camera.hpp"

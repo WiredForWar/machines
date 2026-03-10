@@ -16,7 +16,7 @@
 
 #include "world4d/Entity/Custom.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MexPoint3d;
 

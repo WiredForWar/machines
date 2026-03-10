@@ -14,9 +14,9 @@
 #define _MACHLOG_OPTRANSI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Operations/TransportOperation.hpp"

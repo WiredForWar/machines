@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/map.hpp"
-#include "utility/linetok.hpp"
-#include "sim/conditio.hpp"
-#include "sim/manager.hpp"
+#include "ctl/Map.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "sim/Condition.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Actions/Actions.hpp"
 // conditions
 #include "machlog/Conditions/TimeCondition.hpp"

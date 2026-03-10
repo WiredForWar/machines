@@ -14,7 +14,7 @@
 #define _MACHLOG_FOLLOWI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/Operations/FollowOperation.hpp"
 
 // forward declarations

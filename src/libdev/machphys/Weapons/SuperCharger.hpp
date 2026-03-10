@@ -13,7 +13,7 @@
 #define _MACHPHYS_CHARGER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/Weapons/Weapon.hpp"

@@ -16,7 +16,7 @@
 #include "base/base.hpp"
 
 #include "phys/phys.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/AccelerateTumblePlan.hpp"

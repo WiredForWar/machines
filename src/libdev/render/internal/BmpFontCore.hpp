@@ -1,8 +1,8 @@
 #pragma once
 
-#include "render/surface.hpp"
-#include "system/pathname.hpp"
-#include "ctl/vector.hpp"
+#include "render/Surface.hpp"
+#include "system/PathName.hpp"
+#include "ctl/Vector.hpp"
 
 struct BmpFontCoreCharData
 {

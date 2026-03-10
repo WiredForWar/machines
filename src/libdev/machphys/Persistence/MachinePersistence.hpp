@@ -13,7 +13,7 @@
 #define _MACHPHYS_MACHPER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class MachPhysMachinePersistence
 // Canonical form revoked

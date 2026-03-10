@@ -1,33 +1,33 @@
 
 set(SIM_SOURCES
-    action.cpp
-    action.hpp
-    actor.cpp
-    actor.hpp
-    actor.ipp
-    conditim.cpp
-    conditim.hpp
-    conditio.cpp
-    conditio.hpp
-    destenty.cpp
-    destenty.hpp
-    disevent.cpp
-    disevent.hpp
-    disevent.ipp
-    evdiary.cpp
-    evdiary.hpp
-    evdiary.ipp
-    internal/manageri.hpp
-    manager.cpp
-    manager.hpp
-    manageri.cpp
-    process.cpp
-    process.hpp
-    projecti.cpp
-    projecti.hpp
+    Action.cpp
+    Action.hpp
+    Actor.cpp
+    Actor.hpp
+    Actor.ipp
+    ConditionsManager.cpp
+    ConditionsManager.hpp
+    Condition.cpp
+    Condition.hpp
+    DestructEntityEvent.cpp
+    DestructEntityEvent.hpp
+    DiscreteEvent.cpp
+    DiscreteEvent.hpp
+    DiscreteEvent.ipp
+    EventDiary.cpp
+    EventDiary.hpp
+    EventDiary.ipp
+    internal/ManagerImpl.hpp
+    Manager.cpp
+    Manager.hpp
+    ManagerImpl.cpp
+    Process.cpp
+    Process.hpp
+    Projectile.cpp
+    Projectile.hpp
     sim.hpp
-    simstats.cpp
-    simstats.hpp
+    Stats.cpp
+    Stats.hpp
 )
 
 add_library(sim STATIC ${SIM_SOURCES})

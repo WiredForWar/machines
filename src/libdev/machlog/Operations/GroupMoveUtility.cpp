@@ -7,8 +7,8 @@
 
 #include "machlog/Internal/GroupMoveUtility.hpp"
 #include "machlog/Actors/Machine.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec2.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec2.hpp"
 
 MachLogGroupMoverUtility::MachLogGroupMoverUtility(const Machines& actors, MATHEX_SCALAR distance)
     : distance_(distance)

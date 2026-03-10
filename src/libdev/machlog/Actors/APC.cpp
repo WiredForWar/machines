@@ -5,14 +5,14 @@
 #include "machlog/Actors/APC.hpp"
 #include "machlog/Internal/APCImpl.hpp"
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
-#include "mathex/poly2d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 

@@ -9,7 +9,7 @@
 #include "machgui/Cameras.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/gui.hpp"
-#include "gui/event.hpp"
+#include "gui/Event.hpp"
 
 MachGuiCameraScrollArea::MachGuiCameraScrollArea(
     GuiDisplayable* pParent,

@@ -14,9 +14,9 @@
 #include "machlog/Actors/HardwareLab.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "gui/gui.hpp"
-#include "gui/progress.hpp"
-#include "gui/icon.hpp"
-#include "device/butevent.hpp"
+#include "gui/ProgressBar.hpp"
+#include "gui/Icon.hpp"
+#include "device/ButtonEvent.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

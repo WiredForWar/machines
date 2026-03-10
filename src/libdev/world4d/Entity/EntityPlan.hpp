@@ -24,7 +24,7 @@
 #define _WORLD4D_ENTYPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
 #include "render/render.hpp"
 #include "phys/phys.hpp"

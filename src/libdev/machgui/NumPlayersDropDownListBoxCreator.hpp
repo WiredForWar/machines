@@ -13,8 +13,8 @@
 #define _MACHGUI_NUMPDROP_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "gui/displaya.hpp"
+#include "ctl/Vector.hpp"
+#include "gui/Displayable.hpp"
 #include "machgui/DropDownListBoxCreator.hpp"
 
 class MachGuiNumPlayersDropDownListBoxCreator : public MachGuiDropDownListBoxCreator

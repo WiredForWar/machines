@@ -7,7 +7,7 @@
 
 #include "base/base.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machphys/Terrain/TileBoundary.hpp"
 
 #include "planeted/testtibo.hpp"

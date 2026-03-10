@@ -13,7 +13,7 @@
 #define _MACHPHYS_STINGL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/machphys.hpp"
 #include "machphys/Weapons/LinearProjectile.hpp"
 

@@ -7,18 +7,18 @@
 
 #include "machphys/Weapons/LightStingWeapon.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/colour.hpp"
-#include "render/matvec.hpp"
-#include "render/material.hpp"
-#include "render/texture.hpp"
-#include "render/texmgr.hpp"
+#include "mathex/Transform3d.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Colour.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
+#include "render/Texture.hpp"
+#include "render/TextureManager.hpp"
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
@@ -36,7 +36,7 @@
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysLightStingWeapon);
 

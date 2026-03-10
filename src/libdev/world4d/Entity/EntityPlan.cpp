@@ -7,7 +7,7 @@
 
 #include "world4d/Entity/EntityPlan.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Entity/EntityScale.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Tracking/FrameRegulator.hpp"
@@ -19,19 +19,19 @@
 #include "world4d/Plans/UVPlan.hpp"
 #include "world4d/Plans/Internal/PendingPlan.hpp"
 
-#include "render/matmap.hpp"
-#include "render/scale.hpp"
+#include "render/MaterialMap.hpp"
+#include "render/Scale.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/phys.hpp"
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 #include "world4d/Entity/Internal/PlanFunctions.hpp"
 // #ifdef _INSTANTIATE_TEMPLATE_FUNCTIONS
 #include "world4d/Entity/Internal/PlanFunctions.ctf"
 // #endif
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 
 PER_DEFINE_PERSISTENT(W4dEntityPlan);
 

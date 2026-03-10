@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/Internal/HardwareLabImpl.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogHardwareLabImpl);

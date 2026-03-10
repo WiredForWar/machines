@@ -1,8 +1,8 @@
-#include "network/session.hpp"
-#include "network/node.hpp"
+#include "network/Session.hpp"
+#include "network/Node.hpp"
 
 #include "network/internal/mapping.hpp"
-#include "network/internal/sessioni.hpp"
+#include "network/internal/SessionImpl.hpp"
 
 const int MAXPLAYERS = 10;
 

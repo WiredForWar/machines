@@ -4,7 +4,7 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/Persistence/PersistOperations.hpp"

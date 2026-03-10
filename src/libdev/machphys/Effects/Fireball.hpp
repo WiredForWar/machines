@@ -13,7 +13,7 @@
 #define _MACHPHYS_FIREBALL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Sprite3d.hpp"
 
 #include "machphys/machphys.hpp"

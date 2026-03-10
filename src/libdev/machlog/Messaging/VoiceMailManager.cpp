@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 #include "machlog/Messaging/VoiceMailManager.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machphys/Random.hpp"
 
@@ -17,9 +17,9 @@
 #include "machlog/Internal/VoiceMail.hpp"
 #include "machlog/Internal/VoiceMailManagerImpl.hpp"
 
-#include "sound/soundmix.hpp"
-#include "sound/sndwavid.hpp"
-#include "utility/linetok.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/WaveformId.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include <memory>
 

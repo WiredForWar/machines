@@ -18,7 +18,7 @@
 #define _TIMESPIN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
 #include "phys/phys.hpp"
 

@@ -25,14 +25,14 @@
 
 #include "phys/Plans/LinearScalarPlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/scale.hpp"
-#include "render/matvec.hpp"
-#include "render/material.hpp"
-#include "render/colour.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Scale.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Material.hpp"
+#include "render/Colour.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysIonWeapon);
 

@@ -3,10 +3,10 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-// #include "ctl/algorith.hpp"
+// #include "ctl/Algorithm.hpp"
 #include <algorithm>
-#include "gui/manager.hpp"
-#include "gui/painter.hpp"
+#include "gui/Manager.hpp"
+#include "gui/GuiPainter.hpp"
 
 #include "machphys/Data/ObjectData.hpp"
 

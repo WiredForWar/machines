@@ -1,5 +1,5 @@
 #include <iostream>
-#include "render/surface.hpp"
+#include "render/Surface.hpp"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 

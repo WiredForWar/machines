@@ -16,11 +16,11 @@
 
 #include "base/base.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/utility.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Utility.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/World/SquareSpiral.hpp"

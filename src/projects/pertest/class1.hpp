@@ -14,7 +14,7 @@
 #ifndef _PER_CLASS1_HPP
 #define _PER_CLASS1_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class Class1
 {

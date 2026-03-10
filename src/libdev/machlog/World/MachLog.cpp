@@ -5,7 +5,7 @@
 
 #include "machlog/World/MachLog.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include <fstream>
 #include <type_traits>

@@ -14,7 +14,7 @@
 #ifndef _MACHLOG_CONTROLR_BASE_HPP
 #define _MACHLOG_CONTROLR_BASE_HPP
 
-#include "sim/actor.hpp"
+#include "sim/Actor.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/Messaging/Message.hpp"
 #include "machlog/Actors/CanAdminister.hpp"

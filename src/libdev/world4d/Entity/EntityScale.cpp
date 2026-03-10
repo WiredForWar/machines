@@ -7,7 +7,7 @@
 
 #include "world4d/Entity/EntityScale.hpp"
 
-#include "render/scale.hpp"
+#include "render/Scale.hpp"
 
 #ifndef _INLINE
 #include "world4d/Entity/EntityScale.ipp"

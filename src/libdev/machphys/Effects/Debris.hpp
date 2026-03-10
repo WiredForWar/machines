@@ -13,9 +13,9 @@
 #define _DEBRIS_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machphys/machphys.hpp"
 #include "machphys/Effects/DebrisUnit.hpp"
@@ -23,7 +23,7 @@
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 
-#include "mathex/abox2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
 
 class MachPhysDebris : public W4dEntity
 {

@@ -3,36 +3,36 @@ set(UTILITY_SOURCES
     Array.hpp
     CallbackHandle.hpp
     DependencyProvider.hpp
-    ascpict.cpp
-    ascpict.hpp
-    ascpicti.cpp
-    bidpmap.hpp
-    bidpmap.itp
-    bidvoidm.cpp
-    bndidgen.cpp
-    bndidgen.hpp
-    constrai.hpp
-    factory.hpp
-    id.hpp
-    indent.hpp
-    internal/ascpicti.hpp
-    interval.hpp
-    linetok.cpp
-    linetok.hpp
-    percent.hpp
-    private/bidvoidm.hpp
-    private/uint64.hpp
-    property.hpp
+    AsciiPicture.cpp
+    AsciiPicture.hpp
+    AsciiPictureImpl.cpp
+    BoundedIdPMap.hpp
+    BoundedIdPMap.itp
+    BoundedIdPMapVoid.cpp
+    BoundedIdGenerator.cpp
+    BoundedIdGenerator.hpp
+    Constraint.hpp
+    Factory.hpp
+    Id.hpp
+    Indent.hpp
+    internal/AsciiPictureImpl.hpp
+    Interval.hpp
+    LineTokeniser.cpp
+    LineTokeniser.hpp
+    Percentage.hpp
+    private/BoundedIdPMapVoid.hpp
+    private/UInt64.hpp
+    Property.hpp
     rapidxml.hpp
     rapidxml_ext.hpp
     rapidxml_print.hpp
     rapidxml_utils.hpp
-    string.cpp
-    string.hpp
-    subrange.hpp
-    time.hpp
-    tostring.cpp
-    tostring.hpp
+    String.cpp
+    String.hpp
+    Subrange.hpp
+    DebugTimer.hpp
+    ToString.cpp
+    ToString.hpp
 )
 
 add_library(utility OBJECT ${UTILITY_SOURCES})

@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "system/pathname.hpp"
-#include "system/vfs.hpp"
+#include "system/PathName.hpp"
+#include "system/VFS.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machphys/Data/Internal/DataParser.hpp"
 #include "machphys/Constructions/Station.hpp"
 #include "machphys/Constructions/Stations.hpp"
@@ -41,11 +41,11 @@
 #include "machphys/Locomotion/EvasionPriorityPlans.hpp"
 #include "machphys/Data/GeneralData.hpp"
 
-#include "mathex/degrees.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/Point3d.hpp"
 
-#include "ctl/fixedvec.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/Vector.hpp"
 
 #include <memory>
 

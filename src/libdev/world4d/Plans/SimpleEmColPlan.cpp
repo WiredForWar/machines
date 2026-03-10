@@ -7,7 +7,7 @@
 
 #include "world4d/Plans/SimpleEmColPlan.hpp"
 
-#include "render/matvec.hpp"
+#include "render/MaterialVec.hpp"
 
 W4dSimpleEmColPlan::W4dSimpleEmColPlan(
     const RenMaterial& mat,

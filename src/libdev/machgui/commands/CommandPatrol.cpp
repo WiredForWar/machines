@@ -13,8 +13,8 @@
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"
 #include "machlog/Operations/PatrolOperation.hpp"
-#include "mathex/transf3d.hpp"
-#include "system/pathname.hpp"
+#include "mathex/Transform3d.hpp"
+#include "system/PathName.hpp"
 
 MachGuiPatrolCommand::MachGuiPatrolCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-patrol"_bind)

@@ -25,7 +25,7 @@
 // #include "machlog/Actors/Actor.hpp"
 // #include "machlog/World/SpacialManipulation.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "world4d/Scene/GarbageCollector.hpp"
 

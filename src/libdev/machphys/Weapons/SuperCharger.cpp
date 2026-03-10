@@ -13,7 +13,7 @@
 #include "machphys/Constructions/Construction.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Tracking/ObjectTracker.hpp"
 #include "world4d/Tracking/ObjectTrackerMotionPlan.hpp"
@@ -24,11 +24,11 @@
 #include "world4d/Sound/SoundManager.hpp"
 #include "world4d/Scene/Light.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
-#include "system/pathname.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "system/PathName.hpp"
 
-#include "render/colour.hpp"
+#include "render/Colour.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysSuperCharger);
 

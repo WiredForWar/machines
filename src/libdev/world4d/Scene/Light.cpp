@@ -10,16 +10,16 @@
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Scene/Internal/LightImpl.hpp"
 
-#include "render/colour.hpp"
-#include "render/light.hpp"
+#include "render/Colour.hpp"
+#include "render/Light.hpp"
 
 #include "phys/Plans/ScalarPlan.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/sphere3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/vec3.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Sphere3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include <algorithm>
 #include <limits.h>

@@ -13,8 +13,8 @@
 #define _MACHGUI_DBPLANEI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/vector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/Vector.hpp"
 
 // forward refs
 class MachGuiDbScenario;

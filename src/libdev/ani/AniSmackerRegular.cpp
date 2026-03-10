@@ -1,12 +1,12 @@
 #include "ani/AniSmackerRegular.hpp"
 
-#include "render/display.hpp"
+#include "render/Display.hpp"
 #include "render/Painter.hpp"
-#include "recorder/recorder.hpp"
-#include "recorder/private/recpriv.hpp"
-#include "device/time.hpp"
+#include "recorder/Recorder.hpp"
+#include "recorder/private/RecorderPrivate.hpp"
+#include "device/Time.hpp"
 
-#include "sound/internal/alsound.hpp"
+#include "sound/internal/ALSound.hpp"
 
 #include "smacker.h"
 

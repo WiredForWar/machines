@@ -14,7 +14,7 @@
 #define _MACHGUI_DBELEMEN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 // forward refs
 class MachGuiDbIElement;

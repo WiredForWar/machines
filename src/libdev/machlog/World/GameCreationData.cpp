@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machlog/World/GameCreationData.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class MachLogGameCreationDataImpl
 {

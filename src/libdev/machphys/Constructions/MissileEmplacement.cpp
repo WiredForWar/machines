@@ -21,10 +21,10 @@
 #include "machphys/Locomotion/TurnerTracker.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "system/pathname.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/list.hpp"
+#include "mathex/Transform3d.hpp"
+#include "system/PathName.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysMissileEmplacement);
 

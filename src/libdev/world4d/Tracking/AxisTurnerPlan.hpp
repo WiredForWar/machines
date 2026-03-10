@@ -16,8 +16,8 @@
 #define _W4D_AXISTURN_HPP
 
 #include "base/base.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "world4d/world4d.hpp"
 

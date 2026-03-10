@@ -6,17 +6,17 @@
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Internal/ActorImpl.hpp"
 
-#include "utility/bndidgen.hpp"
+#include "utility/BoundedIdGenerator.hpp"
 
-#include "mathex/abox3d.hpp"
-// #include "mathex/poly2d.hpp"  //??
+#include "mathex/AlignedBox3d.hpp"
+// #include "mathex/Polygon2d.hpp"  //??
 
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 #include "world4d/Manager.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

@@ -3,11 +3,11 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Polygon2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "world4d/Scene/Domain.hpp"
 

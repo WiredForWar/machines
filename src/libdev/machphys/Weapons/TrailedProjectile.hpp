@@ -13,13 +13,13 @@
 #define _MACHPHYS_TRAILPRJ_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 
 #include "machphys/Weapons/LinearProjectile.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Vec3.hpp"
 
 // class MachPhysTrailedProjectileImpl;
 class MachPhysVapourTrail;

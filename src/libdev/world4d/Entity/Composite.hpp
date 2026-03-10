@@ -13,9 +13,9 @@
 #define _REN_COMPOSITE_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
-#include "render/matmap.hpp"
+#include "render/MaterialMap.hpp"
 #include "world4d/ForwardPlans.hpp"
 #include "world4d/Entity/Entity.hpp"
 

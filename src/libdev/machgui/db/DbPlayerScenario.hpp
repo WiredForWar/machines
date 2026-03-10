@@ -13,7 +13,7 @@
 #define _MACHGUI_DBPLYSCN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machlog/ProductionUnit.hpp" //Fairly cheap to include - avoids clients defining ctl_vector having to
 
 #include <string>

@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/poly2d.hpp"
+#include "mathex/Polygon2d.hpp"
 
 #include "phys/ConfigSpace/Internal/Polygon.hpp"
 
-#include "utility/indent.hpp"
+#include "utility/Indent.hpp"
 
 #ifndef _INLINE
 #include "phys/ConfigSpace/Internal/Polygon.ipp"

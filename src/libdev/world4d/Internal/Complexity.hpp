@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dComplexity
 // Canonical form revoked

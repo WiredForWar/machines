@@ -4,9 +4,9 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Machines/Internal/MachineImpl.hpp"

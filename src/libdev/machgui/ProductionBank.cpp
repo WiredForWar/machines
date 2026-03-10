@@ -14,7 +14,7 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/Factory.hpp"
 #include "gui/gui.hpp"
-#include "device/butevent.hpp"
+#include "device/ButtonEvent.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 

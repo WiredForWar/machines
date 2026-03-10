@@ -13,10 +13,10 @@
 #define _MACHLOG_EXPANDBI_HPP
 
 #include "base/base.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/phys.hpp"
 // #include "world4d/world4d.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machlog/Combat/ExpandingBlast.hpp"
 

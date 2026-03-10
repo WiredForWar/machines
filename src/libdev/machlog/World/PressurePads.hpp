@@ -17,7 +17,7 @@
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
-#include "ctl/map.hpp"
+#include "ctl/Map.hpp"
 
 class MexPoint2d;
 class MexCircle2d;

@@ -12,7 +12,7 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
 #include "world4d/Scene/Domain.hpp"
 #include "machlog/Actors/Actor.hpp"

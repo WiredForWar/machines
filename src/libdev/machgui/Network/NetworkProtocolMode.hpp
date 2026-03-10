@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 class GuiDisplayable;
 class MachGuiStartupScreens;

@@ -3,7 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 // #include "machlog/Actors/Actor.hpp"
 #include "machlog/Operations/AnimationOperation.hpp"

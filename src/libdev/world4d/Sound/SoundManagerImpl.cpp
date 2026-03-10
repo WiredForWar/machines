@@ -3,16 +3,16 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "world4d/Sound/Internal/SoundManagerImpl.hpp"
 #include "world4d/Sound/Internal/SoundData.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Manager.hpp"
 
-#include "sound/smpparam.hpp"
-#include "sound/sndwavid.hpp"
-#include "sound/soundmix.hpp"
+#include "sound/SampleParameters.hpp"
+#include "sound/WaveformId.hpp"
+#include "sound/Mixer.hpp"
 
 W4dSoundManagerImpl::W4dSoundManagerImpl()
     : hasPendingSound_(false)

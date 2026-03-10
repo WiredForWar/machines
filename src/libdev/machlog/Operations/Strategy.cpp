@@ -5,13 +5,13 @@
 
 #include "machlog/Operations/Strategy.hpp"
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp" // only needed if we need to have a "path" move op in the forceAsSubOp
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp" // only needed if we need to have a "path" move op in the forceAsSubOp
 
-#include "mathex/poly2d.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Transform3d.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

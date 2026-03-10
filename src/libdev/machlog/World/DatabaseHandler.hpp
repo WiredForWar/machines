@@ -14,7 +14,7 @@
 #define _MACHLOG_DBHANDLR_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/ProductionUnit.hpp" //Cheap, and saves clients with ctl_vector defined including it
 

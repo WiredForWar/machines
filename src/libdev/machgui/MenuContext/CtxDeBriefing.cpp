@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 #include "machgui/MenuContext/CtxDeBriefing.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/StartupScreens.hpp"
@@ -19,16 +19,16 @@
 #include "machlog/World/DatabaseHandler.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "machgui/internal/strings.hpp"
-#include "system/pathname.hpp"
-#include "gui/image.hpp"
-#include "sound/sndwavid.hpp"
-#include "sound/smpparam.hpp"
+#include "system/PathName.hpp"
+#include "gui/Image.hpp"
+#include "sound/WaveformId.hpp"
+#include "sound/SampleParameters.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
-#include "system/pathname.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
-#include "device/cd.hpp"
+#include "system/PathName.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
+#include "device/CD.hpp"
 
 MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sj", pStartupScreens)

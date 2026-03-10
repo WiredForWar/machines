@@ -15,7 +15,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 
 // Memberwise canonical

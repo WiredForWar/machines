@@ -7,9 +7,9 @@
 
 #include "machlog/Internal/MineralSiteImpl.hpp"
 
-#include "ctl/algorith.hpp"
-#include "ctl/list.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/Algorithm.hpp"
+#include "ctl/List.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "machlog/Actors/ActorMaker.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"

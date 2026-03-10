@@ -9,12 +9,12 @@
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 
-#include "mathex/utility.hpp"
-#include "mathex/random.hpp"
+#include "mathex/Utility.hpp"
+#include "mathex/Random.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/EulerAngles.hpp"
 
 // void    bobTest();
 

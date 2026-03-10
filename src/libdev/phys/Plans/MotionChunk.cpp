@@ -7,13 +7,13 @@
 
 // #include "stdlib/algorith.hpp"
 
-// #include "mathex/epsilon.hpp"
-#include "mathex/sausag2d.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/circle2d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/quadrati.hpp"
+// #include "mathex/Epsilon.hpp"
+#include "mathex/Sausage2d.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Circle2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Quadratic.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 #include "phys/Plans/CompressedMotionChunk.hpp"

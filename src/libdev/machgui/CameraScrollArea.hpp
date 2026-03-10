@@ -13,7 +13,7 @@
 #define _MACHGUI_CAMSCROL_HPP
 
 #include "base/base.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
 class MachCameras;
 class MachInGameScreen;

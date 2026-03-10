@@ -16,7 +16,7 @@
 #define _WORLD4D_SUBJECT_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/world4d.hpp"
 
 // forward refs

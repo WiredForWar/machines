@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "gui/gui.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
 class MachGuiPlayerNameList : public GuiDisplayable
 // Canonical form revoked

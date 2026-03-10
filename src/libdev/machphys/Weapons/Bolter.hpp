@@ -13,10 +13,10 @@
 #define _MACHPHYS_BOLTER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 class W4dGeneric;
 class W4dLink;

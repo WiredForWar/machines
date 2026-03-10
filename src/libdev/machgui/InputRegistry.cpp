@@ -5,11 +5,11 @@
 
 #include "gui/ResolvedUiString.hpp"
 #include "gui/gui.hpp"
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 
-#include "base/prepost.hpp"
+#include "base/PrePost.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include <algorithm>
 #include <unordered_map>

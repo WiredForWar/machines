@@ -5,9 +5,9 @@
 
 #include "machlog/Operations/AdminAttackOperation.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 

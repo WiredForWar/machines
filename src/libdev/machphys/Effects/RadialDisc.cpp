@@ -10,12 +10,12 @@
 #include "machphys/Persistence/OtherPersistence.hpp"
 
 #include "world4d/Entity/Root.hpp"
-#include "render/texmgr.hpp"
-#include "render/texture.hpp"
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "mathex/transf3d.hpp"
-#include "system/pathname.hpp"
+#include "render/TextureManager.hpp"
+#include "render/Texture.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "mathex/Transform3d.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysRadialDisc);
 

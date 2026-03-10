@@ -13,7 +13,7 @@
 #define _MACHPHYS_GLIDER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/Locomotion/LocomotionMethod.hpp"
 
 class W4dLink;

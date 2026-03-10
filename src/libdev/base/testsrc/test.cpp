@@ -13,16 +13,16 @@
 
 #include "base/base.hpp"
 #include "base/hungaria.hpp"
-#include "base/logbuff.hpp"
-#include "base/diag.hpp"
-#include "base/tracker.hpp"
-#include "base/private/dualstr.hpp"
+#include "base/LogBuffer.hpp"
+#include "base/Diag.hpp"
+#include "base/Tracker.hpp"
+#include "base/private/DualStream.hpp"
 
-#include "profiler/profiler.hpp"
+#include "profiler/Profiler.hpp"
 
 #include "testh/t1.hpp"
 
-#include "base/private/indent.hpp"
+#include "base/private/Indent.hpp"
 
 void testProfiler();
 void testStream();

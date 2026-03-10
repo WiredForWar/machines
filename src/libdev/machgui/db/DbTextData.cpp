@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/persist.hpp"
-#include "system/pathname.hpp"
-#include "utility/linetok.hpp"
+#include "base/Persistence.hpp"
+#include "system/PathName.hpp"
+#include "utility/LineTokeniser.hpp"
 
 #include "machgui/db/DbTextData.hpp"
 #include "machgui/db/internal/DbITextData.hpp"
 
-#include "system/vfs.hpp"
+#include "system/VFS.hpp"
 
 MachGuiDbTextData::MachGuiDbTextData()
 {

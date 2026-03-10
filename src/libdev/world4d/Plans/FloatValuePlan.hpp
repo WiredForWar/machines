@@ -15,7 +15,7 @@
 
 #include "base/base.hpp"
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "phys/phys.hpp"
 
 class W4dFloatValuePlan

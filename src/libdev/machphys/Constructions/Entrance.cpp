@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "world4d/Sound/SoundManager.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Constructions/Entrance.hpp"
 #include "machphys/Constructions/Door.hpp"

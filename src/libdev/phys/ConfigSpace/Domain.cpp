@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/abox2d.hpp"
-#include "mathex/poly2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Polygon2d.hpp"
 
 #include "phys/ConfigSpace/Internal/Domain.hpp"
 

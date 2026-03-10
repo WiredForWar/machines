@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "world4d/Subject/Observer.hpp"
-#include "gui/displaya.hpp"
+#include "gui/Displayable.hpp"
 
 // Forward refs
 class MachProductionIcons;

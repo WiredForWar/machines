@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machphys/machphys.hpp"
 
 class MachActor;

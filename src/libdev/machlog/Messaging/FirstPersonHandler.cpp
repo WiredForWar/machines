@@ -7,13 +7,13 @@
 
 #include "machlog/Messaging/FirstPersonHandler.hpp"
 
-#include "ctl/nbvector.hpp"
-#include "utility/id.hpp"
+#include "ctl/NoBoundsVector.hpp"
+#include "utility/Id.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point2d.hpp"
 #include "phys/phys.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "world4d/Entity/Entity.hpp"
@@ -23,7 +23,7 @@
 #include "world4d/Scene/Camera.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/GarbageCollector.hpp"
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/FirstPersonDriver.hpp"
 #include "machphys/MoveIndicator.hpp"
 #include "machlog/Actors/Actor.hpp"
@@ -34,7 +34,7 @@
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/PlanetDomains.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 class MachLogAimDataFilter;
 class MachLog1stPersonHandlerData

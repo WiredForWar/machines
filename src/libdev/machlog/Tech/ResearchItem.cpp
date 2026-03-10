@@ -7,7 +7,7 @@
 
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machlog/Tech/Internal/ResearchItemImpl.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Messaging/Network.hpp"

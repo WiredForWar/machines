@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 #include "machlog/Actors/Squadron.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Internal/SquadronImpl.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 #include "world4d/Entity/Generic.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/OreHolographData.hpp"
@@ -20,7 +20,7 @@
 #include "machlog/Controllers/AIController.hpp"
 #include "machlog/World/Planet.hpp"
 
-#include "profiler/stktrace.hpp"
+#include "profiler/StackTracer.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogSquadron);
 

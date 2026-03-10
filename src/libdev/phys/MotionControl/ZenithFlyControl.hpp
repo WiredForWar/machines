@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "phys/MotionControl/MotionControlWithTrans.hpp"
 #include "phys/MotionControl/Brake.hpp"
 

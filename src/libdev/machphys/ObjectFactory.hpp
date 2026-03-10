@@ -28,8 +28,8 @@
 #define _MACHPHYS_OFACTORY_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/fixedvec.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/FixedVector.hpp"
 
 #include "world4d/Entity/Root.hpp"
 

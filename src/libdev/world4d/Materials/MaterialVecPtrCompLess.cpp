@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
 #include "world4d/Materials/MaterialVecPtrCompLess.hpp"
 
-#include "render/matvec.hpp"
+#include "render/MaterialVec.hpp"
 
 bool W4dMaterialVecPtr_SetLess::operator()(const Ren::MaterialVecPtr& lhs, const Ren::MaterialVecPtr& rhs) const
 {

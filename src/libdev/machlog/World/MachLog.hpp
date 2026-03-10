@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machphys/machphys.hpp"
 
 // forward refs

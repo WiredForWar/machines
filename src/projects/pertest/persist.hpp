@@ -13,12 +13,12 @@
 #define _BASE_PERSIST_HPP
 
 #include "pertest/private/persist.hpp"
-// #include "base/private/persist.hpp"
+// #include "base/private/Persistence.hpp"
 
 //  Use PerOstream as your persistent output stream, PerIstream as the input stream.
 
-#include "base/ostr.hpp"
-#include "base/istr.hpp"
+#include "base/PerOstream.hpp"
+#include "base/PerIstream.hpp"
 
 //================= DEBUG MACROS ===================================================
 

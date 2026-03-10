@@ -8,7 +8,7 @@
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Subject/Observer.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
 W4dSubjectImpl::W4dSubjectImpl(W4dSubject* pSubject, W4dEntity* pPhysObject)
     : physObjectPtr_(pPhysObject)

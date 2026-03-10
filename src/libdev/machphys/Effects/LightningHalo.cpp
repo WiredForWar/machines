@@ -9,14 +9,14 @@
 
 #include "machphys/Persistence/OtherPersistence.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "render/texture.hpp"
-#include "render/scale.hpp"
+#include "render/Texture.hpp"
+#include "render/Scale.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
@@ -25,7 +25,7 @@
 
 #include "machphys/Effects/LightningHaloMaterialPlan.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysLightningHalo);
 

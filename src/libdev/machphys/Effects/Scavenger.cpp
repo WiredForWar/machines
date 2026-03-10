@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/Effects/Scavenger.hpp"
 #include "machphys/Persistence/OtherPersistence.hpp"
-#include "system/pathname.hpp"
-#include "mathex/transf3d.hpp"
+#include "system/PathName.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "phys/Plans/ScalarPlan.hpp"
 #include "world4d/Entity/EntityPlan.hpp"

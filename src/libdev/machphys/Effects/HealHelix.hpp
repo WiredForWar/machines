@@ -13,7 +13,7 @@
 #define _MACHPHYS_HEALHELX_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 class MachPhysHealHelix : public W4dEntity

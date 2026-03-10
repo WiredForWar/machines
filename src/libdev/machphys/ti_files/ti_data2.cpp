@@ -5,7 +5,7 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 
 class MachPhysHardwareLabData;
 class MachPhysSoftwareLabData;

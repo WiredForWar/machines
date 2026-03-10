@@ -34,9 +34,9 @@ using uint = unsigned int;
 
 ///////////////////////////////////
 
-#include "base/prepost.hpp"
+#include "base/PrePost.hpp"
 
-#include "base/memchk.hpp"
+#include "base/MemChk.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -8,9 +8,9 @@
 #include "machgui/MenuContext/CtxInGameOptions.hpp"
 
 #include "machgui/gui.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 #include "machlog/Messaging/Network.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machgui/ui/MenuButton.hpp"
 #include "machgui/db/Database.hpp"
 #include "machgui/StartupScreens.hpp"

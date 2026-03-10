@@ -13,8 +13,8 @@
 #define _MACHLOG_PEROTHER_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/pvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/PtrVector.hpp"
 
 class MachActor;
 class MachLogMineralSite;

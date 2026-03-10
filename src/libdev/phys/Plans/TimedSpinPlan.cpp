@@ -5,13 +5,13 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "base/Diag.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/quatern.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/Quaternion.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/Plans/TimedSpinPlan.hpp"
 #include "phys/Plans/Internal/TimedSpinPlanImpl.hpp"
 

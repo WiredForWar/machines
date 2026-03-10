@@ -4,18 +4,18 @@
  */
 
 // #include "mextest/bountest.hpp"
-#include "mathex/random.hpp"
-#include "mathex/epsilon.hpp"
-#include "mathex/utility.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/grid2d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/cvexpgon.hpp"
-#include "mathex/degrees.hpp"
+#include "mathex/Random.hpp"
+#include "mathex/Epsilon.hpp"
+#include "mathex/Utility.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/Grid2d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
+#include "mathex/Degrees.hpp"
 #include "mathex/mathex.hpp"
 
-#include "device/timer.hpp"
+#include "device/Timer.hpp"
 
 static void randomTest();
 static void quadraticTest();

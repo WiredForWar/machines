@@ -5,23 +5,23 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/radians.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "machphys/Locomotion/LocomotionMethod.hpp"
 #include "machphys/Locomotion/Internal/LocomotionMethodImpl.hpp"
 #include "machphys/Machines/Machine.hpp"
 
-#include "mathex/utility.hpp"
-#include "mathex/vec2.hpp"
-#include "mathex/vec3.hpp"
-#include "mathex/utility.hpp"
-#include "mathex/quatern.hpp"
+#include "mathex/Utility.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Utility.hpp"
+#include "mathex/Quaternion.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
@@ -30,7 +30,7 @@
 #include "phys/Plans/LinearMotionPlan.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT_ABSTRACT(MachPhysLocomotionMethod);
 

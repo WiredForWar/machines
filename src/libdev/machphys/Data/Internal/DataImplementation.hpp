@@ -13,7 +13,7 @@
 #define _MACHPHYS_DATAIMPL_HPP
 
 #include "base/base.hpp"
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 
 #include "machphys/machphys.hpp"
 

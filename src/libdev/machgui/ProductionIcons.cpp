@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "ctl/vector.hpp"
-#include "gui/manager.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Vector.hpp"
+#include "gui/Manager.hpp"
 #include "machgui/ProductionIcons.hpp"
 #include "machgui/NewProductionIcon.hpp"
 #include "machgui/gui.hpp"

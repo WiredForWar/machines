@@ -14,8 +14,8 @@
 
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/Link.hpp"
-#include "mathex/transf3d.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Transform3d.hpp"
+#include "sim/Manager.hpp"
 
 PER_DEFINE_PERSISTENT_ABSTRACT(MachPhysCanAttack);
 

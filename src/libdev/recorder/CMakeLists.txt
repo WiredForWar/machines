@@ -1,13 +1,13 @@
 
 set(RECORDER_SOURCES
-    internal/recimpl.hpp
-    private/recpriv.ctf
-    private/recpriv.hpp
-    private/recpriv.itf
-    recimpl.cpp
-    recorder.cpp
-    recorder.hpp
-    recpriv.cpp
+    internal/RecorderImpl.hpp
+    private/RecorderPrivate.ctf
+    private/RecorderPrivate.hpp
+    private/RecorderPrivate.itf
+    RecorderImpl.cpp
+    Recorder.cpp
+    Recorder.hpp
+    RecorderPrivate.cpp
 )
 
 add_library(recorder ${GAME_COMPONENT_LIB_TYPE} ${RECORDER_SOURCES})

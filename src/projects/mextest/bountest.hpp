@@ -7,19 +7,19 @@
 #include <fstream>
 #include <ctime>
 
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 // #include "mathex/transrep.hpp"
 
-#include "mathex/eulerang.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Point3d.hpp"
 // #include "mathex/mathex.hpp"
 // #include "mathex/boundary.hpp"
 
 // #include "mathex/hlfspc3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 // #include "mathex/ubox3d.hpp"
-#include "mathex/plane3d.hpp"
+#include "mathex/Plane3d.hpp"
 #include "mextest/random.hpp"
 // #include "mathex/intdata.hpp"
 

@@ -8,7 +8,7 @@
 #include "machgui/db/DbElement.hpp"
 #include "machgui/db/internal/DbIElement.hpp"
 #include "machgui/db/DbTextData.hpp"
-#include "gui/restring.hpp"
+#include "gui/ResourceString.hpp"
 #include <algorithm>
 
 PER_DEFINE_PERSISTENT(MachGuiDbElement);

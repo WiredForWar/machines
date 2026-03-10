@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "device/key.hpp"
+#include "device/Key.hpp"
 
 #include "ctl/testh/soaktest.hpp"
 #include "ctl/testh/random.hpp"

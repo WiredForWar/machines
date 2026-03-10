@@ -19,7 +19,7 @@
 
 #include "base/base.hpp"
 #include "machlog/Actors/Actor.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 class MachLogMachine;
 class MachLogAdministrator;

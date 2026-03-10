@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Algorithm.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

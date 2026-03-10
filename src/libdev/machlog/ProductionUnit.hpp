@@ -14,8 +14,8 @@
 #define _MACHLOG_PRODUNIT_HPP
 
 #include "base/base.hpp"
-#include "base/tracker.hpp"
-#include "mathex/transf3d.hpp"
+#include "base/Tracker.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/machphys.hpp"
 
 #include "machlog/World/MachLog.hpp"

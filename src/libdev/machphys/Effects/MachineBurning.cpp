@@ -5,18 +5,18 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/vector.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/abox3d.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machphys/Effects/MachineBurning.hpp"
 #include "machphys/Machines/Machine.hpp"

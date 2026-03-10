@@ -5,9 +5,9 @@
 
 #include "machlog/Actors/Garrison.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "phys/phys.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machphys/Constructions/Garrison.hpp"
@@ -26,7 +26,7 @@
 #include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include <algorithm>
 

@@ -14,7 +14,7 @@
 #include "machlog/Races.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 

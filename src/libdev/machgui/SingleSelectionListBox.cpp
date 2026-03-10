@@ -8,7 +8,7 @@
 #include "machgui/SingleSelectionListBox.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
 #include "machgui/StartupScreens.hpp"
-#include "gui/painter.hpp"
+#include "gui/GuiPainter.hpp"
 #include <algorithm>
 
 MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(

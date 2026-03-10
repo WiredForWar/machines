@@ -13,8 +13,8 @@
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/manager.hpp"
-#include "gui/painter.hpp"
+#include "gui/Manager.hpp"
+#include "gui/GuiPainter.hpp"
 #include "machgui/menus_helper.hpp"
 
 MachGuiMessageBoxResponder::MachGuiMessageBoxResponder()

@@ -5,10 +5,10 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/countptr.hpp"
-#include "render/matvec.hpp"
-#include "render/colour.hpp"
-#include "render/hsv.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "render/MaterialVec.hpp"
+#include "render/Colour.hpp"
+#include "render/ColourHSV.hpp"
 #include "machphys/Effects/RaceChanger.hpp"
 #include "machphys/Effects/Internal/RaceChangerBody.hpp"
 #include "machphys/Machines/Machine.hpp"

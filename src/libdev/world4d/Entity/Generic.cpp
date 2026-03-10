@@ -5,13 +5,13 @@
 
 #include "world4d/Entity/Generic.hpp"
 
-#include "base/diag.hpp"
-#include "system/pathname.hpp"
-#include "render/meshinst.hpp"
-#include "mathex/double.hpp"
+#include "base/Diag.hpp"
+#include "system/PathName.hpp"
+#include "render/MeshInstance.hpp"
+#include "mathex/Double.hpp"
 #include "world4d/Scene/Internal/NoLight.hpp"
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 PER_DEFINE_PERSISTENT(W4dGeneric);
 

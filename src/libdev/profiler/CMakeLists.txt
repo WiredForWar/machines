@@ -1,9 +1,9 @@
 
 set(PROFILER_SOURCES
-    profiler.cpp
-    profiler.hpp
-    stktrace.cpp
-    stktrace.hpp
+    Profiler.cpp
+    Profiler.hpp
+    StackTracer.cpp
+    StackTracer.hpp
 )
 
 add_library(profiler OBJECT ${PROFILER_SOURCES})

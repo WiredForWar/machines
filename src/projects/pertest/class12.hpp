@@ -13,7 +13,7 @@
 #define _PERTEST_CLASS12_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 class Class12
 // Canonical form revoked

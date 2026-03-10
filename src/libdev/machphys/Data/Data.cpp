@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/error.hpp"
-#include "system/pathname.hpp"
-#include "utility/linetok.hpp"
+#include "base/Error.hpp"
+#include "system/PathName.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/Levels.hpp"
 #include "machphys/Constructions/Station.hpp"

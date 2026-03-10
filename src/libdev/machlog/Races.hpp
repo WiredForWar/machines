@@ -12,9 +12,9 @@
 #define _MACHLOG_RACES_HPP
 
 #include "base/base.hpp"
-#include "utility/id.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/transf3d.hpp"
+#include "utility/Id.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/MachLog.hpp"
 #include "machlog/World/Camera.hpp"

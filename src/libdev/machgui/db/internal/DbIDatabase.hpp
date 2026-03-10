@@ -13,10 +13,10 @@
 #define _MACHGUI_DATABASI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include <functional>
-#include "ctl/vector.hpp"
-#include "ctl/map.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Map.hpp"
 
 // forward refs
 class MachGuiDbSystem;

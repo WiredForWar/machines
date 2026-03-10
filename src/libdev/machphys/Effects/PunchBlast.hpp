@@ -13,12 +13,12 @@
 #define _MACHPHYS_PUNCH_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "phys/phys.hpp"
 #include "world4d/Entity/Entity.hpp"
-#include "ctl/vector.hpp"
-#include "mathex/point3d.hpp"
+#include "ctl/Vector.hpp"
+#include "mathex/Point3d.hpp"
 
 class MachPhysPlanetSurface;
 

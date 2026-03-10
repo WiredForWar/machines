@@ -8,15 +8,15 @@
 #include "machgui/InGameChatMessagesDisplay.hpp"
 #include "machgui/InGameChatMessages.hpp"
 #include "machgui/gui.hpp"
-#include "gui/font.hpp"
-#include "gui/painter.hpp"
+#include "gui/Font.hpp"
+#include "gui/GuiPainter.hpp"
 #include "render/Painter.hpp"
-#include "gui/event.hpp"
+#include "gui/Event.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
-#include "render/device.hpp"
-#include "render/surface.hpp"
-#include "ctl/list.hpp"
+#include "render/Device.hpp"
+#include "render/Surface.hpp"
+#include "ctl/List.hpp"
 
 struct MachGuiInGameChatMessagesDisplayImpl
 {

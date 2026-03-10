@@ -1,9 +1,9 @@
-#include "ctl/vector.hpp"
-#include "ctl/vector.ctp"
-#include "ctl/list.hpp"
-#include "ctl/list.ctp"
-#include "ctl/map.hpp"
-#include "ctl/map.ctp"
+#include "ctl/Vector.hpp"
+#include "ctl/Vector.ctp"
+#include "ctl/List.hpp"
+#include "ctl/List.ctp"
+#include "ctl/Map.hpp"
+#include "ctl/Map.ctp"
 
 #include <string.hpp>
 #include "internal/soundmai.hpp"

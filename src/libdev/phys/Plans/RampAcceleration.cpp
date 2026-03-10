@@ -8,8 +8,8 @@
 #include "base/base.hpp"
 #include <cmath>
 #include <cstdlib>
-// #include "mathex/epsilon.hpp"
-#include "mathex/utility.hpp"
+// #include "mathex/Epsilon.hpp"
+#include "mathex/Utility.hpp"
 
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/CompressedRampAcceleration.hpp"

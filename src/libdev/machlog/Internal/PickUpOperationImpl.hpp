@@ -16,11 +16,11 @@
 #include "machlog/Operations/PickUpOperation.hpp"
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 #include "machlog/Actors/Actor.hpp"
 

@@ -8,18 +8,18 @@
 //  TBD: This should be in mcmotseq.hpp, it will cause big recompiles though - Bob
 #include <memory>
 
-#include "ctl/pvector.hpp"
-#include "ctl/list.hpp"
-#include "utility/linetok.hpp"
-#include "utility/string.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/List.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "utility/String.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/degrees.hpp"
-#include "mathex/eulerang.hpp"
-#include "mathex/poly2d.hpp"
-#include "mathex/circle2d.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/EulerAngles.hpp"
+#include "mathex/Polygon2d.hpp"
+#include "mathex/Circle2d.hpp"
 
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 #include "phys/Plans/MotionChunk.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
@@ -27,8 +27,8 @@
 #include "world4d/Entity/Generic.hpp"
 #include "world4d/Scene/Domain.hpp"
 
-#include "sim/manager.hpp"
-#include "sim/conditim.hpp"
+#include "sim/Manager.hpp"
+#include "sim/ConditionsManager.hpp"
 
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Constructions/Construction.hpp"
@@ -71,7 +71,7 @@
 #include "machlog/Tech/ConstructionItem.hpp"
 #include "machlog/Tech/ConstructionTree.hpp"
 
-#include "system/vfs.hpp"
+#include "system/VFS.hpp"
 
 // static
 void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGameCreationData& gameData)

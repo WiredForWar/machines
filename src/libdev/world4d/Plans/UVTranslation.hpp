@@ -6,11 +6,11 @@
 #ifndef _WORLD4D_UVTRANS_HPP
 #define _WORLD4D_UVTRANS_HPP
 
-#include "base/persist.hpp"
-#include "ctl/countptr.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "world4d/Plans/UVPlan.hpp"
 #include "render/render.hpp"
-#include "render/uvtrans.hpp"
+#include "render/UVTranslation.hpp"
 
 class RenTexture;
 

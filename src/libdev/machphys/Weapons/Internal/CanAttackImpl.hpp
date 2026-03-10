@@ -13,9 +13,9 @@
 #define _MACHPHYS_ATTACKI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/fixedvec.hpp"
-#include "ctl/pvector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machphys/machphys.hpp"
 
 class W4dLink;

@@ -13,7 +13,7 @@
 #define _MACHLOG_RESTREEI_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
 
 class MachLogResearchTreeImpl

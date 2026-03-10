@@ -8,8 +8,8 @@
 #include "machphys/Weapons/VortexWeapon.hpp"
 #include "machphys/Data/SoundData.hpp"
 
-#include "ctl/countptr.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "mathex/Transform3d.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Sound/SoundManager.hpp"
@@ -25,13 +25,13 @@
 #include "phys/Plans/LinearScalarPlan.hpp"
 #include "phys/Plans/TimedAnglePlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/scale.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Scale.hpp"
 
 #include "machphys/Persistence/WeaponPersistence.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysVortexWeapon);
 

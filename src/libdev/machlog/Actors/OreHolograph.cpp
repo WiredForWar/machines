@@ -4,8 +4,8 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "ctl/pvector.hpp"
-#include "mathex/transf3d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "machphys/OreHolograph.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"

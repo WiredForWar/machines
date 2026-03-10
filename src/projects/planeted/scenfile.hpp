@@ -13,12 +13,12 @@
 #define _PLANETED_SCENFILE_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "system/pathname.hpp"
-#include "utility/linetok.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/degrees.hpp"
+#include "ctl/Vector.hpp"
+#include "system/PathName.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Degrees.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/Camera.hpp"
 

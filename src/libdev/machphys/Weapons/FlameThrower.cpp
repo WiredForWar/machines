@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machphys/Weapons/FlameThrower.hpp"
-#include "render/texture.hpp" //must be included  here!!!
+#include "render/Texture.hpp" //must be included  here!!!
 #include "machphys/Effects/FlameBall.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 #include "machphys/Effects/Effects.hpp"
@@ -33,17 +33,17 @@
 #include "phys/Plans/MotionPlan.hpp"
 #include "phys/Plans/LinearMotionPlan.hpp"
 
-#include "render/mesh.hpp"
-#include "render/meshinst.hpp"
-#include "render/colour.hpp"
-#include "render/texmgr.hpp"
+#include "render/Mesh.hpp"
+#include "render/MeshInstance.hpp"
+#include "render/Colour.hpp"
+#include "render/TextureManager.hpp"
 
-#include "mathex/vec2.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/vec3.hpp"
+#include "mathex/Vec2.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Vec3.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysFlameThrower);
 

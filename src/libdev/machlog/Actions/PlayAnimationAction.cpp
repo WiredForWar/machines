@@ -4,15 +4,15 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "base/diag.hpp"
-#include "ctl/list.hpp"
-#include "ctl/countptr.hpp"
+#include "base/Diag.hpp"
+#include "ctl/List.hpp"
+#include "ctl/CountedPtr.hpp"
 
-#include "utility/linetok.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "world4d/Entity/Composite.hpp"
 #include "world4d/Entity/CompositePlan.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 
 #include "machlog/Actions/PlayAnimationAction.hpp"
 #include "machlog/World/Scenario.hpp"

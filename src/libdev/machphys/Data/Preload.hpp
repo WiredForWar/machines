@@ -14,7 +14,7 @@
 #define _MACHPHYS_PRELOAD_HPP
 
 #include "base/base.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 class IProgressReporter;
 

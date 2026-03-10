@@ -6,9 +6,9 @@
 #ifndef _MACHPHYS_ITRACKS_HPP
 #define _MACHPHYS_ITRACKS_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "world4d/Plans/UVPlan.hpp"
 
 class W4dLink;

@@ -5,8 +5,8 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 #include "machphys/Constructions/Station.hpp"
 #include "machphys/Constructions/Stations.hpp"

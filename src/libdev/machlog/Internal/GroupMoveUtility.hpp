@@ -14,10 +14,10 @@
 #define _MACHLOG_GRPMVUTL_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/utility.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/Utility.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 class MachLogMachine;
 

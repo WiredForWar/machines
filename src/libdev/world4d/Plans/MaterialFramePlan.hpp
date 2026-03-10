@@ -17,10 +17,10 @@
 #define _WORLD4D_MATFRMPL_HPP
 
 #include "base/base.hpp"
-#include "ctl/vector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/CountedPtr.hpp"
 #include "render/render.hpp"
-#include "render/texture.hpp"
+#include "render/Texture.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 
 // Forward refs

@@ -7,8 +7,8 @@
 
 #include "world4d/Materials/Internal/CycleTextureData.hpp"
 #include "world4d/Plans/MaterialFramePlan.hpp"
-#include "system/pathname.hpp"
-#include "render/texmgr.hpp"
+#include "system/PathName.hpp"
+#include "render/TextureManager.hpp"
 #include <cstdlib>
 
 PER_DEFINE_PERSISTENT(W4dCycleTextureData);

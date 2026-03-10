@@ -14,7 +14,7 @@
 
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
-#include "network/netnet.hpp"
+#include "network/Network.hpp"
 
 #include <optional>
 

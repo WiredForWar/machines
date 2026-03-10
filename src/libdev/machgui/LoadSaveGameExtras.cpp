@@ -5,7 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "machgui/LoadSaveGameExtras.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machlog/Races.hpp"

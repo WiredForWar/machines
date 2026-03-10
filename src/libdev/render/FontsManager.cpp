@@ -1,6 +1,6 @@
 #include "FontsManager.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 
 #include "spdlog/spdlog.h"
 

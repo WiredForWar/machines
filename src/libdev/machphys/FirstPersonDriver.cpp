@@ -7,11 +7,11 @@
 
 #include "machphys/FirstPersonDriver.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "mathex/point3d.hpp"
-#include "mathex/line3d.hpp"
-#include "mathex/degrees.hpp"
-#include "mathex/eulerang.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Line3d.hpp"
+#include "mathex/Degrees.hpp"
+#include "mathex/EulerAngles.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 #include "phys/Plans/MotionPlan.hpp"
 #include "world4d/Manager.hpp"
@@ -29,7 +29,7 @@
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 
-#include "ctl/countptr.hpp"
+#include "ctl/CountedPtr.hpp"
 
 // data class
 class MachPhys1stPersonDriverImpl
@@ -537,7 +537,7 @@ std::ostream& operator<<(std::ostream& o, const MachPhysFirstPersonStateVector& 
     return o;
 }
 
-#include "system/registry.hpp"
+#include "system/Registry.hpp"
 
 void MachPhys1stPersonDriver::adjustCameraRoll()
 {

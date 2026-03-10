@@ -14,7 +14,7 @@
 
 #include "machgui/GameMenuContext.hpp"
 
-#include "sound/soundmix.hpp"
+#include "sound/Mixer.hpp"
 
 class MachGuiScrollableText;
 class MachGuiMenuButton;

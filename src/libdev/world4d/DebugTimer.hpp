@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 
-#include "utility/time.hpp"
-#include "ctl/vector.hpp"
+#include "utility/DebugTimer.hpp"
+#include "ctl/Vector.hpp"
 #include <string.hpp>
 
 class W4dDebugTimer

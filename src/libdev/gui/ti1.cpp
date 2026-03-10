@@ -2,11 +2,11 @@
 
 #define _INSTANTIATE_TEMPLATE_CLASSES
 
-#include "ctl/list.hpp"
-#include "ctl/vector.hpp"
-#include "device/keyboard.hpp"
-#include "gui/font.hpp"
-#include "gui/internal/fontcore.hpp"
+#include "ctl/List.hpp"
+#include "ctl/Vector.hpp"
+#include "device/Keyboard.hpp"
+#include "gui/Font.hpp"
+#include "gui/internal/FontCore.hpp"
 
 class GuiDisplayable;
 

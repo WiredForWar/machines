@@ -4,8 +4,8 @@
 #include "render/FontsManager.hpp"
 #include "render/TextOptions.hpp"
 
-#include "render/device.hpp"
-#include "render/surface.hpp"
+#include "render/Device.hpp"
+#include "render/Surface.hpp"
 
 #include "spdlog/spdlog.h"
 

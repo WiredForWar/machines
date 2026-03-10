@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include <string>
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machlog/Internal/PlanetImpl.hpp"
 #include "world4d/Entity/Root.hpp"
 

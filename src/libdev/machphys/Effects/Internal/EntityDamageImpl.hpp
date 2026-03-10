@@ -13,12 +13,12 @@
 #define _MACHPHYS_DAMAGEI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
-#include "mathex/transf3d.hpp"
-#include "mathex/abox3d.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
+#include "ctl/Vector.hpp"
 
 class W4dEntity;
 class MachPhysGroundSplat;

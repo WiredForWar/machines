@@ -14,7 +14,7 @@
 #define _MACHLOG_ARTEFACT_HPP
 
 #include "base/base.hpp"
-#include "utility/id.hpp"
+#include "utility/Id.hpp"
 #include "machphys/ArtefactData.hpp"
 #include "machlog/Actors/Actor.hpp"
 

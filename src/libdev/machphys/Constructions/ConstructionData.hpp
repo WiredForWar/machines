@@ -14,10 +14,10 @@
 #define _MACHPHYS_CONSDATA_HPP
 
 #include "machphys/Data/ObjectData.hpp"
-#include "mathex/point2d.hpp"
-#include "mathex/abox2d.hpp"
-#include "mathex/line2d.hpp"
-#include "ctl/vector.hpp"
+#include "mathex/Point2d.hpp"
+#include "mathex/AlignedBox2d.hpp"
+#include "mathex/Line2d.hpp"
+#include "ctl/Vector.hpp"
 
 class MexTransform3d;
 class MexConvexPolygon2d;

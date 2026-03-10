@@ -9,7 +9,7 @@
 
 #include "machlog/Actors/Administrator.hpp"
 
-// #include "mathex/point2d.hpp"
+// #include "mathex/Point2d.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogAdminLocateOperationImpl);
 

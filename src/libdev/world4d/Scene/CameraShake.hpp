@@ -16,7 +16,7 @@
 #include "base/base.hpp"
 #include "phys/phys.hpp"
 #include "mathex/mathex.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 
 class MexTransform3d;
 

@@ -23,15 +23,15 @@
 #include "machlog/World/DatabaseHandler.hpp"
 #include "machlog/Races.hpp"
 #include "machgui/internal/strings.hpp"
-#include "gui/image.hpp"
+#include "gui/Image.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
-#include "sound/soundmix.hpp"
-#include "sound/smpparam.hpp"
-#include "sound/sndwavid.hpp"
-#include "render/device.hpp"
-#include "render/display.hpp"
-#include "device/cd.hpp"
+#include "sound/Mixer.hpp"
+#include "sound/SampleParameters.hpp"
+#include "sound/WaveformId.hpp"
+#include "render/Device.hpp"
+#include "render/Display.hpp"
+#include "device/CD.hpp"
 #include <algorithm>
 
 MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)

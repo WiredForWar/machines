@@ -15,8 +15,8 @@
 #include "base/base.hpp"
 #include "world4d/Plans/MaterialPlan.hpp"
 #include "world4d/Plans/ColourPulseData.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/PtrVector.hpp"
 #include "phys/phys.hpp"
 
 // forward refs

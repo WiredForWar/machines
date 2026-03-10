@@ -13,9 +13,9 @@
 #define _MACHLOG_ACTREINF_HPP
 
 #include "base/base.hpp"
-#include "ctl/pvector.hpp"
-#include "sim/action.hpp"
-#include "mathex/point2d.hpp"
+#include "ctl/PtrVector.hpp"
+#include "sim/Action.hpp"
+#include "mathex/Point2d.hpp"
 #include "machphys/machphys.hpp"
 
 #include <memory>

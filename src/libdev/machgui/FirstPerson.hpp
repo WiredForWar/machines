@@ -13,7 +13,7 @@
 #define _MACHGUI_FSTPERSN_HPP
 
 #include "base/base.hpp"
-#include "gui/root.hpp"
+#include "gui/Root.hpp"
 #include "world4d/Subject/Observer.hpp"
 #include "world4d/Subject/Subject.hpp"
 #include "machphys/machphys.hpp"

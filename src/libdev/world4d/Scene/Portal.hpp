@@ -14,9 +14,9 @@
 #define _PORTAL_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "mathex/quad3d.hpp"
-#include "mathex/t3dkey.hpp"
+#include "base/Persistence.hpp"
+#include "mathex/Quad3d.hpp"
+#include "mathex/Transform3dKey.hpp"
 #include "world4d/Entity/Entity.hpp"
 
 class W4dDomain;

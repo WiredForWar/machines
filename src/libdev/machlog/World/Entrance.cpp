@@ -5,14 +5,14 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/World/Entrance.hpp"
 #include "machlog/World/PressurePads.hpp"
 #include "machlog/World/Planet.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "mathex/cvexpgon.hpp"
+#include "mathex/ConvexPolygon2d.hpp"
 #include "machphys/Constructions/ConstructionData.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogEntrance);

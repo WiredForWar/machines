@@ -7,7 +7,7 @@
 
 #include "machphys/Effects/STFFlame.hpp"
 
-// #include "system/pathname.hpp"
+// #include "system/PathName.hpp"
 
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"

@@ -4,7 +4,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "machgui/HWResearchIcon.hpp"
 #include "machgui/HWResearchBank.hpp"
 #include "machgui/ActorBitmaps.hpp"
@@ -14,8 +14,8 @@
 #include "machlog/Actors/HardwareLab.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machlog/Races.hpp"
-#include "gui/font.hpp"
-#include "gui/restring.hpp"
+#include "gui/Font.hpp"
+#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 

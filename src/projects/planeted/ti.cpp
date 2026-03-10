@@ -7,8 +7,8 @@
 
 #include "stdlib/string.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/list.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/List.hpp"
 #include "machphys/machphys.hpp"
 #include "planeted/scenfile.hpp"
 #include "planeted/editconstr.hpp"

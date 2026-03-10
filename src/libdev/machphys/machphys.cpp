@@ -5,7 +5,7 @@
 
 #include "machphys/machphys.hpp"
 
-#include "utility/string.hpp"
+#include "utility/String.hpp"
 
 #include <ostream>
 #include <type_traits>

@@ -13,7 +13,7 @@
 #define _PERTEST_CLASSPA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "stdlib/utility.hpp"
 

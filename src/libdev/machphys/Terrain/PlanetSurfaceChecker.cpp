@@ -7,17 +7,17 @@
 
 #include "machphys/Terrain/PlanetSurfaceChecker.hpp"
 
-#include "base/diag.hpp"
+#include "base/Diag.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Terrain/TerrainTile.hpp"
 #include "machphys/Terrain/TileData.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/GeneralData.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
-#include "mathex/plane3d.hpp"
-#include "mathex/tri2d.hpp"
-#include "mathex/line2d.hpp"
-#include "mathex/epsilon.hpp"
+#include "mathex/Plane3d.hpp"
+#include "mathex/Triangle2d.hpp"
+#include "mathex/Line2d.hpp"
+#include "mathex/Epsilon.hpp"
 
 MachPhysPlanetSurfaceChecker::MachPhysPlanetSurfaceChecker(const MachPhysPlanetSurface& surface)
     : surface_(surface)

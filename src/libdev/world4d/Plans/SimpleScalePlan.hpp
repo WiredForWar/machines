@@ -14,10 +14,10 @@
 #define _WORLD4D_SIMPLSCA_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 #include "mathex/mathex.hpp"
 #include "phys/phys.hpp"
-#include "render/scale.hpp"
+#include "render/Scale.hpp"
 #include "world4d/Plans/ScalePlan.hpp"
 
 // Forward refs

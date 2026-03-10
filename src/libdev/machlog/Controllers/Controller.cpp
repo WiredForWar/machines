@@ -3,9 +3,9 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 #include "base/base.hpp"
-#include "ctl/algorith.hpp"
+#include "ctl/Algorithm.hpp"
 
-#include "sim/manager.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Race.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Controllers/Controller.hpp"

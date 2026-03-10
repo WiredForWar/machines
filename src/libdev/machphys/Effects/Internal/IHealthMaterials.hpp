@@ -7,8 +7,8 @@
 #define _MACHPHYS_HEALTHMA_HPP
 
 #include "base/base.hpp"
-#include "render/texture.hpp"
-#include "render/material.hpp"
+#include "render/Texture.hpp"
+#include "render/Material.hpp"
 
 // Map from percentage hit points to a material whose colour indicates a
 // Machine's health.  Green is healthy; red means just about to die.  In

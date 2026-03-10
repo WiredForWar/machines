@@ -18,7 +18,7 @@
 
 #include "base/base.hpp"
 #include "mathex/mathex.hpp"
-#include "ftl/seriamap.hpp"
+#include "ftl/SerialMap.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 

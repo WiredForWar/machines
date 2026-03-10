@@ -17,8 +17,8 @@
 #include "base/base.hpp"
 #include "world4d/Subject/ObserverForward.hpp"
 #include "world4d/Subject/Subject.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/countptr.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/CountedPtr.hpp"
 
 class W4dEntity;
 class W4dSubject;

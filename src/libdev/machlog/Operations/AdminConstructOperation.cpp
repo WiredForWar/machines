@@ -5,10 +5,10 @@
 
 #include "machlog/Operations/AdminConstructOperation.hpp"
 
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"

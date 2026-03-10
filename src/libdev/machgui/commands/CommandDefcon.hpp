@@ -17,7 +17,7 @@
 #include "base/base.hpp"
 #include "machgui/gui.hpp"
 
-#include "ctl/pvector.hpp"
+#include "ctl/PtrVector.hpp"
 
 // Forward refs
 class MachLogAdministrator;

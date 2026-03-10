@@ -13,7 +13,7 @@
 #define _MACHLOG_ACTVMAIL_HPP
 
 #include "base/base.hpp"
-#include "sim/action.hpp"
+#include "sim/Action.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
 #include "machphys/machphys.hpp"
 

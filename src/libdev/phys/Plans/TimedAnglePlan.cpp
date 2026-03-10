@@ -3,15 +3,15 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved
  */
 
-#include "mathex/transf3d.hpp"
-#include "mathex/radians.hpp"
+#include "mathex/Transform3d.hpp"
+#include "mathex/Radians.hpp"
 #include "phys/Plans/RampAcceleration.hpp"
 
 #include "phys/Plans/TimedAnglePlan.hpp"
 
 #include "phys/Plans/Internal/TimedAnglePlanImpl.hpp"
 
-#include "mathex/quatern.hpp"
+#include "mathex/Quaternion.hpp"
 
 PER_DEFINE_PERSISTENT(PhysTimedAnglePlan);
 

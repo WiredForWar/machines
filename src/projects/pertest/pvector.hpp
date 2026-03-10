@@ -13,7 +13,7 @@
 #ifndef _CTL_PVECTOR_HPP
 #define _CTL_PVECTOR_HPP
 
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 //////////////////////////////////////////////////////////////////////
 

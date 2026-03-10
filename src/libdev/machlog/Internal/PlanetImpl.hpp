@@ -13,11 +13,11 @@
 #define _MACHLOG_PLANETI_HPP
 
 #include "base/base.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machlog/World/MineralSite.hpp"
 #include "machlog/World/Planet.hpp"
-#include "ctl/pvector.hpp"
-#include "ctl/map.hpp"
+#include "ctl/PtrVector.hpp"
+#include "ctl/Map.hpp"
 
 class MachLogPlanetImpl
 // Canonical form revoked

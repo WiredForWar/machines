@@ -6,10 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "planeted/editmode.hpp"
-#include "mathex/transf3d.hpp"
+#include "mathex/Transform3d.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Scene/Camera.hpp"
-#include "render/device.hpp"
+#include "render/Device.hpp"
 
 PedEditorMode::PedEditorMode()
     : pSceneManager_(nullptr)

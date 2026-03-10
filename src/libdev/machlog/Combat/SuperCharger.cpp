@@ -7,8 +7,8 @@
 
 #include "machphys/Weapons/SuperCharger.hpp"
 
-#include "mathex/transf3d.hpp"
-#include "sim/manager.hpp"
+#include "mathex/Transform3d.hpp"
+#include "sim/Manager.hpp"
 #include "machphys/Weapons/Weapon.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 

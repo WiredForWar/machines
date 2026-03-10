@@ -5,9 +5,9 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "utility/linetok.hpp"
-#include "mathex/point2d.hpp"
-#include "sim/manager.hpp"
+#include "utility/LineTokeniser.hpp"
+#include "mathex/Point2d.hpp"
+#include "sim/Manager.hpp"
 #include "machlog/Actions/LostAction.hpp"
 #include "machlog/World/Scenario.hpp"
 #include "machlog/Races.hpp"

@@ -8,10 +8,10 @@
 #include "machphys/ObjectFactory.hpp"
 #include "machphys/Machines/ResourceCarrier.hpp"
 
-#include "mathex/point3d.hpp"
-#include "mathex/abox3d.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/AlignedBox3d.hpp"
 
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "world4d/Entity/Root.hpp"
 #include "world4d/Entity/Link.hpp"
 #include "world4d/Entity/Composite.hpp"
@@ -28,7 +28,7 @@
 
 // I don't know why ctl/list.hpp must be included after the other #include
 // ti avoid instantiation errors
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 
 PER_DEFINE_PERSISTENT(MachPhysResourceCarrier);
 

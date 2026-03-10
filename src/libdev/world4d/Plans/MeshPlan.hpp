@@ -13,9 +13,9 @@
 #define _REN_MESHPLAN_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
-#include "ctl/countptr.hpp"
-#include "ctl/vector.hpp"
+#include "base/Persistence.hpp"
+#include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
 #include "phys/phys.hpp"
 #include "world4d/world4d.hpp"
 // #include "world4d/Entity/Entity.hpp"

@@ -13,7 +13,7 @@
 #define _PERSIST_CLASS9_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 template <class X> class Class9
 // Canonical form revoked

@@ -1,37 +1,37 @@
 set(ENVIRNMT_SOURCES
-    elevclut.cpp
-    elevclut.hpp
-    elevmatp.cpp
-    elevmatp.hpp
-    internal/orbparam.hpp
-    internal/plaparse.hpp
-    internal/satparam.hpp
-    internal/skydecl.hpp
-    lexer.cpp
-    orbit.cpp
-    orbit.hpp
-    orbparam.cpp
-    parser.cpp
-    planet.cpp
-    planet.hpp
-    plaparse.cpp
-    satelite.cpp
-    satelite.hpp
-    satparam.cpp
-    sky.cpp
-    skydecl.cpp
-    sky.hpp
-    sky.ipp
-    skyline.cpp
-    skyline.hpp
+    ElevationColourTable.cpp
+    ElevationColourTable.hpp
+    ElevationMaterialPlan.cpp
+    ElevationMaterialPlan.hpp
+    internal/OrbitParams.hpp
+    internal/PlanetParser.hpp
+    internal/SatelliteParams.hpp
+    internal/SkyDeclarations.hpp
+    Lexer.cpp
+    Orbit.cpp
+    Orbit.hpp
+    OrbitParams.cpp
+    Parser.cpp
+    PlanetEnvironment.cpp
+    PlanetEnvironment.hpp
+    PlanetParser.cpp
+    Satellite.cpp
+    Satellite.hpp
+    SatelliteParams.cpp
+    Sky.cpp
+    SkyDeclarations.cpp
+    Sky.hpp
+    Sky.ipp
+    Skyline.cpp
+    Skyline.hpp
 )
 
 add_library(envirnmt STATIC ${ENVIRNMT_SOURCES})
 add_library(LibDev::environment ALIAS envirnmt)
 
 set_source_files_properties(
-    lexer.cpp
-    parser.cpp
+    Lexer.cpp
+    Parser.cpp
     PROPERTIES
         SKIP_UNITY_BUILD_INCLUSION
             ON

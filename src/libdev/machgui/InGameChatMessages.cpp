@@ -9,13 +9,13 @@
 
 #include "machgui/gui.hpp"
 #include "phys/phys.hpp"
-#include "ctl/list.hpp"
+#include "ctl/List.hpp"
 #include "machgui/MessageBroker.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/internal/SoundManager.hpp"
-#include "gui/font.hpp"
+#include "gui/Font.hpp"
 #include <fstream>
 
 struct MachGuiInGameChatMessagesImpl

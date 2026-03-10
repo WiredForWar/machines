@@ -8,8 +8,8 @@
 
 #include "base/base.hpp"
 
-#include "mathex/vec3.hpp"
-#include "mathex/point3d.hpp"
+#include "mathex/Vec3.hpp"
+#include "mathex/Point3d.hpp"
 
 typedef MexPoint3d TestPoint3d;
 typedef MexVec3 TestVec3;

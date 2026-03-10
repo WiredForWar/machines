@@ -27,7 +27,7 @@
 #include "base/base.hpp"
 
 #include "world4d/Entity/Root.hpp"
-#include "ctl/fixedvec.hpp"
+#include "ctl/FixedVector.hpp"
 
 template <class SUB_TYPE, class PART> class MachPhysSubTypedObjectFactory
 {

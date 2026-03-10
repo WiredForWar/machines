@@ -4,8 +4,8 @@
  */
 
 //  Definitions of non-inline non-template methods and global functions
-#include "base/diag.hpp"
-#include "utility/linetok.hpp"
+#include "base/Diag.hpp"
+#include "utility/LineTokeniser.hpp"
 #include "machlog/Internal/StatsImpl.hpp"
 
 #include <memory>

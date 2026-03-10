@@ -13,11 +13,11 @@
 #define _MACHPHYS_CRAKFIRI_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
 #include "mathex/mathex.hpp"
 #include "world4d/Entity/Link.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 
 class MachPhysCrackFire;
 

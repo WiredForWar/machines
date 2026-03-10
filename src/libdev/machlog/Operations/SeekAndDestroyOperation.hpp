@@ -6,7 +6,7 @@
 #ifndef _MACHLOG_SEEKDEST_HPP
 #define _MACHLOG_SEEKDEST_HPP
 
-#include "mathex/point3d.hpp"
+#include "mathex/Point3d.hpp"
 #include "machlog/Operations/Operation.hpp"
 #include "machlog/World/MachLog.hpp"
 

@@ -5,11 +5,11 @@
 
 //  Definitions of non-inline non-template methods and global functions
 
-#include "mathex/point2d.hpp"
+#include "mathex/Point2d.hpp"
 #include "machlog/Internal/ArtefactsImpl.hpp"
-#include "ctl/vector.hpp"
+#include "ctl/Vector.hpp"
 #include "world4d/Entity/GenericRepository.hpp"
-#include "system/pathname.hpp"
+#include "system/PathName.hpp"
 #include "machlog/Internal/ArtefactsData.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogArtefactsImpl);

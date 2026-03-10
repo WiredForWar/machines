@@ -13,13 +13,13 @@
 #define _PERSIST_CONTAIN2_HPP
 
 #include "base/base.hpp"
-#include "base/persist.hpp"
+#include "base/Persistence.hpp"
 
-#include "ctl/vector.hpp"
-#include "ctl/fixedvec.hpp"
-#include "ctl/mmvector.hpp"
-#include "ctl/list.hpp"
-#include "ctl/pvector.hpp"
+#include "ctl/Vector.hpp"
+#include "ctl/FixedVector.hpp"
+#include "ctl/MinMemoryVector.hpp"
+#include "ctl/List.hpp"
+#include "ctl/PtrVector.hpp"
 
 class Containers2
 // Canonical form revoked
