@@ -453,15 +453,15 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
         static const auto& showMenusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
         static const auto& sendAllTrigger = MachGui::inputRegistry()->getBinds("chat-send-to-all"_bind);
 
-        if ((event.key() == Device::KeyCode::F1 || event.key() == Device::KeyCode::F2 || event.key() == Device::KeyCode::F3)
+        if ((event.key() == Device::KeyCode::F2 || event.key() == Device::KeyCode::F3 || event.key() == Device::KeyCode::F4)
             && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
         {
             // Work out who we are going to send the message to
             int newOpponentIndex = 0;
 
-            if (event.key() == Device::KeyCode::F2)
+            if (event.key() == Device::KeyCode::F3)
                 newOpponentIndex = 1;
-            else if (event.key() == Device::KeyCode::F3)
+            else if (event.key() == Device::KeyCode::F4)
                 newOpponentIndex = 2;
 
             if (event.isCtrlPressed())

@@ -351,9 +351,9 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     {
         result.displayBind_ = Utils::join<std::vector<std::string>>(
             {
-                toDisplayString(KeyCode::F1),
                 toDisplayString(KeyCode::F2),
                 toDisplayString(KeyCode::F3),
+                toDisplayString(KeyCode::F4),
             },
             "/");
     }
@@ -361,9 +361,9 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     {
         result.displayBind_ = Utils::join<std::vector<std::string>>(
             {
-                toDisplayString(KeyCode::F1),
                 toDisplayString(KeyCode::F2),
                 toDisplayString(KeyCode::F3),
+                toDisplayString(KeyCode::F4),
             },
             "/") + " " + toDisplayString(KeyModifier::Ctrl);
     }
