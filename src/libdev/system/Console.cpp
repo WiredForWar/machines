@@ -429,6 +429,25 @@ bool Console::parseArguments(
         parsedArguments.push_back(std::move(value));
     }
 
+    // If the last argument is repeating, consume all remaining tokens.
+    if (inputIndex < tokenArguments.size()
+        && !metadata.arguments.empty() && metadata.arguments.back().repeating)
+    {
+        const auto& spec = metadata.arguments.back();
+        while (inputIndex < tokenArguments.size())
+        {
+            ArgumentValue value{};
+            value.type = spec.type;
+            value.provided = true;
+            if (!convertToken(spec.type, tokenArguments[inputIndex], value))
+            {
+                return false;
+            }
+            parsedArguments.push_back(std::move(value));
+            ++inputIndex;
+        }
+    }
+
     if (inputIndex < tokenArguments.size())
     {
         setError("Too many arguments for command.");

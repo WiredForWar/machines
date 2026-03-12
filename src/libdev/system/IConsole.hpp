@@ -30,6 +30,7 @@ public:
         std::string name{};
         ArgumentType type{};
         bool optional{};
+        bool repeating{};
         std::string description{};
     };
 
