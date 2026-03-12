@@ -26,6 +26,7 @@
 #include "render/Painter.hpp"
 #include "render/SurfaceManager.hpp"
 #include "device/CD.hpp"
+#include "utility/String.hpp"
 
 #include <string>
 
@@ -646,6 +647,10 @@ void MachPromptText::submit()
     CB_DEPIMPL_AUTO(opponentIndex_);
     CB_DEPIMPL_AUTO(pInGameScreen_);
 
+    const std::string trimmedText = Utils::trimWhitespace(text());
+    if (trimmedText.empty())
+        return;
+
     if (opponentIndex_ == SYSTEM_MESSAGE)
     {
         if (strncasecmp(text().c_str(), "MUSIC", 5) == 0 && text().length() > 5)
@@ -664,7 +669,7 @@ void MachPromptText::submit()
             pInGameScreen_->instantExit(true);
         }
 
-        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
+        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + std::string(trimmedText));
     }
     else
     {
@@ -688,10 +693,10 @@ void MachPromptText::submit()
         }
         chatMessageStr += MachGuiInGameChatMessages::instance().playerName();
         chatMessageStr += ": ";
-        chatMessageStr += text();
+        chatMessageStr += trimmedText;
 
         MachGuiInGameChatMessages::instance().sendMessage(chatMessageStr, chatMessageIntendedForRace_);
-        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + text());
+        MachGuiInGameChatMessages::instance().addMessage(chatMessageIntendedForStr_ + std::string(trimmedText));
     }
 }
 
