@@ -354,7 +354,6 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
                 toDisplayString(KeyCode::F1),
                 toDisplayString(KeyCode::F2),
                 toDisplayString(KeyCode::F3),
-                toDisplayString(KeyCode::F4),
             },
             "/");
     }
@@ -622,7 +621,7 @@ void InputRegistry::setLegacyDefaults()
     setBinds(
         "chat-send-to-all"_bind,
         { {
-            .keyWithMods = KeyCode::F4,
+            .keyWithMods = KeyCode::ENTER,
             .releasedModifiers = KeyModifierFlags::All,
         } });
 
