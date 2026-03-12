@@ -36,7 +36,7 @@ public:
     void setHistoryLimit(std::size_t limit) override;
     [[nodiscard]] const std::vector<std::string>& history() const override;
 
-    [[nodiscard]] CompletionResult suggestions(std::string_view prefix) const override;
+    [[nodiscard]] CompletionResult suggestions(std::string_view line, std::size_t cursorPos) const override;
 
     [[nodiscard]] const std::string& lastError() const override;
     void clearError() override;

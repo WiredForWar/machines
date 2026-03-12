@@ -274,7 +274,8 @@ void MachGuiConsoleDropDown::handleTabCompletion()
         return;
 
     const std::string line = inputText();
-    const System::IConsole::CompletionResult result = pConsole_->suggestions(line);
+    const std::size_t cursor = inputBox()->cursorPosition();
+    const System::IConsole::CompletionResult result = pConsole_->suggestions(line, cursor);
     const std::vector<std::string>& candidates = result.candidates;
 
     if (candidates.empty())
@@ -295,9 +296,33 @@ void MachGuiConsoleDropDown::handleTabCompletion()
         return;
     }
 
+    // Helper: replace the token region in the line and set cursor after the replacement.
+    auto applyReplacement = [&](const std::string& replacement)
+    {
+        std::string newLine = line.substr(0, result.replaceStart)
+            + replacement
+            + line.substr(result.replaceStart + result.replaceLength);
+        const std::size_t newCursor = result.replaceStart + replacement.size();
+
+        inputBox()->setText(newLine);
+        inputBox()->setCursorPosition(newCursor);
+    };
+
     if (candidates.size() == 1)
     {
-        setInputText(candidates[0] + ' ');
+        std::string replacement = candidates[0];
+
+        // Append a space only when:
+        // - there is no text after the replaced region, or
+        // - the character right after the replaced region is not already a space.
+        const std::size_t afterToken = result.replaceStart + result.replaceLength;
+        if (afterToken >= line.size()
+            || !std::isspace(static_cast<unsigned char>(line[afterToken])))
+        {
+            replacement += ' ';
+        }
+
+        applyReplacement(replacement);
         lastTabWasComplete_ = false;
         return;
     }
@@ -305,9 +330,11 @@ void MachGuiConsoleDropDown::handleTabCompletion()
     // Multiple matches: complete to the longest common prefix of candidates.
     const std::string lcp = Utils::longestCommonPrefix(candidates);
 
-    if (lcp.size() > line.size())
+    const std::string_view currentToken = std::string_view(line).substr(
+        result.replaceStart, result.replaceLength);
+    if (lcp.size() > currentToken.size())
     {
-        setInputText(lcp);
+        applyReplacement(lcp);
     }
 
     lastTabWasComplete_ = true;

@@ -198,6 +198,11 @@ bool GuiSingleLineEditBox::doHandleKeyEvent(const GuiKeyEvent& e)
     return processed;
 }
 
+std::size_t GuiSingleLineEditBox::cursorPosition() const
+{
+    return cursorIndex_;
+}
+
 void GuiSingleLineEditBox::setCursorPosition(std::size_t position)
 {
     if (position > text_.length())

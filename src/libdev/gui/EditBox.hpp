@@ -49,6 +49,7 @@ public:
     void setText(const std::string&);
     // PRE( std::string.length() <= maxChars_ );
     std::string text() const;
+    std::size_t cursorPosition() const;
     void setCursorPosition(std::size_t position);
     void setTextChangedCallback(Callback callback);
 

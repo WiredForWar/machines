@@ -201,11 +201,48 @@ const std::vector<std::string>& Console::history() const
     return history_;
 }
 
-Console::CompletionResult Console::suggestions(std::string_view prefix) const
+Console::CompletionResult Console::suggestions(std::string_view line, std::size_t cursorPos) const
 {
-    // Tokenize the input so far to determine if the user is completing a command name or an argument.
-    const std::vector<std::string> tokens = tokenize(prefix);
-    const bool endsWithSpace = !prefix.empty() && std::isspace(static_cast<unsigned char>(prefix.back()));
+    if (cursorPos > line.size())
+        cursorPos = line.size();
+
+    // Only the text before the cursor determines what we're completing.
+    const std::string_view beforeCursor = line.substr(0, cursorPos);
+    const std::vector<std::string> tokens = tokenize(beforeCursor);
+    const bool endsWithSpace = !beforeCursor.empty()
+        && std::isspace(static_cast<unsigned char>(beforeCursor.back()));
+
+    // Find where the token under the cursor starts and ends in the original line.
+    // If cursor is right after a space, we're completing a new (empty) token.
+    // Otherwise, we're completing the last token in beforeCursor, and the token may
+    // extend past the cursor into the full line.
+    std::size_t replaceStart{};
+    std::size_t replaceLength{};
+
+    if (endsWithSpace || tokens.empty())
+    {
+        // Completing a new empty token at cursor position.
+        replaceStart = cursorPos;
+        replaceLength = 0;
+    }
+    else
+    {
+        // The partial token is the last token in beforeCursor.
+        // Walk backward from cursorPos to find the start of this token in the raw line.
+        std::size_t pos = cursorPos;
+        while (pos > 0 && !std::isspace(static_cast<unsigned char>(line[pos - 1])))
+            --pos;
+        replaceStart = pos;
+
+        // Walk forward from cursorPos to find the end of the token in the full line.
+        pos = cursorPos;
+        while (pos < line.size() && !std::isspace(static_cast<unsigned char>(line[pos])))
+            ++pos;
+        replaceLength = pos - replaceStart;
+    }
+
+    const std::string_view partialValue = endsWithSpace ? std::string_view{}
+        : (tokens.empty() ? std::string_view{} : tokens.back());
 
     // If we have a recognized command and the cursor is past the command name, try argument completion.
     if (!tokens.empty())
@@ -217,28 +254,11 @@ Console::CompletionResult Console::suggestions(std::string_view prefix) const
             if (!def.completer)
                 return {};
 
-            // argIndex: which argument position is being completed
-            // partialValue: the partially-typed argument text (empty if cursor is after a space)
             const std::size_t argIndex = endsWithSpace ? tokens.size() - 1 : tokens.size() - 2;
-            const std::string_view partialValue = endsWithSpace ? std::string_view{} : tokens.back();
-
-            // Build the prefix that precedes the argument being completed
-            std::string linePrefix;
-            {
-                const std::size_t completedTokens = endsWithSpace ? tokens.size() : tokens.size() - 1;
-                for (std::size_t i = 0; i < completedTokens; ++i)
-                {
-                    if (!linePrefix.empty())
-                        linePrefix += ' ';
-                    linePrefix += tokens[i];
-                }
-                linePrefix += ' ';
-            }
 
             // Collect the fully-typed argument tokens that precede the one being completed.
             std::vector<std::string> precedingArgs;
             {
-                // Argument tokens start at index 1 (index 0 is the command name).
                 const std::size_t argTokenEnd = endsWithSpace ? tokens.size() : tokens.size() - 1;
                 for (std::size_t i = 1; i < argTokenEnd; ++i)
                     precedingArgs.push_back(tokens[i]);
@@ -247,20 +267,15 @@ Console::CompletionResult Console::suggestions(std::string_view prefix) const
             std::vector<std::string> argMatches
                 = def.completer(def.metadata, argIndex, partialValue, precedingArgs);
 
-            // Prefix each suggestion with the already-typed command + preceding args
-            // so the tab handler can replace the whole input line.
-            std::vector<std::string> results;
-            results.reserve(argMatches.size());
-            for (const std::string& m : argMatches)
-            {
-                results.push_back(linePrefix + m);
-            }
+            if (argMatches.size() > config_.suggestionLimit)
+                argMatches.resize(config_.suggestionLimit);
 
-            if (results.size() > config_.suggestionLimit)
-                results.resize(config_.suggestionLimit);
-
-            std::sort(results.begin(), results.end());
-            return results;
+            std::sort(argMatches.begin(), argMatches.end());
+            return CompletionResult{
+                .candidates = std::move(argMatches),
+                .replaceStart = replaceStart,
+                .replaceLength = replaceLength,
+            };
         }
     }
 
@@ -271,7 +286,7 @@ Console::CompletionResult Console::suggestions(std::string_view prefix) const
     for (const CommandMap::value_type& entry : commands_)
     {
         const std::string& commandName = entry.first;
-        if (prefix.empty() || Utils::startsWith(commandName, prefix))
+        if (partialValue.empty() || Utils::startsWith(commandName, partialValue))
         {
             matches.push_back(commandName);
         }
@@ -283,6 +298,8 @@ Console::CompletionResult Console::suggestions(std::string_view prefix) const
     std::sort(matches.begin(), matches.end());
     return CompletionResult{
         .candidates = std::move(matches),
+        .replaceStart = replaceStart,
+        .replaceLength = replaceLength,
     };
 }
 

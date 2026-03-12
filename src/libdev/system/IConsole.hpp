@@ -57,6 +57,8 @@ public:
     struct CompletionResult
     {
         std::vector<std::string> candidates{};
+        std::size_t replaceStart{};
+        std::size_t replaceLength{};
     };
 
     using CommandHandler = std::function<void(const CommandRequest&, IConsole&)>;
@@ -84,7 +86,7 @@ public:
     virtual void setHistoryLimit(std::size_t limit) = 0;
     [[nodiscard]] virtual const std::vector<std::string>& history() const = 0;
 
-    [[nodiscard]] virtual CompletionResult suggestions(std::string_view prefix) const = 0;
+    [[nodiscard]] virtual CompletionResult suggestions(std::string_view line, std::size_t cursorPos) const = 0;
 
     [[nodiscard]] virtual const std::string& lastError() const = 0;
     virtual void clearError() = 0;
