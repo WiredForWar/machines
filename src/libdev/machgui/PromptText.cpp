@@ -450,6 +450,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
     {
         static const auto& sendChatToSystemTrigger = MachGui::inputRegistry()->getBinds("chat-send-to-system"_bind);
         static const auto& showMenusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
+        static const auto& sendAllTrigger = MachGui::inputRegistry()->getBinds("chat-send-to-all"_bind);
 
         if ((event.key() == Device::KeyCode::F1 || event.key() == Device::KeyCode::F2 || event.key() == Device::KeyCode::F3)
             && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
@@ -535,7 +536,8 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
             }
         }
         else if (
-            event.key() == Device::KeyCode::F4 && ! event.isShiftPressed() && MachLogNetwork::instance().isNetworkGame())
+            MachLogNetwork::instance().isNetworkGame() && !enteringChatMessage_
+            && sendAllTrigger.matches(event.keyWithMods()))
         {
             int newOpponentIndex = 3;
 
