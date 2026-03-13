@@ -6,48 +6,23 @@
 #include "machphys/Locomotion/EvasionPriorityPlans.hpp"
 #include "machphys/Locomotion/EvasionPriorityPlan.hpp"
 
-// #include<algorith.hpp>
-
-/* //////////////////////////////////////////////////////////////// */
-
 MachPhysEvasionPriorityPlans& MachPhysEvasionPriorityPlans::instance()
 {
     static MachPhysEvasionPriorityPlans instance_;
     return instance_;
 }
 
-/* //////////////////////////////////////////////////////////////// */
-
-MachPhysEvasionPriorityPlans::MachPhysEvasionPriorityPlans()
-    : nEPPs_(0)
+void MachPhysEvasionPriorityPlans::clear()
 {
-    EPPs_.reserve(16);
+    EPPs_.clear();
 }
-
-/* //////////////////////////////////////////////////////////////// */
-
-MachPhysEvasionPriorityPlans::~MachPhysEvasionPriorityPlans()
-{
-    for (EPPs::iterator i = EPPs_.begin(); i != EPPs_.end(); ++i)
-    {
-        delete *i;
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////////
 
 void MachPhysEvasionPriorityPlans::addNewEPP(const std::string& EPPName)
 {
-    PRE(! EPPExists(EPPName));
+    PRE(!EPPExists(EPPName));
 
-    MachPhysEvasionPriorityPlan* pEPP = new MachPhysEvasionPriorityPlan(EPPName);
-    EPPs_.push_back(pEPP);
-    ++nEPPs_;
-
-    POST(EPPs_.size() == nEPPs_);
+    EPPs_.push_back(std::make_unique<MachPhysEvasionPriorityPlan>(EPPName));
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 void MachPhysEvasionPriorityPlans::garrisonPriority(const std::string& EPPName, int priority)
 {
@@ -60,8 +35,6 @@ void MachPhysEvasionPriorityPlans::garrisonPriority(const std::string& EPPName, 
     EPP(EPPName).garrisonPriority(priority);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 void MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
@@ -70,8 +43,6 @@ void MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPNam
 
     EPP(EPPName).aggressivesPriority(priority);
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 void MachPhysEvasionPriorityPlans::podPriority(const std::string& EPPName, int priority)
 {
@@ -82,8 +53,6 @@ void MachPhysEvasionPriorityPlans::podPriority(const std::string& EPPName, int p
     EPP(EPPName).podPriority(priority);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 void MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName, int priority)
 {
     PRE_INFO(priority);
@@ -93,16 +62,12 @@ void MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName, i
     EPP(EPPName).turretsPriority(priority);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 int MachPhysEvasionPriorityPlans::garrisonPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
     return EPP(EPPName).garrisonPriority();
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 int MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPName) const
 {
@@ -111,16 +76,12 @@ int MachPhysEvasionPriorityPlans::aggressivesPriority(const std::string& EPPName
     return EPP(EPPName).aggressivesPriority();
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 int MachPhysEvasionPriorityPlans::podPriority(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
     return EPP(EPPName).podPriority();
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 int MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName) const
 {
@@ -129,63 +90,41 @@ int MachPhysEvasionPriorityPlans::turretsPriority(const std::string& EPPName) co
     return EPP(EPPName).turretsPriority();
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-
 bool MachPhysEvasionPriorityPlans::EPPExists(const std::string& EPPName) const
 {
-    bool found = false;
-
-    for (EPPs::const_iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
+    for (const std::unique_ptr<MachPhysEvasionPriorityPlan>& epp : EPPs_)
     {
-        if ((*i)->name() == EPPName)
-            found = true;
+        if (epp->name() == EPPName)
+            return true;
     }
 
-    return found;
+    return false;
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 const MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const std::string& EPPName) const
 {
     PRE(EPPExists(EPPName));
 
-    MachPhysEvasionPriorityPlan* pEPP = nullptr;
-    bool found = false;
-
-    for (EPPs::const_iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
+    for (const std::unique_ptr<MachPhysEvasionPriorityPlan>& epp : EPPs_)
     {
-        if ((*i)->name() == EPPName)
-        {
-            found = true;
-            pEPP = (*i);
-        }
+        if (epp->name() == EPPName)
+            return *epp;
     }
 
-    return *pEPP;
+    ASSERT_FAIL("EPP not found");
+    return *EPPs_.front();
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 MachPhysEvasionPriorityPlan& MachPhysEvasionPriorityPlans::EPP(const std::string& EPPName)
 {
     PRE(EPPExists(EPPName));
 
-    bool found = false;
-    MachPhysEvasionPriorityPlan* pEPP = nullptr;
-
-    for (EPPs::iterator i = EPPs_.begin(); ! found && i != EPPs_.end(); ++i)
+    for (const std::unique_ptr<MachPhysEvasionPriorityPlan>& epp : EPPs_)
     {
-        if ((*i)->name() == EPPName)
-        {
-            found = true;
-            pEPP = (*i);
-        }
+        if (epp->name() == EPPName)
+            return *epp;
     }
 
-    return *pEPP;
+    ASSERT_FAIL("EPP not found");
+    return *EPPs_.front();
 }
-
-//////////////////////////////////////////////////////////////////////////////////
-
-/* End EPPs.CPP *************************************************/

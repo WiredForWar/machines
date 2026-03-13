@@ -8,6 +8,7 @@
 #include "machphys/Data/Internal/DataImplementation.hpp"
 #include "machphys/Data/Internal/DataParser.hpp"
 #include "machphys/Data/Internal/DataImplementation.ctf"
+#include "machphys/Locomotion/EvasionPriorityPlans.hpp"
 
 #include "machphys/Data/Levels.hpp"
 
@@ -111,6 +112,13 @@ MachPhysDataImplementation::~MachPhysDataImplementation()
     TEST_INVARIANT;
 
     clearAllData();
+}
+
+void MachPhysDataImplementation::reloadData()
+{
+    clearAllData();
+    MachPhysEvasionPriorityPlans::instance().clear();
+    MachPhysDataParser::instance().read("data/parmdata.dat", this);
 }
 
 void MachPhysDataImplementation::clearAllData()

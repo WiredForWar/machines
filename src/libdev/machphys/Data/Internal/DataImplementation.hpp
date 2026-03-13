@@ -51,6 +51,8 @@ public:
     static MachPhysDataImplementation& instance();
     ~MachPhysDataImplementation();
 
+    void reloadData();
+
     // Machine Types
     const MachPhysAggressorData& aggressorData(MachPhys::AggressorSubType, size_t hwLevel, size_t swLevel) const;
     const MachPhysAdministratorData&

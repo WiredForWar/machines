@@ -16,28 +16,26 @@
 #ifndef _MACHPHYS_EPPs_HPP
 #define _MACHPHYS_EPPs_HPP
 
-#include "ctl/PtrVector.hpp"
 #include "base/base.hpp"
 
-/* //////////////////////////////////////////////////////////////// */
+#include <memory>
+#include <string>
+#include <vector>
 
 class MachPhysEvasionPriorityPlan;
 
 class MachPhysEvasionPriorityPlans
 {
 public:
-    enum NPriorityLevels
+    enum
     {
-        N_PRIORITY_LEVELS = 4
+        N_PRIORITY_LEVELS = 4,
     };
 
-    using EPPs = ctl_pvector<MachPhysEvasionPriorityPlan>;
-
     static MachPhysEvasionPriorityPlans& instance();
+    ~MachPhysEvasionPriorityPlans() = default;
 
-    ~MachPhysEvasionPriorityPlans();
-
-    ///////////////////////////////
+    void clear();
 
     void addNewEPP(const std::string& EPPName);
 
@@ -56,21 +54,13 @@ public:
     bool EPPExists(const std::string& EPPName) const;
 
 private:
-    MachPhysEvasionPriorityPlans();
-
-    // Operation deliberately revoked
-    MachPhysEvasionPriorityPlans(const MachPhysEvasionPriorityPlans&);
-
-    // Operation deliberately revoked
-    MachPhysEvasionPriorityPlans& operator=(const MachPhysEvasionPriorityPlans&);
-
-    // Operation deliberately revoked
-    bool operator==(const MachPhysEvasionPriorityPlans&);
+    MachPhysEvasionPriorityPlans() = default;
+    MachPhysEvasionPriorityPlans(const MachPhysEvasionPriorityPlans&) = delete;
+    MachPhysEvasionPriorityPlans& operator=(const MachPhysEvasionPriorityPlans&) = delete;
 
     MachPhysEvasionPriorityPlan& EPP(const std::string& EPPName);
 
-    int nEPPs_;
-    EPPs EPPs_;
+    std::vector<std::unique_ptr<MachPhysEvasionPriorityPlan>> EPPs_;
 };
 
 /* //////////////////////////////////////////////////////////////// */
