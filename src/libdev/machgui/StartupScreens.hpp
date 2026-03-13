@@ -263,6 +263,7 @@ public:
     // the lobbying code exits in a special way hence the specific function.
     void contextFinishFromLobby();
 
+    void reloadUiStrings();
     // Initialise the CD and sound volume to the values specified in the registry
     void initializeVolumes();
     void initializeCursorOptions();

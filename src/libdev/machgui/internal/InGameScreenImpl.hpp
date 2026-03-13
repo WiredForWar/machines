@@ -98,7 +98,6 @@ public:
     MachProductionBank* pProductionBank_{}; // A factory production bank
     MachHWResearchBank* pHWResearchBank_{}; // A hardware lab research bank
     MachGuiSquadronBank* pSquadronBank_{}; // The squadron bank
-    std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table
     std::unique_ptr<MachCameras> pCameras_;
     MachGui::ControlPanelContext controlPanelContext_{}; // Menu context
     std::unique_ptr<MachInGameCursors2d> pCursors2d_; // The class enabling switching of cursor

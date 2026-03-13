@@ -146,7 +146,6 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     CB_DEPIMPL_AUTO(pRoot_);
     CB_DEPIMPL_AUTO(selectedActors_);
     CB_DEPIMPL_AUTO(allCommands_);
-    CB_DEPIMPL_AUTO(pStringResourceLib_);
     CB_DEPIMPL_AUTO(pMachinesIcon_);
     CB_DEPIMPL_AUTO(pConstructionsIcon_);
     CB_DEPIMPL_AUTO(pSquadronIcon_);
@@ -190,13 +189,6 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
     // Create cameras
     pCameras_= std::make_unique<MachCameras>(pSceneManager, pRoot);
     pReporter->report(20, 100); // 20% done
-
-    // Load the string table resource file
-    pStringResourceLib_ = std::make_unique<AfxResourceLib>();
-    for (const std::string& file : System::getFileOverrides("machstrg.xml"))
-        pStringResourceLib_->addStringsFromFile(file);
-
-    GuiResourceString::resource(pStringResourceLib_.get());
 
     pReporter->report(25, 100); // 25% done
 

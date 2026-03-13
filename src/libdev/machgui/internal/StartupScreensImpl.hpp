@@ -45,6 +45,7 @@ private:
     bool finishApp_;
     W4dRoot* pW4dRoot_;
     PhysAbsoluteTime contextTimer_;
+    std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table
     AniSmacker* pPlayingSmacker_; // A currently playing smacker file. NULL if none
     MachGuiStartupScreens::Music playingCdTrack_; // Track number playing on audio cd. ( -1 for none )
     MachGuiStartupScreens::Music desiredCdTrack_; // Track number that should be playing on audio cd. ( -1 for none )

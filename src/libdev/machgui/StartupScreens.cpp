@@ -211,6 +211,8 @@ MachGuiStartupScreens::MachGuiStartupScreens(
 
     pReporter->report(1, 100); // 1% of gui stuff done
 
+    reloadUiStrings();
+
     // The loading image is the very first backdrop. Loaded before construction of MGSS. It needs to be tracked by its
     // purpose. Since this bitmap was already loaded in sdlapp.cpp, the surface manager will simply increase the ref
     // count (:
@@ -3757,6 +3759,17 @@ void MachGuiStartupScreens::contextFinishFromLobby()
 {
     deleteAllChildren();
     contextFinish();
+}
+
+void MachGuiStartupScreens::reloadUiStrings()
+{
+    CB_DEPIMPL_AUTO(pStringResourceLib_);
+
+    pStringResourceLib_ = std::make_unique<AfxResourceLib>();
+    for (const std::string& file : System::getFileOverrides("machstrg.xml"))
+        pStringResourceLib_->addStringsFromFile(file);
+
+    GuiResourceString::resource(pStringResourceLib_.get());
 }
 
 bool MachGuiStartupScreens::ignoreHostLostSystemMessage() const
