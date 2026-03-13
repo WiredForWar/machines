@@ -7,6 +7,8 @@
 #include <ranges>
 #include <vector>
 
+#include "spdlog/spdlog.h"
+
 namespace System
 {
 
@@ -64,6 +66,19 @@ std::vector<std::string> listMods()
     std::vector<std::string> mods = listAvailableMods();
     std::sort(mods.begin(), mods.end());
     return mods;
+}
+
+void registerMods()
+{
+    spdlog::info("Registering mods...");
+    overrideLocations.clear();
+
+    const std::vector<std::string> mods = listMods();
+    for (const std::string& modDir : mods)
+    {
+        spdlog::info("Adding FS override '{}'", modDir);
+        addFsOverride(modDir);
+    }
 }
 
 std::vector<std::string> getFileOverrides(std::string path)

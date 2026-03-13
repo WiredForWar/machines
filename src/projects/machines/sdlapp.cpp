@@ -169,14 +169,7 @@ bool SDLApp::clientStartup()
     // Initially, pick the lowest-res 16-bit mode.
     pDisplay_->buildDisplayModesList();
 
-    {
-        const std::vector<std::string> mods = System::listMods();
-        for (const std::string& modDir : mods)
-        {
-            spdlog::info("Adding FS override '{}'", modDir);
-            System::addFsOverride(modDir);
-        }
-    }
+    System::registerMods();
 
     // Check for windowed mode
     if (!Config::gfxWindowed.get())

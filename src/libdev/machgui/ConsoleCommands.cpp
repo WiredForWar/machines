@@ -24,12 +24,14 @@
 #include "machlog/World/Scenario.hpp"
 #include "machlog/World/SpacialManipulation.hpp"
 #include "machphys/Weapons/LegalWeaponCombos.hpp"
+#include "machphys/Data/Internal/DataImplementation.hpp"
 #include "machphys/Data/Levels.hpp"
 #include "mathex/EulerAngles.hpp"
 #include "mathex/Point2d.hpp"
 #include "mathex/Point3d.hpp"
 #include "mathex/Radians.hpp"
 #include "mathex/Transform3d.hpp"
+#include "render/Device.hpp"
 #include "sim/Manager.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/IConsole.hpp"
@@ -755,6 +757,20 @@ void spawnConstructionCommand(const Request& request, Console& console)
     console.writeLine(
         "Spawned " + typeStr + " " + subTypeStr + " at " + formatCoordinates(coords->x(), coords->y())
         + ", id=" + std::to_string(pBuilding->id()) + ".");
+}
+
+void reloadDataCommand(MachGuiStartupScreens* pStartup, Console& console)
+{
+    System::registerMods();
+    console.writeLine("- Mods reloaded");
+
+    MachPhysDataImplementation::instance().reloadData();
+    console.writeLine("- parmdata reloaded");
+    pStartup->reloadUiStrings();
+    console.writeLine("- UI strings reloaded");
+
+    RenDevice::current()->fireResourcesInvalidatedCallbacks();
+    console.writeLine("- Textures reloaded");
 }
 
 void commandMoveCommand(const Request& request, Console& console)
@@ -1547,6 +1563,16 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
         },
         [pStartup](const Request& request, Console& console)
         { loadGameCommand(pStartup, request, console); });
+
+    // ---- Data reload commands ----
+
+    console.registerCommand(
+        {
+            .name = "reload_data",
+            .description = "Reload gameplay data files (parmdata.dat and mod overrides).",
+            .cheat = true,
+        },
+        [pStartup](const Request&, Console& console) { reloadDataCommand(pStartup, console); });
 
     // ---- Order commands ----
 

@@ -46,6 +46,10 @@ target_link_libraries(system PUBLIC
     SDL3::SDL3
 )
 
+target_link_libraries(system PRIVATE
+    spdlog::spdlog
+)
+
 if(PLATFORM_WINDOWS)
     target_link_libraries(system PUBLIC
         version
