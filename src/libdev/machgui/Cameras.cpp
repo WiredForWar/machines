@@ -781,53 +781,36 @@ void MachCameras::scrollWithWheel(const Gui::ScrollState wheelDir, const double 
 
     if (pCurrentCamera_ == pZenithCamera_.get())
     {
-        auto zenithMotion = PhysMotion { pZenithControl_->motion_ };
-        auto zenithTransform = MexTransform3d { pZenithCamera_->globalTransform() };
+        MATHEX_SCALAR zoomDistance{};
+        MATHEX_SCALAR x{};
+        MATHEX_SCALAR y{};
+        MexRadians heading{};
+        pZenithConstraint_->cameraPositionData(&zoomDistance, &x, &y, &heading);
 
+        constexpr double zoomFraction = 1.0 / 8;
         if (wheelDir == zoomIn)
-        {
-            double newClimb = std::fabs(zenithMotion.climb()) * -1.0;
-            zenithMotion.climb(newClimb);
-            zenithMotion.deltaClimb(step * -1.0);
-        }
+            zoomDistance *= (1.0 - zoomFraction);
         else if (wheelDir == zoomOut)
-        {
-            double newClimb = std::fabs(zenithMotion.climb());
-            zenithMotion.climb(newClimb);
-            zenithMotion.deltaClimb(step);
-        }
+            zoomDistance *= (1.0 + zoomFraction);
 
-        constexpr double zoomFactor = 10;
-        pZenithControl_->pMotionConstraint_->move(
-            zenithTransform,
-            zenithMotion,
-            step / zoomFactor);
-        pZenithCamera_->globalTransform(zenithTransform);
+        zoomDistance = std::clamp(zoomDistance, pZenithConstraint_->minZoomDistance(),
+                                               pZenithConstraint_->maxZoomDistance());
+        pZenithConstraint_->cameraPositionData(zoomDistance, x, y, heading);
     }
     else if (pCurrentCamera_ == pGroundCamera_.get())
     {
-        auto groundMotion = PhysMotion { pGroundControl_->motion_ };
-        auto groundTransform = MexTransform3d { pGroundCamera_->globalTransform() };
+        // Adjust height above terrain proportionally
+        MATHEX_SCALAR delta = pGroundConstraint_->zTerrainDelta();
 
-        // GROUND CAM is inverted directions
-        if (wheelDir == zoomOut)
-        {
-            double newClimb = std::fabs(groundMotion.climb()) * -1.0;
-            groundMotion.climb(newClimb);
-            groundMotion.deltaClimb(step * -1.0);
-        }
-        else if (wheelDir == zoomIn)
-        {
-            double newClimb = std::fabs(groundMotion.climb());
-            groundMotion.climb(newClimb);
-            groundMotion.deltaClimb(step);
-        }
+        constexpr double zoomFraction = 0.1;
+        if (wheelDir == zoomIn)
+            delta *= (1.0 + zoomFraction);
+        else if (wheelDir == zoomOut)
+            delta *= (1.0 - zoomFraction);
 
-        pGroundControl_->pMotionConstraint_->move(
-            groundTransform,
-            groundMotion,
-            step / pGroundControl_->metresPerSecond());
-        pGroundCamera_->globalTransform(groundTransform);
+        delta = std::clamp(delta, static_cast<MATHEX_SCALAR>(pGroundConstraint_->minHeight()),
+                                  static_cast<MATHEX_SCALAR>(pGroundConstraint_->maxHeight()));
+        pGroundConstraint_->zTerrainDelta(delta);
     }
 }
 

@@ -19,6 +19,8 @@
 
 #include "system/ConfigVariables.hpp"
 
+#include <algorithm>
+
 //////////////////////////////////////////////////////////////////////////////////////////
 PhysGroundFlyControl::PhysGroundFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
     : PhysMotionControlWithTrans(std::move(target), forwards)

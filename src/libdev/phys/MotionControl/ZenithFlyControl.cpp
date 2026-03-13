@@ -8,7 +8,10 @@
 #include "mathex/Point3d.hpp"
 #include "phys/MotionControl/ZenithFlyControl.hpp"
 
+#include "device/Keyboard.hpp"
 #include "system/ConfigVariables.hpp"
+
+#include <algorithm>
 
 PhysZenithFlyControl::PhysZenithFlyControl(std::unique_ptr<PhysMotionControlled> target, const MexVec2& forwards)
     : PhysMotionControlWithTrans(std::move(target), forwards)

@@ -9,6 +9,7 @@
 - Added models texture modding support
 - Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)
 - Fixed many cases when machines could stuck and lock each other
+- Fixed camera move and zoom at the same time (basically reimplemented zoom with mouse wheel)
 - Fixed selection marker rendering (2D/3D and runtime switching)
 - Fixed rendering/culling issues that could cause missing world tiles / rooms not being rendered
 - Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers

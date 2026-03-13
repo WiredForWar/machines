@@ -79,6 +79,9 @@ public:
     cameraPositionData(MATHEX_SCALAR* pZoomDistance, MATHEX_SCALAR* pX, MATHEX_SCALAR* pY, MexRadians* pHeading) const;
     void cameraPositionData(MATHEX_SCALAR zoomDistance, MATHEX_SCALAR x, MATHEX_SCALAR y, MexRadians heading);
 
+    MATHEX_SCALAR minZoomDistance() const { return minHeight() / sinPitchAngle_; }
+    MATHEX_SCALAR maxZoomDistance() const { return maxHeight() / sinPitchAngle_; }
+
 private:
     // Operations revoked
     MachLogZenithCameraMotionConstraint(const MachLogZenithCameraMotionConstraint&);

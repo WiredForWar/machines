@@ -15,8 +15,6 @@
 #include "base/base.hpp"
 #include "phys/MotionControl/MotionControlWithTrans.hpp"
 
-#include "gui/gui.hpp"
-#include "machgui/Cameras.hpp"
 
 // orthodox canonical ( revoked )
 class PhysGroundFlyControl : public PhysMotionControlWithTrans
@@ -58,7 +56,6 @@ private:
     // Data members...
     bool reversePitchUpDownKeys_;
 
-    friend void MachCameras::scrollWithWheel(const Gui::ScrollState, const double);
 };
 
 class PhysGroundMotionConstraint : public PhysMotionConstraint
