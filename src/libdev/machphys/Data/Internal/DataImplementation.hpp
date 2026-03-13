@@ -17,6 +17,8 @@
 
 #include "machphys/machphys.hpp"
 
+#include <memory>
+
 class MachPhysAggressorData;
 class MachPhysAdministratorData;
 class MachPhysAPCData;
@@ -92,6 +94,8 @@ private:
 
     MachPhysDataImplementation();
 
+    void clearAllData();
+
     enum
     {
         MAX_HARDWARE_LEVELS = 5
@@ -166,7 +170,7 @@ private:
     using MachineDataStore = ctl_fixed_vector<ctl_fixed_vector<MachPhysMachineData*>>;
     using ConstructionDataStore = ctl_fixed_vector<MachPhysConstructionData*>;
 
-    MachPhysOreHolographData* pOreHolographData_;
+    std::unique_ptr<MachPhysOreHolographData> pOreHolographData_;
 
     const AggressorDataStore* pDataStore(MachPhys::AggressorSubType subType) const;
     const AdministratorDataStore* pDataStore(MachPhys::AdministratorSubType subType) const;
@@ -193,8 +197,8 @@ private:
     MachPhysWeaponData* pWeaponData(MachPhys::WeaponType);
     WeaponDataStore* pWeaponDataStore();
 
-    MachPhysGeneralData* pGeneralData_; // Stores general data
-    MachPhysGeneralData** pGeneralDataStore();
+    std::unique_ptr<MachPhysGeneralData> pGeneralData_;
+    std::unique_ptr<MachPhysGeneralData>& pGeneralDataStore();
 };
 
 #endif

@@ -100,7 +100,6 @@ MachPhysDataImplementation::MachPhysDataImplementation()
     , missileEmplacementLauncherData_(STORE_HARDWARE_SIZE, nullptr)
     , missileEmplacementICBMData_(STORE_HARDWARE_SIZE, nullptr)
     , weaponData_(MachPhys::N_WEAPON_TYPES, nullptr)
-    , pGeneralData_(nullptr)
 {
     MachPhysDataParser::instance().read("data/parmdata.dat", this);
 
@@ -111,6 +110,11 @@ MachPhysDataImplementation::~MachPhysDataImplementation()
 {
     TEST_INVARIANT;
 
+    clearAllData();
+}
+
+void MachPhysDataImplementation::clearAllData()
+{
     delete2D(administratorBossData_);
     delete2D(administratorOverseerData_);
     delete2D(administratorCommanderData_);
@@ -144,7 +148,8 @@ MachPhysDataImplementation::~MachPhysDataImplementation()
     delete1D(missileEmplacementLauncherData_);
     delete1D(missileEmplacementICBMData_);
     delete1D(weaponData_);
-    delete pGeneralData_;
+    pGeneralData_.reset();
+    pOreHolographData_.reset();
 }
 
 void MachPhysDataImplementation::CLASS_INVARIANT
@@ -637,13 +642,14 @@ MachPhysDataImplementation::WeaponDataStore* MachPhysDataImplementation::pWeapon
     return &weaponData_;
 }
 
-MachPhysGeneralData** MachPhysDataImplementation::pGeneralDataStore()
+std::unique_ptr<MachPhysGeneralData>& MachPhysDataImplementation::pGeneralDataStore()
 {
-    return &pGeneralData_;
+    return pGeneralData_;
 }
 
 const MachPhysGeneralData& MachPhysDataImplementation::generalData()
 {
     return *pGeneralData_;
+
 }
 /* End DATAIMPL.CPP *************************************************/

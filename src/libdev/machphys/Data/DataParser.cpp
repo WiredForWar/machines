@@ -600,8 +600,7 @@ void MachPhysDataParser::initialiseDataStores()
         (*pData_->pWeaponDataStore())[i] = new MachPhysWeaponData;
     }
 
-    //*(MachPhysDataImplementation::instance().pGeneralDataStore()) = new MachPhysGeneralData;
-    *(pData_->pGeneralDataStore()) = new MachPhysGeneralData;
+    pData_->pGeneralDataStore().reset(new MachPhysGeneralData);
 }
 
 // **************************************************************************
@@ -2665,7 +2664,7 @@ void MachPhysDataParser::parseGeneralData(UtlLineTokeniser* pParser)
     pParser->parseNextLine();
 
     // Get the data object to use
-    MachPhysGeneralData& generalData = **(pData_->pGeneralDataStore());
+    MachPhysGeneralData& generalData = *pData_->pGeneralDataStore();
 
     // read the data line by line
     while (pParser->tokens()[0] != "END")
