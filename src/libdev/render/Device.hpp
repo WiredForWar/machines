@@ -81,6 +81,14 @@ public:
     // POST(!doingBackground_);
     void endFrame();
 
+    // Finalize the back buffer: draw debug text overlay and cursor.
+    void finalizeBackBuffer();
+
+    // Present the back buffer to the screen (swap buffers).
+    // PRE(rendering());
+    // POST(!rendering());
+    void presentFrame();
+
     // True within calls of startFrame() and endFrame().
     bool rendering() const;
     // True within calls of start2D() and end2D().

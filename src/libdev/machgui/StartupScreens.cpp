@@ -1499,6 +1499,7 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
 {
     CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
     CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+    CB_DEPIMPL_AUTO(pendingScreenShot_);
 
     updateCdAudio();
 
@@ -1525,7 +1526,17 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
         playSmackerAnimations();
         pSceneManager_->pDevice()->end2D();
 
-        pSceneManager_->pDevice()->endFrame();
+        if (pendingScreenShot_)
+        {
+            pendingScreenShot_ = false;
+            pSceneManager_->pDevice()->finalizeBackBuffer();
+            Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
+            pSceneManager_->pDevice()->presentFrame();
+        }
+        else
+        {
+            pSceneManager_->pDevice()->endFrame();
+        }
     }
 
     // Make sure new gui sounds are played
@@ -1648,11 +1659,18 @@ void MachGuiStartupScreens::loopCycleInGame()
         displayGui();
         pSceneManager_->pDevice()->end2D();
 
-        // Save the screen shot from the back buffer before endFrame swaps it.
         if (pInGameScreen_->isRenderingScreenShot())
+        {
+            // Finalize the back buffer (debug overlay + cursor) so the
+            // screenshot captures the fully composed frame, then present.
+            pSceneManager_->pDevice()->finalizeBackBuffer();
             pInGameScreen_->finalizeScreenShot();
-
-        pSceneManager_->pDevice()->endFrame();
+            pSceneManager_->pDevice()->presentFrame();
+        }
+        else
+        {
+            pSceneManager_->pDevice()->endFrame();
+        }
     }
 
     // Check for switch to in-game options, won or lost
@@ -1739,7 +1757,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
         if (screenshotTrigger.matches(e.keyWithMods()))
         {
-            Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
+            pImpl_->pendingScreenShot_ = true;
         }
 
         // Do we have a control with focus that can respond to the key press?

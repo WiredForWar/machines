@@ -815,13 +815,19 @@ void RenDevice::syncSmoothFilters()
     }
 }
 
-void RenDevice::endFrame()
+void RenDevice::finalizeBackBuffer()
 {
     PRE(rendering());
 
     commonEndFrame();
     RenSurface backBuf = backSurface();
     pImpl_->display_->displayImpl().drawCursor(backBuf);
+}
+
+void RenDevice::presentFrame()
+{
+    PRE(rendering());
+
     pImpl_->display_->flipBuffers();
 
     pImpl_->rendering_ = false;
@@ -834,6 +840,12 @@ void RenDevice::endFrame()
 
     POST(!rendering());
     POST(!rendering3D());
+}
+
+void RenDevice::endFrame()
+{
+    finalizeBackBuffer();
+    presentFrame();
 }
 
 ///////////////////////// Transformation matrix support (MVP) /////////////////////////
