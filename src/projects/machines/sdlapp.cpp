@@ -678,7 +678,10 @@ void SDLApp::setVSyncOptions()
 
 void SDLApp::initConsole()
 {
-    console_ = std::make_unique<System::Console>();
+    System::ConsoleConfig consoleConfig{};
+    if (Config::consoleHistoryPersistence.get())
+        consoleConfig.historyFilePath = "console.history";
+    console_ = std::make_unique<System::Console>(consoleConfig);
     System::registerConsoleBuiltins(*console_);
 
     console_->registerCommand(

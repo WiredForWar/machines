@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <fstream>
 #include <sstream>
 
 namespace System
@@ -17,6 +18,7 @@ Console::Console(const ConsoleConfig& config)
     output_.reserve(std::min<std::size_t>(config_.outputLimit, output_.capacity()));
     listenerState_ = std::make_shared<OutputListenerState>();
     listenerState_->console = this;
+    loadHistory();
 }
 
 Console::~Console()
@@ -511,18 +513,62 @@ bool Console::convertToken(ArgumentType type, const std::string& token, Argument
 void Console::appendHistoryEntry(const std::string& line)
 {
     if (line.empty())
-    {
         return;
-    }
 
-    if (!history_.empty() && history_.back() == line)
-        return;
+    if (!history_.empty())
+    {
+        if (history_.back() == line)
+            return;
+
+        std::erase(history_, line);
+    }
 
     history_.push_back(line);
 
     if (history_.size() > config_.historyLimit)
     {
         history_.erase(history_.begin());
+    }
+
+    saveHistoryEntry(line);
+}
+
+void Console::loadHistory()
+{
+    if (config_.historyFilePath.empty())
+        return;
+
+    std::ifstream file(config_.historyFilePath);
+    if (!file.is_open())
+        return;
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        if (!line.empty())
+            history_.push_back(line);
+    }
+
+    if (history_.size() > config_.historyLimit)
+    {
+        history_.erase(
+            history_.begin(),
+            history_.begin() + static_cast<std::ptrdiff_t>(history_.size() - config_.historyLimit));
+    }
+}
+
+void Console::saveHistoryEntry(const std::string& line)
+{
+    if (config_.historyFilePath.empty())
+        return;
+
+    std::ofstream file(config_.historyFilePath, std::ios::trunc);
+    if (!file.is_open())
+        return;
+
+    for (const std::string& entry : history_)
+    {
+        file << entry << '\n';
     }
 }
 

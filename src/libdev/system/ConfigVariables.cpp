@@ -25,4 +25,6 @@ Variable<bool> grabCursor("Options/Grab Cursor/on", true);
 Variable<uint32_t> soundVolume("Options/Sound/Volume", 95);
 Variable<uint32_t> musicVolume("Options/CD/Volume", 30);
 
+Variable<bool> consoleHistoryPersistence("Options/Console/History Persistence", true);
+
 } // namespace Config

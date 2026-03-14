@@ -3,6 +3,7 @@
 #include "system/IConsole.hpp"
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -14,6 +15,7 @@ struct ConsoleConfig
     std::size_t historyLimit { 64U };
     std::size_t suggestionLimit { 10U };
     std::size_t outputLimit { 256U };
+    std::string historyFilePath{};
 };
 
 class Console : public IConsole
@@ -77,6 +79,8 @@ private:
     bool executeCommand(std::string_view line, EchoCommandLine echo);
 
     void appendHistoryEntry(const std::string& line);
+    void loadHistory();
+    void saveHistoryEntry(const std::string& line);
     void setError(std::string message);
     void appendOutputLine(std::string_view text);
 

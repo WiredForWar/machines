@@ -29,4 +29,6 @@ extern Variable<bool> grabCursor;
 extern Variable<uint32_t> soundVolume;
 extern Variable<uint32_t> musicVolume;
 
+extern Variable<bool> consoleHistoryPersistence;
+
 } // namespace Config
