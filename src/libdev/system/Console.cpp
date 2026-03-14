@@ -587,13 +587,41 @@ void Console::saveHistoryEntry(const std::string& line)
     if (config_.historyFilePath.empty())
         return;
 
-    std::ofstream file(config_.historyFilePath, std::ios::trunc);
-    if (!file.is_open())
-        return;
+    std::vector<std::string> merged;
+
+    {
+        std::ifstream in(config_.historyFilePath);
+        if (in.is_open())
+        {
+            std::string diskLine;
+            while (std::getline(in, diskLine))
+            {
+                if (!diskLine.empty())
+                    merged.push_back(std::move(diskLine));
+            }
+        }
+    }
 
     for (const std::string& entry : history_)
     {
-        file << entry << '\n';
+        std::erase(merged, entry);
+        merged.push_back(entry);
+    }
+
+    if (merged.size() > config_.historyLimit)
+    {
+        merged.erase(
+            merged.begin(),
+            merged.begin() + static_cast<std::ptrdiff_t>(merged.size() - config_.historyLimit));
+    }
+
+    std::ofstream out(config_.historyFilePath, std::ios::trunc);
+    if (!out.is_open())
+        return;
+
+    for (const std::string& entry : merged)
+    {
+        out << entry << '\n';
     }
 }
 
