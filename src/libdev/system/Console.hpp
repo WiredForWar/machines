@@ -78,6 +78,7 @@ private:
     bool convertToken(ArgumentType type, const std::string& token, ArgumentValue& value);
     bool executeCommand(std::string_view line, EchoCommandLine echo);
 
+    static bool isHistoryIgnored(std::string_view line);
     void appendHistoryEntry(const std::string& line);
     void loadHistory();
     void saveHistoryEntry(const std::string& line);

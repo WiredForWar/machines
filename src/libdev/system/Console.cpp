@@ -3,6 +3,7 @@
 #include "utility/String.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <fstream>
 #include <sstream>
@@ -510,9 +511,33 @@ bool Console::convertToken(ArgumentType type, const std::string& token, Argument
     return true;
 }
 
+bool Console::isHistoryIgnored(std::string_view line)
+{
+    static const std::array<std::string_view, 4> ignoredCommands{
+        "clear",
+        "echo",
+        "help",
+        "version",
+    };
+
+    const std::size_t spacePos = line.find(' ');
+    const std::string_view commandName = line.substr(0, spacePos);
+
+    for (std::string_view ignored : ignoredCommands)
+    {
+        if (commandName == ignored)
+            return true;
+    }
+
+    return false;
+}
+
 void Console::appendHistoryEntry(const std::string& line)
 {
     if (line.empty())
+        return;
+
+    if (isHistoryIgnored(line))
         return;
 
     if (!history_.empty())
