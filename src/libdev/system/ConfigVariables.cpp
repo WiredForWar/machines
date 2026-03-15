@@ -27,4 +27,6 @@ Variable<uint32_t> musicVolume("Options/CD/Volume", 30);
 
 Variable<bool> consoleHistoryPersistence("Options/Console/History Persistence", true);
 
+Variable<bool> devMode({}, {});
+
 } // namespace Config

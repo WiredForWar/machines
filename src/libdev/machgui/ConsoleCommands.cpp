@@ -31,6 +31,7 @@
 #include "mathex/Radians.hpp"
 #include "mathex/Transform3d.hpp"
 #include "sim/Manager.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/IConsole.hpp"
 #include "system/PathName.hpp"
 #include "system/VFS.hpp"
@@ -358,6 +359,22 @@ bool isWeaponComboValid(MachLog::ObjectType objType, int subType, size_t hwLevel
             return true;
     }
     return false;
+}
+
+static void setDevModeCommand(const System::IConsole::CommandRequest& request, System::IConsole& console)
+{
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        const bool enabled = console.devModeEnabled();
+        console.writeLine(std::string("Developer mode is ") + (enabled ? "enabled." : "disabled."));
+        return;
+    }
+
+    const bool enable = std::get<bool>(request.arguments[0].value);
+    Config::devMode.set(enable);
+
+    console.setDevModeEnabled(Config::devMode.get());
+    console.writeLine(std::string("Developer mode ") + (enable ? "enabled." : "disabled."));
 }
 
 // ============================================================
@@ -1334,6 +1351,14 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
 {
     using namespace ConsoleImpl;
 
+    console.registerCommand(
+        {
+         .name = "dev_mode",
+         .description = "Get/set developer mode.",
+         .arguments = { {.name = "state", .type = Arg::Boolean, .optional = true, .description = "on or off. Omit to print current state." } },
+         },
+        setDevModeCommand);
+
     // ---- Camera commands ----
 
     console.registerCommand(
@@ -1444,6 +1469,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "weapon_combo", .type = Arg::Identifier, .optional = true, .description = "Weapon combo (e.g. l_auto_cannon). Uses .scn names.", },
             },
             .cheat = true,
+            .devOnly = true,
         },
         [](const Request& request, Console& console) { spawnMachineCommand(request, console); },
         spawnMachineCompleter);
@@ -1461,6 +1487,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "race", .type = Arg::Identifier, .optional = true, .description = "Race: red, blue, green, yellow." },
             },
             .cheat = true,
+            .devOnly = true,
         },
         [](const Request& request, Console& console) { spawnConstructionCommand(request, console); },
         spawnConstructionCompleter);
@@ -1485,6 +1512,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                {.name = "time", .type = Arg::Float, .optional = true, .description = "Absolute simulation time in seconds. Omit to print current time."}
             },
             .cheat = true,
+            .devOnly = true,
         },
         [pStartup](const Request& request, Console& console)
         { setTimeCommand(pStartup, request, console); });
@@ -1530,6 +1558,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "pos", .type = Arg::String, .description = "Destination as x,y." },
             },
             .cheat = true,
+            .devOnly = true,
         },
         [](const Request& request, Console& console) { commandMoveCommand(request, console); });
 }

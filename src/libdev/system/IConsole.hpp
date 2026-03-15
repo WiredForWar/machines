@@ -40,6 +40,7 @@ public:
         std::string description{};
         std::vector<ArgumentSpec> arguments{};
         bool cheat{};
+        bool devOnly{};
     };
 
     struct ArgumentValue
@@ -99,8 +100,12 @@ public:
 
     virtual bool submit(std::string_view line) = 0;
     virtual bool executeScript(std::string_view scriptSource) = 0;
+
     virtual void setCheatsEnabled(bool enabled) = 0;
     [[nodiscard]] virtual bool cheatsEnabled() const = 0;
+
+    virtual void setDevModeEnabled(bool enabled) = 0;
+    [[nodiscard]] virtual bool devModeEnabled() const = 0;
 
     virtual void clearHistory() = 0;
     virtual void setHistoryLimit(std::size_t limit) = 0;

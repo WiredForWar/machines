@@ -176,6 +176,13 @@ bool Console::executeCommand(std::string_view line, EchoCommandLine echo)
         return false;
     }
 
+    if (commandIterator->second.metadata.devOnly && !devModeEnabled_)
+    {
+        setError("Command disabled: " + commandName + " requires developer mode to be enabled.");
+        writeLine(lastError_);
+        return false;
+    }
+
     const std::vector<std::string> tokenArguments(tokens.begin() + 1, tokens.end());
     std::vector<ArgumentValue> parsedArguments;
     if (!parseArguments(commandIterator->second.metadata, tokenArguments, parsedArguments))
@@ -219,6 +226,16 @@ void Console::setCheatsEnabled(bool enabled)
 bool Console::cheatsEnabled() const
 {
     return cheatsEnabled_;
+}
+
+void Console::setDevModeEnabled(bool enabled)
+{
+    devModeEnabled_ = enabled;
+}
+
+bool Console::devModeEnabled() const
+{
+    return devModeEnabled_;
 }
 
 Console::CompletionResult Console::suggestions(std::string_view line, std::size_t cursorPos) const

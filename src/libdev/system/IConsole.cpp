@@ -19,6 +19,9 @@ IConsole::CompletionProvider IConsole::commandNameCompleter() const
             if (cmd.cheat && !cheatsEnabled())
                 continue;
 
+            if (cmd.devOnly && !devModeEnabled())
+                continue;
+
             if (partialValue.empty() || Utils::startsWith(cmd.name, partialValue))
             {
                 matches.push_back(cmd.name);

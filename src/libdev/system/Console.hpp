@@ -41,6 +41,9 @@ public:
     void setCheatsEnabled(bool enabled) override;
     [[nodiscard]] bool cheatsEnabled() const override;
 
+    void setDevModeEnabled(bool enabled) override;
+    [[nodiscard]] bool devModeEnabled() const override;
+
     [[nodiscard]] CompletionResult suggestions(std::string_view line, std::size_t cursorPos) const override;
 
     [[nodiscard]] const std::string& lastError() const override;
@@ -110,6 +113,7 @@ private:
     std::shared_ptr<OutputListenerState> listenerState_{};
     std::string lastError_{};
     bool cheatsEnabled_{};
+    bool devModeEnabled_{};
 };
 
 } // namespace System

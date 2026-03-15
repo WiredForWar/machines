@@ -44,6 +44,7 @@
 #include "machgui/VSyncMode.hpp"
 #include "machgui/gui.hpp"
 
+#include "system/ConfigVariables.hpp"
 #include "system/Console.hpp"
 #include "system/ConsoleBuiltins.hpp"
 #include "system/VFS.hpp"
@@ -682,6 +683,7 @@ void SDLApp::initConsole()
     if (Config::consoleHistoryPersistence.get())
         consoleConfig.historyFilePath = "console.history";
     console_ = std::make_unique<System::Console>(consoleConfig);
+    console_->setDevModeEnabled(Config::devMode.get());
     System::registerConsoleBuiltins(*console_);
 
     console_->registerCommand(

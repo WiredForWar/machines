@@ -31,4 +31,6 @@ extern Variable<uint32_t> musicVolume;
 
 extern Variable<bool> consoleHistoryPersistence;
 
+extern Variable<bool> devMode;
+
 } // namespace Config
