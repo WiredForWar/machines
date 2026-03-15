@@ -45,6 +45,7 @@ private:
     std::string inputText() const;
     void setInputText(const std::string& text);
     void navigateHistory(int direction);
+    void handleTabCompletion();
 
     MachGuiSingleLineEditBox* inputBox() const;
     void doLayout();
@@ -72,4 +73,5 @@ private:
 
     std::size_t historyIndex_{std::size_t(-1)};
     std::string savedInput_{};
+    bool lastTabWasComplete_{};
 };

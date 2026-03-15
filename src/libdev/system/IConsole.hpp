@@ -54,6 +54,11 @@ public:
         std::string rawLine{};
     };
 
+    struct CompletionResult
+    {
+        std::vector<std::string> candidates{};
+    };
+
     using CommandHandler = std::function<void(const CommandRequest&, IConsole&)>;
     using OutputListener = std::function<void(std::string_view)>;
 
@@ -70,6 +75,8 @@ public:
     virtual void clearHistory() = 0;
     virtual void setHistoryLimit(std::size_t limit) = 0;
     [[nodiscard]] virtual const std::vector<std::string>& history() const = 0;
+
+    [[nodiscard]] virtual CompletionResult suggestions(std::string_view prefix) const = 0;
 
     [[nodiscard]] virtual const std::string& lastError() const = 0;
     virtual void clearError() = 0;

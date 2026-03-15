@@ -195,6 +195,29 @@ const std::vector<std::string>& Console::history() const
     return history_;
 }
 
+Console::CompletionResult Console::suggestions(std::string_view prefix) const
+{
+    std::vector<std::string> matches;
+    matches.reserve(config_.suggestionLimit);
+
+    for (const CommandMap::value_type& entry : commands_)
+    {
+        const std::string& commandName = entry.first;
+        if (prefix.empty() || Utils::startsWith(commandName, prefix))
+        {
+            matches.push_back(commandName);
+        }
+    }
+
+    if (matches.size() > config_.suggestionLimit)
+        matches.resize(config_.suggestionLimit);
+
+    std::sort(matches.begin(), matches.end());
+    return CompletionResult{
+        .candidates = std::move(matches),
+    };
+}
+
 const std::string& Console::lastError() const
 {
     return lastError_;

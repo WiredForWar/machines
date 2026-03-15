@@ -12,6 +12,7 @@ namespace System
 struct ConsoleConfig
 {
     std::size_t historyLimit { 64U };
+    std::size_t suggestionLimit { 10U };
     std::size_t outputLimit { 256U };
 };
 
@@ -32,6 +33,8 @@ public:
     void clearHistory() override;
     void setHistoryLimit(std::size_t limit) override;
     [[nodiscard]] const std::vector<std::string>& history() const override;
+
+    [[nodiscard]] CompletionResult suggestions(std::string_view prefix) const override;
 
     [[nodiscard]] const std::string& lastError() const override;
     void clearError() override;

@@ -6,8 +6,10 @@
 #include "machgui/gui.hpp"
 
 #include "system/IConsole.hpp"
+#include "utility/String.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <string>
 
 namespace
@@ -159,25 +161,34 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
     if (event.state() != Gui::PRESSED)
         return true;
 
-    if (event.key() == Device::KeyCode::ENTER)
+    if (event.key() == Device::KeyCode::TAB)
     {
-        submit();
-    }
-    else if (event.key() == Device::KeyCode::ESCAPE)
-    {
-        toggle();
-    }
-    else if (event.key() == Device::KeyCode::UP_ARROW)
-    {
-        navigateHistory(-1);
-    }
-    else if (event.key() == Device::KeyCode::DOWN_ARROW)
-    {
-        navigateHistory(1);
+        handleTabCompletion();
     }
     else
     {
-        inputBox()->doHandleKeyEvent(event);
+        lastTabWasComplete_ = false;
+
+        if (event.key() == Device::KeyCode::ENTER)
+        {
+            submit();
+        }
+        else if (event.key() == Device::KeyCode::ESCAPE)
+        {
+            toggle();
+        }
+        else if (event.key() == Device::KeyCode::UP_ARROW)
+        {
+            navigateHistory(-1);
+        }
+        else if (event.key() == Device::KeyCode::DOWN_ARROW)
+        {
+            navigateHistory(1);
+        }
+        else
+        {
+            inputBox()->doHandleKeyEvent(event);
+        }
     }
 
     return true;
@@ -244,6 +255,51 @@ void MachGuiConsoleDropDown::navigateHistory(int direction)
             savedInput_.clear();
         }
     }
+}
+
+void MachGuiConsoleDropDown::handleTabCompletion()
+{
+    if (!pConsole_)
+        return;
+
+    const std::string line = inputText();
+    const System::IConsole::CompletionResult result = pConsole_->suggestions(line);
+    const std::vector<std::string>& candidates = result.candidates;
+
+    if (candidates.empty())
+        return;
+
+    if (lastTabWasComplete_)
+    {
+        // Second consecutive Tab: echo the prompt+input, then list alternatives.
+        std::string echoLine{pConsole_->prompt()};
+        echoLine += line;
+        pConsole_->writeLine(echoLine);
+
+        for (const std::string& candidate : candidates)
+        {
+            pConsole_->writeLine(candidate);
+        }
+        lastTabWasComplete_ = false;
+        return;
+    }
+
+    if (candidates.size() == 1)
+    {
+        setInputText(candidates[0] + ' ');
+        lastTabWasComplete_ = false;
+        return;
+    }
+
+    // Multiple matches: complete to the longest common prefix of candidates.
+    const std::string lcp = Utils::longestCommonPrefix(candidates);
+
+    if (lcp.size() > line.size())
+    {
+        setInputText(lcp);
+    }
+
+    lastTabWasComplete_ = true;
 }
 
 void MachGuiConsoleDropDown::doLayout()
