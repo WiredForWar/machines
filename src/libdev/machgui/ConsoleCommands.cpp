@@ -18,6 +18,7 @@
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/World/GameCreationData.hpp"
 #include "machlog/Actors/Machine.hpp"
+#include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/World/Scenario.hpp"
@@ -737,6 +738,50 @@ void spawnConstructionCommand(const Request& request, Console& console)
     console.writeLine(
         "Spawned " + typeStr + " " + subTypeStr + " at " + formatCoordinates(coords->x(), coords->y())
         + ", id=" + std::to_string(pBuilding->id()) + ".");
+}
+
+void commandMoveCommand(const Request& request, Console& console)
+{
+    const std::string& posStr = std::get<std::string>(request.arguments[0].value);
+
+    // Repeating integer arguments starting at index 2 are actor IDs.
+    std::vector<UtlId> actorIds;
+    for (std::size_t i = 1; i < request.arguments.size(); ++i)
+        actorIds.push_back(static_cast<UtlId>(std::get<std::int64_t>(request.arguments[i].value)));
+
+    const std::optional<MexPoint2d> dest = parseCoordinates(posStr);
+    if (!dest.has_value())
+    {
+        console.writeLine("Invalid position format. Use x,y (e.g. 123.4,567.8).");
+        return;
+    }
+
+    int movedCount = 0;
+
+    for (UtlId id : actorIds)
+    {
+        if (!MachLogRaces::instance().actorExists(id))
+        {
+            console.writeLine("Actor " + std::to_string(id) + " does not exist.");
+            continue;
+        }
+
+        MachActor& actor = MachLogRaces::instance().actor(id);
+        if (actor.objectIsMachine())
+        {
+            MachLogMachine& machine = actor.asMachine();
+            machine.newOperation(std::make_unique<MachLogMoveToOperation>(&machine, dest.value()));
+            ++movedCount;
+        }
+        else
+        {
+            console.writeLine("Actor " + std::to_string(id) + " is not a machine.");
+        }
+    }
+
+    console.writeLine(
+        "Issued move to (" + formatCoordinates(dest->x(), dest->y()) + " for " + std::to_string(movedCount)
+        + " machine(s).");
 }
 
 // ============================================================
@@ -1474,6 +1519,19 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
         },
         [pStartup](const Request& request, Console& console)
         { loadGameCommand(pStartup, request, console); });
+
+    // ---- Order commands ----
+
+    console.registerCommand(
+        {
+            .name = "command_move",
+            .description = "Order machines to move. Usage: command_move x y id1 [id2] [id3] ...",
+            .arguments = {
+                { .name = "pos", .type = Arg::String, .description = "Destination as x,y." },
+            },
+            .cheat = true,
+        },
+        [](const Request& request, Console& console) { commandMoveCommand(request, console); });
 }
 
 } // namespace MachGui
