@@ -1,5 +1,6 @@
 #pragma once
 
+#include <span>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -44,6 +45,25 @@ inline bool caseInsensitiveEqual(std::string_view a, std::string_view b)
             return false;
     }
     return true;
+}
+
+inline std::string longestCommonPrefix(std::span<const std::string> strings)
+{
+    if (strings.empty())
+        return {};
+
+    std::string_view lcp = strings[0];
+    for (std::size_t i = 1; i < strings.size(); ++i)
+    {
+        const std::string_view s = strings[i];
+        const std::size_t len = std::min(lcp.size(), s.size());
+        std::size_t j = 0;
+        while (j < len && lcp[j] == s[j])
+            ++j;
+        lcp = lcp.substr(0, j);
+    }
+
+    return std::string(lcp);
 }
 
 inline bool startsWithCaseInsensitive(std::string_view text, std::string_view prefix)
