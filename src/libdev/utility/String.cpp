@@ -69,12 +69,17 @@ void toLowerInPlace(std::string* str)
 
 std::string trimWhitespace(std::string_view text)
 {
-    const std::size_t first = text.find_first_not_of(" \t\r\n");
-    if (first == std::string_view::npos)
-    {
+    std::size_t first = 0;
+    while (first < text.size() && std::isspace(static_cast<unsigned char>(text[first])))
+        ++first;
+
+    if (first == text.size())
         return {};
-    }
-    const std::size_t last = text.find_last_not_of(" \t\r\n");
+
+    std::size_t last = text.size() - 1;
+    while (last > first && std::isspace(static_cast<unsigned char>(text[last])))
+        --last;
+
     return std::string(text.substr(first, last - first + 1));
 }
 
