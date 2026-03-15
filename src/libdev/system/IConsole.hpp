@@ -71,6 +71,9 @@ public:
 
     virtual ~IConsole() = default;
 
+    // Returns a CompletionProvider that completes registered command names by prefix.
+    [[nodiscard]] CompletionProvider commandNameCompleter() const;
+
     virtual bool registerCommand(const CommandMetadata& metadata, CommandHandler handler) = 0;
     virtual bool
     registerCommand(const CommandMetadata& metadata, CommandHandler handler, CompletionProvider completer)

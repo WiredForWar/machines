@@ -209,8 +209,7 @@ Console::CompletionResult Console::suggestions(std::string_view line, std::size_
     // Only the text before the cursor determines what we're completing.
     const std::string_view beforeCursor = line.substr(0, cursorPos);
     const std::vector<std::string> tokens = tokenize(beforeCursor);
-    const bool endsWithSpace = !beforeCursor.empty()
-        && std::isspace(static_cast<unsigned char>(beforeCursor.back()));
+    const bool endsWithSpace = !beforeCursor.empty() && std::isspace(static_cast<unsigned char>(beforeCursor.back()));
 
     // Find where the token under the cursor starts and ends in the original line.
     // If cursor is right after a space, we're completing a new (empty) token.
@@ -241,56 +240,42 @@ Console::CompletionResult Console::suggestions(std::string_view line, std::size_
         replaceLength = pos - replaceStart;
     }
 
-    const std::string_view partialValue = endsWithSpace ? std::string_view{}
-        : (tokens.empty() ? std::string_view{} : tokens.back());
+    const std::string_view partialValue
+        = endsWithSpace ? std::string_view{} : (tokens.empty() ? std::string_view{} : tokens.back());
 
-    // If we have a recognized command and the cursor is past the command name, try argument completion.
+    // Choose the completer and metadata depending on context.
+    CommandMetadata metadata{};
+    CompletionProvider completer{};
+    std::vector<std::string> precedingArgs;
+
     if (!tokens.empty())
     {
         const auto it = commands_.find(tokens[0]);
         if (it != commands_.end() && (tokens.size() > 1 || endsWithSpace))
         {
+            // Argument completion for a recognized command.
             const CommandDefinition& def = it->second;
             if (!def.completer)
                 return {};
 
-            const std::size_t argIndex = endsWithSpace ? tokens.size() - 1 : tokens.size() - 2;
+            metadata = def.metadata;
+            completer = def.completer;
 
-            // Collect the fully-typed argument tokens that precede the one being completed.
-            std::vector<std::string> precedingArgs;
-            {
-                const std::size_t argTokenEnd = endsWithSpace ? tokens.size() : tokens.size() - 1;
-                for (std::size_t i = 1; i < argTokenEnd; ++i)
-                    precedingArgs.push_back(tokens[i]);
-            }
-
-            std::vector<std::string> argMatches
-                = def.completer(def.metadata, argIndex, partialValue, precedingArgs);
-
-            if (argMatches.size() > config_.suggestionLimit)
-                argMatches.resize(config_.suggestionLimit);
-
-            std::sort(argMatches.begin(), argMatches.end());
-            return CompletionResult{
-                .candidates = std::move(argMatches),
-                .replaceStart = replaceStart,
-                .replaceLength = replaceLength,
-            };
+            const std::size_t argTokenEnd = endsWithSpace ? tokens.size() : tokens.size() - 1;
+            for (std::size_t i = 1; i < argTokenEnd; ++i)
+                precedingArgs.push_back(tokens[i]);
         }
     }
 
-    // Default: complete command names.
-    std::vector<std::string> matches;
-    matches.reserve(config_.suggestionLimit);
-
-    for (const CommandMap::value_type& entry : commands_)
+    if (!completer)
     {
-        const std::string& commandName = entry.first;
-        if (partialValue.empty() || Utils::startsWith(commandName, partialValue))
-        {
-            matches.push_back(commandName);
-        }
+        // Default: complete command names.
+        completer = commandNameCompleter();
     }
+
+    const std::size_t argIndex = tokens.size() < 2 ? 0 : (endsWithSpace ? tokens.size() - 1 : tokens.size() - 2);
+
+    std::vector<std::string> matches = completer(metadata, argIndex, partialValue, precedingArgs);
 
     if (matches.size() > config_.suggestionLimit)
         matches.resize(config_.suggestionLimit);

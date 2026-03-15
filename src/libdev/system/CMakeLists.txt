@@ -5,6 +5,7 @@ set(SYSTEM_SOURCES
     Console.cpp
     Console.hpp
     Endian.hpp
+    IConsole.cpp
     IConsole.hpp
     SysInfo.cpp
     SysInfo.hpp
