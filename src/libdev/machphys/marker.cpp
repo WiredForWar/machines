@@ -103,31 +103,19 @@ MachPhysMarker::MachPhysMarker(
         static const MachPhysIHealthMaterials mats(20, sMarkerWidth, tex1, 0.7);
         const RenMaterial& mat = (permanent) ? mats.material(percentageHp) : mats.blueMaterial();
 
-        const MATHEX_SCALAR width = maxCorner.x() - minCorner.x();
-        const MATHEX_SCALAR depth = maxCorner.y() - minCorner.y();
-        MATHEX_SCALAR height = maxCorner.z() - minCorner.z();
+        // The TTF compose2DGeometry maps width_ to world X and height_ to world Y.
+        // The BV is in local space, so we must rotate it by the parent's orientation
+        // to get the correct world-space footprint for the marker.
+        const MexAlignedBox3d worldBV(boundary, pParent->globalTransform());
+        const MATHEX_SCALAR ttfWidth = std::max(worldBV.maxCorner().x() - worldBV.minCorner().x(), 3.0);
+        const MATHEX_SCALAR ttfHeight = std::max(worldBV.maxCorner().y() - worldBV.minCorner().y(), 3.0);
 
-        const MATHEX_SCALAR minTTFWidth = 3.0;
-        const MATHEX_SCALAR minTTFHeight = 2.0;
-
-        // Average the width and depth and use it as the 2D width.
-        // Set a lower limit on the width of the overall TTF.
-        const MATHEX_SCALAR average = 0.5 * (width + depth);
-        const MATHEX_SCALAR ttfWidth = mexClamp(average, minTTFWidth, HUGE_VAL);
-
-        // Firstly, if the width is greater than the height, increase the
-        // height slightly.  This gives a better aspect ratio in zenith.
-        if (width > height)
-            height = 0.25 * (3 * height + width);
-
-        // If we have artificially increased the TTF height, move the centre
-        // up so the bottom edge isn't buried the ground.
         MexPoint3d centre = boundary.centroid();
-        centre.z(minCorner.z() + minTTFHeight);
+        centre.z(minCorner.z() + 0.25);
 
         RenTTFTriangles ttf;
         ttf.centre(centre);
-        ttf.depthOffset(-ttfWidth * 0.6);
+        ttf.depthOffset(-std::max(ttfWidth, ttfHeight) * 0.6);
         ttf.material(mat);
 
         // Compute an interpolated line thickness.  Larger objects have thicker lines.
@@ -135,7 +123,8 @@ MachPhysMarker::MachPhysMarker(
         const MATHEX_SCALAR maxLineThickness = 0.8;
         const MATHEX_SCALAR minThicknessAt = 3.5;
         const MATHEX_SCALAR maxThicknessAt = 15.0;
-        const MATHEX_SCALAR clampWidth1 = mexClamp(ttfWidth, minThicknessAt, maxThicknessAt);
+        const MATHEX_SCALAR largerDim = std::max(ttfWidth, ttfHeight);
+        const MATHEX_SCALAR clampWidth1 = mexClamp(largerDim, minThicknessAt, maxThicknessAt);
         const MATHEX_SCALAR lineThickness
             = mexInterpolate(clampWidth1, minThicknessAt, maxThicknessAt, minLineThickness, maxLineThickness);
 
@@ -144,11 +133,11 @@ MachPhysMarker::MachPhysMarker(
         const MATHEX_SCALAR largeCorner = 12.0 / 32.0;
         const MATHEX_SCALAR smallCornerAt = 15.0;
         const MATHEX_SCALAR largeCornerAt = 5.0;
-        const MATHEX_SCALAR clampWidth2 = mexClamp(average, largeCornerAt, smallCornerAt);
+        const MATHEX_SCALAR clampWidth2 = mexClamp(largerDim, largeCornerAt, smallCornerAt);
         const MATHEX_SCALAR cornerSize
             = mexInterpolate(clampWidth2, largeCornerAt, smallCornerAt, largeCorner, smallCorner);
 
-        setMarkerDimensions(ttf, ttfWidth, height, cornerSize, lineThickness);
+        setMarkerDimensions(ttf, ttfWidth, ttfHeight, cornerSize, lineThickness);
 
         RenMesh& boxMesh = mesh();
         boxMesh.addTTFPolygon(ttf);
