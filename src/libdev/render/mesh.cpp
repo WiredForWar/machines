@@ -2436,20 +2436,20 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
             if (ax >= ay && ax >= az)
             {
-                mv.px = static_cast<float>(base.x());
-                mv.py = static_cast<float>(base.y()) + sv.x;
-                mv.pz = static_cast<float>(base.z()) + sv.y;
-            }
-            else if (ay >= ax && ay >= az)
-            {
                 mv.px = static_cast<float>(base.x()) + sv.x;
                 mv.py = static_cast<float>(base.y());
                 mv.pz = static_cast<float>(base.z()) + sv.y;
             }
+            else if (ay >= ax && ay >= az)
+            {
+                mv.px = static_cast<float>(base.x());
+                mv.py = static_cast<float>(base.y())  + sv.x;
+                mv.pz = static_cast<float>(base.z()) + sv.y;
+            }
             else
             {
-                mv.px = static_cast<float>(base.x()) - sv.y;
-                mv.py = static_cast<float>(base.y());
+                mv.px = static_cast<float>(base.x());
+                mv.py = static_cast<float>(base.y()) - sv.y;
                 mv.pz = static_cast<float>(base.z()) + sv.x;
             }
 
