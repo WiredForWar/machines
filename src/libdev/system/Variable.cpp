@@ -174,6 +174,9 @@ std::string Impl::toString(const int32_t& value)
 template <>
 std::optional<int32_t> Impl::toValue(const std::string& asString)
 {
+    if (asString.empty())
+        return {};
+
     return std::atoi(asString.c_str());
 }
 
@@ -188,6 +191,9 @@ std::string Impl::toString(const uint32_t& value)
 template <>
 std::optional<uint32_t> Impl::toValue(const std::string& asString)
 {
+    if (asString.empty())
+        return {};
+
     return std::atoi(asString.c_str());
 }
 

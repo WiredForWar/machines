@@ -57,6 +57,7 @@ private:
     void write(const T& value);
 
     T defaultValue_{};
+    mutable std::optional<T> value_;
 };
 
 } // namespace Config

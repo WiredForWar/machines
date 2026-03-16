@@ -17,13 +17,20 @@ Variable<T>::Variable(std::string_view name, T defaultValue)
 template<typename T>
 T Variable<T>::get() const
 {
-    std::string asString;
+    if (!value_.has_value() && !name_.empty())
+    {
+        std::string asString;
+        SysRegistry::instance().queryValueNoRecord(name_, asString);
+        if (!asString.empty())
+        {
+            value_ = Impl::toValue<T>(asString);
+        }
+    }
 
-    SysRegistry::instance().queryValueNoRecord(name_, asString);
-    if (asString.empty())
-        return defaultValue_;
+    if (!value_.has_value())
+        value_ = defaultValue_;
 
-    return Impl::toValue<T>(asString).value_or(defaultValue_);
+    return value_.value();
 }
 
 template<typename T>
@@ -43,6 +50,7 @@ template <typename T>
 void Variable<T>::write(const T& value)
 {
     SysRegistry::instance().setValue(name_, Impl::toString<T>(value));
+    value_ = value;
 }
 
 } // namespace Config
