@@ -103,12 +103,14 @@ MachPhysMarker::MachPhysMarker(
         static const MachPhysIHealthMaterials mats(20, sMarkerWidth, tex1, 0.7);
         const RenMaterial& mat = (permanent) ? mats.material(percentageHp) : mats.blueMaterial();
 
+        // Size increment is needed because otherwise the marker stays inside of the volume
+        const MATHEX_SCALAR extraSize{sMarkerWidth};
         // The TTF compose2DGeometry maps width_ to world X and height_ to world Y.
         // The BV is in local space, so we must rotate it by the parent's orientation
         // to get the correct world-space footprint for the marker.
         const MexAlignedBox3d worldBV(boundary, pParent->globalTransform());
-        const MATHEX_SCALAR ttfWidth = std::max(worldBV.maxCorner().x() - worldBV.minCorner().x(), 3.0);
-        const MATHEX_SCALAR ttfHeight = std::max(worldBV.maxCorner().y() - worldBV.minCorner().y(), 3.0);
+        const MATHEX_SCALAR ttfWidth = std::max(worldBV.xLength(), 3.0) + extraSize;
+        const MATHEX_SCALAR ttfHeight = std::max(worldBV.yLength(), 2.0) + extraSize;
 
         MexPoint3d centre = boundary.centroid();
         centre.z(minCorner.z() + 0.25);
