@@ -2051,6 +2051,13 @@ void MachInGameScreen::cancelActiveCommand()
     cancelActiveCommand_ = true;
 }
 
+void MachInGameScreen::setCursorPromptTextToPos(MexPoint2d point)
+{
+    int posX = point.x();
+    int posY = point.y();
+    setCursorPromptText(std::to_string(posX) + "," + std::to_string(posY), false);
+}
+
 void MachInGameScreen::setCursorPromptText(const ResolvedUiString& prompt)
 {
     CB_DEPIMPL_AUTO(pPromptText_);

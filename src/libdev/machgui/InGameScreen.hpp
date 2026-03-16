@@ -133,6 +133,7 @@ public:
     void cancelActiveCommand();
 
     // Set/get the prompt text related to cursor position
+    void setCursorPromptTextToPos(MexPoint2d point);
     void setCursorPromptText(const ResolvedUiString& prompt);
     void setCursorPromptText(const ResolvedUiString& prompt, bool restartScroll);
     const std::string& cursorPromptText() const;

@@ -9,6 +9,7 @@
 #include "mathex/Transform3d.hpp"
 #include "mathex/Line3d.hpp"
 #include "device/Time.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/PathName.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
@@ -1128,6 +1129,7 @@ void MachContinentMap::doHandleMouseExitEvent(const GuiMouseEvent&)
 {
     // Switch to menu cursor
     pInGameScreen_->cursor2d(MachGui::MENU_CURSOR);
+    pInGameScreen_->clearCursorPromptText();
 }
 
 bool MachContinentMap::findActor(const GuiMouseEvent& rel, MachActor** ppActor)
@@ -1274,6 +1276,15 @@ void MachContinentMap::handleIntelligentCursor(const GuiMouseEvent& rel, bool bu
 
             x *= mapToWorldRatio_;
             y *= mapToWorldRatio_;
+
+            if (Config::devMode.get())
+            {
+                pInGameScreen_->setCursorPromptTextToPos(MexPoint2d(x, y));
+            }
+            else
+            {
+                pInGameScreen_->clearCursorPromptText();
+            }
 
             MachPhysPlanetSurface* pSurface = MachLogPlanet::instance().surface();
 

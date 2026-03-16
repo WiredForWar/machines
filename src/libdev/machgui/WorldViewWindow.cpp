@@ -32,6 +32,7 @@
 #include "mathex/Transform3d.hpp"
 #include "mathex/Epsilon.hpp"
 #include "utility/Id.hpp"
+#include "system/ConfigVariables.hpp"
 #include "system/PathName.hpp"
 #include "gui/GuiPainter.hpp"
 #include "device/KeyToCommandTranslator.hpp"
@@ -219,6 +220,19 @@ void MachWorldViewWindow::dispatchCursor(
         hit = false;
     }
 
+    auto onNothingHovered = [&]()
+    {
+        if (Config::devMode.get())
+        {
+            const MexPoint3d hitPoint = cursorLine.pointAtDistance(distance);
+            pInGameScreen_->setCursorPromptTextToPos(MexPoint2d(hitPoint.x(), hitPoint.y()));
+        }
+        else
+        {
+            pInGameScreen_->clearCursorPromptText();
+        }
+    };
+
     // If we got something, dispatch it
     if (hit)
     {
@@ -273,7 +287,7 @@ void MachWorldViewWindow::dispatchCursor(
         }
         else
         {
-            pInGameScreen_->clearCursorPromptText();
+            onNothingHovered();
 
             // Assume hit on terrain. Get the point at the hit distance.
             MexPoint3d hitPoint = cursorLine.pointAtDistance(distance);
@@ -302,7 +316,7 @@ void MachWorldViewWindow::dispatchCursor(
     }
     else
     {
-        pInGameScreen_->clearCursorPromptText();
+        onNothingHovered();
     }
 
     // Update the highlight state of any new/previous actor
@@ -346,6 +360,7 @@ void MachWorldViewWindow::doHandleMouseExitEvent(const GuiMouseEvent&)
 {
     // Switch to menu cursor
     pInGameScreen_->cursor2d(MachGui::MENU_CURSOR);
+    pInGameScreen_->clearCursorPromptText();
 
     // Remove highlight from around actor
     if (haveHighlightedActor_)
