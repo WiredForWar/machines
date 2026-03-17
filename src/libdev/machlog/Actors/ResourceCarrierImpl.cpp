@@ -105,7 +105,7 @@ MachLogResourceCarrierImpl::iNearestSupplier(
         }
     }
 
-    POST(iNearestSupplierFound != listOfCandidateSuppliers.end());
+    // May return end() if all candidates are unreachable via domain graph
 
     return iNearestSupplierFound;
 }

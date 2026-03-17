@@ -528,8 +528,8 @@ void MachLogResourceCarrier::reorderTransportRoute()
         for (Suppliers::iterator iSup = suppliers_.begin(); iSup != suppliers_.end(); ++iSup)
         {
             const MexPoint2d supPos((*iSup)->position());
-            auto dist = configSpace
-                    .domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
+            std::optional<MATHEX_SCALAR> dist
+                = configSpace.domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
 
             if (dist && (!lowestDistanceFound || *dist < *lowestDistanceFound))
             {
@@ -538,14 +538,20 @@ void MachLogResourceCarrier::reorderTransportRoute()
             }
         }
 
-        ASSERT(iNextClosestSupplier != suppliers_.end(), "Didn't manage to find a next nearest supplier!");
+        if (iNextClosestSupplier == suppliers_.end())
+        {
+            // No remaining supplier is reachable from currentCheckPosition.
+            // Append the rest in their current order — relative ordering doesn't matter
+            // for unreachable suppliers.
+            reorderedSuppliers.insert(reorderedSuppliers.end(), suppliers_.begin(), suppliers_.end());
+            suppliers_.clear();
+            break;
+        }
 
         currentCheckPosition = (*iNextClosestSupplier)->position();
         reorderedSuppliers.push_back(*iNextClosestSupplier);
         suppliers_.erase(iNextClosestSupplier);
     }
-
-    ASSERT(suppliers_.empty(), "The original suppliers_ list should be empty by now.");
 
     // now need to rebuild our suppliers_ container in the new order.
 
@@ -787,15 +793,23 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
             // check for complete mines.
             Suppliers poolOfWorthwhileMines;
             poolOfWorthwhileMines.reserve(nMyTotalMines);
-            MachLogRaces::Mines::const_iterator i = mines.begin();
-            for (; i != mines.end(); ++i)
+            for (MachLogMine* pCandidateMine : mines)
             {
-                MachLogMine* pCandidateMine = (*i);
                 if (pCandidateMine->worthVisiting())
                 {
                     poolOfWorthwhileMines.push_back(pCandidateMine);
                 }
             }
+
+            // Filter out mines unreachable via the domain graph from the carrier's position
+            const MexPoint2d objPos(obj->position());
+            auto isUnreachable = [&](MachLogConstruction* pMine) {
+                return !configSpace.domainGraphDistance(objPos, pMine->position(), clearance, obsFlags).has_value();
+            };
+            poolOfWorthwhileMines.erase(
+                std::remove_if(poolOfWorthwhileMines.begin(), poolOfWorthwhileMines.end(), isUnreachable),
+                poolOfWorthwhileMines.end());
+
             int nMyWorthwhileMines = poolOfWorthwhileMines.size();
 
             if (nMyWorthwhileMines > 0)
@@ -807,7 +821,7 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                 Suppliers approvedItineraryList;
                 approvedItineraryList.reserve(nMinesToVisit);
 
-                Suppliers::iterator iFirst = poolOfWorthwhileMines.end(); // "null" assignment
+                Suppliers::iterator iFirst;
 
                 PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
@@ -850,8 +864,8 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                          ++iSup)
                     {
                         const MexPoint2d supPos((*iSup)->position());
-                        auto dist = configSpace
-                            .domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
+                        std::optional<MATHEX_SCALAR> dist
+                            = configSpace.domainGraphDistance(currentCheckPosition, supPos, clearance, obsFlags);
 
                         if (dist && (!lowestDistanceFound || *dist < *lowestDistanceFound))
                         {
@@ -860,9 +874,8 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                         }
                     }
 
-                    ASSERT(
-                        iNextClosestSupplier != poolOfWorthwhileMines.end(),
-                        "Didn't manage to find a next nearest supplier!");
+                    if (iNextClosestSupplier == poolOfWorthwhileMines.end())
+                        break; // remaining mines are all unreachable
 
                     // add this mine to our itinerary, and remove it from the pool of remaining candidates
                     MachLogConstruction* pNextClosestSupplier = (*iNextClosestSupplier);
@@ -908,8 +921,8 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
                         if (pCandidateMine->worthVisiting())
                         {
                             const MexPoint2d minePos(pCandidateMine->position());
-                            auto dist = configSpace
-                                .domainGraphDistance(objPos, minePos, clearance, obsFlags);
+                            std::optional<MATHEX_SCALAR> dist
+                                = configSpace.domainGraphDistance(objPos, minePos, clearance, obsFlags);
                             if (dist && (!closestPointDistance || *dist < *closestPointDistance))
                             {
                                 closestPointDistance = dist;
@@ -1110,8 +1123,8 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
                 // Euclidean pre-filter: skip debris that's definitely out of range
                 if (myPos.sqrEuclidianDistance(candidateDebrisPosition) >= sqrScavengingRange)
                     continue;
-                auto dist = configSpace
-                    .domainGraphDistance(myPos, candidateDebrisPosition, myClearance, obsFlags);
+                std::optional<MATHEX_SCALAR> dist
+                    = configSpace.domainGraphDistance(myPos, candidateDebrisPosition, myClearance, obsFlags);
                 if (dist && (!closestFoundSoFar || *dist < *closestFoundSoFar)
                     && MachLogSpacialManipulation::pointIsFree(candidateDebrisPosition, 2.0))
                 {
