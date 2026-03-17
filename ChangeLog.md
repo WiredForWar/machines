@@ -7,6 +7,7 @@
 - Screenshot capture is now more robust and the 'Paused' overlay is no longer included in screenshots
 - Optimized the game startup
 - Added models texture modding support
+- Fixed constructions interior was not race specific (always red)
 - Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)
 - Fixed many cases when machines could stuck and lock each other
 - Fixed camera move and zoom at the same time (basically reimplemented zoom with mouse wheel)
@@ -15,6 +16,7 @@
 - Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers
 - Fixed nearest Lab lookup for Technicians
 - Fixed crash on close by Alt+F4
+- Fixed the audio stuttering during video playback
 
 ### v1.7.4
 
