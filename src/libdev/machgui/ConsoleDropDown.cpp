@@ -292,6 +292,10 @@ void MachGuiConsoleDropDown::handleTabCompletion()
         {
             pConsole_->writeLine(candidate);
         }
+        if (result.totalCount > candidates.size())
+        {
+            pConsole_->writeLine("and " + std::to_string(result.totalCount - candidates.size()) + " more");
+        }
         lastTabWasComplete_ = false;
         return;
     }

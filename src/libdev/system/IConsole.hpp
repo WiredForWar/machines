@@ -59,6 +59,7 @@ public:
         std::vector<std::string> candidates{};
         std::size_t replaceStart{};
         std::size_t replaceLength{};
+        std::size_t totalCount{};
     };
 
     using CommandHandler = std::function<void(const CommandRequest&, IConsole&)>;

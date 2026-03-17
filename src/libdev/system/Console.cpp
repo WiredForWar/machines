@@ -277,6 +277,7 @@ Console::CompletionResult Console::suggestions(std::string_view line, std::size_
 
     std::vector<std::string> matches = completer(metadata, argIndex, partialValue, precedingArgs);
 
+    const std::size_t totalCount = matches.size();
     if (matches.size() > config_.suggestionLimit)
         matches.resize(config_.suggestionLimit);
 
@@ -285,6 +286,7 @@ Console::CompletionResult Console::suggestions(std::string_view line, std::size_
         .candidates = std::move(matches),
         .replaceStart = replaceStart,
         .replaceLength = replaceLength,
+        .totalCount = totalCount,
     };
 }
 
