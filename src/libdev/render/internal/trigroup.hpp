@@ -143,6 +143,8 @@ public:
 
     // TBD: add methods for removing.
     void addLine(Ren::VertexIdx i1, Ren::VertexIdx i2);
+    // Needed for a model export.
+    void line(Ren::TriangleIdx, Ren::VertexIdx*, Ren::VertexIdx*) const;
 
     using IndexVec = ctl_min_memory_vector<Ren::VertexIdx>;
 

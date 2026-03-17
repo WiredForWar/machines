@@ -249,6 +249,12 @@ void RenILineGroup::addLine(Ren::VertexIdx i1, Ren::VertexIdx i2)
     pushBackIndex(&indices_, i2, &nIndicesUsed_);
 }
 
+void RenILineGroup::line(Ren::TriangleIdx i, Ren::VertexIdx* i1, Ren::VertexIdx* i2) const
+{
+    *i1 = indices_[i * 2];
+    *i2 = indices_[i * 2 + 1];
+}
+
 Ren::VertexIdx RenILineGroup::firstVertexIdx() const
 {
     PRE(indices_.size() > 0);

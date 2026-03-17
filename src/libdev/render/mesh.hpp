@@ -119,8 +119,8 @@ public:
     int nTriangles() const;
     const RenTriangle& triangle(Ren::TriangleIdx index) const;
 
-    // Read-only access to lines.
-    // TBD: complete API access to lines.
+    // Read-only access to lines (for export/inspection).
+    const ctl_min_memory_vector<RenILineGroup*>& lineGroups() const { return lines_; };
     // PRE(!RenDevice::current()->rendering()); for all non-const access
     void addLine(const MexPoint3d&, const MexPoint3d&, const RenMaterial&);
     int nLines() const;
