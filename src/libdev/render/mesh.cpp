@@ -2275,6 +2275,7 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
     const size_t nBaseVerts = vtxData->size();
     const auto& triGroups = mesh.triangleGroups();
+    const auto& lineGroups = mesh.lineGroups();
 
     // Helper: extract MeshMaterial from a RenMaterial + STF/backface flags.
     auto extractMaterial = [](const RenMaterial& mat, RenI::SpinAxis axis, bool backface) -> RenI::MeshMaterial
@@ -2401,6 +2402,65 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
         data.primitives.push_back(std::move(prim));
     }
+    // Line groups
+    for (const auto* group : lineGroups)
+    {
+        if (group->nLines() == 0)
+            continue;
+
+        int matIdx = static_cast<int>(data.materials.size());
+        data.materials.push_back(extractMaterial(group->material(), RenI::SpinAxis::None, false));
+        // TODO: mark a line material?
+
+        RenI::MeshPrimitive prim;
+        prim.materialIndex = matIdx;
+
+        // Collect unique vertex indices used by this group
+        std::map<uint32_t, uint32_t> vertexRemap;
+
+        for (size_t l = 0; l < group->nLines(); ++l)
+        {
+            Ren::VertexIdx v1, v2;
+            group->line(l, &v1, &v2);
+
+            for (Ren::VertexIdx vi : {v1, v2})
+            {
+                if (vertexRemap.find(vi) == vertexRemap.end())
+                {
+                    uint32_t newIdx = static_cast<uint32_t>(prim.vertices.size());
+                    vertexRemap[vi] = newIdx;
+
+                    const RenIVertex& v = (*vtxData)[vi];
+                    RenIVec3FixPtS0_7 fixNorm = vtxData->normal(v);
+                    MexVec3 norm;
+                    fixNorm.convertToMex(&norm);
+
+                    RenI::MeshVertex mv;
+                    mv.px = v.x;
+                    mv.py = v.y;
+                    mv.pz = v.z;
+                    mv.nx = static_cast<float>(norm.x());
+                    mv.ny = static_cast<float>(norm.y());
+                    mv.nz = static_cast<float>(norm.z());
+                    mv.tu = v.tu;
+                    mv.tv = v.tv;
+                    prim.vertices.push_back(mv);
+                }
+            }
+
+            prim.indices.push_back(vertexRemap[v1]);
+            prim.indices.push_back(vertexRemap[v2]);
+            // Add a separate vertex with some tiny delta offset to indicate a line instead of a triangle.
+            // Alternativley repeat the last vertex index but some tools don't like such a triangles.
+            RenI::MeshVertex mv = *prim.vertices.crbegin();
+            const MATHEX_SCALAR verySmall = 0.02 * 0.001;	// 0.2 cm
+            mv.pz += verySmall;
+            prim.indices.push_back(prim.vertices.size());
+            prim.vertices.push_back(mv);
+        }
+
+        data.primitives.push_back(std::move(prim));
+    }
 
     // STF polygons
     int nSTF = mesh.nSpinTFPolygons();
@@ -2436,20 +2496,20 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
             if (ax >= ay && ax >= az)
             {
-                mv.px = static_cast<float>(base.x());
-                mv.py = static_cast<float>(base.y()) + sv.x;
-                mv.pz = static_cast<float>(base.z()) + sv.y;
-            }
-            else if (ay >= ax && ay >= az)
-            {
                 mv.px = static_cast<float>(base.x()) + sv.x;
                 mv.py = static_cast<float>(base.y());
                 mv.pz = static_cast<float>(base.z()) + sv.y;
             }
+            else if (ay >= ax && ay >= az)
+            {
+                mv.px = static_cast<float>(base.x());
+                mv.py = static_cast<float>(base.y())  + sv.x;
+                mv.pz = static_cast<float>(base.z()) + sv.y;
+            }
             else
             {
-                mv.px = static_cast<float>(base.x()) - sv.y;
-                mv.py = static_cast<float>(base.y());
+                mv.px = static_cast<float>(base.x());
+                mv.py = static_cast<float>(base.y()) - sv.y;
                 mv.pz = static_cast<float>(base.z()) + sv.x;
             }
 
@@ -2463,6 +2523,66 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
         // Fan triangulation
         for (size_t t = 0; t + 2 < svd->size(); ++t)
+        {
+            prim.indices.push_back(0);
+            prim.indices.push_back(static_cast<uint32_t>(t + 1));
+            prim.indices.push_back(static_cast<uint32_t>(t + 2));
+        }
+
+        data.primitives.push_back(std::move(prim));
+    }
+    // TTF polygons
+    int nTTF = mesh.nTTFPolygons();
+    for (int ti = 0; ti < nTTF; ++ti)
+    {
+        const RenTTFPolygon& ttf = mesh.TTFPolygon(ti);
+        if (!ttf.isRectangle())
+            continue;
+
+        const MATHEX_SCALAR hw = ttf.asRectangle().width() * .5;
+        const MATHEX_SCALAR hh = ttf.asRectangle().height() * .5;
+        const MexPoint3d& base = ttf.centre();
+
+        int matIdx = static_cast<int>(data.materials.size());
+        data.materials.push_back(extractMaterial(ttf.material(),  RenI::SpinAxis::XYZ, false));
+        // TODO: ttf.depthOffset into specular red
+
+        RenI::MeshPrimitive prim;
+        prim.materialIndex = matIdx;
+
+        // Reconstruct 3D vertices from TTF 2D data
+        const MexVec2& uv0 = ttf.uv(0);
+        const MexVec2& uv1 = ttf.uv(1);
+        const MexVec2& uv2 = ttf.uv(2);
+        const MexVec2& uv3 = ttf.uv(3);
+        RenI::MeshVertex mv;
+
+        mv.nx = static_cast<float>(1);
+        mv.ny = static_cast<float>(0);
+        mv.nz = static_cast<float>(0);
+        mv.px = static_cast<float>(base.x());
+        mv.py = static_cast<float>(base.y() + hw);
+        mv.pz = static_cast<float>(base.z() + hh);
+        mv.tu = uv0.x(); mv.tv = uv0.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() - hw);
+        mv.pz = static_cast<float>(base.z() + hh);
+        mv.tu = uv1.x(); mv.tv = uv1.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() - hw);
+        mv.pz = static_cast<float>(base.z() - hh);
+        mv.tu = uv2.x(); mv.tv = uv2.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() + hw);
+        mv.pz = static_cast<float>(base.z() - hh);
+        mv.tu = uv3.x(); mv.tv = uv3.y();
+        prim.vertices.push_back(mv);
+
+        // Fan triangulation
+        for (size_t t = 0; t + 2 < 4; ++t)
         {
             prim.indices.push_back(0);
             prim.indices.push_back(static_cast<uint32_t>(t + 1));

@@ -108,6 +108,8 @@ static float spinAxisToXFloat(RenI::SpinAxis axis)
         return 3.0f;
     case RenI::SpinAxis::Z:
         return 4.0f;
+    case RenI::SpinAxis::XYZ:
+        return 5.0f;
     case RenI::SpinAxis::None:
         return 0.0f;
     }
