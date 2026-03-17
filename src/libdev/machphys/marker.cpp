@@ -113,7 +113,7 @@ MachPhysMarker::MachPhysMarker(
         const MATHEX_SCALAR ttfHeight = std::max(worldBV.yLength(), 2.0) + extraSize;
 
         MexPoint3d centre = boundary.centroid();
-        centre.z(minCorner.z() + 0.25);
+        centre.z(std::max(0.0, minCorner.z()) + 0.25);
 
         RenTTFTriangles ttf;
         ttf.centre(centre);
