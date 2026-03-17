@@ -32,6 +32,7 @@ enum class SortMode
 enum class SpinAxis
 {
     None,
+    XYZ,
     X,
     Y,
     Z,

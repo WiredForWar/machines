@@ -2471,6 +2471,66 @@ RenI::MeshData RenMesh::extractMeshData(const RenMeshInstance& meshInst)
 
         data.primitives.push_back(std::move(prim));
     }
+    // TTF polygons
+    int nTTF = mesh.nTTFPolygons();
+    for (int ti = 0; ti < nTTF; ++ti)
+    {
+        const RenTTFPolygon& ttf = mesh.TTFPolygon(ti);
+        if (!ttf.isRectangle())
+            continue;
+
+        const MATHEX_SCALAR hw = ttf.asRectangle().width() * .5;
+        const MATHEX_SCALAR hh = ttf.asRectangle().height() * .5;
+        const MexPoint3d& base = ttf.centre();
+
+        int matIdx = static_cast<int>(data.materials.size());
+        data.materials.push_back(extractMaterial(ttf.material(),  RenI::SpinAxis::XYZ, false));
+        // TODO: ttf.depthOffset into specular red
+
+        RenI::MeshPrimitive prim;
+        prim.materialIndex = matIdx;
+
+        // Reconstruct 3D vertices from TTF 2D data
+        const MexVec2& uv0 = ttf.uv(0);
+        const MexVec2& uv1 = ttf.uv(1);
+        const MexVec2& uv2 = ttf.uv(2);
+        const MexVec2& uv3 = ttf.uv(3);
+        RenI::MeshVertex mv;
+
+        mv.nx = static_cast<float>(1);
+        mv.ny = static_cast<float>(0);
+        mv.nz = static_cast<float>(0);
+        mv.px = static_cast<float>(base.x());
+        mv.py = static_cast<float>(base.y() + hw);
+        mv.pz = static_cast<float>(base.z() + hh);
+        mv.tu = uv0.x(); mv.tv = uv0.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() - hw);
+        mv.pz = static_cast<float>(base.z() + hh);
+        mv.tu = uv1.x(); mv.tv = uv1.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() - hw);
+        mv.pz = static_cast<float>(base.z() - hh);
+        mv.tu = uv2.x(); mv.tv = uv2.y();
+        prim.vertices.push_back(mv);
+
+        mv.py = static_cast<float>(base.y() + hw);
+        mv.pz = static_cast<float>(base.z() - hh);
+        mv.tu = uv3.x(); mv.tv = uv3.y();
+        prim.vertices.push_back(mv);
+
+        // Fan triangulation
+        for (size_t t = 0; t + 2 < 4; ++t)
+        {
+            prim.indices.push_back(0);
+            prim.indices.push_back(static_cast<uint32_t>(t + 1));
+            prim.indices.push_back(static_cast<uint32_t>(t + 2));
+        }
+
+        data.primitives.push_back(std::move(prim));
+    }
 
     return data;
 }
