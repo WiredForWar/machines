@@ -227,11 +227,8 @@ public:
 
     bool okPressed() override
     {
-        // if ( MachGui::machinesCDIsAvailable( 2 ) )
-        {
-            pBriefingCtx_->autoLoadGame();
-            return true;
-        }
+        pBriefingCtx_->autoLoadGame();
+        return true;
         // return false;
     }
 
@@ -289,31 +286,9 @@ void MachGuiCtxBriefing::displayBriefingImage()
     SysPathName briefPicture(briefPath);
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario brief filename: " << briefPicture << std::endl);
 
-    // Get flic off hard-disk or CD-Rom
     if (! briefPicture.existsAsFile())
     {
-        // Make sure the cd is stopped before accessing files on it.
-        if (DevCD::instance().isPlayingAudioCd())
-        {
-            DevCD::instance().stopPlaying();
-        }
-
-        std::string cdRomDrive;
-
-        if (MachGui::getCDRomDriveContainingFile(cdRomDrive, briefPath))
-        {
-            briefPicture = SysPathName(cdRomDrive + briefPath);
-
-            // Can't play music and smacker anim off CD at same time
-            if (briefPicture.existsAsFile())
-            {
-                pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
-            }
-        }
-        else
-        {
-            briefPicture = SysPathName("gui/menu/cdb.smk");
-        }
+        briefPicture = SysPathName("gui/menu/cdb.smk");
     }
 
     if (briefPicture.existsAsFile())

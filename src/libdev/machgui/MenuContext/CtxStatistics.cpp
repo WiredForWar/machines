@@ -9,7 +9,7 @@
 #include "render/Font.hpp"
 #include "system/PathName.hpp"
 #include "device/Time.hpp"
-#include "device/CD.hpp"
+
 #include "render/Font.hpp"
 #include "render/Device.hpp"
 #include "render/Display.hpp"
@@ -57,29 +57,6 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
     pStartupScreens->desiredCdTrack(MachGuiStartupScreens::MENU_MUSIC);
 
     SysPathName statAnim("flics/gui/statist.smk");
-
-    // Get flic off hard-disk or CD-Rom
-    if (! statAnim.existsAsFile())
-    {
-        // Make sure the cd is stopped before accessing files on it.
-        if (DevCD::instance().isPlayingAudioCd())
-        {
-            DevCD::instance().stopPlaying();
-        }
-
-        std::string cdRomDrive;
-
-        if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/gui/statist.smk"))
-        {
-            statAnim = SysPathName(cdRomDrive + "flics/gui/statist.smk");
-
-            // Can't play music and smacker anim off CD at same time
-            if (statAnim.existsAsFile())
-            {
-                pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
-            }
-        }
-    }
 
     if (statAnim.existsAsFile())
     {

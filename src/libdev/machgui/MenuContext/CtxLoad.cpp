@@ -266,12 +266,8 @@ public:
 
     bool okPressed() override
     {
-        // if ( MachGui::machinesCDIsAvailable( 2 ) )
-        {
-            pLoadCtx_->autoLoadGame();
-            return true;
-        }
-        // return false;
+        pLoadCtx_->autoLoadGame();
+        return true;
     }
 
 private:

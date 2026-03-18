@@ -109,15 +109,7 @@ void SDLApp::initMusic()
 {
     if (DevCD::instance().isAudioCDPresent())
     {
-        // Play loading music. It's in a different position depending upon which CD is in.
-        if (MachGui::machinesCDIsAvailable(1))
-        {
-            DevCD::instance().play(2); // Data 0, Menu Music 1, Loading Music 2
-        }
-        else if (MachGui::machinesCDIsAvailable(2))
-        {
-            DevCD::instance().play(4); // Data 0, Menu Music 1, Victory Music 2, Defeat Music 3, Loading Music 4
-        }
+        DevCD::instance().play(4); // Data 0, Menu Music 1, Victory Music 2, Defeat Music 3, Loading Music 4
     }
 }
 

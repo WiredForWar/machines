@@ -694,31 +694,9 @@ void MachGuiCtxScenario::updateDisplayedInfo(const std::string& text, SysPathNam
     pStartupScreens_->clearAllSmackerAnimations();
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario animation filename: " << animation << std::endl);
 
-    // Get flic off hard-disk or CD-Rom
     if (! animation.existsAsFile())
     {
-        // Make sure the cd is stopped before accessing files on it.
-        if (DevCD::instance().isPlayingAudioCd())
-        {
-            DevCD::instance().stopPlaying();
-        }
-
-        std::string cdRomDrive;
-
-        if (MachGui::getCDRomDriveContainingFile(cdRomDrive, animation.c_str()))
-        {
-            animation = SysPathName(cdRomDrive + animation.c_str());
-
-            // Can't play music and smacker anim off CD at same time
-            if (animation.existsAsFile())
-            {
-                pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
-            }
-        }
-        else
-        {
-            animation = SysPathName("gui/menu/cds.smk");
-        }
+        animation = SysPathName("gui/menu/cds.smk");
     }
 
     if (animation.existsAsFile())

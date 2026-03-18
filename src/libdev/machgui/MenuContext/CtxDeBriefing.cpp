@@ -28,7 +28,7 @@
 #include "system/PathName.hpp"
 #include "render/Device.hpp"
 #include "render/Display.hpp"
-#include "device/CD.hpp"
+
 
 MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sj", pStartupScreens)
@@ -267,29 +267,6 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
 
     SysPathName debriefPicture(debriefPath);
     WAYNE_STREAM("MachGuiCtxScenario::updateSelectedScenario debrief filename: " << debriefPicture << std::endl);
-
-    // Get flic off hard-disk or CD-Rom
-    if (! debriefPicture.existsAsFile())
-    {
-        // Make sure the cd is stopped before accessing files on it.
-        if (DevCD::instance().isPlayingAudioCd())
-        {
-            DevCD::instance().stopPlaying();
-        }
-
-        std::string cdRomDrive;
-
-        if (MachGui::getCDRomDriveContainingFile(cdRomDrive, debriefPath))
-        {
-            debriefPicture = SysPathName(cdRomDrive + debriefPath);
-
-            // Can't play music and smacker anim off CD at same time
-            if (debriefPicture.existsAsFile())
-            {
-                pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
-            }
-        }
-    }
 
     if (debriefPicture.existsAsFile())
     {

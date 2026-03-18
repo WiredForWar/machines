@@ -181,9 +181,6 @@ public:
     // Can the host start the game ( i.e. has everyone pressed the "I'm Ready" button )
     bool canStartMultiPlayerGame() const;
 
-    bool doesAtLeastOnePlayerHaveMachinesCD() const;
-    // PRE( isHost() );
-
     // As more than 4 players can attempt to join a game this query is used to
     // see if the player on the local computer is being considered for the game.
     bool includedInGame() const;

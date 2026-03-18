@@ -1562,45 +1562,8 @@ void MachGuiStartupData::receivedInGameChatMessage(const std::string& message, M
         MachGuiInGameChatMessages::instance().addMessage(message);
 }
 
-bool MachGuiStartupData::doesAtLeastOnePlayerHaveMachinesCD() const
+void MachGuiStartupData::receivedHasMachinesCDMessage(const std::string& /*playerName*/, bool /*hasMachinesCD*/)
 {
-    PRE(isHost());
-
-    bool retVal = false;
-
-    // Check to see if the host has a machines CD
-    if (MachGui::machinesCDIsAvailable(1) || MachGui::machinesCDIsAvailable(2))
-    {
-        retVal = true;
-    }
-
-    // Check to see if other players have machines CD
-    for (size_t loop = 0; loop < 4 && ! retVal; ++loop)
-    {
-        if (players_[loop].status_ == PlayerInfo::HUMAN)
-        {
-            retVal = players_[loop].hasMachinesCD_;
-        }
-    }
-
-    return retVal;
-}
-
-void MachGuiStartupData::receivedHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD)
-{
-    if (isHost())
-    {
-        // Update player info to indicate who has a machines CD
-        for (size_t loop = 0; loop < 4; ++loop)
-        {
-            if (players_[loop].playerName_ == playerName)
-            {
-                players_[loop].hasMachinesCD_ = hasMachinesCD;
-            }
-        }
-
-        sendUpdatePlayersMessage();
-    }
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo& t)

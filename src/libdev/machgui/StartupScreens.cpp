@@ -2271,69 +2271,21 @@ void MachGuiStartupScreens::contextAnimation()
     else if (context_ == CTX_INTROANIMATION)
     {
         SysPathName sysFlicName("flics/animatic.smk");
-        std::string cdRomDrive;
-        bool flicExists = false;
         Gui::Coord animationPos = Gui::Coord(5, 104);
 
-        // Try playing into anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
             startPlayingAnimation(sysFlicName, false, true, animationPos, true);
-            flicExists = true;
-        }
-        // Try playing intro anim off CD-ROM
-        else
-        {
-            // Make sure the cd is stopped before accessing files on it.
-            if (DevCD::instance().isPlayingAudioCd())
-            {
-                DevCD::instance().stopPlaying();
-            }
-
-            if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/animatic.smk"))
-            {
-                SysPathName sysCDFlicName(cdRomDrive + "flics/animatic.smk");
-                startPlayingAnimation(sysCDFlicName, false, true, animationPos, true);
-                flicExists = true;
-            }
-        }
-
-        if (flicExists)
-        {
             prepareForAnimation();
         }
     }
     else if (context_ == CTX_POSTLOADINGANIMATION)
     {
         SysPathName sysFlicName("flics/postload.smk");
-        std::string cdRomDrive;
-        bool flicExists = false;
 
-        // Try playing intro anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
             startPlayingAnimation(sysFlicName, false, true, MachGui::waitImageContentOffset);
-            flicExists = true;
-        }
-        // Try playing intro anim off CD-ROM
-        else
-        {
-            // Make sure the cd is stopped before accessing files on it.
-            if (DevCD::instance().isPlayingAudioCd())
-            {
-                DevCD::instance().stopPlaying();
-            }
-
-            if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/postload.smk"))
-            {
-                SysPathName sysCDFlicName(cdRomDrive + "flics/postload.smk");
-                startPlayingAnimation(sysCDFlicName, false, true, MachGui::waitImageContentOffset);
-                flicExists = true;
-            }
-        }
-
-        if (flicExists)
-        {
             prepareForAnimation();
         }
     }
@@ -2358,35 +2310,11 @@ void MachGuiStartupScreens::contextAnimation()
         }
 
         SysPathName sysFlicName(flicName);
-        std::string cdRomDrive;
-        bool flicExists = false;
         Gui::Coord animationPos = Gui::Coord(5, 104);
 
-        // Try playing intro anim off hard-disk
         if (sysFlicName.existsAsFile())
         {
             startPlayingAnimation(sysFlicName, false, true, animationPos, true);
-            flicExists = true;
-        }
-        // Try playing intro anim off CD-ROM
-        else
-        {
-            // Make sure the cd is stopped before accessing files on it.
-            if (DevCD::instance().isPlayingAudioCd())
-            {
-                DevCD::instance().stopPlaying();
-            }
-
-            if (MachGui::getCDRomDriveContainingFile(cdRomDrive, flicName))
-            {
-                SysPathName sysCDFlicName(cdRomDrive + flicName);
-                startPlayingAnimation(sysCDFlicName, false, true, animationPos, true);
-                flicExists = true;
-            }
-        }
-
-        if (flicExists)
-        {
             prepareForAnimation();
         }
     }

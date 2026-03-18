@@ -167,13 +167,4 @@ int convertNetworkError(int);
 
 void releaseInGameBmpMemory();
 
-// Funtions that check for existance of CD
-bool getCDRomDriveContainingFile(std::string& cdRomDrive, const std::string& fileToCheckFor);
-
-bool getCDRomDriveContainingMachinesCD(std::string& cdRomDrive, int CDNumber);
-// PRE( CDNumber > and 0 CDNumber < 3 );
-
-bool machinesCDIsAvailable(int CDNumber);
-// PRE( CDNumber > and 0 CDNumber < 3 );
-
 }; // namespace MachGui

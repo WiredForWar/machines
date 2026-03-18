@@ -745,12 +745,8 @@ public:
 
     bool okPressed() override
     {
-        // if ( MachGui::machinesCDIsAvailable( 2 ) )
-        {
-            pSkirmishCtx_->autoLoadGame();
-            return true;
-        }
-        // return false;
+        pSkirmishCtx_->autoLoadGame();
+        return true;
     }
 
 private:

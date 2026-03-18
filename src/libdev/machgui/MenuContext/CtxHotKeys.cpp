@@ -21,7 +21,7 @@
 #include "render/Display.hpp"
 #include "ani/AniSmacker.hpp"
 #include "ani/AniSmackerRegular.hpp"
-#include "device/CD.hpp"
+
 
 #include "utility/String.hpp"
 
@@ -189,29 +189,6 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
     {
         // Add flick to bottom left of window
         SysPathName hotkeySmackerFile("flics/gui/hotkeys.smk");
-
-        // Get flic off hard-disk or CD-Rom
-        if (!hotkeySmackerFile.existsAsFile())
-        {
-            // Make sure the cd is stopped before accessing files on it.
-            if (DevCD::instance().isPlayingAudioCd())
-            {
-                DevCD::instance().stopPlaying();
-            }
-
-            std::string cdRomDrive;
-
-            if (MachGui::getCDRomDriveContainingFile(cdRomDrive, "flics/gui/hotkeys.smk"))
-            {
-                hotkeySmackerFile = SysPathName(cdRomDrive + "flics/gui/hotkeys.smk");
-
-                // Can't play music and smacker anim off CD at same time
-                if (hotkeySmackerFile.existsAsFile())
-                {
-                    pStartupScreens_->desiredCdTrack(MachGuiStartupScreens::DONT_PLAY_CD);
-                }
-            }
-        }
 
         // Play animation only if it exists
         if (hotkeySmackerFile.existsAsFile())
