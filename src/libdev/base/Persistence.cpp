@@ -249,12 +249,12 @@ void Persistence::CLASS_INVARIANT
 #define PER_READ_BUILTIN_POINTER(TYPE)                                                                                 \
     PerIstream& operator>>(PerIstream& istr, TYPE*& pOb)                                                               \
     {                                                                                                                  \
-        if (Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), #TYPE)                       \
+        if (Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), #TYPE)                        \
             == Persistence::READ_OBJECT)                                                                               \
         {                                                                                                              \
             istr >> *new TYPE;                                                                                         \
         }                                                                                                              \
-        Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), #TYPE);                         \
+        Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), #TYPE);                          \
         return istr;                                                                                                   \
     }
 
