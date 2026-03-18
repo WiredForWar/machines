@@ -98,7 +98,7 @@ void MachPhysPlasmaAura::startPlasmaAura(const PhysAbsoluteTime& startTime, cons
 {
     /*
     //set the colour
-    Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, this)->mesh().mesh();
+    Ren::ConstMeshPtr animMeshPtr = const_cast<const W4dEntity*>(this)->mesh().mesh();
     RenMaterialVec* pAnimMaterialVec =animMeshPtr->materialVec().release();
 
     (*pAnimMaterialVec)[0].diffuse( RenColour( 0, 188.0/255.0, 0) );

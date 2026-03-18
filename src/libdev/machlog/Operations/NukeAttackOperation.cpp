@@ -100,7 +100,7 @@ void MachLogNukeAttackOperation::doFinish()
 
 bool MachLogNukeAttackOperation::doIsFinished() const
 {
-    bool result = !(_CONST_CAST(const MachLogMissileEmplacement&, *pActor_).weapons().front()->recharged());
+    bool result = !(const_cast<const MachLogMissileEmplacement&>(*pActor_).weapons().front()->recharged());
 
     return result;
 }

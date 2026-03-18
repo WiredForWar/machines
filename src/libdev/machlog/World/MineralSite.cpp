@@ -146,7 +146,7 @@ void MachLogMineralSite::setOre(MachPhys::BuildingMaterialUnits amountOfOre)
                     for (MachLogRaces::Mines::const_iterator i = mines.begin(); i != mines.end(); ++i)
                     {
                         MachLogMine& mine = (**i);
-                        if (mine.hasMineralSite() && &(_CONST_CAST(const MachLogMine&, mine).mineralSite()) == this)
+                        if (mine.hasMineralSite() && &(const_cast<const MachLogMine&>(mine).mineralSite()) == this)
                         {
                             // need to give voicemail if appropriate.
                             if (! pcPlayerHadMineUsingThis

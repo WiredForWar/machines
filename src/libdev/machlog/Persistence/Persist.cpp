@@ -110,7 +110,7 @@ const MachLogOtherPersistence& MachLogPersistence::others() const
 
 void MachLogPersistence::setDataForWrite() const
 {
-    MachLogPersistence& nonConstPer = *(_CONST_CAST(MachLogPersistence*, this));
+    MachLogPersistence& nonConstPer = *(const_cast<MachLogPersistence*>(this));
     // removed for now   nonConstPer.planetName_ = MachLogRaces::instance().currentPlanet();
     // removed for now   for( MachPhys::Race i = MachPhys::RED; i < MachPhys::N_RACES; ++((int&)i) )
     // removed for now   {

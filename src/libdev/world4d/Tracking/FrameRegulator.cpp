@@ -84,7 +84,7 @@ PhysAbsoluteTime W4dFrameRegulator::effectiveTime() const
             {
                 // This is the first frame of the animation.
                 // Store the starting frame, and return the start time.
-                W4dFrameRegulator* nonConstThis = _CONST_CAST(W4dFrameRegulator*, this);
+                W4dFrameRegulator* nonConstThis = const_cast<W4dFrameRegulator*>(this);
                 nonConstThis->startFrame_ = simulationFrame;
                 nonConstThis->startTime_ = timeNow;
                 result = startTime_;

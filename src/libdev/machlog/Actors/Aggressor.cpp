@@ -79,7 +79,7 @@ PhysRelativeTime MachLogAggressor::update(const PhysRelativeTime& maxCPUTime, MA
     }
 
     // Do the main work
-    // PhysRelativeTime alertnessResponse = ( 4.0 - ( _CONST_CAST( PhysRelativeTime, std::min( 100, alertness() ) )
+    // PhysRelativeTime alertnessResponse = ( 4.0 - ( const_cast< PhysRelativeTime>(std::min( 100, alertness() ) )
     // / 30.0 ) );
     PhysRelativeTime alertnessResponse = (4.0 - (std::min(100, alertness()) / 30.0));
     PhysRelativeTime result = std::min(MachLogMachine::update(maxCPUTime, junk), alertnessResponse);

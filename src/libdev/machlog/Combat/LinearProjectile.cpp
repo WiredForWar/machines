@@ -184,7 +184,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToStationaryObject(
         //
         //             //Convert to an actor.
         //             //TBD - do this properly using id map etc
-        //             MachActor* pActor = &(_CONST_CAST( MachActor&, subject ) );
+        //             MachActor* pActor = &(const_cast< MachActor&>(subject ) );
         //
         //             INSPECT_ON( Diag::bobStream(), *pActor );
         //         }
@@ -490,9 +490,9 @@ void MachLogLinearProjectile::genericCheckForDamage(
         }
 
         // construct a temporary bounding box
-        MexAlignedBox3d& box = _CONST_CAST(MexAlignedBox3d&, (*i)->physObject().boundingVolume());
+        MexAlignedBox3d& box = const_cast<MexAlignedBox3d&>((*i)->physObject().boundingVolume());
         if ((*i)->physObject().isComposite())
-            box = _CONST_CAST(MexAlignedBox3d&, (*i)->physObject().asComposite().compositeBoundingVolume());
+            box = const_cast<MexAlignedBox3d&>((*i)->physObject().asComposite().compositeBoundingVolume());
 
         MexPoint3d tempPosition(expPosition);
         // get explosion position in local space.

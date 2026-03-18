@@ -597,7 +597,7 @@ const W4dTransform3d& W4dEntity::localTransform() const
             // Update the transform from any motion plan
             if (hasTransformPlan)
             {
-                if (_CONST_CAST(W4dEntity*, this)->updateTransformFromPlan())
+                if (const_cast<W4dEntity*>(this)->updateTransformFromPlan())
                 {
                     // Update any stored unscaled transform position
                     if (useParentScale)
@@ -607,7 +607,7 @@ const W4dTransform3d& W4dEntity::localTransform() const
 
             // Update the transform position from parent scale if required
             if (useParentScale)
-                _CONST_CAST(W4dEntity*, this)->scaleTransformPosition();
+                const_cast<W4dEntity*>(this)->scaleTransformPosition();
         }
     }
 
@@ -677,7 +677,7 @@ const W4dTransform3d& W4dEntity::globalTransform() const
         if (now != timeGlobalTransformLastUpdated_)
         {
             // Will now be updated
-            // W4dEntity* nonConstThis = _CONST_CAST( W4dEntity*, this );
+            // W4dEntity* nonConstThis = const_cast< W4dEntity*>(this );
             const W4dEntity* nonConstThis = this;
             nonConstThis->pImpl_->timeGlobalTransformLastUpdated_ = now;
 
@@ -1573,7 +1573,7 @@ const MexAlignedBox3d& W4dEntity::boundingVolume() const
     {
         // Ensure we have a local copy of the scaled BV
         if (boundingVolume_ == nullptr)
-            _CONST_CAST(W4dEntity*, this)->updateBoundingVolume();
+            const_cast<W4dEntity*>(this)->updateBoundingVolume();
 
         pResult = boundingVolume_;
         ASSERT(boundingVolume_ != nullptr, "")
@@ -1968,7 +1968,7 @@ const RenScale& W4dEntity::temporaryScale() const
     PRE(hasTemporaryScale());
 
     // Ensure we have the entityScale allocated.
-    W4dEntityScale& myEntityScale = _CONST_CAST(W4dEntity*, this)->entityScale();
+    W4dEntityScale& myEntityScale = const_cast<W4dEntity*>(this)->entityScale();
 
     // Check for a scale plan
     if (pPlan_ != nullptr && pPlan_->hasScalePlan())
@@ -2224,7 +2224,7 @@ bool W4dEntity::hasContainingDomain(W4dDomain** ppDomain) const
 {
     TEST_INVARIANT;
 
-    W4dEntity* pNode = _CONST_CAST(W4dEntity*, this);
+    W4dEntity* pNode = const_cast<W4dEntity*>(this);
     bool found = false;
 
     while (! found && pNode->hasParent())

@@ -60,7 +60,7 @@ MachPhysTerrainTile::MachPhysTerrainTile(
 //E3 hack. Should be able to delete this soon
     if( hasMesh() )
     {
-        const string& name = _CONST_CAST(const W4dEntity*, this)->mesh().mesh()->meshName();
+        const string& name = const_cast<const W4dEntity*>(this)->mesh().mesh()->meshName();
 
         bool contains = ( name.substr(0, 4) == "anim" );
 
@@ -243,8 +243,8 @@ MachPhysTerrainTile::MachPhysTerrainTile(
         nXVertices,
         nYVertices,
         MexAlignedBox2d(xMin, yMin, xMax, yMax),
-        *(_CONST_CAST(const W4dEntity&, static_cast<W4dEntity&>(*this)).mesh(W4dLOD(0)).mesh()));
-    //*(_CONST_CAST( const W4dEntity&, *this).mesh( W4dLOD( 0 ) ).mesh() )) );
+        *(const_cast<const W4dEntity&>(static_cast<W4dEntity&>(*this)).mesh(W4dLOD(0)).mesh()));
+    //*(const_cast< const W4dEntity&>(*this).mesh( W4dLOD( 0 ) ).mesh() )) );
 
     //...and hence the ref-counted pointer to it
     pTileDataPtr_ = new MachPhysTileDataPtr(pData);

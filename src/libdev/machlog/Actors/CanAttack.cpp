@@ -115,7 +115,7 @@ void MachLogCanAttack::currentTarget(MachActor* p)
         currentlyAttached_ = true;
         pCurrentTarget_->attach(this);
 
-        pPhysCanAttack_->trackTarget(_CONST_CAST(const MachActor*, p)->physObject());
+        pPhysCanAttack_->trackTarget(const_cast<const MachActor*>(p)->physObject());
     }
 
     MachLogNetwork& network = MachLogNetwork::instance();
@@ -653,7 +653,7 @@ PhysRelativeTime MachLogCanAttack::attackWithTreachery(MachActor* pTarget)
     MachLogFireData fireData = createFireData();
     for (MachLogCanAttack::Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
-        if (_CONST_CAST(const MachLogWeapon*, (*i))->physWeapon().type() == MachPhys::ORB_OF_TREACHERY)
+        if (const_cast<const MachLogWeapon*>((*i))->physWeapon().type() == MachPhys::ORB_OF_TREACHERY)
         {
             lastFireFrame_ = W4dManager::instance().frameNumber();
             PhysRelativeTime wft = (*i)->fire(pTarget, fireData);
@@ -849,7 +849,7 @@ PhysRelativeTime MachLogCanAttack::attack(MachActor* pTarget)
     PhysRelativeTime rt = 0;
     for (Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
-        MachPhys::WeaponType type = _CONST_CAST(const MachLogWeapon*, (*i))->physWeapon().type();
+        MachPhys::WeaponType type = const_cast<const MachLogWeapon*>((*i))->physWeapon().type();
         if (type != MachPhys::SUPERCHARGE_ADVANCED && type != MachPhys::SUPERCHARGE_SUPER
             && type != MachPhys::GORILLA_PUNCH
             && !(type == MachPhys::ORB_OF_TREACHERY && ! pTarget->objectIsMachine()))
@@ -872,7 +872,7 @@ PhysRelativeTime MachLogCanAttack::heal(MachActor* pTarget)
     PhysRelativeTime rt = 0;
     for (Weapons::iterator i = weapons().begin(); i != weapons().end(); ++i)
     {
-        MachPhys::WeaponType type = _CONST_CAST(const MachLogWeapon*, (*i))->physWeapon().type();
+        MachPhys::WeaponType type = const_cast<const MachLogWeapon*>((*i))->physWeapon().type();
         if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER)
         {
             lastFireFrame_ = W4dManager::instance().frameNumber();

@@ -43,7 +43,7 @@ const MATHEX_SCALAR& W4dComplexity::W4dRangeModifier::rangeMultiplier() const
 {
     if (! rangeMultiplierUptodate_)
     {
-        W4dRangeModifier* nonConstThis = _CONST_CAST(W4dRangeModifier*, this);
+        W4dRangeModifier* nonConstThis = const_cast<W4dRangeModifier*>(this);
         nonConstThis->updateRangeMultiplier();
     }
     return rangeMultiplier_;
@@ -99,7 +99,7 @@ bool W4dComplexity::highestComplexityReached() const
 {
     if (! highestComplexityReachedUptodate_)
     {
-        W4dComplexity* nonConstThis = _CONST_CAST(W4dComplexity*, this);
+        W4dComplexity* nonConstThis = const_cast<W4dComplexity*>(this);
         nonConstThis->updateHighestComplexityReached();
     }
     return highestComplexityReached_;
@@ -109,7 +109,7 @@ bool W4dComplexity::lowestComplexityReached() const
 {
     if (! lowestComplexityReachedUptodate_)
     {
-        W4dComplexity* nonConstThis = _CONST_CAST(W4dComplexity*, this);
+        W4dComplexity* nonConstThis = const_cast<W4dComplexity*>(this);
         nonConstThis->updateLowestComplexityReached();
     }
     return lowestComplexityReached_;

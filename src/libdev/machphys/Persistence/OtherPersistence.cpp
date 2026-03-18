@@ -362,8 +362,8 @@ const MachPhysElectro& MachPhysOtherPersistence::electroExemplar(MachPhysElectro
 
         // TBD: Disable the back fuce cull via cast here.
         // These needs to be changed so the property is defined in the .x file.
-        // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *ppElectro).mesh().mesh();
-        //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
+        // Ren::ConstMeshPtr myMesh = const_cast< const W4dEntity&>(*ppElectro).mesh().mesh();
+        //const_cast< RenMesh&>(*myMesh ).backFaceAll( false );
     }
 
     return **ppElectro;

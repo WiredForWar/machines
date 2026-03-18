@@ -57,7 +57,7 @@ void PhysAccelerateTumblePlan::transform(const PhysRelativeTime& timeOffset, Mex
     else
     {
         // We'll need to modify some cached data
-        PhysAccelerateTumblePlan* nonConstThis = _CONST_CAST(PhysAccelerateTumblePlan*, this);
+        PhysAccelerateTumblePlan* nonConstThis = const_cast<PhysAccelerateTumblePlan*>(this);
         PhysMotionPlan::Times& segmentTimes = *segmentTimesPtr_;
 
         bool recalculateSegmentIndex = false;

@@ -323,7 +323,7 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
             if (lineSize >= 3)
             {
                 subType = MachLogScenario::objectSubType(consType, parser.tokens()[1]);
-                // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 2 ].c_str() ) );
+                // hwLevel = const_cast<size_t>(atoi( parser.tokens()[ 2 ].c_str() ) );
                 hwLevel = atoi(parser.tokens()[2].c_str());
 
                 /*
@@ -336,7 +336,7 @@ void MachLogConstructionTree::readAllItems(const SysPathName& treePath)
             else
             {
                 subType = 0;
-                // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 1 ].c_str() ) );
+                // hwLevel = const_cast<size_t>(atoi( parser.tokens()[ 1 ].c_str() ) );
                 hwLevel = atoi(parser.tokens()[1].c_str());
             }
 

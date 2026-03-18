@@ -111,7 +111,7 @@ const Ren::MaterialVecPtr& W4dColourPulsePlan::materialVec(const PhysRelativeTim
         size_t iData = pulsingTexturePositions_[i];
         if (iData != 9999)
         {
-            RenMaterial& pulsingMaterial = (*_CONST_CAST(W4dColourPulsePlan*, this)->materialVecPtr_)[i];
+            RenMaterial& pulsingMaterial = (*const_cast<W4dColourPulsePlan*>(this)->materialVecPtr_)[i];
             pulsingMaterial.makeNonSharable();
 
             if (pulsingMaterial.emissive() != RenColour::black())
@@ -163,7 +163,7 @@ void W4dColourPulsePlan::makePlan(
     uint nRepetations,
     uint animId)
 {
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
     W4dMaterialPlanPtr matPlanPtr;
 
@@ -186,7 +186,7 @@ bool W4dColourPulsePlan::changeColour(W4dEntity* pEntity, const RenTexture& text
 {
     bool found = false;
 
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
     RenMaterialVec* pAnimMaterialVec;
 
@@ -234,8 +234,8 @@ bool W4dColourPulsePlan::changeColour(W4dEntity* pEntity, const RenTexture& text
         }
 
         // apply the new materialVecPtr to the mesh
-        //_CONST_CAST(RenMeshInstance, meshInst).materialVec( materialVecPtr );
-        _CONST_CAST(RenMeshInstance&, meshInst).materialVec(materialVecPtr);
+        //const_cast<RenMeshInstance>(meshInst).materialVec( materialVecPtr );
+        const_cast<RenMeshInstance&>(meshInst).materialVec(materialVecPtr);
     }
     // delete the old to avoid mem leak
     delete pAnimMaterialVec;
@@ -253,7 +253,7 @@ void W4dColourPulsePlan::changeAllColour(
     uint nPeriods,
     uint animId)
 {
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
 
     RenMaterialVec* pAnimMaterialVec;

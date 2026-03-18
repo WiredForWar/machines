@@ -497,7 +497,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                             // MachPhysConstructionData& conData = _STATIC_CAST( MachPhysConstructionData&,
                             // pCandidateLab->constructionData() );
                             MachPhysConstructionData& conData
-                                = _CONST_CAST(MachPhysConstructionData&, pCandidateLab->constructionData());
+                                = const_cast<MachPhysConstructionData&>(pCandidateLab->constructionData());
                             if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                             {
                                 j = i;
@@ -552,7 +552,7 @@ void MachLogAIController::handleIdleTechnician(MachLogCommsId pObj)
                 // pChosenLab->constructionData()
                 // );
                 MachPhysConstructionData& conData
-                    = _CONST_CAST(MachPhysConstructionData&, pChosenLab->constructionData());
+                    = const_cast<MachPhysConstructionData&>(pChosenLab->constructionData());
                 if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                 {
                     if (pChosenLab->objectType() == MachLog::HARDWARE_LAB)

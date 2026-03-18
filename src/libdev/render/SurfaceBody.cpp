@@ -271,7 +271,7 @@ void RenISurfBody::filledRectangle(const Ren::Rect& area, uint colour)
     srcArea.originX = srcArea.originY = 0;
     srcArea.width = srcArea.height = 1;
     RenISurfBody emptySurf;
-    RenDevice* dev = _CONST_CAST(RenDevice*, device_);
+    RenDevice* dev = const_cast<RenDevice*>(device_);
 
     const bool backgroundColour = colour == 0xFFFF00FF;
     const Ren::BlitMode blitMode = backgroundColour ? Ren::BlitMode::ZeroZero : Ren::BlitMode::AlphaBlend;

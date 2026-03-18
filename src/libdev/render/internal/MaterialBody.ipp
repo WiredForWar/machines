@@ -44,7 +44,7 @@ _CODE_INLINE
 bool RenIMatBody::hasFlatTransparency() const
 {
     if (dirty_)
-        _CONST_CAST(RenIMatBody*, this)->updateTransparent();
+        const_cast<RenIMatBody*>(this)->updateTransparent();
 
     return transparent_;
 }
@@ -53,7 +53,7 @@ _CODE_INLINE
 bool RenIMatBody::hasAlphaTransparency() const
 {
     if (dirty_)
-        _CONST_CAST(RenIMatBody*, this)->updateTransparent();
+        const_cast<RenIMatBody*>(this)->updateTransparent();
 
     return alphaTransparent_ || texture_.hasAlphaTransparency();
 }

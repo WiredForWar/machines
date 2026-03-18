@@ -72,7 +72,7 @@ void W4dCycleMultiTextureData::apply(W4dEntity* pEntity, const PhysAbsoluteTime&
     const size_t nData = cycleTextureDataVec_.size();
 
     // get the basic materialVec
-    Ren::ConstMeshPtr animMeshPtr = _CONST_CAST(const W4dEntity*, pEntity)->mesh().mesh();
+    Ren::ConstMeshPtr animMeshPtr = const_cast<const W4dEntity*>(pEntity)->mesh().mesh();
     RenMaterialVec* pAnimMaterialVec = animMeshPtr->materialVec().release();
 
     // find the animation keys in pAnimMaterialVec

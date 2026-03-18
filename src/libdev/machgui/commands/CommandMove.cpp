@@ -222,7 +222,7 @@ bool MachGuiMoveCommand::applyEnterBuilding(MachActor* pActor, std::string* pRea
                : MachPhysStation::PARKING_BAY);
 
     MachPhysConstructionData& constructionData
-        = _CONST_CAST(MachPhysConstructionData&, pConstruction_->constructionData());
+        = const_cast<MachPhysConstructionData&>(pConstruction_->constructionData());
 
     MachPhysStations& stations = constructionData.stations();
     MachPhysStation* pStation = nullptr;

@@ -1069,7 +1069,7 @@ void W4dComposite::renderHeldObjects(const W4dCamera& camera) const
     {
         for (HeldEntities::iterator it = pHeldEntities_->begin(); it != pHeldEntities_->end(); ++it)
         {
-            _CONST_CAST(W4dCamera&, camera).renderSubTree(*it);
+            const_cast<W4dCamera&>(camera).renderSubTree(*it);
         }
     }
 }

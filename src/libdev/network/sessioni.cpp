@@ -46,7 +46,7 @@ const NetAppSessionUid& NetIAppSession::appSessionUid() const
 
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetIAppSession* nonConstThis = _CONST_CAST(NetIAppSession*, this);
+        NetIAppSession* nonConstThis = const_cast<NetIAppSession*>(this);
 
         nonConstThis->appSessionUid_ = NetIRecorder::instance().playbackAppSessionUid();
     }
@@ -164,7 +164,7 @@ const NetAppSession::NodeIds& NetIAppSession::nodes() const
 
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetIAppSession* nonConstThis = _CONST_CAST(NetIAppSession*, this);
+        NetIAppSession* nonConstThis = const_cast<NetIAppSession*>(this);
 
         NetIRecorder::instance().playbackNodeIds(&nonConstThis->nodeIds_);
     }

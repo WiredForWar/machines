@@ -220,7 +220,7 @@ W4dBoundingBoxSelector::Entities W4dBoundingBoxSelector::selectedEntities() cons
     entities.reserve(256);
 
     // update the cached data
-    W4dBoundingBoxSelector* pSelector = _CONST_CAST(W4dBoundingBoxSelector*, this);
+    W4dBoundingBoxSelector* pSelector = const_cast<W4dBoundingBoxSelector*>(this);
     pSelector->updateGlobalData();
 
     // Get a check id to use for this check

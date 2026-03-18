@@ -78,7 +78,7 @@ const RenSurface& RenIAnimCursor2d::currentBitmap()
 // virtual
 const RenSurface& RenAnimCursor2d::currentBitmap() const
 {
-    return _CONST_CAST(RenIAnimCursor2d*, internals_)->currentBitmap();
+    return const_cast<RenIAnimCursor2d*>(internals_)->currentBitmap();
 }
 
 void RenAnimCursor2d::addFrame(const RenSurface& newSurf)

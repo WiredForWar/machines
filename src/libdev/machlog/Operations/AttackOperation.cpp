@@ -291,7 +291,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     MachActor& target = directObject();
 
     // Check each weapon separately
-    const MachLogCanAttack::Weapons& weapons = _CONST_CAST(const MachLogCanAttack&, attacker).weapons();
+    const MachLogCanAttack::Weapons& weapons = const_cast<const MachLogCanAttack&>(attacker).weapons();
     if (pActor_->isInSpecialUpdateActorsList() && MachLogRaces::instance().inSpecialActorUpdate()
         && ! weapons.front()->recharged())
         return 0;
@@ -322,7 +322,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     // Set up useful local variables
     PhysRelativeTime interval = 0; // if this can fire then there will be a call back time of zero
                                    // otherwise will be overridden.
-    const W4dEntity& targetObject = _CONST_CAST(const MachActor&, target).physObject();
+    const W4dEntity& targetObject = const_cast<const MachActor&>(target).physObject();
     MATHEX_SCALAR heightModifier = 1.0;
     bool canMove = ! pActor_->isStandingGround();
     MachLogCanAttack::WeaponDisposition worstDisposition = MachLogCanAttack::IN_RANGE;
@@ -392,7 +392,7 @@ PhysRelativeTime MachLogAttackOperation::doUpdate()
     {
         // certain weapon types use special attack ops, and will not be fired here
         MachLogWeapon& weapon = *(*it);
-        const MachPhysWeapon& physWeapon = _CONST_CAST(const MachLogWeapon&, weapon).physWeapon();
+        const MachPhysWeapon& physWeapon = const_cast<const MachLogWeapon&>(weapon).physWeapon();
         MachPhys::WeaponType type = physWeapon.type();
         if (type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER
             || (type == MachPhys::ORB_OF_TREACHERY && ! pDirectObject_->objectIsMachine()))

@@ -68,7 +68,7 @@ void MachLogConstructionPersistence::registerDerivedClasses()
 void MachLogConstructionPersistence::setUpLocalVectorFromViews() const
 {
     // clear down collection of constructions before we begin.
-    MachLogConstructionPersistence& nonConstPer = *(_CONST_CAST(MachLogConstructionPersistence*, this));
+    MachLogConstructionPersistence& nonConstPer = *(const_cast<MachLogConstructionPersistence*>(this));
     nonConstPer.constructions_.erase(nonConstPer.constructions_.begin(), nonConstPer.constructions_.end());
     for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin();
          i != MachLogRaces::instance().objects().end();

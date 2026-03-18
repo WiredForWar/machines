@@ -206,7 +206,7 @@ uint32_t RenCapabilities::maxAvailableDisplayMemoryAfterTextures() const
     CB_RenCapabilities_DEPIMPL();
     if (maxAvailableDisplayMemoryAfterTexturesDirty_)
     {
-        _CONST_CAST(RenCapabilities*, this)->updateMaxAvailableDisplayMemoryAfterTextures();
+        const_cast<RenCapabilities*>(this)->updateMaxAvailableDisplayMemoryAfterTextures();
     }
     RENDER_STREAM(
         "Memory available for display " << maxAvailableDisplayMemoryAfterTextures_ << " ("
@@ -295,7 +295,7 @@ uint32_t RenCapabilities::maxAvailableTextureMemory() const
     CB_RenCapabilities_DEPIMPL();
     if (maxAvailableTextureMemoryDirty_)
     {
-        _CONST_CAST(RenCapabilities*, this)->updateMaxAvailableTextureMemory();
+        const_cast<RenCapabilities*>(this)->updateMaxAvailableTextureMemory();
     }
     RENDER_STREAM(
         "Memory available for textures: " << maxAvailableTextureMemory_ << " ("

@@ -202,7 +202,7 @@ const W4dCompositeMaterialVecChanger& MachPhysRaceChangerBody::changer(
     if (it == pMachineChangerMap_->end())
     {
         // Not registered yet, so register it
-        _CONST_CAST(MachPhysRaceChangerBody*, this)->add(machine, data);
+        const_cast<MachPhysRaceChangerBody*>(this)->add(machine, data);
 
         // Now try again to find the changer we want
         it = pMachineChangerMap_->find(spec);
@@ -226,7 +226,7 @@ const W4dCompositeMaterialVecChanger& MachPhysRaceChangerBody::changer(
     if (it == pConstructionChangerMap_->end())
     {
         // Not registered yet, so register it
-        _CONST_CAST(MachPhysRaceChangerBody*, this)->add(construction, data);
+        const_cast<MachPhysRaceChangerBody*>(this)->add(construction, data);
 
         // Now try again to find the changer we want
         it = pConstructionChangerMap_->find(spec);
@@ -337,7 +337,7 @@ MachPhysRaceChangerBody::changer(const MachPhysWeapon& weapon, MachPhys::Race to
     if (it == pWeaponChangerMap_->end())
     {
         // Not registered yet, so register it
-        _CONST_CAST(MachPhysRaceChangerBody*, this)->add(weapon);
+        const_cast<MachPhysRaceChangerBody*>(this)->add(weapon);
 
         // Now try again to find the changer we want
         it = pWeaponChangerMap_->find(spec);

@@ -206,69 +206,69 @@ void MachGuiMessageBroker::processMachGuiMessage(NetMessage* pMessage)
     {
         case MT_CHATMESSAGE:
             // processChatMessage( reinterpret_cast< MachGuiChatMessage*>(pMessage->body().body() ) );
-            processChatMessage(reinterpret_cast<MachGuiChatMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+            processChatMessage(reinterpret_cast<MachGuiChatMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_JOINMESSAGE:
             // processJoinMessage( reinterpret_cast< MachGuiJoinMessage*>(pMessage->body().body() ) );
-            processJoinMessage(reinterpret_cast<MachGuiJoinMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+            processJoinMessage(reinterpret_cast<MachGuiJoinMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_UPDATEPLAYERSMESSAGE:
             // processUpdatePlayersMessage( reinterpret_cast< MachGuiUpdatePlayersMessage*>(pMessage->body().body() )
             // );
             processUpdatePlayersMessage(
-                reinterpret_cast<MachGuiUpdatePlayersMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiUpdatePlayersMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_RACECHANGEREQUESTMESSAGE:
             // processRaceChangeRequest( reinterpret_cast< MachGuiRaceChangeRequestMessage*>(pMessage->body().body() )
             // );
             processRaceChangeRequest(
-                reinterpret_cast<MachGuiRaceChangeRequestMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiRaceChangeRequestMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_STARTMESSAGE:
             // processStartMessage( reinterpret_cast< MachGuiStartMessage*>(pMessage->body().body() ) );
-            processStartMessage(reinterpret_cast<MachGuiStartMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+            processStartMessage(reinterpret_cast<MachGuiStartMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_IMREADYMESSAGE:
             // processImReadyMessage( reinterpret_cast< MachGuiImReadyMessage*>(pMessage->body().body() ) );
             processImReadyMessage(
-                reinterpret_cast<MachGuiImReadyMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiImReadyMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_HOSTCANCELMESSAGE:
             // processHostCancelMessage( reinterpret_cast< MachGuiHostCancelMessage*>(pMessage->body().body() ) );
             processHostCancelMessage(
-                reinterpret_cast<MachGuiHostCancelMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiHostCancelMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_CLIENTCANCELMESSAGE:
             // processClientCancelMessage( reinterpret_cast< MachGuiClientCancelMessage*>(pMessage->body().body() )  );
             processClientCancelMessage(
-                reinterpret_cast<MachGuiClientCancelMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiClientCancelMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MY_UPDATEGAMESETTINGSMESSAGE:
             // processUpdateGameSettingsMessage( _REINTERPRET_CAST( MachGuiUpdateGameSettingsMessage*,
             // pMessage->body().body() )  );
             processUpdateGameSettingsMessage(
-                reinterpret_cast<MachGuiUpdateGameSettingsMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiUpdateGameSettingsMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_INGAMECHATMESSAGE:
             // processInGameChatMessage( reinterpret_cast< MachGuiInGameChatMessage*>(pMessage->body().body() )  );
             processInGameChatMessage(
-                reinterpret_cast<MachGuiInGameChatMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiInGameChatMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_HASMACHINESCDMESSAGE:
             // processHasMachinesCDMessage( reinterpret_cast< MachGuiHasMachinesCDMessage*>(pMessage->body().body() )
             // );
             processHasMachinesCDMessage(
-                reinterpret_cast<MachGuiHasMachinesCDMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiHasMachinesCDMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_IVELOSTMESSAGE:
             // processIveLostMessage( reinterpret_cast< MachGuiIveLostMessage*>(pMessage->body().body() )  );
             processIveLostMessage(
-                reinterpret_cast<MachGuiIveLostMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiIveLostMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         case MT_NAMECHANGEMESSAGE:
             // processNameChangeMessage( reinterpret_cast< MachGuiNameChangeMessage*>(pMessage->body().body() ) );
             processNameChangeMessage(
-                reinterpret_cast<MachGuiNameChangeMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiNameChangeMessage*>(const_cast<uint8*>(pMessage->body().body())));
             break;
         default:
             ASSERT_BAD_CASE;

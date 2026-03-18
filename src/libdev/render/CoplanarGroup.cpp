@@ -34,7 +34,7 @@ RenIDelayedCoplanarGroup::~RenIDelayedCoplanarGroup()
 // virtual
 void RenIDelayedCoplanarGroup::render()
 {
-    glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
+    glm::mat4* crufty = const_cast<glm::mat4*>(&xform_);
     RenDevice::current()->setModelMatrix(*crufty);
 
     const RenICapabilities* caps = RenIDeviceImpl::currentPimpl()->capabilities().internal();

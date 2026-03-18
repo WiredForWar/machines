@@ -161,7 +161,7 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
 
     // Set up useful local variables
     PhysRelativeTime interval = 0.25;
-    const W4dEntity& targetObject = _CONST_CAST(const MachActor&, target).physObject();
+    const W4dEntity& targetObject = const_cast<const MachActor&>(target).physObject();
     MATHEX_SCALAR heightModifier = 1.0;
     MachLogCanAttack::WeaponDisposition worstDisposition = MachLogCanAttack::IN_RANGE;
 
@@ -208,13 +208,13 @@ PhysRelativeTime MachLogHealOperation::doUpdate()
     }
 
     // Check each weapon separately
-    const MachLogCanAttack::Weapons& weapons = _CONST_CAST(const MachLogCanAttack&, attacker).weapons();
+    const MachLogCanAttack::Weapons& weapons = const_cast<const MachLogCanAttack&>(attacker).weapons();
 
     for (MachLogCanAttack::Weapons::const_iterator it = weapons.begin(); it != weapons.end(); ++it)
     {
         // only process supercharger weapons
         MachLogWeapon& weapon = *(*it);
-        const MachPhysWeapon& physWeapon = _CONST_CAST(const MachLogWeapon&, weapon).physWeapon();
+        const MachPhysWeapon& physWeapon = const_cast<const MachLogWeapon&>(weapon).physWeapon();
         MachPhys::WeaponType type = physWeapon.type();
         if (type != MachPhys::SUPERCHARGE_ADVANCED && type != MachPhys::SUPERCHARGE_SUPER)
             continue;

@@ -69,17 +69,17 @@ const Ren::MaterialVecPtr& W4dSimpleIntensityPlan::materialVec(const PhysRelativ
     RenColour diffuseColour = material_.diffuse();
     diffuseColour
         = RenColour(intensity * diffuseColour.r(), intensity * diffuseColour.g(), intensity * diffuseColour.b());
-    _CONST_CAST(W4dSimpleIntensityPlan*, this)->material_.diffuse(diffuseColour);
+    const_cast<W4dSimpleIntensityPlan*>(this)->material_.diffuse(diffuseColour);
 
     RenColour ambientColour = material_.ambient();
     ambientColour
         = RenColour(intensity * ambientColour.r(), intensity * ambientColour.g(), intensity * ambientColour.b());
-    _CONST_CAST(W4dSimpleIntensityPlan*, this)->material_.ambient(ambientColour);
+    const_cast<W4dSimpleIntensityPlan*>(this)->material_.ambient(ambientColour);
 
     RenColour emissiveColour = material_.emissive();
     emissiveColour
         = RenColour(intensity * emissiveColour.r(), intensity * emissiveColour.g(), intensity * emissiveColour.b());
-    _CONST_CAST(W4dSimpleIntensityPlan*, this)->material_.emissive(emissiveColour);
+    const_cast<W4dSimpleIntensityPlan*>(this)->material_.emissive(emissiveColour);
 
     // Return the material vector
     return materialVecPtr_;

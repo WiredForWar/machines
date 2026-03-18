@@ -83,7 +83,7 @@ const Ren::MaterialVecPtr& W4dSolidFadedAlphaPlan::materialVec(const PhysRelativ
         MATHEX_SCALAR alpha = minAlpha_ + alphaDifference_ * fabs(i - half) / half;
         RenColour diffuseColour = material_.diffuse();
         diffuseColour.a(alpha);
-        _CONST_CAST(W4dSolidFadedAlphaPlan*, this)->material_.diffuse(diffuseColour);
+        const_cast<W4dSolidFadedAlphaPlan*>(this)->material_.diffuse(diffuseColour);
     }
 
     return materialVecPtr_;

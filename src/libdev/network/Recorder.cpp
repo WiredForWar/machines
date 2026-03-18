@@ -325,7 +325,7 @@ void NetIRecorder::recordNodeIds(const NetAppSession::NodeIds& nodeIds) const
         for (size_t i = 0; i < nodeIds.size(); ++i)
             recordNodeUid(*nodeIds[i]);
 
-        NetIRecorder* nonConstThis = _CONST_CAST(NetIRecorder*, this);
+        NetIRecorder* nonConstThis = const_cast<NetIRecorder*>(this);
 
         nonConstThis->previousNodeIds_ = nodeIds;
     }
@@ -372,11 +372,11 @@ void NetIRecorder::recordNodeUid(const NetNodeUid& nodeUid) const
 {
     RecRecorderPrivate::instance().recordNetworkString(nodeUid.processUid().processorUid());
     RecRecorderPrivate::instance().recordNetworkData(
-        reinterpret_cast<uint8*>(_CONST_CAST(NetThreadUid*, &nodeUid.processUid().threadUid())),
+        reinterpret_cast<uint8*>(const_cast<NetThreadUid*>(&nodeUid.processUid().threadUid())),
         sizeof(NetThreadUid));
     const NetInterProcessUid interprocessUid = nodeUid.interprocessUid();
     RecRecorderPrivate::instance().recordNetworkData(
-        reinterpret_cast<uint8*>(_CONST_CAST(NetThreadUid*, &interprocessUid)),
+        reinterpret_cast<uint8*>(const_cast<NetThreadUid*>(&interprocessUid)),
         sizeof(NetInterProcessUid));
     RecRecorderPrivate::instance().recordNetworkString(nodeUid.nodeName());
 }
@@ -507,7 +507,7 @@ void NetIRecorder::recordHeader(const NetMessageHeader& header) const
     //    recordNodeUid( header.sender() );
 
     RecRecorderPrivate::instance().recordNetworkData(
-        reinterpret_cast<uint8*>(_CONST_CAST(NetPriority*, &header.priority())),
+        reinterpret_cast<uint8*>(const_cast<NetPriority*>(&header.priority())),
         sizeof(NetPriority));
 }
 
@@ -529,7 +529,7 @@ void NetIRecorder::recordBody(const NetMessageBody& messageBody) const
 {
     RecRecorderPrivate::instance().recordNetworkUint(messageBody.lengthInBytes());
     RecRecorderPrivate::instance().recordNetworkData(
-        _CONST_CAST(uint8*, messageBody.body()),
+        const_cast<uint8*>(messageBody.body()),
         messageBody.lengthInBytes());
 }
 

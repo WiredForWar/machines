@@ -64,8 +64,8 @@
     {                                                                                                                  \
         if (!ptr->diagTrackingActive())                                                                                \
             return true;                                                                                               \
-        ASSERT_INFO(_CONST_CAST(void*, reinterpret_cast<const void*>(ptr)));                                          \
-        return CLASS::diagTracker().pointerPresent(_CONST_CAST(void*, reinterpret_cast<const void*>(ptr)));           \
+        ASSERT_INFO(const_cast<void*>(reinterpret_cast<const void*>(ptr)));                                          \
+        return CLASS::diagTracker().pointerPresent(const_cast<void*>(reinterpret_cast<const void*>(ptr)));           \
     }                                                                                                                  \
     bool exists(const CLASS& ref)                                                                                      \
     {                                                                                                                  \

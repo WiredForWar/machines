@@ -55,7 +55,7 @@ MachLogLinearProjectile* MachLogMultiLauncher::createLinearProjectile(
         &logRace(),
         // pPhysMultiLauncher_->createMissile( burstStartTime, index, pParent, target, targetOffset ),
         pPhysMultiLauncher_
-            ->createMissile(burstStartTime, index, pParent, _CONST_CAST(W4dEntity&, target), targetOffset),
+            ->createMissile(burstStartTime, index, pParent, const_cast<W4dEntity&>(target), targetOffset),
         //          createPhysLinearProjectile( burstStartTime, index, pParent, target, targetOffset ),
         &owner(),
         physWeapon().weaponData());

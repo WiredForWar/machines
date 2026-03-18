@@ -229,8 +229,8 @@ const GuiBitmap& MachGuiSelfDestructCommandIcon::getBitmap() const
 
     static GuiBitmap retVal;
     const char* pBitmapPath = nullptr;
-    // GuiDisplayable* pThis = _CONST_CAST( GuiDisplayable*, this );
-    GuiDisplayable* pThis = static_cast<GuiDisplayable*>(_CONST_CAST(MachGuiSelfDestructCommandIcon*, this));
+    // GuiDisplayable* pThis = const_cast< GuiDisplayable*>(this );
+    GuiDisplayable* pThis = static_cast<GuiDisplayable*>(const_cast<MachGuiSelfDestructCommandIcon*>(this));
 
     // Display hidden self-destruct button
     if (MachGuiSelfDestructCommand::buttonState() == MachGuiSelfDestructCommand::BTN_HIDDEN)

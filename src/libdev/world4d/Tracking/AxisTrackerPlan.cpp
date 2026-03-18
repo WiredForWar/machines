@@ -73,7 +73,7 @@ std::ostream& operator<<(std::ostream& o, const W4dAxisTrackerPlan& t)
 void W4dAxisTrackerPlan::transform(const PhysRelativeTime& timeOffset, MexTransform3d* pResult) const
 {
     // Needed for mutable data members
-    W4dAxisTrackerPlan* nonConstThis = _CONST_CAST(W4dAxisTrackerPlan*, this);
+    W4dAxisTrackerPlan* nonConstThis = const_cast<W4dAxisTrackerPlan*>(this);
 
     // First call indicated by target offset frame update interval set to 0.
     // In this case initialise to default value of 50 frames.

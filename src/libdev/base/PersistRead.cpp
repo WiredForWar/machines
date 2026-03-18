@@ -482,7 +482,7 @@ void PersistenceImplementationRead::writeAddress(const void* ptr) const
 {
     if (logAddresses())
         // PER_READ_INDENT_STREAM( " (" << static_cast< void*>(ptr ) << ") " );
-        PER_READ_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
+        PER_READ_INDENT_STREAM(" (" << const_cast<void*>(ptr) << ") ");
 }
 
 std::ostream& operator<<(std::ostream& o, const PersistenceImplementationRead& t)

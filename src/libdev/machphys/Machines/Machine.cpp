@@ -556,14 +556,14 @@ MachPhysCanAttack* MachPhysMachine::canAttack() const
     if (thisMachineType == MachPhys::AGGRESSOR)
     {
         // MachPhysAggressor* pThisAggressor = static_cast<MachPhysAggressor*>(this);
-        MachPhysAggressor* pThisAggressor = static_cast<MachPhysAggressor*>(_CONST_CAST(MachPhysMachine*, this));
+        MachPhysAggressor* pThisAggressor = static_cast<MachPhysAggressor*>(const_cast<MachPhysMachine*>(this));
         pThisAttack = static_cast<MachPhysCanAttack*>(pThisAggressor);
     }
     else if (thisMachineType == MachPhys::ADMINISTRATOR)
     {
         // MachPhysAdministrator* pThisAdministrator = static_cast<MachPhysAdministrator*>(this);
         MachPhysAdministrator* pThisAdministrator
-            = static_cast<MachPhysAdministrator*>(_CONST_CAST(MachPhysMachine*, this));
+            = static_cast<MachPhysAdministrator*>(const_cast<MachPhysMachine*>(this));
 
         pThisAttack = static_cast<MachPhysCanAttack*>(pThisAdministrator);
     }

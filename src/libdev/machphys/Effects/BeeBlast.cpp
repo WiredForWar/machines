@@ -94,7 +94,7 @@ void MachPhysBeeBlast::startBeeBlast(
 
     /*
     //alpha plan
-    RenMaterialVec* pMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
+    RenMaterialVec* pMaterialVec =const_cast<const W4dEntity*>(this)->mesh().mesh()->materialVec().release();
 
     uint nMaterials = pMaterialVec->size();
     ASSERT( nMaterials>0, "not enought Materials" );

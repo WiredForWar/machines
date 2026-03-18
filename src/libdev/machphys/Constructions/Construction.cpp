@@ -626,7 +626,7 @@ MachPhysMissileEmplacement& MachPhysConstruction::asMissileEmplacement() const
     const MachPhysConstruction& construction = *this;
     // MachPhysMissileEmplacement& result = static_cast< MachPhysMissileEmplacement&>(construction );
     MachPhysMissileEmplacement& result
-        = static_cast<MachPhysMissileEmplacement&>(_CONST_CAST(MachPhysConstruction&, construction));
+        = static_cast<MachPhysMissileEmplacement&>(const_cast<MachPhysConstruction&>(construction));
 
     return result;
 }
@@ -637,7 +637,7 @@ MachPhysPod& MachPhysConstruction::asPod() const
 
     const MachPhysConstruction& construction = *this;
     // MachPhysPod& result = static_cast< MachPhysPod&>(construction );
-    MachPhysPod& result = static_cast<MachPhysPod&>(_CONST_CAST(MachPhysConstruction&, construction));
+    MachPhysPod& result = static_cast<MachPhysPod&>(const_cast<MachPhysConstruction&>(construction));
 
     return result;
 }

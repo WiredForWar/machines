@@ -34,8 +34,8 @@ MachPhysRadialDisc::MachPhysRadialDisc()
 
     // TBD: Disable the bcak fuce cull via static cast here.
     // These needs to be changed so the property is defined in the .x file.
-    // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *this).mesh().mesh();
-    //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
+    // Ren::ConstMeshPtr myMesh = const_cast< const W4dEntity&>(*this).mesh().mesh();
+    //const_cast< RenMesh&>(*myMesh ).backFaceAll( false );
     // requested Steve to work on the model already. 14.12.98. Yueai
 
     TEST_INVARIANT;

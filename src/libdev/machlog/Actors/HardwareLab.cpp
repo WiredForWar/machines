@@ -523,14 +523,14 @@ void MachLogHardwareLab::moveResearchItem(const MachLogResearchItem& mlri, MachL
             {
                 case TOWARDS_FRONT:
                     --insertIterator;
-                    currentResearchQueue_.insert(insertIterator, &_CONST_CAST(MachLogResearchItem&, mlri));
+                    currentResearchQueue_.insert(insertIterator, &const_cast<MachLogResearchItem&>(mlri));
                     currentResearchQueue_.erase(i);
                     break;
 
                 case TOWARDS_BACK:
                     insertIterator++;
                     insertIterator++;
-                    currentResearchQueue_.insert(insertIterator, &_CONST_CAST(MachLogResearchItem&, mlri));
+                    currentResearchQueue_.insert(insertIterator, &const_cast<MachLogResearchItem&>(mlri));
                     currentResearchQueue_.erase(i);
                     break;
                 default:

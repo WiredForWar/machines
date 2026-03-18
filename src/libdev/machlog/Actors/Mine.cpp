@@ -341,7 +341,7 @@ bool MachLogMine::validForAllSmelters(const MexPoint3d& location)
              i != MachLogRaces::instance().pods(r).end();
              ++i)
         {
-            const MachLogPod* pPod = _CONST_CAST(const MachLogPod*, (*i));
+            const MachLogPod* pPod = const_cast<const MachLogPod*>((*i));
             if (! outsideMinimumMineSmelterRange(location, pPod))
                 return false;
         }

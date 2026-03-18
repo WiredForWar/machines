@@ -75,7 +75,7 @@ const Ren::MaterialVecPtr& W4dSimpleAlphaPlan::materialVec(const PhysRelativeTim
     // Set the material alpha
     RenColour diffuseColour = material_.diffuse();
     diffuseColour.a(alpha);
-    _CONST_CAST(W4dSimpleAlphaPlan*, this)->material_.diffuse(diffuseColour);
+    const_cast<W4dSimpleAlphaPlan*>(this)->material_.diffuse(diffuseColour);
 
     // Return the material vector
     return materialVecPtr_;
@@ -88,7 +88,7 @@ void W4dSimpleAlphaPlan::makePlan(
     const PhysScalarPlanPtr& alphaPlanPtr,
     W4dLOD maxLOD)
 {
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
     RenMaterialVec* pMaterialVec;
 

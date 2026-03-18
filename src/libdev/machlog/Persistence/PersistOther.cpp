@@ -80,7 +80,7 @@ void MachLogOtherPersistence::registerDerivedClasses()
 void MachLogOtherPersistence::setUpLocalVectorFromViews() const
 {
     // clear down collection of machines before we begin.
-    MachLogOtherPersistence& nonConstPer = *(_CONST_CAST(MachLogOtherPersistence*, this));
+    MachLogOtherPersistence& nonConstPer = *(const_cast<MachLogOtherPersistence*>(this));
     nonConstPer.others_.erase(nonConstPer.others_.begin(), nonConstPer.others_.end());
     for (MachLogRaces::Objects::iterator i = MachLogRaces::instance().objects().begin();
          i != MachLogRaces::instance().objects().end();

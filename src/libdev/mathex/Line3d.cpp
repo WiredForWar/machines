@@ -72,7 +72,7 @@ MATHEX_SCALAR MexLine3d::length() const
     // Compute and store length if not cached already
     if (length_ < 0.0)
     {
-        MexLine3d* pNonConstThis = _CONST_CAST(MexLine3d*, this);
+        MexLine3d* pNonConstThis = const_cast<MexLine3d*>(this);
         pNonConstThis->length_ = end1_.euclidianDistance(end2_);
     }
 

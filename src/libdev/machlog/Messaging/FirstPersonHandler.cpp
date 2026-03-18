@@ -489,7 +489,7 @@ bool MachLog1stPersonHandler::weaponCanOnlyFireAtActor(uint index) const
     PRE(index < nWeapons());
 
     // get the weapon type. This decides it
-    MachPhys::WeaponType type = _CONST_CAST(MachLog1stPersonHandler*, this)->weapon(index).type();
+    MachPhys::WeaponType type = const_cast<MachLog1stPersonHandler*>(this)->weapon(index).type();
     return type == MachPhys::SUPERCHARGE_ADVANCED || type == MachPhys::SUPERCHARGE_SUPER;
 }
 

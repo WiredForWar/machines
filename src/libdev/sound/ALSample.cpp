@@ -65,7 +65,7 @@ ALSample::ALSample(const SndSampleParameters& params)
     }
 
     // Obtain a pointer to the waveform
-    waveform_ = _CONST_CAST(SndWaveform*, SndWaveManager::instance().getWaveForm(params.id()));
+    waveform_ = const_cast<SndWaveform*>(SndWaveManager::instance().getWaveForm(params.id()));
 
     // If our wave is smaller than the maximum buffer size
     if (waveform_->dataSize() < MAX_BUFFER_SIZE)

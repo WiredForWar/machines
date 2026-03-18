@@ -86,7 +86,7 @@ PhysAbsoluteTime MachPhysLinearWeapon::launchData(
 
     // Get the launch offset to use, and increment it
     uint launchIndex = nextLaunchOffset();
-    _CONST_CAST(MachPhysLinearWeapon*, this)->nextLaunchOffset(launchIndex + 1);
+    const_cast<MachPhysLinearWeapon*>(this)->nextLaunchOffset(launchIndex + 1);
 
     // Set up an object tracker to do the computations for getting the start transform for
     // the projectile

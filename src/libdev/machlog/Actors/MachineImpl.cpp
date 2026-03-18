@@ -207,7 +207,7 @@ void perRead(PerIstream& istr, MachLogMachineImpl& actorImpl)
         ASSERT(pTempConstruction != nullptr, "");
         MachPhysStation* pStation;
         MachPhysConstructionData& consData
-            = _CONST_CAST(MachPhysConstructionData&, pTempConstruction->constructionData());
+            = const_cast<MachPhysConstructionData&>(pTempConstruction->constructionData());
         bool found = consData.stations().nearStation(stationCoords, &pStation);
         ASSERT(found, "Invalid station coords");
         ASSERT(! pStation->locked(), "Station already locked");

@@ -207,7 +207,7 @@ protected:                                                                      
 
 #define PER_PRIVATE_P_DERIVED_CLASS_DEFINITION                                                                         \
     {                                                                                                                  \
-        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
+        return const_cast<char*>(reinterpret_cast<const char*>(this));                                               \
     }
 
 #define PER_PRIVATE_MEMBER_PERSISTENT_STANDARD_INLINE(className, VIRTUAL)                                              \
@@ -325,7 +325,7 @@ public:                                                                         
     Persistence::instance().readRawData(istr, reinterpret_cast<char*>(ptr), nBytes)
 // Persistence::instance().readRawData( istr, static_cast< char*>(ptr ), nBytes )
 
-#define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> _CONST_CAST(NON_CONST_TYPE&, OBJECT)
+#define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> const_cast<NON_CONST_TYPE&>(OBJECT)
 
 #define PER_PRIVATE_WRITE_ENUM_DEFINITION(TYPE)                                                                        \
     inline PerOstream& operator<<(PerOstream& ostr, const TYPE& val)                                                   \

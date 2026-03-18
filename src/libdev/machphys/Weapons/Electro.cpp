@@ -80,7 +80,7 @@ const MachPhysElectro& MachPhysElectro::exemplar(FlashType type)
     // TBD: Disable the back face cull via cast here.
     // These needs to be changed so the property is defined in the .x file.
     Ren::ConstMeshPtr myMesh = electro.mesh().mesh();
-    _CONST_CAST(RenMesh&, *myMesh).backFaceAll(false);
+    const_cast<RenMesh&>(*myMesh).backFaceAll(false);
 
     return electro;
 }

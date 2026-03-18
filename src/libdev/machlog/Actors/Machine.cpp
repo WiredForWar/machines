@@ -1717,7 +1717,7 @@ int MachLogMachine::localStrength() const
     {
         // const-cast naughtiness, but this is okay as it doesn't violate the spirit of const
         // from the client's point of view - this is for cached lazy evaluation.
-        MachLogMachine* pThis = _CONST_CAST(MachLogMachine*, this);
+        MachLogMachine* pThis = const_cast<MachLogMachine*>(this);
         pThis->updateLocalStrengthEstimate();
         lastStrengthEstimateTime_ = SimManager::instance().currentTime();
         lastStrengthEstimateTime_ = SimManager::instance().currentTime();
@@ -1874,7 +1874,7 @@ bool MachLogMachine::findSafestNearbyAggressiveMachine(MachLogMachine** ppSafest
 
         // const-cast naughtiness, but this is okay as it doesn't violate the spirit of const
         // from the client's point of view - this is for cached lazy evaluation.
-        MachLogMachine* pThis = _CONST_CAST(MachLogMachine*, this);
+        MachLogMachine* pThis = const_cast<MachLogMachine*>(this);
 
         if (pSafestMachine_)
         {
@@ -1924,7 +1924,7 @@ bool MachLogMachine::findSafestNearbyMissileEmplacement(MachLogMissileEmplacemen
 
         // const-cast naughtiness, but this is okay as it doesn't violate the spirit of const
         // from the client's point of view - this is for cached lazy evaluation.
-        MachLogMachine* pThis = _CONST_CAST(MachLogMachine*, this);
+        MachLogMachine* pThis = const_cast<MachLogMachine*>(this);
 
         if (pSafestMissileEmplacement_)
         {
@@ -2473,7 +2473,7 @@ bool MachLogMachine::canFitInsideConstructionNow(const MachLogConstruction& cons
             MachPhysStation* pDummyStation = nullptr;
 
             MachPhysConstructionData& constructionData
-                = _CONST_CAST(MachPhysConstructionData&, construction.constructionData());
+                = const_cast<MachPhysConstructionData&>(construction.constructionData());
 
             MachPhysStations& stations = constructionData.stations();
             result = stations.freeStation(stationType, &pDummyStation);

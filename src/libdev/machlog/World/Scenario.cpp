@@ -1352,13 +1352,13 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
     if (lineSize >= 6)
     {
         subType = MachLogScenario::objectSubType(type, parser.tokens()[4]);
-        // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 5 ].c_str() ) );
+        // hwLevel = const_cast<size_t>(atoi( parser.tokens()[ 5 ].c_str() ) );
         hwLevel = atoi(parser.tokens()[5].c_str());
     }
     else
     {
         subType = 0;
-        // hwLevel = _CONST_CAST(size_t, atoi( parser.tokens()[ 4 ].c_str() ) );
+        // hwLevel = const_cast<size_t>(atoi( parser.tokens()[ 4 ].c_str() ) );
         hwLevel = atoi(parser.tokens()[4].c_str());
     }
 

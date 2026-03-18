@@ -493,7 +493,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                                 doMove = false;
                                 MachPhysStation::Type type = pStation_->type();
                                 MachPhysConstructionData& conData
-                                    = _CONST_CAST(MachPhysConstructionData&, pConstruction_->constructionData());
+                                    = const_cast<MachPhysConstructionData&>(pConstruction_->constructionData());
 
                                 if (conData.stations().freeStation(type, &pStation_))
                                     doMove = true;
@@ -710,7 +710,7 @@ void perRead(PerIstream& istr, MachLogEnterBuildingOperation& op)
     // Get the station if required
     if (needToGetAStation)
     {
-        MachPhysConstructionData& data = _CONST_CAST(MachPhysConstructionData&, op.pConstruction_->constructionData());
+        MachPhysConstructionData& data = const_cast<MachPhysConstructionData&>(op.pConstruction_->constructionData());
         bool found = data.stations().nearStation(stationCoords, &op.pStation_);
         ASSERT(found, "Invalid station coords");
     }
@@ -1227,7 +1227,7 @@ void perRead(PerIstream& istr, MachLogLeaveBuildingOperation& op)
     // Get the station if required
     if (needToGetAStation)
     {
-        MachPhysConstructionData& data = _CONST_CAST(MachPhysConstructionData&, op.pConstruction_->constructionData());
+        MachPhysConstructionData& data = const_cast<MachPhysConstructionData&>(op.pConstruction_->constructionData());
         bool found = data.stations().nearStation(stationCoords, &op.pStation_);
         ASSERT(found, "Invalid station coords");
     }

@@ -105,50 +105,42 @@ const MachPhysObjDemolish& MachPhysObjDemolish::exemplar(MachPhys::DemolitionTyp
     //   MachPhysObjDemolish** result;
     if (type.objectType == MachPhys::NOT_CONSTRUCTION)
     {
-        result = _CONST_CAST(MachPhysObjDemolish*, &MachPhysWeaponPersistence::instance().objDemolishExemplar(type));
+        result = const_cast<MachPhysObjDemolish*>(&MachPhysWeaponPersistence::instance().objDemolishExemplar(type));
     }
     else
     {
         switch (type.constructionType)
         {
             case MachPhys::HARDWARE_LAB:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().hardwareLabDemolishExemplar(type));
                 break;
             case MachPhys::SMELTER:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().smelterDemolishExemplar(type));
                 break;
             case MachPhys::FACTORY:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().factoryDemolishExemplar(type));
                 break;
             case MachPhys::MISSILE_EMPLACEMENT:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().missileEmplacementDemolishExemplar(type));
                 break;
             case MachPhys::GARRISON:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().garrisonDemolishExemplar(type));
                 break;
             case MachPhys::MINE:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().mineDemolishExemplar(type));
                 break;
             case MachPhys::BEACON:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().beaconDemolishExemplar(type));
                 break;
             case MachPhys::POD:
-                result = _CONST_CAST(
-                    MachPhysObjDemolish*,
+                result = const_cast<MachPhysObjDemolish*>(
                     &MachPhysWeaponPersistence::instance().podDemolishExemplar(type));
                 break;
                 DEFAULT_ASSERT_BAD_CASE(type.constructionType);

@@ -130,7 +130,7 @@ W4dMaterialFramePlan* W4dMaterialFramePlan::createPlan(
 
     for (W4dLOD lodId = 0; lodId <= maxLOD; ++lodId)
     {
-        const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh(lodId);
+        const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh(lodId);
         const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
         RenMaterialVec* pAnimMaterialVec;
 

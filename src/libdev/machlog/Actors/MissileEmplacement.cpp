@@ -208,7 +208,7 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
                     checkAndAttackCloserTarget(this);
                 }
                 diminishAlertnessAndInaccuracy();
-                // alertnessResponse = ( 4.2 - ( _CONST_CAST( PhysRelativeTime, std::min( 100, alertness() ) ) / 30.0 )
+                // alertnessResponse = ( 4.2 - ( const_cast< PhysRelativeTime>(std::min( 100, alertness() ) ) / 30.0 )
                 // );
                 alertnessResponse = (4.2 - std::min(100, alertness()) / 30.0);
         }
@@ -436,7 +436,7 @@ int MachLogMissileEmplacement::localStrength() const
     {
         // const-cast naughtiness, but this is okay as it doesn't violate the spirit of const
         // from the client's point of view - this is for cached lazy evaluation.
-        MachLogMissileEmplacement* pThis = _CONST_CAST(MachLogMissileEmplacement*, this);
+        MachLogMissileEmplacement* pThis = const_cast<MachLogMissileEmplacement*>(this);
         pThis->updateLocalStrengthEstimate();
         pThis->lastStrengthEstimateTime_ = SimManager::instance().currentTime();
     }

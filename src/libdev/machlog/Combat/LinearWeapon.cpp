@@ -91,7 +91,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace()
         && owner().asMachine().insideBuilding())
     {
-        pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
+        pParent = const_cast<W4dDomain*>(&owner().asMachine().insideWhichBuilding().interiorDomain());
     }
 
     MachLogMessageBroker::ProjectileDestroyData extraData;
@@ -160,7 +160,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
     if (owner().objectIsMachine()
         && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
-        pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
+        pParent = const_cast<W4dDomain*>(&owner().asMachine().insideWhichBuilding().interiorDomain());
     }
 
     MachLogMessageBroker::ProjectileDestroyData extraData;
@@ -174,7 +174,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
     const W4dEntity& targetEntity = cactor.physObject();
 
     // MexPoint3d originalTargetOffset = cactor.predictedTargetOffset( approxTimeToTarget );
-    MexPoint3d originalTargetOffset = _CONST_CAST(MachActor&, cactor).predictedTargetOffset(approxTimeToTarget);
+    MexPoint3d originalTargetOffset = const_cast<MachActor&>(cactor).predictedTargetOffset(approxTimeToTarget);
 
     MexPoint3d finalOffsetPoint;
 
@@ -306,7 +306,7 @@ void MachLogLinearWeapon::doEchoFire(
     if (owner().objectIsMachine()
         && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
-        pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
+        pParent = const_cast<W4dDomain*>(&owner().asMachine().insideWhichBuilding().interiorDomain());
     }
 
     const MachActor& cactor = *pTarget;
@@ -348,7 +348,7 @@ void MachLogLinearWeapon::doEchoFireForTerrain(
     if (owner().objectIsMachine()
         && &owner().asMachine().motionSeq().currentConfigSpace() != &MachLogPlanet::instance().configSpace())
     {
-        pParent = _CONST_CAST(W4dDomain*, &owner().asMachine().insideWhichBuilding().interiorDomain());
+        pParent = const_cast<W4dDomain*>(&owner().asMachine().insideWhichBuilding().interiorDomain());
     }
 
     // get domain and transform to use

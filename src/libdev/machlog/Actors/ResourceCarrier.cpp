@@ -652,7 +652,7 @@ const MachPhysResourceCarrierData& MachLogResourceCarrier::data() const
     // return  static_cast< MachPhysResourceCarrierData>(physMachine().machineData() );
     return static_cast<const MachPhysResourceCarrierData&>(physMachine().machineData());
     // return  _REINTERPRET_CAST( MachPhysResourceCarrierData&,
-    //   _CONST_CAST(MachPhysMachineData&, physMachine().machineData()) );
+    //   const_cast<MachPhysMachineData&>(physMachine().machineData()) );
 }
 /* //////////////////////////////////////////////////////////////// */
 

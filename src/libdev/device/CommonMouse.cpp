@@ -26,7 +26,7 @@ DevMouse::ButtonState DevMouse::deltaLeftButton() const
     else
         result = RELEASED;
 
-    DevMouse* nonConstThis = _CONST_CAST(DevMouse*, this);
+    DevMouse* nonConstThis = const_cast<DevMouse*>(this);
 
     nonConstThis->lastLeftButtonState_ = currentLeftButtonState;
 
@@ -48,7 +48,7 @@ DevMouse::ButtonState DevMouse::deltaRightButton() const
     else
         result = RELEASED;
 
-    DevMouse* nonConstThis = _CONST_CAST(DevMouse*, this);
+    DevMouse* nonConstThis = const_cast<DevMouse*>(this);
 
     nonConstThis->lastRightButtonState_ = currentRightButtonState;
 

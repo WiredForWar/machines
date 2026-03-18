@@ -47,7 +47,7 @@ MachPhysLandMine::MachPhysLandMine()
     //    //TBD: Disable the bcak fuce cull via static cast here.
     //    //These needs to be changed so the property is defined in the .x file.
     //    Ren::ConstMeshPtr myMesh = mesh().mesh();
-    //    _CONST_CAST( RenMesh&, *myMesh ).backFace( false );
+    //    const_cast< RenMesh&>(*myMesh ).backFace( false );
     TEST_INVARIANT;
 }
 

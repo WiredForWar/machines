@@ -161,7 +161,7 @@ const NetNetwork::Sessions& NetINetwork::sessions() const
 
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         NetIRecorder::instance().playbackSessions(&nonConstThis->sessions_);
     }
@@ -856,7 +856,7 @@ bool NetINetwork::isLobbiedGame() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->isLobbiedGame_ = NetIRecorder::instance().playbackIsLobbiedGame();
     }
@@ -875,7 +875,7 @@ bool NetINetwork::isLogicalHost() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->isLogicalHost_ = NetIRecorder::instance().playbackIsLogicalHost();
     }
@@ -894,7 +894,7 @@ const std::string& NetINetwork::localPlayerName() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->localPlayerName_ = NetIRecorder::instance().playbackLocalPlayerName();
     }
@@ -918,7 +918,7 @@ NetNetwork::NetworkProtocol NetINetwork::currentProtocol() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->currentProtocol_ = NetIRecorder::instance().playbackCurrentProtocol();
     }
@@ -937,7 +937,7 @@ const std::string& NetINetwork::IPAddress() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->IPAddress_ = NetIRecorder::instance().playbackIPAddress();
     }
@@ -961,7 +961,7 @@ bool NetINetwork::imStuffed() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetINetwork* nonConstThis = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* nonConstThis = const_cast<NetINetwork*>(this);
 
         nonConstThis->imStuffed_ = NetIRecorder::instance().playbackImStuffed();
     }
@@ -1073,7 +1073,7 @@ size_t NetINetwork::maxSentMessagesPerSecond() const
     static bool initialisedFromRegistry = false;
     if (! initialisedFromRegistry)
     {
-        NetINetwork* pMe = _CONST_CAST(NetINetwork*, this);
+        NetINetwork* pMe = const_cast<NetINetwork*>(this);
         bool fromLan = (currentProtocol() == NetNetwork::NetworkProtocol::IPX);
         std::string keyValue = "Max packets per second";
 

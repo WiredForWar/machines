@@ -1573,7 +1573,7 @@ void MachActor::populateStrongThreats(Actors* pActors)
 
 int MachActor::militaryValueOfIncomingThreats() const
 {
-    MachActor* pMe = _CONST_CAST(MachActor*, this);
+    MachActor* pMe = const_cast<MachActor*>(this);
     pMe->validateActorsThreateningMe();
 
     CB_DEPIMPL(const Actors, actorsThreateningMe_);
@@ -1915,7 +1915,7 @@ const MexPoint3d& MachActor::predictedTargetOffset(PhysRelativeTime t)
             cachedTargetOffset_ = result;
             // const-cast naughtiness, but this is okay as it doesn't violate the spirit of const
             // from the client's point of view - this is for cached lazy evaluation.
-            MachActor* pThis = _CONST_CAST(MachActor*, this);
+            MachActor* pThis = const_cast<MachActor*>(this);
             pThis->pImpl_->nextPredictedPositionRecalculateTime_ = timeNow + 0.05;
         }
         return cachedTargetOffset_;
@@ -2018,7 +2018,7 @@ void MachActor::checkAndDoSpecialDeaths()
 
             MachLogWeapon& vortexWeapon = *(aggressor.weapons().front());
             ASSERT(
-                _CONST_CAST(const MachLogWeapon&, vortexWeapon).physWeapon().type() == MachPhys::VORTEX,
+                const_cast<const MachLogWeapon&>(vortexWeapon).physWeapon().type() == MachPhys::VORTEX,
                 "Eradicator's first weapon was NOT a vortex!");
 
             vortexWeapon.fire(position());
@@ -2034,7 +2034,7 @@ void MachActor::checkAndDoSpecialDeaths()
 
             MachLogWeapon& nukeWeapon = *(me.weapons().front());
             ASSERT(
-                _CONST_CAST(const MachLogWeapon&, nukeWeapon).physWeapon().type() == MachPhys::NUCLEAR_MISSILE,
+                const_cast<const MachLogWeapon&>(nukeWeapon).physWeapon().type() == MachPhys::NUCLEAR_MISSILE,
                 "ICBM's first weapon was NOT a nuke!");
 
             nukeWeapon.fire(position());

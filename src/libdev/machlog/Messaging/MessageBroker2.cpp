@@ -111,7 +111,7 @@ void MachLogMessageBroker::processBeHitMessage(NetMessage* pNetMessage)
 {
     // MachLogBeHitMessage* pMessage = reinterpret_cast< MachLogBeHitMessage*>(&pNetMessage->body().body()[0] );
     MachLogBeHitMessage* pMessage
-        = reinterpret_cast<MachLogBeHitMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogBeHitMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     NETWORK_ERRORS_STREAM("MachLogMessageBroker::processBeHitMessage " << pMessage->whichId_ << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, "processBeHitMessage " << pMessage->whichId_ << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, *pMessage << std::endl);
@@ -195,7 +195,7 @@ void MachLogMessageBroker::processFireWeaponAnimationMessage(NetMessage* pNetMes
     // MachLogFireWeaponAnimationMessage* pMessage = _REINTERPRET_CAST( MachLogFireWeaponAnimationMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogFireWeaponAnimationMessage* pMessage
-        = reinterpret_cast<MachLogFireWeaponAnimationMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogFireWeaponAnimationMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processFireWeaponAnimationMessage " << pMessage->whichId_ << std::endl);
     //  DEBUG_STREAM( DIAG_NETWORK, *pMessage << std::endl );
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exist");
@@ -206,9 +206,8 @@ void MachLogMessageBroker::processFireWeaponAnimationMessage(NetMessage* pNetMes
         if (actor.objectIsCanAttack())
         {
             MachLogCanAttack& canAttack = actor.asCanAttack();
-            MachLogCanAttack::Weapons& weapons
-                = _CONST_CAST(MachLogCanAttack::Weapons&, _CONST_CAST(const MachLogCanAttack&, canAttack).weapons());
-            //          MachLogCanAttack::Weapons& weapons = _CONST_CAST( MachLogCanAttack::Weapons&, cweapons );
+            MachLogCanAttack::Weapons& weapons = const_cast<MachLogCanAttack::Weapons&>(canAttack.weapons());
+            //          MachLogCanAttack::Weapons& weapons = const_cast< MachLogCanAttack::Weapons&>(cweapons );
             for (MachLogCanAttack::Weapons::iterator i = weapons.begin(); i != weapons.end(); ++i)
                 if ((*i)->mounting() == pMessage->mounting_)
                 {
@@ -243,7 +242,7 @@ void MachLogMessageBroker::processUpdateCompletionVisualisationMessage(NetMessag
     // MachLogUpdateCompletionVisualisationMessage* pMessage = _REINTERPRET_CAST(
     // MachLogUpdateCompletionVisualisationMessage*, &pNetMessage->body().body()[0] );
     MachLogUpdateCompletionVisualisationMessage* pMessage = reinterpret_cast<MachLogUpdateCompletionVisualisationMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processUpdateCompletionVisualisationMessage " << pMessage->whichId_ << std::endl);
     //  DEBUG_STREAM( DIAG_NETWORK, *pMessage << std::endl );
     ASSERT_INFO(pMessage->whichId_);
@@ -314,7 +313,7 @@ void MachLogMessageBroker::processEchoLinearProjectileMessage(NetMessage* pNetMe
     // MachLogEchoLinearProjectileMessage* pMessage = _REINTERPRET_CAST( MachLogEchoLinearProjectileMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogEchoLinearProjectileMessage* pMessage
-        = reinterpret_cast<MachLogEchoLinearProjectileMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogEchoLinearProjectileMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processEchoLinearProjectileMessage " << pMessage->whichId_ << std::endl);
     //  DEBUG_STREAM( DIAG_NETWORK, *pMessage << std::endl );
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exist");
@@ -352,8 +351,7 @@ void MachLogMessageBroker::processEchoLinearProjectileMessage(NetMessage* pNetMe
             }
             MachLogCanAttack& canAttack = actor.asCanAttack();
             MachLogCanAttack::Weapons& weapons
-                = _CONST_CAST(MachLogCanAttack::Weapons&, _CONST_CAST(const MachLogCanAttack&, canAttack).weapons());
-            //          MachLogCanAttack::Weapons& weapons = _CONST_CAST( MachLogCanAttack::Weapons&, cweapons );
+                = const_cast<MachLogCanAttack::Weapons&>(const_cast<MachLogCanAttack&>(canAttack).weapons());
             for (MachLogCanAttack::Weapons::iterator i = weapons.begin(); i != weapons.end(); ++i)
                 if ((*i)->mounting() == pMessage->mounting_)
                 {
@@ -461,7 +459,7 @@ void MachLogMessageBroker::processCreateSpecialWeaponEffectMessage(NetMessage* p
     // MachLogCreateSpecialWeaponEffectMessage* pMessage = _REINTERPRET_CAST( MachLogCreateSpecialWeaponEffectMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogCreateSpecialWeaponEffectMessage* pMessage = reinterpret_cast<MachLogCreateSpecialWeaponEffectMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(
         DIAG_NETWORK,
         "processCreateSpecialWeaponEffectMessage " << pMessage->weaponType_ << " " << pMessage->position_ << std::endl);
@@ -529,13 +527,13 @@ void MachLogMessageBroker::processApplySpecialWeaponAnimationMessage(NetMessage*
     // MachLogApplySpecialWeaponAnimationMessage* pMessage = _REINTERPRET_CAST(
     // MachLogApplySpecialWeaponAnimationMessage*, &pNetMessage->body().body()[0] );
     MachLogApplySpecialWeaponAnimationMessage* pMessage = reinterpret_cast<MachLogApplySpecialWeaponAnimationMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processApplySpecialWeaponAnimationMessage " << pMessage->weaponType_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exist" );
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
         MachActor& actor = MachLogRaces::instance().actor(pMessage->whichId_);
-        const MachActor& cactor = _CONST_CAST(const MachActor&, actor);
+        const MachActor& cactor = const_cast<const MachActor&>(actor);
         switch (pMessage->weaponType_)
         {
             case MachPhys::VORTEX:
@@ -572,7 +570,7 @@ void MachLogMessageBroker::processPlayNormalObjectAnimationMessage(NetMessage* p
     // MachLogPlayNormalObjectAnimationMessage* pMessage = _REINTERPRET_CAST( MachLogPlayNormalObjectAnimationMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogPlayNormalObjectAnimationMessage* pMessage = reinterpret_cast<MachLogPlayNormalObjectAnimationMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processPlayNormalObjectAnimationMessage " << pMessage->whichId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exist" );
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -620,7 +618,7 @@ void MachLogMessageBroker::processPlayConstructAnimationMessage(NetMessage* pNet
     // MachLogPlayConstructionAnimationMessage* pMessage = _REINTERPRET_CAST( MachLogPlayConstructionAnimationMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogPlayConstructionAnimationMessage* pMessage = reinterpret_cast<MachLogPlayConstructionAnimationMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "MachLogPlayConstructionAnimationMessage " << pMessage->constructorId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->constructorId_ ), "Actor does not exist" );
 
@@ -664,7 +662,7 @@ void MachLogMessageBroker::processWeaponInformationMessage(NetMessage* pNetMessa
     // MachLogWeaponInformationMessage* pMessage = _REINTERPRET_CAST( MachLogWeaponInformationMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogWeaponInformationMessage* pMessage
-        = reinterpret_cast<MachLogWeaponInformationMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogWeaponInformationMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processWeaponInformationMessage " << std::endl);
 
     MachPhys::Race myRace = MachLogRaces::instance().playerRace();
@@ -712,7 +710,7 @@ void MachLogMessageBroker::processSetSiteDiscoveredByMessage(NetMessage* pNetMes
     // MachLogSetSiteDiscoveredByMessage* pMessage = _REINTERPRET_CAST( MachLogSetSiteDiscoveredByMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogSetSiteDiscoveredByMessage* pMessage
-        = reinterpret_cast<MachLogSetSiteDiscoveredByMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogSetSiteDiscoveredByMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processSetSiteDiscoveredByMessage " << std::endl);
     for (MachLogPlanet::Sites::const_iterator i = MachLogPlanet::instance().sites().begin();
          i != MachLogPlanet::instance().sites().end();
@@ -747,7 +745,7 @@ void MachLogMessageBroker::processSetSiteOreMessage(NetMessage* pNetMessage)
     // MachLogSetSiteOreMessage* pMessage = reinterpret_cast< MachLogSetSiteOreMessage*>(&pNetMessage->body().body()[0]
     // );
     MachLogSetSiteOreMessage* pMessage
-        = reinterpret_cast<MachLogSetSiteOreMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogSetSiteOreMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
 
     DEBUG_STREAM(DIAG_NETWORK, "processSetSiteOreMessage " << std::endl);
 
@@ -784,7 +782,7 @@ void MachLogMessageBroker::processNewResearchMessage(NetMessage* pNetMessage)
     // MachLogNewResearchMessage* pMessage = _REINTERPRET_CAST( MachLogNewResearchMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogNewResearchMessage* pMessage
-        = reinterpret_cast<MachLogNewResearchMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogNewResearchMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processNewResearchMessage " << std::endl);
     MachLogResearchItem& ri = MachLogRaces::instance().researchTree().researchItem(
         pMessage->objectType_,
@@ -819,7 +817,7 @@ void MachLogMessageBroker::processHealMessage(NetMessage* pNetMessage)
 {
     // MachLogHealMessage* pMessage = reinterpret_cast< MachLogHealMessage*>(&pNetMessage->body().body()[0] );
     MachLogHealMessage* pMessage
-        = reinterpret_cast<MachLogHealMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogHealMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processHealMessage " << std::endl);
     if (pMessage->garrisonHealing_)
     {
@@ -881,7 +879,7 @@ void MachLogMessageBroker::processRemoveConstructionMessage(NetMessage* pNetMess
     // MachLogRemoveConstructionMessage* pMessage = _REINTERPRET_CAST( MachLogRemoveConstructionMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogRemoveConstructionMessage* pMessage
-        = reinterpret_cast<MachLogRemoveConstructionMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogRemoveConstructionMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processRemoveConstructionMessage (" << pMessage->whichId_ << ")" << std::endl);
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
@@ -922,7 +920,7 @@ void MachLogMessageBroker::processChangeRaceMessage(NetMessage* pNetMessage)
     // MachLogChangeRaceMessage* pMessage = reinterpret_cast< MachLogChangeRaceMessage*>(&pNetMessage->body().body()[0]
     // );
     MachLogChangeRaceMessage* pMessage
-        = reinterpret_cast<MachLogChangeRaceMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogChangeRaceMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processChangeRaceMessage (" << pMessage->whichId_ << ")" << std::endl);
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
@@ -960,7 +958,7 @@ void MachLogMessageBroker::processDebrisExpiredMessage(NetMessage* pNetMessage)
     // MachLogRemoveConstructionMessage* pMessage = _REINTERPRET_CAST( MachLogRemoveConstructionMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogRemoveConstructionMessage* pMessage
-        = reinterpret_cast<MachLogRemoveConstructionMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogRemoveConstructionMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processDebrisExpiredMessage (" << pMessage->whichId_ << ")" << std::endl);
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
@@ -1007,7 +1005,7 @@ void MachLogMessageBroker::processLoadArtefactModelsMessage(NetMessage* pNetMess
     // MachLogLoadArtefactModelsMessage* pMessage = _REINTERPRET_CAST( MachLogLoadArtefactModelsMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogLoadArtefactModelsMessage* pMessage
-        = reinterpret_cast<MachLogLoadArtefactModelsMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogLoadArtefactModelsMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processLoadArtefactModelsMessage " << std::endl);
     MachLogRaces::instance().artefacts().load(pMessage->arrayData_);
 }
@@ -1065,7 +1063,7 @@ void MachLogMessageBroker::processAddNewArtefactSubTypeMessage(NetMessage* pNetM
     // MachLogAddNewArtefactSubTypeMessage* pMessage = _REINTERPRET_CAST( MachLogAddNewArtefactSubTypeMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogAddNewArtefactSubTypeMessage* pMessage
-        = reinterpret_cast<MachLogAddNewArtefactSubTypeMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogAddNewArtefactSubTypeMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddNewArtefactSubTypeMessage " << std::endl);
     // recreate local boundary
     ctl_vector<MexPoint2d> localBoundary;
@@ -1122,7 +1120,7 @@ void MachLogMessageBroker::processAddArtefactDamageLinkMessage(NetMessage* pNetM
     // MachLogAddArtefactDamageLinkMessage* pMessage = _REINTERPRET_CAST( MachLogAddArtefactDamageLinkMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogAddArtefactDamageLinkMessage* pMessage
-        = reinterpret_cast<MachLogAddArtefactDamageLinkMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogAddArtefactDamageLinkMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddArtefactDamageLinkMessage " << std::endl);
     MachLogRaces::instance().artefacts().addDamageRelation(
         pMessage->destroyId_,
@@ -1151,7 +1149,7 @@ void MachLogMessageBroker::processCamouflageMachineMessage(NetMessage* pNetMessa
     // MachLogCamouflageMachineMessage* pMessage = _REINTERPRET_CAST( MachLogCamouflageMachineMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogCamouflageMachineMessage* pMessage
-        = reinterpret_cast<MachLogCamouflageMachineMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogCamouflageMachineMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processCamouflageMachineMessage " << pMessage->whichId_ << std::endl);
 
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exist");
@@ -1202,7 +1200,7 @@ void MachLogMessageBroker::processCurrentTargetMessage(NetMessage* pNetMessage)
     // MachLogCurrentTargetMessage* pMessage = _REINTERPRET_CAST( MachLogCurrentTargetMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogCurrentTargetMessage* pMessage
-        = reinterpret_cast<MachLogCurrentTargetMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogCurrentTargetMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processCurrentTargetMessage " << pMessage->whichId_ << std::endl);
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
@@ -1241,7 +1239,7 @@ void MachLogMessageBroker::processEchoNewScoreMessage(NetMessage* pNetMessage)
     // MachLogEchoNewScoreMessage* pMessage = _REINTERPRET_CAST( MachLogEchoNewScoreMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogEchoNewScoreMessage* pMessage
-        = reinterpret_cast<MachLogEchoNewScoreMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogEchoNewScoreMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processEchoNewScoreMessage " << std::endl);
     MachLogRaces::instance().score(pMessage->scoreImpl_.race_).assignScoreFromImpl(pMessage->scoreImpl_);
 }
@@ -1273,7 +1271,7 @@ void MachLogMessageBroker::processActorThreatMessage(NetMessage* pNetMessage)
     // MachLogActorThreatMessage* pMessage = _REINTERPRET_CAST( MachLogActorThreatMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogActorThreatMessage* pMessage
-        = reinterpret_cast<MachLogActorThreatMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogActorThreatMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(
         DIAG_NETWORK,
         "processActorThreatMessage whichId " << pMessage->whichId_ << " threat " << pMessage->threatId_ << " Add? "
@@ -1330,7 +1328,7 @@ void MachLogMessageBroker::processChangeOfDispositionMessage(NetMessage* pNetMes
     // MachLogChangeOfDispositionMessage* pMessage = _REINTERPRET_CAST( MachLogChangeOfDispositionMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogChangeOfDispositionMessage* pMessage
-        = reinterpret_cast<MachLogChangeOfDispositionMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogChangeOfDispositionMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processChangeOfDispositionMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     races.dispositionToRaceWithoutEcho(
@@ -1362,7 +1360,7 @@ void MachLogMessageBroker::processSmeltMachineMessage(NetMessage* pNetMessage)
     // MachLogSmeltMachineMessage* pMessage = _REINTERPRET_CAST( MachLogSmeltMachineMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogSmeltMachineMessage* pMessage
-        = reinterpret_cast<MachLogSmeltMachineMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogSmeltMachineMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processSmeltMachineMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
@@ -1409,7 +1407,7 @@ void MachLogMessageBroker::processAdvanceConstructionStateMessage(NetMessage* pN
     // MachLogAdvanceConstructionStateMessage* pMessage = _REINTERPRET_CAST( MachLogAdvanceConstructionStateMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogAdvanceConstructionStateMessage* pMessage = reinterpret_cast<MachLogAdvanceConstructionStateMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAdvanceConstructionStateMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
@@ -1443,7 +1441,7 @@ void MachLogMessageBroker::processAddRepairPointsMessage(NetMessage* pNetMessage
     // MachLogAddRepairPointsMessage* pMessage = _REINTERPRET_CAST( MachLogAddRepairPointsMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogAddRepairPointsMessage* pMessage
-        = reinterpret_cast<MachLogAddRepairPointsMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogAddRepairPointsMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddRepairPointsMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
@@ -1477,7 +1475,7 @@ void MachLogMessageBroker::processMakeCompleteConstructionMessage(NetMessage* pN
     // MachLogMakeCompleteConstructionMessage* pMessage = _REINTERPRET_CAST( MachLogMakeCompleteConstructionMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMakeCompleteConstructionMessage* pMessage = reinterpret_cast<MachLogMakeCompleteConstructionMessage*>(
-        _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processMakeCompleteConstructionMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;
@@ -1512,7 +1510,7 @@ void MachLogMessageBroker::processIsEntranceOpenMessage(NetMessage* pNetMessage)
     // MachLogIsEntranceOpenMessage* pMessage = _REINTERPRET_CAST( MachLogIsEntranceOpenMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogIsEntranceOpenMessage* pMessage
-        = reinterpret_cast<MachLogIsEntranceOpenMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogIsEntranceOpenMessage*>(const_cast<uint8*>(&pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processIsEntranceOpenMessage " << std::endl);
     MachLogRaces& races = MachLogRaces::instance();
     UtlId& whichId = pMessage->whichId_;

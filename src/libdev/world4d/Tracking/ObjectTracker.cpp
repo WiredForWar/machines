@@ -78,7 +78,7 @@ MATHEX_SCALAR W4dObjectTracker::track(MexTransform3d* pTrackTransform) const
     if (now != lastUpdateTime_)
     {
         // Update the cached data
-        W4dObjectTracker* nonConstThis = _CONST_CAST(W4dObjectTracker*, this);
+        W4dObjectTracker* nonConstThis = const_cast<W4dObjectTracker*>(this);
         nonConstThis->lastUpdateTime_ = now;
 
         // Get the current global position of the target point

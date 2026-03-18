@@ -206,13 +206,13 @@ void RenMeshInstance::render(const MexTransform3d& transform, const RenScale& ex
     // Cache the existing RenScale pointer, since we intend to temporarily
     // replace it with one allocated on the stack in this function
     RenScale& baseScale = *scale_;
-    RenMeshInstance* nonConstThis = _CONST_CAST(RenMeshInstance*, this);
+    RenMeshInstance* nonConstThis = const_cast<RenMeshInstance*>(this);
 
     // Check various combinations of base and extra scale types
     if (baseScale.isUnity())
     {
         // No base scale, so just use the extra one
-        nonConstThis->scale_ = _CONST_CAST(RenScale*, &extraScale);
+        nonConstThis->scale_ = const_cast<RenScale*>(&extraScale);
         render(transform);
     }
     else if (extraScale.isUniform())

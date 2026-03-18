@@ -128,7 +128,7 @@ void MachLogPodAttackOperation::doFinish()
 
 bool MachLogPodAttackOperation::doIsFinished() const
 {
-    bool result = ! _CONST_CAST(const MachLogPod&, *pActor_).weapons().front()->recharged();
+    bool result = ! const_cast<const MachLogPod&>(*pActor_).weapons().front()->recharged();
 
     return result;
 }

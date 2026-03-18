@@ -45,7 +45,7 @@ RenIDelayedSpinPolygon::~RenIDelayedSpinPolygon()
 void RenIDelayedSpinPolygon::render()
 {
     // SetTransform is not const-correct w.r.t. its 2nd argument.
-    glm::mat4* crufty = _CONST_CAST(glm::mat4*, &xform_);
+    glm::mat4* crufty = const_cast<glm::mat4*>(&xform_);
     RenDevice::current()->setModelMatrix(*crufty);
     RenIDeviceImpl::currentPimpl()->setMaterialHandles(material_);
 

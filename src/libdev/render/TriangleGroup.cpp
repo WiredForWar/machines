@@ -322,7 +322,7 @@ void perWrite(PerOstream& ostr, const RenIDistinctGroup& group)
 {
     const RenITriangleGroup& base = group;
     ostr << base;
-    _CONST_CAST(RenIDistinctGroup&, group)
+    const_cast<RenIDistinctGroup&>(group)
         .indices_.persistAsRaw(true); // TODO something corrupts memory and flag is cleared again?
     ostr << group.indices_;
     ostr << group.nIndicesUsed_;

@@ -607,7 +607,7 @@ const NetNode::Ping& NetNode::pingInformation() const
     CB_NetNode_DEPIMPL();
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
     {
-        NetNode* nonConstThis = _CONST_CAST(NetNode*, this);
+        NetNode* nonConstThis = const_cast<NetNode*>(this);
 
         nonConstThis->pImpl_->ping_ = NetIRecorder::instance().playbackPing();
     }

@@ -413,7 +413,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
 
                     if (pActor_->asMine().hasMineralSite())
                     {
-                        bmusLeft = _CONST_CAST(const MachLogMine&, pActor_->asMine()).mineralSite().amountOfOre();
+                        bmusLeft = const_cast<const MachLogMine&>(pActor_->asMine()).mineralSite().amountOfOre();
                     }
 
                     // Add BMU info

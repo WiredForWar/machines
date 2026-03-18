@@ -324,7 +324,7 @@ bool MachLogPod::hasIonCannon() const
 
         // CONST_CAST naughtiness to simulate hasIonCannon_ being mutable - spirit of const-correctness is not violated
         // from client's point of view.
-        bool& mutableHasIonCannon = _CONST_CAST( bool&, hasIonCannon_ );
+        bool& mutableHasIonCannon = const_cast< bool&>(hasIonCannon_ );
         mutableHasIonCannon = result;
     }
 

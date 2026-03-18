@@ -99,18 +99,6 @@ using uint = unsigned int;
 
 //////////////////////////////////////////////////////////////////////
 
-#ifndef NO_STANDARD_CASTS
-
-#define _CONST_CAST(t, o) (const_cast<t>(o))
-
-#else
-
-#define _CONST_CAST(t, o) ((t)(o))
-
-#endif /* #ifndef NO_STANDARD_CASTS */
-
-//////////////////////////////////////////////////////////////////////
-
 // Macros make switching between pImpl_ and no pImpl_ very easy.
 #define CB_DEPIMPL_AUTO(varname)                                                                                       \
     PRE(pImpl_)                                                                                                        \

@@ -50,7 +50,7 @@ bool PhysCS2dDomainFindPathCache::findPath(
         }
     }
 
-    PhysCS2dDomainFindPathCache* nonConstThis = _CONST_CAST(PhysCS2dDomainFindPathCache*, this);
+    PhysCS2dDomainFindPathCache* nonConstThis = const_cast<PhysCS2dDomainFindPathCache*>(this);
 
     if (result)
         ++nonConstThis->succeed_;

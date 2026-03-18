@@ -302,7 +302,7 @@ public:                                                                         
 #define PER_PRIVATE_READ_RAW_DATA(istr, ptr, nBytes)                                                                   \
     Persistence::instance().readRawData(istr, reinterpret_cast<char*>(ptr), nBytes)
 
-#define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> _CONST_CAST(NON_CONST_TYPE&, OBJECT)
+#define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> const_cast<NON_CONST_TYPE&>(OBJECT)
 
 #define PER_PRIVATE_WRITE_ENUM_DEFINITION(TYPE)                                                                        \
     inline PerOstream& operator<<(PerOstream& ostr, const TYPE& val)                                                   \
@@ -338,7 +338,7 @@ public:                                                                         
 #define PER_PRIVATE_DEFINE_PERSISTENT(className)                                                                       \
     char* className::perPDerivedClass() const                                                                          \
     {                                                                                                                  \
-        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
+        return const_cast<char*>(reinterpret_cast<const char*>(this));                                               \
     }                                                                                                                  \
     const char* className::perClassName()                                                                              \
     {                                                                                                                  \
@@ -512,7 +512,7 @@ public:                                                                         
                     PER_POINTER_READ(className, (className<LIST_T>::perCreate())) template <CLASS_LIST_T>              \
                     inline char* className<LIST_T>::perPDerivedClass() const                                           \
     {                                                                                                                  \
-        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
+        return const_cast<char*>(reinterpret_cast<const char*>(this));                                               \
     }                                                                                                                  \
     template <CLASS_LIST_T> inline const char* className<LIST_T>::perMostDerivedClassName() const                      \
     {                                                                                                                  \

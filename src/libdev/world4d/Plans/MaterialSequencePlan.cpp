@@ -114,7 +114,7 @@ bool W4dMaterialSequencePlan::makePlan(
 {
     bool Found = false;
 
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& materialVecPtr = meshInst.materialVec();
     RenMaterialVec* pAnimMaterialVec;
 
@@ -197,7 +197,7 @@ bool W4dMaterialSequencePlan::changeTexture(
 {
     bool found = false;
 
-    const RenMeshInstance& meshInst = _CONST_CAST(const W4dEntity*, pEntity)->mesh();
+    const RenMeshInstance& meshInst = const_cast<const W4dEntity*>(pEntity)->mesh();
     const Ren::MaterialVecPtr& meshInstMaterialVecPtr = meshInst.materialVec();
     RenMaterialVec* pAnimMaterialVec;
 
@@ -228,8 +228,8 @@ bool W4dMaterialSequencePlan::changeTexture(
     }
 
     // apply the new materialVecPtr to the mesh
-    //_CONST_CAST(RenMeshInstance, meshInst).materialVec( materialVecPtr );
-    _CONST_CAST(RenMeshInstance&, meshInst).materialVec(materialVecPtr);
+    //const_cast<RenMeshInstance>(meshInst).materialVec( materialVecPtr );
+    const_cast<RenMeshInstance&>(meshInst).materialVec(materialVecPtr);
 
     // delete the old to avoid mem leak
     delete pAnimMaterialVec;

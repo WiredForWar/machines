@@ -65,7 +65,7 @@ const MexSphere3d& W4dLightImpl::boundingSphere(const W4dCamera* camera) const
     // re-enabled later and meanwhile their spheres are used for culling.
     if (spherePassId_ != cameraPass)
     {
-        W4dLightImpl* ncThis = _CONST_CAST(W4dLightImpl*, this);
+        W4dLightImpl* ncThis = const_cast<W4dLightImpl*>(this);
         ncThis->spherePassId_ = cameraPass;
         pW4dLight_->updateSphere();
     }

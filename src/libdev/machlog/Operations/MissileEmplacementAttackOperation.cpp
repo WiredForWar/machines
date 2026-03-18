@@ -168,11 +168,11 @@ PhysRelativeTime MachLogMissileEmplacementAttackOperation::doUpdate()
 
     // Set up useful local variables
     PhysRelativeTime interval = 0.25;
-    const W4dEntity& targetObject = _CONST_CAST(const MachActor&, target).physObject();
+    const W4dEntity& targetObject = const_cast<const MachActor&>(target).physObject();
     MATHEX_SCALAR heightModifier = 1.0;
 
     // Check each weapon separately
-    const MachLogCanAttack::Weapons& weapons = _CONST_CAST(const MachLogCanAttack&, attacker).weapons();
+    const MachLogCanAttack::Weapons& weapons = const_cast<const MachLogCanAttack&>(attacker).weapons();
 
     MachLogFireData fireData = pActor_->asCanAttack().createFireData();
 
@@ -180,7 +180,7 @@ PhysRelativeTime MachLogMissileEmplacementAttackOperation::doUpdate()
     {
         // store the logical and physical weapon refs
         MachLogWeapon& weapon = *(*it);
-        const MachPhysWeapon& physWeapon = _CONST_CAST(const MachLogWeapon&, weapon).physWeapon();
+        const MachPhysWeapon& physWeapon = const_cast<const MachLogWeapon&>(weapon).physWeapon();
 
         // Get the disposition of this weapon with respect to position (not cover)
         MexPoint3d globalAimPoint;

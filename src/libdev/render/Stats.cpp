@@ -120,7 +120,7 @@ bool RenStats::shown()
 const std::string& RenStats::statsText() const
 {
     TEST_INVARIANT;
-    RenStats* crufty = _CONST_CAST(RenStats*, this);
+    RenStats* crufty = const_cast<RenStats*>(this);
     crufty->text_ = stream_.dataAsString();
     return text_;
 }

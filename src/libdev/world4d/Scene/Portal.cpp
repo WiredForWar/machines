@@ -125,7 +125,7 @@ const MexQuad3d& W4dPortal::globalAperture() const
     if (xform.key() != lastGlobalTransformKey_)
     {
         IAIN_STREAM("  portal needs recomputation.\n");
-        W4dPortal* nonConstThis = _CONST_CAST(W4dPortal*, this);
+        W4dPortal* nonConstThis = const_cast<W4dPortal*>(this);
         nonConstThis->updateGlobalAperture(xform);
     }
 

@@ -504,7 +504,7 @@ void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, co
 
     if (pVertexTexture_ == nullptr)
     {
-        _CONST_CAST(RenMesh*, this)->createTextures();
+        const_cast<RenMesh*>(this)->createTextures();
     }
 
     animateVertices(vertices_.get(), uvAnimated_, anim, *pVertexTexture_);
@@ -571,7 +571,7 @@ void RenMesh::render(
 
     if (pVertexTexture_ == nullptr)
     {
-        _CONST_CAST(RenMesh*, this)->createTextures();
+        const_cast<RenMesh*>(this)->createTextures();
     }
 
     animateVertices(vertices_.get(), uvAnimated_, anim, *pVertexTexture_);
@@ -646,7 +646,7 @@ const RenVertex RenMesh::vertex(Ren::VertexIdx index) const
     // The RenVertex ctor takes a non-const mesh pointer.  We *trust* that if
     // a vertex is const it will not (logically) modify this mesh even though
     // the compiler would allow non-const access.
-    RenMesh* crufty = _CONST_CAST(RenMesh*, this);
+    RenMesh* crufty = const_cast<RenMesh*>(this);
     return RenVertex(crufty, index);
 }
 
@@ -1097,7 +1097,7 @@ const MexAlignedBox3d& RenMesh::boundingVolume() const
     // ensure up-to-date
     if (isDirty_)
     {
-        _CONST_CAST(RenMesh*, this)->updateAllData();
+        const_cast<RenMesh*>(this)->updateAllData();
     }
 
     return boundingVolume_;

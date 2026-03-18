@@ -289,7 +289,7 @@ void RecRecorderImplementation::writeDriveInfo(std::ostream& o) const
 
         GetDiskFreeSpace( drive_, &sectorsPerCluster, &bytesPerSector, &freeClusters, &totalClusters );
 
-        RecRecorderImplementation* nonConstThis = _CONST_CAST( RecRecorderImplementation*, this );
+        RecRecorderImplementation* nonConstThis = const_cast< RecRecorderImplementation*>(this );
 
         nonConstThis->diskSpaceFreeBytes_ = freeClusters;
         nonConstThis->diskSpaceFreeBytes_ *= sectorsPerCluster;

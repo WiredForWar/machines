@@ -83,7 +83,7 @@ PhysRelativeTime MachLogAdministrator::update(const PhysRelativeTime& maxCPUTime
         setMinimumAlertness(45);
     }
 
-    // PhysRelativeTime alertnessResponse = ( 4.0 - ( _CONST_CAST( PhysRelativeTime, alertness() ) / 30.0 ) );
+    // PhysRelativeTime alertnessResponse = ( 4.0 - ( const_cast< PhysRelativeTime>(alertness() ) / 30.0 ) );
     PhysRelativeTime alertnessResponse = (4.0 - (alertness() / 30.0));
     PhysRelativeTime result = std::min(MachLogMachine::update(maxCPUTime, junk), alertnessResponse);
 
@@ -137,7 +137,7 @@ MachPhysAdministrator& MachLogAdministrator::physAdministrator()
 const MachPhysAdministrator& MachLogAdministrator::physAdministrator() const
 {
     // return static_cast< MachPhysAdministrator&>(physObject() );
-    return static_cast<MachPhysAdministrator&>(_CONST_CAST(W4dEntity&, physObject()));
+    return static_cast<MachPhysAdministrator&>(const_cast<W4dEntity&>(physObject()));
 }
 
 /* //////////////////////////////////////////////////////////////// */

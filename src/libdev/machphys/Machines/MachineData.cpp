@@ -255,10 +255,10 @@ void MachPhysMachineData::locomotionParameter(MATHEX_SCALAR v)
 void MachPhysMachineData::setEPP(const std::string& EPPName)
 {
     const MachPhysEvasionPriorityPlans& cEPPs
-        = _CONST_CAST(const MachPhysEvasionPriorityPlans&, MachPhysEvasionPriorityPlans::instance());
+        = const_cast<const MachPhysEvasionPriorityPlans&>(MachPhysEvasionPriorityPlans::instance());
 
     const MachPhysEvasionPriorityPlan& EPP = cEPPs.EPP(EPPName);
-    pEPP_ = &(_CONST_CAST(MachPhysEvasionPriorityPlan&, EPP));
+    pEPP_ = &(const_cast<MachPhysEvasionPriorityPlan&>(EPP));
 }
 
 const MachPhysEvasionPriorityPlan& MachPhysMachineData::EPP() const

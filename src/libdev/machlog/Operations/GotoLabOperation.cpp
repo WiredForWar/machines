@@ -104,7 +104,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
                 // MachPhysConstructionData& conData = static_cast< MachPhysConstructionData&>((*i)->constructionData()
                 // );
                 MachPhysConstructionData& conData = static_cast<MachPhysConstructionData&>(
-                    _CONST_CAST(MachPhysConstructionData&, (*i)->constructionData()));
+                    const_cast<MachPhysConstructionData&>((*i)->constructionData()));
                 if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                 {
                     j = i;

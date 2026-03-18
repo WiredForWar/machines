@@ -338,7 +338,7 @@ MexPoint3d MachPhysEntityDamage::referencePointOnEntity() const
 
     pLargestEntity_->globalTransform().transformInverse( &refPointLocal );
 
-    Ren::ConstMeshPtr mesh = _CONST_CAST(const W4dEntity*, pLargestEntity_)->mesh().mesh();
+    Ren::ConstMeshPtr mesh = const_cast<const W4dEntity*>(pLargestEntity_)->mesh().mesh();
     const uint vtxNo = mesh->nVertices();
 
     double distance = 100000000.0; //just a large number

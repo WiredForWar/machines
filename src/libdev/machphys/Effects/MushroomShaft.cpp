@@ -95,7 +95,7 @@ static void setFogMultipliers(const W4dEntity* entity)
 
     if (entity->hasMesh())
     {
-        RenMesh* meshPtr(_CONST_CAST(RenMesh*, &(*entity->mesh().mesh())));
+        RenMesh* meshPtr(const_cast<RenMesh*>(&(*entity->mesh().mesh())));
 
         std::unique_ptr<RenMaterialVec> materialASet = meshPtr->materialVec();
         RenMaterialVec& materialSet = *materialASet;

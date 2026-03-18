@@ -182,19 +182,19 @@ bool MachPhysLinearProjectile::intersectsLine(const MexLine3d&, MATHEX_SCALAR*, 
 
 const PhysAbsoluteTime& MachPhysLinearProjectile::flightStartTime() const
 {
-    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
+    const_cast<MachPhysLinearProjectile*>(this)->updateFlightData();
     return pImpl_->flightStartTime_;
 }
 
 const PhysRelativeTime& MachPhysLinearProjectile::flightDuration() const
 {
-    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
+    const_cast<MachPhysLinearProjectile*>(this)->updateFlightData();
     return pImpl_->flightDuration_;
 }
 
 const MexLine3d& MachPhysLinearProjectile::flightPath() const
 {
-    _CONST_CAST(MachPhysLinearProjectile*, this)->updateFlightData();
+    const_cast<MachPhysLinearProjectile*>(this)->updateFlightData();
     return pImpl_->flightPath_;
 }
 

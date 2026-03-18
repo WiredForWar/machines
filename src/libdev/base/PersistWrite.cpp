@@ -335,7 +335,7 @@ void PersistenceImplementationWrite::writeAddress(const void* ptr) const
 {
     if (logAddresses())
         // PER_WRITE_INDENT_STREAM( " (" << static_cast< void*>(ptr ) << ") " );
-        PER_WRITE_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
+        PER_WRITE_INDENT_STREAM(" (" << const_cast<void*>(ptr) << ") ");
 }
 
 std::ostream& PersistenceImplementationWrite::debugStream()

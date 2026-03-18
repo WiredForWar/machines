@@ -61,7 +61,7 @@ const Ren::MaterialVecPtr& W4dSimpleEmColPlan::materialVec(const PhysRelativeTim
     emissiveColour.r(colour.r());
     emissiveColour.g(colour.g());
     emissiveColour.b(colour.b());
-    _CONST_CAST(W4dSimpleEmColPlan*, this)->material_.emissive(emissiveColour);
+    const_cast<W4dSimpleEmColPlan*>(this)->material_.emissive(emissiveColour);
 
     // Return the material vector
     return materialVecPtr_;

@@ -219,8 +219,8 @@ W4dGeneric& MachPhysHealAura::newRadialCross()
 
     // TBD: Disable the back fuce cull via cast here.
     // These needs to be changed so the property is defined in the .x file.
-    // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, theCross).mesh().mesh();
-    //  _CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
+    // Ren::ConstMeshPtr myMesh = const_cast< const W4dEntity&>(theCross).mesh().mesh();
+    //  const_cast< RenMesh&>(*myMesh ).backFaceAll( false );
 
     return *pRadialCross;
 }
@@ -236,8 +236,8 @@ W4dGeneric& MachPhysHealAura::newCentralCross()
 
     // TBD: Disable the back fuce cull via cast here.
     // These needs to be changed so the property is defined in the .x file.
-    // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, theCross).mesh().mesh();
-    //_CONST_CAST( RenMesh&, *myMesh ).backFaceAll( false );
+    // Ren::ConstMeshPtr myMesh = const_cast< const W4dEntity&>(theCross).mesh().mesh();
+    //const_cast< RenMesh&>(*myMesh ).backFaceAll( false );
 
     return *pCentralCross;
 }

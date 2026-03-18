@@ -304,7 +304,7 @@ MachLogScore::MachLogScore(PerConstructor)
 
 void MachLogScore::assignScoreFromImpl(const MachLogScoreImpl& newImpl) const
 {
-    MachLogScore& me = _CONST_CAST(MachLogScore&, *this);
+    MachLogScore& me = const_cast<MachLogScore&>(*this);
     *(me.pImpl_) = newImpl;
 }
 

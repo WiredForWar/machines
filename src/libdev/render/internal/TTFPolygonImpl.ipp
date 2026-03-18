@@ -16,7 +16,7 @@ _CODE_INLINE
 void RenITTFImpl::renderGL(RenIVertex* vtx, const RenMaterial& mat, Ren::PrimitiveTopology topology) const
 {
     glDisable(GL_CULL_FACE);
-    Ren::VertexIdx* crufty = _CONST_CAST(Ren::VertexIdx*, indices_);
+    Ren::VertexIdx* crufty = const_cast<Ren::VertexIdx*>(indices_);
     RenDevice::current()->renderIndexedScreenspace(vtx, nVertices_, crufty, nIndices_, mat, topology);
     glEnable(GL_CULL_FACE);
 }

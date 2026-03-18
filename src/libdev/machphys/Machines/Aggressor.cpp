@@ -330,7 +330,7 @@ void MachPhysAggressor::doWeaponBaseTrackTarget(const W4dEntity& targetObject)
 {
     PRE(canTurnUpperBody());
     // upperBodyTrackTarget( targetObject );
-    upperBodyTrackTarget(_CONST_CAST(W4dEntity&, targetObject));
+    upperBodyTrackTarget(const_cast<W4dEntity&>(targetObject));
 }
 
 // virtual

@@ -58,7 +58,7 @@ void TestUVAnim::transform(float uIn, float vIn, float* uOut, float* vOut) const
     *uOut = uIn + magnitude_ * sin(randomRates[2 * counter_] * time);
     *vOut = vIn + magnitude_ * cos(randomRates[2 * counter_ + 1] * time);
 
-    TestUVAnim* crufty = _CONST_CAST(TestUVAnim*, this);
+    TestUVAnim* crufty = const_cast<TestUVAnim*>(this);
     crufty->counter_++;
     if (counter_ >= nVerts_)
         crufty->counter_ = 0;

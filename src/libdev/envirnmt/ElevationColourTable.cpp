@@ -94,7 +94,7 @@ void EnvElevationColourTable::addEntry(MexDegrees el, const RenColour& col)
 #ifdef NDEBUG
     ColourVec::iterator insertAt = lower_bound(colours_.begin(), colours_.end(), entry);
     //  ColourVec::const_iterator crufty = lower_bound(colours_.begin(), colours_.end(), entry);
-    //  ColourVec::iterator insertAt = _CONST_CAST(ColourVec::iterator, crufty);
+    //  ColourVec::iterator insertAt = const_cast<ColourVec::iterator>(crufty);
 #else
     ColourVec::iterator insertAt = lower_bound(colours_.begin(), colours_.end(), entry);
 #endif

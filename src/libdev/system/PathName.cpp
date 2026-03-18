@@ -182,7 +182,7 @@ const std::string& SysPathName::pathname() const
             SysPathName temp(internalRootDirectory());
             temp.combine(*this);
 
-            SysPathName* nonConstThis = _CONST_CAST(SysPathName*, this);
+            SysPathName* nonConstThis = const_cast<SysPathName*>(this);
 
             CB_PEER_PTR_DEPIMPL(nonConstThis, fullPathname_) = temp.pathname();
             CB_PEER_PTR_DEPIMPL(nonConstThis, fullPathnameSet_) = true;
@@ -375,7 +375,7 @@ void SysPathName::createComponents() const
 
     PRE(set());
 
-    SysPathName* nonConstThis = _CONST_CAST(SysPathName*, this);
+    SysPathName* nonConstThis = const_cast<SysPathName*>(this);
 
     CB_PEER_PTR_DEPIMPL(nonConstThis, components_)
         .erase(

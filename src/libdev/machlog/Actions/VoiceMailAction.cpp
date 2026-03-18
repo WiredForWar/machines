@@ -57,8 +57,7 @@ std::unique_ptr<MachLogVoiceMailAction> MachLogVoiceMailAction::newFromParser(Si
             pResult->race_ = MachLogScenario::machPhysRace(pParser->tokens()[i + 1]);
         else if (token == "VID")
             //          pResult->mailID_ = MachLogVoiceMailManager::instance().veMailIDMap()[ pParser->tokens()[i+1] ];
-            pResult->mailID_ = _CONST_CAST(
-                MachLogVoiceMailManager::VEmailIDMap&,
+            pResult->mailID_ = const_cast<MachLogVoiceMailManager::VEmailIDMap&>(
                 MachLogVoiceMailManager::instance().veMailIDMap())[pParser->tokens()[i + 1]];
     }
     return pResult;

@@ -52,7 +52,7 @@ void MachLogMessageBroker::processMessage(NetMessage* pMessage)
     ++nIncomingMessages;
     // MachLogNetMessage* pLogMessage = reinterpret_cast< MachLogNetMessage*>(pMessage->body().body() );
     MachLogNetMessage* pLogMessage
-        = reinterpret_cast<MachLogNetMessage*>(_CONST_CAST(uint8*, pMessage->body().body()));
+        = reinterpret_cast<MachLogNetMessage*>(const_cast<uint8*>(pMessage->body().body()));
     MachLogMessageCode code = (MachLogMessageCode)pLogMessage->header_.messageCode_;
     int systemCode = pLogMessage->header_.systemCode_;
     incomingTotalLength += pLogMessage->header_.totalLength_;

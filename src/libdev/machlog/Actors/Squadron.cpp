@@ -161,7 +161,7 @@ void MachLogSquadron::removeFromControl(const MachLogMachine* p)
 
     if (setDefCon_)
     {
-        MachLogMachine* pMach = _CONST_CAST(MachLogMachine*, p);
+        MachLogMachine* pMach = const_cast<MachLogMachine*>(p);
         pMach->defCon(MachLogRaces::instance().defCon(p->race()));
     }
 

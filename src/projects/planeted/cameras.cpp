@@ -366,7 +366,7 @@ void MachCameras::switchThirdPerson(MachLogMachine* pNewMachine)
 
     if (pThirdPerson_)
     {
-        MachLogMachine* pCurrentMachine = _CONST_CAST(MachLogMachine*, pThirdPerson_->machine());
+        MachLogMachine* pCurrentMachine = const_cast<MachLogMachine*>(pThirdPerson_->machine());
         // pCurrentMachine->isIn3rdPersonView( false );
     }
 
@@ -416,7 +416,7 @@ void MachCameras::check3rdCameraDomain()
     if (pThirdPerson_)
     {
         // Get the current machine, and check in 3rd person view
-        MachLogMachine* pMachine = _CONST_CAST(MachLogMachine*, pThirdPerson_->machine());
+        MachLogMachine* pMachine = const_cast<MachLogMachine*>(pThirdPerson_->machine());
         /*if( pMachine->isIn3rdPersonView() )
         {
             //Get the motion sequencer, and see if using a space domain.
@@ -505,7 +505,7 @@ void MachCameras::restoreCamera(const CameraSave& cameraSave)
     {
         if (MachLogRaces::instance().machineExists(cameraSave.pMachine_))
         {
-            switchThirdPerson(_CONST_CAST(MachLogMachine*, cameraSave.pMachine_));
+            switchThirdPerson(const_cast<MachLogMachine*>(cameraSave.pMachine_));
         }
     }
 }
@@ -580,7 +580,7 @@ void MachCameras::lookAt(const MachActor& actor)
     else if (pCurrentCamera_ == pEyeCamera_)
     {
         if (actor.objectIsMachine()) // Only stay in 3rd person if actor is a machine
-            switchThirdPerson(_CONST_CAST(MachLogMachine*, &actor.asMachine()));
+            switchThirdPerson(const_cast<MachLogMachine*>(&actor.asMachine()));
         else // switch to zenith camera to view construction
         {
             switchToZenith(actorPos);

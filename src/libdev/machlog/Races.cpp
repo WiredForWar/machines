@@ -770,7 +770,7 @@ void MachLogRaces::race(MachPhys::Race r, MachLogRace* pRace, MachLogRaces::Crea
 
 void MachLogRaces::addToSquadrons(const MachLogSquadron& squad)
 {
-    pDataImpl_->squadrons_[map_MachPhysRace_to_size_t(squad.race())].push_back(&_CONST_CAST(MachLogSquadron&, squad));
+    pDataImpl_->squadrons_[map_MachPhysRace_to_size_t(squad.race())].push_back(&const_cast<MachLogSquadron&>(squad));
 }
 
 const MachLogRace& MachLogRaces::race(MachPhys::Race r) const
@@ -1826,7 +1826,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
                         case FREE_BAYS_ONLY:
                             {
                                 MachPhysConstructionData& conData
-                                    = _CONST_CAST(MachPhysConstructionData&, pCandidateGarrison->constructionData());
+                                    = const_cast<MachPhysConstructionData&>(pCandidateGarrison->constructionData());
                                 // const MachPhysConstructionData& conData = (*i)->constructionData();
                                 if (sqrDistance < range
                                     && conData.stations().freeStation(
@@ -1844,7 +1844,7 @@ bool MachLogRaces::findFriendlyGarrisonClosestTo(
                         case FREE_BAYS_PLUS_NO_ENEMY_CANATTACKS:
                             {
                                 MachPhysConstructionData& conData
-                                    = _CONST_CAST(MachPhysConstructionData&, pCandidateGarrison->constructionData());
+                                    = const_cast<MachPhysConstructionData&>(pCandidateGarrison->constructionData());
                                 // const MachPhysConstructionData& conData = (*i)->constructionData();
                                 if (sqrDistance < range
                                     && conData.stations().freeStation(MachPhysStation::PARKING_BAY, &pCandidateStation)

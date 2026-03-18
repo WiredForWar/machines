@@ -173,19 +173,19 @@ MachPhysLightningHaloMaterialPlan::materialVec(const PhysRelativeTime& timeOffse
     // Set the alpha for the 4 materials
     RenColour diffuseColour = mat1_.diffuse();
     diffuseColour.a(alpha);
-    _CONST_CAST(MachPhysLightningHaloMaterialPlan*, this)->mat1_.diffuse(diffuseColour);
+    const_cast<MachPhysLightningHaloMaterialPlan*>(this)->mat1_.diffuse(diffuseColour);
 
     diffuseColour = mat2_.diffuse();
     diffuseColour.a(alpha);
-    _CONST_CAST(MachPhysLightningHaloMaterialPlan*, this)->mat2_.diffuse(diffuseColour);
+    const_cast<MachPhysLightningHaloMaterialPlan*>(this)->mat2_.diffuse(diffuseColour);
 
     diffuseColour = mat3_.diffuse();
     diffuseColour.a(alpha);
-    _CONST_CAST(MachPhysLightningHaloMaterialPlan*, this)->mat3_.diffuse(diffuseColour);
+    const_cast<MachPhysLightningHaloMaterialPlan*>(this)->mat3_.diffuse(diffuseColour);
 
     diffuseColour = mat4_.diffuse();
     diffuseColour.a(alpha);
-    _CONST_CAST(MachPhysLightningHaloMaterialPlan*, this)->mat4_.diffuse(diffuseColour);
+    const_cast<MachPhysLightningHaloMaterialPlan*>(this)->mat4_.diffuse(diffuseColour);
 
     uint i = W4dManager::instance().frameNumber() % 4;
     return materialVecPtrs_[i];

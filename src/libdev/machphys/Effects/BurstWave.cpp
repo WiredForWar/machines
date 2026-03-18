@@ -121,9 +121,9 @@ void MachPhysBurstWave::startBurstWave(
     propogateScalePlan(planPtr, startTime, 1);
 
     // fade out in the last quater of duration
-    // RenMaterialVec* pFlashMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
+    // RenMaterialVec* pFlashMaterialVec =const_cast<const W4dEntity*>(this)->mesh().mesh()->materialVec().release();
     RenMaterialVec* pFlashMaterialVec
-        = _CONST_CAST(const W4dEntity*, static_cast<W4dEntity*>(this))->mesh().mesh()->materialVec().release();
+        = const_cast<const W4dEntity*>(static_cast<W4dEntity*>(this))->mesh().mesh()->materialVec().release();
     RenMaterial& matFlash = (*pFlashMaterialVec)[0];
 
     PhysLinearScalarPlan::ScalarVec times;

@@ -307,7 +307,7 @@ void RenIDirectionalLight::lightVertices(
     PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIDirectionalLight*, this)->used(true);
+    const_cast<RenIDirectionalLight*>(this)->used(true);
 
     // Transform the light direction into the vertices' local co-ordinate system.
     MexVec3 dir = direction();
@@ -397,7 +397,7 @@ void RenIDirectionalLight::lightVerticesMMX(
     /*  PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIDirectionalLight*, this)->used(true);
+    const_cast<RenIDirectionalLight*>(this)->used(true);
 
     // Transform the light direction into the vertices' local co-ordinate system.
     MexVec3 dir = direction();
@@ -678,7 +678,7 @@ void RenIPointLight::lightVertices(
     PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIPointLight*, this)->used(true);
+    const_cast<RenIPointLight*>(this)->used(true);
 
     // Transform the light position into the vertices' local co-ordinate system.
     MexPoint3d pos = position();
@@ -761,7 +761,7 @@ void RenIPointLight::lightVerticesMMX(
     PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIPointLight*, this)->used(true);
+    const_cast<RenIPointLight*>(this)->used(true);
 
     // Transform the light position into the vertices' local co-ordinate system.
     MexPoint3d pos = position();
@@ -902,7 +902,7 @@ void RenIUniformLight::lightVertices(
     PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIUniformLight*, this)->used(true);
+    const_cast<RenIUniformLight*>(this)->used(true);
 
     // Transform the light position into the vertices' local co-ordinate system.
     MexPoint3d pos = position();
@@ -966,7 +966,7 @@ void RenIUniformLight::lightVerticesMMX(
     PRE(on());
 
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIUniformLight*, this)->used(true);
+    const_cast<RenIUniformLight*>(this)->used(true);
 
     // Transform the light position into the vertices' local co-ordinate system.
     MexPoint3d pos = position();
@@ -1050,7 +1050,7 @@ void RenIZeroLight::lightVertices(
     const MexAlignedBox3d*) const
 {
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIZeroLight*, this)->used(true);
+    const_cast<RenIZeroLight*>(this)->used(true);
 
     // If sumType is accumulate, then we don't have to do anything.
     if (sumType == INITIALISE)
@@ -1089,7 +1089,7 @@ void RenIZeroLight::lightVerticesMMX(
 {
     /*
     // TBD: could be removed from the production version.
-    _CONST_CAST(RenIZeroLight*, this)->used(true);
+    const_cast<RenIZeroLight*>(this)->used(true);
 
     // If sumType is accumulate, then we don't have to do anything.
     if (sumType == INITIALISE)

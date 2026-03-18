@@ -250,8 +250,8 @@ void PhysCS2dImpl::trace(std::ostream& o, const PhysCS2dDomainGraph& domainGraph
 
     uint nDomainVertices = 0;
 
-    for (PhysConfigSpace2d::DomainVertexId id = _CONST_CAST(PhysCS2dImpl*, this)->domainVertexIdGenerator().begin();
-         id != _CONST_CAST(PhysCS2dImpl*, this)->domainVertexIdGenerator().end();
+    for (PhysConfigSpace2d::DomainVertexId id = const_cast<PhysCS2dImpl*>(this)->domainVertexIdGenerator().begin();
+         id != const_cast<PhysCS2dImpl*>(this)->domainVertexIdGenerator().end();
          ++id)
     {
         if (domainGraph.containsVertex(id))
@@ -279,8 +279,8 @@ void PhysCS2dImpl::trace(std::ostream& o, const PhysCS2dDomainGraph& domainGraph
 
     uint nDomainArcs = 0;
 
-    for (PhysConfigSpace2d::DomainArcId id = _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().begin();
-         id != _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().end();
+    for (PhysConfigSpace2d::DomainArcId id = const_cast<PhysCS2dImpl*>(this)->domainArcIdGenerator().begin();
+         id != const_cast<PhysCS2dImpl*>(this)->domainArcIdGenerator().end();
          ++id)
     {
         if (domainGraph.containsArc(id))
@@ -1163,8 +1163,8 @@ void PhysCS2dImpl::activeDomainFindPath(PhysCS2dDomainFindPath* pDomainFindPath)
 
 void PhysCS2dImpl::listArcs(std::ostream& ostr) const
 {
-    for (PhysConfigSpace2d::DomainArcId arcId = _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().begin();
-         arcId != _CONST_CAST(PhysCS2dImpl*, this)->domainArcIdGenerator().end();
+    for (PhysConfigSpace2d::DomainArcId arcId = const_cast<PhysCS2dImpl*>(this)->domainArcIdGenerator().begin();
+         arcId != const_cast<PhysCS2dImpl*>(this)->domainArcIdGenerator().end();
          ++arcId)
     {
         if (domainGraph().containsArc(arcId))

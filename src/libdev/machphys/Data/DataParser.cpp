@@ -1696,7 +1696,7 @@ void MachPhysDataParser::parseConstructorBlock(UtlLineTokeniser* pParser)
                         "MachPhysDataParser::parseConstructorBlock: the problem here is that the construction type "
                         "MUST be specified in the parmdata file before the subtype.");
                     MachPhys::ConstructionType CT
-                        = _CONST_CAST(const MachPhysConstructorData*, (*pStore)[hardwareLevel][firstSoftwareLevel])
+                        = const_cast<const MachPhysConstructorData*>((*pStore)[hardwareLevel][firstSoftwareLevel])
                               ->mostAdvancedConstructionType();
 
                     consSubType = constructionSubType(CT, pParser->tokens()[hwIndex + 1]);

@@ -70,7 +70,7 @@ void MachLogTreacheryOrb::doBeDestroyed()
                 MachLogMachine& mlm = (*i)->asMachine();
                 const MachLogMachine& cmlm = (*i)->asMachine();
                 const MachPhysMachine& mpm = cmlm.physMachine();
-                MachPhysMachine& ncmpm = _CONST_CAST(MachPhysMachine&, mpm);
+                MachPhysMachine& ncmpm = const_cast<MachPhysMachine&>(mpm);
                 MachPhys::Race oldRace = mlm.race();
                 mlm.assignToDifferentRace(*pLogRace_);
                 MachPhysTreacheryWeapon::traitorAnimation(&ncmpm, now, oldRace, race_);
