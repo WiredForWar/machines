@@ -769,11 +769,11 @@ public:
         for (Children::iterator itter = children().begin(); itter != children().end(); ++itter)
         {
             GuiDisplayable* pChild = *itter;
-            MachGuiNavButtonWithCounter* pNavButtonCount = _REINTERPRET_CAST(MachGuiNavButtonWithCounter*, pChild);
+            MachGuiNavButtonWithCounter* pNavButtonCount = reinterpret_cast<MachGuiNavButtonWithCounter*>(pChild);
 
             if (pNavButtonCount->isNavButton())
             {
-                MachGuiNavButton* pNavButton = _REINTERPRET_CAST(MachGuiNavButton*, pNavButtonCount);
+                MachGuiNavButton* pNavButton = reinterpret_cast<MachGuiNavButton*>(pNavButtonCount);
                 pNavButton->selected();
             }
         }

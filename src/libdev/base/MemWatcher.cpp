@@ -234,7 +234,7 @@ size_t BaseMemWatcher::hashValue(size_t nStackFrames, const size_t* aCallStack, 
 // static
 size_t BaseMemWatcher::hashValue(void* address)
 {
-    return (_REINTERPRET_CAST(size_t, address) >> 2) & (BaseMemWatcher::POINTER_HASH_BOUND - 1);
+    return (reinterpret_cast<size_t>(address) >> 2) & (BaseMemWatcher::POINTER_HASH_BOUND - 1);
 }
 
 void BaseMemWatcher::traceOustandingAllocations(std::ostream& outStream)

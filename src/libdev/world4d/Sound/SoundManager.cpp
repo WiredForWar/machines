@@ -262,7 +262,7 @@ void W4dSoundManager::stop(const W4dEntity* pEntity)
                 // SOUND_STREAM("Stopping already freed id for entity " << static_cast<void*>(pEntity) << std::endl);
                 SOUND_STREAM(
                     "Stopping already freed id for entity "
-                    << _CONST_CAST(void*, _REINTERPRET_CAST(const void*, pEntity)) << std::endl);
+                    << _CONST_CAST(void*, reinterpret_cast<const void*>(pEntity)) << std::endl);
             }
             sounds_.erase(it);
 

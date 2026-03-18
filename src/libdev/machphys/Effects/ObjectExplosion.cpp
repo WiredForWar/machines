@@ -210,7 +210,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
     // W4dGeneric* pExplosionSite = new W4dGeneric(static_cast<W4dEntity*>(pObject_->containingDomain()),
     // pObject_->localTransform());
     W4dGeneric* pExplosionSite
-        = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pObject_->containingDomain()), pObject_->localTransform());
+        = new W4dGeneric(reinterpret_cast<W4dEntity*>(pObject_->containingDomain()), pObject_->localTransform());
 
     //  SOUND_STREAM("Object buildingSize " << buildingSize << endl);
     if (buildingSize > 40)

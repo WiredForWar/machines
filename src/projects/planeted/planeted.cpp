@@ -410,9 +410,9 @@ void PedPlanetEditor::processInput(const DevButtonEvent& devButtonEvent)
         {
             // Create map bitmap
             PedMapCreator mapCreator(
-                *_REINTERPRET_CAST(PedPolygonEditor*, pDomainMode_),
-                *_REINTERPRET_CAST(PedPolygonEditor*, pPortalMode_),
-                *_REINTERPRET_CAST(PedPolygonEditor*, pObstacleMode_));
+                *reinterpret_cast<PedPolygonEditor*>(pDomainMode_),
+                *reinterpret_cast<PedPolygonEditor*>(pPortalMode_),
+                *reinterpret_cast<PedPolygonEditor*>(pObstacleMode_));
             mapCreator.createBmp();
         }
     }

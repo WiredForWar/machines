@@ -61,7 +61,7 @@ void MachLogMessageBroker::sendMachineMoveMessage(
     else
     {
         MachLogNetMessage* pMessage = new MachLogNetMessage();
-        MachLogMachineMoveMessage* pMoveMessage = _REINTERPRET_CAST(MachLogMachineMoveMessage*, pMessage);
+        MachLogMachineMoveMessage* pMoveMessage = reinterpret_cast<MachLogMachineMoveMessage*>(pMessage);
         pMoveMessage->whichId_ = whichId;
         pMoveMessage->header_.systemCode_ = 0;
         pMoveMessage->header_.messageCode_ = MACHINE_MOVE_CODE;
@@ -98,7 +98,7 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
     // MachLogMachineMoveMessage* pMoveMessage = _REINTERPRET_CAST( MachLogMachineMoveMessage*,
     // &pMessage->body().body()[0] );
     MachLogMachineMoveMessage* pMoveMessage
-        = _REINTERPRET_CAST(MachLogMachineMoveMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMachineMoveMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processMachineMoveMessage for " << pMoveMessage->whichId_ << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, *pMoveMessage << std::endl);
     //  DEBUG_STREAM( DIAG_NETWORK, "Current Time " << SimManager::instance().currentTime() << std::endl );
@@ -112,9 +112,8 @@ void MachLogMessageBroker::processMachineMoveMessage(NetMessage* pMessage)
             ctl_vector<MachPhysMachineMoveInfo> infos;
             for (int i = 0; i < pMoveMessage->nMoveInfos_; ++i)
             {
-                MachLogSingleMoveInfo* pMoveInfo = _REINTERPRET_CAST(
-                    MachLogSingleMoveInfo*,
-                    (pMoveMessage->data_ + i * sizeof(MachLogSingleMoveInfo)));
+                MachLogSingleMoveInfo* pMoveInfo = reinterpret_cast<MachLogSingleMoveInfo*>(
+                    pMoveMessage->data_ + i * sizeof(MachLogSingleMoveInfo));
                 // NETWORK_STREAM( "MachLogSingleMoveInfo " << i << std::endl << *pMoveInfo << std::endl);
 
                 MachPhysMachine::ProfilePtr profilePtr = pPhysMachine->profile(
@@ -192,7 +191,7 @@ void MachLogMessageBroker::sendMachineSetDomainMessage(UtlId whichId, const MexT
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMachineSetDomainMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogMachineSetDomainMessage* pMessage = _REINTERPRET_CAST(MachLogMachineSetDomainMessage*, pLogNetMessage);
+    MachLogMachineSetDomainMessage* pMessage = reinterpret_cast<MachLogMachineSetDomainMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = MACHINE_SET_DOMAIN_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMachineSetDomainMessage);
@@ -208,7 +207,7 @@ void MachLogMessageBroker::processMachineSetDomainMessage(NetMessage* pNetMessag
     // MachLogMachineSetDomainMessage* pMessage = _REINTERPRET_CAST( MachLogMachineSetDomainMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMachineSetDomainMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMachineSetDomainMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMachineSetDomainMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processMachineSetDomainMessage " << pMessage->whichId_ << std::endl);
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exists");
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -224,7 +223,7 @@ void MachLogMessageBroker::sendMachineTurnMessage(UtlId whichId, const MexRadian
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMachineTurnMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogMachineTurnMessage* pMessage = _REINTERPRET_CAST(MachLogMachineTurnMessage*, pLogNetMessage);
+    MachLogMachineTurnMessage* pMessage = reinterpret_cast<MachLogMachineTurnMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = MACHINE_TURN_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMachineTurnMessage);
@@ -239,7 +238,7 @@ void MachLogMessageBroker::processMachineTurnMessage(NetMessage* pNetMessage)
     // MachLogMachineTurnMessage* pMessage = _REINTERPRET_CAST( MachLogMachineTurnMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMachineTurnMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMachineTurnMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMachineTurnMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processMachineTurnMessage " << pMessage->whichId_ << std::endl);
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exists");
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -258,7 +257,7 @@ void MachLogMessageBroker::sendAddRestingObstacleMessage(UtlId whichId, const Me
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddRestingObstacleMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, pLogNetMessage);
+    MachLogRestingObstacleMessage* pMessage = reinterpret_cast<MachLogRestingObstacleMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADD_RESTING_OBSTACLE_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogRestingObstacleMessage);
@@ -273,7 +272,7 @@ void MachLogMessageBroker::processAddRestingObstacleMessage(NetMessage* pNetMess
     // MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogRestingObstacleMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogRestingObstacleMessage* pMessage
-        = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogRestingObstacleMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddRestingObstacleMessage " << pMessage->whichId_ << std::endl);
     // machines are constructed in a funny order this assertion isn't always valid
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exists" );
@@ -296,7 +295,7 @@ void MachLogMessageBroker::sendAddRestingObstacleShortMessage(UtlId whichId)
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddRestingObstacleShortMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogRestingObstacleShortMessage* pMessage
-        = _REINTERPRET_CAST(MachLogRestingObstacleShortMessage*, pLogNetMessage);
+        = reinterpret_cast<MachLogRestingObstacleShortMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADD_RESTING_OBSTACLE_SHORT_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogRestingObstacleShortMessage);
@@ -310,7 +309,7 @@ void MachLogMessageBroker::processAddRestingObstacleShortMessage(NetMessage* pNe
     // MachLogRestingObstacleShortMessage* pMessage = _REINTERPRET_CAST( MachLogRestingObstacleShortMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogRestingObstacleShortMessage* pMessage
-        = _REINTERPRET_CAST(MachLogRestingObstacleShortMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogRestingObstacleShortMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddRestingObstacleShortMessage " << pMessage->whichId_ << std::endl);
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
     {
@@ -331,7 +330,7 @@ void MachLogMessageBroker::sendRequestAddRestingObstacleMessage(
         DIAG_NETWORK,
         "MLMessageBroker::sendRequestAddRestingObstacleMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, pLogNetMessage);
+    MachLogRestingObstacleMessage* pMessage = reinterpret_cast<MachLogRestingObstacleMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = REQUEST_ADD_RESTING_OBSTACLE_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogRestingObstacleMessage);
@@ -347,7 +346,7 @@ void MachLogMessageBroker::processRequestAddRestingObstacleMessage(NetMessage* p
     // MachLogRestingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogRestingObstacleMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogRestingObstacleMessage* pMessage
-        = _REINTERPRET_CAST(MachLogRestingObstacleMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogRestingObstacleMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processRequestAddRestingObstacleMessage " << pMessage->whichId_ << std::endl);
     if (MachLogNetwork::instance().isNodeLogicalHost())
     {
@@ -368,7 +367,7 @@ void MachLogMessageBroker::processRequestAddRestingObstacleMessage(NetMessage* p
 // oldvoid MachLogMessageBroker::sendAddMovingObstacleMessage( UtlId whichId, const MexPoint3d& start, const MexPoint3d&
 // end, int status ) old{ old   DEBUG_STREAM( DIAG_NETWORK, "MLMessageBroker::sendAddMovingObstacleMessage (" << whichId
 // << ")" << std::endl ); old   MachLogNetMessage* pLogNetMessage = new MachLogNetMessage(); old
-// MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogMovingObstacleMessage*, pLogNetMessage ); old
+// MachLogMovingObstacleMessage* pMessage = reinterpret_cast< MachLogMovingObstacleMessage*>(pLogNetMessage ); old
 // pMessage->header_.systemCode_ = 0; old   pMessage->header_.messageCode_ = ADD_MOVING_OBSTACLE_CODE; old
 // pMessage->header_.totalLength_ = sizeof( MachLogMovingObstacleMessage ); old   pMessage->whichId_ = whichId; old
 // pMessage->start_ = start; old   pMessage->end_ = end; old   pMessage->status_ = status; old   doSend( pLogNetMessage
@@ -419,7 +418,7 @@ void MachLogMessageBroker::sendAddMotionChunksMessage(
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAddMotionChunksMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST(MachLogMotionChunksMessage*, pLogNetMessage);
+    MachLogMotionChunksMessage* pMessage = reinterpret_cast<MachLogMotionChunksMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADD_MOTION_CHUNKS_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMotionChunksMessage) - MachLogMotionChunksMessage::dataSize()
@@ -444,7 +443,7 @@ void MachLogMessageBroker::processAddMotionChunksMessage(NetMessage* pNetMessage
     // MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST( MachLogMotionChunksMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMotionChunksMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMotionChunksMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMotionChunksMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAddMotionChunksMessage " << pMessage->whichId_ << std::endl);
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exists");
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -457,9 +456,8 @@ void MachLogMessageBroker::processAddMotionChunksMessage(NetMessage* pNetMessage
             ctl_vector<PhysMotionChunk> chunks;
             for (int i = 0; i < pMessage->nChunks_; ++i)
             {
-                PhysCompressedMotionChunk* pChunk = _REINTERPRET_CAST(
-                    PhysCompressedMotionChunk*,
-                    (pMessage->data_ + i * sizeof(PhysCompressedMotionChunk)));
+                PhysCompressedMotionChunk* pChunk = reinterpret_cast<PhysCompressedMotionChunk*>(
+                    pMessage->data_ + i * sizeof(PhysCompressedMotionChunk));
                 chunks.push_back(*pChunk);
             }
             MachLogMachineMotionSequencer& motSeq = actor.asMachine().motionSeq();
@@ -476,7 +474,7 @@ void MachLogMessageBroker::sendRequestAddMotionChunksMessage(
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendRequestAddMotionChunksMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST(MachLogMotionChunksMessage*, pLogNetMessage);
+    MachLogMotionChunksMessage* pMessage = reinterpret_cast<MachLogMotionChunksMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = REQUEST_ADD_MOTION_CHUNKS_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMotionChunksMessage) - MachLogMotionChunksMessage::dataSize()
@@ -501,7 +499,7 @@ void MachLogMessageBroker::processRequestAddMotionChunksMessage(NetMessage* pNet
     // MachLogMotionChunksMessage* pMessage = _REINTERPRET_CAST( MachLogMotionChunksMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMotionChunksMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMotionChunksMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMotionChunksMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processRequestAddMotionChunksMessage " << pMessage->whichId_ << std::endl);
     // if we are the logical host then verify addition as normal and send back failure if it didn't work
     // if not host then treat this as an AddMotionChunksMessage
@@ -520,9 +518,8 @@ void MachLogMessageBroker::processRequestAddMotionChunksMessage(NetMessage* pNet
 
                 for (int i = 0; i < pMessage->nChunks_; ++i)
                 {
-                    PhysCompressedMotionChunk* pChunk = _REINTERPRET_CAST(
-                        PhysCompressedMotionChunk*,
-                        (pMessage->data_ + i * sizeof(PhysCompressedMotionChunk)));
+                    PhysCompressedMotionChunk* pChunk = reinterpret_cast<PhysCompressedMotionChunk*>(
+                        pMessage->data_ + i * sizeof(PhysCompressedMotionChunk));
                     chunks.push_back(*pChunk);
                 }
 
@@ -547,7 +544,7 @@ void MachLogMessageBroker::sendMotionChunksAddFailedMessage(UtlId whichId, int s
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendMotionChunksAddFailedMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogMotionChunksAddFailedMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMotionChunksAddFailedMessage*, pLogNetMessage);
+        = reinterpret_cast<MachLogMotionChunksAddFailedMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = MOTION_CHUNKS_FAILED_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMotionChunksAddFailedMessage);
@@ -563,7 +560,7 @@ void MachLogMessageBroker::processMotionChunksAddFailedMessage(NetMessage* pNetM
     // MachLogMotionChunksAddFailedMessage* pMessage = _REINTERPRET_CAST( MachLogMotionChunksAddFailedMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMotionChunksAddFailedMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMotionChunksAddFailedMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMotionChunksAddFailedMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processMotionChunksAddFailedMessage " << pMessage->whichId_ << std::endl);
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exists");
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -589,7 +586,7 @@ void MachLogMessageBroker::sendClearRestingObstacleMessage(UtlId whichId)
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendClearRestingObstacleMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogClearRestingObstacleMessage* pMessage
-        = _REINTERPRET_CAST(MachLogClearRestingObstacleMessage*, pLogNetMessage);
+        = reinterpret_cast<MachLogClearRestingObstacleMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = CLEAR_RESTING_OBSTACLE_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogClearRestingObstacleMessage);
@@ -603,7 +600,7 @@ void MachLogMessageBroker::processClearRestingObstacleMessage(NetMessage* pNetMe
     // MachLogClearRestingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogClearRestingObstacleMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogClearRestingObstacleMessage* pMessage
-        = _REINTERPRET_CAST(MachLogClearRestingObstacleMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogClearRestingObstacleMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processClearRestingObstacleMessage " << pMessage->whichId_ << std::endl);
     // assertion removed as this is actually a valid message before a machine is constructed.
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exists" );
@@ -621,7 +618,7 @@ void MachLogMessageBroker::sendClearMovingChunksMessage(UtlId whichId)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendClearMovingObstacleMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST(MachLogMovingObstacleMessage*, pLogNetMessage);
+    MachLogMovingObstacleMessage* pMessage = reinterpret_cast<MachLogMovingObstacleMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = CLEAR_MOVING_CHUNKS_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogMovingObstacleMessage);
@@ -635,7 +632,7 @@ void MachLogMessageBroker::processClearMovingChunksMessage(NetMessage* pNetMessa
     // MachLogMovingObstacleMessage* pMessage = _REINTERPRET_CAST( MachLogMovingObstacleMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogMovingObstacleMessage* pMessage
-        = _REINTERPRET_CAST(MachLogMovingObstacleMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogMovingObstacleMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processClearMovingObstacleMessage " << pMessage->whichId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exists" );
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -653,7 +650,7 @@ void MachLogMessageBroker::sendStopDeadMessage(UtlId whichId, const MexTransform
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendStopDeadMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogStopDeadMessage* pMessage = _REINTERPRET_CAST(MachLogStopDeadMessage*, pLogNetMessage);
+    MachLogStopDeadMessage* pMessage = reinterpret_cast<MachLogStopDeadMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = STOP_DEAD_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogStopDeadMessage);
@@ -674,9 +671,9 @@ void MachLogMessageBroker::sendStopDeadMessage(UtlId whichId, const MexTransform
 
 void MachLogMessageBroker::processStopDeadMessage(NetMessage* pNetMessage)
 {
-    // MachLogStopDeadMessage* pMessage = _REINTERPRET_CAST( MachLogStopDeadMessage*, &pNetMessage->body().body()[0] );
+    // MachLogStopDeadMessage* pMessage = reinterpret_cast< MachLogStopDeadMessage*>(&pNetMessage->body().body()[0] );
     MachLogStopDeadMessage* pMessage
-        = _REINTERPRET_CAST(MachLogStopDeadMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogStopDeadMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processStopDeadMessage " << pMessage->whichId_ << std::endl);
     // TODO?: fails\/
     //  ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exists" );
@@ -702,7 +699,7 @@ void MachLogMessageBroker::sendAdjustHPAndArmourMessage(UtlId whichId, int hp, i
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendAdjustHPAndArmourMessage (" << whichId << ")" << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogAdjustHPAndArmourMessage* pMessage = _REINTERPRET_CAST(MachLogAdjustHPAndArmourMessage*, pLogNetMessage);
+    MachLogAdjustHPAndArmourMessage* pMessage = reinterpret_cast<MachLogAdjustHPAndArmourMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ADJUST_HP_AND_ARMOUR_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogAdjustHPAndArmourMessage);
@@ -718,7 +715,7 @@ void MachLogMessageBroker::processAdjustHPAndArmourMessage(NetMessage* pNetMessa
     // MachLogAdjustHPAndArmourMessage* pMessage = _REINTERPRET_CAST( MachLogAdjustHPAndArmourMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogAdjustHPAndArmourMessage* pMessage
-        = _REINTERPRET_CAST(MachLogAdjustHPAndArmourMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogAdjustHPAndArmourMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processAdjustHPAndArmourMessageMessage " << pMessage->whichId_ << std::endl);
     ASSERT(MachLogRaces::instance().actorExists(pMessage->whichId_), "Actor does not exists");
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -741,7 +738,7 @@ void MachLogMessageBroker::sendCreateActorMessage(
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendCreateActorMessage " << ot << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
-    MachLogCreateActorMessage* createMessage = _REINTERPRET_CAST(MachLogCreateActorMessage*, pMessage);
+    MachLogCreateActorMessage* createMessage = reinterpret_cast<MachLogCreateActorMessage*>(pMessage);
     createMessage->race_ = race;
     createMessage->objectType_ = ot;
     createMessage->subType_ = subType;
@@ -767,7 +764,7 @@ void MachLogMessageBroker::processCreateActorMessage(NetMessage* pMessage)
     // MachLogCreateActorMessage* pCreateMessage = _REINTERPRET_CAST( MachLogCreateActorMessage*,
     // &pMessage->body().body()[0] );
     MachLogCreateActorMessage* pCreateMessage
-        = _REINTERPRET_CAST(MachLogCreateActorMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogCreateActorMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processCreateActorMessage " << pCreateMessage->objectType_ << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, *pCreateMessage << std::endl);
 
@@ -862,7 +859,7 @@ void MachLogMessageBroker::sendCreateSpecialActorMessage(
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendCreateSpecialActorMessage " << ot << std::endl);
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachLogCreateSpecialActorMessage* pMessage = _REINTERPRET_CAST(MachLogCreateSpecialActorMessage*, pLogMessage);
+    MachLogCreateSpecialActorMessage* pMessage = reinterpret_cast<MachLogCreateSpecialActorMessage*>(pLogMessage);
     pMessage->race_ = race;
     pMessage->objectType_ = ot;
     pMessage->quantity_ = quantity;
@@ -885,7 +882,7 @@ void MachLogMessageBroker::processCreateSpecialActorMessage(NetMessage* pLogMess
     // MachLogCreateSpecialActorMessage* pMessage = _REINTERPRET_CAST( MachLogCreateSpecialActorMessage*,
     // &pLogMessage->body().body()[0] );
     MachLogCreateSpecialActorMessage* pMessage
-        = _REINTERPRET_CAST(MachLogCreateSpecialActorMessage*, _CONST_CAST(uint8*, &pLogMessage->body().body()[0]));
+        = reinterpret_cast<MachLogCreateSpecialActorMessage*>(_CONST_CAST(uint8*, &pLogMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processCreateSpecialActorMessage " << pMessage->objectType_ << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, *pMessage << std::endl);
 
@@ -919,7 +916,7 @@ void MachLogMessageBroker::sendReadyMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendReadyMessage " << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
-    MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
+    MachLogReadyMessage* pReadyMessage = reinterpret_cast<MachLogReadyMessage*>(pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = READY_CODE;
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
@@ -930,9 +927,9 @@ void MachLogMessageBroker::sendReadyMessage()
 
 void MachLogMessageBroker::processReadyMessage(NetMessage* pMessage)
 {
-    // MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST( MachLogReadyMessage*, &pMessage->body().body()[0] );
+    // MachLogReadyMessage* pReadyMessage = reinterpret_cast< MachLogReadyMessage*>(&pMessage->body().body()[0] );
     MachLogReadyMessage* pReadyMessage
-        = _REINTERPRET_CAST(MachLogReadyMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogReadyMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processReadyMessage " << std::endl);
     MachLogNetwork::instance().ready(pReadyMessage->race_, true);
 }
@@ -941,7 +938,7 @@ void MachLogMessageBroker::sendResyncTimeMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendResyncTimeMessage " << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
-    MachLogResyncTimeMessage* pResyncMessage = _REINTERPRET_CAST(MachLogResyncTimeMessage*, pMessage);
+    MachLogResyncTimeMessage* pResyncMessage = reinterpret_cast<MachLogResyncTimeMessage*>(pMessage);
     pResyncMessage->header_.systemCode_ = 0;
     pResyncMessage->header_.messageCode_ = RESYNC_TIME_CODE;
     pResyncMessage->header_.totalLength_ = sizeof(MachLogResyncTimeMessage);
@@ -967,7 +964,7 @@ void MachLogMessageBroker::processResyncTimeMessage(NetMessage* pMessage)
     // MachLogResyncTimeMessage* pResyncMessage = _REINTERPRET_CAST( MachLogResyncTimeMessage*,
     // &pMessage->body().body()[0] );
     MachLogResyncTimeMessage* pResyncMessage
-        = _REINTERPRET_CAST(MachLogResyncTimeMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogResyncTimeMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processResyncTimeMessage " << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, "Current Time " << SimManager::instance().currentTime() << std::endl);
     DEBUG_STREAM(DIAG_NETWORK, "resync time " << pResyncMessage->now_ << std::endl);
@@ -996,7 +993,7 @@ void MachLogMessageBroker::sendUseSpaceDomainMessage(UtlId whichId, UtlId constr
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendUseSpaceDomainMessage\n");
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendUseSpaceDomainMessage " << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogUseSpaceDomainMessage* pMessage = _REINTERPRET_CAST(MachLogUseSpaceDomainMessage*, pLogNetMessage);
+    MachLogUseSpaceDomainMessage* pMessage = reinterpret_cast<MachLogUseSpaceDomainMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = USE_SPACE_DOMAIN_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogUseSpaceDomainMessage);
@@ -1011,7 +1008,7 @@ void MachLogMessageBroker::processUseSpaceDomainMessage(NetMessage* pNetMessage)
     // MachLogUseSpaceDomainMessage* pMessage = _REINTERPRET_CAST( MachLogUseSpaceDomainMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogUseSpaceDomainMessage* pMessage
-        = _REINTERPRET_CAST(MachLogUseSpaceDomainMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogUseSpaceDomainMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processUseSpaceDomainMessage " << pMessage->whichId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exists" );
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->constructionId_ ), "Actor [the construction] does not
@@ -1106,7 +1103,7 @@ void MachLogMessageBroker::sendFirstPersonEndMessage(UtlId whichId, MachPhys::Ra
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendFirstPersonEndMessage\n");
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogFirstPersonEndMessage* pMessage = _REINTERPRET_CAST(MachLogFirstPersonEndMessage*, pLogNetMessage);
+    MachLogFirstPersonEndMessage* pMessage = reinterpret_cast<MachLogFirstPersonEndMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = FIRST_PERSON_END_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogFirstPersonEndMessage);
@@ -1122,7 +1119,7 @@ void MachLogMessageBroker::processFirstPersonEndMessage(NetMessage* pNetMessage)
     // MachLogFirstPersonEndMessage* pMessage = _REINTERPRET_CAST( MachLogFirstPersonEndMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogFirstPersonEndMessage* pMessage
-        = _REINTERPRET_CAST(MachLogFirstPersonEndMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogFirstPersonEndMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processFirstPersonEndMessage " << pMessage->whichId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exist" );
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -1142,7 +1139,7 @@ void MachLogMessageBroker::sendFirstPersonUpdateMessage(
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendFirstPersonUpdateMessage\n");
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogFirstPersonUpdateMessage* pMessage = _REINTERPRET_CAST(MachLogFirstPersonUpdateMessage*, pLogNetMessage);
+    MachLogFirstPersonUpdateMessage* pMessage = reinterpret_cast<MachLogFirstPersonUpdateMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = FIRST_PERSON_UPDATE_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogFirstPersonUpdateMessage);
@@ -1158,7 +1155,7 @@ void MachLogMessageBroker::processFirstPersonUpdateMessage(NetMessage* pNetMessa
     // MachLogFirstPersonUpdateMessage* pMessage = _REINTERPRET_CAST( MachLogFirstPersonUpdateMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogFirstPersonUpdateMessage* pMessage
-        = _REINTERPRET_CAST(MachLogFirstPersonUpdateMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogFirstPersonUpdateMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processFirstPersonUpdateMessage " << pMessage->whichId_ << std::endl);
     // ASSERT( MachLogRaces::instance().actorExists( pMessage->whichId_ ), "Actor does not exist" );
     if (MachLogRaces::instance().actorExists(pMessage->whichId_))
@@ -1172,7 +1169,7 @@ void MachLogMessageBroker::sendEnteredBuildingMessage(UtlId whichId, UtlId const
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendEnteredBuildingMessage\n");
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
-    MachLogEnteredBuildingMessage* pMessage = _REINTERPRET_CAST(MachLogEnteredBuildingMessage*, pLogNetMessage);
+    MachLogEnteredBuildingMessage* pMessage = reinterpret_cast<MachLogEnteredBuildingMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
     pMessage->header_.messageCode_ = ENTERED_BUILDING_CODE;
     pMessage->header_.totalLength_ = sizeof(MachLogEnteredBuildingMessage);
@@ -1187,7 +1184,7 @@ void MachLogMessageBroker::processEnteredBuildingMessage(NetMessage* pNetMessage
     // MachLogEnteredBuildingMessage* pMessage = _REINTERPRET_CAST( MachLogEnteredBuildingMessage*,
     // &pNetMessage->body().body()[0] );
     MachLogEnteredBuildingMessage* pMessage
-        = _REINTERPRET_CAST(MachLogEnteredBuildingMessage*, _CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
+        = reinterpret_cast<MachLogEnteredBuildingMessage*>(_CONST_CAST(uint8*, &pNetMessage->body().body()[0]));
     DEBUG_STREAM(
         DIAG_NETWORK,
         "processEnteredBuildingMessage " << pMessage->whichId_ << " constructionId " << pMessage->constructionId_
@@ -1237,7 +1234,7 @@ void MachLogMessageBroker::sendStartGameMessage()
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendStartGameMessage " << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
-    MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
+    MachLogReadyMessage* pReadyMessage = reinterpret_cast<MachLogReadyMessage*>(pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = START_GAME_CODE;
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
@@ -1248,9 +1245,9 @@ void MachLogMessageBroker::sendStartGameMessage()
 
 void MachLogMessageBroker::processStartGameMessage(NetMessage* pMessage)
 {
-    // MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST( MachLogReadyMessage*, &pMessage->body().body()[0] );
+    // MachLogReadyMessage* pReadyMessage = reinterpret_cast< MachLogReadyMessage*>(&pMessage->body().body()[0] );
     MachLogReadyMessage* pReadyMessage
-        = _REINTERPRET_CAST(MachLogReadyMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogReadyMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processReadyMessage " << std::endl);
     SimManager::instance().resume();
 }
@@ -1259,7 +1256,7 @@ void MachLogMessageBroker::sendLostFlagSetMessage(MachPhys::Race race)
 {
     DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sstd::endlostFlagSetMessage " << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
-    MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST(MachLogReadyMessage*, pMessage);
+    MachLogReadyMessage* pReadyMessage = reinterpret_cast<MachLogReadyMessage*>(pMessage);
     pReadyMessage->header_.systemCode_ = 0;
     pReadyMessage->header_.messageCode_ = LOST_FLAG_SET_CODE;
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
@@ -1270,9 +1267,9 @@ void MachLogMessageBroker::sendLostFlagSetMessage(MachPhys::Race race)
 
 void MachLogMessageBroker::processLostFlagSetMessage(NetMessage* pMessage)
 {
-    // MachLogReadyMessage* pReadyMessage = _REINTERPRET_CAST( MachLogReadyMessage*, &pMessage->body().body()[0] );
+    // MachLogReadyMessage* pReadyMessage = reinterpret_cast< MachLogReadyMessage*>(&pMessage->body().body()[0] );
     MachLogReadyMessage* pReadyMessage
-        = _REINTERPRET_CAST(MachLogReadyMessage*, _CONST_CAST(uint8*, &pMessage->body().body()[0]));
+        = reinterpret_cast<MachLogReadyMessage*>(_CONST_CAST(uint8*, &pMessage->body().body()[0]));
     DEBUG_STREAM(DIAG_NETWORK, "processReadyMessage " << std::endl);
     MachLogRaces::instance().hasLost(pReadyMessage->race_, true);
 }

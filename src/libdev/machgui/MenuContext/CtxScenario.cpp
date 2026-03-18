@@ -91,7 +91,7 @@ void MachGuiSystemPlanetScenarioListBox::doNavSelectNewItem(MachGuiSingleSelecti
     pItem->selectThisItem();
 
     // Make sure smacker animation and text is updated
-    MachGuiSystemPlanetScenarioListBoxItem* pRCItem = _REINTERPRET_CAST(MachGuiSystemPlanetScenarioListBoxItem*, pItem);
+    MachGuiSystemPlanetScenarioListBoxItem* pRCItem = reinterpret_cast<MachGuiSystemPlanetScenarioListBoxItem*>(pItem);
     pRCItem->updateDisplayInfo();
 }
 

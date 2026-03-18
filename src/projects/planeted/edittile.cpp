@@ -151,7 +151,7 @@ void PedTileEditor::highlightTile()
         &pEntity,
         &distance);
 
-    if (result && ! isSelected(_REINTERPRET_CAST(MachPhysTerrainTile*, pEntity)))
+    if (result && ! isSelected(reinterpret_cast<MachPhysTerrainTile*>(pEntity)))
     {
         // Display a box around the selected tile
         pHighlightTile_ = new PedTileMarker(pEntity, MexTransform3d(), pEntity->boundingVolume(), false);

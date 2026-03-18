@@ -37,7 +37,7 @@ PerIdentifier PersistenceImplementationWrite::identifier(const void* ptr)
     else
     {
         // PerMapPtrType  mapPtr = static_cast< PerMapPtrType>(ptr );
-        PerMapPtrType mapPtr = _REINTERPRET_CAST(PerMapPtrType, ptr);
+        PerMapPtrType mapPtr = reinterpret_cast<PerMapPtrType>(ptr);
 
         PointerToIdMap::const_iterator i = pointerToId_.find(mapPtr);
 

@@ -205,70 +205,70 @@ void MachGuiMessageBroker::processMachGuiMessage(NetMessage* pMessage)
     switch (getMessageType(pMessage))
     {
         case MT_CHATMESSAGE:
-            // processChatMessage( _REINTERPRET_CAST( MachGuiChatMessage*, pMessage->body().body() ) );
-            processChatMessage(_REINTERPRET_CAST(MachGuiChatMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+            // processChatMessage( reinterpret_cast< MachGuiChatMessage*>(pMessage->body().body() ) );
+            processChatMessage(reinterpret_cast<MachGuiChatMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_JOINMESSAGE:
-            // processJoinMessage( _REINTERPRET_CAST( MachGuiJoinMessage*, pMessage->body().body() ) );
-            processJoinMessage(_REINTERPRET_CAST(MachGuiJoinMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+            // processJoinMessage( reinterpret_cast< MachGuiJoinMessage*>(pMessage->body().body() ) );
+            processJoinMessage(reinterpret_cast<MachGuiJoinMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_UPDATEPLAYERSMESSAGE:
-            // processUpdatePlayersMessage( _REINTERPRET_CAST( MachGuiUpdatePlayersMessage*, pMessage->body().body() )
+            // processUpdatePlayersMessage( reinterpret_cast< MachGuiUpdatePlayersMessage*>(pMessage->body().body() )
             // );
             processUpdatePlayersMessage(
-                _REINTERPRET_CAST(MachGuiUpdatePlayersMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiUpdatePlayersMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_RACECHANGEREQUESTMESSAGE:
-            // processRaceChangeRequest( _REINTERPRET_CAST( MachGuiRaceChangeRequestMessage*, pMessage->body().body() )
+            // processRaceChangeRequest( reinterpret_cast< MachGuiRaceChangeRequestMessage*>(pMessage->body().body() )
             // );
             processRaceChangeRequest(
-                _REINTERPRET_CAST(MachGuiRaceChangeRequestMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiRaceChangeRequestMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_STARTMESSAGE:
-            // processStartMessage( _REINTERPRET_CAST( MachGuiStartMessage*, pMessage->body().body() ) );
-            processStartMessage(_REINTERPRET_CAST(MachGuiStartMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+            // processStartMessage( reinterpret_cast< MachGuiStartMessage*>(pMessage->body().body() ) );
+            processStartMessage(reinterpret_cast<MachGuiStartMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_IMREADYMESSAGE:
-            // processImReadyMessage( _REINTERPRET_CAST( MachGuiImReadyMessage*, pMessage->body().body() ) );
+            // processImReadyMessage( reinterpret_cast< MachGuiImReadyMessage*>(pMessage->body().body() ) );
             processImReadyMessage(
-                _REINTERPRET_CAST(MachGuiImReadyMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiImReadyMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_HOSTCANCELMESSAGE:
-            // processHostCancelMessage( _REINTERPRET_CAST( MachGuiHostCancelMessage*, pMessage->body().body() ) );
+            // processHostCancelMessage( reinterpret_cast< MachGuiHostCancelMessage*>(pMessage->body().body() ) );
             processHostCancelMessage(
-                _REINTERPRET_CAST(MachGuiHostCancelMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiHostCancelMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_CLIENTCANCELMESSAGE:
-            // processClientCancelMessage( _REINTERPRET_CAST( MachGuiClientCancelMessage*, pMessage->body().body() )  );
+            // processClientCancelMessage( reinterpret_cast< MachGuiClientCancelMessage*>(pMessage->body().body() )  );
             processClientCancelMessage(
-                _REINTERPRET_CAST(MachGuiClientCancelMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiClientCancelMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MY_UPDATEGAMESETTINGSMESSAGE:
             // processUpdateGameSettingsMessage( _REINTERPRET_CAST( MachGuiUpdateGameSettingsMessage*,
             // pMessage->body().body() )  );
             processUpdateGameSettingsMessage(
-                _REINTERPRET_CAST(MachGuiUpdateGameSettingsMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiUpdateGameSettingsMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_INGAMECHATMESSAGE:
-            // processInGameChatMessage( _REINTERPRET_CAST( MachGuiInGameChatMessage*, pMessage->body().body() )  );
+            // processInGameChatMessage( reinterpret_cast< MachGuiInGameChatMessage*>(pMessage->body().body() )  );
             processInGameChatMessage(
-                _REINTERPRET_CAST(MachGuiInGameChatMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiInGameChatMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_HASMACHINESCDMESSAGE:
-            // processHasMachinesCDMessage( _REINTERPRET_CAST( MachGuiHasMachinesCDMessage*, pMessage->body().body() )
+            // processHasMachinesCDMessage( reinterpret_cast< MachGuiHasMachinesCDMessage*>(pMessage->body().body() )
             // );
             processHasMachinesCDMessage(
-                _REINTERPRET_CAST(MachGuiHasMachinesCDMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiHasMachinesCDMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_IVELOSTMESSAGE:
-            // processIveLostMessage( _REINTERPRET_CAST( MachGuiIveLostMessage*, pMessage->body().body() )  );
+            // processIveLostMessage( reinterpret_cast< MachGuiIveLostMessage*>(pMessage->body().body() )  );
             processIveLostMessage(
-                _REINTERPRET_CAST(MachGuiIveLostMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiIveLostMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         case MT_NAMECHANGEMESSAGE:
-            // processNameChangeMessage( _REINTERPRET_CAST( MachGuiNameChangeMessage*, pMessage->body().body() ) );
+            // processNameChangeMessage( reinterpret_cast< MachGuiNameChangeMessage*>(pMessage->body().body() ) );
             processNameChangeMessage(
-                _REINTERPRET_CAST(MachGuiNameChangeMessage*, _CONST_CAST(uint8*, pMessage->body().body())));
+                reinterpret_cast<MachGuiNameChangeMessage*>(_CONST_CAST(uint8*, pMessage->body().body())));
             break;
         default:
             ASSERT_BAD_CASE;
@@ -310,7 +310,7 @@ MachGuiMessageBroker::MessageType MachGuiMessageBroker::getMessageType(NetMessag
 void MachGuiMessageBroker::sendChatMessage(const std::string& chat)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiChatMessage* pMessage = _REINTERPRET_CAST(MachGuiChatMessage*, pLogMessage);
+    MachGuiChatMessage* pMessage = reinterpret_cast<MachGuiChatMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_CHATMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiChatMessage);
@@ -327,7 +327,7 @@ void MachGuiMessageBroker::sendJoinMessage(const std::string& playerName, int un
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiJoinMessage* pMessage = _REINTERPRET_CAST(MachGuiJoinMessage*, pLogMessage);
+    MachGuiJoinMessage* pMessage = reinterpret_cast<MachGuiJoinMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_JOINMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiJoinMessage);
@@ -346,7 +346,7 @@ void MachGuiMessageBroker::sendJoinMessage(const std::string& playerName, int un
 void MachGuiMessageBroker::sendUpdatePlayersMessage()
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiUpdatePlayersMessage* pMessage = _REINTERPRET_CAST(MachGuiUpdatePlayersMessage*, pLogMessage);
+    MachGuiUpdatePlayersMessage* pMessage = reinterpret_cast<MachGuiUpdatePlayersMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_UPDATEPLAYERSMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiUpdatePlayersMessage);
@@ -359,7 +359,7 @@ void MachGuiMessageBroker::sendUpdatePlayersMessage()
 void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiUpdateGameSettingsMessage* pMessage = _REINTERPRET_CAST(MachGuiUpdateGameSettingsMessage*, pLogMessage);
+    MachGuiUpdateGameSettingsMessage* pMessage = reinterpret_cast<MachGuiUpdateGameSettingsMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MY_UPDATEGAMESETTINGSMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiUpdateGameSettingsMessage);
@@ -372,7 +372,7 @@ void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
 void MachGuiMessageBroker::sendRaceChangeRequest(const std::string& playerName, size_t playerIndex, MachPhys::Race newRace)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiRaceChangeRequestMessage* pMessage = _REINTERPRET_CAST(MachGuiRaceChangeRequestMessage*, pLogMessage);
+    MachGuiRaceChangeRequestMessage* pMessage = reinterpret_cast<MachGuiRaceChangeRequestMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_RACECHANGEREQUESTMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiRaceChangeRequestMessage);
@@ -390,7 +390,7 @@ void MachGuiMessageBroker::sendRaceChangeRequest(const std::string& playerName, 
 void MachGuiMessageBroker::sendImReadyMessage(const std::string& playerName, bool ready)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiImReadyMessage* pMessage = _REINTERPRET_CAST(MachGuiImReadyMessage*, pLogMessage);
+    MachGuiImReadyMessage* pMessage = reinterpret_cast<MachGuiImReadyMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_IMREADYMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiImReadyMessage);
@@ -407,7 +407,7 @@ void MachGuiMessageBroker::sendImReadyMessage(const std::string& playerName, boo
 void MachGuiMessageBroker::sendStartMessage()
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiStartMessage* pMessage = _REINTERPRET_CAST(MachGuiStartMessage*, pLogMessage);
+    MachGuiStartMessage* pMessage = reinterpret_cast<MachGuiStartMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_STARTMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiStartMessage);
@@ -418,7 +418,7 @@ void MachGuiMessageBroker::sendStartMessage()
 void MachGuiMessageBroker::sendHostCancelMessage()
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiHostCancelMessage* pMessage = _REINTERPRET_CAST(MachGuiHostCancelMessage*, pLogMessage);
+    MachGuiHostCancelMessage* pMessage = reinterpret_cast<MachGuiHostCancelMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_HOSTCANCELMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiHostCancelMessage);
@@ -429,7 +429,7 @@ void MachGuiMessageBroker::sendHostCancelMessage()
 void MachGuiMessageBroker::sendClientCancelMessage(const std::string& playerName)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiClientCancelMessage* pMessage = _REINTERPRET_CAST(MachGuiClientCancelMessage*, pLogMessage);
+    MachGuiClientCancelMessage* pMessage = reinterpret_cast<MachGuiClientCancelMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_CLIENTCANCELMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiClientCancelMessage);
@@ -444,7 +444,7 @@ void MachGuiMessageBroker::sendClientCancelMessage(const std::string& playerName
 void MachGuiMessageBroker::sendInGameChatMessage(const std::string& message, MachPhys::Race intendedForRace)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiInGameChatMessage* pMessage = _REINTERPRET_CAST(MachGuiInGameChatMessage*, pLogMessage);
+    MachGuiInGameChatMessage* pMessage = reinterpret_cast<MachGuiInGameChatMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_INGAMECHATMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiInGameChatMessage);
@@ -520,7 +520,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker::MessageTyp
 void MachGuiMessageBroker::sendHasMachinesCDMessage(const std::string& playerName, bool hasMachinesCD)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiHasMachinesCDMessage* pMessage = _REINTERPRET_CAST(MachGuiHasMachinesCDMessage*, pLogMessage);
+    MachGuiHasMachinesCDMessage* pMessage = reinterpret_cast<MachGuiHasMachinesCDMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_HASMACHINESCDMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiHasMachinesCDMessage);
@@ -544,7 +544,7 @@ void MachGuiMessageBroker::processHasMachinesCDMessage(MachGuiHasMachinesCDMessa
 void MachGuiMessageBroker::sendIveLostMessage(const std::string& playerName)
 {
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiIveLostMessage* pMessage = _REINTERPRET_CAST(MachGuiIveLostMessage*, pLogMessage);
+    MachGuiIveLostMessage* pMessage = reinterpret_cast<MachGuiIveLostMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_IVELOSTMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiIveLostMessage);
@@ -559,7 +559,7 @@ void MachGuiMessageBroker::sendNameChangeMessage(const std::string& newPlayerNam
     NETWORK_STREAM("MachGuiMessageBroker::sendJoinMessage\n");
     NETWORK_INDENT(2);
     MachLogNetMessage* pLogMessage = new MachLogNetMessage();
-    MachGuiNameChangeMessage* pMessage = _REINTERPRET_CAST(MachGuiNameChangeMessage*, pLogMessage);
+    MachGuiNameChangeMessage* pMessage = reinterpret_cast<MachGuiNameChangeMessage*>(pLogMessage);
     pMessage->header_.systemCode_ = SYSTEM_MACHGUI_MESSAGE;
     pMessage->header_.messageCode_ = MT_NAMECHANGEMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiNameChangeMessage);

@@ -365,7 +365,7 @@ void MachPhysMachineExplosion::createMainFireball(
         // W4dGeneric* pExplosionSite = new W4dGeneric(static_cast<W4dEntity*>(pMachine->containingDomain()),
         // pMachine->localTransform());
         W4dGeneric* pExplosionSite
-            = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pMachine->containingDomain()), pMachine->localTransform());
+            = new W4dGeneric(reinterpret_cast<W4dEntity*>(pMachine->containingDomain()), pMachine->localTransform());
 
         SOUND_STREAM("Real fireball size " << fireballSize << std::endl);
         SoundId thisFireballSound = SID_XPLODE1_MACHINE;

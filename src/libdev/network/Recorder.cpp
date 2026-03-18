@@ -36,7 +36,7 @@ NetProcessUid NetIRecorder::playbackProcessUid() const
     NetProcessUid uid;
 
     // RecRecorderPrivate::instance().playbackNetworkData( static_cast< uint8*>(&uid ), sizeof( uid ) );
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &uid), sizeof(uid));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&uid), sizeof(uid));
 
     return uid;
 }
@@ -44,7 +44,7 @@ NetProcessUid NetIRecorder::playbackProcessUid() const
 void NetIRecorder::recordProcessUid(NetProcessUid uid) const
 {
     // RecRecorderPrivate::instance().recordNetworkData( static_cast< const uint8*>(&uid ), sizeof( uid ) );
-    RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &uid), sizeof(uid));
+    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&uid), sizeof(uid));
 }
 
 bool NetIRecorder::playbackHasAppSession() const
@@ -85,7 +85,7 @@ NetAppUid NetIRecorder::playbackAppUid() const
 {
     NetAppUid uid;
     // replaced here to reinterpret cast
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &uid), sizeof(uid));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&uid), sizeof(uid));
 
     return uid;
 }
@@ -93,7 +93,7 @@ NetAppUid NetIRecorder::playbackAppUid() const
 void NetIRecorder::recordAppUid(NetAppUid uid) const
 {
     // and here...
-    RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &uid), sizeof(uid));
+    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&uid), sizeof(uid));
 }
 
 bool NetIRecorder::playbackIsLogicalHost() const
@@ -153,14 +153,14 @@ NetNetwork::NetNetworkStatus NetIRecorder::playbackCurrentStatus() const
 {
     NetNetwork::NetNetworkStatus status;
 
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &status), sizeof(status));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&status), sizeof(status));
 
     return status;
 }
 
 void NetIRecorder::recordCurrentStatus(const NetNetwork::NetNetworkStatus& status) const
 {
-    RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &status), sizeof(status));
+    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&status), sizeof(status));
 }
 
 bool NetIRecorder::playbackIsLobbiedGame() const
@@ -177,14 +177,14 @@ NetNetwork::NetworkProtocol NetIRecorder::playbackCurrentProtocol() const
 {
     NetNetwork::NetworkProtocol protocol;
 
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &protocol), sizeof(protocol));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&protocol), sizeof(protocol));
 
     return protocol;
 }
 
 void NetIRecorder::recordCurrentProtocol(const NetNetwork::NetworkProtocol& protocol) const
 {
-    RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &protocol), sizeof(protocol));
+    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&protocol), sizeof(protocol));
 }
 
 std::string NetIRecorder::playbackIPAddress() const
@@ -255,14 +255,14 @@ NetAppSession::NetSessionStatus NetIRecorder::playbackSessionStatus() const
 {
     NetAppSession::NetSessionStatus status;
 
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &status), sizeof(status));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&status), sizeof(status));
 
     return status;
 }
 
 void NetIRecorder::recordSessionStatus(const NetAppSession::NetSessionStatus& status) const
 {
-    RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &status), sizeof(status));
+    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&status), sizeof(status));
 }
 
 NetSessionInfo NetIRecorder::playbackSessionInfo() const
@@ -357,9 +357,9 @@ NetNodeUid NetIRecorder::playbackNodeUid() const
     NetThreadUid threadUid;
     NetInterProcessUid interprocessUid;
 
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &threadUid), sizeof(NetThreadUid));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&threadUid), sizeof(NetThreadUid));
     RecRecorderPrivate::instance().playbackNetworkData(
-        _REINTERPRET_CAST(uint8*, &interprocessUid),
+        reinterpret_cast<uint8*>(&interprocessUid),
         sizeof(NetInterProcessUid));
     const std::string nodeName = RecRecorderPrivate::instance().playbackNetworkString();
 
@@ -372,11 +372,11 @@ void NetIRecorder::recordNodeUid(const NetNodeUid& nodeUid) const
 {
     RecRecorderPrivate::instance().recordNetworkString(nodeUid.processUid().processorUid());
     RecRecorderPrivate::instance().recordNetworkData(
-        _REINTERPRET_CAST(uint8*, _CONST_CAST(NetThreadUid*, &nodeUid.processUid().threadUid())),
+        reinterpret_cast<uint8*>(_CONST_CAST(NetThreadUid*, &nodeUid.processUid().threadUid())),
         sizeof(NetThreadUid));
     const NetInterProcessUid interprocessUid = nodeUid.interprocessUid();
     RecRecorderPrivate::instance().recordNetworkData(
-        _REINTERPRET_CAST(uint8*, _CONST_CAST(NetThreadUid*, &interprocessUid)),
+        reinterpret_cast<uint8*>(_CONST_CAST(NetThreadUid*, &interprocessUid)),
         sizeof(NetInterProcessUid));
     RecRecorderPrivate::instance().recordNetworkString(nodeUid.nodeName());
 }
@@ -391,7 +391,7 @@ NetPing NetIRecorder::playbackPing() const
     {
         NetNodeUid nodeUid = playbackNodeUid();
         NetPingInformation info;
-        RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &info), sizeof(info));
+        RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&info), sizeof(info));
         ping.insert(nodeUid, info);
     }
 
@@ -406,7 +406,7 @@ void NetIRecorder::recordPing(const NetPing& ping) const
     {
         recordNodeUid((*i).first);
         const NetPingInformation& info = (*i).second;
-        RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &info), sizeof(info));
+        RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&info), sizeof(info));
     }
 }
 
@@ -507,7 +507,7 @@ void NetIRecorder::recordHeader(const NetMessageHeader& header) const
     //    recordNodeUid( header.sender() );
 
     RecRecorderPrivate::instance().recordNetworkData(
-        _REINTERPRET_CAST(uint8*, _CONST_CAST(NetPriority*, &header.priority())),
+        reinterpret_cast<uint8*>(_CONST_CAST(NetPriority*, &header.priority())),
         sizeof(NetPriority));
 }
 
@@ -517,7 +517,7 @@ NetMessageHeader NetIRecorder::playbackHeader() const
 
     NetPriority priority;
 
-    RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &priority), sizeof(NetPriority));
+    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&priority), sizeof(NetPriority));
 
     //    const NetMessageHeader header( sender, priority );
     const NetMessageHeader header(nullptr, priority);

@@ -181,8 +181,8 @@ const MachPhysConstructionData& MachLogDebris::constructionData() const
 // TBD: Woah would you look at that...someone returning the oreholograph data for buring debris....
 const MachPhysConstructionData& MachLogDebris::data() const
 {
-    // return _REINTERPRET_CAST( MachPhysConstructionData&, MachPhysData::instance().oreHolographData() );
-    return _REINTERPRET_CAST(const MachPhysConstructionData&, MachPhysData::instance().oreHolographData());
+    // return reinterpret_cast< MachPhysConstructionData&>(MachPhysData::instance().oreHolographData() );
+    return reinterpret_cast<const MachPhysConstructionData&>(MachPhysData::instance().oreHolographData());
 }
 
 // virtual

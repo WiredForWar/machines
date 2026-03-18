@@ -106,7 +106,7 @@ const MachPhysConstructionData& MachLogOreHolograph::constructionData() const
 
 const MachPhysConstructionData& MachLogOreHolograph::data() const
 {
-    return _REINTERPRET_CAST(const MachPhysConstructionData&, MachPhysData::instance().oreHolographData());
+    return reinterpret_cast<const MachPhysConstructionData&>(MachPhysData::instance().oreHolographData());
 }
 
 // virtual

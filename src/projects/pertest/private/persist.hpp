@@ -271,12 +271,12 @@ public:                                                                         
 
 #define PER_POINTER_READ(className, createFunction)                                                                    \
     {                                                                                                                  \
-        if (Persistence::instance().readPointerPre(istr, _REINTERPRET_CAST(void**, &pOb), #className)                  \
+        if (Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), #className)                  \
             == Persistence::READ_OBJECT)                                                                               \
         {                                                                                                              \
             istr >> createFunction;                                                                                    \
         }                                                                                                              \
-        Persistence::instance().readPointerPost(istr, _REINTERPRET_CAST(void**, &pOb), #className);                    \
+        Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), #className);                    \
         return istr;                                                                                                   \
     }
 
@@ -297,10 +297,10 @@ public:                                                                         
     Persistence::instance().readAsRaw(true), perRead(istr, ob), Persistence::instance().readAsRaw(false)
 
 #define PER_PRIVATE_WRITE_RAW_DATA(ostr, ptr, nBytes)                                                                  \
-    Persistence::instance().writeRawData(ostr, _REINTERPRET_CAST(const char*, ptr), nBytes)
+    Persistence::instance().writeRawData(ostr, reinterpret_cast<const char*>(ptr), nBytes)
 
 #define PER_PRIVATE_READ_RAW_DATA(istr, ptr, nBytes)                                                                   \
-    Persistence::instance().readRawData(istr, _REINTERPRET_CAST(char*, ptr), nBytes)
+    Persistence::instance().readRawData(istr, reinterpret_cast<char*>(ptr), nBytes)
 
 #define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> _CONST_CAST(NON_CONST_TYPE&, OBJECT)
 
@@ -338,7 +338,7 @@ public:                                                                         
 #define PER_PRIVATE_DEFINE_PERSISTENT(className)                                                                       \
     char* className::perPDerivedClass() const                                                                          \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
     }                                                                                                                  \
     const char* className::perClassName()                                                                              \
     {                                                                                                                  \
@@ -512,7 +512,7 @@ public:                                                                         
                     PER_POINTER_READ(className, (className<LIST_T>::perCreate())) template <CLASS_LIST_T>              \
                     inline char* className<LIST_T>::perPDerivedClass() const                                           \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
     }                                                                                                                  \
     template <CLASS_LIST_T> inline const char* className<LIST_T>::perMostDerivedClassName() const                      \
     {                                                                                                                  \

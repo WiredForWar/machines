@@ -72,7 +72,7 @@ void ProProfiler::traceStack(
     // Now the actual call stack
     for (size_t i = 0; i < nStackFrames; ++i)
     {
-        void* p = _REINTERPRET_CAST(void*, (*(pCallStack + i)));
+        void* p = reinterpret_cast<void*>((*(pCallStack + i)));
         ostr << " " << p;
     }
 

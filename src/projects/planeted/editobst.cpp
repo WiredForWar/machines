@@ -480,7 +480,7 @@ void PedObstacleEditor::processChangeObstacleType()
     PRE(pSelectedPolygon_);
 
     // Naughty but unavoidable
-    PedObstacle* pObstacle = _REINTERPRET_CAST(PedObstacle*, pSelectedPolygon_);
+    PedObstacle* pObstacle = reinterpret_cast<PedObstacle*>(pSelectedPolygon_);
 
     pObstacle->cspType(PedObstacle::highlightedType());
 }

@@ -52,7 +52,7 @@ ALSample::ALSample(const SndSampleParameters& params)
     //  SOUND_STREAM("ALSample::ALSample params.id() " << params.id().pathname() << std::endl );
     static unsigned int sampleCount = 0;
     // SOUND_STREAM("Creating " << static_cast<unsigned int>(this) << " smp no " << ++sampleCount << std::endl);
-    SOUND_STREAM("Creating " << _REINTERPRET_CAST(size_t, this) << " smp no " << ++sampleCount << std::endl);
+    SOUND_STREAM("Creating " << reinterpret_cast<size_t>(this) << " smp no " << ++sampleCount << std::endl);
 
     ASSERT(bufferSize_ % 2 == 0, "BufferSize must be even");
 

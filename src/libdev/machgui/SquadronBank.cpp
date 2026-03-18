@@ -384,7 +384,7 @@ void MachGuiSquadronBank::loadGame()
 {
     for (Children::iterator iter = children().begin(); iter != children().end(); ++iter)
     {
-        MachGuiSquadron* pSquad = _REINTERPRET_CAST(MachGuiSquadron*, *iter);
+        MachGuiSquadron* pSquad = reinterpret_cast<MachGuiSquadron*>(*iter);
         pSquad->loadGame();
     }
 
@@ -395,7 +395,7 @@ void MachGuiSquadronBank::unloadGame()
 {
     for (Children::iterator iter = children().begin(); iter != children().end(); ++iter)
     {
-        MachGuiSquadron* pSquad = _REINTERPRET_CAST(MachGuiSquadron*, *iter);
+        MachGuiSquadron* pSquad = reinterpret_cast<MachGuiSquadron*>(*iter);
         pSquad->unloadGame();
     }
 }
@@ -423,7 +423,7 @@ void MachGuiSquadronBank::update()
 
     for (Children::iterator itter = children().begin(); itter != children().end(); ++itter)
     {
-        MachGuiSquadron* pSquad = _REINTERPRET_CAST(MachGuiSquadron*, *itter);
+        MachGuiSquadron* pSquad = reinterpret_cast<MachGuiSquadron*>(*itter);
         pSquad->update();
     }
 

@@ -102,12 +102,10 @@ using uint = unsigned int;
 #ifndef NO_STANDARD_CASTS
 
 #define _CONST_CAST(t, o) (const_cast<t>(o))
-#define _REINTERPRET_CAST(t, o) (reinterpret_cast<t>(o))
 
 #else
 
 #define _CONST_CAST(t, o) ((t)(o))
-#define _REINTERPRET_CAST(t, o) ((t)(o))
 
 #endif /* #ifndef NO_STANDARD_CASTS */
 

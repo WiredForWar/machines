@@ -1768,7 +1768,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
             // be a pointer to the required RenTexture.
             DWORD dword = rmTex->GetAppData();
             //RenTexture* tex  = static_cast<RenTexture*>(dword);
-            RenTexture* tex  = _REINTERPRET_CAST(RenTexture*, dword);
+            RenTexture* tex  = reinterpret_cast<RenTexture*>(dword);
             RenTexture copy = *tex;
             newMat.texture(copy);
 

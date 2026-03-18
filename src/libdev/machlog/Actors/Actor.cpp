@@ -1018,7 +1018,7 @@ MachLogSoftwareLab& MachActor::asSoftwareLab()
     ASSERT_INFO(objectType());
     ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad static_cast type in MachActor::asSoftwareLab\n");
     // return *(static_cast< MachLogSoftwareLab*>(this ) );
-    return *(_REINTERPRET_CAST(MachLogSoftwareLab*, this));
+    return *(reinterpret_cast<MachLogSoftwareLab*>(this));
 }
 
 const MachLogSoftwareLab& MachActor::asSoftwareLab() const
@@ -1026,7 +1026,7 @@ const MachLogSoftwareLab& MachActor::asSoftwareLab() const
     ASSERT_INFO(objectType());
     ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad static_cast type in MachActor::asSoftwareLab\n");
     // return *(static_cast< const MachLogSoftwareLab*>(this ) );
-    return *(_REINTERPRET_CAST(const MachLogSoftwareLab*, this));
+    return *(reinterpret_cast<const MachLogSoftwareLab*>(this));
 }
 
 MachLogMissileEmplacement& MachActor::asMissileEmplacement()

@@ -117,7 +117,7 @@ void MachHWResearchBankIcons::updateProgress(float percentageComplete)
 {
     if (! children().empty() && ! canScrollBackward())
     {
-        MachHWResearchBankIcon* pHeadOfList = _REINTERPRET_CAST(MachHWResearchBankIcon*, children().front());
+        MachHWResearchBankIcon* pHeadOfList = reinterpret_cast<MachHWResearchBankIcon*>(children().front());
         pHeadOfList->updateProgress(percentageComplete);
     }
 }

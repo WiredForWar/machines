@@ -50,9 +50,9 @@ MachLogMessageBroker::~MachLogMessageBroker()
 void MachLogMessageBroker::processMessage(NetMessage* pMessage)
 {
     ++nIncomingMessages;
-    // MachLogNetMessage* pLogMessage = _REINTERPRET_CAST( MachLogNetMessage*, pMessage->body().body() );
+    // MachLogNetMessage* pLogMessage = reinterpret_cast< MachLogNetMessage*>(pMessage->body().body() );
     MachLogNetMessage* pLogMessage
-        = _REINTERPRET_CAST(MachLogNetMessage*, _CONST_CAST(uint8*, pMessage->body().body()));
+        = reinterpret_cast<MachLogNetMessage*>(_CONST_CAST(uint8*, pMessage->body().body()));
     MachLogMessageCode code = (MachLogMessageCode)pLogMessage->header_.messageCode_;
     int systemCode = pLogMessage->header_.systemCode_;
     incomingTotalLength += pLogMessage->header_.totalLength_;
@@ -265,7 +265,7 @@ void MachLogMessageBroker::doSend(MachLogNetMessage*& pMessage)
     else
     {
         NetPriority priority(1);
-        NetMessageBody body(_REINTERPRET_CAST(const unsigned char*, pMessage), pMessage->header_.totalLength_);
+        NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
         //      NetNode& node = MachLogNetwork::instance().node();
         //      node.sendMessage( priority, to, body);
         NetNetwork::instance().sendMessage(priority, body);
@@ -321,7 +321,7 @@ void MachLogMessageBroker::sendCachedOutgoingMessages()
         DEBUG_STREAM(
             DIAG_NETWORK,
             " messageCode " << static_cast<const MachLogMessageCode>(pMessage->header_.messageCode_) << std::endl);
-        NetMessageBody body(_REINTERPRET_CAST(const unsigned char*, pMessage), pMessage->header_.totalLength_);
+        NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
         NetNetwork::instance().sendMessage(priority, body);
         /*      NetNode& node = MachLogNetwork::instance().node();
         node.sendMessage( priority, to, body);

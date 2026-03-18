@@ -207,7 +207,7 @@ protected:                                                                      
 
 #define PER_PRIVATE_P_DERIVED_CLASS_DEFINITION                                                                         \
     {                                                                                                                  \
-        return _CONST_CAST(char*, _REINTERPRET_CAST(const char*, this));                                               \
+        return _CONST_CAST(char*, reinterpret_cast<const char*>(this));                                               \
     }
 
 #define PER_PRIVATE_MEMBER_PERSISTENT_STANDARD_INLINE(className, VIRTUAL)                                              \
@@ -289,18 +289,18 @@ public:                                                                         
 
 #define PER_POINTER_READ(className, createFunction)                                                                    \
     {                                                                                                                  \
-        if (Persistence::instance().readPointerPre(istr, _REINTERPRET_CAST(void**, &pOb), #className)                  \
+        if (Persistence::instance().readPointerPre(istr, reinterpret_cast<void**>(&pOb), #className)                  \
             == Persistence::READ_OBJECT)                                                                               \
         {                                                                                                              \
             istr >> createFunction;                                                                                    \
         }                                                                                                              \
-        Persistence::instance().readPointerPost(istr, _REINTERPRET_CAST(void**, &pOb), #className);                    \
+        Persistence::instance().readPointerPost(istr, reinterpret_cast<void**>(&pOb), #className);                    \
         return istr;                                                                                                   \
     }
 
 #define PER_POINTER_READ_ABSTRACT(className)                                                                           \
     {                                                                                                                  \
-        Persistence::instance().readPointerAbstract(istr, _REINTERPRET_CAST(void**, &pOb), #className);                \
+        Persistence::instance().readPointerAbstract(istr, reinterpret_cast<void**>(&pOb), #className);                \
         return istr;                                                                                                   \
     }
 
@@ -309,7 +309,7 @@ public:                                                                         
 // #define PER_PRIVATE_READ_RAW_POINTER( istr, ptr )  Persistence::instance().readRawPointer( istr, _STATIC_CAST(
 // void**, &ptr ) )
 #define PER_PRIVATE_READ_RAW_POINTER(istr, ptr)                                                                        \
-    Persistence::instance().readRawPointer(istr, _REINTERPRET_CAST(void**, &ptr))
+    Persistence::instance().readRawPointer(istr, reinterpret_cast<void**>(&ptr))
 
 #define PER_PRIVATE_WRITE_RAW_OBJECT(ostr, ob)                                                                         \
     Persistence::instance().writeAsRaw(true), perWrite(ostr, ob), Persistence::instance().writeAsRaw(false)
@@ -318,11 +318,11 @@ public:                                                                         
     Persistence::instance().readAsRaw(true), perRead(istr, ob), Persistence::instance().readAsRaw(false)
 
 #define PER_PRIVATE_WRITE_RAW_DATA(ostr, ptr, nBytes)                                                                  \
-    Persistence::instance().writeRawData(ostr, _REINTERPRET_CAST(const char*, ptr), nBytes)
+    Persistence::instance().writeRawData(ostr, reinterpret_cast<const char*>(ptr), nBytes)
 // Persistence::instance().writeRawData( ostr, static_cast< const char*>(ptr ), nBytes )
 
 #define PER_PRIVATE_READ_RAW_DATA(istr, ptr, nBytes)                                                                   \
-    Persistence::instance().readRawData(istr, _REINTERPRET_CAST(char*, ptr), nBytes)
+    Persistence::instance().readRawData(istr, reinterpret_cast<char*>(ptr), nBytes)
 // Persistence::instance().readRawData( istr, static_cast< char*>(ptr ), nBytes )
 
 #define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> _CONST_CAST(NON_CONST_TYPE&, OBJECT)

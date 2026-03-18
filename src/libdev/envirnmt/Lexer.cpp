@@ -153,7 +153,7 @@ static int keyword();
 inline const char* yytextChar()
 {
     // return static_cast<char*>(yytext);
-    return _REINTERPRET_CAST(char*, yytext);
+    return reinterpret_cast<char*>(yytext);
 }
 
 // To allow istream's to be used, and therefore SysMetaFile's, you have to redefine this macro.
@@ -796,7 +796,7 @@ int globalLexIstreamBufferInput(unsigned char* pBuffer, int bufferSize)
     PRE(pGlobalLexIstream);
 
     // pGlobalLexIstream->read(pBuffer, bufferSize);
-    pGlobalLexIstream->read(_REINTERPRET_CAST(char*, pBuffer), bufferSize);
+    pGlobalLexIstream->read(reinterpret_cast<char*>(pBuffer), bufferSize);
 
     // \r\n line endings seem to cause some troubles, replace them.
     std::replace(pBuffer, pBuffer + bufferSize, '\r', '\n');

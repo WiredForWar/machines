@@ -109,7 +109,7 @@ void MachProductionIcons::updateProgress(float percentageComplete)
 {
     if (! children().empty() && ! canScrollBackward())
     {
-        MachProductionIcon* pHeadOfList = _REINTERPRET_CAST(MachProductionIcon*, children().front());
+        MachProductionIcon* pHeadOfList = reinterpret_cast<MachProductionIcon*>(children().front());
         pHeadOfList->updateProgress(percentageComplete);
     }
 }

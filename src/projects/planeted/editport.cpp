@@ -293,7 +293,7 @@ void PedPortalEditor::writeCspFile(std::ofstream& out)
 
     for (Polygons::iterator portalIter = polygons_.begin(); portalIter != polygons_.end(); ++portalIter)
     {
-        PedPortal* pPortal = _REINTERPRET_CAST(PedPortal*, *portalIter);
+        PedPortal* pPortal = reinterpret_cast<PedPortal*>(*portalIter);
 
         bool firstDomainFound = false;
         size_t domainOne = 0;
@@ -304,7 +304,7 @@ void PedPortalEditor::writeCspFile(std::ofstream& out)
              ++domainIter)
         {
             const PedPolygon* pPolygon = *domainIter;
-            const PedDomain* pDomain = _REINTERPRET_CAST(const PedDomain*, pPolygon);
+            const PedDomain* pDomain = reinterpret_cast<const PedDomain*>(pPolygon);
 
             if (pDomain->intersectsPortal(*pPortal))
             {
@@ -340,7 +340,7 @@ void PedPortalEditor::validate()
     // Work out if portals are valid (do they intersect two domains only)
     for (Polygons::iterator portalIter = polygons_.begin(); portalIter != polygons_.end(); ++portalIter)
     {
-        PedPortal* pPortal = _REINTERPRET_CAST(PedPortal*, *portalIter);
+        PedPortal* pPortal = reinterpret_cast<PedPortal*>(*portalIter);
 
         bool firstDomainFound = false;
         bool secondDomainFound = false;
@@ -351,7 +351,7 @@ void PedPortalEditor::validate()
              ++domainIter)
         {
             const PedPolygon* pPolygon = *domainIter;
-            const PedDomain* pDomain = _REINTERPRET_CAST(const PedDomain*, pPolygon);
+            const PedDomain* pDomain = reinterpret_cast<const PedDomain*>(pPolygon);
 
             if (pDomain->intersectsPortal(*pPortal))
             {
@@ -414,8 +414,8 @@ void PedPortalEditor::processCreatePortalsFromDomains()
         {
             ASSERT(domain1Index != domain2Index, "The loop should ensure that this doesn't happen!");
 
-            const PedDomain* pDomain1 = _REINTERPRET_CAST(PedDomain*, domains[domain1Index]);
-            const PedDomain* pDomain2 = _REINTERPRET_CAST(PedDomain*, domains[domain2Index]);
+            const PedDomain* pDomain1 = reinterpret_cast<PedDomain*>(domains[domain1Index]);
+            const PedDomain* pDomain2 = reinterpret_cast<PedDomain*>(domains[domain2Index]);
 
             DANIEL_STREAM("Domains " << domain1Index << " " << domain2Index << std::endl);
 

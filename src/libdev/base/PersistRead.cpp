@@ -53,8 +53,8 @@ void PersistenceImplementationRead::registerObject(const void* ptr, PerReadIdent
 
     pushCurrentPoolAllocator(pIdMapAllocator_);
     // idToPointer_.insert( id, static_cast< PerMapPtrType>(ptr ) );
-    readIdToPointer_.emplace(idPair, _REINTERPRET_CAST(PerMapPtrType, ptr));
-    idToPointer_.emplace(std::make_pair(idPair.first, _REINTERPRET_CAST(PerMapPtrType, ptr)));
+    readIdToPointer_.emplace(idPair, reinterpret_cast<PerMapPtrType>(ptr));
+    idToPointer_.emplace(std::make_pair(idPair.first, reinterpret_cast<PerMapPtrType>(ptr)));
     popCurrentPoolAllocator();
 }
 
@@ -69,7 +69,7 @@ bool PersistenceImplementationRead::pointerIdValid(const void* ptr, PerReadIdent
     if (i != readIdToPointer_.end())
     {
         // if( static_cast< void*>((*i).second ) != ptr )
-        void* val = _REINTERPRET_CAST(void*, (*i).second);
+        void* val = reinterpret_cast<void*>((*i).second);
         if (val != ptr)
         {
             result = false;
@@ -112,8 +112,8 @@ void PersistenceImplementationRead::fixupPointer(void** pPtr, PerReadIdentifier 
             }
             else if ( std::distance(j.first, j.second) == 1 )
             {
-                //void*   ptr = _REINTERPRET_CAST( void*, (*j).first.second );
-                void*   ptr = _REINTERPRET_CAST( void*, j.first->second );
+                //void*   ptr = reinterpret_cast< void*>((*j).first.second );
+                void*   ptr = reinterpret_cast< void*>(j.first->second );
                 *pPtr = ptr;
             }
             else
@@ -144,14 +144,14 @@ void PersistenceImplementationRead::fixupPointer(void** pPtr, PerReadIdentifier 
                     }
                     std::cout << " selected address: "<< j->second << std::endl;
                     // select second option
-                    void*   ptr = _REINTERPRET_CAST( void*, j->second );
+                    void*   ptr = reinterpret_cast< void*>(j->second );
                     *pPtr = ptr;
                 }
                 else
                     */
                 {
-                    // void*   ptr = _REINTERPRET_CAST( void*, (*j).first.second );
-                    void* ptr = _REINTERPRET_CAST(void*, j->second);
+                    // void*   ptr = reinterpret_cast< void*>((*j).first.second );
+                    void* ptr = reinterpret_cast<void*>(j->second);
                     *pPtr = ptr;
                 }
             }
@@ -163,7 +163,7 @@ void PersistenceImplementationRead::fixupPointer(void** pPtr, PerReadIdentifier 
             // void*   ptr = static_cast< void*>(idToPointer_[ id ] );
             // was
             // void*   ptr = static_cast< void*>((*i).second );
-            void* ptr = _REINTERPRET_CAST(void*, (*i).second);
+            void* ptr = reinterpret_cast<void*>((*i).second);
 
             *pPtr = ptr;
         }
@@ -192,7 +192,7 @@ void PersistenceImplementationRead::fixupOutstandingPointers()
             }
             else
             {
-                *((*i).first) = _REINTERPRET_CAST(void*, j->second);
+                *((*i).first) = reinterpret_cast<void*>(j->second);
             }
         }
         else
@@ -203,7 +203,7 @@ void PersistenceImplementationRead::fixupOutstandingPointers()
             //*((*i).first) = static_cast< void*>(idToPointer_[ (*i).second ] );
             // was:
             //*((*i).first) = static_cast< void*>((*ptrIterator).second );
-            *((*i).first) = _REINTERPRET_CAST(void*, (*ptrIterator).second);
+            *((*i).first) = reinterpret_cast<void*>((*ptrIterator).second);
         }
     }
 }
