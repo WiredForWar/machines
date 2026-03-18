@@ -308,7 +308,7 @@ float MachLogHardwareLab::totalResearchRate() const
                 --nResearchStationsFree;
             }
             else
-                researchContributed = _STATIC_CAST(float, (*i)->data().researchRate()) / 5.0;
+                researchContributed = static_cast<float>((*i)->data().researchRate()) / 5.0;
 
             availableResearchUnits += researchContributed;
         }

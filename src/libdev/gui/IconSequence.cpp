@@ -178,7 +178,7 @@ void GuiIconSequence::repositionChildren()
         {
             // place next active child in the i-th position
             bool foundChild = false;
-            for (Coords::size_type j = std::max(i, _STATIC_CAST(Coords::size_type, offset()));
+            for (Coords::size_type j = std::max(i, static_cast<Coords::size_type>(offset()));
                  j < activeChildren_.size() && ! foundChild;
                  ++j)
             {

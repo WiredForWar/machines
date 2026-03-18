@@ -20,7 +20,7 @@ bool RenColour::lessThanOrEq(float d1, float d2) const
 _CODE_INLINE
 float RenColour::IColour::unpackAlpha() const
 {
-    return _STATIC_CAST(float, (a_ >> 24)) * (1.0 / 255);
+    return static_cast<float>((a_ >> 24)) * (1.0 / 255);
 }
 
 _CODE_INLINE

@@ -71,7 +71,7 @@ const RenMaterial& MachPhysIHealthMaterials::material(double percentageHp) const
     PRE(percentageHp >= 0);
     PRE(percentageHp <= 100);
 
-    const int idx = _STATIC_CAST(int, nMats_* percentageHp / 100.1);
+    const int idx = static_cast<int>(nMats_* percentageHp / 100.1);
     ASSERT(idx >= 0, "MachPhysIHealthMaterials indexing error");
     ASSERT(idx < nMats_, "MachPhysIHealthMaterials indexing error");
 

@@ -169,7 +169,7 @@ void MachLogTaskLocateOperation::doFinish()
 
 bool MachLogTaskLocateOperation::doIsFinished() const
 {
-    // MachLogTaskLocateOperation* pNonConstThis = _STATIC_CAST( MachLogTaskLocateOperation*, this );
+    // MachLogTaskLocateOperation* pNonConstThis = static_cast< MachLogTaskLocateOperation*>(this );
     MachLogTaskLocateOperation* pNonConstThis = _CONST_CAST(MachLogTaskLocateOperation*, this);
     return pNonConstThis->setCompleteState();
 }

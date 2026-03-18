@@ -137,7 +137,7 @@ _CODE_INLINE
 void RenIMatBody::coplanarPriority(short p)
 {
     // Looks like unary negation causes an integral promotion.
-    depth_ = _STATIC_CAST(short, -p);
+    depth_ = static_cast<short>(-p);
     dirty_ = true;
 }
 
@@ -145,7 +145,7 @@ _CODE_INLINE
 short RenIMatBody::coplanarPriority() const
 {
     // Looks like unary negation causes an integral promotion.
-    return _STATIC_CAST(short, -depth_);
+    return static_cast<short>(-depth_);
 }
 
 _CODE_INLINE

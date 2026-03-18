@@ -315,7 +315,7 @@ bool MachLogGarrison::currentlyHealing(MachLogMachine* pMachine)
 bool MachLogGarrison::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int)
 {
     CB_MachLogGarrison_DEPIMPL();
-    ASSERT_DATA(MachActor* pActor = _STATIC_CAST(MachActor*, pSubject););
+    ASSERT_DATA(MachActor* pActor = static_cast<MachActor*>(pSubject););
     ASSERT(
         pActor->objectIsMachine(),
         "MachLogGarrison::beNotified : have been notified by a subject that is NOT a machine.");

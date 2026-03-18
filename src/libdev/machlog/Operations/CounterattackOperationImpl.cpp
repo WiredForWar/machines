@@ -30,7 +30,7 @@ MachLogCounterattackOperationImpl::MachLogCounterattackOperationImpl(MachLogMach
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
     lastTimeTargetWasntEvading_ = timeNow;
     nextTimeINeedToCheckImClosing_ = timeNow + MachLogCounterattackOperation::distanceBeyondWeaponRangeCheckInterval()
-        + _STATIC_CAST(MATHEX_SCALAR, MachPhysRandom::randomInt(0, 11));
+        + static_cast<MATHEX_SCALAR>(MachPhysRandom::randomInt(0, 11));
 
     TEST_INVARIANT;
 }

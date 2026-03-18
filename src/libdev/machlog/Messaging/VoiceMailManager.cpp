@@ -525,7 +525,7 @@ void MachLogVoiceMailManager::registerVoiceMailIDs()
         ASSERT_INFO(tokens[0]);
         VoiceMailID id = registeredIds_[tokens[0]];
         ASSERT_INFO((int)id);
-        ASSERT_INFO(_STATIC_CAST(int, VID_N_MAIL_IDS));
+        ASSERT_INFO(static_cast<int>(VID_N_MAIL_IDS));
         ASSERT(id < VID_N_MAIL_IDS, "What the hell? An id larger than the size of the ids collection?");
         ASSERT(availableVEMails_[id] == nullptr, "Duplicate VEMail id");
 

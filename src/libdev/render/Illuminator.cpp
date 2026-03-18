@@ -359,7 +359,7 @@ static void resizeIndices(ctl_min_memory_vector<Ren::VertexIdx>& v, size_t newSi
 
         // Each element of the vector is it's own index.
         for (size_t i = v.size(); i != newSize; ++i)
-            v.push_back(_STATIC_CAST(Ren::VertexIdx, i));
+            v.push_back(static_cast<Ren::VertexIdx>(i));
     }
     else if (newSize < v.size())
     {

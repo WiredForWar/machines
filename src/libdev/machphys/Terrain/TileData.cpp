@@ -452,7 +452,7 @@ bool MachPhysTileData::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDis
     foundIntersection_ = false;
 
     // Check for intersection between the line and the triangles over each cell
-    // MachPhysTileData* nonConstThis = _STATIC_CAST( MachPhysTileData*, this );
+    // MachPhysTileData* nonConstThis = static_cast< MachPhysTileData*>(this );
     MachPhysTileData* nonConstThis = _CONST_CAST(MachPhysTileData*, this);
     nonConstThis->cellsUnderLine(line.end1(), line.end2(), lineIntersectsCell);
 

@@ -72,14 +72,14 @@ _CODE_INLINE
 int MachPhysPlanetSurface::xIndex(const MexPoint3d& position) const
 {
     // TBD: this ought to use multiplication by 1/edgeLength_.
-    return _STATIC_CAST(int, position.x() / edgeLength_);
+    return static_cast<int>(position.x() / edgeLength_);
 }
 
 _CODE_INLINE
 int MachPhysPlanetSurface::yIndex(const MexPoint3d& position) const
 {
     // TBD: this ought to use multiplication by 1/edgeLength_.
-    return _STATIC_CAST(int, position.y() / edgeLength_);
+    return static_cast<int>(position.y() / edgeLength_);
 }
 
 /* End PLANSURF.IPP *************************************************/

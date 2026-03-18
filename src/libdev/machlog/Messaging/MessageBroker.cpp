@@ -320,7 +320,7 @@ void MachLogMessageBroker::sendCachedOutgoingMessages()
         MachLogNetMessage* pMessage = cachedOutgoingMessages_.front();
         DEBUG_STREAM(
             DIAG_NETWORK,
-            " messageCode " << _STATIC_CAST(const MachLogMessageCode, pMessage->header_.messageCode_) << std::endl);
+            " messageCode " << static_cast<const MachLogMessageCode>(pMessage->header_.messageCode_) << std::endl);
         NetMessageBody body(_REINTERPRET_CAST(const unsigned char*, pMessage), pMessage->header_.totalLength_);
         NetNetwork::instance().sendMessage(priority, body);
         /*      NetNode& node = MachLogNetwork::instance().node();

@@ -424,7 +424,7 @@ int MachLogMissileEmplacement::militaryStrength() const
             return 0;
         default:
             {
-                return _STATIC_CAST(int, hpRatio() * _STATIC_CAST(MATHEX_SCALAR, objectData().cost()));
+                return static_cast<int>(hpRatio() * static_cast<MATHEX_SCALAR>(objectData().cost()));
             }
     }
 }

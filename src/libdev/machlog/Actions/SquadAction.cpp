@@ -60,7 +60,7 @@ void MachLogActivateSquadronsAction::doAction()
                 if ((*i)->strategy().currentOperationType() == MachLogOperation::TASK_ATTACK_OPERATION)
                 {
                     MachLogTaskAttackOperation& task
-                        = _STATIC_CAST(MachLogTaskAttackOperation&, (*i)->strategy().currentOperation());
+                        = static_cast<MachLogTaskAttackOperation&>((*i)->strategy().currentOperation());
                     task.initialDelay(0);
                 }
             }

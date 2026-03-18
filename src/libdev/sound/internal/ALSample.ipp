@@ -43,7 +43,7 @@ Snd::RelativeTime ALSample::length() const
 _CODE_INLINE
 void ALSample::pause()
 {
-    state_ = _STATIC_CAST(ALSample::SampleState, Sample::PAUSED);
+    state_ = static_cast<ALSample::SampleState>(Sample::PAUSED);
     alSourcePause(alSource_);
 }
 ////////////////////////////////////////////////////////////

@@ -283,12 +283,12 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
             {
                 // check for storage here....
                 float amountToAdd = (timeNow - lastUpdateTime_) * data().buildRate() / 60.0;
-                float remainingCost = _STATIC_CAST(float, cost - current->amountBuilt());
+                float remainingCost = static_cast<float>(cost - current->amountBuilt());
 
                 // don't need to pay any more than the remaining cost
                 amountToAdd = std::min(amountToAdd, remainingCost);
 
-                roundedOffAmountToAdd = _STATIC_CAST(int, amountToAdd);
+                roundedOffAmountToAdd = static_cast<int>(amountToAdd);
 
                 roundedOffAmountToAdd = MachLogRaces::instance().smartSubtractBMUs(race(), roundedOffAmountToAdd);
 

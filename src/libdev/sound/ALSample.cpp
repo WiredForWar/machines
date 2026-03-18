@@ -51,7 +51,7 @@ ALSample::ALSample(const SndSampleParameters& params)
 
     //  SOUND_STREAM("ALSample::ALSample params.id() " << params.id().pathname() << std::endl );
     static unsigned int sampleCount = 0;
-    // SOUND_STREAM("Creating " << _STATIC_CAST(unsigned int, this) << " smp no " << ++sampleCount << std::endl);
+    // SOUND_STREAM("Creating " << static_cast<unsigned int>(this) << " smp no " << ++sampleCount << std::endl);
     SOUND_STREAM("Creating " << _REINTERPRET_CAST(size_t, this) << " smp no " << ++sampleCount << std::endl);
 
     ASSERT(bufferSize_ % 2 == 0, "BufferSize must be even");
@@ -210,7 +210,7 @@ Sample::SampleState ALSample::update()
     // external to be done to it.
     if (state_ == INITIALISED || state_ == STOPPED)
     {
-        returnState = _STATIC_CAST(Sample::SampleState, state_);
+        returnState = static_cast<Sample::SampleState>(state_);
         return returnState;
     }
 
@@ -266,7 +266,7 @@ Sample::SampleState ALSample::update()
         case STOPPED:
         case PAUSED:
             // returnState = state_;
-            returnState = _STATIC_CAST(Sample::SampleState, state_);
+            returnState = static_cast<Sample::SampleState>(state_);
             break;
 
         case PLAYING_OUT:

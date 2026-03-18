@@ -1653,7 +1653,7 @@ void MachGuiFirstPerson::embodyActor()
             pCommandWidget_->updateSquadNumber();
         }
 
-        W4dEntity* thisEntity = _STATIC_CAST(W4dEntity*, &(pActor_->asMachine().physMachine()));
+        W4dEntity* thisEntity = static_cast<W4dEntity*>(&(pActor_->asMachine().physMachine()));
         W4dSoundManager::instance().stop(thisEntity);
         W4dSoundManager::instance().play(thisEntity, SID_INHEAD, 0, 0);
 
@@ -1702,7 +1702,7 @@ void MachGuiFirstPerson::exitActor()
         {
             MachLogMachine& logicalMachine = pActor_->asMachine();
             MachPhysMachine& thisMachine = logicalMachine.physMachine();
-            W4dEntity* thisEntity = _STATIC_CAST(W4dEntity*, &(pActor_->asMachine().physMachine()));
+            W4dEntity* thisEntity = static_cast<W4dEntity*>(&(pActor_->asMachine().physMachine()));
             W4dSoundManager::instance().stop(thisEntity);
             SoundId moveSound;
             SoundId idleSound;

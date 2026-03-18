@@ -36,7 +36,7 @@ PerIdentifier PersistenceImplementationWrite::identifier(const void* ptr)
         identifier = 0;
     else
     {
-        // PerMapPtrType  mapPtr = _STATIC_CAST( PerMapPtrType, ptr );
+        // PerMapPtrType  mapPtr = static_cast< PerMapPtrType>(ptr );
         PerMapPtrType mapPtr = _REINTERPRET_CAST(PerMapPtrType, ptr);
 
         PointerToIdMap::const_iterator i = pointerToId_.find(mapPtr);
@@ -244,7 +244,7 @@ void PersistenceImplementationWrite::write(PerOstream& ostr, PerDataType type)
 {
     ASSERT(type < 256, "Internal error - PerDataType > 256");
 
-    char c = _STATIC_CAST(char, type);
+    char c = static_cast<char>(type);
     ostr.write(&c, 1);
 }
 
@@ -334,7 +334,7 @@ bool PersistenceImplementationWrite::logAddresses() const
 void PersistenceImplementationWrite::writeAddress(const void* ptr) const
 {
     if (logAddresses())
-        // PER_WRITE_INDENT_STREAM( " (" << _STATIC_CAST( void*, ptr ) << ") " );
+        // PER_WRITE_INDENT_STREAM( " (" << static_cast< void*>(ptr ) << ") " );
         PER_WRITE_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
 }
 

@@ -323,7 +323,7 @@ const char* DiagInternal::streamText(size_t index)
 {
     const char* result;
 
-    DiagStreamType type = _STATIC_CAST(DiagStreamType, index);
+    DiagStreamType type = static_cast<DiagStreamType>(index);
 
     switch (type)
     {

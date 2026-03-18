@@ -40,7 +40,7 @@ MachPhysHelix::MachPhysHelix(Twist twist)
     // TBD: Disable the back fuce cull via cast here.
     // These needs to be changed so the property is defined in the .x file.
     // Ren::ConstMeshPtr myMesh = _CONST_CAST( const W4dEntity&, *this).mesh().mesh();
-    Ren::ConstMeshPtr myMesh = _CONST_CAST(const W4dEntity&, _STATIC_CAST(W4dEntity&, *this)).mesh().mesh();
+    Ren::ConstMeshPtr myMesh = _CONST_CAST(const W4dEntity&, static_cast<W4dEntity&>(*this)).mesh().mesh();
     _CONST_CAST(RenMesh&, *myMesh).backFaceAll(false);
 
     TEST_INVARIANT;

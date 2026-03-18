@@ -74,7 +74,7 @@ void MachLogTreacheryOrb::doBeDestroyed()
                 MachPhys::Race oldRace = mlm.race();
                 mlm.assignToDifferentRace(*pLogRace_);
                 MachPhysTreacheryWeapon::traitorAnimation(&ncmpm, now, oldRace, race_);
-                MachPhysTreacheryOrb& mpto = _STATIC_CAST(MachPhysTreacheryOrb&, physLinearProjectile());
+                MachPhysTreacheryOrb& mpto = static_cast<MachPhysTreacheryOrb&>(physLinearProjectile());
                 mpto.suckRaceAt(now, mlm.race());
                 if (mlm.objectType() == MachLog::TECHNICIAN)
                     MachLogRaces::instance().techniciansTreacheried(

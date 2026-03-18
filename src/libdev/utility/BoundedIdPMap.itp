@@ -13,7 +13,7 @@
 
 template <class X> _CODE_INLINE X* UtlBoundedIdPMap<X>::operator[](UtlId id) const
 {
-    return _STATIC_CAST(X*, entry(id));
+    return static_cast<X*>(entry(id));
 }
 
 template <class X> _CODE_INLINE void UtlBoundedIdPMap<X>::add(UtlId id, X* p)

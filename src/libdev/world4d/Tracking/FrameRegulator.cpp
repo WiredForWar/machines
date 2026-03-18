@@ -99,7 +99,7 @@ PhysAbsoluteTime W4dFrameRegulator::effectiveTime() const
                     result = startTime_ + idealDuration_;
                 else
                     result = startTime_
-                        + idealDuration_ * (_STATIC_CAST(double, frameOffset) / _STATIC_CAST(double, nFrames_));
+                        + idealDuration_ * (static_cast<double>(frameOffset) / static_cast<double>(nFrames_));
             }
         }
     }

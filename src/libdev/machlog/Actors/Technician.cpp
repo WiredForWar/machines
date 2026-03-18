@@ -96,7 +96,7 @@ const MachPhysMachineData& MachLogTechnician::machineData() const
 
 const MachPhysTechnicianData& MachLogTechnician::data() const
 {
-    return _STATIC_CAST(const MachPhysTechnicianData&, physMachine().machineData());
+    return static_cast<const MachPhysTechnicianData&>(physMachine().machineData());
 }
 /* //////////////////////////////////////////////////////////////// */
 
@@ -104,12 +104,12 @@ const MachPhysTechnicianData& MachLogTechnician::data() const
 
 MachPhysTechnician& MachLogTechnician::physTechnician()
 {
-    return _STATIC_CAST(MachPhysTechnician&, physObject());
+    return static_cast<MachPhysTechnician&>(physObject());
 }
 
 const MachPhysTechnician& MachLogTechnician::physTechnician() const
 {
-    return _STATIC_CAST(const MachPhysTechnician&, physObject());
+    return static_cast<const MachPhysTechnician&>(physObject());
 }
 
 const MachPhys::TechnicianSubType& MachLogTechnician::subType() const

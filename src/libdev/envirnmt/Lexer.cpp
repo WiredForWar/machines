@@ -152,7 +152,7 @@ static int keyword();
 // Don't ask why, but yytext is unsigned and strcmp requires signed.
 inline const char* yytextChar()
 {
-    // return _STATIC_CAST(char*, yytext);
+    // return static_cast<char*>(yytext);
     return _REINTERPRET_CAST(char*, yytext);
 }
 

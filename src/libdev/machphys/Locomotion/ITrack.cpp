@@ -64,7 +64,7 @@ W4dUVTranslation& MachPhysITrack::w4dUVTranslation()
     // This cast is safe because this class only creates and stores
     // plans of this type. Note we need the counted pointer to be
     // at the base class level, hence the need for the cast.
-    return _STATIC_CAST(W4dUVTranslation&, *uvPlan_);
+    return static_cast<W4dUVTranslation&>(*uvPlan_);
 }
 
 void perWrite(PerOstream& ostr, const MachPhysITrack& track)

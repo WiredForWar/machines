@@ -917,7 +917,7 @@ void MachContinentMap::updateRacePos()
             && (W4dManager::instance().frameNumber() > 10))
         {
             // actorState |= ATTACKED;
-            actorState = _STATIC_CAST(ActorState, ActorState::ATTACKED | actorState);
+            actorState = static_cast<ActorState>(ActorState::ATTACKED | actorState);
         }
 
         newPosInfo.actorState_ = actorState;

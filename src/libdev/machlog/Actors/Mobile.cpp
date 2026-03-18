@@ -106,12 +106,12 @@ PhysRelativeTime MachLogMobile::beDestroyed()
 
 MachPhysMobile& MachLogMobile::physMobile()
 {
-    return _STATIC_CAST(MachPhysMobile&, physObject());
+    return static_cast<MachPhysMobile&>(physObject());
 }
 
 const MachPhysMobile& MachLogMobile::physMobile() const
 {
-    return _STATIC_CAST(const MachPhysMobile&, physObject());
+    return static_cast<const MachPhysMobile&>(physObject());
 }
 
 /* //////////////////////////////////////////////////////////////// */

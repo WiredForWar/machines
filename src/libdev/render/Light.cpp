@@ -110,7 +110,7 @@ void perRead(PerIstream& istr, RenLight& light)
 /////////////////////////////////////////////////////////////////////////////
 RenDirectionalLight::RenDirectionalLight()
     : RenLight(new RenIDirectionalLight)
-    , pDir_(_STATIC_CAST(RenIDirectionalLight*, pILight()))
+    , pDir_(static_cast<RenIDirectionalLight*>(pILight()))
 {
 }
 

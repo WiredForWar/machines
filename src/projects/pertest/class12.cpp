@@ -18,7 +18,7 @@ Class12::Class12()
 
     for (size_t i = 0; i < nBytes_; ++i)
     {
-        ptr_[i] = _STATIC_CAST(char, randomInt());
+        ptr_[i] = static_cast<char>(randomInt());
     }
 
     TEST_INVARIANT;

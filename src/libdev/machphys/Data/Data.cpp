@@ -238,7 +238,7 @@ MachPhysData::constructionData(MachPhys::ConstructionType type, int subType, int
 
         case MachPhys::FACTORY:
             pConstructionData
-                = &MachPhysData::instance().factoryData(_STATIC_CAST(MachPhys::FactorySubType, subType), hwLevel);
+                = &MachPhysData::instance().factoryData(static_cast<MachPhys::FactorySubType>(subType), hwLevel);
             break;
 
         case MachPhys::GARRISON:
@@ -247,7 +247,7 @@ MachPhysData::constructionData(MachPhys::ConstructionType type, int subType, int
 
         case MachPhys::HARDWARE_LAB:
             pConstructionData = &MachPhysData::instance().hardwareLabData(
-                _STATIC_CAST(MachPhys::HardwareLabSubType, subType),
+                static_cast<MachPhys::HardwareLabSubType>(subType),
                 hwLevel);
             break;
 
@@ -261,7 +261,7 @@ MachPhysData::constructionData(MachPhys::ConstructionType type, int subType, int
 
         case MachPhys::MISSILE_EMPLACEMENT:
             pConstructionData = &MachPhysData::instance().missileEmplacementData(
-                _STATIC_CAST(MachPhys::MissileEmplacementSubType, subType),
+                static_cast<MachPhys::MissileEmplacementSubType>(subType),
                 hwLevel);
             break;
 

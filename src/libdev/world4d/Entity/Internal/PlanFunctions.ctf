@@ -164,7 +164,7 @@ template <class PLAN_TYPE> PhysAbsoluteTime FinishAnimation(ctl_list<W4dPendingP
                 nNewRepetitions = 0;
             else
             {
-                nNewRepetitions = _STATIC_CAST(uint, (timeNow - startTime) / duration);
+                nNewRepetitions = static_cast<uint>((timeNow - startTime) / duration);
                 if (nNewRepetitions > nRepetitions)
                     nNewRepetitions = nRepetitions;
 

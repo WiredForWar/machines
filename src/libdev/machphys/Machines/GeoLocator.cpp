@@ -206,7 +206,7 @@ void MachPhysGeoLocator::isLocating(bool doLocate)
             // The locator sound is attached to the first link in the list,
             // so that it is not stopped when the locomotion sounds
             // are stopped
-            // SOUND_STREAM("Locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
+            // SOUND_STREAM("Locating for " << static_cast<int>(links()[0]) << std::endl);
             SOUND_STREAM("Locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
             W4dSoundManager::instance().play(links()[0], SID_GEOLOCATE, PhysAbsoluteTime(0), 0);
         }
@@ -220,7 +220,7 @@ void MachPhysGeoLocator::isLocating(bool doLocate)
                 pLocator_ = nullptr;
             }
 
-            // SOUND_STREAM("Stopped locating for " << _STATIC_CAST(int, links()[0]) << std::endl);
+            // SOUND_STREAM("Stopped locating for " << static_cast<int>(links()[0]) << std::endl);
             SOUND_STREAM("Stopped locating for " << _REINTERPRET_CAST(size_t, links()[0]) << std::endl);
             W4dSoundManager::instance().stop(links()[0]);
         }

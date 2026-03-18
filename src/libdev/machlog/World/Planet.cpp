@@ -268,7 +268,7 @@ void MachLogPlanet::readPlanetConfigSpaceFile(const SysPathName& spaceFilePath, 
     {
         long currentPosition = pIstream->tellg();
         // This function must report on section 20% to 50% - so scale % read of file accordingly.
-        long reportAmount = 20 + (currentPosition / _STATIC_CAST(float, nBytesInFile)) * 30;
+        long reportAmount = 20 + (currentPosition / static_cast<float>(nBytesInFile)) * 30;
         pReporter->report(reportAmount, 100);
         ASSERT(parser.tokens().size() != 0, "");
 

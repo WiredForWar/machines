@@ -101,10 +101,9 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
             if (dist && (!bestDistance || *dist < *bestDistance) && (*i)->currentResearchQueue().size())
             {
                 MachPhysStation* pStation;
-                // MachPhysConstructionData& conData = _STATIC_CAST( MachPhysConstructionData&, (*i)->constructionData()
+                // MachPhysConstructionData& conData = static_cast< MachPhysConstructionData&>((*i)->constructionData()
                 // );
-                MachPhysConstructionData& conData = _STATIC_CAST(
-                    MachPhysConstructionData&,
+                MachPhysConstructionData& conData = static_cast<MachPhysConstructionData&>(
                     _CONST_CAST(MachPhysConstructionData&, (*i)->constructionData()));
                 if (conData.stations().freeStation(MachPhysStation::RESEARCH_BAY, &pStation))
                 {
@@ -127,7 +126,7 @@ PhysRelativeTime MachLogGotoLabOperation::doUpdate()
     // MachLogRaces::instance().softwareLabs( pActor_->race() ).end(); ++i) No software labs??                if(
     // pActor_->position().sqrEuclidianDistance( (*i)->position() ) < sqrRange ) No software labs??                { No
     // software labs??                    MachPhysStation* pStation; No software labs?? MachPhysConstructionData&
-    // conData = _STATIC_CAST( MachPhysConstructionData&, (*i)->constructionData() ); No software labs?? if(
+    // conData = static_cast< MachPhysConstructionData&>((*i)->constructionData() ); No software labs?? if(
     // conData.stations().freeStation( MachPhysStation::RESEARCH_BAY, &pStation ) ) No software labs?? { No software
     // labs??                        j = i; No software labs??                        pActualStation = pStation; No
     // software labs??                        found = true; No software labs??                    } No software labs?? }

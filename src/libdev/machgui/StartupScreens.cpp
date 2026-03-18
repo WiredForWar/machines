@@ -3293,7 +3293,7 @@ bool MachGuiStartupScreens::handleDestroyPlayerMessage(const std::string& name)
                         pStartupData_->players()[i].reset();
                 // TBD: get rid of this cast (it is safe but a bit crap).
                 if (context_ == CTX_IMREADY)
-                    _STATIC_CAST(MachGuiCtxImReady*, pCurrContext_)->createPlayerList();
+                    static_cast<MachGuiCtxImReady*>(pCurrContext_)->createPlayerList();
                 pStartupData_->sendUpdatePlayersMessage();
             }
             else

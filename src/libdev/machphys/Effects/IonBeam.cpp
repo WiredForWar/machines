@@ -139,7 +139,7 @@ static PhysScalarPlanPtr createIonInensityPlan(PhysRelativeTime duration, const 
     ASSERT_INFO(flickerFrequency);
     ASSERT(flickerFrequency > 0, "Ion cannon light flicker frequency must be >0.");
     const MATHEX_SCALAR halfWavelength = 0.5 / flickerFrequency;
-    const size_t nCycles = _STATIC_CAST(size_t, 10 + duration / halfWavelength);
+    const size_t nCycles = static_cast<size_t>(10 + duration / halfWavelength);
 
     PhysLinearScalarPlan::ScalarVec fTimes;
     PhysLinearScalarPlan::ScalarVec fScales;

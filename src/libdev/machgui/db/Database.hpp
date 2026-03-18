@@ -195,7 +195,7 @@ private:
 // Added missing operator
 inline MachGuiDatabase::TerrainSize operator++(MachGuiDatabase::TerrainSize& ts)
 {
-    return _STATIC_CAST(MachGuiDatabase::TerrainSize, _STATIC_CAST(unsigned char, ts) + 1);
+    return static_cast<MachGuiDatabase::TerrainSize>(static_cast<unsigned char>(ts) + 1);
 }
 
 #endif

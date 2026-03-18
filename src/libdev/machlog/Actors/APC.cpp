@@ -233,8 +233,8 @@ const MachPhysMachineData& MachLogAPC::machineData() const
 
 const MachPhysAPCData& MachLogAPC::data() const
 {
-    // return  _STATIC_CAST( MachPhysAPCData&, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysAPCData&, physMachine().machineData());
+    // return  static_cast< MachPhysAPCData&>(physMachine().machineData() );
+    return static_cast<const MachPhysAPCData&>(physMachine().machineData());
 }
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -386,7 +386,7 @@ W4dDomain* W4dEntity::getAsDomain()
 
     PRE(isDomain());
 
-    W4dDomain* result = _STATIC_CAST(W4dDomain*, this);
+    W4dDomain* result = static_cast<W4dDomain*>(this);
 
     POST(result != nullptr);
 
@@ -1130,7 +1130,7 @@ W4dRoot* W4dEntity::findRoot()
     // be an object of type W4dRoot.  This could possibly be a dynamic_cast
     // if the compiler supported it and we wanted the RTTI overhead.
     ASSERT(!retval->hasParent(), logic_error());
-    return _STATIC_CAST(W4dRoot*, retval);
+    return static_cast<W4dRoot*>(retval);
 }
 
 const W4dRoot* W4dEntity::findRoot() const
@@ -1144,7 +1144,7 @@ const W4dRoot* W4dEntity::findRoot() const
     // be an object of type W4dRoot.  This could possibly be a dynamic_cast
     // if the compiler supported it and we wanted the RTTI overhead.
     ASSERT(!retval->hasParent(), logic_error());
-    return _STATIC_CAST(const W4dRoot*, retval);
+    return static_cast<const W4dRoot*>(retval);
 }
 
 int W4dEntity::computeDescendantCount() const
@@ -2191,14 +2191,14 @@ bool W4dEntity::isComposite() const
 W4dComposite& W4dEntity::asComposite()
 {
     PRE(isComposite());
-    return *(_STATIC_CAST(W4dComposite*, this));
+    return *(static_cast<W4dComposite*>(this));
 }
 
 const W4dComposite& W4dEntity::asComposite() const
 {
     PRE(isComposite());
-    // return *(_STATIC_CAST( W4dComposite*, this ));
-    return *(_STATIC_CAST(const W4dComposite*, this));
+    // return *(static_cast< W4dComposite*>(this ));
+    return *(static_cast<const W4dComposite*>(this));
 }
 
 void W4dEntity::isComposite(bool isIt)

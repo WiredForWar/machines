@@ -415,7 +415,7 @@ void MachGuiStartupData::receivedUpdateGameSettingsMessage()
     // Based on the ids that have just been passed across the network find out which
     // scenario these are linked to.
     for (MachGuiDatabase::TerrainSize loop = MachGuiDatabase::SMALL; loop <= MachGuiDatabase::LARGE && ! found;
-         loop = _STATIC_CAST(MachGuiDatabase::TerrainSize, _STATIC_CAST(uint, loop) + 1))
+         loop = static_cast<MachGuiDatabase::TerrainSize>(static_cast<uint>(loop) + 1))
     {
         // Find system...
         MachGuiDbSystem& system = MachGuiDatabase::instance().multiPlayerSystem(loop);

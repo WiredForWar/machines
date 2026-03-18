@@ -285,14 +285,14 @@ void MachLogMachine::machineCreated()
 
 MachPhysMachine& MachLogMachine::physMachine()
 {
-    return _STATIC_CAST(MachPhysMachine&, physObject());
+    return static_cast<MachPhysMachine&>(physObject());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const MachPhysMachine& MachLogMachine::physMachine() const
 {
-    return _STATIC_CAST(const MachPhysMachine&, physObject());
+    return static_cast<const MachPhysMachine&>(physObject());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

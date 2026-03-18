@@ -13,7 +13,7 @@ template <class T>
 CtlCountedPtr<T>::CtlCountedPtr(T* pT)
     : pCount_(pT ? new(CtlCountHolder<T>) : nullptr)
 {
-    PRE_INFO(_STATIC_CAST(void*, pT));
+    PRE_INFO(static_cast<void*>(pT));
     ASSERT(
         implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid(pT)),
         "Raw pointer has already been assigned to a counted pointer");
@@ -79,7 +79,7 @@ template <class T> CtlCountHolder<T>::CtlCountHolder()
 
 template <class T> CtlCountHolder<T>::~CtlCountHolder()
 {
-    PRE_INFO(_STATIC_CAST(void*, pT_));
+    PRE_INFO(static_cast<void*>(pT_));
 
     ASSERT(
         implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerDestructionValid(pT_)),
@@ -112,7 +112,7 @@ template <class T>
 CtlConstCountedPtr<T>::CtlConstCountedPtr(T* pT)
     : pCount_(pT ? new(CtlCountHolder<T>) : nullptr)
 {
-    PRE_INFO(_STATIC_CAST(void*, pT));
+    PRE_INFO(static_cast<void*>(pT));
     ASSERT(
         implies(DiagInternal::checkCountedPointers_, ctlCountedPtrPointerValid(pT)),
         "Raw pointer has already been assigned to a counted pointer");

@@ -195,7 +195,7 @@ PhysRelativeTime MachPhysWeapon::recoil(const PhysAbsoluteTime& startTime, int n
 
         // Get the required entity
         // W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : links()[recoilId_ - 2]);
-        W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : _STATIC_CAST(W4dEntity*, links()[recoilId_ - 2]));
+        W4dEntity* pRecoilEntity = (recoilId_ == 1 ? this : static_cast<W4dEntity*>(links()[recoilId_ - 2]));
 
         // Set up the motion plan for a single burst/recoil
         MexTransform3d startPos = pRecoilEntity->localTransform();

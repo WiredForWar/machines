@@ -562,9 +562,8 @@ MachPhys::BuildingMaterialUnits MachLogResearchItem::costToAddResearch(MachPhys:
     ASSERT_INFO(researchToAdd);
     ASSERT_INFO(researchCost_);
 
-    return _STATIC_CAST(
-        MachPhys::BuildingMaterialUnits,
-        (buildingCost_ * _STATIC_CAST(float, researchToAdd) / _STATIC_CAST(float, researchCost_)));
+    return static_cast<MachPhys::BuildingMaterialUnits>(
+        buildingCost_ * static_cast<float>(researchToAdd) / static_cast<float>(researchCost_));
 }
 
 void perWrite(PerOstream& ostr, const MachLogResearchItem& resItem)

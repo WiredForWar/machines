@@ -10,7 +10,7 @@
 #include "machlog/Internal/SequencerData.hpp"
 
 //  TBD: Sort out a better way of doing this
-static const size_t NO_ID = _STATIC_CAST(size_t, -1);
+static const size_t NO_ID = static_cast<size_t>(-1);
 
 MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
     : commandId_(NO_ID)

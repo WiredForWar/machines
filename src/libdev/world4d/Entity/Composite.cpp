@@ -145,7 +145,7 @@ void W4dComposite::sharedCopyCtor(const W4dComposite& copyMe, CopyLights copyLig
     {
         if ((*i)->name() == "SHADOW_PROJ" || (*i)->name() == "SHADOW_FIXED")
         {
-            W4dShadow* shd = _STATIC_CAST(W4dShadow*, *i);
+            W4dShadow* shd = static_cast<W4dShadow*>(*i);
             shd->copy(this);
         }
     }

@@ -33,5 +33,5 @@ virtual const MachPhysMachineData& MachLogAggressor::machineData() const
 private:
 MachPhysAggressor& MachLogAggressor::physAggressor()
 {
-    return _STATIC_CAST(MachPhysAggressor*, physObject());
+    return static_cast<MachPhysAggressor*>(physObject());
 }

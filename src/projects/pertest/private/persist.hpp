@@ -196,7 +196,7 @@ protected:                                                                      
 
 #define PER_PRIVATE_P_DERIVED_CLASS_DEFINITION                                                                         \
     {                                                                                                                  \
-        return _STATIC_CAST(char*, this);                                                                              \
+        return static_cast<char*>(this);                                                                              \
     }
 
 #define PER_PRIVATE_MEMBER_PERSISTENT_STANDARD_INLINE(className, VIRTUAL)                                              \
@@ -237,17 +237,17 @@ public:                                                                         
 
 #define PER_OBJECT_WRITE(className)                                                                                    \
     {                                                                                                                  \
-        Persistence::instance().writeObjectPre(ostr, _STATIC_CAST(const void*, &ob), #className);                      \
+        Persistence::instance().writeObjectPre(ostr, static_cast<const void*>(&ob), #className);                      \
         perWrite(ostr, ob);                                                                                            \
-        Persistence::instance().writeObjectPost(_STATIC_CAST(const void*, &ob), #className);                           \
+        Persistence::instance().writeObjectPost(static_cast<const void*>(&ob), #className);                           \
         return ostr;                                                                                                   \
     }
 
 #define PER_OBJECT_READ(className)                                                                                     \
     {                                                                                                                  \
-        Persistence::instance().readObjectPre(istr, _STATIC_CAST(const void*, &ob), #className);                       \
+        Persistence::instance().readObjectPre(istr, static_cast<const void*>(&ob), #className);                       \
         perRead(istr, ob);                                                                                             \
-        Persistence::instance().readObjectPost(_STATIC_CAST(const void*, &ob), #className);                            \
+        Persistence::instance().readObjectPost(static_cast<const void*>(&ob), #className);                            \
         return istr;                                                                                                   \
     }
 
@@ -257,7 +257,7 @@ public:                                                                         
         const char* mostDerivedClassName = pOb ? pOb->perMostDerivedClassName() : NULL;                                \
         if (Persistence::instance().writePointerPre(                                                                   \
                 ostr,                                                                                                  \
-                _STATIC_CAST(const void*, pOb),                                                                        \
+                static_cast<const void*>(pOb),                                                                        \
                 #className,                                                                                            \
                 pMostDerivedOb,                                                                                        \
                 mostDerivedClassName)                                                                                  \
@@ -265,7 +265,7 @@ public:                                                                         
         {                                                                                                              \
             ostr << *pOb;                                                                                              \
         }                                                                                                              \
-        Persistence::instance().writePointerPost(ostr, _STATIC_CAST(const void*, pOb), #className, pMostDerivedOb);    \
+        Persistence::instance().writePointerPost(ostr, static_cast<const void*>(pOb), #className, pMostDerivedOb);    \
         return ostr;                                                                                                   \
     }
 
@@ -282,13 +282,13 @@ public:                                                                         
 
 #define PER_POINTER_READ_ABSTRACT(className)                                                                           \
     {                                                                                                                  \
-        Persistence::instance().readPointerAbstract(istr, _STATIC_CAST(void**, &pOb), #className);                     \
+        Persistence::instance().readPointerAbstract(istr, static_cast<void**>(&pOb), #className);                     \
         return istr;                                                                                                   \
     }
 
 #define PER_PRIVATE_WRITE_RAW_POINTER(ostr, ptr) Persistence::instance().writeRawPointer(ostr, ptr)
 
-#define PER_PRIVATE_READ_RAW_POINTER(istr, ptr) Persistence::instance().readRawPointer(istr, _STATIC_CAST(void**, &ptr))
+#define PER_PRIVATE_READ_RAW_POINTER(istr, ptr) Persistence::instance().readRawPointer(istr, static_cast<void**>(&ptr))
 
 #define PER_PRIVATE_WRITE_RAW_OBJECT(ostr, ob)                                                                         \
     Persistence::instance().writeAsRaw(true), perWrite(ostr, ob), Persistence::instance().writeAsRaw(false)
@@ -354,7 +354,7 @@ public:                                                                         
     }                                                                                                                  \
     void perWrite##className(PerOstream& ostr, const void* pVoid)                                                      \
     {                                                                                                                  \
-        const className* pObject = _STATIC_CAST(const className*, pVoid);                                              \
+        const className* pObject = static_cast<const className*>(pVoid);                                              \
         ostr << *pObject;                                                                                              \
     }                                                                                                                  \
     PerOstream& operator<<(PerOstream& ostr, const className& ob) PER_OBJECT_WRITE(className) PerIstream& operator>>(  \
@@ -366,7 +366,7 @@ public:                                                                         
 #define PER_PRIVATE_DEFINE_PERSISTENT_ABSTRACT(className)                                                              \
     char* className::perPDerivedClass() const                                                                          \
     {                                                                                                                  \
-        return _STATIC_CAST(char*, this);                                                                              \
+        return static_cast<char*>(this);                                                                              \
     }                                                                                                                  \
     const char* className::perClassName()                                                                              \
     {                                                                                                                  \
@@ -454,7 +454,7 @@ public:                                                                         
         PER_POINTER_READ(className##STRING_T, (className<LIST_T>::perCreate())) char*                                  \
         className<LIST_T>::perPDerivedClass() const                                                                    \
     {                                                                                                                  \
-        return _STATIC_CAST(char*, this);                                                                              \
+        return static_cast<char*>(this);                                                                              \
     }                                                                                                                  \
     const char* className<LIST_T>::perClassName() const                                                                \
     {                                                                                                                  \
@@ -481,7 +481,7 @@ public:                                                                         
     operator>>(PerIstream& istr, className<LIST_T>*& pOb) PER_POINTER_READ_ABSTRACT(className<LIST_T>) char*           \
     className<LIST_T>::perPDerivedClass() const                                                                        \
     {                                                                                                                  \
-        return _STATIC_CAST(char*, this);                                                                              \
+        return static_cast<char*>(this);                                                                              \
     }                                                                                                                  \
     const char* className<LIST_T>::perClassName() const                                                                \
     {                                                                                                                  \

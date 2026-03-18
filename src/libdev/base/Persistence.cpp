@@ -213,11 +213,11 @@ void Persistence::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-// ostr.write( _STATIC_CAST( char*, &ob ), sizeof( ob ) );
+// ostr.write( static_cast< char*>(&ob ), sizeof( ob ) );
 #define PER_WRITE_BUILTIN_OBJECT(TYPE, STORED_TYPE)                                                                    \
     PerOstream& operator<<(PerOstream& ostr, const TYPE& ob)                                                           \
     {                                                                                                                  \
-        STORED_TYPE obj = _STATIC_CAST(STORED_TYPE, ob);                                                               \
+        STORED_TYPE obj = static_cast<STORED_TYPE>(ob);                                                                \
         Persistence::instance().writeObjectPre(ostr, &ob, #TYPE);                                                      \
         ostr.write(&obj, sizeof(obj));                                                                                 \
         Persistence::instance().writeObjectPost(&ob, #TYPE);                                                           \
@@ -241,7 +241,7 @@ void Persistence::CLASS_INVARIANT
         STORED_TYPE obj;                                                                                               \
         Persistence::instance().readObjectPre(istr, &ob, #TYPE);                                                       \
         istr.read(&obj, sizeof(obj));                                                                                  \
-        ob = _STATIC_CAST(TYPE, obj);                                                                                  \
+        ob = static_cast<TYPE>(obj);                                                                                   \
         Persistence::instance().readObjectPost(&ob, #TYPE);                                                            \
         return istr;                                                                                                   \
     }
@@ -252,7 +252,7 @@ void Persistence::CLASS_INVARIANT
         if (Persistence::instance().readPointerPre(istr, _REINTERPRET_CAST(void**, &pOb), #TYPE)                       \
             == Persistence::READ_OBJECT)                                                                               \
         {                                                                                                              \
-            istr >> *new TYPE;                                                                                       \
+            istr >> *new TYPE;                                                                                         \
         }                                                                                                              \
         Persistence::instance().readPointerPost(istr, _REINTERPRET_CAST(void**, &pOb), #TYPE);                         \
         return istr;                                                                                                   \
@@ -261,14 +261,14 @@ void Persistence::CLASS_INVARIANT
 #define PER_READ_WRITE_RAW_BUILTIN_OBJECT(TYPE, STORED_TYPE)                                                           \
     void perWrite(PerOstream& ostr, const TYPE& ob)                                                                    \
     {                                                                                                                  \
-        STORED_TYPE obj = _STATIC_CAST(STORED_TYPE, ob);                                                               \
+        STORED_TYPE obj = static_cast<STORED_TYPE>(ob);                                                                \
         ostr.write(&obj, sizeof(obj));                                                                                 \
     }                                                                                                                  \
     void perRead(PerIstream& istr, TYPE& ob)                                                                           \
     {                                                                                                                  \
         STORED_TYPE obj;                                                                                               \
         istr.read(&obj, sizeof(obj));                                                                                  \
-        ob = _STATIC_CAST(TYPE, obj);                                                                                  \
+        ob = static_cast<TYPE>(obj);                                                                                   \
     }
 
 #define PER_BUILTIN(TYPE, STORED_TYPE)                                                                                 \

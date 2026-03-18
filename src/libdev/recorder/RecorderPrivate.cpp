@@ -34,14 +34,14 @@ void RecRecorderPrivate::recordTime(double time)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::TIME, sizeof(time), _STATIC_CAST(const void*, &time));
+    recorder.putData(RecRecorderImplementation::TIME, sizeof(time), static_cast<const void*>(&time));
 }
 
 void RecRecorderPrivate::recordMousePosition(const DevMousePosition& position)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::MOUSE_POSITION, sizeof(position), _STATIC_CAST(const void*, &position));
+    recorder.putData(RecRecorderImplementation::MOUSE_POSITION, sizeof(position), static_cast<const void*>(&position));
 }
 
 void RecRecorderPrivate::recordLeftButton(bool state)
@@ -107,14 +107,14 @@ void RecRecorderPrivate::recordDeltaKeyCode(const DevKeyboard::KeyState& state)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), _STATIC_CAST(const void*, &state));
+    recorder.putData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), static_cast<const void*>(&state));
 }
 
 void RecRecorderPrivate::recordRandomSeed(uint32_t seed)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::RANDOM_SEED, sizeof(seed), _STATIC_CAST(const void*, &seed));
+    recorder.putData(RecRecorderImplementation::RANDOM_SEED, sizeof(seed), static_cast<const void*>(&seed));
 }
 
 void RecRecorderPrivate::recordButtonEvent(const DevButtonEvent& event)
@@ -122,14 +122,14 @@ void RecRecorderPrivate::recordButtonEvent(const DevButtonEvent& event)
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
     //  This relies on the class being bitwise canonical
-    recorder.putData(RecRecorderImplementation::BUTTON_EVENT, sizeof(event), _STATIC_CAST(const void*, &event));
+    recorder.putData(RecRecorderImplementation::BUTTON_EVENT, sizeof(event), static_cast<const void*>(&event));
 }
 
 void RecRecorderPrivate::recordEventQueueLength(size_t length)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(length), _STATIC_CAST(const void*, &length));
+    recorder.putData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(length), static_cast<const void*>(&length));
 }
 
 void RecRecorderPrivate::recordSoundIsActive(bool value)
@@ -166,7 +166,7 @@ void RecRecorderPrivate::recordSoundSamplePosition(const MexPoint3d& position)
     recorder.putData(
         RecRecorderImplementation::SOUND_SAMPLE_POSITION,
         sizeof(position),
-        _STATIC_CAST(const void*, &position));
+        static_cast<const void*>(&position));
 }
 
 void RecRecorderPrivate::recordSoundSampleVolume(Snd::Volume volume)
@@ -176,7 +176,7 @@ void RecRecorderPrivate::recordSoundSampleVolume(Snd::Volume volume)
     recorder.putData(
         RecRecorderImplementation::SOUND_SAMPLE_VOLUME,
         sizeof(volume),
-        _STATIC_CAST(const void*, &volume));
+        static_cast<const void*>(&volume));
 }
 
 void RecRecorderPrivate::recordSoundNoOfFreeLogicalChannels(uint32_t value)
@@ -186,7 +186,7 @@ void RecRecorderPrivate::recordSoundNoOfFreeLogicalChannels(uint32_t value)
     recorder.putData(
         RecRecorderImplementation::SOUND_FREE_LOGICAL_CHANNELS,
         sizeof(value),
-        _STATIC_CAST(const void*, &value));
+        static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordSoundNoOfUsedLogicalChannels(uint32_t value)
@@ -196,7 +196,7 @@ void RecRecorderPrivate::recordSoundNoOfUsedLogicalChannels(uint32_t value)
     recorder.putData(
         RecRecorderImplementation::SOUND_USED_LOGICAL_CHANNELS,
         sizeof(value),
-        _STATIC_CAST(const void*, &value));
+        static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordAniSmackerFinished(bool value)
@@ -216,7 +216,7 @@ void RecRecorderPrivate::recordRegistryReturnValue(SysRegistry::ReturnValue valu
     recorder.putData(
         RecRecorderImplementation::REGISTRY_RETURN_VALUE,
         sizeof(value),
-        _STATIC_CAST(const void*, &value));
+        static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordRegistryBuffer(const void* pBuffer, int bufferSize)
@@ -226,7 +226,7 @@ void RecRecorderPrivate::recordRegistryBuffer(const void* pBuffer, int bufferSiz
     recorder.putData(
         RecRecorderImplementation::REGISTRY_BUFFER_SIZE,
         sizeof(bufferSize),
-        _STATIC_CAST(const void*, &bufferSize));
+        static_cast<const void*>(&bufferSize));
 
     recorder.putData(RecRecorderImplementation::REGISTRY_BUFFER, bufferSize, pBuffer);
 }
@@ -237,23 +237,23 @@ void RecRecorderPrivate::recordRegistryStringValue(const std::string& str)
 
     const int size = str.length();
 
-    recorder.putData(RecRecorderImplementation::REGISTRY_STRING_SIZE, sizeof(size), _STATIC_CAST(const void*, &size));
+    recorder.putData(RecRecorderImplementation::REGISTRY_STRING_SIZE, sizeof(size), static_cast<const void*>(&size));
 
-    recorder.putData(RecRecorderImplementation::REGISTRY_STRING, size, _STATIC_CAST(const void*, str.c_str()));
+    recorder.putData(RecRecorderImplementation::REGISTRY_STRING, size, static_cast<const void*>(str.c_str()));
 }
 
 void RecRecorderPrivate::recordRegistryIntegerValue(int value)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::REGISTRY_INTEGER, sizeof(value), _STATIC_CAST(const void*, &value));
+    recorder.putData(RecRecorderImplementation::REGISTRY_INTEGER, sizeof(value), static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordNetworkInt(int value)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::NETWORK_INTEGER, sizeof(value), _STATIC_CAST(const void*, &value));
+    recorder.putData(RecRecorderImplementation::NETWORK_INTEGER, sizeof(value), static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordNetworkUint(uint value)
@@ -263,21 +263,21 @@ void RecRecorderPrivate::recordNetworkUint(uint value)
     recorder.putData(
         RecRecorderImplementation::NETWORK_UNSIGNED_INTEGER,
         sizeof(value),
-        _STATIC_CAST(const void*, &value));
+        static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordNetworkData(const uint8* buffer, size_t bufferSize)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::NETWORK_DATA, bufferSize, _STATIC_CAST(const void*, buffer));
+    recorder.putData(RecRecorderImplementation::NETWORK_DATA, bufferSize, static_cast<const void*>(buffer));
 }
 
 void RecRecorderPrivate::recordNetworkBool(bool value)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::NETWORK_BOOL, sizeof(value), _STATIC_CAST(const void*, &value));
+    recorder.putData(RecRecorderImplementation::NETWORK_BOOL, sizeof(value), static_cast<const void*>(&value));
 }
 
 void RecRecorderPrivate::recordNetworkString(const std::string& str)
@@ -286,16 +286,16 @@ void RecRecorderPrivate::recordNetworkString(const std::string& str)
 
     const int size = str.length();
 
-    recorder.putData(RecRecorderImplementation::NETWORK_STRING_SIZE, sizeof(size), _STATIC_CAST(const void*, &size));
+    recorder.putData(RecRecorderImplementation::NETWORK_STRING_SIZE, sizeof(size), static_cast<const void*>(&size));
 
-    recorder.putData(RecRecorderImplementation::NETWORK_STRING, size, _STATIC_CAST(const void*, str.c_str()));
+    recorder.putData(RecRecorderImplementation::NETWORK_STRING, size, static_cast<const void*>(str.c_str()));
 }
 
 void RecRecorderPrivate::recordNetworkDouble(double value)
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::NETWORK_DOUBLE, sizeof(value), _STATIC_CAST(const void*, &value));
+    recorder.putData(RecRecorderImplementation::NETWORK_DOUBLE, sizeof(value), static_cast<const void*>(&value));
 }
 
 double RecRecorderPrivate::playbackTime() const
@@ -304,7 +304,7 @@ double RecRecorderPrivate::playbackTime() const
 
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::TIME, sizeof(time), _STATIC_CAST(void*, &time));
+    recorder.getData(RecRecorderImplementation::TIME, sizeof(time), static_cast<void*>(&time));
 
     return time;
 }
@@ -315,7 +315,7 @@ DevMousePosition RecRecorderPrivate::playbackMousePosition() const
 
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::MOUSE_POSITION, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::MOUSE_POSITION, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -384,7 +384,7 @@ DevKeyboard::KeyState RecRecorderPrivate::playbackDeltaKeyCode() const
 
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), _STATIC_CAST(void*, &state));
+    recorder.getData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), static_cast<void*>(&state));
 
     return state;
 }
@@ -395,7 +395,7 @@ uint32_t RecRecorderPrivate::playbackRandomSeed() const
 
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::RANDOM_SEED, sizeof(seed), _STATIC_CAST(void*, &seed));
+    recorder.getData(RecRecorderImplementation::RANDOM_SEED, sizeof(seed), static_cast<void*>(&seed));
 
     return seed;
 }
@@ -407,7 +407,7 @@ DevButtonEvent RecRecorderPrivate::playbackButtonEvent() const
     DevButtonEvent result;
 
     //  This relies on the class being bitwise canonical
-    recorder.getData(RecRecorderImplementation::BUTTON_EVENT, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::BUTTON_EVENT, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -418,7 +418,7 @@ size_t RecRecorderPrivate::playbackEventQueueLength() const
 
     size_t result;
 
-    recorder.getData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -456,7 +456,7 @@ MexPoint3d RecRecorderPrivate::playbackSoundSamplePosition() const
 
     //  Relies on MexPoint3d being bitwise canonical
 
-    recorder.getData(RecRecorderImplementation::SOUND_SAMPLE_POSITION, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::SOUND_SAMPLE_POSITION, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -467,7 +467,7 @@ Snd::Volume RecRecorderPrivate::playbackSoundSampleVolume() const
 
     Snd::Volume result;
 
-    recorder.getData(RecRecorderImplementation::SOUND_SAMPLE_VOLUME, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::SOUND_SAMPLE_VOLUME, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -481,7 +481,7 @@ uint32_t RecRecorderPrivate::playbackSoundNoOfFreeLogicalChannels() const
     recorder.getData(
         RecRecorderImplementation::SOUND_FREE_LOGICAL_CHANNELS,
         sizeof(result),
-        _STATIC_CAST(void*, &result));
+        static_cast<void*>(&result));
 
     return result;
 }
@@ -495,7 +495,7 @@ uint32_t RecRecorderPrivate::playbackSoundNoOfUsedLogicalChannels() const
     recorder.getData(
         RecRecorderImplementation::SOUND_USED_LOGICAL_CHANNELS,
         sizeof(result),
-        _STATIC_CAST(void*, &result));
+        static_cast<void*>(&result));
 
     return result;
 }
@@ -515,7 +515,7 @@ SysRegistry::ReturnValue RecRecorderPrivate::playbackRegistryReturnValue() const
 
     SysRegistry::ReturnValue result;
 
-    recorder.getData(RecRecorderImplementation::REGISTRY_RETURN_VALUE, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::REGISTRY_RETURN_VALUE, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -529,7 +529,7 @@ int RecRecorderPrivate::playbackRegistryBuffer(void* pBuffer) const
     recorder.getData(
         RecRecorderImplementation::REGISTRY_BUFFER_SIZE,
         sizeof(bufferSize),
-        _STATIC_CAST(void*, &bufferSize));
+        static_cast<void*>(&bufferSize));
 
     recorder.getData(RecRecorderImplementation::REGISTRY_BUFFER, bufferSize, pBuffer);
 
@@ -542,11 +542,11 @@ std::string RecRecorderPrivate::playbackRegistryStringValue() const
 
     int size;
 
-    recorder.getData(RecRecorderImplementation::REGISTRY_STRING_SIZE, sizeof(size), _STATIC_CAST(void*, &size));
+    recorder.getData(RecRecorderImplementation::REGISTRY_STRING_SIZE, sizeof(size), static_cast<void*>(&size));
 
     char* buffer = _NEW_ARRAY(char, size + 1);
 
-    recorder.getData(RecRecorderImplementation::REGISTRY_STRING, size, _STATIC_CAST(void*, buffer));
+    recorder.getData(RecRecorderImplementation::REGISTRY_STRING, size, static_cast<void*>(buffer));
 
     buffer[size] = '\0';
 
@@ -561,7 +561,7 @@ int RecRecorderPrivate::playbackRegistryIntegerValue() const
 
     int result;
 
-    recorder.getData(RecRecorderImplementation::REGISTRY_INTEGER, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::REGISTRY_INTEGER, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -572,7 +572,7 @@ int RecRecorderPrivate::playbackNetworkInt() const
 
     int result;
 
-    recorder.getData(RecRecorderImplementation::NETWORK_INTEGER, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::NETWORK_INTEGER, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -583,7 +583,7 @@ uint RecRecorderPrivate::playbackNetworkUint() const
 
     uint result;
 
-    recorder.getData(RecRecorderImplementation::NETWORK_UNSIGNED_INTEGER, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::NETWORK_UNSIGNED_INTEGER, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -592,7 +592,7 @@ void RecRecorderPrivate::playbackNetworkData(uint8* buffer, size_t bufferSize) c
 {
     RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::NETWORK_DATA, bufferSize, _STATIC_CAST(void*, buffer));
+    recorder.getData(RecRecorderImplementation::NETWORK_DATA, bufferSize, static_cast<void*>(buffer));
 }
 
 bool RecRecorderPrivate::playbackNetworkBool() const
@@ -601,7 +601,7 @@ bool RecRecorderPrivate::playbackNetworkBool() const
 
     bool result;
 
-    recorder.getData(RecRecorderImplementation::NETWORK_BOOL, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::NETWORK_BOOL, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -612,11 +612,11 @@ std::string RecRecorderPrivate::playbackNetworkString() const
 
     int size;
 
-    recorder.getData(RecRecorderImplementation::NETWORK_STRING_SIZE, sizeof(size), _STATIC_CAST(void*, &size));
+    recorder.getData(RecRecorderImplementation::NETWORK_STRING_SIZE, sizeof(size), static_cast<void*>(&size));
 
     char* buffer = _NEW_ARRAY(char, size + 1);
 
-    recorder.getData(RecRecorderImplementation::NETWORK_STRING, size, _STATIC_CAST(void*, buffer));
+    recorder.getData(RecRecorderImplementation::NETWORK_STRING, size, static_cast<void*>(buffer));
 
     buffer[size] = '\0';
 
@@ -631,7 +631,7 @@ double RecRecorderPrivate::playbackNetworkDouble() const
 
     double result;
 
-    recorder.getData(RecRecorderImplementation::NETWORK_DOUBLE, sizeof(result), _STATIC_CAST(void*, &result));
+    recorder.getData(RecRecorderImplementation::NETWORK_DOUBLE, sizeof(result), static_cast<void*>(&result));
 
     return result;
 }
@@ -735,7 +735,7 @@ std::ostream& operator<<(std::ostream& o, const RecRecorderPrivate& t)
 //              o << "EVENT_QUEUE_LENGTH";
 //              break;
 //          default:
-//              o << "UNKNOWN (" << _STATIC_CAST( int, type ) << ")";
+//              o << "UNKNOWN (" << static_cast< int>(type ) << ")";
 //              break;
 //      }
 //  }

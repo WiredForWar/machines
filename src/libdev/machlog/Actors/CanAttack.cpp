@@ -1382,7 +1382,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover(
 
                 if (disposition != MachLogRaces::ENEMY && disposition != MachLogRaces::NEUTRAL)
                     // disposition = BEHIND_FRIENDLY_COVER;
-                    disposition = _STATIC_CAST(MachLogRaces::DispositionToRace, BEHIND_FRIENDLY_COVER);
+                    disposition = static_cast<MachLogRaces::DispositionToRace>(BEHIND_FRIENDLY_COVER);
             }
         }
     }

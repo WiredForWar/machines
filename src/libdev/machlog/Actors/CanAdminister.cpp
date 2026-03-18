@@ -92,7 +92,7 @@ void MachLogCanAdminister::handleIdleGeoLocator(MachLogCommsId obj)
     {
         found = !(*j).hasBeenDiscoveredBy( race() );
         if( found )
-            obj->newOperation( new MachLocateOperation( _STATIC_CAST( MachLogLocator *, obj ) , (*j).position() ) );
+            obj->newOperation( new MachLocateOperation( static_cast< MachLogLocator *>(obj ) , (*j).position() ) );
     }
 
     if( not found )
@@ -138,7 +138,7 @@ void MachLogCanAdminister::handleIdleAggressor(MachLogCommsId pObj)
         if (obj->squadron()->strategy().currentOperationType() == MachLogOperation::TASK_ATTACK_OPERATION)
             return;
     }
-    //  obj->newOperation( new MachSeekAndDestroyOperation( _STATIC_CAST( MachLogAggressor *, obj ) ) );
+    //  obj->newOperation( new MachSeekAndDestroyOperation( static_cast< MachLogAggressor *>(obj ) ) );
     //  if( MachLogRaces::instance().aggressors( obj->race() ).size() < 5 )
     moveOutOfTheWay(obj);
     //  else
@@ -177,7 +177,7 @@ void MachLogCanAdminister::handleIdleAdministrator(MachLogCommsId pObj)
         ctl_append( &path, MexPoint2d( 350, 900 ) );
     }
 
-    obj->newOperation( new MachPatrolOperation( _STATIC_CAST( MachLogAdministrator *, obj ), path ) );
+    obj->newOperation( new MachPatrolOperation( static_cast< MachLogAdministrator *>(obj ), path ) );
     */
 }
 

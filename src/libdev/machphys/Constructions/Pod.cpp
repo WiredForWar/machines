@@ -232,13 +232,13 @@ void MachPhysPod::doWorking(bool setWorking)
 // virtual
 W4dComposite& MachPhysPod::asComposite()
 {
-    return _STATIC_CAST(W4dComposite&, *this);
+    return static_cast<W4dComposite&>(*this);
 }
 
 // virtual
 const W4dComposite& MachPhysPod::asComposite() const
 {
-    return _STATIC_CAST(const W4dComposite&, *this);
+    return static_cast<const W4dComposite&>(*this);
 }
 
 void MachPhysPod::persistenceInitialiseData()

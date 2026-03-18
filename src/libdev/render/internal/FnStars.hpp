@@ -210,7 +210,7 @@ public:
     {
         PRE(alpha >= 0.0 && alpha <= 1.0);
 
-        return (colour & 0x00ffffff) | (_STATIC_CAST(uint, alpha * 255) << 24);
+        return (colour & 0x00ffffff) | (static_cast<uint>(alpha * 255) << 24);
     }
 
     void operator()(RenIVertex& vertex)

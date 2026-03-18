@@ -316,7 +316,7 @@ bool MachGuiMoveCommand::applyFollowMachine(MachActor* pActor, std::string*)
     PRE(pMachine_ != nullptr);
 
     // Check not trying to follow self
-    if (pActor != _STATIC_CAST(MachActor*, pMachine_))
+    if (pActor != static_cast<MachActor*>(pMachine_))
     {
         // Construct a follow operation
         auto op = std::make_unique<MachLogFollowOperation>(&pActor->asMachine(), pMachine_, MexPoint2d(0, 0), pathFindingPriority());

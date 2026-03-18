@@ -649,8 +649,8 @@ const MachPhysMachineData& MachLogResourceCarrier::machineData() const
 const MachPhysResourceCarrierData& MachLogResourceCarrier::data() const
 {
     // TODO check
-    // return  _STATIC_CAST( MachPhysResourceCarrierData, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysResourceCarrierData&, physMachine().machineData());
+    // return  static_cast< MachPhysResourceCarrierData>(physMachine().machineData() );
+    return static_cast<const MachPhysResourceCarrierData&>(physMachine().machineData());
     // return  _REINTERPRET_CAST( MachPhysResourceCarrierData&,
     //   _CONST_CAST(MachPhysMachineData&, physMachine().machineData()) );
 }
@@ -984,9 +984,9 @@ bool MachLogResourceCarrier::beNotified(W4dSubject* pSubject, W4dSubject::Notifi
                 case MachLog::RACE_CHANGED:
                     {
                         ASSERT(
-                            _STATIC_CAST(MachActor*, pSubject)->objectIsConstruction(),
+                            static_cast<MachActor*>(pSubject)->objectIsConstruction(),
                             "pSubject was unexpectedly not a construction!");
-                        MachLogConstruction& construction = _STATIC_CAST(MachActor*, pSubject)->asConstruction();
+                        MachLogConstruction& construction = static_cast<MachActor*>(pSubject)->asConstruction();
                         if (construction.race() != race())
                         {
                             stayAttached = mayHaveLostRouteElement(pSubject);
@@ -1203,12 +1203,12 @@ MachLogResourceCarrier::MachLogResourceCarrier(PerConstructor con)
 
 MachPhysResourceCarrier& MachLogResourceCarrier::physResourceCarrier()
 {
-    return _STATIC_CAST(MachPhysResourceCarrier&, physObject());
+    return static_cast<MachPhysResourceCarrier&>(physObject());
 }
 
 const MachPhysResourceCarrier& MachLogResourceCarrier::physResourceCarrier() const
 {
-    return _STATIC_CAST(const MachPhysResourceCarrier&, physObject());
+    return static_cast<const MachPhysResourceCarrier&>(physObject());
 }
 
 PhysRelativeTime MachLogResourceCarrier::doLoading()

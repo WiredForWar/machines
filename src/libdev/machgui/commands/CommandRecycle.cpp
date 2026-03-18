@@ -83,7 +83,7 @@ MachGui::Cursor2dType MachGuiRecycleCommand::cursorOnActor(MachActor* pActor, bo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    if (pActor->objectIsCanSmelt() && (_STATIC_CAST(MachLogConstruction*, pActor))->isComplete())
+    if (pActor->objectIsCanSmelt() && (static_cast<MachLogConstruction*>(pActor))->isComplete())
     {
         cursor = MachGui::RECYCLE_CURSOR;
     }

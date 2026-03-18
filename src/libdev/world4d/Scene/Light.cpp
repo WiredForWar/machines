@@ -436,7 +436,7 @@ void perRead(PerIstream& istr, W4dLight& light)
 
     int temp;
     PER_READ_RAW_OBJECT(istr, temp);
-    light.scope(_STATIC_CAST(W4dLight::Scope, temp));
+    light.scope(static_cast<W4dLight::Scope>(temp));
 
     istr >> light.pImpl_;
 }
@@ -515,7 +515,7 @@ static MexTransform3d lightTransform(const MexVec3& direction)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dDirectionalLight::W4dDirectionalLight(W4dEntity* pParent, const MexVec3& direction)
     : W4dLight(pParent, lightTransform(direction), new RenDirectionalLight(), false)
-    , pDirLight_(_STATIC_CAST(RenDirectionalLight*, pRenLight()))
+    , pDirLight_(static_cast<RenDirectionalLight*>(pRenLight()))
 {
 }
 
@@ -567,7 +567,7 @@ W4dDirectionalLight::W4dDirectionalLight(PerConstructor con)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dPointLight::W4dPointLight(W4dEntity* pParent, const MexVec3& position, MATHEX_SCALAR range)
     : W4dLight(pParent, W4dTransform3d(position), new RenPointLight(range), true)
-    , pPtLight_(_STATIC_CAST(RenPointLight*, pRenLight()))
+    , pPtLight_(static_cast<RenPointLight*>(pRenLight()))
 {
 }
 
@@ -615,7 +615,7 @@ W4dPointLight::W4dPointLight(PerConstructor con)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 W4dUniformLight::W4dUniformLight(W4dEntity* pParent, const MexVec3& position, MATHEX_SCALAR range)
     : W4dLight(pParent, W4dTransform3d(position), new RenUniformLight(range), true)
-    , pUniLight_(_STATIC_CAST(RenUniformLight*, pRenLight()))
+    , pUniLight_(static_cast<RenUniformLight*>(pRenLight()))
 {
 }
 

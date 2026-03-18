@@ -108,7 +108,7 @@ void MexTriangle2d::geometric_invariant() const
 
 std::ostream& operator<<(std::ostream& ostr, const MexTriangle2d& t)
 {
-    // ostr << _STATIC_CAST( MexPolygon2d, t );
+    // ostr << static_cast< MexPolygon2d>(t );
 
     for (int i = 0; i < MexTriangle2d::NUMBER_OF_VERTICES_; ++i)
         ostr << t.vertices_[i];
@@ -139,7 +139,7 @@ void perWrite(PerOstream& stream, const MexTriangle2d& t)
 void perRead(PerIstream& stream, MexTriangle2d& t)
 {
 
-    stream >> _STATIC_CAST(MexPolygon2d&, t);
+    stream >> static_cast<MexPolygon2d&>(t);
     for (int i = 0; i < MexTriangle2d::NUMBER_OF_VERTICES_; ++i)
         stream >> t.vertices_[i];
 

@@ -177,12 +177,12 @@ void MachLogAggressor::doActOnClassification()
 
 MachPhysAggressor& MachLogAggressor::physAggressor()
 {
-    return _STATIC_CAST(MachPhysAggressor&, physObject());
+    return static_cast<MachPhysAggressor&>(physObject());
 }
 
 const MachPhysAggressor& MachLogAggressor::physAggressor() const
 {
-    return _STATIC_CAST(const MachPhysAggressor&, physObject());
+    return static_cast<const MachPhysAggressor&>(physObject());
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -211,8 +211,8 @@ const MachPhysMachineData& MachLogAggressor::machineData() const
 
 const MachPhysAggressorData& MachLogAggressor::data() const
 {
-    // return _STATIC_CAST( MachPhysAggressorData, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysAggressorData&, physMachine().machineData());
+    // return static_cast< MachPhysAggressorData>(physMachine().machineData() );
+    return static_cast<const MachPhysAggressorData&>(physMachine().machineData());
     //  return physMachine().machinedata();
 }
 
@@ -238,7 +238,7 @@ bool MachLogAggressor::fearsThisActor(const MachActor& otherActor) const
 // virtual
 int MachLogAggressor::militaryStrength() const
 {
-    return _STATIC_CAST(int, hpRatio() * _STATIC_CAST(MATHEX_SCALAR, objectData().cost()));
+    return static_cast<int>(hpRatio() * static_cast<MATHEX_SCALAR>(objectData().cost()));
 }
 
 /////////////////////////////////////////////////// persistence /////////////////////////////////////////////////////

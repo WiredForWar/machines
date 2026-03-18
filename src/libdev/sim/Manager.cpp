@@ -205,7 +205,7 @@ void SimManager::updateCurrentTime()
     CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
     CB_DEPIMPL(DevTimer, timer_);
 
-    currentTime_ = _STATIC_CAST(PhysAbsoluteTime, timer_.time()) - devStartTime_;
+    currentTime_ = static_cast<PhysAbsoluteTime>(timer_.time()) - devStartTime_;
 
     TEST_INVARIANT;
 }
@@ -346,7 +346,7 @@ void SimManager::setSimulationTime(const PhysAbsoluteTime& newTime)
     CB_DEPIMPL(DevTimer, timer_);
 
     currentTime_ = newTime;
-    devStartTime_ = _STATIC_CAST(PhysAbsoluteTime, timer_.time()) - currentTime_;
+    devStartTime_ = static_cast<PhysAbsoluteTime>(timer_.time()) - currentTime_;
 
     W4dManager::instance().time(currentTime_);
 }

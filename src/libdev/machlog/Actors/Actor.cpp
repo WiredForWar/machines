@@ -638,249 +638,249 @@ bool MachActor::selfDestruct() const
 MachLogAdministrator& MachActor::asAdministrator()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ADMINISTRATOR, "Bad _STATIC_CAST type in MachActor::asAdministrator\n");
-    return *(_STATIC_CAST(MachLogAdministrator*, this));
+    ASSERT(objectType() == MachLog::ADMINISTRATOR, "Bad static_cast type in MachActor::asAdministrator\n");
+    return *(static_cast<MachLogAdministrator*>(this));
 }
 
 const MachLogAdministrator& MachActor::asAdministrator() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ADMINISTRATOR, "Bad _STATIC_CAST type in MachActor::asAdministrator\n");
-    return *(_STATIC_CAST(const MachLogAdministrator*, this));
+    ASSERT(objectType() == MachLog::ADMINISTRATOR, "Bad static_cast type in MachActor::asAdministrator\n");
+    return *(static_cast<const MachLogAdministrator*>(this));
 }
 
 MachLogAggressor& MachActor::asAggressor()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::AGGRESSOR, "Bad _STATIC_CAST type in MachActor::asAggressor\n");
-    return *(_STATIC_CAST(MachLogAggressor*, this));
+    ASSERT(objectType() == MachLog::AGGRESSOR, "Bad static_cast type in MachActor::asAggressor\n");
+    return *(static_cast<MachLogAggressor*>(this));
 }
 
 const MachLogAggressor& MachActor::asAggressor() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::AGGRESSOR, "Bad _STATIC_CAST type in MachActor::asAggressor\n");
-    return *(_STATIC_CAST(const MachLogAggressor*, this));
+    ASSERT(objectType() == MachLog::AGGRESSOR, "Bad static_cast type in MachActor::asAggressor\n");
+    return *(static_cast<const MachLogAggressor*>(this));
 }
 
 MachLogConstructor& MachActor::asConstructor()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::CONSTRUCTOR, "Bad _STATIC_CAST type in MachActor::asConstructor\n");
-    return *(_STATIC_CAST(MachLogConstructor*, this));
+    ASSERT(objectType() == MachLog::CONSTRUCTOR, "Bad static_cast type in MachActor::asConstructor\n");
+    return *(static_cast<MachLogConstructor*>(this));
 }
 
 const MachLogConstructor& MachActor::asConstructor() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::CONSTRUCTOR, "Bad _STATIC_CAST type in MachActor::asConstructor\n");
-    return *(_STATIC_CAST(const MachLogConstructor*, this));
+    ASSERT(objectType() == MachLog::CONSTRUCTOR, "Bad static_cast type in MachActor::asConstructor\n");
+    return *(static_cast<const MachLogConstructor*>(this));
 }
 
 MachLogGeoLocator& MachActor::asGeoLocator()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::GEO_LOCATOR, "Bad _STATIC_CAST type in MachActor::asGeoLocator\n");
-    return *(_STATIC_CAST(MachLogGeoLocator*, this));
+    ASSERT(objectType() == MachLog::GEO_LOCATOR, "Bad static_cast type in MachActor::asGeoLocator\n");
+    return *(static_cast<MachLogGeoLocator*>(this));
 }
 
 const MachLogGeoLocator& MachActor::asGeoLocator() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::GEO_LOCATOR, "Bad _STATIC_CAST type in MachActor::asGeoLocator\n");
-    return *(_STATIC_CAST(const MachLogGeoLocator*, this));
+    ASSERT(objectType() == MachLog::GEO_LOCATOR, "Bad static_cast type in MachActor::asGeoLocator\n");
+    return *(static_cast<const MachLogGeoLocator*>(this));
 }
 
 MachLogSpyLocator& MachActor::asSpyLocator()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SPY_LOCATOR, "Bad _STATIC_CAST type in MachActor::asSpyLocator\n");
-    return *(_STATIC_CAST(MachLogSpyLocator*, this));
+    ASSERT(objectType() == MachLog::SPY_LOCATOR, "Bad static_cast type in MachActor::asSpyLocator\n");
+    return *(static_cast<MachLogSpyLocator*>(this));
 }
 
 const MachLogSpyLocator& MachActor::asSpyLocator() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SPY_LOCATOR, "Bad _STATIC_CAST type in MachActor::asSpyLocator\n");
-    return *(_STATIC_CAST(const MachLogSpyLocator*, this));
+    ASSERT(objectType() == MachLog::SPY_LOCATOR, "Bad static_cast type in MachActor::asSpyLocator\n");
+    return *(static_cast<const MachLogSpyLocator*>(this));
 }
 
 MachLogTechnician& MachActor::asTechnician()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::TECHNICIAN, "Bad _STATIC_CAST type in MachActor::asTechnician\n");
-    return *(_STATIC_CAST(MachLogTechnician*, this));
+    ASSERT(objectType() == MachLog::TECHNICIAN, "Bad static_cast type in MachActor::asTechnician\n");
+    return *(static_cast<MachLogTechnician*>(this));
 }
 
 const MachLogTechnician& MachActor::asTechnician() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::TECHNICIAN, "Bad _STATIC_CAST type in MachActor::asTechnician\n");
-    return *(_STATIC_CAST(const MachLogTechnician*, this));
+    ASSERT(objectType() == MachLog::TECHNICIAN, "Bad static_cast type in MachActor::asTechnician\n");
+    return *(static_cast<const MachLogTechnician*>(this));
 }
 
 MachLogResourceCarrier& MachActor::asResourceCarrier()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::RESOURCE_CARRIER, "Bad _STATIC_CAST type in MachActor::asResourceCarrier\n");
-    return *(_STATIC_CAST(MachLogResourceCarrier*, this));
+    ASSERT(objectType() == MachLog::RESOURCE_CARRIER, "Bad static_cast type in MachActor::asResourceCarrier\n");
+    return *(static_cast<MachLogResourceCarrier*>(this));
 }
 
 const MachLogResourceCarrier& MachActor::asResourceCarrier() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::RESOURCE_CARRIER, "Bad _STATIC_CAST type in MachActor::asResourceCarrier\n");
-    return *(_STATIC_CAST(const MachLogResourceCarrier*, this));
+    ASSERT(objectType() == MachLog::RESOURCE_CARRIER, "Bad static_cast type in MachActor::asResourceCarrier\n");
+    return *(static_cast<const MachLogResourceCarrier*>(this));
 }
 
 MachLogAPC& MachActor::asAPC()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::APC, "Bad _STATIC_CAST type in MachActor::asAPC\n");
-    return *(_STATIC_CAST(MachLogAPC*, this));
+    ASSERT(objectType() == MachLog::APC, "Bad static_cast type in MachActor::asAPC\n");
+    return *(static_cast<MachLogAPC*>(this));
 }
 
 const MachLogAPC& MachActor::asAPC() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::APC, "Bad _STATIC_CAST type in MachActor::asAPC\n");
-    return *(_STATIC_CAST(const MachLogAPC*, this));
+    ASSERT(objectType() == MachLog::APC, "Bad static_cast type in MachActor::asAPC\n");
+    return *(static_cast<const MachLogAPC*>(this));
 }
 
 MachLogMobile& MachActor::asMobile()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsMachine(), "Bad _STATIC_CAST type in MachActor::asMobile\n");
-    return *(_STATIC_CAST(MachLogMobile*, this));
+    ASSERT(objectIsMachine(), "Bad static_cast type in MachActor::asMobile\n");
+    return *(static_cast<MachLogMobile*>(this));
 }
 
 const MachLogMobile& MachActor::asMobile() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsMachine(), "Bad _STATIC_CAST type in MachActor::asMobile\n");
-    return *(_STATIC_CAST(const MachLogMobile*, this));
+    ASSERT(objectIsMachine(), "Bad static_cast type in MachActor::asMobile\n");
+    return *(static_cast<const MachLogMobile*>(this));
 }
 
 MachLogCanAttack& MachActor::asCanAttack()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsCanAttack(), "Bad _STATIC_CAST type in MachActor::asCanAttack\n");
+    ASSERT(objectIsCanAttack(), "Bad static_cast type in MachActor::asCanAttack\n");
     switch (objectType())
     {
         case MachLog::AGGRESSOR:
-            return *(MachLogCanAttack*)(_STATIC_CAST(MachLogAggressor*, this));
+            return *(MachLogCanAttack*)(static_cast<MachLogAggressor*>(this));
         case MachLog::ADMINISTRATOR:
-            return *(MachLogCanAttack*)(_STATIC_CAST(MachLogAdministrator*, this));
+            return *(MachLogCanAttack*)(static_cast<MachLogAdministrator*>(this));
         case MachLog::MISSILE_EMPLACEMENT:
-            return *(MachLogCanAttack*)(_STATIC_CAST(MachLogMissileEmplacement*, this));
+            return *(MachLogCanAttack*)(static_cast<MachLogMissileEmplacement*>(this));
         default:
-            return *(MachLogCanAttack*)(_STATIC_CAST(MachLogPod*, this));
+            return *(MachLogCanAttack*)(static_cast<MachLogPod*>(this));
     }
 }
 
 const MachLogCanAttack& MachActor::asCanAttack() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsCanAttack(), "Bad _STATIC_CAST type in MachActor::asCanAttack\n");
+    ASSERT(objectIsCanAttack(), "Bad static_cast type in MachActor::asCanAttack\n");
     switch (objectType())
     {
         case MachLog::AGGRESSOR:
-            // return *(MachLogCanAttack*)(_STATIC_CAST( MachLogAggressor*,this ) );
-            return *(MachLogCanAttack*)(_STATIC_CAST(const MachLogAggressor*, this));
+            // return *(MachLogCanAttack*)(static_cast< MachLogAggressor*>(this ) );
+            return *(MachLogCanAttack*)(static_cast<const MachLogAggressor*>(this));
         case MachLog::ADMINISTRATOR:
-            // return *(MachLogCanAttack*)(_STATIC_CAST( MachLogAdministrator*,this ) );
-            return *(MachLogCanAttack*)(_STATIC_CAST(const MachLogAdministrator*, this));
+            // return *(MachLogCanAttack*)(static_cast< MachLogAdministrator*>(this ) );
+            return *(MachLogCanAttack*)(static_cast<const MachLogAdministrator*>(this));
         case MachLog::MISSILE_EMPLACEMENT:
-            // return *(MachLogCanAttack*)(_STATIC_CAST( MachLogMissileEmplacement*,this ) );
-            return *(MachLogCanAttack*)(_STATIC_CAST(const MachLogMissileEmplacement*, this));
+            // return *(MachLogCanAttack*)(static_cast< MachLogMissileEmplacement*>(this ) );
+            return *(MachLogCanAttack*)(static_cast<const MachLogMissileEmplacement*>(this));
         default:
-            // return *(MachLogCanAttack*)(_STATIC_CAST( MachLogPod*,this ) );
-            return *(MachLogCanAttack*)(_STATIC_CAST(const MachLogPod*, this));
+            // return *(MachLogCanAttack*)(static_cast< MachLogPod*>(this ) );
+            return *(MachLogCanAttack*)(static_cast<const MachLogPod*>(this));
     }
 }
 
 MachLogMachine& MachActor::asMachine()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsMachine(), "Bad _STATIC_CAST type in MachActor::asMachine\n");
-    return *(_STATIC_CAST(MachLogMachine*, this));
+    ASSERT(objectIsMachine(), "Bad static_cast type in MachActor::asMachine\n");
+    return *(static_cast<MachLogMachine*>(this));
 }
 
 const MachLogMachine& MachActor::asMachine() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsMachine(), "Bad _STATIC_CAST type in MachActor::asMachine\n");
-    return *(_STATIC_CAST(const MachLogMachine*, this));
+    ASSERT(objectIsMachine(), "Bad static_cast type in MachActor::asMachine\n");
+    return *(static_cast<const MachLogMachine*>(this));
 }
 
 MachLogConstruction& MachActor::asConstruction()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsConstruction(), "Bad _STATIC_CAST type in MachActor::asConstruction\n");
-    return *(_STATIC_CAST(MachLogConstruction*, this));
+    ASSERT(objectIsConstruction(), "Bad static_cast type in MachActor::asConstruction\n");
+    return *(static_cast<MachLogConstruction*>(this));
 }
 
 const MachLogConstruction& MachActor::asConstruction() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectIsConstruction(), "Bad _STATIC_CAST type in MachActor::asConstruction\n");
-    return *(_STATIC_CAST(const MachLogConstruction*, this));
+    ASSERT(objectIsConstruction(), "Bad static_cast type in MachActor::asConstruction\n");
+    return *(static_cast<const MachLogConstruction*>(this));
 }
 
 MachLogMine& MachActor::asMine()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::MINE, "Bad _STATIC_CAST type in MachActor::asMine\n");
-    return *(_STATIC_CAST(MachLogMine*, this));
+    ASSERT(objectType() == MachLog::MINE, "Bad static_cast type in MachActor::asMine\n");
+    return *(static_cast<MachLogMine*>(this));
 }
 
 const MachLogMine& MachActor::asMine() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::MINE, "Bad _STATIC_CAST type in MachActor::asMine\n");
-    return *(_STATIC_CAST(const MachLogMine*, this));
+    ASSERT(objectType() == MachLog::MINE, "Bad static_cast type in MachActor::asMine\n");
+    return *(static_cast<const MachLogMine*>(this));
 }
 
 MachLogSmelter& MachActor::asSmelter()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SMELTER, "Bad _STATIC_CAST type in MachActor::asSmelter\n");
-    return *(_STATIC_CAST(MachLogSmelter*, this));
+    ASSERT(objectType() == MachLog::SMELTER, "Bad static_cast type in MachActor::asSmelter\n");
+    return *(static_cast<MachLogSmelter*>(this));
 }
 
 const MachLogSmelter& MachActor::asSmelter() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SMELTER, "Bad _STATIC_CAST type in MachActor::asSmelter\n");
-    return *(_STATIC_CAST(const MachLogSmelter*, this));
+    ASSERT(objectType() == MachLog::SMELTER, "Bad static_cast type in MachActor::asSmelter\n");
+    return *(static_cast<const MachLogSmelter*>(this));
 }
 
 MachLogFactory& MachActor::asFactory()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::FACTORY, "Bad _STATIC_CAST type in MachActor::asFactory\n");
-    return *(_STATIC_CAST(MachLogFactory*, this));
+    ASSERT(objectType() == MachLog::FACTORY, "Bad static_cast type in MachActor::asFactory\n");
+    return *(static_cast<MachLogFactory*>(this));
 }
 
 const MachLogFactory& MachActor::asFactory() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::FACTORY, "Bad _STATIC_CAST type in MachActor::asFactory\n");
-    return *(_STATIC_CAST(const MachLogFactory*, this));
+    ASSERT(objectType() == MachLog::FACTORY, "Bad static_cast type in MachActor::asFactory\n");
+    return *(static_cast<const MachLogFactory*>(this));
 }
 
 MachLogGarrison& MachActor::asGarrison()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::GARRISON, "Bad _STATIC_CAST type in MachActor::asGarrison\n");
-    return *(_STATIC_CAST(MachLogGarrison*, this));
+    ASSERT(objectType() == MachLog::GARRISON, "Bad static_cast type in MachActor::asGarrison\n");
+    return *(static_cast<MachLogGarrison*>(this));
 }
 
 const MachLogGarrison& MachActor::asGarrison() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::GARRISON, "Bad _STATIC_CAST type in MachActor::asGarrison\n");
-    return *(_STATIC_CAST(const MachLogGarrison*, this));
+    ASSERT(objectType() == MachLog::GARRISON, "Bad static_cast type in MachActor::asGarrison\n");
+    return *(static_cast<const MachLogGarrison*>(this));
 }
 
 bool MachActor::objectIsMachine() const
@@ -951,29 +951,29 @@ bool MachActor::objectIsCanSmelt() const
 MachLogArtefact& MachActor::asArtefact()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ARTEFACT, "Bad _STATIC_CAST type in MachActor::asArtefact");
-    return *(_STATIC_CAST(MachLogArtefact*, this));
+    ASSERT(objectType() == MachLog::ARTEFACT, "Bad static_cast type in MachActor::asArtefact");
+    return *(static_cast<MachLogArtefact*>(this));
 }
 
 const MachLogArtefact& MachActor::asArtefact() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ARTEFACT, "Bad _STATIC_CAST type in MachActor::asArtefact");
-    return *(_STATIC_CAST(const MachLogArtefact*, this));
+    ASSERT(objectType() == MachLog::ARTEFACT, "Bad static_cast type in MachActor::asArtefact");
+    return *(static_cast<const MachLogArtefact*>(this));
 }
 
 MachLogSquadron& MachActor::asSquadron()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SQUADRON, "Bad _STATIC_CAST type in MachActor::asSquadron");
-    return *(_STATIC_CAST(MachLogSquadron*, this));
+    ASSERT(objectType() == MachLog::SQUADRON, "Bad static_cast type in MachActor::asSquadron");
+    return *(static_cast<MachLogSquadron*>(this));
 }
 
 const MachLogSquadron& MachActor::asSquadron() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SQUADRON, "Bad _STATIC_CAST type in MachActor::asSquadron");
-    return *(_STATIC_CAST(const MachLogSquadron*, this));
+    ASSERT(objectType() == MachLog::SQUADRON, "Bad static_cast type in MachActor::asSquadron");
+    return *(static_cast<const MachLogSquadron*>(this));
 }
 
 bool MachActor::objectIsArtefact() const
@@ -1002,113 +1002,113 @@ MachLog::SelectionState MachActor::selectionState() const
 MachLogHardwareLab& MachActor::asHardwareLab()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::HARDWARE_LAB, "Bad _STATIC_CAST type in MachActor::asHardwareLab\n");
-    return *(_STATIC_CAST(MachLogHardwareLab*, this));
+    ASSERT(objectType() == MachLog::HARDWARE_LAB, "Bad static_cast type in MachActor::asHardwareLab\n");
+    return *(static_cast<MachLogHardwareLab*>(this));
 }
 
 const MachLogHardwareLab& MachActor::asHardwareLab() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::HARDWARE_LAB, "Bad _STATIC_CAST type in MachActor::asHardwareLab\n");
-    return *(_STATIC_CAST(const MachLogHardwareLab*, this));
+    ASSERT(objectType() == MachLog::HARDWARE_LAB, "Bad static_cast type in MachActor::asHardwareLab\n");
+    return *(static_cast<const MachLogHardwareLab*>(this));
 }
 
 MachLogSoftwareLab& MachActor::asSoftwareLab()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad _STATIC_CAST type in MachActor::asSoftwareLab\n");
-    // return *(_STATIC_CAST( MachLogSoftwareLab*,this ) );
+    ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad static_cast type in MachActor::asSoftwareLab\n");
+    // return *(static_cast< MachLogSoftwareLab*>(this ) );
     return *(_REINTERPRET_CAST(MachLogSoftwareLab*, this));
 }
 
 const MachLogSoftwareLab& MachActor::asSoftwareLab() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad _STATIC_CAST type in MachActor::asSoftwareLab\n");
-    // return *(_STATIC_CAST( const MachLogSoftwareLab*,this ) );
+    ASSERT(objectType() == MachLog::SOFTWARE_LAB, "Bad static_cast type in MachActor::asSoftwareLab\n");
+    // return *(static_cast< const MachLogSoftwareLab*>(this ) );
     return *(_REINTERPRET_CAST(const MachLogSoftwareLab*, this));
 }
 
 MachLogMissileEmplacement& MachActor::asMissileEmplacement()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::MISSILE_EMPLACEMENT, "Bad _STATIC_CAST type in MachActor::asMissileEmplacement\n");
-    return *(_STATIC_CAST(MachLogMissileEmplacement*, this));
+    ASSERT(objectType() == MachLog::MISSILE_EMPLACEMENT, "Bad static_cast type in MachActor::asMissileEmplacement\n");
+    return *(static_cast<MachLogMissileEmplacement*>(this));
 }
 
 const MachLogMissileEmplacement& MachActor::asMissileEmplacement() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::MISSILE_EMPLACEMENT, "Bad _STATIC_CAST type in MachActor::asMissileEmplacement\n");
-    return *(_STATIC_CAST(const MachLogMissileEmplacement*, this));
+    ASSERT(objectType() == MachLog::MISSILE_EMPLACEMENT, "Bad static_cast type in MachActor::asMissileEmplacement\n");
+    return *(static_cast<const MachLogMissileEmplacement*>(this));
 }
 
 MachLogPod& MachActor::asPod()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::POD, "Bad _STATIC_CAST type in MachActor::asPod\n");
-    return *(_STATIC_CAST(MachLogPod*, this));
+    ASSERT(objectType() == MachLog::POD, "Bad static_cast type in MachActor::asPod\n");
+    return *(static_cast<MachLogPod*>(this));
 }
 
 const MachLogPod& MachActor::asPod() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::POD, "Bad _STATIC_CAST type in MachActor::asPod\n");
-    return *(_STATIC_CAST(const MachLogPod*, this));
+    ASSERT(objectType() == MachLog::POD, "Bad static_cast type in MachActor::asPod\n");
+    return *(static_cast<const MachLogPod*>(this));
 }
 
 MachLogBeacon& MachActor::asBeacon()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::BEACON, "Bad _STATIC_CAST type in MachActor::asBeacon\n");
-    return *(_STATIC_CAST(MachLogBeacon*, this));
+    ASSERT(objectType() == MachLog::BEACON, "Bad static_cast type in MachActor::asBeacon\n");
+    return *(static_cast<MachLogBeacon*>(this));
 }
 
 const MachLogBeacon& MachActor::asBeacon() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::BEACON, "Bad _STATIC_CAST type in MachActor::asBeacon\n");
-    return *(_STATIC_CAST(const MachLogBeacon*, this));
+    ASSERT(objectType() == MachLog::BEACON, "Bad static_cast type in MachActor::asBeacon\n");
+    return *(static_cast<const MachLogBeacon*>(this));
 }
 
 MachLogDebris& MachActor::asDebris()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::DEBRIS, "Bad _STATIC_CAST type in MachActor::asDebris\n");
-    return *(_STATIC_CAST(MachLogDebris*, this));
+    ASSERT(objectType() == MachLog::DEBRIS, "Bad static_cast type in MachActor::asDebris\n");
+    return *(static_cast<MachLogDebris*>(this));
 }
 const MachLogDebris& MachActor::asDebris() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::DEBRIS, "Bad _STATIC_CAST type in MachActor::asDebris\n");
-    return *(_STATIC_CAST(const MachLogDebris*, this));
+    ASSERT(objectType() == MachLog::DEBRIS, "Bad static_cast type in MachActor::asDebris\n");
+    return *(static_cast<const MachLogDebris*>(this));
 }
 
 MachLogOreHolograph& MachActor::asOreHolograph()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ORE_HOLOGRAPH, "Bad _STATIC_CAST type in MachActor::asOreHolograph\n");
-    return *(_STATIC_CAST(MachLogOreHolograph*, this));
+    ASSERT(objectType() == MachLog::ORE_HOLOGRAPH, "Bad static_cast type in MachActor::asOreHolograph\n");
+    return *(static_cast<MachLogOreHolograph*>(this));
 }
 const MachLogOreHolograph& MachActor::asOreHolograph() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::ORE_HOLOGRAPH, "Bad _STATIC_CAST type in MachActor::asOreHolograph\n");
-    return *(_STATIC_CAST(const MachLogOreHolograph*, this));
+    ASSERT(objectType() == MachLog::ORE_HOLOGRAPH, "Bad static_cast type in MachActor::asOreHolograph\n");
+    return *(static_cast<const MachLogOreHolograph*>(this));
 }
 
 MachLogLandMine& MachActor::asLandMine()
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::LAND_MINE, "Bad _STATIC_CAST type in MachActor::asLandMine\n");
-    return *(_STATIC_CAST(MachLogLandMine*, this));
+    ASSERT(objectType() == MachLog::LAND_MINE, "Bad static_cast type in MachActor::asLandMine\n");
+    return *(static_cast<MachLogLandMine*>(this));
 }
 
 const MachLogLandMine& MachActor::asLandMine() const
 {
     ASSERT_INFO(objectType());
-    ASSERT(objectType() == MachLog::LAND_MINE, "Bad _STATIC_CAST type in MachActor::asLandMine\n");
-    return *(_STATIC_CAST(const MachLogLandMine*, this));
+    ASSERT(objectType() == MachLog::LAND_MINE, "Bad static_cast type in MachActor::asLandMine\n");
+    return *(static_cast<const MachLogLandMine*>(this));
 }
 
 int MachActor::subType() const
@@ -1615,8 +1615,8 @@ void MachActor::dispatchSOS(Actors& strongThreats)
 
     MachLogRaces& races = MachLogRaces::instance();
 
-    MATHEX_SCALAR firstWaveRadius = _STATIC_CAST(MATHEX_SCALAR, localStrengthMaximumRadius()) + 50.0;
-    MATHEX_SCALAR secondWaveRadius = _STATIC_CAST(MATHEX_SCALAR, localStrengthMaximumRadius() * 2) + 50.0;
+    MATHEX_SCALAR firstWaveRadius = static_cast<MATHEX_SCALAR>(localStrengthMaximumRadius()) + 50.0;
+    MATHEX_SCALAR secondWaveRadius = static_cast<MATHEX_SCALAR>(localStrengthMaximumRadius() * 2) + 50.0;
 
     if (objectType() == MachLog::POD)
     {

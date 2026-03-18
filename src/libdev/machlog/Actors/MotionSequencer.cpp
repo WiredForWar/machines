@@ -972,7 +972,7 @@ void MachLogMachineMotionSequencer::changeStatus(int newStatus)
     CB_DEPIMPL(InternalState, internalState_);
 
     CHANGE_STATE(
-        _STATIC_CAST(InternalState, newStatus),
+        static_cast<InternalState>(newStatus),
         "MachLogMachineMotionSequencer::change status called. Forced change of state");
 }
 

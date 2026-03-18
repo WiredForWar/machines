@@ -362,7 +362,7 @@ void MachPhysMachineExplosion::createMainFireball(
             SimManager::instance().currentTime() + fireballStartTime,
             duration);
 
-        // W4dGeneric* pExplosionSite = new W4dGeneric(_STATIC_CAST(W4dEntity*, pMachine->containingDomain()),
+        // W4dGeneric* pExplosionSite = new W4dGeneric(static_cast<W4dEntity*>(pMachine->containingDomain()),
         // pMachine->localTransform());
         W4dGeneric* pExplosionSite
             = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pMachine->containingDomain()), pMachine->localTransform());

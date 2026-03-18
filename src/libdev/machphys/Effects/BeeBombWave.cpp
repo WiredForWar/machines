@@ -160,7 +160,7 @@ const PhysRelativeTime MachPhysBeeBombWave::startBeeWave(const PhysAbsoluteTime&
 
     // alpha plan
     // RenMaterialVec* pMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
-    RenMaterialVec* pMaterialVec = _STATIC_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
+    RenMaterialVec* pMaterialVec = static_cast<const W4dEntity*>(this)->mesh().mesh()->materialVec().release();
 
     uint nMaterials = pMaterialVec->size();
     ASSERT(nMaterials > 0, "not enought Materials");

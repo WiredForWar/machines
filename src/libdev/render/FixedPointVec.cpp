@@ -15,9 +15,9 @@ RenIVec3FixPtS0_7::RenIVec3FixPtS0_7(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SC
     PRE_INFO(mexVec);
     PRE(mexVec.modulus() <= 1.0001);
 
-    vec_[0] = _STATIC_CAST(RenIFixPtS0_7, x * 127 + 0.5);
-    vec_[1] = _STATIC_CAST(RenIFixPtS0_7, y * 127 + 0.5);
-    vec_[2] = _STATIC_CAST(RenIFixPtS0_7, z * 127 + 0.5);
+    vec_[0] = static_cast<RenIFixPtS0_7>(x * 127 + 0.5);
+    vec_[1] = static_cast<RenIFixPtS0_7>(y * 127 + 0.5);
+    vec_[2] = static_cast<RenIFixPtS0_7>(z * 127 + 0.5);
 }
 
 // Note this isn't strictly a S1.7 format because 1.0 is represented as 127,
@@ -26,9 +26,9 @@ void RenIVec3FixPtS0_7::setVector(const MexVec3& vec)
 {
     PRE_INFO(vec);
     PRE(vec.modulus() <= 1.0001);
-    vec_[0] = _STATIC_CAST(RenIFixPtS0_7, vec.x() * 127 + 0.5);
-    vec_[1] = _STATIC_CAST(RenIFixPtS0_7, vec.y() * 127 + 0.5);
-    vec_[2] = _STATIC_CAST(RenIFixPtS0_7, vec.z() * 127 + 0.5);
+    vec_[0] = static_cast<RenIFixPtS0_7>(vec.x() * 127 + 0.5);
+    vec_[1] = static_cast<RenIFixPtS0_7>(vec.y() * 127 + 0.5);
+    vec_[2] = static_cast<RenIFixPtS0_7>(vec.z() * 127 + 0.5);
 }
 
 void RenIVec3FixPtS0_7::convertToMex(MexVec3* v)

@@ -329,7 +329,7 @@ void MachPhysCrackFire::startCrackAndFire(
     // RenMaterialVec* pCrackMaterialVec =_CONST_CAST(const W4dEntity*,
     // pCrack_)->mesh().mesh()->materialVec().release();
     RenMaterialVec* pCrackMaterialVec
-        = _CONST_CAST(const W4dEntity*, _STATIC_CAST(W4dEntity*, pCrack_))->mesh().mesh()->materialVec().release();
+        = _CONST_CAST(const W4dEntity*, static_cast<W4dEntity*>(pCrack_))->mesh().mesh()->materialVec().release();
     RenMaterial& matCrack = (*pCrackMaterialVec)[0];
     const size_t nMatCrack = pCrackMaterialVec->size();
 
@@ -384,7 +384,7 @@ void MachPhysCrackFire::startCrackAndFire(
     // fire alpha plan
     // RenMaterialVec* pFireMaterialVec =_CONST_CAST(const W4dEntity*, pFire_)->mesh().mesh()->materialVec().release();
     RenMaterialVec* pFireMaterialVec
-        = _CONST_CAST(const W4dEntity*, _STATIC_CAST(W4dEntity*, pFire_))->mesh().mesh()->materialVec().release();
+        = _CONST_CAST(const W4dEntity*, static_cast<W4dEntity*>(pFire_))->mesh().mesh()->materialVec().release();
 
     RenMaterial& matFire = (*pFireMaterialVec)[0];
     const size_t nMatFire = pFireMaterialVec->size();
@@ -419,7 +419,7 @@ void MachPhysCrackFire::startCrackAndFire(
 
             // RenMaterialVec* pDebrisMaterialVec =_CONST_CAST(const W4dEntity*,
             // debris_[i])->mesh().mesh()->materialVec().release();
-            RenMaterialVec* pDebrisMaterialVec = _CONST_CAST(const W4dEntity*, _STATIC_CAST(W4dEntity*, debris_[i]))
+            RenMaterialVec* pDebrisMaterialVec = _CONST_CAST(const W4dEntity*, static_cast<W4dEntity*>(debris_[i]))
                                                      ->mesh()
                                                      .mesh()
                                                      ->materialVec()

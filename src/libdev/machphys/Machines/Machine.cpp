@@ -555,17 +555,17 @@ MachPhysCanAttack* MachPhysMachine::canAttack() const
     MachPhysCanAttack* pThisAttack = nullptr;
     if (thisMachineType == MachPhys::AGGRESSOR)
     {
-        // MachPhysAggressor* pThisAggressor = _STATIC_CAST(MachPhysAggressor*, this);
-        MachPhysAggressor* pThisAggressor = _STATIC_CAST(MachPhysAggressor*, _CONST_CAST(MachPhysMachine*, this));
-        pThisAttack = _STATIC_CAST(MachPhysCanAttack*, pThisAggressor);
+        // MachPhysAggressor* pThisAggressor = static_cast<MachPhysAggressor*>(this);
+        MachPhysAggressor* pThisAggressor = static_cast<MachPhysAggressor*>(_CONST_CAST(MachPhysMachine*, this));
+        pThisAttack = static_cast<MachPhysCanAttack*>(pThisAggressor);
     }
     else if (thisMachineType == MachPhys::ADMINISTRATOR)
     {
-        // MachPhysAdministrator* pThisAdministrator = _STATIC_CAST(MachPhysAdministrator*, this);
+        // MachPhysAdministrator* pThisAdministrator = static_cast<MachPhysAdministrator*>(this);
         MachPhysAdministrator* pThisAdministrator
-            = _STATIC_CAST(MachPhysAdministrator*, _CONST_CAST(MachPhysMachine*, this));
+            = static_cast<MachPhysAdministrator*>(_CONST_CAST(MachPhysMachine*, this));
 
-        pThisAttack = _STATIC_CAST(MachPhysCanAttack*, pThisAdministrator);
+        pThisAttack = static_cast<MachPhysCanAttack*>(pThisAdministrator);
     }
     POST(pThisAttack);
     return pThisAttack;
@@ -895,7 +895,7 @@ void MachPhysMachine::fireballEffect(PhysAbsoluteTime time)
 
         for (size_t i = 0; i < nSegments; ++i)
         {
-            modelTime += time / _STATIC_CAST(double, nSegments);
+            modelTime += time / static_cast<double>(nSegments);
 
             size_t modelIndex = rand() % nModels;
 

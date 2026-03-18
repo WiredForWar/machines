@@ -685,7 +685,7 @@ void D3DApp::createTTFs(const Ren::MeshPtr& mesh)
     ttf2.uv(uvTest, 10);
 
     mesh->addTTFPolygon(ttf2);
-    RenTTFTriangles& tmpRef = _STATIC_CAST(RenTTFTriangles&, mesh->TTFPolygon(2));
+    RenTTFTriangles& tmpRef = static_cast<RenTTFTriangles&>(mesh->TTFPolygon(2));
     ttf_ = &tmpRef;
 }
 

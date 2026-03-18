@@ -624,9 +624,9 @@ MachPhysMissileEmplacement& MachPhysConstruction::asMissileEmplacement() const
     PRE(constructionData().constructionType() == MachPhys::MISSILE_EMPLACEMENT);
 
     const MachPhysConstruction& construction = *this;
-    // MachPhysMissileEmplacement& result = _STATIC_CAST( MachPhysMissileEmplacement&, construction );
+    // MachPhysMissileEmplacement& result = static_cast< MachPhysMissileEmplacement&>(construction );
     MachPhysMissileEmplacement& result
-        = _STATIC_CAST(MachPhysMissileEmplacement&, _CONST_CAST(MachPhysConstruction&, construction));
+        = static_cast<MachPhysMissileEmplacement&>(_CONST_CAST(MachPhysConstruction&, construction));
 
     return result;
 }
@@ -636,8 +636,8 @@ MachPhysPod& MachPhysConstruction::asPod() const
     PRE(constructionData().constructionType() == MachPhys::POD);
 
     const MachPhysConstruction& construction = *this;
-    // MachPhysPod& result = _STATIC_CAST( MachPhysPod&, construction );
-    MachPhysPod& result = _STATIC_CAST(MachPhysPod&, _CONST_CAST(MachPhysConstruction&, construction));
+    // MachPhysPod& result = static_cast< MachPhysPod&>(construction );
+    MachPhysPod& result = static_cast<MachPhysPod&>(_CONST_CAST(MachPhysConstruction&, construction));
 
     return result;
 }

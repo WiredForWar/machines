@@ -766,7 +766,7 @@ bool MachLogStrategy::isEnteringBuilding(const MachLogConstruction& constron) co
         MachLogOperation* pOp = (*i);
 
         if (pOp->operationType() == MachLogOperation::ENTER_OPERATION
-            && _STATIC_CAST(const MachLogEnterBuildingOperation*, pOp)->destination().id() == constron.id())
+            && static_cast<const MachLogEnterBuildingOperation*>(pOp)->destination().id() == constron.id())
         {
             result = true;
         }

@@ -252,7 +252,7 @@ void perRead(PerIstream& istr, MachLogPersistence& per)
         if (per.controllers_[i]->type() == MachLogController::PLAYER_CONTROLLER)
         {
             HAL_STREAM(" controller is PLAYER_CONTROLLER registering with races\n");
-            MachLogRaces::instance().setPcController(_STATIC_CAST(MachLogPCController*, per.controllers_[i]));
+            MachLogRaces::instance().setPcController(static_cast<MachLogPCController*>(per.controllers_[i]));
         }
     }
 

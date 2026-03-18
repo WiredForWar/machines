@@ -418,14 +418,14 @@ MachPhysLinearProjectile& MachLogLinearProjectile::physLinearProjectile()
 {
     //  Permissable because we know we passed a lineproj into W4dSubject
 
-    return _STATIC_CAST(MachPhysLinearProjectile&, physObject());
+    return static_cast<MachPhysLinearProjectile&>(physObject());
 }
 
 const MachPhysLinearProjectile& MachLogLinearProjectile::physLinearProjectile() const
 {
     //  Permissable because we know we passed a lineproj into W4dSubject
 
-    return _STATIC_CAST(const MachPhysLinearProjectile&, physObject());
+    return static_cast<const MachPhysLinearProjectile&>(physObject());
 }
 
 const MexPoint3d& MachLogLinearProjectile::globalDestructionPosition() const

@@ -52,7 +52,7 @@ void PersistenceImplementationRead::registerObject(const void* ptr, PerReadIdent
     PRE(pointerIdValid(ptr, idPair));
 
     pushCurrentPoolAllocator(pIdMapAllocator_);
-    // idToPointer_.insert( id, _STATIC_CAST( PerMapPtrType, ptr ) );
+    // idToPointer_.insert( id, static_cast< PerMapPtrType>(ptr ) );
     readIdToPointer_.emplace(idPair, _REINTERPRET_CAST(PerMapPtrType, ptr));
     idToPointer_.emplace(std::make_pair(idPair.first, _REINTERPRET_CAST(PerMapPtrType, ptr)));
     popCurrentPoolAllocator();
@@ -68,7 +68,7 @@ bool PersistenceImplementationRead::pointerIdValid(const void* ptr, PerReadIdent
 
     if (i != readIdToPointer_.end())
     {
-        // if( _STATIC_CAST( void*, (*i).second ) != ptr )
+        // if( static_cast< void*>((*i).second ) != ptr )
         void* val = _REINTERPRET_CAST(void*, (*i).second);
         if (val != ptr)
         {
@@ -160,9 +160,9 @@ void PersistenceImplementationRead::fixupPointer(void** pPtr, PerReadIdentifier 
         {
             //  Object already loaded, set up the pointer correctly
 
-            // void*   ptr = _STATIC_CAST( void*, idToPointer_[ id ] );
+            // void*   ptr = static_cast< void*>(idToPointer_[ id ] );
             // was
-            // void*   ptr = _STATIC_CAST( void*, (*i).second );
+            // void*   ptr = static_cast< void*>((*i).second );
             void* ptr = _REINTERPRET_CAST(void*, (*i).second);
 
             *pPtr = ptr;
@@ -200,9 +200,9 @@ void PersistenceImplementationRead::fixupOutstandingPointers()
             ASSERT_INFO((*i).second.first);
             // ASSERT( ptrIterator != readIdToPointer_.end(), "Object not in file" );
 
-            //*((*i).first) = _STATIC_CAST( void*, idToPointer_[ (*i).second ] );
+            //*((*i).first) = static_cast< void*>(idToPointer_[ (*i).second ] );
             // was:
-            //*((*i).first) = _STATIC_CAST( void*, (*ptrIterator).second );
+            //*((*i).first) = static_cast< void*>((*ptrIterator).second );
             *((*i).first) = _REINTERPRET_CAST(void*, (*ptrIterator).second);
         }
     }
@@ -481,7 +481,7 @@ bool PersistenceImplementationRead::logAddresses() const
 void PersistenceImplementationRead::writeAddress(const void* ptr) const
 {
     if (logAddresses())
-        // PER_READ_INDENT_STREAM( " (" << _STATIC_CAST( void*, ptr ) << ") " );
+        // PER_READ_INDENT_STREAM( " (" << static_cast< void*>(ptr ) << ") " );
         PER_READ_INDENT_STREAM(" (" << _CONST_CAST(void*, ptr) << ") ");
 }
 

@@ -417,7 +417,7 @@ void PedDomainEditor::validate()
             if (!(*itDomainPtr)->isConvex())
             {
                 string warningMsg("WARNING : Domain ");
-                warningMsg += utlToString(_STATIC_CAST(unsigned long, (*itDomainPtr)->uniqueId()));
+                warningMsg += utlToString(static_cast<unsigned long>((*itDomainPtr)->uniqueId()));
                 warningMsg += " is concave.";
 
                 warnings_.push_back(warningMsg);

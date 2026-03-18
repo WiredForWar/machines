@@ -186,7 +186,7 @@ PhysRelativeTime MachLogAIController::update(const PhysRelativeTime&, MATHEX_SCA
         // note random element to update times - tries to avoid all computer races updating ally relationships at more
         // or less the same time
         nextAllyUpdateTime_
-            += allyUpdateInterval() + _STATIC_CAST(PhysRelativeTime, (MachPhysRandom::randomInt(120) - 60));
+            += allyUpdateInterval() + static_cast<PhysRelativeTime>((MachPhysRandom::randomInt(120) - 60));
 
         HAL_STREAM("MachLogAIController::update " << myRace << std::endl);
         MachPhys::Race highestScoreRace = MachPhys::RED;

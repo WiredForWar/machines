@@ -40,7 +40,7 @@ void perWrite(PerOstream& str, const MexDegrees& t)
 
 void perRead(PerIstream& str, MexDegrees& t)
 {
-    // str >> _STATIC_CAST( MexAngle&, t );
+    // str >> static_cast< MexAngle&>(t );
 
     MexAngle& angle = t;
     perRead(str, angle);

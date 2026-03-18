@@ -446,7 +446,7 @@ void perRead(PerIstream& stream, MexConvexPolygon2d& t)
 {
     std::cout << "preReading     a MexConvexPolygon2d: " << std::endl;
 
-    stream >> _STATIC_CAST(MexPolygon2d&, t);
+    stream >> static_cast<MexPolygon2d&>(t);
 
     ctl_vector<MexPoint2d>* pPoints = new ctl_vector<MexPoint2d>; // The vertices
     int size;

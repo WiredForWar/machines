@@ -365,13 +365,13 @@ const W4dTransform3d& MachPhysMissileEmplacement::globalAspectTransform() const
 // virtual
 W4dComposite& MachPhysMissileEmplacement::asComposite()
 {
-    return _STATIC_CAST(W4dComposite&, *this);
+    return static_cast<W4dComposite&>(*this);
 }
 
 // virtual
 const W4dComposite& MachPhysMissileEmplacement::asComposite() const
 {
-    return _STATIC_CAST(const W4dComposite&, *this);
+    return static_cast<const W4dComposite&>(*this);
 }
 
 void MachPhysMissileEmplacement::persistenceInitialiseData()

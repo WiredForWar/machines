@@ -283,7 +283,7 @@ void MachLogPutDownOperation::chooseMostViablePad()
     {
         // no points are free - just choose a point at random.
         destinationPadPosition_ = pDestinationSmeltingBuilding->putDownPoint(
-            MachPhysRandom::randomInt(0, _STATIC_CAST(int, pDestinationSmeltingBuilding->nPutDownPoints())));
+            MachPhysRandom::randomInt(0, static_cast<int>(pDestinationSmeltingBuilding->nPutDownPoints())));
     }
 }
 

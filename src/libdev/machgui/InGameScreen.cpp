@@ -1560,7 +1560,7 @@ bool MachInGameScreen::beNotified(W4dSubject* pSubject, W4dSubject::Notification
     {
         // Since we only observe MachActors, this cast, although unfortunate,
         // should be safe.
-        MachActor* pActor = _STATIC_CAST(MachActor*, pSubject);
+        MachActor* pActor = static_cast<MachActor*>(pSubject);
 
         // Stop the navigator from being dismissed just because we are unselecting
         // a deleted actor

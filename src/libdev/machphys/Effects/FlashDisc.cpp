@@ -87,7 +87,7 @@ MachPhysFlashDisc::MachPhysFlashDisc(const MATHEX_SCALAR& size, ColourType colou
     meshPtr->addTTFPolygon(ttf);
     // Add a mesh instance for it, with the fog distance as the visibility range
     RenMeshInstance* pMeshInstance = new RenMeshInstance(meshPtr);
-    add(pMeshInstance, MexDouble(_STATIC_CAST(double, RenDevice::current()->fogEnd())), W4dLOD(0));
+    add(pMeshInstance, MexDouble(static_cast<double>(RenDevice::current()->fogEnd())), W4dLOD(0));
 
     TEST_INVARIANT;
 }

@@ -67,7 +67,7 @@ int BaseInfiniteStreamBuffer::do_sgetn(char* buf, int len)
     }
     else
     {
-        size_t nCharactersToOutput = std::min(len, _STATIC_CAST(int, nCharactersInBuffer() - nCharactersOutput_));
+        size_t nCharactersToOutput = std::min(len, static_cast<int>(nCharactersInBuffer() - nCharactersOutput_));
 
         memcpy(buf, pbase() + nCharactersOutput_, nCharactersToOutput);
         nCharactersOutput_ += nCharactersToOutput;

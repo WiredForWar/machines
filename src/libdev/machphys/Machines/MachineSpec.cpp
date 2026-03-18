@@ -234,7 +234,7 @@ MachPhysWeaponSpec::MachPhysWeaponSpec(MachPhys::WeaponType type, MachPhys::Race
 
 MachPhysWeaponSpec::MachPhysWeaponSpec()
     //:   type_( MachPhys::L_BOLTER ),
-    : type_(_STATIC_CAST(MachPhys::WeaponType, MachPhys::L_BOLTER))
+    : type_(static_cast<MachPhys::WeaponType>(MachPhys::L_BOLTER))
     , race_(MachPhys::RED)
 {
     TEST_INVARIANT;

@@ -156,7 +156,7 @@ bool MachPhysPlanetSurfaceChecker::segmentInsideObstacle(
     //  to invert the flags value.
 
     // flags ^= OBSTACLE_ALL;
-    flags = _STATIC_CAST(MachPhysPlanetSurfaceChecker::ObstacleFlag, flags ^ OBSTACLE_ALL);
+    flags = static_cast<MachPhysPlanetSurfaceChecker::ObstacleFlag>(flags ^ OBSTACLE_ALL);
 
     PhysConfigSpace2d::PolygonId id;
 
@@ -221,7 +221,7 @@ bool MachPhysPlanetSurfaceChecker::triangleInsideObstacle(
     //  to invert the flags value.
 
     // flags ^= OBSTACLE_ALL;
-    flags = _STATIC_CAST(MachPhysPlanetSurfaceChecker::ObstacleFlag, flags ^ OBSTACLE_ALL);
+    flags = static_cast<MachPhysPlanetSurfaceChecker::ObstacleFlag>(flags ^ OBSTACLE_ALL);
 
     PhysConfigSpace2d::PolygonId id;
 

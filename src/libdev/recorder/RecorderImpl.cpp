@@ -66,7 +66,7 @@ RecRecorderImplementation::RecRecorderImplementation()
         if (strlen(filename) >= 2 && filename[1] == ':')
             drive_[0] = filename[0];
         // else
-        // drive_[ 0 ] = _STATIC_CAST( char, 'a' + _getdrive() - 1 );
+        // drive_[ 0 ] = static_cast< char>('a' + _getdrive() - 1 );
 
         drive_[1] = ':';
         drive_[2] = '\\';
@@ -100,7 +100,7 @@ void RecRecorderImplementation::putData(RecordType type, size_t nBytes, const vo
     const char header = type;
 
     recordStream_.write(&header, sizeof(header));
-    recordStream_.write(_STATIC_CAST(const char*, pData), nBytes);
+    recordStream_.write(static_cast<const char*>(pData), nBytes);
 
     nBytesWritten_ += sizeof(header) + nBytes;
 
@@ -133,7 +133,7 @@ void RecRecorderImplementation::getData(RecordType type, size_t nBytes, void* pD
 
     playbackStream_.read(&header, sizeof(header));
 
-    RecordType readType = _STATIC_CAST(RecordType, header);
+    RecordType readType = static_cast<RecordType>(header);
 
     if (REC_PLAYBACK_STREAM_ENABLED)
     {
@@ -152,7 +152,7 @@ void RecRecorderImplementation::getData(RecordType type, size_t nBytes, void* pD
 
     ASSERT(type == readType, "");
 
-    playbackStream_.read(_STATIC_CAST(char*, pData), nBytes);
+    playbackStream_.read(static_cast<char*>(pData), nBytes);
 
     nBytesRead_ += sizeof(header) + nBytes;
 
@@ -171,7 +171,7 @@ bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseTyp
 
     playbackStream_.read(&header, sizeof(header));
 
-    RecordType readType = _STATIC_CAST(RecordType, header);
+    RecordType readType = static_cast<RecordType>(header);
 
     if (REC_PLAYBACK_STREAM_ENABLED)
     {
@@ -515,7 +515,7 @@ std::ostream& operator<<(std::ostream& o, RecRecorderImplementation::RecordType 
             o << "NETWORK_DOUBLE";
             break;
         default:
-            o << "UNKNOWN (" << _STATIC_CAST(int, type) << ")";
+            o << "UNKNOWN (" << static_cast<int>(type) << ")";
             break;
     }
     return o;

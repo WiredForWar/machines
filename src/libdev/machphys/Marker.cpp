@@ -78,7 +78,7 @@ MachPhysMarker::MachPhysMarker(
     const MexAlignedBox3d& boundary,
     bool permanent,
     int percentageHp)
-    : W4dCustom(pParent, localTransform, W4dEntity::NOT_SOLID, _STATIC_CAST(MexDouble, RenDevice::current()->fogEnd()))
+    : W4dCustom(pParent, localTransform, W4dEntity::NOT_SOLID, static_cast<MexDouble>(RenDevice::current()->fogEnd()))
 {
     // This entity is pure emissive so it needs no lighting.
     doNotLight(true);

@@ -91,10 +91,10 @@ void BaseMemWatcher::addBlock(void* pBlock, size_t nBytes, uint32_t lineNumber, 
     if (pSite == nullptr)
     {
         // Initialise the data
-        pSite = _STATIC_CAST(AllocationSite*, allocator().alloc(sizeof(AllocationSite)));
+        pSite = static_cast<AllocationSite*>(allocator().alloc(sizeof(AllocationSite)));
         pSite->nStackFrames_ = nStackFrames;
 
-        pSite->aCallStack_ = _STATIC_CAST(size_t*, allocator().alloc(sizeof(size_t) * nStackFrames));
+        pSite->aCallStack_ = static_cast<size_t*>(allocator().alloc(sizeof(size_t) * nStackFrames));
         for (size_t i = 0; i != nStackFrames; ++i)
             pSite->aCallStack_[i] = stackAddress[i];
 
@@ -104,7 +104,7 @@ void BaseMemWatcher::addBlock(void* pBlock, size_t nBytes, uint32_t lineNumber, 
             pSite->aNewText_ = nullptr;
         else
         {
-            pSite->aNewText_ = _STATIC_CAST(char*, allocator().alloc(sizeof(char) * nNewTextChars));
+            pSite->aNewText_ = static_cast<char*>(allocator().alloc(sizeof(char) * nNewTextChars));
             strcpy(pSite->aNewText_, aNewText);
         }
 
@@ -122,7 +122,7 @@ void BaseMemWatcher::addBlock(void* pBlock, size_t nBytes, uint32_t lineNumber, 
     size_t pointerHashValue = hashValue(pBlock);
 
     // Create an object representing the allocation
-    AllocatedBlock* pAllocatedBlock = _STATIC_CAST(AllocatedBlock*, allocator().alloc(sizeof(AllocatedBlock)));
+    AllocatedBlock* pAllocatedBlock = static_cast<AllocatedBlock*>(allocator().alloc(sizeof(AllocatedBlock)));
     pAllocatedBlock->address_ = pBlock;
     pAllocatedBlock->pSite_ = pSite;
 

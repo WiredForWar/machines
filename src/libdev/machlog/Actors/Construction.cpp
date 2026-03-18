@@ -689,14 +689,14 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
 MachPhysConstruction& MachLogConstruction::physConstruction()
 {
     //  This looks dodgy but is really OK since we know we have a MachPhysConstruction
-    return _STATIC_CAST(MachPhysConstruction&, physObject());
+    return static_cast<MachPhysConstruction&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const MachPhysConstruction& MachLogConstruction::physConstruction() const
 {
     //  This looks dodgy but is really OK since we know we have a MachPhysConstruction
-    return _STATIC_CAST(const MachPhysConstruction&, physObject());
+    return static_cast<const MachPhysConstruction&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1442,8 +1442,8 @@ void MachLogConstruction::dropDebris(const PhysAbsoluteTime&)
     {
         MATHEX_SCALAR completionMultiplier = percentageComplete() / 100.0;
         MATHEX_SCALAR recoveredValue
-            = _STATIC_CAST(MATHEX_SCALAR, constructionData().cost()) * completionMultiplier / 5.0;
-        int quantity = _STATIC_CAST(int, recoveredValue);
+            = static_cast<MATHEX_SCALAR>(constructionData().cost()) * completionMultiplier / 5.0;
+        int quantity = static_cast<int>(recoveredValue);
         if (quantity > 0)
             MachLogActorMaker::newLogDebris(race(), quantity, position(), globalBoundary());
     }

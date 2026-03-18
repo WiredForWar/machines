@@ -84,7 +84,7 @@ int BaseCircularStreamBuffer::do_sgetn(char* buf, int len)
 
             if (pStart < epptr())
             {
-                size_t nCharactersToOutput = std::min(len, _STATIC_CAST(int, epptr() - pStart));
+                size_t nCharactersToOutput = std::min(len, static_cast<int>(epptr() - pStart));
 
                 memcpy(buf, pStart, nCharactersToOutput);
                 nCharactersOutput_ += nCharactersToOutput;
@@ -94,7 +94,7 @@ int BaseCircularStreamBuffer::do_sgetn(char* buf, int len)
             {
                 pStart -= bufferSize_;
 
-                size_t nCharactersToOutput = std::min(len, _STATIC_CAST(int, pptr() - pStart));
+                size_t nCharactersToOutput = std::min(len, static_cast<int>(pptr() - pStart));
 
                 memcpy(buf, pStart, nCharactersToOutput);
                 nCharactersOutput_ += nCharactersToOutput;
@@ -103,7 +103,7 @@ int BaseCircularStreamBuffer::do_sgetn(char* buf, int len)
         }
         else
         {
-            size_t nCharactersToOutput = std::min(len, _STATIC_CAST(int, nCharactersInBuffer() - nCharactersOutput_));
+            size_t nCharactersToOutput = std::min(len, static_cast<int>(nCharactersInBuffer() - nCharactersOutput_));
             memcpy(buf, pBuffer_ + nCharactersOutput_, nCharactersToOutput);
             nCharactersOutput_ += nCharactersToOutput;
             result = nCharactersToOutput;

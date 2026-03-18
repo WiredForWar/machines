@@ -219,7 +219,7 @@ void EnvDynamicSky::colourSomeVertices(RenMesh* mesh, int startIndex, int nVerti
 
     for (int i = startIndex; i != endIndex; ++i)
     {
-        Ren::VertexIdx idx = _STATIC_CAST(Ren::VertexIdx, i);
+        Ren::VertexIdx idx = static_cast<Ren::VertexIdx>(i);
         RenVertex vertex = mesh->vertex(idx);
         const MexDegrees elevation = vertexElevation(vertex);
         const RenColour& vertexColour = findVertexColour(elevation);

@@ -140,7 +140,7 @@ void MachPhysBlast::startBlast(const PhysAbsoluteTime& startTime)
 */
     // blast alpha plan
     // RenMaterialVec* pBlastMaterialVec =_CONST_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
-    RenMaterialVec* pBlastMaterialVec = _STATIC_CAST(const W4dEntity*, this)->mesh().mesh()->materialVec().release();
+    RenMaterialVec* pBlastMaterialVec = static_cast<const W4dEntity*>(this)->mesh().mesh()->materialVec().release();
     RenMaterial& matBlast = (*pBlastMaterialVec)[0];
     uint nMaterials = pBlastMaterialVec->size();
 

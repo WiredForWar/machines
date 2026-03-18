@@ -179,7 +179,7 @@ accumulateIllumination(float* pR, float* pG, float* pB, RenILight::OutputAction 
 // TODO FixPtS11_4 is probably not used legacy code
 /*FixPtS11_4 floatToFixPtS11_4(float f)
 {
-    return _STATIC_CAST(short, (f * 16 + 0.5));
+    return static_cast<short>((f * 16 + 0.5));
 }
 
 inline accumulateIllumination
@@ -196,15 +196,15 @@ inline accumulateIllumination
     switch (sum)
     {
         case RenILight::INITIALISE:
-            output->r_ = _STATIC_CAST(FixPtS11_4, colour.r_ >> 12);
-            output->g_ = _STATIC_CAST(FixPtS11_4, colour.g_ >> 12);
-            output->b_ = _STATIC_CAST(FixPtS11_4, colour.b_ >> 12);
+            output->r_ = static_cast<FixPtS11_4>(colour.r_ >> 12);
+            output->g_ = static_cast<FixPtS11_4>(colour.g_ >> 12);
+            output->b_ = static_cast<FixPtS11_4>(colour.b_ >> 12);
             output->a_ = alpha;
             break;
         case RenILight::ACCUMULATE:
-            output->r_ += _STATIC_CAST(FixPtS11_4, colour.r_ >> 12);
-            output->g_ += _STATIC_CAST(FixPtS11_4, colour.g_ >> 12);
-            output->b_ += _STATIC_CAST(FixPtS11_4, colour.b_ >> 12);
+            output->r_ += static_cast<FixPtS11_4>(colour.r_ >> 12);
+            output->g_ += static_cast<FixPtS11_4>(colour.g_ >> 12);
+            output->b_ += static_cast<FixPtS11_4>(colour.b_ >> 12);
             break;
     }
 }
@@ -224,15 +224,15 @@ inline accumulateIllumination
     switch (sum)
     {
         case RenILight::INITIALISE:
-            output->r_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.r_) >> 20);
-            output->g_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.g_) >> 20);
-            output->b_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.b_) >> 20);
+            output->r_ = static_cast<FixPtS11_4>((intensity * colour.r_) >> 20);
+            output->g_ = static_cast<FixPtS11_4>((intensity * colour.g_) >> 20);
+            output->b_ = static_cast<FixPtS11_4>((intensity * colour.b_) >> 20);
             output->a_ = alpha;
             break;
         case RenILight::ACCUMULATE:
-            output->r_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.r_) >> 20);
-            output->g_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.g_) >> 20);
-            output->b_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.b_) >> 20);
+            output->r_ += static_cast<FixPtS11_4>((intensity * colour.r_) >> 20);
+            output->g_ += static_cast<FixPtS11_4>((intensity * colour.g_) >> 20);
+            output->b_ += static_cast<FixPtS11_4>((intensity * colour.b_) >> 20);
             break;
     }
 }
@@ -252,15 +252,15 @@ inline accumulateIllumination
     switch (sum)
     {
         case RenILight::INITIALISE:
-            output->r_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.r_) >> 12);
-            output->g_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.g_) >> 12);
-            output->b_ = _STATIC_CAST(FixPtS11_4, (intensity * colour.b_) >> 12);
+            output->r_ = static_cast<FixPtS11_4>((intensity * colour.r_) >> 12);
+            output->g_ = static_cast<FixPtS11_4>((intensity * colour.g_) >> 12);
+            output->b_ = static_cast<FixPtS11_4>((intensity * colour.b_) >> 12);
             output->a_ = alpha;
             break;
         case RenILight::ACCUMULATE:
-            output->r_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.r_) >> 12);
-            output->g_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.g_) >> 12);
-            output->b_ += _STATIC_CAST(FixPtS11_4, (intensity * colour.b_) >> 12);
+            output->r_ += static_cast<FixPtS11_4>((intensity * colour.r_) >> 12);
+            output->g_ += static_cast<FixPtS11_4>((intensity * colour.g_) >> 12);
+            output->b_ += static_cast<FixPtS11_4>((intensity * colour.b_) >> 12);
             break;
     }
 }

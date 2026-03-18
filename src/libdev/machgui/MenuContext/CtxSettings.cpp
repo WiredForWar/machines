@@ -341,7 +341,7 @@ void MachGuiCtxSettings::updateMapSizeList()
 
     // for ( MachGuiDatabase::TerrainSize loop = MachGuiDatabase::SMALL; loop <= MachGuiDatabase::LARGE; ++loop )
     for (MachGuiDatabase::TerrainSize loop = MachGuiDatabase::SMALL; loop <= MachGuiDatabase::LARGE;
-         loop = _STATIC_CAST(MachGuiDatabase::TerrainSize, _STATIC_CAST(uint, loop) + 1))
+         loop = static_cast<MachGuiDatabase::TerrainSize>(static_cast<uint>(loop) + 1))
     {
         MachGuiDbSystem& system = MachGuiDatabase::instance().multiPlayerSystem(loop);
 

@@ -252,20 +252,20 @@ public:                                                                         
 #define PER_OBJECT_WRITE(className)                                                                                    \
     {                                                                                                                  \
         ASSERT_INFO("w");                                                                                              \
-        Persistence::instance().writeObjectPre(ostr, _STATIC_CAST(const void*, &ob), #className);                      \
+        Persistence::instance().writeObjectPre(ostr, static_cast<const void*>(&ob), #className);                      \
         ASSERT_INFO("x");                                                                                              \
         perWrite(ostr, ob);                                                                                            \
         ASSERT_INFO("y");                                                                                              \
-        Persistence::instance().writeObjectPost(_STATIC_CAST(const void*, &ob), #className);                           \
+        Persistence::instance().writeObjectPost(static_cast<const void*>(&ob), #className);                           \
         ASSERT_INFO("z");                                                                                              \
         return ostr;                                                                                                   \
     }
 
 #define PER_OBJECT_READ(className)                                                                                     \
     {                                                                                                                  \
-        Persistence::instance().readObjectPre(istr, _STATIC_CAST(const void*, &ob), #className);                       \
+        Persistence::instance().readObjectPre(istr, static_cast<const void*>(&ob), #className);                       \
         perRead(istr, ob);                                                                                             \
-        Persistence::instance().readObjectPost(_STATIC_CAST(const void*, &ob), #className);                            \
+        Persistence::instance().readObjectPost(static_cast<const void*>(&ob), #className);                            \
         return istr;                                                                                                   \
     }
 
@@ -275,7 +275,7 @@ public:                                                                         
         const char* mostDerivedClassName = pOb ? pOb->perMostDerivedClassName() : NULL;                                \
         if (Persistence::instance().writePointerPre(                                                                   \
                 ostr,                                                                                                  \
-                _STATIC_CAST(const void*, pOb),                                                                        \
+                static_cast<const void*>(pOb),                                                                        \
                 #className,                                                                                            \
                 pMostDerivedOb,                                                                                        \
                 mostDerivedClassName)                                                                                  \
@@ -283,7 +283,7 @@ public:                                                                         
         {                                                                                                              \
             ostr << *pOb;                                                                                              \
         }                                                                                                              \
-        Persistence::instance().writePointerPost(ostr, _STATIC_CAST(const void*, pOb), #className, pMostDerivedOb);    \
+        Persistence::instance().writePointerPost(ostr, static_cast<const void*>(pOb), #className, pMostDerivedOb);    \
         return ostr;                                                                                                   \
     }
 
@@ -319,11 +319,11 @@ public:                                                                         
 
 #define PER_PRIVATE_WRITE_RAW_DATA(ostr, ptr, nBytes)                                                                  \
     Persistence::instance().writeRawData(ostr, _REINTERPRET_CAST(const char*, ptr), nBytes)
-// Persistence::instance().writeRawData( ostr, _STATIC_CAST( const char*, ptr ), nBytes )
+// Persistence::instance().writeRawData( ostr, static_cast< const char*>(ptr ), nBytes )
 
 #define PER_PRIVATE_READ_RAW_DATA(istr, ptr, nBytes)                                                                   \
     Persistence::instance().readRawData(istr, _REINTERPRET_CAST(char*, ptr), nBytes)
-// Persistence::instance().readRawData( istr, _STATIC_CAST( char*, ptr ), nBytes )
+// Persistence::instance().readRawData( istr, static_cast< char*>(ptr ), nBytes )
 
 #define PER_PRIVATE_READ_CONST_OBJECT(ISTR, NON_CONST_TYPE, OBJECT) ISTR >> _CONST_CAST(NON_CONST_TYPE&, OBJECT)
 
@@ -377,7 +377,7 @@ public:                                                                         
     }                                                                                                                  \
     void perWrite##className(PerOstream& ostr, const void* pVoid)                                                      \
     {                                                                                                                  \
-        const className* pObject = _STATIC_CAST(const className*, pVoid);                                              \
+        const className* pObject = static_cast<const className*>(pVoid);                                              \
         ostr << *pObject;                                                                                              \
     }                                                                                                                  \
     PerOstream& operator<<(PerOstream& ostr, const className& ob) PER_OBJECT_WRITE(className) PerIstream& operator>>(  \

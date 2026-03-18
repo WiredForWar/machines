@@ -808,7 +808,7 @@ MachLogAIController& MachLogRaces::AIController(MachPhys::Race r)
     ASSERT(
         pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]->type() == MachLogController::AI_CONTROLLER,
         "Trying to cast non-AI Controller to AI Controller\n");
-    return _STATIC_CAST(MachLogAIController&, *pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]);
+    return static_cast<MachLogAIController&>(*pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]);
 }
 
 const MachLogAIController& MachLogRaces::AIController(MachPhys::Race r) const
@@ -816,7 +816,7 @@ const MachLogAIController& MachLogRaces::AIController(MachPhys::Race r) const
     ASSERT(
         pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]->type() == MachLogController::AI_CONTROLLER,
         "Trying to cast non-AI Controller to AI Controller\n");
-    return _STATIC_CAST(const MachLogAIController&, *pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]);
+    return static_cast<const MachLogAIController&>(*pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)]);
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -3484,10 +3484,9 @@ bool MachLogRaces::findMostValuableTarget(
                         if (favourBuildings)
                         {
                             if (pTargetActor->objectIsConstruction())
-                                militaryValue = _STATIC_CAST(
-                                    int,
+                                militaryValue = static_cast<int>(
                                     pTargetActor->hpRatio()
-                                        * _STATIC_CAST(MATHEX_SCALAR, pTargetActor->objectData().cost()));
+                                        * static_cast<MATHEX_SCALAR>(pTargetActor->objectData().cost()));
                             else
                                 // mobile targets not so valuable as they may move out of range (of e.g. a nuclear
                                 // strike)

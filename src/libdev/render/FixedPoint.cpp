@@ -14,9 +14,9 @@ RenIColourFixPtS15_16::RenIColourFixPtS15_16()
 }
 
 RenIColourFixPtS15_16::RenIColourFixPtS15_16(const RenColour& col)
-    : r_(_STATIC_CAST(RenIFixPtS15_16, col.r() * 65536 + 0.5))
-    , g_(_STATIC_CAST(RenIFixPtS15_16, col.g() * 65536 + 0.5))
-    , b_(_STATIC_CAST(RenIFixPtS15_16, col.b() * 65536 + 0.5))
+    : r_(static_cast<RenIFixPtS15_16>(col.r() * 65536 + 0.5))
+    , g_(static_cast<RenIFixPtS15_16>(col.g() * 65536 + 0.5))
+    , b_(static_cast<RenIFixPtS15_16>(col.b() * 65536 + 0.5))
 {
 }
 
@@ -28,9 +28,9 @@ RenIColourFixPtS23_8::RenIColourFixPtS23_8()
 }
 
 RenIColourFixPtS23_8::RenIColourFixPtS23_8(const RenColour& col)
-    : r_(_STATIC_CAST(RenIFixPtS23_8, col.r() * 256 + 0.5))
-    , g_(_STATIC_CAST(RenIFixPtS23_8, col.g() * 256 + 0.5))
-    , b_(_STATIC_CAST(RenIFixPtS23_8, col.b() * 256 + 0.5))
+    : r_(static_cast<RenIFixPtS23_8>(col.r() * 256 + 0.5))
+    , g_(static_cast<RenIFixPtS23_8>(col.g() * 256 + 0.5))
+    , b_(static_cast<RenIFixPtS23_8>(col.b() * 256 + 0.5))
 {
 }
 

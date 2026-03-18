@@ -159,7 +159,7 @@ MachLogSuperCharger& MachLogSuperCharger::asSuperCharger(MachLogWeapon* pWeapon)
         ((const MachLogWeapon*)pWeapon)->physWeapon().type() == MachPhys::SUPERCHARGE_ADVANCED
             || ((const MachLogWeapon*)pWeapon)->physWeapon().type() == MachPhys::SUPERCHARGE_SUPER,
         " Wrong weapon type in MLCharger::asSuperCharger\n");
-    return *(_STATIC_CAST(MachLogSuperCharger*, pWeapon));
+    return *(static_cast<MachLogSuperCharger*>(pWeapon));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////

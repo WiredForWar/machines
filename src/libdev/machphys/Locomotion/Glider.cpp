@@ -306,7 +306,7 @@ void MachPhysGlider::moveAnimations(
             {
                 // pitching TODO check
                 // MexRadians pitchAngle = translationTime>1.5? maxPitchAngle: MexDegrees( 5 );
-                MexRadians pitchAngle = translationTime > 1.5 ? maxPitchAngle : _STATIC_CAST(MexRadians, MexDegrees(5));
+                MexRadians pitchAngle = translationTime > 1.5 ? maxPitchAngle : static_cast<MexRadians>(MexDegrees(5));
                 PhysRelativeTime pitchTime = translationTime > 1.5 ? 0.7 : translationTime * 0.2;
 
                 PhysRelativeTime pitchUpTime = translationStartTime + pitchTime;
@@ -387,7 +387,7 @@ void MachPhysGlider::moveAnimations(
     {
         // pitching
         // MexRadians pitchAngle = translationTime>1.5? maxPitchAngle: MexDegrees( 5 );
-        MexRadians pitchAngle = translationTime > 1.5 ? maxPitchAngle : _STATIC_CAST(MexRadians, MexDegrees(5));
+        MexRadians pitchAngle = translationTime > 1.5 ? maxPitchAngle : static_cast<MexRadians>(MexDegrees(5));
         PhysRelativeTime pitchTime = translationTime > 1.5 ? 0.7 : translationTime * 0.2;
 
         PhysRelativeTime pitchUpTime = translationStartTime + pitchTime;

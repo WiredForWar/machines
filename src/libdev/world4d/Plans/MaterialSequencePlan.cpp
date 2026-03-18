@@ -95,8 +95,8 @@ const Ren::MaterialVecPtr& W4dMaterialSequencePlan::materialVec(const PhysRelati
     }
     else
     {
-        double n = _STATIC_CAST(double, nFrames);
-        i = _STATIC_CAST(size_t, (timeOffset / d) * n + 0.01 * (d / n));
+        double n = static_cast<double>(nFrames);
+        i = static_cast<size_t>((timeOffset / d) * n + 0.01 * (d / n));
         if (i == nFrames)
             --i;
     }

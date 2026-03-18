@@ -59,12 +59,12 @@ const MexVec2& W4dUVTranslation::position() const
 
 RenUVTranslation& W4dUVTranslation::uvTranslation()
 {
-    return _STATIC_CAST(RenUVTranslation&, *positionPtr_);
+    return static_cast<RenUVTranslation&>(*positionPtr_);
 }
 
 const RenUVTranslation& W4dUVTranslation::uvTranslation() const
 {
-    return _STATIC_CAST(RenUVTranslation&, *positionPtr_);
+    return static_cast<RenUVTranslation&>(*positionPtr_);
 }
 
 void perWrite(PerOstream& ostr, const W4dUVTranslation& translation)

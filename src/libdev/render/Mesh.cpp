@@ -1706,7 +1706,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
 
             ASSERT(power < SHRT_MAX, "Specular power must fit into a short.");
             ASSERT(power > SHRT_MIN, "Specular power must fit into a short.");
-            const short shortPower = _STATIC_CAST(short, power);
+            const short shortPower = static_cast<short>(power);
 
             D3DVALUE r,g, dummy;
             TRYRENDX(rmMat->GetEmissive(&r, &g, &dummy));
@@ -1733,7 +1733,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
             {
                 // If the flag is 3, negate the priority.
                 newMat.absoluteAlphaPriority(true);
-                newMat.alphaPriority(_STATIC_CAST(short, -shortPower));
+                newMat.alphaPriority(static_cast<short>(-shortPower));
                 DBG_LOAD0("Set absolute alpha priority=" << -shortPower << " for " << newMat << "\n");
             }
             else if (r > 3.5 && r <= 4.5)
@@ -1767,7 +1767,7 @@ bool RenMesh::copyFromMeshBuilder(IDirect3DRMMeshBuilder* builder)
             // previously created a RM texture and set its app data to
             // be a pointer to the required RenTexture.
             DWORD dword = rmTex->GetAppData();
-            //RenTexture* tex  = _STATIC_CAST(RenTexture*, dword);
+            //RenTexture* tex  = static_cast<RenTexture*>(dword);
             RenTexture* tex  = _REINTERPRET_CAST(RenTexture*, dword);
             RenTexture copy = *tex;
             newMat.texture(copy);
@@ -2093,7 +2093,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
         if (mesh->mPositions.size() == mesh->mTexCoords[0].size())
             renUV = MexPoint2d(mesh->mTexCoords[0][i].x, mesh->mTexCoords[0][i].y);
 
-        renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
+        renVertexIndex = static_cast<Ren::VertexIdx>(vertices_->size());
         if (renNormal.modulus() > 1)
             renNormal.makeUnitVector();
 
@@ -2134,7 +2134,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
 
         float r = material->mEmissiveCtrl.r;
         float g = material->mEmissiveCtrl.g;
-        const short shortPower = _STATIC_CAST(short, material->mSortPriority);
+        const short shortPower = static_cast<short>(material->mSortPriority);
 
         // Coplanar and special alpha sorting aren't actually mutually exclusive.
         // Fortunately the one current example where we need both (shadows)
@@ -2157,7 +2157,7 @@ bool RenMesh::buildFromXMesh(XFile::Scene* scene, XFile::Mesh* mesh)
         {
             // If the flag is 3, negate the priority.
             renMat.absoluteAlphaPriority(true);
-            renMat.alphaPriority(_STATIC_CAST(short, -shortPower));
+            renMat.alphaPriority(static_cast<short>(-shortPower));
             DBG_LOAD0("Set absolute alpha priority=" << -shortPower << " for " << renMat << "\n");
         }
         else if (r > 3.5 && r <= 4.5)
@@ -2398,7 +2398,7 @@ bool RenMesh::buildFromGXMesh(GXMesh* gxmesh)
             gxmesh->normal(gxNormalIndex).y());
         MexPoint2d renUV(gxVertex.uv().u(), 1 - gxVertex.uv().v());
 
-        renVertexIndex = _STATIC_CAST(Ren::VertexIdx, vertices_->size());
+        renVertexIndex = static_cast<Ren::VertexIdx>(vertices_->size());
 
         // It may be nonsensical, but 3d Studio appears to create zero
         // vector normals for some polygons.  The addVertex code chokes

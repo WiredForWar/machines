@@ -117,9 +117,9 @@ MachPhysFlameBall::MachPhysFlameBall(FlameBallType type)
     meshPtr->addTTFPolygon(ttf);
     // Add a mesh instance for it, with the fog distance as the visibility range
     RenMeshInstance* pMeshInstance = new RenMeshInstance(meshPtr);
-    // add( pMeshInstance, _STATIC_CAST( double, RenDevice::current()->fogEnd() ), W4dLOD( 0 ) );
-    // add( pMeshInstance, MexDouble( _STATIC_CAST( double, RenDevice::current()->fogEnd() ) ), W4dLOD( 0 ) );
-    add(pMeshInstance, _STATIC_CAST(MexDouble, RenDevice::current()->fogEnd()), W4dLOD(0));
+    // add( pMeshInstance, static_cast< double>(RenDevice::current()->fogEnd() ), W4dLOD( 0 ) );
+    // add( pMeshInstance, MexDouble( static_cast< double>(RenDevice::current()->fogEnd() ) ), W4dLOD( 0 ) );
+    add(pMeshInstance, static_cast<MexDouble>(RenDevice::current()->fogEnd()), W4dLOD(0));
 
     TEST_INVARIANT;
 }

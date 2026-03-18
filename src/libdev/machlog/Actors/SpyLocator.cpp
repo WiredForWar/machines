@@ -96,13 +96,13 @@ MachLogSpyLocator::pNewPhysSpyLocator(Level hwLevel, Level swLevel, MachLogRace*
 
 MachPhysSpyLocator& MachLogSpyLocator::physSpyLocator()
 {
-    return _STATIC_CAST(MachPhysSpyLocator&, physObject());
+    return static_cast<MachPhysSpyLocator&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const MachPhysSpyLocator& MachLogSpyLocator::physSpyLocator() const
 {
-    return _STATIC_CAST(const MachPhysSpyLocator&, physObject());
+    return static_cast<const MachPhysSpyLocator&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,8 +133,8 @@ PhysRelativeTime MachLogSpyLocator::update(const PhysRelativeTime& maxCPUTime, M
 
 const MachPhysSpyLocatorData& MachLogSpyLocator::data() const
 {
-    // return  _STATIC_CAST( MachPhysSpyLocatorData&, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysSpyLocatorData&, physMachine().machineData());
+    // return  static_cast< MachPhysSpyLocatorData&>(physMachine().machineData() );
+    return static_cast<const MachPhysSpyLocatorData&>(physMachine().machineData());
 }
 
 int MachLogSpyLocator::nMines() const

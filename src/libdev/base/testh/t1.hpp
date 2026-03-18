@@ -29,8 +29,8 @@ EXISTS_T1(T2);
 //         template< class X >
 //         static bool exists( const T2< X >* ptr )
 //         {
-//             ASSERT_INFO( _STATIC_CAST( void*, ptr ) );
-//             return T2< X >::diagTracker().pointerPresent( _STATIC_CAST( void*, ptr ) );
+//             ASSERT_INFO( static_cast< void*>(ptr ) );
+//             return T2< X >::diagTracker().pointerPresent( static_cast< void*>(ptr ) );
 //         }
 //         template< class X >
 //         static bool exists( const T2< X >& ref )

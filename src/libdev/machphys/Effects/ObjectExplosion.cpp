@@ -207,7 +207,7 @@ PhysRelativeTime MachPhysObjectExplosion::explode(const PhysAbsoluteTime& startT
         mainFireballDuration);
     pMainFireball->rotate(MexRadians(MexRadians(mainFireBallAngle)));
 
-    // W4dGeneric* pExplosionSite = new W4dGeneric(_STATIC_CAST(W4dEntity*, pObject_->containingDomain()),
+    // W4dGeneric* pExplosionSite = new W4dGeneric(static_cast<W4dEntity*>(pObject_->containingDomain()),
     // pObject_->localTransform());
     W4dGeneric* pExplosionSite
         = new W4dGeneric(_REINTERPRET_CAST(W4dEntity*, pObject_->containingDomain()), pObject_->localTransform());

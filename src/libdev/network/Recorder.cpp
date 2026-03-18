@@ -35,7 +35,7 @@ NetProcessUid NetIRecorder::playbackProcessUid() const
 {
     NetProcessUid uid;
 
-    // RecRecorderPrivate::instance().playbackNetworkData( _STATIC_CAST( uint8*, &uid ), sizeof( uid ) );
+    // RecRecorderPrivate::instance().playbackNetworkData( static_cast< uint8*>(&uid ), sizeof( uid ) );
     RecRecorderPrivate::instance().playbackNetworkData(_REINTERPRET_CAST(uint8*, &uid), sizeof(uid));
 
     return uid;
@@ -43,7 +43,7 @@ NetProcessUid NetIRecorder::playbackProcessUid() const
 
 void NetIRecorder::recordProcessUid(NetProcessUid uid) const
 {
-    // RecRecorderPrivate::instance().recordNetworkData( _STATIC_CAST( const uint8*, &uid ), sizeof( uid ) );
+    // RecRecorderPrivate::instance().recordNetworkData( static_cast< const uint8*>(&uid ), sizeof( uid ) );
     RecRecorderPrivate::instance().recordNetworkData(_REINTERPRET_CAST(const uint8*, &uid), sizeof(uid));
 }
 

@@ -139,7 +139,7 @@ std::ostream& operator<<(std::ostream& o, const RenIMatBody& t)
 
 inline int testAndShift(bool b, uint shiftBy)
 {
-    return _STATIC_CAST(int, ((b) ? 1 : 0) << shiftBy);
+    return static_cast<int>(((b) ? 1 : 0) << shiftBy);
 }
 
 static uchar pack6Bools(bool b1, bool b2, bool b3, bool b4, bool b5, bool b6)
@@ -147,7 +147,7 @@ static uchar pack6Bools(bool b1, bool b2, bool b3, bool b4, bool b5, bool b6)
     const int result = testAndShift(b1, 0) | testAndShift(b2, 1) | testAndShift(b3, 2) | testAndShift(b4, 3)
         | testAndShift(b5, 4) | testAndShift(b6, 5);
 
-    return _STATIC_CAST(uchar, result);
+    return static_cast<uchar>(result);
 }
 
 static void unpack6Bools(uchar packed, bool* b1, bool* b2, bool* b3, bool* b4, bool* b5, bool* b6)

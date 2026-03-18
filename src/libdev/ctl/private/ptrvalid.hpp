@@ -15,7 +15,7 @@ template <class T> bool ctlCountedPtrPointerValid(T* ptr)
     }
     else
     {
-        void* voidPtr = _STATIC_CAST(void*, ptr);
+        void* voidPtr = static_cast<void*>(ptr);
 
         // cout << "Check pointer " << voidPtr << endl;
 
@@ -46,7 +46,7 @@ template <class T> bool ctlCountedPtrPointerDestructionValid(const T* pT)
     }
     else
     {
-        void* voidPtr = _CONST_CAST(void*, _STATIC_CAST(const void*, pT));
+        void* voidPtr = _CONST_CAST(void*, static_cast<const void*>(pT));
 
         if (DiagInternal::countedPointerTracker().pointerPresent(voidPtr))
         {

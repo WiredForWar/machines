@@ -242,37 +242,37 @@ RenScale* RenNonUniformScale::clone() const
 RenUnityScale& RenScale::asUnity()
 {
     PRE(isUnity());
-    return _STATIC_CAST(RenUnityScale&, *this);
+    return static_cast<RenUnityScale&>(*this);
 }
 
 const RenUnityScale& RenScale::asUnity() const
 {
     PRE(isUnity());
-    return _STATIC_CAST(const RenUnityScale&, *this);
+    return static_cast<const RenUnityScale&>(*this);
 }
 
 RenUniformScale& RenScale::asUniform()
 {
     PRE(isUniform());
-    return _STATIC_CAST(RenUniformScale&, *this);
+    return static_cast<RenUniformScale&>(*this);
 }
 
 const RenUniformScale& RenScale::asUniform() const
 {
     PRE(isUniform());
-    return _STATIC_CAST(const RenUniformScale&, *this);
+    return static_cast<const RenUniformScale&>(*this);
 }
 
 RenNonUniformScale& RenScale::asNonUniform()
 {
     PRE(isNonUniform());
-    return _STATIC_CAST(RenNonUniformScale&, *this);
+    return static_cast<RenNonUniformScale&>(*this);
 }
 
 const RenNonUniformScale& RenScale::asNonUniform() const
 {
     PRE(isNonUniform());
-    return _STATIC_CAST(const RenNonUniformScale&, *this);
+    return static_cast<const RenNonUniformScale&>(*this);
 }
 
 // virtual

@@ -144,13 +144,13 @@ MachPhysConstructor* MachLogConstructor::pNewPhysConstructor(
 
 const MachPhysConstructor& MachLogConstructor::physConstructor() const
 {
-    return _STATIC_CAST(const MachPhysConstructor&, physObject());
+    return static_cast<const MachPhysConstructor&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 MachPhysConstructor& MachLogConstructor::physConstructor()
 {
-    return _STATIC_CAST(MachPhysConstructor&, physObject());
+    return static_cast<MachPhysConstructor&>(physObject());
 }
 // virtual
 const MachPhysMachineData& MachLogConstructor::machineData() const
@@ -160,8 +160,8 @@ const MachPhysMachineData& MachLogConstructor::machineData() const
 
 const MachPhysConstructorData& MachLogConstructor::data() const
 {
-    // return  _STATIC_CAST( MachPhysConstructorData&, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysConstructorData&, physMachine().machineData());
+    // return  static_cast< MachPhysConstructorData&>(physMachine().machineData() );
+    return static_cast<const MachPhysConstructorData&>(physMachine().machineData());
 }
 
 const MachPhys::ConstructorSubType& MachLogConstructor::subType() const
@@ -257,8 +257,8 @@ bool MachLogConstructor::constructingMissileEmplacement() const
         const MachLogOperation& operation = strategy().operationCurrentlyExecuting();
 
         result = operation.operationType() == MachLogOperation::CONSTRUCT_OPERATION
-            // and _STATIC_CAST( MachLogConstructOperation&, operation ).constructingMissileEmplacement();
-            && _STATIC_CAST(const MachLogConstructOperation&, operation).constructingMissileEmplacement();
+            // and static_cast< MachLogConstructOperation&>(operation ).constructingMissileEmplacement();
+            && static_cast<const MachLogConstructOperation&>(operation).constructingMissileEmplacement();
     }
 
     return result;

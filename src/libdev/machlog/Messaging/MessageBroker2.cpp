@@ -213,7 +213,7 @@ void MachLogMessageBroker::processFireWeaponAnimationMessage(NetMessage* pNetMes
                 if ((*i)->mounting() == pMessage->mounting_)
                 {
                     if ((*i)->type() == MachPhys::GORILLA_PUNCH)
-                        _STATIC_CAST(MachLogPunchWeapon*, (*i))->doEchoPunch();
+                        static_cast<MachLogPunchWeapon*>((*i))->doEchoPunch();
                     else
                         (*i)->fireWithoutEcho(pMessage->numberInBurst_);
                     return;

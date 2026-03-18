@@ -15,8 +15,8 @@ PER_DEFINE_PERSISTENT(MachPhysCanAttackImpl);
 
 MachPhysCanAttackImpl::MachPhysCanAttackImpl()
     : mountingLinks_(MachPhys::N_MOUNTINGS, nullptr)
-    , lastSoundWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0))
-    , lastLightWeapon_(_STATIC_CAST(MachPhys::WeaponType, 0))
+    , lastSoundWeapon_(static_cast<MachPhys::WeaponType>(0))
+    , lastLightWeapon_(static_cast<MachPhys::WeaponType>(0))
 {
 
     TEST_INVARIANT;

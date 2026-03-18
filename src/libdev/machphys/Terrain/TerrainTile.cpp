@@ -243,7 +243,7 @@ MachPhysTerrainTile::MachPhysTerrainTile(
         nXVertices,
         nYVertices,
         MexAlignedBox2d(xMin, yMin, xMax, yMax),
-        *(_CONST_CAST(const W4dEntity&, _STATIC_CAST(W4dEntity&, *this)).mesh(W4dLOD(0)).mesh()));
+        *(_CONST_CAST(const W4dEntity&, static_cast<W4dEntity&>(*this)).mesh(W4dLOD(0)).mesh()));
     //*(_CONST_CAST( const W4dEntity&, *this).mesh( W4dLOD( 0 ) ).mesh() )) );
 
     //...and hence the ref-counted pointer to it

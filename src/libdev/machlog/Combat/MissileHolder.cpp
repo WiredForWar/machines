@@ -17,7 +17,7 @@ MachLogMissileHolder::MachLogMissileHolder(
     const PhysAbsoluteTime& destroyAtTime)
     : SimProjectile(pProcess, pPhysObject)
     , destroyAtTime_(destroyAtTime)
-    , pPhysMissile_(_STATIC_CAST(MachPhysMissile*, pPhysObject))
+    , pPhysMissile_(static_cast<MachPhysMissile*>(pPhysObject))
 {
 
     TEST_INVARIANT;

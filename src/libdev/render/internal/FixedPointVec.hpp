@@ -44,14 +44,14 @@ public:
     RenIFixPtU0_8 dotProductClampZero(const RenIVec3FixPtS0_7& v) const
     {
         // result is in S2.14.  Note the compiler does integral promotion for the arithmetic.
-        short result = _STATIC_CAST(short, vec_[0] * v.vec_[0] + vec_[1] * v.vec_[1] + vec_[2] * v.vec_[2]);
+        short result = static_cast<short>(vec_[0] * v.vec_[0] + vec_[1] * v.vec_[1] + vec_[2] * v.vec_[2]);
 
         if (result < 0)
             result = 0;
 
-        ushort usResult = _STATIC_CAST(ushort, result); // now U2.14
+        ushort usResult = static_cast<ushort>(result); // now U2.14
 
-        return _STATIC_CAST(RenIFixPtU0_8, usResult >> 6); // convert to U0.8
+        return static_cast<RenIFixPtU0_8>(usResult >> 6); // convert to U0.8
     }
 
     bool operator==(const RenIVec3FixPtS0_7& v) const { return 0 == memcmp(vec_, v.vec_, 3); }

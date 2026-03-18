@@ -81,13 +81,13 @@ MachLogGeoLocator::pNewPhysGeoLocator(Level hwLevel, Level swLevel, MachLogRace*
 
 MachPhysGeoLocator& MachLogGeoLocator::physGeoLocator()
 {
-    return _STATIC_CAST(MachPhysGeoLocator&, physObject());
+    return static_cast<MachPhysGeoLocator&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const MachPhysGeoLocator& MachLogGeoLocator::physGeoLocator() const
 {
-    return _STATIC_CAST(const MachPhysGeoLocator&, physObject());
+    return static_cast<const MachPhysGeoLocator&>(physObject());
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -116,8 +116,8 @@ const MachPhysMachineData& MachLogGeoLocator::machineData() const
 
 const MachPhysGeoLocatorData& MachLogGeoLocator::data() const
 {
-    // return  _STATIC_CAST( MachPhysGeoLocatorData&, physMachine().machineData() );
-    return _STATIC_CAST(const MachPhysGeoLocatorData&, physMachine().machineData());
+    // return  static_cast< MachPhysGeoLocatorData&>(physMachine().machineData() );
+    return static_cast<const MachPhysGeoLocatorData&>(physMachine().machineData());
 }
 
 void perWrite(PerOstream& ostr, const MachLogGeoLocator& actor)

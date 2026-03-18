@@ -135,8 +135,8 @@ void RenSurface::simpleBlit(
 
     const int srcW = source.width();
     const int srcH = source.height();
-    const int intW = _STATIC_CAST(int, width());
-    const int intH = _STATIC_CAST(int, height());
+    const int intW = static_cast<int>(width());
+    const int intH = static_cast<int>(height());
 
     if (srcArea.has_value())
     {

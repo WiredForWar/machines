@@ -243,7 +243,7 @@ PhysRelativeTime MachLogPickUpOperation::doUpdate()
         {
             // no points are free - just choose a point at random.
             destinationPadPosition_
-                = mine.pickUpPoint(MachPhysRandom::randomInt(0, _STATIC_CAST(int, mine.nPickUpPoints())));
+                = mine.pickUpPoint(MachPhysRandom::randomInt(0, static_cast<int>(mine.nPickUpPoints())));
         }
 
         // are we at the mine yet?

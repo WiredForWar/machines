@@ -124,20 +124,20 @@ const MachPhysMachineData& MachLogAdministrator::machineData() const
 
 const MachPhysAdministratorData& MachLogAdministrator::data() const
 {
-    return _STATIC_CAST(const MachPhysAdministratorData&, physMachine().machineData());
+    return static_cast<const MachPhysAdministratorData&>(physMachine().machineData());
 }
 
 /* //////////////////////////////////////////////////////////////// */
 
 MachPhysAdministrator& MachLogAdministrator::physAdministrator()
 {
-    return _STATIC_CAST(MachPhysAdministrator&, physObject());
+    return static_cast<MachPhysAdministrator&>(physObject());
 }
 
 const MachPhysAdministrator& MachLogAdministrator::physAdministrator() const
 {
-    // return _STATIC_CAST( MachPhysAdministrator&, physObject() );
-    return _STATIC_CAST(MachPhysAdministrator&, _CONST_CAST(W4dEntity&, physObject()));
+    // return static_cast< MachPhysAdministrator&>(physObject() );
+    return static_cast<MachPhysAdministrator&>(_CONST_CAST(W4dEntity&, physObject()));
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -175,7 +175,7 @@ bool MachLogAdministrator::fearsThisActor(const MachActor& otherActor) const
 // virtual
 int MachLogAdministrator::militaryStrength() const
 {
-    return _STATIC_CAST(int, hpRatio() * _STATIC_CAST(MATHEX_SCALAR, objectData().cost()));
+    return static_cast<int>(hpRatio() * static_cast<MATHEX_SCALAR>(objectData().cost()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

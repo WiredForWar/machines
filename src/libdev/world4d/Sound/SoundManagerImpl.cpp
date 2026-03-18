@@ -159,8 +159,8 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
         {
             pTempParams = new SndSampleParameters(
                 newId,
-                _STATIC_CAST(double, pThisSound->duration_),
-                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_));
+                static_cast<double>(pThisSound->duration_),
+                static_cast<Snd::Volume>(pThisSound->currentPercentageVolume_));
             SOUND_STREAM("Playing 2DDurational sound " << std::endl);
         }
         else
@@ -183,8 +183,8 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
         {
             pTempParams = new SndSampleParameters(
                 newId,
-                _STATIC_CAST(Snd::LoopCount, pThisSound->repetitions_),
-                _STATIC_CAST(Snd::Volume, pThisSound->currentPercentageVolume_));
+                static_cast<Snd::LoopCount>(pThisSound->repetitions_),
+                static_cast<Snd::Volume>(pThisSound->currentPercentageVolume_));
             SOUND_STREAM("Playing 2DRepetitional sound " << std::endl);
         }
         else
@@ -192,7 +192,7 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
             pTempParams = new SndSampleParameters(
                 newId,
                 pThisSound->lastPosition_,
-                _STATIC_CAST(Snd::LoopCount, pThisSound->repetitions_),
+                static_cast<Snd::LoopCount>(pThisSound->repetitions_),
                 pThisSound->farDistance_,
                 pThisSound->nearDistance_,
                 pThisSound->currentPercentageVolume_);

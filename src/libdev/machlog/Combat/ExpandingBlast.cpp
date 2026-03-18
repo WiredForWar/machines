@@ -603,7 +603,7 @@ bool MachLogExpandingBlast::beNotified(W4dSubject* pSubject, W4dSubject::Notific
                 if (nVictims_ > 0)
                     // this ATTEMPTS to remove the actor from the victim list; however, if it is the owner it may
                     // not actually BE one of the victims.
-                    finishedWithVictim(_STATIC_CAST(MachActor*, pSubject), MachLogExpandingBlast::SUPPRESS_DETACH);
+                    finishedWithVictim(static_cast<MachActor*>(pSubject), MachLogExpandingBlast::SUPPRESS_DETACH);
 
                 if (pSubject == (W4dSubject*)pOwner())
                 {
@@ -628,7 +628,7 @@ bool MachLogExpandingBlast::beNotified(W4dSubject* pSubject, W4dSubject::Notific
                 case MachLog::TELEPORTED_OUT_OF_WORLD:
                     {
                         remainAsObserver = false;
-                        finishedWithVictim(_STATIC_CAST(MachActor*, pSubject), MachLogExpandingBlast::SUPPRESS_DETACH);
+                        finishedWithVictim(static_cast<MachActor*>(pSubject), MachLogExpandingBlast::SUPPRESS_DETACH);
                     }
                     break;
             }
