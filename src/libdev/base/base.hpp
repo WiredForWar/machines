@@ -58,47 +58,6 @@ using uint = unsigned int;
 
 //////////////////////////////////////////////////////////////////////
 
-#ifndef NO_ENUM_OVERLOAD
-
-#define _BITMASK(E, T)                                                                                                 \
-    E& operator&=(E& _X, E& _Y)                                                                                        \
-    {                                                                                                                  \
-        _X = (E)(_X & _Y);                                                                                             \
-        return (_X);                                                                                                   \
-    }                                                                                                                  \
-                                                                                                                       \
-    E& operator|=(E& _X, E& _Y)                                                                                        \
-    {                                                                                                                  \
-        _X = (E)(_X | _Y);                                                                                             \
-        return (_X);                                                                                                   \
-    }                                                                                                                  \
-                                                                                                                       \
-    E& operator^=(E& _X, E& _Y)                                                                                        \
-    {                                                                                                                  \
-        _X = (E)(_X ^ _Y);                                                                                             \
-        return (_X);                                                                                                   \
-    }                                                                                                                  \
-                                                                                                                       \
-    E operator&(E _X, E _Y)                                                                                            \
-    {                                                                                                                  \
-        return ((E)(_X & _Y );                                                                                         \
-    }                                                                                                                  \
-                                                                                                                       \
-    E operator|(E _X, E _Y)                                                                                            \
-    {                                                                                                                  \
-        return ((E)(_X | _Y );                                                                                         \
-    }                                                                                                                  \
-                                                                                                                       \
-    E operator&(E _X, E _Y)                                                                                            \
-    {                                                                                                                  \
-        return ((E)(_X & _Y );                                                                                         \
-    }                                                                                                                  \
-    typedef E T
-
-#endif /* #ifndef NO_ENUM_OVERLOAD */
-
-//////////////////////////////////////////////////////////////////////
-
 // Macros make switching between pImpl_ and no pImpl_ very easy.
 #define CB_DEPIMPL_AUTO(varname)                                                                                       \
     PRE(pImpl_)                                                                                                        \
