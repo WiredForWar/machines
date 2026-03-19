@@ -16,10 +16,6 @@
 #ifndef _SYS_FILEFIND_HPP
 #define _SYS_FILEFIND_HPP
 
-// #include <dos.h>
-#include <ctime>
-#include <string>
-
 #include "system/PathName.hpp"
 #include "system/FileData.hpp"
 
@@ -78,7 +74,7 @@ private:
     // Data...
     SysPathName currentDirectory_;
     SysPathName fileSpecification_;
-    bool examineSubdirectories_;
+    bool examineSubdirectories_{};
     SearchFor includeInSearch_;
 };
 

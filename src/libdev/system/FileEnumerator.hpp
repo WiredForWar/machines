@@ -17,10 +17,10 @@
 #ifndef _SYS_FILEENUM_HPP
 #define _SYS_FILEENUM_HPP
 
-#include "base/base.hpp"
+#include "base/PrePost.hpp"
 #include "system/FileFinder.hpp"
 
-#include "ctl/Vector.hpp"
+#include <vector>
 
 class SysFileEnumerator : public SysFileFinder
 {
