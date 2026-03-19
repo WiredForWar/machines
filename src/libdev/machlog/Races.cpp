@@ -72,6 +72,8 @@
 
 #include "system/VFS.hpp"
 
+#include "spdlog/spdlog.h"
+
 #include <memory>
 #include <cstdio>
 
@@ -2230,6 +2232,7 @@ bool MachLogRaces::loadGame(
     const MachLogGameCreationData& gameData,
     IProgressReporter* pReporter)
 {
+    spdlog::info("Loading game (planet: '{}', scenario: '{}'", planetName, scenarioName);
 
     MachLogVoiceMailManager::instance().acceptMailPostings(false);
 
