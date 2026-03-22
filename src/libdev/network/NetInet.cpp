@@ -421,18 +421,32 @@ void NetINetwork::pollMessages()
                     break;
 
                 case ENET_EVENT_TYPE_DISCONNECT:
-                    spdlog::debug("NetINetwork: Peer disconnected: {}", event.peer->address.host);
+                {
+                    std::string peerName;
+                    if (event.peer->data)
+                    {
+                        peerName = static_cast<const char*>(event.peer->data);
+                    }
+                    spdlog::debug("NetINetwork: Peer '{}' disconnected: {}", peerName, event.peer->address.host);
 
                     // Reset client's information
                     _DELETE_ARRAY((char*)event.peer->data);
                     event.peer->data = nullptr;
                     peers_.erase(std::remove(peers_.begin(), peers_.end(), event.peer), peers_.end());
-                    if (peers_.empty())
+
+                    if (pSystemMessageHandler_)
                     {
-                        if (pSystemMessageHandler_)
-                            bool shouldAbort = ! pSystemMessageHandler_->handleSessionLostMessage();
+                        if (!peerName.empty())
+                        {
+                            pSystemMessageHandler_->handleDestroyPlayerMessage(peerName);
+                        }
+                        if (peers_.empty() && !isLogicalHost_)
+                        {
+                            pSystemMessageHandler_->handleSessionLostMessage();
+                        }
                     }
                     break;
+                }
                 case ENET_EVENT_TYPE_NONE:
                     break;
             }

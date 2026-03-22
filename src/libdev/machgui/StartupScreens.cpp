@@ -4,6 +4,7 @@
  */
 
 #include "machgui/StartupScreens.hpp"
+#include "machgui/ChatWindow.hpp"
 #include "machgui/gui.hpp"
 
 inline constexpr bool cDemoVersion =
@@ -3295,6 +3296,9 @@ bool MachGuiStartupScreens::handleDestroyPlayerMessage(const std::string& name)
                 if (context_ == CTX_IMREADY)
                     static_cast<MachGuiCtxImReady*>(pCurrContext_)->createPlayerList();
                 pStartupData_->sendUpdatePlayersMessage();
+
+                GuiResourceString lostMsg(IDS_MULTI_ERROR_PLAYER_CONNECTION_LOST, name);
+                MachGuiChatWindow::addText(lostMsg.asString());
             }
             else
             {
