@@ -297,7 +297,7 @@ void MachInGameScreen::doBecomeRoot()
     CB_DEPIMPL_AUTO(pCameras_);
 
     // Reposition debug text
-    pSceneManager_->pDevice()->debugTextCoords(204, 0);
+    pSceneManager_->pDevice()->debugTextCoords(MachGui::controlPanelOutXPos() + 4 * Gui::uiScaleFactor(), 0);
 
     if (resolutionChanged_)
     {

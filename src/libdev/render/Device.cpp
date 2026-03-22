@@ -780,14 +780,14 @@ void RenDevice::commonEndFrame()
     {
         RenSurface surf = backSurface();
         Ren::Painter painter(surf);
-        auto const& yellowColour { RenColour::yellow() };
-        // >trusting incremental rebuilds
-        // surf.drawText(pImpl_->debugX_, pImpl_->debugY_, concat, yellowColour, RenSurface::FontSizes::Statistics,
-        // RenSurface::AvailableFonts::Terminus);
+        Ren::TextOptions textOptions(RenColour::yellow());
         const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
-        painter.filledRectangle(Ren::Rect(pImpl_->debugX_, pImpl_->debugY_, font->horizontalAdvance(concat) + 8, font->height() * 4 + 8), RenColour(0.1, 0.1, 0.1, 0.5));
-        painter.drawText(pImpl_->debugX_ + 4, pImpl_->debugY_ + 4, concat, *font, yellowColour);
+        Ren::Size textBounding = font->boundingSize(concat, textOptions);
+        painter.filledRectangle(
+            Ren::Rect(pImpl_->debugX_, pImpl_->debugY_, textBounding.width + 8, textBounding.height + 8),
+            RenColour(0.1, 0.1, 0.1, 0.6));
+        painter.drawText(pImpl_->debugX_ + 4, pImpl_->debugY_ + 4, concat, *font, textOptions);
     }
 
     pImpl_->extOut_.clear();
