@@ -53,7 +53,7 @@ MachGuiChatWindow::strings& MachGuiChatWindow::linesOfText()
 // static
 size_t& MachGuiChatWindow::chatWidth()
 {
-    static size_t width = 315;
+    static size_t width = 315 * Gui::uiScaleFactor();
     return width;
 }
 
@@ -98,7 +98,11 @@ void MachGuiChatWindow::doDisplay()
 void MachGuiChatWindow::addText(const std::string& text)
 {
     const GuiBmpFont& font = Gui::getFont(MachGui::Menu::smallFontLight());
-    linesOfText() = MachGuiMenuText::chopUpText(text, chatWidth(), font);
+    {
+        strings newText = MachGuiMenuText::chopUpText(text, chatWidth(), font);
+        linesOfText().reserve(linesOfText().size() + newText.size());
+        std::move(newText.begin(), newText.end(), std::back_inserter(linesOfText()));
+    }
 
     while (linesOfText().size() > numLines())
     {
