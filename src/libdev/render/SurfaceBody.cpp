@@ -406,7 +406,7 @@ void RenISurfBody::drawText(
             }
 
             x = originX;
-            y += fontImpl.lineHeight() + 2;
+            y += fontImpl.lineHeight() + options.lineSpacing();
 
             lineStartX = originX;
             lineEndX = originX;

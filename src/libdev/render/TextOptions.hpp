@@ -27,6 +27,9 @@ public:
     int letterSpacing() const { return letterSpacing_; }
     void setLetterSpacing(int value) { letterSpacing_ = value; };
 
+    int lineSpacing() const { return lineSpacing_; }
+    void setLineSpacing(int value) { lineSpacing_ = value; };
+
     int shadowX() const { return shadowX_; }
     int shadowY() const { return shadowY_; }
     bool hasShadow() const { return shadowX_ || shadowY_; }
@@ -58,6 +61,7 @@ public:
 private:
     Alignment alignment_{};
     int letterSpacing_{};
+    int lineSpacing_{2};
     int shadowX_{};
     int shadowY_{};
     int outlineThickness_{};
