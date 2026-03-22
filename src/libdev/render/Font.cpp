@@ -223,14 +223,15 @@ int Font::charWidth(uint32_t character) const
     return charData->ax;
 }
 
-int Font::horizontalAdvance(const std::string_view& text, const TextOptions& options) const
+Size Font::boundingSize(const std::string_view& text, const TextOptions& options) const
 {
     const Ren::FontImpl& font = *pImpl_;
     const Ren::FontImpl::CharData* charData {};
 
-    int textWidth = 0;
-    int lineTextWidth = 0;
-    int usedSpacing = 0;
+    int textWidth{};
+    int textHeight = font.lineHeight();
+    int lineTextWidth{};
+    int usedSpacing{};
 
     for (std::size_t i = 0; i < text.size(); ++i)
     {
@@ -240,6 +241,10 @@ int Font::horizontalAdvance(const std::string_view& text, const TextOptions& opt
             textWidth = std::max<int>(textWidth, lineTextWidth - usedSpacing);
             lineTextWidth = 0;
             usedSpacing = 0;
+
+            if (i != text.size() - 1)
+                textHeight += font.lineHeight() + options.lineSpacing();
+
             continue;
         }
 
@@ -258,12 +263,22 @@ int Font::horizontalAdvance(const std::string_view& text, const TextOptions& opt
         textWidth += options.shadowX();
     }
 
-    return textWidth;
+    return Size{textWidth, textHeight};
+}
+
+Size Font::boundingSize(const std::string_view& text) const
+{
+    return boundingSize(text, {});
+}
+
+int Font::horizontalAdvance(const std::string_view& text, const TextOptions& options) const
+{
+    return boundingSize(text, options).width;
 }
 
 int Font::horizontalAdvance(const std::string_view& text) const
 {
-    return horizontalAdvance(text, {});
+    return boundingSize(text).width;
 }
 
 const Font* Font::getFont(int pixelSize)

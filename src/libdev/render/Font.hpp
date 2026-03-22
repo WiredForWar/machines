@@ -5,6 +5,8 @@
 #include <string>
 #include <string_view>
 
+#include "render/render.hpp"
+
 namespace Ren
 {
 
@@ -28,6 +30,9 @@ public:
     int height() const;
 
     int charWidth(uint32_t character) const;
+
+    Size boundingSize(const std::string_view& text, const TextOptions &options) const;
+    Size boundingSize(const std::string_view& text) const;
 
     int horizontalAdvance(const std::string_view& text, const TextOptions &options) const;
     int horizontalAdvance(const std::string_view& text) const;
