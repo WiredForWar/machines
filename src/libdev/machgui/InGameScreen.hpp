@@ -61,6 +61,7 @@ public:
 
     void setConsole(System::IConsole* console);
     void setConsoleDropDown(MachGuiConsoleDropDown* pDropDown);
+    void reattachConsoleDropDown();
 
     // Create the cameras, initialises button display values and map
     void loadGame(const std::string& planet, std::optional<PerIstream *> savedStream = std::nullopt);

@@ -285,6 +285,7 @@ public:
     // Initialise the CD and sound volume to the values specified in the registry
     void initializeVolumes();
     void initializeCursorOptions();
+    void initializeConsoleDropDown();
 
     // Focus capable controls allow for keyboard navigation of the menus
     void addFocusCapableControl(MachGuiFocusCapableControl*);

@@ -430,6 +430,7 @@ bool SDLApp::clientStartup()
     progressIndicator.report(100, 100);
     progressIndicator.setLimits(0.35, 0.37);
     pStartupScreens_->initializeCursorOptions();
+    pStartupScreens_->initializeConsoleDropDown();
 
     MachPhysData::instance();
 
@@ -677,6 +678,21 @@ void SDLApp::setVSyncOptions()
     manager_->pDevice()->setVSyncPreference(enable);
 }
 
+void consoleToggleCommand(const System::IConsole::CommandRequest& request, System::IConsole& console)
+{
+    auto toOnOffString = [](bool value) -> std::string { return value ? "on" : "off"; };
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        console.writeLine(std::string("Console is ") + toOnOffString(Config::consoleEnabled.get()) + ".");
+        return;
+    }
+
+    const bool enabled = std::get<bool>(request.arguments[0].value);
+    Config::consoleEnabled.set(enabled);
+    console.writeLine(std::string("Console turned ") + toOnOffString(enabled) + ".");
+}
+
 void SDLApp::initConsole()
 {
     System::ConsoleConfig consoleConfig{};
@@ -705,6 +721,18 @@ void SDLApp::initConsole()
         output += ")";
         console.writeLine(output);
     });
+    console_->registerCommand(
+        {
+            .name = "console",
+            .description = "Toggle console drop-down enablement (on/off).",
+            .arguments = {{
+                .name = "state",
+                .type = System::IConsole::ArgumentType::Boolean,
+                .optional = true,
+                .description = "on or off. Omit to print current.",
+            }},
+        },
+        consoleToggleCommand);
 }
 
 void SDLApp::initProfiling(IProgressReporter* /*pReporter*/)

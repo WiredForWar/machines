@@ -2869,6 +2869,22 @@ void MachInGameScreen::setConsoleDropDown(MachGuiConsoleDropDown* pDropDown)
     pConsoleDropDown_ = pDropDown;
 }
 
+void MachInGameScreen::reattachConsoleDropDown()
+{
+    CB_DEPIMPL_AUTO(pConsoleDropDown_);
+    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+    CB_DEPIMPL_AUTO(pSceneManager_);
+
+    if (!pConsoleDropDown_)
+        return;
+
+    reparentChild(pConsoleDropDown_, GuiDisplayable::LAYER5);
+    pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+    consoleDropDownOffset_ = -static_cast<int>(pConsoleDropDown_->height());
+    positionChildAbsolute(pConsoleDropDown_, Gui::Coord(0, consoleDropDownOffset_));
+    pConsoleDropDown_->setVisible(false);
+}
+
 void MachInGameScreen::toggleConsoleDropDown()
 {
     CB_DEPIMPL_AUTO(pConsoleDropDown_);
@@ -2894,7 +2910,7 @@ void MachInGameScreen::updateConsoleDropDownViewport()
     CB_DEPIMPL_AUTO(pConsoleDropDown_);
     CB_DEPIMPL_AUTO(consoleDropDownOffset_);
 
-    if (!pConsoleDropDown_)
+    if (!pConsoleDropDown_ || !hasChild(pConsoleDropDown_))
         return;
 
     const int hiddenOffset = -static_cast<int>(pConsoleDropDown_->height());

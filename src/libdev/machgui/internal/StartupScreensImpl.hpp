@@ -77,7 +77,9 @@ private:
     Utils::HandleWithTriggerUPtr soundVolumeHandle_;
     Utils::HandleWithTriggerUPtr musicVolumeHandle_;
     Utils::HandleWithTriggerUPtr selectionMarkerTypeHandle_;
+    Utils::HandleWithTriggerUPtr consoleDropDownHandle_;
     std::unique_ptr<MachGuiConsoleDropDown> pConsoleDropDown_{};
+    std::unique_ptr<MachGuiConsoleDropDown> pendingDropDownDelete_{};
     int consoleDropDownOffset_{};
 
     friend class MachGuiStartupScreens;

@@ -226,17 +226,6 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
     pInGameScreen_->setConsole(console_);
 
-    // Create the shared console dropdown — it will be attached to whichever
-    // root is active via doBecomeRoot/doBecomeNotRoot.
-    {
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
-        pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(nullptr);
-        pConsoleDropDown_->setConsole(console_);
-        pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager->pDevice()->windowSize()));
-        pConsoleDropDown_->setVisible(false);
-        pInGameScreen_->setConsoleDropDown(pConsoleDropDown_.get());
-    }
-
     pReporter->report(70, 100); // 70% of gui stuff done
 
     switchContext(CTX_LOADINGEXE);
@@ -320,6 +309,7 @@ void MachGuiStartupScreens::loopCycle()
 {
     CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
     CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
+    pImpl_->pendingDropDownDelete_.reset();
 
     // Trace memory every minute if CB_MINMEM set
     static bool traceMemoryPerMinute = getenv("CB_MINMEM") != nullptr;
@@ -3479,6 +3469,57 @@ void MachGuiStartupScreens::initializeCursorOptions()
     MachPhysMarker::setMarkerLineWidth(lineWidth);
 }
 
+void MachGuiStartupScreens::initializeConsoleDropDown()
+{
+    CB_DEPIMPL_AUTO(consoleDropDownHandle_);
+
+    consoleDropDownHandle_ = Config::consoleEnabled.addListener([this]
+    {
+        CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
+        CB_DEPIMPL(System::IConsole*, console_);
+        CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
+        CB_DEPIMPL_AUTO(pConsoleDropDown_);
+        CB_DEPIMPL_AUTO(pendingDropDownDelete_);
+        CB_DEPIMPL_AUTO(consoleDropDownOffset_);
+
+        if (Config::consoleEnabled.get())
+        {
+            pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(nullptr);
+            pConsoleDropDown_->setConsole(console_);
+            pConsoleDropDown_->setViewportSize(Gui::toSize(pSceneManager_->pDevice()->windowSize()));
+            pConsoleDropDown_->setVisible(false);
+            pInGameScreen_->setConsoleDropDown(pConsoleDropDown_.get());
+
+            // Attach immediately to whichever root is currently active.
+            if (GuiManager::instance().hasRoot())
+            {
+                const GuiManager& constManager = GuiManager::instance();
+                if (&constManager.root() == pInGameScreen_)
+                {
+                    pInGameScreen_->reattachConsoleDropDown();
+                }
+                else
+                {
+                    // StartupScreens is the root — attach to this.
+                    reparentChild(pConsoleDropDown_.get(), GuiDisplayable::LAYER5);
+                    consoleDropDownOffset_ = -static_cast<int>(pConsoleDropDown_->height());
+                    positionChildAbsolute(pConsoleDropDown_.get(), Gui::Coord(0, consoleDropDownOffset_));
+                }
+            }
+        }
+        else
+        {
+            if (pConsoleDropDown_)
+                pConsoleDropDown_->detachFromParent();
+            // Move to pending slot — destroyed at the top of the next loopCycle,
+            // safely outside any event-handler call stack.
+            pendingDropDownDelete_ = std::move(pConsoleDropDown_);
+            pInGameScreen_->setConsoleDropDown(pConsoleDropDown_.get());
+        }
+    });
+    consoleDropDownHandle_->trigger();
+}
+
 void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
 {
     CB_DEPIMPL(MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_);
@@ -3877,7 +3918,7 @@ void MachGuiStartupScreens::updateConsoleDropDown()
     CB_DEPIMPL_AUTO(pConsoleDropDown_);
     CB_DEPIMPL_AUTO(consoleDropDownOffset_);
 
-    if (!pConsoleDropDown_)
+    if (!pConsoleDropDown_ || !hasChild(pConsoleDropDown_.get()))
         return;
 
     const int hiddenOffset = -static_cast<int>(pConsoleDropDown_->height());
