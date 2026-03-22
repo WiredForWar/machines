@@ -317,6 +317,10 @@ bool NetINetwork::hasActiveSession() const
 
 void NetINetwork::pollMessages()
 {
+    // Don't drain events while the async join state machine owns the host
+    if (joinState_ == JoinState::Connecting || joinState_ == JoinState::WaitingInit)
+        return;
+
     //  This line must be outside the if for the recorder to work properly
 
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
