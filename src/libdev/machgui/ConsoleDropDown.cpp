@@ -165,6 +165,7 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
     if (event.state() != Gui::PRESSED)
         return true;
 
+    bool processed = true;
     if (event.key() == Device::KeyCode::TAB)
     {
         handleTabCompletion();
@@ -188,7 +189,7 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
         }
         else if (event.key() == Device::KeyCode::ESCAPE)
         {
-            toggle();
+            close();
         }
         else if (event.key() == Device::KeyCode::UP_ARROW)
         {
@@ -200,11 +201,11 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
         }
         else
         {
-            inputBox()->doHandleKeyEvent(event);
+            processed = inputBox()->doHandleKeyEvent(event);
         }
     }
 
-    return true;
+    return processed;
 }
 
 std::string MachGuiConsoleDropDown::inputText() const

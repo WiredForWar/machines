@@ -72,19 +72,21 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             }
             else if (pConsoleDropDown_ && pConsoleDropDown_->isOpen())
             {
+                processed = pConsoleDropDown_->doHandleKeyEvent(e);
                 static const auto& menusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
-                if (e.state() == Gui::PRESSED)
+                // Check 'processed' to trigger the menu only if the event was not explicitly consumed by the console
+                if (!processed && e.state() == Gui::PRESSED)
                 {
                     if (menusTrigger.matches(e.keyWithMods()))
                     {
                         toggleConsoleDropDown();
-                    }
-                    else
-                    {
                         processed = true;
-                        pConsoleDropDown_->doHandleKeyEvent(e);
                     }
                 }
+
+                // Assume the event is anyway processed if the console was open.
+                // This prevents leakage of doHandleCharEvent()
+                processed = true;
             }
             else
             {
