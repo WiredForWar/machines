@@ -31,8 +31,6 @@
 
 #define MAXNAMELEN 200
 
-#define INITGUID
-
 static constexpr char DiscoveryMagic[4] = { 'W', 'F', 'W', '0' };
 static constexpr uint32_t DiscoveryVersion = 2;
 static constexpr uint16_t GamePort = 1234;
@@ -197,40 +195,8 @@ const NetNetwork::Sessions& NetINetwork::sessions() const
 
 ///////////////////////////////
 
-///////////////////////////////
-NetAppUid NetINetwork::appUid() const
-{
-    PRE(isValidNoRecord());
-
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-    {
-        appUid_ = NetIRecorder::instance().playbackAppUid();
-    }
-    else
-    {
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-        {
-            NetIRecorder::instance().recordAppUid(appUid_);
-        }
-    }
-
-    return appUid_;
-}
-
-NetAppUid NetINetwork::appUidNoRecord() const
-{
-    PRE(isValidNoRecord());
-
-    return appUid_;
-}
-
 NetINetwork::NetINetwork()
-    : descFileName_("")
-    , descCommandLine_("")
-    , descPath_("")
-    , descCurrentDirectory_("")
-    , descDescription_("")
-    , localPlayerName_("")
+    : localPlayerName_()
     , maxBytesPerSecond_(9000)
     , pingAllAllowed_(true)
     , maxSentMessagesPerSecond_(40)
@@ -988,9 +954,6 @@ void NetINetwork::currentStatus(NetNetwork::NetNetworkStatus status)
 {
     currentStatusNoRecord() = status;
 }
-
-// static
-NetAppUid NetINetwork::appUid_ = 0;
 
 void NetINetwork::systemMessageHandler(NetSystemMessageHandler* pMessageHandler)
 {

@@ -85,8 +85,6 @@ public:
 
     ///////////////////////////////
 
-    NetAppUid appUid() const;
-    NetAppUid appUidNoRecord() const;
     bool hasAppSession(NetAppSessionUid) const;
     void update();
     void refreshSessions();
