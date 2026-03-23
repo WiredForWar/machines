@@ -7,3 +7,6 @@ add_subdirectory(spdlog)
 
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 add_subdirectory(nlohmann_json)
+
+set(HTTPLIB_INSTALL OFF CACHE INTERNAL "")
+add_subdirectory(cpp-httplib)
