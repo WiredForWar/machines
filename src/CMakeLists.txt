@@ -177,15 +177,17 @@ target_link_libraries(libs INTERFACE
     LibDev::version
 )
 
-add_executable(machines WIN32
-    ${MACHINES_SOURCES}
-)
+if(BUILD_CLIENT)
+    add_executable(machines WIN32
+        ${MACHINES_SOURCES}
+    )
 
-set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE -s)
-set_target_properties(machines PROPERTIES
-    COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
-)
-target_link_libraries(machines libs)
+    set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE -s)
+    set_target_properties(machines PROPERTIES
+        COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
+    )
+    target_link_libraries(machines libs)
+endif()
 
 if(BUILD_PLANETED)
     add_executable(planeted WIN32
