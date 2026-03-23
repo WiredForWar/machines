@@ -81,21 +81,6 @@ void NetIRecorder::recordSessions(const NetNetwork::Sessions& sessions) const
     }
 }
 
-NetAppUid NetIRecorder::playbackAppUid() const
-{
-    NetAppUid uid;
-    // replaced here to reinterpret cast
-    RecRecorderPrivate::instance().playbackNetworkData(reinterpret_cast<uint8*>(&uid), sizeof(uid));
-
-    return uid;
-}
-
-void NetIRecorder::recordAppUid(NetAppUid uid) const
-{
-    // and here...
-    RecRecorderPrivate::instance().recordNetworkData(reinterpret_cast<const uint8*>(&uid), sizeof(uid));
-}
-
 bool NetIRecorder::playbackIsLogicalHost() const
 {
     return RecRecorderPrivate::instance().playbackNetworkBool();

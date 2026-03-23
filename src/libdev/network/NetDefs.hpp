@@ -11,7 +11,6 @@ using NetProcessorUid = std::string;
 using NetAppSessionName = std::string;
 using NetNodeName = std::string;
 using NetMessageUid = unsigned int;
-using NetAppUid = unsigned int;
 using NetAppInstanceUid = unsigned int;
 
 using NetInterProcessUid = unsigned int;

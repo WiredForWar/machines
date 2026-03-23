@@ -13,8 +13,6 @@
 
 #define MAXNAMELEN 200
 
-#define INITGUID
-
 //////////////////////////////////////////////////////////////
 
 NetNetwork::NetNetwork()
@@ -91,28 +89,6 @@ NetNetwork::NetNetworkStatus NetNetwork::currentStatusNoRecord()
 }
 
 //////////////////////////////////////////////////////////////
-
-NetAppUid NetNetwork::appUid() const
-{
-    PRE(isValidNoRecord());
-
-    NetAppUid appUid;
-
-    appUid = pNetINetwork_->appUid();
-
-    return appUid;
-}
-
-NetAppUid NetNetwork::appUidNoRecord() const
-{
-    PRE(isValidNoRecord());
-
-    NetAppUid appUid;
-
-    appUid = pNetINetwork_->appUidNoRecord();
-
-    return appUid;
-}
 
 bool NetNetwork::hasAppSession(NetAppSessionUid aUid) const
 {

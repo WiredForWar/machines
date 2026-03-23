@@ -22,16 +22,6 @@
 
 #include "spdlog/spdlog.h"
 
-// #define DEFINE_GUID
-#define INITGUID
-// #include <windows.h>
-// #include <initguid.h>
-
-// {7D2DD660-D859-11d1-B2ED-0020AFEBB1CC}
-// DEFINE_GUID(DPMACHINES_GUID, 0x7d2dd660, 0xd859, 0x11d1, 0xb2, 0xed, 0x0, 0x20, 0xaf, 0xeb, 0xb1, 0xcc);
-
-void setAppUid();
-
 // static
 MachLogNetwork& MachLogNetwork::instance()
 {
@@ -146,14 +136,6 @@ std::ostream& operator<<(std::ostream& o, const MachLogNetwork& t)
     o << "MachLogNetwork " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;
-}
-
-void setAppUid()
-{
-    DEBUG_STREAM(DIAG_NETWORK, "setAppUid\n");
-
-    //  NetNetwork::setAppUid((void*)&DPMACHINES_GUID );
-    DEBUG_STREAM(DIAG_NETWORK, "setAppUid done\n");
 }
 
 void MachLogNetwork::setBroker(MachLogMessageBroker* pBroker)

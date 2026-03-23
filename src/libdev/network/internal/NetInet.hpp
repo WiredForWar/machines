@@ -82,7 +82,6 @@ public:
     NetAppSession* connectAppSession();
     void resetAppSession();
 
-    NetAppUid appUid() const;
     bool hasAppSession(const NetAppSessionUid&) const;
     //  Use the no record version in assertions
     bool hasAppSessionNoRecord(const NetAppSessionUid&) const;
@@ -147,8 +146,6 @@ private:
     bool hasLocalNodeNoRecord(const NetNode*) const;
     static NetNetwork::NetNetworkStatus& currentStatusNoRecord();
 
-    NetAppUid appUidNoRecord() const;
-
     NetProcessUid& processUidMaster() const;
     void addSentMessage(int length);
     void computeSentMessageStuffedNess();
@@ -177,10 +174,6 @@ private:
 
     ///////////////////////////////
 
-    static NetAppUid appUid_;
-
-    ///////////////////////////////
-
     NetMessageBuffer messageBuffer_;
     NetNetwork::Sessions sessions_;
     double lastSessionsUpdate_{};
@@ -191,13 +184,6 @@ private:
     bool lobbyAware_{};
 
     // lobby description fields
-    std::string descAppName_;
-    std::string descFileName_;
-    std::string descCommandLine_;
-    std::string descPath_;
-    std::string descCurrentDirectory_;
-    std::string descDescription_;
-
     bool isLobbiedGame_{};
     bool isLogicalHost_{};
     std::string localPlayerName_;

@@ -39,9 +39,6 @@ public:
     void playbackSessions(NetNetwork::Sessions*) const;
     void recordSessions(const NetNetwork::Sessions&) const;
 
-    NetAppUid playbackAppUid() const;
-    void recordAppUid(NetAppUid) const;
-
     bool playbackIsLogicalHost() const;
     void recordIsLogicalHost(bool) const;
 
