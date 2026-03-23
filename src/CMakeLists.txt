@@ -192,26 +192,28 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang
     endif()
 endif()
 
-add_executable(machines WIN32
-    ${MACHINES_SOURCES}
-)
+if(BUILD_CLIENT)
+    add_executable(machines WIN32
+        ${MACHINES_SOURCES}
+    )
 
-set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE "${MACHINES_STRIP_LINK_FLAGS}")
-set_target_properties(machines PROPERTIES
-    COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
-)
-target_link_libraries(machines
-    libs
-    LibDev::window_support_sdl
-)
+    set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE "${MACHINES_STRIP_LINK_FLAGS}")
+    set_target_properties(machines PROPERTIES
+        COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
+    )
+    target_link_libraries(machines
+        libs
+        LibDev::window_support_sdl
+    )
 
-split_debug_info(machines)
+    split_debug_info(machines)
 
-if(MSVC)
-    # The application manifest is embedded via machines.rc; keep the linker
-    # from embedding its own default manifest with the same resource id
-    # (CVTRES error CVT1100: duplicate resource).
-    target_link_options(machines PRIVATE "/MANIFEST:NO")
+    if(MSVC)
+        # The application manifest is embedded via machines.rc; keep the linker
+        # from embedding its own default manifest with the same resource id
+        # (CVTRES error CVT1100: duplicate resource).
+        target_link_options(machines PRIVATE "/MANIFEST:NO")
+    endif()
 endif()
 
 if(BUILD_PLANETED)
