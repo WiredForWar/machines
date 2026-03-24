@@ -29,3 +29,13 @@ target_link_libraries(mek
         Threads::Threads
 )
 
+add_executable(mek_client
+    client/TestClient.cpp
+)
+
+target_link_libraries(mek_client
+    PRIVATE
+        LibDev::rendezvous
+        nlohmann_json::nlohmann_json
+        spdlog::spdlog
+)
