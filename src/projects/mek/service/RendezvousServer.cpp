@@ -76,9 +76,10 @@ bool RendezvousServer::run()
     pruneThread_ = std::thread(&RendezvousServer::pruneLoop, this);
 
     spdlog::info(
-        "RendezvousServer listening on {}:{}",
+        "RendezvousServer listening on {}:{} (metrics {})",
         config_.bindAddress,
-        config_.port);
+        config_.port,
+        config_.metricsEnabled ? "enabled" : "disabled");
 
     const bool listenResult = server_->listen(config_.bindAddress.c_str(), config_.port);
     if (!listenResult)
@@ -136,6 +137,12 @@ void RendezvousServer::configureRoutes()
         "/status",
         [this](const httplib::Request& request, httplib::Response& response) {
             handleStatus(request, response);
+        });
+
+    server_->Get(
+        "/metrics",
+        [this](const httplib::Request& request, httplib::Response& response) {
+            handleMetrics(request, response);
         });
 
     server_->Post(
@@ -213,6 +220,40 @@ void RendezvousServer::handleStatus(const httplib::Request&, httplib::Response& 
     response.set_content(payload.dump(), ContentTypeJson);
 }
 
+void RendezvousServer::handleMetrics(const httplib::Request&, httplib::Response& response) const
+{
+    if (!config_.metricsEnabled)
+    {
+        response.status = HttpStatus::NotFound;
+        response.set_content("metrics disabled\n", ContentTypeText);
+        return;
+    }
+
+    const std::vector<SessionStore::Session> sessionsSnapshot = sessionStore_.sessions();
+    const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    const double uptimeSeconds = std::chrono::duration<double>(now - startTime_).count();
+
+    std::ostringstream stream;
+    stream << "# HELP rendezvous_sessions Number of active sessions\n";
+    stream << "# TYPE rendezvous_sessions gauge\n";
+    stream << "rendezvous_sessions " << sessionsSnapshot.size() << '\n';
+    stream << "# HELP rendezvous_session_registrations_total Total session registrations\n";
+    stream << "# TYPE rendezvous_session_registrations_total counter\n";
+    stream << "rendezvous_session_registrations_total " << sessionRegistrationsTotal_.load() << '\n';
+    stream << "# HELP rendezvous_heartbeats_total Total heartbeats received\n";
+    stream << "# TYPE rendezvous_heartbeats_total counter\n";
+    stream << "rendezvous_heartbeats_total " << heartbeatsTotal_.load() << '\n';
+    stream << "# HELP rendezvous_punch_requests_total Total punch requests registered\n";
+    stream << "# TYPE rendezvous_punch_requests_total counter\n";
+    stream << "rendezvous_punch_requests_total " << punchRequestsTotal_.load() << '\n';
+    stream << "# HELP rendezvous_process_uptime_seconds Process uptime in seconds\n";
+    stream << "# TYPE rendezvous_process_uptime_seconds gauge\n";
+    stream << "rendezvous_process_uptime_seconds " << uptimeSeconds << '\n';
+
+    response.status = HttpStatus::Ok;
+    response.set_content(stream.str(), ContentTypeText);
+}
+
 void RendezvousServer::handleRegisterSession(const httplib::Request& request, httplib::Response& response)
 {
     try
@@ -262,6 +303,8 @@ void RendezvousServer::handleRegisterSession(const httplib::Request& request, ht
         Rendezvous::RegisterSessionResponse registerResponse{};
         registerResponse.session = session;
         registerResponse.expiresIn = config_.sessionTimeout;
+
+        sessionRegistrationsTotal_.fetch_add(1, std::memory_order_relaxed);
 
         response.status = HttpStatus::Created;
         response.set_content(makeRegisterSessionResponseJson(registerResponse).dump(), ContentTypeJson);
@@ -314,6 +357,8 @@ void RendezvousServer::handleRegisterPunchRequest(const httplib::Request& reques
             response.set_content("Unknown session\n", ContentTypeText);
             return;
         }
+
+        punchRequestsTotal_.fetch_add(1, std::memory_order_relaxed);
 
         nlohmann::json responseJson;
         responseJson["requestId"] = punchResponse->requestId;
@@ -376,6 +421,7 @@ void RendezvousServer::handleHeartbeat(const httplib::Request& request, httplib:
     const bool updated = sessionStore_.heartbeat(sessionId);
     if (updated)
     {
+        heartbeatsTotal_.fetch_add(1, std::memory_order_relaxed);
         response.status = HttpStatus::NoContent;
         spdlog::info("Heartbeat refreshed for session {}", sessionId);
     }

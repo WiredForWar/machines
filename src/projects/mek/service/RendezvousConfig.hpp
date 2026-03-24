@@ -8,5 +8,6 @@ struct RendezvousConfig
 {
     std::string bindAddress{};
     uint16_t port{};
+    bool metricsEnabled{};
     std::chrono::seconds sessionTimeout{};
 };

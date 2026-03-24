@@ -51,7 +51,7 @@ bool parseUint32(const char* text, uint32_t* outValue)
 
 void printUsage()
 {
-    std::cout << "Usage: mek [--bind-address addr] [--port N] [--session-timeout seconds]" << std::endl;
+    std::cout << "Usage: mek [--bind-address addr] [--port N] [--session-timeout seconds] [--no-metrics]" << std::endl;
 }
 
 void initLogging()
@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
     RendezvousConfig config{
         .bindAddress = "0.0.0.0",
         .port = 8080,
+        .metricsEnabled = true,
         .sessionTimeout = std::chrono::minutes(2),
     };
 
@@ -112,6 +113,10 @@ int main(int argc, char* argv[])
                 return 1;
             }
             config.sessionTimeout = std::chrono::seconds(timeoutValue);
+        }
+        else if (argument == "--no-metrics")
+        {
+            config.metricsEnabled = false;
         }
         else if (argument == "--help")
         {
