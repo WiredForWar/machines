@@ -81,6 +81,7 @@ option(USE_STANDALONE_LAYOUT "Install the executable and data into the same dir"
 set(WARNINGS_AS_ERRORS FALSE)
 option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
 option(BUILD_CLIENT "Build the game client" ON)
+option(BUILD_SERVER "Build the lobby server" OFF)
 option(BUILD_PLANETED "Build the PlanetEditor" OFF)
 
 # Warn about development build

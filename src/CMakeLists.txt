@@ -200,3 +200,7 @@ if(BUILD_PLANETED)
     )
     target_link_libraries(planeted libs)
 endif()
+
+if(BUILD_SERVER)
+    add_subdirectory(projects/mek)
+endif()
