@@ -127,6 +127,7 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     switch (protocol)
     {
         case NetNetwork::NetworkProtocol::UDP:
+        case NetNetwork::NetworkProtocol::UDP_STUN:
             pNetworkProtocol_ = new MachGuiInternetNetworkMode(pStartupScreens, pStartupScreens);
             break;
         case NetNetwork::NetworkProtocol::IPX:
@@ -233,6 +234,7 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
     if (pGamesList_->currentItem() == pNewGameName_)
     {
         editingGameName_ = true;
+        NetNetwork::instance().setSelectedRendezvousSessionId({});
     }
     else
     {
@@ -257,6 +259,7 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
                     const NetSessionInfo& info = sessions.at(sessionIndex);
 
                     NetNetwork::instance().setIPAddress(info.address);
+                    NetNetwork::instance().setSelectedRendezvousSessionId(info.sessionId);
                     pNetworkProtocol_->readNetworkDetails();
                 }
             }

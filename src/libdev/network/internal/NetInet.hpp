@@ -6,16 +6,21 @@
 #include "ctl/Vector.hpp"
 #include "ctl/List.hpp"
 
-#include <vector>
-
 #include "device/Timer.hpp"
-
-#include <enet/enet.h>
 
 #include "network/NetDefs.hpp"
 #include "network/Network.hpp"
-#include "network/ComPortAddress.hpp"
-// #include "network/PingHelper.hpp"
+#include "network/StunClient.hpp"
+
+#include <enet/enet.h>
+
+#include <chrono>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+class RendezvousWorker;
 
 class NetNode;
 class NetNodeUid;
@@ -46,6 +51,7 @@ public:
     enum class JoinState
     {
         Idle,
+        WaitingPunch,
         Connecting,
         WaitingInit,
         Done,
@@ -86,6 +92,7 @@ public:
     //  Use the no record version in assertions
     bool hasAppSessionNoRecord(const NetAppSessionUid&) const;
     NetAppSession& session();
+    const std::optional<StunClient::Result>& publicEndpoint() const;
     void update();
     void clearSessions();
     void updateSessions();
@@ -141,6 +148,8 @@ private:
     // Ip addresses may be in the form of numerical IP addresses or domain net
     const std::string& IPAddress() const;
     void setIPAddress(const std::string& newIPAddress);
+    const std::string& selectedRendezvousSessionId() const;
+    void setSelectedRendezvousSessionId(const std::string& sessionId);
 
     bool isValidNoRecord() const;
     bool hasLocalNodeNoRecord(const NetNode*) const;
@@ -167,10 +176,24 @@ private:
     void deinitLocalServerDiscovery();
     void replyToServerDiscoveryRequests();
 
+    void updateRendezvousSessions();
+    void pollRendezvousResults();
+    RendezvousWorker* ensureWorker();
+    void destroyWorker();
+    void beginStunQuery();
+    void beginRegisterSession();
+    void beginHeartbeat();
+    void beginListPunchRequests();
+    void clearRendezvousRegistration();
+    void sendUdpPunch(const std::string& ipAddress, uint16_t port) const;
+
     void determineStandardSendFlags();
 
     void messageThrottlingActive(bool);
     bool messageThrottlingActive() const;
+
+    bool isStunProtocolSelected() const;
+    void clearPublicEndpoint();
 
     ///////////////////////////////
 
@@ -190,6 +213,7 @@ private:
     std::string gameName_;
 
     std::string IPAddress_;
+    std::string selectedRendezvousSessionId_{};
 
     NetNetwork::NetworkProtocol currentProtocol_;
 
@@ -205,8 +229,34 @@ private:
     JoinState joinState_{JoinState::Idle};
     ENetPeer* joinPeer_{};
     double joinStartTime_{};
+    ENetAddress joinAddress_{};
 
     bool deterministicPingDropoutAllowed_{};
+
+    std::optional<StunClient::Result> publicEndpoint_{};
+    std::string stunServerHost_{};
+    uint16_t stunServerPort_{};
+
+    bool rendezvousConfigValid_{};
+    std::string rendezvousHost_{};
+    uint16_t rendezvousPort_{};
+    bool rendezvousUseHttps_{};
+    std::string rendezvousApiPathPrefix_{};
+    std::chrono::milliseconds rendezvousNetworkTimeout_{};
+    std::string rendezvousSessionId_{};
+    std::chrono::seconds rendezvousHeartbeatInterval_{};
+    std::chrono::steady_clock::time_point rendezvousNextHeartbeat_{};
+    std::chrono::steady_clock::time_point rendezvousNextPunchPoll_{};
+
+    std::unique_ptr<RendezvousWorker> worker_{};
+
+    // Pending async state for createAppSession / beginJoinAppSession
+    bool stunQueryPending_{};
+    bool registerSessionPending_{};
+    bool heartbeatPending_{};
+    bool listSessionsPending_{};
+    bool listPunchRequestsPending_{};
+    bool registerPunchPending_{};
 
     ///////////////////////////////
 

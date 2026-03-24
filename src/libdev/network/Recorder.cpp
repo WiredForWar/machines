@@ -255,6 +255,7 @@ NetSessionInfo NetIRecorder::playbackSessionInfo() const
     NetSessionInfo info;
     info.address = RecRecorderPrivate::instance().playbackNetworkString();
     info.serverName = RecRecorderPrivate::instance().playbackNetworkString();
+    info.sessionId = RecRecorderPrivate::instance().playbackNetworkString();
 
     return info;
 }
@@ -263,6 +264,7 @@ void NetIRecorder::recordSessionInfo(const NetSessionInfo& info) const
 {
     RecRecorderPrivate::instance().recordNetworkString(info.address);
     RecRecorderPrivate::instance().recordNetworkString(info.serverName);
+    RecRecorderPrivate::instance().recordNetworkString(info.sessionId);
 }
 
 bool NetIRecorder::playbackHasMember() const

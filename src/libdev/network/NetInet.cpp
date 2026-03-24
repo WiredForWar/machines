@@ -14,6 +14,7 @@
 #include "network/Message.hpp"
 #include "network/SystemMessageHandler.hpp"
 
+#include "network/AddressUtils.hpp"
 #include "network/internal/SessionImpl.hpp"
 #include "network/internal/Recorder.hpp"
 #include "network/internal/CompoundMessage.hpp"
@@ -22,14 +23,31 @@
 
 #include "system/Endian.hpp"
 #include "system/Registry.hpp"
+#include "system/Variable.hpp"
+
+#include "network/RendezvousWorker.hpp"
+
+#include "rendezvous/RendezvousClient.hpp"
 
 #include "MachinesVersion.hpp"
 
 #include "spdlog/spdlog.h"
 
+#include <chrono>
+#include <limits>
 #include <memory>
+#include <algorithm>
+#include <array>
 
 #define MAXNAMELEN 200
+
+namespace Config
+{
+
+Variable<std::string> netStunHost("Network/STUN Host", "stun.l.google.com:19302");
+Variable<std::string> netRendezvousHost("Network/Rendezvous Host", "127.0.0.1:8080");
+
+} // namespace Config
 
 static constexpr char DiscoveryMagic[4] = { 'W', 'F', 'W', '0' };
 static constexpr uint32_t DiscoveryVersion = 2;
@@ -38,6 +56,10 @@ static constexpr uint16_t GamePort = 1234;
 static constexpr uint16_t LANServerDiscoveryPort = 'w' << 8 | 'w';
 
 static constexpr double JoinTimeoutSeconds = 5.0;
+
+static constexpr uint16_t DefaultStunServerPort = 3478;
+static constexpr std::chrono::milliseconds DefaultStunTimeout{1500};
+static constexpr std::chrono::milliseconds DefaultRendezvousTimeout{5000};
 
 #pragma pack(push, 1)
 struct ServerReply
@@ -90,8 +112,97 @@ NetINetwork::~NetINetwork()
 
         RecRecorder::instance().recordingAllowed(true);
     }
+
+    destroyWorker();
+
     NETWORK_INDENT(-2);
     NETWORK_STREAM("NetINetwork::~NetINetwork DONE " << static_cast<const void*>(this) << std::endl);
+}
+
+void NetINetwork::beginListPunchRequests()
+{
+    if (!isStunProtocolSelected() || !isLogicalHost_ || rendezvousSessionId_.empty() || pHost_ == nullptr)
+    {
+        return;
+    }
+
+    const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    static constexpr std::chrono::milliseconds PollInterval{500};
+    if (now < rendezvousNextPunchPoll_)
+    {
+        return;
+    }
+    rendezvousNextPunchPoll_ = now + PollInterval;
+
+    RendezvousWorker* worker = ensureWorker();
+    if (worker == nullptr || listPunchRequestsPending_)
+    {
+        return;
+    }
+
+    listPunchRequestsPending_ = true;
+    worker->requestListRequests(rendezvousSessionId_);
+}
+
+void NetINetwork::sendUdpPunch(const std::string& ipAddress, uint16_t port) const
+{
+    if (pHost_ == nullptr || ipAddress.empty() || port == 0)
+    {
+        return;
+    }
+
+    ENetAddress address{};
+    if (enet_address_set_host(&address, ipAddress.c_str()) != 0)
+    {
+        spdlog::warn("NetINetwork: Unable to resolve punch address '{}'", ipAddress);
+        return;
+    }
+    address.port = port;
+
+    static constexpr std::array<uint8_t, 8> Payload{'P', 'U', 'N', 'C', 'H', 0, 0, 0};
+    ENetBuffer buffer{};
+    buffer.data = const_cast<uint8_t*>(Payload.data());
+    buffer.dataLength = Payload.size();
+
+    for (int attempt = 0; attempt < 5; ++attempt)
+    {
+        enet_socket_send(pHost_->socket, &address, &buffer, 1);
+    }
+}
+
+bool NetINetwork::isStunProtocolSelected() const
+{
+    return currentProtocol_ == NetNetwork::NetworkProtocol::UDP_STUN;
+}
+
+void NetINetwork::clearPublicEndpoint()
+{
+    publicEndpoint_.reset();
+}
+
+void NetINetwork::beginStunQuery()
+{
+    if (stunServerHost_.empty() || stunServerPort_ == 0)
+    {
+        spdlog::warn(
+            "NetINetwork: Invalid STUN server configuration (host='{}', port={})", stunServerHost_, stunServerPort_);
+        return;
+    }
+
+    RendezvousWorker* worker = ensureWorker();
+    if (worker == nullptr || stunQueryPending_)
+    {
+        return;
+    }
+
+    int socketFd = -1;
+    if (pHost_ != nullptr && pHost_->socket != ENET_SOCKET_NULL)
+    {
+        socketFd = static_cast<int>(pHost_->socket);
+    }
+
+    stunQueryPending_ = true;
+    worker->requestStunQuery(socketFd);
 }
 
 NetProcessUid& NetINetwork::processUidMaster() const
@@ -151,11 +262,24 @@ bool NetINetwork::hasAppSessionNoRecord(const NetAppSessionUid& aUid) const
 // call periodically to ensure that network information remains current.
 void NetINetwork::update()
 {
+    if (isStunProtocolSelected())
+    {
+        pollRendezvousResults();
+    }
+
     if (hasActiveSession())
     {
         if (isLogicalHost())
         {
-            replyToServerDiscoveryRequests();
+            if (isStunProtocolSelected())
+            {
+                beginHeartbeat();
+                beginListPunchRequests();
+            }
+            else
+            {
+                replyToServerDiscoveryRequests();
+            }
         }
     }
     else
@@ -166,7 +290,10 @@ void NetINetwork::update()
             updateSessions();
         }
 
-        acceptLocalServersReplies();
+        if (!isStunProtocolSelected())
+        {
+            acceptLocalServersReplies();
+        }
     }
 }
 
@@ -197,12 +324,36 @@ const NetNetwork::Sessions& NetINetwork::sessions() const
 
 NetINetwork::NetINetwork()
     : localPlayerName_()
+    , rendezvousApiPathPrefix_("/")
+    , rendezvousNetworkTimeout_(DefaultRendezvousTimeout)
+    , rendezvousHeartbeatInterval_(std::chrono::seconds(30))
     , maxBytesPerSecond_(9000)
     , pingAllAllowed_(true)
     , maxSentMessagesPerSecond_(40)
     , originalMaxSentMessagesPerSecond_(40)
 {
     PRE(isValidNoRecord());
+
+    stunServerHost_ = getHost(Config::netStunHost.get());
+    stunServerPort_ = getPort(Config::netStunHost.get()).value_or(DefaultStunServerPort);
+    rendezvousHost_ = getHost(Config::netRendezvousHost.get());
+    rendezvousPort_ = getPort(Config::netRendezvousHost.get()).value_or(0);
+
+    const std::string rendezvousHostValue = SysRegistry::instance().queryStringValue("Network", "RendezvousHost");
+    if (! rendezvousHostValue.empty())
+    {
+        rendezvousHost_ = rendezvousHostValue;
+    }
+
+    rendezvousUseHttps_ = SysRegistry::instance().queryIntegerValue("Network", "RendezvousUseHttps", 0) != 0;
+
+    const std::string rendezvousApiPrefix = SysRegistry::instance().queryStringValue("Network", "RendezvousApiPath");
+    if (! rendezvousApiPrefix.empty())
+    {
+        rendezvousApiPathPrefix_ = rendezvousApiPrefix;
+    }
+
+    rendezvousConfigValid_ = !rendezvousHost_.empty() && rendezvousPort_ != 0;
 
     if (RecRecorder::instance().state() != RecRecorder::PLAYING)
     {
@@ -470,7 +621,18 @@ NetAppSession* NetINetwork::createAppSession(const std::string& gameName)
 
     gameName_ = gameName;
 
-    registerServer();
+    if (isStunProtocolSelected())
+    {
+        // Kick off async STUN query. Once the result arrives in
+        // pollRendezvousResults(), it will call beginRegisterSession().
+        clearPublicEndpoint();
+        beginStunQuery();
+    }
+    else
+    {
+        clearPublicEndpoint();
+        registerServer();
+    }
 
     return nullptr;
 }
@@ -486,21 +648,46 @@ void NetINetwork::beginJoinAppSession(const std::string& addressStr)
     std::string ipAddress = std::string(getHost(addressStr));
     std::optional<uint16_t> port = getPort(addressStr);
 
-    ENetAddress address;
-    enet_address_set_host(&address, ipAddress.c_str());
-    address.port = port.value_or(GamePort);
-
-    joinPeer_ = enet_host_connect(pHost_, &address, 2, 0);
-    if (joinPeer_ == nullptr)
-    {
-        spdlog::warn("NetINetwork: No available peers for connection");
-        currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
-        joinState_ = JoinState::Done;
-        return;
-    }
-
+    enet_address_set_host(&joinAddress_, ipAddress.c_str());
+    joinAddress_.port = port.value_or(GamePort);
     joinStartTime_ = DevTime::instance().time();
-    joinState_ = JoinState::Connecting;
+
+    if (isStunProtocolSelected())
+    {
+        // Enter WaitingPunch: the ENet connect is deferred until the
+        // punch exchange completes (STUN → register punch → host punches back).
+        clearPublicEndpoint();
+        beginStunQuery();
+
+        if (!selectedRendezvousSessionId_.empty())
+        {
+            registerPunchPending_ = true;
+        }
+        else
+        {
+            spdlog::warn("NetINetwork: No rendezvous sessionId selected; punch-through will be degraded");
+        }
+
+        // Send an early punch from our local socket to start opening our NAT pinhole.
+        sendUdpPunch(ipAddress, port.value_or(GamePort));
+
+        joinState_ = JoinState::WaitingPunch;
+    }
+    else
+    {
+        clearPublicEndpoint();
+
+        joinPeer_ = enet_host_connect(pHost_, &joinAddress_, 2, 0);
+        if (joinPeer_ == nullptr)
+        {
+            spdlog::warn("NetINetwork: No available peers for connection");
+            currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+            joinState_ = JoinState::Done;
+            return;
+        }
+
+        joinState_ = JoinState::Connecting;
+    }
 }
 
 void NetINetwork::updateJoin()
@@ -509,6 +696,33 @@ void NetINetwork::updateJoin()
         return;
 
     const double elapsed = DevTime::instance().time() - joinStartTime_;
+
+    // WaitingPunch: we're waiting for the async STUN + punch exchange.
+    // pollRendezvousResults() will transition us to Connecting once done.
+    // If it takes too long, fall back to a direct connect attempt.
+    if (joinState_ == JoinState::WaitingPunch)
+    {
+        static constexpr double PunchWaitTimeout = 3.0;
+        if (elapsed > PunchWaitTimeout)
+        {
+            spdlog::warn("NetINetwork: Punch exchange timed out after {:.1f}s, attempting direct connect", elapsed);
+
+            std::array<char, 64> hostBuf{};
+            enet_address_get_host_ip(&joinAddress_, hostBuf.data(), hostBuf.size());
+            sendUdpPunch(hostBuf.data(), joinAddress_.port);
+
+            joinPeer_ = enet_host_connect(pHost_, &joinAddress_, 2, 0);
+            if (joinPeer_ == nullptr)
+            {
+                spdlog::warn("NetINetwork: No available peers for connection");
+                currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+                joinState_ = JoinState::Done;
+                return;
+            }
+            joinState_ = JoinState::Connecting;
+        }
+        return;
+    }
 
     ENetEvent event;
     while (enet_host_service(pHost_, &event, 0) > 0)
@@ -628,6 +842,9 @@ NetAppSession* NetINetwork::connectAppSession()
 
 void NetINetwork::resetAppSession()
 {
+    clearRendezvousRegistration();
+    destroyWorker();
+
     if (isLogicalHost_)
     {
         deinitLocalServerDiscovery();
@@ -635,6 +852,7 @@ void NetINetwork::resetAppSession()
 
     resetHost();
     initServersDiscoverySocket();
+    clearPublicEndpoint();
 }
 
 NetAppSession& NetINetwork::session()
@@ -642,6 +860,11 @@ NetAppSession& NetINetwork::session()
     PRE(isValidNoRecord());
     PRE(pLocalSession_);
     return *pLocalSession_;
+}
+
+const std::optional<StunClient::Result>& NetINetwork::publicEndpoint() const
+{
+    return publicEndpoint_;
 }
 
 void NetINetwork::clearSessions()
@@ -660,7 +883,37 @@ void NetINetwork::clearSessions()
 void NetINetwork::updateSessions()
 {
     lastSessionsUpdate_ = DevTime::instance().time();
-    sendLocalServersDiscoveryBroadcast();
+
+    if (isStunProtocolSelected())
+    {
+        updateRendezvousSessions();
+    }
+    else
+    {
+        sendLocalServersDiscoveryBroadcast();
+    }
+}
+
+void NetINetwork::updateRendezvousSessions()
+{
+    RendezvousWorker* worker = ensureWorker();
+    if (worker == nullptr || listSessionsPending_)
+    {
+        return;
+    }
+
+    listSessionsPending_ = true;
+    worker->requestListSessions();
+}
+
+const std::string& NetINetwork::selectedRendezvousSessionId() const
+{
+    return selectedRendezvousSessionId_;
+}
+
+void NetINetwork::setSelectedRendezvousSessionId(const std::string& sessionId)
+{
+    selectedRendezvousSessionId_ = sessionId;
 }
 
 const NetNetwork::ProtocolList& NetINetwork::availableProtocols(Update update)
@@ -683,6 +936,7 @@ const NetNetwork::ProtocolList& NetINetwork::availableProtocols(Update update)
         else
         {
             availableProtocols.push_back(NetNetwork::NetworkProtocol::UDP);
+            availableProtocols.push_back(NetNetwork::NetworkProtocol::UDP_STUN);
 
             if (RecRecorder::instance().state() == RecRecorder::RECORDING)
             {
@@ -727,6 +981,8 @@ void NetINetwork::chooseProtocol(NetNetwork::NetworkProtocol protocol, NetNetwor
         PRE(currentStatusNoRecord() == NetNetwork::NETNET_OK);
 
         currentProtocol_ = protocol;
+        clearPublicEndpoint();
+        destroyWorker();
         NETWORK_STREAM(" Selected protocol " << static_cast<int>(currentProtocol_) << "\n");
 
         // if( initConnection == NetNetwork::INITIALISE_CONNECTION )
@@ -1072,6 +1328,295 @@ void NetINetwork::setIPAddress(const std::string& newIPAddress)
     IPAddress_ = newIPAddress;
 }
 
+RendezvousWorker* NetINetwork::ensureWorker()
+{
+    if (!rendezvousConfigValid_)
+    {
+        return nullptr;
+    }
+
+    if (!worker_)
+    {
+        Rendezvous::RendezvousClientConfig config{
+            .host = rendezvousHost_,
+            .port = rendezvousPort_,
+            .useHttps = rendezvousUseHttps_,
+            .apiPathPrefix = rendezvousApiPathPrefix_,
+            .networkTimeout = rendezvousNetworkTimeout_,
+        };
+        worker_ = std::make_unique<RendezvousWorker>(std::move(config), stunServerHost_, stunServerPort_);
+    }
+
+    return worker_.get();
+}
+
+void NetINetwork::destroyWorker()
+{
+    stunQueryPending_ = false;
+    registerSessionPending_ = false;
+    heartbeatPending_ = false;
+    listSessionsPending_ = false;
+    listPunchRequestsPending_ = false;
+    registerPunchPending_ = false;
+    worker_.reset();
+}
+
+void NetINetwork::beginRegisterSession()
+{
+    if (!isStunProtocolSelected() || !publicEndpoint_)
+    {
+        return;
+    }
+
+    RendezvousWorker* worker = ensureWorker();
+    if (worker == nullptr || registerSessionPending_)
+    {
+        return;
+    }
+
+    Rendezvous::RegisterSessionRequest request{};
+    request.hostPort = publicEndpoint_->publicPort;
+    request.gameName = gameName_;
+
+    registerSessionPending_ = true;
+    worker->requestRegisterSession(std::move(request));
+}
+
+void NetINetwork::beginHeartbeat()
+{
+    if (!isStunProtocolSelected() || rendezvousSessionId_.empty())
+    {
+        return;
+    }
+
+    const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    if (now < rendezvousNextHeartbeat_)
+    {
+        return;
+    }
+
+    RendezvousWorker* worker = ensureWorker();
+    if (worker == nullptr || heartbeatPending_)
+    {
+        return;
+    }
+
+    heartbeatPending_ = true;
+    rendezvousNextHeartbeat_ = now + rendezvousHeartbeatInterval_;
+    worker->requestHeartbeat(rendezvousSessionId_);
+}
+
+void NetINetwork::clearRendezvousRegistration()
+{
+    rendezvousSessionId_.clear();
+    rendezvousNextHeartbeat_ = std::chrono::steady_clock::time_point{};
+}
+
+void NetINetwork::pollRendezvousResults()
+{
+    if (!worker_)
+    {
+        return;
+    }
+
+    // --- STUN result ---
+    if (stunQueryPending_)
+    {
+        std::optional<std::optional<StunClient::Result>> stunResult = worker_->takeStunResult();
+        if (stunResult)
+        {
+            stunQueryPending_ = false;
+            if (*stunResult)
+            {
+                publicEndpoint_ = **stunResult;
+                spdlog::info(
+                    "NetINetwork: STUN mapped address {}:{}",
+                    publicEndpoint_->publicAddress,
+                    publicEndpoint_->publicPort);
+
+                // Chain: if we're hosting, register the session now
+                if (isLogicalHost_ && rendezvousSessionId_.empty())
+                {
+                    beginRegisterSession();
+                }
+
+                // Chain: if we're joining and need a punch request, send it now
+                if (registerPunchPending_ && !selectedRendezvousSessionId_.empty()
+                    && joinState_ == JoinState::WaitingPunch)
+                {
+                    Rendezvous::RegisterPunchRequest punchReq{};
+                    punchReq.clientPort = publicEndpoint_->publicPort;
+                    worker_->requestRegisterPunch(selectedRendezvousSessionId_, std::move(punchReq));
+
+                    // Send more punches now that we know our public port
+                    std::array<char, 64> hostBuf{};
+                    enet_address_get_host_ip(&joinAddress_, hostBuf.data(), hostBuf.size());
+                    sendUdpPunch(hostBuf.data(), joinAddress_.port);
+                }
+            }
+            else
+            {
+                spdlog::warn("NetINetwork: STUN query failed");
+            }
+        }
+    }
+
+    // --- Register session result ---
+    if (registerSessionPending_)
+    {
+        std::optional<std::optional<Rendezvous::RegisterSessionResponse>> regResult =
+            worker_->takeRegisterSessionResult();
+        if (regResult)
+        {
+            registerSessionPending_ = false;
+            if (*regResult)
+            {
+                const Rendezvous::RegisterSessionResponse& response = **regResult;
+                rendezvousSessionId_ = response.session.sessionId;
+
+                if (response.expiresIn.count() <= 0)
+                {
+                    spdlog::warn("NetINetwork: Rendezvous registerSession response missing expiresIn; ignoring");
+                    rendezvousSessionId_.clear();
+                }
+                else
+                {
+                    std::chrono::seconds halfExpiry = response.expiresIn / 2;
+                    if (halfExpiry.count() == 0)
+                    {
+                        halfExpiry = response.expiresIn;
+                    }
+                    rendezvousHeartbeatInterval_ = halfExpiry;
+                    rendezvousNextHeartbeat_ = std::chrono::steady_clock::now();
+
+                    spdlog::info(
+                        "NetINetwork: Registered rendezvous session {} (heartbeat every {}s)",
+                        rendezvousSessionId_,
+                        rendezvousHeartbeatInterval_.count());
+                }
+            }
+            else
+            {
+                spdlog::warn("NetINetwork: Failed to register rendezvous session");
+            }
+        }
+    }
+
+    // --- Heartbeat result ---
+    if (heartbeatPending_)
+    {
+        std::optional<bool> hbResult = worker_->takeHeartbeatResult();
+        if (hbResult)
+        {
+            heartbeatPending_ = false;
+            if (!*hbResult)
+            {
+                spdlog::warn(
+                    "NetINetwork: Heartbeat failed for session {}", rendezvousSessionId_);
+            }
+        }
+    }
+
+    // --- List sessions result ---
+    if (listSessionsPending_)
+    {
+        std::optional<std::optional<std::vector<Rendezvous::Session>>> sessionsResult =
+            worker_->takeListSessionsResult();
+        if (sessionsResult)
+        {
+            listSessionsPending_ = false;
+            if (*sessionsResult)
+            {
+                sessions_.clear();
+                sessions_.reserve((*sessionsResult)->size());
+                for (const Rendezvous::Session& session : **sessionsResult)
+                {
+                    NetSessionInfo info;
+                    info.address = makeAddress(session.hostAddress, session.hostPort);
+                    info.serverName = session.gameName;
+                    info.sessionId = session.sessionId;
+                    sessions_.push_back(std::move(info));
+                }
+            }
+            else
+            {
+                sessions_.clear();
+            }
+        }
+    }
+
+    // --- Register punch result ---
+    if (registerPunchPending_)
+    {
+        std::optional<std::optional<Rendezvous::RegisterPunchResponse>> punchResult =
+            worker_->takeRegisterPunchResult();
+        if (punchResult)
+        {
+            registerPunchPending_ = false;
+            if (*punchResult)
+            {
+                spdlog::info(
+                    "NetINetwork: Registered punch request {} for session {}",
+                    (*punchResult)->requestId,
+                    selectedRendezvousSessionId_);
+            }
+            else
+            {
+                spdlog::warn(
+                    "NetINetwork: Failed to register punch request for session {}",
+                    selectedRendezvousSessionId_);
+            }
+
+            // Transition WaitingPunch → Connecting: now the host knows about
+            // us and will send UDP punches our way. Fire ENet connect.
+            if (joinState_ == JoinState::WaitingPunch)
+            {
+                // Send another round of punches right before connecting
+                std::array<char, 64> hostBuf{};
+                enet_address_get_host_ip(&joinAddress_, hostBuf.data(), hostBuf.size());
+                sendUdpPunch(hostBuf.data(), joinAddress_.port);
+
+                joinPeer_ = enet_host_connect(pHost_, &joinAddress_, 2, 0);
+                if (joinPeer_ == nullptr)
+                {
+                    spdlog::warn("NetINetwork: No available peers for connection");
+                    currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+                    joinState_ = JoinState::Done;
+                }
+                else
+                {
+                    spdlog::info("NetINetwork: Punch exchange done, starting ENet connect");
+                    joinState_ = JoinState::Connecting;
+                }
+            }
+        }
+    }
+
+    // --- List punch requests result (host side) ---
+    if (listPunchRequestsPending_)
+    {
+        std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> punchListResult =
+            worker_->takeListRequestsResult();
+        if (punchListResult)
+        {
+            listPunchRequestsPending_ = false;
+            if (*punchListResult)
+            {
+                for (const Rendezvous::PunchRequestInfo& info : **punchListResult)
+                {
+                    spdlog::info(
+                        "NetINetwork: Punch request {} for session {}: client {}:{}",
+                        info.requestId,
+                        rendezvousSessionId_,
+                        info.clientAddress,
+                        info.clientPort);
+                    sendUdpPunch(info.clientAddress, info.clientPort);
+                }
+            }
+        }
+    }
+}
+
 bool NetINetwork::imStuffed() const
 {
     if (RecRecorder::instance().state() == RecRecorder::PLAYING)
@@ -1368,12 +1913,21 @@ void NetINetwork::acceptLocalServersReplies()
         .address = address,
         .serverName = reply.serverName,
         .gameVersion = gameVersion,
+        .sessionId = {},
     });
 }
 
 bool NetINetwork::registerServer()
 {
-    return initLocalServerDiscovery();
+    if (isStunProtocolSelected())
+    {
+        beginRegisterSession();
+        return true;
+    }
+    else
+    {
+        return initLocalServerDiscovery();
+    }
 }
 
 bool NetINetwork::initLocalServerDiscovery()

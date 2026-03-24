@@ -45,6 +45,7 @@ public:
     enum class NetworkProtocol
     {
         UDP,
+        UDP_STUN,
         IPX,
         TCPIP,
         MODEM,
@@ -132,6 +133,8 @@ public:
     // Ip addresses may be in the form of numerical IP addresses or domain net
     const std::string& IPAddress() const;
     void setIPAddress(const std::string& newAddress);
+    const std::string& selectedRendezvousSessionId() const;
+    void setSelectedRendezvousSessionId(const std::string& sessionId);
 
     bool imStuffed() const;
     bool imStuffedNoRecord() const;

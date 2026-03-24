@@ -34,6 +34,8 @@ set(NETWORK_SOURCES
     Priority.cpp
     Priority.hpp
     Recorder.cpp
+    RendezvousWorker.cpp
+    RendezvousWorker.hpp
     # session.cpp # unused
     Session.hpp
     # sessioni.cpp # unused
@@ -51,6 +53,7 @@ add_library(LibDev::network ALIAS network)
 target_link_libraries(network PRIVATE
     LibDev::base
     LibDev::system
+    LibDev::rendezvous
     LibDev::version
 
     enet::enet

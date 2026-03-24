@@ -269,6 +269,8 @@ std::optional<ConnectionType> MachGuiStartupData::connectionType() const
         {
         case NetworkProtocol::UDP:
             return ConnectionType::LAN;
+        case NetworkProtocol::UDP_STUN:
+            return ConnectionType::InternetP2P;
         default:
             return std::nullopt;
         }
@@ -285,6 +287,9 @@ void MachGuiStartupData::setConnectionType(ConnectionType ct)
     {
     case ConnectionType::LAN:
         success = MachLogNetwork::instance().setDesiredProtocol(NetNetwork::NetworkProtocol::UDP);
+        break;
+    case ConnectionType::InternetP2P:
+        success = MachLogNetwork::instance().setDesiredProtocol(NetNetwork::NetworkProtocol::UDP_STUN);
         break;
     }
 

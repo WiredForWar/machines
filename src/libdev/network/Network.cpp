@@ -272,6 +272,16 @@ void NetNetwork::setIPAddress(const std::string& newAddress)
     pNetINetwork_->setIPAddress(newAddress);
 }
 
+const std::string& NetNetwork::selectedRendezvousSessionId() const
+{
+    return pNetINetwork_->selectedRendezvousSessionId();
+}
+
+void NetNetwork::setSelectedRendezvousSessionId(const std::string& sessionId)
+{
+    pNetINetwork_->setSelectedRendezvousSessionId(sessionId);
+}
+
 void NetNetwork::initialiseConnection()
 {
     pNetINetwork_->initialiseConnection();

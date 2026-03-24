@@ -1401,6 +1401,8 @@ BELONGING TO</string>
 	>Incompatible game version. Server: %1, Client: %2</string>
 <string id="7150"
 	>LAN Game</string>
+<string id="7151"
+	>Internet Game (peer to peer)</string>
 <string id="7200"
 	>Connection Types</string>
 <string id="7201"

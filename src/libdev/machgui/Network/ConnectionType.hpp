@@ -7,10 +7,12 @@
 enum class ConnectionType
 {
     LAN,
+    InternetP2P,
 };
 
 inline constexpr ConnectionType AllConnectionTypes[] = {
     ConnectionType::LAN,
+    ConnectionType::InternetP2P,
 };
 
 std::string_view toString(ConnectionType type);

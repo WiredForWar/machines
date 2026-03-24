@@ -2,7 +2,6 @@
  * I P X M O D E . H P P
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
-
 /*
     MachGuiIPXNetworkMode
 
