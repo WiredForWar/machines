@@ -2,7 +2,6 @@
 set(NETWORK_SOURCES
     AddressUtils.cpp
     AddressUtils.hpp
-    NetSessionInfo.hpp
     Buffer.cpp
     Buffer.hpp
     Buffer.ipp
@@ -24,6 +23,7 @@ set(NETWORK_SOURCES
     NetInet.cpp
     Network.cpp
     Network.hpp
+    NetSessionInfo.hpp
     # node.cpp # unused
     # node.hpp # unused
     # nodei.cpp # unused
@@ -39,6 +39,8 @@ set(NETWORK_SOURCES
     # sessioni.cpp # unused
     SessionUid.cpp
     SessionUid.hpp
+    StunClient.cpp
+    StunClient.hpp
     SystemMessageHandler.cpp
     SystemMessageHandler.hpp
 )
