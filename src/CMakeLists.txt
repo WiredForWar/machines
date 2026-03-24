@@ -147,6 +147,7 @@ add_subdirectory(libdev/envirnmt)
 add_subdirectory(libdev/ani)
 add_subdirectory(libdev/machlog)
 add_subdirectory(libdev/machgui)
+add_subdirectory(libdev/rendezvous)
 
 add_library(libs INTERFACE)
 target_sources(libs
