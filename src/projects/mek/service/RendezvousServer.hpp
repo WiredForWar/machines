@@ -2,6 +2,7 @@
 
 #include "service/RendezvousConfig.hpp"
 #include "service/SessionStore.hpp"
+#include "service/UdpRelay.hpp"
 
 #include <atomic>
 #include <chrono>
@@ -37,10 +38,12 @@ private:
     void handleListSessions(const httplib::Request& request, httplib::Response& response) const;
     void handleHeartbeat(const httplib::Request& request, httplib::Response& response);
     void handleRegisterPunchRequest(const httplib::Request& request, httplib::Response& response);
+    void handleRegisterRelayRequest(const httplib::Request& request, httplib::Response& response);
     void handleListRequests(const httplib::Request& request, httplib::Response& response);
 
     RendezvousConfig config_;
     SessionStore sessionStore_;
+    UdpRelay relay_;
     std::atomic<bool> running_{false};
     std::unique_ptr<httplib::Server> server_{};
     std::thread pruneThread_{};
@@ -50,4 +53,5 @@ private:
     std::atomic<uint64_t> sessionRegistrationsTotal_{};
     std::atomic<uint64_t> heartbeatsTotal_{};
     std::atomic<uint64_t> punchRequestsTotal_{};
+    std::atomic<uint64_t> relayRequestsTotal_{};
 };

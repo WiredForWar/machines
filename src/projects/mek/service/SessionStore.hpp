@@ -35,6 +35,14 @@ public:
 
     std::optional<std::vector<Rendezvous::PunchRequestInfo>> consumePunchRequests(const std::string& sessionId);
 
+    std::optional<Rendezvous::RegisterRelayResponse> registerRelayRequest(
+        const std::string& sessionId,
+        const std::string& relayAddress,
+        uint16_t relayHostPort,
+        uint16_t relayClientPort);
+
+    std::optional<std::vector<Rendezvous::ConnectionRequestInfo>> consumeConnectionRequests(const std::string& sessionId);
+
     void pruneExpired();
 
 private:
@@ -45,6 +53,7 @@ private:
     mutable std::mutex mutex_{};
     std::unordered_map<std::string, Session> sessions_{};
     uint64_t nextSessionId_{1};
-    uint64_t nextPunchRequestId_{1};
+    uint64_t nextRequestId_{1};
     std::unordered_map<std::string, std::vector<Rendezvous::PunchRequestInfo>> punchRequests_{};
+    std::unordered_map<std::string, std::vector<Rendezvous::RelayRequestInfo>> relayRequests_{};
 };

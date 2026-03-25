@@ -55,6 +55,13 @@ bool isValidIp(const std::string& address)
 RendezvousServer::RendezvousServer(RendezvousConfig config)
     : config_(std::move(config))
     , sessionStore_(config_.sessionTimeout)
+    , relay_(UdpRelayConfig{
+          .bindAddress = config_.bindAddress,
+          .portRangeStart = config_.relayPortRangeStart,
+          .portRangeEnd = config_.relayPortRangeEnd,
+          .allocationTimeout = config_.relayAllocationTimeout,
+          .publicAddress = config_.relayPublicAddress,
+      })
 {
 }
 
@@ -79,11 +86,17 @@ bool RendezvousServer::run()
 
     pruneThread_ = std::thread(&RendezvousServer::pruneLoop, this);
 
+    if (config_.relayEnabled)
+    {
+        relay_.start();
+    }
+
     spdlog::info(
-        "RendezvousServer listening on {}:{} (metrics {})",
+        "RendezvousServer listening on {}:{} (metrics {}, relay {})",
         config_.bindAddress,
         config_.port,
-        config_.metricsEnabled ? "enabled" : "disabled");
+        config_.metricsEnabled ? "enabled" : "disabled",
+        config_.relayEnabled ? "enabled" : "disabled");
 
     const bool listenResult = server_->listen(config_.bindAddress.c_str(), config_.port);
     if (!listenResult)
@@ -95,6 +108,7 @@ bool RendezvousServer::run()
     }
 
     running_.store(false);
+    relay_.stop();
     if (pruneThread_.joinable())
     {
         pruneThread_.join();
@@ -116,6 +130,8 @@ void RendezvousServer::stop()
     {
         server_->stop();
     }
+
+    relay_.stop();
 
     if (pruneThread_.joinable())
     {
@@ -171,6 +187,12 @@ void RendezvousServer::configureRoutes()
         R"(/sessions/([^/]+)/punch)",
         [this](const httplib::Request& request, httplib::Response& response) {
             handleRegisterPunchRequest(request, response);
+        });
+
+    server_->Post(
+        R"(/sessions/([^/]+)/relay)",
+        [this](const httplib::Request& request, httplib::Response& response) {
+            handleRegisterRelayRequest(request, response);
         });
 
     server_->Get(
@@ -250,6 +272,9 @@ void RendezvousServer::handleMetrics(const httplib::Request&, httplib::Response&
     stream << "# HELP rendezvous_punch_requests_total Total punch requests registered\n";
     stream << "# TYPE rendezvous_punch_requests_total counter\n";
     stream << "rendezvous_punch_requests_total " << punchRequestsTotal_.load() << '\n';
+    stream << "# HELP rendezvous_relay_requests_total Total relay requests registered\n";
+    stream << "# TYPE rendezvous_relay_requests_total counter\n";
+    stream << "rendezvous_relay_requests_total " << relayRequestsTotal_.load() << '\n';
     stream << "# HELP rendezvous_process_uptime_seconds Process uptime in seconds\n";
     stream << "# TYPE rendezvous_process_uptime_seconds gauge\n";
     stream << "rendezvous_process_uptime_seconds " << uptimeSeconds << '\n';
@@ -388,10 +413,54 @@ void RendezvousServer::handleRegisterPunchRequest(const httplib::Request& reques
     }
 }
 
+void RendezvousServer::handleRegisterRelayRequest(const httplib::Request& request, httplib::Response& response)
+{
+    const std::string sessionId = request.matches[1].str();
+
+    if (!config_.relayEnabled)
+    {
+        response.status = HttpStatus::ServiceUnavailable;
+        response.set_content("Relay is not enabled on this server\n", ContentTypeText);
+        return;
+    }
+
+    const std::optional<RelayAllocation> allocation = relay_.allocate(sessionId);
+    if (!allocation)
+    {
+        response.status = HttpStatus::ServiceUnavailable;
+        response.set_content("No relay ports available\n", ContentTypeText);
+        return;
+    }
+
+    const std::optional<Rendezvous::RegisterRelayResponse> relayResponse = sessionStore_.registerRelayRequest(
+        sessionId,
+        allocation->relayAddress,
+        allocation->hostPort,
+        allocation->clientPort);
+    if (!relayResponse)
+    {
+        response.status = HttpStatus::NotFound;
+        response.set_content("Unknown session\n", ContentTypeText);
+        return;
+    }
+
+    relayRequestsTotal_.fetch_add(1, std::memory_order_relaxed);
+
+    nlohmann::json responseJson;
+    responseJson["requestId"] = relayResponse->requestId;
+    responseJson["relayAddress"] = relayResponse->relayAddress;
+    responseJson["relayHostPort"] = relayResponse->relayHostPort;
+    responseJson["relayClientPort"] = relayResponse->relayClientPort;
+
+    response.status = HttpStatus::Created;
+    response.set_content(responseJson.dump(), ContentTypeJson);
+}
+
 void RendezvousServer::handleListRequests(const httplib::Request& request, httplib::Response& response)
 {
     const std::string sessionId = request.matches[1].str();
-    const std::optional<std::vector<Rendezvous::PunchRequestInfo>> pending = sessionStore_.consumePunchRequests(sessionId);
+    const std::optional<std::vector<Rendezvous::ConnectionRequestInfo>> pending =
+        sessionStore_.consumeConnectionRequests(sessionId);
     if (!pending)
     {
         response.status = HttpStatus::NotFound;
@@ -400,12 +469,22 @@ void RendezvousServer::handleListRequests(const httplib::Request& request, httpl
     }
 
     nlohmann::json array = nlohmann::json::array();
-    for (const Rendezvous::PunchRequestInfo& info : *pending)
+    for (const Rendezvous::ConnectionRequestInfo& info : *pending)
     {
         nlohmann::json entry;
+        entry["type"] = info.type;
         entry["requestId"] = info.requestId;
-        entry["clientAddress"] = info.clientAddress;
-        entry["clientPort"] = info.clientPort;
+        if (info.type == "punch")
+        {
+            entry["clientAddress"] = info.clientAddress;
+            entry["clientPort"] = info.clientPort;
+        }
+        else if (info.type == "relay")
+        {
+            entry["relayAddress"] = info.relayAddress;
+            entry["relayHostPort"] = info.relayHostPort;
+            entry["relayClientPort"] = info.relayClientPort;
+        }
         array.push_back(std::move(entry));
     }
 

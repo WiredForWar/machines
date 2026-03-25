@@ -51,7 +51,8 @@ bool parseUint32(const char* text, uint32_t* outValue)
 
 void printUsage()
 {
-    std::cout << "Usage: mek [--bind-address addr] [--port N] [--session-timeout seconds] [--no-metrics]" << std::endl;
+    std::cout << "Usage: mek [--bind-address addr] [--port N] [--session-timeout seconds] [--no-metrics]\n"
+              << "           [--relay] [--relay-public-address addr] [--relay-port-range start-end]\n";
 }
 
 void initLogging()
@@ -117,6 +118,36 @@ int main(int argc, char* argv[])
         else if (argument == "--no-metrics")
         {
             config.metricsEnabled = false;
+        }
+        else if (argument == "--relay")
+        {
+            config.relayEnabled = true;
+        }
+        else if (argument == "--relay-public-address" && i + 1 < argc)
+        {
+            config.relayPublicAddress = argv[++i];
+        }
+        else if (argument == "--relay-port-range" && i + 1 < argc)
+        {
+            const std::string_view range = argv[++i];
+            const size_t dashPos = range.find('-');
+            if (dashPos == std::string_view::npos)
+            {
+                spdlog::error("Invalid relay port range (expected start-end)");
+                return 1;
+            }
+            uint16_t startPort = 0;
+            uint16_t endPort = 0;
+            const std::string startStr(range.substr(0, dashPos));
+            const std::string endStr(range.substr(dashPos + 1));
+            if (!parseUint16(startStr.c_str(), &startPort) || !parseUint16(endStr.c_str(), &endPort)
+                || startPort == 0 || endPort == 0 || startPort >= endPort)
+            {
+                spdlog::error("Invalid relay port range");
+                return 1;
+            }
+            config.relayPortRangeStart = startPort;
+            config.relayPortRangeEnd = endPort;
         }
         else if (argument == "--help")
         {

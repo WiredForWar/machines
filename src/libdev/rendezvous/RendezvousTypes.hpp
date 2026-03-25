@@ -54,6 +54,35 @@ struct PunchRequestInfo
     uint16_t clientPort{};
 };
 
+struct RelayRequestInfo
+{
+    std::string requestId{};
+    std::string relayAddress{};
+    uint16_t relayHostPort{};
+    uint16_t relayClientPort{};
+};
+
+struct RegisterRelayResponse
+{
+    std::string requestId{};
+    std::string relayAddress{};
+    uint16_t relayHostPort{};
+    uint16_t relayClientPort{};
+};
+
+struct ConnectionRequestInfo
+{
+    std::string type{};
+    // Punch fields
+    std::string requestId{};
+    std::string clientAddress{};
+    uint16_t clientPort{};
+    // Relay fields
+    std::string relayAddress{};
+    uint16_t relayHostPort{};
+    uint16_t relayClientPort{};
+};
+
 struct RendezvousClientConfig
 {
     std::string host{};
