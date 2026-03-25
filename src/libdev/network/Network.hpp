@@ -40,6 +40,7 @@ public:
         NETNET_SESSIONERROR,
         NETNET_NODEERROR,
         NETNET_VERSIONMISMATCH,
+        NETNET_SERVERUNAVAILABLE,
     };
 
     enum class NetworkProtocol

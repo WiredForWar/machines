@@ -755,6 +755,8 @@ int MachGui::convertNetworkError(int errorCode)
             return IDS_MENUMSG_NETNODEERROR;
         case NetNetwork::NETNET_VERSIONMISMATCH:
             return IDS_MENUMSG_NETVERSIONMISMATCH;
+        case NetNetwork::NETNET_SERVERUNAVAILABLE:
+            return IDS_MENUMSG_NETSERVERUNAVAILABLE;
     }
     return IDS_MENUMSG_NETSUCCESS;
 }

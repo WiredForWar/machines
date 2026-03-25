@@ -1499,6 +1499,10 @@ void NetINetwork::pollRendezvousResults()
             else
             {
                 spdlog::warn("NetINetwork: STUN query failed");
+                if (isLogicalHost_)
+                {
+                    currentStatus(NetNetwork::NETNET_SERVERUNAVAILABLE);
+                }
             }
         }
     }
@@ -1540,6 +1544,10 @@ void NetINetwork::pollRendezvousResults()
             else
             {
                 spdlog::warn("NetINetwork: Failed to register rendezvous session");
+                if (isLogicalHost_)
+                {
+                    currentStatus(NetNetwork::NETNET_SERVERUNAVAILABLE);
+                }
             }
         }
     }

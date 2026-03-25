@@ -1399,6 +1399,8 @@ BELONGING TO</string>
 	>Your name has changed to '%1' because '%2' is already being used by another player.</string>
 <string id="7143"
 	>Incompatible game version. Server: %1, Client: %2</string>
+<string id="7144"
+	>Server is not available or unreachable. Please check your connection and try again.</string>
 <string id="7150"
 	>LAN Game</string>
 <string id="7151"
