@@ -47,6 +47,7 @@ public:
     void requestHeartbeat(const std::string& sessionId);
     void requestListSessions();
     void requestRegisterPunch(const std::string& sessionId, Rendezvous::RegisterPunchRequest request);
+    void requestRegisterRelay(const std::string& sessionId);
     void requestListRequests(const std::string& sessionId);
 
     // --- Consume results (called from main thread, non-blocking) --------
@@ -57,7 +58,8 @@ public:
     std::optional<bool> takeHeartbeatResult();
     std::optional<std::optional<std::vector<Rendezvous::Session>>> takeListSessionsResult();
     std::optional<std::optional<Rendezvous::RegisterPunchResponse>> takeRegisterPunchResult();
-    std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> takeListRequestsResult();
+    std::optional<std::optional<Rendezvous::RegisterRelayResponse>> takeRegisterRelayResult();
+    std::optional<std::optional<std::vector<Rendezvous::ConnectionRequestInfo>>> takeListRequestsResult();
 
     // --- Status queries (called from main thread) -----------------------
 
@@ -66,6 +68,7 @@ public:
     bool isHeartbeatInFlight() const;
     bool isListSessionsInFlight() const;
     bool isRegisterPunchInFlight() const;
+    bool isRegisterRelayInFlight() const;
     bool isListRequestsInFlight() const;
 
 private:
@@ -103,6 +106,9 @@ private:
     std::optional<std::optional<Rendezvous::RegisterPunchResponse>> registerPunchResult_{};
     bool registerPunchInFlight_{};
 
-    std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> listRequestsResult_{};
+    std::optional<std::optional<Rendezvous::RegisterRelayResponse>> registerRelayResult_{};
+    bool registerRelayInFlight_{};
+
+    std::optional<std::optional<std::vector<Rendezvous::ConnectionRequestInfo>>> listRequestsResult_{};
     bool listRequestsInFlight_{};
 };

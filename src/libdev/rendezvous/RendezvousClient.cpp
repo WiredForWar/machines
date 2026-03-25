@@ -167,7 +167,49 @@ bool Client::registerPunchRequest(const std::string& sessionId, const RegisterPu
     return true;
 }
 
-std::optional<std::vector<PunchRequestInfo>> Client::listRequests(const std::string& sessionId) const
+bool Client::registerRelayRequest(const std::string& sessionId, RegisterRelayResponse* response) const
+{
+    if (response == nullptr)
+    {
+        return false;
+    }
+
+    if (sessionId.empty())
+    {
+        return false;
+    }
+
+    std::unique_ptr<httplib::ClientImpl> httpClient = createHttpClient();
+    if (!httpClient)
+    {
+        return false;
+    }
+
+    const std::string path = makePath("/sessions/" + sessionId + "/relay");
+    const httplib::Result result = httpClient->Post(path.c_str(), "", ContentTypeJson);
+    if (!result)
+    {
+        spdlog::warn("Rendezvous client: registerRelay request failed");
+        return false;
+    }
+
+    if (result->status != HttpStatus::Created)
+    {
+        spdlog::warn("Rendezvous client: registerRelay unexpected status {}", result->status);
+        return false;
+    }
+
+    const std::optional<RegisterRelayResponse> parsed = parseRegisterRelayResponse(result->body);
+    if (!parsed)
+    {
+        return false;
+    }
+
+    *response = *parsed;
+    return true;
+}
+
+std::optional<std::vector<ConnectionRequestInfo>> Client::listRequests(const std::string& sessionId) const
 {
     if (sessionId.empty())
     {
@@ -184,17 +226,17 @@ std::optional<std::vector<PunchRequestInfo>> Client::listRequests(const std::str
     const httplib::Result result = httpClient->Get(path.c_str());
     if (!result)
     {
-        spdlog::warn("Rendezvous client: listPunchRequests request failed");
+        spdlog::warn("Rendezvous client: listRequests request failed");
         return {};
     }
 
     if (result->status != HttpStatus::Ok)
     {
-        spdlog::warn("Rendezvous client: listPunchRequests unexpected status {}", result->status);
+        spdlog::warn("Rendezvous client: listRequests unexpected status {}", result->status);
         return {};
     }
 
-    return parsePunchRequestList(result->body);
+    return parseConnectionRequestList(result->body);
 }
 
 std::optional<std::vector<Session>> Client::listSessions() const
@@ -339,7 +381,33 @@ std::optional<RegisterPunchResponse> Client::parseRegisterPunchResponse(const st
     }
 }
 
-std::optional<std::vector<PunchRequestInfo>> Client::parsePunchRequestList(const std::string& body)
+std::optional<RegisterRelayResponse> Client::parseRegisterRelayResponse(const std::string& body)
+{
+    try
+    {
+        const nlohmann::json json = nlohmann::json::parse(body);
+        RegisterRelayResponse response{};
+        response.requestId = json.value("requestId", std::string{});
+        response.relayAddress = json.value("relayAddress", std::string{});
+        response.relayHostPort = static_cast<uint16_t>(json.value("relayHostPort", 0));
+        response.relayClientPort = static_cast<uint16_t>(json.value("relayClientPort", 0));
+
+        if (response.requestId.empty() || response.relayAddress.empty()
+            || response.relayHostPort == 0 || response.relayClientPort == 0)
+        {
+            return {};
+        }
+
+        return response;
+    }
+    catch (const nlohmann::json::parse_error&)
+    {
+        spdlog::warn("Rendezvous client: unable to parse registerRelay response");
+        return {};
+    }
+}
+
+std::optional<std::vector<ConnectionRequestInfo>> Client::parseConnectionRequestList(const std::string& body)
 {
     try
     {
@@ -349,17 +417,29 @@ std::optional<std::vector<PunchRequestInfo>> Client::parsePunchRequestList(const
             return {};
         }
 
-        std::vector<PunchRequestInfo> requests;
+        std::vector<ConnectionRequestInfo> requests;
         requests.reserve(array.size());
 
         for (nlohmann::json::const_iterator it = array.begin(); it != array.end(); ++it)
         {
             const nlohmann::json& entry = *it;
-            PunchRequestInfo info;
+            ConnectionRequestInfo info{};
+            info.type = entry.value("type", std::string{});
             info.requestId = entry.value("requestId", std::string{});
-            info.clientAddress = entry.value("clientAddress", std::string{});
-            info.clientPort = static_cast<uint16_t>(entry.value("clientPort", 0));
-            if (!info.requestId.empty() && !info.clientAddress.empty() && info.clientPort != 0)
+
+            if (info.type == "punch")
+            {
+                info.clientAddress = entry.value("clientAddress", std::string{});
+                info.clientPort = static_cast<uint16_t>(entry.value("clientPort", 0));
+            }
+            else if (info.type == "relay")
+            {
+                info.relayAddress = entry.value("relayAddress", std::string{});
+                info.relayHostPort = static_cast<uint16_t>(entry.value("relayHostPort", 0));
+                info.relayClientPort = static_cast<uint16_t>(entry.value("relayClientPort", 0));
+            }
+
+            if (!info.requestId.empty())
             {
                 requests.push_back(std::move(info));
             }
@@ -369,7 +449,7 @@ std::optional<std::vector<PunchRequestInfo>> Client::parsePunchRequestList(const
     }
     catch (const nlohmann::json::parse_error&)
     {
-        spdlog::warn("Rendezvous client: unable to parse punch request list response");
+        spdlog::warn("Rendezvous client: unable to parse connection request list response");
         return {};
     }
 }

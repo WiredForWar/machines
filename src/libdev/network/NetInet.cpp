@@ -1646,25 +1646,41 @@ void NetINetwork::pollRendezvousResults()
         }
     }
 
-    // --- List punch requests result (host side) ---
+    // --- List connection requests result (host side) ---
     if (listPunchRequestsPending_)
     {
-        std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> punchListResult =
+        std::optional<std::optional<std::vector<Rendezvous::ConnectionRequestInfo>>> requestListResult =
             worker_->takeListRequestsResult();
-        if (punchListResult)
+        if (requestListResult)
         {
             listPunchRequestsPending_ = false;
-            if (*punchListResult)
+            if (*requestListResult)
             {
-                for (const Rendezvous::PunchRequestInfo& info : **punchListResult)
+                for (const Rendezvous::ConnectionRequestInfo& info : **requestListResult)
                 {
-                    spdlog::info(
-                        "NetINetwork: Punch request {} for session {}: client {}:{}",
-                        info.requestId,
-                        rendezvousSessionId_,
-                        info.clientAddress,
-                        info.clientPort);
-                    sendUdpPunch(info.clientAddress, info.clientPort);
+                    if (info.type == "punch")
+                    {
+                        spdlog::info(
+                            "NetINetwork: Punch request {} for session {}: client {}:{}",
+                            info.requestId,
+                            rendezvousSessionId_,
+                            info.clientAddress,
+                            info.clientPort);
+                        sendUdpPunch(info.clientAddress, info.clientPort);
+                    }
+                    else if (info.type == "relay")
+                    {
+                        spdlog::info(
+                            "NetINetwork: Relay request {} for session {}: relay {}:{}/{}",
+                            info.requestId,
+                            rendezvousSessionId_,
+                            info.relayAddress,
+                            info.relayHostPort,
+                            info.relayClientPort);
+                        // Host sends a UDP punch to its relay port so the relay learns
+                        // the host's remote address and can start forwarding.
+                        sendUdpPunch(info.relayAddress, info.relayHostPort);
+                    }
                 }
             }
         }

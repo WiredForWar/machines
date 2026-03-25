@@ -29,7 +29,8 @@ public:
     bool sendHeartbeat(const std::string& sessionId) const;
     std::optional<std::vector<Session>> listSessions() const;
     bool registerPunchRequest(const std::string& sessionId, const RegisterPunchRequest& request, RegisterPunchResponse* response) const;
-    std::optional<std::vector<PunchRequestInfo>> listRequests(const std::string& sessionId) const;
+    bool registerRelayRequest(const std::string& sessionId, RegisterRelayResponse* response) const;
+    std::optional<std::vector<ConnectionRequestInfo>> listRequests(const std::string& sessionId) const;
 
 private:
     std::unique_ptr<httplib::ClientImpl> createHttpClient() const;
@@ -37,7 +38,8 @@ private:
     static std::optional<RegisterSessionResponse> parseRegisterResponse(const std::string& body);
     static std::optional<std::vector<Session>> parseSessionList(const std::string& body);
     static std::optional<RegisterPunchResponse> parseRegisterPunchResponse(const std::string& body);
-    static std::optional<std::vector<PunchRequestInfo>> parsePunchRequestList(const std::string& body);
+    static std::optional<RegisterRelayResponse> parseRegisterRelayResponse(const std::string& body);
+    static std::optional<std::vector<ConnectionRequestInfo>> parseConnectionRequestList(const std::string& body);
 
     RendezvousClientConfig config_{};
 };

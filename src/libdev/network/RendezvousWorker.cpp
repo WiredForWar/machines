@@ -140,6 +140,33 @@ void RendezvousWorker::requestRegisterPunch(const std::string& sessionId, Rendez
     });
 }
 
+void RendezvousWorker::requestRegisterRelay(const std::string& sessionId)
+{
+    {
+        std::lock_guard<std::mutex> lock(resultMutex_);
+        registerRelayInFlight_ = true;
+    }
+
+    std::string id = sessionId;
+    enqueue([this, id = std::move(id)] {
+        Rendezvous::RegisterRelayResponse response{};
+        bool ok = client_->registerRelayRequest(id, &response);
+
+        {
+            std::lock_guard<std::mutex> lock(resultMutex_);
+            if (ok)
+            {
+                registerRelayResult_ = std::move(response);
+            }
+            else
+            {
+                registerRelayResult_ = std::nullopt;
+            }
+            registerRelayInFlight_ = false;
+        }
+    });
+}
+
 void RendezvousWorker::requestListRequests(const std::string& sessionId)
 {
     {
@@ -149,7 +176,7 @@ void RendezvousWorker::requestListRequests(const std::string& sessionId)
 
     std::string id = sessionId;
     enqueue([this, id = std::move(id)] {
-        std::optional<std::vector<Rendezvous::PunchRequestInfo>> result = client_->listRequests(id);
+        std::optional<std::vector<Rendezvous::ConnectionRequestInfo>> result = client_->listRequests(id);
 
         {
             std::lock_guard<std::mutex> lock(resultMutex_);
@@ -203,10 +230,18 @@ std::optional<std::optional<Rendezvous::RegisterPunchResponse>> RendezvousWorker
     return out;
 }
 
-std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> RendezvousWorker::takeListRequestsResult()
+std::optional<std::optional<Rendezvous::RegisterRelayResponse>> RendezvousWorker::takeRegisterRelayResult()
 {
     std::lock_guard<std::mutex> lock(resultMutex_);
-    std::optional<std::optional<std::vector<Rendezvous::PunchRequestInfo>>> out{};
+    std::optional<std::optional<Rendezvous::RegisterRelayResponse>> out{};
+    out.swap(registerRelayResult_);
+    return out;
+}
+
+std::optional<std::optional<std::vector<Rendezvous::ConnectionRequestInfo>>> RendezvousWorker::takeListRequestsResult()
+{
+    std::lock_guard<std::mutex> lock(resultMutex_);
+    std::optional<std::optional<std::vector<Rendezvous::ConnectionRequestInfo>>> out{};
     out.swap(listRequestsResult_);
     return out;
 }
@@ -243,6 +278,12 @@ bool RendezvousWorker::isRegisterPunchInFlight() const
 {
     std::lock_guard<std::mutex> lock(resultMutex_);
     return registerPunchInFlight_;
+}
+
+bool RendezvousWorker::isRegisterRelayInFlight() const
+{
+    std::lock_guard<std::mutex> lock(resultMutex_);
+    return registerRelayInFlight_;
 }
 
 bool RendezvousWorker::isListRequestsInFlight() const
