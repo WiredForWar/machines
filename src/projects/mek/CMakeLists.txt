@@ -17,6 +17,8 @@ add_executable(mek
     service/RendezvousServer.hpp
     service/SessionStore.cpp
     service/SessionStore.hpp
+    service/UdpRelay.cpp
+    service/UdpRelay.hpp
 )
 
 target_include_directories(mek PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
