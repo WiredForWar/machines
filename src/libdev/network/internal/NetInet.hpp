@@ -52,6 +52,7 @@ public:
     {
         Idle,
         WaitingPunch,
+        WaitingRelay,
         Connecting,
         WaitingInit,
         Done,
@@ -260,6 +261,7 @@ private:
     bool listSessionsPending_{};
     bool listPunchRequestsPending_{};
     bool registerPunchPending_{};
+    bool registerRelayPending_{};
 
     ///////////////////////////////
 

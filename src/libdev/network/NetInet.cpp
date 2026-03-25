@@ -435,7 +435,8 @@ bool NetINetwork::hasActiveSession() const
 void NetINetwork::pollMessages()
 {
     // Don't drain events while the async join state machine owns the host
-    if (joinState_ == JoinState::Connecting || joinState_ == JoinState::WaitingInit)
+    if (joinState_ == JoinState::Connecting || joinState_ == JoinState::WaitingInit
+        || joinState_ == JoinState::WaitingRelay)
         return;
 
     //  This line must be outside the if for the recorder to work properly
@@ -726,14 +727,30 @@ void NetINetwork::updateJoin()
 
     // WaitingPunch: we're waiting for the async STUN + punch exchange.
     // pollRendezvousResults() will transition us to Connecting once done.
-    // If it takes too long, fall back to a direct connect attempt.
+    // If it takes too long, try relay fallback before direct connect.
     if (joinState_ == JoinState::WaitingPunch)
     {
         static constexpr double PunchWaitTimeout = 3.0;
         if (elapsed > PunchWaitTimeout)
         {
-            spdlog::warn("NetINetwork: Punch exchange timed out after {:.1f}s, attempting direct connect", elapsed);
+            spdlog::warn("NetINetwork: Punch exchange timed out after {:.1f}s", elapsed);
 
+            // Try relay fallback if we have a rendezvous session
+            if (!selectedRendezvousSessionId_.empty() && !registerRelayPending_)
+            {
+                RendezvousWorker* worker = ensureWorker();
+                if (worker != nullptr)
+                {
+                    spdlog::info("NetINetwork: Requesting relay allocation for session {}", selectedRendezvousSessionId_);
+                    registerRelayPending_ = true;
+                    worker->requestRegisterRelay(selectedRendezvousSessionId_);
+                    joinState_ = JoinState::WaitingRelay;
+                    return;
+                }
+            }
+
+            // No rendezvous or worker — fall back to direct connect
+            spdlog::info("NetINetwork: Falling back to direct connect");
             std::array<char, 64> hostBuf{};
             enet_address_get_host_ip(&joinAddress_, hostBuf.data(), hostBuf.size());
             sendUdpPunch(hostBuf.data(), joinAddress_.port);
@@ -748,6 +765,13 @@ void NetINetwork::updateJoin()
             }
             joinState_ = JoinState::Connecting;
         }
+        return;
+    }
+
+    // WaitingRelay: relay request is in flight; pollRendezvousResults will
+    // transition us to Connecting once the result arrives.
+    if (joinState_ == JoinState::WaitingRelay)
+    {
         return;
     }
 
@@ -1640,6 +1664,69 @@ void NetINetwork::pollRendezvousResults()
                 else
                 {
                     spdlog::info("NetINetwork: Punch exchange done, starting ENet connect");
+                    joinState_ = JoinState::Connecting;
+                }
+            }
+        }
+    }
+
+    // --- Register relay result (client side) ---
+    if (registerRelayPending_)
+    {
+        std::optional<std::optional<Rendezvous::RegisterRelayResponse>> relayResult =
+            worker_->takeRegisterRelayResult();
+        if (relayResult)
+        {
+            registerRelayPending_ = false;
+            if (*relayResult && joinState_ == JoinState::WaitingRelay)
+            {
+                const Rendezvous::RegisterRelayResponse& relay = **relayResult;
+                spdlog::info(
+                    "NetINetwork: Relay allocated for session {}: {}:{} (client port {})",
+                    selectedRendezvousSessionId_,
+                    relay.relayAddress,
+                    relay.relayHostPort,
+                    relay.relayClientPort);
+
+                // Connect to the relay's client-side port instead of the host directly
+                ENetAddress relayAddress{};
+                enet_address_set_host(&relayAddress, relay.relayAddress.c_str());
+                relayAddress.port = relay.relayClientPort;
+
+                // Send a UDP punch to the relay so it learns our address
+                sendUdpPunch(relay.relayAddress, relay.relayClientPort);
+
+                joinPeer_ = enet_host_connect(pHost_, &relayAddress, 2, 0);
+                if (joinPeer_ == nullptr)
+                {
+                    spdlog::warn("NetINetwork: No available peers for relay connection");
+                    currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+                    joinState_ = JoinState::Done;
+                }
+                else
+                {
+                    spdlog::info("NetINetwork: Connecting via relay");
+                    joinState_ = JoinState::Connecting;
+                }
+            }
+            else if (joinState_ == JoinState::WaitingRelay)
+            {
+                // Relay allocation failed — fall back to direct connect
+                spdlog::warn("NetINetwork: Relay allocation failed, falling back to direct connect");
+
+                std::array<char, 64> hostBuf{};
+                enet_address_get_host_ip(&joinAddress_, hostBuf.data(), hostBuf.size());
+                sendUdpPunch(hostBuf.data(), joinAddress_.port);
+
+                joinPeer_ = enet_host_connect(pHost_, &joinAddress_, 2, 0);
+                if (joinPeer_ == nullptr)
+                {
+                    spdlog::warn("NetINetwork: No available peers for connection");
+                    currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+                    joinState_ = JoinState::Done;
+                }
+                else
+                {
                     joinState_ = JoinState::Connecting;
                 }
             }
