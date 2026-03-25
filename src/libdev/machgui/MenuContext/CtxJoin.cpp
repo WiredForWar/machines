@@ -235,6 +235,7 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
     {
         editingGameName_ = true;
         NetNetwork::instance().setSelectedRendezvousSessionId({});
+        NetNetwork::instance().setSelectedRendezvousLanAddress({});
     }
     else
     {
@@ -260,6 +261,7 @@ void MachGuiCtxJoin::onGamesListSelectionChanged()
 
                     NetNetwork::instance().setIPAddress(info.address);
                     NetNetwork::instance().setSelectedRendezvousSessionId(info.sessionId);
+                    NetNetwork::instance().setSelectedRendezvousLanAddress(info.lanAddress);
                     pNetworkProtocol_->readNetworkDetails();
                 }
             }

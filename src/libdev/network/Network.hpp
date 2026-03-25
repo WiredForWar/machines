@@ -135,6 +135,8 @@ public:
     void setIPAddress(const std::string& newAddress);
     const std::string& selectedRendezvousSessionId() const;
     void setSelectedRendezvousSessionId(const std::string& sessionId);
+    const std::string& selectedRendezvousLanAddress() const;
+    void setSelectedRendezvousLanAddress(const std::string& lanAddress);
 
     bool imStuffed() const;
     bool imStuffedNoRecord() const;

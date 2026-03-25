@@ -150,6 +150,8 @@ private:
     void setIPAddress(const std::string& newIPAddress);
     const std::string& selectedRendezvousSessionId() const;
     void setSelectedRendezvousSessionId(const std::string& sessionId);
+    const std::string& selectedRendezvousLanAddress() const;
+    void setSelectedRendezvousLanAddress(const std::string& lanAddress);
 
     bool isValidNoRecord() const;
     bool hasLocalNodeNoRecord(const NetNode*) const;
@@ -214,6 +216,7 @@ private:
 
     std::string IPAddress_;
     std::string selectedRendezvousSessionId_{};
+    std::string selectedRendezvousLanAddress_{};
 
     NetNetwork::NetworkProtocol currentProtocol_;
 

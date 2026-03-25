@@ -11,6 +11,8 @@ SessionStore::SessionStore(std::chrono::seconds sessionTimeout)
 SessionStore::Session SessionStore::registerSession(
     const std::string& hostAddress,
     uint16_t hostPort,
+    const std::string& hostLanAddress,
+    uint16_t hostLanPort,
     const std::string& gameName)
 {
     const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
@@ -35,6 +37,8 @@ SessionStore::Session SessionStore::registerSession(
     session.sessionId = generateSessionId();
     session.hostAddress = hostAddress;
     session.hostPort = hostPort;
+    session.hostLanAddress = hostLanAddress;
+    session.hostLanPort = hostLanPort;
     session.gameName = gameName;
     session.createdAt = now;
     session.lastHeartbeat = now;

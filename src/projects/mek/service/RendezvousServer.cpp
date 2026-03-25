@@ -23,6 +23,8 @@ nlohmann::json makeRegisterSessionResponseJson(const Rendezvous::RegisterSession
     json["sessionId"] = response.session.sessionId;
     json["hostAddress"] = response.session.hostAddress;
     json["hostPort"] = response.session.hostPort;
+    json["hostLanAddress"] = response.session.hostLanAddress;
+    json["hostLanPort"] = response.session.hostLanPort;
     json["gameName"] = response.session.gameName;
     json["expiresInSeconds"] = response.expiresIn.count();
     return json;
@@ -34,6 +36,8 @@ nlohmann::json makeSessionListEntryJson(const Rendezvous::Session& session)
     entry["sessionId"] = session.sessionId;
     entry["hostAddress"] = session.hostAddress;
     entry["hostPort"] = session.hostPort;
+    entry["hostLanAddress"] = session.hostLanAddress;
+    entry["hostLanPort"] = session.hostLanPort;
     entry["gameName"] = session.gameName;
     entry["createdAt"] = std::chrono::duration_cast<std::chrono::seconds>(
                                session.createdAt.time_since_epoch())
@@ -281,6 +285,15 @@ void RendezvousServer::handleRegisterSession(const httplib::Request& request, ht
         registerRequest.hostPort = static_cast<uint16_t>(body["hostPort"].get<int>());
         registerRequest.gameName = body["gameName"].get<std::string>();
 
+        if (body.contains("hostLanAddress") && body["hostLanAddress"].is_string())
+        {
+            registerRequest.hostLanAddress = body["hostLanAddress"].get<std::string>();
+        }
+        if (body.contains("hostLanPort") && body["hostLanPort"].is_number_integer())
+        {
+            registerRequest.hostLanPort = static_cast<uint16_t>(body["hostLanPort"].get<int>());
+        }
+
         if (registerRequest.hostPort == 0)
         {
             response.status = HttpStatus::BadRequest;
@@ -291,6 +304,8 @@ void RendezvousServer::handleRegisterSession(const httplib::Request& request, ht
         const SessionStore::Session session = sessionStore_.registerSession(
             remoteAddress,
             registerRequest.hostPort,
+            registerRequest.hostLanAddress,
+            registerRequest.hostLanPort,
             registerRequest.gameName);
 
         spdlog::info(
@@ -398,17 +413,27 @@ void RendezvousServer::handleListRequests(const httplib::Request& request, httpl
     response.set_content(array.dump(), ContentTypeJson);
 }
 
-void RendezvousServer::handleListSessions(const httplib::Request&, httplib::Response& response) const
+void RendezvousServer::handleListSessions(const httplib::Request& request, httplib::Response& response) const
 {
+    const std::string requesterAddress = request.remote_addr;
     const std::vector<SessionStore::Session> sessionsSnapshot = sessionStore_.sessions();
     nlohmann::json array = nlohmann::json::array();
 
     for (const SessionStore::Session& session : sessionsSnapshot)
     {
-        array.push_back(makeSessionListEntryJson(session));
+        nlohmann::json entry = makeSessionListEntryJson(session);
+
+        // Only expose the host's LAN address to clients behind the same NAT
+        if (session.hostAddress != requesterAddress)
+        {
+            entry.erase("hostLanAddress");
+            entry.erase("hostLanPort");
+        }
+
+        array.push_back(std::move(entry));
     }
 
-    spdlog::info("Returning {} sessions", array.size());
+    spdlog::info("Returning {} sessions to {}", array.size(), requesterAddress);
 
     response.status = HttpStatus::Ok;
     response.set_content(array.dump(), ContentTypeJson);

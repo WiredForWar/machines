@@ -12,6 +12,8 @@ struct Session
     std::string sessionId{};
     std::string hostAddress{};
     uint16_t hostPort{};
+    std::string hostLanAddress{};
+    uint16_t hostLanPort{};
     std::string gameName{};
     std::chrono::steady_clock::time_point createdAt{};
     std::chrono::steady_clock::time_point lastHeartbeat{};
@@ -20,6 +22,8 @@ struct Session
 struct RegisterSessionRequest
 {
     uint16_t hostPort{};
+    std::string hostLanAddress{};
+    uint16_t hostLanPort{};
     std::string gameName{};
 };
 

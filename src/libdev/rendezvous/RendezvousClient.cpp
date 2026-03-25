@@ -56,6 +56,11 @@ bool Client::registerSession(const RegisterSessionRequest& request, RegisterSess
     nlohmann::json payload;
     payload["hostPort"] = request.hostPort;
     payload["gameName"] = request.gameName;
+    if (!request.hostLanAddress.empty())
+    {
+        payload["hostLanAddress"] = request.hostLanAddress;
+        payload["hostLanPort"] = request.hostLanPort;
+    }
 
     const std::string path = makePath("/sessions");
     const httplib::Result result = httpClient->Post(path.c_str(), payload.dump(), ContentTypeJson);
@@ -265,6 +270,8 @@ std::optional<RegisterSessionResponse> Client::parseRegisterResponse(const std::
         response.session.sessionId = json.value("sessionId", std::string{});
         response.session.hostAddress = json.value("hostAddress", std::string{});
         response.session.hostPort = static_cast<uint16_t>(json.value("hostPort", 0));
+        response.session.hostLanAddress = json.value("hostLanAddress", std::string{});
+        response.session.hostLanPort = static_cast<uint16_t>(json.value("hostLanPort", 0));
         response.session.gameName = json.value("gameName", std::string{});
         response.expiresIn = std::chrono::seconds(json.value("expiresInSeconds", 0));
         return response;
@@ -296,6 +303,8 @@ std::optional<std::vector<Session>> Client::parseSessionList(const std::string& 
             session.sessionId = entry.value("sessionId", std::string{});
             session.hostAddress = entry.value("hostAddress", std::string{});
             session.hostPort = static_cast<uint16_t>(entry.value("hostPort", 0));
+            session.hostLanAddress = entry.value("hostLanAddress", std::string{});
+            session.hostLanPort = static_cast<uint16_t>(entry.value("hostLanPort", 0));
             session.gameName = entry.value("gameName", std::string{});
             sessions.push_back(session);
         }

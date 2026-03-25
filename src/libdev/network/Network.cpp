@@ -282,6 +282,16 @@ void NetNetwork::setSelectedRendezvousSessionId(const std::string& sessionId)
     pNetINetwork_->setSelectedRendezvousSessionId(sessionId);
 }
 
+const std::string& NetNetwork::selectedRendezvousLanAddress() const
+{
+    return pNetINetwork_->selectedRendezvousLanAddress();
+}
+
+void NetNetwork::setSelectedRendezvousLanAddress(const std::string& lanAddress)
+{
+    pNetINetwork_->setSelectedRendezvousLanAddress(lanAddress);
+}
+
 void NetNetwork::initialiseConnection()
 {
     pNetINetwork_->initialiseConnection();

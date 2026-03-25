@@ -17,7 +17,12 @@ public:
 
     explicit SessionStore(std::chrono::seconds sessionTimeout);
 
-    Session registerSession(const std::string& hostAddress, uint16_t hostPort, const std::string& gameName);
+    Session registerSession(
+        const std::string& hostAddress,
+        uint16_t hostPort,
+        const std::string& hostLanAddress,
+        uint16_t hostLanPort,
+        const std::string& gameName);
 
     std::vector<Session> sessions() const;
 

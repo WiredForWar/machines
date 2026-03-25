@@ -654,6 +654,33 @@ void NetINetwork::beginJoinAppSession(const std::string& addressStr)
 
     if (isStunProtocolSelected())
     {
+        // Same-LAN detection: if the host provided a LAN address and it is
+        // available, use it directly — no punching or STUN needed.
+        if (!selectedRendezvousLanAddress_.empty())
+        {
+            const std::string lanIp = std::string(getHost(selectedRendezvousLanAddress_));
+            const std::optional<uint16_t> lanPort = getPort(selectedRendezvousLanAddress_);
+
+            spdlog::info(
+                "NetINetwork: Same-LAN detected, connecting directly to {}:{}",
+                lanIp,
+                lanPort.value_or(GamePort));
+
+            enet_address_set_host(&joinAddress_, lanIp.c_str());
+            joinAddress_.port = lanPort.value_or(GamePort);
+
+            joinPeer_ = enet_host_connect(pHost_, &joinAddress_, 2, 0);
+            if (joinPeer_ == nullptr)
+            {
+                spdlog::warn("NetINetwork: No available peers for connection");
+                currentStatus(NetNetwork::NETNET_CONNECTIONERROR);
+                joinState_ = JoinState::Done;
+                return;
+            }
+            joinState_ = JoinState::Connecting;
+            return;
+        }
+
         // Enter WaitingPunch: the ENet connect is deferred until the
         // punch exchange completes (STUN → register punch → host punches back).
         clearPublicEndpoint();
@@ -914,6 +941,16 @@ const std::string& NetINetwork::selectedRendezvousSessionId() const
 void NetINetwork::setSelectedRendezvousSessionId(const std::string& sessionId)
 {
     selectedRendezvousSessionId_ = sessionId;
+}
+
+const std::string& NetINetwork::selectedRendezvousLanAddress() const
+{
+    return selectedRendezvousLanAddress_;
+}
+
+void NetINetwork::setSelectedRendezvousLanAddress(const std::string& lanAddress)
+{
+    selectedRendezvousLanAddress_ = lanAddress;
 }
 
 const NetNetwork::ProtocolList& NetINetwork::availableProtocols(Update update)
@@ -1376,6 +1413,11 @@ void NetINetwork::beginRegisterSession()
 
     Rendezvous::RegisterSessionRequest request{};
     request.hostPort = publicEndpoint_->publicPort;
+    request.hostLanAddress = getLocalLanAddress();
+    if (!request.hostLanAddress.empty() && pHost_ != nullptr)
+    {
+        request.hostLanPort = pHost_->address.port;
+    }
     request.gameName = gameName_;
 
     registerSessionPending_ = true;
@@ -1533,6 +1575,10 @@ void NetINetwork::pollRendezvousResults()
                 {
                     NetSessionInfo info;
                     info.address = makeAddress(session.hostAddress, session.hostPort);
+                    if (!session.hostLanAddress.empty() && session.hostLanPort != 0)
+                    {
+                        info.lanAddress = makeAddress(session.hostLanAddress, session.hostLanPort);
+                    }
                     info.serverName = session.gameName;
                     info.sessionId = session.sessionId;
                     sessions_.push_back(std::move(info));
