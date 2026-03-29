@@ -51,10 +51,25 @@ std::string Gui::getScaledImagePath(std::string path, float scale)
 
     if (scale == 1)
     {
+        std::string pngPath;
         if (hasBmpExtention)
-            return path;
+        {
+            pngPath = path;
+            const auto from = pngPath.end() - s_BmpSuffixSize;
+            pngPath.replace(from, pngPath.end(), s_PngTextureSuffix);
+        }
+        else
+        {
+            pngPath = path + s_PngTextureSuffix;
+            path += s_BmpTextureSuffix;
+        }
 
-        return path + s_BmpTextureSuffix;
+        // Prefer png over bmp
+        pngPath = System::findFile(pngPath);
+        if (SysPathName::existsAsFile(pngPath))
+            return pngPath;
+
+        return System::findFile(path);
     }
 
     s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
@@ -62,64 +77,26 @@ std::string Gui::getScaledImagePath(std::string path, float scale)
     {
         const auto from = path.end() - s_BmpSuffixSize;
         path.replace(from, path.end(), s_ScaledTextureSuffix);
-        return path;
+    }
+    else
+    {
+        path += s_ScaledTextureSuffix;
     }
 
-    return path + s_ScaledTextureSuffix;
+    return path.empty() ? path : System::findFile(path);
 }
 
 GuiBitmap Gui::requestScaledImage(std::string path, float scale)
 {
-    const bool hasBmpExtention = path.size() > s_BmpSuffixSize
-        && path.substr(path.size() - s_BmpSuffixSize, s_BmpSuffixSize) == s_BmpTextureSuffix;
+    std::string imagePath = getScaledImagePath(path, scale);
 
     if (scale == 1)
-    {
-        std::string pngImagePath;
-        if (hasBmpExtention)
-        {
-            pngImagePath = path;
-            const auto from = pngImagePath.end() - s_BmpSuffixSize;
-            pngImagePath.replace(from, pngImagePath.end(), s_PngTextureSuffix);
-        }
-        else
-        {
-            pngImagePath = path + s_PngTextureSuffix;
-            path += s_BmpTextureSuffix;
-        }
-
-        pngImagePath = System::findFile(pngImagePath);
-
-        // Prefer (try first) png images
-        if (SysPathName::existsAsFile(pngImagePath))
-        {
-            return Gui::bitmap(pngImagePath);
-        }
-
-        path = System::findFile(path);
-        return Gui::bitmap(path);
-    }
-
-    s_ScaledTextureSuffix[1] = '0' + static_cast<int>(scale);
-    std::string imagePath = path;
-    if (hasBmpExtention)
-    {
-        const auto from = imagePath.end() - s_BmpSuffixSize;
-        imagePath.replace(from, imagePath.end(), s_ScaledTextureSuffix);
-    }
-    else
-    {
-        imagePath += s_ScaledTextureSuffix;
-    }
-
-    imagePath = System::findFile(imagePath);
-    if (SysPathName::existsAsFile(imagePath))
-    {
         return Gui::bitmap(imagePath);
-    }
 
-    imagePath = System::findFile(hasBmpExtention ? path : path + s_BmpTextureSuffix);
-    GuiBitmap result = Gui::bitmap(imagePath);
+    if (SysPathName::existsAsFile(imagePath))
+        return Gui::bitmap(imagePath);
+
+    GuiBitmap result = Gui::bitmap(getScaledImagePath(path, 1));
     result.setRequestedSize(result.size() * scale);
     return result;
 }
