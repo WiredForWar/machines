@@ -1611,17 +1611,7 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
         else
         {
             // Load the actual map terrain
-            if (Gui::uiScaleFactor() == 1)
-            {
-                mapBackground_ = Gui::bitmap(mapPath_);
-            }
-            else
-            {
-                GuiBitmap mapBitmap = Gui::bitmap(mapPath_);
-                mapBackground_ = RenSurface::createAnonymousSurface(
-                    mapBitmap.size() * Gui::uiScaleFactor());
-                Ren::Painter(mapBackground_).stretchBlit(mapBitmap);
-            }
+            mapBackground_ = Gui::getScaledImage(mapPath_);
         }
     }
 }
