@@ -6,7 +6,7 @@
 - A number of pathfinding improvements (performance and responsiveness)
 - Screenshot capture is now more robust and the 'Paused' overlay is no longer included in screenshots
 - Optimized the game startup
-- Added models texture modding support
+- Added models, cursors, and planet minimaps texture modding support
 - Added support for scaled planet maps
 - Fixed constructions interior was not race specific (always red)
 - Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)

@@ -137,7 +137,7 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
     int nFrames = cursorSpec.getFramesNumber();
     double fps = cursorSpec.getFps();
     std::string baseName = cursorSpec.getName();
-    MexPoint2d origin = cursorSpec.origin();
+    MexPoint2d origin = cursorSpec.origin() * Gui::uiScaleFactor();
 
     ASSERT(nFrames < 100, "No more than 99 frames allowed for animated cursors - this is the current arbitrary limit.");
 
@@ -151,35 +151,19 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
     RenAnimCursor2d* pCursor = new RenAnimCursor2d;
 
     // Create and add the surface for each frame
-    char buffer[3];
+    char buffer[12];
     const std::string cursorDir = "gui/cursor/";
     const std::string basePath = cursorDir + baseName;
-    std::string extention;
 
+    // Check if twice as many frames exist (e.g. spec says 4 but 8 frames are available)
+    if (nFrames > 1)
     {
-        std::string withFrames = nFrames > 1 ? basePath + "1" : basePath;
-        extention = MachGui::getScaledImagePath(std::string());
-
-        if (SysPathName::existsAsFile(withFrames + extention))
+        snprintf(buffer, sizeof(buffer), "%d", nFrames * 2);
+        std::string twicePath = Gui::getScaledImagePath(basePath + buffer);
+        if (SysPathName::existsAsFile(twicePath))
         {
-            origin *= Gui::uiScaleFactor();
-        }
-        else
-        {
-            // Fallback
-            extention = ".bmp";
-
-            ASSERT(SysPathName::existsAsFile(withFrames + extention), "Unable to load a cursor: file not found");
-        }
-        if (nFrames > 1)
-        {
-            snprintf(buffer, sizeof(buffer), "%d", nFrames * 2);
-            if (SysPathName::existsAsFile(basePath + buffer + extention))
-            {
-                // Twice many frames
-                fps *= 2;
-                nFrames *= 2;
-            }
+            fps *= 2;
+            nFrames *= 2;
         }
     }
 
@@ -189,17 +173,12 @@ RenCursor2d* MachInGameCursors2d::loadCursor(const MachCursorSpec& cursorSpec)
         std::string name = basePath;
         if (nFrames > 1)
         {
-            int frameNumber = i + 1;
-            //          name += itoa( frameNumber, buffer, 10 );
-            snprintf(buffer, sizeof(buffer), "%d", frameNumber);
+            snprintf(buffer, sizeof(buffer), "%d", i + 1);
             name += buffer;
         }
 
-        name += extention;
-        //++index;
-
-        // Create the surface
-        GuiBitmap surface = Gui::bitmap(SysPathName(name));
+        // Load the surface, scaling if needed
+        GuiBitmap surface = Gui::getScaledImage(name);
         surface.enableColourKeying();
 
         if (i == 0)
