@@ -583,6 +583,35 @@ void RenDevice::releaseGpuResources()
         backend_->destroyTexture2D(postProcessColorTexture_);
     backend_->releaseFramebuffer(postProcessFBO_);
     backend_->releaseBuffer(postProcessQuadVBO_);
+
+    gui2D_ = {};
+    standard_ = {};
+    billboard_ = {};
+    shadowDepth_ = {};
+    postProcess_ = {};
+    geometryRenderPass_ = {};
+    uiRenderPass_ = {};
+    shadowRenderPass_ = {};
+    shadowFramebuffer_ = {};
+    shadowDepthTexture_ = {};
+    shadowNearFramebuffer_ = {};
+    shadowNearDepthTexture_ = {};
+    vertexBuffer2D_ = {};
+    vertexDataBuffer_ = {};
+    normalBuffer_ = {};
+    vtxDiffuseBuffer_ = {};
+    vtxAmbientBuffer_ = {};
+    vtxEmissiveBuffer_ = {};
+    elementBuffer_ = {};
+    vertexDataBufferBillboard_ = {};
+    elementBufferBillboard_ = {};
+    offscreenFramebuffer_ = {};
+    postProcessFBO_ = {};
+    postProcessColorTexture_ = {};
+    postProcessQuadVBO_ = {};
+    postProcessWidth_ = {};
+    postProcessHeight_ = {};
+    postProcessReady_ = {};
 }
 
 void RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
