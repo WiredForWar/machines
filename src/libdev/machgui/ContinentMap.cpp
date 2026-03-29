@@ -38,6 +38,8 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "sim/Manager.hpp"
 
+#include "spdlog/spdlog.h"
+
 using SysPathNames = std::pair<SysPathName, SysPathName>;
 
 const size_t NUM_FRAMES = 12;
@@ -48,6 +50,7 @@ const size_t SCANNER_ACTUALSIZE[5] = { 20, 40, 80, 130, 200 };
 
 const size_t BEENHERE_ARRAYWIDTH = 70;
 const size_t BEENHERE_ARRAYHEIGHT = 70;
+const Ren::Size MAP_IMAGE_BASE_SIZE = Ren::Size(134, 127);
 
 class MachGuiTerrainOnOffButton : public GuiBitmapButtonWithFilledBorder
 {
@@ -227,7 +230,7 @@ MachContinentMap::MachContinentMap(
     , pCameras_(pCameras)
     , firstDraw_(false)
     , pInGameScreen_(pInGameScreen)
-    , mapBackground_(logoImage(MachPhys::RED))
+    , mapBackground_(MachGui::getScaledImage(logoImagePath(MachPhys::RED)))
     , fogOfWarOn_(true)
     , mapMode_(UNITS_ONLY)
     , currentBeacon_(MachLog::NO_BEACON)
@@ -296,7 +299,7 @@ void MachContinentMap::loadGame(const std::string& planet)
 
     DEBUG_STREAM(DIAG_NEIL, "Changing map to " << mapBmp << std::endl);
 
-    const Ren::Size mapBackgroundSize = Ren::Size(134, 127) * Gui::uiScaleFactor();
+    const Ren::Size mapBackgroundSize = MAP_IMAGE_BASE_SIZE * Gui::uiScaleFactor();
     mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackgroundSize);
     mapFrameTwo_ = RenSurface::createAnonymousSurface(mapFrameOne_.size());
 
@@ -383,16 +386,16 @@ void MachContinentMap::doDisplay()
 }
 
 // static
-GuiBitmap& MachContinentMap::logoImage(MachPhys::Race race)
+std::string MachContinentMap::logoImagePath(MachPhys::Race race)
 {
-    static GuiBitmap logoPixel[MachPhys::N_RACES] = {
-        MachGui::getScaledImage("gui/map/rlogo.bmp"),
-        MachGui::getScaledImage("gui/map/blogo.bmp"),
-        MachGui::getScaledImage("gui/map/glogo.bmp"),
-        MachGui::getScaledImage("gui/map/ylogo.bmp"),
+    static const std::string logoPaths[MachPhys::N_RACES] = {
+        "gui/map/rlogo.bmp",
+        "gui/map/blogo.bmp",
+        "gui/map/glogo.bmp",
+        "gui/map/ylogo.bmp",
     };
 
-    return logoPixel[race];
+    return logoPaths[race];
 }
 
 // static
@@ -1603,15 +1606,12 @@ void MachContinentMap::updateBeacon(bool forceBeaconUpdate /* = false */)
     {
         currentBeacon_ = newBeaconSetting;
 
-        // If we don't have any form of beacon then the map just shows the race logo
-        if (currentBeacon_ == MachLog::NO_BEACON)
+        std::string path = currentBeacon_ == MachLog::NO_BEACON ? logoImagePath(playerRace_) : mapPath_;
+        mapBackground_ = Gui::getScaledImage(path);
+        const Ren::Size mapBackgroundSize = MAP_IMAGE_BASE_SIZE * Gui::uiScaleFactor();
+        if (mapBackground_.size() != mapBackgroundSize)
         {
-            mapBackground_ = logoImage(playerRace_);
-        }
-        else
-        {
-            // Load the actual map terrain
-            mapBackground_ = Gui::getScaledImage(mapPath_);
+            spdlog::warn("ContinentMap: loaded '{}' has unexpected image size", Gui::getScaledImagePath(path));
         }
     }
 }

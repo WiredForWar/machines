@@ -101,7 +101,8 @@ protected:
 
     void updateMapToWorldMetrics();
 
-    static GuiBitmap& logoImage(MachPhys::Race race);
+    static std::string logoImagePath(MachPhys::Race race);
+
     static GuiBitmap& machineImage(MachPhys::Race race);
     static GuiBitmap& constructionImage(MachPhys::Race race);
     static GuiBitmap& podImage(MachPhys::Race race);
