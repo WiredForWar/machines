@@ -296,24 +296,15 @@ void MachContinentMap::loadGame(const std::string& planet)
 
     DEBUG_STREAM(DIAG_NEIL, "Changing map to " << mapBmp << std::endl);
 
-    if (Gui::uiScaleFactor() == 1)
-    {
-        mapBackground_ = Gui::bitmap(mapBmp);
-    }
-    else
-    {
-        GuiBitmap mapBitmap = Gui::bitmap(mapBmp);
-        mapBackground_ = RenSurface::createAnonymousSurface(mapBitmap.size() * Gui::uiScaleFactor());
-        Ren::Painter(mapBackground_).stretchBlit(mapBitmap);
-    }
-    mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackground_.size());
+    const Ren::Size mapBackgroundSize = Ren::Size(134, 127) * Gui::uiScaleFactor();
+    mapFrameOne_ = RenSurface::createAnonymousSurface(mapBackgroundSize);
     mapFrameTwo_ = RenSurface::createAnonymousSurface(mapFrameOne_.size());
 
     // Set up visible area. This is used for "fog of war"
-    mapVisibleArea_ = RenSurface::createAnonymousSurface(mapBackground_.size());
+    mapVisibleArea_ = RenSurface::createAnonymousSurface(mapBackgroundSize);
     // Initialise to nothing visible
     Ren::Painter visibleAreaPainter(mapVisibleArea_);
-    visibleAreaPainter.filledRectangle(mapBackground_.size(), Gui::BLACK());
+    visibleAreaPainter.filledRectangle(mapBackgroundSize, Gui::BLACK());
     // TODO: check this, not sure what exactly it does but creates a line of pixels without FOW on map
     //  mapVisibleArea_.hollowRectangle( RenSurface::Rect( 0, 0, mapBackground_.width() - 1, mapBackground_.height() - 1
     //  ), Gui::MAGENTA(), 1 );
@@ -325,15 +316,15 @@ void MachContinentMap::loadGame(const std::string& planet)
     // Unfog areas of Map which are unusable, e.g. if the Map is thin and long (not square)
     if (xOffset() != 0)
     {
-        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackground_.height()));
+        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, xOffset(), mapBackgroundSize.height));
         visibleAreaPainter.clearRectangle(
-            RenSurface::Rect(mapBackground_.width() - xOffset(), 0, xOffset(), mapBackground_.height()));
+            RenSurface::Rect(mapBackgroundSize.width - xOffset(), 0, xOffset(), mapBackgroundSize.height));
     }
     else if (yOffset() != 0)
     {
-        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, mapBackground_.width(), yOffset()));
+        visibleAreaPainter.clearRectangle(RenSurface::Rect(0, 0, mapBackgroundSize.width, yOffset()));
         visibleAreaPainter.clearRectangle(
-            RenSurface::Rect(0, mapBackground_.height() - yOffset(), mapBackground_.width(), yOffset()));
+            RenSurface::Rect(0, mapBackgroundSize.height - yOffset(), mapBackgroundSize.width, yOffset()));
     }
 
     // Create different scanner ranges ( used for unfogging ( note : fog of war NOT atmospheric fog ) ).
