@@ -291,27 +291,29 @@ float MachLogHardwareLab::totalResearchRate() const
     float availableResearchUnits = 0;
     int nResearchStationsFree = constructionData().stations().nStations();
 
-    for (MachLogRaces::Technicians::const_iterator i = MachLogRaces::instance().technicians(race()).begin();
-         i != MachLogRaces::instance().technicians(race()).end();
-         ++i)
-        if ((*i)->insideBuilding() && (*i)->insideWhichBuilding().id() == id()
-            && &(*i)->motionSeq().currentConfigSpace() == &interiorConfigSpace())
+    for (MachLogTechnician* technician : MachLogRaces::instance().technicians(race()))
+    {
+        if (!technician->insideBuilding() || technician->insideWhichBuilding().id() != id())
+            continue;
+
+        if (&technician->motionSeq().currentConfigSpace() != &interiorConfigSpace())
+            continue;
+
+        if (technician->isIdle())
+            technician->newOperation(std::make_unique<MachLogResearchAnimation>(technician));
+
+        float researchContributed = 0;
+
+        if (nResearchStationsFree)
         {
-            if ((*i)->isIdle())
-                (*i)->newOperation(std::make_unique<MachLogResearchAnimation>(*i));
-
-            float researchContributed = 0;
-
-            if (nResearchStationsFree)
-            {
-                researchContributed = (*i)->data().researchRate();
-                --nResearchStationsFree;
-            }
-            else
-                researchContributed = static_cast<float>((*i)->data().researchRate()) / 5.0;
-
-            availableResearchUnits += researchContributed;
+            researchContributed = technician->data().researchRate();
+            --nResearchStationsFree;
         }
+        else
+            researchContributed = static_cast<float>(technician->data().researchRate()) / 5.0;
+
+        availableResearchUnits += researchContributed;
+    }
 
     // 10% bonus for level 3 labs, 20% bonus for level 5 labs
     availableResearchUnits *= (1.0 + ((level() - 1) * 0.05));
