@@ -19,10 +19,10 @@ public:
 
     ConfigManager();
 
-    Utils::HandleWithTriggerUPtr addListener(std::string_view name, ChangesListener listener);
+    Utils::HandleWithTriggerUPtr addListener(const IVariable* variable, ChangesListener listener);
     void removeListener(const Utils::CallbackHandle* handle);
 
-    void onVariableChanged(std::string_view variable);
+    void onVariableChanged(const IVariable* variable);
 
 private:
     struct ListenerState
@@ -39,7 +39,7 @@ private:
     };
 
     std::shared_ptr<ListenerState> listenerState_{};
-    std::unordered_multimap<std::string, const ChangesListenerHandleImpl*, string_hash, std::equal_to<>> listeners_{};
+    std::unordered_multimap<const IVariable*, const ChangesListenerHandleImpl*> listeners_{};
 };
 
 class ConfigManager::ChangesListenerHandleImpl : public Utils::HandleWithTrigger
@@ -92,7 +92,7 @@ void ConfigManager::removeListener(const Utils::CallbackHandle* handle)
     }
 }
 
-void ConfigManager::onVariableChanged(std::string_view variable)
+void ConfigManager::onVariableChanged(const IVariable* variable)
 {
     const auto [begin, end] = listeners_.equal_range(variable);
     for (auto it = begin; it != end; ++it)
@@ -101,7 +101,7 @@ void ConfigManager::onVariableChanged(std::string_view variable)
     }
 }
 
-Utils::HandleWithTriggerUPtr ConfigManager::addListener(std::string_view name, ChangesListener listener)
+Utils::HandleWithTriggerUPtr ConfigManager::addListener(const IVariable* variable, ChangesListener listener)
 {
     if (!listenerState_)
     {
@@ -110,7 +110,7 @@ Utils::HandleWithTriggerUPtr ConfigManager::addListener(std::string_view name, C
     }
 
     auto handle = std::make_unique<ChangesListenerHandleImpl>(listenerState_, std::move(listener));
-    listeners_.emplace(std::string(name), handle.get());
+    listeners_.emplace(variable, handle.get());
     return handle;
 }
 
@@ -142,13 +142,13 @@ std::string_view IVariable::name() const
 Utils::HandleWithTriggerUPtr IVariable::addListener(ChangesListener listener)
 {
     PRE(configManager);
-    return configManager->addListener(name(), std::move(listener));
+    return configManager->addListener(this, std::move(listener));
 }
 
 void IVariable::onChanged()
 {
     PRE(configManager.get());
-    configManager->onVariableChanged(name());
+    configManager->onVariableChanged(this);
 }
 
 template <>
