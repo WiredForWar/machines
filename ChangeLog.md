@@ -8,6 +8,7 @@
 - Optimized the game startup
 - Added models, cursors, and planet minimaps texture modding support
 - Added support for scaled planet maps
+- Added console (press `Ctrl+Alt+Shift+F11` and type `console on` there)
 - Fixed constructions interior was not race specific (always red)
 - Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)
 - Fixed many cases when machines could stuck and lock each other
