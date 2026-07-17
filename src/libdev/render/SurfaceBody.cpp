@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 #include "render/internal/VertexData.hpp"
 #include "render/internal/ColourPack.hpp"
 
@@ -124,7 +124,7 @@ SDL_Surface* RenISurfBody::readFromFile(const char *fileName)
     SDL_Surface* surface = IMG_Load(fileName);
     if (!surface)
     {
-        spdlog::error("Failed to load texture from file (path: {}, error: {})", fileName, IMG_GetError());
+        spdlog::error("Failed to load texture from file (path: {}, error: {})", fileName, SDL_GetError());
     }
     return surface;
 }
@@ -161,7 +161,7 @@ void RenISurfBody::reuploadFromDisk()
     if (allocateDDSurfaces(surface->w, surface->h, SYSTEM))
         copyWithColourKeyEmulation(surface, RenColour::magenta());
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 }
 
 // virtual
@@ -185,7 +185,7 @@ bool RenISurfBody::read(const std::string& filePath, const std::string& logicalN
         retval = copyWithColourKeyEmulation(surface, RenColour::magenta());
 
     name(logicalName);
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     return retval;
 }
@@ -594,8 +594,8 @@ static void computeScaleAndShift(unsigned long bitMask, int& shift, int& scale)
 
 bool RenISurfBody::copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha, bool createMipmaps)
 {
-    SDL_Surface* surfaceDst = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ABGR8888, 0);
-    SDL_Surface* surfaceTmp = SDL_ConvertSurfaceFormat(surfaceAlpha, SDL_PIXELFORMAT_BGRA8888, 0);
+    SDL_Surface* surfaceDst = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ABGR8888);
+    SDL_Surface* surfaceTmp = SDL_ConvertSurface(surfaceAlpha, SDL_PIXELFORMAT_BGRA8888);
 
     Uint32* pixelsDst = (Uint32*)surfaceDst->pixels;
     Uint32* pixelsSrc = (Uint32*)surfaceTmp->pixels;
@@ -625,26 +625,18 @@ bool RenISurfBody::copyWithAlpha(SDL_Surface* surface, SDL_Surface* surfaceAlpha
 
     width_ = surface->w;
     height_ = surface->h;
-    SDL_FreeSurface(surfaceDst);
-    SDL_FreeSurface(surfaceTmp);
+    SDL_DestroySurface(surfaceDst);
+    SDL_DestroySurface(surfaceTmp);
     return true;
 }
 
 bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenColour& keyColour, bool createMipmaps)
 {
     // Convert to RGBA and set alpha 0 for key magenta colour
-    SDL_Surface* surfaceTmp = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA8888, 0);
-    SDL_SetColorKey(surfaceTmp, SDL_TRUE, SDL_MapRGB(surfaceTmp->format, 0xFF, 0x0, 0xFF));
+    SDL_Surface* surfaceTmp = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA8888);
+    SDL_SetSurfaceColorKey(surfaceTmp, true, SDL_MapSurfaceRGB(surfaceTmp, 0xFF, 0x0, 0xFF));
 
-    SDL_Surface* surfaceDst = SDL_CreateRGBSurface(
-        SDL_SWSURFACE,
-        surface->w,
-        surface->h,
-        32,
-        0x000000ff,
-        0x0000ff00,
-        0x00ff0000,
-        0xff000000);
+    SDL_Surface* surfaceDst = SDL_CreateSurface(surface->w, surface->h, SDL_PIXELFORMAT_RGBA32);
     SDL_BlitSurface(surfaceTmp, nullptr, surfaceDst, nullptr);
 
     Ren::IRenderBackend& backend = requireBackend();
@@ -664,8 +656,8 @@ bool RenISurfBody::copyWithColourKeyEmulation(SDL_Surface* surface, const RenCol
     width_ = surface->w;
     height_ = surface->h;
 
-    SDL_FreeSurface(surfaceTmp);
-    SDL_FreeSurface(surfaceDst);
+    SDL_DestroySurface(surfaceTmp);
+    SDL_DestroySurface(surfaceDst);
     return true;
 }
 

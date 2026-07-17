@@ -1,7 +1,7 @@
 #pragma once
 
 #include <utility>
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 struct SdlDelegate
 {
@@ -10,13 +10,13 @@ struct SdlDelegate
 
     //////////////////////////////////////////////////////////////////////
 
-    virtual int showCursor(const int toggle) { return SDL_ShowCursor(toggle); }
+    virtual bool showCursor(const bool show) { return show ? SDL_ShowCursor() : SDL_HideCursor(); }
 
     virtual std::pair<int, int> getCursorPosition()
     {
-        int x, y;
+        float x, y;
         SDL_GetMouseState(&x, &y);
-        return std::make_pair(x, y);
+        return std::make_pair(static_cast<int>(x), static_cast<int>(y));
     }
 
     virtual void moveCursorToPosition(SDL_Window* window, const int x, const int y)

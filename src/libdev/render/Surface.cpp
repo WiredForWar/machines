@@ -18,7 +18,7 @@
 #include "render/internal/VertexData.hpp"
 #include "render/Device.hpp"
 
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <GL/glew.h>
 
@@ -639,29 +639,10 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
         else
             glReadPixels(0, 0, width(), height(), GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(
-            screenPixels,
-            width(),
-            height(),
-            32,
-            width() * 4,
-            0xff000000,
-            0x00ff0000,
-            0x0000ff00,
-            0x000000ff);
-#else
-        SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(
-            screenPixels,
-            width(),
-            height(),
-            32,
-            width() * 4,
-            0x000000ff,
-            0x0000ff00,
-            0x00ff0000,
-            0xff000000);
-#endif
+        // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on
+        // both little and big endian systems.
+        SDL_Surface* surface
+            = SDL_CreateSurfaceFrom(width(), height(), SDL_PIXELFORMAT_RGBA32, screenPixels, width() * 4);
 
         // Flip surface vertically because of OpenGL coordinates...
         // Code comes from https://halfgeek.org/wiki/Vertically_invert_a_surface_in_SDL
@@ -708,7 +689,7 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
         IMG_SavePNG(surface, filename.pathname().c_str());
 
         // Free everything
-        SDL_FreeSurface(surface);
+        SDL_DestroySurface(surface);
         _DELETE_ARRAY(screenPixels);
     }
 

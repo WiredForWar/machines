@@ -1,11 +1,11 @@
 #include "SysInfo.hpp"
 
-#include <SDL_platform.h>
+#include <SDL3/SDL_platform.h>
 
 #include <cstring>
 #include <stdio.h>
 
-#if defined(__WINDOWS__)
+#if defined(SDL_PLATFORM_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #else
@@ -15,7 +15,7 @@
 std::string obtainVersion()
 {
     char version[256] = {};
-#if defined(__WINDOWS__)
+#if defined(SDL_PLATFORM_WIN32)
     const char unknown[] = "Unknown windows";
     const WCHAR *module_path = L"kernel32.dll";
     DWORD handle;

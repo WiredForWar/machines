@@ -5,7 +5,7 @@
 
 #include "device/private/SharedKeyboard.hpp"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 //////////////////////////////////////////////////////////////////////
 // Implements the mechanism for determining key-presses under SDL2.0

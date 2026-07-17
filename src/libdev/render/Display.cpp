@@ -16,7 +16,7 @@
 #include "render/Surface.hpp"
 #include "render/internal/DisplayImpl.hpp"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <GL/glew.h>
 
 #include "spdlog/spdlog.h"
@@ -69,46 +69,49 @@ void RenDisplay::buildDisplayModesList()
 {
     CB_RenDisplay_DEPIMPL();
 
-    SDL_DisplayMode desktopMode;
-    if (SDL_GetDesktopDisplayMode(0, &desktopMode) == 0)
+    if (const SDL_DisplayMode* desktopMode = SDL_GetDesktopDisplayMode(SDL_GetPrimaryDisplay()))
     {
         spdlog::info(
             "Current desktop display mode: {}x{}@{}bpp ({} Hz)",
-            desktopMode.w,
-            desktopMode.h,
-            SDL_BITSPERPIXEL(desktopMode.format),
-            desktopMode.refresh_rate);
+            desktopMode->w,
+            desktopMode->h,
+            SDL_BITSPERPIXEL(desktopMode->format),
+            desktopMode->refresh_rate);
     }
     else
     {
         spdlog::warn("Unable to get the current desktop display mode");
-        // Got no current desktop mode
-        desktopMode.w = desktopMode.h = 0;
     }
 
-    int displayCount = SDL_GetNumVideoDisplays();
+    int displayCount = 0;
+    SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
     modeList_.clear();
     modeList_.reserve(displayCount);
 
     RENDER_STREAM("Number of displays: " << displayCount << std::endl);
-    for (int displayIndex = 0; displayIndex <= displayCount; displayIndex++)
+    for (int displayIndex = 0; displays && displayIndex < displayCount; displayIndex++)
     {
-        int modesCount = SDL_GetNumDisplayModes(displayIndex);
-        for (int modeIndex = 0; modeIndex <= modesCount; modeIndex++)
+        int modesCount = 0;
+        SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(displays[displayIndex], &modesCount);
+        for (int modeIndex = 0; modes && modeIndex < modesCount; modeIndex++)
         {
-            SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, nullptr };
+            const SDL_DisplayMode* mode = modes[modeIndex];
 
-            if (SDL_GetDisplayMode(displayIndex, modeIndex, &mode) == 0)
+            // Add modes with matching refresh rate only
+            // if(desktopMode.w && (desktopMode.refresh_rate == mode.refresh_rate) )
             {
-                // Add modes with matching refresh rate only
-                // if(desktopMode.w && (desktopMode.refresh_rate == mode.refresh_rate) )
-                {
-                    RenDisplay::Mode m(mode.w, mode.h, SDL_BITSPERPIXEL(mode.format), mode.refresh_rate, mode.format);
-                    modeList_.push_back(m);
-                }
+                RenDisplay::Mode m(
+                    mode->w,
+                    mode->h,
+                    SDL_BITSPERPIXEL(mode->format),
+                    static_cast<int>(mode->refresh_rate),
+                    mode->format);
+                modeList_.push_back(m);
             }
         }
+        SDL_free(modes);
     }
+    SDL_free(displays);
 
     std::sort(modeList_.begin(), modeList_.end());
 
@@ -118,18 +121,18 @@ void RenDisplay::buildDisplayModesList()
 
 const RenDisplay::Mode RenDisplay::getDesktopDisplayMode() const
 {
-    SDL_DisplayMode desktopMode;
-    if (SDL_GetDesktopDisplayMode(0, &desktopMode) != 0)
+    const SDL_DisplayMode* desktopMode = SDL_GetDesktopDisplayMode(SDL_GetPrimaryDisplay());
+    if (!desktopMode)
     {
         // Got no current desktop mode
         return Mode();
     }
     return Mode(
-        desktopMode.w,
-        desktopMode.h,
-        SDL_BITSPERPIXEL(desktopMode.format),
-        desktopMode.refresh_rate,
-        desktopMode.format);
+        desktopMode->w,
+        desktopMode->h,
+        SDL_BITSPERPIXEL(desktopMode->format),
+        static_cast<int>(desktopMode->refresh_rate),
+        desktopMode->format);
 }
 
 const RenDisplay::Mode RenDisplay::getFailSafeDisplayMode() const
@@ -161,7 +164,7 @@ bool RenDisplay::useFullScreen()
 void RenDisplay::resetToNormalScreen()
 {
     CB_RenDisplay_DEPIMPL();
-    fullscreen_ = !(0 == SDL_SetWindowFullscreen(window(), 0));
+    fullscreen_ = !SDL_SetWindowFullscreen(window(), false);
 
     // Return to the primary DD driver.
     if (!fullscreen_)
@@ -206,16 +209,25 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     bool success = true;
     if (fullscreen_)
     {
-        SDL_DisplayMode sdlMode = { m.format_, m.width(), m.height(), m.refreshRate(), nullptr };
-        success = (0 == SDL_SetWindowDisplayMode(window(), &sdlMode));
-        // SDL_SetWindowBordered(window(), SDL_FALSE);
+        // SDL3 requires a mode obtained from SDL; pick the closest supported one.
+        SDL_DisplayMode closestMode;
+        success = SDL_GetClosestFullscreenDisplayMode(
+            SDL_GetDisplayForWindow(window()),
+            m.width(),
+            m.height(),
+            m.refreshRate(),
+            false,
+            &closestMode);
+        if (success)
+            success = SDL_SetWindowFullscreenMode(window(), &closestMode);
+        // SDL_SetWindowBordered(window(), false);
         SDL_SetWindowSize(window(), m.width(), m.height());
         SDL_SetWindowPosition(window(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-        fullscreen_ = (0 == SDL_SetWindowFullscreen(window(), SDL_WINDOW_FULLSCREEN));
+        fullscreen_ = SDL_SetWindowFullscreen(window(), true);
     }
     else
     {
-        SDL_SetWindowFullscreen(window(), 0);
+        SDL_SetWindowFullscreen(window(), false);
         SDL_SetWindowSize(window(), m.width(), m.height());
         SDL_SetWindowPosition(window(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
@@ -582,7 +594,7 @@ const RenCursor2d* RenDisplay::currentCursor() const
 
 void RenDisplay::setCursorGrabEnabled(bool enabled)
 {
-    SDL_SetWindowMouseGrab(pImpl_->pWnd_, enabled ? SDL_TRUE : SDL_FALSE);
+    SDL_SetWindowMouseGrab(pImpl_->pWnd_, enabled);
 }
 
 uint32_t RenDisplay::frameNumber() const
@@ -652,7 +664,10 @@ void RenDisplay::gammaCorrection(const double& gamma)
     GammaRamp gammaRamp;
     setGammaRamp(gamma, &gammaRamp);
 
-    SDL_SetWindowGammaRamp(window(), gammaRamp.red, gammaRamp.green, gammaRamp.blue);
+    // TODO: SDL3 removed SDL_SetWindowGammaRamp() (modern display servers do
+    // not support per-window gamma ramps). Gamma should be reimplemented in
+    // the renderer, e.g. as an output shader pass. Until then the capability
+    // is reported as unsupported, so this is unreachable in practice.
     gammaCorrection_ = gamma;
 }
 

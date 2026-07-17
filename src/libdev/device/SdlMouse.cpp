@@ -45,15 +45,13 @@ DEV_MOUSE_CLASS::~DevMouseT()
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 void DEV_MOUSE_CLASS::hide()
 {
-    // SDL_ShowCursor
-    pSdl_->showCursor(SDL_DISABLE);
+    pSdl_->showCursor(false);
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 void DEV_MOUSE_CLASS::unhide()
 {
-    // SDL_ShowCursor
-    pSdl_->showCursor(SDL_ENABLE);
+    pSdl_->showCursor(true);
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>

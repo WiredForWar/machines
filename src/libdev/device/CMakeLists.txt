@@ -48,7 +48,7 @@ add_library(device ${GAME_COMPONENT_LIB_TYPE} ${DEVICE_SOURCES})
 add_library(LibDev::device ALIAS device)
 
 target_link_libraries(device PUBLIC
-    SDL2::SDL2
+    SDL3::SDL3
 )
 
 target_link_libraries(device PRIVATE

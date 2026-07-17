@@ -17,7 +17,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include <vector>
 
@@ -69,9 +69,12 @@ bool AfxSdlApp::OSStartup()
     }
 
     {
-        SDL_version v;
-        SDL_GetVersion(&v);
-        spdlog::info("SDL version: {}.{}.{}", v.major, v.minor, v.patch);
+        const int v = SDL_GetVersion();
+        spdlog::info(
+            "SDL version: {}.{}.{}",
+            SDL_VERSIONNUM_MAJOR(v),
+            SDL_VERSIONNUM_MINOR(v),
+            SDL_VERSIONNUM_MICRO(v));
     }
 
     // Create window
@@ -100,17 +103,21 @@ bool AfxSdlApp::recreateWindow()
 
     pWindow_ = SDL_CreateWindow(
         name().c_str(),
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
         640,
         480, // initial width and height
-        SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+        SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL);
 
     if (pWindow_ == nullptr)
     {
         spdlog::error("Unable to create a window: {}", SDL_GetError());
         return false;
     }
+
+    SDL_SetWindowPosition(pWindow_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
+    // Unlike SDL2, SDL3 does not deliver SDL_EVENT_TEXT_INPUT unless text
+    // input is explicitly started.
+    SDL_StartTextInput(pWindow_);
 
     // Can this method fail?
     return true;
@@ -139,11 +146,11 @@ void AfxSdlApp::coreLoop()
         {
             // If any message other than key down or mouse move, ensure we
             // call the application
-            if (ev.type != SDL_KEYDOWN && ev.type != SDL_KEYUP && ev.type != SDL_MOUSEMOTION)
+            if (ev.type != SDL_EVENT_KEY_DOWN && ev.type != SDL_EVENT_KEY_UP && ev.type != SDL_EVENT_MOUSE_MOTION)
             {
                 callApp = true;
             }
-            if (ev.type == SDL_QUIT)
+            if (ev.type == SDL_EVENT_QUIT)
             {
                 // When should this be set?  I assume that there could be outstanding
                 // messages in the queue when PostQuitMessage is called.  Therefore,
@@ -248,48 +255,47 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
     RecRecorder::instance().recordingAllowed(false);
     switch (event->type)
     {
-        case SDL_WINDOWEVENT:
-            if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-            {
-                DevSdlKeyboard::sdlInstance().wm_killfocus();
-            }
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            DevSdlKeyboard::sdlInstance().wm_killfocus();
             break;
 
-        case SDL_MOUSEMOTION:
-            int x, y;
+        case SDL_EVENT_MOUSE_MOTION:
+        {
+            float x, y;
             SDL_GetMouseState(&x, &y);
-            DevMouse::instance().position(x, y);
+            DevMouse::instance().position(static_cast<int>(x), static_cast<int>(y));
             break;
+        }
 
-        case SDL_MOUSEBUTTONUP:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
             dispatchMouseButtonEvent(event, false);
             break;
 
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             dispatchMouseButtonEvent(event, true);
             break;
 
-        case SDL_MOUSEWHEEL:
+        case SDL_EVENT_MOUSE_WHEEL:
             dispatchMouseScrollEvent(event);
             break;
 
-        case SDL_KEYUP:
+        case SDL_EVENT_KEY_UP:
             dispatchKeyboardEvent(event, false);
             break;
 
-        case SDL_KEYDOWN:
+        case SDL_EVENT_KEY_DOWN:
             dispatchKeyboardEvent(event, true);
             break;
 
-        case SDL_TEXTINPUT:
+        case SDL_EVENT_TEXT_INPUT:
             dispatchCharEvent(event);
             break;
 
-        case SDL_FINGERUP:
+        case SDL_EVENT_FINGER_UP:
             dispatchTouchEvent(event, false);
             break;
 
-        case SDL_FINGERDOWN:
+        case SDL_EVENT_FINGER_DOWN:
             dispatchTouchEvent(event, true);
             break;
 
@@ -348,7 +354,7 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
     const int y = pos.second;
 
     // Get the states of the modifiers keys at the time of the event.
-    const Uint8* kStates = SDL_GetKeyboardState(nullptr);
+    const bool* kStates = SDL_GetKeyboardState(nullptr);
     const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
     const bool ctrl = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
     const bool alt = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];
@@ -388,7 +394,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const int y = pos.second;
 
     // Get the states of the modifiers keys at the time of the event.
-    const Uint8* kStates = SDL_GetKeyboardState(nullptr);
+    const bool* kStates = SDL_GetKeyboardState(nullptr);
     const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
     const bool ctrl = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
     const bool alt = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];
@@ -419,15 +425,15 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
 
     // Use the event's own modifier state rather than SDL_GetKeyboardState which
     // can carry stale modifier flags from before the game window gained focus.
-    const Uint16 mod = event->key.keysym.mod;
-    const bool shift = (mod & (KMOD_LSHIFT | KMOD_RSHIFT)) != 0;
-    const bool ctrl = (mod & (KMOD_LCTRL | KMOD_RCTRL)) != 0;
-    const bool alt = (mod & (KMOD_LALT | KMOD_RALT)) != 0;
+    const SDL_Keymod mod = event->key.mod;
+    const bool shift = (mod & (SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)) != 0;
+    const bool ctrl = (mod & (SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)) != 0;
+    const bool alt = (mod & (SDL_KMOD_LALT | SDL_KMOD_RALT)) != 0;
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
 
-    const DevButtonEvent::ScanCode code = DevSdlKeyboard::translateScanCode(event->key.keysym.scancode);
+    const DevButtonEvent::ScanCode code = DevSdlKeyboard::translateScanCode(event->key.scancode);
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 
@@ -473,7 +479,7 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const int y = pos.second;
 
     // Get the states of the modifiers keys at the time of the event.
-    const Uint8* kStates = SDL_GetKeyboardState(nullptr);
+    const bool* kStates = SDL_GetKeyboardState(nullptr);
     const bool shift = kStates[SDL_SCANCODE_LSHIFT] || kStates[SDL_SCANCODE_RSHIFT];
     const bool ctrl = kStates[SDL_SCANCODE_LCTRL] || kStates[SDL_SCANCODE_RCTRL];
     const bool alt = kStates[SDL_SCANCODE_LALT] || kStates[SDL_SCANCODE_RALT];

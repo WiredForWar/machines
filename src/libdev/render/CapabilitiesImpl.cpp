@@ -50,7 +50,10 @@ RenICapabilities::RenICapabilities(const RenDevice* dev, bool h)
     supportsEdgeAntiAliasing_ = true;
     supportsMMX_ = false;
     supportsZBias_ = true;
-    supportsGammaCorrection_ = true;
+    // SDL3 removed per-window gamma ramps (SDL_SetWindowGammaRamp); gamma
+    // correction needs to be reimplemented in the renderer before this can
+    // be enabled again.
+    supportsGammaCorrection_ = false;
     supportsSharedVideoMemory_ = true;
     supportsTextureSysMemory_ = true;
     minDisplayMemory_ = 3 * dev->display()->lowestAllowedMode().memoryRequired();

@@ -6,7 +6,7 @@
 
 #include "spdlog/spdlog.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include <fstream>
 
@@ -201,7 +201,7 @@ void RenderBackendGL::shutdown()
     if (glContext_ != nullptr)
     {
         SDL_GL_MakeCurrent(nullptr, nullptr);
-        SDL_GL_DeleteContext(glContext_);
+        SDL_GL_DestroyContext(glContext_);
         glContext_ = nullptr;
     }
 
@@ -225,18 +225,18 @@ bool RenderBackendGL::setVSync(bool enabled)
 
     if (enabled)
     {
-        if (SDL_GL_SetSwapInterval(-1) == 0)
+        if (SDL_GL_SetSwapInterval(-1))
         {
             spdlog::info("Adaptive VSync enabled");
             success = true;
         }
-        else if (SDL_GL_SetSwapInterval(1) == 0)
+        else if (SDL_GL_SetSwapInterval(1))
         {
             spdlog::info("Standard VSync enabled (adaptive unavailable: {})", SDL_GetError());
             success = true;
         }
     }
-    else if (SDL_GL_SetSwapInterval(0) == 0)
+    else if (SDL_GL_SetSwapInterval(0))
     {
         spdlog::info("VSync disabled");
         success = true;

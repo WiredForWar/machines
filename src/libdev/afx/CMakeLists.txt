@@ -25,7 +25,7 @@ add_library(afx OBJECT
 )
 target_link_libraries(afx PUBLIC
     afx_lite_iface
-    SDL2::SDL2
+    SDL3::SDL3
 )
 
 add_library(afx_iface INTERFACE)

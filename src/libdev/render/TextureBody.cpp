@@ -19,7 +19,7 @@
 #include "render/internal/TextureBody.ipp"
 #endif
 
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 RenITexBody::RenITexBody()
     : RenISurfBody()
@@ -281,7 +281,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     if (!allocateDDSurfaces(surface->w, surface->h, residence))
     {
         // DeleteObject(handle);
-        SDL_FreeSurface(surface);
+        SDL_DestroySurface(surface);
         // DeleteObject(alphaHandle);
         return false;
     }
@@ -294,7 +294,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     if (alpha_)
     {
         retval = copyWithAlpha(surface, surfaceAlpha, true);
-        SDL_FreeSurface(surfaceAlpha);
+        SDL_DestroySurface(surfaceAlpha);
     }
     //  else if (transparent && !colourKey)
     else
@@ -308,7 +308,7 @@ bool RenITexBody::read(const std::string& filePath, const std::string& logicalNa
     loaded_ = true;
     TEST_INVARIANT;
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
     RENDER_STREAM(std::endl);
     return retval;
 }

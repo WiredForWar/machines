@@ -6,7 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "system/WindowsAPI.hpp"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 SysWindowsAPI::SysWindowsAPI()
 {

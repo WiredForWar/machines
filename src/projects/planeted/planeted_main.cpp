@@ -2,7 +2,10 @@
 
 #include "MachinesVersion.hpp"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
+// The SDL2main library is gone in SDL3; the header-only SDL_main.h provides
+// the platform entry point (e.g. WinMain for windowed MSVC builds).
+#include <SDL3/SDL_main.h>
 
 int main(int argc, char* argv[])
 {

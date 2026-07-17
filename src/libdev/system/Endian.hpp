@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL_endian.h>
+#include <SDL3/SDL_endian.h>
 
 namespace System
 {

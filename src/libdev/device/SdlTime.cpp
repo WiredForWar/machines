@@ -7,7 +7,7 @@
 #include "recorder/Recorder.hpp"
 #include "recorder/private/RecorderPrivate.hpp"
 #include "device/internal/SdlTimeImpl.hpp"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 // TODO TIMER
 double DevTime::OSTime::resolution() const

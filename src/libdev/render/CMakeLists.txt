@@ -212,8 +212,8 @@ target_link_libraries(render PUBLIC
 )
 
 target_link_libraries(render PRIVATE
-    SDL2::SDL2
-    SDL2_image::SDL2_image
+    SDL3::SDL3
+    SDL3_image::SDL3_image
     GLEW::GLEW
     Freetype::Freetype
 )

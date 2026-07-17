@@ -178,6 +178,7 @@ jobs:
     - name: Add runtime libraries
       if: matrix.package
       run: |
+        cp -arv ${{github.workspace}}/machines-packager/mingw64/win-dev-libs/x86_64-w64-mingw32/bin/* ${{github.workspace}}/install/machines
         cp -arv ${{github.workspace}}/machines-packager/mingw64/win64-extra-files/* ${{github.workspace}}/install/machines
 
     - name: Create the package
