@@ -163,7 +163,11 @@ if(TARGET glm AND NOT TARGET glm::glm)
     target_link_libraries(glm::glm INTERFACE glm)
 endif()
 
-if(PLATFORM_WINDOWS)
+# Static dependencies of the prebuilt Freetype used for the MinGW builds.
+# Only applicable when the prebuilt dependencies directory is provided;
+# otherwise (e.g. Conan-provided or fully system Freetype) the find_library
+# calls would poison the link line with <VAR>-NOTFOUND entries.
+if(PLATFORM_WINDOWS AND WINDOWS_DEPENDENCIES_DIR)
   if(NOT BUILD_32)
     find_library(MSVCRT_LIBRARY msvcrt HINTS ${WINDOWS_DEPENDENCIES_DIR})
     find_library(FREETYPE_LIBRARY freetype HINTS ${WINDOWS_DEPENDENCIES_DIR})
