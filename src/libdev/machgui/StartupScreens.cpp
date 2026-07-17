@@ -3526,6 +3526,8 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                         }
                     }
                 }
+
+                break;
             }
         }
 
