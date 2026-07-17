@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <string_view>
 
 std::string makeAddress(std::string_view ip, uint16_t port);
