@@ -26,7 +26,9 @@ std::optional<uint16_t> getPort(const std::string_view& addressStr)
         return {};
 
     uint16_t port{};
-    auto result = std::from_chars(portDelimiterIt, addressStr.cend(), port);
+    const char* from = addressStr.data() + std::distance(addressStr.cbegin(), portDelimiterIt);
+    const char* to = addressStr.data() + addressStr.size();
+    auto result = std::from_chars(from, to, port);
     if (result.ec != std::errc{})
         return {};
 
