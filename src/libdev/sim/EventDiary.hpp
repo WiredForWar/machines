@@ -77,7 +77,7 @@ private:
     void eventTimeChanged();
 
     // Defines a comparator function for the SimDiscreteEventPtrs in the deque
-    class EventOrder : public std::binary_function<const SimDiscreteEventPtr&, const SimDiscreteEventPtr&, bool>
+    class EventOrder
     {
     public:
         bool operator()(const SimDiscreteEventPtr&, const SimDiscreteEventPtr&) const;

@@ -12,7 +12,7 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template <class FIRST, class SECOND> struct ctl_select1st : public std::unary_function<std::pair<FIRST, SECOND>, FIRST>
+template <class FIRST, class SECOND> struct ctl_select1st
 {
     FIRST& operator()(std::pair<FIRST, SECOND>& p) const { return p.first; }
 
@@ -21,7 +21,7 @@ template <class FIRST, class SECOND> struct ctl_select1st : public std::unary_fu
 
 //////////////////////////////////////////////////////////////////////
 
-template <class FIRST, class SECOND> struct ctl_select2nd : public std::unary_function<std::pair<FIRST, SECOND>, SECOND>
+template <class FIRST, class SECOND> struct ctl_select2nd
 {
     SECOND& operator()(std::pair<FIRST, SECOND>& p) const { return p.second; }
 
