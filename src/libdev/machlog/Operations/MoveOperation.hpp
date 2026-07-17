@@ -33,10 +33,7 @@ public:
     {
         NO_ID = -1
     };
-    enum NoTolerance
-    {
-        NO_TOLERANCE = -1
-    };
+    static constexpr MATHEX_SCALAR NO_TOLERANCE = -1;
 
     using Path = ctl_list<MexPoint2d>;
 
