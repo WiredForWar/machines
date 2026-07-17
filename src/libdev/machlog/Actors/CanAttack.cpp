@@ -48,9 +48,6 @@
 
 PER_DEFINE_PERSISTENT(MachLogCanAttack);
 
-#pragma GCC diagnostic ignored "-Wunused-variable"
-// derferencing all these will cause a hit in the debug version - in the release version the compiler will remove
-// any unreferenced variables.
 #define CB_MachLogCanAttack_DEPIMPL()                                                                                  \
     PRE(pImpl_);                                                                                                       \
     CB_DEPIMPL(MachActor*, pMe_)                                                                                       \
@@ -2209,5 +2206,3 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
 
     return retarget;
 }
-
-#pragma GCC diagnostic pop
