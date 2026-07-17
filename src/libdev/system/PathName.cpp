@@ -267,7 +267,7 @@ bool SysPathName::checkForCapitals(const std::string& path) const
     }
 
     // start from back
-    for (auto c = path.cend(); c > path.cbegin(); --c)
+    for (auto c = path.rbegin(); c != path.rend(); ++c)
     {
         const unsigned char curChar = static_cast<unsigned char>(*c);
         if (std::isupper(curChar) != 0)
