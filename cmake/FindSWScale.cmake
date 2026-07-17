@@ -10,6 +10,15 @@
 #   SWSCALE_LIBRARIES     - the path to the library binary
 #
 
+# Prefer an ffmpeg CMake package (e.g. provided by Conan), which exports
+# the ffmpeg::swscale target directly.
+find_package(ffmpeg CONFIG QUIET COMPONENTS swscale)
+if(TARGET ffmpeg::swscale)
+    set(SWScale_FOUND TRUE)
+    set(SWSCALE_FOUND TRUE)
+    return()
+endif()
+
 # Find the libswscale include files
 find_path(SWSCALE_INCLUDE_DIRS
   NAMES "libswscale/swscale.h"
