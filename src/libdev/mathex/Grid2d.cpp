@@ -147,7 +147,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
         ++j;
     }
 
-    for (Points::iterator i = internalPoints.begin(); i != internalPoints.end(); ++i, ++j)
+    for (Points::iterator i = internalPoints.begin(); i != internalPoints.end(); ++i)
     {
         MexPoint2d convertedJ;
 
@@ -188,6 +188,7 @@ void MexGrid2d::intersect(const MexLine2d& line, Cells* pCells, Points* pPoints)
 
                 pCells->push_back(CellIndex(xCellIndex, yCellIndex));
             }
+            ++j;
         }
         else if (! inRange(convertedI))
             useThisPoint = false;
