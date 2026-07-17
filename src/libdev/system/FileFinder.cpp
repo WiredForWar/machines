@@ -11,6 +11,8 @@
 #include "system/FileTime.hpp"
 #include "system/FileDate.hpp"
 
+#include "ctl/Vector.hpp"
+
 #ifdef _MSC_VER
 #include "windows.h"
 #else
