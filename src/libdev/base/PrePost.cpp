@@ -111,7 +111,6 @@ WEAK_SYMBOL void BaseAssertion::assertFail(const char* msg, const xmsg& xms)
     {
         first = false;
 
-        _RAISE(xms);
         std::string assertFileName("assert.log");
         char* pAssertEnv = getenv("CB_ASSERT_TO");
         if (pAssertEnv)

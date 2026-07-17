@@ -8,32 +8,6 @@
 #ifndef _STD_EXCEPTIO_HPP
 #define _STD_EXCEPTIO_HPP
 
-#ifndef NO_EXCEPTIONS
-
-// exceptions implemented
-
-#define _TRY_BEGIN                                                                                                     \
-    try                                                                                                                \
-    {
-#define _CATCH_ALL                                                                                                     \
-    catch (...)                                                                                                        \
-    {
-#define _CATCH_END }
-#define _RAISE(x) throw(x)
-#define _RERAISE(x) throw
-
-#else
-
-// exceptions revoked
-
-#define _TRY_BEGIN {
-#define _CATCH_ALL {
-#define _CATCH_END }
-#define _RAISE(x)
-#define _RERAISE(x)
-
-#endif /* #ifndef NO_EXCEPTIONS */
-
 //////////////////////////////////////////////////////////////////////
 
 using fvoid_t = void();
@@ -64,22 +38,11 @@ public:
 
     virtual const char* what() const;
 
-    // handle an unthrowable xmsg
-    static void _Throw(xmsg* ePtr);
-
-    using raise_handler = void (*)(xmsg&);
-    static raise_handler set_raise_handler(raise_handler newh);
-
 protected:
     xmsg(const char*, bool);
 
-    virtual void do_raise();
-
 private:
-    void _Raise();
     void _Tidy();
-
-    static raise_handler _Handler;
 
     const char* _What;
     bool _Alloced;
@@ -96,9 +59,6 @@ public:
     logic_error(const char* what = nullptr);
 
     ~logic_error() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -111,9 +71,6 @@ public:
     domain_error(const char* what = nullptr);
 
     ~domain_error() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -126,9 +83,6 @@ public:
     invalid_argument(const char* what = nullptr);
 
     ~invalid_argument() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -142,9 +96,6 @@ public:
     length_error(const char* what = nullptr);
 
     ~length_error() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -157,9 +108,6 @@ public:
     out_of_range(const char* what = nullptr);
 
     ~out_of_range() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -172,9 +120,6 @@ public:
     bad_cast(const char* what = nullptr);
 
     ~bad_cast() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -188,9 +133,6 @@ public:
     bad_typeid(const char* what = nullptr);
 
     ~bad_typeid() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -208,8 +150,6 @@ public:
 
 protected:
     runtime_error(const char* what, bool copy);
-
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -222,9 +162,6 @@ public:
     range_error(const char* what = nullptr);
 
     ~range_error() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -238,9 +175,6 @@ public:
     overflow_error(const char* what = nullptr);
 
     ~overflow_error() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -255,9 +189,6 @@ public:
     bad_alloc(const char* what = nullptr);
 
     ~bad_alloc() override;
-
-protected:
-    void do_raise() override;
 };
 
 //////////////////////////////////////////////////////////////////////

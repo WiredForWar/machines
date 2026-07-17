@@ -3,17 +3,10 @@
  * (c) Charybdis Limited, 1995. All Rights Reserved.
  */
 
-#include <csignal>
 #include <cstdlib>
 #include <cstring>
 
-#include <iostream>
-
 #include "stdlib/Exceptions.hpp"
-
-//////////////////////////////////////////////////////////////////////
-
-xmsg::raise_handler xmsg::_Handler = nullptr;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -73,41 +66,9 @@ const xmsg& xmsg::operator=(const xmsg& rhs)
 
 //////////////////////////////////////////////////////////////////////
 
-void xmsg::_Raise()
-{
-    if (_Handler != nullptr)
-        (*_Handler)(*this);
-
-    do_raise();
-
-    _RAISE(*this);
-}
-
-//////////////////////////////////////////////////////////////////////
-
 const char* xmsg::what() const
 {
     return _What != nullptr ? _What : "";
-}
-
-void xmsg::_Throw(xmsg* ePtr)
-// handle an unthrowable xmsg
-{
-    std::cerr << "xmsg: " << (ePtr ? ePtr->what() : "unknown");
-    std::cerr << std::endl;
-    ::raise(SIGABRT);
-}
-
-xmsg::raise_handler xmsg::set_raise_handler(xmsg::raise_handler newh)
-{
-    const raise_handler oldh = xmsg::_Handler;
-    xmsg::_Handler = newh;
-    return oldh;
-}
-
-void xmsg::do_raise()
-{
-    /* no special handling by default */
 }
 
 void xmsg::_Tidy()
@@ -132,11 +93,6 @@ logic_error::~logic_error()
     /*  Intentionally Empty  */
 }
 
-void logic_error::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 bad_cast::bad_cast(const char* what)
@@ -149,11 +105,6 @@ bad_cast::~bad_cast()
 { /*  Intentionally Empty  */
 }
 
-void bad_cast::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 bad_typeid::bad_typeid(const char* what)
@@ -164,11 +115,6 @@ bad_typeid::bad_typeid(const char* what)
 
 bad_typeid::~bad_typeid()
 { /*  Intentionally Empty  */
-}
-
-void bad_typeid::do_raise()
-{
-    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -184,11 +130,6 @@ invalid_argument::~invalid_argument()
     /*  Intentionally Empty  */
 }
 
-void invalid_argument::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 length_error::length_error(const char* what)
@@ -199,11 +140,6 @@ length_error::length_error(const char* what)
 
 length_error::~length_error()
 { /*  Intentionally Empty  */
-}
-
-void length_error::do_raise()
-{
-    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -218,11 +154,6 @@ out_of_range::~out_of_range()
 { /*  Intentionally Empty  */
 }
 
-void out_of_range::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 domain_error::domain_error(const char* what)
@@ -233,11 +164,6 @@ domain_error::domain_error(const char* what)
 
 domain_error::~domain_error()
 { /*  Intentionally Empty  */
-}
-
-void domain_error::do_raise()
-{
-    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -259,11 +185,6 @@ runtime_error::~runtime_error()
     /*  Intentionally Empty */
 }
 
-void runtime_error::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 overflow_error::overflow_error(const char* what)
@@ -275,11 +196,6 @@ overflow_error::overflow_error(const char* what)
 overflow_error::~overflow_error()
 {
     /*  Intentionally Empty */
-}
-
-void overflow_error::do_raise()
-{
-    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -294,11 +210,6 @@ range_error::~range_error()
 { /*  Intentionally Empty */
 }
 
-void range_error::do_raise()
-{
-    _RAISE(*this);
-}
-
 //////////////////////////////////////////////////////////////////////
 
 bad_alloc::bad_alloc(const char* what)
@@ -309,11 +220,6 @@ bad_alloc::bad_alloc(const char* what)
 
 bad_alloc::~bad_alloc()
 { /*  Intentionally Empty */
-}
-
-void bad_alloc::do_raise()
-{
-    _RAISE(*this);
 }
 
 //////////////////////////////////////////////////////////////////////
