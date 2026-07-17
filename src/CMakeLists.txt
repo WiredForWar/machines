@@ -187,6 +187,13 @@ set_target_properties(machines PROPERTIES
 )
 target_link_libraries(machines libs)
 
+if(MSVC)
+    # The application manifest is embedded via machines.rc; keep the linker
+    # from embedding its own default manifest with the same resource id
+    # (CVTRES error CVT1100: duplicate resource).
+    target_link_options(machines PRIVATE "/MANIFEST:NO")
+endif()
+
 if(BUILD_PLANETED)
     add_executable(planeted WIN32
         ${PLANETED_SOURCES}
