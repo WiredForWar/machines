@@ -222,44 +222,4 @@ bad_alloc::~bad_alloc()
 { /*  Intentionally Empty */
 }
 
-//////////////////////////////////////////////////////////////////////
-
-static fvoid_t* terminate_handler = &abort;
-
-fvoid_t* set_terminate(fvoid_t* newh)
-{
-    fvoid_t* oldh = terminate_handler;
-    terminate_handler = newh;
-    return oldh;
-}
-
-void terminate()
-// call terminate handler or abort
-{
-    if (terminate_handler != nullptr)
-        (*terminate_handler)();
-
-    abort();
-}
-
-//////////////////////////////////////////////////////////////////////
-
-static fvoid_t* unexpected_handler = &terminate;
-
-fvoid_t* set_unexpected(fvoid_t* newh)
-{
-    fvoid_t* oldh = unexpected_handler;
-    unexpected_handler = newh;
-    return oldh;
-}
-
-void unexpected()
-// call unexpected handler or terminate
-{
-    if (unexpected_handler != nullptr)
-        (*unexpected_handler)();
-
-    terminate();
-}
-
 /* End EXCEPTIO.CPP *************************************************/

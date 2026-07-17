@@ -10,16 +10,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-using fvoid_t = void();
-
-void terminate();
-fvoid_t* set_terminate(fvoid_t*);
-
-void unexpected();
-fvoid_t* set_unexpected(fvoid_t*);
-
-//////////////////////////////////////////////////////////////////////
-
 // xmsg is the base class
 // from which all specialised exceptions are derived
 
