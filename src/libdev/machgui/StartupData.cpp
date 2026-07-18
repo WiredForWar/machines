@@ -29,6 +29,8 @@
 #include "gui/ResourceString.hpp"
 #include "mathex/Random.hpp"
 
+#include <climits>
+
 MachGuiStartupData::PlayerInfo::PlayerInfo()
 {
     reset();
@@ -211,7 +213,7 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
     lastConnectionType_ = Config::netSelectedProtocol.get();
 
     MexBasicRandom rng = MexBasicRandom::constructSeededFromTime();
-    uniqueMachineNumber_ = mexRandomInt(&rng, INT_MIN, INT_MAX);
+    uniqueMachineNumber_ = mexRandomInt(&rng, std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
     TEST_INVARIANT;
 }
