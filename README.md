@@ -124,6 +124,24 @@ Extra parameters for release optimizations:
 + `cmake ..`
 + `cmake --build . -j 9`
 
+### With Conan (e.g. for Windows/MSVC)
+
+Dependencies can be provided by [Conan 2](https://conan.io/) instead of
+system packages, using the bundled
+[cmake-conan](https://github.com/conan-io/cmake-conan) dependency provider.
+This is the recommended way to build with MSVC.
+
+Prerequisites: `pip install conan` and a one-time `conan profile detect`.
+
+```
+cmake -S . -B build -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=cmake/conan_provider.cmake
+cmake --build build
+```
+
+Missing binary packages are built from source on the first configure
+(subsequent configures use the local Conan cache). If `conan` is not on
+`PATH`, pass `-DCONAN_COMMAND=<path/to/conan>`.
+
 For ARM SoC development boards (like Raspberry or Nitrogen8M) if you do not have cross compilation toolchain prepared it will be easier to boot-up one of dedicated system distribution and build it within this enviroment (takes approx one hour for 4 cores).
 
 ### Making a package
