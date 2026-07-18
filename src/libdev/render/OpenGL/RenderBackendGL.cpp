@@ -142,7 +142,14 @@ bool RenderBackendGL::initialize(SDL_Window* window)
     }
 
     spdlog::info("Initializing GLEW...");
-    const GLenum glew_status = glewInit();
+    GLenum glew_status = glewInit();
+#if defined(GLEW_ERROR_NO_GLX_DISPLAY)
+    if (glew_status == GLEW_ERROR_NO_GLX_DISPLAY)
+    {
+        spdlog::info("GLEW: no GLX display (assuming native Wayland); continuing without GLX extensions");
+        glew_status = GLEW_OK;
+    }
+#endif
     if (glew_status != GLEW_OK)
     {
         spdlog::error("Fatal in glewInit: {}", reinterpret_cast<const char*>(glewGetErrorString(glew_status)));
