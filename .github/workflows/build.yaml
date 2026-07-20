@@ -86,14 +86,17 @@ jobs:
           toolchain: mingw64
           build-type: Release
           package: true
+          package-name: machines-win64
 
         - os: windows-2025
           build-type: Release
           conan: true
+          package: true
+          package-name: machines-win64-msvc
 
     steps:
     - uses: actions/checkout@v4
-      if: matrix.package
+      if: contains(matrix.toolchain, 'mingw')
       with:
         path: "machines-packager"
         repository: "WiredForWar/machines-packager"
@@ -211,22 +214,31 @@ jobs:
       if: matrix.package
       run: cmake -E copy_directory ${{github.workspace}}/machines-data-pack ${{github.workspace}}/install/machines
 
-    - name: Add runtime libraries
-      if: matrix.package
+    - name: Add runtime libraries (mingw)
+      if: matrix.package && contains(matrix.toolchain, 'mingw')
       run: |
         cp -arv ${{github.workspace}}/machines-packager/mingw64/win-dev-libs/x86_64-w64-mingw32/bin/* ${{github.workspace}}/install/machines
         cp -arv ${{github.workspace}}/machines-packager/mingw64/win64-extra-files/* ${{github.workspace}}/install/machines
 
-    - name: Create the package
-      if: matrix.package
+    - name: Add runtime libraries (MSVC)
+      if: matrix.package && runner.os == 'Windows'
+      run: Copy-Item "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT\*.dll" ${{github.workspace}}\install\machines\
+
+    - name: Create the package (Linux)
+      if: matrix.package && runner.os == 'Linux'
       working-directory: ${{github.workspace}}/install
       run: |
         sudo apt install -y p7zip-full
-        7z a machines-win64-$BUILD_TAG-$(date +%Y%m%d).7z machines
+        7z a ${{ matrix.package-name }}-$BUILD_TAG-$(date +%Y%m%d).7z machines
 
-    - name: Upload final data pack
+    - name: Create the package (Windows)
+      if: matrix.package && runner.os == 'Windows'
+      working-directory: ${{github.workspace}}/install
+      run: 7z a ${{ matrix.package-name }}-$env:BUILD_TAG-$(Get-Date -Format yyyyMMdd).7z machines
+
+    - name: Upload the package
       if: matrix.package
       uses: actions/upload-artifact@v4
       with:
-        name: machines-win64
-        path: ${{github.workspace}}/install/machines-win64-*.7z
+        name: ${{ matrix.package-name }}
+        path: ${{github.workspace}}/install/${{ matrix.package-name }}-*.7z
