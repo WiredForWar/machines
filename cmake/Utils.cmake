@@ -14,7 +14,7 @@ function(option_with_list OPTION_NAME OPTION_TEXT OPTION_VALUE OPTION_LIST_PLACE
 endfunction()
 
 # Usage:
-# option_on_off_auto(BUILD_WITH_ALURE "Build with Alure support" "Auto")
+# option_on_off_auto(BUILD_WITH_SWSCALE "Build with SWScale support" "Auto")
 function(option_on_off_auto OPTION_NAME OPTION_TEXT OPTION_VALUE)
     option_with_list(${OPTION_NAME} "${OPTION_TEXT}" "${OPTION_VALUE}"
         STRINGS
@@ -29,8 +29,7 @@ endfunction()
 # Output variables:
 #   - USE_<PACKAGE_NAME_CAPITALIZED>
 # E.g.:
-#   find_optional_dependency(Alure)
-#   find_optional_dependency(Alure 1.2)
+#   find_optional_dependency(SWScale)
 #
 # Note: this has to be a macro for compatibility with CMake < 3.24 (function requires find_package(.. GLOBAL))
 macro(find_optional_dependency)

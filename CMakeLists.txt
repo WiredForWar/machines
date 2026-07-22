@@ -68,7 +68,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Options for optional libs
 option_on_off_auto(BUILD_WITH_SWSCALE "Build with SWScale support" "Auto")
-option_on_off_auto(BUILD_WITH_ALURE "Build with Alure support" "Auto")
 
 # 32 bit build configuration
 option(BUILD_32 "Builds 32 bit executable" OFF)
@@ -143,7 +142,6 @@ find_package(OpenAL REQUIRED)
 find_package(glm REQUIRED)
 include(EnsureOpenALTarget)
 
-find_optional_dependency(Alure)
 find_optional_dependency(SWScale)
 
 find_package(enet REQUIRED)

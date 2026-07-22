@@ -15,7 +15,6 @@ RUN apt-get update --fix-missing && \
         libsdl2-dev \
         libsdl2-image-dev \
         libopenal-dev \
-        libalure-dev \
         libenet-dev \
         libfreetype6-dev \
         libglew-dev \

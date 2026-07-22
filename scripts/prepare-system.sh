@@ -19,7 +19,6 @@ prepare_debian()
 	installPackages+=(libglm-dev)
 	installPackages+=(libaudio-dev)
 	installPackages+=(libswscale-dev)
-	installPackages+=(libalure-dev)
 	installPackages+=(libopenal-dev)
 	installPackages+=(libenet-dev)
 

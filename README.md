@@ -100,7 +100,7 @@ The logs are in `~/.var/app/io.github.wiredforwar.machines/logs`, and the save f
 ## Build dependencies
 Use provided Docker image for building or manually setup your environment.
 
-`libsdl2-dev libsdl2-image-dev libopenal-dev libalure-dev libenet-dev libfreetype6-dev libglew-dev libglm-dev libaudio-dev libswscale-dev`
+`libsdl2-dev libsdl2-image-dev libopenal-dev libenet-dev libfreetype6-dev libglew-dev libglm-dev libaudio-dev libswscale-dev`
 
 ##  Building
 
