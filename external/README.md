@@ -2,3 +2,4 @@
 - [OpenGL Mathematics](https://glm.g-truc.net/0.9.5/api/index.html) - The source code is licenced under the [MIT](http://www.opensource.org/licenses/mit-license.php) licence.
 - Libaudio - by NETWORK COMPUTING DEVICES, INC.
 - [spdlog](https://github.com/gabime/spdlog) - by Gabi Melman & spdlog contributors (MIT License)
+- [stb_vorbis](https://github.com/nothings/stb) by Sean Barrett - public domain (or MIT licensed).
