@@ -52,15 +52,7 @@ DevCD::DevCD()
 
     savedVolume_ = 20;
 
-    //    int nDevices = mixerGetNumDevs();
-
     bool noErrors = true;
-
-    /*if(!alureInitDevice(nullptr, nullptr)) //Device context is created by alsound on sndmixer init
-    {
-        std::cerr << "Failed to open OpenAL device: " << alureGetErrorString() << std::endl;
-        noErrors = false;
-    }*/
 
     if (musicEnabled_)
     {
@@ -111,8 +103,6 @@ DevCD::~DevCD()
     RICHARD_STREAM("Setting vol to saved volume " << savedVolume_ << std::endl);
     volume(savedVolume_);
 
-    //    mixerClose(hMixer_);
-
     if (musicEnabled_)
     {
         alDeleteSources(1, &source_);
@@ -121,7 +111,6 @@ DevCD::~DevCD()
         alureShutdownDevice();
     }
 
-    //    delete [] pMixerValues_;
     delete pPlayList_;
     delete pImpl_;
 #endif
@@ -133,7 +122,6 @@ void DevCD::update()
     {
         handleMessages(DevCD::SUCCESS, 0);
         pImpl_->needsUpdate_ = false;
-        // std::cout << "music mixer update" << std::endl;
     }
 }
 
@@ -165,29 +153,7 @@ Volume DevCD::volume() const
     Volume percentageVolume = 0;
     if (supportsVolumeControl())
     {
-        /*HMIXER&  hMixer_ = pImpl_-> hMixer_;
-        MIXERLINE&  mixerLine_ = pImpl_-> mixerLine_;
-        MIXERLINECONTROLS&  mixerLineControl_ = pImpl_-> mixerLineControl_;
-        MIXERCONTROL&  mixerControl_ = pImpl_-> mixerControl_;
-        MIXERCONTROLDETAILS&  mixerControlDetails_ = pImpl_-> mixerControlDetails_;
-        MIXERCONTROLDETAILS_UNSIGNED*&  pMixerValues_ = pImpl_-> pMixerValues_;*/
-        ;
         unsigned int& savedVolume_ = pImpl_->savedVolume_;
-
-        /*HRESULT hr = mixerGetControlDetails( ( HMIXEROBJ )hMixer_, &mixerControlDetails_,
-            MIXER_GETCONTROLDETAILSF_VALUE );
-        if(hr == MMSYSERR_NOERROR)
-        {
-            RICHARD_STREAM("Got control details" << std::endl);
-        }
-        else
-        {
-            RICHARD_STREAM("Couldn't get control details" << std::endl);
-        }
-
-        float theVolume = pMixerValues_[0].dwValue;
-        percentageVolume = (((float)theVolume / (float)DevCDImpl::MAX_CDVOLUME) * 100.0) + 0.5;
-        RICHARD_STREAM("Current vol " << theVolume << std::endl);*/
         percentageVolume = savedVolume_;
         RICHARD_STREAM("Current percentage vol " << percentageVolume << std::endl);
     }
@@ -213,23 +179,6 @@ void DevCD::volume(Volume newLevel)
             ALfloat fVol = (float)(savedVolume_) / 100.0f; // Maybe use log model instead of linear?
             alSourcef(source_, AL_GAIN, fVol);
         }
-        /*unsigned int theVolume = ((float)newLevel / 100.0) * DevCDImpl::MAX_CDVOLUME;
-
-        pMixerValues_[0].dwValue = theVolume;
-        pMixerValues_[1].dwValue = theVolume;
-
-        HRESULT hr;
-        hr = mixerSetControlDetails( ( HMIXEROBJ )hMixer_, &mixerControlDetails_,
-            MIXER_SETCONTROLDETAILSF_VALUE );
-        if(hr == MMSYSERR_NOERROR)
-        {
-            RICHARD_STREAM("Percentage volume set to " << newLevel << std::endl);
-            RICHARD_STREAM("Volume set to " << theVolume << std::endl);
-        }
-        else
-        {
-            RICHARD_STREAM("Couldn't set volume" << std::endl);
-        }*/
         RICHARD_STREAM("NewVolume set to " << volume() << std::endl);
     }
 }
@@ -334,7 +283,6 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
         std::cerr << "Failed to play stream: " << alureGetErrorString() << std::endl;
         return;
     }
-    // std::cout << "Playing track: " << trackPlaying_ << " volume: " << savedVolume_ << std::endl;
 
     if (repeat)
     {
