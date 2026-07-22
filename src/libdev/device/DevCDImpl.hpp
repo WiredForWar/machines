@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "al.h"
 
 #include "device/CDPlayList.hpp"
@@ -36,7 +38,7 @@ public:
     PlayStatus status_ = NORMAL;
     DevCDTrackIndex trackPlaying_{};
 
-    bool needsUpdate_{};
+    std::atomic<bool> needsUpdate_{};
     unsigned int savedVolume_{};
 
     DevCDPlayList* pPlayList_{};
