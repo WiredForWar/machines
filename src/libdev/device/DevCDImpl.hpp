@@ -1,19 +1,12 @@
 #pragma once
 
-#if USE_ALURE
 #include "al.h"
-#include "alure.h"
-#else
-typedef struct alureStream alureStream;
-typedef unsigned int ALuint;
-#endif
 
 #include "device/CDPlayList.hpp"
 #include "mathex/Random.hpp"
 
-void eosCallback(void*, ALuint);
-
 class DevCD;
+class OggStream;
 
 enum PlayStatus
 {
@@ -29,8 +22,6 @@ enum PlayStatus
 class DevCDImpl
 {
 public:
-    friend void eosCallback(void*, ALuint);
-
     static DevCDImpl* getInstance(DevCD* parent);
 
     enum CDVOLUME
@@ -39,22 +30,22 @@ public:
         MIN_CDVOLUME = 0
     };
 
-    alureStream* stream_ = nullptr;
-    ALuint source_ = 0;
+    OggStream* musicStream_{};
+    ALuint source_{};
 
     PlayStatus status_ = NORMAL;
-    DevCDTrackIndex trackPlaying_ = 0;
+    DevCDTrackIndex trackPlaying_{};
 
-    bool needsUpdate_ = false;
-    unsigned int savedVolume_ = 0;
+    bool needsUpdate_{};
+    unsigned int savedVolume_{};
 
-    DevCDPlayList* pPlayList_ = nullptr;
+    DevCDPlayList* pPlayList_{};
 
-    bool haveMixer_ = false;
+    bool haveMixer_{};
 
-    DevCDTrackIndex randomStartTrack_ = 0;
-    DevCDTrackIndex randomEndTrack_ = 0;
+    DevCDTrackIndex randomStartTrack_{};
+    DevCDTrackIndex randomEndTrack_{};
     MexBasicRandom randomGenerator_;
 
-    bool musicEnabled_ = false;
+    bool musicEnabled_{};
 };

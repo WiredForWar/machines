@@ -8,6 +8,8 @@ set(DEVICE_SOURCES
     ButtonEvent.hpp
     CD.cpp
     CD.hpp
+    OggStream.cpp
+    OggStream.hpp
     CDHelper.cpp
     CDHelper.hpp
     CDDefs.hpp
@@ -52,12 +54,7 @@ target_link_libraries(device PUBLIC
 target_link_libraries(device PRIVATE
     OpenAL::OpenAL
 
+    External::stb_vorbis
+
     spdlog::spdlog
 )
-
-if(TARGET Alure::Alure)
-    target_link_libraries(device PRIVATE Alure::Alure)
-    target_compile_definitions(device PRIVATE USE_ALURE=1)
-else()
-    target_compile_definitions(device PRIVATE USE_ALURE=0)
-endif()

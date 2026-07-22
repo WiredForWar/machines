@@ -9,19 +9,14 @@
 #include "device/CD.hpp"
 #include "device/CDHelper.hpp"
 #include "device/CDPlayList.hpp"
+#include "device/OggStream.hpp"
 #include "system/PathName.hpp"
 
 #include "device/DevCDImpl.hpp"
 
 #include "spdlog/spdlog.h"
 
-#if !USE_ALURE
 #include "al.h"
-#endif
-
-#define STREAM_NUM_BUFFERS 3
-#define STREAM_BUFFER_SIZE 250000
-#define STREAM_UPDATE_INTERVAL 0.125f
 
 DevCDImpl* DevCDImpl::getInstance(DevCD* parent)
 {
@@ -39,7 +34,6 @@ DevCD& DevCD::instance()
 DevCD::DevCD()
     : pImpl_(new DevCDImpl())
 {
-#if USE_ALURE
     // This will enable/disable music!
     device::helper::cd::configure(this);
 
@@ -56,21 +50,16 @@ DevCD::DevCD()
 
     if (musicEnabled_)
     {
-        spdlog::info("Enabling the music (using alure)...");
+        spdlog::info("Enabling the music...");
 
         ALenum errorCode = alGetError();
         if (errorCode == AL_NO_ERROR)
         {
             alGenSources(1, &source_);
-            if (errorCode == AL_NO_ERROR)
-            {
-                alureStreamSizeIsMicroSec(AL_TRUE);
-                alureUpdateInterval(STREAM_UPDATE_INTERVAL);
-            }
-            else
+            errorCode = alGetError();
+            if (errorCode != AL_NO_ERROR)
             {
                 spdlog::warn("Failed to create OpenAL source for music mixer! Code: {}", errorCode);
-                alureShutdownDevice();
             }
         }
         else
@@ -84,15 +73,10 @@ DevCD::DevCD()
     pPlayList_ = new DevCDPlayList(numberOfTracks());
 
     randomGenerator_.seedFromTime();
-#else
-    spdlog::info("The music is not available in this build configuration ('alure' backend is disabled)");
-#endif
 }
 
 DevCD::~DevCD()
 {
-#if USE_ALURE
-    alureStream*& stream_ = pImpl_->stream_;
     ALuint& source_ = pImpl_->source_;
     unsigned int& savedVolume_ = pImpl_->savedVolume_;
     DevCDPlayList*& pPlayList_ = pImpl_->pPlayList_;
@@ -105,15 +89,16 @@ DevCD::~DevCD()
 
     if (musicEnabled_)
     {
-        alDeleteSources(1, &source_);
-        alureDestroyStream(stream_, 0, nullptr);
+        // Teardown order: stop the refill thread and free the decoder (OggStream
+        // dtor) BEFORE deleting the source it queues onto.
+        delete pImpl_->musicStream_;
+        pImpl_->musicStream_ = nullptr;
 
-        alureShutdownDevice();
+        alDeleteSources(1, &source_);
     }
 
     delete pPlayList_;
     delete pImpl_;
-#endif
 }
 
 void DevCD::update()
@@ -127,7 +112,6 @@ void DevCD::update()
 
 bool DevCD::isPlayingAudioCd() const
 {
-#if USE_ALURE
     ALuint& source_ = pImpl_->source_;
     bool& musicEnabled_ = pImpl_->musicEnabled_;
 
@@ -137,7 +121,6 @@ bool DevCD::isPlayingAudioCd() const
         alGetSourcei(source_, AL_SOURCE_STATE, &sourceState);
         return sourceState == AL_PLAYING;
     }
-#endif
 
     return false;
 }
@@ -231,20 +214,8 @@ void DevCD::playFrom(DevCDTrackIndex track)
     play(track);
 }
 
-void eosCallback(void* unused, ALuint unused2)
-{
-    (void)unused;
-    (void)unused2;
-    // DevCD::instance().handleMessages(DevCD::SUCCESS, 0); // This called from alure thread creates little problems
-    DevCDImpl* pImpl = DevCDImpl::getInstance(&DevCD::instance());
-    pImpl->needsUpdate_ = true;
-    // std::cout << "Done playing track" << std::endl;
-}
-
 void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
 {
-#if USE_ALURE
-    alureStream*& stream_ = pImpl_->stream_;
     ALuint& source_ = pImpl_->source_;
     PlayStatus& status_ = pImpl_->status_;
     DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
@@ -255,10 +226,10 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
 
     trackPlaying_ = track;
 
-    if (musicEnabled_ && stream_ != nullptr)
-    {
-        alureDestroyStream(stream_, 0, nullptr);
-    }
+    // Tear down any previous stream (stops its refill thread) before starting
+    // a new one on the shared source.
+    delete pImpl_->musicStream_;
+    pImpl_->musicStream_ = nullptr;
 
     if (! musicEnabled_ || savedVolume_ <= 0) // Muted
     {
@@ -268,21 +239,20 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     char fileName[40];
     snprintf(fileName, sizeof(fileName), "sounds/music/track%d.ogg", trackPlaying_);
     SysPathName filePath(fileName);
-    stream_ = alureCreateStreamFromFile(filePath.pathname().c_str(), STREAM_BUFFER_SIZE, 0, nullptr);
 
-    if (stream_ == nullptr)
+    DevCDImpl* pImpl = pImpl_;
+    auto* stream = new OggStream(source_, [pImpl]() { pImpl->needsUpdate_ = true; });
+    if (!stream->open(filePath.pathname()))
     {
-        std::cerr << "Could not load " << filePath.pathname() << " reason: " << alureGetErrorString() << std::endl;
+        std::cerr << "Could not load " << filePath.pathname() << std::endl;
+        delete stream;
         return;
     }
+    pImpl_->musicStream_ = stream;
 
     ALfloat fVol = (float)(savedVolume_) / 100.0f;
     alSourcef(source_, AL_GAIN, fVol);
-    if (!alurePlaySourceStream(source_, stream_, STREAM_NUM_BUFFERS, 0, eosCallback, nullptr))
-    {
-        std::cerr << "Failed to play stream: " << alureGetErrorString() << std::endl;
-        return;
-    }
+    stream->play();
 
     if (repeat)
     {
@@ -292,7 +262,6 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     {
         status_ = SINGLE;
     }
-#endif
 }
 
 void DevCD::play(const DevCDPlayList& params)
@@ -310,15 +279,12 @@ void DevCD::play(const DevCDPlayList& params)
 
 void DevCD::stopPlaying()
 {
-    ALuint& source_ = pImpl_->source_;
     bool& musicEnabled_ = pImpl_->musicEnabled_;
 
-#if USE_ALURE
-    if (musicEnabled_)
+    if (musicEnabled_ && pImpl_->musicStream_ != nullptr)
     {
-        alureStopSource(source_, AL_FALSE);
+        pImpl_->musicStream_->stop();
     }
-#endif
 }
 
 void DevCD::handleMessages(CDMessage message, unsigned int devID)
