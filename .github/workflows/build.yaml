@@ -43,25 +43,10 @@ jobs:
         name: machines-data
         path: ${{github.workspace}}/machines-data/install/machines
 
-  build:
+  data_pack:
+    name: "Prepare the data pack"
     needs: game_data_archive
-    runs-on: ${{ matrix.os }}
-    env:
-      BUILD_TAG: "wfw"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - os: ubuntu-24.04
-          build-type: Release
-          upload-data-pack: true
-          tests: true
-
-        - os: ubuntu-24.04
-          toolchain: mingw64
-          build-type: Release
-          package: true
-
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
       with:
@@ -77,12 +62,36 @@ jobs:
       run: |
         machines-packager/data-pack/gen-machines-data-pack.sh
 
-    - name: Upload final data pack
-      if: matrix.upload-data-pack
+    - name: Upload the data pack
       uses: actions/upload-artifact@v4
       with:
         name: machines-data-pack
         path: ${{github.workspace}}/machines-data-pack-*.zip
+
+  build:
+    needs: data_pack
+    runs-on: ${{ matrix.os }}
+    env:
+      BUILD_TAG: "wfw"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - os: ubuntu-24.04
+          build-type: Release
+          tests: true
+
+        - os: ubuntu-24.04
+          toolchain: mingw64
+          build-type: Release
+          package: true
+
+    steps:
+    - uses: actions/checkout@v4
+      if: matrix.package
+      with:
+        path: "machines-packager"
+        repository: "WiredForWar/machines-packager"
 
     - uses: actions/checkout@v4
       with:
@@ -151,10 +160,20 @@ jobs:
       if: matrix.package
       run: cmake -E remove ${{github.workspace}}/install/machines/planeted.exe
 
+    - name: Download the data pack
+      if: matrix.package
+      uses: actions/download-artifact@v4
+      with:
+        name: machines-data-pack
+
+    - name: Unpack the data pack
+      if: matrix.package
+      shell: bash
+      run: cmake -E tar xf machines-data-pack-*.zip
+
     - name: Add the data pack
       if: matrix.package
-      run: |
-        cp -arv ${{github.workspace}}/machines-data-pack/* ${{github.workspace}}/install/machines
+      run: cmake -E copy_directory ${{github.workspace}}/machines-data-pack ${{github.workspace}}/install/machines
 
     - name: Add runtime libraries
       if: matrix.package
