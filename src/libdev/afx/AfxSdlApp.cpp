@@ -57,7 +57,15 @@ bool AfxSdlApp::OSStartup()
     initLogger();
 
     {
-        spdlog::info("OS: {}", getOsVersion());
+        const std::string& packaging = getPackagingInfo();
+        if (packaging.empty())
+        {
+            spdlog::info("OS: {}", getOsVersion());
+        }
+        else
+        {
+            spdlog::info("OS: {} ({})", getOsVersion(), packaging);
+        }
     }
 
     {

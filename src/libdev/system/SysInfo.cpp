@@ -105,3 +105,21 @@ const std::string& getOsVersion()
     static std::string version = obtainVersion();
     return version;
 }
+
+std::string obtainPackagingInfo()
+{
+#if !defined(__WINDOWS__)
+    if (auto fileHandle = fopen("/.flatpak-info", "r"))
+    {
+        fclose(fileHandle);
+        return "Flatpak";
+    }
+#endif
+    return {};
+}
+
+const std::string& getPackagingInfo()
+{
+    static std::string packaging = obtainPackagingInfo();
+    return packaging;
+}
