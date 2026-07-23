@@ -57,13 +57,13 @@ bool AfxSdlApp::OSStartup()
     initLogger();
 
     {
-        SDL_version v;
-        SDL_GetVersion(&v);
-        spdlog::info("SDL version: {}.{}.{}", v.major, v.minor, v.patch);
+        spdlog::info("OS: {}", getOsVersion());
     }
 
     {
-        spdlog::info("OS: {}", getOsVersion());
+        SDL_version v;
+        SDL_GetVersion(&v);
+        spdlog::info("SDL version: {}.{}.{}", v.major, v.minor, v.patch);
     }
 
     // Create window
