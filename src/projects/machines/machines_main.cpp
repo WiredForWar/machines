@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
     app.setAppName("Machines");
     app.setVersion(machinesVersion());
     app.setBuildVersion(machinesBuildVersion());
+    app.setBuildInfo(machinesBuildInfo());
     app.setLoggingEnabled(true);
 
     try

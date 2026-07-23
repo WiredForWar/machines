@@ -53,6 +53,10 @@ public:
     std::string_view buildVersion() const;
     void setBuildVersion(const std::string& buildVersion);
 
+    // Compiler, architecture, and build type. Empty if not provided.
+    std::string_view buildInfo() const;
+    void setBuildInfo(const std::string& buildInfo);
+
     // Get the arguments that were supplied at program invocation.
     // This does *not* include the program name as the first element
     // (a la DOS & Unix) because it does not seem to be available
@@ -104,6 +108,7 @@ private:
     std::string appName_;
     std::string version_;
     std::string buildVersion_;
+    std::string buildInfo_;
 };
 
 #endif //_FRAMEWORK_BASE_APP_INCLUDED

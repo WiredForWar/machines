@@ -229,6 +229,10 @@ void AfxSdlApp::initLogger()
     spdlog::flush_on(spdlog::level::info);
     spdlog::set_level(spdlog::level::debug);
     spdlog::info("Starting {} {} ({})", name(), version(), buildVersion());
+    if (!buildInfo().empty())
+    {
+        spdlog::info("Build: {}", buildInfo());
+    }
 }
 
 void AfxSdlApp::dispatchEvent(const SDL_Event* event)

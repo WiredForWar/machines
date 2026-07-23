@@ -18,6 +18,10 @@ AfxApp::ExitStatus AfxApp::run()
         if (args_.at(0) == "--version")
         {
             std::cout << name() << " " << version() << " (build " << buildVersion() << ")" << std::endl;
+            if (!buildInfo().empty())
+            {
+                std::cout << "Build: " << buildInfo() << std::endl;
+            }
             return EXIT_OK;
         }
     }
@@ -99,4 +103,14 @@ void AfxApp::setVersion(const std::string& version)
 void AfxApp::setBuildVersion(const std::string& buildVersion)
 {
     buildVersion_ = buildVersion;
+}
+
+std::string_view AfxApp::buildInfo() const
+{
+    return buildInfo_;
+}
+
+void AfxApp::setBuildInfo(const std::string& buildInfo)
+{
+    buildInfo_ = buildInfo;
 }

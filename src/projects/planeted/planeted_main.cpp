@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
     app.setAppName("Machines Planet Editor");
     app.setVersion("v0.00.01");
     app.setBuildVersion(machinesBuildVersion());
+    app.setBuildInfo(machinesBuildInfo());
 
     try
     {
