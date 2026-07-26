@@ -139,10 +139,11 @@ jobs:
       shell: cmake -P {0}
       run: |
         set(toolchain "${{ matrix.toolchain }}")
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" WORKSPACE_DIR)
         if(toolchain)
           set(cmake_toolchain_args "-DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-${toolchain}.cmake")
             if(toolchain MATCHES ".*mingw.*")
-                list(APPEND cmake_toolchain_args "-DWINDOWS_DEPENDENCIES_DIR=${{github.workspace}}/machines-packager/mingw64/win-dev-libs")
+                list(APPEND cmake_toolchain_args "-DWINDOWS_DEPENDENCIES_DIR=${WORKSPACE_DIR}/machines-packager/mingw64/win-dev-libs")
             endif()
             if(toolchain MATCHES ".*32.*")
                 list(APPEND cmake_toolchain_args "-DBUILD_32=1")
@@ -160,14 +161,12 @@ jobs:
           list(APPEND cmake_conan_args "-DCONAN_INSTALL_ARGS=--build=missing\;-c\;tools.system.package_manager:mode=install\;-c\;tools.system.package_manager:sudo=True")
         endif()
 
-        file(TO_CMAKE_PATH "${{github.workspace}}" WORKSPACE_DIR)
-
         execute_process(COMMAND ${CMAKE_COMMAND}
           -S ${WORKSPACE_DIR}/sources
           -B ${WORKSPACE_DIR}/build
           -GNinja
           -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
-          -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/install/machines
+          -DCMAKE_INSTALL_PREFIX=${WORKSPACE_DIR}/install/machines
           -DBUILD_PLANETED=TRUE
           ${cmake_toolchain_args}
           ${cmake_release_args}
