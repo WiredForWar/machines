@@ -79,6 +79,7 @@ jobs:
         include:
         - os: ubuntu-24.04
           build-type: Release
+          conan: true
           tests: true
 
         - os: ubuntu-24.04
@@ -107,6 +108,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo sources/scripts/prepare-system.sh
+        sudo apt-get install pkg-config
 
     - name: Prepare mingw (Linux)
       if: contains(matrix.toolchain, 'mingw')
@@ -148,6 +150,11 @@ jobs:
         endif()
         if("${{ matrix.conan }}" STREQUAL "true")
           set(cmake_conan_args "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=cmake/conan_provider.cmake")
+          # Let Conan install the system packages its recipes need (e.g. the
+          # X11/xcb -dev packages pulled in by xorg/system for SDL on Linux).
+          # The inner ';' are escaped so the whole value reaches the child cmake
+          # as a single -D argument (a CONAN_INSTALL_ARGS list).
+          list(APPEND cmake_conan_args "-DCONAN_INSTALL_ARGS=--build=missing\;-c\;tools.system.package_manager:mode=install\;-c\;tools.system.package_manager:sudo=True")
         endif()
 
         file(TO_CMAKE_PATH "${{github.workspace}}" WORKSPACE_DIR)
