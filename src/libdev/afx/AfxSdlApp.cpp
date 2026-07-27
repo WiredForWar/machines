@@ -108,7 +108,7 @@ bool AfxSdlApp::recreateWindow()
         name().c_str(),
         640,
         480, // initial width and height
-        SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN);
+        SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN);
 
     if (pWindow_ == nullptr)
     {
