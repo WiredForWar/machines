@@ -2232,7 +2232,7 @@ bool MachLogRaces::loadGame(
     const MachLogGameCreationData& gameData,
     IProgressReporter* pReporter)
 {
-    spdlog::info("Loading game (planet: '{}', scenario: '{}'", planetName, scenarioName);
+    spdlog::info("Loading game (planet: '{}', scenario: '{}')", planetName, scenarioName);
 
     MachLogVoiceMailManager::instance().acceptMailPostings(false);
 
