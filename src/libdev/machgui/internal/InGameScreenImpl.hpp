@@ -143,7 +143,6 @@ public:
 
 #ifndef PRODUCTION
     bool showCurrentMachine_{};
-    bool showNetworkPing_{};
     bool showNetworkStuffed_{};
 #endif
 };

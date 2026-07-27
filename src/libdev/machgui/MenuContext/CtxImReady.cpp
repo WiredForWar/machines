@@ -426,17 +426,10 @@ void MachGuiCtxImReady::createPlayerList()
 
     pPlayerList_->deleteAllChildren();
 
-    //  const NetNode::Ping& ping = MachLogNetwork::instance().node().pingInformation();
-
     for (size_t loop = 0; loop < 4; ++loop)
     {
         NETWORK_STREAM("player " << loop << " displayName " << pPlayers[loop].getDisplayName() << std::endl);
         double pingValue = 0;
-        /*      for( NetNode::Ping::const_iterator i = ping.begin(); i != ping.end(); ++i )
-        {
-            if( (*i).first.nodeName() == pPlayers[loop].getDisplayName() )
-                pingValue = (*i).second.lastProperPingTime_;
-        }*/
 
         pPlayerListItem_[loop] = new MachGuiPlayerListItem(
             pStartupScreens_,
@@ -467,16 +460,9 @@ void MachGuiCtxImReady::updatePlayerList()
     NETWORK_INDENT(2);
     MachGuiStartupData::PlayerInfo* pPlayers = startupData().players();
 
-    //  const NetNode::Ping& ping = MachLogNetwork::instance().node().pingInformation();
-
     for (size_t loop = 0; loop < 4; ++loop)
     {
         double pingValue = 0;
-        /*      for( NetNode::Ping::const_iterator i = ping.begin(); i != ping.end(); ++i )
-        {
-            if( (*i).first.nodeName() == pPlayers[loop].getDisplayName() )
-                pingValue = (*i).second.lastProperPingTime_;
-        }*/
 
         pPlayerListItem_[loop]->updateInfo(
             pPlayers[loop].getDisplayName(),

@@ -329,10 +329,6 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
             RENDER_STREAM(RenSurfaceManager::instance());
         }
 
-        if (e.key() == Device::KeyCode::KEY_N && e.isShiftPressed())
-        {
-            pImpl_->showNetworkPing_ = e.isCtrlPressed();
-        }
         if (e.key() == Device::KeyCode::ASTERISK_PAD)
         {
             if (e.isShiftPressed())

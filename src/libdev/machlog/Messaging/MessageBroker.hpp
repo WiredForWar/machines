@@ -31,7 +31,6 @@ class MexLine3d;
 class MexAlignedBox2d;
 class SysPathName;
 class MachPhysFirstPersonStateVector;
-class NetNode;
 class NetNodeUid;
 class NetMessage;
 class MachLogScoreImpl;
@@ -173,7 +172,6 @@ public:
     virtual void processMessage(NetMessage*);
     // note that message code has to be integer. This allows untype safe but useful different
     // enums to be used at the different library levels.
-    virtual void sendMessage(int messageCode, NetNode* from, NetMessageRecipients to);
 
     bool hasCachedOutgoingMessages() const;
     void sendCachedOutgoingMessages();
@@ -351,7 +349,6 @@ private:
     void processMakeCompleteConstructionMessage(NetMessage* pNetMessage);
     void processIsEntranceOpenMessage(NetMessage* pNetMessage);
 
-    void nodeConnectionLost();
 
     MachLogMessageBroker(const MachLogMessageBroker&);
     MachLogMessageBroker& operator=(const MachLogMessageBroker&);

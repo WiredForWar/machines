@@ -1297,7 +1297,6 @@ void MachInGameScreen::asynchronousUpdate()
 
 #ifndef PRODUCTION
     CB_DEPIMPL_AUTO(showCurrentMachine_);
-    CB_DEPIMPL_AUTO(showNetworkPing_);
     CB_DEPIMPL_AUTO(showNetworkStuffed_);
 #endif
 
@@ -1426,20 +1425,6 @@ void MachInGameScreen::asynchronousUpdate()
     }
     if (showCurrentMachine_ && selectedActors().size() > 0)
         pSceneManager_->out() << *selectedActors().front() << std::endl;
-    if (showNetworkPing_ && MachLogNetwork::instance().isNetworkGame())
-    {
-        /*
-        const NetNode& node = MachLogNetwork::instance().node();
-        const NetNode::Ping& pingInfo = node.pingInformation();
-        for( NetNode::Ping::const_iterator i = pingInfo.begin(); i != pingInfo.end(); ++i )
-        {
-            if( (*i).first != node.nodeUid() )
-            {
-                pSceneManager_->out() << "Current ping : " << (*i).first.nodeName() << " " << (*i).second << std::endl;
-            }
-        }
-        */
-    }
 #endif
 }
 
@@ -1473,7 +1458,6 @@ void MachInGameScreen::update()
 
 #ifndef PRODUCTION
     CB_DEPIMPL_AUTO(showCurrentMachine_);
-    CB_DEPIMPL_AUTO(showNetworkPing_);
     CB_DEPIMPL_AUTO(showNetworkStuffed_);
 #endif
 

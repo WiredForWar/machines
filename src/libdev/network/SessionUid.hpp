@@ -24,7 +24,6 @@ private:
 
     friend bool operator==(const NetAppSessionUid& lhs, const NetAppSessionUid& rhs);
 
-    friend class NetNode;
     friend class NetIAppSession;
 
     friend class NetIRecorder;

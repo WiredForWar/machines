@@ -266,31 +266,14 @@ void MachLogMessageBroker::doSend(MachLogNetMessage*& pMessage)
     {
         NetPriority priority(1);
         NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
-        //      NetNode& node = MachLogNetwork::instance().node();
-        //      node.sendMessage( priority, to, body);
         NetNetwork::instance().sendMessage(priority, body);
         MachLogMessageCode code = (MachLogMessageCode)pMessage->header_.messageCode_;
         int systemCode = (int)pMessage->header_.systemCode_;
         NET_ANALYSIS_STREAM(
             "out," << systemCode << "," << code << "," << SimManager::instance().currentTime() << ","
                    << pMessage->header_.totalLength_ << std::endl);
-        /*      switch( node.currentStatus() )
-        {
-            case NetNode::NETNODE_OK:
-            break;
-            case NetNode::NETNODE_CONNECTIONLOST:
-            {
-                nodeConnectionLost();
-            }
-            break;
-        }*/
         delete pMessage;
     }
-}
-
-// virtual
-void MachLogMessageBroker::sendMessage(int, NetNode*, NetMessageRecipients)
-{
 }
 
 bool MachLogMessageBroker::hasCachedOutgoingMessages() const
@@ -323,20 +306,6 @@ void MachLogMessageBroker::sendCachedOutgoingMessages()
             " messageCode " << static_cast<const MachLogMessageCode>(pMessage->header_.messageCode_) << std::endl);
         NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
         NetNetwork::instance().sendMessage(priority, body);
-        /*      NetNode& node = MachLogNetwork::instance().node();
-        node.sendMessage( priority, to, body);
-        switch( node.currentStatus() )
-        {
-            case NetNode::NETNODE_OK:
-            break;
-            case NetNode::NETNODE_CONNECTIONLOST:
-            {
-                NETWORK_STREAM("MLMessageBroker::sendCachedOutgoingMessages NETNODE_CONNECTIONLOST returned.\n" );
-                nodeConnectionLost();
-                connectionLost = true;
-            }
-            break;
-        }*/
         MachLogMessageCode code = (MachLogMessageCode)pMessage->header_.messageCode_;
         int systemCode = (int)pMessage->header_.systemCode_;
         NET_ANALYSIS_STREAM(
@@ -575,54 +544,6 @@ int MachLogMessageBroker::maximumMotionChunks()
     //  TBD: Make this calculate the result properly
 
     return 6;
-}
-
-void MachLogMessageBroker::nodeConnectionLost()
-{
-    NETWORK_STREAM("MachLogMessageBroker::nodeConnectionLost node has lost connection\n");
-    //              std::string reason;
-    //              reason = ". The connection has been lost in the message broker.\n";
-    //              NetNetwork::instance().doAbort( reason );
-    ctl_vector<std::string> nodeNames;
-    /*  NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
-    NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
-    for( ; i != j; ++i )
-    {
-        nodeNames.push_back( (*i)->nodeName() );
-    }*/
-    NETWORK_STREAM(" nodes before loss size " << nodeNames.size() << std::endl);
-    NETWORK_INDENT(2);
-    NETWORK_STREAM(nodeNames);
-    NETWORK_INDENT(-2);
-
-    //  NetNetwork::instance().session().updateNodes();
-    //  NETWORK_STREAM(" nodes after loss size " << NetNetwork::instance().session().nodes().size() << std::endl );
-    ctl_vector<std::string> nodeNamesAfterUpdate;
-    /*  i = NetNetwork::instance().session().nodes().begin();
-    j = NetNetwork::instance().session().nodes().end();
-    for( ; i != j; ++i )
-    {
-        nodeNamesAfterUpdate.push_back( (*i)->nodeName() );
-    }*/
-    NETWORK_INDENT(2);
-    NETWORK_STREAM(nodeNamesAfterUpdate);
-    NETWORK_INDENT(-2);
-    //  if( nodeNamesAfterUpdate.size() == nodeNames.size() )
-    //  {
-    //      NETWORK_STREAM("lists are the same size so exiting without doing any work\n" );
-    //  }
-    //  else
-    {
-        for (ctl_vector<std::string>::const_iterator i = nodeNames.begin(); i != nodeNames.end(); ++i)
-        {
-            if (find(nodeNamesAfterUpdate.begin(), nodeNamesAfterUpdate.end(), (*i)) == nodeNamesAfterUpdate.end())
-            {
-                if (NetNetwork::instance().hasSystemMessageHandler())
-                    NetNetwork::instance().systemMessageHandler().handleDestroyPlayerMessage((*i));
-            }
-        }
-    }
-    NETWORK_STREAM("MachLogMessageBroker::nodeConnectionLost DONE\n");
 }
 
 /* End MESSBROK.CPP *************************************************/

@@ -35,7 +35,6 @@ MachLogNetwork::MachLogNetwork()
     CB_MachLogNetwork_DEPIMPL();
 
     expectedPlayers_ = 2;
-    pNode_ = nullptr;
     pBroker_ = nullptr;
     terminateAndReset();
     //  NetNetwork::instance().directXProtocol( true );
@@ -64,9 +63,6 @@ void MachLogNetwork::terminateAndReset()
     spdlog::debug("MachLogNetwork::terminateAndReset()");
     NETWORK_STREAM(ProStackTracer());
 
-    if (pNode_)
-        delete pNode_;
-    pNode_ = nullptr;
     // do not delete the broker!
     //   if( pBroker_ )
     //       delete pBroker_;
@@ -166,15 +162,11 @@ void MachLogNetwork::update()
     // in the pollmessages call above...therefore check that game is still running.
     if (! isNetworkGame())
         return;
-    // NETWORK_STREAM( " deref node\n" );
-    //   NetNode& nod = node();
-    // NETWORK_STREAM( " pNode_ " << (void*)&nod << " asking haveMessages\n" );
     if (pBroker_)
     {
         //  ASSERT( pBroker_ != NULL,"message broker is NULL and trying to call messageBroker method\n" );
         MachLogMessageBroker& broker = messageBroker();
         // network game status _may_ be changed by processing a message
-        //       while( isNetworkGame_ and nod.haveMessages() )
         while (isNetworkGame_ && NetNetwork::instance().haveMessages())
         {
             // NETWORK_STREAM( " gunna process a message..\n" );
@@ -188,23 +180,7 @@ void MachLogNetwork::update()
             broker.sendCachedOutgoingMessages();
     }
 
-    if (isNetworkGame_)
-    {
-        /*      nod.transmitCompoundMessage();
-        if( nod.lastPingAllTime() > 5 )
-        {
-            nod.pingAll();
-        }*/
-    }
-
     // NETWORK_STREAM(  "MachLogNetwrok::update DONE\n" );
-}
-
-NetNode& MachLogNetwork::node()
-{
-    CB_DEPIMPL(NetNode*, pNode_);
-
-    return *pNode_;
 }
 
 MachLogMessageBroker& MachLogNetwork::messageBroker()
@@ -276,8 +252,6 @@ bool MachLogNetwork::hostSession(const std::string& gameName, const std::string&
     //  GetComputerName(szSessionName, &dwNameSize);
     // NetNodeName name(playerName);
     NetNetwork::instance().setLocalPlayerName(playerName);
-    //  pNode_ = new NetNode(name);
-    //  pNode_->useCompoundMessaging( true );
     if (NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
     {
         isNetworkGame_ = true;
@@ -320,8 +294,6 @@ bool MachLogNetwork::launchFromLobbyInfo()
 
     NetNodeName name(NetNetwork::instance().localPlayerName());
     NetNetwork::instance().setLocalPlayerName(name);
-    //  pImpl_->pNode_ = new NetNode(name);
-    //  pImpl_->pNode_->useCompoundMessaging( true );
     NETWORK_INDENT(-2);
     NETWORK_STREAM("MachLogNetwork::launchFromLobbyInfo() DONE\n");
     return true;
@@ -330,11 +302,6 @@ bool MachLogNetwork::launchFromLobbyInfo()
 void MachLogNetwork::isNodeLogicalHost(bool newValue)
 {
     pImpl_->isNodeLogicalHost_ = newValue;
-}
-
-void MachLogNetwork::setNodeCompoundStatus(bool value)
-{
-    // pImpl_->pNode_->useCompoundMessaging( value );
 }
 
 /* End NETWORK.CPP **************************************************/

@@ -15,7 +15,6 @@
 #include "device/Mouse.hpp"
 #include "device/CD.hpp"
 #include "network/Network.hpp"
-#include "network/Node.hpp"
 #include "phys/phys.hpp"
 #include "render/TextOptions.hpp"
 #include "render/Display.hpp"

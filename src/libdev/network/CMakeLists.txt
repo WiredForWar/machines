@@ -11,7 +11,6 @@ set(NETWORK_SOURCES
     CompoundMessage.cpp
     internal/CompoundMessage.hpp
     internal/NetInet.hpp
-    internal/NodeImpl.hpp
     internal/Recorder.hpp
     internal/SessionImpl.hpp
     Message.cpp
@@ -24,9 +23,6 @@ set(NETWORK_SOURCES
     NetInet.cpp
     Network.cpp
     Network.hpp
-    # node.cpp # unused
-    # node.hpp # unused
-    # nodei.cpp # unused
     NodeUid.cpp
     NodeUid.hpp
     PingHelper.cpp
@@ -34,9 +30,7 @@ set(NETWORK_SOURCES
     Priority.cpp
     Priority.hpp
     Recorder.cpp
-    # session.cpp # unused
     Session.hpp
-    # sessioni.cpp # unused
     SessionUid.cpp
     SessionUid.hpp
     SystemMessageHandler.cpp

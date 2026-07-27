@@ -17,7 +17,6 @@
 #include "network/ComPortAddress.hpp"
 // #include "network/PingHelper.hpp"
 
-class NetNode;
 class NetNodeUid;
 class NetProcessUid;
 class NetAppSession;
@@ -128,7 +127,6 @@ private:
     bool hasAppSession(const NetAppSessionName&) const;
     //  Use the no record version in assertions
     bool hasAppSessionNoRecord(const NetAppSessionName&) const;
-    void enterAppSession(NetNode*, NetAppSessionUid);
     void doAbort(const std::string& reasonCode);
     void initHost(bool asServer = false);
     void resetHost();
@@ -143,7 +141,6 @@ private:
     void setIPAddress(const std::string& newIPAddress);
 
     bool isValidNoRecord() const;
-    bool hasLocalNodeNoRecord(const NetNode*) const;
     static NetNetwork::NetNetworkStatus& currentStatusNoRecord();
 
     NetProcessUid& processUidMaster() const;
@@ -210,7 +207,6 @@ private:
 
     ///////////////////////////////
 
-    friend class NetNode;
     friend class NetNetwork;
     friend class NetIAppSession;
     friend class NetSystemMessageHandler;

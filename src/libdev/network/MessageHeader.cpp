@@ -5,13 +5,6 @@
 
 #include <ostream>
 
-// NetMessageHeader::NetMessageHeader( NetNode* pSender, NetPriority priority, const Recipients& recipients):
-// sender_(pSender->nodeUid()),
-// priority_(priority),
-// recipients_(recipients)
-//{
-// }
-
 /*NetMessageHeader::NetMessageHeader( const NetNodeUid& sender, const NetPriority& priority ):
 sender_(sender),
 priority_(priority)

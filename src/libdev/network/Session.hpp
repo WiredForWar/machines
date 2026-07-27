@@ -5,7 +5,6 @@
 #include "ctl/PtrVector.hpp"
 
 class NetNodeUid;
-class NetNode;
 class NetIAppSession;
 class NetAppSessionUid;
 
@@ -37,10 +36,6 @@ public:
     //  Use the no record version for assertions
     bool hasMemberNoRecord(NetNodeUid checkUid) const;
 
-    void join(NetNode* pNode);
-    // PRE( not hasMember( pNode->nodeUid() ) );
-    // POST( hasMember( pNode->nUid ) );
-
     ///////////////////////////////
 
     using NodeIds = ctl_pvector<NetNodeUid>;
@@ -67,7 +62,6 @@ private:
 
     NetIAppSession* pIAppSession_;
 
-    friend class NetNode;
     friend class NetINetwork;
     friend class NetIAppSession;
 

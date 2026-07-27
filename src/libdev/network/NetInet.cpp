@@ -908,8 +908,6 @@ void NetINetwork::resetStatus()
         RecRecorder::instance().recordingAllowed(false);
 
         currentStatus(NetNetwork::NETNET_OK);
-        //      NetIAppSession::currentStatusNoRecord() = NetAppSession::NETSESS_OK;
-        //      NetNode::currentStatusNoRecord() = NetNode::NETNODE_OK;
 
         RecRecorder::instance().recordingAllowed(true);
     }
@@ -938,14 +936,6 @@ const NetNetwork::NetNetworkStatus& NetINetwork::currentStatus()
 NetNetwork::NetNetworkStatus& NetINetwork::currentStatusNoRecord()
 {
     static NetNetwork::NetNetworkStatus currentStatus = NetNetwork::NETNET_OK;
-
-    if (currentStatus == NetNetwork::NETNET_OK)
-    {
-        /*      if(NetIAppSession::currentStatusNoRecord() != NetAppSession::NETSESS_OK)
-            currentStatus = NetNetwork::NETNET_SESSIONERROR;
-        else if(NetNode::currentStatusNoRecord() != NetNode::NETNODE_OK)
-            currentStatus = NetNetwork::NETNET_NODEERROR;*/
-    }
 
     return currentStatus;
 }

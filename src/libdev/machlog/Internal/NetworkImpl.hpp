@@ -40,7 +40,6 @@ private:
     MachPhys::Race localRace_;
     std::optional<NetNetwork::NetworkProtocol> desiredProtocol_;
     std::string sessionId_;
-    NetNode* pNode_;
     MachLogMessageBroker* pBroker_;
     bool readyStatus_[MachPhys::N_RACES];
     bool simUpdateReceived_[MachPhys::N_RACES];
@@ -57,7 +56,6 @@ private:
     CB_DEPIMPL_AUTO(remote_);                                                                                          \
     CB_DEPIMPL_AUTO(localRace_);                                                                                       \
     CB_DEPIMPL_AUTO(desiredProtocol_);                                                                                 \
-    CB_DEPIMPL_AUTO(pNode_);                                                                                           \
     CB_DEPIMPL_AUTO(pBroker_);                                                                                         \
     CB_DEPIMPL_AUTO(readyStatus_);                                                                                     \
     CB_DEPIMPL_AUTO(simUpdateReceived_);                                                                               \

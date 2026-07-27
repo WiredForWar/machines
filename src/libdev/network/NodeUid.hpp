@@ -6,7 +6,6 @@
 // class NetProcessUid;
 class NetNetwork;
 class NetNodeUid;
-class NetNode;
 
 // typedef ctl_vector< pair< NetNodeUid*, NetMessageUid* > > NetMessageRecipients;
 
@@ -42,7 +41,6 @@ private:
     friend bool operator!=(const NetNodeUid&, const NetNodeUid&);
     friend bool operator<(const NetNodeUid&, const NetNodeUid&);
     friend std::ostream& operator<<(std::ostream& o, const NetNodeUid&);
-    friend class NetNode;
     friend class NetIAppSession;
 };
 

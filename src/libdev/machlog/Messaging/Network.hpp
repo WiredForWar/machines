@@ -18,7 +18,6 @@
 
 #include <optional>
 
-class NetNode;
 class MachLogMessageBroker;
 class MachLogNetworkDataImpl;
 
@@ -58,7 +57,6 @@ public:
     bool simUpdateReceived(MachPhys::Race) const;
     void simUpdateReceived(MachPhys::Race, bool);
 
-    NetNode& node();
     MachLogMessageBroker& messageBroker();
 
     void ready(MachPhys::Race, bool newValue);
@@ -72,7 +70,6 @@ public:
     void beginJoinSession(const std::string& address, const std::string& playerName);
     void resetSession();
     bool launchFromLobbyInfo();
-    void setNodeCompoundStatus(bool);
 
     void CLASS_INVARIANT;
 

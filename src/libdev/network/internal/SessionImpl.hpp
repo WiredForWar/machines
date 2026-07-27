@@ -15,7 +15,6 @@ public:
     bool hasMember(const NetNodeUid& checkUid) const;
     // POST( implies( result, NetNetwork::instance().hasSessionMember( nUid ) ) );
 
-    void join(NetNode* pNode);
     // PRE( not hasMember( pNode->nodeUid() ) );
     // POST( hasMember( pNode->nUid ) );
 
@@ -43,7 +42,6 @@ private:
     NodeIds nodeIds_;
 
     void init();
-    void leave(NetNode* pNode);
     // PRE( hasMember( pNode->nodeUid() ) );
     // POST( not hasMember( pNode->nUid ) );
 
@@ -57,7 +55,6 @@ private:
 
     static NetAppSession::NetSessionStatus& currentStatusNoRecord();
 
-    friend class NetNode;
     friend class NetINetwork;
     friend class NetAppSession;
 };

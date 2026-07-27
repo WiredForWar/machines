@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 
-class NetNode;
 class NetNodeUid;
 class NetProcessUid;
 class NetAppSession;
@@ -173,7 +172,6 @@ private:
     ///////////////////////////////
 
     friend class NetINetwork;
-    friend class NetNode;
 
     ///////////////////////////////
 };
