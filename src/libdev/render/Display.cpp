@@ -231,11 +231,19 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         SDL_SetWindowSize(window(), m.width(), m.height());
         SDL_SetWindowPosition(window(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
+    SDL_ShowWindow(window());
+    // The size and the fullscreen state are applied asynchronously by the
+    // windowing system, so wait for them to land before setting up the
+    // viewport. This has to happen after the window is shown: Wayland cannot
+    // map a toplevel directly in the fullscreen state, so the state requested
+    // while the window was hidden is only sent to the compositor once the
+    // window has been mapped, and until it is acknowledged the window is in
+    // its windowed state.
+    SDL_SyncWindow(window());
+
     glViewport(0, 0, m.width(), m.height());
-    SDL_Delay(100); // TODO: Without it there seems to be a issue with small viewport/ glFlush
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
-    SDL_ShowWindow(window());
 
     if (!success || (! pImpl_->modeChanged()))
     {
