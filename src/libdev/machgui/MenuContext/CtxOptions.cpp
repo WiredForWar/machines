@@ -383,7 +383,10 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 GuiResourceString choice(ch + id + 1);
                 std::string choiceString = choice.asString();
                 choices.push_back(choiceString);
-                choiceIds.push_back((MachGuiDropDownListBoxCreator::DropDownListBoxItem)(ch + 1));
+                // The item id is an opaque pointer-sized tag, so widen the
+                // index before reinterpreting it as one.
+                choiceIds.push_back(reinterpret_cast<MachGuiDropDownListBoxCreator::DropDownListBoxItem>(
+                    static_cast<uintptr_t>(ch + 1)));
             }
             GuiResourceString choiceTitle(id);
 
