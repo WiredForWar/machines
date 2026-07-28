@@ -2460,7 +2460,7 @@ bool MachLogMachine::canFitInsideConstructionNow(const MachLogConstruction& cons
 
         // Need to examine bays if this is a building of our race OR if this machine is an aggressor;
         // Don't care otherwise.
-        if (construction.race() == race() && ! objectType() == MachLog::AGGRESSOR)
+        if (construction.race() == race() && objectType() != MachLog::AGGRESSOR)
         {
             // See if there is a free station.
             // The internal station will be a PARKING BAY unless this is a research lab.
