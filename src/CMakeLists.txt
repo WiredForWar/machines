@@ -177,11 +177,17 @@ target_link_libraries(libs INTERFACE
     LibDev::version
 )
 
+# Strip the release binaries. `-s` is a GNU linker option; the MSVC-style
+# linkers (link.exe, lld-link) keep the symbols in a separate .pdb anyway.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MACHINES_CLANG_CL))
+    set(MACHINES_STRIP_LINK_FLAGS -s)
+endif()
+
 add_executable(machines WIN32
     ${MACHINES_SOURCES}
 )
 
-set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE -s)
+set_target_properties(machines PROPERTIES LINK_FLAGS_RELEASE "${MACHINES_STRIP_LINK_FLAGS}")
 set_target_properties(machines PROPERTIES
     COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
 )
@@ -198,7 +204,7 @@ if(BUILD_PLANETED)
     add_executable(planeted WIN32
         ${PLANETED_SOURCES}
     )
-    set_target_properties(planeted PROPERTIES LINK_FLAGS_RELEASE -s)
+    set_target_properties(planeted PROPERTIES LINK_FLAGS_RELEASE "${MACHINES_STRIP_LINK_FLAGS}")
     set_target_properties(planeted PROPERTIES
         COMPILE_FLAGS "${MACHINES_COMPILER_BIT_MODE}" LINK_FLAGS "${MACHINES_COMPILER_BIT_MODE}"
     )

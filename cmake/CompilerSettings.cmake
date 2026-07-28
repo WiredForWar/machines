@@ -41,7 +41,16 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang"
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=unused-value")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+# Clang exposes either the GCC-compatible driver (clang++) or the
+# MSVC-compatible one (clang-cl); the option syntax differs between them.
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+    set(MACHINES_CLANG_CL TRUE)
+else()
+    set(MACHINES_CLANG_CL FALSE)
+endif()
+
+# -m32/-m64 are understood by the GCC-compatible drivers only
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MACHINES_CLANG_CL))
     if(BUILD_32)
         set(MACHINES_COMPILER_BIT_MODE -m32)
     else()
@@ -53,7 +62,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(MACHINES_COMPILER_BIT_MODE "")
         message(WARNING "${PROJECT_NAME} will be built for compiler default target architecture.")
     endif()
+endif()
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall -Wmissing-declarations")
     set(NORMAL_C_FLAGS " ${MACHINES_COMPILER_BIT_MODE} -Wall")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
@@ -66,14 +77,29 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(DEBUG_CXX_FLAGS "-g -O0")
     set(TEST_CXX_FLAGS "-pthread")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.1)
-        message(FATAL_ERROR "${PROJECT_NAME} requires Clang 3.1 or greater.")
+    if(MACHINES_CLANG_CL)
+        # clang-cl targets the MSVC ABI and takes MSVC-style options, so it
+        # needs the same set as the MSVC branch below. GCC-style -W flags are
+        # still accepted and are used for the warning selection.
+        set(NORMAL_CXX_FLAGS "/EHsc")
+        set(RELEASE_CXX_FLAGS "/MD")
+        set(DEBUG_CXX_FLAGS "/MDd /Zi")
+        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
+        set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/DEBUG")
+    else()
+        #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-prototypes")
+        set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall")
+        set(RELEASE_CXX_FLAGS "-O2")
+        set(DEBUG_CXX_FLAGS "-g -O0")
     endif()
 
-    #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-prototypes")
-    set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} ${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations") # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
-    set(RELEASE_CXX_FLAGS "-O2")
-    set(DEBUG_CXX_FLAGS "-g -O0")
+    # updated version of physfs is not available on some platforms so we keep using deprecated functions, see #958
+    set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-error=deprecated-declarations")
+
+    # The code base predates `override` and declares overriding members with
+    # plain `virtual`. Clang reports every one of them (~11k warnings), which
+    # buries everything else, so silence that single diagnostic.
+    set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-inconsistent-missing-override")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(NORMAL_CXX_FLAGS "/wd4244 /wd4309 /wd4800 /wd4996 /wd4351 /EHsc") # disable some useless warnings
     set(RELEASE_CXX_FLAGS "/MD")
