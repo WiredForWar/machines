@@ -2,7 +2,6 @@
 
 #include <array>
 #include <cstdint>
-#include <vector>
 
 namespace Ren
 {
@@ -60,14 +59,15 @@ struct StandardObjectUniforms
     float filterG{};
     float filterB{};
     int hasVtxMaterials{};
-    // Point lights
+    // Point lights. Flat arrays borrowed from the caller, 3 floats per light
+    // for the vec3 ones and 1 for the scalars. Valid for as long as the
+    // command that carries them, same rule as BackendCommandBufferData.
     int numPointLights{};
-    // Flat arrays: 3 floats per light, up to 16 lights.
-    std::vector<float> pointLightPos{};
-    std::vector<float> pointLightColor{};
-    std::vector<float> pointLightRange{};
-    std::vector<float> pointLightAtten{};
-    std::vector<float> pointLightOmni{};
+    const float* pointLightPos{};
+    const float* pointLightColor{};
+    const float* pointLightRange{};
+    const float* pointLightAtten{};
+    const float* pointLightOmni{};
     // Shadows
     int shadowEnabled{};
     float shadowStrength{};

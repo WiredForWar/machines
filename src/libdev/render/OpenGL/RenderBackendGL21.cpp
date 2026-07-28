@@ -50,6 +50,31 @@ bool compileShader(GLuint shaderID, const std::string& code)
     return result == GL_TRUE;
 }
 
+// Point light arrays are borrowed from the caller, so a queued command needs
+// its own copy of them. Three floats per light for the vec3 arrays, one for
+// the scalars.
+void stagePointLights(StandardObjectUniforms& uniforms, CommandArena& arena)
+{
+    const std::size_t lights = static_cast<std::size_t>(uniforms.numPointLights);
+    if (lights == 0)
+        return;
+
+    const std::size_t vec3Bytes = lights * 3 * sizeof(float);
+    const std::size_t scalarBytes = lights * sizeof(float);
+
+    const auto stage = [&arena](const float* source, std::size_t bytes) -> const float* {
+        if (source == nullptr)
+            return nullptr;
+        return static_cast<const float*>(arena.append(source, bytes));
+    };
+
+    uniforms.pointLightPos = stage(uniforms.pointLightPos, vec3Bytes);
+    uniforms.pointLightColor = stage(uniforms.pointLightColor, vec3Bytes);
+    uniforms.pointLightAtten = stage(uniforms.pointLightAtten, vec3Bytes);
+    uniforms.pointLightRange = stage(uniforms.pointLightRange, scalarBytes);
+    uniforms.pointLightOmni = stage(uniforms.pointLightOmni, scalarBytes);
+}
+
 } // namespace
 
 RenderBackendGL21::RenderBackendGL21()
@@ -812,6 +837,10 @@ void RenderBackendGL21::recordCommand(BackendCommandBufferHandle handle, Backend
             bufferDataCommand->data
                 = buffer->arena.append(bufferDataCommand->data, bufferDataCommand->sizeBytes);
         }
+        else if (auto* objectUniforms = std::get_if<BackendCommandSetStandardObjectUniforms>(&command))
+        {
+            stagePointLights(objectUniforms->uniforms, buffer->arena);
+        }
 
         buffer->commands.push_back(std::move(command));
     }
@@ -1409,16 +1438,16 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetStandardObjectUnif
             const GLint locPR = glGetUniformLocation(prog, "uPointLightRange");
             const GLint locPA = glGetUniformLocation(prog, "uPointLightAtten");
             const GLint locPO = glGetUniformLocation(prog, "uPointLightOmni");
-            if (locPP >= 0 && !u.pointLightPos.empty())
-                glUniform3fv(locPP, u.numPointLights, u.pointLightPos.data());
-            if (locPC >= 0 && !u.pointLightColor.empty())
-                glUniform3fv(locPC, u.numPointLights, u.pointLightColor.data());
-            if (locPR >= 0 && !u.pointLightRange.empty())
-                glUniform1fv(locPR, u.numPointLights, u.pointLightRange.data());
-            if (locPA >= 0 && !u.pointLightAtten.empty())
-                glUniform3fv(locPA, u.numPointLights, u.pointLightAtten.data());
-            if (locPO >= 0 && !u.pointLightOmni.empty())
-                glUniform1fv(locPO, u.numPointLights, u.pointLightOmni.data());
+            if (locPP >= 0 && u.pointLightPos != nullptr)
+                glUniform3fv(locPP, u.numPointLights, u.pointLightPos);
+            if (locPC >= 0 && u.pointLightColor != nullptr)
+                glUniform3fv(locPC, u.numPointLights, u.pointLightColor);
+            if (locPR >= 0 && u.pointLightRange != nullptr)
+                glUniform1fv(locPR, u.numPointLights, u.pointLightRange);
+            if (locPA >= 0 && u.pointLightAtten != nullptr)
+                glUniform3fv(locPA, u.numPointLights, u.pointLightAtten);
+            if (locPO >= 0 && u.pointLightOmni != nullptr)
+                glUniform1fv(locPO, u.numPointLights, u.pointLightOmni);
         }
 
         const GLint locSE = glGetUniformLocation(prog, "uShadowEnabled");
