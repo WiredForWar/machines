@@ -22,6 +22,7 @@
 #include "render/internal/ModeObserver.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/BackendCommands.hpp"
+#include "render/internal/DrawCallFactory.hpp"
 #include "device/Timer.hpp"
 #include "render/internal/PipelineSpec.hpp"
 #include "render/internal/RenderPassSpec.hpp"
@@ -292,6 +293,11 @@ private:
     bool frameCommandBufferRecording_{};
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
+
+    // Scratch list the draw call factory emits into, drained into the backend
+    // after every draw. Kept as a member so that its capacity survives from
+    // one draw call to the next instead of being rebuilt every time.
+    Ren::DrawCallFactory::Commands drawCommands_{};
 
     // GPU lighting state, populated by the illuminator during lightVertices.
     std::vector<float> expandedNormals_{};
