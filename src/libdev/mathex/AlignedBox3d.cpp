@@ -123,7 +123,7 @@ const MexAlignedBox3d& MexAlignedBox3d::operator=(const MexAlignedBox3d& b)
     minCorner_ = b.minCorner_;
     maxCorner_ = b.maxCorner_;
     isEmpty_ = b.isEmpty_;
-    spinSafe_ = spinSafe_;
+    spinSafe_ = b.spinSafe_;
 
     POST(*this == b);
 
