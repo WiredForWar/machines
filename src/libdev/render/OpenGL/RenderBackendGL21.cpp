@@ -56,8 +56,10 @@ RenderBackendGL21::RenderBackendGL21()
     : programs_{0,}
     , buffers_{0,}
     , framebuffers_{0,}
-    , commandBuffers_{CommandBuffer{},}
 {
+    // Slot 0 is the reserved invalid handle. Constructed in place because a
+    // command buffer owns its arena and so is not copyable.
+    commandBuffers_.emplace_back();
 }
 
 BackendType RenderBackendGL21::backendType() const
@@ -744,7 +746,7 @@ BackendCommandBufferHandle RenderBackendGL21::createCommandBuffer()
 {
     if (commandBuffers_.empty())
     {
-        commandBuffers_.push_back(CommandBuffer{});
+        commandBuffers_.emplace_back();
     }
 
     for (std::size_t idx = 1; idx < commandBuffers_.size(); ++idx)
@@ -759,7 +761,7 @@ BackendCommandBufferHandle RenderBackendGL21::createCommandBuffer()
         }
     }
 
-    commandBuffers_.push_back(CommandBuffer{});
+    commandBuffers_.emplace_back();
     CommandBuffer& buffer = commandBuffers_.back();
     buffer.alive = true;
     buffer.recording = false;
@@ -798,9 +800,21 @@ void RenderBackendGL21::recordCommand(BackendCommandBufferHandle handle, Backend
         return;
 
     if constexpr (ImmediateExecution)
+    {
         executeCommand(command);
+    }
     else
+    {
+        // Commands only borrow their payloads, so anything queued past the end
+        // of this call has to be given storage that lives until submit.
+        if (auto* bufferDataCommand = std::get_if<BackendCommandBufferData>(&command))
+        {
+            bufferDataCommand->data
+                = buffer->arena.append(bufferDataCommand->data, bufferDataCommand->sizeBytes);
+        }
+
         buffer->commands.push_back(std::move(command));
+    }
 }
 
 void RenderBackendGL21::endCommandBuffer(BackendCommandBufferHandle handle)
@@ -824,6 +838,7 @@ void RenderBackendGL21::submitCommandBuffer(BackendCommandBufferHandle handle)
     }
 
     buffer->commands.clear();
+    buffer->arena.reset();
 
     // Only flush pending deletes when no other buffer is still recording,
     // to avoid deleting resources that queued commands may still reference.
@@ -1209,7 +1224,7 @@ void RenderBackendGL21::executeCommand(const BackendCommandBindTexture2D& comman
 
 void RenderBackendGL21::executeCommand(const BackendCommandBufferData& command)
 {
-    bufferData(command.target, command.bufferId, command.data.size(), command.data.data(), command.usage);
+    bufferData(command.target, command.bufferId, command.sizeBytes, command.data, command.usage);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandBindBuffer& command)

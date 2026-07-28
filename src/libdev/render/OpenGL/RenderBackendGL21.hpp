@@ -1,5 +1,6 @@
 #pragma once
 
+#include "render/internal/CommandArena.hpp"
 #include "render/internal/IRenderBackend.hpp"
 
 #include <array>
@@ -113,6 +114,9 @@ private:
         bool alive{};
         bool recording{};
         std::vector<BackendCommand> commands{};
+        // Backs the payloads of queued commands; unused while executing
+        // immediately, since then nothing outlives its recordCommand() call.
+        CommandArena arena{};
     };
     CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle);
     const CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle) const;
