@@ -152,7 +152,7 @@ void MachGuiMessageBroker::processUpdateGameSettingsMessage(MachGuiUpdateGameSet
     PRE(pStartupData_);
 
     // Copy new information into game settings structure
-    memcpy(pStartupData_->gameSettings(), &pMessage->gameSettings_, sizeof(MachGuiStartupData::GameSettings));
+    *pStartupData_->gameSettings() = pMessage->gameSettings_;
 
     // Refresh any gui components...
     pStartupData_->receivedUpdateGameSettingsMessage();
@@ -364,7 +364,7 @@ void MachGuiMessageBroker::sendUpdateGameSettingsMessage()
     pMessage->header_.messageCode_ = MY_UPDATEGAMESETTINGSMESSAGE;
     pMessage->header_.totalLength_ = sizeof(MachGuiUpdateGameSettingsMessage);
 
-    memcpy(&pMessage->gameSettings_, pStartupData_->gameSettings(), sizeof(MachGuiStartupData::GameSettings));
+    pMessage->gameSettings_ = *pStartupData_->gameSettings();
 
     doSend(pLogMessage);
 }
