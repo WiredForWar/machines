@@ -325,7 +325,7 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
     CB_DEPIMPL(bool, isTeleporting_);
     CB_DEPIMPL(PhysAbsoluteTime, teleportFinishTime_);
     PhysRelativeTime alteredMaxCPUTime = maxCPUTime;
-    if (isDead() && ! state_ == EXPLODING)
+    if (isDead() && state_ != EXPLODING)
         return 1.0;
 
     // if we're a non-first person-controlled machine that's idle inside a building that has
