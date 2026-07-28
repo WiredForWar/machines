@@ -37,7 +37,7 @@ void DevRate::update(double numerator, double denominator)
 
             if (readings_.size() == N_READINGS)
             {
-                readings_[index_] == reading;
+                readings_[index_] = reading;
             }
             else
             {
