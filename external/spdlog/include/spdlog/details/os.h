@@ -3,14 +3,14 @@
 
 #pragma once
 
+#include <ctime>  // std::time_t
 #include <spdlog/common.h>
-#include <ctime> // std::time_t
 
-namespace spdlog {
+SPDLOG_NAMESPACE_BEGIN
 namespace details {
 namespace os {
 
-SPDLOG_API spdlog::log_clock::time_point now() SPDLOG_NOEXCEPT;
+SPDLOG_API log_clock::time_point now() SPDLOG_NOEXCEPT;
 
 SPDLOG_API std::tm localtime(const std::time_t &time_tt) SPDLOG_NOEXCEPT;
 
@@ -22,26 +22,27 @@ SPDLOG_API std::tm gmtime() SPDLOG_NOEXCEPT;
 
 // eol definition
 #if !defined(SPDLOG_EOL)
-#    ifdef _WIN32
-#        define SPDLOG_EOL "\r\n"
-#    else
-#        define SPDLOG_EOL "\n"
-#    endif
+#ifdef _WIN32
+#define SPDLOG_EOL "\r\n"
+#else
+#define SPDLOG_EOL "\n"
+#endif
 #endif
 
 SPDLOG_CONSTEXPR static const char *default_eol = SPDLOG_EOL;
 
 // folder separator
 #if !defined(SPDLOG_FOLDER_SEPS)
-#    ifdef _WIN32
-#        define SPDLOG_FOLDER_SEPS "\\/"
-#    else
-#        define SPDLOG_FOLDER_SEPS "/"
-#    endif
+#ifdef _WIN32
+#define SPDLOG_FOLDER_SEPS "\\/"
+#else
+#define SPDLOG_FOLDER_SEPS "/"
+#endif
 #endif
 
 SPDLOG_CONSTEXPR static const char folder_seps[] = SPDLOG_FOLDER_SEPS;
-SPDLOG_CONSTEXPR static const filename_t::value_type folder_seps_filename[] = SPDLOG_FILENAME_T(SPDLOG_FOLDER_SEPS);
+SPDLOG_CONSTEXPR static const filename_t::value_type folder_seps_filename[] =
+    SPDLOG_FILENAME_T(SPDLOG_FOLDER_SEPS);
 
 // fopen_s on non windows for writing
 SPDLOG_API bool fopen_s(FILE **fp, const filename_t &filename, const filename_t &mode);
@@ -111,12 +112,16 @@ SPDLOG_API std::string getenv(const char *field);
 
 // Do fsync by FILE objectpointer.
 // Return true on success.
-SPDLOG_API bool fsync(FILE * fp);
+SPDLOG_API bool fsync(FILE *fp);
 
-} // namespace os
-} // namespace details
-} // namespace spdlog
+// Do non-locking fwrite if possible by the os or use the regular locking fwrite
+// Return true on success.
+SPDLOG_API bool fwrite_bytes(const void *ptr, const size_t n_bytes, FILE *fp);
+
+}  // namespace os
+}  // namespace details
+SPDLOG_NAMESPACE_END
 
 #ifdef SPDLOG_HEADER_ONLY
-#    include "os-inl.h"
+#include "os-inl.h"
 #endif
