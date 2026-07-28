@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <cinttypes>
 #include "base/MemWatcher.hpp"
 #include "base/PoolAllocator.hpp"
 #include "profiler/Profiler.hpp"
@@ -252,10 +253,14 @@ void BaseMemWatcher::traceOustandingAllocations(std::ostream& outStream)
             AllocationSite* pSite = pAllocatedBlock->pSite_;
             char* pNewText = pSite->aNewText_;
             char buffer[64];
+            // %x expects an unsigned int, so the address has to go through an
+            // integer type wide enough to hold it (a plain %#08x silently
+            // truncated it on 64 bit builds).
+            const auto address = reinterpret_cast<uintptr_t>(pAllocatedBlock->address_);
             if (pNewText != nullptr)
-                snprintf(buffer, sizeof(buffer), "NEW %zu %#08x @ %.32s @", pSite->nBytes_, pAllocatedBlock->address_, pNewText);
+                snprintf(buffer, sizeof(buffer), "NEW %zu %#08" PRIxPTR " @ %.32s @", pSite->nBytes_, address, pNewText);
             else
-                snprintf(buffer, sizeof(buffer), "NEW %zu %#08x", pSite->nBytes_, pAllocatedBlock->address_);
+                snprintf(buffer, sizeof(buffer), "NEW %zu %#08" PRIxPTR, pSite->nBytes_, address);
 
             // get the profiler to write the call stack line in the correct format for profanal
             profiler.traceStack(
