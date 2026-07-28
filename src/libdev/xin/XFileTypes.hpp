@@ -88,15 +88,17 @@ class DeadlyImportError : public std::exception
 {
 public:
     DeadlyImportError(const char* msg)
-        : msg_(msg)
+        : msg_("Deadly Import Error: " + std::string(msg))
     {
     }
-    DeadlyImportError(const std::string msg)
-        : msg_(msg)
+    DeadlyImportError(const std::string& msg)
+        : msg_("Deadly Import Error: " + msg)
     {
     }
     ~DeadlyImportError() throw() override { }
-    const char* what() const throw() override { return std::string("Deadly Import Error: " + msg_).c_str(); }
+    // Must return a pointer that outlives the call, hence the message is
+    // composed once at construction time instead of on every what() call.
+    const char* what() const throw() override { return msg_.c_str(); }
 
 private:
     std::string msg_;
