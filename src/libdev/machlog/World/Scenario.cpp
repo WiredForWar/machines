@@ -1363,7 +1363,7 @@ void MachLogScenario::parseRestrictConstruction(const UtlLineTokeniser& parser)
     }
 
     MachLogConstructionItem& consItem
-        = races.constructionTree().constructionItem((MachPhys::ConstructionType)type, subType, hwLevel, weaponCombo);
+        = races.constructionTree().constructionItem(type, subType, hwLevel, weaponCombo);
     for (MachPhys::Race i : MachPhys::AllRaces)
     {
         bool doWork = false;

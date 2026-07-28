@@ -65,7 +65,7 @@ public:
     ConstructionItems& constructionItems();
     const ConstructionItems& constructionItems() const;
     MachLogConstructionItem& constructionItem(
-        MachPhys::ConstructionType constructionType,
+        MachLog::ObjectType constructionType,
         int subType,
         size_t hwLevel,
         MachPhys::WeaponCombo wc = MachPhys::N_WEAPON_COMBOS);

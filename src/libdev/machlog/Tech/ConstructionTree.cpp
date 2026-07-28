@@ -121,7 +121,7 @@ bool MachLogConstructionTree::activated(
 //////////////////////////////////////////////////////////////////////////////
 
 MachLogConstructionItem& MachLogConstructionTree::constructionItem(
-    MachPhys::ConstructionType constructionType,
+    MachLog::ObjectType constructionType,
     int subType,
     size_t hwLevel,
     MachPhys::WeaponCombo wc)
