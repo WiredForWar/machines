@@ -531,7 +531,7 @@ void SndMixer::update()
             switch (sampleState)
             {
                 // If the sample has been stopped
-                case ALSample::STOPPED:
+                case Sample::STOPPED:
                     {
                         // Stop the sample
                         if (pThisSample->getResourceResponsibility() == Sample::LIBRARY)
@@ -543,7 +543,7 @@ void SndMixer::update()
 
                 // If the sample has been initialised, i.e. it is loaded
                 // but not playing
-                case ALSample::INITIALISED:
+                case Sample::INITIALISED:
                     {
                         // play the sample
                         //              keepLooping = false;
