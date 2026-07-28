@@ -392,7 +392,7 @@ void MachPhysHardwareLab::doWorking(bool setWorking)
 
             switch (subType())
             {
-                case MachPhys::MILITARY:
+                case MachPhys::LAB_MILITARY:
                     {
                         // neon objects blink for all level mlabs
                         size_t nNeons = neons_.size();
@@ -413,7 +413,7 @@ void MachPhysHardwareLab::doWorking(bool setWorking)
 
                         break;
                     }
-                case MachPhys::CIVILIAN:
+                case MachPhys::LAB_CIVILIAN:
                     {
                         clearAnimation(MachPhys::CONSTRUCTION_NOT_WORKING);
 
@@ -449,7 +449,7 @@ void MachPhysHardwareLab::doWorking(bool setWorking)
                 .play(this, SID_IDLE_CONSTRUCTION, PhysAbsoluteTime(0), W4dSoundManager::LOOP_CONTINUOUSLY);
             W4dSoundManager::instance().stop(this);
 
-            if (subType() == MachPhys::CIVILIAN)
+            if (subType() == MachPhys::LAB_CIVILIAN)
             {
                 for (size_t iLink = 0; iLink < nLinks; ++iLink)
                 {
@@ -486,13 +486,13 @@ void MachPhysHardwareLab::damageLevel(const double& percent)
     switch (subType())
     {
 
-        case MachPhys::MILITARY:
+        case MachPhys::LAB_MILITARY:
 
             damageSmoke1Type(M_LAB_BLUE);
             damageSmoke2Type(M_LAB_BROWN);
             break;
 
-        case MachPhys::CIVILIAN:
+        case MachPhys::LAB_CIVILIAN:
 
             damageSmoke1Type(C_LAB_BLUE);
             damageSmoke2Type(C_LAB_WHITE);

@@ -1308,10 +1308,10 @@ size_t MachPhysLevels::uniqueHardwareIndex(MachPhys::HardwareLabSubType subType,
 
     switch (subType)
     {
-        case MachPhys::MILITARY:
+        case MachPhys::LAB_MILITARY:
             result = hardwareLevelIndexMap(subType).index(hardwareLevel);
             break;
-        case MachPhys::CIVILIAN:
+        case MachPhys::LAB_CIVILIAN:
             result
                 = elementsof(hardwareLabMilitaryHardwareLevels) + hardwareLevelIndexMap(subType).index(hardwareLevel);
             break;
