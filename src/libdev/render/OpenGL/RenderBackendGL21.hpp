@@ -180,6 +180,56 @@ private:
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
 
+    // Locations of the uniforms making up the standard blocks, resolved once
+    // when the pipeline is created. -1 for the ones a given program does not
+    // declare, which is how the setters know to skip them.
+    struct StandardUniformLocations
+    {
+        // GUI 2D block
+        GLint screenspace{-1};
+        GLint textureSampler{-1};
+
+        // Standard frame block
+        GLint view{-1};
+        GLint proj{-1};
+        GLint fogColour{-1};
+        GLint fogParams{-1};
+        GLint fogMode{-1};
+
+        // Standard object block
+        GLint model{-1};
+        GLint gpuLighting{-1};
+        GLint lightDir{-1};
+        GLint lightColor{-1};
+        GLint ambientColor{-1};
+        GLint matDiffuse{-1};
+        GLint matDiffuseA{-1};
+        GLint matAmbient{-1};
+        GLint matEmissive{-1};
+        GLint filter{-1};
+        GLint hasVtxMaterials{-1};
+        GLint numPointLights{-1};
+        GLint pointLightPos{-1};
+        GLint pointLightColor{-1};
+        GLint pointLightRange{-1};
+        GLint pointLightAtten{-1};
+        GLint pointLightOmni{-1};
+        GLint shadowEnabled{-1};
+        GLint shadowMap{-1};
+        GLint lightSpaceMatrix{-1};
+        GLint shadowMapNear{-1};
+        GLint lightSpaceMatrixNear{-1};
+        GLint shadowStrength{-1};
+        GLint textureSampler2{-1};
+
+        // Billboard block
+        GLint viewProj{-1};
+
+        // Post-process block
+        GLint sceneTexture{-1};
+        GLint exposure{-1};
+    };
+
     struct Pipeline
     {
         bool alive{};
@@ -187,7 +237,14 @@ private:
         std::vector<VertexAttributeDesc> vertexAttributes{};
         std::vector<std::pair<std::string, UniformLocationId>> uniforms{};
         std::vector<std::pair<std::string, AttributeLocationId>> attributes{};
+        StandardUniformLocations standardUniforms{};
     };
+
+    static StandardUniformLocations resolveStandardUniformLocations(GLuint program);
+
+    // Locations of the pipeline bound by the last BindPipeline command. Every
+    // uniform block command is recorded after one, so this is what they read.
+    const StandardUniformLocations& boundUniformLocations() const;
 
     std::vector<GLuint> programs_{};
     std::vector<Pipeline> pipelines_{};
@@ -268,6 +325,8 @@ private:
     StateCache stateCache_{};
 
     GLuint currentFboColorAttachment_{};
+
+    PipelineId currentPipelineId_{};
 
     // Shared buffers the coalesced payloads are uploaded into, created lazily.
     BufferId streamArrayBuffer_{};
