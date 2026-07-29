@@ -117,9 +117,30 @@ private:
         // Backs the payloads of queued commands; unused while executing
         // immediately, since then nothing outlives its recordCommand() call.
         CommandArena arena{};
+        // Vertex and index payloads gathered in record order when uploads are
+        // coalesced, so that submit can push each in a single glBufferData.
+        std::vector<std::byte> arrayStaging{};
+        std::vector<std::byte> elementStaging{};
+
+        // Drops what was recorded while keeping the capacity of everything
+        // backing it, ready for the next recording.
+        void resetRecording()
+        {
+            commands.clear();
+            arena.reset();
+            arrayStaging.clear();
+            elementStaging.clear();
+        }
     };
     CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle);
     const CommandBuffer* commandBufferFromHandle(BackendCommandBufferHandle handle) const;
+
+    // Coalesced upload support. Payloads are staged at record time and uploaded
+    // once per target per submit; the commands that reference them are then
+    // replayed against the shared buffer with their offsets rebased.
+    static std::size_t stagePayload(std::vector<std::byte>& staging, const void* data, std::size_t sizeBytes);
+    void uploadStagedPayloads(CommandBuffer& buffer);
+    void submitCoalesced(CommandBuffer& buffer);
     void executeCommand(const BackendCommand& command);
     void executeCommand(const BackendCommandClear& command);
     void executeCommand(const BackendCommandSetViewport& command);
@@ -247,6 +268,10 @@ private:
     StateCache stateCache_{};
 
     GLuint currentFboColorAttachment_{};
+
+    // Shared buffers the coalesced payloads are uploaded into, created lazily.
+    BufferId streamArrayBuffer_{};
+    BufferId streamElementBuffer_{};
 
     IGLRenderSurface* glSurface_{};
 };

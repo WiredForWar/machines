@@ -151,6 +151,10 @@ struct BackendCommandBufferData
     const void* data{};
     std::size_t sizeBytes{};
     BufferUsage usage{};
+    // Where the payload ended up in the command buffer's staging area, filled
+    // in at record time when a backend coalesces its uploads. Unused when the
+    // command carries its data by pointer.
+    std::size_t stagingOffset{};
 };
 
 struct BackendCommandBindBuffer

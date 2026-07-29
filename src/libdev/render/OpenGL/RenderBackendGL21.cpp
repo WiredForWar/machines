@@ -10,12 +10,20 @@
 
 #include "spdlog/spdlog.h"
 
+#include <cstring>
 #include <fstream>
+#include <unordered_map>
 #include <variant>
 
 // Immediate mode is more performant, at least for the legacy renderer.
 // Yet we want to have this switch to debug commands buffer implementation.
 constexpr bool ImmediateExecution{true};
+
+// Gather the vertex and index payloads of a queued command buffer and upload
+// each in one call at submit, instead of one glBufferData per draw call. Only
+// meaningful when the commands are queued: immediate execution has nothing to
+// gather, since every command runs before the next is recorded.
+constexpr bool CoalesceUploads{!ImmediateExecution};
 
 namespace Ren
 {
@@ -781,7 +789,7 @@ BackendCommandBufferHandle RenderBackendGL21::createCommandBuffer()
         {
             buffer.alive = true;
             buffer.recording = false;
-            buffer.commands.clear();
+            buffer.resetRecording();
             return BackendCommandBufferHandle(static_cast<std::uint32_t>(idx));
         }
     }
@@ -790,7 +798,7 @@ BackendCommandBufferHandle RenderBackendGL21::createCommandBuffer()
     CommandBuffer& buffer = commandBuffers_.back();
     buffer.alive = true;
     buffer.recording = false;
-    buffer.commands.clear();
+    buffer.resetRecording();
     return BackendCommandBufferHandle(static_cast<std::uint32_t>(commandBuffers_.size() - 1));
 }
 
@@ -802,7 +810,7 @@ void RenderBackendGL21::destroyCommandBuffer(BackendCommandBufferHandle handle)
 
     buffer->alive = false;
     buffer->recording = false;
-    buffer->commands.clear();
+    buffer->resetRecording();
 }
 
 void RenderBackendGL21::beginCommandBuffer(BackendCommandBufferHandle handle)
@@ -812,7 +820,7 @@ void RenderBackendGL21::beginCommandBuffer(BackendCommandBufferHandle handle)
         return;
 
     buffer->recording = true;
-    buffer->commands.clear();
+    buffer->resetRecording();
 }
 
 void RenderBackendGL21::recordCommand(BackendCommandBufferHandle handle, BackendCommand&& command)
@@ -834,8 +842,20 @@ void RenderBackendGL21::recordCommand(BackendCommandBufferHandle handle, Backend
         // of this call has to be given storage that lives until submit.
         if (auto* bufferDataCommand = std::get_if<BackendCommandBufferData>(&command))
         {
-            bufferDataCommand->data
-                = buffer->arena.append(bufferDataCommand->data, bufferDataCommand->sizeBytes);
+            if constexpr (CoalesceUploads)
+            {
+                std::vector<std::byte>& staging = bufferDataCommand->target == BufferTarget::Array
+                    ? buffer->arrayStaging
+                    : buffer->elementStaging;
+                bufferDataCommand->stagingOffset
+                    = stagePayload(staging, bufferDataCommand->data, bufferDataCommand->sizeBytes);
+                bufferDataCommand->data = nullptr;
+            }
+            else
+            {
+                bufferDataCommand->data
+                    = buffer->arena.append(bufferDataCommand->data, bufferDataCommand->sizeBytes);
+            }
         }
         else if (auto* objectUniforms = std::get_if<BackendCommandSetStandardObjectUniforms>(&command))
         {
@@ -861,18 +881,132 @@ void RenderBackendGL21::submitCommandBuffer(BackendCommandBufferHandle handle)
     if (buffer == nullptr || buffer->recording)
         return;
 
-    for (const BackendCommand& command : buffer->commands)
+    if constexpr (CoalesceUploads)
     {
-        std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+        submitCoalesced(*buffer);
+    }
+    else
+    {
+        for (const BackendCommand& command : buffer->commands)
+        {
+            std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+        }
     }
 
-    buffer->commands.clear();
-    buffer->arena.reset();
+    buffer->resetRecording();
 
     // Only flush pending deletes when no other buffer is still recording,
     // to avoid deleting resources that queued commands may still reference.
     if (activeCommandBufferCount() == 0)
         flushPendingDeletes();
+}
+
+std::size_t RenderBackendGL21::stagePayload(
+    std::vector<std::byte>& staging, const void* data, std::size_t sizeBytes)
+{
+    // Vertex attribute pointers into the shared buffer have to stay naturally
+    // aligned for their component type, so start every payload on a 16-byte
+    // boundary rather than packing them tightly.
+    constexpr std::size_t alignment = 16;
+    const std::size_t padded = (staging.size() + alignment - 1) & ~(alignment - 1);
+    staging.resize(padded + sizeBytes);
+    if (sizeBytes != 0)
+        std::memcpy(staging.data() + padded, data, sizeBytes);
+
+    return padded;
+}
+
+void RenderBackendGL21::uploadStagedPayloads(CommandBuffer& buffer)
+{
+    if (!buffer.arrayStaging.empty())
+    {
+        if (streamArrayBuffer_ == 0)
+            streamArrayBuffer_ = createBuffer();
+
+        bufferData(
+            BufferTarget::Array,
+            streamArrayBuffer_,
+            buffer.arrayStaging.size(),
+            buffer.arrayStaging.data(),
+            BufferUsage::StreamDraw);
+    }
+
+    if (!buffer.elementStaging.empty())
+    {
+        if (streamElementBuffer_ == 0)
+            streamElementBuffer_ = createBuffer();
+
+        bufferData(
+            BufferTarget::ElementArray,
+            streamElementBuffer_,
+            buffer.elementStaging.size(),
+            buffer.elementStaging.data(),
+            BufferUsage::StreamDraw);
+    }
+}
+
+void RenderBackendGL21::submitCoalesced(CommandBuffer& buffer)
+{
+    uploadStagedPayloads(buffer);
+
+    // Every payload now lives in one of the two shared buffers, so the commands
+    // that referenced the per-draw buffers have to be rebased onto it: a bind
+    // targets the shared buffer, and the offsets of anything reading through
+    // that binding shift by where the payload landed.
+    std::unordered_map<BufferId, std::size_t> coalescedOffset;
+    std::size_t arrayBase = 0;
+    std::size_t elementBase = 0;
+
+    const auto rebind = [&](BufferTarget target, BufferId bufferId) {
+        const auto it = coalescedOffset.find(bufferId);
+        const bool coalesced = it != coalescedOffset.end();
+        if (target == BufferTarget::Array)
+        {
+            arrayBase = coalesced ? it->second : 0;
+            bindBuffer(target, coalesced ? streamArrayBuffer_ : bufferId);
+        }
+        else
+        {
+            elementBase = coalesced ? it->second : 0;
+            bindBuffer(target, coalesced ? streamElementBuffer_ : bufferId);
+        }
+    };
+
+    for (const BackendCommand& command : buffer.commands)
+    {
+        if (const auto* upload = std::get_if<BackendCommandBufferData>(&command))
+        {
+            // Already uploaded. bufferData() used to leave its buffer bound and
+            // the element path relies on that, so bind here in its place.
+            coalescedOffset[upload->bufferId] = upload->stagingOffset;
+            rebind(upload->target, upload->bufferId);
+            continue;
+        }
+
+        if (const auto* bind = std::get_if<BackendCommandBindBuffer>(&command))
+        {
+            rebind(bind->target, bind->bufferId);
+            continue;
+        }
+
+        if (const auto* attrib = std::get_if<BackendCommandSetVertexAttribPointer>(&command))
+        {
+            BackendCommandSetVertexAttribPointer rebased = *attrib;
+            rebased.offset += arrayBase;
+            executeCommand(rebased);
+            continue;
+        }
+
+        if (const auto* drawIndexed = std::get_if<BackendCommandDrawIndexed>(&command))
+        {
+            BackendCommandDrawIndexed rebased = *drawIndexed;
+            rebased.indexBufferOffset += elementBase;
+            executeCommand(rebased);
+            continue;
+        }
+
+        std::visit([this](const auto& cmd) { executeCommand(cmd); }, command);
+    }
 }
 
 void RenderBackendGL21::flushPendingDeletes()
