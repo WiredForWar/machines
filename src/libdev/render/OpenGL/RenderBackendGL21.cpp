@@ -185,6 +185,7 @@ bool RenderBackendGL21::initialize(IRenderSurface* surface)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     stateCache_.reset();
+    currentPipelineId_ = 0;
 
     initialized_ = true;
     spdlog::info("RenderBackendGL21 initialized ({}x{})", glSurface_->width(), glSurface_->height());
@@ -458,6 +459,62 @@ void RenderBackendGL21::releaseProgram(ProgramId id)
     }
 }
 
+RenderBackendGL21::StandardUniformLocations RenderBackendGL21::resolveStandardUniformLocations(GLuint program)
+{
+    StandardUniformLocations locations;
+    const auto at = [program](const char* name) { return glGetUniformLocation(program, name); };
+
+    locations.screenspace = at("uScreenspace");
+    locations.textureSampler = at("uTextureSampler");
+
+    locations.view = at("uV");
+    locations.proj = at("uP");
+    locations.fogColour = at("uFogColour");
+    locations.fogParams = at("uFogParams");
+    locations.fogMode = at("uFogMode");
+
+    locations.model = at("uM");
+    locations.gpuLighting = at("uGpuLighting");
+    locations.lightDir = at("uLightDir");
+    locations.lightColor = at("uLightColor");
+    locations.ambientColor = at("uAmbientColor");
+    locations.matDiffuse = at("uMatDiffuse");
+    locations.matDiffuseA = at("uMatDiffuseA");
+    locations.matAmbient = at("uMatAmbient");
+    locations.matEmissive = at("uMatEmissive");
+    locations.filter = at("uFilter");
+    locations.hasVtxMaterials = at("uHasVtxMaterials");
+    locations.numPointLights = at("uNumPointLights");
+    locations.pointLightPos = at("uPointLightPos");
+    locations.pointLightColor = at("uPointLightColor");
+    locations.pointLightRange = at("uPointLightRange");
+    locations.pointLightAtten = at("uPointLightAtten");
+    locations.pointLightOmni = at("uPointLightOmni");
+    locations.shadowEnabled = at("uShadowEnabled");
+    locations.shadowMap = at("uShadowMap");
+    locations.lightSpaceMatrix = at("uLightSpaceMatrix");
+    locations.shadowMapNear = at("uShadowMapNear");
+    locations.lightSpaceMatrixNear = at("uLightSpaceMatrixNear");
+    locations.shadowStrength = at("uShadowStrength");
+    locations.textureSampler2 = at("uTextureSampler2");
+
+    locations.viewProj = at("uVP");
+
+    locations.sceneTexture = at("uSceneTexture");
+    locations.exposure = at("uExposure");
+
+    return locations;
+}
+
+const RenderBackendGL21::StandardUniformLocations& RenderBackendGL21::boundUniformLocations() const
+{
+    static const StandardUniformLocations none;
+    if (currentPipelineId_ == 0 || currentPipelineId_ > pipelines_.size())
+        return none;
+
+    return pipelines_[currentPipelineId_ - 1].standardUniforms;
+}
+
 PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
 {
     // Resolve logical shader names to backend-specific file paths
@@ -490,6 +547,8 @@ PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
     {
         pipeline.attributes.emplace_back(attr.name, attribLocation(programId, attr.name));
     }
+
+    pipeline.standardUniforms = resolveStandardUniformLocations(programHandle(programId));
 
     pipelines_.push_back(std::move(pipeline));
     return static_cast<PipelineId>(pipelines_.size());
@@ -1298,6 +1357,7 @@ void RenderBackendGL21::executeCommand(const BackendCommandBindPipeline& command
     if (!pipeline.alive)
         return;
 
+    currentPipelineId_ = id;
     useProgram(pipeline.programId);
 }
 
@@ -1442,148 +1502,117 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetPointSize& command
 void RenderBackendGL21::executeCommand(const BackendCommandSetGui2DUniforms& command)
 {
     const auto& u = command.uniforms;
-    // Look up uniform locations from the currently bound program.
-    // The pipeline must already be bound via bindPipeline before this command.
-    const GLint locScreenspace = glGetUniformLocation(stateCache_.currentProgram_, "uScreenspace");
-    const GLint locSampler = glGetUniformLocation(stateCache_.currentProgram_, "uTextureSampler");
-    if (locScreenspace >= 0)
-        glUniform2f(locScreenspace, u.screenspaceX, u.screenspaceY);
-    if (locSampler >= 0)
-        glUniform1i(locSampler, u.textureSampler);
+    const StandardUniformLocations& at = boundUniformLocations();
+
+    if (at.screenspace >= 0)
+        glUniform2f(at.screenspace, u.screenspaceX, u.screenspaceY);
+    if (at.textureSampler >= 0)
+        glUniform1i(at.textureSampler, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
 {
     const auto& u = command.uniforms;
-    const GLuint prog = stateCache_.currentProgram_;
-    const GLint locV = glGetUniformLocation(prog, "uV");
-    const GLint locP = glGetUniformLocation(prog, "uP");
-    const GLint locFogColour = glGetUniformLocation(prog, "uFogColour");
-    const GLint locFogParams = glGetUniformLocation(prog, "uFogParams");
-    if (locV >= 0)
-        glUniformMatrix4fv(locV, 1, GL_FALSE, u.view.data());
-    if (locP >= 0)
-        glUniformMatrix4fv(locP, 1, GL_FALSE, u.proj.data());
-    if (locFogColour >= 0)
-        glUniform3f(locFogColour, u.fogColourR, u.fogColourG, u.fogColourB);
-    if (locFogParams >= 0)
-        glUniform3f(locFogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
-    const GLint locFogMode = glGetUniformLocation(prog, "uFogMode");
-    if (locFogMode >= 0)
-        glUniform1i(locFogMode, u.fogMode);
+    const StandardUniformLocations& at = boundUniformLocations();
+
+    if (at.view >= 0)
+        glUniformMatrix4fv(at.view, 1, GL_FALSE, u.view.data());
+    if (at.proj >= 0)
+        glUniformMatrix4fv(at.proj, 1, GL_FALSE, u.proj.data());
+    if (at.fogColour >= 0)
+        glUniform3f(at.fogColour, u.fogColourR, u.fogColourG, u.fogColourB);
+    if (at.fogParams >= 0)
+        glUniform3f(at.fogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
+    if (at.fogMode >= 0)
+        glUniform1i(at.fogMode, u.fogMode);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
 {
     const auto& u = command.uniforms;
-    const GLuint prog = stateCache_.currentProgram_;
+    const StandardUniformLocations& at = boundUniformLocations();
 
-    const GLint locM = glGetUniformLocation(prog, "uM");
-    if (locM >= 0)
-        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+    if (at.model >= 0)
+        glUniformMatrix4fv(at.model, 1, GL_FALSE, u.model.data());
 
-    const GLint locGpu = glGetUniformLocation(prog, "uGpuLighting");
-    if (locGpu >= 0)
-        glUniform1i(locGpu, u.gpuLighting);
+    if (at.gpuLighting >= 0)
+        glUniform1i(at.gpuLighting, u.gpuLighting);
 
     if (u.gpuLighting)
     {
-        const GLint locLD = glGetUniformLocation(prog, "uLightDir");
-        const GLint locLC = glGetUniformLocation(prog, "uLightColor");
-        const GLint locAC = glGetUniformLocation(prog, "uAmbientColor");
-        const GLint locMD = glGetUniformLocation(prog, "uMatDiffuse");
-        const GLint locMDA = glGetUniformLocation(prog, "uMatDiffuseA");
-        const GLint locMA = glGetUniformLocation(prog, "uMatAmbient");
-        const GLint locME = glGetUniformLocation(prog, "uMatEmissive");
-        const GLint locF = glGetUniformLocation(prog, "uFilter");
-        const GLint locHV = glGetUniformLocation(prog, "uHasVtxMaterials");
-        if (locLD >= 0) glUniform3f(locLD, u.lightDirX, u.lightDirY, u.lightDirZ);
-        if (locLC >= 0) glUniform3f(locLC, u.lightColorR, u.lightColorG, u.lightColorB);
-        if (locAC >= 0) glUniform3f(locAC, u.ambientColorR, u.ambientColorG, u.ambientColorB);
-        if (locMD >= 0) glUniform3f(locMD, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
-        if (locMDA >= 0) glUniform1f(locMDA, u.matDiffuseA);
-        if (locMA >= 0) glUniform3f(locMA, u.matAmbientR, u.matAmbientG, u.matAmbientB);
-        if (locME >= 0) glUniform3f(locME, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
-        if (locF >= 0) glUniform3f(locF, u.filterR, u.filterG, u.filterB);
-        if (locHV >= 0) glUniform1i(locHV, u.hasVtxMaterials);
+        if (at.lightDir >= 0) glUniform3f(at.lightDir, u.lightDirX, u.lightDirY, u.lightDirZ);
+        if (at.lightColor >= 0) glUniform3f(at.lightColor, u.lightColorR, u.lightColorG, u.lightColorB);
+        if (at.ambientColor >= 0) glUniform3f(at.ambientColor, u.ambientColorR, u.ambientColorG, u.ambientColorB);
+        if (at.matDiffuse >= 0) glUniform3f(at.matDiffuse, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
+        if (at.matDiffuseA >= 0) glUniform1f(at.matDiffuseA, u.matDiffuseA);
+        if (at.matAmbient >= 0) glUniform3f(at.matAmbient, u.matAmbientR, u.matAmbientG, u.matAmbientB);
+        if (at.matEmissive >= 0) glUniform3f(at.matEmissive, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
+        if (at.filter >= 0) glUniform3f(at.filter, u.filterR, u.filterG, u.filterB);
+        if (at.hasVtxMaterials >= 0) glUniform1i(at.hasVtxMaterials, u.hasVtxMaterials);
 
-        const GLint locNPL = glGetUniformLocation(prog, "uNumPointLights");
-        if (locNPL >= 0) glUniform1i(locNPL, u.numPointLights);
+        if (at.numPointLights >= 0) glUniform1i(at.numPointLights, u.numPointLights);
         if (u.numPointLights > 0)
         {
-            const GLint locPP = glGetUniformLocation(prog, "uPointLightPos");
-            const GLint locPC = glGetUniformLocation(prog, "uPointLightColor");
-            const GLint locPR = glGetUniformLocation(prog, "uPointLightRange");
-            const GLint locPA = glGetUniformLocation(prog, "uPointLightAtten");
-            const GLint locPO = glGetUniformLocation(prog, "uPointLightOmni");
-            if (locPP >= 0 && u.pointLightPos != nullptr)
-                glUniform3fv(locPP, u.numPointLights, u.pointLightPos);
-            if (locPC >= 0 && u.pointLightColor != nullptr)
-                glUniform3fv(locPC, u.numPointLights, u.pointLightColor);
-            if (locPR >= 0 && u.pointLightRange != nullptr)
-                glUniform1fv(locPR, u.numPointLights, u.pointLightRange);
-            if (locPA >= 0 && u.pointLightAtten != nullptr)
-                glUniform3fv(locPA, u.numPointLights, u.pointLightAtten);
-            if (locPO >= 0 && u.pointLightOmni != nullptr)
-                glUniform1fv(locPO, u.numPointLights, u.pointLightOmni);
+            if (at.pointLightPos >= 0 && u.pointLightPos != nullptr)
+                glUniform3fv(at.pointLightPos, u.numPointLights, u.pointLightPos);
+            if (at.pointLightColor >= 0 && u.pointLightColor != nullptr)
+                glUniform3fv(at.pointLightColor, u.numPointLights, u.pointLightColor);
+            if (at.pointLightRange >= 0 && u.pointLightRange != nullptr)
+                glUniform1fv(at.pointLightRange, u.numPointLights, u.pointLightRange);
+            if (at.pointLightAtten >= 0 && u.pointLightAtten != nullptr)
+                glUniform3fv(at.pointLightAtten, u.numPointLights, u.pointLightAtten);
+            if (at.pointLightOmni >= 0 && u.pointLightOmni != nullptr)
+                glUniform1fv(at.pointLightOmni, u.numPointLights, u.pointLightOmni);
         }
 
-        const GLint locSE = glGetUniformLocation(prog, "uShadowEnabled");
-        if (locSE >= 0) glUniform1i(locSE, u.shadowEnabled);
+        if (at.shadowEnabled >= 0) glUniform1i(at.shadowEnabled, u.shadowEnabled);
         if (u.shadowEnabled)
         {
-            const GLint locSM = glGetUniformLocation(prog, "uShadowMap");
-            const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
-            const GLint locSMN = glGetUniformLocation(prog, "uShadowMapNear");
-            const GLint locLSMN = glGetUniformLocation(prog, "uLightSpaceMatrixNear");
-            const GLint locSS = glGetUniformLocation(prog, "uShadowStrength");
-            if (locSM >= 0) glUniform1i(locSM, u.shadowMapUnit);
-            if (locLSM >= 0) glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
-            if (locSMN >= 0) glUniform1i(locSMN, u.shadowMapNearUnit);
-            if (locLSMN >= 0) glUniformMatrix4fv(locLSMN, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
-            if (locSS >= 0) glUniform1f(locSS, u.shadowStrength);
+            if (at.shadowMap >= 0) glUniform1i(at.shadowMap, u.shadowMapUnit);
+            if (at.lightSpaceMatrix >= 0)
+                glUniformMatrix4fv(at.lightSpaceMatrix, 1, GL_FALSE, u.lightSpaceMatrix.data());
+            if (at.shadowMapNear >= 0) glUniform1i(at.shadowMapNear, u.shadowMapNearUnit);
+            if (at.lightSpaceMatrixNear >= 0)
+                glUniformMatrix4fv(at.lightSpaceMatrixNear, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
+            if (at.shadowStrength >= 0) glUniform1f(at.shadowStrength, u.shadowStrength);
         }
     }
 
-    const GLint locTS = glGetUniformLocation(prog, "uTextureSampler2");
-    if (locTS >= 0)
-        glUniform1i(locTS, u.textureSampler);
+    if (at.textureSampler2 >= 0)
+        glUniform1i(at.textureSampler2, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetBillboardUniforms& command)
 {
     const auto& u = command.uniforms;
-    const GLuint prog = stateCache_.currentProgram_;
-    const GLint locVP = glGetUniformLocation(prog, "uVP");
-    const GLint locSampler = glGetUniformLocation(prog, "uTextureSampler");
-    if (locVP >= 0)
-        glUniformMatrix4fv(locVP, 1, GL_FALSE, u.viewProj.data());
-    if (locSampler >= 0)
-        glUniform1i(locSampler, u.textureSampler);
+    const StandardUniformLocations& at = boundUniformLocations();
+
+    if (at.viewProj >= 0)
+        glUniformMatrix4fv(at.viewProj, 1, GL_FALSE, u.viewProj.data());
+    if (at.textureSampler >= 0)
+        glUniform1i(at.textureSampler, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
 {
     const auto& u = command.uniforms;
-    const GLuint prog = stateCache_.currentProgram_;
-    const GLint locLSM = glGetUniformLocation(prog, "uLightSpaceMatrix");
-    const GLint locM = glGetUniformLocation(prog, "uM");
-    if (locLSM >= 0)
-        glUniformMatrix4fv(locLSM, 1, GL_FALSE, u.lightSpaceMatrix.data());
-    if (locM >= 0)
-        glUniformMatrix4fv(locM, 1, GL_FALSE, u.model.data());
+    const StandardUniformLocations& at = boundUniformLocations();
+
+    if (at.lightSpaceMatrix >= 0)
+        glUniformMatrix4fv(at.lightSpaceMatrix, 1, GL_FALSE, u.lightSpaceMatrix.data());
+    if (at.model >= 0)
+        glUniformMatrix4fv(at.model, 1, GL_FALSE, u.model.data());
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetPostProcessUniforms& command)
 {
     const auto& u = command.uniforms;
-    const GLuint prog = stateCache_.currentProgram_;
-    const GLint locScene = glGetUniformLocation(prog, "uSceneTexture");
-    const GLint locExposure = glGetUniformLocation(prog, "uExposure");
-    if (locScene >= 0)
-        glUniform1i(locScene, u.sceneTextureSampler);
-    if (locExposure >= 0)
-        glUniform1f(locExposure, u.exposure);
+    const StandardUniformLocations& at = boundUniformLocations();
+
+    if (at.sceneTexture >= 0)
+        glUniform1i(at.sceneTexture, u.sceneTextureSampler);
+    if (at.exposure >= 0)
+        glUniform1f(at.exposure, u.exposure);
 }
 
 BackendTextureHandle RenderBackendGL21::createTexture2D()
