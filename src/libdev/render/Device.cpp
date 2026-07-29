@@ -2604,7 +2604,9 @@ void RenDevice::renderPrimitive(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    Ren::DrawCallFactory::Commands cmds;
+    // Reuse the scratch list so that it keeps its capacity across draw calls.
+    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
+    cmds.clear();
     Ren::DrawCallFactory::emitStandard3DDraw(
         buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
@@ -2643,7 +2645,9 @@ void RenDevice::renderIndexed(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    Ren::DrawCallFactory::Commands cmds;
+    // Reuse the scratch list so that it keeps its capacity across draw calls.
+    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
+    cmds.clear();
     Ren::DrawCallFactory::emitStandard3DDrawIndexed(
         buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
@@ -2702,7 +2706,9 @@ void RenDevice::renderIndexedScreenspace(
     bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
     bu.textureSampler = 0;
 
-    Ren::DrawCallFactory::Commands cmds;
+    // Reuse the scratch list so that it keeps its capacity across draw calls.
+    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
+    cmds.clear();
     Ren::DrawCallFactory::emitBillboardDrawIndexed(
         bh, bu, billboardUniformsDirty_,
         resolveTextureHandle(mat.texture().handle()),
@@ -2821,7 +2827,9 @@ void RenDevice::renderShadowDepth(
     sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
     sdu.model = toFloatArray(model_);
 
-    Ren::DrawCallFactory::Commands cmds;
+    // Reuse the scratch list so that it keeps its capacity across draw calls.
+    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
+    cmds.clear();
     Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
         sh, sdu, vertices, nVertices, indices, nIndices, topology, &cmds);
 
