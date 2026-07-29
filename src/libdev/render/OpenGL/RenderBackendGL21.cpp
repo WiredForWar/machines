@@ -260,6 +260,7 @@ void RenderBackendGL21::StateCache::reset()
 {
     currentProgram_ = 0;
     enabledAttribs_.reset();
+    pendingAttribDisables_.reset();
 
     resetTextureUnits();
 
@@ -1242,12 +1243,16 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetMultisample& comma
 
 void RenderBackendGL21::executeCommand(const BackendCommandDraw& command)
 {
+    applyPendingAttribDisables();
+
     const GLenum mode = toDrawMode(command.topology);
     glDrawArrays(mode, command.first, command.count);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandDrawIndexed& command)
 {
+    applyPendingAttribDisables();
+
     const GLenum mode = toDrawMode(command.topology);
     const GLenum indexType = toIndexType(command.indexType);
     glDrawElements(mode, command.count, indexType, reinterpret_cast<const void*>(command.indexBufferOffset));
@@ -1382,11 +1387,19 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetVertexAttribPointe
 
     if (command.enabled)
     {
-        if (index < MaxVertexAttribs && !stateCache_.enabledAttribs_.test(index))
+        if (index < MaxVertexAttribs)
         {
-            stateCache_.enabledAttribs_.set(index);
-            glEnableVertexAttribArray(index);
+            // Whatever this attribute was queued to be disabled for, it is
+            // wanted again before the next draw, so the disable is moot.
+            stateCache_.pendingAttribDisables_.reset(index);
+
+            if (!stateCache_.enabledAttribs_.test(index))
+            {
+                stateCache_.enabledAttribs_.set(index);
+                glEnableVertexAttribArray(index);
+            }
         }
+
         glVertexAttribPointer(
             index,
             command.size,
@@ -1397,12 +1410,33 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetVertexAttribPointe
     }
     else
     {
+        // Deferred to the next draw rather than issued now. Every draw call
+        // disables the layout it just used and the next one re-enables the
+        // same attributes, so acting immediately would spend two driver calls
+        // per attribute per draw to arrive back where it started.
         if (index < MaxVertexAttribs && stateCache_.enabledAttribs_.test(index))
-        {
-            stateCache_.enabledAttribs_.reset(index);
-            glDisableVertexAttribArray(index);
-        }
+            stateCache_.pendingAttribDisables_.set(index);
     }
+}
+
+// Brings the enabled attribute set to what the pending disables asked for. Run
+// before every draw, so the state a draw sees is the same as if each disable
+// had been issued when it was recorded.
+void RenderBackendGL21::applyPendingAttribDisables()
+{
+    if (stateCache_.pendingAttribDisables_.none())
+        return;
+
+    for (std::size_t index = 0; index != MaxVertexAttribs; ++index)
+    {
+        if (!stateCache_.pendingAttribDisables_.test(index))
+            continue;
+
+        stateCache_.enabledAttribs_.reset(index);
+        glDisableVertexAttribArray(static_cast<GLuint>(index));
+    }
+
+    stateCache_.pendingAttribDisables_.reset();
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetProgram& command)
