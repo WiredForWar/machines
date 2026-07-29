@@ -26,6 +26,8 @@ struct StandardFrameUniforms
     float fogEndOrY{};
     float fogDensityOrZ{};
     int fogMode{};
+    // Taps in the shadow filter kernel: 1 for a single sample, 25 for 5x5.
+    int shadowFilterTaps{};
 };
 
 // Per-object uniforms for the standard 3D pipeline (set per draw call).

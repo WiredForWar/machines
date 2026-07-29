@@ -537,6 +537,7 @@ RenderBackendGL21::StandardUniformLocations RenderBackendGL21::resolveStandardUn
     locations.fogColour = at("uFogColour");
     locations.fogParams = at("uFogParams");
     locations.fogMode = at("uFogMode");
+    locations.shadowFilterTaps = at("uShadowFilterTaps");
 
     locations.model = at("uM");
     locations.gpuLighting = at("uGpuLighting");
@@ -1632,6 +1633,8 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetStandardFrameUnifo
         glUniform3f(at.fogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
     if (at.fogMode >= 0 && changed(sent.fogMode, u.fogMode))
         glUniform1i(at.fogMode, u.fogMode);
+    if (at.shadowFilterTaps >= 0 && changed(sent.shadowFilterTaps, u.shadowFilterTaps))
+        glUniform1i(at.shadowFilterTaps, u.shadowFilterTaps);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetStandardObjectUniforms& command)

@@ -31,6 +31,7 @@ struct FrameState
     float fogEndOrY{};
     float fogDensityOrZ{};
     int fogMode{};
+    int shadowFilterTaps{};
 };
 
 // Lightweight snapshot of per-object GPU lighting state.

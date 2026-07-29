@@ -196,6 +196,7 @@ private:
         GLint fogColour{-1};
         GLint fogParams{-1};
         GLint fogMode{-1};
+        GLint shadowFilterTaps{-1};
 
         // Standard object block
         GLint model{-1};
@@ -246,6 +247,7 @@ private:
         std::array<float, 3> fogColour{};
         std::array<float, 3> fogParams{};
         int fogMode{};
+        int shadowFilterTaps{};
 
         std::array<float, 16> model{};
         int gpuLighting{};
