@@ -178,17 +178,27 @@ bool SDLApp::clientStartup()
 
     Config::gfxWindowed.writeBack();;
 
+    // Apply the configured resolution. gfxLockResolution used to decide whether
+    // the resolution changed between the menus and the game; that switching is
+    // gone (see MachGuiStartupScreens::doBecomeNotRoot), so this is now the only
+    // place the player's choice is applied and it has to run either way.
     bool displayModeInitialized = false;
-    if (Config::gfxLockResolution.get())
     {
-        int modeW = Config::gfxResolutionWidth.get();
-        int modeH = Config::gfxResolutionHeight.get();
+        const int modeW = Config::gfxResolutionWidth.get();
+        const int modeH = Config::gfxResolutionHeight.get();
 
         if (modeW && modeH)
         {
-            int modeR = pDisplay_->fullScreen()? Config::gfxRefreshRate.get() : 0;
+            const int modeR = pDisplay_->fullScreen() ? Config::gfxRefreshRate.get() : 0;
 
-            const RenDisplay::Mode loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
+            // Windowed size is ours to pick, so take it as given. Only fullscreen
+            // has to match a mode the display actually supports, and the mode
+            // list holds nothing else -- looking a windowed size up in it would
+            // reject anything that is not also a fullscreen mode.
+            const RenDisplay::Mode loadedMode = pDisplay_->fullScreen()
+                ? pDisplay_->findMode(modeW, modeH, modeR)
+                : pDisplay_->getWindowedMode(modeW, modeH);
+
             if (loadedMode.isValid())
             {
                 displayModeInitialized = pDisplay_->useMode(loadedMode);
