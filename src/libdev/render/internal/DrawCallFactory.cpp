@@ -4,12 +4,18 @@
 #include "render/Material.hpp"
 #include "render/internal/VertexData.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Ren
 {
 
 static constexpr int TextureUnit = 0;
 static constexpr int ShadowFarTextureUnit = 1;
 static constexpr int ShadowNearTextureUnit = 2;
+
+// The point light uniforms are uploaded as one flat run of 3 floats per light,
+// so an array of vec3 has to be exactly that with nothing in between.
+static_assert(sizeof(glm::vec3) == 3 * sizeof(float), "glm::vec3 must be tightly packed");
 
 StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
     const std::array<float, 16>& model,
@@ -50,11 +56,11 @@ StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
         ou.numPointLights = nPt;
         if (nPt > 0)
         {
-            ou.pointLightPos.assign(&lighting.pointLightPos[0].x, &lighting.pointLightPos[0].x + nPt * 3);
-            ou.pointLightColor.assign(&lighting.pointLightColor[0].x, &lighting.pointLightColor[0].x + nPt * 3);
-            ou.pointLightRange.assign(lighting.pointLightRange, lighting.pointLightRange + nPt);
-            ou.pointLightAtten.assign(&lighting.pointLightAtten[0].x, &lighting.pointLightAtten[0].x + nPt * 3);
-            ou.pointLightOmni.assign(lighting.pointLightOmni, lighting.pointLightOmni + nPt);
+            ou.pointLightPos = glm::value_ptr(lighting.pointLightPos[0]);
+            ou.pointLightColor = glm::value_ptr(lighting.pointLightColor[0]);
+            ou.pointLightRange = lighting.pointLightRange;
+            ou.pointLightAtten = glm::value_ptr(lighting.pointLightAtten[0]);
+            ou.pointLightOmni = lighting.pointLightOmni;
         }
 
         ou.shadowEnabled = lighting.shadowEnabled ? 1 : 0;
