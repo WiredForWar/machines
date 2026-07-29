@@ -40,6 +40,12 @@ void RenStats::incrPointsCount(uint32_t number)
 }
 
 _CODE_INLINE
+void RenStats::incrDrawCallCount(uint32_t number)
+{
+    drawCallsMade_ += number;
+}
+
+_CODE_INLINE
 uint32_t RenStats::frameCount() const
 {
     return frameCount_;
