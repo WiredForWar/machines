@@ -385,7 +385,13 @@ void RenIIlluminator::lightVertices(
         devImpl_->hasPerVertexMaterials_ = false;
     }
 
-    if (!disabled())
+    // The per-vertex Lambertian sum exists to produce the vertex colour, which
+    // only the Legacy path consumes: StandardShading.vxgls reads vertexColor in
+    // its else branch and sets fragmentColor to white whenever uGpuLighting is
+    // set, computing the lighting from the normal instead. So in the GPU
+    // lighting modes this walks every light over every vertex to fill in a
+    // value the shader then discards.
+    if (!disabled() && !gpuLighting)
         computeLambertian(in, mexWorld, pVolume);
 
     // If these vertices have an intensity map, then create an expanded version.
