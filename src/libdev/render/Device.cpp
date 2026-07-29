@@ -38,6 +38,7 @@
 #include "render/Material.hpp"
 #include "render/Mesh.hpp"
 #include "render/DriverSelector.hpp"
+#include "render/ShadowQuality.hpp"
 #include "render/IWindowAdapter.hpp"
 
 #include "render/internal/DrawCallFactory.hpp"
@@ -2141,6 +2142,10 @@ Ren::FrameState RenDevice::buildFrameState() const
     fs.fogEndOrY = fogParams_.y;
     fs.fogDensityOrZ = fogParams_.z;
     fs.fogMode = static_cast<int>(Config::gfxFogMode.get());
+    // Soft keeps the 5x5 kernel; anything else takes a single sample. The
+    // filter is by far the most expensive part of a shadowed frame, so this
+    // is what the setting is for.
+    fs.shadowFilterTaps = (Config::gfxShadowQuality.get() == ShadowQuality::Soft) ? 25 : 1;
     return fs;
 }
 

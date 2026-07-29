@@ -46,10 +46,21 @@ uniform sampler2D uShadowMapNear;      // near cascade
 uniform mat4 uLightSpaceMatrixNear;    // near cascade
 uniform int uShadowEnabled;
 uniform float uShadowStrength;
+uniform int uShadowFilterTaps;
 
 float sampleShadowPCF(sampler2D shadowMap, vec3 projCoords, float bias, float texelSize)
 {
     float currentDepth = projCoords.z;
+
+    // A single sample costs 25 times fewer texture fetches, and the filter
+    // is per fragment over the whole screen, so this dominates the cost of
+    // a shadowed frame.
+    if (uShadowFilterTaps <= 1)
+    {
+        float centreDepth = texture2D(shadowMap, projCoords.xy).r;
+        return (currentDepth - bias > centreDepth) ? 1.0 : 0.0;
+    }
+
     float shadow = 0.0;
     for (int x = -2; x <= 2; ++x)
     {
