@@ -196,6 +196,20 @@ public:
 
     const RenIVertexData* vertices() const { return vertices_.get(); }
 
+    // The shadow casting geometry of this mesh: the triangles of every casting
+    // group as one index run into the returned vertex data, which the depth pass
+    // can draw in a single call. Rebuilt when the set of casting groups changes.
+    // Returns false when this mesh casts nothing, leaving the outputs untouched.
+    //
+    // Exposed so callers that can batch several meshes into one draw -- a
+    // composite collapsing its links, say -- can reach the same runs the
+    // single-mesh depth path uses.
+    bool shadowGeometry(
+        const RenIVertexData** vertices,
+        const Ren::VertexIdx** indices,
+        size_t* nIndices,
+        Ren::VertexIdx* nVertices) const;
+
     void CLASS_INVARIANT;
 
     PER_MEMBER_PERSISTENT_DEFAULT_VIRTUAL(RenMesh);
@@ -237,6 +251,14 @@ private:
 
     // typedef ctl_vector< RenTexture > Textures;
     Textures* pVertexTexture_ {};
+
+    // Rebuilds shadowIndices_ when the set of casting groups no longer matches
+    // castingGroups_.
+    void updateMergedShadowIndices() const;
+
+    // Draws the whole mesh into the depth map in one call. Returns whether a
+    // shadow pass was active, i.e. whether the colour path should be skipped.
+    bool renderMergedShadowDepthIfActive(const MexTransform3d& world, const RenScale& scale) const;
 
     bool read(const SysPathName& path, const std::string& mesh, double scale = 1.0);
     bool copyFromMeshBuilder(IDirect3DRMMeshBuilder*);
