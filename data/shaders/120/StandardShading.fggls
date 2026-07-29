@@ -115,12 +115,6 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
     if (NdotL <= 0.0)
         return 1.0;
 
-    // Smooth transition zone: for surfaces nearly edge-on to the light
-    // (NdotL 0..0.3), blend between full shadow and the shadow map result.
-    // This hides staircase artifacts on steep surfaces (e.g. cliff faces
-    // with a moving sun) by gradually fading out the shadow map influence.
-    float edgeFade = smoothstep(0.0, 0.3, NdotL);
-
     // Each cascade has its own texel footprint and its own ortho depth range, so
     // the bias has to be worked out per cascade -- see shadowBias().
     const float nearTexel = 1.0 / 4096.0;
@@ -169,7 +163,7 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
         float nearEdge = max(abs(nearProj.x - 0.5), abs(nearProj.y - 0.5)) * 2.0; // 0..1
         float blendFar = smoothstep(0.8, 1.0, nearEdge);
         shadowSample = mix(nearShadow, max(nearShadow, farShadow), blendFar);
-        return mix(1.0, shadowSample, edgeFade);
+        return shadowSample;
     }
     else if (inFar)
     {
@@ -182,7 +176,7 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
         debugColor = vec4(intensity * 0.15, intensity * 0.15, intensity, 1.0);
 #endif
         shadowSample = farShadow;
-        return mix(1.0, shadowSample, edgeFade);
+        return shadowSample;
     }
 
     return 0.0;
