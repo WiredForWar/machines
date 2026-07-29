@@ -154,6 +154,7 @@ set(RENDER_SOURCES
     internal/CapabilitiesImpl.hpp
     internal/CapabilitiesImpl.ipp
     internal/ColourPack.hpp
+    internal/CommandArena.hpp
     internal/CoplanarFactory.ctp
     internal/CoplanarFactory.hpp
     internal/CoplanarGroup.hpp

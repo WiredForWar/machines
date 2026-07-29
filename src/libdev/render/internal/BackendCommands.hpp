@@ -191,7 +191,11 @@ struct BackendCommandBufferData
 {
     BufferTarget target{};
     BufferId bufferId{};
-    std::vector<std::byte> data{};
+    // Borrowed from the caller. Valid until the command is executed, which for
+    // immediate execution is before bufferData() returns. A backend that queues
+    // the command instead has to copy the payload into storage of its own.
+    const void* data{};
+    std::size_t sizeBytes{};
     BufferUsage usage{};
 };
 
@@ -495,8 +499,7 @@ inline BackendCommand bindTexture2D(
 
 inline BackendCommand bufferData(BufferTarget target, BufferId bufferId, const void* data, std::size_t sizeBytes, BufferUsage usage)
 {
-    auto bytes = static_cast<const std::byte*>(data);
-    return BackendCommandBufferData{ target, bufferId, std::vector<std::byte>(bytes, bytes + sizeBytes), usage };
+    return BackendCommandBufferData{ target, bufferId, data, sizeBytes, usage };
 }
 
 inline BackendCommand bindBuffer(BufferTarget target, BufferId bufferId)
