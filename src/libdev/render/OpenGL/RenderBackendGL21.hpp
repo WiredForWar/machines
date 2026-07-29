@@ -177,6 +177,7 @@ private:
     void executeCommand(const BackendCommandSetShadowDepthUniforms& command);
     void executeCommand(const BackendCommandSetPostProcessUniforms& command);
 
+    void applyPendingAttribDisables();
     void flushPendingDeletes();
     std::size_t activeCommandBufferCount() const;
 
@@ -327,6 +328,9 @@ private:
 
         GLuint currentProgram_{};
         std::bitset<MaxVertexAttribs> enabledAttribs_{};
+        // Attributes a draw asked to disable, held back until the next draw
+        // so that a disable followed by a re-enable costs nothing.
+        std::bitset<MaxVertexAttribs> pendingAttribDisables_{};
 
         struct TextureUnitState
         {
