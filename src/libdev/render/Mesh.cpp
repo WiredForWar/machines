@@ -252,6 +252,96 @@ inline bool renderShadowDepthIfActive(
     return true;
 }
 
+// Whether a group can go into the merged run. The depth shader takes only a
+// position and two matrices -- no texture, no colour, and an empty fragment
+// shader -- so a material reaches the depth map through this one decision and
+// nothing else. Semi-transparent surfaces are out, since they must not cast a
+// full opaque shadow.
+//
+// Anything that later needs material state while the depth map is being drawn
+// has to be excluded here and drawn on its own: alpha tested cutouts, whose
+// shadow should have the holes their texture does, are the case to expect.
+inline bool castsMergedShadow(const RenITriangleGroup* group)
+{
+    return !group->material().hasAlphaTransparency();
+}
+
+// One draw for the whole mesh instead of one per material group. The depth pass
+// writes no colour, so the groups carry nothing it needs to distinguish, and
+// their triangles can go out as a single index run.
+inline bool renderMergedShadowDepthIfActive(
+    const MexTransform3d& world,
+    const RenScale& scale,
+    const RenIVertexData* vertices,
+    const ctl_min_memory_vector<RenITriangleGroup*>& triangles,
+    ctl_min_memory_vector<Ren::VertexIdx>& shadowIndices,
+    ctl_min_memory_vector<uint8_t>& castingGroups,
+    Ren::VertexIdx& shadowVertexCount)
+{
+    if (!RenDevice::current()->isShadowPassActive())
+        return false;
+
+    if (!vertices)
+        return true;
+
+    // A material can be swapped at runtime, so which groups cast is not fixed
+    // for the life of the mesh. Checking is a handful of loads per group, far
+    // cheaper than the draw calls the merged run saves.
+    bool stale = castingGroups.size() != triangles.size();
+    for (size_t idx = 0; !stale && idx != triangles.size(); ++idx)
+        stale = (castingGroups[idx] != (castsMergedShadow(triangles[idx]) ? 1 : 0));
+
+    if (stale)
+    {
+        shadowIndices.erase(shadowIndices.begin(), shadowIndices.end());
+        castingGroups.erase(castingGroups.begin(), castingGroups.end());
+        shadowVertexCount = 0;
+
+        for (const auto* group : triangles)
+        {
+            const bool casts = castsMergedShadow(group);
+            castingGroups.push_back(casts ? 1 : 0);
+            if (!casts)
+                continue;
+
+            if (group->maxUsedIndices() > shadowVertexCount)
+                shadowVertexCount = group->maxUsedIndices();
+
+            const size_t nTriangles = group->nTriangles();
+            for (size_t triangle = 0; triangle != nTriangles; ++triangle)
+            {
+                Ren::VertexIdx i1{};
+                Ren::VertexIdx i2{};
+                Ren::VertexIdx i3{};
+                group->triangle(static_cast<Ren::TriangleIdx>(triangle), &i1, &i2, &i3);
+                shadowIndices.push_back(i1);
+                shadowIndices.push_back(i2);
+                shadowIndices.push_back(i3);
+            }
+        }
+    }
+
+    if (!shadowIndices.empty())
+    {
+        // The per group path reaches renderShadowDepth through
+        // RenITriangleGroup::render, which leaves setting the model matrix to
+        // its caller. Drawing directly here takes that responsibility on: the
+        // mesh scale lives in this matrix, so without it the geometry goes out
+        // at whatever scale the previous draw happened to leave behind.
+        glm::mat4 glWorld;
+        setMeshWorldMatrix(world, glWorld, scale);
+
+        RenDevice::current()->renderShadowDepth(
+            &vertices->front(),
+            shadowVertexCount,
+            &shadowIndices.front(),
+            shadowIndices.size(),
+            Ren::PrimitiveTopology::Triangles);
+    }
+
+    return true;
+}
+
 inline void animateVertices(
     const RenIVertexData* in,
     std::unique_ptr<RenIVertexData>& out,
@@ -419,7 +509,8 @@ template <class T> void GroupRenderFunctorMatOverride<T>::operator()(const T* gr
 // Both the transform and the scaling functor are mandatory parameters.
 void RenMesh::render(const MexTransform3d& world, const RenScale& scale) const
 {
-    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+    if (renderMergedShadowDepthIfActive(
+            world, scale, vertices_.get(), triangles_, shadowIndices_, castingGroups_, shadowVertexCount_))
         return;
 
     renderPreconditions();
@@ -533,7 +624,8 @@ void RenMesh::render(const MexTransform3d& world, const RenMaterialVec* mats, co
 
 void RenMesh::render(const MexTransform3d& world, const RenUVTransform& anim, const RenScale& scale) const
 {
-    if (renderShadowDepthIfActive(world, scale, vertices_.get(), triangles_))
+    if (renderMergedShadowDepthIfActive(
+            world, scale, vertices_.get(), triangles_, shadowIndices_, castingGroups_, shadowVertexCount_))
         return;
 
     renderPreconditions();
