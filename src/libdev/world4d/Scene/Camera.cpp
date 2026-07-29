@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <queue>
+#include <unordered_set>
 
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/Portal.hpp"
@@ -64,9 +65,6 @@ void W4dCamera::inOrderRender()
 {
     W4dRoot* root = findRoot();
     ASSERT(!root->hasParent(), logic_error());
-
-    CULL_TRACE(entitiesRendered_ = 0);
-    CULL_TRACE(domainsRendered_ = 0);
 
     // Update the camera clipping volume
     pVolume_->update();
@@ -286,58 +284,100 @@ void W4dCamera::domainRender(const int maxDepth)
 {
     PRE(maxDepth > 0);
 
-    // Check the camera is in a domain
-    W4dDomain* myDomain;
-    if (hasContainingDomain(&myDomain))
-    {
-        CULL_TRACE(entitiesRendered_ = 0);
-        CULL_TRACE(domainsRendered_ = 0);
-
-        // Update the camera clipping volume
-        if (lastRenderTransformKey_ != globalTransform().key())
-            pVolume_->update();
-
-        passId_ = W4dManager::instance().generateRenderPassId();
-        recursiveDomainRender(myDomain, NULL, maxDepth);
-
-        // We're finished with the domain culling.
-
-        // For test purposes only: render any non-domain children of the root.
-        W4dRoot* root = findRoot();
-        ASSERT(!root->hasParent(), logic_error());
-
-        const W4dEntity::W4dEntities& kids = root->children();
-        for (W4dEntity::W4dEntities::const_iterator it = kids.begin(); it != kids.end(); ++it)
-        {
-            W4dEntity* entity = *it;
-            if (!entity->isDomain())
-            {
-                renderTree(entity, DOMAIN_RENDER);
-            }
-        }
-
-        lastRenderTransformKey_ = globalTransform().key();
-        lastPassId_ = passId_;
-        // Finished rendering.
-    }
-    else
-    {
-        // camera not in a domain, so do an inorder render
-        inOrderRender();
-    }
+    cullVisibleSet(maxDepth);
+    renderVisibleSet();
 }
 
-void W4dCamera::recursiveDomainRender(
-    W4dDomain* startDomain,
-    int /*depth*/,
-    int maxDepth
-)
+void W4dCamera::cullVisibleSet(const int maxDepth)
+{
+    PRE(maxDepth > 0);
+
+    visibleDomains_.erase(visibleDomains_.begin(), visibleDomains_.end());
+    visibleSetIsUnculled_ = false;
+
+    // Check the camera is in a domain
+    W4dDomain* myDomain;
+    if (!hasContainingDomain(&myDomain))
+    {
+        // Camera not in a domain, so the whole tree is drawn without culling.
+        visibleSetIsUnculled_ = true;
+        return;
+    }
+
+    CULL_TRACE(entitiesRendered_ = 0);
+    CULL_TRACE(domainsRendered_ = 0);
+
+    // Update the camera clipping volume
+    if (lastRenderTransformKey_ != globalTransform().key())
+        pVolume_->update();
+
+    cullDomains(myDomain, maxDepth);
+}
+
+void W4dCamera::renderVisibleSet()
+{
+    if (visibleSetIsUnculled_)
+    {
+        inOrderRender();
+        return;
+    }
+
+    // A fresh pass id each time, so that the per-entity "already drawn this
+    // pass" marks do not stop a second drawing of the same visible set.
+    passId_ = W4dManager::instance().generateRenderPassId();
+
+    // Counted per drawing, as they were when culling and drawing were one.
+    CULL_TRACE(entitiesRendered_ = 0);
+    CULL_TRACE(domainsRendered_ = 0);
+
+    for (W4dDomain* in : visibleDomains_)
+    {
+        CULL_TRACE(++domainsRendered_);
+
+        // Render the domain's subtree.
+        // NB: also tags the domain with this camera's render pass Id.
+        renderTree(in, DOMAIN_RENDER);
+
+        // The above renderTree call will turn on the domain's light list then
+        // turn it off again.  We need the list to be on for any intersecting
+        // entities or for recursive domains.
+        if (in->hasLightList())
+            in->lightListForEdit().turnOnAll();
+
+        // Render any entities which (might) intersect the current domain.
+        const W4dEntities& entities = in->intersectingEntities();
+        for (W4dEntities::const_iterator it = entities.begin(); it != entities.end(); ++it)
+        {
+            if (*it)
+                renderTree(*it, DOMAIN_RENDER);
+        }
+
+        if (in->hasLightList())
+            in->lightListForEdit().turnOffAll();
+    }
+
+    // For test purposes only: render any non-domain children of the root.
+    W4dRoot* root = findRoot();
+    ASSERT(!root->hasParent(), logic_error());
+
+    const W4dEntity::W4dEntities& kids = root->children();
+    for (W4dEntity::W4dEntities::const_iterator it = kids.begin(); it != kids.end(); ++it)
+    {
+        W4dEntity* entity = *it;
+        if (!entity->isDomain())
+            renderTree(entity, DOMAIN_RENDER);
+    }
+
+    lastRenderTransformKey_ = globalTransform().key();
+    lastPassId_ = passId_;
+}
+
+void W4dCamera::cullDomains(W4dDomain* startDomain, int maxDepth)
 {
     PRE(startDomain);
-    PRE(startDomain->latestRenderPassId() != renderPassId());
 
     // BFS traversal: process domains breadth-first so that rooms closest
-    // (in graph distance) to the camera are rendered first.  This prevents
+    // (in graph distance) to the camera are recorded first.  This prevents
     // the depth budget from being wasted going deep into one corridor chain
     // before visiting nearby visible rooms.
 
@@ -349,6 +389,11 @@ void W4dCamera::recursiveDomainRender(
 
     std::queue<BfsEntry> bfsQueue;
     bfsQueue.push({startDomain, 0});
+
+    // The fused version marked domains through the render pass id, which it got
+    // for free from drawing them. Culling on its own has to track this itself.
+    std::unordered_set<const W4dDomain*> queued;
+    queued.insert(startDomain);
 
     // With proper 6-plane canSee culling (behind + far + 4 sides) and BFS,
     // the frustum test is the real traversal limiter.  The budget is just a
@@ -362,11 +407,6 @@ void W4dCamera::recursiveDomainRender(
         const auto [in, depth] = bfsQueue.front();
         bfsQueue.pop();
 
-        // Skip if already processed (could have been enqueued from multiple portals
-        // before being processed).
-        if (in != startDomain && in->latestRenderPassId() == renderPassId())
-            continue;
-
         // Safety limit to prevent runaway traversal.
         if (domainsProcessed > safetyCap)
         {
@@ -377,37 +417,8 @@ void W4dCamera::recursiveDomainRender(
 
         CULL_STREAM("traversing into " << (W4dEntity*)in << " depth=" << depth << "\n");
         CULL_INDENT(2);
-        CULL_TRACE(++domainsRendered_);
 
-        // Render the domain's subtree.
-        // NB: also tags the domain with this camera's render pass Id.
-        renderTree(in, DOMAIN_RENDER);
-
-        // The above renderTree call will turn on the domain's light list then
-        // turn it off again.  We need the list to be on for any intersecting
-        // entities or for recursive domains.
-        if (in->hasLightList())
-        {
-            CULL_STREAM("lights on for " << (W4dEntity*)in << "\n");
-            in->lightListForEdit().turnOnAll();
-        }
-
-        // Render any entities which (might) intersect the current domain.
-        const W4dEntities& entities = in->intersectingEntities();
-        for (W4dEntities::const_iterator it = entities.begin(); it != entities.end(); ++it)
-        {
-            if (*it)
-            {
-                CULL_STREAM("processing intersecting entity " << (W4dEntity*)(*it) << "\n");
-                renderTree(*it, DOMAIN_RENDER);
-            }
-        }
-
-        if (in->hasLightList())
-        {
-            CULL_STREAM("lights off for " << (W4dEntity*)in << "\n");
-            in->lightListForEdit().turnOffAll();
-        }
+        visibleDomains_.push_back(in);
 
         // Enqueue neighbouring domains (BFS expansion).
         const W4dDomain::W4dPortals& portals = in->portals();
@@ -421,14 +432,14 @@ void W4dCamera::recursiveDomainRender(
                 W4dDomain* nextDomain = portal->otherDomain(in);
                 CULL_STREAM("Considering " << nextDomain->name() << ": ");
 
-                // Don't traverse if we have visited the domain previously during
-                // this render pass.
-                if (nextDomain->latestRenderPassId() != renderPassId())
+                // Don't traverse if we have already reached the domain.
+                if (queued.find(nextDomain) == queued.end())
                 {
                     CULL_STREAM("through " << portal->globalAperture() << " ");
                     if (canSee(portal->globalAperture()))
                     {
-                        CULL_STREAM("visible — enqueued\n");
+                        CULL_STREAM("visible - enqueued\n");
+                        queued.insert(nextDomain);
                         bfsQueue.push({nextDomain, depth + 1});
                     }
                     else
@@ -438,7 +449,7 @@ void W4dCamera::recursiveDomainRender(
                 }
                 else
                 {
-                    CULL_STREAM("processed already\n");
+                    CULL_STREAM("reached already\n");
                 }
             }
         }

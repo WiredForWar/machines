@@ -10,6 +10,8 @@
 #include "world4d/Entity/Entity.hpp"
 #include "mathex/Transform3dKey.hpp"
 
+#include <vector>
+
 class MexPoint3d;
 class MexQuad3d;
 class RenCamera;
@@ -86,7 +88,6 @@ private:
 
     void renderTree(W4dEntity* node, TraversalType);
     void renderSubTree(W4dEntity* node);
-    void recursiveDomainRender(W4dDomain* entering, int depth, int maxDepth);
 
     void updateRenCamera();
 
@@ -111,6 +112,33 @@ private:
     // PRE(maxDepth > 0);                           we must render something
     // PRE(intersectingDomains().size() == 1);      camera's domain must be uniquely set
     void domainRender(const int maxDepth);
+
+public:
+    // domainRender() split in two, for callers that draw the same visible set
+    // more than once in a frame -- the shadow cascades and the main pass all
+    // work from this camera, so the portal walk and the per-entity volume
+    // tests only have to happen once.
+    //
+    // cullVisibleSet() decides what is visible and records it; renderVisibleSet()
+    // draws what was recorded and may be called repeatedly. The result stays
+    // valid for as long as the camera does not move and the world does not
+    // change, i.e. for the frame it was culled in.
+    void cullVisibleSet(const int maxDepth); // PRE(maxDepth > 0);
+    void renderVisibleSet();
+
+private:
+    // Collects the domains the portal walk reaches, in the order it reached
+    // them, so that replaying preserves the order the fused version drew in.
+    void cullDomains(W4dDomain* startDomain, int maxDepth);
+
+    // The visible domains of the last cullVisibleSet(), in traversal order.
+    // Their intersecting entities are read back from the domain when drawing
+    // rather than copied here, since a domain owns that list anyway.
+    std::vector<W4dDomain*> visibleDomains_;
+
+    // Set when the camera was in no domain, where the fused version fell back
+    // to an unculled in-order render of the whole tree.
+    bool visibleSetIsUnculled_{};
 
     W4dSceneManager* manager_;
     uint32_t passId_;
