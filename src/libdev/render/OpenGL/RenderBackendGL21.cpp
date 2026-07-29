@@ -1117,62 +1117,6 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetDepthTest& command
         glDisable(GL_DEPTH_TEST);
 }
 
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1i& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform1i(command.location.value(), command.value);
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1f& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform1f(command.location.value(), command.value);
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform2f& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform2f(command.location.value(), command.x, command.y);
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform1fv& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform1fv(command.location.value(), static_cast<GLsizei>(command.values.size()), command.values.data());
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform3f& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform3f(command.location.value(), command.x, command.y, command.z);
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniform3fv& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniform3fv(command.location.value(), static_cast<GLsizei>(command.values.size() / 3), command.values.data());
-}
-
-void RenderBackendGL21::executeCommand(const BackendCommandSetUniformMatrix4fv& command)
-{
-    if (!command.location.isValid())
-        return;
-
-    glUniformMatrix4fv(command.location.value(), 1, command.transpose ? GL_TRUE : GL_FALSE, command.values.data());
-}
-
 void RenderBackendGL21::executeCommand(const BackendCommandSetVertexAttribPointer& command)
 {
     if (!command.index.isValid())
