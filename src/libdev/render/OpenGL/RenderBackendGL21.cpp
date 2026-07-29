@@ -58,6 +58,64 @@ bool compileShader(GLuint shaderID, const std::string& code)
     return result == GL_TRUE;
 }
 
+
+// Uniform values live in the program object, so a value the driver already
+// holds does not need resending. Each helper reports whether the cached value
+// had to change, i.e. whether a glUniform call is actually needed.
+bool changed(int& cached, int value)
+{
+    if (cached == value)
+        return false;
+
+    cached = value;
+    return true;
+}
+
+bool changed(float& cached, float value)
+{
+    if (cached == value)
+        return false;
+
+    cached = value;
+    return true;
+}
+
+bool changed(std::array<float, 2>& cached, float x, float y)
+{
+    if (cached[0] == x && cached[1] == y)
+        return false;
+
+    cached = {x, y};
+    return true;
+}
+
+bool changed(std::array<float, 3>& cached, float x, float y, float z)
+{
+    if (cached[0] == x && cached[1] == y && cached[2] == z)
+        return false;
+
+    cached = {x, y, z};
+    return true;
+}
+
+bool changed(std::array<float, 16>& cached, const float* value)
+{
+    if (std::memcmp(cached.data(), value, cached.size() * sizeof(float)) == 0)
+        return false;
+
+    std::memcpy(cached.data(), value, cached.size() * sizeof(float));
+    return true;
+}
+
+bool changed(std::vector<float>& cached, const float* value, std::size_t count)
+{
+    if (cached.size() == count && std::memcmp(cached.data(), value, count * sizeof(float)) == 0)
+        return false;
+
+    cached.assign(value, value + count);
+    return true;
+}
+
 // Point light arrays are borrowed from the caller, so a queued command needs
 // its own copy of them. Three floats per light for the vec3 arrays, one for
 // the scalars.
@@ -186,6 +244,12 @@ bool RenderBackendGL21::initialize(IRenderSurface* surface)
 
     stateCache_.reset();
     currentPipelineId_ = 0;
+
+    // Re-initialising means a new context, so any program that outlived the old
+    // one has its uniforms back at zero and nothing recorded as already sent
+    // still holds.
+    for (Pipeline& pipeline : pipelines_)
+        pipeline.standardValues = {};
 
     initialized_ = true;
     spdlog::info("RenderBackendGL21 initialized ({}x{})", glSurface_->width(), glSurface_->height());
@@ -506,13 +570,12 @@ RenderBackendGL21::StandardUniformLocations RenderBackendGL21::resolveStandardUn
     return locations;
 }
 
-const RenderBackendGL21::StandardUniformLocations& RenderBackendGL21::boundUniformLocations() const
+RenderBackendGL21::Pipeline* RenderBackendGL21::boundPipeline()
 {
-    static const StandardUniformLocations none;
     if (currentPipelineId_ == 0 || currentPipelineId_ > pipelines_.size())
-        return none;
+        return nullptr;
 
-    return pipelines_[currentPipelineId_ - 1].standardUniforms;
+    return &pipelines_[currentPipelineId_ - 1];
 }
 
 PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
@@ -1502,116 +1565,169 @@ void RenderBackendGL21::executeCommand(const BackendCommandSetPointSize& command
 void RenderBackendGL21::executeCommand(const BackendCommandSetGui2DUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.screenspace >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.screenspace >= 0 && changed(sent.screenspace, u.screenspaceX, u.screenspaceY))
         glUniform2f(at.screenspace, u.screenspaceX, u.screenspaceY);
-    if (at.textureSampler >= 0)
+    if (at.textureSampler >= 0 && changed(sent.textureSampler, u.textureSampler))
         glUniform1i(at.textureSampler, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetStandardFrameUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.view >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.view >= 0 && changed(sent.view, u.view.data()))
         glUniformMatrix4fv(at.view, 1, GL_FALSE, u.view.data());
-    if (at.proj >= 0)
+    if (at.proj >= 0 && changed(sent.proj, u.proj.data()))
         glUniformMatrix4fv(at.proj, 1, GL_FALSE, u.proj.data());
-    if (at.fogColour >= 0)
+    if (at.fogColour >= 0 && changed(sent.fogColour, u.fogColourR, u.fogColourG, u.fogColourB))
         glUniform3f(at.fogColour, u.fogColourR, u.fogColourG, u.fogColourB);
-    if (at.fogParams >= 0)
+    if (at.fogParams >= 0 && changed(sent.fogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ))
         glUniform3f(at.fogParams, u.fogStartOrX, u.fogEndOrY, u.fogDensityOrZ);
-    if (at.fogMode >= 0)
+    if (at.fogMode >= 0 && changed(sent.fogMode, u.fogMode))
         glUniform1i(at.fogMode, u.fogMode);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetStandardObjectUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.model >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.model >= 0 && changed(sent.model, u.model.data()))
         glUniformMatrix4fv(at.model, 1, GL_FALSE, u.model.data());
 
-    if (at.gpuLighting >= 0)
+    if (at.gpuLighting >= 0 && changed(sent.gpuLighting, u.gpuLighting))
         glUniform1i(at.gpuLighting, u.gpuLighting);
 
     if (u.gpuLighting)
     {
-        if (at.lightDir >= 0) glUniform3f(at.lightDir, u.lightDirX, u.lightDirY, u.lightDirZ);
-        if (at.lightColor >= 0) glUniform3f(at.lightColor, u.lightColorR, u.lightColorG, u.lightColorB);
-        if (at.ambientColor >= 0) glUniform3f(at.ambientColor, u.ambientColorR, u.ambientColorG, u.ambientColorB);
-        if (at.matDiffuse >= 0) glUniform3f(at.matDiffuse, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
-        if (at.matDiffuseA >= 0) glUniform1f(at.matDiffuseA, u.matDiffuseA);
-        if (at.matAmbient >= 0) glUniform3f(at.matAmbient, u.matAmbientR, u.matAmbientG, u.matAmbientB);
-        if (at.matEmissive >= 0) glUniform3f(at.matEmissive, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
-        if (at.filter >= 0) glUniform3f(at.filter, u.filterR, u.filterG, u.filterB);
-        if (at.hasVtxMaterials >= 0) glUniform1i(at.hasVtxMaterials, u.hasVtxMaterials);
+        if (at.lightDir >= 0 && changed(sent.lightDir, u.lightDirX, u.lightDirY, u.lightDirZ))
+            glUniform3f(at.lightDir, u.lightDirX, u.lightDirY, u.lightDirZ);
+        if (at.lightColor >= 0 && changed(sent.lightColor, u.lightColorR, u.lightColorG, u.lightColorB))
+            glUniform3f(at.lightColor, u.lightColorR, u.lightColorG, u.lightColorB);
+        if (at.ambientColor >= 0
+            && changed(sent.ambientColor, u.ambientColorR, u.ambientColorG, u.ambientColorB))
+            glUniform3f(at.ambientColor, u.ambientColorR, u.ambientColorG, u.ambientColorB);
+        if (at.matDiffuse >= 0 && changed(sent.matDiffuse, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB))
+            glUniform3f(at.matDiffuse, u.matDiffuseR, u.matDiffuseG, u.matDiffuseB);
+        if (at.matDiffuseA >= 0 && changed(sent.matDiffuseA, u.matDiffuseA))
+            glUniform1f(at.matDiffuseA, u.matDiffuseA);
+        if (at.matAmbient >= 0 && changed(sent.matAmbient, u.matAmbientR, u.matAmbientG, u.matAmbientB))
+            glUniform3f(at.matAmbient, u.matAmbientR, u.matAmbientG, u.matAmbientB);
+        if (at.matEmissive >= 0 && changed(sent.matEmissive, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB))
+            glUniform3f(at.matEmissive, u.matEmissiveR, u.matEmissiveG, u.matEmissiveB);
+        if (at.filter >= 0 && changed(sent.filter, u.filterR, u.filterG, u.filterB))
+            glUniform3f(at.filter, u.filterR, u.filterG, u.filterB);
+        if (at.hasVtxMaterials >= 0 && changed(sent.hasVtxMaterials, u.hasVtxMaterials))
+            glUniform1i(at.hasVtxMaterials, u.hasVtxMaterials);
 
-        if (at.numPointLights >= 0) glUniform1i(at.numPointLights, u.numPointLights);
+        if (at.numPointLights >= 0 && changed(sent.numPointLights, u.numPointLights))
+            glUniform1i(at.numPointLights, u.numPointLights);
         if (u.numPointLights > 0)
         {
-            if (at.pointLightPos >= 0 && u.pointLightPos != nullptr)
+            const std::size_t vec3Count = static_cast<std::size_t>(u.numPointLights) * 3;
+            const std::size_t scalarCount = static_cast<std::size_t>(u.numPointLights);
+            if (at.pointLightPos >= 0 && u.pointLightPos != nullptr
+                && changed(sent.pointLightPos, u.pointLightPos, vec3Count))
                 glUniform3fv(at.pointLightPos, u.numPointLights, u.pointLightPos);
-            if (at.pointLightColor >= 0 && u.pointLightColor != nullptr)
+            if (at.pointLightColor >= 0 && u.pointLightColor != nullptr
+                && changed(sent.pointLightColor, u.pointLightColor, vec3Count))
                 glUniform3fv(at.pointLightColor, u.numPointLights, u.pointLightColor);
-            if (at.pointLightRange >= 0 && u.pointLightRange != nullptr)
+            if (at.pointLightRange >= 0 && u.pointLightRange != nullptr
+                && changed(sent.pointLightRange, u.pointLightRange, scalarCount))
                 glUniform1fv(at.pointLightRange, u.numPointLights, u.pointLightRange);
-            if (at.pointLightAtten >= 0 && u.pointLightAtten != nullptr)
+            if (at.pointLightAtten >= 0 && u.pointLightAtten != nullptr
+                && changed(sent.pointLightAtten, u.pointLightAtten, vec3Count))
                 glUniform3fv(at.pointLightAtten, u.numPointLights, u.pointLightAtten);
-            if (at.pointLightOmni >= 0 && u.pointLightOmni != nullptr)
+            if (at.pointLightOmni >= 0 && u.pointLightOmni != nullptr
+                && changed(sent.pointLightOmni, u.pointLightOmni, scalarCount))
                 glUniform1fv(at.pointLightOmni, u.numPointLights, u.pointLightOmni);
         }
 
-        if (at.shadowEnabled >= 0) glUniform1i(at.shadowEnabled, u.shadowEnabled);
+        if (at.shadowEnabled >= 0 && changed(sent.shadowEnabled, u.shadowEnabled))
+            glUniform1i(at.shadowEnabled, u.shadowEnabled);
         if (u.shadowEnabled)
         {
-            if (at.shadowMap >= 0) glUniform1i(at.shadowMap, u.shadowMapUnit);
-            if (at.lightSpaceMatrix >= 0)
+            if (at.shadowMap >= 0 && changed(sent.shadowMap, u.shadowMapUnit))
+                glUniform1i(at.shadowMap, u.shadowMapUnit);
+            if (at.lightSpaceMatrix >= 0 && changed(sent.lightSpaceMatrix, u.lightSpaceMatrix.data()))
                 glUniformMatrix4fv(at.lightSpaceMatrix, 1, GL_FALSE, u.lightSpaceMatrix.data());
-            if (at.shadowMapNear >= 0) glUniform1i(at.shadowMapNear, u.shadowMapNearUnit);
-            if (at.lightSpaceMatrixNear >= 0)
+            if (at.shadowMapNear >= 0 && changed(sent.shadowMapNear, u.shadowMapNearUnit))
+                glUniform1i(at.shadowMapNear, u.shadowMapNearUnit);
+            if (at.lightSpaceMatrixNear >= 0
+                && changed(sent.lightSpaceMatrixNear, u.lightSpaceMatrixNear.data()))
                 glUniformMatrix4fv(at.lightSpaceMatrixNear, 1, GL_FALSE, u.lightSpaceMatrixNear.data());
-            if (at.shadowStrength >= 0) glUniform1f(at.shadowStrength, u.shadowStrength);
+            if (at.shadowStrength >= 0 && changed(sent.shadowStrength, u.shadowStrength))
+                glUniform1f(at.shadowStrength, u.shadowStrength);
         }
     }
 
-    if (at.textureSampler2 >= 0)
+    if (at.textureSampler2 >= 0 && changed(sent.textureSampler2, u.textureSampler))
         glUniform1i(at.textureSampler2, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetBillboardUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.viewProj >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.viewProj >= 0 && changed(sent.viewProj, u.viewProj.data()))
         glUniformMatrix4fv(at.viewProj, 1, GL_FALSE, u.viewProj.data());
-    if (at.textureSampler >= 0)
+    if (at.textureSampler >= 0 && changed(sent.textureSampler, u.textureSampler))
         glUniform1i(at.textureSampler, u.textureSampler);
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetShadowDepthUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.lightSpaceMatrix >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.lightSpaceMatrix >= 0 && changed(sent.lightSpaceMatrix, u.lightSpaceMatrix.data()))
         glUniformMatrix4fv(at.lightSpaceMatrix, 1, GL_FALSE, u.lightSpaceMatrix.data());
-    if (at.model >= 0)
+    if (at.model >= 0 && changed(sent.model, u.model.data()))
         glUniformMatrix4fv(at.model, 1, GL_FALSE, u.model.data());
 }
 
 void RenderBackendGL21::executeCommand(const BackendCommandSetPostProcessUniforms& command)
 {
     const auto& u = command.uniforms;
-    const StandardUniformLocations& at = boundUniformLocations();
+    Pipeline* pipeline = boundPipeline();
+    if (pipeline == nullptr)
+        return;
 
-    if (at.sceneTexture >= 0)
+    const StandardUniformLocations& at = pipeline->standardUniforms;
+    StandardUniformValues& sent = pipeline->standardValues;
+
+    if (at.sceneTexture >= 0 && changed(sent.sceneTexture, u.sceneTextureSampler))
         glUniform1i(at.sceneTexture, u.sceneTextureSampler);
-    if (at.exposure >= 0)
+    if (at.exposure >= 0 && changed(sent.exposure, u.exposure))
         glUniform1f(at.exposure, u.exposure);
 }
 
