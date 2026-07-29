@@ -219,6 +219,14 @@ private:
     MexAlignedBox3d boundingVolume_;
     bool isDirty_{}; // Indicates the mesh data has changed
 
+    // The triangles of every shadow casting group, concatenated so that the
+    // depth-only pass can draw the whole mesh at once: it writes no colour, so
+    // the material boundaries the groups exist for do not apply to it. Rebuilt
+    // only when the set of casting groups changes, which castingGroups_ detects.
+    mutable ctl_min_memory_vector<Ren::VertexIdx> shadowIndices_;
+    mutable ctl_min_memory_vector<uint8_t> castingGroups_;
+    mutable Ren::VertexIdx shadowVertexCount_{};
+
     ctl_min_memory_vector<RenITriangleGroup*> triangles_;
     ctl_min_memory_vector<RenTTFPolygon*> ttfs_;
     ctl_min_memory_vector<RenSpinTFPolygon*> stfps_;
