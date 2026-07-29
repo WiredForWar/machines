@@ -34,6 +34,13 @@ enum class VSyncMode;
 
 } // namespace MachGui
 
+namespace Ren
+{
+
+enum class BackendType;
+
+} // namespace Ren
+
 class MachGuiCtxOptions : public MachGui::GameMenuContext
 // Canonical form revoked
 {
@@ -87,6 +94,8 @@ private:
     MachGui::VSyncMode vsyncMode_{};
     MachGuiDropDownListBoxCreator* vSyncModeDropDown_{};
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_{};
+    MachGuiDropDownListBoxCreator* backendDropDown_{};
+    Ren::BackendType savedBackendType_{};
     bool exitFromOptions_ = false;
     bool cursorType2d_;
     MachGuiSlideBar* pGammaCorrection_{};

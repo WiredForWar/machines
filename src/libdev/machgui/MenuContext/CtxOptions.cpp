@@ -26,6 +26,10 @@
 #include "machphys/ComplexityManager.hpp"
 #include "machphys/ComplexityItem.hpp"
 #include "machgui/VSyncMode.hpp"
+#include "render/BackendType.hpp"
+#include "render/RenderVariables.hpp"
+#include "render/IWindowAdapter.hpp"
+#include "render/internal/IRenderBackend.hpp"
 #include "machgui/InputLayout.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/ui/MenuButton.hpp"
@@ -46,6 +50,19 @@
 #define OPTIONS_AREA_MINY 50
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 239
+
+namespace
+{
+
+// Offer only the backends the window can actually present, rather than every
+// backend that happens to be compiled in.
+std::vector<Ren::BackendType> presentableBackends()
+{
+    RenDisplay* pDisplay = W4dManager::instance().sceneManager()->pDevice()->display();
+    return Ren::IRenderBackend::supportedBackends(pDisplay ? pDisplay->adapter() : nullptr);
+}
+
+} // namespace
 
 class MachGuiOptionsExitMessageBoxResponder : public MachGuiMessageBoxResponder
 {
@@ -290,6 +307,17 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     {
+        const auto backends = presentableBackends();
+        GuiStrings backendNames;
+        backendNames.reserve(backends.size());
+        for (Ren::BackendType bt : backends)
+            backendNames.push_back(std::string(Ren::toString(bt)));
+
+        backendDropDown_ = addDropDown(IDS_RENDER_BACKEND);
+        backendDropDown_->setAvailText(backendNames);
+    }
+
+    {
         GuiStrings scaleNames = {
             ResolvedUiString(IDS_MENU_DEFAULT),
             "100%",
@@ -432,6 +460,15 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Config::gfxVSyncMode.set(selectedMode);
     });
 
+    backendDropDown_->setCurrentIndexChangedCallback([this]() {
+        const auto backends = presentableBackends();
+        const int idx = backendDropDown_->currentIndex();
+        if (idx >= 0 && idx < static_cast<int>(backends.size()))
+        {
+            Config::gfxBackendType.set(backends.at(idx));
+        }
+    });
+
     TEST_INVARIANT;
 }
 
@@ -533,6 +570,20 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
         vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
+        {
+            const auto backends = presentableBackends();
+            int idx = 0;
+            for (int i = 0; i < static_cast<int>(backends.size()); ++i)
+            {
+                if (backends[i] == savedBackendType_)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            backendDropDown_->setCurrentIndex(idx);
+            Config::gfxBackendType.set(savedBackendType_);
+        }
         // Only restore gamma correction if gamma correction is supported
         if (pGammaCorrection_)
         {
@@ -688,6 +739,21 @@ void MachGuiCtxOptions::readFromConfig()
 
     vsyncMode_ = Config::gfxVSyncMode.get();
     vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
+
+    savedBackendType_ = Config::gfxBackendType.get();
+    {
+        const auto backends = presentableBackends();
+        int index = -1;
+        for (std::size_t i = 0; i < backends.size(); ++i)
+        {
+            if (backends[i] == savedBackendType_)
+            {
+                index = static_cast<int>(i);
+                break;
+            }
+        }
+        backendDropDown_->setCurrentIndex(index);
+    }
 
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
