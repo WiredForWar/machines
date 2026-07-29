@@ -297,6 +297,11 @@ void W4dSceneManager::render()
 
     device_->start3D();
 
+    // Decide what is visible once. The shadow cascades and the main geometry
+    // pass all draw from this camera, so they share the answer instead of each
+    // repeating the portal walk and the per-entity volume tests.
+    currentCamera_->cullVisibleSet(pImpl_->maxDomainRenderDepth_);
+
     // Shadow depth pass: render scene from the light's perspective into the
     // shadow map.  Runs after start3D() (rendering context is ready) but
     // before beginGeometryPass() so the shadow maps are complete before the
@@ -420,7 +425,7 @@ void W4dSceneManager::render()
                 const glm::mat4 nearMatrix = nearProj * nearView;
 
                 device_->beginShadowPass(RenDevice::ShadowCascade::Near, nearMatrix);
-                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                currentCamera_->renderVisibleSet();
                 device_->endShadowPass();
             }
 
@@ -436,7 +441,7 @@ void W4dSceneManager::render()
                 const glm::mat4 farMatrix = farProj * farView;
 
                 device_->beginShadowPass(RenDevice::ShadowCascade::Far, farMatrix);
-                currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+                currentCamera_->renderVisibleSet();
                 device_->endShadowPass();
             }
         }
@@ -445,7 +450,7 @@ void W4dSceneManager::render()
     device_->beginGeometryPass(clearBg_);
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
-    currentCamera_->domainRender(pImpl_->maxDomainRenderDepth_);
+    currentCamera_->renderVisibleSet();
 
     totalEntities_ += currentCamera_->entitiesRendered();
     totalDomains_ += currentCamera_->domainsRendered();
