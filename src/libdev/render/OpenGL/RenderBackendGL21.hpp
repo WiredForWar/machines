@@ -230,6 +230,53 @@ private:
         GLint exposure{-1};
     };
 
+
+    // The last value sent for each uniform of the standard blocks. Zero
+    // initialised, which matches the state of a freshly linked program: GL
+    // defaults its uniforms to zero, so a cache that starts at zero is already
+    // in step with the driver and the first redundant send can be skipped too.
+    struct StandardUniformValues
+    {
+        std::array<float, 2> screenspace{};
+        int textureSampler{};
+
+        std::array<float, 16> view{};
+        std::array<float, 16> proj{};
+        std::array<float, 3> fogColour{};
+        std::array<float, 3> fogParams{};
+        int fogMode{};
+
+        std::array<float, 16> model{};
+        int gpuLighting{};
+        std::array<float, 3> lightDir{};
+        std::array<float, 3> lightColor{};
+        std::array<float, 3> ambientColor{};
+        std::array<float, 3> matDiffuse{};
+        float matDiffuseA{};
+        std::array<float, 3> matAmbient{};
+        std::array<float, 3> matEmissive{};
+        std::array<float, 3> filter{};
+        int hasVtxMaterials{};
+        int numPointLights{};
+        std::vector<float> pointLightPos{};
+        std::vector<float> pointLightColor{};
+        std::vector<float> pointLightRange{};
+        std::vector<float> pointLightAtten{};
+        std::vector<float> pointLightOmni{};
+        int shadowEnabled{};
+        int shadowMap{};
+        std::array<float, 16> lightSpaceMatrix{};
+        int shadowMapNear{};
+        std::array<float, 16> lightSpaceMatrixNear{};
+        float shadowStrength{};
+        int textureSampler2{};
+
+        std::array<float, 16> viewProj{};
+
+        int sceneTexture{};
+        float exposure{};
+    };
+
     struct Pipeline
     {
         bool alive{};
@@ -238,13 +285,17 @@ private:
         std::vector<std::pair<std::string, UniformLocationId>> uniforms{};
         std::vector<std::pair<std::string, AttributeLocationId>> attributes{};
         StandardUniformLocations standardUniforms{};
+        StandardUniformValues standardValues{};
     };
 
     static StandardUniformLocations resolveStandardUniformLocations(GLuint program);
 
-    // Locations of the pipeline bound by the last BindPipeline command. Every
-    // uniform block command is recorded after one, so this is what they read.
-    const StandardUniformLocations& boundUniformLocations() const;
+    // The pipeline bound by the last BindPipeline command. Every uniform block
+    // command is recorded after one, so this is whose locations they use and
+    // whose sent-value cache they update. Uniform values live in the program
+    // object, so keeping the cache per pipeline needs no invalidation when
+    // another pipeline is bound in between.
+    Pipeline* boundPipeline();
 
     std::vector<GLuint> programs_{};
     std::vector<Pipeline> pipelines_{};
