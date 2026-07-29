@@ -48,6 +48,32 @@ uniform int uShadowEnabled;
 uniform float uShadowStrength;
 uniform int uShadowFilterTaps;
 
+// The depth comparison happens in the cascade's normalised [0,1] range, but the
+// offset a surface needs is a world distance: about the ground one shadow texel
+// covers, tilted by the angle between the surface and the light. Both scales are
+// in the light matrix already, so deriving them here makes the bias follow
+// whichever cascade is being sampled rather than being tuned for one of them and
+// wrong by an order of magnitude in the others.
+//
+//   |row 0| = 1 / ortho extent  ->  a texel spans 2 * texelSize / |row 0| metres
+//   |row 2| = 2 / (far - near)  ->  unit normalised depth spans 2 / |row 2| metres
+//
+// Rows, not columns: m[i] indexes a column in GLSL.
+float shadowBias(mat4 lightMatrix, float texelSize, float NdotL)
+{
+    vec3 xRow = vec3(lightMatrix[0][0], lightMatrix[1][0], lightMatrix[2][0]);
+    vec3 zRow = vec3(lightMatrix[0][2], lightMatrix[1][2], lightMatrix[2][2]);
+
+    float metresPerTexel = 2.0 * texelSize / length(xRow);
+    float metresPerDepth = 2.0 / length(zRow);
+
+    // Tangent of the angle away from the light. Clamped, because a surface seen
+    // edge-on would otherwise ask for an unbounded offset and peter-pan instead.
+    float slope = sqrt(max(1.0 - NdotL * NdotL, 0.0)) / max(NdotL, 0.15);
+
+    return metresPerTexel * (1.0 + 2.0 * min(slope, 5.0)) / metresPerDepth;
+}
+
 float sampleShadowPCF(sampler2D shadowMap, vec3 projCoords, float bias, float texelSize)
 {
     float currentDepth = projCoords.z;
@@ -95,8 +121,10 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
     // with a moving sun) by gradually fading out the shadow map influence.
     float edgeFade = smoothstep(0.0, 0.3, NdotL);
 
-    // Slope-scaled depth bias.
-    float bias = max(0.008 * (1.0 - NdotL), 0.002);
+    // Each cascade has its own texel footprint and its own ortho depth range, so
+    // the bias has to be worked out per cascade -- see shadowBias().
+    const float nearTexel = 1.0 / 4096.0;
+    const float farTexel = 1.0 / 2048.0;
 
     float shadowSample = 0.0;
 
@@ -117,7 +145,8 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
     // Always sample the far cascade when available (used as cross-check).
     float farShadow = 0.0;
     if (inFar)
-        farShadow = sampleShadowPCF(uShadowMap, farProj, bias, 1.0 / 2048.0);
+        farShadow = sampleShadowPCF(
+            uShadowMap, farProj, shadowBias(uLightSpaceMatrix, farTexel, NdotL), farTexel);
 
     if (inNear)
     {
@@ -135,7 +164,8 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
         // small ortho box.  This keeps shadows crisp at the player's
         // visual focus while still filling in missing casters at the
         // periphery.
-        float nearShadow = sampleShadowPCF(uShadowMapNear, nearProj, bias, 1.0 / 4096.0);
+        float nearShadow = sampleShadowPCF(
+            uShadowMapNear, nearProj, shadowBias(uLightSpaceMatrixNear, nearTexel, NdotL), nearTexel);
         float nearEdge = max(abs(nearProj.x - 0.5), abs(nearProj.y - 0.5)) * 2.0; // 0..1
         float blendFar = smoothstep(0.8, 1.0, nearEdge);
         shadowSample = mix(nearShadow, max(nearShadow, farShadow), blendFar);
