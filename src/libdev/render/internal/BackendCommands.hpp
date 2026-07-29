@@ -112,52 +112,6 @@ struct BackendCommandSetDepthTest
     bool enabled{};
 };
 
-struct BackendCommandSetUniform1i
-{
-    UniformLocationId location{};
-    int value{};
-};
-
-struct BackendCommandSetUniform1f
-{
-    UniformLocationId location{};
-    float value{};
-};
-
-struct BackendCommandSetUniform2f
-{
-    UniformLocationId location{};
-    float x{};
-    float y{};
-};
-
-struct BackendCommandSetUniform3f
-{
-    UniformLocationId location{};
-    float x{};
-    float y{};
-    float z{};
-};
-
-struct BackendCommandSetUniform1fv
-{
-    UniformLocationId location{};
-    std::vector<float> values{};
-};
-
-struct BackendCommandSetUniform3fv
-{
-    UniformLocationId location{};
-    std::vector<float> values{}; // count*3 floats
-};
-
-struct BackendCommandSetUniformMatrix4fv
-{
-    UniformLocationId location{};
-    std::array<float, 16> values{};
-    bool transpose{};
-};
-
 struct BackendCommandSetVertexAttribPointer
 {
     bool enabled{};
@@ -294,13 +248,6 @@ using BackendCommand = std::variant<
     BackendCommandSetDepthMask,
     BackendCommandSetDepthFunc,
     BackendCommandSetDepthTest,
-    BackendCommandSetUniform1i,
-    BackendCommandSetUniform1f,
-    BackendCommandSetUniform1fv,
-    BackendCommandSetUniform2f,
-    BackendCommandSetUniform3f,
-    BackendCommandSetUniform3fv,
-    BackendCommandSetUniformMatrix4fv,
     BackendCommandSetVertexAttribPointer,
     BackendCommandSetProgram,
     BackendCommandBindPipeline,
@@ -419,41 +366,6 @@ inline BackendCommand setDepthFunc(BackendDepthFunc function)
 inline BackendCommand setDepthTest(bool enabled)
 {
     return BackendCommandSetDepthTest{enabled};
-}
-
-inline BackendCommand setUniform1i(UniformLocationId location, int value)
-{
-    return BackendCommandSetUniform1i{location, value};
-}
-
-inline BackendCommand setUniform1f(UniformLocationId location, float value)
-{
-    return BackendCommandSetUniform1f{location, value};
-}
-
-inline BackendCommand setUniform2f(UniformLocationId location, float x, float y)
-{
-    return BackendCommandSetUniform2f{location, x, y};
-}
-
-inline BackendCommand setUniform1fv(UniformLocationId location, std::vector<float> values)
-{
-    return BackendCommandSetUniform1fv{location, std::move(values)};
-}
-
-inline BackendCommand setUniform3f(UniformLocationId location, float x, float y, float z)
-{
-    return BackendCommandSetUniform3f{location, x, y, z};
-}
-
-inline BackendCommand setUniform3fv(UniformLocationId location, std::vector<float> values)
-{
-    return BackendCommandSetUniform3fv{location, std::move(values)};
-}
-
-inline BackendCommand setUniformMatrix4fv(UniformLocationId location, const std::array<float, 16>& values, bool transpose)
-{
-    return BackendCommandSetUniformMatrix4fv{location, values, transpose};
 }
 
 inline BackendCommand enableVertexAttribPointer(
