@@ -183,6 +183,8 @@ void RenStats::endFrame()
         STFsDrawn_ = 0;
         uint32_t avPoints = pointsDrawn_ / framesSinceUpdate_;
         pointsDrawn_ = 0;
+        uint32_t avDrawCalls = drawCallsMade_ / framesSinceUpdate_;
+        drawCallsMade_ = 0;
 
         if (show_)
         {
@@ -195,6 +197,7 @@ void RenStats::endFrame()
                     << "\n";
             stream_ << avPolys << " polys, " << avLines << " lines, " << avTTFs << " TTFs, " << avSTFs << " STFs, "
                     << avPoints << " Points\n";
+            stream_ << avDrawCalls << " draw calls\n";
         }
 
         // Reset the frame counter.

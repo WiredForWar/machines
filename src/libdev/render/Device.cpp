@@ -2619,6 +2619,9 @@ void RenDevice::renderPrimitive(
     if (standardUniformsDirty_)
         standardUniformsDirty_ = false;
 
+    if (RenStats* stats = pImpl_->statistics())
+        stats->incrDrawCallCount(1);
+
     for (auto& cmd : cmds)
         recordCommand(std::move(cmd));
 
@@ -2661,6 +2664,9 @@ void RenDevice::renderIndexed(
 
     if (standardUniformsDirty_)
         standardUniformsDirty_ = false;
+
+    if (RenStats* stats = pImpl_->statistics())
+        stats->incrDrawCallCount(1);
 
     for (auto& cmd : cmds)
         recordCommand(std::move(cmd));
@@ -2717,6 +2723,9 @@ void RenDevice::renderIndexedScreenspace(
 
     if (billboardUniformsDirty_)
         billboardUniformsDirty_ = false;
+
+    if (RenStats* stats = pImpl_->statistics())
+        stats->incrDrawCallCount(1);
 
     for (auto& cmd : cmds)
         recordCommand(std::move(cmd));
@@ -2832,6 +2841,9 @@ void RenDevice::renderShadowDepth(
     cmds.clear();
     Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
         sh, sdu, vertices, nVertices, indices, nIndices, topology, &cmds);
+
+    if (RenStats* stats = pImpl_->statistics())
+        stats->incrDrawCallCount(1);
 
     for (auto& cmd : cmds)
         recordCommand(std::move(cmd));

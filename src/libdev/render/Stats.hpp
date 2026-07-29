@@ -62,6 +62,7 @@ public:
     void incrSTFCount(uint32_t number);
     void incrTTFCount(uint32_t number);
     void incrPointsCount(uint32_t number);
+    void incrDrawCallCount(uint32_t number);
 
 private:
     void computeAverage();
@@ -85,6 +86,7 @@ private:
     uint32_t TTFsDrawn_{};
     uint32_t STFsDrawn_{};
     uint32_t pointsDrawn_{};
+    uint32_t drawCallsMade_{};
 
     BaseLogBuffer stream_;
     std::string text_;
