@@ -2625,9 +2625,15 @@ void RenDevice::renderPrimitive(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
+    // The frame state is only read when the frame uniforms are due for another
+    // upload, which happens once a frame rather than once a draw.
+    Ren::FrameState frame;
+    if (standardUniformsDirty_)
+        frame = buildFrameState();
+
     RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitStandard3DDraw(
-        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        buildStandardHandles(), frame, standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
         resolveTextureHandle(mat.texture().handle()),
         vertices, nVertices,
@@ -2664,9 +2670,15 @@ void RenDevice::renderIndexed(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
+    // The frame state is only read when the frame uniforms are due for another
+    // upload, which happens once a frame rather than once a draw.
+    Ren::FrameState frame;
+    if (standardUniformsDirty_)
+        frame = buildFrameState();
+
     RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitStandard3DDrawIndexed(
-        buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
+        buildStandardHandles(), frame, standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
         resolveTextureHandle(mat.texture().handle()),
         vertices, nVertices, indices, nIndices,
