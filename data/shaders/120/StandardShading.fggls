@@ -120,8 +120,6 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
     const float nearTexel = 1.0 / 4096.0;
     const float farTexel = 1.0 / 2048.0;
 
-    float shadowSample = 0.0;
-
     // Near cascade coverage check.
     vec4 nearLsPos = uLightSpaceMatrixNear * vec4(worldPos, 1.0);
     vec3 nearProj = nearLsPos.xyz / nearLsPos.w * 0.5 + 0.5;
@@ -135,12 +133,6 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
     bool inFar = farProj.x >= 0.0 && farProj.x <= 1.0 &&
         farProj.y >= 0.0 && farProj.y <= 1.0 &&
         farProj.z <= 1.0;
-
-    // Always sample the far cascade when available (used as cross-check).
-    float farShadow = 0.0;
-    if (inFar)
-        farShadow = sampleShadowPCF(
-            uShadowMap, farProj, shadowBias(uLightSpaceMatrix, farTexel, NdotL), farTexel);
 
     if (inNear)
     {
@@ -162,8 +154,21 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
             uShadowMapNear, nearProj, shadowBias(uLightSpaceMatrixNear, nearTexel, NdotL), nearTexel);
         float nearEdge = max(abs(nearProj.x - 0.5), abs(nearProj.y - 0.5)) * 2.0; // 0..1
         float blendFar = smoothstep(0.8, 1.0, nearEdge);
-        shadowSample = mix(nearShadow, max(nearShadow, farShadow), blendFar);
-        return shadowSample;
+
+        // smoothstep is exactly zero below 0.8, and nearEdge is a max of two
+        // absolute values, so that covers a square of 0.8 half-width -- 64% of
+        // the near cascade. Sampling the far cascade there would be a second
+        // filter kernel multiplied by nothing. The test is on nearEdge, which
+        // varies smoothly across the screen, so neighbouring fragments agree
+        // and the branch costs little of what it saves.
+        if (blendFar > 0.0 && inFar)
+        {
+            float farShadow = sampleShadowPCF(
+                uShadowMap, farProj, shadowBias(uLightSpaceMatrix, farTexel, NdotL), farTexel);
+            return mix(nearShadow, max(nearShadow, farShadow), blendFar);
+        }
+
+        return nearShadow;
     }
     else if (inFar)
     {
@@ -175,8 +180,8 @@ float calcShadow(vec3 worldPos, vec3 normal, vec3 lightDir, float viewDist)
         float intensity = max(max(center, edge), fill);
         debugColor = vec4(intensity * 0.15, intensity * 0.15, intensity, 1.0);
 #endif
-        shadowSample = farShadow;
-        return shadowSample;
+        return sampleShadowPCF(
+            uShadowMap, farProj, shadowBias(uLightSpaceMatrix, farTexel, NdotL), farTexel);
     }
 
     return 0.0;
