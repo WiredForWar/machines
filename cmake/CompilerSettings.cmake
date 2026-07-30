@@ -102,7 +102,11 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-inconsistent-missing-override")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(NORMAL_CXX_FLAGS "/wd4244 /wd4309 /wd4800 /wd4996 /wd4351 /EHsc") # disable some useless warnings
-    set(RELEASE_CXX_FLAGS "/MD")
+    # These replace CMake's own release flags rather than adding to them, so the
+    # optimiser has to be asked for explicitly. Without it this build came out
+    # unoptimised, which cost it about a third of its frame rate next to the
+    # MinGW one.
+    set(RELEASE_CXX_FLAGS "/MD /O2 /Ob2")
     set(DEBUG_CXX_FLAGS "/MDd /ZI")
 
     if (CMAKE_CXX_STANDARD GREATER_EQUAL 11)
