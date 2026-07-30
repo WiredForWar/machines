@@ -83,6 +83,22 @@ static std::array<float, 16> toFloatArray(const glm::mat4& m)
     return result;
 }
 
+// Hands each command the draw-call factory produces straight to the device, so
+// that a draw does not stage its couple of dozen commands in a vector first.
+class RenIDeviceCommandSink : public Ren::CommandSink
+{
+public:
+    explicit RenIDeviceCommandSink(RenDevice* device)
+        : device_(device)
+    {
+    }
+
+    void emit(Ren::BackendCommand&& command) override { device_->recordCommand(std::move(command)); }
+
+private:
+    RenDevice* device_;
+};
+
 static Ren::BackendTextureHandle resolveTextureHandle(Ren::TexId id)
 {
     if (id == Ren::NullTexId)
@@ -2098,7 +2114,7 @@ RenDevice* RenDevice::current()
     return RenIDeviceImpl::current();
 }
 
-void RenDevice::recordCommand(Ren::BackendCommand command)
+void RenDevice::recordCommand(Ren::BackendCommand&& command)
 {
     PRE(pImpl_);
     PRE(pImpl_->backend_);
@@ -2609,9 +2625,7 @@ void RenDevice::renderPrimitive(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    // Reuse the scratch list so that it keeps its capacity across draw calls.
-    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
-    cmds.clear();
+    RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitStandard3DDraw(
         buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
@@ -2619,16 +2633,13 @@ void RenDevice::renderPrimitive(
         vertices, nVertices,
         gpuLighting ? pImpl_->expandedNormals_.data() : nullptr,
         nullptr, nullptr, nullptr,
-        topology, &cmds);
+        topology, sink);
 
     if (standardUniformsDirty_)
         standardUniformsDirty_ = false;
 
     if (RenStats* stats = pImpl_->statistics())
         stats->incrDrawCallCount(1);
-
-    for (auto& cmd : cmds)
-        recordCommand(std::move(cmd));
 
     if (gpuLighting)
         recordDisableVertexAttribPointer(standard_.normalAttr);
@@ -2653,9 +2664,7 @@ void RenDevice::renderIndexed(
 
     const bool gpuLighting = pImpl_->expandedNormalsCount_ > 0 && nVertices <= pImpl_->expandedNormalsCount_;
 
-    // Reuse the scratch list so that it keeps its capacity across draw calls.
-    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
-    cmds.clear();
+    RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitStandard3DDrawIndexed(
         buildStandardHandles(), buildFrameState(), standardUniformsDirty_,
         toFloatArray(model_), mat, buildGpuLightingState(gpuLighting),
@@ -2665,16 +2674,13 @@ void RenDevice::renderIndexed(
         gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxDiffuse_.data() : nullptr,
         gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxAmbient_.data() : nullptr,
         gpuLighting && pImpl_->hasPerVertexMaterials_ ? pImpl_->expandedVtxEmissive_.data() : nullptr,
-        topology, &cmds);
+        topology, sink);
 
     if (standardUniformsDirty_)
         standardUniformsDirty_ = false;
 
     if (RenStats* stats = pImpl_->statistics())
         stats->incrDrawCallCount(1);
-
-    for (auto& cmd : cmds)
-        recordCommand(std::move(cmd));
 
     if (gpuLighting)
     {
@@ -2717,23 +2723,18 @@ void RenDevice::renderIndexedScreenspace(
     bu.viewProj = toFloatArray(*pImpl_->projViewMatrix_);
     bu.textureSampler = 0;
 
-    // Reuse the scratch list so that it keeps its capacity across draw calls.
-    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
-    cmds.clear();
+    RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitBillboardDrawIndexed(
         bh, bu, billboardUniformsDirty_,
         resolveTextureHandle(mat.texture().handle()),
         vertices, nVertices, indices, nIndices,
-        topology, &cmds);
+        topology, sink);
 
     if (billboardUniformsDirty_)
         billboardUniformsDirty_ = false;
 
     if (RenStats* stats = pImpl_->statistics())
         stats->incrDrawCallCount(1);
-
-    for (auto& cmd : cmds)
-        recordCommand(std::move(cmd));
 
     disableVertexLayout(billboard_.posAttr, billboard_.uvAttr, billboard_.colAttr);
 }
@@ -2841,17 +2842,12 @@ void RenDevice::renderShadowDepth(
     sdu.lightSpaceMatrix = toFloatArray(pImpl_->activeShadowLightSpaceMatrix_);
     sdu.model = toFloatArray(model_);
 
-    // Reuse the scratch list so that it keeps its capacity across draw calls.
-    Ren::DrawCallFactory::Commands& cmds = pImpl_->drawCommands_;
-    cmds.clear();
+    RenIDeviceCommandSink sink(this);
     Ren::DrawCallFactory::emitShadowDepthDrawIndexed(
-        sh, sdu, vertices, nVertices, indices, nIndices, topology, &cmds);
+        sh, sdu, vertices, nVertices, indices, nIndices, topology, sink);
 
     if (RenStats* stats = pImpl_->statistics())
         stats->incrDrawCallCount(1);
-
-    for (auto& cmd : cmds)
-        recordCommand(std::move(cmd));
 
     recordDisableVertexAttribPointer(shadowDepth_.posAttr);
 }

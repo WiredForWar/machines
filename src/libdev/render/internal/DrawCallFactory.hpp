@@ -99,6 +99,34 @@ struct ShadowDepthPipelineHandles
     BufferId elementBuffer{};
 };
 
+// Receives the commands a draw call expands into. A BackendCommand is a few
+// hundred bytes and a single draw expands into a couple of dozen of them, so
+// staging them in a vector before handing them on costs two copies of every
+// command. Emitting through a sink lets the device forward them straight to the
+// backend instead.
+class CommandSink
+{
+public:
+    virtual ~CommandSink() = default;
+    virtual void emit(BackendCommand&& command) = 0;
+};
+
+// Collects into a vector, for callers that want to inspect or replay the
+// commands rather than record them as they come.
+class VectorCommandSink : public CommandSink
+{
+public:
+    explicit VectorCommandSink(std::vector<BackendCommand>* out)
+        : out_(out)
+    {
+    }
+
+    void emit(BackendCommand&& command) override { out_->push_back(std::move(command)); }
+
+private:
+    std::vector<BackendCommand>* out_;
+};
+
 // Builds BackendCommand sequences for the various draw-call types.
 // Decouples command generation from RenDevice, eliminating duplication
 // between renderPrimitive and renderIndexed.
@@ -112,7 +140,7 @@ public:
         const std::array<float, 16>& model,
         const RenMaterial& mat,
         const GpuLightingState& lighting,
-        Commands* out);
+        CommandSink& sink);
 
     // Emit commands for a standard 3D non-indexed draw.
     static void emitStandard3DDraw(
@@ -130,7 +158,7 @@ public:
         const float* expandedVtxAmbient,
         const float* expandedVtxEmissive,
         PrimitiveTopology topology,
-        Commands* out);
+        CommandSink& sink);
 
     // Emit commands for a standard 3D indexed draw.
     static void emitStandard3DDrawIndexed(
@@ -150,7 +178,7 @@ public:
         const float* expandedVtxAmbient,
         const float* expandedVtxEmissive,
         PrimitiveTopology topology,
-        Commands* out);
+        CommandSink& sink);
 
     // Emit commands for a billboard indexed draw.
     static void emitBillboardDrawIndexed(
@@ -163,7 +191,7 @@ public:
         const VertexIdx* indices,
         std::size_t nIndices,
         PrimitiveTopology topology,
-        Commands* out);
+        CommandSink& sink);
 
     // Emit commands for a shadow depth indexed draw.
     static void emitShadowDepthDrawIndexed(
@@ -174,7 +202,7 @@ public:
         const VertexIdx* indices,
         std::size_t nIndices,
         PrimitiveTopology topology,
-        Commands* out);
+        CommandSink& sink);
 
 private:
     // Shared helper: emit pipeline bind, frame uniforms, object uniforms,
@@ -193,7 +221,7 @@ private:
         const float* expandedVtxDiffuse,
         const float* expandedVtxAmbient,
         const float* expandedVtxEmissive,
-        Commands* out);
+        CommandSink& sink);
 };
 
 } // namespace Ren

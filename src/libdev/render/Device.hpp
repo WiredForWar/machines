@@ -187,7 +187,7 @@ public:
     static void useDevice(RenDevice* d);
     static RenDevice* current();
 
-    void recordCommand(Ren::BackendCommand command);
+    void recordCommand(Ren::BackendCommand&& command);
     void recordEnableVertexAttribPointer(
         Ren::AttributeLocationId index,
         int size,

@@ -21,7 +21,7 @@ StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
     const std::array<float, 16>& model,
     const RenMaterial& mat,
     const GpuLightingState& lighting,
-    Commands* out)
+    CommandSink& sink)
 {
     StandardObjectUniforms ou;
     ou.model = model;
@@ -66,8 +66,8 @@ StandardObjectUniforms DrawCallFactory::buildStandardObjectUniforms(
         ou.shadowEnabled = lighting.shadowEnabled ? 1 : 0;
         if (lighting.shadowEnabled)
         {
-            out->push_back(Command::bindTexture2D(lighting.shadowDepthTexture, ShadowFarTextureUnit));
-            out->push_back(Command::bindTexture2D(lighting.shadowNearDepthTexture, ShadowNearTextureUnit));
+            sink.emit(Command::bindTexture2D(lighting.shadowDepthTexture, ShadowFarTextureUnit));
+            sink.emit(Command::bindTexture2D(lighting.shadowNearDepthTexture, ShadowNearTextureUnit));
             ou.shadowMapUnit = ShadowFarTextureUnit;
             ou.shadowMapNearUnit = ShadowNearTextureUnit;
             ou.lightSpaceMatrix = lighting.lightSpaceMatrix;
@@ -94,9 +94,9 @@ void DrawCallFactory::emitStandard3DCommon(
     const float* expandedVtxDiffuse,
     const float* expandedVtxAmbient,
     const float* expandedVtxEmissive,
-    Commands* out)
+    CommandSink& sink)
 {
-    out->push_back(Command::bindPipeline(handles.pipelineId));
+    sink.emit(Command::bindPipeline(handles.pipelineId));
 
     if (frameUniformsDirty)
     {
@@ -111,76 +111,76 @@ void DrawCallFactory::emitStandard3DCommon(
         fu.fogDensityOrZ = frame.fogDensityOrZ;
         fu.fogMode = frame.fogMode;
         fu.shadowFilterTaps = frame.shadowFilterTaps;
-        out->push_back(Command::setStandardFrameUniforms(std::move(fu)));
+        sink.emit(Command::setStandardFrameUniforms(std::move(fu)));
     }
 
-    auto ou = buildStandardObjectUniforms(model, mat, lighting, out);
-    out->push_back(Command::setStandardObjectUniforms(std::move(ou)));
+    auto ou = buildStandardObjectUniforms(model, mat, lighting, sink);
+    sink.emit(Command::setStandardObjectUniforms(std::move(ou)));
 
     // Bind material texture.
-    out->push_back(Command::bindTexture2D(materialTexture, TextureUnit));
+    sink.emit(Command::bindTexture2D(materialTexture, TextureUnit));
 
     // Vertex buffer.
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::Array,
         handles.vertexBuffer,
         vertices,
         nVertices * sizeof(RenIVertex),
         BufferUsage::StreamDraw));
-    out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
+    sink.emit(Command::enableVertexAttribPointer(
         handles.posAttr, 3, BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::enableVertexAttribPointer(
         handles.uvAttr, 2, BackendVertexAttribType::Float, false, sizeof(RenIVertex),
         sizeof(RenIVertex) - 2 * sizeof(float)));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::enableVertexAttribPointer(
         handles.colAttr, 4, BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex),
         3 * sizeof(float) + sizeof(uint32_t)));
 
     // Normal buffer (GPU lighting).
     if (lighting.enabled && expandedNormals)
     {
-        out->push_back(Command::bufferData(
+        sink.emit(Command::bufferData(
             BufferTarget::Array,
             handles.normalBuffer,
             expandedNormals,
             nVertices * 3 * sizeof(float),
             BufferUsage::StreamDraw));
-        out->push_back(Command::bindBuffer(BufferTarget::Array, handles.normalBuffer));
-        out->push_back(Command::enableVertexAttribPointer(
+        sink.emit(Command::bindBuffer(BufferTarget::Array, handles.normalBuffer));
+        sink.emit(Command::enableVertexAttribPointer(
             handles.normalAttr, 3, BackendVertexAttribType::Float, false, 3 * sizeof(float), 0));
 
         // Per-vertex material buffers.
         if (lighting.hasPerVertexMaterials && expandedVtxDiffuse && expandedVtxAmbient && expandedVtxEmissive)
         {
-            out->push_back(Command::bufferData(
+            sink.emit(Command::bufferData(
                 BufferTarget::Array,
                 handles.vtxDiffuseBuffer,
                 expandedVtxDiffuse,
                 nVertices * 3 * sizeof(float),
                 BufferUsage::StreamDraw));
-            out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vtxDiffuseBuffer));
-            out->push_back(Command::enableVertexAttribPointer(
+            sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vtxDiffuseBuffer));
+            sink.emit(Command::enableVertexAttribPointer(
                 handles.vtxDiffuseAttr, 3, BackendVertexAttribType::Float, false, 3 * sizeof(float), 0));
 
-            out->push_back(Command::bufferData(
+            sink.emit(Command::bufferData(
                 BufferTarget::Array,
                 handles.vtxAmbientBuffer,
                 expandedVtxAmbient,
                 nVertices * 3 * sizeof(float),
                 BufferUsage::StreamDraw));
-            out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vtxAmbientBuffer));
-            out->push_back(Command::enableVertexAttribPointer(
+            sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vtxAmbientBuffer));
+            sink.emit(Command::enableVertexAttribPointer(
                 handles.vtxAmbientAttr, 3, BackendVertexAttribType::Float, false, 3 * sizeof(float), 0));
 
-            out->push_back(Command::bufferData(
+            sink.emit(Command::bufferData(
                 BufferTarget::Array,
                 handles.vtxEmissiveBuffer,
                 expandedVtxEmissive,
                 nVertices * 3 * sizeof(float),
                 BufferUsage::StreamDraw));
-            out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vtxEmissiveBuffer));
-            out->push_back(Command::enableVertexAttribPointer(
+            sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vtxEmissiveBuffer));
+            sink.emit(Command::enableVertexAttribPointer(
                 handles.vtxEmissiveAttr, 3, BackendVertexAttribType::Float, false, 3 * sizeof(float), 0));
         }
     }
@@ -201,13 +201,12 @@ void DrawCallFactory::emitStandard3DDraw(
     const float* expandedVtxAmbient,
     const float* expandedVtxEmissive,
     PrimitiveTopology topology,
-    Commands* out)
+    CommandSink& sink)
 {
-    out->reserve(out->size() + 24);
     emitStandard3DCommon(handles, frame, frameUniformsDirty, model, mat, lighting,
-        materialTexture, vertices, nVertices, expandedNormals, expandedVtxDiffuse, expandedVtxAmbient, expandedVtxEmissive, out);
+        materialTexture, vertices, nVertices, expandedNormals, expandedVtxDiffuse, expandedVtxAmbient, expandedVtxEmissive, sink);
 
-    out->push_back(Command::draw(topology, 0, nVertices));
+    sink.emit(Command::draw(topology, 0, nVertices));
 }
 
 void DrawCallFactory::emitStandard3DDrawIndexed(
@@ -227,21 +226,20 @@ void DrawCallFactory::emitStandard3DDrawIndexed(
     const float* expandedVtxAmbient,
     const float* expandedVtxEmissive,
     PrimitiveTopology topology,
-    Commands* out)
+    CommandSink& sink)
 {
-    out->reserve(out->size() + 26);
     emitStandard3DCommon(handles, frame, frameUniformsDirty, model, mat, lighting,
-        materialTexture, vertices, nVertices, expandedNormals, expandedVtxDiffuse, expandedVtxAmbient, expandedVtxEmissive, out);
+        materialTexture, vertices, nVertices, expandedNormals, expandedVtxDiffuse, expandedVtxAmbient, expandedVtxEmissive, sink);
 
     // Index buffer.
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::ElementArray,
         handles.elementBuffer,
         indices,
         nIndices * sizeof(unsigned short),
         BufferUsage::StreamDraw));
 
-    out->push_back(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
+    sink.emit(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
 }
 
 void DrawCallFactory::emitBillboardDrawIndexed(
@@ -254,39 +252,38 @@ void DrawCallFactory::emitBillboardDrawIndexed(
     const VertexIdx* indices,
     std::size_t nIndices,
     PrimitiveTopology topology,
-    Commands* out)
+    CommandSink& sink)
 {
-    out->reserve(out->size() + 11);
-    out->push_back(Command::bindPipeline(handles.pipelineId));
-    out->push_back(Command::bindTexture2D(texture, 0));
+    sink.emit(Command::bindPipeline(handles.pipelineId));
+    sink.emit(Command::bindTexture2D(texture, 0));
 
     if (uniformsDirty)
-        out->push_back(Command::setBillboardUniforms(uniforms));
+        sink.emit(Command::setBillboardUniforms(uniforms));
 
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::Array,
         handles.vertexBuffer,
         vertices,
         nVertices * sizeof(RenIVertex),
         BufferUsage::StreamDraw));
-    out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
+    sink.emit(Command::enableVertexAttribPointer(
         handles.posAttr, 4, BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::enableVertexAttribPointer(
         handles.uvAttr, 2, BackendVertexAttribType::Float, false, sizeof(RenIVertex),
         sizeof(RenIVertex) - 2 * sizeof(float)));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::enableVertexAttribPointer(
         handles.colAttr, 4, BackendVertexAttribType::UnsignedByte, true, sizeof(RenIVertex),
         3 * sizeof(float) + sizeof(uint32_t)));
 
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::ElementArray,
         handles.elementBuffer,
         indices,
         nIndices * sizeof(unsigned short),
         BufferUsage::StreamDraw));
 
-    out->push_back(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
+    sink.emit(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
 }
 
 void DrawCallFactory::emitShadowDepthDrawIndexed(
@@ -297,29 +294,28 @@ void DrawCallFactory::emitShadowDepthDrawIndexed(
     const VertexIdx* indices,
     std::size_t nIndices,
     PrimitiveTopology topology,
-    Commands* out)
+    CommandSink& sink)
 {
-    out->reserve(out->size() + 7);
-    out->push_back(Command::setShadowDepthUniforms(uniforms));
+    sink.emit(Command::setShadowDepthUniforms(uniforms));
 
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::Array,
         handles.vertexBuffer,
         vertices,
         nVertices * sizeof(RenIVertex),
         BufferUsage::StreamDraw));
-    out->push_back(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
-    out->push_back(Command::enableVertexAttribPointer(
+    sink.emit(Command::bindBuffer(BufferTarget::Array, handles.vertexBuffer));
+    sink.emit(Command::enableVertexAttribPointer(
         handles.posAttr, 3, BackendVertexAttribType::Float, false, sizeof(RenIVertex), 0));
 
-    out->push_back(Command::bufferData(
+    sink.emit(Command::bufferData(
         BufferTarget::ElementArray,
         handles.elementBuffer,
         indices,
         nIndices * sizeof(unsigned short),
         BufferUsage::StreamDraw));
 
-    out->push_back(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
+    sink.emit(Command::drawIndexed(topology, BackendIndexType::UnsignedShort, nIndices));
 }
 
 } // namespace Ren

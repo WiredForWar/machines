@@ -294,11 +294,6 @@ private:
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
 
-    // Scratch list the draw call factory emits into, drained into the backend
-    // after every draw. Kept as a member so that its capacity survives from
-    // one draw call to the next instead of being rebuilt every time.
-    Ren::DrawCallFactory::Commands drawCommands_{};
-
     // GPU lighting state, populated by the illuminator during lightVertices.
     std::vector<float> expandedNormals_{};
     size_t expandedNormalsCount_{};
