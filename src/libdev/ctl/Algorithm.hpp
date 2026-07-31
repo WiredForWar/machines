@@ -50,17 +50,6 @@ size_t ctl_count(const Container& c, const T& value)
     return n;
 }
 
-template <class Container, class Predicate>
-inline
-    // Container::size_type
-    size_t
-    ctl_count_if(const Container& c, Predicate pred)
-{
-    typename Container::size_type n = 0;
-    count_if(c.begin(), c.end(), pred, n);
-    return n;
-}
-
 //////////////////////////////////////////////////////////////////////
 //  The ctl_erase methods have been removed because they do not work
 //  properly on associative containers - what is worse they compile
@@ -86,22 +75,6 @@ template <class CONTAINER, class T> inline bool ctl_contains(CONTAINER* cPtr, co
 template <class Container, class Function> inline Function ctl_for_each(Container& c, Function f)
 {
     return for_each(c.begin(), c.end(), f);
-}
-
-//////////////////////////////////////////////////////////////////////
-
-// SYNOPSIS
-//    Replace specified values in a container that satisfy a predicate.
-// DESCRIPTION
-//    Replaces every element in the container `c` that causes `pred`
-//    to evaluate to `true` with `new_value`.
-// SEE ALSO
-//    replace_if()
-
-template <class Container, class Predicate, class T>
-inline void ctl_replace_if(Container& c, Predicate pred, const T& new_value)
-{
-    replace_if(c.begin(), c.end(), pred, new_value);
 }
 
 //////////////////////////////////////////////////////////////////////
