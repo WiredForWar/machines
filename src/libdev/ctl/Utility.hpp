@@ -19,16 +19,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template <class FIRST, class SECOND>
-std::pair<const FIRST, SECOND> ctl_make_const_first_pair(const FIRST& first, const SECOND& second)
-// In the absence of a conforming compiler, ctl_make_const_first_pair can be used
-// in place of make_pair for inserting elements into associative containers.
-{
-    return std::pair<const FIRST, SECOND>(first, second);
-}
-
-//////////////////////////////////////////////////////////////////////
-
 #define CTL_PAIR(className, type1, member1, type2, member2)                                                            \
     class className : public std::pair<type1, type2>                                                                   \
     {                                                                                                                  \
