@@ -9,7 +9,6 @@ file(GLOB CTL_SOURCES
     Deque.hpp
     Erase.hpp
     FixedVector.hpp
-    Function.hpp
     List.hpp
     Map.hpp
     MinMemoryVector.hpp
