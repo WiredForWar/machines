@@ -81,7 +81,7 @@ MachLogResourceCarrier::MachLogResourceCarrier(
 {
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().resourceCarriers(pRace->race()), this);
+    MachLogRaces::instance().resourceCarriers(pRace->race()).push_back(this);
 }
 
 MachLogResourceCarrier::~MachLogResourceCarrier()

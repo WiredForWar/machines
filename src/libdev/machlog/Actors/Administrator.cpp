@@ -56,7 +56,7 @@ MachLogAdministrator::MachLogAdministrator(
 {
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().administrators(pRace->race()), this);
+    MachLogRaces::instance().administrators(pRace->race()).push_back(this);
     MachLogArmourer::arm(this);
 }
 

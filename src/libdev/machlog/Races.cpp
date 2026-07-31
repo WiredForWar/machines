@@ -3784,7 +3784,7 @@ MachLog::GameType MachLogRaces::gameType() const
 void MachLogRaces::addToMachinesCollection(MachLogMachine* pMachine)
 {
     ASSERT(! machineExists(pMachine), "Tried to add duplicate of machine into machines collection!");
-    ctl_append(&machines(), pMachine);
+    machines().push_back(pMachine);
 
     ++nMachines(pMachine->race());
 }

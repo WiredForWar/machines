@@ -45,7 +45,7 @@ MachLogGeoLocator::MachLogGeoLocator(
     objectType(MachLog::GEO_LOCATOR);
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().geoLocators(pRace->race()), this);
+    MachLogRaces::instance().geoLocators(pRace->race()).push_back(this);
 }
 
 MachLogGeoLocator::~MachLogGeoLocator()

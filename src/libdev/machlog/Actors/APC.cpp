@@ -71,7 +71,7 @@ MachLogAPC::MachLogAPC(
 {
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().apcs(pRace->race()), this);
+    MachLogRaces::instance().apcs(pRace->race()).push_back(this);
 }
 
 ///////////////////////////

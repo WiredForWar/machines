@@ -54,7 +54,7 @@ MachLogAggressor::MachLogAggressor(
     //  objectType( MachLog::AGGRESSOR );
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().aggressors(pRace->race()), this);
+    MachLogRaces::instance().aggressors(pRace->race()).push_back(this);
     MachLogArmourer::arm(this);
 }
 

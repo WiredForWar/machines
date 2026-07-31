@@ -31,13 +31,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-template <class Container, class T> _CODE_INLINE void ctl_append(Container* cPtr, const T& t)
-{
-    cPtr->insert(cPtr->end(), t);
-}
-
-//////////////////////////////////////////////////////////////////////
-
 template <class Container, class T>
 // inline
 // Container::size_type

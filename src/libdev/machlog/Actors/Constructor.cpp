@@ -56,7 +56,7 @@ MachLogConstructor::MachLogConstructor(
     hp(data().hitPoints());
     armour(data().armour());
     MachLogRaces& races = MachLogRaces::instance();
-    ctl_append(&races.constructors(pRace->race()), this);
+    races.constructors(pRace->race()).push_back(this);
     races.constructionTree().updateAvailableConstructions(
         pRace->race(),
         data().mostAdvancedConstructionType(),

@@ -57,7 +57,7 @@ MachLogSpyLocator::MachLogSpyLocator(
 {
     hp(data().hitPoints());
     armour(data().armour());
-    ctl_append(&MachLogRaces::instance().spyLocators(pRace->race()), this);
+    MachLogRaces::instance().spyLocators(pRace->race()).push_back(this);
 }
 
 MachLogSpyLocator::~MachLogSpyLocator()
