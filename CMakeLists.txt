@@ -90,8 +90,10 @@ include(CompilerSettings)
 include(StaticAnalyzers)
 
 # Testing
-#option(BUILD_TESTS "Build the test suite" off)
-cmake_dependent_option(BUILD_TESTS "Build the test suites" ON "DEV_BUILD" OFF)
+# The test suites need the assertion overrides, which are only compiled in for
+# a development build, hence the default. A dependent option would force the
+# value back to OFF, silently ignoring -DBUILD_TESTS=ON.
+option(BUILD_TESTS "Build the test suites" ${DEV_BUILD})
 
 # Warn about xbawks huge test binaries
 if(BUILD_TESTS)
