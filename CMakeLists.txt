@@ -207,6 +207,13 @@ add_subdirectory(src)
 # TESTS
 if(BUILD_TESTS)
     message(STATUS "Unit tests are enabled.")
+
+    if(PLATFORM_WINDOWS)
+        # Has to be set before googletest is added, because it picks the
+        # runtime library to use while its own CMakeLists is processed.
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    endif()
+
     include(FetchContent)
     FetchContent_Declare(
         googletest
@@ -221,9 +228,6 @@ if(BUILD_TESTS)
       add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
     endif()
 
-    if(PLATFORM_WINDOWS)
-        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    endif(PLATFORM_WINDOWS)
     enable_testing()
     add_subdirectory(test)
 endif(BUILD_TESTS)
