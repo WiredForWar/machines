@@ -9,6 +9,53 @@
 constexpr PerIdentifier initialId = 100;
 using ClampedSizeType = uint32_t;
 
+//  A minimal persistent class holding a pointer to another instance of itself.
+//  Writing an instance whose pointer is null makes PER_POINTER_WRITE pass a null
+//  most derived class name down into the persistence implementation.
+class PerNullPointerHost;
+void perWrite(PerOstream& ostr, const PerNullPointerHost& ob);
+void perRead(PerIstream& istr, PerNullPointerHost& ob);
+
+class PerNullPointerHost
+{
+public:
+    PerNullPointerHost() = default;
+
+    PER_MEMBER_PERSISTENT_DEFAULT_INLINE(PerNullPointerHost);
+
+    PerNullPointerHost* pOther_ = nullptr;
+};
+
+void perWrite(PerOstream& ostr, const PerNullPointerHost& ob)
+{
+    ostr << ob.pOther_;
+}
+
+void perRead(PerIstream& istr, PerNullPointerHost& ob)
+{
+    istr >> ob.pOther_;
+}
+
+TEST(PersistenceTests, WriteNullObjectPointer)
+{
+    std::ostringstream ofstr(std::ios::binary);
+    PerOstream ostr(ofstr);
+
+    PerNullPointerHost host;
+    ASSERT_EQ(host.pOther_, nullptr);
+
+    ostr << host;
+
+    //  The object header plus the PER_POINTER marker and the pointer identifier
+    ASSERT_EQ(ofstr.view().size(), 2 * (sizeof(char) + sizeof(PerIdentifier)));
+    const char* buffer = ofstr.view().data();
+
+    EXPECT_EQ(buffer[0], static_cast<char>(PER_OBJECT));
+
+    //  A null pointer is written as a plain PER_POINTER, without the object
+    EXPECT_EQ(buffer[sizeof(char) + sizeof(PerIdentifier)], static_cast<char>(PER_POINTER));
+}
+
 TEST(PersistenceTests, WriteString)
 {
     std::ostringstream ofstr(std::ios::binary);

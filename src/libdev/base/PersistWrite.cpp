@@ -157,7 +157,9 @@ Persistence::PointerWriteResult PersistenceImplementationWrite::writePointerPre(
     PER_WRITE_INDENT_STREAM("Start  pointer to " << className << std::endl);
 
     ASSERT_INFO(className);
-    ASSERT_INFO(mostDerivedClassName);
+    //  mostDerivedClassName is null when pOb is null, and streaming a null char
+    //  pointer into an std::ostream is undefined behaviour.
+    ASSERT_INFO((mostDerivedClassName ? mostDerivedClassName : "<null>"));
     ASSERT_INFO((void*)pOb);
     ASSERT_INFO((void*)pMostDerivedOb);
 
