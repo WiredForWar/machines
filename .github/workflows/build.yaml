@@ -149,8 +149,13 @@ jobs:
                 list(APPEND cmake_toolchain_args "-DBUILD_32=1")
             endif()
         endif()
-        if("${{ matrix.build-type }}" STREQUAL "Release" AND NOT "${{ matrix.tests }}" STREQUAL "true")
-          set(cmake_release_args "-DDEV_BUILD=OFF")
+        if("${{ matrix.tests }}" STREQUAL "true")
+          # Both options are passed explicitly: the tests only build for a
+          # development build, and relying on the DEV_BUILD default is what
+          # silently stopped the tests from being built at all.
+          set(cmake_dev_build_args "-DDEV_BUILD=ON" "-DBUILD_TESTS=ON")
+        else()
+          set(cmake_dev_build_args "-DDEV_BUILD=OFF")
         endif()
         if("${{ matrix.conan }}" STREQUAL "true")
           set(cmake_conan_args "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=cmake/conan_provider.cmake")
@@ -169,7 +174,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=${WORKSPACE_DIR}/install/machines
           -DBUILD_PLANETED=TRUE
           ${cmake_toolchain_args}
-          ${cmake_release_args}
+          ${cmake_dev_build_args}
           ${cmake_conan_args}
           RESULT_VARIABLE CONF_RESULT
         )
@@ -184,7 +189,7 @@ jobs:
     - name: Test
       if: matrix.tests
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{ matrix.build-type }} --output-on-failure
+      run: ctest -C ${{ matrix.build-type }} --output-on-failure --no-tests=error
 
     - name: Trim the Conan cache before it is saved
       if: matrix.conan
