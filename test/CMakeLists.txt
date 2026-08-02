@@ -72,5 +72,13 @@ foreach( val RANGE ${len2} )
         gtest_main
         ${TESTING_THESE_GUYS}
     )
+    if(MSVC)
+        # AssertionOverrides.cpp and RenSurfaceOverrides.cpp replace the library
+        # implementations, which are only weak symbols when building with GCC
+        # (see WEAK_SYMBOL in base/compiler.hpp). MSVC has no weak symbols, so
+        # ask the linker to keep the first definition instead of reporting a
+        # duplicate one; the overrides are linked before the libraries.
+        target_link_options(${test_name} PRIVATE /FORCE:MULTIPLE)
+    endif()
     add_test(NAME ${test_name} COMMAND ${test_name})
 endforeach()
