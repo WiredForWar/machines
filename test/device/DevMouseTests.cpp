@@ -47,7 +47,7 @@ public:
 class MockSdlDelegate : public SdlDelegate
 {
 public:
-    MOCK_METHOD(int, showCursor, (const int toggle), (override));
+    MOCK_METHOD(bool, showCursor, (const bool show), (override));
     using IntPair = std::pair<int,int>;
     MOCK_METHOD(IntPair, getCursorPosition, (), (override));
     MOCK_METHOD(void, moveCursorToPosition, (SDL_Window* window, const int x, const int y), (override));
