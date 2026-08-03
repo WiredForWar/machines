@@ -52,13 +52,12 @@ public:
     MOCK_METHOD(IntPair, getCursorPosition, (), (override));
     MOCK_METHOD(void, moveCursorToPosition, (SDL_Window* window, const int x, const int y), (override));
 };
-MockSdlDelegate mockSDL;
 
 class Mouse : public DevMouseT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime, MockDevEventQueue>
 {
 public:
-    Mouse()
-        : DevMouseT(&mockSDL)
+    explicit Mouse(SdlDelegate* sdl)
+        : DevMouseT(sdl)
     {}
 
     void setMocks(MockRecRecorder* rec, MockRecRecorderPrivate* recPriv, MockDevEventQueue* eq)
@@ -75,6 +74,7 @@ public:
 
 TEST(DevMouseTests, WMbutton_DispatchesClick)
 {
+    MockSdlDelegate mockSDL;
     MockRecRecorder recorder;
     MockRecRecorderPrivate privRecorder;
     MockDevEventQueue eventQueue;
@@ -98,7 +98,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
     EXPECT_CALL(recorder, state())
             .WillRepeatedly(Return(RecRecorder::INACTIVE));
 
-    Mouse mouse;
+    Mouse mouse(&mockSDL);
     mouse.setMocks(&recorder, &privRecorder, &eventQueue);
 
     // DISPATCH THE MOUSE EVENT
@@ -112,6 +112,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
 
 TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
 {
+    MockSdlDelegate mockSDL;
     MockRecRecorder recorder;
     MockRecRecorderPrivate privRecorder;
     MockDevEventQueue eventQueue;
@@ -135,7 +136,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
     EXPECT_CALL(recorder, state())
             .WillRepeatedly(Return(RecRecorder::INACTIVE));
 
-    Mouse mouse;
+    Mouse mouse(&mockSDL);
     mouse.setMocks(&recorder, &privRecorder, &eventQueue);
 
     // DISPATCH THE MOUSE EVENT
@@ -153,6 +154,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
 
 TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
 {
+    MockSdlDelegate mockSDL;
     MockRecRecorder recorder;
     MockRecRecorderPrivate privRecorder;
     MockDevEventQueue eventQueue;
@@ -176,7 +178,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
     EXPECT_CALL(recorder, state())
             .WillRepeatedly(Return(RecRecorder::INACTIVE));
 
-    Mouse mouse;
+    Mouse mouse(&mockSDL);
     mouse.setMocks(&recorder, &privRecorder, &eventQueue);
 
     // DISPATCH THE MOUSE EVENT
