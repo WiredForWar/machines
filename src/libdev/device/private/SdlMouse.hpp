@@ -39,6 +39,12 @@ public:
     //  ( clipped by the range limits )
     const Position& position() const;
 
+    // Pointer travel reported by the system since the last takeRelativeMotion() call,
+    // in device counts, and clear the accumulator. Unlike a difference of two
+    // position() values this is not quantised to the window, so it keeps working when
+    // the pointer is at an edge of the screen.
+    Motion takeRelativeMotion();
+
     bool leftButton() const;
     bool rightButton() const;
     bool wheelScrollUp() const;
@@ -68,6 +74,10 @@ public:
     // event.
     void changePosition(XCoord new_x, YCoord new_y);
 
+    // Add pointer travel to the amount reported by takeRelativeMotion(). Called by the
+    // application for every pointer motion the system reports.
+    void addRelativeMotion(double deltaX, double deltaY);
+
     // This does the same as the Windows fn. of the same name, however, the
     // return value use the coordinate system of this class's position fn.
     Position getMessagePos() const;
@@ -94,6 +104,7 @@ private:
 
     mutable Position position_;
     Position lastPosition_;
+    Motion relativeMotion_;
     int cursorVisible_;
     bool lButtonPressed_;
     bool rButtonPressed_;

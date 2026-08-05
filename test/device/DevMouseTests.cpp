@@ -193,3 +193,62 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
     // Unless mouse.wm_button(ev) is called again with another scroll, this shall be false.
     ASSERT_FALSE(mouse.wheelScrollDown());
 }
+
+TEST(DevMouseTests, RelativeMotion_StartsAtZero)
+{
+    MockSdlDelegate mockSDL;
+    Mouse mouse(&mockSDL);
+
+    ASSERT_TRUE(mouse.takeRelativeMotion().isZero());
+}
+
+TEST(DevMouseTests, RelativeMotion_AccumulatesUntilTaken)
+{
+    MockSdlDelegate mockSDL;
+    Mouse mouse(&mockSDL);
+
+    mouse.addRelativeMotion(3.0, -2.0);
+    mouse.addRelativeMotion(1.5, -0.5);
+
+    const auto motion = mouse.takeRelativeMotion();
+    ASSERT_DOUBLE_EQ(4.5, motion.x);
+    ASSERT_DOUBLE_EQ(-2.5, motion.y);
+}
+
+TEST(DevMouseTests, RelativeMotion_IsClearedByTaking)
+{
+    MockSdlDelegate mockSDL;
+    Mouse mouse(&mockSDL);
+
+    mouse.addRelativeMotion(10.0, 20.0);
+    mouse.takeRelativeMotion();
+
+    ASSERT_TRUE(mouse.takeRelativeMotion().isZero());
+}
+
+TEST(DevMouseTests, RelativeMotion_IsReportedWhileThePositionStandsStill)
+{
+    MockSdlDelegate mockSDL;
+    MockRecRecorder recorder;
+    MockRecRecorderPrivate privRecorder;
+    MockDevEventQueue eventQueue;
+
+    EXPECT_CALL(recorder, state())
+            .WillRepeatedly(Return(RecRecorder::INACTIVE));
+
+    Mouse mouse(&mockSDL);
+    mouse.setMocks(&recorder, &privRecorder, &eventQueue);
+
+    // A pointer the system holds in place - pinned at a screen edge, or locked for
+    // relative reporting - travels without its position ever changing.
+    mouse.position(100, 100);
+    mouse.addRelativeMotion(50.0, -50.0);
+
+    const auto& position = mouse.position();
+    ASSERT_EQ(100, position.first);
+    ASSERT_EQ(100, position.second);
+
+    const auto motion = mouse.takeRelativeMotion();
+    ASSERT_DOUBLE_EQ(50.0, motion.x);
+    ASSERT_DOUBLE_EQ(-50.0, motion.y);
+}

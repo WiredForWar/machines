@@ -17,6 +17,7 @@ DEV_MOUSE_CLASS::DevMouseT()
     , pSdl_(&sdlDelegate_)
     , position_(0, 0)
     , lastPosition_(0, 0)
+    , relativeMotion_()
     , lButtonPressed_(false)
     , rButtonPressed_(false)
     , scaleX_(1)
@@ -96,6 +97,22 @@ DEV_MOUSE_CLASS::position() const
     }
 
     return position_;
+}
+
+template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
+void DEV_MOUSE_CLASS::addRelativeMotion(double deltaX, double deltaY)
+{
+    relativeMotion_.x += deltaX;
+    relativeMotion_.y += deltaY;
+}
+
+template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
+typename DEV_MOUSE_CLASS::Motion // RETURN TYPE. Method below:
+DEV_MOUSE_CLASS::takeRelativeMotion()
+{
+    const Motion result = relativeMotion_;
+    relativeMotion_ = Motion();
+    return result;
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>

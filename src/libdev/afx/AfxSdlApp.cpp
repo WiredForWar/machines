@@ -267,6 +267,7 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
             float x, y;
             SDL_GetMouseState(&x, &y);
             DevMouse::instance().position(static_cast<int>(x), static_cast<int>(y));
+            DevMouse::instance().addRelativeMotion(event->motion.xrel, event->motion.yrel);
             break;
         }
 
