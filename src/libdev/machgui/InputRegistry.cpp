@@ -1146,12 +1146,12 @@ void InputRegistry::setWasdLayout()
     });
 
     setBinds("fpv-move-forward"_bind, {
-        { .keyWithMods = KeyCode::KEY_W },
-        { .keyWithMods = KeyCode::UP_ARROW },
+        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Shift },
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Shift },
     });
     setBinds("fpv-move-backward"_bind, {
-        { .keyWithMods = KeyCode::KEY_S },
-        { .keyWithMods = KeyCode::DOWN_ARROW },
+        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Shift },
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Shift },
     });
 
     setBinds("fpv-turn-left"_bind, {
