@@ -77,6 +77,14 @@ bool AfxSdlApp::OSStartup()
             SDL_VERSIONNUM_MICRO(v));
     }
 
+    // Report pointer travel as the device measures it, with no system pointer
+    // acceleration curve and no system pointer speed applied. Each system shapes those
+    // differently, so leaving them in makes the same movement of the hand mean
+    // different things on different systems. Both are SDL's defaults; ask for them
+    // anyway, because aiming depends on them.
+    SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE, "0");
+    SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE, "1.0");
+
     // Create window
     spdlog::info("Initializing SDL...");
     SDL_Init(SDL_INIT_VIDEO);
