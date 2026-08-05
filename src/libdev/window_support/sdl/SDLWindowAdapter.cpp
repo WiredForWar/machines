@@ -222,6 +222,15 @@ void SDLWindowAdapter::setCursorGrabEnabled(bool enabled)
         SDL_SetWindowMouseGrab(window_, enabled);
 }
 
+bool SDLWindowAdapter::setRelativeMouseModeEnabled(bool enabled)
+{
+    if (window_ && SDL_SetWindowRelativeMouseMode(window_, enabled))
+        return true;
+
+    spdlog::warn("Unable to {} relative mouse mode: {}", enabled ? "enable" : "disable", SDL_GetError());
+    return false;
+}
+
 bool SDLWindowAdapter::hasMouseFocus() const
 {
     return SDL_GetMouseFocus() != nullptr;

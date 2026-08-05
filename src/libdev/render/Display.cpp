@@ -564,6 +564,11 @@ void RenDisplay::setCursorGrabEnabled(bool enabled)
         pImpl_->adapter_->setCursorGrabEnabled(enabled);
 }
 
+bool RenDisplay::setRelativeMouseModeEnabled(bool enabled)
+{
+    return pImpl_->adapter_ && pImpl_->adapter_->setRelativeMouseModeEnabled(enabled);
+}
+
 uint32_t RenDisplay::frameNumber() const
 {
     CB_RenDisplay_DEPIMPL();

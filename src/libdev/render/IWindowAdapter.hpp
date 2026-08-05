@@ -36,6 +36,12 @@ public:
     // --- Cursor / input ---
 
     virtual void setCursorGrabEnabled(bool enabled) = 0;
+
+    // Switch the pointer to relative reporting, hiding it and freeing it from the window
+    // edges so travel keeps arriving once the pointer would have left. Returns false, and
+    // leaves the mode unchanged, if the window cannot honour the request.
+    virtual bool setRelativeMouseModeEnabled(bool enabled) = 0;
+
     virtual bool hasMouseFocus() const = 0;
 };
 

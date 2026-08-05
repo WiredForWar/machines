@@ -162,6 +162,14 @@ public:
 
     void setCursorGrabEnabled(bool enabled);
 
+    // Ask the system to report pointer motion relative to where the pointer already is,
+    // instead of moving a visible pointer around the window. While enabled the pointer
+    // is hidden and its position stops changing, so motion can be reported without
+    // being limited by the edges of the window and without the system's pointer
+    // acceleration applied. Returns false if the system refused, in which case the
+    // pointer keeps behaving as it did.
+    bool setRelativeMouseModeEnabled(bool enabled);
+
     void supportsGammaCorrection(bool);
     bool supportsGammaCorrection() const;
     void gammaCorrection(const double& gammaCorrection);

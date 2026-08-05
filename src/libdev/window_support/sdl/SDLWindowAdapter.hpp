@@ -43,6 +43,7 @@ public:
 
     // --- Cursor / input ---
     void setCursorGrabEnabled(bool enabled) override;
+    bool setRelativeMouseModeEnabled(bool enabled) override;
     bool hasMouseFocus() const override;
 
 private:
