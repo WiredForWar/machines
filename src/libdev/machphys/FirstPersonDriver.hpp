@@ -97,14 +97,31 @@ public:
     // Makes the machine decelerate to rest
     void stopMoving();
 
-    // Makes it turn left
+    // Makes it turn left at the full rate
     void turnLeft();
 
-    // Makes it turn right
+    // Makes it turn right at the full rate
     void turnRight();
+
+    // Adds angle, positive to the right, to the rotation the machine is asked to turn
+    // through before the next turn is made. Requests accumulate, so travel arriving between
+    // one turn and the next is not lost however often it is reported.
+    void turnBy(MexRadians angle);
+
+    // The rotation asked for but not yet turned through, zero when turning at the full rate.
+    MexRadians turnDemand() const;
+
+    // Returns as much of the outstanding demand as limit allows and clears the rest, so the
+    // machine turns at up to its own rate while a request stands and stops once it is met,
+    // without banking rotation it could not make in time. Called by the driver as it turns.
+    MexRadians takeTurnDemand(MexRadians limit);
 
     // Makes it stop turning
     void stopTurning();
+
+    // The fastest the entity can turn. A rotation asked for above this is delivered at
+    // this rate instead, over as many intervals as it takes.
+    virtual MexRadians maxTurnRate() const = 0;
 
     // Set/get the fast/slow turn rate option
     void turnAtFastRate(bool fast);

@@ -96,21 +96,17 @@ bool MachPhys1stPersonMachineDriver::nextPosition(MexTransform3d* pNextPosition)
 
             if (isTurningLeft() || isTurningRight())
             {
-                // Get the limit for turning rate, and cap the machine's own rate.
-                // See whether fast or slow limit set.
-                const MachPhysGeneralData& generalData = MachPhysData::instance().generalData();
-                MexRadians maxTurnRate
-                    = (turnAtFastRate() ? generalData.firstPersonMaxFastTurnRate()
-                                        : generalData.firstPersonMaxSlowTurnRate());
+                // Compute the required angle of rotation about the z axis, which is as
+                // far as the machine can turn in the interval. A pending turnBy() demand
+                // gives up that much of itself and keeps the rest for later intervals; a
+                // held key turns at the full rate.
+                const MexRadians maxAngle = maxTurnRate() * interval;
 
-                MexRadians turnRate = machineData.rotationSpeed();
-                if (turnRate > maxTurnRate)
-                    turnRate = maxTurnRate;
-
-                // Compute the required angle of rotation about the z axis
-                MexRadians angle = turnRate * interval;
-                if (isTurningLeft())
-                    angle = -angle;
+                MexRadians angle;
+                if (turnDemand().asScalar() != 0.0)
+                    angle = takeTurnDemand(maxAngle);
+                else
+                    angle = isTurningLeft() ? -maxAngle : maxAngle;
 
                 // generate the global machine transform after the rotation
                 MexTransform3d rotationTransform(MexEulerAngles(angle, 0.0, 0.0));
@@ -198,6 +194,17 @@ W4dEntity& MachPhys1stPersonMachineDriver::cameraAttachment(MexTransform3d* pOff
 }
 
 // virtual
+// virtual
+MexRadians MachPhys1stPersonMachineDriver::maxTurnRate() const
+{
+    const MachPhysGeneralData& generalData = MachPhysData::instance().generalData();
+    const MexRadians cap
+        = (turnAtFastRate() ? generalData.firstPersonMaxFastTurnRate() : generalData.firstPersonMaxSlowTurnRate());
+
+    const MexRadians rate = pMachine_->machineData().rotationSpeed();
+    return (rate > cap) ? cap : rate;
+}
+
 bool MachPhys1stPersonMachineDriver::canTurnHead() const
 {
     return pMachine_->canTurnUpperBody();

@@ -40,6 +40,7 @@ public:
     W4dEntity* pAntiRollEntity_; // Owns the camera and rolls to level out the view
     MexTransform3d cameraBaseTransform_; // Base transform for the camera from its parent
     bool turnAtFastRate_; // true if to turn whole machine at the faster rate
+    MexRadians turnDemand_; // angle to turn by this interval, zero to turn at the full rate
     MexTransform3dKey lastAntiRollParentTransformKey_; // determines whether the antiRollEntity transform needs update
     MexDegrees lastRollAngle_;
     MexDegrees lastElevationAngle_;
@@ -72,6 +73,7 @@ MachPhys1stPersonDriver::MachPhys1stPersonDriver(
     pImpl_ = new MachPhys1stPersonDriverImpl;
     pImpl_->pAxisTurnerPlan_ = nullptr;
     pImpl_->turnAtFastRate_ = true;
+    pImpl_->turnDemand_ = MexRadians(0.0);
     pImpl_->pAntiRollEntity_ = nullptr;
     pImpl_->pAimDataFilter_ = nullptr;
 
@@ -146,18 +148,58 @@ void MachPhys1stPersonDriver::turnLeft()
 {
     turningLeft_ = true;
     turningRight_ = false;
+    pImpl_->turnDemand_ = MexRadians(0.0);
 }
 
 void MachPhys1stPersonDriver::turnRight()
 {
     turningLeft_ = false;
     turningRight_ = true;
+    pImpl_->turnDemand_ = MexRadians(0.0);
+}
+
+void MachPhys1stPersonDriver::turnBy(MexRadians angle)
+{
+    pImpl_->turnDemand_ += angle;
+
+    const MATHEX_SCALAR asScalar = pImpl_->turnDemand_.asScalar();
+    if (asScalar != 0.0)
+    {
+        turningLeft_ = asScalar < 0.0;
+        turningRight_ = ! turningLeft_;
+    }
+}
+
+MexRadians MachPhys1stPersonDriver::turnDemand() const
+{
+    return pImpl_->turnDemand_;
+}
+
+MexRadians MachPhys1stPersonDriver::takeTurnDemand(MexRadians limit)
+{
+    MexRadians delivered = pImpl_->turnDemand_;
+    if (delivered > limit)
+        delivered = limit;
+    else if (delivered < -limit)
+        delivered = -limit;
+
+    // Discard the rest rather than banking it. A demand larger than the machine can turn
+    // through this interval means the pointer moved faster than the machine can follow;
+    // turning at the full rate while it does so and stopping when it stops is wanted, not
+    // playing the movement out for seconds afterwards.
+    pImpl_->turnDemand_ = MexRadians(0.0);
+    return delivered;
 }
 
 void MachPhys1stPersonDriver::stopTurning()
 {
-    turningLeft_ = false;
-    turningRight_ = false;
+    // A held turn key has been released. Rotation the mouse has asked for but not yet been
+    // given keeps draining, so clear the turning state only once none is left.
+    if (pImpl_->turnDemand_.asScalar() == 0.0)
+    {
+        turningLeft_ = false;
+        turningRight_ = false;
+    }
 }
 
 bool MachPhys1stPersonDriver::isMovingForwards() const
@@ -486,6 +528,7 @@ void MachPhys1stPersonDriver::updateState(const MachPhysFirstPersonStateVector& 
     turningLeft_ = state.turningLeft_;
     turningRight_ = state.turningRight_;
     pImpl_->turnAtFastRate_ = state.turnAtFastRate_;
+    pImpl_->turnDemand_ = MexRadians(0.0);
 
     // Jump to specified position
     snapTo(state.transform_, state.lastSpeed_, lastUpdateTime_);

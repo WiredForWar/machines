@@ -46,6 +46,8 @@ public:
     // forward/backward signed speed at specified time.
     void snapTo(const MexTransform3d& transform, MATHEX_SCALAR speed, const PhysAbsoluteTime& time) override;
 
+    MexRadians maxTurnRate() const override;
+
     ////////////
     // Head turning controls
     bool canTurnHead() const override;
