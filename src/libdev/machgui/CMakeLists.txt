@@ -154,6 +154,8 @@ set(MACHGUI_SOURCES
     MessageDisplay.hpp
     MexTemp.cpp
     MexTemp.hpp
+    MouseLook.cpp
+    MouseLook.hpp
     NavigatorBase.cpp
     NavigatorBase.hpp
     Network/ConnectionType.cpp

@@ -52,6 +52,8 @@ append_test(DevMouseTests device/DevMouseTests.cpp)
 append_test(DevKeyToCommandTranslator device/DevKeyToCommandTranslator.cpp)
 #~:gui
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
+#~:machgui
+append_test(MouseLookTests machgui/MouseLookTests.cpp)
 #~:network
 append_test(NetUtilsTest network/NetUtilsTests.cpp)
 #~:system
