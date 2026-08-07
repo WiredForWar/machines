@@ -20,6 +20,7 @@
 #include "render/Device.hpp"
 #include "render/Camera.hpp"
 #include "render/RenderVariables.hpp"
+#include "render/Display.hpp"
 #include "gui/gui.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
@@ -47,6 +48,7 @@
 #include "machgui/InGameChatMessages.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/MachGuiFPCommand.hpp"
+#include "machgui/MouseLook.hpp"
 #include "machphys/Data/ObjectData.hpp"
 #include "machphys/Data/SoundData.hpp"
 #include "machphys/Machines/Machine.hpp"
@@ -62,6 +64,10 @@
 #define WEAPON_DROPDOWN_FRAMES 10
 #define STARTUP_SEQUENCE_TIME 0.5
 #define STARTUP_SEQUENCE_FRAMES 10
+
+// How much of the usual rotation a given amount of pointer travel is worth while the
+// player asks for finer aiming.
+static constexpr double FirstPersonPrecisionAimScale = 0.25;
 
 class MachGuiFirstPersonImpl
 {
@@ -545,101 +551,44 @@ void MachGuiFirstPerson::update()
             logHandler.lookAhead();
         }
 
-        // Turn machine head or whole body...
+        // Aim from how far the pointer has travelled since the last frame. The rotation is
+        // handed on whole: the machine turns and looks no faster than its own rates allow and
+        // keeps whatever it cannot yet reach for the frames that follow, so none of the travel
+        // is lost however the frame rate compares with the simulation. Holding Ctrl turns less
+        // far for the same travel, for finer aiming.
+        const double precisionScale
+            = DevKeyboard::instance().ctrlPressed() ? FirstPersonPrecisionAimScale : 1.0;
+        const MachGui::MouseLookSettings lookSettings
+            = MachGui::firstPersonMouseLookSettings(reverseUpDownMouse_, precisionScale);
 
-        // Get screen size.
-        RenDevice& device = *pSceneManager_->pDevice();
-        const double halfScreenWidth = device.windowWidth() / 2.0;
-        const double halfScreenHeight = device.windowHeight() / 2.0;
+        const DevMouse::Motion pointerTravel = DevMouse::instance().takeRelativeMotion();
+        const MachGui::MouseLookRotation wanted
+            = MachGui::mouseLookRotation(pointerTravel.x, pointerTravel.y, lookSettings);
 
-        // Get new mouse position
-        DevMouse::Position mousePos = DevMouse::instance().position();
-
-        Gui::Vec relMove(mousePos.first - halfScreenWidth, mousePos.second - halfScreenHeight);
-        double origDeltaX = relMove.x();
+        const bool turningHead = logHandler.canTurnHead()
+            && (DevKeyboard::instance().shiftPressed() || DevMouse::instance().rightButton());
 
         // If head can turn independant of body then do so (as long as Shift is pressed or Right mouse button pressed)
-        if (logHandler.canTurnHead() && (DevKeyboard::instance().shiftPressed() || DevMouse::instance().rightButton()))
+        if (turningHead)
         {
             if (DevMouse::instance().rightButton())
                 rightMouseButtonHeadTurningUsed_ = true;
 
-            // in fast mode movement is progressivly faster based on distance mouse has moved
-            // half screen width = 10 deg rotation ( in slow mode )
-            if (DevKeyboard::instance().ctrlPressed())
-            {
-                relMove.rx() = (relMove.x() / halfScreenWidth) * (Mathex::PI / 18.0);
-            }
-            else
-            {
-                // Move ten times faster when mouse has moved a long way ( 60 pixels )
-                if (!(relMove.x() < 60.0 && relMove.x() > -60.0))
-                {
-                    relMove.rx() *= 7.0;
-                }
-                relMove.rx() = (relMove.x() / halfScreenHeight) * (Mathex::PI / 7.0);
-            }
-
-            if (relMove.x() != 0.0)
-                logHandler.turnHeadBy(relMove.x());
+            if (wanted.yaw.asScalar() != 0.0)
+                logHandler.turnHeadBy(wanted.yaw);
         }
-        else // Move whole body
+        else if (wanted.yaw.asScalar() != 0.0)
         {
-            // Work out if body should be turning at fast rate
-            bool turnFast = false;
-            if (!DevKeyboard::instance().ctrlPressed()
-                && ((relMove.x() < -10.0 || relMove.x() > 10.0) || relMove.x() == 0.0))
-            {
-                turnFast = true;
-            }
-
-            logHandler.turnAtFastRate(turnFast);
-
-            if (relMove.x() < 0)
-            {
-                logHandler.turnLeft();
-            }
-            else if (relMove.x() > 0)
-            {
-                logHandler.turnRight();
-            }
+            // A held turn key asks for the slow rate; the mouse turns at the fast rate. Set
+            // this only when the mouse actually turns the body, so an idle frame does not
+            // quietly overwrite the rate a turn key has asked for.
+            logHandler.turnAtFastRate(true);
+            logHandler.turnBy(wanted.yaw);
         }
 
         // Look up/down. All machines can do this.
-        // in fast mode movement is progressivly faster based on distance mouse has moved
-        // half screen height = 10 deg rotation ( in slow mode )
-        if (DevKeyboard::instance().ctrlPressed())
-        {
-            relMove.ry() = (relMove.y() / halfScreenHeight) * (Mathex::PI / 18.0);
-        }
-        else
-        {
-            if (abs(origDeltaX) < abs(relMove.y() * 3.0))
-            {
-                // Move two times faster when mouse has moved a long way ( 50 pixels )
-                if (!(relMove.y() < 50.0 && relMove.y() > -50.0))
-                {
-                    relMove.ry() *= 4.0;
-                }
-
-                relMove.ry() = (relMove.y() / halfScreenHeight) * (Mathex::PI / 12.0);
-            }
-            else
-            {
-                relMove.ry() = 0.0;
-            }
-        }
-
-        if (relMove.y() != 0.0)
-        {
-            if (reverseUpDownMouse_)
-                logHandler.lookDown(-relMove.y());
-            else
-                logHandler.lookDown(relMove.y());
-        }
-
-        // Reset mouse position to centre of screen
-        DevMouse::instance().changePosition(halfScreenWidth, halfScreenHeight);
+        if (wanted.pitch.asScalar() != 0.0)
+            logHandler.lookDown(wanted.pitch);
 
         // Update the handler
         logHandler.update();
@@ -1127,12 +1076,12 @@ void MachGuiFirstPerson::doBecomeRoot()
     // Attach the camera to the machine
     attachCamera();
 
-    // Set mouse pointer to middle of screen...
-    // Get screen size.
-    const double halfScreenWidth = device.windowWidth() / 2.0;
-    const double halfScreenHeight = device.windowHeight() / 2.0;
+    // Aiming uses pointer travel rather than a pointer position, so let the system
+    // report travel without a pointer to move around the window.
+    device.display()->setRelativeMouseModeEnabled(true);
 
-    DevMouse::instance().changePosition(halfScreenWidth, halfScreenHeight);
+    // Travel from before entering the machine is not aiming.
+    DevMouse::instance().takeRelativeMotion();
 
     // Initialise the log handler
     if (pLogHandler_)
@@ -1209,6 +1158,9 @@ void MachGuiFirstPerson::doBecomeNotRoot()
     // Detach the camera and exit the actor
     detachCamera();
     exitActor();
+
+    // Hand the pointer back to the rest of the interface
+    pSceneManager_->pDevice()->display()->setRelativeMouseModeEnabled(false);
 
     inFirstPerson_ = false;
 
@@ -2051,8 +2003,14 @@ void MachGuiFirstPerson::activate()
 {
     // De-pImpl_ variables used within this function.
     CB_DEPIMPL(int, borderDrawCount_);
+    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
 
     borderDrawCount_ = 2;
+
+    // The system releases the pointer while the app is in the background, so ask for it
+    // again, and do not aim with whatever it did in the meantime.
+    pSceneManager_->pDevice()->display()->setRelativeMouseModeEnabled(true);
+    DevMouse::instance().takeRelativeMotion();
 }
 
 void MachGuiFirstPerson::loadWeaponBmps()
