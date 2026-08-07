@@ -51,6 +51,8 @@ public:
     bool isToMoveBackwards_;
     bool isToTurnLeft_;
     bool isToTurnRight_;
+    bool isToTurnBy_;
+    MexRadians turnByAngle_;
     bool targetAnglesValid_; // true if any enabled weapon can hit the target angle
     bool remoteNode_; // true if handling a 1st person entity controlled from a remote node
     bool xmitOnUpdate_; // true if the state vector should be networked on next update call
@@ -173,12 +175,24 @@ void MachLog1stPersonHandler::turnLeft()
 {
     pData_->isToTurnLeft_ = true;
     pData_->isToTurnRight_ = false;
+    pData_->isToTurnBy_ = false;
 }
 
 void MachLog1stPersonHandler::turnRight()
 {
     pData_->isToTurnLeft_ = false;
     pData_->isToTurnRight_ = true;
+    pData_->isToTurnBy_ = false;
+}
+
+void MachLog1stPersonHandler::turnBy(MexRadians angle)
+{
+    const MATHEX_SCALAR asScalar = angle.asScalar();
+
+    pData_->isToTurnLeft_ = asScalar < 0.0;
+    pData_->isToTurnRight_ = asScalar > 0.0;
+    pData_->isToTurnBy_ = asScalar != 0.0;
+    pData_->turnByAngle_ = angle;
 }
 
 void MachLog1stPersonHandler::update()
@@ -226,12 +240,25 @@ bool MachLog1stPersonHandler::isToTurnRight() const
     return pData_->isToTurnRight_;
 }
 
+bool MachLog1stPersonHandler::isToTurnBy() const
+{
+    return pData_->isToTurnBy_;
+}
+
+MexRadians MachLog1stPersonHandler::turnByAngle() const
+{
+    PRE(isToTurnBy());
+    return pData_->turnByAngle_;
+}
+
 void MachLog1stPersonHandler::clearSetupFlags()
 {
     pData_->isToMoveForwards_ = false;
     pData_->isToMoveBackwards_ = false;
     pData_->isToTurnLeft_ = false;
     pData_->isToTurnRight_ = false;
+    pData_->isToTurnBy_ = false;
+    pData_->turnByAngle_ = MexRadians(0.0);
 }
 
 uint MachLog1stPersonHandler::nWeapons() const

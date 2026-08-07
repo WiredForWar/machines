@@ -60,6 +60,11 @@ public:
     void turnLeft();
     void turnRight();
 
+    // Turn by angle, positive to the right, as far as the entity can manage this frame.
+    // Takes the place of turnLeft()/turnRight() for a caller that knows how much
+    // rotation it wants rather than only which way.
+    void turnBy(MexRadians angle);
+
     // Set/get the fast/slow turn rate option
     void turnAtFastRate(bool fast);
     bool turnAtFastRate() const;
@@ -162,6 +167,9 @@ protected:
     bool isToMoveBackwards() const;
     bool isToTurnLeft() const;
     bool isToTurnRight() const;
+    bool isToTurnBy() const;
+    MexRadians turnByAngle() const;
+    // PRE( isToTurnBy() );
 
     // Establish remote handlers for this entity on remote nodes
     // Subclasses most call at end of ctor.

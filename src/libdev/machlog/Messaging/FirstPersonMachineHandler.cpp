@@ -167,7 +167,9 @@ void MachLog1stPersonMachineHandler::doUpdate()
         else
             driver.stopMoving();
 
-        if (isToTurnLeft())
+        if (isToTurnBy())
+            driver.turnBy(turnByAngle());
+        else if (isToTurnLeft())
             driver.turnLeft();
         else if (isToTurnRight())
             driver.turnRight();
