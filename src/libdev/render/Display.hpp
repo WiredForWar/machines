@@ -7,6 +7,7 @@
 #define _REN_DISPLAY_HPP
 
 #include "base/base.hpp"
+#include "render/DisplayModeCatalogue.hpp"
 #include "render/IWindowAdapter.hpp"
 #include "render/render.hpp"
 
@@ -101,6 +102,11 @@ public:
     // a list of modes, choose one and pass a reference to useMode.
     using Modes = std::vector<Mode>;
     const Modes& modeList() const;
+
+    // The same modes as a list of resolutions and the rates each is offered at,
+    // for offering the player a choice. Built with the mode list.
+    const Ren::DisplayModeCatalogue& modeCatalogue() const;
+
     bool useMode(const Mode&);
     const Mode& currentMode() const;
     void buildDisplayModesList();

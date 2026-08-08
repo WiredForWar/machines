@@ -69,6 +69,7 @@ private:
 
     Ren::IWindowAdapter* adapter_{};
     std::vector<RenDisplay::Mode> modeList_;
+    Ren::DisplayModeCatalogue modeCatalogue_;
     RenDisplay::Mode currentMode_;
     RenDisplay::WindowMode windowMode_ = RenDisplay::WindowMode::Windowed;
     const RenCursor2d* cursor_ = nullptr;

@@ -61,6 +61,7 @@ append_test(NetUtilsTest network/NetUtilsTests.cpp)
 append_test(SysPathNameTests system/SysPathNameTests.cpp)
 
 append_test(ColourTests render/ColourTests.cpp)
+append_test(DisplayModeCatalogueTests render/DisplayModeCatalogueTests.cpp)
 
 #### Create executables
 list(LENGTH TESTS_SRCS len1)

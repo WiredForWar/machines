@@ -24,6 +24,7 @@
 
 #define CB_RenDisplay_DEPIMPL()                                                                                        \
     CB_DEPIMPL(std::vector<RenDisplay::Mode>, modeList_);                                                              \
+    CB_DEPIMPL(Ren::DisplayModeCatalogue, modeCatalogue_);                                                             \
     CB_DEPIMPL(RenDisplay::Mode, currentMode_);                                                                        \
     CB_DEPIMPL(RenDisplay::WindowMode, windowMode_);                                                                   \
     CB_DEPIMPL(uint32_t, frameNo_);                                                                                    \
@@ -101,6 +102,7 @@ void RenDisplay::buildDisplayModesList()
     }
 
     const auto adapterModes = adapter->availableDisplayModes();
+    modeCatalogue_ = Ren::DisplayModeCatalogue(adapterModes);
     modeList_.clear();
     modeList_.reserve(adapterModes.size());
 
@@ -180,6 +182,12 @@ const std::vector<RenDisplay::Mode>& RenDisplay::modeList() const
 {
     CB_RenDisplay_DEPIMPL();
     return modeList_;
+}
+
+const Ren::DisplayModeCatalogue& RenDisplay::modeCatalogue() const
+{
+    CB_RenDisplay_DEPIMPL();
+    return modeCatalogue_;
 }
 
 bool RenDisplay::useMode(const RenDisplay::Mode& m)

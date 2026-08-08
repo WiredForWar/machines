@@ -31,6 +31,8 @@ set(RENDER_SOURCES
     Display.cpp
     Display.hpp
     DisplayImpl.cpp
+    DisplayModeCatalogue.cpp
+    DisplayModeCatalogue.hpp
     Driver.cpp
     Driver.hpp
     DriverDeprecated.cpp
