@@ -109,7 +109,6 @@ inline constexpr bool cDemoVersion =
 #include "machlog/World/GameCreationData.hpp"
 #include "machlog/Messaging/RemoteFirstPersonManager.hpp"
 #include "machlog/Score.hpp"
-#include "machlog/Messaging/RecentEventsManager.hpp"
 
 #include "device/CD.hpp"
 #include "device/ButtonEvent.hpp"
@@ -254,7 +253,6 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     SysRegistry::instance().setStringValue("", "version", "1.0");
 
     MachGuiInGameChatMessages::instance().initialise(pMessageBroker_, this);
-    MachLogRecentEventsManager::instance().setCameras(pInGameScreen_->cameras());
 
     pReporter->report(100, 100); // 100% of gui stuff done
     if (getenv("CB_DISABLE_NETWORK_TO"))
@@ -276,8 +274,6 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
     CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
     CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
     CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
-    MachLogRecentEventsManager::instance().setCameras(nullptr);
 
     unloadGame();
 

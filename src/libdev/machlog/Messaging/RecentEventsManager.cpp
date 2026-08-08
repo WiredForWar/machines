@@ -1,9 +1,8 @@
 #include "RecentEventsManager.hpp"
 
-#include "gui/Event.hpp"
-#include "machgui/Cameras.hpp"
 #include "machlog/Messaging/MachineVoiceMailEventID.hpp"
 #include "machlog/Actors/Actor.hpp"
+#include "mathex/Point3d.hpp"
 
 MachLogRecentEventsManager::MachLogRecentEventsManager()
 {
@@ -13,11 +12,6 @@ MachLogRecentEventsManager& MachLogRecentEventsManager::instance()
 {
     static MachLogRecentEventsManager instance_;
     return instance_;
-}
-
-void MachLogRecentEventsManager::setCameras(MachCameras* pCameras)
-{
-    pCameras_ = pCameras;
 }
 
 void MachLogRecentEventsManager::clear()
@@ -100,26 +94,19 @@ void MachLogRecentEventsManager::onVoiceMailPosted(const MachActor& fromActor, M
     addEventPosition(fromActor.position());
 }
 
-bool MachLogRecentEventsManager::doHandleKeyEvent(const GuiKeyEvent& event)
+MexPoint2d MachLogRecentEventsManager::nextEventPosition()
 {
-    PRE(pCameras_);
+    PRE(hasEvents());
 
-    if (event.key() == Device::KeyCode::SPACE && event.state() == Gui::PRESSED)
+    const MexPoint2d position = eventPositions_.at(eventPositions_.size() - skipEvents_ - 1);
+
+    ++skipEvents_;
+    if (skipEvents_ >= eventPositions_.size())
     {
-        if (hasEvents())
-        {
-            pCameras_->moveTo(eventPositions_.at(eventPositions_.size() - skipEvents_ - 1));
-            skipEvents_++;
-            if (skipEvents_ >= eventPositions_.size())
-            {
-                skipEvents_ = 0;
-            }
-        }
-
-        return true;
+        skipEvents_ = 0;
     }
 
-    return false;
+    return position;
 }
 
 void MachLogRecentEventsManager::addEventPosition(const MexPoint2d& newEventPos)

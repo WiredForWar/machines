@@ -4,11 +4,10 @@
 #include "mathex/Point2d.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
 
+#include <cstddef>
 #include <vector>
 
-class GuiKeyEvent;
 class MachActor;
-class MachCameras;
 
 enum class MachineVoiceMailEventID;
 
@@ -17,8 +16,6 @@ class MachLogRecentEventsManager
 public:
     static MachLogRecentEventsManager& instance();
 
-    void setCameras(MachCameras* pCameras);
-
     void clear();
 
     bool hasEvents() const;
@@ -26,16 +23,18 @@ public:
     void onVoiceMailPosted(const MexPoint3d& position, VoiceMailID id);
     void onVoiceMailPosted(const MachActor& fromActor, MachineVoiceMailEventID id);
 
-    bool doHandleKeyEvent(const GuiKeyEvent& event);
+    // The event to look at next, from the most recent one back to the oldest and
+    // then round again.
+    MexPoint2d nextEventPosition();
+    // PRE( hasEvents() );
 
 private:
     MachLogRecentEventsManager();
 
     void addEventPosition(const MexPoint2d& newEventPos);
 
-    int skipEvents_ = 0;
+    std::size_t skipEvents_ = 0;
     std::vector<MexPoint2d> eventPositions_;
-    MachCameras* pCameras_ = nullptr;
 };
 
 #endif // MACHLOG_RecentEventsManager_HPP

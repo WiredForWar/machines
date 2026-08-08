@@ -233,8 +233,18 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
             }
             break;
-        case 14:
-            processed = MachLogRecentEventsManager::instance().doHandleKeyEvent(e);
+        case 14: // Look at the recent events in turn
+            if (e.key() == Device::KeyCode::SPACE && e.state() == Gui::PRESSED)
+            {
+                MachLogRecentEventsManager& recentEvents = MachLogRecentEventsManager::instance();
+                if (recentEvents.hasEvents())
+                {
+                    ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
+                    pImpl_->pCameras_->moveTo(recentEvents.nextEventPosition());
+                }
+
+                processed = true;
+            }
             break;
         default:
             finished = true;
