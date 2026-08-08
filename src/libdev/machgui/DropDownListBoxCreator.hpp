@@ -90,12 +90,17 @@ public:
     bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
     void hasFocus(bool) override;
 
+    // A disabled drop down shows its selection dimmed, and neither opens nor takes
+    // the focus. Use it for a choice that the state of another control has settled.
+    bool isFocusEnabled() const override;
+
     void setCurrentIndexChangedCallback(Callback callback);
 
 protected:
     static GuiBmpFont getFont();
     static GuiBmpFont getWhiteFont();
     static GuiBmpFont getHighlightFont();
+    static GuiBmpFont getDisabledFont();
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;

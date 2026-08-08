@@ -183,6 +183,9 @@ size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
+    if (!isEnabled())
+        return;
+
     hovered_ = true;
     changed();
 }
@@ -195,9 +198,15 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& 
 }
 
 // virtual
+bool MachGuiDropDownListBoxCreator::isFocusEnabled() const
+{
+    return isEnabled() && MachGuiFocusCapableControl::isFocusEnabled();
+}
+
+// virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (strings_.empty() || rel.leftButton() != Gui::RELEASED)
+    if (!isEnabled() || strings_.empty() || rel.leftButton() != Gui::RELEASED)
         return;
 
     const int itemHeight = static_cast<int>(MachGuiSingleSelectionListBoxItem::reqHeight());
@@ -252,7 +261,12 @@ void MachGuiDropDownListBoxCreator::doDisplay()
         absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor() + offset,
         absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor() + offset);
 
-    if (hovered_)
+    if (!isEnabled())
+    {
+        GuiPainter::instance()
+            .drawText(currentText(), Ren::Point(textPos.x(), textPos.y()), getDisabledFont(), width() - offset2);
+    }
+    else if (hovered_)
     {
         if (isFocusControl())
         {
@@ -346,6 +360,15 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getWhiteFont()
 // static
 GuiBmpFont MachGuiDropDownListBoxCreator::getHighlightFont()
 {
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
+
+    return bmpFont;
+}
+
+// static
+GuiBmpFont MachGuiDropDownListBoxCreator::getDisabledFont()
+{
+    // Dark against the backdrop, so the text reads as out of reach.
     GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
 
     return bmpFont;
