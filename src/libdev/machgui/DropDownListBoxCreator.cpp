@@ -333,7 +333,7 @@ GuiBmpFont MachGuiDropDownListBoxCreator::getHighlightFont()
 GuiBmpFont MachGuiDropDownListBoxCreator::getDisabledFont()
 {
     // Dark against the backdrop, so the text reads as out of reach.
-    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontDark());
+    GuiBmpFont bmpFont = Gui::getFont(MachGui::Menu::smallFontWhite());
 
     return bmpFont;
 }

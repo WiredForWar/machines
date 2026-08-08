@@ -70,6 +70,14 @@ const std::string& computerText();
 const std::string& unavailableText();
 const std::string& wonSymbolText();
 
+// The size the menus are drawn at, and scaled up from.
+constexpr Ren::Size MenuSize{640, 480};
+
+// Whether the menus scaled by the given percentage still fit a window of the given
+// size. A percentage of zero leaves the scale to the game, which only ever picks
+// one that fits, so it fits any window.
+bool scaleFactorFits(int scaleFactorPercents, Ren::Size windowSize);
+
 MATHEX_SCALAR menuScaleFactor();
 void setMenuScaleFactor(MATHEX_SCALAR scale);
 

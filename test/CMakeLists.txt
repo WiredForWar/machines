@@ -55,6 +55,7 @@ append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
 #~:machgui
 append_test(DropDownPlacementTests machgui/DropDownPlacementTests.cpp)
 append_test(MouseLookTests machgui/MouseLookTests.cpp)
+append_test(ScaleFactorTests machgui/ScaleFactorTests.cpp)
 #~:network
 append_test(NetUtilsTest network/NetUtilsTests.cpp)
 #~:system

@@ -280,22 +280,12 @@ bool SDLApp::clientStartup()
         int scaleFactorPercents = SysRegistry::instance().queryIntegerValue("Options\\Scale Factor", "Value");
         if (scaleFactorPercents == 0)
         {
-            if (mode.width() > 1024 && mode.height() > 768)
-            {
-                scaleFactorPercents = 200;
-            }
-            else
-            {
-                scaleFactorPercents = 100;
-            }
+            scaleFactorPercents = MachGui::scaleFactorFits(200, mode.size()) ? 200 : 100;
         }
-        else if (scaleFactorPercents > 100)
+        else if (! MachGui::scaleFactorFits(scaleFactorPercents, mode.size()))
         {
-            if (mode.width() < 1024 || mode.height() < 768)
-            {
-                spdlog::info("The scale factor from preferences does not fit in the window resolution");
-                scaleFactorPercents = 100;
-            }
+            spdlog::info("The scale factor from preferences does not fit in the window resolution");
+            scaleFactorPercents = 100;
         }
 
         spdlog::info("Using scale factor {}%", scaleFactorPercents);
