@@ -52,9 +52,8 @@
 namespace
 {
 
-// A percentage, or zero to let the resolution decide. In step with the entries of
-// the interface scale drop down.
-constexpr int ScaleFactorValues[] = {
+// A percentage, or zero to leave the scale to the game.
+constexpr int AllScaleFactorValues[] = {
     0,
     100,
     200,
@@ -259,16 +258,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         vSyncModeDropDown_->setAvailText(itemNames);
     }
 
-    {
-        GuiStrings scaleNames = {
-            ResolvedUiString(IDS_MENU_DEFAULT),
-            "100%",
-            "200%",
-        };
-
-        pScaleFactorSelector_ = addDropDown(IDS_SCALE_FACTOR);
-        pScaleFactorSelector_->setAvailText(scaleNames);
-    }
+    pScaleFactorSelector_ = addDropDown(IDS_SCALE_FACTOR);
 
     pCameraAccelerationSlider_ = addSliderBar(IDS_CONFIG_CAMERA_ACCELERATION);
     pCameraAccelerationSlider_->minMax(1, 30);
@@ -366,7 +356,10 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     });
 
     pWindowMode_->setCurrentIndexChangedCallback([this]() { updateDisplayControls(); });
-    pScreenSize_->setCurrentIndexChangedCallback([this]() { updateRefreshRates(); });
+    pScreenSize_->setCurrentIndexChangedCallback([this]() {
+        updateRefreshRates();
+        updateScaleFactors();
+    });
 
     TEST_INVARIANT;
 }
@@ -566,11 +559,7 @@ void MachGuiCtxOptions::writeToConfig()
         ++index;
     }
 
-    {
-        const int scaleFactorIndex = pScaleFactorSelector_->currentIndex();
-        if (scaleFactorIndex >= 0)
-            Config::uiScaleFactor.set(ScaleFactorValues[scaleFactorIndex]);
-    }
+    Config::uiScaleFactor.set(selectedScaleFactor());
 }
 
 void MachGuiCtxOptions::readFromConfig()
@@ -632,20 +621,7 @@ void MachGuiCtxOptions::readFromConfig()
 
     cursorType2d_ = pCursorType_->isChecked();
 
-    {
-        const int scaleFactorValue = Config::uiScaleFactor.get();
-
-        int scaleFactorIndex = 0;
-        for (std::size_t i = 0; i < std::size(ScaleFactorValues); ++i)
-        {
-            if (scaleFactorValue == ScaleFactorValues[i])
-            {
-                scaleFactorIndex = static_cast<int>(i);
-                break;
-            }
-        }
-        pScaleFactorSelector_->setCurrentIndex(scaleFactorIndex);
-    }
+    setScaleFactor(Config::uiScaleFactor.get());
 }
 
 // static
@@ -731,6 +707,7 @@ void MachGuiCtxOptions::updateDisplayControls()
     updatingDisplayControls_ = false;
 
     updateRefreshRates();
+    updateScaleFactors();
 }
 
 void MachGuiCtxOptions::updateResolutions()
@@ -774,6 +751,76 @@ void MachGuiCtxOptions::updateResolutions()
 
     pScreenSize_->setAvailText(labels);
     pScreenSize_->setCurrentIndex(indexOfResolution(wanted));
+}
+
+void MachGuiCtxOptions::updateScaleFactors()
+{
+    if (updatingDisplayControls_)
+        return;
+
+    const int wanted = selectedScaleFactor();
+    const Ren::Size resolution = selectedResolution();
+
+    scaleFactors_.clear();
+    GuiStrings labels;
+
+    for (const int percents : AllScaleFactorValues)
+    {
+        if (! MachGui::scaleFactorFits(percents, resolution))
+            continue;
+
+        scaleFactors_.push_back(percents);
+        if (percents == 0)
+        {
+            labels.push_back(ResolvedUiString(IDS_MENU_DEFAULT));
+        }
+        else
+        {
+            char buffer[16];
+            snprintf(buffer, sizeof(buffer), "%d%%", percents);
+            labels.push_back(buffer);
+        }
+    }
+
+    pScaleFactorSelector_->setAvailText(labels);
+
+    // Keep the scale that was chosen where the resolution still leaves room for
+    // it, and fall back to letting the game decide where it does not.
+    int index = 0;
+    for (std::size_t i = 0; i < scaleFactors_.size(); ++i)
+    {
+        if (scaleFactors_[i] == wanted)
+        {
+            index = static_cast<int>(i);
+            break;
+        }
+    }
+    pScaleFactorSelector_->setCurrentIndex(index);
+}
+
+void MachGuiCtxOptions::setScaleFactor(int scaleFactorPercents)
+{
+    for (std::size_t i = 0; i < scaleFactors_.size(); ++i)
+    {
+        if (scaleFactors_[i] == scaleFactorPercents)
+        {
+            pScaleFactorSelector_->setCurrentIndex(static_cast<int>(i));
+            return;
+        }
+    }
+
+    // The resolution leaves no room for the scale that was asked for, so leave it
+    // to the game.
+    pScaleFactorSelector_->setCurrentIndex(0);
+}
+
+int MachGuiCtxOptions::selectedScaleFactor() const
+{
+    const int index = pScaleFactorSelector_->currentIndex();
+    if (index < 0 || static_cast<std::size_t>(index) >= scaleFactors_.size())
+        return 0;
+
+    return scaleFactors_[index];
 }
 
 void MachGuiCtxOptions::updateRefreshRates()
@@ -847,6 +894,7 @@ void MachGuiCtxOptions::setDisplaySettings(Ren::WindowMode windowMode, Ren::Size
 
     pScreenSize_->setCurrentIndex(indexOfResolution(resolution));
     updateRefreshRates();
+    updateScaleFactors();
 
     for (std::size_t i = 0; i < refreshRates_.size(); ++i)
     {

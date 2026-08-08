@@ -58,6 +58,9 @@ private:
     Ren::WindowMode selectedWindowMode() const;
     Ren::Size selectedResolution() const;
     int selectedRefreshRate() const;
+    int selectedScaleFactor() const;
+
+    void setScaleFactor(int scaleFactorPercents);
 
     void setDisplaySettings(Ren::WindowMode windowMode, Ren::Size resolution, int refreshRate);
 
@@ -67,6 +70,9 @@ private:
     void updateDisplayControls();
     void updateResolutions();
     void updateRefreshRates();
+
+    // Offer only the scales the menus can be drawn at in the chosen resolution.
+    void updateScaleFactors();
 
     int indexOfResolution(Ren::Size resolution) const;
 
@@ -96,6 +102,7 @@ private:
     // offer them.
     ctl_vector<Ren::Size> resolutions_;
     ctl_vector<int> refreshRates_;
+    ctl_vector<int> scaleFactors_;
 
     // Retained so that the display settings can be put back when the player cancels.
     Ren::WindowMode windowMode_{};
