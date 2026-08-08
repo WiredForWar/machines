@@ -60,6 +60,8 @@ set(MACHGUI_SOURCES
     DropDownListBox.hpp
     DropDownListBoxCreator.cpp
     DropDownListBoxCreator.hpp
+    DropDownPlacement.cpp
+    DropDownPlacement.hpp
     EditBoxListBoxItem.cpp
     EditBoxListBoxItem.hpp
     ExitToInternetMessageBoxResponder.cpp

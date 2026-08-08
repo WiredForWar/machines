@@ -13,6 +13,7 @@
 #include "machgui/StartupData.hpp"
 #include "machgui/MessageBroker.hpp"
 #include "machgui/DropDownListBox.hpp"
+#include "machgui/DropDownPlacement.hpp"
 #include "machgui/ui/MenuStyle.hpp"
 #include "gui/ScrollableList.hpp"
 #include "gui/Font.hpp"
@@ -874,17 +875,26 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
             }
         }
 
-        size_t dropDownHeight = strings.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
+        const int itemHeight = static_cast<int>(MachGuiSingleSelectionListBoxItem::reqHeight());
+        const int itemSpacing = itemHeight - 1; // the items are drawn overlapping by one pixel
+
+        // Keep the list inside the root it is attached to, however many players there
+        // are to choose from.
+        const MachGui::DropDownPlacement placement = MachGui::dropDownPlacement(
+            Gui::Box(dropDownPos, dropDownWidth, itemHeight),
+            Gui::Box(0, 0, pStartupScreens_->width(), pStartupScreens_->height()),
+            itemHeight,
+            itemSpacing,
+            strings.size());
+
+        if (placement.visibleItems == 0)
+            return;
 
         MachGuiDropDownListBox* pDropDownList = new MachGuiPlayerSelectionListBox(
             pStartupScreens_,
-            Gui::Box(
-                dropDownPos.x(),
-                dropDownPos.y(),
-                dropDownPos.x() + dropDownWidth,
-                dropDownPos.y() + dropDownHeight),
+            placement.box,
             1000,
-            MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
+            itemSpacing,
             1,
             dropDownWidth,
             strings,

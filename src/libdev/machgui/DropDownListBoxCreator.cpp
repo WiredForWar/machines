@@ -6,6 +6,7 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/DropDownListBoxCreator.hpp"
+#include "machgui/DropDownPlacement.hpp"
 #include "machgui/gui.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/SingleSelectionListBoxItem.hpp"
@@ -203,43 +204,45 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& 
 // virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (!strings_.empty())
+    if (strings_.empty() || rel.leftButton() != Gui::RELEASED)
+        return;
+
+    const int itemHeight = static_cast<int>(MachGuiSingleSelectionListBoxItem::reqHeight());
+    const int itemSpacing = itemHeight - 1; // the items are drawn overlapping by one pixel
+
+    // The list becomes a child of the menu root, so it has to be placed, and kept,
+    // in that root's own space.
+    const Gui::Coord rootOrigin = pStartupScreens_->absoluteCoord();
+    const Gui::Box anchor(
+        Gui::Coord(
+            absoluteBoundary().minCorner().x() - rootOrigin.x(),
+            absoluteBoundary().minCorner().y() - rootOrigin.y()),
+        width(),
+        height());
+    const Gui::Box bounds(0, 0, pStartupScreens_->width(), pStartupScreens_->height());
+
+    // A list too long for the space shows as much of itself as fits, and the rest is
+    // reached by scrolling.
+    const MachGui::DropDownPlacement placement
+        = MachGui::dropDownPlacement(anchor, bounds, itemHeight, itemSpacing, strings_.size());
+
+    if (placement.visibleItems == 0)
+        return;
+
+    // Make sure that selected string appears first in list
+    ctl_vector<std::string> orderedStrings;
+    orderedStrings.push_back(currentText());
+
+    for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)
     {
-        if (rel.leftButton() == Gui::RELEASED)
+        // Ignore current selection, do not add into list again.
+        if (strcasecmp((*iter).c_str(), orderedStrings.front().c_str()) != 0)
         {
-            size_t dropDownHeight = strings_.size() * MachGuiSingleSelectionListBoxItem::reqHeight();
-
-            Gui::Coord coord = absoluteBoundary().minCorner();
-
-            // Make sure that selected string appears first in list
-            ctl_vector<std::string> orderedStrings;
-            orderedStrings.push_back(currentText());
-
-            for (auto iter = strings_.begin(); iter != strings_.end(); ++iter)
-            {
-                // Ignore current selection, do not add into list again.
-                if (strcasecmp((*iter).c_str(), orderedStrings.front().c_str()) != 0)
-                {
-                    orderedStrings.push_back((*iter));
-                }
-            }
-
-            auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
-            using namespace machgui::helper::menus;
-            int menuLeft = x_from_screen_left(pRootParent_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
-            int menuTop = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
-
-            createDropDownList(
-                pStartupScreens_,
-                Gui::Box(Gui::Coord(coord.x() - menuLeft, coord.y() - menuTop), width(), dropDownHeight),
-                1000,
-                MachGuiSingleSelectionListBoxItem::reqHeight() - 1 /* slight overlap*/,
-                1,
-                width(),
-                orderedStrings,
-                this);
+            orderedStrings.push_back((*iter));
         }
     }
+
+    createDropDownList(pStartupScreens_, placement.box, 1000, itemSpacing, 1, width(), orderedStrings, this);
 }
 
 // virtual
