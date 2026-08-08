@@ -14,7 +14,6 @@
 #include "gui/Font.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
-#include "machgui/menus_helper.hpp"
 
 MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     GuiDisplayable* pParent,
@@ -26,8 +25,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     , whiteFont_(false)
     , border_(false)
 {
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-
     TEST_INVARIANT;
 }
 
@@ -42,8 +39,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     , whiteFont_(whiteFont)
     , border_(false)
 {
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-
     TEST_INVARIANT;
 }
 
@@ -60,8 +55,6 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     , whiteFont_(whiteFont)
     , border_(border)
 {
-    pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
-
     TEST_INVARIANT;
 }
 

@@ -131,9 +131,6 @@ private:
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     bool whiteFont_;
     bool border_;
-
-    // A GuiRoot such as MachGuiStartupScreens
-    GuiRoot* pRootParent_;
 };
 
 class MachGuiDropDownList : public MachGuiDropDownListBox
