@@ -33,20 +33,6 @@ class MachGuiDropDownListBoxCreator
 public:
     using Callback = std::function<void()>;
 
-    using DropDownListBoxItem = const void*;
-    using DropDownListBoxItems = ctl_vector<DropDownListBoxItem>;
-
-    template <typename T, int Size> static DropDownListBoxItems createBoxItems(T (&Values)[Size])
-    {
-        MachGuiDropDownListBoxCreator::DropDownListBoxItems items;
-        items.reserve(Size);
-        for (const T& Value : Values)
-        {
-            items.push_back(&Value);
-        }
-        return items;
-    };
-
     // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
     // still needed for
     MachGuiDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width);
@@ -65,24 +51,12 @@ public:
     std::string currentText() const;
     void setCurrentText(const std::string&);
 
+    // Which entry is selected, or -1 when none is. Whatever the entries stand for
+    // is the caller's to keep, in the order the text was given in.
     int currentIndex() const;
     void setCurrentIndex(int index);
 
     void setAvailText(const GuiStrings& availText);
-
-    // Get ptr to item associated with currently highlighted text
-    const DropDownListBoxItem item() const;
-    // PRE ( hasItems() )
-
-    bool setCurrentItem(const DropDownListBoxItem item);
-
-    // Establish if there are values associated with drop down list box entries
-    bool hasItems() const;
-
-    const DropDownListBoxItems& items() const;
-
-    // Set item data associated with list box item text
-    void items(const DropDownListBoxItems& items);
 
     // Get minimum height required for the gui item.
     static size_t reqHeight(bool border = false);
@@ -130,8 +104,6 @@ private:
     bool hovered_ = false;
     GuiStrings strings_;
     int currentIndex_{-1};
-    DropDownListBoxItems items_;
-    DropDownListBoxItem item_;
     // TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     bool whiteFont_;

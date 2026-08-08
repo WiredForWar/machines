@@ -16,12 +16,13 @@
 
 #include "ctl/PtrVector.hpp"
 #include "ctl/CountedPtr.hpp"
+#include "ctl/Vector.hpp"
 #include "machgui/StartupScreens.hpp"
+#include "render/Display.hpp"
 
 class MachGuiSlideBar;
 class MachGuiDropDownListBoxCreator;
 class MachGuiCheckBox;
-class RenDisplay;
 
 namespace MachGui
 {
@@ -53,6 +54,10 @@ private:
     void writeToConfig();
     void readFromConfig();
 
+    // The mode the screen size drop down is showing, or nullptr when it is showing
+    // none.
+    const RenDisplay::Mode* selectedScreenMode() const;
+
     MachGuiCtxOptions(const MachGuiCtxOptions&);
     MachGuiCtxOptions& operator=(const MachGuiCtxOptions&);
 
@@ -72,6 +77,10 @@ private:
     MachGuiCheckBox* pGrabMouse_{};
     MachGuiCheckBox* pWasdControls_{};
     MachGuiDropDownListBoxCreator* pScreenSize_{};
+
+    // The modes the screen size drop down offers, in the order it offers them.
+    ctl_vector<const RenDisplay::Mode*> screenModes_;
+
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
     float musicVolume_, soundVolume_;

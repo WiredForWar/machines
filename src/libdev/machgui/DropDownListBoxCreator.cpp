@@ -133,42 +133,6 @@ void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
     }
 }
 
-const MachGuiDropDownListBoxCreator::DropDownListBoxItem MachGuiDropDownListBoxCreator::item() const
-{
-    // Find value assosciated with currently selected text
-    PRE(hasItems());
-
-    ASSERT_INFO(currentText());
-    ASSERT(currentIndex_ >= 0, "Selected index must be valid when requesting item.");
-    const size_t index = static_cast<size_t>(currentIndex_);
-    ASSERT(
-        index < items_.size(),
-        "Selected index must be in range when requesting item.");
-
-    const DropDownListBoxItem returnItem = items_[index];
-
-    return returnItem;
-}
-
-bool MachGuiDropDownListBoxCreator::setCurrentItem(const DropDownListBoxItem item)
-{
-    for (size_t i = 0; i < items_.size(); ++i)
-    {
-        if (items_.at(i) == item)
-        {
-            setCurrentIndex(static_cast<int>(i));
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool MachGuiDropDownListBoxCreator::hasItems() const
-{
-    return !items_.empty();
-}
-
 // static
 size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
 {
@@ -417,16 +381,6 @@ void MachGuiDropDownList::itemSelected(const std::string& text)
     pCreator_->setCurrentText(text);
 
     MachGuiDropDownListBox::itemSelected(text);
-}
-
-const MachGuiDropDownListBoxCreator::DropDownListBoxItems& MachGuiDropDownListBoxCreator::items() const
-{
-    return items_;
-}
-
-void MachGuiDropDownListBoxCreator::items(const DropDownListBoxItems& items)
-{
-    items_ = items;
 }
 
 // virtual

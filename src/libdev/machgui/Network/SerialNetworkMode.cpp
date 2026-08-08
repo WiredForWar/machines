@@ -28,6 +28,81 @@ public:
     MachGuiDropDownListBoxCreator* pFlowSelecter_{};
 };
 
+namespace
+{
+
+// A port setting and the text offered for it, kept together so that the two
+// cannot fall out of step.
+template <typename T>
+struct Choice
+{
+    const char* label;
+    T value;
+};
+
+constexpr Choice<size_t> ComPorts[] = {
+    { "COM 1", 1 },
+    { "COM 2", 2 },
+    { "COM 3", 3 },
+    { "COM 4", 4 },
+};
+
+constexpr Choice<NetComPortAddress::BaudRate> BaudRates[] = {
+    { "14400", NetComPortAddress::NET_BAUD_14400 },
+    { "19200", NetComPortAddress::NET_BAUD_19200 },
+    { "38400", NetComPortAddress::NET_BAUD_38400 },
+    { "56000", NetComPortAddress::NET_BAUD_56000 },
+    { "57600", NetComPortAddress::NET_BAUD_57600 },
+    { "115200", NetComPortAddress::NET_BAUD_115200 },
+    { "128000", NetComPortAddress::NET_BAUD_128000 },
+    { "256000", NetComPortAddress::NET_BAUD_256000 },
+};
+
+constexpr Choice<NetComPortAddress::Parity> Parities[] = {
+    { "NO PARITY", NetComPortAddress::NO_PARITY },
+    { "ODD", NetComPortAddress::ODD_PARITY },
+    { "EVEN", NetComPortAddress::EVEN_PARITY },
+    { "MARK", NetComPortAddress::MARK_PARITY },
+};
+
+constexpr Choice<NetComPortAddress::StopBits> StopBits[] = {
+    { "1 BIT", NetComPortAddress::ONE_STOPBIT },
+    { "1.5 BITS", NetComPortAddress::ONE5_STOPBIT },
+    { "2 BITS", NetComPortAddress::TWO_STOPBITS },
+};
+
+constexpr Choice<NetComPortAddress::FlowControl> FlowControls[] = {
+    { "NONE", NetComPortAddress::DTR_FLOW },
+    { "DTR", NetComPortAddress::NO_FLOW },
+    { "RTS/DTR", NetComPortAddress::RTSDTR_FLOW },
+    { "RTS", NetComPortAddress::RTS_FLOW },
+    { "XONXOFF", NetComPortAddress::XONXOFF_FLOW },
+};
+
+template <typename T, size_t N>
+GuiStrings labelsOf(const Choice<T> (&choices)[N])
+{
+    GuiStrings labels;
+    labels.reserve(N);
+    for (const Choice<T>& choice : choices)
+        labels.push_back(choice.label);
+
+    return labels;
+}
+
+// What the drop down is showing, or the first choice when it is showing none.
+template <typename T, size_t N>
+T selectedValue(const MachGuiDropDownListBoxCreator* pDropDown, const Choice<T> (&choices)[N])
+{
+    const int index = pDropDown->currentIndex();
+    if (index < 0 || static_cast<size_t>(index) >= N)
+        return choices[0].value;
+
+    return choices[index].value;
+}
+
+} // namespace
+
 MachGuiSerialNetworkMode::MachGuiSerialNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
@@ -53,27 +128,12 @@ void MachGuiSerialNetworkMode::setNetworkDetails()
 {
     // Use the settings from the drop downs to configure network settings
     // Populate a com port object with user settings
-    size_t newPortNumber = (size_t)pimpl_->pComPortSelecter_->item();
+    NetComPortAddress currentPort(selectedValue(pimpl_->pComPortSelecter_, ComPorts));
 
-    NetComPortAddress currentPort(newPortNumber);
-
-    // NetComPortAddress::BaudRate newBaudRate = ( NetComPortAddress::BaudRate ) pimpl_->pBaudRateSelecter_->item();
-    NetComPortAddress::BaudRate newBaudRate = (NetComPortAddress::BaudRate)(size_t)pimpl_->pBaudRateSelecter_->item();
-    currentPort.baudRate(newBaudRate);
-
-    // NetComPortAddress::Parity newParity   = ( NetComPortAddress::Parity ) pimpl_->pParitySelecter_->item();
-    NetComPortAddress::Parity newParity = (NetComPortAddress::Parity)(size_t)pimpl_->pParitySelecter_->item();
-    currentPort.parity(newParity);
-
-    // NetComPortAddress::StopBits newStopBits = ( NetComPortAddress::StopBits ) pimpl_->pStopBitsSelecter_->item();
-    NetComPortAddress::StopBits newStopBits = (NetComPortAddress::StopBits)(size_t)pimpl_->pStopBitsSelecter_->item();
-    currentPort.stopBits(newStopBits);
-
-    // NetComPortAddress::FlowControl newFlowControl = ( NetComPortAddress::FlowControl )
-    // pimpl_->pFlowSelecter_->item();
-    NetComPortAddress::FlowControl newFlowControl
-        = (NetComPortAddress::FlowControl)(size_t)pimpl_->pFlowSelecter_->item();
-    currentPort.flowControl(newFlowControl);
+    currentPort.baudRate(selectedValue(pimpl_->pBaudRateSelecter_, BaudRates));
+    currentPort.parity(selectedValue(pimpl_->pParitySelecter_, Parities));
+    currentPort.stopBits(selectedValue(pimpl_->pStopBitsSelecter_, StopBits));
+    currentPort.flowControl(selectedValue(pimpl_->pFlowSelecter_, FlowControls));
 
     // Set the current com port settings
     //  NetNetwork::instance().comPortAddress( currentPort );
@@ -98,18 +158,6 @@ bool MachGuiSerialNetworkMode::validNetworkDetails(bool /*isHost*/)
 // virtual
 void MachGuiSerialNetworkMode::readNetworkDetails()
 {
-    GuiStrings comStrings;
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems comSettings;
-
-    comStrings.push_back("COM 1");
-    comSettings.push_back((void*)1);
-    comStrings.push_back("COM 2");
-    comSettings.push_back((void*)2);
-    comStrings.push_back("COM 3");
-    comSettings.push_back((void*)3);
-    comStrings.push_back("COM 4");
-    comSettings.push_back((void*)4);
-
     GuiResourceString comPortHeading(IDS_MENU_COMPORT);
     GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontLight()));
     const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
@@ -127,28 +175,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pComPortSelecter_->setAvailText(comStrings);
-    pimpl_->pComPortSelecter_->items(comSettings);
-
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems baudSettings;
-
-    GuiStrings baudStrings;
-    baudStrings.push_back("14400");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_14400);
-    baudStrings.push_back("19200");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_19200);
-    baudStrings.push_back("38400");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_38400);
-    baudStrings.push_back("56000");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_56000);
-    baudStrings.push_back("57600");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_57600);
-    baudStrings.push_back("115200");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_115200);
-    baudStrings.push_back("128000");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_128000);
-    baudStrings.push_back("256000");
-    baudSettings.push_back((void*)NetComPortAddress::NET_BAUD_256000);
+    pimpl_->pComPortSelecter_->setAvailText(labelsOf(ComPorts));
 
     GuiResourceString baudHeading(IDS_MENU_BAUD);
 
@@ -165,20 +192,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pBaudRateSelecter_->setAvailText(baudStrings);
-    pimpl_->pBaudRateSelecter_->items(baudSettings);
-
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems paritySettings;
-
-    GuiStrings parityStrings;
-    parityStrings.push_back("NO PARITY");
-    paritySettings.push_back((void*)NetComPortAddress::NO_PARITY);
-    parityStrings.push_back("ODD");
-    paritySettings.push_back((void*)NetComPortAddress::ODD_PARITY);
-    parityStrings.push_back("EVEN");
-    paritySettings.push_back((void*)NetComPortAddress::EVEN_PARITY);
-    parityStrings.push_back("MARK");
-    paritySettings.push_back((void*)NetComPortAddress::MARK_PARITY);
+    pimpl_->pBaudRateSelecter_->setAvailText(labelsOf(BaudRates));
 
     GuiResourceString parityHeading(IDS_MENU_PARITY);
 
@@ -195,18 +209,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pParitySelecter_->setAvailText(parityStrings);
-    pimpl_->pParitySelecter_->items(paritySettings);
-
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems bitSettings;
-    GuiStrings bitStrings;
-
-    bitStrings.push_back("1 BIT");
-    bitSettings.push_back((void*)NetComPortAddress::ONE_STOPBIT);
-    bitStrings.push_back("1.5 BITS");
-    bitSettings.push_back((void*)NetComPortAddress::ONE5_STOPBIT);
-    bitStrings.push_back("2 BITS");
-    bitSettings.push_back((void*)NetComPortAddress::TWO_STOPBITS);
+    pimpl_->pParitySelecter_->setAvailText(labelsOf(Parities));
 
     GuiResourceString stopBitsHeading(IDS_MENU_STOPBITS);
 
@@ -223,22 +226,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pStopBitsSelecter_->setAvailText(bitStrings);
-    pimpl_->pStopBitsSelecter_->items(bitSettings);
-
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems flowSettings;
-    GuiStrings flowStrings;
-
-    flowStrings.push_back("NONE");
-    flowSettings.push_back((void*)NetComPortAddress::DTR_FLOW);
-    flowStrings.push_back("DTR");
-    flowSettings.push_back((void*)NetComPortAddress::NO_FLOW);
-    flowStrings.push_back("RTS/DTR");
-    flowSettings.push_back((void*)NetComPortAddress::RTSDTR_FLOW);
-    flowStrings.push_back("RTS");
-    flowSettings.push_back((void*)NetComPortAddress::RTS_FLOW);
-    flowStrings.push_back("XONXOFF");
-    flowSettings.push_back((void*)NetComPortAddress::XONXOFF_FLOW);
+    pimpl_->pStopBitsSelecter_->setAvailText(labelsOf(StopBits));
 
     GuiResourceString flowHeading(IDS_MENU_FLOW);
 
@@ -255,8 +243,7 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pFlowSelecter_->setAvailText(flowStrings);
-    pimpl_->pFlowSelecter_->items(flowSettings);
+    pimpl_->pFlowSelecter_->setAvailText(labelsOf(FlowControls));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t)

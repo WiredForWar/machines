@@ -47,6 +47,19 @@
 #define OPTIMISATIONS_AREA_MINX OPTIONS_AREA_MINX
 #define OPTIMISATIONS_AREA_MINY 239
 
+namespace
+{
+
+// A percentage, or zero to let the resolution decide. In step with the entries of
+// the interface scale drop down.
+constexpr int ScaleFactorValues[] = {
+    0,
+    100,
+    200,
+};
+
+} // namespace
+
 class MachGuiOptionsExitMessageBoxResponder : public MachGuiMessageBoxResponder
 {
 public:
@@ -232,9 +245,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     }
 
     GuiStrings strings;
-    MachGuiDropDownListBoxCreator::DropDownListBoxItems modeList;
     strings.reserve(4);
-    modeList.reserve(4);
+    screenModes_.reserve(4);
 
     // Iterate through screen modes selecting compatible ones ( i.e. conform to minimum size and colour bit depth ).
     const RenDisplay::Modes& modes = pDisplay_->modeList();
@@ -263,19 +275,18 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 && (inGameResolutionRefresh == 0 || inGameResolutionRefresh == mode.refreshRate()))
             {
                 strings.insert(strings.begin(), resolutionStr);
-                modeList.insert(modeList.begin(), (void*)&mode);
+                screenModes_.insert(screenModes_.begin(), &mode);
             }
             else
             {
                 strings.push_back(resolutionStr);
-                modeList.push_back((void*)&mode);
+                screenModes_.push_back(&mode);
             }
         }
     }
 
     pScreenSize_ = addDropDown(IDS_MENU_SCREENSIZE);
     pScreenSize_->setAvailText(strings);
-    pScreenSize_->items(modeList);
 
     {
         GuiStrings itemNames = {
@@ -295,16 +306,8 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             "200%",
         };
 
-        static const int scaleValues[] = {
-            0,
-            100,
-            200,
-        };
-
         pScaleFactorSelector_ = addDropDown(IDS_SCALE_FACTOR);
         pScaleFactorSelector_->setAvailText(scaleNames);
-        auto items = MachGuiDropDownListBoxCreator::createBoxItems(scaleValues);
-        pScaleFactorSelector_->items(items);
     }
 
     pCameraAccelerationSlider_ = addSliderBar(IDS_CONFIG_CAMERA_ACCELERATION);
@@ -350,19 +353,12 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             uint nch = (*it)->nChoices();
 
             GuiStrings choices;
-            MachGuiDropDownListBoxCreator::DropDownListBoxItems choiceIds;
             choices.reserve(nch);
-            choiceIds.reserve(nch);
 
             for (uint ch = 0; ch < nch; ++ch)
             {
                 GuiResourceString choice(ch + id + 1);
-                std::string choiceString = choice.asString();
-                choices.push_back(choiceString);
-                // The item id is an opaque pointer-sized tag, so widen the
-                // index before reinterpreting it as one.
-                choiceIds.push_back(reinterpret_cast<MachGuiDropDownListBoxCreator::DropDownListBoxItem>(
-                    static_cast<uintptr_t>(ch + 1)));
+                choices.push_back(choice.asString());
             }
             GuiResourceString choiceTitle(id);
 
@@ -383,7 +379,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 false,
                 true);
             choiceDropDown->setAvailText(choices);
-            choiceDropDown->items(choiceIds);
             choicesOptimisations_.push_back(choiceDropDown);
             ++index;
         }
@@ -466,7 +461,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 
         bool bDisplayMessageBox = false;
 
-        const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
+        const RenDisplay::Mode* pNewMode = selectedScreenMode();
         const RenDisplay::Mode& pCurrentMode
             = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
 
@@ -474,7 +469,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 
         // The chosen resolution is applied when the game starts, so a change to it
         // only takes effect after a restart.
-        if ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height()))
+        if (pNewMode && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
         {
             idsMessage = IDS_MENUMESSAGE_RESOLUTION;
             bDisplayMessageBox = true;
@@ -544,10 +539,12 @@ void MachGuiCtxOptions::writeToConfig()
         pStartupScreens_->startupData()->transitionFlicsOn());
 
     // Store the new screen size in the registry
-    const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
-    Config::gfxResolutionWidth.set(pNewMode->width());
-    Config::gfxResolutionHeight.set(pNewMode->height());
-    Config::gfxRefreshRate.set(pNewMode->refreshRate());
+    if (const RenDisplay::Mode* pNewMode = selectedScreenMode())
+    {
+        Config::gfxResolutionWidth.set(pNewMode->width());
+        Config::gfxResolutionHeight.set(pNewMode->height());
+        Config::gfxRefreshRate.set(pNewMode->refreshRate());
+    }
 
     // Store cursor type (2D/3D)
     SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
@@ -599,17 +596,16 @@ void MachGuiCtxOptions::writeToConfig()
     for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
     {
         uint id = (*it)->id();
-        // TODO: void* to uint??, this ptr value is stored simply as number?
-        // MachPhysComplexityManager::instance().changeChoiceItem( id, ( uint ) choicesOptimisations_[index]->item() - 1
-        // );
-        MachPhysComplexityManager::instance().changeChoiceItem(id, (size_t)choicesOptimisations_[index]->item() - 1);
+        const int choice = choicesOptimisations_[index]->currentIndex();
+        if (choice >= 0)
+            MachPhysComplexityManager::instance().changeChoiceItem(id, choice);
         ++index;
     }
 
     {
-        MachGuiDropDownListBoxCreator::DropDownListBoxItem currentItem = pScaleFactorSelector_->item();
-        int ScaleValue = *static_cast<const int*>(currentItem);
-        Config::uiScaleFactor.set(ScaleValue);
+        const int scaleFactorIndex = pScaleFactorSelector_->currentIndex();
+        if (scaleFactorIndex >= 0)
+            Config::uiScaleFactor.set(ScaleFactorValues[scaleFactorIndex]);
     }
 }
 
@@ -655,11 +651,7 @@ void MachGuiCtxOptions::readFromConfig()
     const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
     for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
     {
-        uint id = (*it)->id();
-
-        GuiResourceString choice(id + (*it)->choice() + 1);
-
-        choicesOptimisations_[index]->setCurrentText(choice.asString());
+        choicesOptimisations_[index]->setCurrentIndex(static_cast<int>((*it)->choice()));
 
         ++index;
     }
@@ -667,20 +659,18 @@ void MachGuiCtxOptions::readFromConfig()
     cursorType2d_ = pCursorType_->isChecked();
 
     {
-        int scaleFactorValue = Config::uiScaleFactor.get();
+        const int scaleFactorValue = Config::uiScaleFactor.get();
 
-        const MachGuiDropDownListBoxCreator::DropDownListBoxItems& scaleItems = pScaleFactorSelector_->items();
-        std::size_t scaleItemIndex = 0;
-        for (std::size_t i = 0; i < scaleItems.size(); ++i)
+        int scaleFactorIndex = 0;
+        for (std::size_t i = 0; i < std::size(ScaleFactorValues); ++i)
         {
-            const int* scale = static_cast<const int*>(scaleItems.at(i));
-            if (scaleFactorValue == *scale)
+            if (scaleFactorValue == ScaleFactorValues[i])
             {
-                scaleItemIndex = i;
+                scaleFactorIndex = static_cast<int>(i);
                 break;
             }
         }
-        pScaleFactorSelector_->setCurrentItem(scaleItems.at(scaleItemIndex));
+        pScaleFactorSelector_->setCurrentIndex(scaleFactorIndex);
     }
 }
 
@@ -718,6 +708,15 @@ void MachGuiCtxOptions::load3dSoundFiles(bool enabled)
 void MachGuiCtxOptions::exitFromOptions()
 {
     exitFromOptions_ = true;
+}
+
+const RenDisplay::Mode* MachGuiCtxOptions::selectedScreenMode() const
+{
+    const int index = pScreenSize_->currentIndex();
+    if (index < 0 || static_cast<std::size_t>(index) >= screenModes_.size())
+        return nullptr;
+
+    return screenModes_[index];
 }
 
 /* End CTXOPTNS.CPP *************************************************/
