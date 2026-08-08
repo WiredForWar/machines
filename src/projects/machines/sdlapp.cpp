@@ -377,17 +377,6 @@ bool SDLApp::clientStartup()
     HAL_STREAM("D3dApp::clientStartup sceneManager\n");
     W4dManager::instance().sceneManager(manager_);
 
-    // Restore users gamma correction setting
-    if (pDisplay_->supportsGammaCorrection())
-    {
-        int DefaultGamma = 1.0 * GAMMA_REG_MULTIPLIER;
-        double gammaValue
-            = SysRegistry::instance().queryIntegerValue("Options\\Gamma Correction", "Value", DefaultGamma);
-        gammaValue /= GAMMA_REG_MULTIPLIER;
-        gammaValue = mexClamp(gammaValue, GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT);
-        pDisplay_->gammaCorrection(gammaValue);
-    }
-
     std::string waitFilePath = System::findFile("gui/menu/wait.bmp");
     std::string waitLobbFilePath = System::findFile("gui/menu/waitlobb.bmp");
     // Get top left offset for images

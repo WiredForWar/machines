@@ -18,10 +18,6 @@
 #include "ctl/CountedPtr.hpp"
 #include "machgui/StartupScreens.hpp"
 
-#define GAMMA_REG_MULTIPLIER 0x19999999
-#define GAMMA_LOWER_LIMIT 0.1
-#define GAMMA_UPPER_LIMIT 5.0
-
 class MachGuiSlideBar;
 class MachGuiDropDownListBoxCreator;
 class MachGuiCheckBox;
@@ -78,7 +74,7 @@ private:
     MachGuiDropDownListBoxCreator* pScreenSize_{};
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;
-    float musicVolume_, soundVolume_, gammaCorrection_;
+    float musicVolume_, soundVolume_;
     bool use2DMarker_{};
     bool grabCursor_{};
     int32_t zenithCameraAcceleration_{};
@@ -88,7 +84,6 @@ private:
     MachGuiDropDownListBoxCreator* pScaleFactorSelector_{};
     bool exitFromOptions_ = false;
     bool cursorType2d_;
-    MachGuiSlideBar* pGammaCorrection_{};
     MachGuiSlideBar* pCameraAccelerationSlider_{};
 };
 

@@ -316,27 +316,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Config::uiGroundCameraAcceleration.set(v);
     });
 
-    // Only display gamma correction slider if gamma correction is supported
-    if (pDisplay_->supportsGammaCorrection())
-    {
-        pGammaCorrection_ = addSliderBar(IDS_MENU_GAMMACORRECTION);
-        pGammaCorrection_->minMax(GAMMA_LOWER_LIMIT, GAMMA_UPPER_LIMIT);
-        // Store initial value
-
-        pGammaCorrection_->setValueChangedHandler([](float newValue) {
-            W4dManager::instance().sceneManager()->pDevice()->display()->gammaCorrection(newValue);
-        });
-
-        gammaCorrection_ = W4dManager::instance().sceneManager()->pDevice()->display()->gammaCorrection();
-        pGammaCorrection_->setValue(gammaCorrection_);
-
-        // Show gamma correction image (helps get gamma setting correct)
-        new GuiImage(
-            pStartupScreens,
-            Gui::Coord(secondColumnInputX, pGammaCorrection_->relativeBoundary().bottom() + verticalSpacing),
-            MachGui::getScaledImage("gui/menu/gammacal.bmp"));
-    }
-
     {
         const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
         // Access boolean items
@@ -524,11 +503,6 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
         vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
-        // Only restore gamma correction if gamma correction is supported
-        if (pGammaCorrection_)
-        {
-            pGammaCorrection_->setValue(gammaCorrection_);
-        }
         pCameraAccelerationSlider_->setValue(zenithCameraAcceleration_);
 
         // There is no explicit Ground camera control but it is possible to set different settings via config file
@@ -574,15 +548,6 @@ void MachGuiCtxOptions::writeToConfig()
     Config::gfxResolutionWidth.set(pNewMode->width());
     Config::gfxResolutionHeight.set(pNewMode->height());
     Config::gfxRefreshRate.set(pNewMode->refreshRate());
-
-    // Store gamma correction value
-    if (pGammaCorrection_)
-    {
-        SysRegistry::instance().setIntegerValue(
-            "Options\\Gamma Correction",
-            "Value",
-            static_cast<double>(pGammaCorrection_->value()) * GAMMA_REG_MULTIPLIER);
-    }
 
     // Store cursor type (2D/3D)
     SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
