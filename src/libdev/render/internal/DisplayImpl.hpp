@@ -70,7 +70,7 @@ private:
     Ren::IWindowAdapter* adapter_{};
     std::vector<RenDisplay::Mode> modeList_;
     RenDisplay::Mode currentMode_;
-    bool fullscreen_ = false;
+    RenDisplay::WindowMode windowMode_ = RenDisplay::WindowMode::Windowed;
     const RenCursor2d* cursor_ = nullptr;
     RenISavedArea* backBufferCursorSave_ = nullptr;
     RenISavedArea* frontBufferCursorSave_ = nullptr;

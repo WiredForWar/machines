@@ -37,9 +37,9 @@ public:
     DisplayMode desktopDisplayMode() const override;
     bool useMode(const DisplayMode& mode) override;
 
-    // --- Fullscreen ---
-    bool setFullscreen(bool enabled) override;
-    bool isFullscreen() const override;
+    // --- Window mode ---
+    bool setWindowMode(WindowMode mode) override;
+    WindowMode windowMode() const override;
 
     // --- Cursor / input ---
     void setCursorGrabEnabled(bool enabled) override;
@@ -50,7 +50,7 @@ private:
     SDL_Window* window_{};
     // SDL_GLContext, kept opaque so that this header does not pull in SDL.
     void* glContext_{};
-    bool fullscreen_{};
+    WindowMode windowMode_{WindowMode::Windowed};
 };
 
 } // namespace Ren

@@ -156,7 +156,9 @@ bool SDLWindowAdapter::useMode(const DisplayMode& mode)
         return false;
 
     bool success = true;
-    if (fullscreen_)
+    switch (windowMode_)
+    {
+    case WindowMode::Fullscreen:
     {
         // SDL3 requires a mode obtained from SDL; pick the closest supported one.
         SDL_DisplayMode closestMode;
@@ -171,13 +173,26 @@ bool SDLWindowAdapter::useMode(const DisplayMode& mode)
             success = SDL_SetWindowFullscreenMode(window_, &closestMode);
         SDL_SetWindowSize(window_, mode.width, mode.height);
         SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-        fullscreen_ = SDL_SetWindowFullscreen(window_, true);
+        if (!SDL_SetWindowFullscreen(window_, true))
+            windowMode_ = WindowMode::Windowed;
+        break;
     }
-    else
-    {
+
+    case WindowMode::Borderless:
+        // A null fullscreen mode leaves the display in the mode it is already in,
+        // which is what makes this borderless rather than exclusive.
+        success = SDL_SetWindowFullscreenMode(window_, nullptr);
+        if (success)
+            success = SDL_SetWindowFullscreen(window_, true);
+        if (!success)
+            windowMode_ = WindowMode::Windowed;
+        break;
+
+    case WindowMode::Windowed:
         SDL_SetWindowFullscreen(window_, false);
         SDL_SetWindowSize(window_, mode.width, mode.height);
         SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+        break;
     }
 
     SDL_ShowWindow(window_);
@@ -193,27 +208,29 @@ bool SDLWindowAdapter::useMode(const DisplayMode& mode)
     return success;
 }
 
-bool SDLWindowAdapter::setFullscreen(bool enabled)
+bool SDLWindowAdapter::setWindowMode(WindowMode mode)
 {
     if (!window_)
         return false;
 
-    if (enabled)
+    if (mode == WindowMode::Windowed && windowMode_ != WindowMode::Windowed)
     {
-        // Deferred: the mode to go fullscreen with is only known in useMode().
-        fullscreen_ = true;
+        if (SDL_SetWindowFullscreen(window_, false))
+            windowMode_ = WindowMode::Windowed;
     }
     else
     {
-        fullscreen_ = !SDL_SetWindowFullscreen(window_, false);
+        // Covering the display is deferred to useMode(), which is where the mode to
+        // cover it with becomes known.
+        windowMode_ = mode;
     }
 
-    return fullscreen_ == enabled;
+    return windowMode_ == mode;
 }
 
-bool SDLWindowAdapter::isFullscreen() const
+Ren::IWindowAdapter::WindowMode SDLWindowAdapter::windowMode() const
 {
-    return fullscreen_;
+    return windowMode_;
 }
 
 void SDLWindowAdapter::setCursorGrabEnabled(bool enabled)

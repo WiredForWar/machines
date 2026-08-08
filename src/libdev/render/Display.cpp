@@ -25,13 +25,33 @@
 #define CB_RenDisplay_DEPIMPL()                                                                                        \
     CB_DEPIMPL(std::vector<RenDisplay::Mode>, modeList_);                                                              \
     CB_DEPIMPL(RenDisplay::Mode, currentMode_);                                                                        \
-    CB_DEPIMPL(bool, fullscreen_);                                                                                     \
+    CB_DEPIMPL(RenDisplay::WindowMode, windowMode_);                                                                   \
     CB_DEPIMPL(uint32_t, frameNo_);                                                                                    \
     CB_DEPIMPL(bool, supportsGammaCorrection_);                                                                        \
     CB_DEPIMPL(double, gammaCorrection_);                                                                              \
     CB_DEPIMPL(RenDisplay::Mode, lowestAllowedMode_);                                                                  \
     CB_DEPIMPL(RenDisplay::Mode, highestAllowedMode_);                                                                 \
     CB_DEPIMPL(bool, isPrimaryDriver_);
+
+namespace
+{
+
+const char* windowModeName(RenDisplay::WindowMode mode)
+{
+    switch (mode)
+    {
+    case RenDisplay::WindowMode::Fullscreen:
+        return "fullscreen";
+    case RenDisplay::WindowMode::Borderless:
+        return "borderless";
+    case RenDisplay::WindowMode::Windowed:
+        return "windowed";
+    }
+
+    return "unknown";
+}
+
+} // namespace
 
 //////////////////////////////////////////////////////////////////////////
 RenDisplay::RenDisplay(Ren::IWindowAdapter* adapter)
@@ -50,9 +70,9 @@ RenDisplay::~RenDisplay()
     TEST_INVARIANT;
     CB_RenDisplay_DEPIMPL();
 
-    if (fullscreen_)
+    if (windowMode_ != WindowMode::Windowed)
     {
-        resetToNormalScreen();
+        useWindowMode(WindowMode::Windowed);
     }
     delete pImpl_;
 }
@@ -118,20 +138,28 @@ const RenDisplay::Mode RenDisplay::getFailSafeDisplayMode() const
     return Mode(640, 480, 0);
 }
 
-bool RenDisplay::useFullScreen()
+bool RenDisplay::useWindowMode(WindowMode mode)
 {
     CB_RenDisplay_DEPIMPL();
-    if (fullscreen_)
+    if (windowMode_ == mode)
         return true;
 
     auto* adapter = pImpl_->adapter_;
     if (adapter)
-        adapter->setFullscreen(true);
-    fullscreen_ = true;
+    {
+        adapter->setWindowMode(mode);
+        windowMode_ = adapter->windowMode();
+    }
+    else
+    {
+        windowMode_ = mode;
+    }
 
-    // If we suceed in going fullscreen, then list the display modes
-    // available in fullscreen.
-    if (fullscreen_)
+    if (windowMode_ == WindowMode::Windowed)
+    {
+        modeList_.erase(modeList_.begin(), modeList_.end());
+    }
+    else if (!modeList_.empty())
     {
         std::sort(modeList_.begin(), modeList_.end());
 
@@ -139,26 +167,13 @@ bool RenDisplay::useFullScreen()
         highestAllowedMode_ = modeList_.back();
     }
 
-    return fullscreen_;
+    return windowMode_ == mode;
 }
 
-void RenDisplay::resetToNormalScreen()
+RenDisplay::WindowMode RenDisplay::windowMode() const
 {
     CB_RenDisplay_DEPIMPL();
-    auto* adapter = pImpl_->adapter_;
-    if (adapter)
-        adapter->setFullscreen(false);
-    fullscreen_ = adapter ? adapter->isFullscreen() : false;
-
-    // Return to the primary DD driver.
-    if (!fullscreen_)
-        modeList_.erase(modeList_.begin(), modeList_.end());
-}
-
-bool RenDisplay::fullScreen() const
-{
-    CB_RenDisplay_DEPIMPL();
-    return fullscreen_;
+    return windowMode_;
 }
 
 const std::vector<RenDisplay::Mode>& RenDisplay::modeList() const
@@ -178,12 +193,12 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         return true;
 
     spdlog::info(
-        "Setting display mode to: {}x{}@{}bpp ({} Hz; fullscreen: {})",
+        "Setting display mode to: {}x{}@{}bpp ({} Hz; window mode: {})",
         m.width(),
         m.height(),
         m.bitDepth(),
         m.refreshRate(),
-        fullscreen_);
+        windowModeName(windowMode_));
 
     pImpl_->prepareForModeChange(m);
 
@@ -196,7 +211,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
     };
     bool success = adapter ? adapter->useMode(adapterMode) : false;
     if (adapter)
-        fullscreen_ = adapter->isFullscreen();
+        windowMode_ = adapter->windowMode();
 
     if (!success || (! pImpl_->modeChanged()))
     {
@@ -476,8 +491,8 @@ bool RenDisplay::fallibleCreateSurfaces(MemoryType memType, int zbDepth)
             ASSERT(0, logic_error("Unknown memory type."));
     }
 
-    // If in fullscreen mode, create complex flipping primary surface.
-    if (fullscreen_)
+    // If the window covers the display, create complex flipping primary surface.
+    if (windowMode_ != WindowMode::Windowed)
     {
         RENDER_STREAM("About to create front and back buffers.\n");
     }
@@ -640,9 +655,9 @@ void RenDisplay::CLASS_INVARIANT
 {
     CB_RenDisplay_DEPIMPL();
     INVARIANT(pImpl_);
-    // If we've gone into fullscreen mode, there must be at least one
+    // If the window covers the display, there must be at least one
     // screen mode available.
-    INVARIANT(implies(fullscreen_, modeList_.size() > 0));
+    INVARIANT(implies(windowMode_ != WindowMode::Windowed, modeList_.size() > 0));
 
     // If there are any entries in the list of modes, then we ought to
     // have picked one as the current mode.

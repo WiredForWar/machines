@@ -176,11 +176,10 @@ bool SDLApp::clientStartup()
 
     System::registerMods();
 
-    // Check for windowed mode
-    if (!Config::gfxWindowed.get())
-        pDisplay_->useFullScreen();
+    pDisplay_->useWindowMode(
+        Config::gfxWindowed.get() ? RenDisplay::WindowMode::Windowed : RenDisplay::WindowMode::Fullscreen);
 
-    Config::gfxWindowed.writeBack();;
+    Config::gfxWindowed.writeBack();
 
     // Apply the configured resolution. This is the only place the player's choice
     // is applied; it then holds for the rest of the run.
@@ -191,15 +190,29 @@ bool SDLApp::clientStartup()
 
         if (modeW && modeH)
         {
-            const int modeR = pDisplay_->fullScreen() ? Config::gfxRefreshRate.get() : 0;
+            // Only exclusive fullscreen puts the display into a mode of our
+            // choosing, so only there does the configured refresh rate apply and
+            // only there does the size have to match a mode the display supports.
+            // The mode list holds nothing but those, so looking a window size up in
+            // it would reject anything that is not also a fullscreen mode.
+            int modeR = 0;
+            RenDisplay::Mode loadedMode;
 
-            // Windowed size is ours to pick, so take it as given. Only fullscreen
-            // has to match a mode the display actually supports, and the mode
-            // list holds nothing else -- looking a windowed size up in it would
-            // reject anything that is not also a fullscreen mode.
-            const RenDisplay::Mode loadedMode = pDisplay_->fullScreen()
-                ? pDisplay_->findMode(modeW, modeH, modeR)
-                : pDisplay_->getWindowedMode(modeW, modeH);
+            switch (pDisplay_->windowMode())
+            {
+            case RenDisplay::WindowMode::Fullscreen:
+                modeR = Config::gfxRefreshRate.get();
+                loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
+                break;
+
+            case RenDisplay::WindowMode::Borderless:
+                loadedMode = pDisplay_->getDesktopDisplayMode();
+                break;
+
+            case RenDisplay::WindowMode::Windowed:
+                loadedMode = pDisplay_->getWindowedMode(modeW, modeH);
+                break;
+            }
 
             if (loadedMode.isValid())
             {

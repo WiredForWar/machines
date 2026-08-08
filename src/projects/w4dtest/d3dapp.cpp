@@ -283,7 +283,7 @@ void D3DApp::pickDisplayMode(bool windowMode, int width, int height)
     if (!windowMode)
     {
         // Initially, pick the lowest-res 16-bit mode.
-        display_->useFullScreen();
+        display_->useWindowMode(RenDisplay::WindowMode::Fullscreen);
 
         std::cout << "Trying to select display mode " << width << "x" << height << "x" << 16 << std::endl;
         if (!display_->useMode(width, height, 16))

@@ -7,11 +7,10 @@
 #define _REN_DISPLAY_HPP
 
 #include "base/base.hpp"
+#include "render/IWindowAdapter.hpp"
 #include "render/render.hpp"
 
 #include <vector>
-
-namespace Ren { class IWindowAdapter; }
 
 template <class T> class ctl_list;
 class SysPathName;
@@ -28,10 +27,15 @@ public:
     explicit RenDisplay(Ren::IWindowAdapter* adapter);
     ~RenDisplay();
 
-    // Go to full-screen exclusive mode.  Returns true to indicate success.
-    bool useFullScreen();
-    void resetToNormalScreen();
-    bool fullScreen() const;
+    using WindowMode = Ren::IWindowAdapter::WindowMode;
+
+    // Ask for the way the window covers the display. Returns whether it ended up in
+    // the mode asked for; windowMode() reports what was settled on either way.
+    //
+    // The mode chosen decides how much of a display mode is the caller's to pick,
+    // so set it before choosing one with useMode().
+    bool useWindowMode(WindowMode mode);
+    WindowMode windowMode() const;
 
     class Mode
     {

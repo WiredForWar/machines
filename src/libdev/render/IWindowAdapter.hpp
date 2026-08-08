@@ -30,8 +30,26 @@ public:
     virtual DisplayMode desktopDisplayMode() const = 0;
     virtual bool useMode(const DisplayMode& mode) = 0;
 
-    virtual bool setFullscreen(bool enabled) = 0;
-    virtual bool isFullscreen() const = 0;
+    // How the window covers the display.
+    enum class WindowMode
+    {
+        // The window owns the display and puts it into the mode asked for, so the
+        // resolution and the refresh rate are both the caller's to choose.
+        Fullscreen,
+
+        // The window covers the display at the resolution the display is already
+        // in. Neither the resolution nor the refresh rate is the caller's to pick.
+        Borderless,
+
+        // The window is one of several on the display. Its size is the caller's to
+        // choose; the refresh rate is not.
+        Windowed,
+    };
+
+    // Returns whether the window ended up in the mode asked for. A window system
+    // may refuse, in which case windowMode() reports what was settled on instead.
+    virtual bool setWindowMode(WindowMode mode) = 0;
+    virtual WindowMode windowMode() const = 0;
 
     // --- Cursor / input ---
 

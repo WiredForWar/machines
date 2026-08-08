@@ -1704,7 +1704,7 @@ bool D3DApp::clientStartup()
     if (!windowMode)
     {
         // Initially, pick the lowest-res 16-bit mode.
-        display_->useFullScreen();
+        display_->useWindowMode(RenDisplay::WindowMode::Fullscreen);
         UtlDebugTimer::finishCalibration();
 
         std::cout << "Trying to select display mode " << modeW << "x" << modeH << "x" << 16 << std::endl;

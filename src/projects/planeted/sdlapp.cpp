@@ -282,7 +282,7 @@ bool SDLApp::clientStartup()
     else
     {
         // Initially, pick the lowest-res 16-bit mode.
-        pDisplay_->useFullScreen();
+        pDisplay_->useWindowMode(RenDisplay::WindowMode::Fullscreen);
 
         if (modSize->isNull())
             modSize = desktopMode.size();
