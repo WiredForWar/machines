@@ -202,7 +202,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     // Create check boxes
     pSound3d_ = addCheckBox(IDS_MENU_3DSOUND);
     pTransitions_ = addCheckBox(IDS_MENU_SCREENTRANSITIONS);
-    pScreenResolutionLock_ = addCheckBox(IDS_MENU_SCREENRESLOCK);
     pCursorType_ = addCheckBox(IDS_MENU_CURSORTYPE);
     pReverseKeys_ = addCheckBox(IDS_MENU_REVERSEKEYS);
     pReverseMouse_ = addCheckBox(IDS_MENU_REVERSEMOUSE);
@@ -488,25 +487,17 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 
         bool bDisplayMessageBox = false;
 
-        // Determine if the 2D selection boxes are enabled and screen resolution has changed
         const RenDisplay::Mode* pNewMode = (const RenDisplay::Mode*)pScreenSize_->item();
         const RenDisplay::Mode& pCurrentMode
             = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
 
         int newScaleFactorValue = Config::uiScaleFactor.get();
 
-        if (pScreenResolutionLock_->isChecked()
-            && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
+        // The chosen resolution is applied when the game starts, so a change to it
+        // only takes effect after a restart.
+        if ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height()))
         {
-            // If we already have a message to display from the previous settings change, then use a combined message
-            if (bDisplayMessageBox)
-            {
-                idsMessage = IDS_MENUMESSAGE_DRIVER_RESOLUTION;
-            }
-            else
-            {
-                idsMessage = IDS_MENUMESSAGE_RESOLUTION;
-            }
+            idsMessage = IDS_MENUMESSAGE_RESOLUTION;
             bDisplayMessageBox = true;
         }
 
@@ -593,9 +584,6 @@ void MachGuiCtxOptions::writeToConfig()
             static_cast<double>(pGammaCorrection_->value()) * GAMMA_REG_MULTIPLIER);
     }
 
-    // Store option to maintain screen res of in-game menus in menus
-    Config::gfxLockResolution.set(pScreenResolutionLock_->isChecked());
-
     // Store cursor type (2D/3D)
     SysRegistry::instance().setIntegerValue("Options\\Cursor Type", "2D", pCursorType_->isChecked());
 
@@ -672,8 +660,6 @@ void MachGuiCtxOptions::readFromConfig()
     pMusicVolume_->setValue(musicVolume_);
     pSoundVolume_->setValue(soundVolume_);
 
-    // Set resolution lock on if it the first time the game is being run
-    pScreenResolutionLock_->setChecked(Config::gfxLockResolution.get());
     pCursorType_->setChecked(use2DMarker_);
     pReverseKeys_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"));
     pReverseMouse_->setChecked(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"));

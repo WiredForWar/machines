@@ -1467,21 +1467,11 @@ void MachGuiStartupScreens::setGuiViewport()
 // virtual
 void MachGuiStartupScreens::doBecomeRoot()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
-    // Use 640x480 menu resolution
-    if (!Config::gfxLockResolution.get())
-    {
-        //      pSceneManager_->pDevice()->display()->useMode(640, 480, 0);
-
-        const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-        DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
-    }
-
     absoluteCoord(Gui::Coord(xMenuOffset(), yMenuOffset()));
 
     // Attach the shared console dropdown to this root
     {
+        CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
         CB_DEPIMPL_AUTO(pConsoleDropDown_);
         CB_DEPIMPL_AUTO(consoleDropDownOffset_);
         if (pConsoleDropDown_)
@@ -1509,41 +1499,6 @@ void MachGuiStartupScreens::doBecomeNotRoot()
             pConsoleDropDown_->detachFromParent();
     }
 
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(int, inGameResolutionWidth_);
-    CB_DEPIMPL(int, inGameResolutionHeight_);
-    CB_DEPIMPL(int, inGameResolutionRate_);
-
-    // Switch to ingame resolution
-    int oldWidth = inGameResolutionWidth_;
-    int oldHeight = inGameResolutionHeight_;
-
-    if (!Config::gfxLockResolution.get())
-    {
-        inGameResolutionWidth_ = Config::gfxResolutionWidth.get();
-        inGameResolutionHeight_ = Config::gfxResolutionHeight.get();
-        inGameResolutionRate_ = Config::gfxRefreshRate.get();
-
-        // Check that minimum resolution is specified
-        if (inGameResolutionWidth_ < 640 || inGameResolutionHeight_ < 480)
-        {
-            inGameResolutionWidth_ = 640;
-            inGameResolutionHeight_ = 480;
-        }
-
-        if (oldWidth != inGameResolutionWidth_ || oldHeight != inGameResolutionHeight_)
-        {
-            pInGameScreen_->resolutionChange();
-        }
-
-        //      pSceneManager_->pDevice()->display()->useMode(inGameResolutionWidth_, inGameResolutionHeight_,
-        //      inGameResolutionRate_);
-
-        const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-        DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
-    }
     // Stop all playing sounds
     W4dSoundManager::instance().stopAll();
 }

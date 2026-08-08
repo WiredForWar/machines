@@ -70,7 +70,6 @@ private:
     MachGuiSlideBar* pSoundVolume_{};
     MachGuiCheckBox* pSound3d_{};
     MachGuiCheckBox* pTransitions_{};
-    MachGuiCheckBox* pScreenResolutionLock_{};
     MachGuiCheckBox* pCursorType_{};
     MachGuiCheckBox* pReverseKeys_{};
     MachGuiCheckBox* pReverseMouse_{};

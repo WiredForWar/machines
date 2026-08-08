@@ -182,10 +182,8 @@ bool SDLApp::clientStartup()
 
     Config::gfxWindowed.writeBack();;
 
-    // Apply the configured resolution. gfxLockResolution used to decide whether
-    // the resolution changed between the menus and the game; that switching is
-    // gone (see MachGuiStartupScreens::doBecomeNotRoot), so this is now the only
-    // place the player's choice is applied and it has to run either way.
+    // Apply the configured resolution. This is the only place the player's choice
+    // is applied; it then holds for the rest of the run.
     bool displayModeInitialized = false;
     {
         const int modeW = Config::gfxResolutionWidth.get();

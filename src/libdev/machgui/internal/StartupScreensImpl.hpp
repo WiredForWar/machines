@@ -66,9 +66,6 @@ private:
                                                       // it's boundary ( generally drop-down list boxes )
     SmackerAnims smackerAnims_; // list of smacker animations to play
     GuiDisplayable* pCharFocus_; // Store the char focus whilst the message box is displayed
-    int inGameResolutionWidth_;
-    int inGameResolutionHeight_;
-    int inGameResolutionRate_;
     bool isGamePaused_{};
     bool pendingScreenShot_{};
     FocusCapableControls focusCapableControls_;
