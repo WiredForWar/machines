@@ -54,9 +54,21 @@ private:
     void writeToConfig();
     void readFromConfig();
 
-    // The mode the screen size drop down is showing, or nullptr when it is showing
-    // none.
-    const RenDisplay::Mode* selectedScreenMode() const;
+    // What the display drop downs are showing.
+    Ren::WindowMode selectedWindowMode() const;
+    Ren::Size selectedResolution() const;
+    int selectedRefreshRate() const;
+
+    void setDisplaySettings(Ren::WindowMode windowMode, Ren::Size resolution, int refreshRate);
+
+    // Bring the resolution and refresh rate drop downs into line with the window
+    // mode, and each other. Only a mode we set ourselves leaves either of them ours
+    // to choose.
+    void updateDisplayControls();
+    void updateResolutions();
+    void updateRefreshRates();
+
+    int indexOfResolution(Ren::Size resolution) const;
 
     MachGuiCtxOptions(const MachGuiCtxOptions&);
     MachGuiCtxOptions& operator=(const MachGuiCtxOptions&);
@@ -76,10 +88,23 @@ private:
     MachGuiCheckBox* pReverseMouse_{};
     MachGuiCheckBox* pGrabMouse_{};
     MachGuiCheckBox* pWasdControls_{};
+    MachGuiDropDownListBoxCreator* pWindowMode_{};
     MachGuiDropDownListBoxCreator* pScreenSize_{};
+    MachGuiDropDownListBoxCreator* pRefreshRate_{};
 
-    // The modes the screen size drop down offers, in the order it offers them.
-    ctl_vector<const RenDisplay::Mode*> screenModes_;
+    // What the resolution and refresh rate drop downs offer, in the order they
+    // offer them.
+    ctl_vector<Ren::Size> resolutions_;
+    ctl_vector<int> refreshRates_;
+
+    // Retained so that the display settings can be put back when the player cancels.
+    Ren::WindowMode windowMode_{};
+    Ren::Size resolution_;
+    int refreshRate_{};
+
+    // Set while the display drop downs are being brought into line, so that the
+    // changes made to one do not send the others round again.
+    bool updatingDisplayControls_ = false;
 
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;

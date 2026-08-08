@@ -19,6 +19,8 @@
 #include "render/Font.hpp"
 #include "render/Device.hpp"
 #include "render/Display.hpp"
+#include "render/RenderVariables.hpp"
+#include "render/WindowMode.hpp"
 #include "render/Capabilities.hpp"
 #include "gui/ResourceString.hpp"
 #include "gui/Font.hpp"
@@ -232,61 +234,19 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
     pSoundVolume_->setValue(Config::soundVolume.get());
     pSoundVolume_->setValueChangedHandler([](float newValue) { Config::soundVolume.set(std::round(newValue)); });
 
-    // Get current resolution
-    int inGameResolutionWidth = pDisplay_->currentMode().width();
-    int inGameResolutionHeight = pDisplay_->currentMode().height();
-    int inGameResolutionRefresh = pDisplay_->currentMode().refreshRate();
-
-    // Check that minimum resolution is specified
-    if (inGameResolutionWidth < 640 || inGameResolutionHeight < 480)
     {
-        inGameResolutionWidth = 640;
-        inGameResolutionHeight = 480;
-    }
+        GuiStrings windowModeNames = {
+            ResolvedUiString(IDS_WINDOW_MODE_FULLSCREEN),
+            ResolvedUiString(IDS_WINDOW_MODE_BORDERLESS),
+            ResolvedUiString(IDS_WINDOW_MODE_WINDOWED),
+        };
 
-    GuiStrings strings;
-    strings.reserve(4);
-    screenModes_.reserve(4);
-
-    // Iterate through screen modes selecting compatible ones ( i.e. conform to minimum size and colour bit depth ).
-    const RenDisplay::Modes& modes = pDisplay_->modeList();
-    const RenDisplay::Mode& lowestMode = pDisplay_->lowestAllowedMode();
-    const RenDisplay::Mode& highestMode = pDisplay_->highestAllowedMode();
-    for (const RenDisplay::Mode& mode : modes)
-    {
-        // I'd like to use the highest allowed mode to decide whether a mode is accepted or
-        // not (instead of testing the memory required versus the available video memory)
-        // unfortunately I can't since the modes are sorted by number of pixels and not by memory
-        // requirement.
-        // if ( mode >= lowestMode and mode.bitDepth() == 16 and
-        if (mode >= lowestMode
-            && 256000000 >= 3 * mode.memoryRequired())
-        {
-            // Construct a string to go in the drop down list box ( e.g. "640x480" )
-            char buffer[30];
-            //          string resolutionStr = itoa( mode.width(), buffer, 10 );
-            //          resolutionStr += itoa( mode.height(), buffer, 10 );
-            snprintf(buffer, sizeof(buffer), "%dx%d %d hz", mode.width(), mode.height(), mode.refreshRate());
-            std::string resolutionStr = buffer;
-
-            // If this mode is the current mode for ingame then make sure it appears first in the
-            // drop down list box
-            if (inGameResolutionWidth == mode.width() && inGameResolutionHeight == mode.height()
-                && (inGameResolutionRefresh == 0 || inGameResolutionRefresh == mode.refreshRate()))
-            {
-                strings.insert(strings.begin(), resolutionStr);
-                screenModes_.insert(screenModes_.begin(), &mode);
-            }
-            else
-            {
-                strings.push_back(resolutionStr);
-                screenModes_.push_back(&mode);
-            }
-        }
+        pWindowMode_ = addDropDown(IDS_WINDOW_MODE);
+        pWindowMode_->setAvailText(windowModeNames);
     }
 
     pScreenSize_ = addDropDown(IDS_MENU_SCREENSIZE);
-    pScreenSize_->setAvailText(strings);
+    pRefreshRate_ = addDropDown(IDS_REFRESH_RATE);
 
     {
         GuiStrings itemNames = {
@@ -405,6 +365,9 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         Config::gfxVSyncMode.set(selectedMode);
     });
 
+    pWindowMode_->setCurrentIndexChangedCallback([this]() { updateDisplayControls(); });
+    pScreenSize_->setCurrentIndexChangedCallback([this]() { updateRefreshRates(); });
+
     TEST_INVARIANT;
 }
 
@@ -461,15 +424,14 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
 
         bool bDisplayMessageBox = false;
 
-        const RenDisplay::Mode* pNewMode = selectedScreenMode();
-        const RenDisplay::Mode& pCurrentMode
-            = W4dManager::instance().sceneManager()->pDevice()->display()->currentMode();
+        const RenDisplay* pDisplay = W4dManager::instance().sceneManager()->pDevice()->display();
+        const RenDisplay::Mode& currentMode = pDisplay->currentMode();
 
         int newScaleFactorValue = Config::uiScaleFactor.get();
 
-        // The chosen resolution is applied when the game starts, so a change to it
-        // only takes effect after a restart.
-        if (pNewMode && ((pNewMode->width() != pCurrentMode.width()) || (pNewMode->height() != pCurrentMode.height())))
+        // The display settings are applied when the game starts, so a change to any
+        // of them only takes effect after a restart.
+        if (selectedResolution() != currentMode.size() || selectedWindowMode() != pDisplay->windowMode())
         {
             idsMessage = IDS_MENUMESSAGE_RESOLUTION;
             bDisplayMessageBox = true;
@@ -498,6 +460,7 @@ void MachGuiCtxOptions::buttonEvent(MachGui::ButtonEvent buttonEvent)
         pMusicVolume_->setValue(musicVolume_);
         pSoundVolume_->setValue(soundVolume_);
         vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
+        setDisplaySettings(windowMode_, resolution_, refreshRate_);
         pCameraAccelerationSlider_->setValue(zenithCameraAcceleration_);
 
         // There is no explicit Ground camera control but it is possible to set different settings via config file
@@ -538,12 +501,13 @@ void MachGuiCtxOptions::writeToConfig()
         "on",
         pStartupScreens_->startupData()->transitionFlicsOn());
 
-    // Store the new screen size in the registry
-    if (const RenDisplay::Mode* pNewMode = selectedScreenMode())
+    // Store the new display settings in the registry
     {
-        Config::gfxResolutionWidth.set(pNewMode->width());
-        Config::gfxResolutionHeight.set(pNewMode->height());
-        Config::gfxRefreshRate.set(pNewMode->refreshRate());
+        const Ren::Size resolution = selectedResolution();
+        Config::gfxWindowMode.set(selectedWindowMode());
+        Config::gfxResolutionWidth.set(resolution.width);
+        Config::gfxResolutionHeight.set(resolution.height);
+        Config::gfxRefreshRate.set(selectedRefreshRate());
     }
 
     // Store cursor type (2D/3D)
@@ -636,6 +600,16 @@ void MachGuiCtxOptions::readFromConfig()
     vsyncMode_ = Config::gfxVSyncMode.get();
     vSyncModeDropDown_->setCurrentIndex(static_cast<int>(vsyncMode_));
 
+    {
+        const RenDisplay* pDisplay = W4dManager::instance().sceneManager()->pDevice()->display();
+
+        windowMode_ = pDisplay->windowMode();
+        resolution_ = pDisplay->currentMode().size();
+        refreshRate_ = pDisplay->currentMode().refreshRate();
+
+        setDisplaySettings(windowMode_, resolution_, refreshRate_);
+    }
+
     // Access all the boolean optimisations
     const MachPhysComplexityManager::BooleanItems& boolItems = MachPhysComplexityManager::instance().booleanItems();
     uint index = 0;
@@ -710,13 +684,189 @@ void MachGuiCtxOptions::exitFromOptions()
     exitFromOptions_ = true;
 }
 
-const RenDisplay::Mode* MachGuiCtxOptions::selectedScreenMode() const
+Ren::WindowMode MachGuiCtxOptions::selectedWindowMode() const
+{
+    const int index = pWindowMode_->currentIndex();
+    if (index < 0 || static_cast<std::size_t>(index) >= std::size(Ren::AllWindowModes))
+        return Ren::WindowMode::Fullscreen;
+
+    return Ren::AllWindowModes[index];
+}
+
+Ren::Size MachGuiCtxOptions::selectedResolution() const
 {
     const int index = pScreenSize_->currentIndex();
-    if (index < 0 || static_cast<std::size_t>(index) >= screenModes_.size())
-        return nullptr;
+    if (index < 0 || static_cast<std::size_t>(index) >= resolutions_.size())
+        return {};
 
-    return screenModes_[index];
+    return resolutions_[index];
+}
+
+int MachGuiCtxOptions::selectedRefreshRate() const
+{
+    const int index = pRefreshRate_->currentIndex();
+    if (index < 0 || static_cast<std::size_t>(index) >= refreshRates_.size())
+        return 0;
+
+    return refreshRates_[index];
+}
+
+void MachGuiCtxOptions::updateDisplayControls()
+{
+    if (updatingDisplayControls_)
+        return;
+
+    updatingDisplayControls_ = true;
+
+    // Only exclusive fullscreen puts the display into a mode of our choosing. The
+    // other two take the resolution the display is already in, so there is nothing
+    // to offer beyond saying what that is.
+    const bool ownsTheMode = selectedWindowMode() == Ren::WindowMode::Fullscreen;
+    const bool ownsTheSize = ownsTheMode || selectedWindowMode() == Ren::WindowMode::Windowed;
+
+    updateResolutions();
+    pScreenSize_->setEnabled(ownsTheSize);
+    pRefreshRate_->setEnabled(ownsTheMode);
+
+    updatingDisplayControls_ = false;
+
+    updateRefreshRates();
+}
+
+void MachGuiCtxOptions::updateResolutions()
+{
+    const RenDisplay* pDisplay = W4dManager::instance().sceneManager()->pDevice()->display();
+    const Ren::Size desktop = pDisplay->getDesktopDisplayMode().size();
+    const Ren::Size wanted = selectedResolution();
+
+    resolutions_.clear();
+    GuiStrings labels;
+
+    if (selectedWindowMode() == Ren::WindowMode::Borderless)
+    {
+        // The display stays in the mode it is already in.
+        resolutions_.push_back(desktop);
+    }
+    else
+    {
+        // A window larger than the display cannot be shown in full, and the menus
+        // are drawn for 640x480 upwards.
+        for (const Ren::Size& resolution : pDisplay->modeCatalogue().resolutions())
+        {
+            const bool fits = desktop.isNull()
+                || (resolution.width <= desktop.width && resolution.height <= desktop.height);
+
+            if (fits && resolution.width >= 640 && resolution.height >= 480)
+                resolutions_.push_back(resolution);
+        }
+    }
+
+    if (resolutions_.empty())
+        resolutions_.push_back(desktop.isNull() ? Ren::Size(640, 480) : desktop);
+
+    labels.reserve(resolutions_.size());
+    for (const Ren::Size& resolution : resolutions_)
+    {
+        char buffer[30];
+        snprintf(buffer, sizeof(buffer), "%dx%d", resolution.width, resolution.height);
+        labels.push_back(buffer);
+    }
+
+    pScreenSize_->setAvailText(labels);
+    pScreenSize_->setCurrentIndex(indexOfResolution(wanted));
+}
+
+void MachGuiCtxOptions::updateRefreshRates()
+{
+    if (updatingDisplayControls_)
+        return;
+
+    updatingDisplayControls_ = true;
+
+    const RenDisplay* pDisplay = W4dManager::instance().sceneManager()->pDevice()->display();
+    const int wanted = selectedRefreshRate();
+
+    refreshRates_.clear();
+
+    if (selectedWindowMode() == Ren::WindowMode::Fullscreen)
+    {
+        const std::vector<int>& offered = pDisplay->modeCatalogue().refreshRates(selectedResolution());
+        refreshRates_.assign(offered.begin(), offered.end());
+    }
+    else
+    {
+        // The rate belongs to the mode the display is already in.
+        refreshRates_.push_back(pDisplay->getDesktopDisplayMode().refreshRate());
+    }
+
+    if (refreshRates_.empty())
+        refreshRates_.push_back(pDisplay->currentMode().refreshRate());
+
+    GuiStrings labels;
+    labels.reserve(refreshRates_.size());
+    for (const int rate : refreshRates_)
+    {
+        char buffer[16];
+        snprintf(buffer, sizeof(buffer), "%d Hz", rate);
+        labels.push_back(buffer);
+    }
+
+    pRefreshRate_->setAvailText(labels);
+
+    // Keep the rate that was chosen when the resolution still offers it; the
+    // highest one leads the list otherwise.
+    int index = 0;
+    for (std::size_t i = 0; i < refreshRates_.size(); ++i)
+    {
+        if (refreshRates_[i] == wanted)
+        {
+            index = static_cast<int>(i);
+            break;
+        }
+    }
+    pRefreshRate_->setCurrentIndex(index);
+
+    updatingDisplayControls_ = false;
+}
+
+void MachGuiCtxOptions::setDisplaySettings(Ren::WindowMode windowMode, Ren::Size resolution, int refreshRate)
+{
+    for (std::size_t i = 0; i < std::size(Ren::AllWindowModes); ++i)
+    {
+        if (Ren::AllWindowModes[i] == windowMode)
+        {
+            pWindowMode_->setCurrentIndex(static_cast<int>(i));
+            break;
+        }
+    }
+
+    // Each list depends on the choice above it, so all three are settled in turn
+    // rather than left to the change handlers, which are not in place yet the first
+    // time round.
+    updateDisplayControls();
+
+    pScreenSize_->setCurrentIndex(indexOfResolution(resolution));
+    updateRefreshRates();
+
+    for (std::size_t i = 0; i < refreshRates_.size(); ++i)
+    {
+        if (refreshRates_[i] == refreshRate)
+        {
+            pRefreshRate_->setCurrentIndex(static_cast<int>(i));
+            break;
+        }
+    }
+}
+
+int MachGuiCtxOptions::indexOfResolution(Ren::Size resolution) const
+{
+    for (std::size_t i = 0; i < resolutions_.size(); ++i)
+    {
+        if (resolutions_[i] == resolution)
+            return static_cast<int>(i);
+    }
+
+    return 0;
 }
 
 /* End CTXOPTNS.CPP *************************************************/

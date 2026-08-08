@@ -1831,4 +1831,14 @@ BELONGING TO</string>
 	>Disabled</string>
 <string id="11008"
 	>Enabled</string>
+<string id="11010"
+	>Window Mode</string>
+<string id="11011"
+	>Fullscreen</string>
+<string id="11012"
+	>Borderless Fullscreen</string>
+<string id="11013"
+	>Windowed</string>
+<string id="11014"
+	>Refresh Rate</string>
 </resources>
