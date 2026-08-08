@@ -42,6 +42,9 @@ protected:
 
     // Called when the list box item has been selected. The selected status is set
     // before this function is called.
+    //
+    // An implementation is allowed to destroy the list box this item belongs to, so
+    // this is the last thing the list box does with itself when an item is chosen.
     virtual void select() = 0;
     // PRE( selected() == true );
 

@@ -55,14 +55,16 @@ void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBo
         }
 
         pCurrentSelection_ = pNewSelection;
-
         pCurrentSelection_->setSelected(true);
-        pCurrentSelection_->select();
 
         if (selectionChangedCallback_)
         {
             selectionChangedCallback_(this);
         }
+
+        // Selecting an item can destroy this list box, so it is done last and
+        // nothing may be added after it.
+        pCurrentSelection_->select();
     }
 }
 
