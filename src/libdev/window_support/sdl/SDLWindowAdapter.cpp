@@ -228,7 +228,7 @@ bool SDLWindowAdapter::setWindowMode(WindowMode mode)
     return windowMode_ == mode;
 }
 
-Ren::IWindowAdapter::WindowMode SDLWindowAdapter::windowMode() const
+Ren::WindowMode SDLWindowAdapter::windowMode() const
 {
     return windowMode_;
 }

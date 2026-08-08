@@ -149,6 +149,8 @@ set(RENDER_SOURCES
     VertexData.cpp
     VertexMaterial.cpp
     ViewportMapping.cpp
+    WindowMode.cpp
+    WindowMode.hpp
     internal/AlphaGroup.hpp
     internal/BackendCommands.hpp
     internal/BackendTypes.hpp

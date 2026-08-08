@@ -176,10 +176,16 @@ bool SDLApp::clientStartup()
 
     System::registerMods();
 
-    pDisplay_->useWindowMode(
-        Config::gfxWindowed.get() ? RenDisplay::WindowMode::Windowed : RenDisplay::WindowMode::Fullscreen);
+    // A window mode recorded before the setting could name one is a plain windowed
+    // flag, so read it under that name while it is all there is.
+    if (Config::windowModeIsUnset()
+        && SysRegistry::instance().queryBooleanValue("Screen Resolution", "Windowed", false))
+    {
+        Config::gfxWindowMode.set(Ren::WindowMode::Windowed);
+    }
 
-    Config::gfxWindowed.writeBack();
+    pDisplay_->useWindowMode(Config::gfxWindowMode.get());
+    Config::gfxWindowMode.writeBack();
 
     // Apply the configured resolution. This is the only place the player's choice
     // is applied; it then holds for the rest of the run.

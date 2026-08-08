@@ -10,6 +10,7 @@ namespace Ren
 {
 
 enum class BackendType;
+enum class WindowMode;
 
 } // namespace Ren
 
@@ -17,6 +18,11 @@ namespace Config
 {
 
 extern Variable<Ren::BackendType> gfxBackendType;
+extern Variable<Ren::WindowMode> gfxWindowMode;
+
+// True when no window mode has been settled on yet, so that a choice recorded
+// under an older name can still be honoured.
+bool windowModeIsUnset();
 
 extern Variable<LightingMode> gfxLightingMode;
 extern Variable<ShadowQuality> gfxShadowQuality;

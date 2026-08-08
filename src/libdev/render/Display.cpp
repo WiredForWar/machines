@@ -34,26 +34,6 @@
     CB_DEPIMPL(RenDisplay::Mode, highestAllowedMode_);                                                                 \
     CB_DEPIMPL(bool, isPrimaryDriver_);
 
-namespace
-{
-
-const char* windowModeName(RenDisplay::WindowMode mode)
-{
-    switch (mode)
-    {
-    case RenDisplay::WindowMode::Fullscreen:
-        return "fullscreen";
-    case RenDisplay::WindowMode::Borderless:
-        return "borderless";
-    case RenDisplay::WindowMode::Windowed:
-        return "windowed";
-    }
-
-    return "unknown";
-}
-
-} // namespace
-
 //////////////////////////////////////////////////////////////////////////
 RenDisplay::RenDisplay(Ren::IWindowAdapter* adapter)
     : pImpl_(new RenIDisplay(adapter))
@@ -206,7 +186,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         m.height(),
         m.bitDepth(),
         m.refreshRate(),
-        windowModeName(windowMode_));
+        Ren::toString(windowMode_));
 
     pImpl_->prepareForModeChange(m);
 

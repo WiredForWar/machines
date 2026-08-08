@@ -13,7 +13,6 @@ extern Variable<int32_t> gfxMsaaSamples;
 extern Variable<int32_t> gfxResolutionWidth;
 extern Variable<int32_t> gfxResolutionHeight;
 extern Variable<int32_t> gfxRefreshRate;
-extern Variable<bool> gfxWindowed;
 
 extern Variable<int32_t> uiZenithCameraAcceleration;
 extern Variable<int32_t> uiZenithCameraSpeedLimit;

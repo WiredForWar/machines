@@ -28,7 +28,7 @@ public:
     explicit RenDisplay(Ren::IWindowAdapter* adapter);
     ~RenDisplay();
 
-    using WindowMode = Ren::IWindowAdapter::WindowMode;
+    using WindowMode = Ren::WindowMode;
 
     // Ask for the way the window covers the display. Returns whether it ended up in
     // the mode asked for; windowMode() reports what was settled on either way.

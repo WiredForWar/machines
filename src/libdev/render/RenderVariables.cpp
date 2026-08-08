@@ -4,7 +4,9 @@
 #include "FogMode.hpp"
 #include "LightingMode.hpp"
 #include "ShadowQuality.hpp"
+#include "WindowMode.hpp"
 
+#include "system/Registry.hpp"
 #include "system/Variable_p.hpp"
 
 namespace Config
@@ -68,6 +70,24 @@ std::optional<FogMode> toValue(const std::string& asString)
 }
 
 template <>
+std::string toString(const Ren::WindowMode& value)
+{
+    return std::string(Ren::toString(value));
+}
+
+template <>
+std::optional<Ren::WindowMode> toValue(const std::string& asString)
+{
+    for (Ren::WindowMode mode : Ren::AllWindowModes)
+    {
+        if (asString == Ren::toString(mode))
+            return mode;
+    }
+
+    return std::nullopt;
+}
+
+template <>
 std::string toString(const ShadowQuality& value)
 {
     return std::string(::toString(value));
@@ -90,9 +110,20 @@ std::optional<ShadowQuality> toValue(const std::string& asString)
 template class Config::Variable<Ren::BackendType>;
 template class Config::Variable<FogMode>;
 template class Config::Variable<LightingMode>;
+template class Config::Variable<Ren::WindowMode>;
 template class Config::Variable<ShadowQuality>;
 
 Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", {});
+Variable<Ren::WindowMode> gfxWindowMode("Screen Resolution/Window Mode", Ren::WindowMode::Fullscreen);
+
+bool windowModeIsUnset()
+{
+    std::string asString;
+    SysRegistry::instance().queryValueNoRecord(std::string(gfxWindowMode.name()), asString);
+
+    return asString.empty();
+}
+
 Variable<LightingMode> gfxLightingMode("Options/Graphics Complexity/Lighting Mode", LightingMode::Legacy);
 Variable<ShadowQuality> gfxShadowQuality("Options/Graphics Complexity/Shadow Quality", ShadowQuality::Static);
 Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false);
