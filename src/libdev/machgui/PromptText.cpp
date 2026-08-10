@@ -36,65 +36,11 @@
 
 using strings = std::vector<std::string>;
 
-class MachPromptTextImpl
-{
-public:
-    MachPromptTextImpl(
-        const std::string& normalFont,
-        const std::string& shadowFont);
-
-    GuiBitmap promptBmp_;
-    std::string cursorPromptText_; // The prompt displayed for mouse moves
-    std::string commandPromptText_; // The prompt displayed for current command
-    strings cursorPromptTextLines_;
-    strings commandPromptTextLines_;
-    MachCameras* pCameras_;
-    bool displayCursorPromptText_;
-    MachPromptText::PromptDisplayed promptDisplayed_;
-    GuiBmpFont font_;
-    GuiBmpFont shadowFont_;
-    int blitToX_;
-    bool refresh_;
-    bool restartScroll_;
-    GuiBitmap lightOn_;
-    GuiBitmap lightOff_;
-    bool enteringChatMessage_;
-    MachPhys::Race chatMessageIntendedForRace_;
-    std::string chatMessageIntendedForStr_;
-    std::string lastDisplayedChatMessage_;
-    int beginningTextWidth_;
-    GuiDisplayable* pPassEventsTo_;
-    int standardMessageIndex_;
-    int opponentIndex_;
-    MachInGameScreen* pInGameScreen_;
-    System::IConsole* pConsole_{};
-};
-
 constexpr int c_textScrollSpeed = 20;
 
 void MachPromptText::setConsole(System::IConsole* pConsole)
 {
-    CB_DEPIMPL_AUTO(pConsole_);
     pConsole_ = pConsole;
-}
-
-MachPromptTextImpl::MachPromptTextImpl(
-    const std::string& normalFont,
-    const std::string& shadowFont)
-    : font_(Gui::getFont(normalFont))
-    , shadowFont_(Gui::getFont(shadowFont))
-    , refresh_(true)
-    , lightOn_(MachGui::getScaledImage("gui/misc/tplight2"))
-    , lightOff_(MachGui::getScaledImage("gui/misc/tplight1"))
-    , enteringChatMessage_(false)
-    , chatMessageIntendedForRace_(MachPhys::N_RACES)
-    , beginningTextWidth_(0)
-    , pPassEventsTo_(nullptr)
-    , standardMessageIndex_(0)
-    , pInGameScreen_(nullptr)
-{
-    lightOn_.enableColourKeying();
-    lightOff_.enableColourKeying();
 }
 
 MachPromptText::MachPromptText(
@@ -108,14 +54,14 @@ MachPromptText::MachPromptText(
     std::string shadowFont = MachGui::getScaledImagePath("gui/menu/promdfnt");
 
     font_ = Gui::getFont(normalFont);
-    pImpl_ = new MachPromptTextImpl(normalFont, shadowFont);
 
-    CB_DEPIMPL(GuiBitmap, promptBmp_);
-    CB_DEPIMPL(MachCameras*, pCameras_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(int, blitToX_);
-    CB_DEPIMPL(GuiDisplayable*, pPassEventsTo_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
+    promptFont_ = Gui::getFont(normalFont);
+    shadowFont_ = Gui::getFont(shadowFont);
+
+    lightOn_ = MachGui::getScaledImage("gui/misc/tplight2");
+    lightOff_ = MachGui::getScaledImage("gui/misc/tplight1");
+    lightOn_.enableColourKeying();
+    lightOff_.enableColourKeying();
 
     setLayer(GuiDisplayable::LAYER4);
 
@@ -137,7 +83,6 @@ MachPromptText::MachPromptText(
 MachPromptText::~MachPromptText()
 {
     TEST_INVARIANT;
-    delete pImpl_;
 }
 
 void MachPromptText::CLASS_INVARIANT
@@ -147,7 +92,6 @@ void MachPromptText::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachPromptText& t)
 {
-
     o << "MachPromptText " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachPromptText " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -161,18 +105,11 @@ void MachPromptText::setCursorPromptText(const std::string& prompt)
 
 void MachPromptText::setCursorPromptText(const std::string& prompt, bool restartScroll)
 {
-    CB_DEPIMPL(std::string, cursorPromptText_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-    CB_DEPIMPL(strings, cursorPromptTextLines_);
-    CB_DEPIMPL(GuiBmpFont, font_);
-
     if (prompt != cursorPromptText_)
     {
         cursorPromptText_ = prompt;
 
-        cursorPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, font_);
+        cursorPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, promptFont_);
 
         refresh_ = true;
 
@@ -189,18 +126,11 @@ void MachPromptText::setCursorPromptText(const std::string& prompt, bool restart
 
 const std::string& MachPromptText::cursorPromptText() const
 {
-    CB_DEPIMPL(std::string, cursorPromptText_);
-
     return cursorPromptText_;
 }
 
 void MachPromptText::clearCursorPromptText()
 {
-    CB_DEPIMPL(std::string, cursorPromptText_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-
     if (cursorPromptText_ != "")
     {
         cursorPromptText_ = "";
@@ -210,18 +140,11 @@ void MachPromptText::clearCursorPromptText()
 
 void MachPromptText::setCommandPromptText(const std::string& prompt)
 {
-    CB_DEPIMPL(std::string, commandPromptText_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-    CB_DEPIMPL(strings, commandPromptTextLines_);
-    CB_DEPIMPL(GuiBmpFont, font_);
-
     if (commandPromptText_ != prompt)
     {
         commandPromptText_ = prompt;
 
-        commandPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, font_);
+        commandPromptTextLines_ = MachGuiMenuText::chopUpText(prompt, 2000, promptFont_);
 
         if (promptDisplayed_ != CURSORTEXT)
         {
@@ -233,18 +156,11 @@ void MachPromptText::setCommandPromptText(const std::string& prompt)
 
 const std::string& MachPromptText::commandPromptText() const
 {
-    CB_DEPIMPL(std::string, commandPromptText_);
-
     return commandPromptText_;
 }
 
 void MachPromptText::clearCommandPromptText()
 {
-    CB_DEPIMPL(std::string, commandPromptText_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-
     if (commandPromptText_ != "")
     {
         commandPromptText_ = "";
@@ -258,21 +174,6 @@ void MachPromptText::clearCommandPromptText()
 
 void MachPromptText::doDisplay()
 {
-    CB_DEPIMPL(std::string, commandPromptText_);
-    CB_DEPIMPL(std::string, cursorPromptText_);
-    CB_DEPIMPL(strings, cursorPromptTextLines_);
-    CB_DEPIMPL(strings, commandPromptTextLines_);
-    CB_DEPIMPL(MachPromptText::PromptDisplayed, promptDisplayed_);
-    CB_DEPIMPL(GuiBitmap, promptBmp_);
-    CB_DEPIMPL(GuiBitmap, lightOn_);
-    CB_DEPIMPL(GuiBitmap, lightOff_);
-    CB_DEPIMPL(GuiBmpFont, font_);
-    CB_DEPIMPL(GuiBmpFont, shadowFont_);
-    CB_DEPIMPL(int, blitToX_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-    CB_DEPIMPL(bool, enteringChatMessage_);
-
     if (enteringChatMessage_)
     {
         displayChatMessage();
@@ -313,8 +214,6 @@ void MachPromptText::doDisplay()
 // virtual
 bool MachPromptText::doHandleCharEvent(const GuiCharEvent& event)
 {
-    CB_DEPIMPL(bool, enteringChatMessage_);
-
     if (enteringChatMessage_)
         return GuiSingleLineEditBox::doHandleCharEvent(event);
 
@@ -323,14 +222,6 @@ bool MachPromptText::doHandleCharEvent(const GuiCharEvent& event)
 
 void MachPromptText::displayChatMessage()
 {
-    CB_DEPIMPL(GuiBitmap, promptBmp_);
-    CB_DEPIMPL(GuiBitmap, lightOn_);
-    CB_DEPIMPL(GuiBmpFont, font_);
-    CB_DEPIMPL(GuiBmpFont, shadowFont_);
-    CB_DEPIMPL(std::string, chatMessageIntendedForStr_);
-    CB_DEPIMPL(std::string, lastDisplayedChatMessage_);
-    CB_DEPIMPL(int, beginningTextWidth_);
-
     // Update the caret
     update();
 
@@ -360,9 +251,9 @@ void MachPromptText::displayChatMessage()
             rightText(), shadowStartText, shadowFont_, promptBmp_.width() - caretPosition - 1 - beginningTextWidth_);
         bmpPainter.drawText(
             leftText(), shadowStartText, shadowFont_, caretPosition - beginningTextWidth_, Ren::AlignRight);
-        bmpPainter.drawText(chatMessageIntendedForStr_, startBeginningText, font_, promptBmp_.width());
-        bmpPainter.drawText(rightText(), startText, font_, promptBmp_.width() - caretPosition - beginningTextWidth_);
-        bmpPainter.drawText(leftText(), startText, font_, caretPosition - beginningTextWidth_, Ren::AlignRight);
+        bmpPainter.drawText(chatMessageIntendedForStr_, startBeginningText, promptFont_, promptBmp_.width());
+        bmpPainter.drawText(rightText(), startText, promptFont_, promptBmp_.width() - caretPosition - beginningTextWidth_);
+        bmpPainter.drawText(leftText(), startText, promptFont_, caretPosition - beginningTextWidth_, Ren::AlignRight);
     }
 
     // Blit text.
@@ -375,7 +266,7 @@ void MachPromptText::displayChatMessage()
         && showCaret()) // Only show caret if we have focus
     {
         Gui::Coord from = getPromptTextAbsolutePosition() + Gui::Vec(caretPosition, startY);
-        Gui::Coord to = from + Gui::Vec(0, font_.height());
+        Gui::Coord to = from + Gui::Vec(0, promptFont_.height());
         GuiPainter::instance().line(from, to, caretColour(), 1 * Gui::uiScaleFactor());
     }
 
@@ -385,19 +276,19 @@ void MachPromptText::displayChatMessage()
 
 void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vector<std::string>& textLines)
 {
-    if (pImpl_->refresh_ || pImpl_->promptDisplayed_ != textType)
+    if (refresh_ || promptDisplayed_ != textType)
     {
-        pImpl_->promptDisplayed_ = textType;
-        pImpl_->refresh_ = false;
+        promptDisplayed_ = textType;
+        refresh_ = false;
 
-        Ren::Painter bmpPainter(pImpl_->promptBmp_);
-        bmpPainter.clearRectangle(pImpl_->promptBmp_.size());
+        Ren::Painter bmpPainter(promptBmp_);
+        bmpPainter.clearRectangle(promptBmp_.size());
 
         // Render all the lines
         int startY = 0;
         if (textLines.size() == 1)
         {
-            startY += pImpl_->shadowFont_.height() / 2;
+            startY += shadowFont_.height() / 2;
             if (Gui::uiScaleFactor() > 1)
                 startY += 1;
         }
@@ -406,54 +297,43 @@ void MachPromptText::displayPromptText(PromptDisplayed textType, const std::vect
         {
             Ren::Point textPos(0, startY);
             Ren::Point shadowPos = textPos + Ren::Point(1, 1) * Gui::uiScaleFactor();
-            bmpPainter.drawText(line, shadowPos, pImpl_->shadowFont_, pImpl_->promptBmp_.width() - shadowPos.x);
-            bmpPainter.drawText(line, textPos, pImpl_->font_, pImpl_->promptBmp_.width());
-            startY += pImpl_->shadowFont_.height() + 1 * Gui::uiScaleFactor();
+            bmpPainter.drawText(line, shadowPos, shadowFont_, promptBmp_.width() - shadowPos.x);
+            bmpPainter.drawText(line, textPos, promptFont_, promptBmp_.width());
+            startY += shadowFont_.height() + 1 * Gui::uiScaleFactor();
         }
 
-        if (pImpl_->restartScroll_)
+        if (restartScroll_)
         {
-            pImpl_->blitToX_ = 0;
+            blitToX_ = 0;
         }
     }
 
     // Blit text.
     GuiPainter::instance().blit(
-        pImpl_->promptBmp_, Gui::Size(pImpl_->blitToX_, pImpl_->promptBmp_.height()), getPromptTextAbsolutePosition());
+        promptBmp_, Gui::Size(blitToX_, promptBmp_.height()), getPromptTextAbsolutePosition());
 
     // Scroll text to new pos for next frame.
-    if (pImpl_->blitToX_ != pImpl_->promptBmp_.width())
+    if (blitToX_ != promptBmp_.width())
     {
-        pImpl_->blitToX_ += c_textScrollSpeed;
-        if (pImpl_->blitToX_ >= width())
+        blitToX_ += c_textScrollSpeed;
+        if (blitToX_ >= width())
         {
-            pImpl_->blitToX_ = pImpl_->promptBmp_.width();
+            blitToX_ = promptBmp_.width();
         }
 
         // Blit light on graphic
-        GuiPainter::instance().blit(pImpl_->lightOn_, absoluteBoundary().minCorner());
+        GuiPainter::instance().blit(lightOn_, absoluteBoundary().minCorner());
     }
     else
     {
         // Blit light off graphic
-        GuiPainter::instance().blit(pImpl_->lightOff_, absoluteBoundary().minCorner());
+        GuiPainter::instance().blit(lightOff_, absoluteBoundary().minCorner());
     }
 }
 
 // virtual
 bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 {
-    CB_DEPIMPL(bool, enteringChatMessage_);
-    CB_DEPIMPL(bool, refresh_);
-    CB_DEPIMPL(bool, restartScroll_);
-    CB_DEPIMPL(MachPhys::Race, chatMessageIntendedForRace_);
-    CB_DEPIMPL(std::string, chatMessageIntendedForStr_);
-    CB_DEPIMPL(int, beginningTextWidth_);
-    CB_DEPIMPL(GuiBmpFont, shadowFont_);
-    CB_DEPIMPL(int, opponentIndex_);
-    CB_DEPIMPL(int, standardMessageIndex_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     bool processed = false;
 
     if (event.state() == Gui::PRESSED)
@@ -623,8 +503,6 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
 int MachPromptText::maxWidth() const
 {
     // Work out how much room there is to type in a chat message
-    CB_DEPIMPL(int, beginningTextWidth_);
-    CB_DEPIMPL(GuiBitmap, lightOn_);
 
     // Work out how much of the prompt text is being displayed on-screen
     const int w = W4dManager::instance().sceneManager()->pDevice()->windowWidth();
@@ -638,8 +516,6 @@ int MachPromptText::maxWidth() const
 
 Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
 {
-    CB_DEPIMPL(GuiBitmap, lightOn_);
-
     const int yOffset = 7 * Gui::uiScaleFactor();
     const int w = W4dManager::instance().sceneManager()->pDevice()->windowWidth();
     const int baseSpacing = w < 1024 ? 1 : 2;
@@ -651,12 +527,6 @@ Gui::Coord MachPromptText::getPromptTextAbsolutePosition() const
 
 void MachPromptText::submit()
 {
-    CB_DEPIMPL_AUTO(chatMessageIntendedForRace_);
-    CB_DEPIMPL_AUTO(chatMessageIntendedForStr_);
-    CB_DEPIMPL_AUTO(opponentIndex_);
-    CB_DEPIMPL_AUTO(pInGameScreen_);
-    CB_DEPIMPL_AUTO(pConsole_);
-
     const std::string trimmedText = Utils::trimWhitespace(text());
     if (trimmedText.empty())
         return;

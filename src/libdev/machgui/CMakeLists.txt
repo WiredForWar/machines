@@ -285,8 +285,6 @@ set(MACHGUI_SOURCES
     commands/CommandTreachery.hpp
     commands/command.cpp
     commands/command.hpp
-    commands/commandi.cpp
-    commands/commandi.hpp
     db/Database.cpp
     db/Database.hpp
     db/DatabaseHandler.cpp

@@ -16,9 +16,13 @@
 #include "gui/Displayable.hpp"
 #include "gui/gui.hpp"
 #include "gui/EditBox.hpp"
+#include "gui/Font.hpp"
+#include "machphys/machphys.hpp"
+
+#include <string>
+#include <vector>
 
 class MachCameras;
-class MachPromptTextImpl;
 class MachInGameScreen;
 
 namespace System
@@ -104,7 +108,32 @@ private:
     bool operator==(const MachPromptText&);
 
     // Data members...
-    MachPromptTextImpl* pImpl_;
+    GuiBitmap promptBmp_;
+    std::string cursorPromptText_; // The prompt displayed for mouse moves
+    std::string commandPromptText_; // The prompt displayed for current command
+    std::vector<std::string> cursorPromptTextLines_;
+    std::vector<std::string> commandPromptTextLines_;
+    MachCameras* pCameras_{};
+    bool displayCursorPromptText_{};
+    PromptDisplayed promptDisplayed_ = NOTEXT;
+    // The font the prompt text is drawn in.
+    GuiBmpFont promptFont_;
+    GuiBmpFont shadowFont_;
+    int blitToX_{};
+    bool refresh_ = true;
+    bool restartScroll_{};
+    GuiBitmap lightOn_;
+    GuiBitmap lightOff_;
+    bool enteringChatMessage_{};
+    MachPhys::Race chatMessageIntendedForRace_ = MachPhys::N_RACES;
+    std::string chatMessageIntendedForStr_;
+    std::string lastDisplayedChatMessage_;
+    int beginningTextWidth_{};
+    GuiDisplayable* pPassEventsTo_{};
+    int standardMessageIndex_{};
+    int opponentIndex_{};
+    MachInGameScreen* pInGameScreen_{};
+    System::IConsole* pConsole_{};
 };
 
 #endif

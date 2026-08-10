@@ -6,11 +6,10 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "command.hpp"
-#include "commandi.hpp"
+#include "machgui/IInputRegistry.hpp"
 
 #include "mathex/Point3d.hpp"
 
-#include "machgui/IInputRegistry.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machlog/Actors/Actor.hpp"
@@ -36,7 +35,9 @@ MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId 
     , isVisible_(false)
     , isSquadronContext_(pInGameScreen->applyCommandToSquadron())
     , hasPlayedVoiceMail_(false)
-    , pImpl_(new MachGuiCommandImpl(pInGameScreen, triggerBindId))
+    , pInGameScreen_(pInGameScreen)
+    , triggerBindId_(triggerBindId)
+    , triggerBinds_(MachGui::inputRegistry()->getBinds(triggerBindId))
 {
     PRE(pInGameScreen != nullptr);
 
@@ -46,8 +47,6 @@ MachGuiCommand::MachGuiCommand(MachInGameScreen* pInGameScreen, MachGui::BindId 
 MachGuiCommand::~MachGuiCommand()
 {
     TEST_INVARIANT;
-
-    delete pImpl_;
 }
 
 std::string MachGuiCommand::getCursorPromptText() const
@@ -62,7 +61,7 @@ std::string MachGuiCommand::getCursorPromptText() const
 
 std::string MachGuiCommand::getBindDisplayString() const
 {
-    return MachGui::inputRegistry()->getBindDisplayString(pImpl_->triggerBindId_);
+    return MachGui::inputRegistry()->getBindDisplayString(triggerBindId_);
 }
 
 bool MachGuiCommand::addPromptTextCommandInfo(const MachActor* pActor, std::string& prompt) const
@@ -93,11 +92,11 @@ void MachGuiCommand::apply()
     ++commandId();
 
     // Get the selected set of actors
-    const MachInGameScreen::Actors& selectedActors = pImpl_->pInGameScreen_->selectedActors();
+    const MachInGameScreen::Actors& selectedActors = pInGameScreen_->selectedActors();
     std::string reason;
     bool succeeded = false;
 
-    pImpl_->clearMachineOperations();
+    clearMachineOperations();
 
     // Check for being in the squadron menu, with a selected squadron having
     // an intelligent administrator. If so, and the command has an admin version,
@@ -158,9 +157,9 @@ void MachGuiCommand::apply()
         }
     }
 
-    if (pImpl_->machineOperations().size() > 0)
+    if (machineOperations().size() > 0)
     {
-        MachLogGroupMover mover(pImpl_->machineOperations());
+        MachLogGroupMover mover(machineOperations());
     }
 
     // Mark the command as executed
@@ -168,7 +167,7 @@ void MachGuiCommand::apply()
 
     // Display failure reason if found
     if (! succeeded)
-        pImpl_->pInGameScreen_->setCursorPromptText(reason);
+        pInGameScreen_->setCursorPromptText(reason);
     else
         // now reset the voice mail played status to allow consecutive reissues of a command to give a voicemail
         // on each occasion
@@ -192,7 +191,7 @@ void MachGuiCommand::hasPlayedVoiceMail(bool status)
 
 MachInGameScreen& MachGuiCommand::inGameScreen() const
 {
-    return *pImpl_->pInGameScreen_;
+    return *pInGameScreen_;
 }
 
 bool MachGuiCommand::isVisible() const
@@ -548,7 +547,7 @@ MachGuiCommand::ObstacleFlags MachGuiCommand::selectedActorObstacleFlags() const
 {
     ObstacleFlags flags = 0;
 
-    const MachInGameScreen::Actors& selectedActors = pImpl_->pInGameScreen_->selectedActors();
+    const MachInGameScreen::Actors& selectedActors = pInGameScreen_->selectedActors();
 
     for (MachInGameScreen::Actors::const_iterator i = selectedActors.begin(); i != selectedActors.end(); ++i)
     {
@@ -564,7 +563,7 @@ MachGuiCommand::ObstacleFlags MachGuiCommand::selectedActorObstacleFlags() const
 // virtual
 bool MachGuiCommand::processButtonEvent(const GuiKeyEvent& event)
 {
-    const auto& trigger = pImpl_->triggerBinds_;
+    const auto& trigger = triggerBinds_;
     const DevButtonEvent& be = event.buttonEvent();
     if (isVisible() && trigger.matches(event.keyWithMods()) && be.action() == DevButtonEvent::PRESS && be.previous() == 0)
     {
@@ -597,7 +596,7 @@ void MachGuiCommand::cursorInFogOfWar(bool inFOW)
 
 void MachGuiCommand::add(MachLogMachine* pMachine, std::unique_ptr<MachLogOperation> operation)
 {
-    pImpl_->add(MachLogMachineOperation(pMachine, operation.release()));
+    add(MachLogMachineOperation(pMachine, operation.release()));
 }
 
 PhysPathFindingPriority MachGuiCommand::pathFindingPriority() const
@@ -606,6 +605,21 @@ PhysPathFindingPriority MachGuiCommand::pathFindingPriority() const
         = Phys::defaultPathFindingPriority() + MachPhysData::instance().generalData().pcPathFindingPriority();
 
     return result;
+}
+
+void MachGuiCommand::add(const MachLogMachineOperation& machineOperation)
+{
+    machineOperations_.push_back(machineOperation);
+}
+
+void MachGuiCommand::clearMachineOperations()
+{
+    machineOperations_.erase(machineOperations_.begin(), machineOperations_.end());
+}
+
+const MachLogMachineOperations& MachGuiCommand::machineOperations() const
+{
+    return machineOperations_;
 }
 
 /* End COMMAND.CPP **************************************************/

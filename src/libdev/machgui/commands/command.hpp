@@ -19,6 +19,8 @@
 #include "base/base.hpp"
 #include "gui/StringId.hpp"
 #include "machgui/BindId.hpp"
+#include "device/KeyBind.hpp"
+#include "machlog/Operations/MachineOperation.hpp"
 #include "machgui/gui.hpp"
 #include "machlog/World/MachLog.hpp"
 
@@ -32,7 +34,6 @@ class MachInGameScreen;
 class MachActor;
 class MachLogOperation;
 class MachLogAdministrator;
-class MachGuiCommandImpl;
 class MachLogMachine;
 template <class X, class Y> class pair;
 template <class T> class ctl_pvector;
@@ -245,6 +246,10 @@ private:
 
     static bool& inFogOfWarFlag();
 
+    void add(const MachLogMachineOperation&);
+    void clearMachineOperations();
+    const MachLogMachineOperations& machineOperations() const;
+
     // Data members
     bool isExecuted_; // True when the command has been executed
     bool isVisible_; // True if currently deemed available for display and interaction
@@ -252,7 +257,10 @@ private:
     bool isSquadronContext_; // True if the command was given in the context of squadron
     bool hasPlayedVoiceMail_; // initially false - becomes true once any voicemail assoc'd with the command has played
 
-    MachGuiCommandImpl* pImpl_;
+    MachLogMachineOperations machineOperations_;
+    MachInGameScreen* pInGameScreen_; // The in-game screen
+    MachGui::BindId triggerBindId_;
+    const KeyBinds& triggerBinds_;
 };
 
 #endif
