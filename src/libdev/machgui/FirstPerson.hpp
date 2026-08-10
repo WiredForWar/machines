@@ -160,9 +160,9 @@ private:
     MachInGameScreen* pInGameScreen_{};
     bool inFirstPerson_{};
     W4dSceneManager* pSceneManager_{};
-    int borderHeight_;
-    int lastBorderHeight_;
-    DevKeyToCommandTranslator* pKeyTranslator_;
+    int borderHeight_{};
+    int lastBorderHeight_{};
+    DevKeyToCommandTranslator* pKeyTranslator_{};
     DevKeyToCommandTranslator::CommandList commandList_;
     MachLog1stPersonHandler* pLogHandler_{}; // Handles 1st person commands - makes things happen in game
     MexPoint3d targetPoint_; // The point currently to be aimed at (global coords)
@@ -176,38 +176,38 @@ private:
     GuiBitmap healthBmp_;
     GuiBitmap armourBmp_;
     MachGuiRadar* pRadar_{};
-    int borderDrawCount_;
+    int borderDrawCount_{};
     GuiBitmap leftWeaponBmp_;
     GuiBitmap rightWeaponBmp_;
     GuiBitmap topWeaponBmp_;
     GuiBitmap weaponChargeBmp_;
     GuiBitmap weaponBackgroundBmp_;
-    int weaponSelectIndex_;
-    bool justEnteredFirstPerson_;
+    int weaponSelectIndex_{};
+    bool justEnteredFirstPerson_{};
     GuiBitmap weaponStartupFrames_[10];
-    double leftWeaponChangeEndTime_;
-    double rightWeaponChangeEndTime_;
-    double topWeaponChangeEndTime_;
-    int leftWeaponPos_;
-    int rightWeaponPos_;
-    int topWeaponPos_;
+    double leftWeaponChangeEndTime_{};
+    double rightWeaponChangeEndTime_{};
+    double topWeaponChangeEndTime_{};
+    int leftWeaponPos_{};
+    int rightWeaponPos_{};
+    int topWeaponPos_{};
     bool resolutionChanged_ = true;
-    bool isDead_;
-    PhysAbsoluteTime timeOfDeath_;
+    bool isDead_{};
+    PhysAbsoluteTime timeOfDeath_{};
     MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_{};
     bool rightMouseButtonHeadTurningUsed_{};
     double lastRightClickTime_{}; // Used for checking for right mouse button double click
-    double timeWeaponsFired_;
+    double timeWeaponsFired_{};
     MachGuiPausedImage* pPausedImage_{};
     bool reverseUpDownKeys_;
     bool reverseUpDownMouse_;
     MexBasicRandom hitInterferenceRandom_;
     bool machineNVGOn_{};
-    double startupTimer_;
+    double startupTimer_{};
     bool finishedStartupSequence_{};
-    bool isHitInterferenceOn_;
-    double hitInterferenceEndTime_;
-    int frameNumber_;
+    bool isHitInterferenceOn_{};
+    double hitInterferenceEndTime_{};
+    int frameNumber_{};
 
     // FP Command
     MachGuiFPCommand* pCommandWidget_{};
