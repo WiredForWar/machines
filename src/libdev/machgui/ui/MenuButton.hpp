@@ -78,8 +78,7 @@ private:
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;
 
-    // TODO: Eliminate dependency. Still required for buttonAction and other GUI event handling
-    // Note: The TODO is blocked by GuiDisplayable
+    // TODO: Eliminate dependency. Still required to report the button event.
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 
     unsigned int stringId_{};

@@ -32,8 +32,8 @@ class MachGuiDropDownListBoxCreator
 public:
     using Callback = std::function<void()>;
 
-    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control stuff is what MGSS
-    // still needed for
+    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. The list is
+    // placed against it and parented to it; the root would do for both.
     MachGuiDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width);
     MachGuiDropDownListBoxCreator(GuiDisplayable* pParent, MachGuiStartupScreens*, int width, bool whiteFont);
     MachGuiDropDownListBoxCreator(
@@ -103,7 +103,7 @@ private:
     bool hovered_ = false;
     GuiStrings strings_;
     int currentIndex_{-1};
-    // TODO: Remove this once the focus capable control and auto-delete displayables refactor is done...
+    // TODO: Remove this once the auto-delete displayables refactor is done...
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
     bool whiteFont_;
     bool border_;
@@ -112,8 +112,8 @@ private:
 class MachGuiDropDownList : public MachGuiDropDownListBox
 {
 public:
-    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Focus capable control & auto-delete stuff
-    // is what MGSS still needed for
+    // TODO: Eliminate entirely MachGuiStartupScreens from these constructors. Auto-delete
+    // is what it is still needed for.
     MachGuiDropDownList(
         MachGuiStartupScreens* pParent,
         const Gui::Box& box,

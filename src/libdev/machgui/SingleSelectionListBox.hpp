@@ -59,7 +59,6 @@ private:
     MachGuiSingleSelectionListBox(const MachGuiSingleSelectionListBox&) = delete;
     MachGuiSingleSelectionListBox& operator=(const MachGuiSingleSelectionListBox&) = delete;
 
-    // TODO: Remove this once the focus capable control refactor is done...
     ctl_pvector<MachGuiSingleSelectionListBoxItem> listItems_;
 
     // A GuiRoot such as MachGuiStartupScreens
