@@ -69,102 +69,20 @@
 // player asks for finer aiming.
 static constexpr double FirstPersonPrecisionAimScale = 0.25;
 
-class MachGuiFirstPersonImpl
-{
-public:
-    MachGuiFirstPersonImpl();
-
-    bool switchToMenus_ = false;
-    bool switchToInGame_ = false;
-    MachActor* pActor_ = nullptr;
-    MachInGameScreen* pInGameScreen_ = nullptr;
-    bool inFirstPerson_ = false;
-    W4dSceneManager* pSceneManager_ = nullptr;
-    int borderHeight_;
-    int lastBorderHeight_;
-    DevKeyToCommandTranslator* pKeyTranslator_;
-    DevKeyToCommandTranslator::CommandList commandList_;
-    MachLog1stPersonHandler* pLogHandler_ = nullptr; // Handles 1st person commands - makes things happen in game
-    MexPoint3d targetPoint_; // The point currently to be aimed at (global coords)
-    MachGuiAnimation* pAttackCursor_ = nullptr; // Attack cross-hair
-    MachGuiAnimation* pNormalCursor_ = nullptr; // Nothing to target cursor
-    MachGuiAnimation* pMissCursor_ = nullptr; // Targeted on actor but weapons cannot tilt
-    MachGuiAnimation* pStartCursor_ = nullptr; // When machine is first embodied, cursor expands.
-    bool switchBackToGroundCamera_; // Camera to switch back to when leaving 1st person
-    MachActor* pTargetActor_ = nullptr;
-    GuiBitmap compassBmp_;
-    GuiBitmap healthBmp_;
-    GuiBitmap armourBmp_;
-    MachGuiRadar* pRadar_ = nullptr;
-    int borderDrawCount_;
-    GuiBitmap leftWeaponBmp_;
-    GuiBitmap rightWeaponBmp_;
-    GuiBitmap topWeaponBmp_;
-    GuiBitmap weaponChargeBmp_;
-    GuiBitmap weaponBackgroundBmp_;
-    int weaponSelectIndex_;
-    bool justEnteredFirstPerson_;
-    GuiBitmap weaponStartupFrames_[10];
-    double leftWeaponChangeEndTime_;
-    double rightWeaponChangeEndTime_;
-    double topWeaponChangeEndTime_;
-    int leftWeaponPos_;
-    int rightWeaponPos_;
-    int topWeaponPos_;
-    bool resolutionChanged_;
-    bool isDead_;
-    PhysAbsoluteTime timeOfDeath_;
-    MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_ = nullptr;
-    bool rightMouseButtonHeadTurningUsed_ = false;
-    double lastRightClickTime_ = 0.0; // Used for checking for right mouse button double click
-    double timeWeaponsFired_;
-    MachGuiPausedImage* pPausedImage_ = nullptr;
-    bool reverseUpDownKeys_;
-    bool reverseUpDownMouse_;
-    MexBasicRandom hitInterferenceRandom_;
-    bool machineNVGOn_ = false;
-    double startupTimer_;
-    bool finishedStartupSequence_ = false;
-    bool isHitInterferenceOn_;
-    double hitInterferenceEndTime_;
-    int frameNumber_;
-
-    // FP Command
-    MachGuiFPCommand* pCommandWidget_ = nullptr;
-    int64_t commandSquadIndex_;
-    double timeSquadIndexChanged_ = 0.0;
-};
-
-MachGuiFirstPersonImpl::MachGuiFirstPersonImpl()
-    : switchBackToGroundCamera_(true)
+MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*, MachInGameScreen* pInGameScreen)
+    : GuiRoot(Gui::Box(0, 0, 10000, 10000))
     , compassBmp_(Gui::getScaledImage("gui/fstpersn/cursor/compass.bmp"))
     , healthBmp_(Gui::getScaledImage("gui/fstpersn/cursor/health.bmp"))
     , armourBmp_(Gui::getScaledImage("gui/fstpersn/cursor/armour.bmp"))
     , weaponChargeBmp_(Gui::getScaledImage("gui/fstpersn/weapon/chrgey.bmp"))
     , weaponBackgroundBmp_(Gui::requestScaledImage("gui/fstpersn/weapon/weapon.bmp"))
-    , resolutionChanged_(true)
     , reverseUpDownKeys_(SysRegistry::instance().queryIntegerValue("Options\\Reverse UpDown Keys", "on"))
     , reverseUpDownMouse_(SysRegistry::instance().queryIntegerValue("Options\\Reverse BackForward Mouse", "on"))
     , hitInterferenceRandom_(MexBasicRandom::constructSeededFromTime())
-    , commandSquadIndex_(-1L)
 {
     compassBmp_.enableColourKeying();
     weaponChargeBmp_.enableColourKeying();
     weaponBackgroundBmp_.enableColourKeying();
-}
-
-MachGuiFirstPerson::MachGuiFirstPerson(W4dSceneManager* pSceneManager, W4dRoot*, MachInGameScreen* pInGameScreen)
-    : GuiRoot(Gui::Box(0, 0, 10000, 10000))
-{
-    // Create implementation
-    pImpl_ = new MachGuiFirstPersonImpl();
-
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(DevKeyToCommandTranslator::CommandList, commandList_);
-    CB_DEPIMPL(MachGuiPausedImage*, pPausedImage_);
 
     commandList_.reserve(NUM_COMMANDS + 1);
 
@@ -229,12 +147,6 @@ MachGuiFirstPerson::~MachGuiFirstPerson()
 {
     TEST_INVARIANT;
 
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachGuiPausedImage*, pPausedImage_);
-    CB_DEPIMPL(MachGuiFPCommand*, pCommandWidget_);
-
     if (pCommandWidget_ != nullptr)
     {
         delete pCommandWidget_;
@@ -243,7 +155,6 @@ MachGuiFirstPerson::~MachGuiFirstPerson()
     delete pKeyTranslator_;
     delete pLogHandler_;
     delete pPausedImage_;
-    delete pImpl_;
 }
 
 void MachGuiFirstPerson::CLASS_INVARIANT
@@ -253,7 +164,6 @@ void MachGuiFirstPerson::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiFirstPerson& t)
 {
-
     o << "MachGuiFirstPerson " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiFirstPerson " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -263,16 +173,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiFirstPerson& t)
 // virtual
 void MachGuiFirstPerson::doDisplay()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(int, lastBorderHeight_);
-    CB_DEPIMPL(int, borderDrawCount_);
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(bool, finishedStartupSequence_);
-    CB_DEPIMPL(int, frameNumber_);
-
     if (borderDrawCount_ || !finishedStartupSequence_)
     {
         // Get screen dimensions
@@ -311,37 +211,6 @@ void MachGuiFirstPerson::doDisplay()
 // virtual
 void MachGuiFirstPerson::update()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(DevKeyToCommandTranslator::CommandList, commandList_);
-    CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(MachGuiAnimation*, pAttackCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pNormalCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pMissCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
-    CB_DEPIMPL(MexPoint3d, targetPoint_);
-    CB_DEPIMPL(MachActor*, pTargetActor_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(bool, isDead_);
-    CB_DEPIMPL(PhysAbsoluteTime, timeOfDeath_);
-    CB_DEPIMPL(bool, rightMouseButtonHeadTurningUsed_);
-    CB_DEPIMPL(double, timeWeaponsFired_);
-    CB_DEPIMPL(bool, reverseUpDownKeys_);
-    CB_DEPIMPL(bool, reverseUpDownMouse_);
-    CB_DEPIMPL(MexBasicRandom, hitInterferenceRandom_);
-    CB_DEPIMPL(bool, machineNVGOn_);
-    CB_DEPIMPL(double, hitInterferenceEndTime_);
-    CB_DEPIMPL(double, startupTimer_);
-    CB_DEPIMPL(bool, finishedStartupSequence_)
-    CB_DEPIMPL(bool, isHitInterferenceOn_);
-    CB_DEPIMPL(int, frameNumber_);
-    CB_DEPIMPL(int64_t, commandSquadIndex_);
-    CB_DEPIMPL(MachGuiFPCommand*, pCommandWidget_);
-    CB_DEPIMPL(double, timeSquadIndexChanged_);
-
     double now = DevTime::instance().time();
 
     if (justEnteredFirstPerson_ == true)
@@ -397,7 +266,6 @@ void MachGuiFirstPerson::update()
                 pActor_->objectType() == MachLog::AGGRESSOR && pActor_->asAggressor().subType() == MachPhys::NINJA
                 && pActor_->busy())) // prevents major movement when gorilla is doing its ground punch
         {
-
             if (commandList_[FOWARD].on())
             {
                 logHandler.moveForwards();
@@ -954,36 +822,6 @@ void MachGuiFirstPerson::update()
 // virtual
 void MachGuiFirstPerson::doBecomeRoot()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(bool, switchBackToGroundCamera_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(int, borderDrawCount_);
-    CB_DEPIMPL(int, weaponSelectIndex_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(MachGuiAnimation*, pAttackCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pNormalCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pMissCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
-    CB_DEPIMPL(int, borderHeight_);
-    CB_DEPIMPL(bool, resolutionChanged_);
-    CB_DEPIMPL(bool, isDead_);
-    CB_DEPIMPL(GuiBitmap, weaponBackgroundBmp_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
-    CB_DEPIMPL(double, timeWeaponsFired_);
-    CB_DEPIMPL(MachActor*, pTargetActor_);
-    CB_DEPIMPL(bool, reverseUpDownKeys_);
-    CB_DEPIMPL(bool, reverseUpDownMouse_);
-    CB_DEPIMPL(bool, finishedStartupSequence_);
-    CB_DEPIMPL(bool, isHitInterferenceOn_);
-    CB_DEPIMPL(int, frameNumber_);
-    CB_DEPIMPL(bool, machineNVGOn_);
-    CB_DEPIMPL(MachGuiFPCommand*, pCommandWidget_);
-
     // Just about to enter machine so initialise the startup sequence
     finishedStartupSequence_ = false;
     isHitInterferenceOn_ = false;
@@ -1140,21 +978,6 @@ void MachGuiFirstPerson::doBecomeRoot()
 // virtual
 void MachGuiFirstPerson::doBecomeNotRoot()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(bool, inFirstPerson_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, switchBackToGroundCamera_);
-    CB_DEPIMPL(DevKeyToCommandTranslator::CommandList, commandList_);
-    CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(MachGuiAnimation*, pAttackCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pNormalCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pMissCursor_);
-    CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiInGameChatMessagesDisplay*, pChatMessageDisplay_);
-    CB_DEPIMPL(bool, switchToMenus_);
-
     // Detach the camera and exit the actor
     detachCamera();
     exitActor();
@@ -1193,8 +1016,6 @@ void MachGuiFirstPerson::doBecomeNotRoot()
 // virtual
 bool MachGuiFirstPerson::doHandleRightClickEvent(const GuiMouseEvent& event)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(double, lastRightClickTime_);
     // Right button used to exit 1st person ( when double clicked )
     if (event.rightButton() == Gui::RELEASED)
     {
@@ -1214,17 +1035,6 @@ bool MachGuiFirstPerson::doHandleRightClickEvent(const GuiMouseEvent& event)
 // virtual
 bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(DevKeyToCommandTranslator::CommandList, commandList_);
-    CB_DEPIMPL(DevKeyToCommandTranslator*, pKeyTranslator_);
-    CB_DEPIMPL(bool, switchToMenus_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(bool, switchBackToGroundCamera_);
-    CB_DEPIMPL(bool, machineNVGOn_);
-
     bool processed = false;
     bool finished = false;
     unsigned int count = 0;
@@ -1363,47 +1173,31 @@ bool MachGuiFirstPerson::doHandleKeyEvent(const GuiKeyEvent& event)
 
 bool MachGuiFirstPerson::switchToMenus() const
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, switchToMenus_);
-
     return switchToMenus_;
 }
 
 bool MachGuiFirstPerson::switchToInGameRequested() const
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, switchToInGame_);
-
     return switchToInGame_;
 }
 
 void MachGuiFirstPerson::resetSwitchToMenus()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, switchToMenus_);
-
     switchToMenus_ = false;
 }
 
 void MachGuiFirstPerson::resetSwitchToInGame()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, switchToInGame_);
-
     switchToInGame_ = false;
 }
 
 void MachGuiFirstPerson::switchToInGame()
 {
-    pImpl_->switchToInGame_ = true;
+    switchToInGame_ = true;
 }
 
 void MachGuiFirstPerson::setActor(MachActor* pActor)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-
     if (pActor->objectIsMachine())
     {
         pActor_ = pActor;
@@ -1417,10 +1211,6 @@ void MachGuiFirstPerson::setActor(MachActor* pActor)
 
 void MachGuiFirstPerson::resetActor()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-
     // Stop observing
     if (pActor_)
         pActor_->detach(this);
@@ -1433,14 +1223,6 @@ void MachGuiFirstPerson::resetActor()
 // virtual
 bool MachGuiFirstPerson::beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(bool, isDead_);
-    CB_DEPIMPL(PhysAbsoluteTime, timeOfDeath_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-    CB_DEPIMPL(bool, inFirstPerson_);
-
     ASSERT((!pActor_) || pSubject == pActor_, "MachGuiFirstPerson::beNotified notified about wrong actor");
 
     bool exitFromActor = false;
@@ -1508,10 +1290,6 @@ void MachGuiFirstPerson::domainDeleted(W4dDomain*)
 
 bool MachGuiFirstPerson::okayToSwitchTo1stPerson()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     // Can only enter 1st person in a multiplayer game if it hasn't been disabled.
     if (pInGameScreen_->isFirstPersonDisabled())
     {
@@ -1532,15 +1310,6 @@ bool MachGuiFirstPerson::okayToSwitchTo1stPerson()
 
 void MachGuiFirstPerson::setFirstPerson3DViewport()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(int, borderHeight_);
-    CB_DEPIMPL(int, lastBorderHeight_);
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(bool, finishedStartupSequence_);
-    CB_DEPIMPL(double, startupTimer_);
-    CB_DEPIMPL(int, frameNumber_);
-
     if (justEnteredFirstPerson_ == true)
     {
         startupTimer_ = DevTime::instance().time();
@@ -1583,14 +1352,6 @@ void MachGuiFirstPerson::setFirstPerson3DViewport()
 
 void MachGuiFirstPerson::embodyActor()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, rightMouseButtonHeadTurningUsed_);
-    CB_DEPIMPL(MachGuiFPCommand*, pCommandWidget_);
-
     PRE(pActor_ != nullptr);
     PRE(pLogHandler_ == nullptr);
 
@@ -1631,13 +1392,6 @@ void MachGuiFirstPerson::embodyActor()
 
 void MachGuiFirstPerson::exitActor()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-    CB_DEPIMPL(MachGuiFPCommand*, pCommandWidget_);
-    CB_DEPIMPL(int64_t, commandSquadIndex_);
-
     // Delete the handler
     delete pLogHandler_;
     pLogHandler_ = nullptr;
@@ -1681,12 +1435,6 @@ void MachGuiFirstPerson::exitActor()
 
 void MachGuiFirstPerson::detachCamera()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, switchBackToGroundCamera_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     // Store 1st person camera
     MachLogCamera* p1stPersonCamera = nullptr;
     if (pInGameScreen_->cameras()->is1stPersonCameraActive())
@@ -1731,11 +1479,6 @@ void MachGuiFirstPerson::detachCamera()
 
 void MachGuiFirstPerson::attachCamera()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     PRE(pLogHandler_ != nullptr);
 
     // Select the appropriate camera
@@ -1760,13 +1503,6 @@ void MachGuiFirstPerson::attachCamera()
 
 void MachGuiFirstPerson::displayCompass()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(GuiBitmap, compassBmp_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachGuiAnimation*, pStartCursor_);
-
     // Only display compass if start cursor has finished animating
     if (pActor_ && !pStartCursor_->isVisible())
     {
@@ -1813,12 +1549,6 @@ void MachGuiFirstPerson::displayCompass()
 
 void MachGuiFirstPerson::displayHealthArmour()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pTargetActor_);
-    CB_DEPIMPL(GuiBitmap, healthBmp_);
-    CB_DEPIMPL(GuiBitmap, armourBmp_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     if (pTargetActor_)
     {
         // Get screen size.
@@ -1864,20 +1594,6 @@ void MachGuiFirstPerson::doHandleMouseClickEvent(const GuiMouseEvent& /*rel*/)
 
 void MachGuiFirstPerson::displayWeapons()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(GuiBitmap, leftWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, rightWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, topWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, weaponBackgroundBmp_);
-    CB_DEPIMPL(int, borderHeight_);
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(double, leftWeaponChangeEndTime_);
-    CB_DEPIMPL(double, topWeaponChangeEndTime_);
-    CB_DEPIMPL(double, rightWeaponChangeEndTime_);
-    CB_DEPIMPL(int, leftWeaponPos_);
-    CB_DEPIMPL(int, topWeaponPos_);
-    CB_DEPIMPL(int, rightWeaponPos_);
-
     if (justEnteredFirstPerson_ == true)
     {
         double now = DevTime::instance().time();
@@ -1919,12 +1635,6 @@ bool MachGuiFirstPerson::displayWeapon(
     double changeEndTime,
     int& weaponFrame)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(GuiBitmap, weaponBackgroundBmp_);
-    CB_DEPIMPL(GuiBitmap, weaponChargeBmp_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, weaponStartupFrames_);
-
     bool foundWeapon = false;
 
     if (pLogHandler_)
@@ -2001,10 +1711,6 @@ bool MachGuiFirstPerson::displayWeapon(
 
 void MachGuiFirstPerson::activate()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(int, borderDrawCount_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     borderDrawCount_ = 2;
 
     // The system releases the pointer while the app is in the background, so ask for it
@@ -2015,12 +1721,6 @@ void MachGuiFirstPerson::activate()
 
 void MachGuiFirstPerson::loadWeaponBmps()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(GuiBitmap, leftWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, rightWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, topWeaponBmp_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-
     for (int index = 0; index < pLogHandler_->nWeapons(); ++index)
     {
         const MachLogWeapon& weapon = pLogHandler_->weapon(index);
@@ -2151,14 +1851,6 @@ GuiBitmap MachGuiFirstPerson::getWeaponBmp(MachPhys::WeaponType wt)
 
 void MachGuiFirstPerson::doWeaponSelect()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(int, weaponSelectIndex_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(double, leftWeaponChangeEndTime_);
-    CB_DEPIMPL(double, topWeaponChangeEndTime_);
-    CB_DEPIMPL(double, rightWeaponChangeEndTime_);
-
     PRE(pLogHandler_);
 
     if (pLogHandler_->nWeapons() < 2)
@@ -2288,9 +1980,6 @@ void MachGuiFirstPerson::updateWeaponAnimEndTime(double& time)
 
 void MachGuiFirstPerson::loadBitmaps()
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, weaponStartupFrames_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-
     loadWeaponBmps();
 
     for (int loop = 0; loop < WEAPON_DROPDOWN_FRAMES; ++loop)
@@ -2311,12 +2000,6 @@ void MachGuiFirstPerson::loadBitmaps()
 
 void MachGuiFirstPerson::unloadBitmaps()
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, weaponStartupFrames_);
-    CB_DEPIMPL(GuiBitmap, leftWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, rightWeaponBmp_);
-    CB_DEPIMPL(GuiBitmap, topWeaponBmp_);
-    CB_DEPIMPL(MachGuiRadar*, pRadar_);
-
     for (int loop = 0; loop < WEAPON_DROPDOWN_FRAMES; ++loop)
     {
         weaponStartupFrames_[loop] = GuiBitmap();
@@ -2331,8 +2014,6 @@ void MachGuiFirstPerson::unloadBitmaps()
 
 void MachGuiFirstPerson::resolutionChange()
 {
-    CB_DEPIMPL(bool, resolutionChanged_);
-
     resolutionChanged_ = true;
 }
 

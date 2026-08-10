@@ -17,14 +17,24 @@
 #include "world4d/Subject/Observer.hpp"
 #include "world4d/Subject/Subject.hpp"
 #include "machphys/machphys.hpp"
+#include "device/KeyToCommandTranslator.hpp"
+#include "gui/gui.hpp"
+#include "mathex/Point3d.hpp"
+#include "mathex/Random.hpp"
+#include "phys/phys.hpp"
 
 class W4dSceneManager;
 class W4dRoot;
-class MachGuiFirstPersonImpl;
 class GuiMouseEvent;
 class MachActor;
 class MachInGameScreen;
 class W4dDomain;
+class MachGuiAnimation;
+class MachGuiFPCommand;
+class MachGuiInGameChatMessagesDisplay;
+class MachGuiPausedImage;
+class MachGuiRadar;
+class MachLog1stPersonHandler;
 
 class MachGuiFirstPerson
     : public GuiRoot
@@ -144,7 +154,65 @@ private:
     MachGuiFirstPerson& operator=(const MachGuiFirstPerson&);
 
     // Data members...
-    MachGuiFirstPersonImpl* pImpl_;
+    bool switchToMenus_{};
+    bool switchToInGame_{};
+    MachActor* pActor_{};
+    MachInGameScreen* pInGameScreen_{};
+    bool inFirstPerson_{};
+    W4dSceneManager* pSceneManager_{};
+    int borderHeight_;
+    int lastBorderHeight_;
+    DevKeyToCommandTranslator* pKeyTranslator_;
+    DevKeyToCommandTranslator::CommandList commandList_;
+    MachLog1stPersonHandler* pLogHandler_{}; // Handles 1st person commands - makes things happen in game
+    MexPoint3d targetPoint_; // The point currently to be aimed at (global coords)
+    MachGuiAnimation* pAttackCursor_{}; // Attack cross-hair
+    MachGuiAnimation* pNormalCursor_{}; // Nothing to target cursor
+    MachGuiAnimation* pMissCursor_{}; // Targeted on actor but weapons cannot tilt
+    MachGuiAnimation* pStartCursor_{}; // When machine is first embodied, cursor expands.
+    bool switchBackToGroundCamera_ = true; // Camera to switch back to when leaving 1st person
+    MachActor* pTargetActor_{};
+    GuiBitmap compassBmp_;
+    GuiBitmap healthBmp_;
+    GuiBitmap armourBmp_;
+    MachGuiRadar* pRadar_{};
+    int borderDrawCount_;
+    GuiBitmap leftWeaponBmp_;
+    GuiBitmap rightWeaponBmp_;
+    GuiBitmap topWeaponBmp_;
+    GuiBitmap weaponChargeBmp_;
+    GuiBitmap weaponBackgroundBmp_;
+    int weaponSelectIndex_;
+    bool justEnteredFirstPerson_;
+    GuiBitmap weaponStartupFrames_[10];
+    double leftWeaponChangeEndTime_;
+    double rightWeaponChangeEndTime_;
+    double topWeaponChangeEndTime_;
+    int leftWeaponPos_;
+    int rightWeaponPos_;
+    int topWeaponPos_;
+    bool resolutionChanged_ = true;
+    bool isDead_;
+    PhysAbsoluteTime timeOfDeath_;
+    MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_{};
+    bool rightMouseButtonHeadTurningUsed_{};
+    double lastRightClickTime_{}; // Used for checking for right mouse button double click
+    double timeWeaponsFired_;
+    MachGuiPausedImage* pPausedImage_{};
+    bool reverseUpDownKeys_;
+    bool reverseUpDownMouse_;
+    MexBasicRandom hitInterferenceRandom_;
+    bool machineNVGOn_{};
+    double startupTimer_;
+    bool finishedStartupSequence_{};
+    bool isHitInterferenceOn_;
+    double hitInterferenceEndTime_;
+    int frameNumber_;
+
+    // FP Command
+    MachGuiFPCommand* pCommandWidget_{};
+    int64_t commandSquadIndex_ = -1L;
+    double timeSquadIndexChanged_{};
 };
 
 #endif
