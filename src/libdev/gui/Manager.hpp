@@ -60,8 +60,6 @@ private:
 
 //////////////////////////////////////////////////////////////////////
 
-class GuiManagerImpl;
-
 class GuiManager
 // Singleton
 {
@@ -131,9 +129,12 @@ private:
     static constexpr int N_BUFFERS = 2;
 
     // Data members
-    GuiManagerImpl* pImpl_;
+    GuiColourScheme colourScheme_ = GuiColourScheme::defaultScheme();
+    GuiRoot* pRoot_{};
+    GuiDisplayable* pMouseFocus_{};
+    GuiDisplayable* pKeyboardFocus_{};
+    GuiDisplayable* pCharacterFocus_{};
 
-    friend class GuiManagerImpl;
     friend class GuiDisplayable;
     friend void GuiRoot::becomeRoot();
 };

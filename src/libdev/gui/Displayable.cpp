@@ -3,19 +3,7 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#define CB_GUIDISPLAYABLE_DEPIMPL()                                                                                    \
-    CB_DEPIMPL(GuiDisplayable*, pParent_);                                                                             \
-    CB_DEPIMPL(Gui::Box, relativeBox_);                                                                                \
-    CB_DEPIMPL(Gui::Box, absoluteBox_);                                                                                \
-    CB_DEPIMPL(bool, isVisible_);                                                                                      \
-    CB_DEPIMPL(int, changed_);                                                                                         \
-    CB_DEPIMPL(bool, redrawEveryFrame_);                                                                               \
-    CB_DEPIMPL_ARRAY(Children, children_);                                                                             \
-    CB_DEPIMPL(Children, allChildren_);                                                                                \
-    CB_DEPIMPL(bool, useFastSecondDisplay_);
-
 #include "gui/Displayable.hpp"
-#include "gui/internal/DisplayableImpl.hpp"
 #include "ctl/Vector.hpp"
 #include "ctl/Algorithm.hpp"
 #include "mathex/Vec2.hpp"
@@ -29,33 +17,25 @@
 //////////////////////////////////////////////////////////////////////
 
 GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, Layer layer)
-    : pImpl_(new GuiDisplayableImpl)
+    : pParent_(pParent)
 {
-    pImpl_->pParent_ = pParent;
-    pImpl_->enabled_ = true;
-    pImpl_->isVisible_ = true;
-    pImpl_->redrawEveryFrame_ = false;
-    pImpl_->useFastSecondDisplay_ = true;
-
-    for (int layer = LAYER1; layer < NUMLAYERS; ++layer)
+    for (int i = LAYER1; i < NUMLAYERS; ++i)
     {
-        pImpl_->children_[layer].reserve(2);
+        children_[i].reserve(2);
     }
-    pImpl_->allChildren_.reserve(4);
+    allChildren_.reserve(4);
 
     changed(true);
 
     if (pParent)
     {
-        pImpl_->pParent_->addChild(this, layer);
+        pParent_->addChild(this, layer);
     }
 }
 
 GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, const Gui::Boundary& relativeBoundary, Layer myLayer)
     : GuiDisplayable(pParent, myLayer)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     PRE(pParent != nullptr);
 
     setRelativeBoundary(relativeBoundary);
@@ -68,8 +48,6 @@ GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, const Gui::Boundary& rel
 GuiDisplayable::GuiDisplayable(const Gui::Boundary& absBoundary)
     : GuiDisplayable(nullptr)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     relativeBox_ = absBoundary;
     absoluteBox_ = absBoundary;
 
@@ -78,38 +56,28 @@ GuiDisplayable::GuiDisplayable(const Gui::Boundary& absBoundary)
 
 GuiDisplayable::~GuiDisplayable()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     deleteAllChildren();
 
     if (pParent_ != nullptr)
         pParent_->removeChild(this);
 
     GuiManager::instance().isBeingDeleted(this);
-
-    delete pImpl_;
 }
 
 //////////////////////////////////////////////////////////////////////
 
 Gui::Coord GuiDisplayable::relativeCoord() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return relativeBox_.minCorner();
 }
 
 Gui::Coord GuiDisplayable::absoluteCoord() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return absoluteBox_.minCorner();
 }
 
 void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // Construct the displacement vector
     MexVec2 diff(relativeBox_.minCorner(), relCoord);
     PRE_INFO(relativeBox_.minCorner());
@@ -147,8 +115,6 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
 
 void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // Construct the displacement vector
     MexVec2 diff(absoluteBox_.minCorner(), absCoord);
 
@@ -179,8 +145,6 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
 
 void GuiDisplayable::positionChildAbsolute(GuiDisplayable* pChild, const Gui::Coord& absCoord)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     PRE(pChild != nullptr);
     PRE(hasChild(pChild));
 
@@ -191,8 +155,6 @@ void GuiDisplayable::positionChildAbsolute(GuiDisplayable* pChild, const Gui::Co
 
 void GuiDisplayable::positionChildRelative(GuiDisplayable* pChild, const Gui::Coord& relCoord)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     PRE(pChild != nullptr);
     PRE(hasChild(pChild));
 
@@ -205,8 +167,6 @@ void GuiDisplayable::positionChildRelative(GuiDisplayable* pChild, const Gui::Co
 
 void GuiDisplayable::setVisible(bool visible)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     bool makeVisible = visible && isEligableForVisibility() && ! isVisible_;
 
     if (makeVisible)
@@ -219,8 +179,6 @@ void GuiDisplayable::setVisible(bool visible)
 
 bool GuiDisplayable::isVisible() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     bool parentVisible = true;
 
     // Check parents visibility
@@ -239,8 +197,6 @@ bool GuiDisplayable::isEligableForVisibility() const
 
 void GuiDisplayable::changed(bool change)
 {
-    CB_DEPIMPL(int, changed_);
-
     if (change)
     {
         // This indicates that the gui displayable needs to be rendered twice ( back buffer and front buffer )
@@ -261,15 +217,11 @@ void GuiDisplayable::changed(bool change)
 
 bool GuiDisplayable::hasChanged() const
 {
-    CB_DEPIMPL(int, changed_);
-
     return changed_ != 0;
 }
 
 bool GuiDisplayable::isRoot() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return pParent_ == nullptr;
 }
 
@@ -277,8 +229,6 @@ bool GuiDisplayable::isRoot() const
 
 void GuiDisplayable::addChild(GuiDisplayable* pNewChild, Layer childsLayer)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     PRE(! hasChild(pNewChild));
     PRE_INFO(absoluteBoundary());
     PRE_INFO(pNewChild->absoluteBoundary());
@@ -296,8 +246,6 @@ void GuiDisplayable::doRemoveChild(GuiDisplayable* /*pChild*/)
 
 void GuiDisplayable::removeChild(GuiDisplayable* pChild)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     PRE(hasChild(pChild));
 
     Children::iterator i = find(allChildren_.begin(), allChildren_.end(), pChild);
@@ -333,19 +281,17 @@ void GuiDisplayable::reparentChild(GuiDisplayable* pChild, Layer layer)
     if (pOldParent != nullptr)
     {
         pOldParent->removeChild(pChild);
-        pChild->pImpl_->pParent_ = nullptr;
+        pChild->pParent_ = nullptr;
     }
 
     addChild(pChild, layer);
-    pChild->pImpl_->pParent_ = this;
+    pChild->pParent_ = this;
 
     POST(hasChild(pChild));
 }
 
 void GuiDisplayable::detachFromParent()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     if (pParent_ != nullptr)
     {
         pParent_->removeChild(this);
@@ -355,8 +301,6 @@ void GuiDisplayable::detachFromParent()
 
 void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     Children::iterator i = find(allChildren_.begin(), allChildren_.end(), pChild);
 
     if (i != allChildren_.end())
@@ -369,8 +313,6 @@ void GuiDisplayable::deleteChild(GuiDisplayable* pChild)
 
 void GuiDisplayable::deleteAllChildren()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // This works because on deletion the child will remove itself from the parents child collection.
     while (allChildren_.size() != 0)
         delete *allChildren_.begin();
@@ -380,29 +322,21 @@ void GuiDisplayable::deleteAllChildren()
 
 GuiDisplayable::Children& GuiDisplayable::children()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return allChildren_;
 }
 
 const GuiDisplayable::Children& GuiDisplayable::children() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return allChildren_;
 }
 
 GuiDisplayable::Children& GuiDisplayable::children(Layer layer)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return children_[layer];
 }
 
 const GuiDisplayable::Children& GuiDisplayable::children(Layer layer) const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return children_[layer];
 }
 
@@ -410,11 +344,9 @@ const GuiDisplayable::Children& GuiDisplayable::children(Layer layer) const
 
 bool GuiDisplayable::hasChild(const GuiDisplayable* pChild) const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     bool result = false;
 
-    Children::iterator i = find(allChildren_.begin(), allChildren_.end(), pChild);
+    Children::const_iterator i = find(allChildren_.begin(), allChildren_.end(), pChild);
 
     if (i != allChildren_.end())
     {
@@ -426,8 +358,6 @@ bool GuiDisplayable::hasChild(const GuiDisplayable* pChild) const
 
 bool GuiDisplayable::recursivelyHasChild(const GuiDisplayable* pChild) const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     bool found = false;
 
     if (this == pChild)
@@ -435,7 +365,7 @@ bool GuiDisplayable::recursivelyHasChild(const GuiDisplayable* pChild) const
         found = true;
     }
 
-    for (Children::iterator i = allChildren_.begin(); ! found && i != allChildren_.end(); ++i)
+    for (Children::const_iterator i = allChildren_.begin(); ! found && i != allChildren_.end(); ++i)
     {
         found = recursivelyHasChild(*i);
     }
@@ -447,8 +377,6 @@ bool GuiDisplayable::recursivelyHasChild(const GuiDisplayable* pChild) const
 
 void GuiDisplayable::display()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     if (isVisible()) // No point continuing if this displayable is invisible
     {
         // If this has changed and needs rendering then draw it followed by all it's children
@@ -482,8 +410,6 @@ void GuiDisplayable::display()
 
 void GuiDisplayable::normalDisplay()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     doDisplay();
 
     // Display all children
@@ -508,8 +434,6 @@ void GuiDisplayable::normalDisplay()
 
 void GuiDisplayable::fastDisplay()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // Blit from front to back buffer.
     GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
     GuiPainter::instance().blit(frontBuffer, absoluteBoundary(), absoluteBoundary().minCorner());
@@ -520,8 +444,6 @@ void GuiDisplayable::fastDisplay()
 
 void GuiDisplayable::fastDisplayChildren()
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     for (Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer))
     {
         for (Children::iterator i = children_[layer].begin(); i != children_[layer].end(); ++i)
@@ -548,15 +470,11 @@ void GuiDisplayable::fastDisplayChildren()
 
 bool GuiDisplayable::firstDisplay() const
 {
-    CB_DEPIMPL(int, changed_);
-
     return changed_ > 1;
 }
 
 bool GuiDisplayable::secondDisplay() const
 {
-    CB_DEPIMPL(int, changed_);
-
     return changed_ == 1;
 }
 
@@ -564,8 +482,6 @@ bool GuiDisplayable::secondDisplay() const
 
 bool GuiDisplayable::empty() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return allChildren_.empty();
 }
 
@@ -638,57 +554,51 @@ void GuiDisplayable::bevel(const Gui::Box& rel, unsigned thickness, const Gui::C
 
 GuiDisplayable* GuiDisplayable::parent()
 {
-    return pImpl_->pParent_;
+    return pParent_;
 }
 
 const GuiDisplayable* GuiDisplayable::parent() const
 {
-    return pImpl_->pParent_;
+    return pParent_;
 }
 
 bool GuiDisplayable::isEnabled() const
 {
-    return pImpl_->enabled_;
+    return enabled_;
 }
 
 void GuiDisplayable::setEnabled(bool enabled)
 {
-    pImpl_->enabled_ = enabled;
+    enabled_ = enabled;
 }
 
 //////////////////////////////////////////////////////////////////////
 
 const Gui::Boundary& GuiDisplayable::absoluteBoundary() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return absoluteBox_;
 }
 
 void GuiDisplayable::setRelativeBoundary(const Gui::Boundary& boundary)
 {
-    pImpl_->relativeBox_ = boundary;
-    if (pImpl_->pParent_)
+    relativeBox_ = boundary;
+    if (pParent_)
     {
-        pImpl_->absoluteBox_ = translateBox(boundary, pImpl_->pParent_->absoluteCoord());
+        absoluteBox_ = translateBox(boundary, pParent_->absoluteCoord());
     }
     else
     {
-        pImpl_->absoluteBox_ = boundary;
+        absoluteBox_ = boundary;
     }
 }
 
 const Gui::Boundary& GuiDisplayable::relativeBoundary() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return relativeBox_;
 }
 
 Gui::Boundary GuiDisplayable::relativeBoundary(const GuiDisplayable& ancestor) const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     Gui::Coord coord = relativeCoord(ancestor);
 
     Gui::Box box(coord, width(), height());
@@ -714,22 +624,16 @@ Gui::Coord GuiDisplayable::relativeCoord(const GuiDisplayable& ancestor) const
 
 unsigned GuiDisplayable::width() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return relativeBox_.width();
 }
 
 unsigned GuiDisplayable::height() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return relativeBox_.height();
 }
 
 Gui::Size GuiDisplayable::size() const
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     return relativeBox_.size();
 }
 
@@ -806,8 +710,6 @@ Gui::Box GuiDisplayable::translateBox(const Gui::Box& b, const Gui::Coord& c)
 
 GuiDisplayable* GuiDisplayable::innermostContaining(const Gui::Coord& c)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
     if (!isVisible() || !absoluteBoundary().contains(c))
@@ -847,29 +749,21 @@ void GuiDisplayable::setLayer(Layer layer)
 
 bool GuiDisplayable::redrawEveryFrame() const
 {
-    CB_DEPIMPL(bool, redrawEveryFrame_);
-
     return redrawEveryFrame_;
 }
 
 void GuiDisplayable::redrawEveryFrame(bool redraw)
 {
-    CB_DEPIMPL(bool, redrawEveryFrame_);
-
     redrawEveryFrame_ = redraw;
 }
 
 bool GuiDisplayable::useFastSecondDisplay() const
 {
-    CB_DEPIMPL(bool, useFastSecondDisplay_);
-
     return useFastSecondDisplay_;
 }
 
 void GuiDisplayable::useFastSecondDisplay(bool fast)
 {
-    CB_DEPIMPL(bool, useFastSecondDisplay_);
-
     useFastSecondDisplay_ = fast;
 }
 
@@ -883,8 +777,6 @@ const char* GuiDisplayable::description() const
 
 GuiDisplayable* GuiDisplayable::innermostContainingCheckProcessesMouseEvents(const Gui::Coord& c)
 {
-    CB_GUIDISPLAYABLE_DEPIMPL();
-
     // If we are visible and the point is contained in the boundary then we have found
     // a gui displayable that contains the mouse.
     if (!isVisible() || !absoluteBoundary().contains(c) || !processesMouseEvents())

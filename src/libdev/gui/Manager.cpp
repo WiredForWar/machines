@@ -5,7 +5,6 @@
 // #include "ctl/Algorithm.hpp"
 #include "ctl/List.hpp"
 #include "device/EventQueue.hpp"
-#include "gui/internal/ManagerImpl.hpp"
 #include "gui/Manager.hpp"
 #include "gui/Displayable.hpp"
 #include "gui/Event.hpp"
@@ -18,13 +17,6 @@
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Manager.hpp"
 #endif
-
-#define CB_GUIMANAGER_DEPIMPL()                                                                                        \
-    CB_DEPIMPL(GuiColourScheme, colourScheme_);                                                                        \
-    CB_DEPIMPL(GuiRoot*, pRoot_);                                                                                      \
-    CB_DEPIMPL(GuiDisplayable*, pMouseFocus_);                                                                         \
-    CB_DEPIMPL(GuiDisplayable*, pKeyboardFocus_);                                                                      \
-    CB_DEPIMPL(GuiDisplayable*, pCharacterFocus_);
 
 //////////////////////////////////////////////////////////////////////
 
@@ -152,16 +144,7 @@ static constexpr DevEventQueue::ScanCode ScanCodes[] {
 //////////////////////////////////////////////////////////////////////
 
 GuiManager::GuiManager()
-    : pImpl_(new GuiManagerImpl(GuiColourScheme::defaultScheme()))
 {
-    CB_GUIMANAGER_DEPIMPL();
-
-    colourScheme_ = GuiColourScheme::defaultScheme();
-    pRoot_ = nullptr;
-    pMouseFocus_ = nullptr;
-    pKeyboardFocus_ = nullptr;
-    pCharacterFocus_ = nullptr;
-
     for (DevEventQueue::ScanCode code : ScanCodes)
     {
         DevEventQueue::instance().queueEvents(code);
@@ -172,25 +155,18 @@ GuiManager::GuiManager()
     DevEventQueue::instance().queueEvents(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN);
 }
 
-GuiManager::~GuiManager()
-{
-    delete pImpl_;
-}
+GuiManager::~GuiManager() = default;
 
 //////////////////////////////////////////////////////////////////////
 
 bool GuiManager::hasRoot() const
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     return pRoot_ != nullptr;
 }
 
 const GuiRoot& GuiManager::root() const
 {
     PRE(hasRoot());
-
-    CB_GUIMANAGER_DEPIMPL();
 
     return *pRoot_;
 }
@@ -199,8 +175,6 @@ GuiRoot& GuiManager::root()
 {
     PRE(hasRoot());
 
-    CB_GUIMANAGER_DEPIMPL();
-
     return *pRoot_;
 }
 
@@ -208,16 +182,12 @@ GuiRoot& GuiManager::root()
 
 bool GuiManager::keyboardFocusExists() const
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     return pKeyboardFocus_ != nullptr;
 }
 
 void GuiManager::keyboardFocus(GuiDisplayable* pNewKeyboardFocus)
 {
     PRE(pNewKeyboardFocus != nullptr);
-
-    CB_GUIMANAGER_DEPIMPL();
 
     pKeyboardFocus_ = pNewKeyboardFocus;
     POST(keyboardFocusExists());
@@ -227,8 +197,6 @@ void GuiManager::keyboardFocus(GuiDisplayable* pNewKeyboardFocus)
 GuiDisplayable& GuiManager::keyboardFocus()
 {
     PRE(keyboardFocusExists());
-
-    CB_GUIMANAGER_DEPIMPL();
 
     return *pKeyboardFocus_;
 }
@@ -253,8 +221,6 @@ bool GuiManager::update()
 
 void GuiManager::display()
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     if (hasRoot())
     {
         root().display();
@@ -315,8 +281,6 @@ Gui::Vec unaryMinus(const Gui::Coord& c)
 
 void GuiManager::changeRoot(GuiRoot* pNewRoot)
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     pMouseFocus_ = nullptr;
 
     pRoot_ = pNewRoot;
@@ -326,8 +290,6 @@ void GuiManager::changeRoot(GuiRoot* pNewRoot)
 
 void GuiManager::updateMouseFocus()
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     GuiMouseEvent me = pollMouse();
 
     GuiDisplayable* pFocus = nullptr;
@@ -383,8 +345,6 @@ void GuiManager::updateMouseFocus()
 
 void GuiManager::processMouseEvent(const GuiMouseEvent& me)
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     GuiMouse::instance().update(me.coord());
 
     GuiMouseEvent mrel = me;
@@ -509,8 +469,6 @@ inline Gui::ScrollState GuiManager::getScrollDirection(DevButtonEvent::Action ac
 
 const GuiColourScheme& GuiManager::colourScheme() const
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     return colourScheme_;
 }
 
@@ -596,8 +554,6 @@ const Gui::Colour& GuiColourScheme::buttonDefault() const
 
 void GuiManager::isBeingDeleted(GuiDisplayable* pDisplayable)
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     // Cancel any cached pointers
     if (pDisplayable == pMouseFocus_)
         pMouseFocus_ = nullptr;
@@ -617,16 +573,12 @@ void GuiManager::isBeingCreated(GuiDisplayable* /*pDisplayable*/)
 
 bool GuiManager::charFocusExists() const
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     return pCharacterFocus_ != nullptr;
 }
 
 GuiDisplayable& GuiManager::charFocus()
 {
     PRE(charFocusExists());
-
-    CB_GUIMANAGER_DEPIMPL();
 
     return *pCharacterFocus_;
 }
@@ -635,8 +587,6 @@ void GuiManager::charFocus(GuiDisplayable* pNewCharFocus)
 {
     PRE(pNewCharFocus != nullptr);
 
-    CB_GUIMANAGER_DEPIMPL();
-
     pCharacterFocus_ = pNewCharFocus;
 
     POST(charFocusExists());
@@ -644,8 +594,6 @@ void GuiManager::charFocus(GuiDisplayable* pNewCharFocus)
 
 void GuiManager::removeCharFocus()
 {
-    CB_GUIMANAGER_DEPIMPL();
-
     pCharacterFocus_ = nullptr;
 
     POST(! charFocusExists());

@@ -3,51 +3,20 @@
  * (c) Charybdis Limited, 1997. All Rights Reserved.
  */
 
-#include "gui/internal/IconSequenceImpl.hpp"
 #include "gui/IconSequence.hpp"
-
-#define CB_GUIICONSEQUENCE_DEPIMPL()                                                                                   \
-    CB_DEPIMPL(ActiveChildren, activeChildren_);                                                                       \
-    CB_DEPIMPL(FixedChildren, fixedChildren_);                                                                         \
-    CB_DEPIMPL(unsigned, nFixedChildren_);                                                                             \
-    CB_DEPIMPL(ctl_bit_vector, allocatedPositions_);                                                                   \
-    CB_DEPIMPL(Coords, coords_);                                                                                       \
-    CB_DEPIMPL(bool, isDoingDisplay_);
-
-#define CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL()                                                                         \
-    CB_DEPIMPL(GuiDisplayable*, pLeftScroller_);                                                                       \
-    CB_DEPIMPL(GuiDisplayable*, pRightScroller_);                                                                      \
-    CB_DEPIMPL(GuiDisplayable*, pTwoWayScroller_);                                                                     \
-    CB_DEPIMPL(Coords::size_type, leftScrollerIndex_);                                                                 \
-    CB_DEPIMPL(Coords::size_type, rightScrollerIndex_);                                                                \
-    CB_DEPIMPL(Coords::size_type, twoWayScrollerIndex_);                                                               \
-    CB_DEPIMPL(bool, canScrollLeft_);                                                                                  \
-    CB_DEPIMPL(bool, canScrollRight_);                                                                                 \
-    CB_DEPIMPL(unsigned, offset_);                                                                                     \
-    CB_DEPIMPL(unsigned, scrollIncrement_);
 
 //////////////////////////////////////////////////////////////////////
 
 GuiIconSequence::GuiIconSequence(GuiDisplayable* pParent, const Gui::Box& rel, const Coords& c)
     : GuiDisplayable(pParent, rel)
-    , pImpl_(nullptr)
+    , activeChildren_(c.size())
+    , fixedChildren_(c.size())
+    , allocatedPositions_(c.size())
+    , coords_(c)
 {
-    pImpl_ = new GuiIconSequenceImpl(c);
-
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
-    // activeChildren_,
-    // allocatedPositions_,
-    // fixedChildren_ constructed in ctor of GuiIconSequenceImpl
-    nFixedChildren_ = 0;
-    coords_ = c;
-    isDoingDisplay_ = false;
 }
 
-GuiIconSequence::~GuiIconSequence()
-{
-    delete pImpl_;
-}
+GuiIconSequence::~GuiIconSequence() = default;
 
 void GuiIconSequence::doRemoveChild(GuiDisplayable* pChild)
 {
@@ -59,15 +28,11 @@ void GuiIconSequence::doRemoveChild(GuiDisplayable* pChild)
 
 const GuiIconSequence::Coords& GuiIconSequence::coords() const
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     return coords_;
 }
 
 void GuiIconSequence::updateMetrics()
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     nFixedChildren_ = 0;
     unsigned nActiveChildren = 0;
     for (Children::iterator i = children().begin(); i != children().end(); ++i)
@@ -87,8 +52,6 @@ void GuiIconSequence::updateMetrics()
 
 void GuiIconSequence::update()
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     activeChildren_.erase(activeChildren_.begin(), activeChildren_.end());
 
     nFixedChildren_ = 0;
@@ -151,8 +114,6 @@ unsigned GuiIconSequence::offset() const
 
 bool GuiIconSequence::isDoingDisplay() const
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     return isDoingDisplay_;
 }
 
@@ -160,8 +121,6 @@ bool GuiIconSequence::isDoingDisplay() const
 
 void GuiIconSequence::repositionChildren()
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     update();
 
     ctl_bit_vector allocatedChild(std::max(activeChildren_.size(), allocatedPositions_.size()));
@@ -212,8 +171,6 @@ void GuiIconSequence::repositionChildren()
 
 void GuiIconSequence::doDisplay()
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     isDoingDisplay_ = true;
     repositionChildren();
     isDoingDisplay_ = false;
@@ -237,8 +194,6 @@ bool GuiIconSequence::isPositionOfFixedChild(Coords::size_type coordIndex) const
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
 
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     return fixedChildren_[coordIndex] != nullptr;
 }
 
@@ -246,8 +201,6 @@ bool GuiIconSequence::isFixedChild(GuiDisplayable* pChild, Coords::size_type* pR
 {
     PRE(hasChild(pChild));
     PRE(! isScroller(pChild));
-
-    CB_GUIICONSEQUENCE_DEPIMPL();
 
     bool result = false;
     for (FixedChildren::size_type i = 0; i < fixedChildren_.size() && ! result; ++i)
@@ -271,8 +224,6 @@ void GuiIconSequence::fixChild(GuiDisplayable* pChild, Coords::size_type coordIn
     PRE_DATA(Coords::size_type dummy);
     PRE(! isFixedChild(pChild, &dummy));
 
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     fixedChildren_[coordIndex] = pChild;
 
     POST_DATA(Coords::size_type atIndex);
@@ -283,8 +234,6 @@ void GuiIconSequence::unfixChild(GuiDisplayable* pChild)
 {
     PRE(hasChild(pChild));
     PRE(! isScroller(pChild));
-
-    CB_GUIICONSEQUENCE_DEPIMPL();
 
     bool found = false;
     FixedChildren::size_type i = 0;
@@ -309,8 +258,6 @@ void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coor
     PRE(coordIndex < coords().size());
     PRE(! isPositionOfFixedChild(coordIndex));
 
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     ASSERT(coordIndex < allocatedPositions_.size(), "index out of range");
     allocatedPositions_[coordIndex] = true;
     pChild->setVisible(true);
@@ -320,8 +267,6 @@ void GuiIconSequence::fixScroller(GuiDisplayable* pChild, Coords::size_type coor
 
 void GuiIconSequence::doOutputOperator(std::ostream& o) const
 {
-    CB_GUIICONSEQUENCE_DEPIMPL();
-
     o << '\t' << "fixedChildren_"
       << " start" << std::endl;
     for (std::size_t i = 0; i < fixedChildren_.size(); ++i)
@@ -462,36 +407,16 @@ GuiScrollableIconSequence::GuiScrollableIconSequence(
     const Coords& coords,
     unsigned scrollIncrement)
     : GuiIconSequence(pParent, rel, coords)
-    , pImpl_(nullptr)
+    , scrollIncrement_(scrollIncrement)
 {
-    pImpl_ = new GuiScrollableIconSequenceImpl;
-
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
-    pLeftScroller_ = nullptr;
-    pRightScroller_ = nullptr;
-    pTwoWayScroller_ = nullptr;
-    leftScrollerIndex_ = 0;
-    rightScrollerIndex_ = 0;
-    twoWayScrollerIndex_ = 0;
-    canScrollLeft_ = false;
-    canScrollRight_ = false;
-    offset_ = 0;
-    scrollIncrement_ = scrollIncrement;
-
     PRE(scrollIncrement < coords.size());
 }
 
-GuiScrollableIconSequence::~GuiScrollableIconSequence()
-{
-    delete pImpl_;
-}
+GuiScrollableIconSequence::~GuiScrollableIconSequence() = default;
 
 void GuiScrollableIconSequence::doRemoveChild(GuiDisplayable* pChild)
 {
     PRE(hasChild(pChild));
-
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
     if (pChild == pLeftScroller_)
         pLeftScroller_ = nullptr;
@@ -507,29 +432,21 @@ void GuiScrollableIconSequence::doRemoveChild(GuiDisplayable* pChild)
 
 unsigned GuiScrollableIconSequence::offset() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return offset_;
 }
 
 unsigned GuiScrollableIconSequence::scrollIncrement() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return scrollIncrement_;
 }
 
 bool GuiScrollableIconSequence::canScroll() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return canScrollLeft_ || canScrollRight_;
 }
 
 bool GuiScrollableIconSequence::canScrollLeft() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     GuiScrollableIconSequence* pNonConstThis = (GuiScrollableIconSequence*)this;
     pNonConstThis->updateMetrics();
     return canScrollLeft_;
@@ -537,8 +454,6 @@ bool GuiScrollableIconSequence::canScrollLeft() const
 
 bool GuiScrollableIconSequence::canScrollRight() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     GuiScrollableIconSequence* pNonConstThis = (GuiScrollableIconSequence*)this;
     pNonConstThis->updateMetrics();
     return canScrollRight_;
@@ -546,8 +461,6 @@ bool GuiScrollableIconSequence::canScrollRight() const
 
 bool GuiScrollableIconSequence::isPositionOfScroller(Coords::size_type coordIndex) const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     PRE(coordIndex < coords().size());
     return pLeftScroller_ != nullptr && coordIndex == leftScrollerIndex_
         || pRightScroller_ != nullptr && coordIndex == rightScrollerIndex_
@@ -556,22 +469,16 @@ bool GuiScrollableIconSequence::isPositionOfScroller(Coords::size_type coordInde
 
 bool GuiScrollableIconSequence::hasLeftScroller() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return pLeftScroller_ != nullptr || pTwoWayScroller_ != nullptr;
 }
 
 bool GuiScrollableIconSequence::hasRightScroller() const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return pRightScroller_ != nullptr || pTwoWayScroller_ != nullptr;
 }
 
 bool GuiScrollableIconSequence::isScroller(GuiDisplayable* pChild) const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     return pLeftScroller_ != nullptr && pChild == pLeftScroller_
         || pRightScroller_ != nullptr && pChild == pRightScroller_
         || pTwoWayScroller_ != nullptr && pChild == pTwoWayScroller_;
@@ -590,8 +497,6 @@ void GuiScrollableIconSequence::leftScroller(GuiDisplayable* pNewScroller, Coord
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
     PRE(! isFixedPosition(coordIndex));
-
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
     pLeftScroller_ = pNewScroller;
     leftScrollerIndex_ = coordIndex;
@@ -612,8 +517,6 @@ void GuiScrollableIconSequence::rightScroller(GuiDisplayable* pNewScroller, Coor
     PRE_INFO(coords().size());
     PRE(coordIndex < coords().size());
     PRE(! isFixedPosition(coordIndex));
-
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
     pRightScroller_ = pNewScroller;
     rightScrollerIndex_ = coordIndex;
@@ -636,8 +539,6 @@ void GuiScrollableIconSequence::twoWayScroller(GuiDisplayable* pNewScroller, Coo
     PRE(coordIndex < coords().size());
     PRE(! isFixedPosition(coordIndex));
 
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     pTwoWayScroller_ = pNewScroller;
     twoWayScrollerIndex_ = coordIndex;
 
@@ -653,8 +554,6 @@ void GuiScrollableIconSequence::scrollLeft()
 {
     PRE(canScrollLeft());
 
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     offset_ = offset_ < scrollIncrement_ ? 0 : offset_ - scrollIncrement_;
     update();
 
@@ -664,8 +563,6 @@ void GuiScrollableIconSequence::scrollLeft()
 void GuiScrollableIconSequence::scrollRight()
 {
     PRE(canScrollRight());
-
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
 
     offset_ += scrollIncrement_;
     update();
@@ -683,8 +580,6 @@ void GuiScrollableIconSequence::doUpdate(unsigned nFixedChildren, unsigned nActi
 
 void GuiScrollableIconSequence::doUpdateMetrics(unsigned nFixedChildren, unsigned nActiveChildren)
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     unsigned nActiveIconPositions = coords().size() - nFixedChildren;
     unsigned maxOffset
         = (nActiveChildren < nActiveIconPositions) ? 0 : nActiveChildren - nActiveIconPositions + scrollIncrement_ - 1;
@@ -710,8 +605,6 @@ void GuiScrollableIconSequence::doUpdateMetrics(unsigned nFixedChildren, unsigne
 
 void GuiScrollableIconSequence::positionScrollers()
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     if (pTwoWayScroller_ != nullptr)
     {
         if (canScrollLeft_ || canScrollRight_)
@@ -740,8 +633,6 @@ void GuiScrollableIconSequence::positionScrollers()
 
 void GuiScrollableIconSequence::doOutputOperator(std::ostream& o) const
 {
-    CB_GUISCROLLABLEICONSEQUENCE_DEPIMPL();
-
     GuiIconSequence::doOutputOperator(o);
     o << "offset_ " << offset_ << std::endl;
 

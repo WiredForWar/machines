@@ -3,19 +3,9 @@
  * (c) Charybdis Limited, 1998. All Rights Reserved
  */
 
+#include "gui/ScrollableList.hpp"
 #include "gui/Event.hpp"
-#include "gui/internal/ScrollableListImpl.hpp"
 #include "gui/ListObserver.hpp"
-
-#define CB_GUISIMPLESCROLLABLELIST_DEPIMPL()                                                                           \
-    CB_DEPIMPL_AUTO(canScrollFoward_);                                                                                 \
-    CB_DEPIMPL_AUTO(canScrollBackward_);                                                                               \
-    CB_DEPIMPL_AUTO(scrollOffset_);                                                                                    \
-    CB_DEPIMPL_AUTO(scrollInc_);                                                                                       \
-    CB_DEPIMPL_AUTO(horizontalSpacing_);                                                                               \
-    CB_DEPIMPL_AUTO(verticalSpacing_);                                                                                 \
-    CB_DEPIMPL_AUTO(numPositions_);                                                                                    \
-    CB_DEPIMPL_AUTO(observers_);
 
 GuiSimpleScrollableList::GuiSimpleScrollableList(
     GuiDisplayable* pParent,
@@ -25,10 +15,6 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
     size_t scrollInc)
     : GuiDisplayable(pParent, box)
 {
-    pImpl_ = new GuiSimpleScrollableListImpl;
-
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     observers_.reserve(64);
 
     horizontalSpacing_ = horizontalSpacing;
@@ -63,16 +49,12 @@ GuiSimpleScrollableList::GuiSimpleScrollableList(
 
 GuiSimpleScrollableList::~GuiSimpleScrollableList()
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     TEST_INVARIANT;
 
     // If there are any observers still attached then tell them I am being deleted. It
     // is their responsibility to make sure they don't call an invalid list.
     for (GuiListObserver *observer : observers_)
         observer->listDeleted();
-
-    delete pImpl_;
 }
 
 void GuiSimpleScrollableList::CLASS_INVARIANT
@@ -82,7 +64,6 @@ void GuiSimpleScrollableList::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t)
 {
-
     o << "GuiSimpleScrollableList " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "GuiSimpleScrollableList " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -91,30 +72,22 @@ std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t)
 
 bool GuiSimpleScrollableList::canScrollFoward() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return canScrollFoward_;
 }
 
 bool GuiSimpleScrollableList::canScrollBackward() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return canScrollBackward_;
 }
 
 bool GuiSimpleScrollableList::canScroll() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return (canScrollFoward_ || canScrollBackward_);
 }
 
 void GuiSimpleScrollableList::scrollFoward()
 {
     PRE(canScrollFoward());
-
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
     scrollOffset_ += scrollInc_;
 
@@ -124,8 +97,6 @@ void GuiSimpleScrollableList::scrollFoward()
 void GuiSimpleScrollableList::scrollBackward()
 {
     PRE(canScrollBackward());
-
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
 
     if (scrollOffset_ != 0)
         scrollOffset_ -= scrollInc_;
@@ -138,8 +109,6 @@ void GuiSimpleScrollableList::scrollTo(size_t scrollPos)
     PRE(canScroll());
     PRE(scrollPos < numListItems());
 
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     scrollOffset_ = scrollPos;
 
     childrenUpdated();
@@ -147,8 +116,6 @@ void GuiSimpleScrollableList::scrollTo(size_t scrollPos)
 
 void GuiSimpleScrollableList::updateInfo()
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     size_t numChildren = children().size();
 
     unsigned maxOffset = (numChildren < numPositions_) ? 0 : numChildren - numPositions_ + scrollInc_ - 1;
@@ -164,8 +131,6 @@ void GuiSimpleScrollableList::updateInfo()
 
 void GuiSimpleScrollableList::childrenUpdated()
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     updateInfo();
 
     // Reposition all the children, making the visible if they fall into the displayable area
@@ -211,8 +176,6 @@ void GuiSimpleScrollableList::childrenUpdated()
 
 void GuiSimpleScrollableList::childAdded()
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     updateInfo();
 
     if (children().size() - scrollOffset_ > numPositions_)
@@ -250,43 +213,31 @@ void GuiSimpleScrollableList::doDisplay()
 
 size_t GuiSimpleScrollableList::scrollIncrement() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return scrollInc_;
 }
 
 size_t GuiSimpleScrollableList::scrollOffset() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return scrollOffset_;
 }
 
 size_t GuiSimpleScrollableList::visiblePositions() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return numPositions_;
 }
 
 size_t GuiSimpleScrollableList::numListItems() const
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     return children().size();
 }
 
 void GuiSimpleScrollableList::notifyMe(GuiListObserver* pObserver)
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     observers_.push_back(pObserver);
 }
 
 void GuiSimpleScrollableList::dontNotifyMe(GuiListObserver* pObserver)
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     ctl_pvector<GuiListObserver>::iterator iter = find(observers_.begin(), observers_.end(), pObserver);
 
     ASSERT(iter != observers_.end(), "couldn't find pObserver in observers_ list");
@@ -296,8 +247,6 @@ void GuiSimpleScrollableList::dontNotifyMe(GuiListObserver* pObserver)
 
 void GuiSimpleScrollableList::notifyObservers()
 {
-    CB_GUISIMPLESCROLLABLELIST_DEPIMPL();
-
     for (GuiListObserver *observer : observers_)
         observer->listUpdated();
 }

@@ -40,18 +40,16 @@
 #ifndef _GUI_DISPLAYA_HPP
 #define _GUI_DISPLAYA_HPP
 
+#include "ctl/Vector.hpp"
 #include "device/ButtonEvent.hpp"
 #include "gui/gui.hpp"
 
-class GuiDisplayableImpl;
 class GuiKeyEvent;
 class GuiMouseEvent;
 class GuiEvent;
 // class DevButtonEvent;
 
 using GuiCharEvent = DevButtonEvent;
-
-template <class T> class ctl_vector;
 
 // GuiDisplayable is the root of the class heirarchy of screen objects.
 // It defines framework protocols for display and responding to
@@ -295,7 +293,16 @@ private:
     GuiDisplayable(const Gui::Boundary&);
 
     // Data members
-    GuiDisplayableImpl* pImpl_;
+    GuiDisplayable* pParent_{};
+    Gui::Box relativeBox_;
+    Gui::Box absoluteBox_;
+    bool enabled_ = true;
+    bool isVisible_ = true;
+    int changed_{};
+    bool redrawEveryFrame_{};
+    Children children_[NUMLAYERS];
+    Children allChildren_;
+    bool useFastSecondDisplay_ = true;
 };
 
 //////////////////////////////////////////////////////////////////////

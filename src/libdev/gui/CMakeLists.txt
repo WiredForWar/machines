@@ -25,9 +25,6 @@ set(GUI_SOURCES
     Image.cpp
     Image.hpp
     internal/FontCore.hpp
-    internal/IconSequenceImpl.hpp
-    internal/ManagerImpl.hpp
-    internal/ScrollableListImpl.hpp
     ListObserver.cpp
     ListObserver.hpp
     Manager.cpp

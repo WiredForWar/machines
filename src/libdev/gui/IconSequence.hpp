@@ -7,12 +7,12 @@
 #define _GUI_ICONSEQ_HPP
 
 #include "gui/Displayable.hpp"
+#include "ctl/BitVector.hpp"
 #include "ctl/Vector.hpp"
 
 /* //////////////////////////////////////////////////////////////// */
 
 // class ostream;
-class GuiIconSequenceImpl;
 
 class GuiIconSequence : public GuiDisplayable
 // cannonical from revoked
@@ -113,15 +113,17 @@ private:
     using ActiveChildren = ctl_vector<GuiDisplayable*>;
     using FixedChildren = ctl_vector<GuiDisplayable*>;
 
-    GuiIconSequenceImpl* pImpl_;
+    ActiveChildren activeChildren_;
+    FixedChildren fixedChildren_;
+    unsigned nFixedChildren_{};
+    ctl_bit_vector allocatedPositions_;
+    Coords coords_;
+    bool isDoingDisplay_{};
 
-    friend class GuiIconSequenceImpl;
     friend std::ostream& operator<<(std::ostream&, const GuiIconSequence&);
 };
 
 /* //////////////////////////////////////////////////////////////// */
-
-class GuiScrollableIconSequenceImpl;
 
 class GuiScrollableIconSequence : public GuiIconSequence
 // cannonical from revoked
@@ -218,7 +220,18 @@ private:
     GuiScrollableIconSequence& operator=(const GuiScrollableIconSequence&);
     bool operator==(const GuiScrollableIconSequence&) const;
 
-    GuiScrollableIconSequenceImpl* pImpl_;
+    GuiDisplayable* pLeftScroller_{};
+    GuiDisplayable* pRightScroller_{};
+    GuiDisplayable* pTwoWayScroller_{};
+
+    Coords::size_type leftScrollerIndex_{};
+    Coords::size_type rightScrollerIndex_{};
+    Coords::size_type twoWayScrollerIndex_{};
+
+    bool canScrollLeft_{};
+    bool canScrollRight_{};
+    unsigned offset_{};
+    unsigned scrollIncrement_{};
 };
 
 /* //////////////////////////////////////////////////////////////// */

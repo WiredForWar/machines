@@ -19,12 +19,10 @@
 #define _GUI_SCROLIST_HPP
 
 #include "base/base.hpp"
+#include "ctl/PtrVector.hpp"
 #include "gui/Displayable.hpp"
 
-template <class T> class ctl_pvector;
-
 class GuiListObserver;
-class GuiSimpleScrollableListImpl;
 
 class GuiSimpleScrollableList : public GuiDisplayable
 // Canonical form revoked
@@ -110,9 +108,14 @@ private:
 
     using Observers = ctl_pvector<GuiListObserver>;
 
-    GuiSimpleScrollableListImpl* pImpl_{};
-
-    friend class GuiSimpleScrollableListImpl;
+    bool canScrollFoward_{};
+    bool canScrollBackward_{};
+    std::size_t scrollOffset_{};
+    std::size_t scrollInc_{};
+    std::size_t horizontalSpacing_{};
+    std::size_t verticalSpacing_{};
+    std::size_t numPositions_{};
+    Observers observers_;
 };
 
 #endif
