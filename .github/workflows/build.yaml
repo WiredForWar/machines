@@ -82,6 +82,15 @@ jobs:
           conan: true
           tests: true
 
+        # Clang is stricter than GCC in places and warns about things GCC does
+        # not, so it is worth one job of its own. Linux, as the runners are
+        # cheaper than the Windows ones and the image already ships Clang.
+        - os: ubuntu-24.04
+          compiler: clang
+          build-type: Release
+          conan: true
+          tests: true
+
         - os: ubuntu-24.04
           toolchain: mingw64
           build-type: Release
@@ -126,6 +135,14 @@ jobs:
       if: matrix.conan
       run: pip install conan
 
+    # Conan takes the compiler for a detected profile from CC and CXX before it
+    # looks anywhere else, and those name the job's compiler by the time the
+    # provider asks. Detecting the profile here instead, before the compiler is
+    # chosen, is what keeps the dependencies on the one the image came with.
+    - name: Detect the Conan profile while the image compiler is still the one in view
+      if: matrix.conan && matrix.compiler
+      run: conan profile detect
+
     - name: Cache the Conan packages
       if: matrix.conan
       uses: actions/cache@v4
@@ -140,6 +157,18 @@ jobs:
       run: |
         set(toolchain "${{ matrix.toolchain }}")
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" WORKSPACE_DIR)
+
+        set(compiler "${{ matrix.compiler }}")
+        if(compiler STREQUAL "clang")
+          set(cmake_compiler_args "-DCMAKE_C_COMPILER=clang" "-DCMAKE_CXX_COMPILER=clang++")
+          # Keep the dependencies on the default profile instead of letting the
+          # provider derive one from the compiler. This job is here to compile
+          # our own code with Clang; ConanCenter has no Clang binaries, so a
+          # Clang profile means building the whole dependency tree from source,
+          # which is both slow and at the mercy of every upstream release URL.
+          list(APPEND cmake_compiler_args "-DCONAN_HOST_PROFILE=default")
+        endif()
+
         if(toolchain)
           set(cmake_toolchain_args "-DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-${toolchain}.cmake")
             if(toolchain MATCHES ".*mingw.*")
@@ -173,6 +202,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
           -DCMAKE_INSTALL_PREFIX=${WORKSPACE_DIR}/install/machines
           -DBUILD_PLANETED=TRUE
+          ${cmake_compiler_args}
           ${cmake_toolchain_args}
           ${cmake_dev_build_args}
           ${cmake_conan_args}
