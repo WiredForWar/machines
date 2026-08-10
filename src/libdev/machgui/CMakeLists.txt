@@ -49,7 +49,6 @@ set(MACHGUI_SOURCES
     ControlPanel.hpp
     ControlPanelAddOn.cpp
     ControlPanelAddOn.hpp
-    ControlPanelImpl.cpp
     CorralSingleIconInfo.cpp
     CorralSingleIconInfo.hpp
     CursorSpec.cpp
@@ -113,7 +112,6 @@ set(MACHGUI_SOURCES
     MachGuiFPCommand.hpp
     MapArea.cpp
     MapArea.hpp
-    MapAreaImpl.cpp
     MenuContext/CtxBriefing.cpp
     MenuContext/CtxBriefing.hpp
     MenuContext/CtxCampaign.cpp
@@ -329,9 +327,7 @@ set(MACHGUI_SOURCES
     db/internal/DbITextData.hpp
     gui.cpp
     gui.hpp
-    internal/ControlPanelImpl.hpp
     internal/InGameScreenImpl.hpp
-    internal/MapAreaImpl.hpp
     internal/PlayerNameList.hpp
     internal/PlayerScore.hpp
     internal/SoundManager.hpp

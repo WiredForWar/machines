@@ -15,7 +15,7 @@
 #include "base/base.hpp"
 #include "gui/Displayable.hpp"
 
-class MachGuiMapAreaImpl;
+class MachGuiMapAreaMagic;
 
 class MachGuiMapArea : public GuiDisplayable
 // Canonical form revoked
@@ -38,7 +38,7 @@ private:
 
     void redrawAreaImmediate(const Gui::Box& area);
 
-    MachGuiMapAreaImpl* pImpl_;
+    MachGuiMapAreaMagic* pMapAreaMagic_{};
 };
 
 #endif

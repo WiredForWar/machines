@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/ControlPanel.hpp"
-#include "machgui/internal/ControlPanelImpl.hpp"
 #include "system/PathName.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
@@ -117,11 +116,7 @@ private:
 
 MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box& box, MachInGameScreen* pInGameScreen)
     : GuiDisplayable(pParent, box, GuiDisplayable::LAYER3)
-    , pImpl_(new MachGuiControlPanelImpl())
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
-    CB_DEPIMPL(MachGuiControlPanelImpl::RedrawAreas, redrawAreas_);
-
     redrawAreas_.reserve(64);
 
     setupDecalBitmaps();
@@ -142,8 +137,6 @@ MachGuiControlPanel::MachGuiControlPanel(GuiDisplayable* pParent, const Gui::Box
 MachGuiControlPanel::~MachGuiControlPanel()
 {
     TEST_INVARIANT;
-
-    delete pImpl_;
 }
 
 void MachGuiControlPanel::CLASS_INVARIANT
@@ -153,7 +146,6 @@ void MachGuiControlPanel::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiControlPanel& t)
 {
-
     o << "MachGuiControlPanel " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiControlPanel " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -175,9 +167,7 @@ void MachGuiControlPanel::redrawArea(const Gui::Box& area)
 {
     NEIL_STREAM("***MachGuiControlPanel::redrawArea() " << area << std::endl);
 
-    CB_DEPIMPL(MachGuiControlPanelImpl::RedrawAreas, redrawAreas_);
-
-    MachGuiControlPanelImpl::RedrawArea* pNewRedrawArea = new MachGuiControlPanelImpl::RedrawArea();
+    MachGuiControlPanel::RedrawArea* pNewRedrawArea = new MachGuiControlPanel::RedrawArea();
     pNewRedrawArea->area_ = area;
 
     if (GuiDisplayable::useFourTimesRender())
@@ -199,9 +189,6 @@ void MachGuiControlPanel::redrawAreaImmediate(const GuiDisplayable& displayable)
 
 void MachGuiControlPanel::redrawAreaImmediate(const Gui::Box& area)
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
-    CB_DEPIMPL_ARRAY(Gui::Coord, decalCoord_);
-
     int y = 3;
     int maxY = getVisibleHeight();
     int yStep = MachGui::controlPanelBmp().height();
@@ -283,12 +270,10 @@ void MachGuiControlPanel::redrawAreaImmediate(const Gui::Box& area)
 
 void MachGuiControlPanel::redrawAllAreas()
 {
-    CB_DEPIMPL(MachGuiControlPanelImpl::RedrawAreas, redrawAreas_);
-
     size_t n = redrawAreas_.size();
     for (size_t i = n; i-- != 0;)
     {
-        MachGuiControlPanelImpl::RedrawArea* pRedrawArea = redrawAreas_[i];
+        MachGuiControlPanel::RedrawArea* pRedrawArea = redrawAreas_[i];
 
         NEIL_STREAM("***MachGuiControlPanel::redrawAllAreas() " << pRedrawArea->area_ << std::endl);
 
@@ -314,9 +299,6 @@ int MachGuiControlPanel::getVisibleHeight() const
 
 void MachGuiControlPanel::setupDecalCoords()
 {
-    CB_DEPIMPL_ARRAY(Gui::Coord, decalCoord_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
-
     decalCoord_[0] = Gui::Coord(0, 78) * Gui::uiScaleFactor();
     decalCoord_[1] = Gui::Coord(1, 175) * Gui::uiScaleFactor();
     decalCoord_[2] = Gui::Coord(127, 60) * Gui::uiScaleFactor();
@@ -374,8 +356,6 @@ std::string MachGuiControlPanel::getDecalRootDirectory() const
 
 void MachGuiControlPanel::setupDecalBitmaps()
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, decals_);
-
     // Setup decal bitmaps
     decals_[0] = MachGui::getScaledImage(getDecalRootDirectory() + "decal1.bmp");
     decals_[1] = MachGui::getScaledImage(getDecalRootDirectory() + "decal2.bmp");

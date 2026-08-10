@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "gui/Displayable.hpp"
+#include "gui/gui.hpp"
 
-class MachGuiControlPanelAddOnImpl;
 class MachInGameScreen;
 
 class MachGuiControlPanelAddOn : public GuiDisplayable
@@ -38,7 +38,8 @@ private:
     MachGuiControlPanelAddOn& operator=(const MachGuiControlPanelAddOn&);
 
     // Data members...
-    MachGuiControlPanelAddOnImpl* pImpl_;
+    GuiBitmap backgroundBmp_;
+    MachInGameScreen* pInGameScreen_{};
 };
 
 #endif

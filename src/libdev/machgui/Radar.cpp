@@ -28,43 +28,11 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "device/Time.hpp"
 
-#define RADAR_ANIMATION_FRAMES 10
 #define RADAR_ANIMATION_TIME 0.5
-
-class MachGuiRadarImpl
-{
-public:
-    MachGuiRadarImpl();
-
-    MachActor* pActor_ {};
-    GuiBitmap healthBmp_[3];
-    GuiBitmap armourBmp_[3];
-    GuiBitmap radarBackdropBmp_;
-    GuiBitmap radarDomeBmp_;
-    MachLog1stPersonHandler* pLogHandler_ {};
-    bool justEnteredFirstPerson_;
-    GuiBitmap radarStartupFrames_[RADAR_ANIMATION_FRAMES];
-    GuiBitmap machineIcon_;
-    bool hpAboveCritical_ {};
-    double animationEndTime_;
-    int frameNumber_;
-};
-
-MachGuiRadarImpl::MachGuiRadarImpl()
-    : radarBackdropBmp_(RenSurface::createSharedSurface(
-        Gui::getScaledImagePath("gui/fstpersn/radar/rmmap.bmp")))
-    , radarDomeBmp_(RenSurface::createSharedSurface(
-          Gui::getScaledImagePath("gui/fstpersn/radar/dome.bmp")))
-{
-    radarBackdropBmp_.enableColourKeying();
-    radarDomeBmp_.enableColourKeying();
-}
 
 MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
     : GuiDisplayable(pParent, Gui::Box(relPos, 1, 1))
 {
-    pImpl_ = new MachGuiRadarImpl;
-
     // Switch on colour keying for radar images
     for (MachPhys::Race race : MachPhys::AllRaces)
     {
@@ -87,18 +55,11 @@ MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
 MachGuiRadar::~MachGuiRadar()
 {
     TEST_INVARIANT;
-    delete pImpl_;
 }
 
 // virtual
 void MachGuiRadar::doDisplay()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(GuiBitmap, machineIcon_);
-    CB_DEPIMPL(double, animationEndTime_);
-    CB_DEPIMPL(int, frameNumber_);
-
     double now = DevTime::instance().time();
 
     if (justEnteredFirstPerson_ == true)
@@ -127,12 +88,6 @@ void MachGuiRadar::doDisplay()
 
 void MachGuiRadar::displayHealthArmour()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, healthBmp_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, armourBmp_);
-    CB_DEPIMPL(bool, hpAboveCritical_);
-
     if (pActor_)
     {
         const double healthHeight = healthBmp_[0].height();
@@ -189,12 +144,6 @@ void MachGuiRadar::displayHealthArmour()
 
 void MachGuiRadar::displayRadarBlips()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(GuiBitmap, radarBackdropBmp_);
-    CB_DEPIMPL(GuiBitmap, radarDomeBmp_);
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-
     // Blit see through portion of map
     GuiPainter::instance().blit(radarBackdropBmp_, absoluteBoundary().minCorner());
 
@@ -303,7 +252,6 @@ void MachGuiRadar::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiRadar& t)
 {
-
     o << "MachGuiRadar " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiRadar " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -312,11 +260,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiRadar& t)
 
 void MachGuiRadar::actor(MachActor* pActor)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-    CB_DEPIMPL(GuiBitmap, machineIcon_);
-    CB_DEPIMPL(bool, hpAboveCritical_);
-
     pActor_ = pActor;
 
     // Get icon to display on radar
@@ -340,9 +283,6 @@ void MachGuiRadar::actor(MachActor* pActor)
 
 void MachGuiRadar::resetActor()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachActor*, pActor_);
-
     pActor_ = nullptr;
 }
 
@@ -446,25 +386,16 @@ GuiBitmap& MachGuiRadar::oreImage()
 
 void MachGuiRadar::logHandler(MachLog1stPersonHandler* pLogHandler)
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-
     pLogHandler_ = pLogHandler;
 }
 
 void MachGuiRadar::resetLogHandler()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-
     pLogHandler_ = nullptr;
 }
 
 void MachGuiRadar::displayMotionDirection()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(MachLog1stPersonHandler*, pLogHandler_);
-
     int index = 0;
     if (pLogHandler_ && pLogHandler_->canTurnHead())
     {
@@ -488,11 +419,6 @@ void MachGuiRadar::displayMotionDirection()
 
 void MachGuiRadar::displayAnimatedRadarFrame()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(double, animationEndTime_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, radarStartupFrames_);
-    CB_DEPIMPL(int, frameNumber_)
-
     double timeDiff = animationEndTime_ - DevTime::instance().time();
     int frame = timeDiff * (RADAR_ANIMATION_FRAMES / RADAR_ANIMATION_TIME);
 
@@ -517,20 +443,12 @@ void MachGuiRadar::displayAnimatedRadarFrame()
 
 void MachGuiRadar::initialise()
 {
-    // De-pImpl_ variables used within this function.
-    CB_DEPIMPL(bool, justEnteredFirstPerson_);
-    CB_DEPIMPL(int, frameNumber_);
-
     justEnteredFirstPerson_ = true;
     frameNumber_ = 0;
 }
 
 void MachGuiRadar::loadBitmaps()
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, radarStartupFrames_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, healthBmp_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, armourBmp_);
-
     for (int loop = 0; loop < RADAR_ANIMATION_FRAMES; ++loop)
     {
         std::string framePath("gui/fstpersn/radar/radar");
@@ -555,10 +473,6 @@ void MachGuiRadar::loadBitmaps()
 
 void MachGuiRadar::unloadBitmaps()
 {
-    CB_DEPIMPL_ARRAY(GuiBitmap, radarStartupFrames_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, healthBmp_);
-    CB_DEPIMPL_ARRAY(GuiBitmap, armourBmp_);
-
     for (int loop = 0; loop < RADAR_ANIMATION_FRAMES; ++loop)
     {
         radarStartupFrames_[loop] = GuiBitmap();

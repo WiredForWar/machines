@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "gui/Displayable.hpp"
-
-struct MachGuiInGameChatMessagesDisplayImpl;
+#include "gui/Font.hpp"
+#include "gui/gui.hpp"
 
 class MachGuiInGameChatMessagesDisplay : public GuiDisplayable
 // Canonical form revoked
@@ -50,7 +50,11 @@ private:
     MachGuiInGameChatMessagesDisplay(const MachGuiInGameChatMessagesDisplay&);
     MachGuiInGameChatMessagesDisplay& operator=(const MachGuiInGameChatMessagesDisplay&);
 
-    MachGuiInGameChatMessagesDisplayImpl* pImpl_;
+    GuiBitmap textBmp_;
+    GuiBmpFont font_;
+    GuiBmpFont shadowFont_;
+    bool forceUpdate_ = true;
+    GuiDisplayable* pPassEventsTo_{};
 };
 
 #endif

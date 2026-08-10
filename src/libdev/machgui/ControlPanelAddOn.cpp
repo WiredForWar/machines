@@ -234,21 +234,6 @@ private:
 };
 */
 
-class MachGuiControlPanelAddOnImpl
-{
-public:
-    MachGuiControlPanelAddOnImpl();
-
-    GuiBitmap backgroundBmp_;
-    MachInGameScreen* pInGameScreen_;
-};
-
-MachGuiControlPanelAddOnImpl::MachGuiControlPanelAddOnImpl()
-    : backgroundBmp_(MachGui::getScaledImage("gui/misc/camtab.bmp"))
-{
-    backgroundBmp_.enableColourKeying();
-}
-
 #define MachGuiControlPanelAddOnWidth 30
 #define MachGuiControlPanelAddOnHeight 66
 
@@ -262,12 +247,10 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
             coord,
             Gui::Size(MachGuiControlPanelAddOnWidth, MachGuiControlPanelAddOnHeight) * Gui::uiScaleFactor()),
         GuiDisplayable::LAYER3)
+    , backgroundBmp_(MachGui::getScaledImage("gui/misc/camtab.bmp"))
+    , pInGameScreen_(pInGameScreen)
 {
-    pImpl_ = new MachGuiControlPanelAddOnImpl();
-
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
-    pInGameScreen_ = pInGameScreen;
+    backgroundBmp_.enableColourKeying();
 
     new MachGuiReturnToMenuBtn(this, Gui::Coord(4, 0) * Gui::uiScaleFactor(), pInGameScreen);
     new MachGuiCameraToggleBtn(this, Gui::Coord(4, 22) * Gui::uiScaleFactor(), pInGameScreen);
@@ -280,14 +263,11 @@ MachGuiControlPanelAddOn::MachGuiControlPanelAddOn(
 MachGuiControlPanelAddOn::~MachGuiControlPanelAddOn()
 {
     TEST_INVARIANT;
-    delete pImpl_;
 }
 
 // virtual
 void MachGuiControlPanelAddOn::doDisplay()
 {
-    CB_DEPIMPL(GuiBitmap, backgroundBmp_);
-
     GuiPainter::instance().blit(backgroundBmp_, absoluteBoundary().minCorner());
 }
 
@@ -298,7 +278,6 @@ void MachGuiControlPanelAddOn::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiControlPanelAddOn& t)
 {
-
     o << "MachGuiControlPanelAddOn " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiControlPanelAddOn " << static_cast<const void*>(&t) << " end" << std::endl;
 

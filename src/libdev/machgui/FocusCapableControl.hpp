@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 
 class MachGuiStartupScreens;
-class MachGuiFocusCapableControlImpl;
 
 class MachGuiFocusCapableControl
 // Canonical form revoked
@@ -80,7 +79,18 @@ private:
     MachGuiFocusCapableControl(const MachGuiFocusCapableControl&);
     MachGuiFocusCapableControl& operator=(const MachGuiFocusCapableControl&);
 
-    MachGuiFocusCapableControlImpl* pImpl_;
+    // Data members
+    bool hasFocus_{};
+    MachGuiStartupScreens* pStartupScreens_{};
+    MachGuiFocusCapableControl* pLeftNavControl_{};
+    MachGuiFocusCapableControl* pRightNavControl_{};
+    MachGuiFocusCapableControl* pUpNavControl_{};
+    MachGuiFocusCapableControl* pDownNavControl_{};
+    MachGuiFocusCapableControl* pTabFowardNavControl_{};
+    MachGuiFocusCapableControl* pTabBackwardNavControl_{};
+    bool msgBoxIsDisplayed_{};
+    bool escapeControl_{};
+    bool defaultControl_{};
 };
 
 #endif

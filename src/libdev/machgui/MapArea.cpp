@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "machgui/MapArea.hpp"
-#include "machgui/internal/MapAreaImpl.hpp"
 #include "system/PathName.hpp"
 #include "render/Device.hpp"
 #include "world4d/Manager.hpp"
@@ -54,10 +53,7 @@ private:
 
 MachGuiMapArea::MachGuiMapArea(GuiDisplayable* pParent, const Gui::Box& box)
     : GuiDisplayable(pParent, box, GuiDisplayable::LAYER2)
-    , pImpl_(new MachGuiMapAreaImpl())
 {
-    CB_DEPIMPL(MachGuiMapAreaMagic*, pMapAreaMagic_);
-
     pMapAreaMagic_ = new MachGuiMapAreaMagic(this, box, this);
 
     TEST_INVARIANT;
@@ -66,14 +62,10 @@ MachGuiMapArea::MachGuiMapArea(GuiDisplayable* pParent, const Gui::Box& box)
 MachGuiMapArea::~MachGuiMapArea()
 {
     TEST_INVARIANT;
-
-    delete pImpl_;
 }
 
 void MachGuiMapArea::controlPanelSliding(bool sliding)
 {
-    CB_DEPIMPL(MachGuiMapAreaMagic*, pMapAreaMagic_);
-
     pMapAreaMagic_->controlPanelSliding(sliding);
 }
 
@@ -84,7 +76,6 @@ void MachGuiMapArea::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiMapArea& t)
 {
-
     o << "MachGuiMapArea " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiMapArea " << static_cast<const void*>(&t) << " end" << std::endl;
 

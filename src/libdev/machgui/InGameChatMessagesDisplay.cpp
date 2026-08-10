@@ -18,31 +18,11 @@
 #include "render/Surface.hpp"
 #include "ctl/List.hpp"
 
-struct MachGuiInGameChatMessagesDisplayImpl
-{
-    MachGuiInGameChatMessagesDisplayImpl();
-
-    GuiBitmap textBmp_;
-    GuiBmpFont font_;
-    GuiBmpFont shadowFont_;
-    bool forceUpdate_;
-    GuiDisplayable* pPassEventsTo_;
-};
-
-MachGuiInGameChatMessagesDisplayImpl::MachGuiInGameChatMessagesDisplayImpl()
-    : font_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp")))
-    , shadowFont_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promdfnt.bmp")))
-    , forceUpdate_(true)
-    , pPassEventsTo_(nullptr)
-{
-}
-
 MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayable* pParent, const Gui::Box& relBox)
     : GuiDisplayable(pParent, relBox, GuiDisplayable::LAYER4)
-    , pImpl_(new MachGuiInGameChatMessagesDisplayImpl())
+    , font_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promtfnt.bmp")))
+    , shadowFont_(Gui::getFont(MachGui::getScaledImagePath("gui/menu/promdfnt.bmp")))
 {
-    CB_DEPIMPL(GuiBitmap, textBmp_);
-
     textBmp_ = RenSurface::createAnonymousSurface(Ren::Size(width(), height()));
     textBmp_.enableColourKeying();
 
@@ -54,8 +34,6 @@ MachGuiInGameChatMessagesDisplay::MachGuiInGameChatMessagesDisplay(GuiDisplayabl
 MachGuiInGameChatMessagesDisplay::~MachGuiInGameChatMessagesDisplay()
 {
     TEST_INVARIANT;
-
-    delete pImpl_;
 }
 
 void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT
@@ -65,7 +43,6 @@ void MachGuiInGameChatMessagesDisplay::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay& t)
 {
-
     o << "MachGuiInGameChatMessagesDisplay " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiInGameChatMessagesDisplay " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -75,11 +52,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay
 // virtual
 void MachGuiInGameChatMessagesDisplay::doDisplay()
 {
-    CB_DEPIMPL(GuiBitmap, textBmp_);
-    CB_DEPIMPL(GuiBmpFont, font_);
-    CB_DEPIMPL(GuiBmpFont, shadowFont_);
-    CB_DEPIMPL(bool, forceUpdate_);
-
     bool needsUpdate = MachGuiInGameChatMessages::instance().update();
 
     if ((needsUpdate && !MachGuiInGameChatMessages::instance().messages().empty()) || forceUpdate_)
@@ -113,14 +85,11 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
 
 void MachGuiInGameChatMessagesDisplay::forceUpdate()
 {
-    CB_DEPIMPL(bool, forceUpdate_);
-
     forceUpdate_ = true;
 }
 
 void MachGuiInGameChatMessagesDisplay::setPassEventsTo(GuiDisplayable* pPassEventsTo)
 {
-    CB_DEPIMPL_AUTO(pPassEventsTo_);
     pPassEventsTo_ = pPassEventsTo;
 }
 
@@ -128,8 +97,6 @@ void MachGuiInGameChatMessagesDisplay::setPassEventsTo(GuiDisplayable* pPassEven
 //virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseClickEvent( const GuiMouseEvent& rel )
 {
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
     GuiMouseEvent relToOther = rel;
 
     if ( passEventTo( &relToOther ) )
@@ -141,8 +108,6 @@ void MachGuiInGameChatMessagesDisplay::doHandleMouseClickEvent( const GuiMouseEv
 //virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseEnterEvent( const GuiMouseEvent& rel )
 {
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
     GuiMouseEvent relToOther = rel;
 
     if ( passEventTo( &relToOther ) )
@@ -154,8 +119,6 @@ void MachGuiInGameChatMessagesDisplay::doHandleMouseEnterEvent( const GuiMouseEv
 //virtual
 void MachGuiInGameChatMessagesDisplay::doHandleMouseExitEvent( const GuiMouseEvent& rel )
 {
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
     GuiMouseEvent relToOther = rel;
 
     if ( passEventTo( &relToOther ) )
@@ -171,8 +134,6 @@ void MachGuiInGameChatMessagesDisplay::doHandleMouseExitEvent( const GuiMouseEve
 //virtual
 void MachGuiInGameChatMessagesDisplay::doHandleContainsMouseEvent( const GuiMouseEvent& rel )
 {
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
     GuiMouseEvent relToOther = rel;
 
     if ( passEventTo( &relToOther ) )
@@ -181,11 +142,8 @@ void MachGuiInGameChatMessagesDisplay::doHandleContainsMouseEvent( const GuiMous
     }
 }
 
-
 bool MachGuiInGameChatMessagesDisplay::passEventTo( GuiMouseEvent* pMouseEvent )
 {
-    CB_DEPIMPL( GuiDisplayable*, pPassEventsTo_ );
-
     bool returnValue = false;
 
     if ( pPassEventsTo_ )

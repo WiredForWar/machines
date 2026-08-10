@@ -16,17 +16,6 @@
 #include "system/PathName.hpp"
 #include "ctl/List.hpp"
 
-class MachGuiSoundManagerImpl
-{
-private:
-    using SampleHandleList = ctl_list<SndSampleHandle>;
-
-    SampleHandleList currentActiveHandles_;
-    int delaySoundsFrameCount_;
-
-    friend class MachGuiSoundManager;
-};
-
 // static
 MachGuiSoundManager& MachGuiSoundManager::instance()
 {
@@ -35,10 +24,7 @@ MachGuiSoundManager& MachGuiSoundManager::instance()
 }
 
 MachGuiSoundManager::MachGuiSoundManager()
-    : pImpl_(new MachGuiSoundManagerImpl())
 {
-    CB_DEPIMPL(int, delaySoundsFrameCount_);
-
     delaySoundsFrameCount_ = 2;
 
     TEST_INVARIANT;
@@ -46,8 +32,6 @@ MachGuiSoundManager::MachGuiSoundManager()
 
 MachGuiSoundManager::~MachGuiSoundManager()
 {
-    CB_DEPIMPL(MachGuiSoundManagerImpl::SampleHandleList, currentActiveHandles_);
-
     currentActiveHandles_.erase(currentActiveHandles_.begin(), currentActiveHandles_.end());
 
     TEST_INVARIANT;
@@ -56,9 +40,6 @@ MachGuiSoundManager::~MachGuiSoundManager()
 bool MachGuiSoundManager::playSound(const SysPathName& wavFilePath)
 {
     PRE(wavFilePath.existsAsFile());
-
-    CB_DEPIMPL(MachGuiSoundManagerImpl::SampleHandleList, currentActiveHandles_);
-    CB_DEPIMPL(int, delaySoundsFrameCount_);
 
     bool playingSound = true;
 
@@ -84,14 +65,11 @@ bool MachGuiSoundManager::playSound(const SysPathName& wavFilePath)
 
 void MachGuiSoundManager::update()
 {
-    CB_DEPIMPL(MachGuiSoundManagerImpl::SampleHandleList, currentActiveHandles_);
-    CB_DEPIMPL(int, delaySoundsFrameCount_);
-
     // If there is anything in the list to update
     if (currentActiveHandles_.size() > 0)
     {
-        MachGuiSoundManagerImpl::SampleHandleList::iterator i = currentActiveHandles_.begin();
-        MachGuiSoundManagerImpl::SampleHandleList::iterator nextIterator = i;
+        SampleHandleList::iterator i = currentActiveHandles_.begin();
+        SampleHandleList::iterator nextIterator = i;
         for (; i != currentActiveHandles_.end(); i = nextIterator)
         {
             ++nextIterator;
@@ -115,9 +93,7 @@ void MachGuiSoundManager::update()
 
 void MachGuiSoundManager::clearAll()
 {
-    CB_DEPIMPL(MachGuiSoundManagerImpl::SampleHandleList, currentActiveHandles_);
-
-    MachGuiSoundManagerImpl::SampleHandleList::iterator i = currentActiveHandles_.begin();
+    SampleHandleList::iterator i = currentActiveHandles_.begin();
     // Run through the list, stop any samples that are playing, free the
     // resources of any sample not playing, and erase the contents
     // of the list
@@ -140,7 +116,6 @@ void MachGuiSoundManager::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t)
 {
-
     o << "MachGuiSoundManager " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiSoundManager " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -149,7 +124,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t)
 
 void MachGuiSoundManager::delaySounds()
 {
-    CB_DEPIMPL(int, delaySoundsFrameCount_);
     delaySoundsFrameCount_ = 2;
 }
 

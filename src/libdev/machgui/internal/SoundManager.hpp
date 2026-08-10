@@ -13,9 +13,10 @@
 #define _MACHGUI_MGSNDMAN_HPP
 
 #include "base/base.hpp"
+#include "ctl/List.hpp"
+#include "sound/SampleHandle.hpp"
 
 class SysPathName;
-class MachGuiSoundManagerImpl;
 
 class MachGuiSoundManager
 // Canonical form revoked
@@ -51,7 +52,10 @@ public:
     void CLASS_INVARIANT;
 
 private:
-    MachGuiSoundManagerImpl* pImpl_;
+    using SampleHandleList = ctl_list<SndSampleHandle>;
+
+    SampleHandleList currentActiveHandles_;
+    int delaySoundsFrameCount_ = 2;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t);
 

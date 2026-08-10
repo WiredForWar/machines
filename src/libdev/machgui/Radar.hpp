@@ -14,8 +14,8 @@
 
 #include "base/base.hpp"
 #include "gui/Displayable.hpp"
+#include "gui/gui.hpp"
 
-class MachGuiRadarImpl;
 class MachActor;
 class MachLog1stPersonHandler;
 
@@ -64,7 +64,20 @@ private:
     MachGuiRadar& operator=(const MachGuiRadar&);
 
     // Data members...
-    MachGuiRadarImpl* pImpl_;
+    static constexpr int RADAR_ANIMATION_FRAMES = 10;
+
+    MachActor* pActor_{};
+    GuiBitmap healthBmp_[3];
+    GuiBitmap armourBmp_[3];
+    GuiBitmap radarBackdropBmp_;
+    GuiBitmap radarDomeBmp_;
+    MachLog1stPersonHandler* pLogHandler_{};
+    bool justEnteredFirstPerson_{};
+    GuiBitmap radarStartupFrames_[RADAR_ANIMATION_FRAMES];
+    GuiBitmap machineIcon_;
+    bool hpAboveCritical_{};
+    double animationEndTime_{};
+    int frameNumber_{};
 };
 
 #endif

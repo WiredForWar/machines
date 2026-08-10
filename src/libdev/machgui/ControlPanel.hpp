@@ -13,9 +13,10 @@
 #define _MACHGUI_CONTROLP_HPP
 
 #include "base/base.hpp"
+#include "ctl/PtrVector.hpp"
 #include "gui/Displayable.hpp"
+#include "gui/gui.hpp"
 
-class MachGuiControlPanelImpl;
 class MachInGameScreen;
 
 class MachGuiControlPanel : public GuiDisplayable
@@ -73,8 +74,17 @@ private:
 
     std::string getDecalRootDirectory() const;
 
+    struct RedrawArea
+    {
+        Gui::Box area_;
+        std::size_t count_;
+    };
+    using RedrawAreas = ctl_pvector<RedrawArea>;
+
     // Data members
-    MachGuiControlPanelImpl* pImpl_;
+    RedrawAreas redrawAreas_;
+    GuiBitmap decals_[8];
+    Gui::Coord decalCoord_[8];
 };
 
 #endif

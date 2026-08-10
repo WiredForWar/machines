@@ -13,6 +13,8 @@
 #define _MACHGUI_CHATMSGS_HPP
 
 #include "base/base.hpp"
+#include "ctl/List.hpp"
+#include "phys/phys.hpp"
 #include "machphys/machphys.hpp"
 
 #include <string>
@@ -21,7 +23,6 @@
 template <class T> class ctl_list;
 template <class T> class ctl_vector;
 
-struct MachGuiInGameChatMessagesImpl;
 class MachGuiMessageBroker;
 class MachGuiStartupScreens;
 
@@ -71,7 +72,12 @@ private:
     MachGuiInGameChatMessages();
 
     // Data members...
-    MachGuiInGameChatMessagesImpl* pImpl_;
+    ctl_list<std::string> chatMessages_;
+    PhysAbsoluteTime lastUpdateTime_;
+    bool messageAdded_{};
+    MachGuiMessageBroker* pMessageBroker_{};
+    MachGuiStartupScreens* pStartupScreens_{};
+    std::vector<std::string> standardMessages_;
 };
 
 #endif
