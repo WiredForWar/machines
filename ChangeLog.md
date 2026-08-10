@@ -1,6 +1,9 @@
 
 ### v1.7.5
 
+Mostly a bugfix and maintenance release: the game moved to SDL3, gained a native MSVC build, and
+had its renderer rebuilt underneath.
+
 - Ground camera height (z position) now always saved/restored on view save/restore
 - Following camera now persists when switching camera type (Ground <-> Zenith)
 - A number of pathfinding improvements (performance and responsiveness)
@@ -8,17 +11,50 @@
 - Optimized the game startup
 - Added models, cursors, and planet minimaps texture modding support
 - Added support for scaled planet maps
-- Added console (press `Ctrl+Alt+Shift+F11` and type `console on` there)
-- Fixed constructions interior was not race specific (always red)
-- Fixed machines moved forth and back in corridors (e.g. in 'Regain Control' mission)
-- Fixed many cases when machines could stuck and lock each other
+- Added a console (press `Ctrl+Alt+Shift+F11` and type `console on` there)
+- PNG textures are now preferred over the original formats and can be overridden by mods
+- Display options are now Window Mode (Exclusive Fullscreen / Borderless Fullscreen /
+  Windowed), Resolution and Refresh Rate as separate settings, instead of one long list
+- Reworked first person aiming to behave the same whatever the frame rate and resolution
+- The starfield now twinkles, and star colours and sizes follow the star's brightness
+- FPS counter (`Ctrl+Shift+F7`) is now available in release builds
+- `Enter` now sends a chat message to all players, `F2`/`F3`/`F4` address a target and
+  toggle alliances
+- Text fields now support word jump and word deletion with `Ctrl`, and `Ctrl+V` paste
+- The game version is now carried in LAN discovery and checked when joining. A client
+  with a mismatched version is now told so, along with both versions.
+- Joining a session no longer blocks the game while it waits for the host
+- Removed the 'Screen resolution lock' option
+- Removed the Gamma correction option, which SDL3 no longer supports
+- Fixed constructions interiors not being race specific (always red)
+- Fixed machines moving forth and back in corridors (e.g. in 'Regain Control' mission)
+- Fixed many cases where machines could get stuck and lock each other
 - Fixed camera move and zoom at the same time (basically reimplemented zoom with mouse wheel)
 - Fixed selection marker rendering (2D/3D and runtime switching)
 - Fixed rendering/culling issues that could cause missing world tiles / rooms not being rendered
 - Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers
 - Fixed nearest Lab lookup for Technicians
+- Fixed machines other than Aggressors being able to enter a friendly building whose
+  bays were all taken. They now need a free bay, as Aggressors always did.
+- Fixed a destroyed machine carrying on with its update while teleporting in or out
+- Fixed a crash when a Resource Carrier was sent to a mine it could not reach
 - Fixed crash on close by Alt+F4
 - Fixed the audio stuttering during video playback
+- Fixed the anti-aliasing option not being applied
+- Fixed the drawing of rectangles and lines
+- Fixed the game menus opening while a modifier key was held
+- Fixed multiplayer chat messages being truncated
+- Fixed the port byte order in LAN discovery packets
+- Fixed a double ENet shutdown
+- A few more small fixes
+
+Under the hood:
+- Ported to SDL3
+- Added Conan 2 support
+- The game now builds with MSVC
+- The game now builds with Clang
+- Dropped the Alure dependency (music is decoded with a bundled stb_vorbis)
+- Reworked the renderer API (ready for multiply render backends)
 
 ### v1.7.4
 
