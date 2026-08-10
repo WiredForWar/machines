@@ -12,14 +12,13 @@
 #pragma once
 
 #include "gui/Displayable.hpp"
-#include "machgui/FocusCapableControl.hpp"
-
 #include "gui/Font.hpp"
 #include "gui/ResolvedUiString.hpp"
 
+class MachGuiStartupScreens;
+
 class MachGuiCheckBox
     : public GuiDisplayable
-    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:

@@ -69,8 +69,6 @@ set(MACHGUI_SOURCES
     FactoryBuffer.hpp
     FirstPerson.cpp
     FirstPerson.hpp
-    FocusCapableControl.cpp
-    FocusCapableControl.hpp
     GameMenuContext.cpp
     GameMenuContext.hpp
     GeneralStatistics.cpp

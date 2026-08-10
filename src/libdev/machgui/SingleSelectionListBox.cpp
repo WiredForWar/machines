@@ -19,8 +19,9 @@ MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(
     size_t verticalSpacing,
     size_t scrollInc)
     : GuiSingleSelectionListBox(pStartupScreens, box, horizontalSpacing, verticalSpacing, scrollInc)
-    , MachGuiFocusCapableControl(pStartupScreens)
 {
+    setAcceptsFocus(true);
+
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
@@ -84,7 +85,7 @@ std::optional<std::size_t> MachGuiSingleSelectionListBox::getCurrentItemIndex() 
 // virtual
 void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus(newValue);
+    GuiDisplayable::hasFocus(newValue);
 
     changed();
 
@@ -108,12 +109,12 @@ void MachGuiSingleSelectionListBox::hasFocus(bool newValue)
 
 // virtual
 bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
-    MachGuiFocusCapableControl::NavKey navKey,
-    MachGuiFocusCapableControl** ppNavFocusControl)
+    GuiDisplayable::NavKey navKey,
+    GuiDisplayable** ppNavFocusControl)
 {
     bool retValue = false;
 
-    if (navKey == MachGuiFocusCapableControl::UP_ARROW)
+    if (navKey == GuiDisplayable::NavKey::UP_ARROW)
     {
         MachGuiSingleSelectionListBoxItem* pPreviousItem = nullptr;
         MachGuiSingleSelectionListBoxItem* pCurrentItem = nullptr;
@@ -142,7 +143,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
             retValue = true;
         }
     }
-    else if (navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    else if (navKey == GuiDisplayable::NavKey::DOWN_ARROW)
     {
         bool itemSelected = false;
 
@@ -176,7 +177,7 @@ bool MachGuiSingleSelectionListBox::doHandleNavigationKey(
 // virtual
 bool MachGuiSingleSelectionListBox::isFocusEnabled() const
 {
-    return MachGuiFocusCapableControl::isFocusEnabled() && !listItems_.empty();
+    return GuiDisplayable::isFocusEnabled() && !listItems_.empty();
 }
 
 ctl_pvector<MachGuiSingleSelectionListBoxItem>& MachGuiSingleSelectionListBox::listItems()

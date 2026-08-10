@@ -41,7 +41,7 @@ class MachGuiMessageBoxResponder;
 class MachGuiDbSavedGame;
 class MachLogGameCreationData;
 class MexTransform3d;
-class MachGuiFocusCapableControl;
+class GuiDisplayable;
 class MachGuiDbScenario;
 
 namespace MachGui
@@ -330,9 +330,7 @@ public:
     void initializeCursorOptions();
     void initializeConsoleDropDown();
 
-    // Focus capable controls allow for keyboard navigation of the menus
-    void addFocusCapableControl(MachGuiFocusCapableControl*);
-    void removeFocusCapableControl(MachGuiFocusCapableControl*);
+    // Withhold the focus from the menu while a message box is up.
     void messageBoxHasFocus(bool);
 
     // this is set to true when games are terminating due to loss of host
@@ -341,7 +339,7 @@ public:
     void ignoreHostLostSystemMessage(bool);
 
 protected:
-    bool doHandleFocusCapableControls(const GuiKeyEvent& e);
+    bool doHandleFocusNavigation(const GuiKeyEvent& e);
 
     void doDisplay() override;
     void update() override;
@@ -485,7 +483,6 @@ private:
     static std::string getContextStrName(Context context);
 
     using SmackerAnims = ctl_pvector<AniSmacker>;
-    using FocusCapableControls = ctl_pvector<MachGuiFocusCapableControl>;
 
     // Data members...
     RenCursor2d* pMenuCursor_;
@@ -530,7 +527,6 @@ private:
     bool isGamePaused_{};
     bool pendingScreenShot_{};
     std::string pendingScreenShotName_{};
-    FocusCapableControls focusCapableControls_;
     MachGuiDispositionChangeNotifiable* pDispositionNotifiable_;
     bool ignoreHostLostSystemMessage_;
     Utils::HandleWithTriggerUPtr soundVolumeHandle_;
