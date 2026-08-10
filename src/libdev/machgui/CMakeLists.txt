@@ -325,7 +325,6 @@ set(MACHGUI_SOURCES
     db/internal/DbITextData.hpp
     gui.cpp
     gui.hpp
-    internal/InGameScreenImpl.hpp
     internal/PlayerNameList.hpp
     internal/PlayerScore.hpp
     internal/SoundManager.hpp

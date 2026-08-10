@@ -22,7 +22,6 @@
 #include "sim/Manager.hpp"
 #include "gui/Event.hpp"
 #include "gui/gui.hpp"
-#include "machgui/internal/InGameScreenImpl.hpp"
 #include "machlog/Messaging/RecentEventsManager.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
@@ -37,12 +36,6 @@
 
 bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
 {
-    CB_DEPIMPL_AUTO(allCommands_);
-    CB_DEPIMPL_AUTO(pActiveCommand_);
-    CB_DEPIMPL_AUTO(pFirstPerson_);
-    CB_DEPIMPL_AUTO(gameStateTimer_);
-    CB_DEPIMPL_AUTO(pConsoleDropDown_);
-
     NEIL_STREAM(
         "InGame button event : " << static_cast<int>(e.key()) << " ctrl " << e.isCtrlPressed() << " shift "
                                  << e.isShiftPressed() << " alt " << e.isAltPressed() << std::endl);
@@ -93,48 +86,48 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             }
             else
             {
-                processed = pImpl_->pPromptText_->doHandleKeyEvent(e);
+                processed = pPromptText_->doHandleKeyEvent(e);
             }
             break;
         }
         case 1:
         {
-            ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
-            processed = pImpl_->pCameras_->processButtonEvent(e);
+            ASSERT(pCameras_, "pCameras_ is NULL");
+            processed = pCameras_->processButtonEvent(e);
 
             static const auto& hidePanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-hide"_bind);
             static const auto& showPanelTrigger = MachGui::inputRegistry()->getBinds("ui-controlpanel-show"_bind);
 
             if (e.state() == Gui::PRESSED)
             {
-                if (pImpl_->controlPanelOn_ && hidePanelTrigger.matches(e.keyWithMods()))
+                if (controlPanelOn_ && hidePanelTrigger.matches(e.keyWithMods()))
                 {
-                    pImpl_->controlPanelOn_ = false;
+                    controlPanelOn_ = false;
                     processed = true;
                 }
                 else if (showPanelTrigger.matches(e.keyWithMods()))
                 {
-                    pImpl_->controlPanelOn_ = true;
+                    controlPanelOn_ = true;
                     processed = true;
                 }
             }
             break;
         }
         case 2:
-            ASSERT(pImpl_->pSquadronBank_, "pSquadronBank_ is NULL");
-            processed = pImpl_->pSquadronBank_->processButtonEvent(e.buttonEvent());
+            ASSERT(pSquadronBank_, "pSquadronBank_ is NULL");
+            processed = pSquadronBank_->processButtonEvent(e.buttonEvent());
             break;
         case 3:
-            ASSERT(pImpl_->pMachineNavigation_, "pMachineNavigation_ is NULL");
-            processed = pImpl_->pMachineNavigation_->processButtonEvent(e.buttonEvent());
+            ASSERT(pMachineNavigation_, "pMachineNavigation_ is NULL");
+            processed = pMachineNavigation_->processButtonEvent(e.buttonEvent());
             break;
         case 4:
-            ASSERT(pImpl_->pConstructionNavigation_, "pConstructionNavigation_ is NULL");
-            processed = pImpl_->pConstructionNavigation_->processButtonEvent(e.buttonEvent());
+            ASSERT(pConstructionNavigation_, "pConstructionNavigation_ is NULL");
+            processed = pConstructionNavigation_->processButtonEvent(e.buttonEvent());
             break;
         case 5:
-            ASSERT(pImpl_->pWorldViewWindow_, "pWorldViewWindow_ is NULL");
-            processed = pImpl_->pWorldViewWindow_->processButtonEvent(e.buttonEvent());
+            ASSERT(pWorldViewWindow_, "pWorldViewWindow_ is NULL");
+            processed = pWorldViewWindow_->processButtonEvent(e.buttonEvent());
             break;
         case 6:
         case 7:
@@ -148,7 +141,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 }
                 else
                 {
-                    pImpl_->switchToMenus_ = true;
+                    switchToMenus_ = true;
                 }
 
                 processed = true;
@@ -159,7 +152,7 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
             static const auto& menusTrigger = MachGui::inputRegistry()->getBinds("show-menus"_bind);
             if (e.state() == Gui::PRESSED && menusTrigger.matches(e.keyWithMods()))
             {
-                pImpl_->switchToMenus_ = true;
+                switchToMenus_ = true;
                 processed = true;
             }
             break;
@@ -239,8 +232,8 @@ bool MachInGameScreen::doHandleKeyEvent(const GuiKeyEvent& e)
                 MachLogRecentEventsManager& recentEvents = MachLogRecentEventsManager::instance();
                 if (recentEvents.hasEvents())
                 {
-                    ASSERT(pImpl_->pCameras_, "pCameras_ is NULL");
-                    pImpl_->pCameras_->moveTo(recentEvents.nextEventPosition());
+                    ASSERT(pCameras_, "pCameras_ is NULL");
+                    pCameras_->moveTo(recentEvents.nextEventPosition());
                 }
 
                 processed = true;
@@ -288,7 +281,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
     {
         static bool fogOfWarOn = true;
         fogOfWarOn = !fogOfWarOn;
-        pImpl_->pContinentMap_->fogOfWarOn(fogOfWarOn);
+        pContinentMap_->fogOfWarOn(fogOfWarOn);
     }
 
     // *** Todo : This stuff needs sorting out. It's been taken from the Machines app and needs a serious tidy...
@@ -303,9 +296,9 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
         if (e.key() == Device::KeyCode::KEY_U)
         {
             if (e.isShiftPressed())
-                pImpl_->pSceneManager_->autoAdjustFrameRate(false);
+                pSceneManager_->autoAdjustFrameRate(false);
             else
-                pImpl_->pSceneManager_->autoAdjustFrameRate(true);
+                pSceneManager_->autoAdjustFrameRate(true);
         }
 
         if (e.key() == Device::KeyCode::F5 && e.isShiftPressed())
@@ -327,8 +320,8 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
         if (e.key() == Device::KeyCode::F8 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            for (MachInGameScreenImpl::Actors::iterator i = pImpl_->selectedActors_.begin();
-                 i != pImpl_->selectedActors_.end();
+            for (MachInGameScreen::Actors::iterator i = selectedActors_.begin();
+                 i != selectedActors_.end();
                  ++i)
             {
                 MachActor* pActor = *i;
@@ -343,7 +336,7 @@ bool MachInGameScreen::doHandleKeyEventHacks(const GuiKeyEvent& e)
 
         if (e.key() == Device::KeyCode::F9 && e.isShiftPressed() && e.isCtrlPressed())
         {
-            pImpl_->showCurrentMachine_ = !pImpl_->showCurrentMachine_;
+            showCurrentMachine_ = !showCurrentMachine_;
         }
 
         if (e.key() == Device::KeyCode::F11)

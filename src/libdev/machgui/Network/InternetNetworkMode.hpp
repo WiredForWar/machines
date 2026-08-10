@@ -15,6 +15,8 @@
 #include "base/base.hpp"
 #include "machgui/Network/NetworkProtocolMode.hpp"
 
+class MachGuiSingleLineEditBox;
+
 class GuiDisplayable;
 class MachGuiStartupScreens;
 
@@ -42,7 +44,7 @@ private:
     MachGuiInternetNetworkMode(const MachGuiInternetNetworkMode&);
     MachGuiInternetNetworkMode& operator=(const MachGuiInternetNetworkMode&);
 
-    class MachGuiInternetNetworkModeImpl* pimpl_;
+    MachGuiSingleLineEditBox* pIPAddressEntryBox_{};
 };
 
 #endif

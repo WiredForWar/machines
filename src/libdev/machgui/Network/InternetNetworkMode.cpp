@@ -18,12 +18,6 @@
 #include "machgui/internal/strings.hpp"
 #include "network/Network.hpp"
 
-class MachGuiInternetNetworkModeImpl
-{
-public:
-    MachGuiSingleLineEditBox* pIPAddressEntryBox_{};
-};
-
 #define INM_MINX 62
 #define INM_MINY 309
 #define INM_WIDTH 110
@@ -32,8 +26,6 @@ public:
 MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-    pimpl_ = new MachGuiInternetNetworkModeImpl;
-
     GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
     GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
     const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
@@ -46,16 +38,16 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
         IDS_MENU_IPADDRESS,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
+    pIPAddressEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),
         Gui::Box(
             pIPAddressText->relativeBoundary().bottomLeft(),
             Gui::Size(INM_WIDTH * MachGui::menuScaleFactor(), textHeight + 4 * MachGui::menuScaleFactor())),
         font);
-    pimpl_->pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
-    pimpl_->pIPAddressEntryBox_->border(true);
+    pIPAddressEntryBox_->borderColour(MachGui::DARKSANDY());
+    pIPAddressEntryBox_->border(true);
 
-    pimpl_->pIPAddressEntryBox_->setTextChangedCallback(
+    pIPAddressEntryBox_->setTextChangedCallback(
         [this](GuiSingleLineEditBox* pLineEdit) { setNetworkDetails(); });
 
     readNetworkDetails();
@@ -66,8 +58,6 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
 MachGuiInternetNetworkMode::~MachGuiInternetNetworkMode()
 {
     TEST_INVARIANT;
-
-    delete pimpl_;
 }
 
 void MachGuiInternetNetworkMode::CLASS_INVARIANT
@@ -79,7 +69,7 @@ void MachGuiInternetNetworkMode::CLASS_INVARIANT
 void MachGuiInternetNetworkMode::setNetworkDetails()
 {
     // This function will use the settings from the drop downs to configure network settings
-    std::string ipAddress = pimpl_->pIPAddressEntryBox_->text();
+    std::string ipAddress = pIPAddressEntryBox_->text();
 
     NetNetwork::instance().setIPAddress(ipAddress);
 }
@@ -94,26 +84,25 @@ bool MachGuiInternetNetworkMode::validNetworkDetails(bool /*isHost*/)
 void MachGuiInternetNetworkMode::updateGUI()
 {
     // Flash caret
-    pimpl_->pIPAddressEntryBox_->update();
+    pIPAddressEntryBox_->update();
 }
 
 // virtual
 void MachGuiInternetNetworkMode::charFocus()
 {
-    GuiManager::instance().charFocus(pimpl_->pIPAddressEntryBox_);
+    GuiManager::instance().charFocus(pIPAddressEntryBox_);
 }
 
 void MachGuiInternetNetworkMode::readNetworkDetails()
 {
     std::string ipAddress = NetNetwork::instance().IPAddress();
-    pimpl_->pIPAddressEntryBox_->setText(ipAddress);
+    pIPAddressEntryBox_->setText(ipAddress);
 
     charFocus();
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t)
 {
-
     o << "MachGuiInternetNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiInternetNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 

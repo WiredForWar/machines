@@ -18,19 +18,8 @@
 #include "network/Network.hpp"
 #include "network/ComPortAddress.hpp"
 
-class MachGuiSerialNetworkModeImpl
-{
-public:
-    MachGuiDropDownListBoxCreator* pComPortSelecter_{};
-    MachGuiDropDownListBoxCreator* pBaudRateSelecter_{};
-    MachGuiDropDownListBoxCreator* pParitySelecter_{};
-    MachGuiDropDownListBoxCreator* pStopBitsSelecter_{};
-    MachGuiDropDownListBoxCreator* pFlowSelecter_{};
-};
-
 namespace
 {
-
 // A port setting and the text offered for it, kept together so that the two
 // cannot fall out of step.
 template <typename T>
@@ -106,15 +95,12 @@ T selectedValue(const MachGuiDropDownListBoxCreator* pDropDown, const Choice<T> 
 MachGuiSerialNetworkMode::MachGuiSerialNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-    pimpl_ = new MachGuiSerialNetworkModeImpl();
     readNetworkDetails();
     TEST_INVARIANT;
 }
 
 MachGuiSerialNetworkMode::~MachGuiSerialNetworkMode()
 {
-    delete pimpl_;
-
     TEST_INVARIANT;
 }
 
@@ -128,12 +114,12 @@ void MachGuiSerialNetworkMode::setNetworkDetails()
 {
     // Use the settings from the drop downs to configure network settings
     // Populate a com port object with user settings
-    NetComPortAddress currentPort(selectedValue(pimpl_->pComPortSelecter_, ComPorts));
+    NetComPortAddress currentPort(selectedValue(pComPortSelecter_, ComPorts));
 
-    currentPort.baudRate(selectedValue(pimpl_->pBaudRateSelecter_, BaudRates));
-    currentPort.parity(selectedValue(pimpl_->pParitySelecter_, Parities));
-    currentPort.stopBits(selectedValue(pimpl_->pStopBitsSelecter_, StopBits));
-    currentPort.flowControl(selectedValue(pimpl_->pFlowSelecter_, FlowControls));
+    currentPort.baudRate(selectedValue(pBaudRateSelecter_, BaudRates));
+    currentPort.parity(selectedValue(pParitySelecter_, Parities));
+    currentPort.stopBits(selectedValue(pStopBitsSelecter_, StopBits));
+    currentPort.flowControl(selectedValue(pFlowSelecter_, FlowControls));
 
     // Set the current com port settings
     //  NetNetwork::instance().comPortAddress( currentPort );
@@ -168,14 +154,14 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         IDS_MENU_COMPORT,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pComPortSelecter_ = new MachGuiDropDownListBoxCreator(
+    pComPortSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY + textHeight),
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pComPortSelecter_->setAvailText(labelsOf(ComPorts));
+    pComPortSelecter_->setAvailText(labelsOf(ComPorts));
 
     GuiResourceString baudHeading(IDS_MENU_BAUD);
 
@@ -185,14 +171,14 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         IDS_MENU_BAUD,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pBaudRateSelecter_ = new MachGuiDropDownListBoxCreator(
+    pBaudRateSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY2 + textHeight),
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pBaudRateSelecter_->setAvailText(labelsOf(BaudRates));
+    pBaudRateSelecter_->setAvailText(labelsOf(BaudRates));
 
     GuiResourceString parityHeading(IDS_MENU_PARITY);
 
@@ -202,14 +188,14 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         IDS_MENU_PARITY,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pParitySelecter_ = new MachGuiDropDownListBoxCreator(
+    pParitySelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY2 + textHeight),
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pParitySelecter_->setAvailText(labelsOf(Parities));
+    pParitySelecter_->setAvailText(labelsOf(Parities));
 
     GuiResourceString stopBitsHeading(IDS_MENU_STOPBITS);
 
@@ -219,14 +205,14 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         IDS_MENU_STOPBITS,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pStopBitsSelecter_ = new MachGuiDropDownListBoxCreator(
+    pStopBitsSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX, SNM_MINY3 + textHeight),
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pStopBitsSelecter_->setAvailText(labelsOf(StopBits));
+    pStopBitsSelecter_->setAvailText(labelsOf(StopBits));
 
     GuiResourceString flowHeading(IDS_MENU_FLOW);
 
@@ -236,19 +222,18 @@ void MachGuiSerialNetworkMode::readNetworkDetails()
         IDS_MENU_FLOW,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pFlowSelecter_ = new MachGuiDropDownListBoxCreator(
+    pFlowSelecter_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(SNM_MINX2, SNM_MINY3 + textHeight),
         SNM_WIDTH,
         true,
         true);
-    pimpl_->pFlowSelecter_->setAvailText(labelsOf(FlowControls));
+    pFlowSelecter_->setAvailText(labelsOf(FlowControls));
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t)
 {
-
     o << "MachGuiSerialNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiSerialNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 

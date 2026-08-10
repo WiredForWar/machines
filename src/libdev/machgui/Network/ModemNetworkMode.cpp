@@ -19,18 +19,9 @@
 #include "network/Network.hpp"
 #include "machgui/MessageBoxResponder.hpp"
 
-class MachGuiModemNetworkModeImpl
-{
-public:
-    MachGuiDropDownListBoxCreator* pModemSelector_{};
-    MachGuiSingleLineEditBox* pTelNoEntryBox_{};
-};
-
 MachGuiModemNetworkMode::MachGuiModemNetworkMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : MachGuiNetworkProtocolMode(pParent, pStartupScreens)
 {
-    pimpl_ = new MachGuiModemNetworkModeImpl();
-
     readNetworkDetails();
 
     TEST_INVARIANT;
@@ -39,8 +30,6 @@ MachGuiModemNetworkMode::MachGuiModemNetworkMode(GuiDisplayable* pParent, MachGu
 MachGuiModemNetworkMode::~MachGuiModemNetworkMode()
 {
     TEST_INVARIANT;
-
-    delete pimpl_;
 }
 
 void MachGuiModemNetworkMode::CLASS_INVARIANT
@@ -52,8 +41,8 @@ void MachGuiModemNetworkMode::CLASS_INVARIANT
 void MachGuiModemNetworkMode::setNetworkDetails()
 {
     // This function will use the settings from the drop downs to configure network settings
-    std::string currentModem = pimpl_->pModemSelector_->currentText();
-    std::string serverTelNo = pimpl_->pTelNoEntryBox_->text();
+    std::string currentModem = pModemSelector_->currentText();
+    std::string serverTelNo = pTelNoEntryBox_->text();
 
     //  NetNetwork::instance().phone( serverTelNo );
     //  NetNetwork::instance().modem( currentModem );
@@ -65,7 +54,7 @@ bool MachGuiModemNetworkMode::validNetworkDetails(bool isHost)
 {
     bool valid = true;
 
-    if ((pimpl_->pTelNoEntryBox_->text() == "") && (! isHost))
+    if ((pTelNoEntryBox_->text() == "") && (! isHost))
     {
         startupScreens().displayMsgBox(IDS_MENUMSG_ENTERSERVERTELNO);
         valid = false;
@@ -77,7 +66,7 @@ bool MachGuiModemNetworkMode::validNetworkDetails(bool isHost)
 void MachGuiModemNetworkMode::updateGUI()
 {
     // calling the update method on the text entry box will cause its caret to flash
-    pimpl_->pTelNoEntryBox_->update();
+    pTelNoEntryBox_->update();
 }
 
 #define MNM_MINX 62
@@ -107,14 +96,14 @@ void MachGuiModemNetworkMode::readNetworkDetails()
         IDS_MENU_MODEMTYPE,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pModemSelector_ = new MachGuiDropDownListBoxCreator(
+    pModemSelector_ = new MachGuiDropDownListBoxCreator(
         &parent(),
         &startupScreens(),
         Gui::Coord(MNM_MINX, MNM_MINY + textHeight),
         MNM_WIDTH,
         true,
         true);
-    pimpl_->pModemSelector_->setAvailText(availableModems);
+    pModemSelector_->setAvailText(availableModems);
 
     GuiResourceString telephoneNoHeading(IDS_MENU_TELNO);
 
@@ -124,20 +113,19 @@ void MachGuiModemNetworkMode::readNetworkDetails()
         IDS_MENU_TELNO,
         MachGui::Menu::smallFontLight());
 
-    pimpl_->pTelNoEntryBox_ = new MachGuiSingleLineEditBox(
+    pTelNoEntryBox_ = new MachGuiSingleLineEditBox(
         &startupScreens(),
         Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2 + textHeight), MNM_WIDTH, textHeight + 4),
         font);
-    pimpl_->pTelNoEntryBox_->ignoreSpaceAtBeginning(true);
-    pimpl_->pTelNoEntryBox_->border(true);
-    pimpl_->pTelNoEntryBox_->borderColour(MachGui::DARKSANDY());
+    pTelNoEntryBox_->ignoreSpaceAtBeginning(true);
+    pTelNoEntryBox_->border(true);
+    pTelNoEntryBox_->borderColour(MachGui::DARKSANDY());
 
-    GuiManager::instance().charFocus(pimpl_->pTelNoEntryBox_);
+    GuiManager::instance().charFocus(pTelNoEntryBox_);
 }
 
 std::ostream& operator<<(std::ostream& o, const MachGuiModemNetworkMode& t)
 {
-
     o << "MachGuiModemNetworkMode " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiModemNetworkMode " << static_cast<const void*>(&t) << " end" << std::endl;
 

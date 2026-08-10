@@ -15,6 +15,8 @@
 #include "machgui/Network/NetworkProtocolMode.hpp"
 #include "base/base.hpp"
 
+class MachGuiDropDownListBoxCreator;
+
 class GuiDisplayable;
 class MachGuiStartupScreens;
 
@@ -40,7 +42,11 @@ private:
     MachGuiSerialNetworkMode(const MachGuiSerialNetworkMode&);
     MachGuiSerialNetworkMode& operator=(const MachGuiSerialNetworkMode&);
 
-    class MachGuiSerialNetworkModeImpl* pimpl_;
+    MachGuiDropDownListBoxCreator* pComPortSelecter_{};
+    MachGuiDropDownListBoxCreator* pBaudRateSelecter_{};
+    MachGuiDropDownListBoxCreator* pParitySelecter_{};
+    MachGuiDropDownListBoxCreator* pStopBitsSelecter_{};
+    MachGuiDropDownListBoxCreator* pFlowSelecter_{};
 };
 
 #endif

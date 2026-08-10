@@ -15,6 +15,9 @@
 #include "base/base.hpp"
 #include "machgui/Network/NetworkProtocolMode.hpp"
 
+class MachGuiDropDownListBoxCreator;
+class MachGuiSingleLineEditBox;
+
 class GuiDisplayable;
 class MachGuiStartupScreens;
 
@@ -46,7 +49,8 @@ private:
 
     // friend class MachGuiModemOkResponder;
 
-    class MachGuiModemNetworkModeImpl* pimpl_;
+    MachGuiDropDownListBoxCreator* pModemSelector_{};
+    MachGuiSingleLineEditBox* pTelNoEntryBox_{};
 };
 
 #endif
