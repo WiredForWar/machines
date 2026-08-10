@@ -60,8 +60,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCheckBox& t);
 
-    MachGuiCheckBox(const MachGuiCheckBox&);
-    MachGuiCheckBox& operator=(const MachGuiCheckBox&);
+    MachGuiCheckBox(const MachGuiCheckBox&) = delete;
+    MachGuiCheckBox& operator=(const MachGuiCheckBox&) = delete;
 
     std::string label_;
     Gui::Coord textPos_{};

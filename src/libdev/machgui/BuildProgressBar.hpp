@@ -37,9 +37,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiBuildProgressBar(const MachGuiBuildProgressBar&);
-    MachGuiBuildProgressBar& operator=(const MachGuiBuildProgressBar&);
-    bool operator==(const MachGuiBuildProgressBar&);
+    MachGuiBuildProgressBar(const MachGuiBuildProgressBar&) = delete;
+    MachGuiBuildProgressBar& operator=(const MachGuiBuildProgressBar&) = delete;
+    bool operator==(const MachGuiBuildProgressBar&) = delete;
 
     Gui::Colour barColour() const;
 

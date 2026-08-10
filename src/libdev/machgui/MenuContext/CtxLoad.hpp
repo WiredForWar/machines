@@ -45,8 +45,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxLoad& t);
 
-    MachGuiCtxLoad(const MachGuiCtxLoad&);
-    MachGuiCtxLoad& operator=(const MachGuiCtxLoad&);
+    MachGuiCtxLoad(const MachGuiCtxLoad&) = delete;
+    MachGuiCtxLoad& operator=(const MachGuiCtxLoad&) = delete;
 
     // Data members...
     MachGuiSingleSelectionListBox* pSaveGameList_;

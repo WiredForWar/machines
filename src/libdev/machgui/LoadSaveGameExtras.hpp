@@ -31,8 +31,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiLoadSaveGameExtras& t);
 
-    MachGuiLoadSaveGameExtras(const MachGuiLoadSaveGameExtras&);
-    MachGuiLoadSaveGameExtras& operator=(const MachGuiLoadSaveGameExtras&);
+    MachGuiLoadSaveGameExtras(const MachGuiLoadSaveGameExtras&) = delete;
+    MachGuiLoadSaveGameExtras& operator=(const MachGuiLoadSaveGameExtras&) = delete;
 
     // Data members...
     MachInGameScreen* pInGameScreen_;

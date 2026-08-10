@@ -31,9 +31,9 @@ public:
     void doOutput(std::ostream&);
 
 private:
-    MachGuiMessageDisplay(const MachGuiMessageDisplay&);
-    MachGuiMessageDisplay& operator=(const MachGuiMessageDisplay&);
-    bool operator==(const MachGuiMessageDisplay&);
+    MachGuiMessageDisplay(const MachGuiMessageDisplay&) = delete;
+    MachGuiMessageDisplay& operator=(const MachGuiMessageDisplay&) = delete;
+    bool operator==(const MachGuiMessageDisplay&) = delete;
 
     MachGuiMessageDisplay();
     struct DisplayMessage

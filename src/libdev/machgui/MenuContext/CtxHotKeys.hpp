@@ -28,8 +28,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxHotKeys& t);
 
-    MachGuiCtxHotKeys(const MachGuiCtxHotKeys&);
-    MachGuiCtxHotKeys& operator=(const MachGuiCtxHotKeys&);
+    MachGuiCtxHotKeys(const MachGuiCtxHotKeys&) = delete;
+    MachGuiCtxHotKeys& operator=(const MachGuiCtxHotKeys&) = delete;
 
     void readHotkeyData(const std::string& hotKeyDataFileName, std::string& hotkeyString, uint& linesInString);
 };

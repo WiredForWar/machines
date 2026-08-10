@@ -74,9 +74,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiFactoryBuffer(const MachGuiFactoryBuffer&);
-    MachGuiFactoryBuffer& operator=(const MachGuiFactoryBuffer&);
-    bool operator==(const MachGuiFactoryBuffer&);
+    MachGuiFactoryBuffer(const MachGuiFactoryBuffer&) = delete;
+    MachGuiFactoryBuffer& operator=(const MachGuiFactoryBuffer&) = delete;
+    bool operator==(const MachGuiFactoryBuffer&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiFactoryBuffer& t);
 

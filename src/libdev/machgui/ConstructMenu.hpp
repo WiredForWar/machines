@@ -39,9 +39,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachConstructMenu(const MachConstructMenu&);
-    MachConstructMenu& operator=(const MachConstructMenu&);
-    bool operator==(const MachConstructMenu&);
+    MachConstructMenu(const MachConstructMenu&) = delete;
+    MachConstructMenu& operator=(const MachConstructMenu&) = delete;
+    bool operator==(const MachConstructMenu&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachConstructMenu& t);
 };

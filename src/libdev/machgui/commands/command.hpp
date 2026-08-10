@@ -211,9 +211,9 @@ protected:
 
 private:
     // Operation deliberately revoked
-    MachGuiCommand(const MachGuiCommand&);
-    MachGuiCommand& operator=(const MachGuiCommand&);
-    bool operator==(const MachGuiCommand&);
+    MachGuiCommand(const MachGuiCommand&) = delete;
+    MachGuiCommand& operator=(const MachGuiCommand&) = delete;
+    bool operator==(const MachGuiCommand&) = delete;
 
     // Execute the command for pActor, returning true if done so,
     // or false if not possible. If the latter, a prompt std::string explaining

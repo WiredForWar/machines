@@ -42,8 +42,8 @@ private:
     MachGuiIDatabase();
     ~MachGuiIDatabase();
 
-    MachGuiIDatabase(const MachGuiIDatabase&);
-    MachGuiIDatabase& operator=(const MachGuiIDatabase&);
+    MachGuiIDatabase(const MachGuiIDatabase&) = delete;
+    MachGuiIDatabase& operator=(const MachGuiIDatabase&) = delete;
 
     using ElementMap = ctl_map<std::string, MachGuiDbElement*, std::less<std::string>>;
     using Players = ctl_vector<MachGuiDbPlayer*>;

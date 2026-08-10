@@ -61,8 +61,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBox& t);
 
-    MachGuiSingleSelectionListBox(const MachGuiSingleSelectionListBox&);
-    MachGuiSingleSelectionListBox& operator=(const MachGuiSingleSelectionListBox&);
+    MachGuiSingleSelectionListBox(const MachGuiSingleSelectionListBox&) = delete;
+    MachGuiSingleSelectionListBox& operator=(const MachGuiSingleSelectionListBox&) = delete;
 
     // TODO: Remove this once the focus capable control refactor is done...
     ctl_pvector<MachGuiSingleSelectionListBoxItem> listItems_;

@@ -44,9 +44,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachHWResearchMenu(const MachHWResearchMenu&);
-    MachHWResearchMenu& operator=(const MachHWResearchMenu&);
-    bool operator==(const MachHWResearchMenu&);
+    MachHWResearchMenu(const MachHWResearchMenu&) = delete;
+    MachHWResearchMenu& operator=(const MachHWResearchMenu&) = delete;
+    bool operator==(const MachHWResearchMenu&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachHWResearchMenu& t);
 

@@ -36,8 +36,8 @@ private:
 
     MachGuiDbIScenario();
     ~MachGuiDbIScenario();
-    MachGuiDbIScenario(const MachGuiDbIScenario&);
-    MachGuiDbIScenario& operator=(const MachGuiDbIScenario&);
+    MachGuiDbIScenario(const MachGuiDbIScenario&) = delete;
+    MachGuiDbIScenario& operator=(const MachGuiDbIScenario&) = delete;
 
     // data members
     MachGuiDbPlanet* pPlanet_; // The planet on which it occurs

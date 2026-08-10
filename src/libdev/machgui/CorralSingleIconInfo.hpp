@@ -39,9 +39,9 @@ public:
     void setActor(MachActor*);
 
 private:
-    MachGuiCorralSingleIconInfo(const MachGuiCorralSingleIconInfo&);
-    MachGuiCorralSingleIconInfo& operator=(const MachGuiCorralSingleIconInfo&);
-    bool operator==(const MachGuiCorralSingleIconInfo&);
+    MachGuiCorralSingleIconInfo(const MachGuiCorralSingleIconInfo&) = delete;
+    MachGuiCorralSingleIconInfo& operator=(const MachGuiCorralSingleIconInfo&) = delete;
+    bool operator==(const MachGuiCorralSingleIconInfo&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCorralSingleIconInfo& t);
 
@@ -71,9 +71,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiCorralSingleIcon(const MachGuiCorralSingleIcon&);
-    MachGuiCorralSingleIcon& operator=(const MachGuiCorralSingleIcon&);
-    bool operator==(const MachGuiCorralSingleIcon&) const;
+    MachGuiCorralSingleIcon(const MachGuiCorralSingleIcon&) = delete;
+    MachGuiCorralSingleIcon& operator=(const MachGuiCorralSingleIcon&) = delete;
+    bool operator==(const MachGuiCorralSingleIcon&) const = delete;
 
     bool beNotified(W4dSubject* pSubject, W4dSubject::NotificationEvent event, int clientData = 0) override;
     void domainDeleted(W4dDomain* pDomain) override;

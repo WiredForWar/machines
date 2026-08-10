@@ -66,8 +66,8 @@ protected:
     bool canInteract() const;
 
 private:
-    MachGuiPlayerColour(const MachGuiPlayerColour&);
-    MachGuiPlayerColour& operator=(const MachGuiPlayerColour&);
+    MachGuiPlayerColour(const MachGuiPlayerColour&) = delete;
+    MachGuiPlayerColour& operator=(const MachGuiPlayerColour&) = delete;
 
     bool highlighted_;
     MachGuiStartupScreens* pStartupScreens_;
@@ -126,8 +126,8 @@ private:
     friend class MachGuiPlayerColour;
     friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerListItem& t);
 
-    MachGuiPlayerListItem(const MachGuiPlayerListItem&);
-    MachGuiPlayerListItem& operator=(const MachGuiPlayerListItem&);
+    MachGuiPlayerListItem(const MachGuiPlayerListItem&) = delete;
+    MachGuiPlayerListItem& operator=(const MachGuiPlayerListItem&) = delete;
 
     bool highlighted_;
     bool colourHighlighted_;
@@ -158,8 +158,8 @@ protected:
     void doDisplay() override;
 
 private:
-    MachGuiColourList(const MachGuiColourList&);
-    MachGuiColourList& operator=(const MachGuiColourList&);
+    MachGuiColourList(const MachGuiColourList&) = delete;
+    MachGuiColourList& operator=(const MachGuiColourList&) = delete;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MachGuiColourSelector : public GuiDisplayable
@@ -181,8 +181,8 @@ protected:
     void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
 
 private:
-    MachGuiColourSelector(const MachGuiColourSelector&);
-    MachGuiColourSelector& operator=(const MachGuiColourSelector&);
+    MachGuiColourSelector(const MachGuiColourSelector&) = delete;
+    MachGuiColourSelector& operator=(const MachGuiColourSelector&) = delete;
 
     // Data members
     bool highlighted_;

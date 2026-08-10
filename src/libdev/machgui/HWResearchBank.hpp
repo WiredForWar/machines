@@ -81,9 +81,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachHWResearchBank(const MachHWResearchBank&);
-    MachHWResearchBank& operator=(const MachHWResearchBank&);
-    bool operator==(const MachHWResearchBank&);
+    MachHWResearchBank(const MachHWResearchBank&) = delete;
+    MachHWResearchBank& operator=(const MachHWResearchBank&) = delete;
+    bool operator==(const MachHWResearchBank&) = delete;
 
     // Data members
     MachLogHardwareLab* pHardwareLab_; // The lab being edited

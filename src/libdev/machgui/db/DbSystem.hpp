@@ -53,8 +53,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbSystem& t);
 
-    MachGuiDbSystem(const MachGuiDbSystem&);
-    MachGuiDbSystem& operator=(const MachGuiDbSystem&);
+    MachGuiDbSystem(const MachGuiDbSystem&) = delete;
+    MachGuiDbSystem& operator=(const MachGuiDbSystem&) = delete;
 
     // data members
     MachGuiDbISystem* pData_; // implementation data object

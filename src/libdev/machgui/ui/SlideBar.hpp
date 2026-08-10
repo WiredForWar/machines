@@ -82,8 +82,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSlideBar& t);
 
-    MachGuiSlideBar(const MachGuiSlideBar&);
-    MachGuiSlideBar& operator=(const MachGuiSlideBar&);
+    MachGuiSlideBar(const MachGuiSlideBar&) = delete;
+    MachGuiSlideBar& operator=(const MachGuiSlideBar&) = delete;
 
     FloatValueChangedCallback valueChangedCallback_;
 

@@ -46,8 +46,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxBriefing& t);
 
-    MachGuiCtxBriefing(const MachGuiCtxBriefing&);
-    MachGuiCtxBriefing& operator=(const MachGuiCtxBriefing&);
+    MachGuiCtxBriefing(const MachGuiCtxBriefing&) = delete;
+    MachGuiCtxBriefing& operator=(const MachGuiCtxBriefing&) = delete;
 
     void displayBriefingImage();
     void playBriefingVoicemail();

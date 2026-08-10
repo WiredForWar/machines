@@ -86,9 +86,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiAttackCommand(const MachGuiAttackCommand&);
-    MachGuiAttackCommand& operator=(const MachGuiAttackCommand&);
-    bool operator==(const MachGuiAttackCommand&);
+    MachGuiAttackCommand(const MachGuiAttackCommand&) = delete;
+    MachGuiAttackCommand& operator=(const MachGuiAttackCommand&) = delete;
+    bool operator==(const MachGuiAttackCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

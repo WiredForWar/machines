@@ -50,8 +50,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxJoin& t);
 
-    MachGuiCtxJoin(const MachGuiCtxJoin&);
-    MachGuiCtxJoin& operator=(const MachGuiCtxJoin&);
+    MachGuiCtxJoin(const MachGuiCtxJoin&) = delete;
+    MachGuiCtxJoin& operator=(const MachGuiCtxJoin&) = delete;
 
     // Data members...
     MachGuiSingleSelectionListBox* pGamesList_;

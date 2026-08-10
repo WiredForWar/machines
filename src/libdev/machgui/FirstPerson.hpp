@@ -150,8 +150,8 @@ private:
     void detachCamera();
 
     // revoked
-    MachGuiFirstPerson(const MachGuiFirstPerson&);
-    MachGuiFirstPerson& operator=(const MachGuiFirstPerson&);
+    MachGuiFirstPerson(const MachGuiFirstPerson&) = delete;
+    MachGuiFirstPerson& operator=(const MachGuiFirstPerson&) = delete;
 
     // Data members...
     bool switchToMenus_{};

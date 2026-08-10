@@ -46,8 +46,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxCampaign& t);
 
-    MachGuiCtxCampaign(const MachGuiCtxCampaign&);
-    MachGuiCtxCampaign& operator=(const MachGuiCtxCampaign&);
+    MachGuiCtxCampaign(const MachGuiCtxCampaign&) = delete;
+    MachGuiCtxCampaign& operator=(const MachGuiCtxCampaign&) = delete;
 
     void displayCurrentStatus();
     // Data members...

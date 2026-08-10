@@ -98,9 +98,9 @@ protected:
     void doHandleMouseScrollEvent(GuiMouseEvent* event) override;
 
 private:
-    GuiSimpleScrollableList(const GuiSimpleScrollableList&);
-    GuiSimpleScrollableList& operator=(const GuiSimpleScrollableList&);
-    bool operator==(const GuiSimpleScrollableList&);
+    GuiSimpleScrollableList(const GuiSimpleScrollableList&) = delete;
+    GuiSimpleScrollableList& operator=(const GuiSimpleScrollableList&) = delete;
+    bool operator==(const GuiSimpleScrollableList&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const GuiSimpleScrollableList& t);
 

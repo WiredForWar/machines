@@ -50,8 +50,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreenContext& t);
 
-    MachGuiStartupScreenContext(const MachGuiStartupScreenContext&);
-    MachGuiStartupScreenContext& operator=(const MachGuiStartupScreenContext&);
+    MachGuiStartupScreenContext(const MachGuiStartupScreenContext&) = delete;
+    MachGuiStartupScreenContext& operator=(const MachGuiStartupScreenContext&) = delete;
 };
 
 #endif

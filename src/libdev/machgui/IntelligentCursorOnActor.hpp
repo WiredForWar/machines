@@ -69,9 +69,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachGuiIntelligentCursorOnActor(const MachGuiIntelligentCursorOnActor&);
-    MachGuiIntelligentCursorOnActor& operator=(const MachGuiIntelligentCursorOnActor&);
-    bool operator==(const MachGuiIntelligentCursorOnActor&);
+    MachGuiIntelligentCursorOnActor(const MachGuiIntelligentCursorOnActor&) = delete;
+    MachGuiIntelligentCursorOnActor& operator=(const MachGuiIntelligentCursorOnActor&) = delete;
+    bool operator==(const MachGuiIntelligentCursorOnActor&) = delete;
 
     // Do standard machine processing
     void processStandardMachine(MachLogMachine* pActor);

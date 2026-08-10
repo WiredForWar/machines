@@ -42,8 +42,8 @@ private:
     void doDisplay(Gui::StringId id, MachPhys::Race race1, MachPhys::Race race2);
     std::string getDisplayName(MachPhys::Race race);
 
-    MachGuiDispositionChangeNotifiable(const MachGuiDispositionChangeNotifiable&);
-    MachGuiDispositionChangeNotifiable& operator=(const MachGuiDispositionChangeNotifiable&);
+    MachGuiDispositionChangeNotifiable(const MachGuiDispositionChangeNotifiable&) = delete;
+    MachGuiDispositionChangeNotifiable& operator=(const MachGuiDispositionChangeNotifiable&) = delete;
 
     MachGuiStartupScreens* pStartupScreens_;
 };

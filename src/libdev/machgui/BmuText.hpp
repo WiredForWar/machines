@@ -42,9 +42,9 @@ protected:
     void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 
 private:
-    MachGuiBmuText(const MachGuiBmuText&);
-    MachGuiBmuText& operator=(const MachGuiBmuText&);
-    bool operator==(const MachGuiBmuText&);
+    MachGuiBmuText(const MachGuiBmuText&) = delete;
+    MachGuiBmuText& operator=(const MachGuiBmuText&) = delete;
+    bool operator==(const MachGuiBmuText&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiBmuText& t);
 
@@ -73,9 +73,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiBmuButton(const MachGuiBmuButton&);
-    MachGuiBmuButton& operator=(const MachGuiBmuButton&);
-    bool operator==(const MachGuiBmuButton&) const;
+    MachGuiBmuButton(const MachGuiBmuButton&) = delete;
+    MachGuiBmuButton& operator=(const MachGuiBmuButton&) = delete;
+    bool operator==(const MachGuiBmuButton&) const = delete;
 
     // Data members
     MachGuiBmuText* pBmuText_;

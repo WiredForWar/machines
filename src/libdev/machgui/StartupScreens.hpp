@@ -378,9 +378,9 @@ protected:
     // PRE( MachGuiDatabase::instance().currentPlayer().nPlayerScenarios() != 0 );
 
 private:
-    MachGuiStartupScreens(const MachGuiStartupScreens&);
-    MachGuiStartupScreens& operator=(const MachGuiStartupScreens&);
-    bool operator==(const MachGuiStartupScreens&);
+    MachGuiStartupScreens(const MachGuiStartupScreens&) = delete;
+    MachGuiStartupScreens& operator=(const MachGuiStartupScreens&) = delete;
+    bool operator==(const MachGuiStartupScreens&) = delete;
 
     void CLASS_INVARIANT;
 

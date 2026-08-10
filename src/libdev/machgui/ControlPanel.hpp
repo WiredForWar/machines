@@ -69,8 +69,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiControlPanel& t);
 
-    MachGuiControlPanel(const MachGuiControlPanel&);
-    MachGuiControlPanel& operator=(const MachGuiControlPanel&);
+    MachGuiControlPanel(const MachGuiControlPanel&) = delete;
+    MachGuiControlPanel& operator=(const MachGuiControlPanel&) = delete;
 
     std::string getDecalRootDirectory() const;
 

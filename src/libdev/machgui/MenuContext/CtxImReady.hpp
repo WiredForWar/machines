@@ -56,8 +56,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxImReady& t);
 
-    MachGuiCtxImReady(const MachGuiCtxImReady&);
-    MachGuiCtxImReady& operator=(const MachGuiCtxImReady&);
+    MachGuiCtxImReady(const MachGuiCtxImReady&) = delete;
+    MachGuiCtxImReady& operator=(const MachGuiCtxImReady&) = delete;
 
     MachGuiChatWindow* pChatWindow_;
     MachGuiSingleLineEditBox* pSingleLineEditBox_;

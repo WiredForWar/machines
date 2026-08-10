@@ -36,9 +36,9 @@ protected:
     void doDisplay() override;
 
 private:
-    MachCommandIcons(const MachCommandIcons&);
-    MachCommandIcons& operator=(const MachCommandIcons&);
-    bool operator==(const MachCommandIcons&) const;
+    MachCommandIcons(const MachCommandIcons&) = delete;
+    MachCommandIcons& operator=(const MachCommandIcons&) = delete;
+    bool operator==(const MachCommandIcons&) const = delete;
 
     static const Coords& staticCoords();
 
@@ -66,9 +66,9 @@ protected:
     void doDisplay() override;
 
 private:
-    MachSmallCommandIcons(const MachSmallCommandIcons&);
-    MachSmallCommandIcons& operator=(const MachSmallCommandIcons&);
-    bool operator==(const MachSmallCommandIcons&) const;
+    MachSmallCommandIcons(const MachSmallCommandIcons&) = delete;
+    MachSmallCommandIcons& operator=(const MachSmallCommandIcons&) = delete;
+    bool operator==(const MachSmallCommandIcons&) const = delete;
 
     static const Coords& staticCoords();
 
@@ -110,9 +110,9 @@ protected:
     void setCursorPromptText();
 
 private:
-    MachCommandIcon(const MachCommandIcon&);
-    MachCommandIcon& operator=(const MachCommandIcon&);
-    bool operator==(const MachCommandIcon&) const;
+    MachCommandIcon(const MachCommandIcon&) = delete;
+    MachCommandIcon& operator=(const MachCommandIcon&) = delete;
+    bool operator==(const MachCommandIcon&) const = delete;
 
     // Helper function used in initialisation list
     std::pair<std::string, std::string> bitmapPaths(const MachGuiCommand& command) const;

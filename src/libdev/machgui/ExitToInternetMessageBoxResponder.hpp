@@ -38,8 +38,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiExitToInternetMessageBoxResponder& t);
 
-    MachGuiExitToInternetMessageBoxResponder(const MachGuiExitToInternetMessageBoxResponder&);
-    MachGuiExitToInternetMessageBoxResponder& operator=(const MachGuiExitToInternetMessageBoxResponder&);
+    MachGuiExitToInternetMessageBoxResponder(const MachGuiExitToInternetMessageBoxResponder&) = delete;
+    MachGuiExitToInternetMessageBoxResponder& operator=(const MachGuiExitToInternetMessageBoxResponder&) = delete;
 
     MachGuiStartupScreens* pStartupScreens_;
     UnloadGame unloadGame_;

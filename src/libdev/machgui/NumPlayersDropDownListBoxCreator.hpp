@@ -42,8 +42,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t);
 
-    MachGuiNumPlayersDropDownListBoxCreator(const MachGuiNumPlayersDropDownListBoxCreator&);
-    MachGuiNumPlayersDropDownListBoxCreator& operator=(const MachGuiNumPlayersDropDownListBoxCreator&);
+    MachGuiNumPlayersDropDownListBoxCreator(const MachGuiNumPlayersDropDownListBoxCreator&) = delete;
+    MachGuiNumPlayersDropDownListBoxCreator& operator=(const MachGuiNumPlayersDropDownListBoxCreator&) = delete;
 };
 
 class MachGuiNumPlayersDropDownList : public MachGuiDropDownList

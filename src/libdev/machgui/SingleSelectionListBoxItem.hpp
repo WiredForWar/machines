@@ -70,8 +70,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleSelectionListBoxItem& t);
 
-    MachGuiSingleSelectionListBoxItem(const MachGuiSingleSelectionListBoxItem&);
-    MachGuiSingleSelectionListBoxItem& operator=(const MachGuiSingleSelectionListBoxItem&);
+    MachGuiSingleSelectionListBoxItem(const MachGuiSingleSelectionListBoxItem&) = delete;
+    MachGuiSingleSelectionListBoxItem& operator=(const MachGuiSingleSelectionListBoxItem&) = delete;
 
     std::string text_;
     bool highlighted_;

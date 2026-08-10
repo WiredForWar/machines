@@ -29,8 +29,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStatistics& t);
 
-    MachGuiStatistics(const MachGuiStatistics&);
-    MachGuiStatistics& operator=(const MachGuiStatistics&);
+    MachGuiStatistics(const MachGuiStatistics&) = delete;
+    MachGuiStatistics& operator=(const MachGuiStatistics&) = delete;
 };
 
 #endif

@@ -40,8 +40,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxDeBriefing& t);
 
-    MachGuiCtxDeBriefing(const MachGuiCtxDeBriefing&);
-    MachGuiCtxDeBriefing& operator=(const MachGuiCtxDeBriefing&);
+    MachGuiCtxDeBriefing(const MachGuiCtxDeBriefing&) = delete;
+    MachGuiCtxDeBriefing& operator=(const MachGuiCtxDeBriefing&) = delete;
 
     void displayDeBriefImage();
 

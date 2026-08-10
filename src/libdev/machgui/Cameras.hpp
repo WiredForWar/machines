@@ -147,9 +147,9 @@ public:
 
 private:
     // Operations revoked
-    MachCameras(const MachCameras&);
-    MachCameras& operator=(const MachCameras&);
-    bool operator==(const MachCameras&);
+    MachCameras(const MachCameras&) = delete;
+    MachCameras& operator=(const MachCameras&) = delete;
+    bool operator==(const MachCameras&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachCameras& t);
 

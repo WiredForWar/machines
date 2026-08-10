@@ -38,9 +38,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiNewResearchIcon(const MachGuiNewResearchIcon&);
-    MachGuiNewResearchIcon& operator=(const MachGuiNewResearchIcon&);
-    bool operator==(const MachGuiNewResearchIcon&) const;
+    MachGuiNewResearchIcon(const MachGuiNewResearchIcon&) = delete;
+    MachGuiNewResearchIcon& operator=(const MachGuiNewResearchIcon&) = delete;
+    bool operator==(const MachGuiNewResearchIcon&) const = delete;
 
     GuiBitmap bitmap_;
 };
@@ -80,9 +80,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachHWResearchBankIcon(const MachHWResearchBankIcon&);
-    MachHWResearchBankIcon& operator=(const MachHWResearchBankIcon&);
-    bool operator==(const MachHWResearchBankIcon&);
+    MachHWResearchBankIcon(const MachHWResearchBankIcon&) = delete;
+    MachHWResearchBankIcon& operator=(const MachHWResearchBankIcon&) = delete;
+    bool operator==(const MachHWResearchBankIcon&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachHWResearchBankIcon& t);
 

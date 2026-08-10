@@ -43,8 +43,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxScenario& t);
 
-    MachGuiCtxScenario(const MachGuiCtxScenario&);
-    MachGuiCtxScenario& operator=(const MachGuiCtxScenario&);
+    MachGuiCtxScenario(const MachGuiCtxScenario&) = delete;
+    MachGuiCtxScenario& operator=(const MachGuiCtxScenario&) = delete;
 
     void updateSystemList();
 

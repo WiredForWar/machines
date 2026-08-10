@@ -33,8 +33,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMapArea& t);
 
-    MachGuiMapArea(const MachGuiMapArea&);
-    MachGuiMapArea& operator=(const MachGuiMapArea&);
+    MachGuiMapArea(const MachGuiMapArea&) = delete;
+    MachGuiMapArea& operator=(const MachGuiMapArea&) = delete;
 
     void redrawAreaImmediate(const Gui::Box& area);
 

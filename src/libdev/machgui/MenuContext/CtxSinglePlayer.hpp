@@ -28,8 +28,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSinglePlayer& t);
 
-    MachGuiCtxSinglePlayer(const MachGuiCtxSinglePlayer&);
-    MachGuiCtxSinglePlayer& operator=(const MachGuiCtxSinglePlayer&);
+    MachGuiCtxSinglePlayer(const MachGuiCtxSinglePlayer&) = delete;
+    MachGuiCtxSinglePlayer& operator=(const MachGuiCtxSinglePlayer&) = delete;
 };
 
 #endif

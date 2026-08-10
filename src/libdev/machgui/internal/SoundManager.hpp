@@ -59,8 +59,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSoundManager& t);
 
-    MachGuiSoundManager(const MachGuiSoundManager&);
-    MachGuiSoundManager& operator=(const MachGuiSoundManager&);
+    MachGuiSoundManager(const MachGuiSoundManager&) = delete;
+    MachGuiSoundManager& operator=(const MachGuiSoundManager&) = delete;
 
     MachGuiSoundManager();
 };

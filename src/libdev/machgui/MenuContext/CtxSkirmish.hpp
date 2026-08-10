@@ -53,8 +53,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSkirmish& t);
 
-    MachGuiCtxSkirmish(const MachGuiCtxSkirmish&);
-    MachGuiCtxSkirmish& operator=(const MachGuiCtxSkirmish&);
+    MachGuiCtxSkirmish(const MachGuiCtxSkirmish&) = delete;
+    MachGuiCtxSkirmish& operator=(const MachGuiCtxSkirmish&) = delete;
 
     void updateMapSizeList();
     void initSettings();

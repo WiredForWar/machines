@@ -27,8 +27,8 @@ public:
     void doDisplay() override;
 
 private:
-    MachGuiPausedImage(const MachGuiPausedImage&);
-    MachGuiPausedImage& operator=(const MachGuiPausedImage&);
+    MachGuiPausedImage(const MachGuiPausedImage&) = delete;
+    MachGuiPausedImage& operator=(const MachGuiPausedImage&) = delete;
 
     MachInGameScreen* pInGameScreen_;
 };

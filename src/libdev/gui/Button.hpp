@@ -57,9 +57,9 @@ protected:
     // POST( isDisabled() );
 
 private:
-    GuiButton(const GuiButton&);
-    GuiButton& operator=(const GuiButton&);
-    bool operator==(const GuiButton&) const;
+    GuiButton(const GuiButton&) = delete;
+    GuiButton& operator=(const GuiButton&) = delete;
+    bool operator==(const GuiButton&) const = delete;
 
     Callback clickedCallback_;
 
@@ -106,9 +106,9 @@ protected:
     const Gui::Coord& depressedInteriorOffset() const;
 
 private:
-    GuiButtonWithBorder(const GuiButtonWithBorder&);
-    GuiButtonWithBorder& operator=(const GuiButtonWithBorder&);
-    bool operator==(const GuiButtonWithBorder&) const;
+    GuiButtonWithBorder(const GuiButtonWithBorder&) = delete;
+    GuiButtonWithBorder& operator=(const GuiButtonWithBorder&) = delete;
+    bool operator==(const GuiButtonWithBorder&) const = delete;
 
     GuiBorderMetrics borderMetrics_;
     GuiBorderDimensions borderDimensions_;
@@ -137,9 +137,9 @@ protected:
     const GuiFilledBorder& border() const;
 
 private:
-    GuiButtonWithFilledBorder(const GuiButtonWithFilledBorder&);
-    GuiButtonWithFilledBorder& operator=(const GuiButtonWithFilledBorder&);
-    bool operator==(const GuiButtonWithFilledBorder&) const;
+    GuiButtonWithFilledBorder(const GuiButtonWithFilledBorder&) = delete;
+    GuiButtonWithFilledBorder& operator=(const GuiButtonWithFilledBorder&) = delete;
+    bool operator==(const GuiButtonWithFilledBorder&) const = delete;
 
     GuiFilledBorder border_;
 };
@@ -170,8 +170,8 @@ protected:
     virtual const GuiBitmap& getBitmap() const;
 
 private:
-    GuiBitmapButtonWithFilledBorder(const GuiBitmapButtonWithFilledBorder&);
-    GuiBitmapButtonWithFilledBorder& operator=(const GuiBitmapButtonWithFilledBorder&);
+    GuiBitmapButtonWithFilledBorder(const GuiBitmapButtonWithFilledBorder&) = delete;
+    GuiBitmapButtonWithFilledBorder& operator=(const GuiBitmapButtonWithFilledBorder&) = delete;
     bool operator==(const GuiButtonWithFilledBorder&) const;
 
     GuiBitmap bitmap_;

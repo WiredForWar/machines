@@ -74,8 +74,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayer& t);
 
-    MachGuiDbPlayer(const MachGuiDbPlayer&);
-    MachGuiDbPlayer& operator=(const MachGuiDbPlayer&);
+    MachGuiDbPlayer(const MachGuiDbPlayer&) = delete;
+    MachGuiDbPlayer& operator=(const MachGuiDbPlayer&) = delete;
 
     // data members
     MachGuiDbIPlayer* pData_; // data implementation object

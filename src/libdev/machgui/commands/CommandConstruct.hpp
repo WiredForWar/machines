@@ -110,9 +110,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiConstructCommand(const MachGuiConstructCommand&);
-    MachGuiConstructCommand& operator=(const MachGuiConstructCommand&);
-    bool operator==(const MachGuiConstructCommand&);
+    MachGuiConstructCommand(const MachGuiConstructCommand&) = delete;
+    MachGuiConstructCommand& operator=(const MachGuiConstructCommand&) = delete;
+    bool operator==(const MachGuiConstructCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

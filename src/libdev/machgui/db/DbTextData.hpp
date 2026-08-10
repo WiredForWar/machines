@@ -65,8 +65,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbTextData& t);
 
-    MachGuiDbTextData(const MachGuiDbTextData&);
-    MachGuiDbTextData& operator=(const MachGuiDbTextData&);
+    MachGuiDbTextData(const MachGuiDbTextData&) = delete;
+    MachGuiDbTextData& operator=(const MachGuiDbTextData&) = delete;
 
     // Parse the text version of the text file
     void parseFile(const SysPathName& filename);

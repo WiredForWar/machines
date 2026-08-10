@@ -60,9 +60,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiBufferScrollButton(const MachGuiBufferScrollButton&);
-    MachGuiBufferScrollButton& operator=(const MachGuiBufferScrollButton&);
-    bool operator==(const MachGuiBufferScrollButton&) const;
+    MachGuiBufferScrollButton(const MachGuiBufferScrollButton&) = delete;
+    MachGuiBufferScrollButton& operator=(const MachGuiBufferScrollButton&) = delete;
+    bool operator==(const MachGuiBufferScrollButton&) const = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiBufferScrollButton& t);
 

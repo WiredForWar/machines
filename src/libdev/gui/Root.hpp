@@ -48,9 +48,9 @@ protected:
     GuiRootSharedBitmaps mSharedBitmaps_;
 
 private:
-    GuiRoot(const GuiRoot&);
-    bool operator==(const GuiRoot&) const;
-    GuiRoot& operator=(const GuiRoot&);
+    GuiRoot(const GuiRoot&) = delete;
+    bool operator==(const GuiRoot&) const = delete;
+    GuiRoot& operator=(const GuiRoot&) = delete;
 };
 
 /* //////////////////////////////////////////////////////////////// */

@@ -57,8 +57,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBoxItem& t);
 
-    GuiSingleSelectionListBoxItem(const GuiSingleSelectionListBoxItem&);
-    GuiSingleSelectionListBoxItem& operator=(const GuiSingleSelectionListBoxItem&);
+    GuiSingleSelectionListBoxItem(const GuiSingleSelectionListBoxItem&) = delete;
+    GuiSingleSelectionListBoxItem& operator=(const GuiSingleSelectionListBoxItem&) = delete;
 
     friend class GuiSingleSelectionListBox;
 

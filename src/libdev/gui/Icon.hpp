@@ -20,9 +20,9 @@ protected:
     ~GuiIcon() override;
 
 private:
-    GuiIcon(const GuiIcon&);
-    GuiIcon& operator=(const GuiIcon&);
-    bool operator==(const GuiIcon&) const;
+    GuiIcon(const GuiIcon&) = delete;
+    GuiIcon& operator=(const GuiIcon&) = delete;
+    bool operator==(const GuiIcon&) const = delete;
 };
 
 /* //////////////////////////////////////////////////////////////// */

@@ -41,8 +41,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiInternetNetworkMode& t);
 
-    MachGuiInternetNetworkMode(const MachGuiInternetNetworkMode&);
-    MachGuiInternetNetworkMode& operator=(const MachGuiInternetNetworkMode&);
+    MachGuiInternetNetworkMode(const MachGuiInternetNetworkMode&) = delete;
+    MachGuiInternetNetworkMode& operator=(const MachGuiInternetNetworkMode&) = delete;
 
     MachGuiSingleLineEditBox* pIPAddressEntryBox_{};
 };

@@ -81,9 +81,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiLocateToCommand(const MachGuiLocateToCommand&);
-    MachGuiLocateToCommand& operator=(const MachGuiLocateToCommand&);
-    bool operator==(const MachGuiLocateToCommand&);
+    MachGuiLocateToCommand(const MachGuiLocateToCommand&) = delete;
+    MachGuiLocateToCommand& operator=(const MachGuiLocateToCommand&) = delete;
+    bool operator==(const MachGuiLocateToCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

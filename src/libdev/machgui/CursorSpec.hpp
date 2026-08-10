@@ -91,9 +91,9 @@ public:
 
 private:
     // Operations deliberately revoked
-    MachInGameCursors2d(const MachInGameCursors2d&);
-    MachInGameCursors2d& operator=(const MachInGameCursors2d&);
-    bool operator==(const MachInGameCursors2d&);
+    MachInGameCursors2d(const MachInGameCursors2d&) = delete;
+    MachInGameCursors2d& operator=(const MachInGameCursors2d&) = delete;
+    bool operator==(const MachInGameCursors2d&) = delete;
 
     // Load up all the cursors
     void loadCursors();

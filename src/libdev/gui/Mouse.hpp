@@ -25,9 +25,9 @@ public:
     static const GuiBitmap& defaultCursor();
 
 private:
-    GuiMouse(const GuiMouse&);
-    bool operator==(const GuiMouse&) const;
-    GuiMouse& operator=(const GuiMouse&);
+    GuiMouse(const GuiMouse&) = delete;
+    bool operator==(const GuiMouse&) const = delete;
+    GuiMouse& operator=(const GuiMouse&) = delete;
 
     GuiMouse();
 

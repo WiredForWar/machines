@@ -120,9 +120,9 @@ protected:
     ///////////////////////////////
 
 private:
-    MachLogTypeRestorer(const MachLogTypeRestorer&);
-    MachLogTypeRestorer& operator=(const MachLogTypeRestorer&);
-    bool operator==(const MachLogTypeRestorer&);
+    MachLogTypeRestorer(const MachLogTypeRestorer&) = delete;
+    MachLogTypeRestorer& operator=(const MachLogTypeRestorer&) = delete;
+    bool operator==(const MachLogTypeRestorer&) = delete;
 
     ///////////////////////////////
 

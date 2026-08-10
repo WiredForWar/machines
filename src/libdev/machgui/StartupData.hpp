@@ -277,8 +277,8 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::PlayerInfo::Status& t);
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::GameSettings& t);
 
-    MachGuiStartupData(const MachGuiStartupData&);
-    MachGuiStartupData& operator=(const MachGuiStartupData&);
+    MachGuiStartupData(const MachGuiStartupData&) = delete;
+    MachGuiStartupData& operator=(const MachGuiStartupData&) = delete;
 
     std::string playerName_;
     MachGuiDbScenario* pScenario_;

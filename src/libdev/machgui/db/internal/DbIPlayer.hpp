@@ -36,8 +36,8 @@ private:
 
     MachGuiDbIPlayer();
     ~MachGuiDbIPlayer();
-    MachGuiDbIPlayer(const MachGuiDbIPlayer&);
-    MachGuiDbIPlayer& operator=(const MachGuiDbIPlayer&);
+    MachGuiDbIPlayer(const MachGuiDbIPlayer&) = delete;
+    MachGuiDbIPlayer& operator=(const MachGuiDbIPlayer&) = delete;
 
     using PlayerScenarios = ctl_vector<MachGuiDbPlayerScenario*>;
 

@@ -76,8 +76,8 @@ private:
 
     int indexOfResolution(Ren::Size resolution) const;
 
-    MachGuiCtxOptions(const MachGuiCtxOptions&);
-    MachGuiCtxOptions& operator=(const MachGuiCtxOptions&);
+    MachGuiCtxOptions(const MachGuiCtxOptions&) = delete;
+    MachGuiCtxOptions& operator=(const MachGuiCtxOptions&) = delete;
 
     using BooleanOptimisations = ctl_pvector<MachGuiCheckBox>;
     using ChoicesOptimisations = ctl_pvector<MachGuiDropDownListBoxCreator>;

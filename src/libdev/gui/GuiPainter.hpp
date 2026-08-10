@@ -79,9 +79,9 @@ public:
         const GuiBorderMetrics&) const;
 
 private:
-    GuiPainter(const GuiPainter&);
-    GuiPainter& operator=(const GuiPainter&);
-    bool operator==(const GuiPainter&) const;
+    GuiPainter(const GuiPainter&) = delete;
+    GuiPainter& operator=(const GuiPainter&) = delete;
+    bool operator==(const GuiPainter&) const = delete;
 
     GuiPainter();
 };

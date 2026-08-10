@@ -47,9 +47,9 @@ protected:
     GuiBitmap& corralBitmap();
 
 private:
-    MachGuiNewCorralIcon(const MachGuiNewCorralIcon&);
-    MachGuiNewCorralIcon& operator=(const MachGuiNewCorralIcon&);
-    bool operator==(const MachGuiNewCorralIcon&) const;
+    MachGuiNewCorralIcon(const MachGuiNewCorralIcon&) = delete;
+    MachGuiNewCorralIcon& operator=(const MachGuiNewCorralIcon&) = delete;
+    bool operator==(const MachGuiNewCorralIcon&) const = delete;
 
     GuiBitmap bitmap_;
 };
@@ -96,9 +96,9 @@ protected:
     void doDisplayInteriorEnabled(const Gui::Coord& absCoord) override;
 
 private:
-    MachGuiCorralResource(const MachGuiCorralResource&);
-    MachGuiCorralResource& operator=(const MachGuiCorralResource&);
-    bool operator==(const MachGuiCorralResource&) const;
+    MachGuiCorralResource(const MachGuiCorralResource&) = delete;
+    MachGuiCorralResource& operator=(const MachGuiCorralResource&) = delete;
+    bool operator==(const MachGuiCorralResource&) const = delete;
 
     void updateHealthBar();
     void updateIcon();
@@ -154,9 +154,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiCorral(const MachGuiCorral&);
-    MachGuiCorral& operator=(const MachGuiCorral&);
-    bool operator==(const MachGuiCorral&) const;
+    MachGuiCorral(const MachGuiCorral&) = delete;
+    MachGuiCorral& operator=(const MachGuiCorral&) = delete;
+    bool operator==(const MachGuiCorral&) const = delete;
 
     void eraseAllActors();
     MachPhys::Race race() const;
@@ -189,9 +189,9 @@ protected:
 
 private:
     // Operations revoked
-    MachCorralIcons(const MachCorralIcons&);
-    MachCorralIcons& operator=(const MachCorralIcons&);
-    bool operator==(const MachCorralIcons&) const;
+    MachCorralIcons(const MachCorralIcons&) = delete;
+    MachCorralIcons& operator=(const MachCorralIcons&) = delete;
+    bool operator==(const MachCorralIcons&) const = delete;
 
     // Data members...
     MachGuiCorral* pCorral_;

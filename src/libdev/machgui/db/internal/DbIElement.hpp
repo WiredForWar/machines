@@ -38,8 +38,8 @@ private:
 
     MachGuiDbIElement();
     ~MachGuiDbIElement();
-    MachGuiDbIElement(const MachGuiDbIElement&);
-    MachGuiDbIElement& operator=(const MachGuiDbIElement&);
+    MachGuiDbIElement(const MachGuiDbIElement&) = delete;
+    MachGuiDbIElement& operator=(const MachGuiDbIElement&) = delete;
 
     // data members
     bool isComplete_{}; // True if the current player has completed this element

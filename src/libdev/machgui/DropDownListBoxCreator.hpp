@@ -95,8 +95,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDropDownListBoxCreator& t);
 
-    MachGuiDropDownListBoxCreator(const MachGuiDropDownListBoxCreator&);
-    MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&);
+    MachGuiDropDownListBoxCreator(const MachGuiDropDownListBoxCreator&) = delete;
+    MachGuiDropDownListBoxCreator& operator=(const MachGuiDropDownListBoxCreator&) = delete;
 
     Callback currentIndexChangedCallback_;
 

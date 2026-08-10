@@ -59,9 +59,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachBuildMachineIcon(const MachBuildMachineIcon&);
-    MachBuildMachineIcon& operator=(const MachBuildMachineIcon&);
-    bool operator==(const MachBuildMachineIcon&);
+    MachBuildMachineIcon(const MachBuildMachineIcon&) = delete;
+    MachBuildMachineIcon& operator=(const MachBuildMachineIcon&) = delete;
+    bool operator==(const MachBuildMachineIcon&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachBuildMachineIcon& t);
 

@@ -59,9 +59,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiScrollButton(const MachGuiScrollButton&);
-    MachGuiScrollButton& operator=(const MachGuiScrollButton&);
-    bool operator==(const MachGuiScrollButton&) const;
+    MachGuiScrollButton(const MachGuiScrollButton&) = delete;
+    MachGuiScrollButton& operator=(const MachGuiScrollButton&) = delete;
+    bool operator==(const MachGuiScrollButton&) const = delete;
 
     // Data members...
     GuiSimpleScrollableList* pIcons_;
@@ -118,9 +118,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiScrollArea(const MachGuiScrollArea&);
-    MachGuiScrollArea& operator=(const MachGuiScrollArea&);
-    bool operator==(const MachGuiScrollArea&);
+    MachGuiScrollArea(const MachGuiScrollArea&) = delete;
+    MachGuiScrollArea& operator=(const MachGuiScrollArea&) = delete;
+    bool operator==(const MachGuiScrollArea&) = delete;
 
     void CLASS_INVARIANT;
 

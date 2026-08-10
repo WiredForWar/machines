@@ -116,9 +116,9 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMessageBroker& t);
     friend std::ostream& operator<<(std::ostream& o, const MessageType& t);
 
-    MachGuiMessageBroker(const MachGuiMessageBroker&);
-    MachGuiMessageBroker& operator=(const MachGuiMessageBroker&);
-    bool operator==(const MachGuiMessageBroker&);
+    MachGuiMessageBroker(const MachGuiMessageBroker&) = delete;
+    MachGuiMessageBroker& operator=(const MachGuiMessageBroker&) = delete;
+    bool operator==(const MachGuiMessageBroker&) = delete;
 
     // Data members
     MachGuiStartupData* pStartupData_;

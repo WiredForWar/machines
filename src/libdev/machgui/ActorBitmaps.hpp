@@ -34,9 +34,9 @@ private:
     // Operation deliberately revoked
     MachActorBitmaps();
     ~MachActorBitmaps();
-    MachActorBitmaps(const MachActorBitmaps&);
-    MachActorBitmaps& operator=(const MachActorBitmaps&);
-    bool operator==(const MachActorBitmaps&);
+    MachActorBitmaps(const MachActorBitmaps&) = delete;
+    MachActorBitmaps& operator=(const MachActorBitmaps&) = delete;
+    bool operator==(const MachActorBitmaps&) = delete;
 
     // Type methods
     static const char* administratorName(MachPhys::AdministratorSubType subType);

@@ -54,9 +54,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachProductionIcons(const MachProductionIcons&);
-    MachProductionIcons& operator=(const MachProductionIcons&);
-    bool operator==(const MachProductionIcons&);
+    MachProductionIcons(const MachProductionIcons&) = delete;
+    MachProductionIcons& operator=(const MachProductionIcons&) = delete;
+    bool operator==(const MachProductionIcons&) = delete;
 
     void onIconClicked(MachProductionIcon* pIcon);
 

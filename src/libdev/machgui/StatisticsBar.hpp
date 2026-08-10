@@ -57,8 +57,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsBar& t);
 
-    MachGuiStatisticsBar(const MachGuiStatisticsBar&);
-    MachGuiStatisticsBar& operator=(const MachGuiStatisticsBar&);
+    MachGuiStatisticsBar(const MachGuiStatisticsBar&) = delete;
+    MachGuiStatisticsBar& operator=(const MachGuiStatisticsBar&) = delete;
 
     float range_; // maximum value to be displayed ( defaulted to 100 )
     float stat_; // current value ( defaulted to 0)

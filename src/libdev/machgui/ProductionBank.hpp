@@ -81,9 +81,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachProductionBank(const MachProductionBank&);
-    MachProductionBank& operator=(const MachProductionBank&);
-    bool operator==(const MachProductionBank&);
+    MachProductionBank(const MachProductionBank&) = delete;
+    MachProductionBank& operator=(const MachProductionBank&) = delete;
+    bool operator==(const MachProductionBank&) = delete;
 
     // Data members
     MachLogFactory* pFactory_; // The factory being edited

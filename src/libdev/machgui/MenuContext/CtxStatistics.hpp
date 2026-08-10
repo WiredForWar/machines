@@ -32,8 +32,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxStatistics& t);
 
-    MachGuiCtxStatistics(const MachGuiCtxStatistics&);
-    MachGuiCtxStatistics& operator=(const MachGuiCtxStatistics&);
+    MachGuiCtxStatistics(const MachGuiCtxStatistics&) = delete;
+    MachGuiCtxStatistics& operator=(const MachGuiCtxStatistics&) = delete;
 
     using Statistics = ctl_pvector<MachGuiStatistics>;
     Statistics statistics_;

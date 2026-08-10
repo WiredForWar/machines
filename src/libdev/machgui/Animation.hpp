@@ -80,8 +80,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiAnimation& t);
 
-    MachGuiAnimation(const MachGuiAnimation&);
-    MachGuiAnimation& operator=(const MachGuiAnimation&);
+    MachGuiAnimation(const MachGuiAnimation&) = delete;
+    MachGuiAnimation& operator=(const MachGuiAnimation&) = delete;
 
     // Data members...
     std::unique_ptr<Cells> pCells_;

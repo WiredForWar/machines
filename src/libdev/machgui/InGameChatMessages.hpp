@@ -66,8 +66,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessages& t);
 
-    MachGuiInGameChatMessages(const MachGuiInGameChatMessages&);
-    MachGuiInGameChatMessages& operator=(const MachGuiInGameChatMessages&);
+    MachGuiInGameChatMessages(const MachGuiInGameChatMessages&) = delete;
+    MachGuiInGameChatMessages& operator=(const MachGuiInGameChatMessages&) = delete;
 
     MachGuiInGameChatMessages();
 

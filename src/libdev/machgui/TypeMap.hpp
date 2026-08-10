@@ -123,9 +123,9 @@ protected:
     ///////////////////////////////
 
 private:
-    MachLogTypeMap(const MachLogTypeMap&);
-    MachLogTypeMap& operator=(const MachLogTypeMap&);
-    bool operator==(const MachLogTypeMap&);
+    MachLogTypeMap(const MachLogTypeMap&) = delete;
+    MachLogTypeMap& operator=(const MachLogTypeMap&) = delete;
+    bool operator==(const MachLogTypeMap&) = delete;
 
     ///////////////////////////////
 

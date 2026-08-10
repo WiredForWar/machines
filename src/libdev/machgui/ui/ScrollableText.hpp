@@ -32,8 +32,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiScrollableText& t);
 
-    MachGuiScrollableText(const MachGuiScrollableText&);
-    MachGuiScrollableText& operator=(const MachGuiScrollableText&);
+    MachGuiScrollableText(const MachGuiScrollableText&) = delete;
+    MachGuiScrollableText& operator=(const MachGuiScrollableText&) = delete;
 
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;

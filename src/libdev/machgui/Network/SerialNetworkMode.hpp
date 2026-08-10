@@ -39,8 +39,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSerialNetworkMode& t);
 
-    MachGuiSerialNetworkMode(const MachGuiSerialNetworkMode&);
-    MachGuiSerialNetworkMode& operator=(const MachGuiSerialNetworkMode&);
+    MachGuiSerialNetworkMode(const MachGuiSerialNetworkMode&) = delete;
+    MachGuiSerialNetworkMode& operator=(const MachGuiSerialNetworkMode&) = delete;
 
     MachGuiDropDownListBoxCreator* pComPortSelecter_{};
     MachGuiDropDownListBoxCreator* pBaudRateSelecter_{};

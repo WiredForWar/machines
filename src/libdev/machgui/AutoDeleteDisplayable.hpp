@@ -39,8 +39,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiAutoDeleteDisplayable& t);
 
-    MachGuiAutoDeleteDisplayable(const MachGuiAutoDeleteDisplayable&);
-    MachGuiAutoDeleteDisplayable& operator=(const MachGuiAutoDeleteDisplayable&);
+    MachGuiAutoDeleteDisplayable(const MachGuiAutoDeleteDisplayable&) = delete;
+    MachGuiAutoDeleteDisplayable& operator=(const MachGuiAutoDeleteDisplayable&) = delete;
 
     // Data members...
     MachGuiStartupScreens* pStartupScreens_;

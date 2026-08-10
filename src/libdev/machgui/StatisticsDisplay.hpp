@@ -50,8 +50,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiStatisticsDisplay& t);
 
-    MachGuiStatisticsDisplay(const MachGuiStatisticsDisplay&);
-    MachGuiStatisticsDisplay& operator=(const MachGuiStatisticsDisplay&);
+    MachGuiStatisticsDisplay(const MachGuiStatisticsDisplay&) = delete;
+    MachGuiStatisticsDisplay& operator=(const MachGuiStatisticsDisplay&) = delete;
 
     using StatBars = ctl_pvector<MachGuiStatisticsBar>;
     using Stats = ctl_vector<int>;

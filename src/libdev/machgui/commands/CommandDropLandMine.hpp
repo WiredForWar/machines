@@ -82,9 +82,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiDropLandMineCommand(const MachGuiDropLandMineCommand&);
-    MachGuiDropLandMineCommand& operator=(const MachGuiDropLandMineCommand&);
-    bool operator==(const MachGuiDropLandMineCommand&);
+    MachGuiDropLandMineCommand(const MachGuiDropLandMineCommand&) = delete;
+    MachGuiDropLandMineCommand& operator=(const MachGuiDropLandMineCommand&) = delete;
+    bool operator==(const MachGuiDropLandMineCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

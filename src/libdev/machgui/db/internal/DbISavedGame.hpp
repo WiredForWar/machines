@@ -37,8 +37,8 @@ private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbISavedGame& t);
 
     MachGuiDbISavedGame();
-    MachGuiDbISavedGame(const MachGuiDbISavedGame&);
-    MachGuiDbISavedGame& operator=(const MachGuiDbISavedGame&);
+    MachGuiDbISavedGame(const MachGuiDbISavedGame&) = delete;
+    MachGuiDbISavedGame& operator=(const MachGuiDbISavedGame&) = delete;
 
     // data members
     std::string userFileName_; // The filename the user sees in the menus

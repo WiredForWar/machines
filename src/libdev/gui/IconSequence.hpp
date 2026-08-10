@@ -102,9 +102,9 @@ protected:
     bool isDoingDisplay() const;
 
 private:
-    GuiIconSequence(const GuiIconSequence&);
-    GuiIconSequence& operator=(const GuiIconSequence&);
-    bool operator==(const GuiIconSequence&) const;
+    GuiIconSequence(const GuiIconSequence&) = delete;
+    GuiIconSequence& operator=(const GuiIconSequence&) = delete;
+    bool operator==(const GuiIconSequence&) const = delete;
 
     void repositionChildren();
 
@@ -216,9 +216,9 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
 private:
-    GuiScrollableIconSequence(const GuiScrollableIconSequence&);
-    GuiScrollableIconSequence& operator=(const GuiScrollableIconSequence&);
-    bool operator==(const GuiScrollableIconSequence&) const;
+    GuiScrollableIconSequence(const GuiScrollableIconSequence&) = delete;
+    GuiScrollableIconSequence& operator=(const GuiScrollableIconSequence&) = delete;
+    bool operator==(const GuiScrollableIconSequence&) const = delete;
 
     GuiDisplayable* pLeftScroller_{};
     GuiDisplayable* pRightScroller_{};

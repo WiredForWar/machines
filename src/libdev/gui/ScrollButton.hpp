@@ -74,8 +74,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const GuiScrollButton& t);
 
-    GuiScrollButton(const GuiScrollButton&);
-    GuiScrollButton& operator=(const GuiScrollButton&);
+    GuiScrollButton(const GuiScrollButton&) = delete;
+    GuiScrollButton& operator=(const GuiScrollButton&) = delete;
 
     ScrollDir scrollDir_;
 

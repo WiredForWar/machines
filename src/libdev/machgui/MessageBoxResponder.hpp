@@ -57,8 +57,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMessageBox& t);
 
-    MachGuiMessageBox(const MachGuiMessageBox&);
-    MachGuiMessageBox& operator=(const MachGuiMessageBox&);
+    MachGuiMessageBox(const MachGuiMessageBox&) = delete;
+    MachGuiMessageBox& operator=(const MachGuiMessageBox&) = delete;
 
     void displayButtons(MachGuiStartupScreens*);
     static SysPathName animationFile(MBType);

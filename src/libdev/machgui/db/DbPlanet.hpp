@@ -60,8 +60,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlanet& t);
 
-    MachGuiDbPlanet(const MachGuiDbPlanet&);
-    MachGuiDbPlanet& operator=(const MachGuiDbPlanet&);
+    MachGuiDbPlanet(const MachGuiDbPlanet&) = delete;
+    MachGuiDbPlanet& operator=(const MachGuiDbPlanet&) = delete;
 
     // data members
     MachGuiDbIPlanet* pData_; // the implementation data object

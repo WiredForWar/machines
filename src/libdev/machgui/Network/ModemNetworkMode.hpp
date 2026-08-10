@@ -44,8 +44,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiModemNetworkMode& t);
 
-    MachGuiModemNetworkMode(const MachGuiModemNetworkMode&);
-    MachGuiModemNetworkMode& operator=(const MachGuiModemNetworkMode&);
+    MachGuiModemNetworkMode(const MachGuiModemNetworkMode&) = delete;
+    MachGuiModemNetworkMode& operator=(const MachGuiModemNetworkMode&) = delete;
 
     // friend class MachGuiModemOkResponder;
 

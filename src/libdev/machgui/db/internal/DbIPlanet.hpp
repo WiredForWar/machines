@@ -36,8 +36,8 @@ private:
 
     MachGuiDbIPlanet();
     ~MachGuiDbIPlanet();
-    MachGuiDbIPlanet(const MachGuiDbIPlanet&);
-    MachGuiDbIPlanet& operator=(const MachGuiDbIPlanet&);
+    MachGuiDbIPlanet(const MachGuiDbIPlanet&) = delete;
+    MachGuiDbIPlanet& operator=(const MachGuiDbIPlanet&) = delete;
 
     // data members
     MachGuiDbSystem* pSystem_; // Owning system/terrain type

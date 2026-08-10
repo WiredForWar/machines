@@ -185,8 +185,8 @@ private:
     // Set up the entire campaign system's complete flags for player
     void setCampaignCompleteFlags(const MachGuiDbPlayer& player);
 
-    MachGuiDatabase(const MachGuiDatabase&);
-    MachGuiDatabase& operator=(const MachGuiDatabase&);
+    MachGuiDatabase(const MachGuiDatabase&) = delete;
+    MachGuiDatabase& operator=(const MachGuiDatabase&) = delete;
 
     // data members
     MachGuiIDatabase* pData_; // the implementation class

@@ -106,8 +106,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbScenario& t);
 
-    MachGuiDbScenario(const MachGuiDbScenario&);
-    MachGuiDbScenario& operator=(const MachGuiDbScenario&);
+    MachGuiDbScenario(const MachGuiDbScenario&) = delete;
+    MachGuiDbScenario& operator=(const MachGuiDbScenario&) = delete;
 
     void initialise(const std::string& scenarioName, const std::string& planetName);
 

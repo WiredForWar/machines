@@ -34,8 +34,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiControlPanelAddOn& t);
 
-    MachGuiControlPanelAddOn(const MachGuiControlPanelAddOn&);
-    MachGuiControlPanelAddOn& operator=(const MachGuiControlPanelAddOn&);
+    MachGuiControlPanelAddOn(const MachGuiControlPanelAddOn&) = delete;
+    MachGuiControlPanelAddOn& operator=(const MachGuiControlPanelAddOn&) = delete;
 
     // Data members...
     GuiBitmap backgroundBmp_;

@@ -276,9 +276,9 @@ protected:
     // PRE( hasChild( pChild ) );
 
 private:
-    GuiDisplayable(const GuiDisplayable&);
-    bool operator==(const GuiDisplayable&) const;
-    GuiDisplayable& operator=(const GuiDisplayable&);
+    GuiDisplayable(const GuiDisplayable&) = delete;
+    bool operator==(const GuiDisplayable&) const = delete;
+    GuiDisplayable& operator=(const GuiDisplayable&) = delete;
 
     void changed(bool);
 

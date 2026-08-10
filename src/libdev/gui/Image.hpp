@@ -23,9 +23,9 @@ protected:
     void doDisplay() override;
 
 private:
-    GuiImage(const GuiImage&);
-    GuiImage& operator=(const GuiImage&);
-    bool operator==(const GuiImage&) const;
+    GuiImage(const GuiImage&) = delete;
+    GuiImage& operator=(const GuiImage&) = delete;
+    bool operator==(const GuiImage&) const = delete;
 
     GuiBitmap image_;
 };

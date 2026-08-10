@@ -99,9 +99,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiPickUpCommand(const MachGuiPickUpCommand&);
-    MachGuiPickUpCommand& operator=(const MachGuiPickUpCommand&);
-    bool operator==(const MachGuiPickUpCommand&);
+    MachGuiPickUpCommand(const MachGuiPickUpCommand&) = delete;
+    MachGuiPickUpCommand& operator=(const MachGuiPickUpCommand&) = delete;
+    bool operator==(const MachGuiPickUpCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

@@ -32,8 +32,8 @@ private:
 
     MachGuiDbITextData();
     ~MachGuiDbITextData();
-    MachGuiDbITextData(const MachGuiDbITextData&);
-    MachGuiDbITextData& operator=(const MachGuiDbITextData&);
+    MachGuiDbITextData(const MachGuiDbITextData&) = delete;
+    MachGuiDbITextData& operator=(const MachGuiDbITextData&) = delete;
 
     using Strings = ctl_vector<std::string>;
     using TaskFlags = ctl_vector<bool>;

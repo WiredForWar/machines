@@ -62,8 +62,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const GuiVerticalScrollBar& t);
 
-    GuiVerticalScrollBar(const GuiVerticalScrollBar&);
-    GuiVerticalScrollBar& operator=(const GuiVerticalScrollBar&);
+    GuiVerticalScrollBar(const GuiVerticalScrollBar&) = delete;
+    GuiVerticalScrollBar& operator=(const GuiVerticalScrollBar&) = delete;
 
     Gui::Box boxAbsPosition_;
     Gui::Box boxRelPosition_;

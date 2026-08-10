@@ -48,8 +48,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiNetworkProtocolMode& t);
 
-    MachGuiNetworkProtocolMode(const MachGuiNetworkProtocolMode&);
-    MachGuiNetworkProtocolMode& operator=(const MachGuiNetworkProtocolMode&);
+    MachGuiNetworkProtocolMode(const MachGuiNetworkProtocolMode&) = delete;
+    MachGuiNetworkProtocolMode& operator=(const MachGuiNetworkProtocolMode&) = delete;
 
     bool connectionSetHelper(NetNetwork::NetNetworkStatus status);
 

@@ -93,9 +93,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiTransportCommand(const MachGuiTransportCommand&);
-    MachGuiTransportCommand& operator=(const MachGuiTransportCommand&);
-    bool operator==(const MachGuiTransportCommand&);
+    MachGuiTransportCommand(const MachGuiTransportCommand&) = delete;
+    MachGuiTransportCommand& operator=(const MachGuiTransportCommand&) = delete;
+    bool operator==(const MachGuiTransportCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

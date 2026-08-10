@@ -46,8 +46,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiChatWindow& t);
 
-    MachGuiChatWindow(const MachGuiChatWindow&);
-    MachGuiChatWindow& operator=(const MachGuiChatWindow&);
+    MachGuiChatWindow(const MachGuiChatWindow&) = delete;
+    MachGuiChatWindow& operator=(const MachGuiChatWindow&) = delete;
 
     // Data members...
 

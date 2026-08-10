@@ -60,8 +60,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiRadar& t);
 
-    MachGuiRadar(const MachGuiRadar&);
-    MachGuiRadar& operator=(const MachGuiRadar&);
+    MachGuiRadar(const MachGuiRadar&) = delete;
+    MachGuiRadar& operator=(const MachGuiRadar&) = delete;
 
     // Data members...
     static constexpr int RADAR_ANIMATION_FRAMES = 10;

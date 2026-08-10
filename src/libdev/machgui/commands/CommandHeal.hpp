@@ -86,9 +86,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiHealCommand(const MachGuiHealCommand&);
-    MachGuiHealCommand& operator=(const MachGuiHealCommand&);
-    bool operator==(const MachGuiHealCommand&);
+    MachGuiHealCommand(const MachGuiHealCommand&) = delete;
+    MachGuiHealCommand& operator=(const MachGuiHealCommand&) = delete;
+    bool operator==(const MachGuiHealCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

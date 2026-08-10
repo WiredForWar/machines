@@ -32,8 +32,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxInGameOptions& t);
 
-    MachGuiCtxInGameOptions(const MachGuiCtxInGameOptions&);
-    MachGuiCtxInGameOptions& operator=(const MachGuiCtxInGameOptions&);
+    MachGuiCtxInGameOptions(const MachGuiCtxInGameOptions&) = delete;
+    MachGuiCtxInGameOptions& operator=(const MachGuiCtxInGameOptions&) = delete;
 };
 
 #endif

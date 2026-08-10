@@ -78,8 +78,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbElement& t);
 
-    MachGuiDbElement(const MachGuiDbElement&);
-    MachGuiDbElement& operator=(const MachGuiDbElement&);
+    MachGuiDbElement(const MachGuiDbElement&) = delete;
+    MachGuiDbElement& operator=(const MachGuiDbElement&) = delete;
 
     // data members
     MachGuiDbIElement* pData_; // The data implementation object

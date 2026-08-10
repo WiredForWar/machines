@@ -41,8 +41,8 @@ private:
 
     void CLASS_INVARIANT;
 
-    GuiListObserver(const GuiListObserver&);
-    GuiListObserver& operator=(const GuiListObserver&);
+    GuiListObserver(const GuiListObserver&) = delete;
+    GuiListObserver& operator=(const GuiListObserver&) = delete;
 
     GuiSimpleScrollableList* pList_;
 };

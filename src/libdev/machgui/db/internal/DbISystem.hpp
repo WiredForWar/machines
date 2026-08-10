@@ -35,8 +35,8 @@ private:
 
     MachGuiDbISystem();
     ~MachGuiDbISystem();
-    MachGuiDbISystem(const MachGuiDbISystem&);
-    MachGuiDbISystem& operator=(const MachGuiDbISystem&);
+    MachGuiDbISystem(const MachGuiDbISystem&) = delete;
+    MachGuiDbISystem& operator=(const MachGuiDbISystem&) = delete;
 
     // data members
     std::string campaignPicture_; // Flic or bmp displayed in campaign menu

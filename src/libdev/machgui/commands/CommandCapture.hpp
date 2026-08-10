@@ -93,9 +93,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiCaptureCommand(const MachGuiCaptureCommand&);
-    MachGuiCaptureCommand& operator=(const MachGuiCaptureCommand&);
-    bool operator==(const MachGuiCaptureCommand&);
+    MachGuiCaptureCommand(const MachGuiCaptureCommand&) = delete;
+    MachGuiCaptureCommand& operator=(const MachGuiCaptureCommand&) = delete;
+    bool operator==(const MachGuiCaptureCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

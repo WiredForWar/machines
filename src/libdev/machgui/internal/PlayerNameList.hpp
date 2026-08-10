@@ -36,8 +36,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerNameList& t);
 
-    MachGuiPlayerNameList(const MachGuiPlayerNameList&);
-    MachGuiPlayerNameList& operator=(const MachGuiPlayerNameList&);
+    MachGuiPlayerNameList(const MachGuiPlayerNameList&) = delete;
+    MachGuiPlayerNameList& operator=(const MachGuiPlayerNameList&) = delete;
 
     bool isWhite_;
 };

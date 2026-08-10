@@ -28,13 +28,13 @@ public:
 
 private:
     // Operation deliberately revoked
-    MexTemp(const MexTemp&);
+    MexTemp(const MexTemp&) = delete;
 
     // Operation deliberately revoked
-    MexTemp& operator=(const MexTemp&);
+    MexTemp& operator=(const MexTemp&) = delete;
 
     // Operation deliberately revoked
-    bool operator==(const MexTemp&);
+    bool operator==(const MexTemp&) = delete;
 };
 
 #endif

@@ -72,9 +72,9 @@ protected:
 
 private:
     // Revoked
-    MachWorldViewWindow(const MachWorldViewWindow&);
-    MachWorldViewWindow& operator=(const MachWorldViewWindow&);
-    bool operator==(const MachWorldViewWindow&);
+    MachWorldViewWindow(const MachWorldViewWindow&) = delete;
+    MachWorldViewWindow& operator=(const MachWorldViewWindow&) = delete;
+    bool operator==(const MachWorldViewWindow&) = delete;
 
     // Deal with a cursor event, after translating cursor position to a 3d line in
     // world space.

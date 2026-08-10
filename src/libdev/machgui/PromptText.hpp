@@ -103,9 +103,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachPromptText(const MachPromptText&);
-    MachPromptText& operator=(const MachPromptText&);
-    bool operator==(const MachPromptText&);
+    MachPromptText(const MachPromptText&) = delete;
+    MachPromptText& operator=(const MachPromptText&) = delete;
+    bool operator==(const MachPromptText&) = delete;
 
     // Data members...
     GuiBitmap promptBmp_;

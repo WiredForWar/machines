@@ -73,8 +73,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMenuButton& t);
 
-    MachGuiMenuButton(const MachGuiMenuButton&);
-    MachGuiMenuButton& operator=(const MachGuiMenuButton&);
+    MachGuiMenuButton(const MachGuiMenuButton&) = delete;
+    MachGuiMenuButton& operator=(const MachGuiMenuButton&) = delete;
 
     // A GuiRoot such as MachGuiStartupScreens
     GuiRoot* pRootParent_;

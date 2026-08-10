@@ -48,8 +48,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiGeneralStatistics& t);
 
-    MachGuiGeneralStatistics(const MachGuiGeneralStatistics&);
-    MachGuiGeneralStatistics& operator=(const MachGuiGeneralStatistics&);
+    MachGuiGeneralStatistics(const MachGuiGeneralStatistics&) = delete;
+    MachGuiGeneralStatistics& operator=(const MachGuiGeneralStatistics&) = delete;
 
     MachGuiStatisticsDisplay statDisplay_;
 };

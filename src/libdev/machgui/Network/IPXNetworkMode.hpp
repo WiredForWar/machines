@@ -37,8 +37,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiIPXNetworkMode& t);
 
-    MachGuiIPXNetworkMode(const MachGuiIPXNetworkMode&);
-    MachGuiIPXNetworkMode& operator=(const MachGuiIPXNetworkMode&);
+    MachGuiIPXNetworkMode(const MachGuiIPXNetworkMode&) = delete;
+    MachGuiIPXNetworkMode& operator=(const MachGuiIPXNetworkMode&) = delete;
 };
 
 #endif

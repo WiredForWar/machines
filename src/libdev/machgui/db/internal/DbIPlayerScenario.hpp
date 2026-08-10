@@ -37,8 +37,8 @@ private:
 
     MachGuiDbIPlayerScenario();
     ~MachGuiDbIPlayerScenario();
-    MachGuiDbIPlayerScenario(const MachGuiDbIPlayerScenario&);
-    MachGuiDbIPlayerScenario& operator=(const MachGuiDbIPlayerScenario&);
+    MachGuiDbIPlayerScenario(const MachGuiDbIPlayerScenario&) = delete;
+    MachGuiDbIPlayerScenario& operator=(const MachGuiDbIPlayerScenario&) = delete;
 
     using Units = ctl_vector<MachLogProductionUnit>;
     using RaceUnits = ctl_vector<Units>;

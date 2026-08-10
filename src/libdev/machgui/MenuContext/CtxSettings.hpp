@@ -45,8 +45,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxSettings& t);
 
-    MachGuiCtxSettings(const MachGuiCtxSettings&);
-    MachGuiCtxSettings& operator=(const MachGuiCtxSettings&);
+    MachGuiCtxSettings(const MachGuiCtxSettings&) = delete;
+    MachGuiCtxSettings& operator=(const MachGuiCtxSettings&) = delete;
 
     void updateMapSizeList();
     void initSettings();

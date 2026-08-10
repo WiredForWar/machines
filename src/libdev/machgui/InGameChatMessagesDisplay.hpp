@@ -47,8 +47,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiInGameChatMessagesDisplay& t);
 
-    MachGuiInGameChatMessagesDisplay(const MachGuiInGameChatMessagesDisplay&);
-    MachGuiInGameChatMessagesDisplay& operator=(const MachGuiInGameChatMessagesDisplay&);
+    MachGuiInGameChatMessagesDisplay(const MachGuiInGameChatMessagesDisplay&) = delete;
+    MachGuiInGameChatMessagesDisplay& operator=(const MachGuiInGameChatMessagesDisplay&) = delete;
 
     GuiBitmap textBmp_;
     GuiBmpFont font_;

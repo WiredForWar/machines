@@ -45,8 +45,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t);
 
-    MachGuiMenuText(const MachGuiMenuText&);
-    MachGuiMenuText& operator=(const MachGuiMenuText&);
+    MachGuiMenuText(const MachGuiMenuText&) = delete;
+    MachGuiMenuText& operator=(const MachGuiMenuText&) = delete;
 
     SysPathName bitmapFontPath_;
     int fontHeight_{};

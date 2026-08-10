@@ -36,9 +36,9 @@ protected:
     static unsigned progressWidthInPixels(Percentage progress, unsigned progressCompleteWidth);
 
 private:
-    GuiProgressBar(const GuiProgressBar&);
-    bool operator==(const GuiProgressBar&) const;
-    GuiProgressBar& operator=(const GuiProgressBar&);
+    GuiProgressBar(const GuiProgressBar&) = delete;
+    bool operator==(const GuiProgressBar&) const = delete;
+    GuiProgressBar& operator=(const GuiProgressBar&) = delete;
 
     Percentage percentageComplete_;
 };
@@ -63,9 +63,9 @@ public:
     void doDisplay() override;
 
 private:
-    GuiFilledProgressBar(const GuiFilledProgressBar&);
-    bool operator==(const GuiFilledProgressBar&) const;
-    GuiFilledProgressBar& operator=(const GuiFilledProgressBar&);
+    GuiFilledProgressBar(const GuiFilledProgressBar&) = delete;
+    bool operator==(const GuiFilledProgressBar&) const = delete;
+    GuiFilledProgressBar& operator=(const GuiFilledProgressBar&) = delete;
 
     ///////////////////////////////
 

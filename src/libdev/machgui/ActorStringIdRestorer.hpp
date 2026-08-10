@@ -49,9 +49,9 @@ public:
 private:
     static Gui::StringId stringId(MachLog::ObjectType objType, size_t subType);
 
-    MachLogActorStringIdRestorer(const MachLogActorStringIdRestorer&);
-    MachLogActorStringIdRestorer& operator=(const MachLogActorStringIdRestorer&);
-    bool operator==(const MachLogActorStringIdRestorer&);
+    MachLogActorStringIdRestorer(const MachLogActorStringIdRestorer&) = delete;
+    MachLogActorStringIdRestorer& operator=(const MachLogActorStringIdRestorer&) = delete;
+    bool operator==(const MachLogActorStringIdRestorer&) = delete;
 
     // Data members...
     Gui::StringId stringId_{};

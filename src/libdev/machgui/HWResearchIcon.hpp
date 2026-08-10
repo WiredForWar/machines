@@ -58,9 +58,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachHWResearchIcon(const MachHWResearchIcon&);
-    MachHWResearchIcon& operator=(const MachHWResearchIcon&);
-    bool operator==(const MachHWResearchIcon&);
+    MachHWResearchIcon(const MachHWResearchIcon&) = delete;
+    MachHWResearchIcon& operator=(const MachHWResearchIcon&) = delete;
+    bool operator==(const MachHWResearchIcon&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachHWResearchIcon& t);
 

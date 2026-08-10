@@ -35,9 +35,9 @@ protected:
 
 private:
     // Operations revoked
-    MachGuiNewProductionIcon(const MachGuiNewProductionIcon&);
-    MachGuiNewProductionIcon& operator=(const MachGuiNewProductionIcon&);
-    bool operator==(const MachGuiNewProductionIcon&) const;
+    MachGuiNewProductionIcon(const MachGuiNewProductionIcon&) = delete;
+    MachGuiNewProductionIcon& operator=(const MachGuiNewProductionIcon&) = delete;
+    bool operator==(const MachGuiNewProductionIcon&) const = delete;
 
     GuiBitmap bitmap_;
     int index_;
@@ -83,9 +83,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachProductionIcon(const MachProductionIcon&);
-    MachProductionIcon& operator=(const MachProductionIcon&);
-    bool operator==(const MachProductionIcon&);
+    MachProductionIcon(const MachProductionIcon&) = delete;
+    MachProductionIcon& operator=(const MachProductionIcon&) = delete;
+    bool operator==(const MachProductionIcon&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachProductionIcon& t);
 
@@ -133,9 +133,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachIncSWLevelIcon(const MachIncSWLevelIcon&);
-    MachIncSWLevelIcon& operator=(const MachIncSWLevelIcon&);
-    bool operator==(const MachIncSWLevelIcon&);
+    MachIncSWLevelIcon(const MachIncSWLevelIcon&) = delete;
+    MachIncSWLevelIcon& operator=(const MachIncSWLevelIcon&) = delete;
+    bool operator==(const MachIncSWLevelIcon&) = delete;
 
     friend std::ostream& operator<<(std::ostream& o, const MachIncSWLevelIcon& t);
 

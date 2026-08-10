@@ -101,8 +101,8 @@ protected:
 protected:
     friend std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t);
 
-    GuiSingleLineEditBox(const GuiSingleLineEditBox&);
-    GuiSingleLineEditBox& operator=(const GuiSingleLineEditBox&);
+    GuiSingleLineEditBox(const GuiSingleLineEditBox&) = delete;
+    GuiSingleLineEditBox& operator=(const GuiSingleLineEditBox&) = delete;
 
     Callback textChangedCallback_{};
 

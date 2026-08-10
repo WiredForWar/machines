@@ -84,9 +84,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiRecycleCommand(const MachGuiRecycleCommand&);
-    MachGuiRecycleCommand& operator=(const MachGuiRecycleCommand&);
-    bool operator==(const MachGuiRecycleCommand&);
+    MachGuiRecycleCommand(const MachGuiRecycleCommand&) = delete;
+    MachGuiRecycleCommand& operator=(const MachGuiRecycleCommand&) = delete;
+    bool operator==(const MachGuiRecycleCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

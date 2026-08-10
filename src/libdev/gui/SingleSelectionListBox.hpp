@@ -46,8 +46,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const GuiSingleSelectionListBox& t);
 
-    GuiSingleSelectionListBox(const GuiSingleSelectionListBox&);
-    GuiSingleSelectionListBox& operator=(const GuiSingleSelectionListBox&);
+    GuiSingleSelectionListBox(const GuiSingleSelectionListBox&) = delete;
+    GuiSingleSelectionListBox& operator=(const GuiSingleSelectionListBox&) = delete;
 
     Callback selectionChangedCallback_;
     GuiSingleSelectionListBoxItem* pCurrentSelection_{};

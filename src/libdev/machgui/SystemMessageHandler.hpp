@@ -37,8 +37,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSystemMessageHandler& t);
 
-    MachGuiSystemMessageHandler(const MachGuiSystemMessageHandler&);
-    MachGuiSystemMessageHandler& operator=(const MachGuiSystemMessageHandler&);
+    MachGuiSystemMessageHandler(const MachGuiSystemMessageHandler&) = delete;
+    MachGuiSystemMessageHandler& operator=(const MachGuiSystemMessageHandler&) = delete;
     bool respondAsInGame() const;
 
     MachGuiStartupScreens* pStartupScreens_;

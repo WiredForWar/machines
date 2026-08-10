@@ -43,8 +43,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiSingleLineEditBox& t);
 
-    MachGuiSingleLineEditBox(const MachGuiSingleLineEditBox&);
-    MachGuiSingleLineEditBox& operator=(const MachGuiSingleLineEditBox&);
+    MachGuiSingleLineEditBox(const MachGuiSingleLineEditBox&) = delete;
+    MachGuiSingleLineEditBox& operator=(const MachGuiSingleLineEditBox&) = delete;
 
     bool clearTextOnNextChar_{};
     bool ignoreSpaceAtBeginning_{};

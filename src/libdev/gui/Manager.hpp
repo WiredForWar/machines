@@ -106,9 +106,9 @@ public:
     // POST( not charFocusExists() );
 
 private:
-    GuiManager(const GuiManager&);
-    bool operator==(const GuiManager&) const;
-    GuiManager& operator=(const GuiManager&);
+    GuiManager(const GuiManager&) = delete;
+    bool operator==(const GuiManager&) const = delete;
+    GuiManager& operator=(const GuiManager&) = delete;
 
     // Called by the framework when pDisplayable is being created
     void isBeingCreated(GuiDisplayable* pDisplayable);

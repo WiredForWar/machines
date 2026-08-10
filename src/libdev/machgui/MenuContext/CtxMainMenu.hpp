@@ -32,8 +32,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxMainMenu& t);
 
-    MachGuiCtxMainMenu(const MachGuiCtxMainMenu&);
-    MachGuiCtxMainMenu& operator=(const MachGuiCtxMainMenu&);
+    MachGuiCtxMainMenu(const MachGuiCtxMainMenu&) = delete;
+    MachGuiCtxMainMenu& operator=(const MachGuiCtxMainMenu&) = delete;
 
     // Data members...
     bool quit_{};

@@ -85,9 +85,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiAssemblyPointCommand(const MachGuiAssemblyPointCommand&);
-    MachGuiAssemblyPointCommand& operator=(const MachGuiAssemblyPointCommand&);
-    bool operator==(const MachGuiAssemblyPointCommand&);
+    MachGuiAssemblyPointCommand(const MachGuiAssemblyPointCommand&) = delete;
+    MachGuiAssemblyPointCommand& operator=(const MachGuiAssemblyPointCommand&) = delete;
+    bool operator==(const MachGuiAssemblyPointCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

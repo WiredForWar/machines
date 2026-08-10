@@ -67,9 +67,9 @@ protected:
     };
 
 private:
-    MachGuiNavigatorBase(const MachGuiNavigatorBase&);
-    MachGuiNavigatorBase& operator=(const MachGuiNavigatorBase&);
-    bool operator==(const MachGuiNavigatorBase&);
+    MachGuiNavigatorBase(const MachGuiNavigatorBase&) = delete;
+    MachGuiNavigatorBase& operator=(const MachGuiNavigatorBase&) = delete;
+    bool operator==(const MachGuiNavigatorBase&) = delete;
 
     // Data members...
     bool remainVisible_;
@@ -128,9 +128,9 @@ protected:
     bool machineNav() override;
 
 private:
-    MachGuiMachineNavigator(const MachGuiMachineNavigator&);
-    MachGuiMachineNavigator& operator=(const MachGuiMachineNavigator&);
-    bool operator==(const MachGuiMachineNavigator&);
+    MachGuiMachineNavigator(const MachGuiMachineNavigator&) = delete;
+    MachGuiMachineNavigator& operator=(const MachGuiMachineNavigator&) = delete;
+    bool operator==(const MachGuiMachineNavigator&) = delete;
 
     void CLASS_INVARIANT;
 
@@ -222,9 +222,9 @@ public:
     void unloadGame();
 
 private:
-    MachGuiConstructionNavigator(const MachGuiConstructionNavigator&);
-    MachGuiConstructionNavigator& operator=(const MachGuiConstructionNavigator&);
-    bool operator==(const MachGuiConstructionNavigator&);
+    MachGuiConstructionNavigator(const MachGuiConstructionNavigator&) = delete;
+    MachGuiConstructionNavigator& operator=(const MachGuiConstructionNavigator&) = delete;
+    bool operator==(const MachGuiConstructionNavigator&) = delete;
 
     void CLASS_INVARIANT;
 

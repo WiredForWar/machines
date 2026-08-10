@@ -98,9 +98,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiSelfDestructCommand(const MachGuiSelfDestructCommand&);
-    MachGuiSelfDestructCommand& operator=(const MachGuiSelfDestructCommand&);
-    bool operator==(const MachGuiSelfDestructCommand&);
+    MachGuiSelfDestructCommand(const MachGuiSelfDestructCommand&) = delete;
+    MachGuiSelfDestructCommand& operator=(const MachGuiSelfDestructCommand&) = delete;
+    bool operator==(const MachGuiSelfDestructCommand&) = delete;
 
     friend class MachGuiSelfDestructCommandIcon;
 

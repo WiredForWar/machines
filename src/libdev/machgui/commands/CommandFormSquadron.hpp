@@ -67,9 +67,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiFormSquadronCommand(const MachGuiFormSquadronCommand&);
-    MachGuiFormSquadronCommand& operator=(const MachGuiFormSquadronCommand&);
-    bool operator==(const MachGuiFormSquadronCommand&);
+    MachGuiFormSquadronCommand(const MachGuiFormSquadronCommand&) = delete;
+    MachGuiFormSquadronCommand& operator=(const MachGuiFormSquadronCommand&) = delete;
+    bool operator==(const MachGuiFormSquadronCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

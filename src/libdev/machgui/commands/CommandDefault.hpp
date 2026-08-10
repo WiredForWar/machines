@@ -87,9 +87,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiDefaultCommand(const MachGuiDefaultCommand&);
-    MachGuiDefaultCommand& operator=(const MachGuiDefaultCommand&);
-    bool operator==(const MachGuiDefaultCommand&);
+    MachGuiDefaultCommand(const MachGuiDefaultCommand&) = delete;
+    MachGuiDefaultCommand& operator=(const MachGuiDefaultCommand&) = delete;
+    bool operator==(const MachGuiDefaultCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

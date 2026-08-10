@@ -26,9 +26,9 @@ protected:
     virtual void doBecomeNotRoot();
 
 private:
-    GuiTestRoot(const GuiTestRoot&);
-    bool operator==(const GuiTestRoot&) const;
-    GuiTestRoot& operator=(const GuiTestRoot&);
+    GuiTestRoot(const GuiTestRoot&) = delete;
+    bool operator==(const GuiTestRoot&) const = delete;
+    GuiTestRoot& operator=(const GuiTestRoot&) = delete;
 };
 
 /* //////////////////////////////////////////////////////////////// */

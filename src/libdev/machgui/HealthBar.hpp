@@ -43,9 +43,9 @@ protected:
     void doDisplay() override;
 
 private:
-    MachGuiHealthBar(const MachGuiHealthBar&);
-    MachGuiHealthBar& operator=(const MachGuiHealthBar&);
-    bool operator==(const MachGuiHealthBar&);
+    MachGuiHealthBar(const MachGuiHealthBar&) = delete;
+    MachGuiHealthBar& operator=(const MachGuiHealthBar&) = delete;
+    bool operator==(const MachGuiHealthBar&) = delete;
 
     ///////////////////////////////
 

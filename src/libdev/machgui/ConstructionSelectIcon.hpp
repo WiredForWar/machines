@@ -56,9 +56,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachConstructionSelectIcon(const MachConstructionSelectIcon&);
-    MachConstructionSelectIcon& operator=(const MachConstructionSelectIcon&);
-    bool operator==(const MachConstructionSelectIcon&);
+    MachConstructionSelectIcon(const MachConstructionSelectIcon&) = delete;
+    MachConstructionSelectIcon& operator=(const MachConstructionSelectIcon&) = delete;
+    bool operator==(const MachConstructionSelectIcon&) = delete;
 
     // Data members
     MachInGameScreen* pInGameScreen_; // The in game screen

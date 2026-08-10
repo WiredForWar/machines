@@ -54,9 +54,9 @@ public:
     void unloadGame();
 
 private:
-    MachGuiSquadronBank(const MachGuiSquadronBank&);
-    MachGuiSquadronBank& operator=(const MachGuiSquadronBank&);
-    bool operator==(const MachGuiSquadronBank&);
+    MachGuiSquadronBank(const MachGuiSquadronBank&) = delete;
+    MachGuiSquadronBank& operator=(const MachGuiSquadronBank&) = delete;
+    bool operator==(const MachGuiSquadronBank&) = delete;
 
     enum Command
     {
@@ -142,9 +142,9 @@ protected:
     void domainDeleted(W4dDomain* pDomain) override;
 
 private:
-    MachGuiSquadronBankIcon(const MachGuiSquadronBankIcon&);
-    MachGuiSquadronBankIcon& operator=(const MachGuiSquadronBankIcon&);
-    bool operator==(const MachGuiSquadronBankIcon&);
+    MachGuiSquadronBankIcon(const MachGuiSquadronBankIcon&) = delete;
+    MachGuiSquadronBankIcon& operator=(const MachGuiSquadronBankIcon&) = delete;
+    bool operator==(const MachGuiSquadronBankIcon&) = delete;
 
     static const std::string& iconBitmaps(unsigned squadronIndex);
     // PRE( squadronIndex <= MachGuiSquadronIcon::N_SQUADRON_ICONS );

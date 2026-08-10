@@ -71,8 +71,8 @@ private:
 
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbPlayerScenario& t);
 
-    MachGuiDbPlayerScenario(const MachGuiDbPlayerScenario&);
-    MachGuiDbPlayerScenario& operator=(const MachGuiDbPlayerScenario&);
+    MachGuiDbPlayerScenario(const MachGuiDbPlayerScenario&) = delete;
+    MachGuiDbPlayerScenario& operator=(const MachGuiDbPlayerScenario&) = delete;
 
     // the sequence id for updates
     uint updateId() const;

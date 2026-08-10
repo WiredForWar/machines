@@ -64,8 +64,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiDbSavedGame& t);
 
-    MachGuiDbSavedGame(const MachGuiDbSavedGame&);
-    MachGuiDbSavedGame& operator=(const MachGuiDbSavedGame&);
+    MachGuiDbSavedGame(const MachGuiDbSavedGame&) = delete;
+    MachGuiDbSavedGame& operator=(const MachGuiDbSavedGame&) = delete;
 
     // data members
     std::unique_ptr<MachGuiDbISavedGame> pData_; // data implementation object

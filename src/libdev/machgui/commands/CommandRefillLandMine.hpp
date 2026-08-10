@@ -78,9 +78,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiRefillLandMineCommand(const MachGuiRefillLandMineCommand&);
-    MachGuiRefillLandMineCommand& operator=(const MachGuiRefillLandMineCommand&);
-    bool operator==(const MachGuiRefillLandMineCommand&);
+    MachGuiRefillLandMineCommand(const MachGuiRefillLandMineCommand&) = delete;
+    MachGuiRefillLandMineCommand& operator=(const MachGuiRefillLandMineCommand&) = delete;
+    bool operator==(const MachGuiRefillLandMineCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

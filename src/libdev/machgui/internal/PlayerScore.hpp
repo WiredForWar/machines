@@ -35,8 +35,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiPlayerScore& t);
 
-    MachGuiPlayerScore(const MachGuiPlayerScore&);
-    MachGuiPlayerScore& operator=(const MachGuiPlayerScore&);
+    MachGuiPlayerScore(const MachGuiPlayerScore&) = delete;
+    MachGuiPlayerScore& operator=(const MachGuiPlayerScore&) = delete;
 
     MachGuiStatisticsDisplay statDisplay_;
 };

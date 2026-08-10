@@ -76,8 +76,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiFocusCapableControl& t);
 
-    MachGuiFocusCapableControl(const MachGuiFocusCapableControl&);
-    MachGuiFocusCapableControl& operator=(const MachGuiFocusCapableControl&);
+    MachGuiFocusCapableControl(const MachGuiFocusCapableControl&) = delete;
+    MachGuiFocusCapableControl& operator=(const MachGuiFocusCapableControl&) = delete;
 
     // Data members
     bool hasFocus_{};

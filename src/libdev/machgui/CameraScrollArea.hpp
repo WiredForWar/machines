@@ -49,8 +49,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCameraScrollArea& t);
 
-    MachGuiCameraScrollArea(const MachGuiCameraScrollArea&);
-    MachGuiCameraScrollArea& operator=(const MachGuiCameraScrollArea&);
+    MachGuiCameraScrollArea(const MachGuiCameraScrollArea&) = delete;
+    MachGuiCameraScrollArea& operator=(const MachGuiCameraScrollArea&) = delete;
 
     POSITION pos_;
     MachCameras* pCameras_;

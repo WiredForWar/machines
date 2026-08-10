@@ -79,9 +79,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiStopCommand(const MachGuiStopCommand&);
-    MachGuiStopCommand& operator=(const MachGuiStopCommand&);
-    bool operator==(const MachGuiStopCommand&);
+    MachGuiStopCommand(const MachGuiStopCommand&) = delete;
+    MachGuiStopCommand& operator=(const MachGuiStopCommand&) = delete;
+    bool operator==(const MachGuiStopCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

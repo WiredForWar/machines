@@ -31,8 +31,8 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiCtxMultiplayer& t);
 
-    MachGuiCtxMultiplayer(const MachGuiCtxMultiplayer&);
-    MachGuiCtxMultiplayer& operator=(const MachGuiCtxMultiplayer&);
+    MachGuiCtxMultiplayer(const MachGuiCtxMultiplayer&) = delete;
+    MachGuiCtxMultiplayer& operator=(const MachGuiCtxMultiplayer&) = delete;
 
     MachGuiSingleLineEditBox* pSingleLineEditBox_;
 };

@@ -87,9 +87,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiDefconCommand(const MachGuiDefconCommand&);
-    MachGuiDefconCommand& operator=(const MachGuiDefconCommand&);
-    bool operator==(const MachGuiDefconCommand&);
+    MachGuiDefconCommand(const MachGuiDefconCommand&) = delete;
+    MachGuiDefconCommand& operator=(const MachGuiDefconCommand&) = delete;
+    bool operator==(const MachGuiDefconCommand&) = delete;
 
     void CLASS_INVARIANT;
 

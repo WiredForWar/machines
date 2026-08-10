@@ -33,9 +33,9 @@ protected:
     MachInGameScreen* pInGameScreen_ = nullptr;
 
 private:
-    MachGuiIconWithCounter(const MachGuiIconWithCounter&);
-    MachGuiIconWithCounter& operator=(const MachGuiIconWithCounter&);
-    bool operator==(const MachGuiIconWithCounter&) const;
+    MachGuiIconWithCounter(const MachGuiIconWithCounter&) = delete;
+    MachGuiIconWithCounter& operator=(const MachGuiIconWithCounter&) = delete;
+    bool operator==(const MachGuiIconWithCounter&) const = delete;
 
     size_t currentValue_ = 0;
 };
@@ -64,9 +64,9 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-    MachMachinesIcon(const MachMachinesIcon&);
-    MachMachinesIcon& operator=(const MachMachinesIcon&);
-    bool operator==(const MachMachinesIcon&) const;
+    MachMachinesIcon(const MachMachinesIcon&) = delete;
+    MachMachinesIcon& operator=(const MachMachinesIcon&) = delete;
+    bool operator==(const MachMachinesIcon&) const = delete;
 
     // Data members...
     bool forcingUp_;
@@ -95,9 +95,9 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-    MachConstructionsIcon(const MachConstructionsIcon&);
-    MachConstructionsIcon& operator=(const MachConstructionsIcon&);
-    bool operator==(const MachConstructionsIcon&) const;
+    MachConstructionsIcon(const MachConstructionsIcon&) = delete;
+    MachConstructionsIcon& operator=(const MachConstructionsIcon&) = delete;
+    bool operator==(const MachConstructionsIcon&) const = delete;
 
     // Data members...
     bool forcingUp_;
@@ -125,9 +125,9 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent&) override;
 
 private:
-    MachSquadronIcon(const MachSquadronIcon&);
-    MachSquadronIcon& operator=(const MachSquadronIcon&);
-    bool operator==(const MachSquadronIcon&) const;
+    MachSquadronIcon(const MachSquadronIcon&) = delete;
+    MachSquadronIcon& operator=(const MachSquadronIcon&) = delete;
+    bool operator==(const MachSquadronIcon&) const = delete;
 
     MachInGameScreen* pInGameScreen_;
 };

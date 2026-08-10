@@ -77,9 +77,9 @@ public:
 
 private:
     // Operation deliberately revoked
-    MachGuiDeployCommand(const MachGuiDeployCommand&);
-    MachGuiDeployCommand& operator=(const MachGuiDeployCommand&);
-    bool operator==(const MachGuiDeployCommand&);
+    MachGuiDeployCommand(const MachGuiDeployCommand&) = delete;
+    MachGuiDeployCommand& operator=(const MachGuiDeployCommand&) = delete;
+    bool operator==(const MachGuiDeployCommand&) = delete;
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand

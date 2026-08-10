@@ -55,8 +55,8 @@ protected:
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiEditBoxListBoxItem& t);
 
-    MachGuiEditBoxListBoxItem(const MachGuiEditBoxListBoxItem&);
-    MachGuiEditBoxListBoxItem& operator=(const MachGuiEditBoxListBoxItem&);
+    MachGuiEditBoxListBoxItem(const MachGuiEditBoxListBoxItem&) = delete;
+    MachGuiEditBoxListBoxItem& operator=(const MachGuiEditBoxListBoxItem&) = delete;
 
     // Data members...
     GuiSingleLineEditBox* pSingleLineEditBox_{};

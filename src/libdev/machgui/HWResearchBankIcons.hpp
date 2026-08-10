@@ -53,9 +53,9 @@ protected:
 
 private:
     // Operations deliberately revoked
-    MachHWResearchBankIcons(const MachHWResearchBankIcons&);
-    MachHWResearchBankIcons& operator=(const MachHWResearchBankIcons&);
-    bool operator==(const MachHWResearchBankIcons&);
+    MachHWResearchBankIcons(const MachHWResearchBankIcons&) = delete;
+    MachHWResearchBankIcons& operator=(const MachHWResearchBankIcons&) = delete;
+    bool operator==(const MachHWResearchBankIcons&) = delete;
 
     void onIconClicked(MachHWResearchBankIcon* pIcon);
 
