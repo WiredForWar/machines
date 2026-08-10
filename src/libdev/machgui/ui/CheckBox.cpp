@@ -17,7 +17,6 @@
 static constexpr MexSize2d IndicatorSize = MexSize2d(12, 11);
 
 MachGuiCheckBox::MachGuiCheckBox(
-    MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
     const Gui::Box& box,
     const ResolvedUiString& label)

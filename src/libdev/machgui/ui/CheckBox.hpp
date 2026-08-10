@@ -27,7 +27,6 @@ public:
     // The coord specifying the postion of the box is the top left corner of the box,
     // not the text label to the right of it.
     MachGuiCheckBox(
-        MachGuiStartupScreens*,
         GuiDisplayable* pParent,
         const Gui::Box& box,
         const ResolvedUiString& label);

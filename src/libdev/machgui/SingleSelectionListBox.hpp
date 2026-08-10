@@ -27,10 +27,7 @@ class MachGuiSingleSelectionListBox
 // Canonical form revoked
 {
 public:
-    // TODO: Eliminate entirely MachGuiStartupScreens from constructor. Focus capable control stuff is what MGSS still
-    // needed for
     MachGuiSingleSelectionListBox(
-        MachGuiStartupScreens* pStartupScreens,
         GuiDisplayable* pParent,
         const Gui::Box& box,
         size_t horizontalSpacing,

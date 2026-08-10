@@ -192,7 +192,6 @@ MachGuiCtxCampaign::MachGuiCtxCampaign(MachGuiStartupScreens* pStartupScreens)
     // Create players list box
     pPlayersList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             PLAYERS_LB_MINX,
             pPlayersText->absoluteBoundary().maxCorner().y() - getBackdropTopLeft().first,

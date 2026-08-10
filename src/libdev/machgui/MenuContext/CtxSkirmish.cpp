@@ -324,7 +324,6 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
     // Create system list box
     pMapSizeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             pMapSizeText->absoluteBoundary().maxCorner().y() - topLeft.first,
@@ -336,7 +335,6 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
     // Create planet list box
     pTerrainTypeList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,
             pTerrainText->absoluteBoundary().maxCorner().y() - topLeft.first,
@@ -347,7 +345,6 @@ MachGuiCtxSkirmish::MachGuiCtxSkirmish(MachGuiStartupScreens* pStartupScreens)
         1);
     // Create scenario list box
     pScenarioList_ = new MachGuiSingleSelectionListBox(
-        pStartupScreens,
         pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * LB_MINX,

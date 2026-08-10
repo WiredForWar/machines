@@ -118,7 +118,6 @@ MachGuiCtxMultiplayer::MachGuiCtxMultiplayer(MachGuiStartupScreens* pStartupScre
     startY += font.height() + 3 * MachGui::menuScaleFactor();
     MachGuiSingleSelectionListBox* pListBox = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             startX,
             startY,

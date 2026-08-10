@@ -209,7 +209,6 @@ MachGuiCtxSave::MachGuiCtxSave(MachGuiStartupScreens* pStartupScreens)
     // Create save game list box
     pSaveGameList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * SAVE_LB_MINX,
             pSaveText->absoluteBoundary().maxCorner().y() - topLeft.first,

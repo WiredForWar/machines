@@ -95,7 +95,6 @@ MachGuiCtxJoin::MachGuiCtxJoin(MachGuiStartupScreens* pStartupScreens)
     // Create games list box
     pGamesList_ = new MachGuiSingleSelectionListBox(
         pStartupScreens,
-        pStartupScreens,
         Gui::Box(
             MachGui::menuScaleFactor() * JOINGAME_LB_MINX,
             pCurrentGamesText->absoluteBoundary().maxCorner().y() - getBackdropTopLeft().first,
