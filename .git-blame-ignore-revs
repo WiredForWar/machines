@@ -1,0 +1,8 @@
+# Revisions to skip when attributing lines. Add whole-tree reformatting and
+# similar sweeps here, never a commit that changed behaviour.
+#
+# Enable with:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Normalise line endings to LF
+a200daaa18e3d5380fb096a6a4704d34ccfc1fca
