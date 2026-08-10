@@ -157,7 +157,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         const uint y = contentY + (rowHeight + verticalSpacing) * itemsIn1stColumn;
         auto* checkBox = new MachGuiCheckBox(
             pStartupScreens,
-            pStartupScreens,
             Gui::Box(
                 Gui::Coord(firstColumnX, y),
                 Gui::Size(firstColumnWidth, rowHeight)),
@@ -180,7 +179,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
             Gui::AlignRight);
 
         auto* slider = new MachGuiSlideBar(
-            pStartupScreens,
             pStartupScreens,
             Gui::Coord(secondColumnInputX, y),
             secondColumnInputWidth);
@@ -278,7 +276,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         for (const MachPhysComplexityBooleanItem *item : boolItems)
         {
             booleanOptimisations_.push_back(new MachGuiCheckBox(
-                pStartupScreens,
                 pStartupScreens,
                 Gui::Box(
                     optimizationAreaCoord + Gui::Coord(0, verticalStep * index),

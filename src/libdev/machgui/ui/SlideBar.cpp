@@ -16,7 +16,6 @@
 constexpr float BorderWidth{2};
 
 MachGuiSlideBar::MachGuiSlideBar(
-    MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
     Gui::Coord topLeft,
     size_t width,
@@ -39,10 +38,9 @@ MachGuiSlideBar::MachGuiSlideBar(
 }
 
 MachGuiSlideBar::MachGuiSlideBar(
-    MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
     Gui::Coord topLeft,
-    size_t width)
+    std::size_t width)
     : GuiDisplayable(pParent, Gui::Box(topLeft, width, reqHeight()))
     , highlighted_(false)
 {

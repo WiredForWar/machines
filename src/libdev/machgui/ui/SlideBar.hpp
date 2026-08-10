@@ -27,7 +27,6 @@ public:
     using FloatValueChangedCallback = std::function<void(float newValue)>;
 
     MachGuiSlideBar(
-        MachGuiStartupScreens*,
         GuiDisplayable* pParent,
         Gui::Coord topLeft,
         size_t width,
@@ -36,7 +35,7 @@ public:
     // POST( value() >= minValue_ );
     // POST( value() <= maxValue_ );
 
-    MachGuiSlideBar(MachGuiStartupScreens*, GuiDisplayable* pParent, Gui::Coord topLeft, size_t width);
+    MachGuiSlideBar(GuiDisplayable* pParent, Gui::Coord topLeft, std::size_t width);
     // POST( minValue_ == 0.0 );
     // POST( maxValue_ == 1.0 );
     // POST( value() == minValue_ );

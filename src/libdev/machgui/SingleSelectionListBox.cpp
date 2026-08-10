@@ -12,13 +12,12 @@
 #include <algorithm>
 
 MachGuiSingleSelectionListBox::MachGuiSingleSelectionListBox(
-    MachGuiStartupScreens* pStartupScreens,
     GuiDisplayable* pParent,
     const Gui::Box& box,
     size_t horizontalSpacing,
     size_t verticalSpacing,
     size_t scrollInc)
-    : GuiSingleSelectionListBox(pStartupScreens, box, horizontalSpacing, verticalSpacing, scrollInc)
+    : GuiSingleSelectionListBox(pParent, box, horizontalSpacing, verticalSpacing, scrollInc)
 {
     setAcceptsFocus(true);
 
