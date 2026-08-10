@@ -16,8 +16,17 @@
 #include "device/Keyboard.hpp"
 #include "gui/Root.hpp"
 #include "gui/ResourceString.hpp"
+#include "ctl/PtrVector.hpp"
+#include "phys/phys.hpp"
+#include "utility/CallbackHandle.hpp"
 
-class MachGuiStartupScreensImpl;
+#include <memory>
+
+class AfxResourceLib;
+class MachGuiConsoleDropDown;
+class MachGuiDispositionChangeNotifiable;
+class MachGuiMessageBox;
+class RenCursor2d;
 class W4dSceneManager;
 class MachInGameScreen;
 class W4dRoot;
@@ -32,6 +41,13 @@ class MachLogGameCreationData;
 class MexTransform3d;
 class MachGuiFocusCapableControl;
 class MachGuiDbScenario;
+
+namespace MachGui
+{
+
+class GameMenuContext;
+
+} // namespace MachGui
 
 namespace System
 {
@@ -425,7 +441,51 @@ private:
 
     static std::string getContextStrName(Context context);
 
-    MachGuiStartupScreensImpl* pImpl_;
+    using SmackerAnims = ctl_pvector<AniSmacker>;
+    using FocusCapableControls = ctl_pvector<MachGuiFocusCapableControl>;
+
+    // Data members...
+    RenCursor2d* pMenuCursor_;
+    W4dSceneManager* pSceneManager_;
+    System::IConsole* console_{};
+    Context context_;
+    Context contextAfterFlic_;
+    Context contextBeforeFlic_;
+    GuiBitmap* pBackdrop_;
+    MachInGameScreen* pInGameScreen_;
+    bool switchGuiRoot_;
+    bool finishApp_;
+    W4dRoot* pW4dRoot_;
+    PhysAbsoluteTime contextTimer_;
+    std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table
+    AniSmacker* pPlayingSmacker_; // A currently playing smacker file. NULL if none
+    Music playingCdTrack_; // Track number playing on audio cd. ( -1 for none )
+    Music desiredCdTrack_; // Track number that should be playing on audio cd. ( -1 for none )
+    PhysAbsoluteTime cdCheckTime_; // Only check cd once every 60 seconds
+    bool endGame_;
+    MachGui::ButtonEvent lastButtonEvent_;
+    MachGuiMessageBox* pMsgBox_; // Displays a message box with OK or OK/Cancel buttons
+    MachGuiMessageBoxResponder* pMsgBoxResponder_; // Is told about OK/Cancel button presses in a message box
+    GameType gameType_;
+    MachGui::GameMenuContext* pCurrContext_;
+    MachGuiStartupData* pStartupData_;
+    MachGuiMessageBroker* pMessageBroker_;
+    MachGuiAutoDeleteDisplayable* pMustContainMouse_; // A gui displayable that is present only if the mouse if inside
+                                                      // it's boundary ( generally drop-down list boxes )
+    SmackerAnims smackerAnims_; // list of smacker animations to play
+    GuiDisplayable* pCharFocus_; // Store the char focus whilst the message box is displayed
+    bool isGamePaused_{};
+    bool pendingScreenShot_{};
+    FocusCapableControls focusCapableControls_;
+    MachGuiDispositionChangeNotifiable* pDispositionNotifiable_;
+    bool ignoreHostLostSystemMessage_;
+    Utils::HandleWithTriggerUPtr soundVolumeHandle_;
+    Utils::HandleWithTriggerUPtr musicVolumeHandle_;
+    Utils::HandleWithTriggerUPtr selectionMarkerTypeHandle_;
+    Utils::HandleWithTriggerUPtr consoleDropDownHandle_;
+    std::unique_ptr<MachGuiConsoleDropDown> pConsoleDropDown_{};
+    std::unique_ptr<MachGuiConsoleDropDown> pendingDropDownDelete_{};
+    int consoleDropDownOffset_{};
 };
 
 #endif

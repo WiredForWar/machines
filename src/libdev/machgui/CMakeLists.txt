@@ -329,7 +329,6 @@ set(MACHGUI_SOURCES
     internal/PlayerNameList.hpp
     internal/PlayerScore.hpp
     internal/SoundManager.hpp
-    internal/StartupScreensImpl.hpp
     internal/strings.hpp
     menus_helper.cpp
     menus_helper.hpp

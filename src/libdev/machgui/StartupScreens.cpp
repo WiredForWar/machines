@@ -20,7 +20,6 @@ inline constexpr bool cDemoVersion =
 //  Definitions of non-inline non-template methods and global functions
 
 #include <stdlib.h>
-#include "machgui/internal/StartupScreensImpl.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/Cameras.hpp"
@@ -150,46 +149,10 @@ public:
     }
 };
 
-#define CB_MachGuiStartupScreens_DEPIMPL()                                                                             \
-    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);                                                                            \
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);                                                                      \
-    CB_DEPIMPL_AUTO(console_);                                                                                         \
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);                                                              \
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);                                                     \
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);                                                    \
-    CB_DEPIMPL(GuiBitmap*, pBackdrop_);                                                                                \
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);                                                                     \
-    CB_DEPIMPL(bool, switchGuiRoot_);                                                                                  \
-    CB_DEPIMPL(bool, finishApp_);                                                                                      \
-    CB_DEPIMPL(W4dRoot*, pW4dRoot_);                                                                                   \
-    CB_DEPIMPL(PhysAbsoluteTime, contextTimer_);                                                                       \
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);                                                                         \
-    CB_DEPIMPL(MachGuiStartupScreens::Music, playingCdTrack_);                                                         \
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);                                                         \
-    CB_DEPIMPL(PhysAbsoluteTime, cdCheckTime_);                                                                        \
-    CB_DEPIMPL(bool, endGame_);                                                                                        \
-    CB_DEPIMPL(ButtonEvent, lastButtonEvent_);                                                                         \
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);                                                                          \
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);                                                        \
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);                                                            \
-    CB_DEPIMPL_AUTO(pCurrContext_);                                                                                    \
-    CB_DEPIMPL(MachGuiStartupData*, pStartupData_);                                                                    \
-    CB_DEPIMPL(MachGuiMessageBroker*, pMessageBroker_);                                                                \
-    CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);                                                     \
-    CB_DEPIMPL(MachGuiStartupScreensImpl::SmackerAnims, smackerAnims_);                                                \
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);                                                                          \
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);                                          \
-    CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
-
 MachGuiStartupScreens::MachGuiStartupScreens(
     W4dSceneManager* pSceneManager, W4dRoot* pRoot, System::IConsole* console, IProgressReporter* pReporter)
     : GuiRoot(Gui::toSize(pSceneManager->pDevice()->windowSize()))
-    , pImpl_(nullptr)
 {
-    pImpl_ = new MachGuiStartupScreensImpl;
-
-    CB_MachGuiStartupScreens_DEPIMPL();
-
     pSceneManager_ = pSceneManager;
     console_ = console;
     pBackdrop_ = nullptr;
@@ -270,15 +233,10 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
 {
     TEST_INVARIANT;
 
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-    CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     unloadGame();
 
-    if (pImpl_->pConsoleDropDown_)
-        pImpl_->pConsoleDropDown_->detachFromParent();
+    if (pConsoleDropDown_)
+        pConsoleDropDown_->detachFromParent();
 
     // Bullet proof function - doesn't matter if notifiable has already been unregistered.
     MachLogRaces::instance().unregisterDispositionChangeNotifiable(pDispositionNotifiable_);
@@ -291,23 +249,19 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
     clearAllSmackerAnimations();
 
     releaseCachedMemory();
-    delete pImpl_->pMenuCursor_;
+    delete pMenuCursor_;
     MachGui::releaseInGameBmpMemory();
 
-    delete pImpl_->pMessageBroker_;
+    delete pMessageBroker_;
 
-    // Explicitly delete children before pImpl is gone to let them gracefully unregister
-    // (e.g. call removeFocusCapableControl(), which uses pImpl_->focusCapableControls_)
+    // Delete the children here rather than leaving it to ~GuiDisplayable, which runs
+    // after the members they unregister themselves from have already gone.
     deleteAllChildren();
-
-    delete pImpl_;
 }
 
 void MachGuiStartupScreens::loopCycle()
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    pImpl_->pendingDropDownDelete_.reset();
+    pendingDropDownDelete_.reset();
 
     // Trace memory every minute if CB_MINMEM set
     static bool traceMemoryPerMinute = getenv("CB_MINMEM") != nullptr;
@@ -354,9 +308,6 @@ void MachGuiStartupScreens::loopCycle()
 
 void MachGuiStartupScreens::updateGui()
 {
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     // This is a useful marker for making sense of the render log.  Please leave.
     RENDER_STREAM("Starting MachGuiStartupScreens::updateGui()\n");
     RENDER_INDENT(2);
@@ -382,9 +333,6 @@ void MachGuiStartupScreens::updateGui()
 
 void MachGuiStartupScreens::displayGui()
 {
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     bool inGame = (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
 
     // This is a bit of a hack.  Setting the viewports correctly depends
@@ -403,18 +351,11 @@ void MachGuiStartupScreens::displayGui()
 
 void MachGuiStartupScreens::requestExit()
 {
-    CB_DEPIMPL(bool, finishApp_);
     finishApp_ = true;
 }
 
 void MachGuiStartupScreens::checkSwitchGuiRoot()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(bool, switchGuiRoot_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, isGamePaused_);
-
     if (switchGuiRoot_)
     {
         DEBUG_STREAM(DIAG_NEIL, "Switching GUI root" << std::endl);
@@ -483,12 +424,6 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
 
 void MachGuiStartupScreens::switchGuiRootToGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     PRE(gameType_ == NOGAME);
 
     // Display loading bmp
@@ -566,12 +501,6 @@ void MachGuiStartupScreens::switchGuiRootToGame()
 
 void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     PRE(gameType_ == NOGAME);
 
     // Display loading bmp
@@ -714,12 +643,6 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
 
 void MachGuiStartupScreens::switchGuiRootToMultiGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     PRE(gameType_ == NOGAME);
     HAL_STREAM("MachGuiStartupScreens::switchGuiRootToMultiGame\n");
 
@@ -1085,8 +1008,6 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be)
 
 void MachGuiStartupScreens::buttonAction(ButtonEvent be, const std::string& wavFile)
 {
-    CB_MachGuiStartupScreens_DEPIMPL();
-
     // Update last button event
     lastButtonEvent_ = be;
 
@@ -1166,10 +1087,6 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const std::string& wavF
 
 void MachGuiStartupScreens::doDisplay()
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(Context, context_);
-
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
     if (context_ != CTX_LOADINGEXE && context_ != CTX_POSTLOADINGANIMATION)
     {
@@ -1193,22 +1110,11 @@ void MachGuiStartupScreens::doDisplay()
 
 bool MachGuiStartupScreens::finishApp()
 {
-    CB_DEPIMPL(bool, finishApp_);
-
     return finishApp_;
 }
 
 void MachGuiStartupScreens::switchContext(Context newContext)
 {
-    CB_DEPIMPL(GameMenuContext*, pCurrContext_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(bool, switchGuiRoot_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(PhysAbsoluteTime, contextTimer_);
-    CB_DEPIMPL(bool, isGamePaused_);
-    CB_DEPIMPL_AUTO(console_);
-
     NETWORK_STREAM(
         "MachGuiStartupScreens::switchContext current " << context_ << " new context " << newContext << std::endl);
     NETWORK_INDENT(2);
@@ -1248,7 +1154,6 @@ void MachGuiStartupScreens::switchContext(Context newContext)
     // context switches — it is owned by pConsoleDropDown_ (unique_ptr), not
     // by the GUI child list.
     {
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
         if (pConsoleDropDown_)
             pConsoleDropDown_->detachFromParent();
     }
@@ -1396,7 +1301,6 @@ void MachGuiStartupScreens::switchContext(Context newContext)
 
     // Re-attach the console dropdown (if any) so it renders on top of the new context.
     {
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
         if (pConsoleDropDown_)
             reparentChild(pConsoleDropDown_.get(), GuiDisplayable::LAYER5);
     }
@@ -1412,10 +1316,6 @@ void MachGuiStartupScreens::switchContext(Context newContext)
 // virtual
 void MachGuiStartupScreens::update()
 {
-    CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);
-    CB_DEPIMPL_AUTO(pCurrContext_);
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-
     // Check that mouse is contained within the auto delete gui. See header for description
     // of this functionality.
     if (pMustContainMouse_)
@@ -1451,8 +1351,6 @@ bool MachGuiStartupScreens::doHandleRightClickEvent(const GuiMouseEvent&)
 
 void MachGuiStartupScreens::setGuiViewport()
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     // Set the viewport boundary to the entire screen.
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
@@ -1467,9 +1365,6 @@ void MachGuiStartupScreens::doBecomeRoot()
 
     // Attach the shared console dropdown to this root
     {
-        CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
-        CB_DEPIMPL_AUTO(consoleDropDownOffset_);
         if (pConsoleDropDown_)
         {
             reparentChild(pConsoleDropDown_.get(), GuiDisplayable::LAYER5);
@@ -1490,7 +1385,6 @@ void MachGuiStartupScreens::doBecomeNotRoot()
 {
     // Detach the shared console dropdown so it isn't destroyed with this root's children
     {
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
         if (pConsoleDropDown_)
             pConsoleDropDown_->detachFromParent();
     }
@@ -1506,7 +1400,6 @@ void MachGuiStartupScreens::CLASS_INVARIANT
 
 std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreens& t)
 {
-
     o << "MachGuiStartupScreens " << static_cast<const void*>(&t) << " start" << std::endl;
     o << "MachGuiStartupScreens " << static_cast<const void*>(&t) << " end" << std::endl;
 
@@ -1515,10 +1408,6 @@ std::ostream& operator<<(std::ostream& o, const MachGuiStartupScreens& t)
 
 void MachGuiStartupScreens::loopCycleStartupScreens()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL_AUTO(pendingScreenShot_);
-
     updateCdAudio();
 
     // Even though we are in the startup screens if there is a multi player
@@ -1564,9 +1453,6 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
 
 void MachGuiStartupScreens::checkContextTimeout()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(PhysAbsoluteTime, contextTimer_);
-
     PhysAbsoluteTime newTime = Phys::time();
 
     bool found = false;
@@ -1604,11 +1490,6 @@ void MachGuiStartupScreens::checkContextTimeout()
 
 void MachGuiStartupScreens::loopCycleInGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL_AUTO(finishApp_);
-
     PRE(context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
 
     if (finishApp_)
@@ -1753,8 +1634,6 @@ void MachGuiStartupScreens::loopCycleInGame()
 
 void MachGuiStartupScreens::updateSound(const MexTransform3d& transf)
 {
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     if (pInGameScreen_->actualGameState() == MachInGameScreen::PLAYING)
     {
         W4dSoundManager::instance().updateVolumes(transf);
@@ -1764,17 +1643,6 @@ void MachGuiStartupScreens::updateSound(const MexTransform3d& transf)
 // virtual
 bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
 {
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL_AUTO(pCurrContext_);
-    CB_DEPIMPL(ButtonEvent, lastButtonEvent_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);
-    CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
-    CB_DEPIMPL_AUTO(pConsoleDropDown_);
-
     // Console toggle/input handling — takes priority over everything else
     if (e.state() == Gui::PRESSED)
     {
@@ -1800,7 +1668,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
         if (screenshotTrigger.matches(e.keyWithMods()))
         {
-            pImpl_->pendingScreenShot_ = true;
+            pendingScreenShot_ = true;
         }
 
         static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);
@@ -1925,9 +1793,6 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
 
 MexTransform3d MachGuiStartupScreens::earTransform() const
 {
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     // get the current camera. Location to use for ear depends on whether in zenith view.
     MexTransform3d xform = pSceneManager_->currentCamera()->globalTransform();
     MexPoint3d earPosition;
@@ -2001,8 +1866,6 @@ MexTransform3d MachGuiStartupScreens::earTransform() const
 
 void MachGuiStartupScreens::startPlayingAnimation(const SysPathName& filename, bool fast)
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-
     // Stop any currently playing animation
     if (pPlayingSmacker_)
         stopPlayingAnimation();
@@ -2024,8 +1887,6 @@ void MachGuiStartupScreens::startPlayingAnimation(
     const Gui::Coord& pos,
     bool isCutscene)
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-
     // Stop any currently playing animation
     if (pPlayingSmacker_)
         stopPlayingAnimation();
@@ -2074,8 +1935,6 @@ void MachGuiStartupScreens::startPlayingAnimation(
 
 void MachGuiStartupScreens::stopPlayingAnimation()
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-
     // Stop any currently playing animation
     if (pPlayingSmacker_)
     {
@@ -2086,9 +1945,6 @@ void MachGuiStartupScreens::stopPlayingAnimation()
 
 void MachGuiStartupScreens::loopCyclePlayingAnimation()
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     PRE(pPlayingSmacker_ != nullptr);
 
     updateCdAudio();
@@ -2120,15 +1976,11 @@ void MachGuiStartupScreens::loopCyclePlayingAnimation()
 
 bool MachGuiStartupScreens::animationFinished()
 {
-    CB_DEPIMPL(AniSmacker*, pPlayingSmacker_);
-
     return pPlayingSmacker_ == nullptr || pPlayingSmacker_->isFinished();
 }
 
 void MachGuiStartupScreens::prepareForAnimation()
 {
-    CB_DEPIMPL_AUTO(pSceneManager_);
-
     desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
 
     // Remove menu screen before app ends to stop it from flashing up momentarily
@@ -2144,12 +1996,6 @@ void MachGuiStartupScreens::prepareForAnimation()
 
 void MachGuiStartupScreens::updateCdAudio()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Music, playingCdTrack_);
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);
-    CB_DEPIMPL(PhysAbsoluteTime, cdCheckTime_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     DevCD::instance().update();
     // Check to see if we are playing a game that has just finished. If so, play
     // either victory or defeat music.
@@ -2243,9 +2089,6 @@ void MachGuiStartupScreens::updateCdAudio()
 
 void MachGuiStartupScreens::cursorOn(bool on)
 {
-    CB_DEPIMPL(RenCursor2d*, pMenuCursor_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     if (on)
     {
         pSceneManager_->pDevice()->display()->useCursor(pMenuCursor_);
@@ -2259,9 +2102,6 @@ void MachGuiStartupScreens::cursorOn(bool on)
 
 void MachGuiStartupScreens::activate()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
     {
         pInGameScreen_->activate();
@@ -2285,12 +2125,6 @@ bool MachGuiStartupScreens::doHandleCharEvent(const DevButtonEvent& e)
 
 void MachGuiStartupScreens::contextAnimation()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextAfterFlic_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, contextBeforeFlic_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     if (context_ == CTX_TRANSITION)
     {
         std::string ctxBeforeName = getContextStrName(contextBeforeFlic_);
@@ -2301,7 +2135,7 @@ void MachGuiStartupScreens::contextAnimation()
         if (sysFlicName.existsAsFile())
         {
             startPlayingAnimation(sysFlicName, true, true, Gui::Coord(0, 0));
-            pImpl_->pPlayingSmacker_->setScaleFactor(MachGui::menuScaleFactor());
+            pPlayingSmacker_->setScaleFactor(MachGui::menuScaleFactor());
         }
     }
     else if (context_ == CTX_INTROANIMATION)
@@ -2358,9 +2192,6 @@ void MachGuiStartupScreens::contextAnimation()
 
 void MachGuiStartupScreens::contextFinish()
 {
-    CB_DEPIMPL(bool, finishApp_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-
     finishApp_ = true;
     // Make sure the cd is stopped before exiting
     if (DevCD::instance().isPlayingAudioCd())
@@ -2378,10 +2209,6 @@ void MachGuiStartupScreens::contextFinish()
 
 void MachGuiStartupScreens::contextGame()
 {
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-    CB_DEPIMPL(bool, switchGuiRoot_);
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     switchGuiRoot_ = true;
     cursorOn(false);
     Music scenarioTrack = static_cast<Music>(MachGuiDatabase::instance().currentScenario().musicTrack());
@@ -2460,9 +2287,6 @@ void MachGuiStartupScreens::contextDefeat()
 
 void MachGuiStartupScreens::contextLogo()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);
-
     switch (context_)
     {
         case CTX_PROBEACCLAIMLOGO:
@@ -2490,15 +2314,12 @@ void MachGuiStartupScreens::contextLogo()
 
 MachGui::ButtonEvent MachGuiStartupScreens::lastButtonEvent() const
 {
-    CB_DEPIMPL_AUTO(lastButtonEvent_);
-
     return lastButtonEvent_;
 }
 
 MachGuiStartupData* MachGuiStartupScreens::startupData()
 {
     NETWORK_STREAM("MachGuiStartupScreens::startupData " << static_cast<const void*>(this) << std::endl);
-    CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
 
     NETWORK_STREAM(" returning " << (void*)pStartupData_ << std::endl);
     return pStartupData_;
@@ -2506,15 +2327,11 @@ MachGuiStartupData* MachGuiStartupScreens::startupData()
 
 void MachGuiStartupScreens::desiredCdTrack(MachGuiStartupScreens::Music cdTrack)
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Music, desiredCdTrack_);
-
     desiredCdTrack_ = cdTrack;
 }
 
 MachGuiMessageBroker& MachGuiStartupScreens::messageBroker()
 {
-    CB_DEPIMPL(MachGuiMessageBroker*, pMessageBroker_);
-
     PRE(pMessageBroker_);
 
     return *pMessageBroker_;
@@ -2522,31 +2339,23 @@ MachGuiMessageBroker& MachGuiStartupScreens::messageBroker()
 
 void MachGuiStartupScreens::registerAutoDeleteGuiElement(MachGuiAutoDeleteDisplayable* pMustContainMouse)
 {
-    CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);
-
     pMustContainMouse_ = pMustContainMouse;
 }
 
 void MachGuiStartupScreens::unregisterAutoDeleteGuiElement()
 {
-    CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);
-
     pMustContainMouse_ = nullptr;
 }
 
 void MachGuiStartupScreens::addSmackerAnimation(AniSmacker* animation)
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::SmackerAnims, smackerAnims_);
-
     PRE(animation != nullptr);
     smackerAnims_.push_back(animation);
 }
 
 void MachGuiStartupScreens::clearAllSmackerAnimations()
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::SmackerAnims, smackerAnims_);
-
-    for (MachGuiStartupScreensImpl::SmackerAnims::iterator i = smackerAnims_.begin(); i != smackerAnims_.end(); ++i)
+    for (SmackerAnims::iterator i = smackerAnims_.begin(); i != smackerAnims_.end(); ++i)
     {
         delete *i;
     }
@@ -2556,11 +2365,9 @@ void MachGuiStartupScreens::clearAllSmackerAnimations()
 
 void MachGuiStartupScreens::playSmackerAnimations()
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::SmackerAnims, smackerAnims_);
-
     // Cycle through list of smacker files setup by a particular context
     // and play next frame of animation ( looping if necessary ).
-    for (MachGuiStartupScreensImpl::SmackerAnims::iterator i = smackerAnims_.begin(); i != smackerAnims_.end(); ++i)
+    for (SmackerAnims::iterator i = smackerAnims_.begin(); i != smackerAnims_.end(); ++i)
     {
         AniSmacker* pCurrentAnimation = *i;
         // loop animation
@@ -2581,9 +2388,6 @@ void MachGuiStartupScreens::releaseCachedMemory()
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId)
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-
     PRE(pMsgBox_ == nullptr);
 
     // Store control with char focus for duration of message box. We don't want
@@ -2602,9 +2406,6 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId)
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& strs)
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-
     PRE(pMsgBox_ == nullptr);
 
     // Store control with char focus for duration of message box. We don't want
@@ -2628,10 +2429,6 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxRes
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxResponder* pResponder, bool yesNo)
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-
     PRE(pMsgBox_ == nullptr);
     PRE(pMsgBoxResponder_ == nullptr);
 
@@ -2664,10 +2461,6 @@ void MachGuiStartupScreens::displayMsgBox(
     MachGuiMessageBoxResponder* pResponder,
     const GuiStrings& strs)
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-
     PRE(pMsgBox_ == nullptr);
     PRE(pMsgBoxResponder_ == nullptr);
 
@@ -2690,10 +2483,6 @@ void MachGuiStartupScreens::displayMsgBox(
 
 void MachGuiStartupScreens::displayOKMsgBox(uint stringResId, MachGuiMessageBoxResponder* pResponder)
 {
-    CB_DEPIMPL(MachGuiMessageBox*, pMsgBox_);
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
-    CB_DEPIMPL(GuiDisplayable*, pCharFocus_);
-
     PRE(pMsgBox_ == nullptr);
     PRE(pMsgBoxResponder_ == nullptr);
 
@@ -2716,22 +2505,16 @@ void MachGuiStartupScreens::displayOKMsgBox(uint stringResId, MachGuiMessageBoxR
 
 MachGuiStartupScreens::GameType MachGuiStartupScreens::gameType() const
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-
     return gameType_;
 }
 
 void MachGuiStartupScreens::gameType(MachGuiStartupScreens::GameType newGameType)
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-
     gameType_ = newGameType;
 }
 
 MachInGameScreen& MachGuiStartupScreens::inGameScreen()
 {
-    CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-
     PRE(pInGameScreen_);
 
     return *pInGameScreen_;
@@ -2739,15 +2522,11 @@ MachInGameScreen& MachGuiStartupScreens::inGameScreen()
 
 MachGuiStartupScreens::Context MachGuiStartupScreens::currentContext() const
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     return context_;
 }
 
 void MachGuiStartupScreens::restartGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-
     PRE(gameType_ != NOGAME);
     PRE(gameType_ != MULTIGAME);
 
@@ -2771,9 +2550,6 @@ void MachGuiStartupScreens::restartGame()
 
 void MachGuiStartupScreens::unloadGame()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     MachLogRaces::instance().unregisterDispositionChangeNotifiable(pDispositionNotifiable_);
 
     // Clear any set flags in the database handler
@@ -2807,10 +2583,6 @@ void MachGuiStartupScreens::unloadGame()
 
 void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
 {
-    CB_DEPIMPL(MachGuiStartupScreens::GameType, gameType_);
-    CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-    CB_DEPIMPL(MachGuiDispositionChangeNotifiable*, pDispositionNotifiable_);
-
     PRE(gameType_ == NOGAME);
 
     pSceneManager_->pDevice()->display()->useCursor(nullptr);
@@ -3147,8 +2919,6 @@ const MachGuiStartupScreens::ContextTimeoutInfo* MachGuiStartupScreens::getConte
 
 bool MachGuiStartupScreens::isContextFlic() const
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     switch (context_)
     {
         case CTX_INTROANIMATION:
@@ -3285,9 +3055,6 @@ const MachGuiStartupScreens::ContextKeypressInfo* MachGuiStartupScreens::getCont
 // if the host has been lost and directX is asking me to be the host
 bool MachGuiStartupScreens::handleHostMessage()
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
-
     NETWORK_STREAM("MachGuiStartupScreens::handleHostMessage\n");
     switch (context_)
     {
@@ -3309,11 +3076,6 @@ bool MachGuiStartupScreens::handleHostMessage()
 
 bool MachGuiStartupScreens::handleDestroyPlayerMessage(const std::string& name)
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-    CB_DEPIMPL(MachGuiStartupData*, pStartupData_);
-    CB_DEPIMPL_AUTO(pCurrContext_);
-    CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
-
     NETWORK_STREAM("MachGuiStartupScreens::handleDestroyPlayerMessage\n");
     switch (context_)
     {
@@ -3382,7 +3144,6 @@ private:
 
 bool MachGuiStartupScreens::handleSessionLostMessage()
 {
-    CB_DEPIMPL(MachGuiMessageBoxResponder*, pMsgBoxResponder_);
     if (pMsgBoxResponder_)
     {
         delete pMsgBoxResponder_;
@@ -3396,14 +3157,11 @@ bool MachGuiStartupScreens::handleSessionLostMessage()
 
 bool MachGuiStartupScreens::msgBoxIsBeingDisplayed() const
 {
-    CB_MachGuiStartupScreens_DEPIMPL();
-
     return (bool)pMsgBox_;
 }
 
 void MachGuiStartupScreens::initializeVolumes()
 {
-    CB_DEPIMPL_AUTO(soundVolumeHandle_);
     soundVolumeHandle_ = Config::soundVolume.addListener([]
     {
         int volume = Config::soundVolume.get();
@@ -3412,7 +3170,6 @@ void MachGuiStartupScreens::initializeVolumes()
     });
     soundVolumeHandle_->trigger();
 
-    CB_DEPIMPL_AUTO(musicVolumeHandle_);
     musicVolumeHandle_ = Config::musicVolume.addListener([]
     {
         int volume = Config::musicVolume.get();
@@ -3424,7 +3181,6 @@ void MachGuiStartupScreens::initializeVolumes()
 
 void MachGuiStartupScreens::initializeCursorOptions()
 {
-    CB_DEPIMPL_AUTO(selectionMarkerTypeHandle_);
     selectionMarkerTypeHandle_ = Config::uiUse2DSelectionMarker.addListener([] {
         using MarkerType = MachPhysMarker::MarkerType;
         const bool use2DCursor = Config::uiUse2DSelectionMarker.get();
@@ -3438,17 +3194,8 @@ void MachGuiStartupScreens::initializeCursorOptions()
 
 void MachGuiStartupScreens::initializeConsoleDropDown()
 {
-    CB_DEPIMPL_AUTO(consoleDropDownHandle_);
-
     consoleDropDownHandle_ = Config::consoleEnabled.addListener([this]
     {
-        CB_DEPIMPL(W4dSceneManager*, pSceneManager_);
-        CB_DEPIMPL(System::IConsole*, console_);
-        CB_DEPIMPL(MachInGameScreen*, pInGameScreen_);
-        CB_DEPIMPL_AUTO(pConsoleDropDown_);
-        CB_DEPIMPL_AUTO(pendingDropDownDelete_);
-        CB_DEPIMPL_AUTO(consoleDropDownOffset_);
-
         if (Config::consoleEnabled.get())
         {
             pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(nullptr);
@@ -3489,8 +3236,6 @@ void MachGuiStartupScreens::initializeConsoleDropDown()
 
 void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_);
-
     focusCapableControls_.push_back(pFocusCtrl);
 
     // Focus defaults to first control registered
@@ -3502,9 +3247,7 @@ void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* p
 
 void MachGuiStartupScreens::removeFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_);
-
-    MachGuiStartupScreensImpl::FocusCapableControls::iterator i
+    FocusCapableControls::iterator i
         = find(focusCapableControls_.begin(), focusCapableControls_.end(), pFocusCtrl);
 
     ASSERT(i != focusCapableControls_.end(), "Trying to remove focusCapableControl which does not exist");
@@ -3514,9 +3257,6 @@ void MachGuiStartupScreens::removeFocusCapableControl(MachGuiFocusCapableControl
 
 bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_);
-    CB_DEPIMPL(MachGuiAutoDeleteDisplayable*, pMustContainMouse_);
-
     bool processed = false;
 
     if (e.key() == Device::KeyCode::LEFT_ARROW || e.key() == Device::KeyCode::RIGHT_ARROW)
@@ -3542,7 +3282,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         MachGuiFocusCapableControl* pDefaultFocusControl = nullptr;
 
         // Find control with escape focus
-        for (MachGuiStartupScreensImpl::FocusCapableControls::iterator escDefIter = focusCapableControls_.begin();
+        for (FocusCapableControls::iterator escDefIter = focusCapableControls_.begin();
              escDefIter != focusCapableControls_.end();
              ++escDefIter)
         {
@@ -3557,7 +3297,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         }
 
         // Find control with focus
-        for (MachGuiStartupScreensImpl::FocusCapableControls::iterator i = focusCapableControls_.begin();
+        for (FocusCapableControls::iterator i = focusCapableControls_.begin();
              i != focusCapableControls_.end() && ! pFocusControl;
              ++i)
         {
@@ -3590,7 +3330,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // Need to loop back to begining
                 if (! pNextFocusControl)
                 {
-                    for (MachGuiStartupScreensImpl::FocusCapableControls::iterator nextIter
+                    for (FocusCapableControls::iterator nextIter
                          = focusCapableControls_.begin();
                          nextIter != focusCapableControls_.end() && ! pNextFocusControl;
                          ++nextIter)
@@ -3606,7 +3346,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // list of controls and find the last non-disabled control.
                 if (! pPreviousFocusControl)
                 {
-                    for (MachGuiStartupScreensImpl::FocusCapableControls::iterator prevIter
+                    for (FocusCapableControls::iterator prevIter
                          = focusCapableControls_.begin();
                          prevIter != focusCapableControls_.end();
                          ++prevIter)
@@ -3729,9 +3469,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
 void MachGuiStartupScreens::messageBoxHasFocus(bool newValue)
 {
-    CB_DEPIMPL(MachGuiStartupScreensImpl::FocusCapableControls, focusCapableControls_);
-
-    for (MachGuiStartupScreensImpl::FocusCapableControls::iterator iter = focusCapableControls_.begin();
+    for (FocusCapableControls::iterator iter = focusCapableControls_.begin();
          iter != focusCapableControls_.end();
          ++iter)
     {
@@ -3797,8 +3535,6 @@ void MachGuiStartupScreens::contextFinishFromLobby()
 
 void MachGuiStartupScreens::reloadUiStrings()
 {
-    CB_DEPIMPL_AUTO(pStringResourceLib_);
-
     pStringResourceLib_ = std::make_unique<AfxResourceLib>();
     for (const std::string& file : System::getFileOverrides("machstrg.xml"))
         pStringResourceLib_->addStringsFromFile(file);
@@ -3808,20 +3544,16 @@ void MachGuiStartupScreens::reloadUiStrings()
 
 bool MachGuiStartupScreens::ignoreHostLostSystemMessage() const
 {
-    CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
     return ignoreHostLostSystemMessage_;
 }
 
 void MachGuiStartupScreens::ignoreHostLostSystemMessage(bool value)
 {
-    CB_DEPIMPL(bool, ignoreHostLostSystemMessage_);
     ignoreHostLostSystemMessage_ = value;
 }
 
 void MachGuiStartupScreens::setContextForGame(Context context)
 {
-    CB_DEPIMPL(MachGuiStartupScreens::Context, context_);
-
     PRE(context == CTX_GAME || context == CTX_SKIRMISH_GAME || context == CTX_MULTI_GAME);
 
     context_ = context;
@@ -3862,8 +3594,6 @@ Ren::Point MachGuiStartupScreens::menuPosition()
 
 void MachGuiStartupScreens::toggleConsoleDropDown()
 {
-    CB_DEPIMPL_AUTO(pConsoleDropDown_);
-
     if (!pConsoleDropDown_)
         return;
 
@@ -3882,9 +3612,6 @@ void MachGuiStartupScreens::toggleConsoleDropDown()
 
 void MachGuiStartupScreens::updateConsoleDropDown()
 {
-    CB_DEPIMPL_AUTO(pConsoleDropDown_);
-    CB_DEPIMPL_AUTO(consoleDropDownOffset_);
-
     if (!pConsoleDropDown_ || !hasChild(pConsoleDropDown_.get()))
         return;
 
