@@ -1,3 +1,18 @@
+# Line endings are LF, in the repository and in every working tree. Committing
+# CRLF once makes it stick: Git skips its own normalisation for a path whose
+# blob already has CRLF, so such a file stays that way through every later
+# commit until someone renormalises it explicitly.
+* text=auto eol=lf
+
+# Content that must reach disk byte for byte.
+*.png binary
+*.bmp binary
+*.ico binary
+*.ttf binary
+*.bin binary
+*.wav binary
+*.smk binary
+
+# Git LFS
 *.a filter=lfs diff=lfs merge=lfs -text
 *.so filter=lfs diff=lfs merge=lfs -text
-
