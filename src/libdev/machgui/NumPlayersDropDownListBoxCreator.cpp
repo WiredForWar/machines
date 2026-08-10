@@ -67,11 +67,11 @@ std::ostream& operator<<(std::ostream& o, const MachGuiNumPlayersDropDownListBox
 // virtual
 bool MachGuiNumPlayersDropDownListBoxCreator::doHandleNavigationKey(
     NavKey navKey,
-    MachGuiFocusCapableControl** pFocusCapableControl)
+    GuiDisplayable** ppNavFocus)
 {
-    bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey(navKey, pFocusCapableControl);
+    bool retValue = MachGuiDropDownListBoxCreator::doHandleNavigationKey(navKey, ppNavFocus);
 
-    if (navKey == MachGuiFocusCapableControl::UP_ARROW || navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    if (navKey == GuiDisplayable::NavKey::UP_ARROW || navKey == GuiDisplayable::NavKey::DOWN_ARROW)
     {
         GuiResourceString two(IDS_MENU_NUMPLAYERS2);
         GuiResourceString three(IDS_MENU_NUMPLAYERS3);

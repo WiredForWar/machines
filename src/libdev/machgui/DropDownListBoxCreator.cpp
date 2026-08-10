@@ -20,11 +20,12 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     MachGuiStartupScreens* pStartupScreens,
     int width)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
-    , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(false)
     , border_(false)
 {
+    setAcceptsFocus(true);
+
     TEST_INVARIANT;
 }
 
@@ -34,11 +35,12 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     int width,
     bool whiteFont)
     : GuiDisplayable(pParent, Gui::Box(0, 0, width, reqHeight()))
-    , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
     , border_(false)
 {
+    setAcceptsFocus(true);
+
     TEST_INVARIANT;
 }
 
@@ -50,11 +52,12 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     bool whiteFont,
     bool border)
     : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight()))
-    , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
     , border_(border)
 {
+    setAcceptsFocus(true);
+
     TEST_INVARIANT;
 }
 
@@ -166,7 +169,7 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& 
 // virtual
 bool MachGuiDropDownListBoxCreator::isFocusEnabled() const
 {
-    return isEnabled() && MachGuiFocusCapableControl::isFocusEnabled();
+    return isEnabled() && GuiDisplayable::isFocusEnabled();
 }
 
 // virtual
@@ -394,11 +397,11 @@ void MachGuiDropDownList::itemSelected(const std::string& text)
 }
 
 // virtual
-bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl**)
+bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, GuiDisplayable**)
 {
     bool retValue = false;
 
-    if (navKey == MachGuiFocusCapableControl::UP_ARROW)
+    if (navKey == GuiDisplayable::NavKey::UP_ARROW)
     {
         std::string previousItem;
         std::string currentItem;
@@ -427,7 +430,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
             retValue = true;
         }
     }
-    else if (navKey == MachGuiFocusCapableControl::DOWN_ARROW)
+    else if (navKey == GuiDisplayable::NavKey::DOWN_ARROW)
     {
         std::string nextItem;
         bool itemSelected = false;
@@ -462,7 +465,7 @@ bool MachGuiDropDownListBoxCreator::doHandleNavigationKey(NavKey navKey, MachGui
 // virtual
 void MachGuiDropDownListBoxCreator::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus(newValue);
+    GuiDisplayable::hasFocus(newValue);
 
     changed();
 }

@@ -32,12 +32,12 @@ MachGuiMenuButton::MachGuiMenuButton(
     unsigned int stringId,
     MachGui::ButtonEvent buttonEvent)
     : GuiDisplayable(pParent, box)
-    , MachGuiFocusCapableControl(pParent)
     , pRootParent_(pRootParent)
     , pStartupScreens_(pParent)
     , stringId_(stringId)
     , buttonEvent_(buttonEvent)
 {
+    setAcceptsFocus(true);
 
     TEST_INVARIANT;
 }
@@ -49,11 +49,12 @@ MachGuiMenuButton::MachGuiMenuButton(
     MachGui::ButtonEvent buttonEvent,
     GuiDisplayable* pParent)
     : GuiDisplayable(pParent, box)
-    , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , stringId_(stringId)
     , buttonEvent_(buttonEvent)
 {
+    setAcceptsFocus(true);
+
     pRootParent_ = static_cast<GuiRoot*>(pParent->findRoot(this));
     TEST_INVARIANT;
 }
@@ -209,7 +210,7 @@ uint MachGuiMenuButton::stringId() const
 // virtual
 bool MachGuiMenuButton::isFocusEnabled() const
 {
-    return !disabled_ && MachGuiFocusCapableControl::isFocusEnabled();
+    return !disabled_ && GuiDisplayable::isFocusEnabled();
 }
 
 // virtual
@@ -229,7 +230,7 @@ bool MachGuiMenuButton::executeControl()
 // virtual
 void MachGuiMenuButton::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus(newValue);
+    GuiDisplayable::hasFocus(newValue);
 
     changed();
 }

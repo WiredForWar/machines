@@ -63,6 +63,9 @@ GuiDisplayable::~GuiDisplayable()
     if (pParent_ != nullptr)
         pParent_->removeChild(this);
 
+    if (acceptsFocus_)
+        GuiManager::instance().removeFromFocusChain(this);
+
     GuiManager::instance().isBeingDeleted(this);
 }
 
@@ -833,3 +836,133 @@ GuiDisplayable* GuiDisplayable::findRoot(GuiDisplayable* current)
 //////////////////////////////////////////////////////////////////////
 
 /* End **************************************************************/
+
+//////////////////////////////////////////////////////////////////////
+
+bool GuiDisplayable::acceptsFocus() const
+{
+    return acceptsFocus_;
+}
+
+void GuiDisplayable::setAcceptsFocus(bool accepts)
+{
+    if (acceptsFocus_ == accepts)
+        return;
+
+    acceptsFocus_ = accepts;
+
+    if (accepts)
+        GuiManager::instance().addToFocusChain(this);
+    else
+        GuiManager::instance().removeFromFocusChain(this);
+}
+
+bool GuiDisplayable::isFocusEnabled() const
+{
+    return !focusSuppressed_;
+}
+
+bool GuiDisplayable::isFocusControl() const
+{
+    return hasFocus_ && !focusSuppressed_;
+}
+
+bool GuiDisplayable::hasFocusSet() const
+{
+    return hasFocus_;
+}
+
+void GuiDisplayable::hasFocus(bool newValue)
+{
+    hasFocus_ = newValue;
+}
+
+bool GuiDisplayable::executeControl()
+{
+    PRE(isFocusControl());
+    PRE(isFocusEnabled());
+
+    return false;
+}
+
+bool GuiDisplayable::doHandleNavigationKey(NavKey navKey, GuiDisplayable** ppNavFocus)
+{
+    switch (navKey)
+    {
+        case NavKey::LEFT_ARROW:
+            *ppNavFocus = pLeftNavControl_;
+            break;
+        case NavKey::RIGHT_ARROW:
+            *ppNavFocus = pRightNavControl_;
+            break;
+        case NavKey::UP_ARROW:
+            *ppNavFocus = pUpNavControl_;
+            break;
+        case NavKey::DOWN_ARROW:
+            *ppNavFocus = pDownNavControl_;
+            break;
+        case NavKey::TAB_BACKWARD:
+            *ppNavFocus = pTabBackwardNavControl_;
+            break;
+        case NavKey::TAB_FOWARD:
+            *ppNavFocus = pTabFowardNavControl_;
+            break;
+    }
+
+    return (*ppNavFocus != nullptr) && (*ppNavFocus)->isFocusEnabled();
+}
+
+void GuiDisplayable::setTabFowardNavControl(GuiDisplayable* pNewValue)
+{
+    pTabFowardNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::setTabBackwardDownNavControl(GuiDisplayable* pNewValue)
+{
+    pTabBackwardNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::setLeftNavControl(GuiDisplayable* pNewValue)
+{
+    pLeftNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::setRightNavControl(GuiDisplayable* pNewValue)
+{
+    pRightNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::setUpNavControl(GuiDisplayable* pNewValue)
+{
+    pUpNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::setDownNavControl(GuiDisplayable* pNewValue)
+{
+    pDownNavControl_ = pNewValue;
+}
+
+void GuiDisplayable::suppressFocus(bool newValue)
+{
+    focusSuppressed_ = newValue;
+}
+
+void GuiDisplayable::escapeControl(bool newValue)
+{
+    escapeControl_ = newValue;
+}
+
+bool GuiDisplayable::isEscapeControl() const
+{
+    return escapeControl_;
+}
+
+void GuiDisplayable::defaultControl(bool newValue)
+{
+    defaultControl_ = newValue;
+}
+
+bool GuiDisplayable::isDefaultControl() const
+{
+    return defaultControl_;
+}

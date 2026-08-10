@@ -12,9 +12,9 @@
 #pragma once
 
 #include "gui/Displayable.hpp"
-#include "machgui/FocusCapableControl.hpp"
 
 class GuiRoot;
+class MachGuiStartupScreens;
 
 namespace MachGui
 {
@@ -25,7 +25,6 @@ enum class ButtonEvent;
 
 class MachGuiMenuButton
     : public GuiDisplayable
-    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:
@@ -53,7 +52,7 @@ public:
     bool highlighted() const;
     uint stringId() const;
 
-    // Inherited from MachGuiFocusCapableControl...
+    // Inherited from GuiDisplayable...
     bool isFocusEnabled() const override;
 
     bool executeControl() override;
@@ -80,7 +79,7 @@ private:
     GuiRoot* pRootParent_;
 
     // TODO: Eliminate dependency. Still required for buttonAction and other GUI event handling
-    // Note: The TODO is blocked by MachGuiFocusCapableControl
+    // Note: The TODO is blocked by GuiDisplayable
     DECL_DEPRECATED MachGuiStartupScreens* pStartupScreens_;
 
     unsigned int stringId_{};

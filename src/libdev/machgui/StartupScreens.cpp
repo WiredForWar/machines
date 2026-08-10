@@ -40,7 +40,6 @@ inline constexpr bool cDemoVersion =
 #include "machgui/LoadSaveGameExtras.hpp"
 #include "machgui/SystemMessageHandler.hpp"
 #include "machgui/InGameChatMessages.hpp"
-#include "machgui/FocusCapableControl.hpp"
 #include "machgui/DispositionChangeNotifiable.hpp"
 #include "machgui/menus_helper.hpp"
 #include "machgui/InputRegistry.hpp"
@@ -1882,7 +1881,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         }
 
         // Do we have a control with focus that can respond to the key press?
-        processed = processed || doHandleFocusCapableControls(e);
+        processed = processed || doHandleFocusNavigation(e);
 
         // Are we dismissing a message box?
         if (! processed && pMsgBox_)
@@ -3459,28 +3458,7 @@ void MachGuiStartupScreens::initializeConsoleDropDown()
     consoleDropDownHandle_->trigger();
 }
 
-void MachGuiStartupScreens::addFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
-{
-    focusCapableControls_.push_back(pFocusCtrl);
-
-    // Focus defaults to first control registered
-    if (focusCapableControls_.size() == 1)
-    {
-        pFocusCtrl->hasFocus(true);
-    }
-}
-
-void MachGuiStartupScreens::removeFocusCapableControl(MachGuiFocusCapableControl* pFocusCtrl)
-{
-    FocusCapableControls::iterator i
-        = find(focusCapableControls_.begin(), focusCapableControls_.end(), pFocusCtrl);
-
-    ASSERT(i != focusCapableControls_.end(), "Trying to remove focusCapableControl which does not exist");
-
-    focusCapableControls_.erase(i);
-}
-
-bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
+bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
 {
     bool processed = false;
 
@@ -3499,16 +3477,18 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         || e.key() == Device::KeyCode::LEFT_ARROW || e.key() == Device::KeyCode::RIGHT_ARROW || e.key() == Device::KeyCode::ENTER
         || e.key() == Device::KeyCode::ESCAPE)
     {
-        MachGuiFocusCapableControl* pFocusControl = nullptr;
-        MachGuiFocusCapableControl* pNextFocusControl = nullptr;
-        MachGuiFocusCapableControl* pPreviousFocusControl = nullptr;
-        MachGuiFocusCapableControl* pCurrentFocusControl = nullptr;
-        MachGuiFocusCapableControl* pEscapeFocusControl = nullptr;
-        MachGuiFocusCapableControl* pDefaultFocusControl = nullptr;
+        const GuiManager::FocusChain& focusChain = GuiManager::instance().focusChain();
+
+        GuiDisplayable* pFocusControl = nullptr;
+        GuiDisplayable* pNextFocusControl = nullptr;
+        GuiDisplayable* pPreviousFocusControl = nullptr;
+        GuiDisplayable* pCurrentFocusControl = nullptr;
+        GuiDisplayable* pEscapeFocusControl = nullptr;
+        GuiDisplayable* pDefaultFocusControl = nullptr;
 
         // Find control with escape focus
-        for (FocusCapableControls::iterator escDefIter = focusCapableControls_.begin();
-             escDefIter != focusCapableControls_.end();
+        for (GuiManager::FocusChain::const_iterator escDefIter = focusChain.begin();
+             escDefIter != focusChain.end();
              ++escDefIter)
         {
             if ((*escDefIter)->isEscapeControl() && (*escDefIter)->isFocusEnabled())
@@ -3522,8 +3502,8 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
         }
 
         // Find control with focus
-        for (FocusCapableControls::iterator i = focusCapableControls_.begin();
-             i != focusCapableControls_.end() && ! pFocusControl;
+        for (GuiManager::FocusChain::const_iterator i = focusChain.begin();
+             i != focusChain.end() && !pFocusControl;
              ++i)
         {
             // Store previous focus control for navigation purposes
@@ -3541,7 +3521,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // Store next and previous focus control for default navigation purposes.
                 // Find next control that is not disabled
                 ++i;
-                while (i != focusCapableControls_.end() && ! pNextFocusControl)
+                while (i != focusChain.end() && !pNextFocusControl)
                 {
                     if ((*i)->isFocusEnabled())
                     {
@@ -3555,9 +3535,9 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // Need to loop back to begining
                 if (! pNextFocusControl)
                 {
-                    for (FocusCapableControls::iterator nextIter
-                         = focusCapableControls_.begin();
-                         nextIter != focusCapableControls_.end() && ! pNextFocusControl;
+                    for (GuiManager::FocusChain::const_iterator nextIter
+                         = focusChain.begin();
+                         nextIter != focusChain.end() && !pNextFocusControl;
                          ++nextIter)
                     {
                         if ((*nextIter)->isFocusEnabled())
@@ -3571,9 +3551,9 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
                 // list of controls and find the last non-disabled control.
                 if (! pPreviousFocusControl)
                 {
-                    for (FocusCapableControls::iterator prevIter
-                         = focusCapableControls_.begin();
-                         prevIter != focusCapableControls_.end();
+                    for (GuiManager::FocusChain::const_iterator prevIter
+                         = focusChain.begin();
+                         prevIter != focusChain.end();
                          ++prevIter)
                     {
                         if ((*prevIter)->isFocusEnabled())
@@ -3619,29 +3599,29 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
             {
                 processed = true;
 
-                MachGuiFocusCapableControl::NavKey navKey = MachGuiFocusCapableControl::DOWN_ARROW;
+                GuiDisplayable::NavKey navKey = GuiDisplayable::NavKey::DOWN_ARROW;
                 switch (e.key())
                 {
                     case Device::KeyCode::UP_ARROW:
-                        navKey = MachGuiFocusCapableControl::UP_ARROW;
+                        navKey = GuiDisplayable::NavKey::UP_ARROW;
                         break;
                     case Device::KeyCode::DOWN_ARROW:
-                        navKey = MachGuiFocusCapableControl::DOWN_ARROW;
+                        navKey = GuiDisplayable::NavKey::DOWN_ARROW;
                         break;
                     case Device::KeyCode::RIGHT_ARROW:
-                        navKey = MachGuiFocusCapableControl::RIGHT_ARROW;
+                        navKey = GuiDisplayable::NavKey::RIGHT_ARROW;
                         break;
                     case Device::KeyCode::LEFT_ARROW:
-                        navKey = MachGuiFocusCapableControl::LEFT_ARROW;
+                        navKey = GuiDisplayable::NavKey::LEFT_ARROW;
                         break;
                     case Device::KeyCode::TAB:
                         if (e.isShiftPressed())
                         {
-                            navKey = MachGuiFocusCapableControl::TAB_BACKWARD;
+                            navKey = GuiDisplayable::NavKey::TAB_BACKWARD;
                         }
                         else
                         {
-                            navKey = MachGuiFocusCapableControl::TAB_FOWARD;
+                            navKey = GuiDisplayable::NavKey::TAB_FOWARD;
                         }
                         break;
                         DEFAULT_ASSERT_BAD_CASE(static_cast<int>(e.key()));
@@ -3649,7 +3629,7 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
                 // Allow current focus control to control the navigation otherwise dropback to
                 // default navigation behaivour
-                MachGuiFocusCapableControl* pNewFocusControl = nullptr;
+                GuiDisplayable* pNewFocusControl = nullptr;
                 if (pFocusControl->doHandleNavigationKey(navKey, &pNewFocusControl))
                 {
                     if (pNewFocusControl)
@@ -3666,14 +3646,14 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
                     switch (navKey)
                     {
-                        case MachGuiFocusCapableControl::UP_ARROW:
-                        case MachGuiFocusCapableControl::LEFT_ARROW:
-                        case MachGuiFocusCapableControl::TAB_BACKWARD:
+                        case GuiDisplayable::NavKey::UP_ARROW:
+                        case GuiDisplayable::NavKey::LEFT_ARROW:
+                        case GuiDisplayable::NavKey::TAB_BACKWARD:
                             pPreviousFocusControl->hasFocus(true);
                             break;
-                        case MachGuiFocusCapableControl::DOWN_ARROW:
-                        case MachGuiFocusCapableControl::RIGHT_ARROW:
-                        case MachGuiFocusCapableControl::TAB_FOWARD:
+                        case GuiDisplayable::NavKey::DOWN_ARROW:
+                        case GuiDisplayable::NavKey::RIGHT_ARROW:
+                        case GuiDisplayable::NavKey::TAB_FOWARD:
                             pNextFocusControl->hasFocus(true);
                             break;
                     }
@@ -3694,11 +3674,13 @@ bool MachGuiStartupScreens::doHandleFocusCapableControls(const GuiKeyEvent& e)
 
 void MachGuiStartupScreens::messageBoxHasFocus(bool newValue)
 {
-    for (FocusCapableControls::iterator iter = focusCapableControls_.begin();
-         iter != focusCapableControls_.end();
+    const GuiManager::FocusChain& focusChain = GuiManager::instance().focusChain();
+
+    for (GuiManager::FocusChain::const_iterator iter = focusChain.begin();
+         iter != focusChain.end();
          ++iter)
     {
-        (*iter)->msgBoxIsDisplayed(newValue);
+        (*iter)->suppressFocus(newValue);
     }
 }
 

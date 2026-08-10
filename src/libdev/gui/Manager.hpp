@@ -105,6 +105,12 @@ public:
     void removeCharFocus();
     // POST( not charFocusExists() );
 
+    // The displayables that accept the keyboard focus, in the order they said so.
+    // Keyboard navigation walks it, and the first to join takes the focus.
+    using FocusChain = ctl_vector<GuiDisplayable*>;
+
+    const FocusChain& focusChain() const;
+
 private:
     GuiManager(const GuiManager&) = delete;
     bool operator==(const GuiManager&) const = delete;
@@ -128,12 +134,16 @@ private:
 
     static constexpr int N_BUFFERS = 2;
 
+    void addToFocusChain(GuiDisplayable* pDisplayable);
+    void removeFromFocusChain(GuiDisplayable* pDisplayable);
+
     // Data members
     GuiColourScheme colourScheme_ = GuiColourScheme::defaultScheme();
     GuiRoot* pRoot_{};
     GuiDisplayable* pMouseFocus_{};
     GuiDisplayable* pKeyboardFocus_{};
     GuiDisplayable* pCharacterFocus_{};
+    FocusChain focusChain_{};
 
     friend class GuiDisplayable;
     friend void GuiRoot::becomeRoot();

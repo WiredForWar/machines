@@ -215,6 +215,65 @@ public:
     // Does this GuiDisplayable want to receive mouse enter, exit and contains messages
     virtual bool processesMouseEvents() const;
 
+    ///////////////////////////////
+    // Keyboard focus.
+    //
+    // A displayable joins the focus chain by accepting the focus, and is offered
+    // the keys in the order the members of that chain accepted it. Exactly one of
+    // them holds the focus at a time.
+
+    enum class NavKey
+    {
+        TAB_FOWARD,
+        TAB_BACKWARD,
+        UP_ARROW,
+        DOWN_ARROW,
+        LEFT_ARROW,
+        RIGHT_ARROW,
+    };
+
+    bool acceptsFocus() const;
+    void setAcceptsFocus(bool);
+
+    // False while the displayable cannot be reached, either because it is in no
+    // state to be used or because something in front of it is taking the keys.
+    virtual bool isFocusEnabled() const;
+
+    // True when this is the displayable the keys are going to.
+    virtual bool isFocusControl() const;
+
+    bool hasFocusSet() const;
+    virtual void hasFocus(bool);
+
+    // Enter activates the displayable holding the focus. Answer true to consume it.
+    virtual bool executeControl();
+    // PRE( isFocusControl() );
+    // PRE( isFocusEnabled() );
+
+    // Answer a navigation key by naming the displayable to move to. Answer false
+    // to be moved along the chain instead.
+    virtual bool doHandleNavigationKey(NavKey, GuiDisplayable** ppNavFocus);
+
+    // Override where the arrow and tab keys lead. Unset, they follow the chain.
+    void setTabFowardNavControl(GuiDisplayable*);
+    void setTabBackwardDownNavControl(GuiDisplayable*);
+    void setLeftNavControl(GuiDisplayable*);
+    void setRightNavControl(GuiDisplayable*);
+    void setUpNavControl(GuiDisplayable*);
+    void setDownNavControl(GuiDisplayable*);
+
+    // Withhold the focus for as long as something in front is taking the keys.
+    void suppressFocus(bool);
+
+    // The displayable Escape reaches, whichever one holds the focus.
+    void escapeControl(bool);
+    bool isEscapeControl() const;
+
+    // The displayable Enter falls back to when the one holding the focus
+    // does not consume it.
+    void defaultControl(bool);
+    bool isDefaultControl() const;
+
 #ifndef _PRODUCTION_RELEASE
     virtual const char* description() const;
 #endif
@@ -320,6 +379,19 @@ private:
     Children children_[NUM_LAYERS];
     Children allChildren_;
     bool useFastSecondDisplay_ = true;
+
+    bool acceptsFocus_{};
+    bool hasFocus_{};
+    bool focusSuppressed_{};
+    bool escapeControl_{};
+    bool defaultControl_{};
+
+    GuiDisplayable* pTabFowardNavControl_{};
+    GuiDisplayable* pTabBackwardNavControl_{};
+    GuiDisplayable* pLeftNavControl_{};
+    GuiDisplayable* pRightNavControl_{};
+    GuiDisplayable* pUpNavControl_{};
+    GuiDisplayable* pDownNavControl_{};
 };
 
 //////////////////////////////////////////////////////////////////////

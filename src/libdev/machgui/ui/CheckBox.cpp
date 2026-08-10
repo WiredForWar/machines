@@ -24,7 +24,6 @@ MachGuiCheckBox::MachGuiCheckBox(
     : GuiDisplayable(
         pParent,
         box)
-    , MachGuiFocusCapableControl(pStartupScreens)
     , label_(label)
     , font_(Gui::getFont(MachGui::Menu::smallFontLight()))
     , checkBmp_(MachGui::getScaledImage("gui/menu/check.bmp", MachGui::menuScaleFactor()))
@@ -34,6 +33,8 @@ MachGuiCheckBox::MachGuiCheckBox(
     , checkHighlightBmp_(MachGui::getScaledImage("gui/menu/checkh.bmp", MachGui::menuScaleFactor()))
     , uncheckHighlightBmp_(MachGui::getScaledImage("gui/menu/uncheckh.bmp", MachGui::menuScaleFactor()))
 {
+    setAcceptsFocus(true);
+
     checkBmp_.enableColourKeying();
     uncheckBmp_.enableColourKeying();
     checkFocusBmp_.enableColourKeying();
@@ -153,7 +154,7 @@ bool MachGuiCheckBox::executeControl()
 // virtual
 void MachGuiCheckBox::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus(newValue);
+    GuiDisplayable::hasFocus(newValue);
 
     changed();
 }

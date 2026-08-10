@@ -15,7 +15,6 @@
 #include "base/base.hpp"
 #include "gui/Root.hpp"
 #include "gui/SingleSelectionListBox.hpp"
-#include "machgui/FocusCapableControl.hpp"
 #include "ctl/PtrVector.hpp"
 
 #include <optional>
@@ -25,7 +24,6 @@ class MachGuiSingleSelectionListBoxItem;
 
 class MachGuiSingleSelectionListBox
     : public GuiSingleSelectionListBox
-    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:
@@ -46,7 +44,7 @@ public:
     void removeListItem(MachGuiSingleSelectionListBoxItem* pItem);
     std::optional<std::size_t> getCurrentItemIndex() const;
 
-    bool doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl** ppNavFocusControl) override;
+    bool doHandleNavigationKey(NavKey navKey, GuiDisplayable** ppNavFocusControl) override;
     void hasFocus(bool newValue) override;
 
     bool isFocusEnabled() const override;

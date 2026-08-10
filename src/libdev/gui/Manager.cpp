@@ -200,6 +200,31 @@ GuiDisplayable& GuiManager::keyboardFocus()
     return *pKeyboardFocus_;
 }
 
+const GuiManager::FocusChain& GuiManager::focusChain() const
+{
+    return focusChain_;
+}
+
+void GuiManager::addToFocusChain(GuiDisplayable* pDisplayable)
+{
+    PRE(pDisplayable != nullptr);
+
+    focusChain_.push_back(pDisplayable);
+
+    // The first to join is the one the keys go to until something moves them.
+    if (focusChain_.size() == 1)
+        pDisplayable->hasFocus(true);
+}
+
+void GuiManager::removeFromFocusChain(GuiDisplayable* pDisplayable)
+{
+    FocusChain::iterator i = std::find(focusChain_.begin(), focusChain_.end(), pDisplayable);
+
+    ASSERT(i != focusChain_.end(), "Removing a displayable that is not in the focus chain");
+
+    focusChain_.erase(i);
+}
+
 //////////////////////////////////////////////////////////////////////
 
 bool GuiManager::update()

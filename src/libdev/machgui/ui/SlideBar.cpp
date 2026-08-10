@@ -23,11 +23,12 @@ MachGuiSlideBar::MachGuiSlideBar(
     float minVal,
     float maxVal)
     : GuiDisplayable(pParent, Gui::Box(topLeft, width, reqHeight()))
-    , MachGuiFocusCapableControl(pStartupScreens)
     , minValue_(minVal)
     , maxValue_(maxVal)
     , highlighted_(false)
 {
+    setAcceptsFocus(true);
+
     barPos_ = 1.0 * MachGui::menuScaleFactor();
 
     POST_INFO(value());
@@ -43,9 +44,10 @@ MachGuiSlideBar::MachGuiSlideBar(
     Gui::Coord topLeft,
     size_t width)
     : GuiDisplayable(pParent, Gui::Box(topLeft, width, reqHeight()))
-    , MachGuiFocusCapableControl(pStartupScreens)
     , highlighted_(false)
 {
+    setAcceptsFocus(true);
+
     minValue_ = 0.0;
     maxValue_ = 1.0;
     barPos_ = 1.0 * MachGui::menuScaleFactor();
@@ -254,11 +256,11 @@ void MachGuiSlideBar::barMoved(Gui::XCoord newBarPos)
 }
 
 // virtual
-bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableControl**)
+bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, GuiDisplayable**)
 {
     bool retValue = false;
 
-    if (navKey == MachGuiFocusCapableControl::RIGHT_ARROW)
+    if (navKey == GuiDisplayable::NavKey::RIGHT_ARROW)
     {
         double incAmount = (maxValue_ - minValue_) / 100.0;
         double newValue = value() + incAmount;
@@ -272,7 +274,7 @@ bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableCo
 
         retValue = true;
     }
-    else if (navKey == MachGuiFocusCapableControl::LEFT_ARROW)
+    else if (navKey == GuiDisplayable::NavKey::LEFT_ARROW)
     {
         double decAmount = (maxValue_ - minValue_) / 100.0;
         double newValue = value() - decAmount;
@@ -293,7 +295,7 @@ bool MachGuiSlideBar::doHandleNavigationKey(NavKey navKey, MachGuiFocusCapableCo
 // virtual
 void MachGuiSlideBar::hasFocus(bool newValue)
 {
-    MachGuiFocusCapableControl::hasFocus(newValue);
+    GuiDisplayable::hasFocus(newValue);
 
     changed();
 }

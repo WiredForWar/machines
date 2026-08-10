@@ -37,7 +37,7 @@ protected:
         const ctl_vector<std::string>& itemText,
         MachGuiDropDownListBoxCreator*) override;
 
-    bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
+    bool doHandleNavigationKey(NavKey, GuiDisplayable**) override;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiNumPlayersDropDownListBoxCreator& t);

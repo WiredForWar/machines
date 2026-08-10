@@ -14,7 +14,6 @@
 
 #include "base/base.hpp"
 #include "gui/Displayable.hpp"
-#include "machgui/FocusCapableControl.hpp"
 
 #include <functional>
 
@@ -22,7 +21,6 @@ class MachGuiStartupScreens;
 
 class MachGuiSlideBar
     : public GuiDisplayable
-    , public MachGuiFocusCapableControl
 // Canonical form revoked
 {
 public:
@@ -63,7 +61,7 @@ public:
 
     static size_t reqHeight();
 
-    bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
+    bool doHandleNavigationKey(NavKey, GuiDisplayable**) override;
 
     void hasFocus(bool newValue) override;
 
