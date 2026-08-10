@@ -8,7 +8,9 @@
 
 #include "base/base.hpp"
 #include "ctl/MinMemoryVector.hpp"
-class RenIVertex;
+// The base class has a virtual destructor, so defining RenIPoints instantiates
+// it, and with it the vector destructor that wants a complete vertex type.
+#include "render/internal/VertexData.hpp"
 
 class RenIPoints : public ctl_min_memory_vector<RenIVertex>
 {
