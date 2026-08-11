@@ -32,6 +32,11 @@ void MachGuiText::setTextOffset(Gui::Coord offset)
     textOffset_ = offset;
 }
 
+Gui::Size MachGuiText::sizeHint() const
+{
+    return Gui::Size(font_.horizontalAdvance(text_) + textOffset_.x(), font_.height() + textOffset_.y());
+}
+
 // virtual
 void MachGuiText::doDisplay()
 {

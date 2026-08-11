@@ -121,3 +121,16 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_ResizeInPlace_LeavesTheChi
     EXPECT_EQ(12, pChild->absoluteBoundary().minCorner().x());
     EXPECT_EQ(12, pChild->absoluteBoundary().minCorner().y());
 }
+
+TEST(GuiDisplayableGeometryTests, SizeHint_WhenNothingMeasuresItself_IsTheSizeItWasGiven)
+{
+    TestRoot root(Gui::Box(0, 0, 200, 200));
+    auto* pItem = new TestDisplayable(&root, Gui::Box(10, 10, 50, 40));
+
+    EXPECT_EQ(Gui::Size(40, 30), pItem->sizeHint());
+    EXPECT_EQ(pItem->sizeHint(), pItem->minimumSizeHint());
+
+    pItem->setRelativeBoundary(Gui::Box(10, 10, 110, 60));
+
+    EXPECT_EQ(Gui::Size(100, 50), pItem->sizeHint());
+}

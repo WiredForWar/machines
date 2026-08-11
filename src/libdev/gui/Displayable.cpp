@@ -619,6 +619,16 @@ void GuiDisplayable::doResized()
 {
 }
 
+Gui::Size GuiDisplayable::sizeHint() const
+{
+    return size();
+}
+
+Gui::Size GuiDisplayable::minimumSizeHint() const
+{
+    return sizeHint();
+}
+
 const Gui::Boundary& GuiDisplayable::relativeBoundary() const
 {
     return relativeBox_;

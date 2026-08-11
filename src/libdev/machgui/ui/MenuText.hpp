@@ -35,6 +35,9 @@ public:
 
     void CLASS_INVARIANT;
 
+    // The size the text needs as it is already broken into lines.
+    Gui::Size sizeHint() const override;
+
     static strings chopUpText(const std::string& text, size_t maxWidth, const GuiBmpFont& font);
     static strings chopUpText(
         const std::string& text, size_t maxWidth, const Ren::Font& font, const Ren::TextOptions& options);
@@ -47,6 +50,9 @@ private:
 
     MachGuiMenuText(const MachGuiMenuText&) = delete;
     MachGuiMenuText& operator=(const MachGuiMenuText&) = delete;
+
+    std::size_t lineWidth(const std::string& line) const;
+    std::size_t textHeight() const;
 
     SysPathName bitmapFontPath_;
     int fontHeight_{};

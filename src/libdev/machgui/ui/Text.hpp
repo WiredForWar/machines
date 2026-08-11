@@ -24,6 +24,9 @@ public:
 
     static size_t reqHeight();
 
+    // The size the text needs on one line.
+    Gui::Size sizeHint() const override;
+
     void doDisplay() override;
 
     void setTextOffset(Gui::Coord offset);
