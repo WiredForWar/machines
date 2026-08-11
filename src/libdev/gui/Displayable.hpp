@@ -146,6 +146,13 @@ public:
     // the size changed.
     void setRelativeBoundary(const Gui::Boundary& boundary);
 
+    // The size this displayable would like, and the smallest it can be shown at
+    // and still make sense. A displayable that can measure its own content says
+    // so here; one that cannot asks for the size it already has, which is what
+    // whoever built it chose.
+    virtual Gui::Size sizeHint() const;
+    virtual Gui::Size minimumSizeHint() const;
+
     bool contains(Gui::XCoord x, Gui::YCoord y) const;
     // POST( iff( result, boundary().contains( Gui::Coord( x, y ) ) ) );
 

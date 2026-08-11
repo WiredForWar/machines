@@ -266,13 +266,36 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t)
     return o;
 }
 
+std::size_t MachGuiMenuText::lineWidth(const std::string& line) const
+{
+    if (font_)
+        return static_cast<std::size_t>(font_->horizontalAdvance(line, textOptions_));
+
+    return static_cast<std::size_t>(Gui::getFont(bitmapFontPath_).horizontalAdvance(line));
+}
+
+std::size_t MachGuiMenuText::textHeight() const
+{
+    if (strings_.empty())
+        return 0;
+
+    const std::size_t lineSpacing = 1 * MachGui::menuScaleFactor();
+    return (strings_.size() * (fontHeight_ + lineSpacing)) - lineSpacing;
+}
+
+Gui::Size MachGuiMenuText::sizeHint() const
+{
+    std::size_t widest = 0;
+    for (const std::string& line : strings_)
+        widest = std::max(widest, lineWidth(line));
+
+    return Gui::Size(widest, textHeight());
+}
+
 // virtual
 void MachGuiMenuText::doDisplay()
 {
-    // The spacing goes between the lines, so there is one less of it than there are lines.
-    const std::size_t lineSpacing = 1 * MachGui::menuScaleFactor();
-    const std::size_t totalHeight
-        = strings_.empty() ? 0 : (strings_.size() * (fontHeight_ + lineSpacing)) - lineSpacing;
+    const std::size_t totalHeight = textHeight();
 
     ASSERT_INFO(totalHeight);
     ASSERT_INFO(height());
