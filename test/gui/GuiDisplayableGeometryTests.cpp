@@ -1,60 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "gui/Displayable.hpp"
-#include "gui/Root.hpp"
-
-//////////////////////////////////////////////////////////////////////////////
-
-namespace
-{
-
-// A displayable with nothing to draw, so that geometry can be exercised without
-// a render device.
-class TestDisplayable : public GuiDisplayable
-{
-public:
-    TestDisplayable(GuiDisplayable* pParent, const Gui::Box& box)
-        : GuiDisplayable(pParent, box)
-    {
-    }
-
-    int resizeCount() const { return resizeCount_; }
-
-protected:
-    void doDisplay() override { }
-
-    void doResized() override { ++resizeCount_; }
-
-private:
-    int resizeCount_{};
-};
-
-// Only a root may be built without a parent to place it against.
-class TestRoot : public GuiRoot
-{
-public:
-    explicit TestRoot(const Gui::Box& box)
-        : GuiRoot(box)
-    {
-    }
-
-protected:
-    void doDisplay() override { }
-    void update() override { }
-    bool doHandleRightClickEvent(const GuiMouseEvent&) override { return false; }
-    void doBecomeRoot() override { }
-    void doBecomeNotRoot() override { }
-};
-
-} // namespace
+#include "TestDisplayable.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 
 TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Move_TakesTheChildrenAlong)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pParent = new TestDisplayable(&root, Gui::Box(10, 10, 50, 50));
-    auto* pChild = new TestDisplayable(pParent, Gui::Box(2, 3, 8, 9));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pParent = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 50));
+    auto* pChild = new GuiTest::Displayable(pParent, Gui::Box(2, 3, 8, 9));
 
     ASSERT_EQ(12, pChild->absoluteBoundary().minCorner().x());
     ASSERT_EQ(13, pChild->absoluteBoundary().minCorner().y());
@@ -72,10 +26,10 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Move_TakesTheChildrenAlong
 
 TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Move_ReachesAGrandchild)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pParent = new TestDisplayable(&root, Gui::Box(10, 10, 50, 50));
-    auto* pChild = new TestDisplayable(pParent, Gui::Box(2, 2, 20, 20));
-    auto* pGrandchild = new TestDisplayable(pChild, Gui::Box(1, 1, 5, 5));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pParent = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 50));
+    auto* pChild = new GuiTest::Displayable(pParent, Gui::Box(2, 2, 20, 20));
+    auto* pGrandchild = new GuiTest::Displayable(pChild, Gui::Box(1, 1, 5, 5));
 
     ASSERT_EQ(13, pGrandchild->absoluteBoundary().minCorner().x());
 
@@ -86,8 +40,8 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Move_ReachesAGrandchild)
 
 TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Resize_ReportsTheNewSize)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pItem = new TestDisplayable(&root, Gui::Box(10, 10, 50, 50));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pItem = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 50));
 
     ASSERT_EQ(0, pItem->resizeCount());
 
@@ -100,8 +54,8 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_Resize_ReportsTheNewSize)
 
 TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_MoveOnly_IsNotAResize)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pItem = new TestDisplayable(&root, Gui::Box(10, 10, 50, 50));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pItem = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 50));
 
     pItem->setRelativeBoundary(Gui::Box(20, 20, 60, 60));
 
@@ -110,9 +64,9 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_MoveOnly_IsNotAResize)
 
 TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_ResizeInPlace_LeavesTheChildrenWhereTheyWere)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pParent = new TestDisplayable(&root, Gui::Box(10, 10, 50, 50));
-    auto* pChild = new TestDisplayable(pParent, Gui::Box(2, 2, 8, 8));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pParent = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 50));
+    auto* pChild = new GuiTest::Displayable(pParent, Gui::Box(2, 2, 8, 8));
 
     // The corner the children are placed against has not moved, so a displayable
     // that does not arrange its children has nothing to do.
@@ -124,8 +78,8 @@ TEST(GuiDisplayableGeometryTests, SetRelativeBoundary_ResizeInPlace_LeavesTheChi
 
 TEST(GuiDisplayableGeometryTests, SizeHint_WhenNothingMeasuresItself_IsTheSizeItWasGiven)
 {
-    TestRoot root(Gui::Box(0, 0, 200, 200));
-    auto* pItem = new TestDisplayable(&root, Gui::Box(10, 10, 50, 40));
+    GuiTest::Root root(Gui::Box(0, 0, 200, 200));
+    auto* pItem = new GuiTest::Displayable(&root, Gui::Box(10, 10, 50, 40));
 
     EXPECT_EQ(Gui::Size(40, 30), pItem->sizeHint());
     EXPECT_EQ(pItem->sizeHint(), pItem->minimumSizeHint());

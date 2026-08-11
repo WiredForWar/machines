@@ -24,6 +24,8 @@ set(GUI_SOURCES
     IconSequence.hpp
     Image.cpp
     Image.hpp
+    Layout.cpp
+    Layout.hpp
     internal/FontCore.hpp
     ListObserver.cpp
     ListObserver.hpp
