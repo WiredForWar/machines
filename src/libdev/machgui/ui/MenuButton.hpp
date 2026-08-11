@@ -46,18 +46,13 @@ public:
 
     void CLASS_INVARIANT;
 
-    // Disable/Enable the button.
-    void disabled(bool);
-
     bool highlighted() const;
     uint stringId() const;
 
     // Inherited from GuiDisplayable...
-    bool isFocusEnabled() const override;
-
     bool executeControl() override;
     // PRE( hasFocus() );
-    // PRE( not isDisabled() );
+    // PRE( isEnabled() );
 
     void hasFocus(bool) override;
 
@@ -68,6 +63,9 @@ protected:
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override;
     void doHandleMouseEnterEvent(const GuiMouseEvent& rel) override;
     void doDisplay() override;
+
+    // A button being switched off is not being pressed or pointed at any more.
+    void doEnabledChanged() override;
 
 private:
     friend std::ostream& operator<<(std::ostream& o, const MachGuiMenuButton& t);
@@ -84,7 +82,6 @@ private:
     unsigned int stringId_{};
     bool highlighted_{};
     bool flash_{};
-    bool disabled_{};
     bool msgBoxButton_{};
     MachGui::ButtonEvent buttonEvent_;
 };

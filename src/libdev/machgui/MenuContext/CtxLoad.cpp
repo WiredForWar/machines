@@ -215,7 +215,7 @@ void MachGuiCtxLoad::updateSaveGameList()
         pOkBtn_->hasFocus(true);
         pDeleteBtn_->hasFocus(false);
     }
-    pDeleteBtn_->disabled(true);
+    pDeleteBtn_->setEnabled(false);
 
     pSelectedSaveGame_ = nullptr;
     pSaveGameList_->deleteAllItems();
@@ -314,7 +314,7 @@ void MachGuiCtxLoad::buttonEvent(MachGui::ButtonEvent be)
 void MachGuiCtxLoad::selectedSaveGame(MachGuiDbSavedGame* pSavedGame)
 {
     pSelectedSaveGame_ = pSavedGame;
-    pDeleteBtn_->disabled(false);
+    pDeleteBtn_->setEnabled(true);
 }
 
 void MachGuiCtxLoad::deleteSavedGame()

@@ -66,13 +66,13 @@ MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreen
         MachGui::ButtonEvent::RESTART);
 
 #ifdef DEMO
-    pStatisticsButton->disabled(true);
+    pStatisticsButton->setEnabled(false);
     pStatisticsButton->hasFocus(false);
     pContinueButton->hasFocus(true);
 #endif
 
     if (pStartupScreens->currentContext() == MachGuiStartupScreens::CTX_MPDEBRIEFING)
-        pRestartButton->disabled(true);
+        pRestartButton->setEnabled(false);
 
     displayDeBriefImage();
 

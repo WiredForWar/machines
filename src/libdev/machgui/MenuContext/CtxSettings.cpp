@@ -186,7 +186,7 @@ MachGuiCtxSettings::MachGuiCtxSettings(MachGuiStartupScreens* pStartupScreens)
     // Disable OK button if we are not the host
     if (! pStartupScreens_->startupData()->isHost())
     {
-        pOKBtn->disabled(true);
+        pOKBtn->setEnabled(false);
         pOKBtn->hasFocus(false);
         pCancelBtn->hasFocus(true);
     }

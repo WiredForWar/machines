@@ -329,9 +329,9 @@ void MachGuiCtxImReady::update()
     // Disable interactive buttons while connection is in progress
     if (joining)
     {
-        pImReadyButton_->disabled(true);
-        pStartButton_->disabled(true);
-        pSettingsButton_->disabled(true);
+        pImReadyButton_->setEnabled(false);
+        pStartButton_->setEnabled(false);
+        pSettingsButton_->setEnabled(false);
         pSingleLineEditBox_->setEnabled(false);
     }
 
@@ -511,7 +511,7 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
     if (startupData().isHost())
     {
         // Isn't used by host...
-        pImReadyButton_->disabled(true);
+        pImReadyButton_->setEnabled(false);
     }
     else
     {
@@ -519,20 +519,20 @@ void MachGuiCtxImReady::updateStartAndReadyButtons()
         if (! startupData().includedInGame() || startupData().terminalMultiPlayerGameProblem())
         {
             pImReadyButton_->setReady(false);
-            pImReadyButton_->disabled(true);
+            pImReadyButton_->setEnabled(false);
         }
         else
         {
             bool ready = startupData().isReady(startupData().playerName());
             pImReadyButton_->setReady(ready);
-            pImReadyButton_->disabled(false);
+            pImReadyButton_->setEnabled(true);
         }
     }
 
     // Update start button
-    pStartButton_->disabled(! startupData().canStartMultiPlayerGame());
+    pStartButton_->setEnabled(startupData().canStartMultiPlayerGame());
 
-    pSettingsButton_->disabled(startupData().terminalMultiPlayerGameProblem());
+    pSettingsButton_->setEnabled(!startupData().terminalMultiPlayerGameProblem());
     pSingleLineEditBox_->setEnabled(true);
 }
 
