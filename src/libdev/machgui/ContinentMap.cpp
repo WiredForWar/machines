@@ -102,11 +102,8 @@ protected:
     {
         GuiBitmapButtonWithFilledBorder::doHandleMouseEnterEvent(mouseEvent);
 
-        // Load the resource string
-        GuiResourceString prompt(IDS_TERRAINONOFF);
-
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(IDS_TERRAINONOFF);
     }
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
     {
@@ -173,33 +170,24 @@ protected:
     {
         PRE(pMap_);
 
-        std::string promptStr;
+        Gui::StringId promptId{};
 
         switch (pMap_->mapMode())
         {
             case MachContinentMap::UNITS_ONLY:
-                {
-                    GuiResourceString prompt(IDS_MAPMODERESOURCE);
-                    promptStr = prompt.asString();
-                    break;
-                }
+                promptId = IDS_MAPMODERESOURCE;
+                break;
             case MachContinentMap::RESOURCES_ONLY:
-                {
-                    GuiResourceString prompt(IDS_MAPMODEALL);
-                    promptStr = prompt.asString();
-                    break;
-                }
+                promptId = IDS_MAPMODEALL;
+                break;
             case MachContinentMap::ALL:
-                {
-                    GuiResourceString prompt(IDS_MAPMODEUNITS);
-                    promptStr = prompt.asString();
-                    break;
-                }
+                promptId = IDS_MAPMODEUNITS;
+                break;
                 DEFAULT_ASSERT_BAD_CASE(pMap_->mapMode());
         }
 
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(promptStr);
+        pInGameScreen_->setCursorPromptText(promptId);
     }
 
     void doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent) override

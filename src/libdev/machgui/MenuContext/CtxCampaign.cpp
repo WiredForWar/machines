@@ -420,15 +420,8 @@ void MachGuiCtxCampaign::displayCurrentStatus()
     // Only display information if a player has been selected
     if (pSelectedPlayer_)
     {
-        // Load resource strings
-        GuiResourceString scenarioStr(IDS_MENU_STATUSSCENARIO);
-        GuiResourceString scoreStr(IDS_MENU_STATUSSCORE);
-        GuiResourceString numScenariosPlayedStr(IDS_MENU_STATUSNUMSCENARIOS);
-        GuiResourceString totalScoreStr(IDS_MENU_STATUSTOTALSCORE);
-        GuiResourceString lastScenarioGuiStr(IDS_MENU_STATUSNOTPLAYED);
-
         // Default text
-        std::string lastScenarioStr(lastScenarioGuiStr.asString());
+        std::string lastScenarioStr(GuiResourceString(IDS_MENU_STATUSNOTPLAYED).asString());
         std::string lastScoreStr("0");
         std::string numScenariosPlayed("0");
         std::string totalScore("0");
@@ -472,7 +465,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         pScenarioText_ = new MachGuiMenuText(
             pStartupScreens_,
             scenarioTextBox,
-            scenarioStr.asString(),
+            IDS_MENU_STATUSSCENARIO,
             MachGui::Menu::smallFontLight(),
             Gui::AlignLeft);
 
@@ -505,7 +498,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         pScoreText_ = new MachGuiMenuText(
             pStartupScreens_,
             scoreTextBox,
-            scoreStr.asString(),
+            IDS_MENU_STATUSSCORE,
             MachGui::Menu::smallFontLight(),
             Gui::AlignLeft);
 
@@ -537,7 +530,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         pNumScenariosPlayedText_ = new MachGuiMenuText(
             pStartupScreens_,
             numScenariosPlayedStrBox,
-            numScenariosPlayedStr.asString(),
+            IDS_MENU_STATUSNUMSCENARIOS,
             MachGui::Menu::smallFontLight(),
             Gui::AlignLeft);
 
@@ -571,7 +564,7 @@ void MachGuiCtxCampaign::displayCurrentStatus()
         pTotalScoreHeadingText_ = new MachGuiMenuText(
             pStartupScreens_,
             totalScoreStrBox,
-            totalScoreStr.asString(),
+            IDS_MENU_STATUSTOTALSCORE,
             MachGui::Menu::smallFontLight(),
             Gui::AlignLeft);
 

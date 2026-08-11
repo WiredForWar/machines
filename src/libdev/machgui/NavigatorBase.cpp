@@ -61,11 +61,8 @@ public:
     {
         GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-        // Load the string for the command
-        GuiResourceString prompt(IDS_CLOSE_NAV);
-
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(IDS_CLOSE_NAV);
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

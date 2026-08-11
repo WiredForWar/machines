@@ -15,7 +15,6 @@
 #include "machgui/gui.hpp"
 #include "machgui/NavigatorBase.hpp"
 #include "machgui/InGameScreen.hpp"
-#include "gui/ResourceString.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machlog/Races.hpp"
@@ -63,19 +62,13 @@ protected:
 
         if (pInGameScreen_->controlPanelOn())
         {
-            // Load the resource string
-            GuiResourceString prompt(IDS_CONTROLPANELOFF);
-
             // Set the cursor prompt
-            pInGameScreen_->setCursorPromptText(prompt.asString());
+            pInGameScreen_->setCursorPromptText(IDS_CONTROLPANELOFF);
         }
         else
         {
-            // Load the resource string
-            GuiResourceString prompt(IDS_CONTROLPANELON);
-
             // Set the cursor prompt
-            pInGameScreen_->setCursorPromptText(prompt.asString());
+            pInGameScreen_->setCursorPromptText(IDS_CONTROLPANELON);
         }
     }
 
