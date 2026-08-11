@@ -363,10 +363,10 @@ protected:
 
         // Load the string for the command
         GuiResourceString prompt(stringId_);
-        GuiResourceString selectAll(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString());
 
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(selectAll.asString());
+        pInGameScreen_->setCursorPromptText(
+            Gui::formatResourceString(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString()));
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override
@@ -701,10 +701,10 @@ protected:
 
         // Load the string for the command
         GuiResourceString prompt(stringId_);
-        GuiResourceString selectAll(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString());
 
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(selectAll.asString());
+        pInGameScreen_->setCursorPromptText(
+            Gui::formatResourceString(IDS_SELECT_ALL_OF_TYPE_X, prompt.asString()));
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

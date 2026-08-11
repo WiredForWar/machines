@@ -232,13 +232,9 @@ std::string InputRegistry::getKeysDisplayString(const KeyBinds &binds, DisplayFo
         return joinStringsWithOr(toDisplayString(binds.at(0), format), toDisplayString(binds.at(1), format));
 }
 
-std::string InputRegistry::joinStringsWithOr(std::string str1, std::string str2)
+std::string InputRegistry::joinStringsWithOr(const std::string& str1, const std::string& str2)
 {
-    GuiStrings strings;
-    strings.emplace_back(std::move(str1));
-    strings.emplace_back(std::move(str2));
-
-    return GuiResourceString(IDS_KEYS_OR, strings).asString();
+    return Gui::formatResourceString(IDS_KEYS_OR, str1, str2);
 }
 
 BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindData& data, DisplayFormat format) const
@@ -248,13 +244,13 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     BindDisplayData result;
     if (id == "x-view-save"_bind)
     {
-        result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "1", "4" }).asString();
+        result.displayName_ = Gui::formatResourceString(data.stringId_, "1", "4");
         result.displayBind_ = toDisplayString(KeyCode::F5) + "-" + toDisplayString(KeyCode::F8) + " "
             + toDisplayString(KeyModifier::Ctrl);
     }
     else if (id == "x-view-restore"_bind)
     {
-        result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "1", "4" }).asString();
+        result.displayName_ = Gui::formatResourceString(data.stringId_, "1", "4");
         result.displayBind_ = toDisplayString(KeyCode::F5) + "-" + toDisplayString(KeyCode::F8);
     }
     else if (id == "x-view-next"_bind)
@@ -283,7 +279,7 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
     }
     else if (id == "x-squadron-create"_bind)
     {
-        result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
+        result.displayName_ = Gui::formatResourceString(data.stringId_, "0", "9");
         std::string combinedBind = toDisplayString(KeyCode::KEY_0) + "-" + toDisplayString(KeyCode::KEY_9)
             + " " + toDisplayString(KeyModifier::Ctrl);
 
@@ -294,18 +290,18 @@ BindDisplayData InputRegistry::getSpecialBindDisplayData(BindId id, const BindDa
         }
         else
         {
-            result.displayBind_ = joinStringsWithOr(std::move(combinedBind), toDisplayString(command.at(0)));
+            result.displayBind_ = joinStringsWithOr(combinedBind, toDisplayString(command.at(0)));
         }
     }
     else if (id == "x-squadron-add"_bind)
     {
-        result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
+        result.displayName_ = Gui::formatResourceString(data.stringId_, "0", "9");
         result.displayBind_ = toDisplayString(KeyCode::KEY_0) + "-" + toDisplayString(KeyCode::KEY_9) + " "
             + toDisplayString(KeyModifier::Shift);
     }
     else if (id == "x-squadron-select"_bind)
     {
-        result.displayName_ = GuiResourceString(data.stringId_, GuiStrings{ "0", "9" }).asString();
+        result.displayName_ = Gui::formatResourceString(data.stringId_, "0", "9");
         result.displayBind_ = toDisplayString(KeyCode::KEY_0) + "-" + toDisplayString(KeyCode::KEY_9);
     }
     else if (id == "x-move-camera"_bind)

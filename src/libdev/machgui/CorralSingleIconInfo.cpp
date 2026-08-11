@@ -316,13 +316,10 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             // Only display extra info if the actor is ours.
             if (pActor_->race() == playerRace)
             {
-                char buffer[20];
-
                 // Display percentage complete
-                //              itoa( pActor_->asConstruction().percentageComplete(), buffer, 10 );
-                snprintf(buffer, sizeof(buffer), "%d", pActor_->asConstruction().percentageComplete());
-                GuiResourceString percentCompleteText(IDS_PERCENTAGECOMPLETE, GuiString(buffer));
-                concat += percentCompleteText.asString();
+                concat += Gui::formatResourceString(
+                    IDS_PERCENTAGECOMPLETE,
+                    pActor_->asConstruction().percentageComplete());
                 concat += "\n";
             }
         }
@@ -452,29 +449,11 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             }
 
             // Display armour info
-            //          itoa( ap, buffer, 10 );
-            //          itoa( maxAp, buffer2, 10 );
-            snprintf(buffer, sizeof(buffer), "%d", ap);
-            snprintf(buffer2, sizeof(buffer2), "%d", maxAp);
-            GuiStrings insertStrings;
-            insertStrings.reserve(2);
-            insertStrings.push_back(GuiString(buffer));
-            insertStrings.push_back(GuiString(buffer2));
-            GuiResourceString apStr(IDS_ARMOUR, insertStrings);
-            concat += apStr.asString();
+            concat += Gui::formatResourceString(IDS_ARMOUR, ap, maxAp);
             concat += "\n";
 
             // Display hp info
-            //          itoa( hp, buffer, 10 );
-            //          itoa( maxHp, buffer2, 10 );
-            snprintf(buffer, sizeof(buffer), "%d", hp);
-            snprintf(buffer2, sizeof(buffer2), "%d", maxHp);
-            GuiStrings insertStrings2;
-            insertStrings2.reserve(2);
-            insertStrings2.push_back(GuiString(buffer));
-            insertStrings2.push_back(GuiString(buffer2));
-            GuiResourceString hpStr(IDS_HITPOINTS, insertStrings2);
-            concat += hpStr.asString();
+            concat += Gui::formatResourceString(IDS_HITPOINTS, hp, maxHp);
         }
 
         // Render the text

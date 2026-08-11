@@ -39,7 +39,7 @@ std::string toDisplayString(Device::KeyCode keyCode, KeysDisplayFormat format)
     {
         std::string number = std::string(1, static_cast<int>(keyCode) - static_cast<int>(Device::KeyCode::PAD_0) + '0');
         Gui::StringId id = format == Compact ? IDS_COMPACT_KEYNAME_NUMPAD_N : IDS_LONG_KEYNAME_NUMPAD_N;
-        return GuiResourceString(id, number).asString();
+        return Gui::formatResourceString(id, number);
     }
     else if (keyCode == Device::KeyCode::FORWARD_SLASH)
         return "/";

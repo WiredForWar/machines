@@ -18,6 +18,7 @@
 #include "gui/Font.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/ResourceString.hpp"
+#include <format>
 
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
@@ -222,18 +223,15 @@ void MachProductionIcon::displayCursorPromptText()
         = MachLogRaces::instance().researchTree().researchItem(machineType_, subType_, hwLevel_, weaponCombo_);
 
     // Add bmu cost to end of prompt text
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), item.factoryInstanceCost());
-    GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
+    const GuiString cost = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), item.factoryInstanceCost());
 
-    prompt += "\n" + bmuCostText.asString();
+    prompt += "\n" + Gui::formatResourceString(IDS_COST, cost);
 
     // Percentage complete info
-    //  GuiResourceString percentCompleteText( IDS_BUILDPERCENTAGECOMPLETE, GuiString( itoa(
-    //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
-    snprintf(buffer, sizeof(buffer), "%d", (uint)pProgressBar_->percentageComplete());
-    GuiResourceString percentCompleteText(IDS_BUILDPERCENTAGECOMPLETE, GuiString(buffer));
-    prompt += ", " + percentCompleteText.asString();
+    prompt += ", "
+        + Gui::formatResourceString(
+            IDS_BUILDPERCENTAGECOMPLETE,
+            static_cast<uint>(pProgressBar_->percentageComplete()));
 
     // Max units reached?
     if (MachLogRaces::instance().maxUnitsExist(MachLogRaces::instance().playerRace()))
@@ -344,9 +342,8 @@ void MachIncSWLevelIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent
     // Load the resource string
     GuiResourceString machName(stringId);
 
-    GuiResourceString prompt(IDS_INCREASE_SW_PROMPT, machName.asString());
     // Set the cursor prompt
-    pInGameScreen_->setCursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(Gui::formatResourceString(IDS_INCREASE_SW_PROMPT, machName.asString()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

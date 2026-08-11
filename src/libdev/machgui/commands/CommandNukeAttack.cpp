@@ -30,6 +30,8 @@
 #include "gui/ResourceString.hpp"
 #include "gui/Font.hpp"
 
+#include <format>
+
 MachGuiNukeAttackCommand::MachGuiNukeAttackCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-nuke-attack"_bind)
     , action_(DO_NOTHING)
@@ -282,11 +284,9 @@ std::string MachGuiNukeAttackCommand::getCursorPromptText() const
 
     MachPhys::BuildingMaterialUnits cost = MachPhysData::instance().generalData().nukeLaunchCost();
 
-    char buffer[32];
-    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), cost);
-    std::string costText = GuiResourceString(IDS_LAUNCH_COST_BMU, buffer).asString();
+    const GuiString launchCost = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), cost);
 
-    return promptText + " " + costText;
+    return promptText + " " + Gui::formatResourceString(IDS_LAUNCH_COST_BMU, launchCost);
 }
 
 // virtual

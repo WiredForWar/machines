@@ -16,24 +16,7 @@ GuiResourceString::GuiResourceString(Gui::StringId id)
 {
     PRE(hasResource());
 
-    insertionString_ = GuiResourceString::map_Id_to_string(id);
-}
-
-GuiResourceString::GuiResourceString(Gui::StringId id, const GuiString& str)
-{
-    PRE(hasResource());
-
-    insertionString_ = GuiResourceString::map_Id_to_string(id);
-    GuiStrings inserts(1, str);
-    insert(inserts);
-}
-
-GuiResourceString::GuiResourceString(Gui::StringId id, const GuiStrings& inserts)
-{
-    PRE(hasResource());
-
-    insertionString_ = GuiResourceString::map_Id_to_string(id);
-    insert(inserts);
+    insertionString_ = Gui::resourceStringText(id);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -102,9 +85,20 @@ GuiString Gui::substituteArguments(std::string_view text, const GuiStrings& argu
     return result;
 }
 
-void GuiResourceString::insert(const GuiStrings& inserts)
+GuiString Gui::resourceStringText(StringId id)
 {
-    insertionString_ = Gui::substituteArguments(insertionString_, inserts);
+    PRE(GuiResourceString::hasResource());
+
+    GuiString result = GuiResourceString::resource().getString(id);
+    POST(GuiResourceString::isInsertionString(result));
+    return result;
+}
+
+GuiString Gui::formatResourceString(StringId id, const GuiStrings& arguments)
+{
+    PRE(GuiResourceString::hasResource());
+
+    return substituteArguments(resourceStringText(id), arguments);
 }
 
 const GuiString& GuiResourceString::asString() const
@@ -122,15 +116,6 @@ std::ostream& operator<<(std::ostream& o, const GuiResourceString& t)
 }
 
 //////////////////////////////////////////////////////////////////////
-
-// static
-GuiString GuiResourceString::map_Id_to_string(Gui::StringId id)
-{
-    PRE(hasResource());
-    GuiString result = resource().getString(id);
-    POST(isInsertionString(result));
-    return result;
-}
 
 // static
 bool GuiResourceString::hasResource()

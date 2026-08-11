@@ -192,8 +192,8 @@ void MachGuiMessageBroker::processInGameChatMessage(MachGuiInGameChatMessage* pM
 
 void MachGuiMessageBroker::processIveLostMessage(MachGuiIveLostMessage* pMessage)
 {
-    GuiResourceString lostString(IDS_PLAYER_HAS_LOST, pMessage->playerName_);
-    MachGuiInGameChatMessages::instance().addMessage(lostString.asString());
+    MachGuiInGameChatMessages::instance().addMessage(
+        Gui::formatResourceString(IDS_PLAYER_HAS_LOST, pMessage->playerName_));
 }
 
 void MachGuiMessageBroker::processMachGuiMessage(NetMessage* pMessage)

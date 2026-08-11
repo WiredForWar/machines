@@ -109,10 +109,9 @@ bool MachGuiSystemMessageHandler::handleHostMessage()
                 MachLogNetwork::instance().remoteStatus(i, MachLogNetwork::LOCAL_PROCESS);
             }
         }
-        GuiResourceString errorString(
+        MachGuiInGameChatMessages::instance().addMessage(Gui::formatResourceString(
             IDS_MULTI_ERROR_HOST_CONNECTION_LOST,
-            pStartupScreens_->startupData()->playerName());
-        MachGuiInGameChatMessages::instance().addMessage(errorString.asString());
+            pStartupScreens_->startupData()->playerName()));
         return true;
         //      return MachLogSystemMessageHandler::handleHostMessage();
     }
@@ -158,8 +157,8 @@ bool MachGuiSystemMessageHandler::handleDestroyPlayerMessage(const std::string& 
 
                 r = pStartupScreens_->startupData()->players()[i].race_;
                 pStartupScreens_->startupData()->players()[i].status_ = MachGuiStartupData::PlayerInfo::CONNECTION_LOST;
-                GuiResourceString errorString(IDS_MULTI_ERROR_PLAYER_CONNECTION_LOST, name);
-                MachGuiInGameChatMessages::instance().addMessage(errorString.asString());
+                MachGuiInGameChatMessages::instance().addMessage(
+                    Gui::formatResourceString(IDS_MULTI_ERROR_PLAYER_CONNECTION_LOST, name));
                 logicalHandleDestroyPlayerMessage(r);
             }
         }

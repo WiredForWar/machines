@@ -377,8 +377,7 @@ void MachGuiStartupData::receivedJoinMessage(const std::string& playerName, int 
         MachGuiSoundManager::instance().playSound("gui/sounds/chatmsg.wav");
 
         // Display message telling host person has joined
-        GuiResourceString hostMessage(IDS_MENUMSG_CLIENTJOIN, newPlayerName);
-        MachGuiChatWindow::addText(hostMessage.asString());
+        MachGuiChatWindow::addText(Gui::formatResourceString(IDS_MENUMSG_CLIENTJOIN, newPlayerName));
 
         // Send out this message so that the new player knows what scenario etc is
         // being used.
@@ -698,13 +697,11 @@ void MachGuiStartupData::receivedHostCancelMessage()
 
     terminalMultiPlayerGameProblem_ = true;
 
-    GuiResourceString str(IDS_MENUMSG_HOSTTERM, getHostName());
-
     // Play sound
     MachGuiSoundManager::instance().playSound("gui/sounds/chatmsg.wav");
 
     // Display message saying host has canceled
-    MachGuiChatWindow::addText(str.asString());
+    MachGuiChatWindow::addText(Gui::formatResourceString(IDS_MENUMSG_HOSTTERM, getHostName()));
 
     if (pCtxImReady_)
         pCtxImReady_->updatePlayerList();
@@ -771,8 +768,7 @@ void MachGuiStartupData::receivedClientCancelMessage(const std::string& playerNa
         MachGuiSoundManager::instance().playSound("gui/sounds/chatmsg.wav");
 
         // Display message telling host person has left
-        GuiResourceString hostMessage(IDS_MENUMSG_CLIENTTERM, playerName);
-        MachGuiChatWindow::addText(hostMessage.asString());
+        MachGuiChatWindow::addText(Gui::formatResourceString(IDS_MENUMSG_CLIENTTERM, playerName));
 
         sendUpdatePlayersMessage();
     }

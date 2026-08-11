@@ -14,6 +14,7 @@
 #include "gui/Font.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/ResourceString.hpp"
+#include <format>
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
@@ -211,34 +212,21 @@ void MachHWResearchBankIcon::displayCursorPromptText()
         IDS_RESEARCHING_WITH_WEAPON_PROMPT);
 
     // Add bmu cost and rp cost to end of prompt text
-    char bmuBuffer[20];
-    char rpBuffer[20];
-    //  itoa( pResearchItem_->buildingCost(), bmuBuffer, 10 );
-    //  itoa( pResearchItem_->researchCost(), rpBuffer, 10 );
-    snprintf(bmuBuffer, sizeof(bmuBuffer), "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
-    snprintf(rpBuffer, sizeof(rpBuffer), "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
+    const GuiString bmuCost
+        = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
+    const GuiString researchCost
+        = std::format("{}{}", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
 
     if (pResearchItem_->buildingCost() != 0)
-    {
-        GuiStrings strings;
-        strings.push_back(GuiString(bmuBuffer));
-        strings.push_back(GuiString(rpBuffer));
-        GuiResourceString costText(IDS_COST_WITH_RP, strings);
-        prompt += "\n" + costText.asString();
-    }
+        prompt += "\n" + Gui::formatResourceString(IDS_COST_WITH_RP, bmuCost, researchCost);
     else
-    {
-        GuiResourceString costText(IDS_COST, GuiString(rpBuffer));
-        prompt += "\n" + costText.asString();
-    }
+        prompt += "\n" + Gui::formatResourceString(IDS_COST, researchCost);
 
     // Percentage complete info
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%d", (uint)pProgressBar_->percentageComplete());
-    //  GuiResourceString percentCompleteText( IDS_RESEARCHPERCENTAGECOMPLETE, GuiString( itoa(
-    //  pProgressBar_->percentageComplete(), buffer, 10 ) ) );
-    GuiResourceString percentCompleteText(IDS_RESEARCHPERCENTAGECOMPLETE, GuiString(buffer));
-    prompt += ", " + percentCompleteText.asString();
+    prompt += ", "
+        + Gui::formatResourceString(
+            IDS_RESEARCHPERCENTAGECOMPLETE,
+            static_cast<uint>(pProgressBar_->percentageComplete()));
 
     pInGameScreen_->setCursorPromptText(prompt, ! needsPromptUpdate_);
 
