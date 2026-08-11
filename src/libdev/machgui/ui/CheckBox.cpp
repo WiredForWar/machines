@@ -60,9 +60,12 @@ MachGuiCheckBox::~MachGuiCheckBox()
 void MachGuiCheckBox::setChecked(bool isChecked)
 {
     isChecked_ = isChecked;
-    if (callback_)
+
+    // Keep a copy: the callback can destroy this object.
+    Callback callback = callback_;
+    if (callback)
     {
-        callback_(this);
+        callback(this);
     }
 }
 

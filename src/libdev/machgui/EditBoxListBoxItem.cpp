@@ -138,8 +138,10 @@ void MachGuiEditBoxListBoxItem::setInputText(const std::string& str)
         singleLineEditBox()->setText(str);
     }
 
-    if (textChangedCallback_)
-        textChangedCallback_();
+    // Keep a copy: the callback can destroy this object.
+    Callback callback = textChangedCallback_;
+    if (callback)
+        callback();
 }
 
 void MachGuiEditBoxListBoxItem::setInputTextChangedCallback(Callback callback)

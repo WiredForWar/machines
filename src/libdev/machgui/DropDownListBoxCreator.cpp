@@ -115,8 +115,10 @@ void MachGuiDropDownListBoxCreator::setCurrentIndex(int index)
     currentIndex_ = index;
     changed();
 
-    if (currentIndexChangedCallback_)
-        currentIndexChangedCallback_();
+    // Keep a copy: the callback can destroy this object.
+    Callback callback = currentIndexChangedCallback_;
+    if (callback)
+        callback();
 }
 
 void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)

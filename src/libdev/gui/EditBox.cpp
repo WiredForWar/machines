@@ -330,9 +330,11 @@ void GuiSingleLineEditBox::onTextChanged()
     updateTextViews();
     forceRedraw();
 
-    if (textChangedCallback_)
+    // Keep a copy: the callback can destroy this object.
+    Callback callback = textChangedCallback_;
+    if (callback)
     {
-        textChangedCallback_(this);
+        callback(this);
     }
 }
 

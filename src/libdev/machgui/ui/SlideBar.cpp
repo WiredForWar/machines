@@ -151,9 +151,11 @@ void MachGuiSlideBar::setValue(float newVal)
 // virtual
 void MachGuiSlideBar::valueChanged(float value)
 {
-    if (valueChangedCallback_)
+    // Keep a copy: the callback can destroy this object.
+    FloatValueChangedCallback callback = valueChangedCallback_;
+    if (callback)
     {
-        valueChangedCallback_(value);
+        callback(value);
     }
 }
 

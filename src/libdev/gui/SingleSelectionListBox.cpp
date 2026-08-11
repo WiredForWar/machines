@@ -57,9 +57,11 @@ void GuiSingleSelectionListBox::notifyListItemSelection(GuiSingleSelectionListBo
         pCurrentSelection_ = pNewSelection;
         pCurrentSelection_->setSelected(true);
 
-        if (selectionChangedCallback_)
+        // Keep a copy: the callback can destroy this object.
+        Callback callback = selectionChangedCallback_;
+        if (callback)
         {
-            selectionChangedCallback_(this);
+            callback(this);
         }
 
         // Selecting an item can destroy this list box, so it is done last and
@@ -73,9 +75,11 @@ void GuiSingleSelectionListBox::deleteAllItems()
     deleteAllChildren();
     pCurrentSelection_ = nullptr;
 
-    if (selectionChangedCallback_)
+    // Keep a copy: the callback can destroy this object.
+    Callback callback = selectionChangedCallback_;
+    if (callback)
     {
-        selectionChangedCallback_(this);
+        callback(this);
     }
 }
 
