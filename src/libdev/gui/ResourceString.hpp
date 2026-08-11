@@ -14,6 +14,7 @@
 #include "gui/StringId.hpp"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 //////////////////////////////////////////////////////////////////////
@@ -24,6 +25,18 @@ class AfxResourceLib;
 
 using GuiString = std::string;
 using GuiStrings = std::vector<GuiString>;
+
+namespace Gui
+{
+
+// Copies text, replacing every %1, %2 ... escape with the argument of that number
+// and every %% with a single percent sign. Numbering starts at one, an escape may
+// be closed with a second percent sign so that it can be followed by a digit, and
+// an escape naming an argument that was not supplied yields nothing. Arguments are
+// copied out verbatim, so a percent sign within one is never an escape.
+GuiString substituteArguments(std::string_view text, const GuiStrings& arguments);
+
+} // namespace Gui
 
 class GuiResourceString
 // memberwise cannonical

@@ -38,7 +38,7 @@ GuiResourceString::GuiResourceString(Gui::StringId id, const GuiStrings& inserts
 
 //////////////////////////////////////////////////////////////////////
 
-void GuiResourceString::insert(const GuiStrings& inserts)
+GuiString Gui::substituteArguments(std::string_view text, const GuiStrings& arguments)
 // <ins str> ::= { <esc seq> | <non-percent-character> }
 // <esc seq> ::= <number esc seq> | <percent esc seq>
 // <percent esc seq> ::= <%> <%>
@@ -47,37 +47,64 @@ void GuiResourceString::insert(const GuiStrings& inserts)
 // <leadingdigit>   ::= <1> - <9>
 // <digit>          ::= <0> - <9>
 {
-    for (size_t i = 0; i < insertionString_.length(); ++i)
+    GuiString result;
+    result.reserve(text.size());
+
+    for (std::size_t i = 0; i < text.size(); ++i)
     {
-        if (insertionString_[i] == '%')
+        if (text[i] != '%')
         {
-            size_t j = 1;
-            if (i + j == insertionString_.length())
-                break;
-            else if (insertionString_[i + j] == '%')
-                // insertionString_.remove( i, 1 );
-                insertionString_.erase(i, 1);
-            else
-            {
-                unsigned n = 0;
-                while (i + j < insertionString_.length() && isdigit(insertionString_[i + j]))
-                {
-                    n *= 10;
-                    n += insertionString_[i + j] - '0';
-                    ++j;
-                }
-
-                if (i + j < insertionString_.length() && insertionString_[i + j] == '%')
-                    ++j;
-
-                // insertionString_.remove( i, j );
-                insertionString_.erase(i, j);
-
-                if (n <= inserts.size())
-                    insertionString_.insert(i, inserts[n - 1]);
-            }
+            result += text[i];
+            continue;
         }
+
+        // A percent sign at the very end has nothing to introduce.
+        if (i + 1 == text.size())
+        {
+            result += '%';
+            break;
+        }
+
+        if (text[i + 1] == '%')
+        {
+            result += '%';
+            ++i;
+            continue;
+        }
+
+        std::size_t number = 0;
+        std::size_t end = i + 1;
+        while (end < text.size() && isdigit(static_cast<unsigned char>(text[end])))
+        {
+            // Once the number is too big to name an argument it can stay that way,
+            // which keeps a long run of digits from overflowing.
+            if (number <= arguments.size())
+                number = (number * 10) + (text[end] - '0');
+            ++end;
+        }
+
+        // Not an escape after all, so the percent sign stands for itself.
+        if (end == i + 1)
+        {
+            result += '%';
+            continue;
+        }
+
+        if (end < text.size() && text[end] == '%')
+            ++end;
+
+        if (number >= 1 && number <= arguments.size())
+            result += arguments[number - 1];
+
+        i = end - 1;
     }
+
+    return result;
+}
+
+void GuiResourceString::insert(const GuiStrings& inserts)
+{
+    insertionString_ = Gui::substituteArguments(insertionString_, inserts);
 }
 
 const GuiString& GuiResourceString::asString() const
