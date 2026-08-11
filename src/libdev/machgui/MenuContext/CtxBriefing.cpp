@@ -116,7 +116,7 @@ void MachGuiCtxBriefing::update()
 void MachGuiCtxBriefing::displayObjectives()
 {
     // Disable the objective button, enable hints button if hints are available.
-    pObjectiveBtn_->disabled(true);
+    pObjectiveBtn_->setEnabled(false);
 
     MachGuiDbPlayerScenario* pPlayerScenario = nullptr;
 
@@ -124,7 +124,7 @@ void MachGuiCtxBriefing::displayObjectives()
             *pStartupScreens_->startupData()->scenario(),
             &pPlayerScenario))
     {
-        pHintsBtn_->disabled(false);
+        pHintsBtn_->setEnabled(true);
 
         if (pObjectiveBtn_->isFocusControl())
         {
@@ -134,7 +134,7 @@ void MachGuiCtxBriefing::displayObjectives()
     }
     else
     {
-        pHintsBtn_->disabled(true);
+        pHintsBtn_->setEnabled(false);
 
         if (pObjectiveBtn_->isFocusControl())
         {
@@ -201,8 +201,8 @@ void MachGuiCtxBriefing::displayObjectives()
 
 void MachGuiCtxBriefing::displayHints()
 {
-    pHintsBtn_->disabled(true);
-    pObjectiveBtn_->disabled(false);
+    pHintsBtn_->setEnabled(false);
+    pObjectiveBtn_->setEnabled(true);
 
     if (pHintsBtn_->isFocusControl())
     {

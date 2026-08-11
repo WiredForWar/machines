@@ -115,20 +115,20 @@ MachGuiCtxInGameOptions::MachGuiCtxInGameOptions(MachGuiStartupScreens* pStartup
 
     // Disable buttons that don't make sense in particular game modes
 #ifdef DEMO
-    pLoadBtn->disabled(true);
-    pSaveBtn->disabled(true);
-    pHotkeysBtn->disabled(true);
+    pLoadBtn->setEnabled(false);
+    pSaveBtn->setEnabled(false);
+    pHotkeysBtn->setEnabled(false);
 #endif
     if (pStartupScreens->gameType() == MachGuiStartupScreens::MULTIGAME)
     {
-        pBriefingBtn->disabled(true);
-        pRestartBtn->disabled(true);
-        pSaveBtn->disabled(true);
-        pLoadBtn->disabled(true);
+        pBriefingBtn->setEnabled(false);
+        pRestartBtn->setEnabled(false);
+        pSaveBtn->setEnabled(false);
+        pLoadBtn->setEnabled(false);
     }
     else if (pStartupScreens->gameType() == MachGuiStartupScreens::SKIRMISHGAME)
     {
-        pBriefingBtn->disabled(true);
+        pBriefingBtn->setEnabled(false);
     }
 
     TEST_INVARIANT;

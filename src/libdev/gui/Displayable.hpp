@@ -320,6 +320,10 @@ protected:
     // own children. The default does nothing, leaving them where they were put.
     virtual void doResized();
 
+    // Called once the new state is in place, for a displayable holding something
+    // that only makes sense while it is enabled. A redraw is already asked for.
+    virtual void doEnabledChanged();
+
     virtual ~GuiDisplayable();
 
     Children& children(Layer);

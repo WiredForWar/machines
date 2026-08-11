@@ -574,7 +574,16 @@ bool GuiDisplayable::isEnabled() const
 
 void GuiDisplayable::setEnabled(bool enabled)
 {
+    if (enabled_ == enabled)
+        return;
+
     enabled_ = enabled;
+    changed();
+    doEnabledChanged();
+}
+
+void GuiDisplayable::doEnabledChanged()
+{
 }
 
 //////////////////////////////////////////////////////////////////////

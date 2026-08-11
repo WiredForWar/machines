@@ -81,7 +81,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMenuButton& t)
 // virtual
 void MachGuiMenuButton::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
-    if (disabled_)
+    if (!isEnabled())
     {
         // Can not press button when disabled. Play discouraging sound...
         if (rel.leftButton() == Gui::RELEASED)
@@ -108,7 +108,7 @@ void MachGuiMenuButton::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 // virtual
 void MachGuiMenuButton::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 {
-    if (disabled_)
+    if (!isEnabled())
         return;
 
     highlighted_ = false;
@@ -119,7 +119,7 @@ void MachGuiMenuButton::doHandleMouseExitEvent(const GuiMouseEvent& /*rel*/)
 // virtual
 void MachGuiMenuButton::doHandleMouseEnterEvent(const GuiMouseEvent& /*rel*/)
 {
-    if (disabled_)
+    if (!isEnabled())
         return;
 
     // Set up the sound to be played
@@ -180,20 +180,9 @@ void MachGuiMenuButton::doDisplay()
     p.drawText(Gui::Coord(textX, textY), text, options, font);
 
     // Show disabled button if necessary
-    if (disabled_)
+    if (!isEnabled())
     {
         p.blit(MachGui::buttonDisableBmp(), Gui::Box(Gui::Coord{}, size()), absoluteBoundary().minCorner());
-    }
-}
-
-void MachGuiMenuButton::disabled(bool disable)
-{
-    if (disabled_ != disable)
-    {
-        disabled_ = disable;
-        flash_ = false;
-        highlighted_ = false;
-        changed();
     }
 }
 
@@ -207,10 +196,10 @@ uint MachGuiMenuButton::stringId() const
     return stringId_;
 }
 
-// virtual
-bool MachGuiMenuButton::isFocusEnabled() const
+void MachGuiMenuButton::doEnabledChanged()
 {
-    return !disabled_ && GuiDisplayable::isFocusEnabled();
+    flash_ = false;
+    highlighted_ = false;
 }
 
 // virtual
