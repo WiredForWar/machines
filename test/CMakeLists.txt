@@ -65,6 +65,7 @@ append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
 append_test(GuiResourceStringTests gui/GuiResourceStringTests.cpp)
 append_test(GuiDisplayableGeometryTests gui/GuiDisplayableGeometryTests.cpp)
 append_test(GuiLayoutTests gui/GuiLayoutTests.cpp)
+append_test(GuiFocusTests gui/GuiFocusTests.cpp)
 append_test(ScreenshotsTests gui/ScreenshotsTests.cpp)
 #~:machgui
 append_test(DropDownPlacementTests machgui/DropDownPlacementTests.cpp)

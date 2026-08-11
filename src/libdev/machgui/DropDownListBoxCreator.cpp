@@ -167,12 +167,6 @@ void MachGuiDropDownListBoxCreator::doHandleMouseExitEvent(const GuiMouseEvent& 
 }
 
 // virtual
-bool MachGuiDropDownListBoxCreator::isFocusEnabled() const
-{
-    return isEnabled() && GuiDisplayable::isFocusEnabled();
-}
-
-// virtual
 void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
     if (!isEnabled() || strings_.empty() || rel.leftButton() != Gui::RELEASED)
