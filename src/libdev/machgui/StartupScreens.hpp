@@ -217,7 +217,11 @@ public:
     // boundary ( generally drop-down list boxes ). If the mouse moves outside
     // the boundary then it is automatically deleted.
     void registerAutoDeleteGuiElement(MachGuiAutoDeleteDisplayable*);
-    void unregisterAutoDeleteGuiElement();
+    void unregisterAutoDeleteGuiElement(MachGuiAutoDeleteDisplayable*);
+
+    // Take the registered element away. It is destroyed at the top of the next
+    // loop cycle, so that the call which asked for it to go can unwind first.
+    void closeAutoDeleteGuiElement();
 
     // Display a message on the screen. This will have to be dismissed before any other gui elements
     // can be interacted with.
@@ -472,6 +476,7 @@ private:
     MachGuiMessageBroker* pMessageBroker_;
     MachGuiAutoDeleteDisplayable* pMustContainMouse_; // A gui displayable that is present only if the mouse if inside
                                                       // it's boundary ( generally drop-down list boxes )
+    MachGuiAutoDeleteDisplayable* pPendingAutoDeleteClose_{};
     SmackerAnims smackerAnims_; // list of smacker animations to play
     GuiDisplayable* pCharFocus_; // Store the char focus whilst the message box is displayed
     bool isGamePaused_{};

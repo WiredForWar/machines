@@ -263,6 +263,9 @@ void MachGuiStartupScreens::loopCycle()
 {
     pendingDropDownDelete_.reset();
 
+    delete pPendingAutoDeleteClose_;
+    pPendingAutoDeleteClose_ = nullptr;
+
     // Trace memory every minute if CB_MINMEM set
     static bool traceMemoryPerMinute = getenv("CB_MINMEM") != nullptr;
 
@@ -2342,9 +2345,27 @@ void MachGuiStartupScreens::registerAutoDeleteGuiElement(MachGuiAutoDeleteDispla
     pMustContainMouse_ = pMustContainMouse;
 }
 
-void MachGuiStartupScreens::unregisterAutoDeleteGuiElement()
+void MachGuiStartupScreens::unregisterAutoDeleteGuiElement(MachGuiAutoDeleteDisplayable* pElement)
 {
+    if (pMustContainMouse_ == pElement)
+        pMustContainMouse_ = nullptr;
+
+    if (pPendingAutoDeleteClose_ == pElement)
+        pPendingAutoDeleteClose_ = nullptr;
+}
+
+void MachGuiStartupScreens::closeAutoDeleteGuiElement()
+{
+    if (pMustContainMouse_ == nullptr)
+        return;
+
+    delete pPendingAutoDeleteClose_;
+    pPendingAutoDeleteClose_ = pMustContainMouse_;
     pMustContainMouse_ = nullptr;
+
+    // Put back whatever it was covering. There is no telling what that was, so
+    // redraw the lot.
+    changed();
 }
 
 void MachGuiStartupScreens::addSmackerAnimation(AniSmacker* animation)

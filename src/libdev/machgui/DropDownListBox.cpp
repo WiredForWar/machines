@@ -156,7 +156,12 @@ void MachGuiDropDownListBox::itemSelected(const std::string& /*itemText*/)
 {
     // You are forced to derive from this class and supply an implementation for this function.
     // This base class function should be called from the derived class!
-    delete this;
+
+    // Out of sight at once, but destroyed by the startup screens once the call
+    // that selected the item has returned: the item doing the selecting is a
+    // child of this box and is still on the stack.
+    setVisible(false);
+    startupScreens().closeAutoDeleteGuiElement();
 }
 
 // virtual

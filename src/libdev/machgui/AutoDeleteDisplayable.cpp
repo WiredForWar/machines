@@ -23,7 +23,7 @@ MachGuiAutoDeleteDisplayable::~MachGuiAutoDeleteDisplayable()
 {
     TEST_INVARIANT;
 
-    pStartupScreens_->unregisterAutoDeleteGuiElement();
+    pStartupScreens_->unregisterAutoDeleteGuiElement(this);
     // Make sure the screen redraws it's self. We don't know what this control may
     // have wiped over so redraw whole screen just to be sure. This isn't ideal
     // by "gui" lib isn't that sophisticated.
