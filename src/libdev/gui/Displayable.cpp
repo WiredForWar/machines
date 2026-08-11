@@ -14,14 +14,16 @@
 #include "gui/GuiPainter.hpp"
 #include "device/ButtonEvent.hpp"
 
+#include <ranges>
+
 //////////////////////////////////////////////////////////////////////
 
 GuiDisplayable::GuiDisplayable(GuiDisplayable* pParent, Layer layer)
     : pParent_(pParent)
 {
-    for (int i = LAYER1; i < NUMLAYERS; ++i)
+    for (Layer childLayer : AllLayers)
     {
-        children_[i].reserve(2);
+        children_[childLayer].reserve(2);
     }
     allChildren_.reserve(4);
 
@@ -256,7 +258,7 @@ void GuiDisplayable::removeChild(GuiDisplayable* pChild)
         allChildren_.erase(i);
     }
 
-    for (Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer))
+    for (Layer layer : AllLayers)
     {
         Children::iterator i = find(children_[layer].begin(), children_[layer].end(), pChild);
 
@@ -396,7 +398,7 @@ void GuiDisplayable::display()
         else
         {
             // Check children to see if they need displaying
-            for (Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer))
+            for (Layer layer : AllLayers)
             {
                 for (Children::iterator i = children_[layer].begin(); i != children_[layer].end(); ++i)
                 {
@@ -413,7 +415,7 @@ void GuiDisplayable::normalDisplay()
     doDisplay();
 
     // Display all children
-    for (Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer))
+    for (Layer layer : AllLayers)
     {
         for (Children::iterator i = children_[layer].begin(); i != children_[layer].end(); ++i)
         {
@@ -444,7 +446,7 @@ void GuiDisplayable::fastDisplay()
 
 void GuiDisplayable::fastDisplayChildren()
 {
-    for (Layer layer = LAYER1; layer < NUMLAYERS; ++((int&)layer))
+    for (Layer layer : AllLayers)
     {
         for (Children::iterator i = children_[layer].begin(); i != children_[layer].end(); ++i)
         {
@@ -715,10 +717,8 @@ GuiDisplayable* GuiDisplayable::innermostContaining(const Gui::Coord& c)
     if (!isVisible() || !absoluteBoundary().contains(c))
         return nullptr;
 
-    for (int layer = NUMLAYERS; layer != LAYER1;)
+    for (Layer layer : AllLayers | std::views::reverse)
     {
-        --layer;
-
         // Check to see if any of the children contain the mouse pointer
         for (GuiDisplayable* pChild : children_[layer])
         {
@@ -782,10 +782,8 @@ GuiDisplayable* GuiDisplayable::innermostContainingCheckProcessesMouseEvents(con
     if (!isVisible() || !absoluteBoundary().contains(c) || !processesMouseEvents())
         return nullptr;
 
-    for (int layer = NUMLAYERS; layer != LAYER1;)
+    for (Layer layer : AllLayers | std::views::reverse)
     {
-        --layer;
-
         // Check to see if any of the children contain the mouse pointer
         for (GuiDisplayable* pChild : children_[layer])
         {

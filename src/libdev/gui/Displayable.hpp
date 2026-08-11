@@ -59,15 +59,26 @@ class GuiDisplayable
 // cannonical form revoked
 {
 public:
+    // Children are displayed back to front: one in a later layer is drawn over
+    // one in an earlier layer, and is offered the mouse before it.
     enum Layer
     {
-        LAYER1 = 0,
-        LAYER2 = 1,
-        LAYER3 = 2,
-        LAYER4 = 3,
-        LAYER5 = 4,
-        NUMLAYERS = 5
+        LAYER1,
+        LAYER2,
+        LAYER3,
+        LAYER4,
+        LAYER5,
     };
+
+    static constexpr Layer AllLayers[] = {
+        LAYER1,
+        LAYER2,
+        LAYER3,
+        LAYER4,
+        LAYER5,
+    };
+
+    static constexpr std::size_t NUM_LAYERS = std::size(AllLayers);
 
     // since subclasses of GuiDisplayable are owned by their parent
     // GuiDisplayable, they should _only_ be allocated on the heap.
@@ -300,7 +311,7 @@ private:
     bool isVisible_ = true;
     int changed_{};
     bool redrawEveryFrame_{};
-    Children children_[NUMLAYERS];
+    Children children_[NUM_LAYERS];
     Children allChildren_;
     bool useFastSecondDisplay_ = true;
 };
