@@ -73,9 +73,8 @@ public:
     {
         GuiIcon::doHandleMouseEnterEvent(mouseEvent);
 
-        GuiResourceString prompt(IDS_SELECTINSIDEBUILDING);
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(IDS_SELECTINSIDEBUILDING);
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent) override

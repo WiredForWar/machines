@@ -145,11 +145,8 @@ protected:
     {
         GuiButton::doHandleMouseEnterEvent(rel);
 
-        // Load the resource string
-        GuiResourceString prompt(IDS_RETURNTOMENUS);
-
         // Set the cursor prompt
-        pInGameScreen_->setCursorPromptText(prompt.asString());
+        pInGameScreen_->setCursorPromptText(IDS_RETURNTOMENUS);
     }
 
     void doHandleMouseExitEvent(const GuiMouseEvent& rel) override

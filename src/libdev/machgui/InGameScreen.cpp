@@ -762,12 +762,8 @@ void MachInGameScreen::activeCommand(const MachGuiCommand& command)
         // Store copy of the required command
         pActiveCommand_ = std::move(pNewCommand);
 
-        // Load the string for the command
-        Gui::StringId id = pActiveCommand_->commandPromptStringid();
-        GuiResourceString prompt(id);
-
         // Set the command prompt
-        commandPromptText(prompt.asString());
+        commandPromptText(pActiveCommand_->commandPromptStringid());
 
         // Do start processing
         pActiveCommand_->start();
@@ -1198,15 +1194,9 @@ void MachInGameScreen::asynchronousUpdate()
 
         // Display command text for single factory and research contexts
         if (controlPanelContext_ == MachGui::SINGLE_FACTORY)
-        {
-            GuiResourceString promptString(IDS_BUILD_START);
-            commandPromptText(promptString.asString());
-        }
+            commandPromptText(IDS_BUILD_START);
         else if (controlPanelContext_ == MachGui::HARDWARE_RESEARCH)
-        {
-            GuiResourceString promptString(IDS_RESEARCHLEVEL_START);
-            commandPromptText(promptString.asString());
-        }
+            commandPromptText(IDS_RESEARCHLEVEL_START);
     }
 
     // If we have a production bank, update it
@@ -1613,8 +1603,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
                     pBuildMenu_ = new MachBuildMenu(pControlPanel_, pProductionBank_, Gui::Coord(1, yPos), this);
                     pBuildMenu_->initialise();
 
-                    GuiResourceString promptString(IDS_BUILD_START);
-                    commandPromptText(promptString.asString());
+                    commandPromptText(IDS_BUILD_START);
                     clearCursorPromptText();
 
                     break;
@@ -1631,8 +1620,7 @@ void MachInGameScreen::currentContext(MachGui::ControlPanelContext newContext, b
                         = new MachHWResearchMenu(pControlPanel_, pHWResearchBank_, Gui::Coord(1, yPos), this);
                     pHWResearchMenu_->initialise();
 
-                    GuiResourceString promptString(IDS_RESEARCHLEVEL_START);
-                    commandPromptText(promptString.asString());
+                    commandPromptText(IDS_RESEARCHLEVEL_START);
                     clearCursorPromptText();
 
                     break;

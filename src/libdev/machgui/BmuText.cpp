@@ -154,11 +154,8 @@ void MachGuiBmuButton::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEvent)
 {
     GuiBitmapButtonWithFilledBorder::doHandleMouseEnterEvent(mouseEvent);
 
-    // Load the resource string
-    GuiResourceString prompt(IDS_BMU_BUTTON);
-
     // Set the cursor prompt
-    pInGameScreen_->setCursorPromptText(prompt.asString());
+    pInGameScreen_->setCursorPromptText(IDS_BMU_BUTTON);
 }
 
 // virtual
