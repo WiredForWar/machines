@@ -586,6 +586,9 @@ const Gui::Boundary& GuiDisplayable::absoluteBoundary() const
 
 void GuiDisplayable::setRelativeBoundary(const Gui::Boundary& boundary)
 {
+    const Gui::Coord oldAbsCoord = absoluteBox_.minCorner();
+    const Gui::Size oldSize = relativeBox_.size();
+
     relativeBox_ = boundary;
     if (pParent_)
     {
@@ -595,6 +598,25 @@ void GuiDisplayable::setRelativeBoundary(const Gui::Boundary& boundary)
     {
         absoluteBox_ = boundary;
     }
+
+    // Children are placed against this one, so they travel with it.
+    const MexVec2 diff(oldAbsCoord, absoluteBox_.minCorner());
+    if (diff.x() != 0 || diff.y() != 0)
+    {
+        for (GuiDisplayable* pChild : allChildren_)
+        {
+            Gui::Coord childCoord = pChild->absoluteCoord();
+            childCoord += diff;
+            positionChildAbsolute(pChild, childCoord);
+        }
+    }
+
+    if (relativeBox_.size() != oldSize)
+        doResized();
+}
+
+void GuiDisplayable::doResized()
+{
 }
 
 const Gui::Boundary& GuiDisplayable::relativeBoundary() const

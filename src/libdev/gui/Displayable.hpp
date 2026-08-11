@@ -141,6 +141,9 @@ public:
     Gui::Boundary relativeBoundary(const GuiDisplayable& ancestor) const;
 
     const Gui::Boundary& absoluteBoundary() const;
+
+    // Place this displayable, taking its children along. Calls doResized() if
+    // the size changed.
     void setRelativeBoundary(const Gui::Boundary& boundary);
 
     bool contains(Gui::XCoord x, Gui::YCoord y) const;
@@ -304,6 +307,10 @@ protected:
 
     // Function that actually does the rendering
     virtual void doDisplay() = 0;
+
+    // Called once the new size is in place, for a displayable that arranges its
+    // own children. The default does nothing, leaving them where they were put.
+    virtual void doResized();
 
     virtual ~GuiDisplayable();
 
