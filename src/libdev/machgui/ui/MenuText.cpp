@@ -269,7 +269,10 @@ std::ostream& operator<<(std::ostream& o, const MachGuiMenuText& t)
 // virtual
 void MachGuiMenuText::doDisplay()
 {
-    size_t totalHeight = (strings_.size() * (fontHeight_ + 1 * MachGui::menuScaleFactor())) - 1 * MachGui::menuScaleFactor();
+    // The spacing goes between the lines, so there is one less of it than there are lines.
+    const std::size_t lineSpacing = 1 * MachGui::menuScaleFactor();
+    const std::size_t totalHeight
+        = strings_.empty() ? 0 : (strings_.size() * (fontHeight_ + lineSpacing)) - lineSpacing;
 
     ASSERT_INFO(totalHeight);
     ASSERT_INFO(height());
