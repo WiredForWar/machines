@@ -81,12 +81,12 @@ MachGuiCtxHotKeys::MachGuiCtxHotKeys(MachGuiStartupScreens* pStartupScreens)
             if (data.displayName_.empty())
                 continue;
 
-            std::string_view displayNameView = data.displayName_;
+            std::string_view displayNameView = data.displayName_.asStringView();
             if (actionFont.horizontalAdvance(displayNameView) > HOTKEY_ACTION_WIDTH)
             {
                 // The descriptive name does not fit
                 if (!data.compactDisplayName_.empty())
-                    displayNameView = data.compactDisplayName_;
+                    displayNameView = data.compactDisplayName_.asStringView();
             }
 
             // Check width, use compactDisplayName_ as fallback

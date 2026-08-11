@@ -21,9 +21,11 @@ public:
     bool empty() const;
 
     std::string asString() const;
-    std::string_view asStringView() const;
     operator std::string() const { return asString(); }
-    operator std::string_view() const { return asStringView(); }
+
+    // The view is good for as long as this object is, so ask for it by name
+    // rather than letting a temporary convert to one and leave it dangling.
+    std::string_view asStringView() const;
 
 private:
     void fillValue() const;
