@@ -19,6 +19,8 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
+#include <format>
+
 MachBuildMachineIcon::MachBuildMachineIcon(
     GuiDisplayable* pParent,
     MachInGameScreen* pInGameScreen,
@@ -110,11 +112,10 @@ void MachBuildMachineIcon::doHandleMouseEnterEvent(const GuiMouseEvent& mouseEve
         IDS_BUILD_WITH_WEAPON_PROMPT);
 
     // Add bmu cost to end of prompt text
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), researchItem_.factoryInstanceCost());
-    GuiResourceString bmuCostText(IDS_COST, GuiString(buffer));
+    const GuiString cost
+        = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), researchItem_.factoryInstanceCost());
 
-    prompt += "\n" + bmuCostText.asString();
+    prompt += "\n" + Gui::formatResourceString(IDS_COST, cost);
 
     // Set the cursor prompt
     pInGameScreen_->setCursorPromptText(prompt);

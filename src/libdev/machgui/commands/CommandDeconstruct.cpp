@@ -29,6 +29,8 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/InGameScreen.hpp"
 
+#include <format>
+
 MachGuiDeconstructCommand::MachGuiDeconstructCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-deconstruct"_bind)
     , hadFinalPick_(false)
@@ -200,11 +202,9 @@ bool MachGuiDeconstructCommand::addPromptTextCommandInfo(const MachActor* pActor
         MachPhys::BuildingMaterialUnits secondHandBMUs
             = totalBMUs * MachLogRaces::instance().stats().secondhandRefundablePercentage();
 
-        char buffer[32];
-        snprintf(buffer, sizeof(buffer), "%c%d", GuiBmpFont::bmuPointsIndex(), secondHandBMUs);
+        const GuiString refund = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), secondHandBMUs);
 
-        GuiResourceString bmuText(IDS_BMUPOINTS_ON_DECONSTRUCTION, buffer);
-        prompt += ", " + bmuText.asString();
+        prompt += ", " + Gui::formatResourceString(IDS_BMUPOINTS_ON_DECONSTRUCTION, refund);
         return true;
     }
 

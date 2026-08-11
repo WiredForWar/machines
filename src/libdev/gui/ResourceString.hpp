@@ -13,6 +13,7 @@
 
 #include "gui/StringId.hpp"
 
+#include <format>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -36,6 +37,23 @@ namespace Gui
 // copied out verbatim, so a percent sign within one is never an escape.
 GuiString substituteArguments(std::string_view text, const GuiStrings& arguments);
 
+// The text held for id in the current resource file.
+GuiString resourceStringText(StringId id);
+// PRE( GuiResourceString::hasResource() );
+
+// The text held for id, with its escapes replaced by the arguments.
+GuiString formatResourceString(StringId id, const GuiStrings& arguments);
+// PRE( GuiResourceString::hasResource() );
+
+// As above, for a number of arguments known where the call is written. Each one
+// is converted the way std::format would print it on its own, so a count or a
+// name goes straight in and does not have to be spelled into a buffer first.
+template <class... Args>
+GuiString formatResourceString(StringId id, const Args&... arguments)
+{
+    return formatResourceString(id, GuiStrings{ std::format("{}", arguments)... });
+}
+
 } // namespace Gui
 
 class GuiResourceString
@@ -44,15 +62,6 @@ class GuiResourceString
 public:
     // loading string with id from current resource file
     GuiResourceString(Gui::StringId id);
-    // PRE( hasResource() );
-
-    // as above, replacing all occurrences of %1 with insert
-    GuiResourceString(Gui::StringId id, const GuiString& insert);
-    // PRE( hasResource() );
-
-    // as above, replacing all occurrences of %1 with insert[ 0 ],
-    // %2 with insert[ 1 ] etc
-    GuiResourceString(Gui::StringId id, const GuiStrings& insert);
     // PRE( hasResource() );
 
     const GuiString& asString() const;
@@ -85,12 +94,6 @@ public:
 private:
     using ResourcePtr = AfxResourceLib*;
     static ResourcePtr& pResource();
-    static GuiString map_Id_to_string(Gui::StringId id);
-    // PRE( hasResource() );
-    // POST( isInsertionString( result ) );
-
-    void insert(const GuiStrings&);
-
     GuiString insertionString_;
 
     friend std::ostream& operator<<(std::ostream& o, const GuiResourceString& t);

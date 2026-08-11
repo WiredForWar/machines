@@ -935,11 +935,8 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
         }
 
         // Percentage complete info
-        //      GuiResourceString percentCompleteText( IDS_PERCENTAGECOMPLETE, GuiString( itoa(
-        //      pActor->asConstruction().percentageComplete(), buffer, 10 ) ) );
-        snprintf(buffer, sizeof(buffer), "%d", pActor->asConstruction().percentageComplete());
-        GuiResourceString percentCompleteText(IDS_PERCENTAGECOMPLETE, GuiString(buffer));
-        prompt += ", " + percentCompleteText.asString();
+        prompt += ", "
+            + Gui::formatResourceString(IDS_PERCENTAGECOMPLETE, pActor->asConstruction().percentageComplete());
 
         processed = true;
     }
@@ -1109,19 +1106,9 @@ void MachInGameScreen::displayActorPromptText(const MachActor* pActor)
     GuiString prompt;
 
     if (weaponName.length() == 0)
-    {
-        GuiResourceString text(IDS_HIGHLIGHT_PROMPT, name.asString());
-        prompt = text.asString();
-    }
+        prompt = Gui::formatResourceString(IDS_HIGHLIGHT_PROMPT, name.asString());
     else
-    {
-        GuiStrings strings;
-        strings.reserve(2);
-        strings.push_back(name.asString());
-        strings.push_back(weaponName);
-        GuiResourceString text(IDS_HIGHLIGHT_WITH_WEAPON_PROMPT, strings);
-        prompt = text.asString();
-    }
+        prompt = Gui::formatResourceString(IDS_HIGHLIGHT_WITH_WEAPON_PROMPT, name.asString(), weaponName);
 
     // Add aditional prompt text info based on actor type
     if (addPromptTextMachineInfo(pActor, prompt))

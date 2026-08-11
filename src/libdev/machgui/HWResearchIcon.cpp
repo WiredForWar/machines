@@ -19,6 +19,8 @@
 #include "machgui/internal/strings.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
+#include <format>
+
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
 MachHWResearchIcon::MachHWResearchIcon(
@@ -63,24 +65,15 @@ std::string MachHWResearchIcon::getPromptText() const
         IDS_RESEARCH_WITH_WEAPON_PROMPT);
 
     // Add bmu cost and rp cost to end of prompt text
-    char bmuBuffer[20];
-    char rpBuffer[20];
-    snprintf(bmuBuffer, sizeof(bmuBuffer), "%c%d", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
-    snprintf(rpBuffer, sizeof(rpBuffer), "%c%d", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
+    const GuiString bmuCost
+        = std::format("{}{}", GuiBmpFont::bmuPointsIndex(), pResearchItem_->buildingCost());
+    const GuiString researchCost
+        = std::format("{}{}", GuiBmpFont::researchPointsIndex(), pResearchItem_->researchCost());
 
     if (pResearchItem_->buildingCost() != 0)
-    {
-        GuiStrings strings;
-        strings.push_back(GuiString(bmuBuffer));
-        strings.push_back(GuiString(rpBuffer));
-        GuiResourceString costText(IDS_COST_WITH_RP, strings);
-        prompt += "\n" + costText.asString();
-    }
+        prompt += "\n" + Gui::formatResourceString(IDS_COST_WITH_RP, bmuCost, researchCost);
     else
-    {
-        GuiResourceString costText(IDS_COST, GuiString(rpBuffer));
-        prompt += "\n" + costText.asString();
-    }
+        prompt += "\n" + Gui::formatResourceString(IDS_COST, researchCost);
 
     return prompt;
 }

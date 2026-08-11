@@ -481,22 +481,9 @@ std::string MachLogActorStringIdRestorer::getActorPromptText(
 
     GuiResourceString resMachName(stringId);
     machName = resMachName.asString();
-    GuiString retVal;
 
     if (weaponName.length() == 0)
-    {
-        GuiResourceString text(actorStrId, machName);
-        retVal = text.asString();
-    }
-    else
-    {
-        GuiStrings strings;
-        strings.reserve(2);
-        strings.push_back(machName);
-        strings.push_back(weaponName);
-        GuiResourceString text(actorWithWeaponStrId, strings);
-        retVal = text.asString();
-    }
+        return Gui::formatResourceString(actorStrId, machName);
 
-    return retVal;
+    return Gui::formatResourceString(actorWithWeaponStrId, machName, weaponName);
 }

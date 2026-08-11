@@ -77,8 +77,7 @@ MachGuiMessageBox::MachGuiMessageBox(
     // Disable focus on all non-message box controls
     pStartupScreens->messageBoxHasFocus(true);
 
-    GuiResourceString str(stringResId, strs);
-    std::string wholeStr = str.asString();
+    std::string wholeStr = Gui::formatResourceString(stringResId, strs);
 
     new MachGuiMenuText(
         this,

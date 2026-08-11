@@ -492,14 +492,14 @@ void MachGuiCtxImReady::displaySystemMessages()
             if (startupData().includedInGame())
             {
                 // Display message saying host has added player into game
-                GuiResourceString message(IDS_MENUMSG_HOSTADDED, startupData().getHostName());
-                MachGuiChatWindow::addText(message.asString());
+                MachGuiChatWindow::addText(
+                    Gui::formatResourceString(IDS_MENUMSG_HOSTADDED, startupData().getHostName()));
             }
             else
             {
                 // Display message saying host has remove player from game
-                GuiResourceString message(IDS_MENUMSG_HOSTREMOVED, startupData().getHostName());
-                MachGuiChatWindow::addText(message.asString());
+                MachGuiChatWindow::addText(
+                    Gui::formatResourceString(IDS_MENUMSG_HOSTREMOVED, startupData().getHostName()));
             }
         }
     }

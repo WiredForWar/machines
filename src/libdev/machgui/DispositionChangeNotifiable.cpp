@@ -80,13 +80,8 @@ void MachGuiDispositionChangeNotifiable::doDisplay(Gui::StringId id, MachPhys::R
         {
             if (! bothRacesAreAI) // Never show computer to computer alliances
             {
-                GuiStrings strings;
-                strings.push_back(getDisplayName(race1));
-                strings.push_back(getDisplayName(race2));
-
-                GuiResourceString dispositionString(id, strings);
-
-                MachGuiInGameChatMessages::instance().addMessage(dispositionString.asString());
+                MachGuiInGameChatMessages::instance().addMessage(
+                    Gui::formatResourceString(id, getDisplayName(race1), getDisplayName(race2)));
             }
         }
     }
