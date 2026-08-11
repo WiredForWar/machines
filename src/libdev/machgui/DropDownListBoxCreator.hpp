@@ -65,7 +65,6 @@ public:
 
     // A disabled drop down shows its selection dimmed, and neither opens nor takes
     // the focus. Use it for a choice that the state of another control has settled.
-    bool isFocusEnabled() const override;
 
     void setCurrentIndexChangedCallback(Callback callback);
 

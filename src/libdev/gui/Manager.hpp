@@ -111,6 +111,16 @@ public:
 
     const FocusChain& focusChain() const;
 
+    // True while the keys may be given to pDisplayable. Navigation asks this
+    // rather than each displayable answering for itself, so that being disabled
+    // means the same thing everywhere.
+    //
+    // Being disabled keeps the keys away, and nothing else: a disabled
+    // displayable is still handed the mouse, still occupies its boundary, and
+    // still draws. Declining to act on what arrives is its own business.
+    bool canTakeFocus(const GuiDisplayable* pDisplayable) const;
+    // PRE( pDisplayable != nullptr );
+
 private:
     GuiManager(const GuiManager&) = delete;
     bool operator==(const GuiManager&) const = delete;

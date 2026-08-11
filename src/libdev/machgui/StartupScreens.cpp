@@ -3477,7 +3477,8 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
         || e.key() == Device::KeyCode::LEFT_ARROW || e.key() == Device::KeyCode::RIGHT_ARROW || e.key() == Device::KeyCode::ENTER
         || e.key() == Device::KeyCode::ESCAPE)
     {
-        const GuiManager::FocusChain& focusChain = GuiManager::instance().focusChain();
+        const GuiManager& guiManager = GuiManager::instance();
+        const GuiManager::FocusChain& focusChain = guiManager.focusChain();
 
         GuiDisplayable* pFocusControl = nullptr;
         GuiDisplayable* pNextFocusControl = nullptr;
@@ -3491,11 +3492,11 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
              escDefIter != focusChain.end();
              ++escDefIter)
         {
-            if ((*escDefIter)->isEscapeControl() && (*escDefIter)->isFocusEnabled())
+            if ((*escDefIter)->isEscapeControl() && guiManager.canTakeFocus(*escDefIter))
             {
                 pEscapeFocusControl = (*escDefIter);
             }
-            if ((*escDefIter)->isDefaultControl() && (*escDefIter)->isFocusEnabled())
+            if ((*escDefIter)->isDefaultControl() && guiManager.canTakeFocus(*escDefIter))
             {
                 pDefaultFocusControl = (*escDefIter);
             }
@@ -3507,7 +3508,7 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
              ++i)
         {
             // Store previous focus control for navigation purposes
-            if (pCurrentFocusControl && pCurrentFocusControl->isFocusEnabled())
+            if (pCurrentFocusControl && guiManager.canTakeFocus(pCurrentFocusControl))
             {
                 pPreviousFocusControl = pCurrentFocusControl;
             }
@@ -3523,7 +3524,7 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
                 ++i;
                 while (i != focusChain.end() && !pNextFocusControl)
                 {
-                    if ((*i)->isFocusEnabled())
+                    if (guiManager.canTakeFocus(*i))
                     {
                         pNextFocusControl = (*i);
                     }
@@ -3540,7 +3541,7 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
                          nextIter != focusChain.end() && !pNextFocusControl;
                          ++nextIter)
                     {
-                        if ((*nextIter)->isFocusEnabled())
+                        if (guiManager.canTakeFocus(*nextIter))
                         {
                             pNextFocusControl = (*nextIter);
                         }
@@ -3556,7 +3557,7 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
                          prevIter != focusChain.end();
                          ++prevIter)
                     {
-                        if ((*prevIter)->isFocusEnabled())
+                        if (guiManager.canTakeFocus(*prevIter))
                         {
                             pPreviousFocusControl = (*prevIter);
                         }
@@ -3571,7 +3572,7 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
         if (e.key() == Device::KeyCode::ESCAPE)
         {
             // Do we have a control with escape focus?
-            if (pEscapeFocusControl && pEscapeFocusControl->isFocusEnabled())
+            if (pEscapeFocusControl && guiManager.canTakeFocus(pEscapeFocusControl))
             {
                 processed = pEscapeFocusControl->executeControl();
             }
@@ -3584,13 +3585,13 @@ bool MachGuiStartupScreens::doHandleFocusNavigation(const GuiKeyEvent& e)
             if (e.key() == Device::KeyCode::ENTER)
             {
                 // Enter key executes focus control
-                if (pFocusControl->isFocusEnabled())
+                if (guiManager.canTakeFocus(pFocusControl))
                 {
                     processed = pFocusControl->executeControl();
                 }
 
                 // If the control with focus didn't use the Enter key then give the default key a chance
-                if (! processed && pDefaultFocusControl && pDefaultFocusControl->isFocusEnabled())
+                if (!processed && pDefaultFocusControl && guiManager.canTakeFocus(pDefaultFocusControl))
                 {
                     processed = pDefaultFocusControl->executeControl();
                 }

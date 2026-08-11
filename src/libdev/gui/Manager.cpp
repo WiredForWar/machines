@@ -205,6 +205,13 @@ const GuiManager::FocusChain& GuiManager::focusChain() const
     return focusChain_;
 }
 
+bool GuiManager::canTakeFocus(const GuiDisplayable* pDisplayable) const
+{
+    PRE(pDisplayable != nullptr);
+
+    return pDisplayable->acceptsFocus() && pDisplayable->isEnabled() && pDisplayable->isFocusEnabled();
+}
+
 void GuiManager::addToFocusChain(GuiDisplayable* pDisplayable)
 {
     PRE(pDisplayable != nullptr);

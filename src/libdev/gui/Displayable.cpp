@@ -941,7 +941,7 @@ bool GuiDisplayable::doHandleNavigationKey(NavKey navKey, GuiDisplayable** ppNav
             break;
     }
 
-    return (*ppNavFocus != nullptr) && (*ppNavFocus)->isFocusEnabled();
+    return (*ppNavFocus != nullptr) && GuiManager::instance().canTakeFocus(*ppNavFocus);
 }
 
 void GuiDisplayable::setTabFowardNavControl(GuiDisplayable* pNewValue)

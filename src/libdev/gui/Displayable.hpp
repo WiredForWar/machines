@@ -245,8 +245,9 @@ public:
     bool acceptsFocus() const;
     void setAcceptsFocus(bool);
 
-    // False while the displayable cannot be reached, either because it is in no
-    // state to be used or because something in front of it is taking the keys.
+    // False while something in front of this displayable is taking the keys, or
+    // while what it holds gives it nothing to do with them. Being disabled is not
+    // asked about here: GuiManager::canTakeFocus() covers that for everyone.
     virtual bool isFocusEnabled() const;
 
     // True when this is the displayable the keys are going to.
