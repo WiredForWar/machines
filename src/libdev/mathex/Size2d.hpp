@@ -36,6 +36,11 @@ constexpr inline bool MexSize2d::operator==(const MexSize2d& rhs) const
     return (width_ == rhs.width_) && (height_ == rhs.height_);
 }
 
+constexpr inline bool MexSize2d::operator!=(const MexSize2d& rhs) const
+{
+    return !(*this == rhs);
+}
+
 constexpr inline MexSize2d& MexSize2d::operator*=(MATHEX_SCALAR multiplier)
 {
     width_ *= multiplier;
