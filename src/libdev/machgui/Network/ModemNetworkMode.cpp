@@ -81,6 +81,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 {
     GuiResourceString modemHeading(IDS_MENU_MODEMTYPE);
     GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
+    const GuiBmpFont& headingFont = Gui::getFont(MachGui::Menu::smallFontLight());
     const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
 
     //  NetNetwork::Modems availableModems = NetNetwork::instance().modems();
@@ -92,7 +93,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pModemText = new MachGuiMenuText(
         &parent(),
-        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), font.horizontalAdvance(modemHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY), headingFont.horizontalAdvance(modemHeading.asString()), textHeight),
         IDS_MENU_MODEMTYPE,
         MachGui::Menu::smallFontLight());
 
@@ -109,7 +110,7 @@ void MachGuiModemNetworkMode::readNetworkDetails()
 
     MachGuiMenuText* pTelephoneNoText = new MachGuiMenuText(
         &parent(),
-        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), font.horizontalAdvance(telephoneNoHeading.asString()), textHeight),
+        Gui::Box(Gui::Coord(MNM_MINX, MNM_MINY2), headingFont.horizontalAdvance(telephoneNoHeading.asString()), textHeight),
         IDS_MENU_TELNO,
         MachGui::Menu::smallFontLight());
 

@@ -28,13 +28,14 @@ MachGuiInternetNetworkMode::MachGuiInternetNetworkMode(GuiDisplayable* pParent, 
 {
     GuiResourceString IPAddressHeading(IDS_MENU_IPADDRESS);
     GuiBmpFont font(Gui::getFont(MachGui::Menu::smallFontWhite()));
+    const GuiBmpFont& headingFont = Gui::getFont(MachGui::Menu::smallFontLight());
     const int textHeight = font.height() + 2 * MachGui::menuScaleFactor();
 
     MachGuiMenuText* pIPAddressText = new MachGuiMenuText(
         &parent(),
         Gui::Box(
             Gui::Coord(INM_MINX, INM_MINY) * MachGui::menuScaleFactor(),
-            Gui::Size(font.horizontalAdvance(IPAddressHeading.asString()), textHeight)),
+            Gui::Size(headingFont.horizontalAdvance(IPAddressHeading.asString()), textHeight)),
         IDS_MENU_IPADDRESS,
         MachGui::Menu::smallFontLight());
 
