@@ -251,7 +251,7 @@ public:
     virtual bool isFocusEnabled() const;
 
     // True when this is the displayable the keys are going to.
-    virtual bool isFocusControl() const;
+    bool isFocusControl() const;
 
     bool hasFocusSet() const;
     virtual void hasFocus(bool);
