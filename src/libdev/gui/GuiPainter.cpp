@@ -154,63 +154,36 @@ void GuiPainter::filledBorder(
     const GuiFilledBorderColours& colours,
     const GuiBorderMetrics& m) const
 {
-    unsigned exteriorHeight = dim.exteriorHeight();
-    unsigned exteriorWidth = dim.exteriorWidth();
-    unsigned interiorHeight = dim.interiorHeight();
-    unsigned interiorWidth = dim.interiorWidth();
+    const int frameThickness = m.frameThickness();
+    const int highlightThickness = m.highlightThickness();
+    const int shadowThickness = m.shadowThickness();
 
-    // draw frame
-    Gui::Box boundary(absCoord, exteriorWidth, exteriorHeight);
-    hollowRectangle(boundary, colours.frameColour(), m.frameThickness());
+    hollowRectangle(
+        Gui::Box(absCoord, dim.exteriorWidth(), dim.exteriorHeight()),
+        colours.frameColour(),
+        frameThickness);
 
-    unsigned borderWidth = exteriorWidth - (2 * m.frameThickness());
-    unsigned borderHeight = exteriorHeight - (2 * m.frameThickness());
+    // What the frame leaves for the bevel to be drawn in.
+    const int left = absCoord.x() + frameThickness;
+    const int top = absCoord.y() + frameThickness;
+    const int width = dim.exteriorWidth() - (2 * frameThickness);
+    const int height = dim.exteriorHeight() - (2 * frameThickness);
 
-    ///////////////////////////////
+    // Each side of the bevel is a rectangle rather than a line, because a line of a
+    // given width is put where it rasterises, which is not where it was asked for.
+    auto band = [this](int x, int y, int bandWidth, int bandHeight, const Gui::Colour& colour) {
+        if (bandWidth > 0 && bandHeight > 0)
+            filledRectangle(Gui::Box(Gui::Coord(x, y), bandWidth, bandHeight), colour);
+    };
 
-    // The shadow lies along the far side of what the frame leaves, so its outer edge
-    // is the last row and column inside the frame and it begins its own thickness
-    // before them.
-    Gui::Coord borderBottomLeft(
-        absCoord.x() + m.frameThickness(),
-        absCoord.y() + exteriorHeight - m.frameThickness() - m.shadowThickness());
+    // Lit from the top left, so the far sides fall away and the near ones catch the
+    // light. The near sides run the whole way, so the two corners where they meet the
+    // far ones go to the light.
+    band(left, top + height - shadowThickness, width, shadowThickness, colours.shadowColour());
+    band(left + width - shadowThickness, top, shadowThickness, height, colours.shadowColour());
 
-    // bottom border
-    horizontalLine(
-        borderBottomLeft,
-        exteriorWidth - (2 * m.frameThickness()),
-        colours.shadowColour(),
-        m.shadowThickness());
-
-    ///////////////////////////////
-
-    // right border
-    Gui::Coord borderTopRight(
-        absCoord.x() + exteriorWidth - m.frameThickness() - m.shadowThickness(),
-        absCoord.y() + m.frameThickness());
-
-    verticalLine(
-        borderTopRight,
-        exteriorHeight - (2 * m.frameThickness()) - m.shadowThickness() + 1,
-        colours.shadowColour(),
-        m.shadowThickness());
-
-    ///////////////////////////////
-
-    // top and left borders
-
-    Gui::Coord borderTopLeft(absCoord.x() + m.frameThickness(), absCoord.y() + m.frameThickness());
-
-    for (unsigned i = 0; i < m.highlightThickness(); ++i)
-    {
-        Gui::Coord hBorderCoord(borderTopLeft.x() + i, borderTopLeft.y() + i);
-
-        horizontalLine(hBorderCoord, borderWidth - i, colours.highlightColour(), 1);
-
-        Gui::Coord vBorderCoord(borderTopLeft.x() + i, borderTopLeft.y() + i);
-
-        verticalLine(vBorderCoord, borderHeight - i, colours.highlightColour(), 1);
-    }
+    band(left, top, width, highlightThickness, colours.highlightColour());
+    band(left, top, highlightThickness, height, colours.highlightColour());
 }
 
 /*********************************************************************
