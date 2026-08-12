@@ -110,7 +110,6 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     // Display large headings
     const Ren::Font& font = MachGui::Menu::font();
-    GuiBmpFont smallFont = Gui::getFont(MachGui::Menu::smallFontLight());
     GuiResourceString optionsHeading(IDS_MENULB_OPTIONS);
     new MachGuiMenuText(
         pStartupScreens,
@@ -293,10 +292,11 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
         // Access all the choices items, their id and # of choice per id
         const MachPhysComplexityManager::ChoiceItems& chItems = MachPhysComplexityManager::instance().choiceItems();
         uint index = 0;
-        const auto optimizationAreaCoord
-            = Gui::Coord(secondColumnX, (OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor());
-        const auto choicesBaseCoord
-            = Gui::Coord(secondColumnInputX, (OPTIMISATIONS_AREA_MINY + 35) * MachGui::menuScaleFactor());
+        // The label and the control beside it start on the line the check boxes in the
+        // column to the left of them start on, as they do in the options above.
+        const int optimisationsY = (OPTIMISATIONS_AREA_MINY + 33) * MachGui::menuScaleFactor();
+        const auto optimizationAreaCoord = Gui::Coord(secondColumnX, optimisationsY);
+        const auto choicesBaseCoord = Gui::Coord(secondColumnInputX, optimisationsY);
         for (MachPhysComplexityManager::ChoiceItems::const_iterator it = chItems.begin(); it != chItems.end(); ++it)
         {
             uint id = (*it)->id();
@@ -316,7 +316,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
                 pStartupScreens,
                 Gui::Box(
                     optimizationAreaCoord + Gui::Vec(0, verticalSpacing * index),
-                    Gui::Size(secondColumnTextWidth, smallFont.height() + 8 * MachGui::menuScaleFactor())),
+                    Gui::Size(secondColumnTextWidth, rowHeight)),
                 id,
                 MachGui::Menu::smallFontLight(),
                 Gui::AlignRight);
