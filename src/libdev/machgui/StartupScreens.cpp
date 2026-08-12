@@ -1099,16 +1099,25 @@ void MachGuiStartupScreens::doDisplay()
     auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
     assert(!backdrop->isNull());
 
-    const Gui::Coord coord(xMenuOffset(), yMenuOffset());
+    const Gui::Box area = menuArea();
     if (backdrop->requestedSize().isNull())
     {
-        GuiPainter::instance().blit(*backdrop, coord);
+        GuiPainter::instance().blit(*backdrop, area.minCorner());
     }
     else
     {
-        RenSurface::Size backdropSize = backdrop->requestedSize();
-        GuiPainter::instance().stretch(*backdrop, Gui::Box(coord, Gui::Size(backdropSize.width, backdropSize.height)));
+        GuiPainter::instance().stretch(*backdrop, area);
     }
+}
+
+Gui::Box MachGuiStartupScreens::menuArea()
+{
+    auto backdrop = mSharedBitmaps_.getNamedBitmap("backdrop");
+
+    return Gui::Box(
+        Gui::Coord(xMenuOffset(), yMenuOffset()),
+        mSharedBitmaps_.getWidthOfNamedBitmap(backdrop),
+        mSharedBitmaps_.getHeightOfNamedBitmap(backdrop));
 }
 
 bool MachGuiStartupScreens::finishApp()
@@ -1440,7 +1449,17 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
         {
             pendingScreenShot_ = false;
             pSceneManager_->pDevice()->finalizeBackBuffer();
-            Gui::backBuffer().saveAsPng(Gui::getNextAvailablePngFileName("menu"));
+
+            // The border around the menu is of no interest, so it is left out.
+            const Gui::Box area = menuArea();
+            Gui::backBuffer().saveAsPng(
+                Gui::getNextAvailablePngFileName("menu"),
+                Ren::Rect(
+                    static_cast<int>(area.minCorner().x()),
+                    static_cast<int>(area.minCorner().y()),
+                    static_cast<int>(area.width()),
+                    static_cast<int>(area.height())));
+
             pSceneManager_->pDevice()->presentFrame();
         }
         else

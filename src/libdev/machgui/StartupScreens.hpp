@@ -437,6 +437,10 @@ private:
     // Change the logo image
     void changeLogoImage(std::string_view image);
 
+    // The part of the window the menu is painted on. The rest of it is the black
+    // border the menu is letterboxed within.
+    Gui::Box menuArea();
+
     // Get the X & Y Coordinates of the Menu's BG Image Top Left Corner.
     friend class LoadGameProgressIndicator;
     int xMenuOffset();
