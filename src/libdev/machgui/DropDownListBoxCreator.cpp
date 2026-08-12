@@ -49,7 +49,7 @@ MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     int width,
     bool whiteFont,
     bool border)
-    : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight(border)))
+    : GuiDisplayable(pParent, Gui::Box(relCoord, width, reqHeight()))
     , MachGuiFocusCapableControl(pStartupScreens)
     , pStartupScreens_(pStartupScreens)
     , whiteFont_(whiteFont)
@@ -136,14 +136,12 @@ void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
 }
 
 // static
-size_t MachGuiDropDownListBoxCreator::reqHeight(bool border /*= false*/)
+size_t MachGuiDropDownListBoxCreator::reqHeight()
 {
-    size_t height = getFont().height() + 4 * MachGui::menuScaleFactor();
-
-    if (border)
-        height += 2 * MachGui::menuScaleFactor();
-
-    return height;
+    // Two either side of the text, which is where the border goes when there is one.
+    // The slide bar and the check box are built to the same recipe, so a row holding
+    // any of the three comes out the same height.
+    return getFont().height() + 4 * MachGui::menuScaleFactor();
 }
 
 // virtual

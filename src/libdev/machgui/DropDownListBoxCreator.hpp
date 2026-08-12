@@ -59,7 +59,7 @@ public:
     void setAvailText(const GuiStrings& availText);
 
     // Get minimum height required for the gui item.
-    static size_t reqHeight(bool border = false);
+    static size_t reqHeight();
 
     bool doHandleNavigationKey(NavKey, MachGuiFocusCapableControl**) override;
     void hasFocus(bool) override;
