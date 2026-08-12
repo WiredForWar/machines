@@ -21,6 +21,73 @@ int roundedRefreshRate(float exactRate)
     return static_cast<int>(std::lround(exactRate));
 }
 
+// Which of two modes offered at the same rate to run at. The rate the desktop is
+// already in wins outright, so that going fullscreen at the rate the desktop runs
+// at leaves the display alone rather than retiming it for a difference nobody can
+// see. Failing that the rate nearest the one asked for wins, and where no rate was
+// asked for the highest one does.
+bool isBetterRefreshRate(float candidate, float best, int wantedRate, float desktopRate)
+{
+    if (best == desktopRate)
+        return false;
+    if (candidate == desktopRate)
+        return true;
+
+    if (wantedRate <= 0)
+        return candidate > best;
+
+    const float wanted = static_cast<float>(wantedRate);
+
+    return std::fabs(candidate - wanted) < std::fabs(best - wanted);
+}
+
+// The mode to run at a resolution and a rate the player was offered. Several of
+// the modes a display offers at one resolution can round to the same rate, so the
+// rate alone does not name one of them and this picks between them.
+//
+// SDL_GetClosestFullscreenDisplayMode cannot do the job: its tie break between two
+// modes of the same size only lets the second win if it has the greater colour
+// depth, so on a display whose modes all share one pixel format it hands back the
+// highest rate on offer whatever rate it was asked for.
+bool chooseDisplayMode(SDL_DisplayID display, const IWindowAdapter::DisplayMode& wanted, SDL_DisplayMode* result)
+{
+    int modeCount = 0;
+    SDL_DisplayMode** modes = SDL_GetFullscreenDisplayModes(display, &modeCount);
+    if (!modes)
+        return false;
+
+    float desktopRate = 0.0F;
+    if (const SDL_DisplayMode* desktopMode = SDL_GetDesktopDisplayMode(display))
+        desktopRate = desktopMode->refresh_rate;
+
+    const SDL_DisplayMode* best = nullptr;
+    for (int i = 0; i < modeCount; ++i)
+    {
+        const SDL_DisplayMode* candidate = modes[i];
+
+        if (candidate->w != wanted.width || candidate->h != wanted.height)
+            continue;
+
+        // A rate of zero is the caller having none to ask for, as the failsafe mode
+        // does, rather than a rate no display offers.
+        if (wanted.refreshRate > 0 && roundedRefreshRate(candidate->refresh_rate) != wanted.refreshRate)
+            continue;
+
+        if (!best || isBetterRefreshRate(candidate->refresh_rate, best->refresh_rate, wanted.refreshRate, desktopRate))
+            best = candidate;
+    }
+
+    // The modes themselves belong to SDL and outlive the list, but copy while the
+    // list is still around anyway: what SDL is handed back has to be a mode it
+    // handed out, byte for byte, or it will not recognise it.
+    if (best)
+        *result = *best;
+
+    SDL_free(modes);
+
+    return best != nullptr;
+}
+
 } // namespace
 
 SDLWindowAdapter::SDLWindowAdapter(SDL_Window* window)
@@ -176,17 +243,38 @@ bool SDLWindowAdapter::useMode(const DisplayMode& mode)
     {
     case WindowMode::Fullscreen:
     {
-        // SDL3 requires a mode obtained from SDL; pick the closest supported one.
-        SDL_DisplayMode closestMode;
-        success = SDL_GetClosestFullscreenDisplayMode(
-            SDL_GetDisplayForWindow(window_),
-            mode.width,
-            mode.height,
-            static_cast<float>(mode.refreshRate),
-            false,
-            &closestMode);
-        if (success)
-            success = SDL_SetWindowFullscreenMode(window_, &closestMode);
+        // SDL3 only takes a mode it handed out itself, so pick one of those.
+        SDL_DisplayMode exclusiveMode;
+        if (!chooseDisplayMode(SDL_GetDisplayForWindow(window_), mode, &exclusiveMode))
+        {
+            // The display offers nothing at the size asked for, which is what a
+            // resolution recorded against a display that has since been swapped
+            // looks like. Borderless brings its own size along so it is the one
+            // fullscreen state always available, and taking it says so, where
+            // settling on some other size would hand back a resolution the player
+            // never chose without ever mentioning it.
+            spdlog::warn(
+                "SDLWindowAdapter: no fullscreen mode is {}x{}; going borderless instead",
+                mode.width,
+                mode.height);
+
+            success = SDL_SetWindowFullscreenMode(window_, nullptr);
+            if (success)
+                success = SDL_SetWindowFullscreen(window_, true);
+            windowMode_ = success ? WindowMode::Borderless : WindowMode::Windowed;
+            break;
+        }
+
+        // The rate is logged as SDL states it, since it is the mode's real timing
+        // that the rate the player picked has been rounded away from.
+        spdlog::info(
+            "SDLWindowAdapter: taking the {}x{} mode timed at {:.3f} Hz for {} Hz",
+            exclusiveMode.w,
+            exclusiveMode.h,
+            exclusiveMode.refresh_rate,
+            mode.refreshRate);
+
+        success = SDL_SetWindowFullscreenMode(window_, &exclusiveMode);
         SDL_SetWindowSize(window_, mode.width, mode.height);
         SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         if (!SDL_SetWindowFullscreen(window_, true))
