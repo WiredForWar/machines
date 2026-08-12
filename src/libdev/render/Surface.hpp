@@ -103,6 +103,8 @@ public:
 
     void getPixel(int x, int y, RenColour*) const;
 
+    // Writes the given area of the surface out, or the whole of it when the area is
+    // empty. The area is measured from the top left corner.
     void saveAsPng(const SysPathName&, const Rect& area = Rect()) const;
 
     // Returns the actual size used, in case an exact match doesn't exist.

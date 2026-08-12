@@ -5,6 +5,7 @@
 
 #include "render/Surface.hpp"
 
+#include <algorithm>
 #include <string>
 #include "base/Diag.hpp"
 
@@ -533,8 +534,22 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
 {
     TEST_INVARIANT;
 
+    const int surfaceWidth = static_cast<int>(width());
+    const int surfaceHeight = static_cast<int>(height());
+
+    // An empty area asks for the whole surface. Whatever is asked for is brought back
+    // inside it, so a caller need not know how much surface there is.
+    Rect region = (area.width > 0 && area.height > 0) ? area : Rect(0, 0, surfaceWidth, surfaceHeight);
+    region.originX = std::clamp(region.originX, 0, surfaceWidth);
+    region.originY = std::clamp(region.originY, 0, surfaceHeight);
+    region.width = std::min(region.width, surfaceWidth - region.originX);
+    region.height = std::min(region.height, surfaceHeight - region.originY);
+
+    if (region.width <= 0 || region.height <= 0)
+        return;
+
     // Save the screen shot
-    unsigned char* screenPixels = _NEW_ARRAY(unsigned char, width() * height() * 4);
+    unsigned char* screenPixels = _NEW_ARRAY(unsigned char, region.width * region.height * 4);
     if (screenPixels)
     {
         // Ensure all pending render commands are submitted before reading
@@ -543,19 +558,27 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
         RenDevice* dev = RenDevice::current();
         dev->flushCommandBuffer();
 
+        // The area is given with its origin at the top left, the way the rest of the
+        // gui counts, while pixels are read back from the bottom left.
+        const int readY = surfaceHeight - (region.originY + region.height);
+
         if (internals() && internals()->isOffscreen())
         {
-            dev->renderToTextureMode(handle(), width(), height());
-            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
+            dev->renderToTextureMode(handle(), surfaceWidth, surfaceHeight);
+            dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, screenPixels);
             dev->renderToTextureMode(Ren::NullTexId, 0, 0);
         }
         else
-            dev->backend().readPixelsUByte(0, 0, width(), height(), screenPixels);
+            dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, screenPixels);
 
         // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on
         // both little and big endian systems.
-        SDL_Surface* surface
-            = SDL_CreateSurfaceFrom(width(), height(), SDL_PIXELFORMAT_RGBA32, screenPixels, width() * 4);
+        SDL_Surface* surface = SDL_CreateSurfaceFrom(
+            region.width,
+            region.height,
+            SDL_PIXELFORMAT_RGBA32,
+            screenPixels,
+            region.width * 4);
 
         // Flip surface vertically because of OpenGL coordinates...
         // Code comes from https://halfgeek.org/wiki/Vertically_invert_a_surface_in_SDL
