@@ -124,39 +124,44 @@ void MachGuiHealthBar::doDisplay()
     const int borderThickness = MachGui::barBorderThickness();
     const int shadowThickness = MachGui::barShadowThickness();
     const int dividerThickness = MachGui::barDividerThickness();
-    const int barOffset = MachGui::barValueLineOffset();
     const int barThickness = MachGui::barValueLineThickness();
 
     const double hpRatio = static_cast<double>(currentHits_) / maxHits_;
     const double armorRatio = static_cast<double>(currentArmour_) / maxArmour_;
 
-    const unsigned interiorWidth = width() - (2 * borderThickness) - shadowThickness;
-    const unsigned hitsWidth = hpRatio * interiorWidth;
-    const unsigned armourWidth = armorRatio * interiorWidth;
+    const int interiorWidth = width() - (2 * borderThickness) - shadowThickness;
+    const int hitsWidth = hpRatio * interiorWidth;
+    const int armourWidth = armorRatio * interiorWidth;
 
-    Gui::Coord topLeft(absoluteCoord().x() + borderThickness, absoluteCoord().y() + borderThickness);
-    Gui::Coord sc(absoluteCoord().x() + borderThickness + shadowThickness, absoluteCoord().y() + borderThickness);
-    Gui::Coord ac(
-        absoluteCoord().x() + borderThickness + shadowThickness,
-        absoluteCoord().y() + barOffset + borderThickness + shadowThickness);
-    Gui::Coord dc(
-        absoluteCoord().x() + borderThickness + shadowThickness,
-        absoluteCoord().y() + borderThickness + shadowThickness + barThickness);
-    Gui::Coord hc(
-        absoluteCoord().x() + borderThickness + shadowThickness,
-        absoluteCoord().y() + barOffset + borderThickness + shadowThickness + barThickness + dividerThickness);
+    // Bands, each drawn from its own top edge, so that what one takes is where the
+    // next one starts: the shadow, the armour, the divider between the two bars, and
+    // the hits. Together they come to the height of the bar less its border, which is
+    // what healthBarHeight() adds up.
+    const int left = absoluteCoord().x() + borderThickness + shadowThickness;
+    const int top = absoluteCoord().y() + borderThickness;
+    const int armourTop = top + shadowThickness;
+    const int dividerTop = armourTop + barThickness;
+    const int hitsTop = dividerTop + dividerThickness;
 
-    GuiPainter::instance().horizontalLine(sc, interiorWidth, Gui::BLACK(), shadowThickness);
-    GuiPainter::instance().horizontalLine(ac, interiorWidth - 1, Gui::LIGHTGREY(), barThickness);
-    GuiPainter::instance().horizontalLine(ac, armourWidth, armourColour(currentArmour_, maxArmour_), barThickness);
-    GuiPainter::instance().horizontalLine(dc, interiorWidth, Gui::LIGHTGREY(), dividerThickness);
-    GuiPainter::instance().horizontalLine(hc, interiorWidth - 1, Gui::LIGHTGREY(), barThickness);
-    GuiPainter::instance().horizontalLine(hc, hitsWidth, hpColour(currentHits_, maxHits_), barThickness);
-    GuiPainter::instance().verticalLine(
-        topLeft,
+    auto band = [](int x, int y, int bandWidth, int bandHeight, const Gui::Colour& colour) {
+        if (bandWidth > 0)
+            GuiPainter::instance().filledRectangle(Gui::Box(Gui::Coord(x, y), bandWidth, bandHeight), colour);
+    };
+
+    band(left, top, interiorWidth, shadowThickness, Gui::BLACK());
+    band(left, armourTop, interiorWidth, barThickness, Gui::LIGHTGREY());
+    band(left, armourTop, armourWidth, barThickness, armourColour(currentArmour_, maxArmour_));
+    band(left, dividerTop, interiorWidth, dividerThickness, Gui::LIGHTGREY());
+    band(left, hitsTop, interiorWidth, barThickness, Gui::LIGHTGREY());
+    band(left, hitsTop, hitsWidth, barThickness, hpColour(currentHits_, maxHits_));
+
+    // The shadow down the left hand side, as deep as all of the bands beside it.
+    band(
+        absoluteCoord().x() + borderThickness,
+        top,
+        shadowThickness,
         shadowThickness + barThickness + dividerThickness + barThickness,
-        Gui::BLACK(),
-        shadowThickness);
+        Gui::BLACK());
 
     GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::WHITE(), borderThickness);
 }

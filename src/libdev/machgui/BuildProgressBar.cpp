@@ -64,25 +64,31 @@ void MachGuiBuildProgressBar::doDisplay()
 {
     const int borderThickness = MachGui::barBorderThickness();
     const int shadowThickness = MachGui::barShadowThickness();
-    const int barOffset = MachGui::barValueLineOffset();
     const int barThickness = MachGui::barValueLineThickness();
 
     GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::PURPLE());
 
-    size_t interiorWidth = width() - (2 * borderThickness) - shadowThickness;
-    size_t barWidth = (percentageComplete_ / 100.0) * interiorWidth;
+    const int interiorWidth = width() - (2 * borderThickness) - shadowThickness;
+    const int barWidth = (percentageComplete_ / 100.0) * interiorWidth;
 
-    Gui::Coord topLeft(absoluteCoord().x() + borderThickness, absoluteCoord().y() + borderThickness);
-    Gui::Coord sc(topLeft + Gui::Vec(shadowThickness, 0));
+    // The shadow along the top and the bar under it, each drawn from its own top edge,
+    // and the shadow down the side as deep as the two of them.
+    const int left = absoluteCoord().x() + borderThickness + shadowThickness;
+    const int top = absoluteCoord().y() + borderThickness;
 
-    GuiPainter::instance().horizontalLine(sc, interiorWidth, Gui::BLACK(), shadowThickness);
-    if (barWidth)
-    {
-        // Only draw if the barWidth is not zero
-        Gui::Coord bc(topLeft + Gui::Vec(shadowThickness, shadowThickness + barOffset));
-        GuiPainter::instance().horizontalLine(bc, barWidth, barColour(), barThickness);
-    }
-    GuiPainter::instance().verticalLine(topLeft, height() - borderThickness, Gui::BLACK(), shadowThickness);
+    auto band = [](int x, int y, int bandWidth, int bandHeight, const Gui::Colour& colour) {
+        if (bandWidth > 0)
+            GuiPainter::instance().filledRectangle(Gui::Box(Gui::Coord(x, y), bandWidth, bandHeight), colour);
+    };
+
+    band(left, top, interiorWidth, shadowThickness, Gui::BLACK());
+    band(left, top + shadowThickness, barWidth, barThickness, barColour());
+    band(
+        absoluteCoord().x() + borderThickness,
+        top,
+        shadowThickness,
+        shadowThickness + barThickness,
+        Gui::BLACK());
 
     GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::WHITE(), borderThickness);
 }
