@@ -209,6 +209,26 @@ bool SDLApp::clientStartup()
             case RenDisplay::WindowMode::Fullscreen:
                 modeR = Config::gfxRefreshRate.get();
                 loadedMode = pDisplay_->findMode(modeW, modeH, modeR);
+
+                if (!loadedMode.isValid() && modeR > 0)
+                {
+                    // A rate recorded while they were truncated rather than rounded
+                    // names a mode the list now holds one Hz higher, and only ever
+                    // the one: truncating and rounding the same rate cannot differ
+                    // by more than that. Read it as the mode it was recorded for,
+                    // which is still on offer, rather than report the mode the
+                    // player picked as gone.
+                    loadedMode = pDisplay_->findMode(modeW, modeH, modeR + 1);
+                    if (loadedMode.isValid())
+                    {
+                        spdlog::info(
+                            "Read the recorded {} Hz as the {} Hz supposing it was recorded"
+                            " before the refresh rates were rounded",
+                            modeR,
+                            modeR + 1);
+                        ++modeR;
+                    }
+                }
                 break;
 
             case RenDisplay::WindowMode::Borderless:
