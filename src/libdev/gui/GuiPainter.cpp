@@ -168,19 +168,17 @@ void GuiPainter::filledBorder(
 
     ///////////////////////////////
 
-    unsigned halfShadowThickness
-        = (m.shadowThickness() % 2 == 0) ? (m.shadowThickness() - 1) / 2 : (m.shadowThickness()) / 2;
-
-    static constexpr int TBD_REMOVE_HACK_OFFSET = 1;
-
+    // The shadow lies along the far side of what the frame leaves, so its outer edge
+    // is the last row and column inside the frame and it begins its own thickness
+    // before them.
     Gui::Coord borderBottomLeft(
         absCoord.x() + m.frameThickness(),
-        absCoord.y() + exteriorHeight - m.frameThickness() - halfShadowThickness - TBD_REMOVE_HACK_OFFSET);
+        absCoord.y() + exteriorHeight - m.frameThickness() - m.shadowThickness());
 
     // bottom border
     horizontalLine(
         borderBottomLeft,
-        exteriorWidth - (2 * m.frameThickness()), // + 1,
+        exteriorWidth - (2 * m.frameThickness()),
         colours.shadowColour(),
         m.shadowThickness());
 
@@ -188,7 +186,7 @@ void GuiPainter::filledBorder(
 
     // right border
     Gui::Coord borderTopRight(
-        absCoord.x() + exteriorWidth - m.frameThickness() - halfShadowThickness - TBD_REMOVE_HACK_OFFSET,
+        absCoord.x() + exteriorWidth - m.frameThickness() - m.shadowThickness(),
         absCoord.y() + m.frameThickness());
 
     verticalLine(
