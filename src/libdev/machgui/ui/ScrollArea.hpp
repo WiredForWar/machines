@@ -108,6 +108,11 @@ public:
     MachGuiScrollArea(GuiDisplayable* pParent, const Gui::Box& area, MachInGameScreen*);
     ~MachGuiScrollArea() override;
 
+    // The line drawn round the list. The list starts this far down the area and stops
+    // this far short of the bottom of it, so an area holding a list of a given height
+    // wants twice this on top of it.
+    static std::size_t outlineThickness();
+
     void initialise();
 
     void update();

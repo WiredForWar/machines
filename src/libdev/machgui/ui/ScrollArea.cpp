@@ -186,6 +186,12 @@ MachGuiScrollArea::~MachGuiScrollArea()
     TEST_INVARIANT;
 }
 
+// static
+std::size_t MachGuiScrollArea::outlineThickness()
+{
+    return 1 * Gui::uiScaleFactor();
+}
+
 void MachGuiScrollArea::initialise()
 {
     DEBUG_STREAM(DIAG_NEIL, "MachGuiScrollArea::initialise()" << std::endl);
@@ -193,7 +199,7 @@ void MachGuiScrollArea::initialise()
     SysPathNames upBmp(SysPathName("gui/corral/scrlup.bmp"), SysPathName("gui/corral/scrlup.bmp"));
     SysPathNames downBmp(SysPathName("gui/corral/scrldn.bmp"), SysPathName("gui/corral/scrldn.bmp"));
 
-    pList_ = createList(this, Gui::Coord(MachGuiScrollBar::reqWidth(), 1), pInGameScreen_);
+    pList_ = createList(this, Gui::Coord(MachGuiScrollBar::reqWidth(), outlineThickness()), pInGameScreen_);
     pLHSScrollBar_
         = new MachGuiScrollBar(this, Gui::Coord(0, 0), pList_, pInGameScreen_, MachGuiScrollBar::TOPBOTTOM);
     pRHSScrollBar_ = new MachGuiScrollBar(
@@ -215,12 +221,16 @@ void MachGuiScrollArea::doDisplay()
 {
     pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
 
+    const std::size_t thickness = outlineThickness();
+
+    // Drawn round the list, meeting the buttons rather than leaving a line of the
+    // panel showing between them, so it takes its own thickness out of each.
     Gui::Box outline = absoluteBoundary();
 
-    outline.xMin(outline.minCorner().x() + MachGuiScrollButton::reqWidth() - 1);
-    outline.xMax(outline.maxCorner().x() - MachGuiScrollButton::reqWidth() + 1);
+    outline.xMin(outline.minCorner().x() + MachGuiScrollButton::reqWidth() - thickness);
+    outline.xMax(outline.maxCorner().x() - MachGuiScrollButton::reqWidth() + thickness);
 
-    GuiPainter::instance().hollowRectangle(outline, MachGui::LIGHTPURPLE(), 1);
+    GuiPainter::instance().hollowRectangle(outline, MachGui::LIGHTPURPLE(), thickness);
 }
 
 void MachGuiScrollArea::CLASS_INVARIANT

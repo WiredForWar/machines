@@ -11,6 +11,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
+#include "machgui/ui/ScrollArea.hpp"
 #include "machlog/Tech/ConstructionTree.hpp"
 #include "machlog/Tech/ConstructionItem.hpp"
 #include "machlog/World/MachLog.hpp"
@@ -64,7 +65,7 @@ std::ostream& operator<<(std::ostream& o, const MachConstructMenuIcons& t)
 // static
 size_t MachConstructMenuIcons::reqHeight(MachInGameScreen* pInGameScreen)
 {
-    int height = pInGameScreen->controlPanel().getVisibleHeight() - 2;
+    int height = pInGameScreen->controlPanel().getVisibleHeight() - (2 * MachGuiScrollArea::outlineThickness());
 
     // Make height a multiple of MachBuildMachineIcon::reqHeight
     height -= height % MachConstructionSelectIcon::reqHeight();

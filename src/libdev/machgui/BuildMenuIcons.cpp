@@ -12,6 +12,7 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
 #include "machgui/ProductionBank.hpp"
+#include "machgui/ui/ScrollArea.hpp"
 #include "machlog/Actors/Factory.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
@@ -95,7 +96,8 @@ size_t MachBuildMenuIcons::reqWidth()
 // static
 size_t MachBuildMenuIcons::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-    int height = pInGameScreen->controlPanel().getVisibleHeight() - (2 + relCoord.y() + MachProductionBank::height());
+    int height = pInGameScreen->controlPanel().getVisibleHeight()
+        - ((2 * MachGuiScrollArea::outlineThickness()) + relCoord.y() + MachProductionBank::height());
 
     // Make height a multiple of MachBuildMachineIcon::reqHeight
     height -= height % MachBuildMachineIcon::reqHeight();

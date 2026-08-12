@@ -47,7 +47,7 @@ size_t MachConstructMenu::reqWidth()
 // static
 size_t MachConstructMenu::reqHeight(MachInGameScreen* pInGameScreen)
 {
-    return MachConstructMenuIcons::reqHeight(pInGameScreen) + 2;
+    return MachConstructMenuIcons::reqHeight(pInGameScreen) + (2 * outlineThickness());
 }
 
 // virtual

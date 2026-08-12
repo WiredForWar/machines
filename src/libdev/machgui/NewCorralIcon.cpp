@@ -364,7 +364,8 @@ size_t MachCorralIcons::reqWidth()
 size_t MachCorralIcons::reqHeight(MachInGameScreen* pInGameScreen)
 {
     // Find height available in control panel
-    int height = pInGameScreen->controlPanel().getVisibleHeight() - MachGuiNavigatorBase::reqHeight() - 2;
+    int height = pInGameScreen->controlPanel().getVisibleHeight() - MachGuiNavigatorBase::reqHeight()
+        - (2 * MachGuiScrollArea::outlineThickness());
 
     // Make height a multiple of MachGuiCorralResource::buttonHeight
     height -= height % MachGuiCorralResource::buttonHeight();
@@ -478,7 +479,7 @@ size_t MachGuiCorral::reqWidth()
 // static
 size_t MachGuiCorral::reqHeight(MachInGameScreen* pInGameScreen)
 {
-    return MachCorralIcons::reqHeight(pInGameScreen) + 2;
+    return MachCorralIcons::reqHeight(pInGameScreen) + (2 * outlineThickness());
 }
 
 // static

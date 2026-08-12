@@ -10,6 +10,7 @@
 #include "machgui/gui.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ControlPanel.hpp"
+#include "machgui/ui/ScrollArea.hpp"
 #include "machlog/Actors/HardwareLab.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Tech/ResearchItem.hpp"

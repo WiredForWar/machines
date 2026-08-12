@@ -71,7 +71,7 @@ size_t MachHWResearchMenu::reqWidth()
 // static
 size_t MachHWResearchMenu::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-    return MachHWResearchIcons::reqHeight(pInGameScreen, relCoord) + 2;
+    return MachHWResearchIcons::reqHeight(pInGameScreen, relCoord) + (2 * outlineThickness());
 }
 
 /* End  *************************************************/

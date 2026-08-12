@@ -70,7 +70,7 @@ size_t MachBuildMenu::reqWidth()
 // static
 size_t MachBuildMenu::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-    return MachBuildMenuIcons::reqHeight(pInGameScreen, relCoord) + 2;
+    return MachBuildMenuIcons::reqHeight(pInGameScreen, relCoord) + (2 * outlineThickness());
 }
 
 /* End BILDMENU.CPP *************************************************/
