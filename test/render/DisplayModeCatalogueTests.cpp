@@ -45,6 +45,21 @@ TEST(DisplayModeCatalogueTests, RepeatsOfTheSameModeCollapseToOneEntry)
     EXPECT_EQ(std::vector<int>({60}), catalogue.refreshRates({1920, 1080}));
 }
 
+TEST(DisplayModeCatalogueTests, ModesThatShareARoundedRateCollapseToOneEntry)
+{
+    // A display commonly offers a resolution at both 60.00 and 59.94 Hz, which the
+    // adapter reports as 60 apiece. The player gets one 60 Hz entry: the two modes
+    // are a timing detail apart, and offering both would read as a fault. Holds the
+    // rate list to the rate the player sees rather than anything finer.
+    const Ren::DisplayModeCatalogue catalogue{{
+        mode(1920, 1080, 60),
+        mode(1920, 1080, 60),
+        mode(1920, 1080, 50),
+    }};
+
+    EXPECT_EQ(std::vector<int>({60, 50}), catalogue.refreshRates({1920, 1080}));
+}
+
 TEST(DisplayModeCatalogueTests, ResolutionsRunLargestFirst)
 {
     const Ren::DisplayModeCatalogue catalogue{{

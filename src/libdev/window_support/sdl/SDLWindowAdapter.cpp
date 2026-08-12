@@ -4,8 +4,24 @@
 
 #include "spdlog/spdlog.h"
 
+#include <cmath>
+
 namespace Ren
 {
+
+namespace
+{
+
+// The rate to report a mode at, and the rate the player picks it by. A mode timed
+// at 59.95 Hz is a 60 Hz mode: the fraction is a timing detail of the mode rather
+// than something the player is choosing, and truncating it would offer them a
+// 59 Hz and a 60 Hz entry for two modes they cannot tell apart.
+int roundedRefreshRate(float exactRate)
+{
+    return static_cast<int>(std::lround(exactRate));
+}
+
+} // namespace
 
 SDLWindowAdapter::SDLWindowAdapter(SDL_Window* window)
     : window_(window)
@@ -124,7 +140,7 @@ std::vector<IWindowAdapter::DisplayMode> SDLWindowAdapter::availableDisplayModes
                     .width = mode->w,
                     .height = mode->h,
                     .depth = static_cast<int>(SDL_BITSPERPIXEL(mode->format)),
-                    .refreshRate = static_cast<int>(mode->refresh_rate),
+                    .refreshRate = roundedRefreshRate(mode->refresh_rate),
                     .format = static_cast<uint32_t>(mode->format),
                 });
         }
@@ -145,7 +161,7 @@ IWindowAdapter::DisplayMode SDLWindowAdapter::desktopDisplayMode() const
         .width = mode->w,
         .height = mode->h,
         .depth = static_cast<int>(SDL_BITSPERPIXEL(mode->format)),
-        .refreshRate = static_cast<int>(mode->refresh_rate),
+        .refreshRate = roundedRefreshRate(mode->refresh_rate),
         .format = static_cast<uint32_t>(mode->format),
     };
 }
