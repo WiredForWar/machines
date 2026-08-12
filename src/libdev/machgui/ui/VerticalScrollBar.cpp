@@ -32,79 +32,56 @@ std::size_t MachGuiVerticalScrollBar::barFrameWidth() const
     return 1 * MachGui::menuScaleFactor();
 }
 
-// virtual
 void MachGuiVerticalScrollBar::doDisplayBar()
 {
-    GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::MENUDARKGREEN());
+    const Gui::Box& bar = absoluteBoundary();
     const int frameWidth = barFrameWidth();
-    GuiPainter::instance().line(
-        absoluteBoundary().minCorner(),
-        Gui::Coord(absoluteBoundary().minCorner().x(), absoluteBoundary().maxCorner().y()),
-        MachGui::DARKSANDY(),
-        frameWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(absoluteBoundary().maxCorner().x() - frameWidth, absoluteBoundary().minCorner().y()),
-        Gui::Coord(absoluteBoundary().maxCorner().x() - frameWidth, absoluteBoundary().maxCorner().y()),
-        MachGui::DARKSANDY(),
-        frameWidth);
+
+    GuiPainter::instance().filledRectangle(bar, MachGui::MENUDARKGREEN());
+
+    // A frame down either side, drawn as the bands they are. A line of a given width
+    // is put where it rasterises, which past one pixel across is not where it was
+    // asked for.
+    auto band = [](int x, int y, int bandWidth, int bandHeight, const Gui::Colour& colour) {
+        if (bandWidth > 0 && bandHeight > 0)
+            GuiPainter::instance().filledRectangle(
+                Gui::Box(Gui::Coord(x, y), bandWidth, bandHeight),
+                colour);
+    };
+
+    band(bar.minCorner().x(), bar.minCorner().y(), frameWidth, bar.height(), MachGui::DARKSANDY());
+    band(bar.maxCorner().x() - frameWidth, bar.minCorner().y(), frameWidth, bar.height(), MachGui::DARKSANDY());
 }
 
-// virtual
 void MachGuiVerticalScrollBar::doDisplayBox(const Gui::Box& absoluteBox)
 {
-    // Draw low lights and high lights
     const int penWidth = 1 * MachGui::menuScaleFactor();
-    GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.maxCorner().x() - 2 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.maxCorner().x() - 2 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y()),
-        MachGui::SANDY(),
-        penWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y() - 1 * MachGui::menuScaleFactor()),
-        Gui::Coord(absoluteBox.maxCorner().x() - 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y() - 1 * MachGui::menuScaleFactor()),
-        MachGui::SANDY(),
-        penWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.maxCorner().x() - 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
-        MachGui::SANDY(),
-        penWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.minCorner().y()),
-        Gui::Coord(absoluteBox.minCorner().x() + 1 * MachGui::menuScaleFactor(), absoluteBox.maxCorner().y()),
-        MachGui::SANDY(),
-        penWidth);
+    const int left = absoluteBox.minCorner().x();
+    const int top = absoluteBox.minCorner().y();
+    const int boxWidth = absoluteBox.width();
+    const int boxHeight = absoluteBox.height();
 
-    int halfBoxHeight = (absoluteBox.maxCorner().y() - absoluteBox.minCorner().y()) / 2;
+    auto band = [](int x, int y, int bandWidth, int bandHeight) {
+        if (bandWidth > 0 && bandHeight > 0)
+            GuiPainter::instance().filledRectangle(
+                Gui::Box(Gui::Coord(x, y), bandWidth, bandHeight),
+                MachGui::SANDY());
+    };
 
-    // Draw three lines in middle of scroll box
-    GuiPainter::instance().line(
-        Gui::Coord(
-            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight),
-        Gui::Coord(
-            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight),
-        MachGui::SANDY(),
-        penWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(
-            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight - 2 * MachGui::menuScaleFactor()),
-        Gui::Coord(
-            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight - 2 * MachGui::menuScaleFactor()),
-        MachGui::SANDY(),
-        penWidth);
-    GuiPainter::instance().line(
-        Gui::Coord(
-            absoluteBox.minCorner().x() + 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight + 2 * MachGui::menuScaleFactor()),
-        Gui::Coord(
-            absoluteBox.maxCorner().x() - 3 * MachGui::menuScaleFactor(),
-            absoluteBox.minCorner().y() + halfBoxHeight + 2 * MachGui::menuScaleFactor()),
-        MachGui::SANDY(),
-        penWidth);
+    // Outlined a pen in from either side and against its own top and bottom, which is
+    // where it came out when a pen was a single pixel.
+    band(left + penWidth, top, penWidth, boxHeight);
+    band(left + boxWidth - (2 * penWidth), top, penWidth, boxHeight);
+    band(left + penWidth, top, boxWidth - (2 * penWidth), penWidth);
+    band(left + penWidth, top + boxHeight - penWidth, boxWidth - (2 * penWidth), penWidth);
+
+    // Three lines across the middle of it, a pen apart from one another.
+    const int middle = top + (boxHeight / 2) - (penWidth / 2);
+
+    for (const int offset : { -2 * penWidth, 0, 2 * penWidth })
+    {
+        band(left + (3 * penWidth), middle + offset, boxWidth - (6 * penWidth), penWidth);
+    }
 }
 
 // static
