@@ -43,9 +43,7 @@ void GuiPainter::filledRectangle(const Gui::Box& b, const Gui::Colour& col) cons
 
 void GuiPainter::hollowRectangle(const Gui::Box& b, const Gui::Colour& col, unsigned thickness) const
 {
-    Ren::Rect area(b.minCorner().x(), b.minCorner().y(), b.width() - 1, b.height() - 1);
-
-    Ren::Painter::hollowRectangle(area, col, thickness);
+    Ren::Painter::hollowRectangle(map_GuiBox_to_RenSurfaceRect(b), col, thickness);
 }
 
 /* //////////////////////////////////////////////////////////////// */
@@ -72,15 +70,19 @@ void GuiPainter::bevel(const Gui::Box& b, unsigned thickness, const Gui::Colour&
     const Gui::Coord& c = b.minCorner();
     Gui::XCoord x1 = c.x();
     Gui::YCoord y1 = c.y();
-    Gui::XCoord x2 = x1 + b.width();
-    Gui::YCoord y2 = y1 + b.height();
+    Gui::XCoord width = b.width();
+    Gui::YCoord height = b.height();
 
-    for (unsigned i = 0; i < thickness; ++i, ++x1, ++y1, --x2, --y2)
+    // Each edge is a line of its own rather than a rectangle, because a rectangle
+    // one pixel across is not one that hollowRectangle can draw.
+    for (unsigned i = 0; i < thickness && width > 0 && height > 0; ++i, ++x1, ++y1, width -= 2, height -= 2)
     {
-        hollowRectangle(Gui::Box(x1, y1, x2, y1), hiCol, 1);
-        hollowRectangle(Gui::Box(x1, y1, x1, y2), hiCol, 1);
-        hollowRectangle(Gui::Box(x2, y1 + 1, x2, y2), loCol, 1);
-        hollowRectangle(Gui::Box(x1 + 1, y2, x2, y2), loCol, 1);
+        // Lit from the top left, so the near edges catch the light and the far ones
+        // fall away. The corners go to whichever edge reaches them first.
+        filledRectangle(Gui::Box(Gui::Coord(x1, y1), width, 1), hiCol);
+        filledRectangle(Gui::Box(Gui::Coord(x1, y1), 1, height), hiCol);
+        filledRectangle(Gui::Box(Gui::Coord(x1 + width - 1, y1 + 1), 1, height - 1), loCol);
+        filledRectangle(Gui::Box(Gui::Coord(x1 + 1, y1 + height - 1), width - 1, 1), loCol);
     }
 }
 
