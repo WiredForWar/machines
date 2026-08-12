@@ -17,10 +17,10 @@ GuiIcon::GuiIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const GuiBitmap
     : GuiBitmapButtonWithFilledBorder(
         pParent,
         rel,
-        GuiBorderMetrics(1, 1, 1),
+        GuiBorderMetrics(1, 1, 1) * Gui::uiScaleFactor(),
         GuiFilledBorderColours(Gui::BLACK(), Gui::LIGHTGREY(), Gui::DARKGREY(), Gui::RED()),
         bitmap,
-        Gui::Coord(1, 1))
+        Gui::Coord(1, 1) * Gui::uiScaleFactor())
 {
 }
 
