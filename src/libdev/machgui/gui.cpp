@@ -729,11 +729,6 @@ int MachGui::barDividerThickness()
     return 1 * Gui::uiScaleFactor();
 }
 
-int MachGui::barValueLineOffset()
-{
-    return 1 * Gui::uiScaleFactor();
-}
-
 int MachGui::barValueLineThickness()
 {
     // The '+' below is intentional:

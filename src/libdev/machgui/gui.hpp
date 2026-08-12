@@ -107,7 +107,6 @@ int mapAreaHeight();
 int barBorderThickness();
 int barShadowThickness();
 int barDividerThickness();
-int barValueLineOffset();
 int barValueLineThickness();
 
 int iconIndexYOffset();
