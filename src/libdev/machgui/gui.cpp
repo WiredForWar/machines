@@ -721,19 +721,29 @@ int MachGui::barBorderThickness()
 
 int MachGui::barShadowThickness()
 {
-    return 1 * Gui::uiScaleFactor();
+    // Neither the shadow under a bar nor the divider between its two halves says
+    // anything itself: one lifts the bar off whatever is behind it and the other keeps
+    // the two halves apart, and both were a single pixel at the size the bars were
+    // drawn for. Grown at the rate the bars are, they read as bands in their own
+    // right, so they grow at half of it and keep to one pixel until there is room for
+    // two.
+    return (static_cast<int>(Gui::uiScaleFactor()) + 1) / 2;
 }
 
 int MachGui::barDividerThickness()
 {
-    return 1 * Gui::uiScaleFactor();
+    return barShadowThickness();
 }
 
 int MachGui::barValueLineThickness()
 {
-    // The '+' below is intentional:
-    // We want 2px for 1X and 3px for 2X scales.
-    return 1 + Gui::uiScaleFactor();
+    // The bars have whatever the border, the shadow and the divider leave them, so the
+    // bar as a whole stays the height it always was, six for every step up from the
+    // size it was drawn for and two besides. What the thin bands give up is what the
+    // bars are given.
+    const int scale = static_cast<int>(Gui::uiScaleFactor());
+
+    return (2 * scale) + 1 - barShadowThickness();
 }
 
 int MachGui::iconIndexYOffset()
