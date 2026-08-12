@@ -22,11 +22,21 @@ MachGuiVerticalScrollBar::MachGuiVerticalScrollBar(
     changed();
 }
 
+std::size_t MachGuiVerticalScrollBar::minBoxHeight() const
+{
+    return 9 * MachGui::menuScaleFactor();
+}
+
+std::size_t MachGuiVerticalScrollBar::barFrameWidth() const
+{
+    return 1 * MachGui::menuScaleFactor();
+}
+
 // virtual
 void MachGuiVerticalScrollBar::doDisplayBar()
 {
     GuiPainter::instance().filledRectangle(absoluteBoundary(), MachGui::MENUDARKGREEN());
-    const int frameWidth = MachGui::menuScaleFactor() * 1;
+    const int frameWidth = barFrameWidth();
     GuiPainter::instance().line(
         absoluteBoundary().minCorner(),
         Gui::Coord(absoluteBoundary().minCorner().x(), absoluteBoundary().maxCorner().y()),

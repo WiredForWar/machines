@@ -51,6 +51,11 @@ protected:
     // box. Default, i.e. this implementation, is set to 7.
     virtual size_t minBoxHeight() const;
 
+    // How wide the frame down either side of the bar is drawn, which is how far the
+    // box inside it is held off each edge. A derived bar that draws a thicker frame
+    // says so here, or the box is laid over it.
+    virtual std::size_t barFrameWidth() const;
+
     void doHandleMouseClickEvent(const GuiMouseEvent& rel) override;
     void doHandleContainsMouseEvent(const GuiMouseEvent& rel) override;
 

@@ -25,4 +25,7 @@ public:
 protected:
     void doDisplayBar() override;
     void doDisplayBox(const Gui::Box& absoluteBox) override;
+
+    std::size_t minBoxHeight() const override;
+    std::size_t barFrameWidth() const override;
 };

@@ -49,18 +49,19 @@ void GuiVerticalScrollBar::listUpdated()
     if (hasList())
     {
         Gui::Box area = absoluteBoundary();
+        const Gui::XCoord frameWidth = barFrameWidth();
 
         if (list().numListItems() <= list().visiblePositions())
         {
             // Special case, there are less items than the visible portion of the list box,
             // therefore make the scroll box fill the scroll bar
-            Gui::XCoord boxLeft = area.minCorner().x() + 1;
+            Gui::XCoord boxLeft = area.minCorner().x() + frameWidth;
             Gui::YCoord boxTop = area.minCorner().y();
 
-            MexSize2d size(area.width() - 2, area.height());
+            MexSize2d size(area.width() - (2 * frameWidth), area.height());
 
             boxAbsPosition_ = Gui::Box(Gui::Coord(boxLeft, boxTop), size);
-            boxRelPosition_ = Gui::Box(Gui::Coord(1, 0), size);
+            boxRelPosition_ = Gui::Box(Gui::Coord(frameWidth, 0), size);
         }
         else
         {
@@ -85,13 +86,13 @@ void GuiVerticalScrollBar::listUpdated()
             // Work out the position of the scroll box in relation to the top of the scroll bar
             int pixTopOffset = list().scrollOffset() * itemRemainderPix;
 
-            Gui::XCoord boxLeft = area.minCorner().x() + 1;
+            Gui::XCoord boxLeft = area.minCorner().x() + frameWidth;
             Gui::YCoord boxTop = area.minCorner().y() + pixTopOffset;
 
-            MexSize2d size(area.width() - 2, pixBoxHeight);
+            MexSize2d size(area.width() - (2 * frameWidth), pixBoxHeight);
 
             boxAbsPosition_ = Gui::Box(Gui::Coord(boxLeft, boxTop), size);
-            boxRelPosition_ = Gui::Box(Gui::Coord(1, pixTopOffset), size);
+            boxRelPosition_ = Gui::Box(Gui::Coord(frameWidth, pixTopOffset), size);
         }
     }
 
@@ -172,6 +173,11 @@ void GuiVerticalScrollBar::doDisplayBox(const Gui::Box& absoluteBox)
 size_t GuiVerticalScrollBar::minBoxHeight() const
 {
     return 9;
+}
+
+std::size_t GuiVerticalScrollBar::barFrameWidth() const
+{
+    return 1;
 }
 
 // virtual
