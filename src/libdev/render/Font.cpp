@@ -230,6 +230,28 @@ int Font::height() const
     return pImpl_ ? pImpl_->height() : 0;
 }
 
+int Font::ascender() const
+{
+    return pImpl_ ? pImpl_->ascender() : 0;
+}
+
+int Font::descender() const
+{
+    return pImpl_ ? pImpl_->descender() : 0;
+}
+
+int Font::capHeight() const
+{
+    if (! pImpl_)
+        return 0;
+
+    // How high a capital is drawn above the baseline is how high the capital H is,
+    // which the atlas already knows. Failing that, a line is taken to be all capital.
+    const Ren::FontImpl::CharData* charData = pImpl_->getChar('H');
+
+    return (charData && charData->bt) ? charData->bt : pImpl_->ascender();
+}
+
 int Font::charWidth(uint32_t character) const
 {
     const Ren::FontImpl::CharData* charData = pImpl_->getChar(character);

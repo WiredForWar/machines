@@ -29,7 +29,15 @@ public:
     bool isValid() const;
     void reload();
     int pixelSize() const;
+
+    // What a line of this font is made of. The ascender is the rise above the
+    // baseline and the descender the drop below it, negative, so that the height is
+    // the two apart. The cap height is how far a capital letter reaches, which is
+    // what to centre on when the text has nothing hanging below the baseline.
     int height() const;
+    int ascender() const;
+    int descender() const;
+    int capHeight() const;
 
     int charWidth(uint32_t character) const;
 
