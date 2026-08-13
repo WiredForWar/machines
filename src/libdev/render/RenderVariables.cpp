@@ -114,7 +114,7 @@ template class Config::Variable<Ren::WindowMode>;
 template class Config::Variable<ShadowQuality>;
 
 Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", {});
-Variable<Ren::WindowMode> gfxWindowMode("Screen Resolution/Window Mode", Ren::WindowMode::Fullscreen);
+Variable<Ren::WindowMode> gfxWindowMode("Screen Resolution/Window Mode", Ren::WindowMode::Borderless);
 
 bool windowModeIsUnset()
 {
