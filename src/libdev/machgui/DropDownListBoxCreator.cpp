@@ -221,6 +221,11 @@ void MachGuiDropDownListBoxCreator::doDisplay()
     }
     int offset2 = 2 * offset;
 
+    // One scaled pixel inside whatever is drawn above and to the left of it, which is
+    // the border where there is one and the edge of the box where there is not. The
+    // room the height keeps for a border is kept either way, so a borderless drop down
+    // has the slack at the bottom rather than a gap at the top, and its text starts
+    // level with the label across from it and with the items of the list it opens.
     Gui::Coord textPos(
         absoluteBoundary().minCorner().x() + 1 * MachGui::menuScaleFactor() + offset,
         absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor() + offset);

@@ -50,9 +50,12 @@ GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 // virtual
 void MachGuiDropDownListBoxItem::doDisplay()
 {
+    // An item of this list draws a border of its own, so its text starts a pixel
+    // inside that rather than inside the edge of the item, which is what the x
+    // coordinate already allowed for and the y did not.
     const Ren::Point textCoord(
         absoluteBoundary().minCorner().x() + 2 * MachGui::menuScaleFactor(),
-        absoluteBoundary().minCorner().y() + 1 * MachGui::menuScaleFactor());
+        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor());
 
     if (isSelected())
     {
