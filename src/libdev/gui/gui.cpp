@@ -1,6 +1,7 @@
 #include "gui/gui.hpp"
 #include "gui/Displayable.hpp"
 #include "render/BmpFont.hpp"
+#include "render/Font.hpp"
 #include "render/Painter.hpp"
 #include "system/PathName.hpp"
 #include "system/VFS.hpp"
@@ -312,6 +313,32 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
     newFont.spacing(spacing);
     fonts.push_back(newFont);
     return newFont;
+}
+
+int Gui::baselineIn(MATHEX_SCALAR boxHeight, int capHeight)
+{
+    // Sit the capitals in the middle; the baseline is the line they stand on.
+    return static_cast<int>((boxHeight - capHeight) / 2) + capHeight;
+}
+
+int Gui::baselineIn(MATHEX_SCALAR boxHeight, const Ren::BmpFont& font)
+{
+    return baselineIn(boxHeight, font.capHeight());
+}
+
+int Gui::baselineIn(MATHEX_SCALAR boxHeight, const Ren::Font& font)
+{
+    return baselineIn(boxHeight, font.capHeight());
+}
+
+int Gui::textTopIn(MATHEX_SCALAR boxHeight, const Ren::BmpFont& font)
+{
+    return baselineIn(boxHeight, font) - font.ascender();
+}
+
+int Gui::textTopIn(MATHEX_SCALAR boxHeight, const Ren::Font& font)
+{
+    return baselineIn(boxHeight, font) - font.ascender();
 }
 
 void Gui::releaseFontMemory()

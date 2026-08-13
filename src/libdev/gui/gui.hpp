@@ -180,6 +180,23 @@ void setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics& metr
 
 Ren::BmpFont getFont(const SysPathName& fontPath);
 
+// Where the baseline of a line of text sits within a box of the given height,
+// measured down from the top of the box.
+//
+// Text is placed from its baseline. The line box around it carries room for glyphs
+// that reach higher and drop lower than the ones actually being drawn, so centring
+// that box leaves the text looking low; what is centred here is the capitals, which
+// is what the eye reads the middle of a line by. Ask for the same box height with
+// the same font anywhere and the answer is the same, so two things drawn beside one
+// another sit on one line.
+int baselineIn(MATHEX_SCALAR boxHeight, int capHeight);
+int baselineIn(MATHEX_SCALAR boxHeight, const Ren::BmpFont& font);
+int baselineIn(MATHEX_SCALAR boxHeight, const Ren::Font& font);
+
+// The top of the line box for text on that baseline, which is where drawing starts.
+int textTopIn(MATHEX_SCALAR boxHeight, const Ren::BmpFont& font);
+int textTopIn(MATHEX_SCALAR boxHeight, const Ren::Font& font);
+
 // Free's up all the memory used by the cached fonts.
 void releaseFontMemory();
 
