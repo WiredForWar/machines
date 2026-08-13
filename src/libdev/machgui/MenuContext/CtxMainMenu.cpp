@@ -48,9 +48,6 @@ MachGuiCtxMainMenu::MachGuiCtxMainMenu(MachGuiStartupScreens* pStartupScreens)
     Gui::getFont(MachGui::Menu::smallFontDark());
     Gui::getFont(MachGui::Menu::smallFontLight());
     Gui::getFont(MachGui::Menu::smallFontWhite());
-    // Gui::getFont(MachGui::Menu::largeFontDark());
-    // Gui::getFont(MachGui::Menu::largeFontLight());
-    // Gui::getFont(MachGui::Menu::largeFontFocus());
 
 #ifdef DEMO
     new MachGuiMenuButton(

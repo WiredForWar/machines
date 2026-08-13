@@ -12,10 +12,6 @@ struct MenuStyle
     std::string smallFontDark;
     std::string smallFontLight;
     std::string smallFontWhite;
-
-    std::string largeFontDark;
-    std::string largeFontLight;
-    std::string largeFontFocus;
 };
 
 MenuStyle& menuStyle()
@@ -44,30 +40,11 @@ const std::string& smallFontWhite()
     return menuStyle().smallFontWhite;
 }
 
-const std::string& largeFontDark()
-{
-    return menuStyle().largeFontDark;
-}
-
-const std::string& largeFontLight()
-{
-    return menuStyle().largeFontLight;
-}
-
-const std::string& largeFontFocus()
-{
-    return menuStyle().largeFontFocus;
-}
-
 void updateFonts()
 {
     menuStyle().smallFontDark = getScaledImagePath("gui/menu/smaldfnt.bmp");
     menuStyle().smallFontLight = getScaledImagePath("gui/menu/smallfnt.bmp");
     menuStyle().smallFontWhite = getScaledImagePath("gui/menu/smalwfnt.bmp");
-
-    menuStyle().largeFontDark = getScaledImagePath("gui/menu/largdfnt.bmp");
-    menuStyle().largeFontLight = getScaledImagePath("gui/menu/largefnt.bmp");
-    menuStyle().largeFontFocus = getScaledImagePath("gui/menu/largyfnt.bmp");
 }
 
 const Gui::Colour highlightedTextColor()
