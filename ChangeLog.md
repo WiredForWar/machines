@@ -7,7 +7,8 @@ had its renderer rebuilt underneath.
 - Ground camera height (z position) now always saved/restored on view save/restore
 - Following camera now persists when switching camera type (Ground <-> Zenith)
 - A number of pathfinding improvements (performance and responsiveness)
-- Screenshot capture is now more robust and the 'Paused' overlay is no longer included in screenshots
+- Screenshot capture is now more robust, and the 'Paused' overlay is no longer included
+- Screenshot of a menu holds just the menu instead of the black border around it
 - Optimized the game startup
 - Added models, cursors, and planet minimaps texture modding support
 - Added support for scaled planet maps
@@ -39,9 +40,11 @@ had its renderer rebuilt underneath.
 - Fixed a destroyed machine carrying on with its update while teleporting in or out
 - Fixed a crash when a Resource Carrier was sent to a mine it could not reach
 - Fixed crash on close by Alt+F4
+- Fixed a crash on choosing an entry from a drop down list
 - Fixed the audio stuttering during video playback
 - Fixed the anti-aliasing option not being applied
 - Fixed the drawing of rectangles and lines
+- Fixed a number of issues with 2x interface scale
 - Fixed the game menus opening while a modifier key was held
 - Fixed multiplayer chat messages being truncated
 - Fixed the port byte order in LAN discovery packets
@@ -54,7 +57,7 @@ Under the hood:
 - The game now builds with MSVC
 - The game now builds with Clang
 - Dropped the Alure dependency (music is decoded with a bundled stb_vorbis)
-- Reworked the renderer API (ready for multiply render backends)
+- Reworked the renderer API (ready for multiple render backends)
 
 ### v1.7.4
 
