@@ -14,13 +14,20 @@
 
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
-BmpFontCore::BmpFontCore(const SysPathName& fontPath)
+BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale)
 {
     fontBmp_ = RenSurface::createSharedSurface(fontPath.pathname());
     fontBmp_.enableColourKeying();
     fontPath_ = fontPath;
     coreCount_ = 1;
-    charHeight_ = fontBmp_.height() - 1 /*bitmap has extra undisplayable line at bottom*/;
+
+    // The original art ends in one undisplayable line, whose white pixels mark where
+    // one character stops and the next starts. The upscaled fonts were produced by
+    // scaling that art whole, so the marker line became scale lines of which only the
+    // last carries the markers and the rest are transparent. That was a deliberate
+    // choice: recutting six atlases by hand to keep a single marker line would have
+    // been far more work than accounting for the scale here.
+    charHeight_ = fontBmp_.height() - scale;
 
     SysPathName persistFontPath = fontPath;
     persistFontPath.extension("bin");
@@ -169,9 +176,9 @@ BmpFont::BmpFont()
 {
 }
 
-BmpFont::BmpFont(const SysPathName& fontPath)
+BmpFont::BmpFont(const SysPathName& fontPath, std::size_t scale)
 {
-    pFontCore_ = new BmpFontCore(fontPath);
+    pFontCore_ = new BmpFontCore(fontPath, scale);
 
     TEST_INVARIANT;
 }

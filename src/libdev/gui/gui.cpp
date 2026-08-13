@@ -290,7 +290,7 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
         }
     }
 
-    Ren::BmpFont newFont(fontPath);
+    Ren::BmpFont newFont(fontPath, static_cast<std::size_t>(Gui::uiScaleFactor()));
     newFont.fontType(Ren::BmpFont::PROPORTIONAL);
     newFont.spaceCharWidth(spaceCharWidth);
     newFont.spacing(spacing);

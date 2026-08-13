@@ -21,6 +21,8 @@
 
 #include <string_view>
 
+#include <cstddef>
+
 class RenSurface;
 
 struct BmpFontCore;
@@ -40,7 +42,10 @@ public:
     };
 
     BmpFont(); // Default constructor to satisfy std::vector. DO NOT USE!!!
-    explicit BmpFont(const SysPathName& fontPath);
+
+    // The scale the atlas was produced at, which says how many lines at the bottom of
+    // it are the undisplayable end-of-character markers rather than glyph.
+    explicit BmpFont(const SysPathName& fontPath, std::size_t scale = 1);
     BmpFont(const BmpFont&);
     BmpFont& operator=(const BmpFont&);
     ~BmpFont();

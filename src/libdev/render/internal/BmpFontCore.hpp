@@ -4,6 +4,8 @@
 #include "system/PathName.hpp"
 #include "ctl/Vector.hpp"
 
+#include <cstddef>
+
 struct BmpFontCoreCharData
 {
     size_t offset_;
@@ -16,7 +18,7 @@ PER_DECLARE_PERSISTENT(BmpFontCoreCharData);
 
 struct BmpFontCore
 {
-    BmpFontCore(const SysPathName& fontPath);
+    BmpFontCore(const SysPathName& fontPath, std::size_t scale);
 
     void calculateProportionalFontWidthData(const SysPathName& persistFontPath);
     void createFromBinaryFile(const SysPathName& persistFontPath);
