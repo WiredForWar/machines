@@ -128,15 +128,22 @@ void MachGuiSingleSelectionListBoxItem::unselect()
 // virtual
 void MachGuiSingleSelectionListBoxItem::doDisplay()
 {
+    GuiBmpFont textFont = isSelected() ? getUnderlineFont() : (isHighlighted() ? getHighlightFont() : getFont());
+
+    // An item stands one scaled pixel short of its own height, since it shares that
+    // pixel with the item below it, and the highlight is drawn to that shorter figure.
+    // The capitals sit in the middle of it, which is not a whole number of scaled
+    // pixels down: it is one and a half of them, so it has to be worked out rather
+    // than written down.
+    const int itemHeight = static_cast<int>(height()) - 1 * static_cast<int>(Gui::uiScaleFactor());
+
     const Gui::Coord textPos(
         absoluteBoundary().minCorner().x() + 1 * Gui::uiScaleFactor(),
-        absoluteBoundary().minCorner().y() + 1 * Gui::uiScaleFactor());
-
-    GuiBmpFont textFont = isSelected() ? getUnderlineFont() : (isHighlighted() ? getHighlightFont() : getFont());
+        absoluteBoundary().minCorner().y() + Gui::textTopIn(itemHeight, textFont));
 
     if (isSelected() || isHighlighted())
     {
-        const Gui::Box itemBox(0, 0, width(), height() - 1 * Gui::uiScaleFactor());
+        const Gui::Box itemBox(0, 0, width(), itemHeight);
 
         if (pMyListBox_ && pMyListBox_->isFocusControl())
         {

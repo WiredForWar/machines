@@ -50,12 +50,16 @@ GuiBmpFont MachGuiDropDownListBoxItem::getWhiteFont()
 // virtual
 void MachGuiDropDownListBoxItem::doDisplay()
 {
-    // An item of this list draws a border of its own, so its text starts a pixel
-    // inside that rather than inside the edge of the item, which is what the x
-    // coordinate already allowed for and the y did not.
+    // An item stands one scaled pixel short of its own height, since it shares that
+    // pixel with the item below it, and the highlight is drawn to that shorter figure.
+    // The capitals sit in the middle of it, which is not a whole number of scaled
+    // pixels down: it is one and a half of them, so it has to be worked out rather
+    // than written down.
+    const int itemHeight = static_cast<int>(height()) - 1 * static_cast<int>(MachGui::menuScaleFactor());
+
     const Ren::Point textCoord(
         absoluteBoundary().minCorner().x() + 2 * MachGui::menuScaleFactor(),
-        absoluteBoundary().minCorner().y() + 2 * MachGui::menuScaleFactor());
+        absoluteBoundary().minCorner().y() + Gui::textTopIn(itemHeight, whiteFont_ ? getWhiteFont() : getFont()));
 
     if (isSelected())
     {
