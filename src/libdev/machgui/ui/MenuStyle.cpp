@@ -1,6 +1,7 @@
 #include "MenuStyle.hpp"
 
 #include "machgui/gui.hpp"
+#include "render/BmpFont.hpp"
 #include "render/Font.hpp"
 #include "render/TextOptions.hpp"
 
@@ -42,9 +43,18 @@ const std::string& smallFontWhite()
 
 void updateFonts()
 {
+    // Measured off the unscaled art. The atlas is six lines tall and its capitals
+    // fill the bottom five, the top line being there for the handful of glyphs that
+    // reach higher.
+    constexpr Ren::BmpFontMetrics smallMetrics{.ascender = 6, .descender = 0, .capHeight = 5};
+
     menuStyle().smallFontDark = getScaledImagePath("gui/menu/smaldfnt.bmp");
     menuStyle().smallFontLight = getScaledImagePath("gui/menu/smallfnt.bmp");
     menuStyle().smallFontWhite = getScaledImagePath("gui/menu/smalwfnt.bmp");
+
+    Gui::setFontMetrics(menuStyle().smallFontDark, smallMetrics);
+    Gui::setFontMetrics(menuStyle().smallFontLight, smallMetrics);
+    Gui::setFontMetrics(menuStyle().smallFontWhite, smallMetrics);
 }
 
 const Gui::Colour highlightedTextColor()
