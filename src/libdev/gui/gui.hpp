@@ -59,6 +59,7 @@ namespace Ren
 class BmpFont;
 class Font;
 class TextOptions;
+struct BmpFontMetrics;
 
 } // namespace Ren
 
@@ -170,6 +171,12 @@ GuiBitmap requestScaledImage(std::string path, float scale = uiScaleFactor());
  * @return scaled image or HiDPI bitmap
  */
 GuiBitmap getScaledImage(std::string path, float scale = uiScaleFactor());
+
+// Say what shape the art in an atlas is, so that text drawn in it can be placed by
+// its baseline rather than by the line box around it. The metrics are those of the
+// unscaled art. This has to be said before the font is first asked for, because an
+// atlas is only read once.
+void setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics& metrics);
 
 Ren::BmpFont getFont(const SysPathName& fontPath);
 

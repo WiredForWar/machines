@@ -6,6 +6,7 @@
 #include "system/VFS.hpp"
 
 #include <cassert>
+#include <map>
 #include <stdio.h>
 #include <vector>
 
@@ -260,6 +261,17 @@ void Gui::setUiScaleFactor(MATHEX_SCALAR scale)
 
 /* //////////////////////////////////////////////////////////////// */
 
+static std::map<std::string, Ren::BmpFontMetrics>& getFontMetrics()
+{
+    static std::map<std::string, Ren::BmpFontMetrics> metrics;
+    return metrics;
+}
+
+void Gui::setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics& metrics)
+{
+    getFontMetrics()[fontPath.pathname()] = metrics;
+}
+
 static std::vector<Ren::BmpFont>& getFontCache()
 {
     static std::vector<Ren::BmpFont> fonts;
@@ -290,7 +302,11 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
         }
     }
 
-    Ren::BmpFont newFont(fontPath, static_cast<std::size_t>(Gui::uiScaleFactor()));
+    const auto& metrics = getFontMetrics();
+    const auto found = metrics.find(fontPath.pathname());
+    const Ren::BmpFontMetrics& fontMetrics = (found != metrics.end()) ? found->second : Ren::BmpFontMetrics{};
+
+    Ren::BmpFont newFont(fontPath, static_cast<std::size_t>(Gui::uiScaleFactor()), fontMetrics);
     newFont.fontType(Ren::BmpFont::PROPORTIONAL);
     newFont.spaceCharWidth(spaceCharWidth);
     newFont.spacing(spacing);
