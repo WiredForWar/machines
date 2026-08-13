@@ -702,7 +702,6 @@ void MachGuiCtxOptions::updateDisplayControls()
 
     updateResolutions();
     pScreenSize_->setEnabled(ownsTheSize);
-    pRefreshRate_->setEnabled(ownsTheMode);
 
     updatingDisplayControls_ = false;
 
@@ -872,6 +871,12 @@ void MachGuiCtxOptions::updateRefreshRates()
         }
     }
     pRefreshRate_->setCurrentIndex(index);
+
+    // There is a rate to choose only where the mode is ours to set and the
+    // resolution is offered at more than one of them. Settled here rather than
+    // alongside the other two controls because it takes the length of the list,
+    // which changes with the resolution the player lands on.
+    pRefreshRate_->setEnabled(selectedWindowMode() == Ren::WindowMode::Fullscreen && refreshRates_.size() > 1);
 
     updatingDisplayControls_ = false;
 }
