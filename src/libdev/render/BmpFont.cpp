@@ -14,7 +14,7 @@
 
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
-BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale)
+BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale, const Ren::BmpFontMetrics& metrics)
 {
     fontBmp_ = RenSurface::createSharedSurface(fontPath.pathname());
     fontBmp_.enableColourKeying();
@@ -28,6 +28,16 @@ BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale)
     // choice: recutting six atlases by hand to keep a single marker line would have
     // been far more work than accounting for the scale here.
     charHeight_ = fontBmp_.height() - scale;
+
+    // The art is scaled whole, so the metrics of the art scale with it. An atlas
+    // nobody has written the metrics down for is taken to be all ascender and all
+    // capital, which places its text where it was placed before there were any.
+    const int lineHeight = static_cast<int>(charHeight_);
+    const int scaled = static_cast<int>(scale);
+
+    ascender_ = metrics.ascender ? metrics.ascender * scaled : lineHeight;
+    descender_ = metrics.descender * scaled;
+    capHeight_ = metrics.capHeight ? metrics.capHeight * scaled : lineHeight;
 
     SysPathName persistFontPath = fontPath;
     persistFontPath.extension("bin");
@@ -176,9 +186,9 @@ BmpFont::BmpFont()
 {
 }
 
-BmpFont::BmpFont(const SysPathName& fontPath, std::size_t scale)
+BmpFont::BmpFont(const SysPathName& fontPath, std::size_t scale, const BmpFontMetrics& metrics)
 {
-    pFontCore_ = new BmpFontCore(fontPath, scale);
+    pFontCore_ = new BmpFontCore(fontPath, scale, metrics);
 
     TEST_INVARIANT;
 }
@@ -249,6 +259,21 @@ std::ostream& operator<<(std::ostream& o, const BmpFont& t)
 size_t BmpFont::height() const
 {
     return pFontCore_->charHeight_;
+}
+
+int BmpFont::ascender() const
+{
+    return pFontCore_->ascender_;
+}
+
+int BmpFont::descender() const
+{
+    return pFontCore_->descender_;
+}
+
+int BmpFont::capHeight() const
+{
+    return pFontCore_->capHeight_;
 }
 
 size_t BmpFont::charWidth(char c) const

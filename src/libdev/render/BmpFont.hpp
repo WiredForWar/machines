@@ -31,6 +31,17 @@ namespace Ren {
 
 class Painter;
 
+// What a line of a bitmap font is made of, in the measurements of the unscaled art.
+// The ascender is the rise above the baseline and the descender the drop below it,
+// negative, so that the height is the two apart. The cap height is how far a capital
+// letter reaches above the baseline.
+struct BmpFontMetrics
+{
+    int ascender{};
+    int descender{};
+    int capHeight{};
+};
+
 class BmpFont
 // Canonical form revoked
 {
@@ -44,13 +55,18 @@ public:
     BmpFont(); // Default constructor to satisfy std::vector. DO NOT USE!!!
 
     // The scale the atlas was produced at, which says how many lines at the bottom of
-    // it are the undisplayable end-of-character markers rather than glyph.
-    explicit BmpFont(const SysPathName& fontPath, std::size_t scale = 1);
+    // it are the undisplayable end-of-character markers rather than glyph. An atlas is
+    // drawn by hand and scaled by hand, so its metrics are given by hand too; given
+    // none, a line is taken to be all ascender and all capital.
+    explicit BmpFont(const SysPathName& fontPath, std::size_t scale = 1, const BmpFontMetrics& metrics = {});
     BmpFont(const BmpFont&);
     BmpFont& operator=(const BmpFont&);
     ~BmpFont();
 
     size_t height() const;
+    int ascender() const;
+    int descender() const;
+    int capHeight() const;
 
     size_t charWidth(char c) const;
 

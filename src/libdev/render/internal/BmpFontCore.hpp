@@ -1,5 +1,6 @@
 #pragma once
 
+#include "render/BmpFont.hpp"
 #include "render/Surface.hpp"
 #include "system/PathName.hpp"
 #include "ctl/Vector.hpp"
@@ -18,7 +19,7 @@ PER_DECLARE_PERSISTENT(BmpFontCoreCharData);
 
 struct BmpFontCore
 {
-    BmpFontCore(const SysPathName& fontPath, std::size_t scale);
+    BmpFontCore(const SysPathName& fontPath, std::size_t scale, const Ren::BmpFontMetrics& metrics);
 
     void calculateProportionalFontWidthData(const SysPathName& persistFontPath);
     void createFromBinaryFile(const SysPathName& persistFontPath);
@@ -31,4 +32,7 @@ struct BmpFontCore
     size_t coreCount_{};
     size_t maxCharWidth_{};
     size_t charHeight_{};
+    int ascender_{};
+    int descender_{};
+    int capHeight_{};
 };
