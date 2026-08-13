@@ -138,10 +138,12 @@ void MachGuiDropDownListBoxCreator::setAvailText(const GuiStrings& availText)
 // static
 size_t MachGuiDropDownListBoxCreator::reqHeight()
 {
-    // Two either side of the text, which is where the border goes when there is one.
-    // The slide bar and the check box are built to the same recipe, so a row holding
-    // any of the three comes out the same height.
-    return getFont().height() + 4 * MachGui::menuScaleFactor();
+    // The height of a row of the menus, which the slide bar takes from the button it
+    // slides and the check box from the box it draws. A drop down has no art of its
+    // own to take it from, so it is written down here as the line of text plus the
+    // five the other two come out at, and an item of the list it opens is built to
+    // the same figure so that opening one does not change the size of the row.
+    return getFont().height() + 5 * MachGui::menuScaleFactor();
 }
 
 // virtual
@@ -174,7 +176,10 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent&
         return;
 
     const int itemHeight = static_cast<int>(MachGuiSingleSelectionListBoxItem::reqHeight());
-    const int itemSpacing = itemHeight - 1; // the items are drawn overlapping by one pixel
+    // The items are drawn overlapping by the one pixel their borders share, which is
+    // a pixel of the art and so grows with it. Left at one, the list stretched by a
+    // pixel an item and every item after the first sat low in its row.
+    const int itemSpacing = itemHeight - 1 * static_cast<int>(MachGui::menuScaleFactor());
 
     // The list becomes a child of the menu root, so it has to be placed, and kept,
     // in that root's own space.
