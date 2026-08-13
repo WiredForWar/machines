@@ -71,8 +71,8 @@ size_t MachHWResearchIcons::reqWidth()
 // static
 size_t MachHWResearchIcons::reqHeight(MachInGameScreen* pInGameScreen, const Gui::Coord& relCoord)
 {
-    int height
-        = pInGameScreen->controlPanel().getVisibleHeight() - (2 + relCoord.y() + MachHWResearchBank::reqHeight());
+    int height = pInGameScreen->controlPanel().getVisibleHeight()
+        - ((2 * MachGuiScrollArea::outlineThickness()) + relCoord.y() + MachHWResearchBank::reqHeight());
 
     // Make height a multiple of MachHWResearchIcon::reqHeight
     height -= height % MachHWResearchIcon::reqHeight();
