@@ -848,13 +848,6 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
         // For APC add on contents
         else if (pActor->objectType() == MachLog::APC)
         {
-            GuiResourceString apcStartText(IDS_APCINFO_START);
-            GuiResourceString apcEndText(IDS_APCINFO_END);
-            GuiResourceString administratorText(IDS_APCINFO_ADMINISTRATOR);
-            GuiResourceString aggressorText(IDS_APCINFO_AGGRESSOR);
-            GuiResourceString civilianText(IDS_APCINFO_CONSTRUCTOR);
-            GuiResourceString spaceText(IDS_APCINFO_SPACE);
-
             bool first = true;
             int count = 0;
             const MachLogAPC& apc = pActor->asAPC();
@@ -865,23 +858,24 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
             {
                 if (first)
                 {
-                    prompt += " " + apcStartText.asString();
+                    prompt += ' ';
+                    prompt += GuiBmpFont::apcListStartIndex();
                     first = false;
                 }
 
                 switch ((*iter)->objectType())
                 {
                     case MachLog::ADMINISTRATOR:
-                        prompt += administratorText.asString();
+                        prompt += GuiBmpFont::apcAdministratorIndex();
                         break;
                     case MachLog::AGGRESSOR:
-                        prompt += aggressorText.asString();
+                        prompt += GuiBmpFont::apcAggressorIndex();
                         break;
                     case MachLog::APC:
                         ASSERT_FAIL("APCs are not allowed inside APCs");
                         break;
                     default:
-                        prompt += civilianText.asString();
+                        prompt += GuiBmpFont::apcCivilianIndex();
                         break;
                 }
 
@@ -889,13 +883,13 @@ bool MachInGameScreen::addPromptTextMachineInfo(const MachActor* pActor, GuiStri
                 // If more than 10 machines in APC then end with ... to indicate more machines.
                 if (count == 10 && count != apc.machines().size())
                 {
-                    prompt += spaceText.asString();
+                    prompt += GuiBmpFont::apcMoreIndex();
                 }
             }
 
             if (! first)
             {
-                prompt += apcEndText.asString();
+                prompt += GuiBmpFont::apcListEndIndex();
             }
         }
 
