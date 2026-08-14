@@ -120,6 +120,16 @@ public:
     static char bmuMinedPointsIndex(); // 1992 // 0x99
     static char researchPointsIndex(); // 2012 // 0x9e
 
+    // The machines an APC is carrying, listed between the two brackets. One
+    // symbol covers every machine that is neither an administrator nor an
+    // aggressor, and the ellipsis stands for the ones past the tenth.
+    static char apcListStartIndex(); // 2280 // 0xa5
+    static char apcListEndIndex(); // 2290 // 0xa6
+    static char apcAdministratorIndex(); // 2210 // 0xa2
+    static char apcAggressorIndex(); // 2220 // 0xa3
+    static char apcCivilianIndex(); // 2230 // 0xa4
+    static char apcMoreIndex(); // 2300 // 0x85
+
 private:
     void CLASS_INVARIANT;
 

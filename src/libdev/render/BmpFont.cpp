@@ -162,6 +162,36 @@ char BmpFont::researchPointsIndex()
     return 0x9E;
 }
 
+char BmpFont::apcListStartIndex()
+{
+    return 0xA5;
+}
+
+char BmpFont::apcListEndIndex()
+{
+    return 0xA6;
+}
+
+char BmpFont::apcAdministratorIndex()
+{
+    return 0xA2;
+}
+
+char BmpFont::apcAggressorIndex()
+{
+    return 0xA3;
+}
+
+char BmpFont::apcCivilianIndex()
+{
+    return 0xA4;
+}
+
+char BmpFont::apcMoreIndex()
+{
+    return 0x85;
+}
+
 char BmpFont::redCharIndex()
 {
     return 0xA9;
