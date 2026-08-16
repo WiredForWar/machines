@@ -4,6 +4,10 @@ from conan.tools.cmake import cmake_layout
 
 class MachinesConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    # Not CMakeConfigDeps: it is still experimental and does not support the
+    # module find mode that several of our dependencies (glew, openal-soft,
+    # freetype, ...) rely on. cmake-conan warns about its absence, but its
+    # find_package() fallback handles CMakeDeps just fine.
     generators = "CMakeDeps"
 
     default_options = {
