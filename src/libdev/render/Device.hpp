@@ -426,8 +426,8 @@ private:
     void createViewport();
     void updateMatrices();
     void displayStats();
-    void updateViewMatrix(glm::mat4& view);
-    void updateProjMatrix(double hither, double yon, double h);
+    glm::mat4 cameraViewMatrix() const;
+    glm::mat4 cameraProjectionMatrix(double hither, double yon) const;
     void setFog(float, float, float, const RenColour&);
     void addStatic();
     void addInterference();

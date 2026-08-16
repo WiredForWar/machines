@@ -1073,8 +1073,7 @@ void RenDevice::flush3DAlpha()
         // needs to be reset before the other post-sorters are invoked.
         const double hither = pImpl_->currentCamera_->hitherClipDistance();
         const double yon = pImpl_->currentCamera_->yonClipDistance();
-        const double h = pImpl_->currentCamera_->projectionPlaneHalfHeight();
-        updateProjMatrix(hither, yon, h);
+        overrideClipping(hither, yon);
 
         // Likewise for the lighting, fog and alpha on the coplanar polys.
         enableLighting();
@@ -1272,14 +1271,13 @@ void RenDevice::updateMatrices()
     // Recalculate the view matrix based on the camera's current position.
     // TBD: use transform IDs to avoid the calculation when the eyepoint
     // hasn't moved since the last frame.
-    updateViewMatrix(view_);
+    view_ = cameraViewMatrix();
 
     // If the camera parameters change from frame to frame, we need to update
     // the projection matrix.
     const double hither = pImpl_->currentCamera_->hitherClipDistance();
     const double yon = pImpl_->currentCamera_->yonClipDistance();
-    const double h = pImpl_->currentCamera_->projectionPlaneHalfHeight();
-    updateProjMatrix(hither, yon, h);
+    projection_ = cameraProjectionMatrix(hither, yon);
 
     // Cache the product of the above matrices.
     *pImpl_->projViewMatrix_ = projection_ * view_;
@@ -1326,9 +1324,9 @@ static void computeViewMatrix(
     }
 }
 
-// Use the camera's current position to set the view matrix part.
+// The view matrix the current camera implies.
 
-void RenDevice::updateViewMatrix(glm::mat4& view)
+glm::mat4 RenDevice::cameraViewMatrix() const
 {
     //    PRE(device_);
     PRE(pImpl_->currentCamera_);
@@ -1356,10 +1354,9 @@ void RenDevice::updateViewMatrix(glm::mat4& view)
         dir.z = -dir.z;
     }
 
+    glm::mat4 view;
     computeViewMatrix(p, dir, up, &view);
-
-    // glm::mat4 view = glm::lookAt(p, dir, up);
-    // view = glm::lookAt(p, dir, up);
+    return view;
 }
 
 // Taken straight from the M$ samples.
@@ -1398,24 +1395,22 @@ computePerspectiveProjection(glm::mat4* matrix, double dHalfHeight, double dFron
     (*matrix)[3][3] = (0.0);
 }
 
-void RenDevice::updateProjMatrix(double hither, double yon, double h)
+// The projection matrix the current camera implies, for the clip distances given.
+
+glm::mat4 RenDevice::cameraProjectionMatrix(double hither, double yon) const
 {
     //    PRE(device_);
     PRE(pImpl_->currentCamera_);
-    PRE(h > 0);
     PRE(hither < yon);
 
     const RenDisplay::Mode mode = pImpl_->display_->currentMode();
 
-    projection_ = glm::perspectiveFovLH<float>(
+    return glm::perspectiveFovLH<float>(
         pImpl_->currentCamera_->verticalFOVAngle(),
         mode.width(),
         mode.height(),
         hither,
         yon);
-
-    standardUniformsDirty_ = true;
-    billboardUniformsDirty_ = true;
 }
 
 void RenDevice::overrideClipping(double hither, double yon)
@@ -1424,8 +1419,11 @@ void RenDevice::overrideClipping(double hither, double yon)
     PRE(pImpl_->currentCamera_);
     PRE(hither < yon);
 
-    const double h = pImpl_->currentCamera_->projectionPlaneHalfHeight();
-    updateProjMatrix(hither, yon, h); // This causes display problems with shadows and so one
+    // This causes display problems with shadows and so on.
+    projection_ = cameraProjectionMatrix(hither, yon);
+
+    standardUniformsDirty_ = true;
+    billboardUniformsDirty_ = true;
 }
 
 ///////////////////////////////////// Fog support /////////////////////////////
