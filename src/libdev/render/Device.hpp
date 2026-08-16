@@ -13,6 +13,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <functional>
+#include <optional>
 #include <vector>
 
 class SysPathName;
@@ -396,6 +397,29 @@ public:
 
     const glm::mat4& getViewMatrix() { return view_; }
 
+    // Where the scene is viewed from, supplied by the caller rather than
+    // derived from the current camera and the display mode.
+    //
+    // A caller that decides its own framing needs this: covering an image in
+    // several passes, or filling a viewport whose frustum is not centred on its
+    // axis, neither of which a camera described by one vertical field of view
+    // and the window's aspect ratio can express. Nothing below the device knows
+    // a viewpoint was supplied, so the same scene can be drawn more than once
+    // per frame from different ones.
+    struct Viewpoint
+    {
+        glm::mat4 view{};
+        glm::mat4 projection{};
+    };
+
+    // Render subsequent frames from here. Takes effect at the next start3D().
+    void setViewpoint(const Viewpoint& viewpoint);
+
+    // Go back to deriving both matrices from the current camera.
+    void clearViewpoint();
+
+    bool hasViewpoint() const;
+
     // Shadow mapping: render scene depth from the light's perspective.
     enum class ShadowCascade { Near, Far };
     void beginShadowPass(ShadowCascade cascade, const glm::mat4& lightSpaceMatrix);
@@ -465,6 +489,7 @@ private:
     glm::mat4 model_ {};
     glm::mat4 view_ {};
     glm::mat4 projection_ {};
+    std::optional<Viewpoint> viewpoint_ {};
     glm::vec3 fogColour_ {};
     glm::vec3 fogParams_ {};
 

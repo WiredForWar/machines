@@ -1266,18 +1266,41 @@ void RenDevice::endFrame()
 
 ///////////////////////// Transformation matrix support (MVP) /////////////////////////
 
+void RenDevice::setViewpoint(const Viewpoint& viewpoint)
+{
+    viewpoint_ = viewpoint;
+}
+
+void RenDevice::clearViewpoint()
+{
+    viewpoint_.reset();
+}
+
+bool RenDevice::hasViewpoint() const
+{
+    return viewpoint_.has_value();
+}
+
 void RenDevice::updateMatrices()
 {
-    // Recalculate the view matrix based on the camera's current position.
-    // TBD: use transform IDs to avoid the calculation when the eyepoint
-    // hasn't moved since the last frame.
-    view_ = cameraViewMatrix();
+    if (viewpoint_)
+    {
+        view_ = viewpoint_->view;
+        projection_ = viewpoint_->projection;
+    }
+    else
+    {
+        // Recalculate the view matrix based on the camera's current position.
+        // TBD: use transform IDs to avoid the calculation when the eyepoint
+        // hasn't moved since the last frame.
+        view_ = cameraViewMatrix();
 
-    // If the camera parameters change from frame to frame, we need to update
-    // the projection matrix.
-    const double hither = pImpl_->currentCamera_->hitherClipDistance();
-    const double yon = pImpl_->currentCamera_->yonClipDistance();
-    projection_ = cameraProjectionMatrix(hither, yon);
+        // If the camera parameters change from frame to frame, we need to update
+        // the projection matrix.
+        const double hither = pImpl_->currentCamera_->hitherClipDistance();
+        const double yon = pImpl_->currentCamera_->yonClipDistance();
+        projection_ = cameraProjectionMatrix(hither, yon);
+    }
 
     // Cache the product of the above matrices.
     *pImpl_->projViewMatrix_ = projection_ * view_;
@@ -1418,6 +1441,13 @@ void RenDevice::overrideClipping(double hither, double yon)
     //    PRE(device_);
     PRE(pImpl_->currentCamera_);
     PRE(hither < yon);
+
+    // A supplied viewpoint owns its whole frustum, clip planes included, so
+    // there is nothing here to override.
+    if (viewpoint_)
+    {
+        return;
+    }
 
     // This causes display problems with shadows and so on.
     projection_ = cameraProjectionMatrix(hither, yon);
