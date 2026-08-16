@@ -62,6 +62,38 @@ std::ostream& operator<<(std::ostream& o, const GuiSingleLineEditBox& t)
     return o;
 }
 
+int GuiSingleLineEditBox::textOffset() const
+{
+    return border_ ? 2 * Gui::uiScaleFactor() : 0;
+}
+
+Gui::XCoord GuiSingleLineEditBox::textWidth(std::string_view text) const
+{
+    if (ttfFont_)
+        return ttfFont_->horizontalAdvance(text, textOptions_);
+
+    return font_.horizontalAdvance(text);
+}
+
+std::size_t GuiSingleLineEditBox::characterIndexAt(Gui::XCoord x) const
+{
+    const std::string_view fullView(text_);
+
+    Gui::XCoord before = textWidth({});
+    for (std::size_t index = 1; index <= fullView.length(); ++index)
+    {
+        const Gui::XCoord after = textWidth(fullView.substr(0, index));
+
+        // The half of the character x fell in says which of its two sides to take.
+        if (x < (before + after) / 2)
+            return index - 1;
+
+        before = after;
+    }
+
+    return fullView.length();
+}
+
 void GuiSingleLineEditBox::updateTextViews()
 {
     if (cursorIndex_ > text_.length())
@@ -71,10 +103,7 @@ void GuiSingleLineEditBox::updateTextViews()
     leftTextView_ = fullView.substr(0, cursorIndex_);
     rightTextView_ = fullView.substr(cursorIndex_);
 
-    if (ttfFont_)
-        caretPos_ = ttfFont_->horizontalAdvance(leftTextView_, textOptions_);
-    else
-        caretPos_ = font_.horizontalAdvance(leftTextView_);
+    caretPos_ = textWidth(leftTextView_);
 
     const int maxCaret = maxWidth() - (border_ ? 5 : 1);
     if (caretPos_ > maxCaret)
@@ -86,7 +115,7 @@ void GuiSingleLineEditBox::doDisplay()
 {
     drawBackground();
 
-    int offset = border_ ? 2 * Gui::uiScaleFactor() : 0;
+    int offset = textOffset();
 
     Ren::Point startText = Ren::Point(absoluteBoundary().left() + offset, absoluteBoundary().top() + offset);
 
@@ -402,10 +431,14 @@ void GuiSingleLineEditBox::borderColour(const GuiColour& colour)
     borderColour_ = colour;
 }
 
-// virtual
-void GuiSingleLineEditBox::doHandleMouseClickEvent(const GuiMouseEvent&)
+void GuiSingleLineEditBox::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
     GuiManager::instance().charFocus(this);
+
+    if (rel.leftButton() != Gui::PRESSED)
+        return;
+
+    setCursorPosition(characterIndexAt(static_cast<Gui::XCoord>(rel.coord().x()) - textOffset()));
 }
 
 std::string_view GuiSingleLineEditBox::leftText() const

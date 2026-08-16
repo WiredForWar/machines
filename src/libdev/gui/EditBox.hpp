@@ -87,6 +87,10 @@ protected:
     void forceRedraw();
     void updateTextViews();
 
+    int textOffset() const;
+    Gui::XCoord textWidth(std::string_view text) const;
+    std::size_t characterIndexAt(Gui::XCoord x) const;
+
     virtual void drawBackground();
 
     std::string_view leftText() const;
