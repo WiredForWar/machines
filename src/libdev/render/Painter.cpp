@@ -332,6 +332,11 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
     int lineEndX = originX;
     int lineBaselineY = y;
 
+    // The font answers for every character code, so a character it does not have comes back
+    // with neither a bitmap nor an advance, where a space has an advance and no bitmap.
+    int charactersAsked{};
+    int charactersKnown{};
+
     x = originX;
     for (size_t i = 0; i < text.size(); ++i)
     {
@@ -360,6 +365,10 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
         // Ignore missing characters
         if (!charData)
             continue;
+
+        ++charactersAsked;
+        if (charData->ax || charData->bw || charData->bh)
+            ++charactersKnown;
 
         int x2 = x + charData->bl;
         int y2 = y - charData->bt;
@@ -458,7 +467,7 @@ void Painter::drawText(int x, int y, std::string_view text, const Font& font, co
         }
         addVertices(fontColor, x1, x2, y1, y2, tu1, tu2, tv1, tv2);
     }
-    ASSERT(!vertices.empty(), "drawText called with text that produced no glyphs");
+    ASSERT(charactersAsked == 0 || charactersKnown != 0, "drawText called with text the font has no character of");
     if (vertices.empty())
         return;
 
