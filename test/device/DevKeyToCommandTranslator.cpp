@@ -140,6 +140,47 @@ TEST(DevKeyToCommandTranslator, TranslateListNormalKeys)
     ASSERT_FALSE(commandList[cmd1].on());
 }
 
+// A release reporting no modifiers must switch a command off even when the
+// press that switched it on had a modifier held. This is what a key released
+// outside the window looks like once focus comes back.
+TEST(DevKeyToCommandTranslator, ReleaseWithoutModifiersUnlatchesModifiedCommand)
+{
+    DevKeyToCommand::CommandId cmd0 = 0;
+    DevKeyToCommandTranslator translator;
+
+    translator.addTranslation(DevKeyToCommand(
+        Device::KeyCode::KEY_A,
+        cmd0,
+        DevKeyToCommand::CTRLKEY_PRESSED,
+        DevKeyToCommand::SHIFTKEY_RELEASED));
+
+    DevKeyToCommandTranslator::CommandList commandList(1);
+
+    // Ctrl+A goes down and latches the command on.
+    {
+        DevButtonEvent pressWithCtrl {
+            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, false, true, false, 10000.0, 20, 20, 1, 'A'
+        };
+        ASSERT_TRUE(translator.translate(pressWithCtrl, &commandList));
+    }
+
+    ASSERT_TRUE(commandList[cmd0].on());
+
+    translator.resetCommands(&commandList);
+    ASSERT_TRUE(commandList[cmd0].on());
+
+    // The release carries no modifiers, unlike the press that turned it on.
+    {
+        DevButtonEvent releaseWithoutCtrl {
+            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, true, false, false, false, 10001.0, 20, 20, 1, 'A'
+        };
+        ASSERT_TRUE(translator.translate(releaseWithoutCtrl, &commandList));
+    }
+
+    translator.resetCommands(&commandList);
+    ASSERT_FALSE(commandList[cmd0].on());
+}
+
 TEST(DevKeyToCommandTranslator, TranslateListKeyWithMods)
 {
     DevKeyToCommand::CommandId cmd0 = 0;

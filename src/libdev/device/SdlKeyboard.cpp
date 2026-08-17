@@ -8,6 +8,8 @@
 #include <limits.h>
 
 #include "device/EventQueue.hpp"
+#include "device/Mouse.hpp"
+#include "device/Time.hpp"
 
 #include <unordered_map>
 
@@ -59,6 +61,32 @@ void DevSdlKeyboard::wm_key(const DevButtonEvent& ev)
 // state.  Not an ideal solution, but an unlikely situation.
 void DevSdlKeyboard::wm_killfocus()
 {
+    // Every key still held is now released, and no further event will say so.
+    // Queue the releases so that the state is announced and not merely dropped;
+    // the modifiers read clear because nothing is held any more.
+    const DevMouse::Position cursor = DevMouse::instance().getMessagePos();
+    const double now = DevTime::instance().time();
+
+    for (int code = 0; code != Device::MAX_CODE; ++code)
+    {
+        const ScanCode scanCode = static_cast<ScanCode>(code);
+        if (!keyCodeNoRecord(scanCode))
+            continue;
+
+        const DevButtonEvent ev(
+            scanCode,
+            DevButtonEvent::RELEASE,
+            true, // previous: the key was down
+            false, // shift
+            false, // ctrl
+            false, // alt
+            now,
+            cursor.first,
+            cursor.second,
+            1); // repeat count must be >= 1
+        DevEventQueue::instance().queueEvent(ev);
+    }
+
     allKeysReleased();
 }
 

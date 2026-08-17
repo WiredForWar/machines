@@ -94,8 +94,15 @@ protected:
 
     void wm_button(const DevButtonEventType&);
 
+    // The window has lost input focus. Any button held at this moment counts as
+    // released, and no further event will report it.
+    void wm_killfocus();
+
 private:
     friend class AfxSdlApp;
+
+    // Queue a release for a button that will get no release of its own.
+    void announceButtonRelease(Device::KeyCode code);
 
     void resetPosition();
 

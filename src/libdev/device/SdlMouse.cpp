@@ -195,6 +195,44 @@ void DEV_MOUSE_CLASS::wm_button(const DevButtonEventType& ev)
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
+void DEV_MOUSE_CLASS::announceButtonRelease(Device::KeyCode code)
+{
+    const DevButtonEventType ev(
+        code,
+        DevButtonEventType::RELEASE,
+        true, // previous: the button was down
+        false, // shift
+        false, // ctrl
+        false, // alt
+        DevTimeDep::instance().time(),
+        position_.first,
+        position_.second,
+        1); // repeat count must be >= 1
+    eventQueueDependency_.get().queueEvent(ev);
+}
+
+template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
+void DEV_MOUSE_CLASS::wm_killfocus()
+{
+    // Clear the polled state ahead of the announcement, so that a button never
+    // reads as down once its release has been queued.
+    if (lButtonPressed_)
+    {
+        lButtonPressed_ = false;
+        announceButtonRelease(Device::KeyCode::MOUSE_LEFT);
+    }
+
+    if (rButtonPressed_)
+    {
+        rButtonPressed_ = false;
+        announceButtonRelease(Device::KeyCode::MOUSE_RIGHT);
+    }
+
+    scrolledUp_ = false;
+    scrolledDown_ = false;
+}
+
+template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 bool DEV_MOUSE_CLASS::leftButton() const
 {
     bool result;
