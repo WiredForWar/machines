@@ -30,7 +30,6 @@
 #include "machlog/Actors/Debris.hpp"
 #include "machlog/Actors/Mine.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Operations/ScavengeOperation.hpp"
 #include "machlog/Operations/TransportOperation.hpp"
 #include "machlog/Operations/PickUpOperation.hpp"
@@ -1225,9 +1224,8 @@ PhysRelativeTime MachLogResourceCarrier::doLoading()
     else
         interval = physResourceCarrier().doLoading(SimManager::instance().currentTime());
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
         broker.sendPlayNormalObjectAnimationMessage(id(), true);
 
     notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::CHANGED_MINERALS_CARRIED);

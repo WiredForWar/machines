@@ -3347,7 +3347,7 @@ void MachLogRaces::specialActorUpdate()
         MachLogNetwork& network = MachLogNetwork::instance();
         if (network.isNetworkGame())
         {
-            if (network.remoteStatus((*i)->race()) == MachLogNetwork::LOCAL_PROCESS)
+            if ((*i)->isSimulatedHere())
             {
                 if (! NetNetwork::instance().imStuffed())
                     (*i)->update(0, 0);

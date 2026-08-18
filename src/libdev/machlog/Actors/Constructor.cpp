@@ -23,7 +23,6 @@
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/Actors/Constructor.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Operations/ConstructOperation.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/PlanetDomains.hpp"
@@ -77,9 +76,8 @@ void MachLogConstructor::constructing(bool newIsConstructingValue, UtlId constru
 
     isConstructing_ = newIsConstructingValue;
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
         broker.sendPlayConstructAnimationMessage(id(), constructionId, isConstructing_);
 
     if (isConstructing_)

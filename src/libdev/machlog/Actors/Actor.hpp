@@ -79,6 +79,9 @@ public:
     const MachLogRace& logRace() const;
     const MachLogRace& logOriginalRace() const;
 
+    // True when this process simulates the actor, rather than being told what it does.
+    bool isSimulatedHere() const;
+
     ///////////////////////////////
 
     // inherited from SimActor...

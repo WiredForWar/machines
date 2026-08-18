@@ -7,6 +7,8 @@
 
 #include "machlog/Race.hpp"
 
+#include "machlog/Messaging/Network.hpp"
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 MachLogRace::MachLogRace(const MachPhys::Race& race)
@@ -21,6 +23,12 @@ MachLogRace::MachLogRace(const MachPhys::Race& race)
 MachLogRace::~MachLogRace()
 {
     TEST_INVARIANT;
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+bool MachLogRace::isSimulatedHere() const
+{
+    return MachLogNetwork::instance().remoteStatus(race_) == MachLogNetwork::LOCAL_PROCESS;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 

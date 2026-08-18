@@ -176,8 +176,7 @@ void MachLogMobile::preservePhysicalModel(const PhysRelativeTime& forTime)
 
 void MachLogMobile::dropDebris(const PhysAbsoluteTime&)
 {
-    if (! MachLogNetwork::instance().isNetworkGame()
-        || MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (!MachLogNetwork::instance().isNetworkGame() || isSimulatedHere())
     {
         MexPoint3d debrisPosition;
 

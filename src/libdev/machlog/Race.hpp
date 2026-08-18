@@ -27,6 +27,10 @@ public:
 
     const MachPhys::Race& race() const { return race_; };
 
+    // True when this process simulates the race, rather than watching another host do it
+    // and applying what that host reports.
+    bool isSimulatedHere() const;
+
     void addActor(MachActor*);
 
     void CLASS_INVARIANT;

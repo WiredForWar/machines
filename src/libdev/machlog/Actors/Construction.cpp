@@ -607,9 +607,8 @@ MachPhys::HitPointUnits MachLogConstruction::hitPointValueOfBMUs(MachPhys::Build
 void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUnits addUnits)
 {
     CB_MachLogConstruction_DEPIMPL();
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
     {
         broker.sendAdvanceConstructionStateMessage(id(), addUnits);
     }
@@ -710,11 +709,9 @@ bool MachLogConstruction::updateCompletionVisualisation()
     {
         physConstruction().percentageComplete(percentageComplete());
 
-        MachLogNetwork& network = MachLogNetwork::instance();
         MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-        if (broker.isPublishing())
-            if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-                broker.sendUpdateCompletionVisualisationMessage(id(), percentageComplete());
+        if (broker.isPublishing() && isSimulatedHere())
+            broker.sendUpdateCompletionVisualisationMessage(id(), percentageComplete());
 
         visualisedUnits_ = constructedUnits_;
     }
@@ -1419,9 +1416,8 @@ void MachLogConstruction::makeComplete(CompleteWithFullHPs setHPsFullStrength)
     physConstruction().percentageComplete(100.0);
     isComplete_ = true;
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
         broker.sendMakeCompleteConstructionMessage(id());
 
     // Ensure the construction is updated soon
@@ -1442,8 +1438,7 @@ void MachLogConstruction::preservePhysicalModel(const PhysRelativeTime& forTime)
 
 void MachLogConstruction::dropDebris(const PhysAbsoluteTime&)
 {
-    if (! MachLogNetwork::instance().isNetworkGame()
-        || MachLogNetwork::instance().remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (!MachLogNetwork::instance().isNetworkGame() || isSimulatedHere())
     {
         MATHEX_SCALAR completionMultiplier = percentageComplete() / 100.0;
         MATHEX_SCALAR recoveredValue
@@ -1618,9 +1613,8 @@ void MachLogConstruction::addRepairPoints(MachPhys::HitPointUnits hpsAdded)
 
     physConstruction().damageLevel(damagePercent);
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
     {
         broker.sendAddRepairPointsMessage(id(), hpsAdded);
     }

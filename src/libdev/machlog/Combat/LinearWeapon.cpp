@@ -26,7 +26,6 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Combat/MissileHolder.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/World/Planet.hpp"
@@ -77,7 +76,6 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
 {
     // HAL_STREAM("MLLinearWeapon::doFire at " << pTarget->id() << std::endl );
     // create Linear blobs (the logical entites here).
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
     const bool isPublishing{broker.isPublishing()};
     PhysAbsoluteTime launchTime = SimManager::instance().currentTime();
@@ -119,7 +117,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isPublishing && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isPublishing && owner().isSimulatedHere())
     {
         broker.sendEchoLinearProjectileMessage(
             owner().id(),
@@ -148,7 +146,6 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
 
     // HAL_STREAM("MLLinearWeapon::doFire at " << pTarget->id() << std::endl );
     // create Linear blobs (the logical entites here).
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
     const bool isPublishing{broker.isPublishing()};
     PhysAbsoluteTime launchTime = SimManager::instance().currentTime();
@@ -271,7 +268,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isPublishing && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isPublishing && owner().isSimulatedHere())
     {
         broker.sendEchoLinearProjectileMessage(
             owner().id(),

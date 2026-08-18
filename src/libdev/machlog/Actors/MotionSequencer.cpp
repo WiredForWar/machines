@@ -859,20 +859,13 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
 
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing())
+    if (broker.isPublishing() && pLogMobile_->isSimulatedHere())
     {
-        if (network.remoteStatus(pLogMobile_->race()) == MachLogNetwork::LOCAL_PROCESS)
-        {
-            if (lastSetDomainTimeMessage_ == timeNow)
-                broker.sendAddRestingObstacleShortMessage(pLogMobile_->id());
-            else
-                broker.sendAddRestingObstacleMessage(
-                    pLogMobile_->id(),
-                    pLogMobile_->globalTransform(),
-                    internalState_);
-        }
+        if (lastSetDomainTimeMessage_ == timeNow)
+            broker.sendAddRestingObstacleShortMessage(pLogMobile_->id());
+        else
+            broker.sendAddRestingObstacleMessage(pLogMobile_->id(), pLogMobile_->globalTransform(), internalState_);
     }
     // Add this to the config space
     restingObstacleId_ = pConfigSpace_->add(polygonUPtr, 3, MachLog::OBSTACLE_NORMAL, PhysConfigSpace2d::TEMPORARY);

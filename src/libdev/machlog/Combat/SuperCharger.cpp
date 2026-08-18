@@ -92,12 +92,7 @@ void MachLogSuperCharger::doFire(MachActor* pTarget, const MachLogFireData&)
 
             if (addAmount != 0)
             {
-                if (MachLogNetwork::instance().isNetworkGame())
-                {
-                    if (MachLogNetwork::instance().remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
-                        pTarget->addHitPoints(addAmount);
-                }
-                else
+                if (!MachLogNetwork::instance().isNetworkGame() || owner().isSimulatedHere())
                     pTarget->addHitPoints(addAmount);
 
                 lastUpdateTime_ = SimManager::instance().currentTime();

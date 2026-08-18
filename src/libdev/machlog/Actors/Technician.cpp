@@ -21,7 +21,6 @@
 #include "machlog/Races.hpp"
 
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogTechnician)
 
@@ -59,9 +58,8 @@ MachLogTechnician::~MachLogTechnician()
 
 PhysRelativeTime MachLogTechnician::research()
 {
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
         broker.sendPlayNormalObjectAnimationMessage(id(), true);
     return physTechnician().research();
 }

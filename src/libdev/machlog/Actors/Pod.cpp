@@ -37,7 +37,6 @@
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 
 #ifndef _INLINE
@@ -351,16 +350,12 @@ void MachLogPod::ionCannonAcquiredForFirstTime()
 
     MachLogRaces::instance().builtIonCannon(podRace);
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
 
     // ........and whizz the warning round to anyone listening.
-    if (broker.isPublishing())
+    if (broker.isPublishing() && isSimulatedHere())
     {
-        if (network.remoteStatus(podRace) != MachLogNetwork::REMOTE_PROCESS)
-        {
-            broker.sendWeaponInformationMessage(MachLogMessageBroker::ION_CANNON_ONLINE, podRace);
-        }
+        broker.sendWeaponInformationMessage(MachLogMessageBroker::ION_CANNON_ONLINE, podRace);
     }
 }
 

@@ -115,9 +115,8 @@ void MachLogCanAttack::currentTarget(MachActor* p)
         pPhysCanAttack_->trackTarget(const_cast<const MachActor*>(p)->physObject());
     }
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && pMe_->isSimulatedHere())
     {
         UtlId otherId = 0;
         if (pCurrentTarget_)
@@ -188,11 +187,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
     if (pActor->evading())
         return;
 
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        if (MachLogNetwork::REMOTE_PROCESS == MachLogNetwork::instance().remoteStatus(pActor->race()))
-            return;
-    }
+    if (MachLogNetwork::instance().isNetworkGame() && !pActor->isSimulatedHere())
+        return;
     // Do some quick DefCon checks first.
     MachLog::DefCon defCon = pActor->virtualDefCon();
 
@@ -364,11 +360,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
 void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor* pFiredAtMe)
 {
     CB_MachLogCanAttack_DEPIMPL();
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        if (MachLogNetwork::REMOTE_PROCESS == MachLogNetwork::instance().remoteStatus(pActor->race()))
-            return;
-    }
+    if (MachLogNetwork::instance().isNetworkGame() && !pActor->isSimulatedHere())
+        return;
     // Look for a closer target
     MachActor* pMach = nullptr;
     // did something fire at us?
@@ -438,11 +431,8 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMissileEmplacement* pAc
         return;
 
     HAL_STREAM("(" << pActor->id() << ") MachLogCanAttack::checkAndAttackCloserTarget\n");
-    if (MachLogNetwork::instance().isNetworkGame())
-    {
-        if (MachLogNetwork::REMOTE_PROCESS == MachLogNetwork::instance().remoteStatus(pActor->race()))
-            return;
-    }
+    if (MachLogNetwork::instance().isNetworkGame() && !pActor->isSimulatedHere())
+        return;
     // Look for a closer target
     MachActor* pMach;
 
@@ -826,8 +816,7 @@ void MachLogCanAttack::stopAllHealing(const MachActor& me)
             {
                 charger.stopAllHealing();
                 MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-                if (broker.isPublishing()
-                    && MachLogNetwork::instance().remoteStatus(me.race()) == MachLogNetwork::LOCAL_PROCESS)
+                if (broker.isPublishing() && me.isSimulatedHere())
                     broker.sendHealMessage(me.id(), 0, MachLogMessageBroker::STOP_HEALING, false);
             }
         }
@@ -888,8 +877,7 @@ PhysRelativeTime MachLogCanAttack::heal(MachActor* pTarget)
             }
 
             MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-            if (broker.isPublishing()
-                && MachLogNetwork::instance().remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
+            if (broker.isPublishing() && pMe_->isSimulatedHere())
                 broker.sendHealMessage(pMe_->id(), pTarget->id(), MachLogMessageBroker::BEGIN_HEALING, false);
         }
     }

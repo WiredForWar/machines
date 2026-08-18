@@ -206,6 +206,11 @@ const MachLogRace& MachActor::logRace() const
     return *pRace_;
 }
 
+bool MachActor::isSimulatedHere() const
+{
+    return logRace().isSimulatedHere();
+}
+
 const MachLogRace& MachActor::logOriginalRace() const
 {
     CB_DEPIMPL(MachLogRace*, pOriginalRace_);
@@ -253,8 +258,7 @@ void MachActor::newOperation(std::unique_ptr<MachLogOperation> operation)
                 MachLogNetwork& network = MachLogNetwork::instance();
                 if (network.isNetworkGame())
                 {
-                    if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS
-                        && ! NetNetwork::instance().imStuffed())
+                    if (isSimulatedHere() && !NetNetwork::instance().imStuffed())
                         update(0, 0);
                 }
                 else
@@ -1175,11 +1179,10 @@ void MachActor::assignToDifferentRace(MachLogRace& newRace)
     else
         changeRaceStartTime_ = 0;
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
     if (broker.isPublishing())
     {
-        if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (isSimulatedHere())
             broker.sendChangeRaceMessage(id(), newRace.race());
         else if (newRace.race() == pOriginalRace_->race())
             broker.sendChangeRaceMessage(id(), newRace.race());
@@ -1226,9 +1229,8 @@ void MachActor::setHPAndArmour(MachPhys::HitPointUnits newHp, MachPhys::ArmourUn
     notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
     doVisualiseSelectionState();
 
-    MachLogNetwork& network = MachLogNetwork::instance();
     MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (broker.isPublishing() && isSimulatedHere())
     {
         broker.sendAdjustHPAndArmourMessage(id(), newHp, newArmour);
     }
@@ -1464,11 +1466,9 @@ void MachActor::addThreat(UtlId threatId /*MachActor* pThreat*/)
     if (! hasThisActorAsAThreat(threatId))
     {
         actorsThreateningMe_.push_back(threatId);
-        MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
         MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-        if (broker.isPublishing() && races.actorExists(threatId)
-            && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (broker.isPublishing() && races.actorExists(threatId) && races.actor(threatId).isSimulatedHere())
         {
             broker.sendActorThreatMessage(id(), threatId, MachLogMessageBroker::ADD_THREAT);
         }
@@ -1491,11 +1491,9 @@ void MachActor::removeThreat(UtlId threatId /*const MachActor* pThreat*/)
 
         actorsThreateningMe_.erase(i);
 
-        MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
         MachLogMessageBroker& broker = MachLogMessageBroker::instance();
-        if (broker.isPublishing() && races.actorExists(threatId)
-            && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (broker.isPublishing() && races.actorExists(threatId) && races.actor(threatId).isSimulatedHere())
         {
             broker.sendActorThreatMessage(id(), threatId, MachLogMessageBroker::REMOVE_THREAT);
         }
