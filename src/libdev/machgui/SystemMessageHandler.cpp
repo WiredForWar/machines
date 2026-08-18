@@ -19,6 +19,7 @@
 
 #include "gui/ResourceString.hpp"
 
+#include "machlog/GameSession.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Race.hpp"
@@ -43,7 +44,7 @@ public:
 
         // if we got into this screen via a lobby session then we need to terminate correctly at this point.
         NETWORK_STREAM("MachGuiSessionLostGameTerminatorEvent::execute terminate and reset\n");
-        MachLogNetwork::instance().terminateAndReset();
+        MachLogGameSession::instance().end();
         NETWORK_STREAM("MachGuiSessionLostGameTerminatorEvent::execute contextFinish\n");
         // Changed
         pStartupScreens_->deleteAllChildren();

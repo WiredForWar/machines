@@ -231,6 +231,8 @@ set(MACHLOG_SOURCES
     Conditions/ViewCondition.hpp
     Conditions/VortexCondition.cpp
     Conditions/VortexCondition.hpp
+    GameSession.cpp
+    GameSession.hpp
     Internal/APCImpl.hpp
     Internal/ActorImpl.hpp
     Internal/AdminLocateOperationImpl.hpp

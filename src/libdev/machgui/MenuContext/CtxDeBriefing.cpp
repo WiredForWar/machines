@@ -17,7 +17,7 @@
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/World/DatabaseHandler.hpp"
-#include "machlog/Messaging/Network.hpp"
+#include "machlog/GameSession.hpp"
 #include "machgui/internal/strings.hpp"
 #include "system/PathName.hpp"
 #include "gui/Image.hpp"
@@ -192,7 +192,7 @@ bool MachGuiCtxDeBriefing::okayToSwitchContext()
         // if we got into this screen via a lobby session then we need to terminate correctly at this point.
         if (NetNetwork::instance().isLobbiedGame())
         {
-            MachLogNetwork::instance().terminateAndReset();
+            MachLogGameSession::instance().end();
             pStartupScreens_->contextFinishFromLobby();
             return false;
         }

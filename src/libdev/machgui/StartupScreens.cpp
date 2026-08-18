@@ -102,6 +102,7 @@ inline constexpr bool cDemoVersion =
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/World/Planet.hpp"
+#include "machlog/GameSession.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "machlog/Stats.hpp"
 #include "machlog/Races.hpp"
@@ -493,6 +494,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
 
     pInGameScreen_->becomeRoot();
     pInGameScreen_->activate();
+    MachLogGameSession::instance().begin();
     SimManager::instance().resume();
 
     // Touch all our own allocated memory to avoid thrashing after the game starts
@@ -635,6 +637,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
 
     pInGameScreen_->becomeRoot();
     pInGameScreen_->activate();
+    MachLogGameSession::instance().begin();
     SimManager::instance().resume();
 
     // Touch all our own allocated memory to avoid thrashing after the game starts
@@ -936,6 +939,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
 
     DEBUG_STREAM(DIAG_NETWORK, "SimManager::instance().resume()" << std::endl);
 
+    MachLogGameSession::instance().begin();
     SimManager::instance().resume();
 
     // Touch all our own allocated memory to avoid thrashing after the game starts
@@ -1649,7 +1653,7 @@ void MachGuiStartupScreens::loopCycleInGame()
         // if we got into this screen via a lobby session then we need to terminate correctly at this point.
         if (MachLogNetwork::instance().isNetworkGame())
         {
-            MachLogNetwork::instance().terminateAndReset();
+            MachLogGameSession::instance().end();
         }
         contextFinishFromLobby();
     }
@@ -2603,7 +2607,7 @@ void MachGuiStartupScreens::unloadGame()
             NetNetwork::instance().messageThrottlingActive(false);
             // Disconnect from network ( keep connectionType!! )
             const std::optional<ConnectionType> selectedConnectionType = startupData()->connectionType();
-            MachLogNetwork::instance().terminateAndReset();
+            MachLogGameSession::instance().end();
             ASSERT(selectedConnectionType.has_value(), "Invalid connection type");
 
             startupData()->setConnectionType(*selectedConnectionType);

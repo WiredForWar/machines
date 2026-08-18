@@ -21,6 +21,7 @@
 #include "machgui/db/DbScenario.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/InGameChatMessages.hpp"
+#include "machlog/GameSession.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "machgui/Network/NetworkVariables.hpp"
 #include "afx/resource.hpp"
@@ -280,7 +281,7 @@ std::optional<ConnectionType> MachGuiStartupData::connectionType() const
 
 void MachGuiStartupData::setConnectionType(ConnectionType ct)
 {
-    MachLogNetwork::instance().terminateAndReset();
+    MachLogGameSession::instance().end();
 
     bool success{};
     switch(ct)
@@ -808,7 +809,7 @@ void MachGuiStartupData::receivedStartMessage()
         //      }
 
         NETWORK_STREAM("calling terminate and reset" << std::endl);
-        MachLogNetwork::instance().terminateAndReset();
+        MachLogGameSession::instance().end();
         NETWORK_STREAM("calling switch context" << std::endl);
         switch (pStartupScreens_->currentContext())
         {

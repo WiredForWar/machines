@@ -23,6 +23,7 @@
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/Text.hpp"
+#include "machlog/GameSession.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "gui/Manager.hpp"
 #include "gui/Event.hpp"
@@ -643,7 +644,7 @@ bool MachGuiCtxImReady::okayToSwitchContext()
             // but simply doing the work.
             if (NetNetwork::instance().isLobbiedGame())
             {
-                MachLogNetwork::instance().terminateAndReset();
+                MachLogGameSession::instance().end();
                 pStartupScreens_->contextFinishFromLobby();
                 return false;
             }

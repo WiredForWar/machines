@@ -9,6 +9,7 @@
 #include "machgui/StartupScreens.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/MessageBroker.hpp"
+#include "machlog/GameSession.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "world4d/Sound/SoundManager.hpp"
 #include "system/WindowsAPI.hpp"
@@ -68,7 +69,7 @@ bool MachGuiExitToInternetMessageBoxResponder::okPressed()
         }
     }
 
-    MachLogNetwork::instance().terminateAndReset();
+    MachLogGameSession::instance().end();
     // Disabled for now
     //  pStartupScreens_->contextFinishFromLobby();
     return true;

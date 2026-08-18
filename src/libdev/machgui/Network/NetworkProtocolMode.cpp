@@ -9,7 +9,7 @@
 #include "machgui/internal/strings.hpp"
 #include "network/Network.hpp"
 #include "machgui/StartupScreens.hpp"
-#include "machlog/Messaging/Network.hpp"
+#include "machlog/GameSession.hpp"
 
 MachGuiNetworkProtocolMode::MachGuiNetworkProtocolMode(GuiDisplayable* pParent, MachGuiStartupScreens* pStartupScreens)
     : pParent_(pParent)
@@ -85,7 +85,7 @@ bool MachGuiNetworkProtocolMode::connectionSetHelper(NetNetwork::NetNetworkStatu
     {
         startupScreens().displayMsgBox(error);
         // Set network to a valid state
-        MachLogNetwork::instance().terminateAndReset();
+        MachLogGameSession::instance().end();
     }
 
     POST(NetNetwork::instance().currentStatusNoRecord() == NetNetwork::NETNET_OK);
