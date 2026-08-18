@@ -297,9 +297,10 @@ MachLogConstruction* MachLogActorMaker::newLogConstruction(
     }
     else
     {
-        if (MachLogNetwork::instance().isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
         {
-            MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
+            broker.sendCreateActorMessage(
                 race,
                 type,
                 subType,
@@ -412,11 +413,10 @@ MachLogMachine* MachLogActorMaker::newLogMachine(
     if (!withId.has_value())
     {
         // Locally created
-        if (MachLogNetwork::instance().isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
         {
-            MachLogNetwork::instance()
-                .messageBroker()
-                .sendCreateActorMessage(race, type, subType, hwLevel, swLevel, location, 0, wc, result->id());
+            broker.sendCreateActorMessage(race, type, subType, hwLevel, swLevel, location, 0, wc, result->id());
         }
     }
 
@@ -449,7 +449,7 @@ MachLogOreHolograph* MachLogActorMaker::newLogOreHolograph(
     /*
     if( MachLogNetwork::instance().isNetworkGame() )
     {
-        MachLogNetwork::instance().messageBroker().sendCreateActorMessage( race,
+        MachLogMessageBroker::instance().sendCreateActorMessage( race,
                                                                             MachLog::ORE_HOLOGRAPH,
                                                                             0,
                                                                             concentration,
@@ -505,11 +505,10 @@ MachLogDebris* MachLogActorMaker::newLogDebris(
 
     MachLogDebris* result = nullptr;
     result = new MachLogDebris(pLogRace, quantity, location, boundary);
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance()
-            .messageBroker()
-            .sendCreateSpecialActorMessage(race, MachLog::DEBRIS, quantity, location, boundary, result->id());
+        broker.sendCreateSpecialActorMessage(race, MachLog::DEBRIS, quantity, location, boundary, result->id());
     }
     DEBUG_STREAM(DIAG_NETWORK, "MLActorMaker::newLogDebris DONE " << std::endl);
     return result;
@@ -559,9 +558,10 @@ MachLogArtefact* MachLogActorMaker::newLogArtefact(int subType, const MexPoint3d
 
     MachLogArtefact* result = new MachLogArtefact(subType, location, angle);
 
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
+        broker.sendCreateActorMessage(
             MachPhys::NORACE,
             MachLog::ARTEFACT,
             subType,
@@ -596,9 +596,10 @@ W4dEntity* MachLogActorMaker::newDumbArtefact(int subType, const MexPoint3d& inL
 
     W4dEntity* pResult = MachLogRaces::instance().artefacts().newPhysArtefact(subType, location, angle);
 
-    if (MachLogNetwork::instance().isNetworkGame() && MachLogNetwork::instance().isNodeLogicalHost())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && MachLogNetwork::instance().isNodeLogicalHost())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateActorMessage(
+        broker.sendCreateActorMessage(
             MachPhys::NORACE,
             MachLog::ARTEFACT,
             subType,

@@ -14,6 +14,7 @@
 
 #include "base/base.hpp"
 #include "machlog/Messaging/Network.hpp"
+#include "machlog/Messaging/NetworkSink.hpp"
 
 #include <optional>
 
@@ -40,7 +41,7 @@ private:
     MachPhys::Race localRace_;
     std::optional<NetNetwork::NetworkProtocol> desiredProtocol_;
     std::string sessionId_;
-    MachLogMessageBroker* pBroker_;
+    MachLogNetworkSink networkSink_{};
     bool readyStatus_[MachPhys::N_RACES];
     bool simUpdateReceived_[MachPhys::N_RACES];
     bool simUpdateNeeded_[MachPhys::N_RACES];
@@ -56,7 +57,6 @@ private:
     CB_DEPIMPL_AUTO(remote_);                                                                                          \
     CB_DEPIMPL_AUTO(localRace_);                                                                                       \
     CB_DEPIMPL_AUTO(desiredProtocol_);                                                                                 \
-    CB_DEPIMPL_AUTO(pBroker_);                                                                                         \
     CB_DEPIMPL_AUTO(readyStatus_);                                                                                     \
     CB_DEPIMPL_AUTO(simUpdateReceived_);                                                                               \
     CB_DEPIMPL_AUTO(simUpdateNeeded_);                                                                                 \

@@ -22,7 +22,6 @@
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Actors/Mine.hpp"
 #include "machlog/World/MineralSite.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/Actors/Pod.hpp"
@@ -140,8 +139,9 @@ PhysRelativeTime MachLogMine::update(const PhysRelativeTime& maxCPUTime, MATHEX_
         if (complete && upToDate && ore_ < data().capacity() && hasMineralSite())
         {
             physMine.isWorking(true);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), true);
 
             // no extraction bonuses from when it was being built!
             lastUpdateTime_ = SimManager::instance().currentTime();
@@ -188,8 +188,9 @@ PhysRelativeTime MachLogMine::update(const PhysRelativeTime& maxCPUTime, MATHEX_
         {
             // I was working, but I've now reached my capacity and should stop extracting
             physMine.isWorking(false);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), false);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), false);
 
             lastUpdateTime_ = SimManager::instance().currentTime();
         }
@@ -543,8 +544,9 @@ void MachLogMine::mineralSiteIsExhausted()
 
         // Halt working animations
         physConstruction().isWorking(false);
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), false);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendPlayNormalObjectAnimationMessage(id(), false);
 
         lastUpdateTime_ = SimManager::instance().currentTime();
 

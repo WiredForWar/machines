@@ -27,7 +27,6 @@
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/SpacialManipulation.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/Controllers/Controller.hpp"
@@ -449,11 +448,10 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
                     // Tell motion sequencer that we are entering another domain
                     W4dDomain* pInteriorDomain = &pConstruction_->interiorDomain();
                     pActor_->motionSeq().useSpaceDomain(pInteriorDomain);
-                    if (MachLogNetwork::instance().isNetworkGame())
+                    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+                    if (broker.isPublishing())
                     {
-                        MachLogNetwork::instance().messageBroker().sendUseSpaceDomainMessage(
-                            pActor_->id(),
-                            pConstruction_->id());
+                        broker.sendUseSpaceDomainMessage(pActor_->id(), pConstruction_->id());
                     }
 
                     // Post move op to internal point

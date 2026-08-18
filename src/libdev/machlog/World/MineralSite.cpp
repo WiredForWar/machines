@@ -74,8 +74,9 @@ void MachLogMineralSite::beDiscoveredBy(MachPhys::Race race)
     }
     else
     {
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendSetSiteDiscoveredByMessage(position_, race);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendSetSiteDiscoveredByMessage(position_, race);
     }
     //  new MachLogOreHolograph( pRace, 0, 0, position() );
 
@@ -108,8 +109,9 @@ MachPhys::BuildingMaterialUnits MachLogMineralSite::extractOre(MachPhys::Buildin
 
     setOre(newOreAmount);
 
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendSetSiteOreMessage(id(), newOreAmount);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendSetSiteOreMessage(id(), newOreAmount);
 
     return oreExtracted;
 }

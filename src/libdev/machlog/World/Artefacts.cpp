@@ -79,10 +79,11 @@ void MachLogArtefacts::load(const SysPathName& pathname)
     CB_MachLogArtefacts_DEPIMPL();
     HAL_STREAM("MLArtefacts::load " << pathname << std::endl);
 
-    // Make sure get loaded round network
+    // Make sure anyone listening loads the same models
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.isNodeLogicalHost())
-        network.messageBroker().sendLoadArtefactModelsMessage(pathname);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.isNodeLogicalHost())
+        broker.sendLoadArtefactModelsMessage(pathname);
 
     // Set the filename for the persistent version
     std::string path = "pdata\\" + pathname.components().back();
@@ -170,9 +171,19 @@ void MachLogArtefacts::addSubType(
     pData_->pSubTypes_->push_back(MachLogArtefactSubType(subType, pExemplar, name));
     pData_->artefactDatas_.push_back(pArtefactData);
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.isNodeLogicalHost())
-        network.messageBroker()
-            .sendAddNewArtefactSubTypeMessage(subType, name, cost, armour, hitPoints, stringId, height, &localBoundary);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.isNodeLogicalHost())
+    {
+        broker.sendAddNewArtefactSubTypeMessage(
+            subType,
+            name,
+            cost,
+            armour,
+            hitPoints,
+            stringId,
+            height,
+            &localBoundary);
+    }
 }
 
 void MachLogArtefacts::addSubType(int subType, const std::string& name)
@@ -197,9 +208,10 @@ void MachLogArtefacts::addSubType(int subType, const std::string& name)
     pData_->artefactDatas_.push_back(nullptr);
 
     MachLogNetwork& network = MachLogNetwork::instance();
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
     // send message to add new subtype - DUMBs key from localboundary being NULL
-    if (network.isNetworkGame() && network.isNodeLogicalHost())
-        network.messageBroker().sendAddNewArtefactSubTypeMessage(subType, name, 0, 0, 0, 0, 0, nullptr);
+    if (broker.isPublishing() && network.isNodeLogicalHost())
+        broker.sendAddNewArtefactSubTypeMessage(subType, name, 0, 0, 0, 0, 0, nullptr);
 }
 
 W4dEntity* MachLogArtefacts::newPhysArtefact(int subType, const MexPoint3d& location, const MexRadians& angle) const
@@ -485,11 +497,11 @@ void MachLogArtefacts::unload()
 void MachLogArtefacts::addDamageRelation(UtlId dyingArtefactId, UtlId damageArtefactId, int hpDamage, int armourDamage)
 {
     CB_MachLogArtefacts_DEPIMPL();
-    // do the network stuff first as values of parameters can be changed inside the function.
+    // publish first as values of parameters can be changed inside the function.
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.isNodeLogicalHost())
-        network.messageBroker()
-            .sendAddArtefactDamageLinkMessage(dyingArtefactId, damageArtefactId, hpDamage, armourDamage);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.isNodeLogicalHost())
+        broker.sendAddArtefactDamageLinkMessage(dyingArtefactId, damageArtefactId, hpDamage, armourDamage);
 
     // Get the 2 artefacts from the ids
     MachLogRaces& races = MachLogRaces::instance();

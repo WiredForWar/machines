@@ -1226,8 +1226,9 @@ PhysRelativeTime MachLogResourceCarrier::doLoading()
         interval = physResourceCarrier().doLoading(SimManager::instance().currentTime());
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-        network.messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        broker.sendPlayNormalObjectAnimationMessage(id(), true);
 
     notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::CHANGED_MINERALS_CARRIED);
 

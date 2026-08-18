@@ -35,7 +35,6 @@ MachLogNetwork::MachLogNetwork()
     CB_MachLogNetwork_DEPIMPL();
 
     expectedPlayers_ = 2;
-    pBroker_ = nullptr;
     terminateAndReset();
     //  NetNetwork::instance().directXProtocol( true );
     //  NetNetwork::instance().asyncMessaging( true );
@@ -67,7 +66,7 @@ void MachLogNetwork::terminateAndReset()
     //   if( pBroker_ )
     //       delete pBroker_;
     //   pBroker_ = NULL;
-    isNetworkGame_ = false;
+    setNetworkGame(false);
     isNodeLogicalHost_ = false;
     for (bool& status : pImpl_->readyStatus_)
         status = false;
@@ -89,6 +88,18 @@ bool MachLogNetwork::isNetworkGame() const
     CB_DEPIMPL(bool, isNetworkGame_);
 
     return isNetworkGame_;
+}
+
+void MachLogNetwork::setNetworkGame(bool newValue)
+{
+    CB_MachLogNetwork_DEPIMPL();
+
+    isNetworkGame_ = newValue;
+
+    if (isNetworkGame_)
+        MachLogMessageBroker::instance().addSink(&pImpl_->networkSink_);
+    else
+        MachLogMessageBroker::instance().removeSink(&pImpl_->networkSink_);
 }
 
 bool MachLogNetwork::isNodeLogicalHost() const
@@ -134,13 +145,6 @@ std::ostream& operator<<(std::ostream& o, const MachLogNetwork& t)
     return o;
 }
 
-void MachLogNetwork::setBroker(MachLogMessageBroker* pBroker)
-{
-    CB_DEPIMPL(MachLogMessageBroker*, pBroker_);
-
-    pBroker_ = pBroker;
-}
-
 void MachLogNetwork::update()
 {
     CB_MachLogNetwork_DEPIMPL();
@@ -162,32 +166,19 @@ void MachLogNetwork::update()
     // in the pollmessages call above...therefore check that game is still running.
     if (! isNetworkGame())
         return;
-    if (pBroker_)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    // network game status _may_ be changed by processing a message
+    while (isNetworkGame_ && NetNetwork::instance().haveMessages())
     {
-        //  ASSERT( pBroker_ != NULL,"message broker is NULL and trying to call messageBroker method\n" );
-        MachLogMessageBroker& broker = messageBroker();
-        // network game status _may_ be changed by processing a message
-        while (isNetworkGame_ && NetNetwork::instance().haveMessages())
-        {
-            // NETWORK_STREAM( " gunna process a message..\n" );
-            broker.processMessage(NetNetwork::instance().getMessage());
-        }
-
-        // send any messages that the broker had to cache.
-        // NETWORK_STREAM( "MLNetwork::update has broker cached messages? " << broker.hasCachedOutgoingMessages() <<
-        // std::endl );
-        if (isNetworkGame_ && broker.hasCachedOutgoingMessages())
-            broker.sendCachedOutgoingMessages();
+        // NETWORK_STREAM( " gunna process a message..\n" );
+        broker.processMessage(NetNetwork::instance().getMessage());
     }
 
+    // send anything the transport could not take when it was published.
+    if (isNetworkGame_ && pImpl_->networkSink_.hasCachedMessages())
+        pImpl_->networkSink_.sendCachedMessages();
+
     // NETWORK_STREAM(  "MachLogNetwrok::update DONE\n" );
-}
-
-MachLogMessageBroker& MachLogNetwork::messageBroker()
-{
-    CB_DEPIMPL(MachLogMessageBroker*, pBroker_);
-
-    return *pBroker_;
 }
 
 void MachLogNetwork::ready(MachPhys::Race race, bool newValue)
@@ -254,7 +245,7 @@ bool MachLogNetwork::hostSession(const std::string& gameName, const std::string&
     NetNetwork::instance().setLocalPlayerName(playerName);
     if (NetNetwork::instance().currentStatus() == NetNetwork::NETNET_OK)
     {
-        isNetworkGame_ = true;
+        setNetworkGame(true);
         isNodeLogicalHost_ = true;
     }
     return true;
@@ -262,17 +253,15 @@ bool MachLogNetwork::hostSession(const std::string& gameName, const std::string&
 
 void MachLogNetwork::beginJoinSession(const std::string& address, const std::string& playerName)
 {
-    CB_MachLogNetwork_DEPIMPL();
-
     NetNetwork::instance().setLocalPlayerName(playerName);
     NetNetwork::instance().beginJoinAppSession(address);
-    isNetworkGame_ = true;
+    setNetworkGame(true);
 }
 
 void MachLogNetwork::resetSession()
 {
     NetNetwork::instance().resetAppSession();
-    pImpl_->isNetworkGame_ = false;
+    setNetworkGame(false);
 }
 
 void MachLogNetwork::localRace(MachPhys::Race newLocalRace)
@@ -285,7 +274,7 @@ void MachLogNetwork::localRace(MachPhys::Race newLocalRace)
 bool MachLogNetwork::launchFromLobbyInfo()
 {
     NETWORK_STREAM("MachLogNetwork::launchFromLobbyInfo()\n");
-    pImpl_->isNetworkGame_ = true;
+    setNetworkGame(true);
     NETWORK_STREAM(" call connect App Session\n");
     NETWORK_INDENT(2);
     NetNetwork::instance().connectAppSession();

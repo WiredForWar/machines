@@ -860,14 +860,15 @@ void MachLogMachineMotionSequencer::addRestingObstacle()
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
         if (network.remoteStatus(pLogMobile_->race()) == MachLogNetwork::LOCAL_PROCESS)
         {
             if (lastSetDomainTimeMessage_ == timeNow)
-                network.messageBroker().sendAddRestingObstacleShortMessage(pLogMobile_->id());
+                broker.sendAddRestingObstacleShortMessage(pLogMobile_->id());
             else
-                network.messageBroker().sendAddRestingObstacleMessage(
+                broker.sendAddRestingObstacleMessage(
                     pLogMobile_->id(),
                     pLogMobile_->globalTransform(),
                     internalState_);
@@ -1493,11 +1494,10 @@ W4dDomain* MachLogMachineMotionSequencer::setDomain()
             pPhysMachine_->attachTo(pCorrectDomain);
             pDomain = pCorrectDomain;
         }
-        if (MachLogNetwork::instance().isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
         {
-            MachLogNetwork::instance().messageBroker().sendMachineSetDomainMessage(
-                pLogMobile_->id(),
-                pLogMobile_->globalTransform());
+            broker.sendMachineSetDomainMessage(pLogMobile_->id(), pLogMobile_->globalTransform());
             lastSetDomainTimeMessage_ = SimManager::instance().currentTime();
         }
     }
@@ -2998,13 +2998,13 @@ void MachLogMachineMotionSequencer::removeMotionChunks()
 
     removeMotionChunksWithoutEcho();
 
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
         PhysAbsoluteTime now = SimManager::instance().currentTime();
         if (now != lastClearMovingChunksTimeMessage_)
         {
-            network.messageBroker().sendClearMovingChunksMessage(pLogMobile_->id());
+            broker.sendClearMovingChunksMessage(pLogMobile_->id());
             lastClearMovingChunksTimeMessage_ = now;
         }
     }
@@ -3017,9 +3017,10 @@ void MachLogMachineMotionSequencer::clearRestingObstacle()
     LOG_ENTER("clearRestingObstacle");
 
     doClearRestingObstacle();
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendClearRestingObstacleMessage(pLogMobile_->id());
+        broker.sendClearRestingObstacleMessage(pLogMobile_->id());
     }
 }
 
@@ -3330,11 +3331,10 @@ void MachLogMachineMotionSequencer::stopDead()
     CB_MachLogMachineMotionSequencerData_DEPIMPL();
 
     doStopDead();
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendStopDeadMessage(
-            pLogMobile_->id(),
-            pLogMobile_->globalTransform());
+        broker.sendStopDeadMessage(pLogMobile_->id(), pLogMobile_->globalTransform());
     }
 }
 
@@ -4092,8 +4092,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiatePhysicalMotion()
     // Queue the actual motion
     PhysRelativeTime interval = setupMotion();
 
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
         ctl_vector<PhysMotionChunk> motionChunks;
 
@@ -4105,11 +4105,11 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiatePhysicalMotion()
             motionChunks.push_back(motionChunk);
         }
 
-        if (network.isNodeLogicalHost())
-            network.messageBroker().sendAddMotionChunksMessage(pLogMobile_->id(), motionChunks, INTERNAL_MOVING);
+        if (MachLogNetwork::instance().isNodeLogicalHost())
+            broker.sendAddMotionChunksMessage(pLogMobile_->id(), motionChunks, INTERNAL_MOVING);
         else
         {
-            network.messageBroker().sendRequestAddMotionChunksMessage(pLogMobile_->id(), motionChunks, INTERNAL_MOVING);
+            broker.sendRequestAddMotionChunksMessage(pLogMobile_->id(), motionChunks, INTERNAL_MOVING);
         }
     }
 

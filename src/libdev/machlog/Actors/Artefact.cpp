@@ -207,8 +207,9 @@ void MachLogArtefact::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendBeHitMessage(
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (echo == ECHO && broker.isPublishing())
+            broker.sendBeHitMessage(
                 id(),
                 damage,
                 MachPhys::N_WEAPON_TYPES,

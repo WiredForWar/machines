@@ -27,7 +27,6 @@
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Combat/ExpandingBlast.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Race.hpp"
@@ -61,11 +60,10 @@ MachLogIonBeam::MachLogIonBeam(
     thirdWaveFinishTime_ = destructionTime_ - 1.5;
 
     // Echo explosion effect across network.
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
-            startPosition,
-            MachPhys::ION_ORBITAL_CANNON);
+        broker.sendCreateSpecialWeaponEffectMessage(startPosition, MachPhys::ION_ORBITAL_CANNON);
     }
 
     // set up collison data and animations
@@ -238,10 +236,9 @@ void MachLogIonBeam::inflictDamageSecondWave(MachActor* pDamagedVictim)
         MachPhysIonWeapon::destroy(
             (W4dComposite*)&cactor.physObject().asComposite(),
             SimManager::instance().currentTime());
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendApplySpecialWeaponAnimationMessage(
-                pDamagedVictim->id(),
-                MachPhys::ION_ORBITAL_CANNON);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendApplySpecialWeaponAnimationMessage(pDamagedVictim->id(), MachPhys::ION_ORBITAL_CANNON);
         pDamagedVictim->beHitWithoutAnimation(pWeaponData_->damagePoints(), 0.1, pByActor);
     }
     else

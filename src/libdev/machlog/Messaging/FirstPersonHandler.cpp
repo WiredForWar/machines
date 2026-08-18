@@ -30,7 +30,6 @@
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Combat/Weapon.hpp"
 #include "machlog/Races.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/PlanetDomains.hpp"
@@ -197,8 +196,8 @@ void MachLog1stPersonHandler::turnBy(MexRadians angle)
 
 void MachLog1stPersonHandler::update()
 {
-    // If networking and any of the setup flags have changed, ensure we retransmit the state vector
-    bool weShouldXmit = MachLogNetwork::instance().isNetworkGame() && ! pData_->remoteNode_;
+    // If publishing and any of the setup flags have changed, ensure we retransmit the state vector
+    const bool weShouldXmit{MachLogMessageBroker::instance().isPublishing() && !pData_->remoteNode_};
     if (weShouldXmit && ! pData_->xmitOnUpdate_)
         pData_->xmitOnUpdate_ = setupFlagsChanged();
 
@@ -640,7 +639,7 @@ bool MachLog1stPersonHandler::setupFlagsChanged()
 
 void MachLog1stPersonHandler::updateAnyNetworkState()
 {
-    if (MachLogNetwork::instance().isNetworkGame() && ! pData_->remoteNode_
+    if (MachLogMessageBroker::instance().isPublishing() && !pData_->remoteNode_
         && SimManager::instance().currentTime() != pData_->lastXmitTime_)
     {
         xmitStateVector();
@@ -649,27 +648,29 @@ void MachLog1stPersonHandler::updateAnyNetworkState()
 
 void MachLog1stPersonHandler::setupRemoteHandlers()
 {
-    // If this is a local handler, and we are playing a network game, we need to set up remote handlers
-    if (! pData_->remoteNode_ && MachLogNetwork::instance().isNetworkGame())
+    // If this is a local handler, the remote handlers need setting up
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (!pData_->remoteNode_ && broker.isPublishing())
     {
         MachActor& actor = *pData_->pActor_;
-        MachLogNetwork::instance().messageBroker().sendFirstPersonEndMessage(actor.id(), actor.race(), true);
+        broker.sendFirstPersonEndMessage(actor.id(), actor.race(), true);
     }
 }
 
 void MachLog1stPersonHandler::clearRemoteHandlers()
 {
-    // If this is a local handler, and we are playing a network game, we need to clear remote handlers
-    if (! pData_->remoteNode_ && MachLogNetwork::instance().isNetworkGame())
+    // If this is a local handler, the remote handlers need clearing
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (!pData_->remoteNode_ && broker.isPublishing())
     {
         MachActor& actor = *pData_->pActor_;
-        MachLogNetwork::instance().messageBroker().sendFirstPersonEndMessage(actor.id(), actor.race(), false);
+        broker.sendFirstPersonEndMessage(actor.id(), actor.race(), false);
     }
 }
 
 void MachLog1stPersonHandler::xmitStateVector()
 {
-    PRE(MachLogNetwork::instance().isNetworkGame());
+    PRE(MachLogMessageBroker::instance().isPublishing());
     PRE(! pData_->remoteNode_);
 
     PhysAbsoluteTime now = SimManager::instance().currentTime();
@@ -693,7 +694,7 @@ void MachLog1stPersonHandler::xmitStateVector()
     // Send the update message
     MachActor& actor = *pData_->pActor_;
     if (! NetNetwork::instance().imStuffed())
-        MachLogNetwork::instance().messageBroker().sendFirstPersonUpdateMessage(actor.id(), actor.race(), stateVector);
+        MachLogMessageBroker::instance().sendFirstPersonUpdateMessage(actor.id(), actor.race(), stateVector);
 }
 
 void MachLog1stPersonHandler::updateState(const MachPhysFirstPersonStateVector& state)

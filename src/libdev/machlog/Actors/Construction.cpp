@@ -608,9 +608,10 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
 {
     CB_MachLogConstruction_DEPIMPL();
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendAdvanceConstructionStateMessage(id(), addUnits);
+        broker.sendAdvanceConstructionStateMessage(id(), addUnits);
     }
     // commented out for D6
     //    PRE( addUnits + constructedUnits() <= constructionData().cost() );
@@ -676,11 +677,10 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
         {
             MachLogRaces::instance().builtNuclearWeapon(race());
 
-            // ........and whizz the warning round the network if it's a network game.
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendWeaponInformationMessage(
-                    MachLogMessageBroker::NUKE_ONLINE,
-                    race());
+            // ........and whizz the warning round to anyone listening.
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendWeaponInformationMessage(MachLogMessageBroker::NUKE_ONLINE, race());
         }
     }
 }
@@ -711,9 +711,10 @@ bool MachLogConstruction::updateCompletionVisualisation()
         physConstruction().percentageComplete(percentageComplete());
 
         MachLogNetwork& network = MachLogNetwork::instance();
-        if (network.isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
             if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-                network.messageBroker().sendUpdateCompletionVisualisationMessage(id(), percentageComplete());
+                broker.sendUpdateCompletionVisualisationMessage(id(), percentageComplete());
 
         visualisedUnits_ = constructedUnits_;
     }
@@ -744,10 +745,10 @@ PhysRelativeTime MachLogConstruction::isEntranceOpen(size_t i, bool doOpen)
     PRE_INFO(nLogicalEntrances());
     PRE(i < nLogicalEntrances());
 
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        network.messageBroker().sendIsEntranceOpenMessage(id(), i, doOpen);
+        broker.sendIsEntranceOpenMessage(id(), i, doOpen);
     }
 
     return physConstruction().isEntranceOpen(i, doOpen);
@@ -978,8 +979,9 @@ void MachLogConstruction::removeConstructor(MachLogConstructor* pConstructor)
             0.1,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
             nullptr));
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendRemoveConstructionMessage(id());
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendRemoveConstructionMessage(id());
     }
     HAL_STREAM(
         "(" << id() << ") MLConstruction::removeConstructor Done currently have " << constructors_.size() << std::endl);
@@ -1075,8 +1077,9 @@ void MachLogConstruction::cancelReservation()
             0.1,
             MachLogDyingEntityEvent::NOT_INSIDE_BUILDING,
             nullptr));
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendRemoveConstructionMessage(id());
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendRemoveConstructionMessage(id());
     }
 
     POST(nReservations_ >= 0);
@@ -1210,8 +1213,9 @@ void MachLogConstruction::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendBeHitMessage(
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (echo == ECHO && broker.isPublishing())
+            broker.sendBeHitMessage(
                 id(),
                 damage,
                 MachPhys::N_WEAPON_TYPES,
@@ -1416,8 +1420,9 @@ void MachLogConstruction::makeComplete(CompleteWithFullHPs setHPsFullStrength)
     isComplete_ = true;
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-        network.messageBroker().sendMakeCompleteConstructionMessage(id());
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        broker.sendMakeCompleteConstructionMessage(id());
 
     // Ensure the construction is updated soon
     nextUpdateTime(timeNow);
@@ -1614,9 +1619,10 @@ void MachLogConstruction::addRepairPoints(MachPhys::HitPointUnits hpsAdded)
     physConstruction().damageLevel(damagePercent);
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendAddRepairPointsMessage(id(), hpsAdded);
+        broker.sendAddRepairPointsMessage(id(), hpsAdded);
     }
 }
 

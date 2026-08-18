@@ -29,7 +29,6 @@
 #include "machlog/Combat/ExpandingBlast.hpp"
 // #include "machlog/Combat/LinearProjectile.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Race.hpp"
@@ -71,11 +70,10 @@ MachLogNuclearBomb::MachLogNuclearBomb(
     thirdWaveFinishTime_ = secondWaveStartTime_ + shockWaveDuration;
 
     // Echo explosion effect across network.
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
-            startPosition,
-            MachPhys::NUCLEAR_MISSILE);
+        broker.sendCreateSpecialWeaponEffectMessage(startPosition, MachPhys::NUCLEAR_MISSILE);
     }
 
     // set up collison data and animations

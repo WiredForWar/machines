@@ -20,8 +20,10 @@
 
 #include "sim/Manager.hpp"
 
+#include "machlog/Messaging/EventSink.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
+
+#include <algorithm>
 
 long outgoingTotalLength = 0;
 long nOutgoingMessages = 0;
@@ -37,13 +39,31 @@ MachLogMessageBroker::MachLogMessageBroker()
 // virtual
 MachLogMessageBroker::~MachLogMessageBroker()
 {
-    while (cachedOutgoingMessages_.size())
-    {
-        MachLogNetMessage* pMessage = cachedOutgoingMessages_.back();
-        delete pMessage;
-        cachedOutgoingMessages_.erase(cachedOutgoingMessages_.begin() + cachedOutgoingMessages_.size() - 1);
-    }
     TEST_INVARIANT;
+}
+
+// static
+MachLogMessageBroker& MachLogMessageBroker::instance()
+{
+    static MachLogMessageBroker plainBroker_;
+
+    return pInstalled_ ? *pInstalled_ : plainBroker_;
+}
+
+// static
+void MachLogMessageBroker::install(MachLogMessageBroker* pBroker)
+{
+    MachLogMessageBroker& previous = instance();
+
+    pInstalled_ = pBroker;
+
+    MachLogMessageBroker& current = instance();
+    if (&current == &previous)
+        return;
+
+    for (MachLogEventSink* pSink : previous.sinks_)
+        current.addSink(pSink);
+    previous.sinks_.clear();
 }
 
 // virtual
@@ -235,95 +255,40 @@ void MachLogMessageBroker::processMessage(NetMessage* pMessage)
 
 void MachLogMessageBroker::doSend(MachLogNetMessage*& pMessage)
 {
-    // if the network is not in an ok state - which can happen asynchronously
-    // then try to recover - if not then do not actually send the message.
-    if (NetNetwork::instance().currentStatus() != NetNetwork::NETNET_OK)
-    {
-        MachLogNetwork::instance().update();
-        if (NetNetwork::instance().currentStatus() != NetNetwork::NETNET_OK)
-        {
-            return;
-        }
-    }
-
     ++nOutgoingMessages;
     outgoingTotalLength += pMessage->header_.totalLength_;
 
-    /*  NetMessageRecipients to;
+    MachLogMessageCode code = (MachLogMessageCode)pMessage->header_.messageCode_;
+    int systemCode = (int)pMessage->header_.systemCode_;
+    NET_ANALYSIS_STREAM(
+        "out," << systemCode << "," << code << "," << SimManager::instance().currentTime() << ","
+               << pMessage->header_.totalLength_ << std::endl);
 
-    NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
-    NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
-    for( ; i != j; ++i )
-        to.push_back( (*i) );
-*/
-    // if we are already caching messages then continue to do so - otherwise messages may go out of sequence.
-    //   if( to.size() == 0 or NetNetwork::instance().imStuffed() or hasCachedOutgoingMessages() )
-    if (NetNetwork::instance().imStuffed() || hasCachedOutgoingMessages())
-    {
-        addCachedOutgoingMessage(pMessage);
-    }
-    else
-    {
-        NetPriority priority(1);
-        NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
-        NetNetwork::instance().sendMessage(priority, body);
-        MachLogMessageCode code = (MachLogMessageCode)pMessage->header_.messageCode_;
-        int systemCode = (int)pMessage->header_.systemCode_;
-        NET_ANALYSIS_STREAM(
-            "out," << systemCode << "," << code << "," << SimManager::instance().currentTime() << ","
-                   << pMessage->header_.totalLength_ << std::endl);
-        delete pMessage;
-    }
+    for (MachLogEventSink* pSink : sinks_)
+        pSink->consume(*pMessage);
+
+    delete pMessage;
+    pMessage = nullptr;
 }
 
-bool MachLogMessageBroker::hasCachedOutgoingMessages() const
+void MachLogMessageBroker::addSink(MachLogEventSink* pSink)
 {
-    return cachedOutgoingMessages_.size() > 0;
+    PRE(pSink);
+
+    if (std::find(sinks_.begin(), sinks_.end(), pSink) == sinks_.end())
+        sinks_.push_back(pSink);
 }
 
-void MachLogMessageBroker::sendCachedOutgoingMessages()
+void MachLogMessageBroker::removeSink(MachLogEventSink* pSink)
 {
-    NetMessageRecipients to;
-    /*  NetAppSession::NodeIds::const_iterator i = NetNetwork::instance().session().nodes().begin();
-    NetAppSession::NodeIds::const_iterator j = NetNetwork::instance().session().nodes().end();
-    for( ; i != j; ++i )
-        to.push_back( (*i) );
-*/
-
-    NetPriority priority(1);
-    bool connectionLost = false;
-
-    //  while( cachedOutgoingMessages_.size() and to.size() > 0 and not NetNetwork::instance().imStuffed() and not
-    //  connectionLost )
-    while (cachedOutgoingMessages_.size() && ! NetNetwork::instance().imStuffed() && ! connectionLost)
-    {
-        DEBUG_STREAM(
-            DIAG_NETWORK,
-            " sending a cached message. cachedMessages.size() " << cachedOutgoingMessages_.size() << std::endl);
-        MachLogNetMessage* pMessage = cachedOutgoingMessages_.front();
-        DEBUG_STREAM(
-            DIAG_NETWORK,
-            " messageCode " << static_cast<const MachLogMessageCode>(pMessage->header_.messageCode_) << std::endl);
-        NetMessageBody body(reinterpret_cast<const unsigned char*>(pMessage), pMessage->header_.totalLength_);
-        NetNetwork::instance().sendMessage(priority, body);
-        MachLogMessageCode code = (MachLogMessageCode)pMessage->header_.messageCode_;
-        int systemCode = (int)pMessage->header_.systemCode_;
-        NET_ANALYSIS_STREAM(
-            "out," << systemCode << "," << code << "," << SimManager::instance().currentTime() << ","
-                   << pMessage->header_.totalLength_ << std::endl);
-        delete pMessage;
-        cachedOutgoingMessages_.erase(cachedOutgoingMessages_.begin());
-        DEBUG_STREAM(DIAG_NETWORK, " sent a cached message size() " << cachedOutgoingMessages_.size() << std::endl);
-    }
+    std::vector<MachLogEventSink*>::iterator i = std::find(sinks_.begin(), sinks_.end(), pSink);
+    if (i != sinks_.end())
+        sinks_.erase(i);
 }
 
-void MachLogMessageBroker::addCachedOutgoingMessage(MachLogNetMessage* pMessage)
+bool MachLogMessageBroker::isPublishing() const
 {
-    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::addcachedOutgoingMessages " << std::endl);
-    cachedOutgoingMessages_.push_back(pMessage);
-    DEBUG_STREAM(
-        DIAG_NETWORK,
-        "MLMessageBroker::addcachedOutgoingMessages size() " << cachedOutgoingMessages_.size() << std::endl);
+    return !sinks_.empty();
 }
 
 void MachLogMessageBroker::CLASS_INVARIANT
@@ -343,7 +308,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogMessageBroker& t)
         o << " average size " << outgoingTotalLength / nOutgoingMessages << std::endl;
     if (SimManager::instance().currentTime() > 0)
         o << " average load per second " << outgoingTotalLength / SimManager::instance().currentTime() << std::endl;
-    o << " cachedOutgoingMessages_.size " << t.cachedOutgoingMessages_.size() << std::endl;
+    o << " sinks " << t.sinks_.size() << std::endl;
     o << "MachLogMessageBroker " << static_cast<const void*>(&t) << " end" << std::endl;
 
     return o;

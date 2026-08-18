@@ -36,8 +36,8 @@
 #include "machlog/Combat/Armourer.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 
 #ifndef _INLINE
@@ -149,8 +149,9 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
         if (! pPhysPod()->isWorking())
         {
             pPhysPod()->isWorking(true);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), true);
         }
 
         if (! hasIonCannon())
@@ -351,13 +352,14 @@ void MachLogPod::ionCannonAcquiredForFirstTime()
     MachLogRaces::instance().builtIonCannon(podRace);
 
     MachLogNetwork& network = MachLogNetwork::instance();
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
 
-    // ........and whizz the warning round the network if it's a network game.
-    if (network.isNetworkGame())
+    // ........and whizz the warning round to anyone listening.
+    if (broker.isPublishing())
     {
         if (network.remoteStatus(podRace) != MachLogNetwork::REMOTE_PROCESS)
         {
-            network.messageBroker().sendWeaponInformationMessage(MachLogMessageBroker::ION_CANNON_ONLINE, podRace);
+            broker.sendWeaponInformationMessage(MachLogMessageBroker::ION_CANNON_ONLINE, podRace);
         }
     }
 }

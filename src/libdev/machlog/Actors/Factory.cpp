@@ -40,7 +40,6 @@
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Operations/MoveOperation.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/ProductionUnit.hpp"
@@ -261,8 +260,9 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
             if (pPhysFactory()->isWorking())
             {
                 pPhysFactory()->isWorking(false);
-                if (MachLogNetwork::instance().isNetworkGame())
-                    MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), false);
+                MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+                if (broker.isPublishing())
+                    broker.sendPlayNormalObjectAnimationMessage(id(), false);
             }
             interval = 6.0;
         }
@@ -271,8 +271,9 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
             // The physical working animation needs to be refreshed periodically, so make the call every time
 
             pPhysFactory()->isWorking(true);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), true);
 
             MachLogProductionUnit* current = *productionLine_.begin();
             MachPhys::BuildingMaterialUnits cost = currentTotalCost();

@@ -14,7 +14,6 @@
 #include "machlog/World/PlanetDomains.hpp"
 
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Combat/NuclearBomb.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 
@@ -71,11 +70,10 @@ void MachLogNuclearMissile::doBeDestroyed()
 
     // network stuff....
 
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
-            position(),
-            MachPhys::NUCLEAR_MISSILE);
+        broker.sendCreateSpecialWeaponEffectMessage(position(), MachPhys::NUCLEAR_MISSILE);
     }
 
     // and create the physical entity on my own node.

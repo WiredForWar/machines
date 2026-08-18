@@ -26,8 +26,8 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Combat/MissileHolder.hpp"
 #include "machlog/Messaging/Network.hpp"
+#include "machlog/Combat/MissileHolder.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Races.hpp"
@@ -78,7 +78,8 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
     // HAL_STREAM("MLLinearWeapon::doFire at " << pTarget->id() << std::endl );
     // create Linear blobs (the logical entites here).
     MachLogNetwork& network = MachLogNetwork::instance();
-    bool isNetworkGame = network.isNetworkGame();
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    const bool isPublishing{broker.isPublishing()};
     PhysAbsoluteTime launchTime = SimManager::instance().currentTime();
     // HAL_STREAM(" rounds per burst " << physWeapon().weaponData().nRoundsPerBurst() << std::endl );
     // get domain and transform to use
@@ -106,7 +107,7 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         // PhysAbsoluteTime startTime = Phys::time();
         MachLogLinearProjectile* pLogProj
             = createLinearProjectile(launchTime, i, pParent, *pDomain, localTileTransform.position());
-        if (isNetworkGame)
+        if (isPublishing)
         {
             MachLogMessageBroker::SingleProjectileDestroyData* pDestroyData
                 = new MachLogMessageBroker::SingleProjectileDestroyData;
@@ -118,9 +119,9 @@ void MachLogLinearWeapon::doFire(const MexPoint3d& position)
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isNetworkGame && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isPublishing && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendEchoLinearProjectileMessage(
+        broker.sendEchoLinearProjectileMessage(
             owner().id(),
             mounting(),
             0,
@@ -148,7 +149,8 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
     // HAL_STREAM("MLLinearWeapon::doFire at " << pTarget->id() << std::endl );
     // create Linear blobs (the logical entites here).
     MachLogNetwork& network = MachLogNetwork::instance();
-    bool isNetworkGame = network.isNetworkGame();
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    const bool isPublishing{broker.isPublishing()};
     PhysAbsoluteTime launchTime = SimManager::instance().currentTime();
     // HAL_STREAM(" rounds per burst " << physWeapon().weaponData().nRoundsPerBurst() << std::endl );
     // get domain and transform to use
@@ -257,7 +259,7 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         // PhysAbsoluteTime startTime = Phys::time();
         MachLogLinearProjectile* pLogProj
             = createLinearProjectile(launchTime, i, pParent, cactor.physObject(), finalOffsetPoint);
-        if (isNetworkGame)
+        if (isPublishing)
         {
             MachLogMessageBroker::SingleProjectileDestroyData* pDestroyData
                 = new MachLogMessageBroker::SingleProjectileDestroyData;
@@ -269,9 +271,9 @@ void MachLogLinearWeapon::doFire(MachActor* pTarget, const MachLogFireData& fire
         // DEBUG_STREAM( DIAG_MISC, owner().id() << "," << physWeapon().type() << ",createLinearProjectile," << endTime
         // - startTime << std::endl ); HAL_STREAM(" create new Linear blob done\n" );
     }
-    if (isNetworkGame && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
+    if (isPublishing && network.remoteStatus(owner().race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendEchoLinearProjectileMessage(
+        broker.sendEchoLinearProjectileMessage(
             owner().id(),
             mounting(),
             cactor.id(),

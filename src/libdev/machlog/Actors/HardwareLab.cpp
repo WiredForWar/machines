@@ -40,7 +40,6 @@
 #include "machlog/Operations/ResearchAnimation.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Controllers/Controller.hpp"
 
@@ -626,8 +625,9 @@ void MachLogHardwareLab::ensureLabAnimationIsOn()
     if (! pPhysHardwareLab()->isWorking())
     {
         pPhysHardwareLab()->isWorking(true);
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendPlayNormalObjectAnimationMessage(id(), true);
     }
 }
 
@@ -636,8 +636,9 @@ void MachLogHardwareLab::ensureLabAnimationIsOff()
     if (pPhysHardwareLab()->isWorking())
     {
         pPhysHardwareLab()->isWorking(false);
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), false);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendPlayNormalObjectAnimationMessage(id(), false);
     }
 }
 

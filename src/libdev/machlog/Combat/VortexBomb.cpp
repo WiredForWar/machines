@@ -30,7 +30,6 @@
 #include "machlog/Combat/ExpandingBlast.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Race.hpp"
@@ -69,13 +68,11 @@ MachLogVortexBomb::MachLogVortexBomb(
     destructionWaveFinishTime_ = destructionWaveStartTime_ + totalExpansionDuration;
 
     // Echo explosion effect across network.
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
         ASSERT(pOwner != nullptr, "Unexpected NULL pointer for pOwner!");
-        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(
-            startPosition,
-            MachPhys::VORTEX,
-            pOwner->id());
+        broker.sendCreateSpecialWeaponEffectMessage(startPosition, MachPhys::VORTEX, pOwner->id());
     }
 
     // set up collison data and animations
@@ -280,10 +277,9 @@ void MachLogVortexBomb::inflictDamageFirstWave(MachActor* pDamagedVictim)
 
         const MachActor& cactor = *pDamagedVictim;
         MachPhysVortexWeapon::destroy(&(pDamagedVictim->physObject()), SimManager::instance().currentTime());
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendApplySpecialWeaponAnimationMessage(
-                pDamagedVictim->id(),
-                MachPhys::VORTEX);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendApplySpecialWeaponAnimationMessage(pDamagedVictim->id(), MachPhys::VORTEX);
         pDamagedVictim->beHitWithoutAnimation(pWeaponData_->damagePoints(), 0.3, pByActor);
     }
     else

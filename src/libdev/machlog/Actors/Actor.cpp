@@ -296,10 +296,17 @@ void MachActor::beHit(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance()
-                .messageBroker()
-                .sendBeHitMessage(id(), damage, wt, pByActor, pLine, 0, MachLogMessageBroker::NORMAL_HIT, actorNowDead);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (echo == ECHO && broker.isPublishing())
+            broker.sendBeHitMessage(
+                id(),
+                damage,
+                wt,
+                pByActor,
+                pLine,
+                0,
+                MachLogMessageBroker::NORMAL_HIT,
+                actorNowDead);
         // Oops I'm dead!
         if (hp() <= 0)
         {
@@ -388,8 +395,9 @@ void MachActor::beHitWithoutAnimation(
             doHitButStillAliveStuff(pByActor);
         }
 
-        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendBeHitMessage(
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (echo == ECHO && broker.isPublishing())
+            broker.sendBeHitMessage(
                 id(),
                 damage,
                 MachPhys::N_WEAPON_TYPES,
@@ -1168,13 +1176,13 @@ void MachActor::assignToDifferentRace(MachLogRace& newRace)
         changeRaceStartTime_ = 0;
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        HAL_STREAM(" it is a network game so determining if need message\n");
         if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-            network.messageBroker().sendChangeRaceMessage(id(), newRace.race());
+            broker.sendChangeRaceMessage(id(), newRace.race());
         else if (newRace.race() == pOriginalRace_->race())
-            network.messageBroker().sendChangeRaceMessage(id(), newRace.race());
+            broker.sendChangeRaceMessage(id(), newRace.race());
     }
 
     strategy().beInterrupted();
@@ -1219,9 +1227,10 @@ void MachActor::setHPAndArmour(MachPhys::HitPointUnits newHp, MachPhys::ArmourUn
     doVisualiseSelectionState();
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendAdjustHPAndArmourMessage(id(), newHp, newArmour);
+        broker.sendAdjustHPAndArmourMessage(id(), newHp, newArmour);
     }
 }
 
@@ -1457,10 +1466,11 @@ void MachActor::addThreat(UtlId threatId /*MachActor* pThreat*/)
         actorsThreateningMe_.push_back(threatId);
         MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
-        if (network.isNetworkGame() && races.actorExists(threatId)
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing() && races.actorExists(threatId)
             && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
         {
-            network.messageBroker().sendActorThreatMessage(id(), threatId, MachLogMessageBroker::ADD_THREAT);
+            broker.sendActorThreatMessage(id(), threatId, MachLogMessageBroker::ADD_THREAT);
         }
     }
 
@@ -1483,10 +1493,11 @@ void MachActor::removeThreat(UtlId threatId /*const MachActor* pThreat*/)
 
         MachLogNetwork& network = MachLogNetwork::instance();
         MachLogRaces& races = MachLogRaces::instance();
-        if (network.isNetworkGame() && races.actorExists(threatId)
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing() && races.actorExists(threatId)
             && network.remoteStatus(races.actor(threatId).race()) == MachLogNetwork::LOCAL_PROCESS)
         {
-            network.messageBroker().sendActorThreatMessage(id(), threatId, MachLogMessageBroker::REMOVE_THREAT);
+            broker.sendActorThreatMessage(id(), threatId, MachLogMessageBroker::REMOVE_THREAT);
         }
     }
 }

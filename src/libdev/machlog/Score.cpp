@@ -194,10 +194,11 @@ void MachLogScore::changeGrossScore(int difference)
     static DevTimer lastTransmissionTime;
     pImpl_->grossScore_ += difference;
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
         if (network.remoteStatus(pImpl_->race_) == MachLogNetwork::LOCAL_PROCESS && lastTransmissionTime.time() > 2)
         {
-            network.messageBroker().sendEchoNewScoreMessage(*pImpl_);
+            broker.sendEchoNewScoreMessage(*pImpl_);
             lastTransmissionTime.time(0);
         }
 }

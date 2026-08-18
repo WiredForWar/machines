@@ -54,10 +54,10 @@
 #include "machlog/Actors/Construction.hpp"
 #include "machlog/Actors/Constructor.hpp"
 #include "machlog/World/Entrance.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
+#include "machlog/Messaging/Network.hpp"
 #include "machlog/Actors/MissileEmplacement.hpp"
 #include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/Operations/MissileEmplacementAttackOperation.hpp"
@@ -157,10 +157,11 @@ MachLogMachine::~MachLogMachine()
         insideWhichBuilding().machineExited(this);
 
         MachLogNetwork& network = MachLogNetwork::instance();
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
 
-        if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
         {
-            network.messageBroker().sendEnteredBuildingMessage(id(), 0);
+            broker.sendEnteredBuildingMessage(id(), 0);
         }
     }
 
@@ -398,9 +399,9 @@ PhysRelativeTime MachLogMachine::update(const PhysRelativeTime& maxCPUTime, MATH
             notifyObservers(W4dSubject::CLIENT_SPECIFIC, MachLog::HEALTH_STATUS_CHANGED);
             // there is no real need to send update for hp/armour more regularly than once every two hundred
             // milliseconds
-            if (MachLogNetwork::instance().isNetworkGame()
-                && (lastUpdateTimeGap > 0.2 || armour() == machData.armour()))
-                MachLogNetwork::instance().messageBroker().sendAdjustHPAndArmourMessage(id(), hp(), armour());
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing() && (lastUpdateTimeGap > 0.2 || armour() == machData.armour()))
+                broker.sendAdjustHPAndArmourMessage(id(), hp(), armour());
         }
     }
     else
@@ -846,12 +847,13 @@ void MachLogMachine::insideWhichBuilding(MachLogConstruction* pEnteredBuilding)
             motionSeq().switchConfigSpace(pNewSpace);
             // this bit is for Enter/Leave building operations
             // So that things are logically attach correctly at the correct time.
-            if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
             {
                 if (pEnteredBuilding)
-                    network.messageBroker().sendEnteredBuildingMessage(id(), pEnteredBuilding->id());
+                    broker.sendEnteredBuildingMessage(id(), pEnteredBuilding->id());
                 else
-                    network.messageBroker().sendEnteredBuildingMessage(id(), 0);
+                    broker.sendEnteredBuildingMessage(id(), 0);
             }
         }
     }
@@ -1107,8 +1109,9 @@ void MachLogMachine::beHitWithoutAnimation(
         MachLogMessageBroker::ActorNowDead actorNowDead = MachLogMessageBroker::ACTOR_NOT_DEAD;
         if (hp() <= 0)
             actorNowDead = MachLogMessageBroker::ACTOR_DEAD;
-        if (echo == ECHO && MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendBeHitMessage(
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (echo == ECHO && broker.isPublishing())
+            broker.sendBeHitMessage(
                 id(),
                 damage,
                 MachPhys::N_WEAPON_TYPES,
@@ -1245,23 +1248,7 @@ void MachLogMachine::releaseHealingAuraReference()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-void MachLogMachine::smeltMe()
-{
-    PhysRelativeTime result = 0.25 + MachPhysVortexWeapon::destroy( &physObject() ,
-                SimManager::instance().currentTime() );
 
-    SimManager::instance().add( new MachLogDyingEntityEvent( physObjectPtr(), NULL, result,
-                MachLogDyingEntityEvent::NOT_INSIDE_BUILDING, NULL ) );
-
-    isDead( true );
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if( network.isNetworkGame() and network.remoteStatus( race() ) == MachLogNetwork::LOCAL_PROCESS )
-    {
-        network.messageBroker().sendSmeltMachineMessage( id() );
-    }
-}
-*/
 void MachLogMachine::smeltMe()
 {
     PhysRelativeTime result = 0.25 + MachPhysIonWeapon::destroy(&physObject(), SimManager::instance().currentTime());
@@ -1278,9 +1265,10 @@ void MachLogMachine::smeltMe()
 
     isDead(true);
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
     {
-        network.messageBroker().sendSmeltMachineMessage(id());
+        broker.sendSmeltMachineMessage(id());
     }
 }
 
@@ -1415,10 +1403,11 @@ void MachLogMachine::camouflaged(bool status)
     if (status == true && camouflaged_ == false)
     {
         MachLogNetwork& network = MachLogNetwork::instance();
-        if (network.isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
         {
             if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-                network.messageBroker().sendCamouflageMachineMessage(id(), MachLogMessageBroker::BEGIN_CAMOUFLAGE);
+                broker.sendCamouflageMachineMessage(id(), MachLogMessageBroker::BEGIN_CAMOUFLAGE);
         }
 
         if (race() != MachLogRaces::instance().playerRace())
@@ -1432,10 +1421,11 @@ void MachLogMachine::camouflaged(bool status)
     else if (status == false && camouflaged_ == true)
     {
         MachLogNetwork& network = MachLogNetwork::instance();
-        if (network.isNetworkGame())
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
         {
             if (network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-                network.messageBroker().sendCamouflageMachineMessage(id(), MachLogMessageBroker::STOP_CAMOUFLAGE);
+                broker.sendCamouflageMachineMessage(id(), MachLogMessageBroker::STOP_CAMOUFLAGE);
         }
 
         if (race() != MachLogRaces::instance().playerRace())

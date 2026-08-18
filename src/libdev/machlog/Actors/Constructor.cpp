@@ -78,8 +78,9 @@ void MachLogConstructor::constructing(bool newIsConstructingValue, UtlId constru
     isConstructing_ = newIsConstructingValue;
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-        network.messageBroker().sendPlayConstructAnimationMessage(id(), constructionId, isConstructing_);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+        broker.sendPlayConstructAnimationMessage(id(), constructionId, isConstructing_);
 
     if (isConstructing_)
     {

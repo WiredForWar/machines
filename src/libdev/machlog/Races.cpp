@@ -2797,10 +2797,11 @@ bool MachLogRaces::hasLost(MachPhys::Race race) const
 void MachLogRaces::hasLost(MachPhys::Race race, bool newValue)
 {
     pDataImpl_->hasLost_[race] = newValue;
-    if (newValue && MachLogNetwork::instance().isNetworkGame()
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (newValue && broker.isPublishing()
         && MachLogNetwork::instance().remoteStatus(race) == MachLogNetwork::LOCAL_PROCESS)
     {
-        MachLogNetwork::instance().messageBroker().sendLostFlagSetMessage(race);
+        broker.sendLostFlagSetMessage(race);
     }
     if (gameType() == MachLog::SKIRMISH_SINGLE_PLAYER
         || (MachLogNetwork::instance().isNetworkGame()
@@ -3730,12 +3731,10 @@ void MachLogRaces::dispositionToRace(
             }
         }
     }
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendChangeOfDispositionMessage(
-            checkRace,
-            targetRace,
-            (int)newDisposition);
+        broker.sendChangeOfDispositionMessage(checkRace, targetRace, (int)newDisposition);
     }
 }
 

@@ -20,7 +20,6 @@
 #include "machlog/Races.hpp"
 #include "machlog/World/DyingEntityEvent.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 
 const MATHEX_SCALAR BURN_TIME = 60;
@@ -245,8 +244,9 @@ PhysRelativeTime MachLogDebris::update(const PhysRelativeTime& maxCPUTime, MATHE
             nullptr);
         SimManager::instance().add(pEvent);
         isDead(true);
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendDebrisExpiredMessage(id());
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendDebrisExpiredMessage(id());
     }
 
     return MachActor::update(maxCPUTime, clearence);

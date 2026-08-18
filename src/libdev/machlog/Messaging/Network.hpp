@@ -18,7 +18,6 @@
 
 #include <optional>
 
-class MachLogMessageBroker;
 class MachLogNetworkDataImpl;
 
 class MachLogNetwork
@@ -49,15 +48,12 @@ public:
     void isNodeLogicalHost(bool);
     Remote remoteStatus(MachPhys::Race) const;
     void remoteStatus(MachPhys::Race, Remote);
-    void setBroker(MachLogMessageBroker*);
     void update();
     int expectedPlayers() const;
     bool simUpdateNeeded(MachPhys::Race) const;
     void simUpdateNeeded(MachPhys::Race, bool);
     bool simUpdateReceived(MachPhys::Race) const;
     void simUpdateReceived(MachPhys::Race, bool);
-
-    MachLogMessageBroker& messageBroker();
 
     void ready(MachPhys::Race, bool newValue);
     bool ready(MachPhys::Race) const;
@@ -81,6 +77,11 @@ private:
     bool operator==(const MachLogNetwork&);
 
     MachLogNetwork();
+
+    // Sets whether a network game is running. The sink that transmits to the other hosts
+    // subscribes to the broker for exactly as long as there is a network game to transmit
+    // to, so this is also where it attaches and detaches.
+    void setNetworkGame(bool);
 
     MachLogNetworkDataImpl* pImpl_;
 };

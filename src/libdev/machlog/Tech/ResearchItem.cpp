@@ -10,7 +10,6 @@
 #include "mathex/Point2d.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/Tech/ResearchTree.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Data/Levels.hpp"
@@ -292,10 +291,9 @@ void MachLogResearchItem::advanceResearch(MachPhys::Race race, MachPhys::Researc
         amountResearched_[race] = researchCost_;
         researched_[race] = true;
 
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance()
-                .messageBroker()
-                .sendNewResearchMessage(objectType_, subType_, hwLevel_, weaponCombo_, race);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendNewResearchMessage(objectType_, subType_, hwLevel_, weaponCombo_, race);
         // I have just researched a new obtyoe/subtype/hwlevel combo
         // ensure that at least the first level of software becomes active for free.
         // unfortunately the software level is only cached in the first occ..so return first hwlevel for type and

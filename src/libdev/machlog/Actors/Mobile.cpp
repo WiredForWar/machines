@@ -118,8 +118,9 @@ const MachPhysMobile& MachLogMobile::physMobile() const
 
 PhysRelativeTime MachLogMobile::turn(const MexRadians& radians)
 {
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendMachineTurnMessage(physMobile().id(), radians);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendMachineTurnMessage(physMobile().id(), radians);
 
     return physMobile().turn(radians);
 }

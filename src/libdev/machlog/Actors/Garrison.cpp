@@ -23,7 +23,6 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/SpyLocator.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 
 #include "sim/Manager.hpp"
@@ -132,8 +131,9 @@ PhysRelativeTime MachLogGarrison::update(const PhysRelativeTime& alteredMaxCPUTi
         if (! pPhysGarrison()->isWorking())
         {
             pPhysGarrison()->isWorking(true);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), true);
         }
     }
 
@@ -268,9 +268,9 @@ void MachLogGarrison::startHealing(MachLogMachine* pMachine)
     machinesBeingHealed_.push_back(pMachine);
     pMachine->attach(this);
     pMachine->addHealingAuraReference();
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
-        network.messageBroker().sendHealMessage(id(), pMachine->id(), MachLogMessageBroker::BEGIN_HEALING, true);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendHealMessage(id(), pMachine->id(), MachLogMessageBroker::BEGIN_HEALING, true);
 
     POST(currentlyHealing(pMachine));
 }
@@ -291,9 +291,9 @@ void MachLogGarrison::stopHealing(MachLogMachine* pMachine)
     machinesBeingHealed_.erase(iToBeRemoved);
     pMachine->detach(this);
     pMachine->releaseHealingAuraReference();
-    MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame())
-        network.messageBroker().sendHealMessage(id(), pMachine->id(), MachLogMessageBroker::STOP_HEALING, true);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendHealMessage(id(), pMachine->id(), MachLogMessageBroker::STOP_HEALING, true);
 
     POST(! currentlyHealing(pMachine));
 }

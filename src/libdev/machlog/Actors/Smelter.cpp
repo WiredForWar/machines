@@ -24,7 +24,6 @@
 #include "machlog/World/PlanetDomains.hpp"
 #include "machlog/Race.hpp"
 #include "machlog/Races.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 
 #ifndef _INLINE
@@ -119,8 +118,9 @@ PhysRelativeTime MachLogSmelter::update(const PhysRelativeTime& alteredMaxCPUTim
         if (isWorking != pPhysSmelter()->isWorking())
         {
             pPhysSmelter()->isWorking(isWorking);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), isWorking);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), isWorking);
         }
     }
 

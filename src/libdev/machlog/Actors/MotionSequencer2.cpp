@@ -17,7 +17,6 @@
 #include "machlog/Internal/SequencerDebug.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Races.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
@@ -1111,7 +1110,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::sendMotionToPhysicalMachine()
     // Queue the motion.
     pPhysMachine_->move(info);
 
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
         MachPhysMachineMoveInfo::Transforms transforms;
 
@@ -1124,7 +1124,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::sendMotionToPhysicalMachine()
         transforms.push_back(pPhysMachine_->pParent()->globalTransform());
         transforms.back().transform(moveInfos_.back().transforms().back());
 
-        MachLogNetwork::instance().messageBroker().sendMachineMoveMessage(
+        broker.sendMachineMoveMessage(
             pLogMobile_->id(),
             capSpeed(),
             moveInfos_,

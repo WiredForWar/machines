@@ -25,7 +25,6 @@
 #include "machlog/Combat/Weapon.hpp"
 #include "machlog/Combat/Armourer.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Stats.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
@@ -137,8 +136,9 @@ PhysRelativeTime MachLogMissileEmplacement::update(const PhysRelativeTime& alter
 
         {
             pPhysMissileEmplacement()->isWorking(true);
-            if (MachLogNetwork::instance().isNetworkGame())
-                MachLogNetwork::instance().messageBroker().sendPlayNormalObjectAnimationMessage(id(), true);
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing())
+                broker.sendPlayNormalObjectAnimationMessage(id(), true);
         }
     }
 
@@ -326,8 +326,9 @@ PhysRelativeTime MachLogMissileEmplacement::attack(MachActor* pTarget)
 // virtual
 PhysRelativeTime MachLogMissileEmplacement::turn(const MexRadians& angle)
 {
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendMachineTurnMessage(id(), angle);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendMachineTurnMessage(id(), angle);
     return pPhysMissileEmplacement()->turn(angle);
 }
 

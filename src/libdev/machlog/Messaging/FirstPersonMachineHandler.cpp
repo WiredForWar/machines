@@ -267,7 +267,6 @@ void MachLog1stPersonMachineHandler::doUpdate()
             else if (! wasInside && ! isOutside)
             {
                 // Enter the building
-                //               MachLogNetwork& network = MachLogNetwork::instance();
                 NETWORK_STREAM(
                     " not wasInside and not isOutside so calling inside with : " << (void*)pEnteringConstruction
                                                                                  << std::endl);
@@ -278,12 +277,6 @@ void MachLog1stPersonMachineHandler::doUpdate()
                     machine.physObject().attachTo(pInteriorDomain);
                 }
                 machine.insideWhichBuilding(pEnteringConstruction);
-                // send useSpaceDomain after the go inside building stuff
-                // as the go inside building will set up the correct config space for the machine.
-                //               if( network.isNetworkGame() and network.remoteStatus( machine.race() ) ==
-                //               MachLogNetwork::LOCAL_PROCESS )
-                //                   network.messageBroker().sendUseSpaceDomainMessage( machine.id(),
-                //                   pEnteringConstruction->id() );
 
                 // Tell the camera if local
                 if (! remotelyControlled())

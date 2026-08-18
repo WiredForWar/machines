@@ -26,6 +26,8 @@
 #include "mathex/Point3d.hpp"
 #include "mathex/Transform3d.hpp"
 
+#include <vector>
+
 class MexRadians;
 class MexLine3d;
 class MexAlignedBox2d;
@@ -33,6 +35,7 @@ class SysPathName;
 class MachPhysFirstPersonStateVector;
 class NetNodeUid;
 class NetMessage;
+class MachLogEventSink;
 class MachLogScoreImpl;
 
 const int MACHLOG_MAXLENGTH = 1024;
@@ -155,7 +158,6 @@ public:
         REMOVE_THREAT
     };
 
-    using CachedMessages = ctl_pvector<MachLogNetMessage>;
 #pragma pack(push, 1)
     struct SingleProjectileDestroyData
     {
@@ -169,13 +171,27 @@ public:
     MachLogMessageBroker();
     virtual ~MachLogMessageBroker();
 
+    // The broker events are published through. Always usable; a plain one handles the
+    // machlog codes until something installs a broker that handles more.
+    static MachLogMessageBroker& instance();
+
+    // Makes pBroker the instance, or restores the plain one when given nullptr. Any
+    // attached sinks move across, so a swap during a session keeps them listening.
+    // A broker has to be uninstalled before it is destroyed.
+    static void install(MachLogMessageBroker* pBroker);
+
     virtual void processMessage(NetMessage*);
     // note that message code has to be integer. This allows untype safe but useful different
     // enums to be used at the different library levels.
 
-    bool hasCachedOutgoingMessages() const;
-    void sendCachedOutgoingMessages();
-    void addCachedOutgoingMessage(MachLogNetMessage*);
+    // Every event sent through this broker is offered to each attached sink, in the order
+    // the sinks were attached. Attaching a sink that is already attached does nothing.
+    void addSink(MachLogEventSink*);
+    void removeSink(MachLogEventSink*);
+
+    // True while at least one sink is attached, and so while formatting and sending an
+    // event has a point. Emission sites test this before doing the work.
+    bool isPublishing() const;
 
     // this is a new helper function so that bits of code that generate motion chunks
     // can know how many the network library can cope with.
@@ -354,7 +370,9 @@ private:
     MachLogMessageBroker& operator=(const MachLogMessageBroker&);
     bool operator==(const MachLogMessageBroker&);
 
-    CachedMessages cachedOutgoingMessages_;
+    std::vector<MachLogEventSink*> sinks_{};
+
+    inline static MachLogMessageBroker* pInstalled_{};
 };
 
 #endif

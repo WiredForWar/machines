@@ -13,7 +13,6 @@
 #include "machphys/Random.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Combat/Weapon.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
 #include "machlog/Race.hpp"
 #include "machlog/Races.hpp"
@@ -65,11 +64,9 @@ PhysRelativeTime MachLogWeapon::fire(MachActor* pTarget, const MachLogFireData& 
 
         MachLogRaces::instance().firedAt(pOwner_->race(), pTarget->race(), true);
 
-        if (MachLogNetwork::instance().isNetworkGame())
-            MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(
-                pOwner_->id(),
-                mounting(),
-                numberInBurst);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing())
+            broker.sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), numberInBurst);
 
         dt("MLWeapon::physWeapon->fire", false);
     }
@@ -97,8 +94,9 @@ PhysRelativeTime MachLogWeapon::fire(MachActor* pTarget)
     dt("", true);
     PhysRelativeTime result = pPhysWeapon_->fire(lastFireTime_, 1);
 
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
 
     dt("MLWeapon::physWeapon->fire", false);
     return result;
@@ -120,8 +118,9 @@ PhysRelativeTime MachLogWeapon::fire(const MexPoint3d& position)
     dt("", true);
     PhysRelativeTime result = pPhysWeapon_->fire(lastFireTime_, 1);
 
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendFireWeaponAnimationMessage(pOwner_->id(), mounting(), 1);
 
     dt("MLWeapon::physWeapon->fire", false);
     return result;

@@ -14,7 +14,6 @@
 
 #include "machlog/Combat/BeeBombExplosion.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/World/PlanetDomains.hpp"
 
 // PER_DEFINE_PERSISTENT( MachLogBeeBomb );
@@ -55,9 +54,10 @@ void MachLogBeeBomb::doBeDestroyed()
 {
     // network stuff....
 
-    if (MachLogNetwork::instance().isNetworkGame())
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
     {
-        MachLogNetwork::instance().messageBroker().sendCreateSpecialWeaponEffectMessage(position(), MachPhys::BEE_BOMB);
+        broker.sendCreateSpecialWeaponEffectMessage(position(), MachPhys::BEE_BOMB);
     }
 
     // and create the physical entity on my own node.

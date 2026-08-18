@@ -21,8 +21,8 @@
 #include "machlog/Race.hpp"
 #include "machlog/Races.hpp"
 
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
+#include "machlog/Messaging/Network.hpp"
 
 PER_DEFINE_PERSISTENT(MachLogGeoLocator);
 /* //////////////////////////////////////////////////////////////// */
@@ -96,8 +96,9 @@ void MachLogGeoLocator::isLocating(bool doLocate)
     if (doLocate != isLocating())
     {
         MachLogNetwork& network = MachLogNetwork::instance();
-        if (network.isNetworkGame() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
-            network.messageBroker().sendPlayNormalObjectAnimationMessage(id(), doLocate);
+        MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+        if (broker.isPublishing() && network.remoteStatus(race()) == MachLogNetwork::LOCAL_PROCESS)
+            broker.sendPlayNormalObjectAnimationMessage(id(), doLocate);
         physGeoLocator().isLocating(doLocate);
     }
 }

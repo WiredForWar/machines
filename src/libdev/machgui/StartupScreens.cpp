@@ -212,7 +212,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     NetNetwork::instance().systemMessageHandler(new MachGuiSystemMessageHandler(this));
     // Set up network message broker ( routes network messages to the appropriate code ).
     pMessageBroker_ = new MachGuiMessageBroker(pStartupData_);
-    MachLogNetwork::instance().setBroker(pMessageBroker_);
+    MachLogMessageBroker::install(pMessageBroker_);
     SysRegistry::instance().setStringValue("", "version", "1.0");
 
     MachGuiInGameChatMessages::instance().initialise(pMessageBroker_, this);
@@ -252,6 +252,7 @@ MachGuiStartupScreens::~MachGuiStartupScreens()
     delete pMenuCursor_;
     MachGui::releaseInGameBmpMemory();
 
+    MachLogMessageBroker::install(nullptr);
     delete pMessageBroker_;
 
     // Delete the children here rather than leaving it to ~GuiDisplayable, which runs
@@ -841,7 +842,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
 
     DEBUG_STREAM(DIAG_NETWORK, "messageBroker().sendReadyMessage()" << std::endl);
 
-    MachLogNetwork::instance().messageBroker().sendReadyMessage();
+    MachLogMessageBroker::instance().sendReadyMessage();
     SysWindowsAPI::peekMessage();
     SysWindowsAPI::sleep(100);
 
@@ -867,8 +868,8 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
                 DEBUG_STREAM(DIAG_NETWORK, "checkAllOk" << std::endl);
 
                 SimManager::instance().resetTime();
-                MachLogNetwork::instance().messageBroker().sendResyncTimeMessage();
-                MachLogNetwork::instance().messageBroker().sendStartGameMessage();
+                MachLogMessageBroker::instance().sendResyncTimeMessage();
+                MachLogMessageBroker::instance().sendStartGameMessage();
             }
             else
             {
@@ -892,8 +893,8 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
             }
         }
         SimManager::instance().resetTime();
-        MachLogNetwork::instance().messageBroker().sendResyncTimeMessage();
-        MachLogNetwork::instance().messageBroker().sendStartGameMessage();
+        MachLogMessageBroker::instance().sendResyncTimeMessage();
+        MachLogMessageBroker::instance().sendStartGameMessage();
         // Sleep to allow for lag
         SysWindowsAPI::sleep(500);
     }
@@ -909,7 +910,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
         {
             SysWindowsAPI::peekMessage();
             SysWindowsAPI::sleep(1000);
-            MachLogNetwork::instance().messageBroker().sendReadyMessage();
+            MachLogMessageBroker::instance().sendReadyMessage();
             MachLogNetwork::instance().update();
 
             // Update progress bar just to show something is happening
@@ -1635,7 +1636,7 @@ void MachGuiStartupScreens::loopCycleInGame()
         PhysAbsoluteTime now = SimManager::instance().currentTime();
         if ((now - lastSyncTime) > 5)
         {
-            MachLogNetwork::instance().messageBroker().sendResyncTimeMessage();
+            MachLogMessageBroker::instance().sendResyncTimeMessage();
             lastSyncTime = now;
         }
     }

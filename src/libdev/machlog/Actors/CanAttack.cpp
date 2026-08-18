@@ -116,12 +116,13 @@ void MachLogCanAttack::currentTarget(MachActor* p)
     }
 
     MachLogNetwork& network = MachLogNetwork::instance();
-    if (network.isNetworkGame() && network.remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing() && network.remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
     {
         UtlId otherId = 0;
         if (pCurrentTarget_)
             otherId = pCurrentTarget_->id();
-        network.messageBroker().sendCurrentTargetMessage(pMe_->id(), otherId);
+        broker.sendCurrentTargetMessage(pMe_->id(), otherId);
     }
 }
 
@@ -824,13 +825,10 @@ void MachLogCanAttack::stopAllHealing(const MachActor& me)
             if (charger.healing())
             {
                 charger.stopAllHealing();
-                if (MachLogNetwork::instance().isNetworkGame()
+                MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+                if (broker.isPublishing()
                     && MachLogNetwork::instance().remoteStatus(me.race()) == MachLogNetwork::LOCAL_PROCESS)
-                    MachLogNetwork::instance().messageBroker().sendHealMessage(
-                        me.id(),
-                        0,
-                        MachLogMessageBroker::STOP_HEALING,
-                        false);
+                    broker.sendHealMessage(me.id(), 0, MachLogMessageBroker::STOP_HEALING, false);
             }
         }
     }
@@ -889,13 +887,10 @@ PhysRelativeTime MachLogCanAttack::heal(MachActor* pTarget)
                 }
             }
 
-            if (MachLogNetwork::instance().isNetworkGame()
+            MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+            if (broker.isPublishing()
                 && MachLogNetwork::instance().remoteStatus(pMe_->race()) == MachLogNetwork::LOCAL_PROCESS)
-                MachLogNetwork::instance().messageBroker().sendHealMessage(
-                    pMe_->id(),
-                    pTarget->id(),
-                    MachLogMessageBroker::BEGIN_HEALING,
-                    false);
+                broker.sendHealMessage(pMe_->id(), pTarget->id(), MachLogMessageBroker::BEGIN_HEALING, false);
         }
     }
     return rt;

@@ -288,6 +288,7 @@ set(MACHLOG_SOURCES
     Internal/VoiceMailInfo.hpp
     Internal/VoiceMailManagerImpl.hpp
     Internal/VortexBombImpl.hpp
+    Messaging/EventSink.hpp
     Messaging/FirstPersonHandler.cpp
     Messaging/FirstPersonHandler.hpp
     Messaging/FirstPersonMachineHandler.cpp
@@ -308,6 +309,8 @@ set(MACHLOG_SOURCES
     Messaging/Network.cpp
     Messaging/Network.hpp
     Messaging/NetworkImpl.cpp
+    Messaging/NetworkSink.cpp
+    Messaging/NetworkSink.hpp
     Messaging/RecentEventsManager.cpp
     Messaging/RecentEventsManager.hpp
     Messaging/RemoteFirstPersonManager.cpp

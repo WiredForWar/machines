@@ -27,7 +27,6 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Messaging/MessageBroker.hpp"
-#include "machlog/Messaging/Network.hpp"
 #include "machlog/Operations/PodAttackOperation.hpp"
 #include "machlog/World/Planet.hpp"
 #include "machlog/Actors/Pod.hpp"
@@ -75,11 +74,10 @@ void MachLogPodAttackOperation::dealWithVoiceMails()
             MachLogRaces::instance().playerRace());
     }
 
-    // ........and whizz the warning round the network if it's a network game.
-    if (MachLogNetwork::instance().isNetworkGame())
-        MachLogNetwork::instance().messageBroker().sendWeaponInformationMessage(
-            MachLogMessageBroker::ION_CANNON_FIRED,
-            pActor_->race());
+    // ........and whizz the warning round to anyone listening.
+    MachLogMessageBroker& broker = MachLogMessageBroker::instance();
+    if (broker.isPublishing())
+        broker.sendWeaponInformationMessage(MachLogMessageBroker::ION_CANNON_FIRED, pActor_->race());
 }
 
 void MachLogPodAttackOperation::doOutputOperator(std::ostream& o) const
