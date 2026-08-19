@@ -485,8 +485,26 @@ void MachLogMachineMotionSequencer::createFindPath()
         PhysConfigSpace2d::PolygonIds badIds;
         ignorePolygons(true);
 
-        if (pConfigSpace_->contains(MexSausage2d(nowPoint, destinationPoint_, useClearance_), obstacleFlags(), &badIds))
+        //  Our own resting polygon sits on nowPoint, so it would veto every
+        //  sausage starting here. Take it out of consideration first.
+        if (pImpl_->restingObstacleExists_)
+            pConfigSpace_->isPolygonEnabled(restingObstacleId_, false);
+
+        //  Weigh resting machines as well as terrain. Scrapping the domain path
+        //  commits us to the direct line, and nothing restores it afterwards:
+        //  every replan re-runs this test and re-scraps the same path. Judging
+        //  the line on permanent obstacles alone means a line held by parked
+        //  machines still looks clear, so a machine that dodges and replans
+        //  keeps choosing it instead of routing through the portal it was given.
+        if (pConfigSpace_->contains(
+                MexSausage2d(nowPoint, destinationPoint_, useClearance_),
+                obstacleFlags(),
+                &badIds,
+                PhysConfigSpace2d::USE_ALL))
             nPortalPointsDone_ = nDomainPathPoints;
+
+        if (pImpl_->restingObstacleExists_)
+            pConfigSpace_->isPolygonEnabled(restingObstacleId_, true);
 
         ignorePolygons(false);
     }
