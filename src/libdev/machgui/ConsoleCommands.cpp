@@ -50,6 +50,7 @@
 #include "world4d/Scene/SceneManager.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <cstring>
@@ -111,6 +112,35 @@ std::optional<MexPoint2d> parseCoordinates(const std::string& str)
     {
         return std::nullopt;
     }
+}
+
+std::optional<UtlId> parseActorId(const std::string& str)
+{
+    const bool allDigits
+        = !str.empty() && std::all_of(str.begin(), str.end(), [](unsigned char c) { return std::isdigit(c) != 0; });
+    if (!allDigits)
+        return std::nullopt;
+
+    try
+    {
+        return static_cast<UtlId>(std::stoul(str));
+    }
+    catch (const std::exception&)
+    {
+        return std::nullopt;
+    }
+}
+
+// The actor with the given id, complaining to the console when there is none.
+MachActor* findActor(UtlId id, Console& console)
+{
+    if (!MachLogRaces::instance().actorExists(id))
+    {
+        console.writeLine("Actor " + std::to_string(id) + " does not exist.");
+        return nullptr;
+    }
+
+    return &MachLogRaces::instance().actor(id);
 }
 
 std::string toOnOffString(bool value)
@@ -668,16 +698,29 @@ void camLookatCommand(MachGuiStartupScreens* pStartup, const Request& request, C
     if (!pScreen)
         return;
 
-    const std::string& posStr = std::get<std::string>(request.arguments[0].value);
-    const std::optional<MexPoint2d> coords = parseCoordinates(posStr);
-    if (!coords.has_value())
+    const std::string& targetStr = std::get<std::string>(request.arguments[0].value);
+
+    const std::optional<MexPoint2d> coords = parseCoordinates(targetStr);
+    if (coords.has_value())
     {
-        console.writeLine("Invalid position format. Use x,y (e.g. 123.4,567.8).");
+        pScreen->cameras()->lookAt(coords.value());
+        console.writeLine("Camera looking at " + formatCoordinates(coords->x(), coords->y()) + ".");
         return;
     }
 
-    pScreen->cameras()->lookAt(coords.value());
-    console.writeLine("Camera looking at " + formatCoordinates(coords->x(), coords->y()) + ".");
+    const std::optional<UtlId> actorId = parseActorId(targetStr);
+    if (!actorId.has_value())
+    {
+        console.writeLine("Invalid target. Use x,y (e.g. 123.4,567.8) or an actor id.");
+        return;
+    }
+
+    MachActor* pActor = findActor(actorId.value(), console);
+    if (!pActor)
+        return;
+
+    pScreen->cameras()->lookAt(*pActor);
+    console.writeLine("Camera looking at actor " + std::to_string(actorId.value()) + ".");
 }
 
 // ============================================================
@@ -1082,13 +1125,11 @@ void commandMoveCommand(const Request& request, Console& console)
 
     for (UtlId id : actorIds)
     {
-        if (!MachLogRaces::instance().actorExists(id))
-        {
-            console.writeLine("Actor " + std::to_string(id) + " does not exist.");
+        MachActor* pActor = findActor(id, console);
+        if (!pActor)
             continue;
-        }
 
-        MachActor& actor = MachLogRaces::instance().actor(id);
+        MachActor& actor = *pActor;
         if (actor.objectIsMachine())
         {
             MachLogMachine& machine = actor.asMachine();
@@ -2164,9 +2205,9 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "cam_lookat",
-            .description = "Point camera at a world position. The free camera turns without moving.",
+            .description = "Point camera at a world position or an actor. The free camera turns without moving.",
             .arguments = {
-                { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
+                { .name = "target", .type = Arg::String, .description = "Position as x,y, or an actor id." },
             },
         },
         [pStartup](const Request& request, Console& console) { camLookatCommand(pStartup, request, console); });
