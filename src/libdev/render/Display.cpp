@@ -209,9 +209,7 @@ bool RenDisplay::useMode(const RenDisplay::Mode& m)
         RENDER_INDENT(2);
         pImpl_->prepareForModeChange(saveMode);
         currentMode_ = saveMode;
-        bool restoreSuccess;
-        ASSERT(restoreSuccess, "Could not restore mode");
-        restoreSuccess = pImpl_->modeChanged();
+        bool restoreSuccess = pImpl_->modeChanged();
         ASSERT(restoreSuccess, "Could not restore mode");
         RENDER_INDENT(-2);
         RENDER_STREAM("Restored mode " << saveMode << std::endl);
