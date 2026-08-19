@@ -2090,10 +2090,13 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
         }
 
         //  Ask the blocking machine to get out of the way. A machine that has
-        //  the same command id as we do is left alone: it is heading the same
-        //  way we are, so shoving it about only churns the group. Those cases
-        //  fall through to the sideways dodge below.
-        if (!done && !objectHasSameCommandId(collisionObjectId))
+        //  the same command id and is still under way is left alone: it is
+        //  heading where we are heading, so shoving it about only churns the
+        //  group, and it will clear the ground by itself. One that has come to
+        //  rest is a different matter -- it has arrived and will sit there
+        //  until something asks it to move -- so treat it like any other
+        //  obstruction. Whatever we do not ask falls through to the dodge below.
+        if (!done && (!objectHasSameCommandId(collisionObjectId) || objectIsResting(collisionObjectId)))
         {
             MachLogRaces& races = MachLogRaces::instance();
             UtlId actorId = collisionObjectId.asScalar();
