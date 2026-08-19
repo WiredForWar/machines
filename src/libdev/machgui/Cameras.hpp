@@ -195,6 +195,10 @@ private:
     // has built up are left alone, so it keeps travelling as it turns.
     void aimFreeCameraAt(const MexPoint3d& target);
 
+    // Drop the follow target once the human starts steering the current camera
+    // themselves. Which input counts as taking over differs per camera.
+    void releaseFollowTargetOnInput();
+
     // Return the position that the zenith camera would have to be in in order for
     // "lookAt" to be the centre of the sceen.
     MexPoint3d zenithLookAt(const MexPoint3d& lookAt);

@@ -36,8 +36,10 @@
 #include "gui/Event.hpp"
 #include "system/VFS.hpp"
 
+#include <array>
 #include <memory>
 #include <ranges>
+#include <span>
 
 #include <cmath>
 
@@ -419,31 +421,48 @@ void MachCameras::switchToZenith(const MexPoint3d& lookAt)
     pZenithControl_->enableInput();
 }
 
+void MachCameras::releaseFollowTargetOnInput()
+{
+    using ControlCommand = PhysMotionControlWithTrans::Command;
+
+    // A camera releases on the input it frames a target with. The zenith and
+    // ground cameras frame by travelling to the subject, so travelling is the
+    // human saying they will take it from here.
+    static const std::array travelCommands{
+        ControlCommand::FOWARD,
+        ControlCommand::BACKWARD,
+        ControlCommand::SLIDE_LEFT,
+        ControlCommand::SLIDE_RIGHT,
+    };
+
+    PhysMotionControlWithTrans* pControl{};
+    std::span<const ControlCommand> releaseCommands;
+
+    if (isZenithCameraActive())
+    {
+        pControl = pZenithControl_.get();
+        releaseCommands = travelCommands;
+    }
+    else if (isGroundCameraActive())
+    {
+        pControl = pGroundControl_.get();
+        releaseCommands = travelCommands;
+    }
+
+    if (! pControl)
+        return;
+
+    if (std::ranges::any_of(releaseCommands, [pControl](ControlCommand commandId) -> bool {
+        return pControl->isCommandOn(commandId);
+    }))
+    {
+        resetFollowTarget();
+    }
+}
+
 void MachCameras::updateCameras()
 {
-    PhysMotionControlWithTrans *pControl{};
-    if (isZenithCameraActive())
-        pControl = pZenithControl_.get();
-    else if (isGroundCameraActive())
-        pControl = pGroundControl_.get();
-
-    if (pControl)
-    {
-        using ControlCommand = PhysMotionControlWithTrans::Command;
-        static const ControlCommand moveCommands[] = {
-            ControlCommand::FOWARD,
-            ControlCommand::BACKWARD,
-            ControlCommand::SLIDE_LEFT,
-            ControlCommand::SLIDE_RIGHT,
-        };
-
-        if (std::ranges::any_of(moveCommands, [pControl](ControlCommand commandId) -> bool {
-            return pControl->isCommandOn(commandId);
-        }))
-        {
-            resetFollowTarget();
-        }
-    }
+    releaseFollowTargetOnInput();
 
     if (pFollowTarget_)
     {
