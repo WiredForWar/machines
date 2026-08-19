@@ -10,6 +10,7 @@
 
 #include "spdlog/spdlog.h"
 
+#include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <unordered_map>
@@ -586,10 +587,33 @@ RenderBackendGL21::Pipeline* RenderBackendGL21::boundPipeline()
     return &pipelines_[currentPipelineId_ - 1];
 }
 
+std::vector<ShaderSet> RenderBackendGL21::supportedShaderSets() const
+{
+    return { ShaderSet::GLSL120 };
+}
+
+ShaderSet RenderBackendGL21::shaderSet() const
+{
+    return shaderSet_;
+}
+
+bool RenderBackendGL21::setShaderSet(ShaderSet set)
+{
+    const std::vector<ShaderSet> supported = supportedShaderSets();
+    if (std::find(supported.begin(), supported.end(), set) == supported.end())
+    {
+        spdlog::error("The {} backend cannot compile the {} shader set", toString(backendType()), toString(set));
+        return false;
+    }
+
+    shaderSet_ = set;
+    return true;
+}
+
 PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
 {
     // Resolve logical shader names to backend-specific file paths
-    static constexpr const char* shadersDir = "data/shaders/120/";
+    const std::string shadersDir(shaderDirectory(shaderSet_));
     static constexpr const char* vertexExt = ".vxgls";
     static constexpr const char* fragmentExt = ".fggls";
 

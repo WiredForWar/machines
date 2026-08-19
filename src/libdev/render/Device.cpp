@@ -227,6 +227,8 @@ bool RenDevice::initialize(Ren::BackendType backendType)
 
     initializeDisplay();
 
+    applyConfiguredShaderSet();
+
     if (!createGpuResources())
         return false;
 
@@ -699,6 +701,11 @@ bool RenDevice::switchBackend(Ren::BackendType type)
         return false;
     }
 
+    // A backend starts on the set it prefers, which is not necessarily the one
+    // that was in use, so the choice has to be made again against what this one
+    // can compile.
+    applyConfiguredShaderSet();
+
     // Recreate all GPU resources on the new backend.
     if (!createGpuResources())
     {
@@ -716,6 +723,66 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     }
 
     spdlog::info("Backend switch complete");
+    return true;
+}
+
+void RenDevice::applyConfiguredShaderSet()
+{
+    CB_DEPIMPL_AUTO(backend_);
+
+    const Ren::ShaderSet configured = Config::gfxShaderSet.get();
+    if (backend_->shaderSet() == configured)
+        return;
+
+    if (!backend_->setShaderSet(configured))
+    {
+        // Say which set is actually in use, so that a scene that does not look
+        // as expected is not blamed on the one that was asked for.
+        spdlog::warn("Keeping the {} shader set", toString(backend_->shaderSet()));
+    }
+}
+
+Ren::ShaderSet RenDevice::shaderSet() const
+{
+    CB_DEPIMPL_AUTO(backend_);
+
+    return backend_->shaderSet();
+}
+
+std::vector<Ren::ShaderSet> RenDevice::supportedShaderSets() const
+{
+    CB_DEPIMPL_AUTO(backend_);
+
+    return backend_->supportedShaderSets();
+}
+
+bool RenDevice::setShaderSet(Ren::ShaderSet set)
+{
+    PRE(!rendering());
+
+    CB_DEPIMPL_AUTO(backend_);
+
+    ASSERT(backend_ && backend_->isInitialized(), "setShaderSet() called before initialize()");
+
+    if (backend_->shaderSet() == set)
+        return true;
+
+    if (!backend_->setShaderSet(set))
+        return false;
+
+    spdlog::info("Rebuilding pipelines for the {} shader set", toString(set));
+
+    // The pipelines hold compiled programs from the previous set, and the
+    // device caches the uniform and attribute locations those programs handed
+    // out, so both have to be built again for the change to be visible.
+    releaseGpuResources();
+
+    if (!createGpuResources())
+    {
+        spdlog::error("Failed to build pipelines for the {} shader set", toString(set));
+        return false;
+    }
+
     return true;
 }
 

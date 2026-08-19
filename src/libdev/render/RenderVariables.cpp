@@ -3,6 +3,7 @@
 #include "BackendType.hpp"
 #include "FogMode.hpp"
 #include "LightingMode.hpp"
+#include "ShaderSet.hpp"
 #include "ShadowQuality.hpp"
 #include "WindowMode.hpp"
 
@@ -28,6 +29,24 @@ std::optional<Ren::BackendType> toValue(const std::string& asString)
     {
         if (asString == Ren::toString(type))
             return type;
+    }
+
+    return std::nullopt;
+}
+
+template <>
+std::string toString(const Ren::ShaderSet& value)
+{
+    return std::string(Ren::toString(value));
+}
+
+template <>
+std::optional<Ren::ShaderSet> toValue(const std::string& asString)
+{
+    for (Ren::ShaderSet set : Ren::AllShaderSets)
+    {
+        if (asString == Ren::toString(set))
+            return set;
     }
 
     return std::nullopt;
@@ -110,10 +129,12 @@ std::optional<ShadowQuality> toValue(const std::string& asString)
 template class Config::Variable<Ren::BackendType>;
 template class Config::Variable<FogMode>;
 template class Config::Variable<LightingMode>;
+template class Config::Variable<Ren::ShaderSet>;
 template class Config::Variable<Ren::WindowMode>;
 template class Config::Variable<ShadowQuality>;
 
 Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", {});
+Variable<Ren::ShaderSet> gfxShaderSet("Options/Graphics/Shader Set", Ren::ShaderSet::GLSL120);
 Variable<Ren::WindowMode> gfxWindowMode("Screen Resolution/Window Mode", Ren::WindowMode::Borderless);
 
 bool windowModeIsUnset()

@@ -2,6 +2,7 @@
 
 #include "render/BackendType.hpp"
 #include "render/IRenderSurface.hpp"
+#include "render/ShaderSet.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/PipelineSpec.hpp"
@@ -49,6 +50,16 @@ public:
     virtual bool isInitialized() const = 0;
 
     virtual bool setVSync(bool enabled) = 0;
+
+    // The GLSL dialects this backend can compile, best first. Never empty.
+    virtual std::vector<ShaderSet> supportedShaderSets() const = 0;
+
+    // Which set createPipeline() reads its sources from. A change applies to
+    // pipelines created after it, so those already built have to be rebuilt for
+    // it to be visible. Returns false, and changes nothing, for a set this
+    // backend does not support.
+    virtual ShaderSet shaderSet() const = 0;
+    virtual bool setShaderSet(ShaderSet set) = 0;
 
     virtual PipelineId createPipeline(const PipelineDesc& desc) = 0;
     virtual void releasePipeline(PipelineId id) = 0;

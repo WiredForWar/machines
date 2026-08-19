@@ -103,6 +103,7 @@ set(RENDER_SOURCES
     Scale.cpp
     Scale.hpp
     Scale.ipp
+    ShaderSet.hpp
     ShadowQuality.cpp
     ShadowQuality.hpp
     SpinPolygon.cpp

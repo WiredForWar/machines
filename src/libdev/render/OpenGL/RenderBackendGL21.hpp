@@ -32,6 +32,10 @@ public:
 
     bool setVSync(bool enabled) override;
 
+    std::vector<ShaderSet> supportedShaderSets() const override;
+    ShaderSet shaderSet() const override;
+    bool setShaderSet(ShaderSet set) override;
+
     PipelineId createPipeline(const PipelineDesc& desc) override;
     void releasePipeline(PipelineId id) override;
     UniformLocationId pipelineUniformLocation(PipelineId id, std::string_view name) const override;
@@ -318,6 +322,7 @@ private:
     GLuint fallbackTexture2D_{};
     std::vector<GLuint> pendingTextureDeletes_{};
     bool initialized_{};
+    ShaderSet shaderSet_{ ShaderSet::GLSL120 };
 
     static constexpr int MaxVertexAttribs = 16;
     static constexpr int MaxTextureUnits = 4;

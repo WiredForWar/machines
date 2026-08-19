@@ -2,6 +2,7 @@
 
 #include "base/base.hpp"
 #include "render/BackendType.hpp"
+#include "render/ShaderSet.hpp"
 #include "render/Texture.hpp"
 #include "render/internal/BackendCommands.hpp"
 #include "render/internal/DrawCallFactory.hpp"
@@ -119,6 +120,17 @@ public:
     void clearAllSurfaces(); // PRE(!rendering());
 
     bool switchBackend(Ren::BackendType type);
+
+    // Which GLSL dialect the scene is drawn with, and which ones the backend in
+    // use is able to compile. Choosing between them changes where sources are
+    // read from and nothing else, so it is a way to compare two writings of the
+    // same shaders rather than a visual setting.
+    Ren::ShaderSet shaderSet() const;
+    std::vector<Ren::ShaderSet> supportedShaderSets() const;
+
+    // Build the pipelines again from the given set. Returns false, and leaves
+    // the current set in place, if the backend cannot compile it.
+    bool setShaderSet(Ren::ShaderSet set); // PRE(!rendering());
 
     // Register a callback invoked after GPU resources are invalidated and
     // reloaded (e.g. backend switch, scale factor change).  Listeners
@@ -462,6 +474,7 @@ private:
 
     bool createGpuResources();
     void releaseGpuResources();
+    void applyConfiguredShaderSet();
 
     bool setVSync(bool enabled);
 
