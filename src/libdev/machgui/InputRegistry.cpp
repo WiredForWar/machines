@@ -899,7 +899,7 @@ void InputRegistry::setLegacyDefaults()
     });
 
     setBinds("free-camera-forward"_bind, { { KeyCode::ENTER_PAD } });
-    setBinds("free-camera-backward"_bind, { { KeyCode::DELETE } });
+    setBinds("free-camera-backward"_bind, { { KeyCode::DELETE_PAD } });
     setBinds("free-camera-slide-left"_bind, { { KeyCode::END } });
     setBinds("free-camera-slide-right"_bind, { { KeyCode::PAGE_DOWN } });
     setBinds("free-camera-rotate-left"_bind, { { KeyCode::LEFT_ARROW } });
