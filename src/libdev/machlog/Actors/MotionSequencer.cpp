@@ -2664,37 +2664,61 @@ PhysRelativeTime MachLogMachineMotionSequencer::moveOutOfWay(
             LOG_INSPECT(askerNormal);
             LOG_INSPECT(askerDir);
 
-            // try moves in various directions
-            canMove
-                = canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + askerNormal.x(), pos.y() + askerNormal.y())) ||
+            //  A position is only worth taking if it puts us clear of the line
+            //  the asker wants to travel. canMoveTo() answers a different
+            //  question -- whether we could stand there at all -- so taking the
+            //  first position it accepts lets us shuffle along the asker's path,
+            //  or across to the far side of it and still within reach, and
+            //  report success while the asker remains blocked by us.
+            const MATHEX_SCALAR askerLength = askerStartPoint.euclidianDistance(askerEndPoint);
+            const MATHEX_SCALAR clearOfAsker = askerClearance + useClearance_;
+            const MATHEX_SCALAR sqrClearOfAsker = clearOfAsker * clearOfAsker;
 
-                canMoveTo(pos, targetPoint = MexPoint2d(pos.x() - askerNormal.x(), pos.y() - askerNormal.y())) ||
+            auto clearsAskersPath = [&](const MexPoint2d& point) {
+                //  A degenerate segment gives MexLine2d no direction to work
+                //  with, so fall back to keeping our distance from the asker.
+                const MATHEX_SCALAR sqrDistance = (askerLength > MexEpsilon::instance())
+                    ? MexLine2d::sqrEuclidianDistance(askerStartPoint, askerEndPoint, askerLength, point)
+                    : point.sqrEuclidianDistance(askerStartPoint);
 
-                canMoveTo(
-                      pos,
-                      targetPoint
-                      = MexPoint2d(pos.x() + askerNormal.x() + askerDir.x(), pos.y() + askerNormal.y() + askerDir.y()))
-                ||
+                return sqrDistance >= sqrClearOfAsker;
+            };
 
-                canMoveTo(
-                      pos,
-                      targetPoint
-                      = MexPoint2d(pos.x() - askerNormal.x() + askerDir.x(), pos.y() - askerNormal.y() + askerDir.y()))
-                ||
+            auto acceptable = [&](const MexPoint2d& point) {
+                if (!clearsAskersPath(point))
+                    return false;
 
-                canMoveTo(
-                      pos,
-                      targetPoint
-                      = MexPoint2d(pos.x() + askerNormal.x() - askerDir.x(), pos.y() + askerNormal.y() - askerDir.y()))
-                ||
+                targetPoint = point;
+                return canMoveTo(pos, point);
+            };
 
-                canMoveTo(
-                      pos,
-                      targetPoint
-                      = MexPoint2d(pos.x() - askerNormal.x() - askerDir.x(), pos.y() - askerNormal.y() - askerDir.y()))
-                ||
+            // A machine in a doorway is often hemmed in at one step's reach
+            // while there is room just past its neighbours, so widen the step
+            // rather than refuse. The shortest one that works still wins.
+            static const MATHEX_SCALAR stepScales[] = { 1.0, 2.0, 3.0 };
+            const std::size_t nStepScales = std::size(stepScales);
 
-                canMoveTo(pos, targetPoint = MexPoint2d(pos.x() + askerDir.x(), pos.y() + askerDir.y()));
+            for (std::size_t iScale = 0; !canMove && iScale != nStepScales; ++iScale)
+            {
+                const MATHEX_SCALAR dx = askerDir.x() * stepScales[iScale];
+                const MATHEX_SCALAR dy = askerDir.y() * stepScales[iScale];
+                const MATHEX_SCALAR nx = askerNormal.x() * stepScales[iScale];
+                const MATHEX_SCALAR ny = askerNormal.y() * stepScales[iScale];
+
+                canMove = acceptable(MexPoint2d(pos.x() + nx, pos.y() + ny)) ||
+
+                    acceptable(MexPoint2d(pos.x() - nx, pos.y() - ny)) ||
+
+                    acceptable(MexPoint2d(pos.x() + nx + dx, pos.y() + ny + dy)) ||
+
+                    acceptable(MexPoint2d(pos.x() - nx + dx, pos.y() - ny + dy)) ||
+
+                    acceptable(MexPoint2d(pos.x() + nx - dx, pos.y() + ny - dy)) ||
+
+                    acceptable(MexPoint2d(pos.x() - nx - dx, pos.y() - ny - dy)) ||
+
+                    acceptable(MexPoint2d(pos.x() + dx, pos.y() + dy));
+            }
 
             // Reenable the resting polygon
             if (pImpl_->restingObstacleExists_)
