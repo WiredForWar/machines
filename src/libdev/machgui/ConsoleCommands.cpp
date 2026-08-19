@@ -723,6 +723,50 @@ void camLookatCommand(MachGuiStartupScreens* pStartup, const Request& request, C
     console.writeLine("Camera looking at actor " + std::to_string(actorId.value()) + ".");
 }
 
+void camFollowCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
+    if (!pScreen)
+        return;
+
+    MachCameras* pCameras = pScreen->cameras();
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        const MachActor* pTarget = pCameras->followTarget();
+        console.writeLine(pTarget ? std::to_string(pTarget->id()) : "off");
+        return;
+    }
+
+    const std::string& targetStr = std::get<std::string>(request.arguments[0].value);
+    if (targetStr == "off")
+    {
+        pCameras->resetFollowTarget();
+        console.writeLine("Camera follow off.");
+        return;
+    }
+
+    if (pCameras->is1stPersonCameraActive())
+    {
+        console.writeLine("The 1stperson camera cannot follow a target.");
+        return;
+    }
+
+    const std::optional<UtlId> actorId = parseActorId(targetStr);
+    if (!actorId.has_value())
+    {
+        console.writeLine("Invalid target. Use an actor id, or off.");
+        return;
+    }
+
+    MachActor* pActor = findActor(actorId.value(), console);
+    if (!pActor)
+        return;
+
+    pCameras->setFollowTarget(pActor, MachCameras::FollowMode::UntilReleased);
+    console.writeLine("Following actor " + std::to_string(actorId.value()) + ".");
+}
+
 // ============================================================
 // Fog of war command
 // ============================================================
@@ -2211,6 +2255,17 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             },
         },
         [pStartup](const Request& request, Console& console) { camLookatCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "cam_follow",
+            .description = "Get/set the actor the camera keeps in view. Zenith and ground travel with it, the free "
+                           "camera turns to it.",
+            .arguments = {
+                { .name = "target", .type = Arg::String, .optional = true, .description = "Actor id, or off. Omit to print the current target." },
+            },
+        },
+        [pStartup](const Request& request, Console& console) { camFollowCommand(pStartup, request, console); });
 
     console.registerCommand(
         {
