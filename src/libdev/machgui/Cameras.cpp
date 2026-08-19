@@ -444,7 +444,7 @@ void MachCameras::updateCameras()
 
     if (pFollowTarget_)
     {
-        if (pFollowTarget_->selectionState() != MachLog::SELECTED)
+        if (followMode_ == FollowMode::WhileSelected && pFollowTarget_->selectionState() != MachLog::SELECTED)
         {
             resetFollowTarget();
         }
@@ -625,8 +625,10 @@ void MachCameras::moveTo(const MexPoint2d& newPos)
     updateCameras();
 }
 
-void MachCameras::setFollowTarget(MachActor* pActor)
+void MachCameras::setFollowTarget(MachActor* pActor, FollowMode mode)
 {
+    followMode_ = mode;
+
     if (pFollowTarget_ == pActor)
         return;
 
@@ -645,7 +647,12 @@ void MachCameras::setFollowTarget(MachActor* pActor)
 
 void MachCameras::resetFollowTarget()
 {
-    setFollowTarget(nullptr);
+    setFollowTarget(nullptr, {});
+}
+
+MachActor* MachCameras::followTarget() const
+{
+    return pFollowTarget_;
 }
 
 // Make camera move into a position where it can look at the MachActor.

@@ -220,7 +220,7 @@ void MachGuiCorralResource::doBeReleased(const GuiMouseEvent& event)
         const MachInGameScreen::Actors& selectedActors = pInGameScreen->selectedActors();
         if ((selectedActors.size() == 1) && selectedActors.at(0) == pActor)
         {
-            pInGameScreen->cameras()->setFollowTarget(pActor);
+            pInGameScreen->cameras()->setFollowTarget(pActor, MachCameras::FollowMode::WhileSelected);
             return;
         }
 

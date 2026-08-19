@@ -68,11 +68,22 @@ public:
     // ending up inside an obstacle etc ).
     void moveTo(const MexPoint2d&);
 
+    // How long a follow target is kept.
+    enum class FollowMode
+    {
+        // Dropped as soon as the actor is no longer selected.
+        WhileSelected,
+        // Kept until the target is released or the camera is taken over by hand.
+        UntilReleased
+    };
+
     // Make camera move into a position where it can look at the MachActor.
     // Note that the camera can automatically switch between ground,
     // zenith and 3rd person depending upon the actor type.
-    void setFollowTarget(MachActor* pActor);
+    void setFollowTarget(MachActor* pActor, FollowMode mode);
     void resetFollowTarget();
+
+    MachActor* followTarget() const;
 
     // Make camera move into a position where it can look at the MachActor.
     // Note that the camera can automatically switch between ground,
@@ -229,6 +240,7 @@ private:
     std::unique_ptr<MachLogCamera> pZenithCamera_;
     MachLogCamera* pCurrentCamera_;
     MachActor* pFollowTarget_ = nullptr;
+    FollowMode followMode_{};
     W4dSceneManager* pSceneManager_;
     W4dRoot* pRoot_;
     CameraSave save1_;
