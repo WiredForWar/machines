@@ -187,7 +187,7 @@ template <class GRA_GRAPH, class VERTEX_MAP> typename GraAStarAlg__::State GraAS
 //////////////////////////////////////////////////////////////////////////////////////////
 
 template <class GRA_GRAPH, class VERTEX_MAP>
-void GraAStarAlg__::expand(const VertexId& expandId, const Weight& costToExpandVertex)
+void GraAStarAlg__::expand(const VertexId& expandId, Weight costToExpandVertex)
 {
     // A_STAR_STREAM( "Enter expand " << (void*)this << std::endl );
     // A_STAR_INDENT( 2 );

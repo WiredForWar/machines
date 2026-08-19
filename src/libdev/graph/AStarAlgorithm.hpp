@@ -83,8 +83,10 @@ private:
     GraAStarAlg& operator=(const GraAStarAlg&);
     bool operator==(const GraAStarAlg&);
 
-    // Expands the vertex with id expandId. The current cost to this node is costToExpandVertex
-    void expand(const VertexId& expandId, const Weight& costToExpandVertex);
+    // Expands the vertex with id expandId. The current cost to this node is costToExpandVertex.
+    // The cost is taken by value: expanding adds vertices to the vertex map, which can
+    // reallocate its storage and invalidate a reference into the vertex we came from.
+    void expand(const VertexId& expandId, Weight costToExpandVertex);
 
     // Adds id to the opne vertex list. Its current estimated total path cost is
     // estimatedTotalCost.
