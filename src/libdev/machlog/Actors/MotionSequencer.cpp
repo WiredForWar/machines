@@ -52,6 +52,7 @@
 
 #include "machlog/Internal/CollisionInfo.hpp"
 
+#include <algorithm>
 #include <string>
 
 #ifndef _INLINE
@@ -1869,6 +1870,38 @@ void MachLogMachineMotionSequencer::calculateGroupMovePortalPoint()
 
     usePoint += averageVector;
 
+    //  The offset is a vector in the plane, but a portal is a line. The part of
+    //  it running across the doorway spreads the group over the width we
+    //  actually have to share, and is kept as it is. The part running through
+    //  the doorway spreads the group over depth we do not have, and carries the
+    //  point off the portal -- far enough, for a machine out on the edge of a
+    //  formation, to land behind it. Arriving there then counts as a crossing
+    //  without the machine ever passing through, the domain path is rebuilt,
+    //  and it is sent back to the portal it believes it just crossed.
+    //
+    //  So keep the spread along the portal, and hold the depth to within our
+    //  own clearance of it.
+    const MexPoint2d portalStart = currentConfigSpace().portalPoint(portalId, 0.0);
+    const MexPoint2d portalEnd = currentConfigSpace().portalPoint(portalId, portalLength);
+
+    MexVec2 alongPortal(portalStart, portalEnd);
+    alongPortal.makeUnitVector();
+    const MexVec2 acrossPortal(alongPortal.normal());
+
+    const MexVec2 startToPoint(portalStart, usePoint);
+    MATHEX_SCALAR along = alongPortal.dotProduct(startToPoint);
+    MATHEX_SCALAR across = acrossPortal.dotProduct(startToPoint);
+
+    //  Keep a machine's width clear of each end, unless the portal is too
+    //  narrow to allow even that, in which case aim at the middle of it.
+    const MATHEX_SCALAR endMargin = std::min(useClearance_, portalLength / 2.0);
+    along = std::clamp(along, endMargin, portalLength - endMargin);
+    across = std::clamp(across, -useClearance_, useClearance_);
+
+    usePoint = MexPoint2d(
+        portalStart.x() + alongPortal.x() * along + acrossPortal.x() * across,
+        portalStart.y() + alongPortal.y() * along + acrossPortal.y() * across);
+
     //  Only use our new point if it doesn't intersect with any obstacles
     MexCircle2d testCircle(usePoint, useClearance_);
     PolygonId badId;
@@ -3309,8 +3342,18 @@ void MachLogMachineMotionSequencer::advancePathProgress()
                 && sqrDistanceFromPortal > 0.0625;
 
             bool nearLine = sqrDistanceFromPortal < 0.0625;
-            bool nearWaypoint = pImpl_->hasOnPortalPoint_
-                && onPortalPoint_.sqrEuclidianDistance(nowPoint) < 0.0625;
+
+            //  Reaching the waypoint only tells us we have crossed if the
+            //  waypoint is on the portal. The group offset can carry it off,
+            //  and a waypoint short of the portal would otherwise have us
+            //  count a crossing we have not made and turn back for it.
+            const MATHEX_SCALAR waypointMargin = 2.0 * useClearance_;
+            bool waypointOnPortal = pImpl_->hasOnPortalPoint_
+                && MexLine2d::sqrEuclidianDistance(portalStart, portalEnd, portalLength, onPortalPoint_)
+                    <= waypointMargin * waypointMargin;
+
+            bool nearWaypoint
+                = waypointOnPortal && onPortalPoint_.sqrEuclidianDistance(nowPoint) < 0.0625;
 
             if (nearLine || nearWaypoint || pastPortal)
             {
