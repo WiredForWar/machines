@@ -435,6 +435,18 @@ void MachCameras::releaseFollowTargetOnInput()
         ControlCommand::SLIDE_RIGHT,
     };
 
+    // The free camera frames by turning instead, so turning is what releases it
+    // and travelling does not: flying past a subject while it stays in shot is
+    // the whole point.
+    static const std::array turnCommands{
+        ControlCommand::ROTATE_LEFT,
+        ControlCommand::ROTATE_RIGHT,
+        ControlCommand::PITCH_UP,
+        ControlCommand::PITCH_DOWN,
+        ControlCommand::ROLL_LEFT,
+        ControlCommand::ROLL_RIGHT,
+    };
+
     PhysMotionControlWithTrans* pControl{};
     std::span<const ControlCommand> releaseCommands;
 
@@ -447,6 +459,11 @@ void MachCameras::releaseFollowTargetOnInput()
     {
         pControl = pGroundControl_.get();
         releaseCommands = travelCommands;
+    }
+    else if (isFreeCameraActive())
+    {
+        pControl = pFreeControl_.get();
+        releaseCommands = turnCommands;
     }
 
     if (! pControl)
