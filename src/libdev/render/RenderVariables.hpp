@@ -26,6 +26,7 @@ bool windowModeIsUnset();
 
 extern Variable<LightingMode> gfxLightingMode;
 extern Variable<ShadowQuality> gfxShadowQuality;
+// Takes effect at the next start.
 extern Variable<bool> gfxToneMapping;
 extern Variable<FogMode> gfxFogMode;
 extern Variable<bool> gfxModernRendering;

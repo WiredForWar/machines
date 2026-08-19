@@ -495,7 +495,9 @@ bool RenDevice::createGpuResources()
         backend_->framebufferAttachDepthTexture(shadowFramebuffer_, shadowDepthTexture_);
     }
 
-    // Post-process pipeline (tone mapping)
+    // Post-process pipeline (tone mapping), and further down the target it
+    // resolves from. Neither exists unless tone mapping is on.
+    if (Config::gfxToneMapping.get())
     {
         Ren::PipelineDesc desc;
         desc.vertexShader = "PostProcess";
@@ -505,6 +507,9 @@ bool RenDevice::createGpuResources()
             { "vertexUV", 2, Ren::BackendVertexAttribType::Float, false, 4 * sizeof(float), 2 * sizeof(float) },
         };
         desc.uniformNames = { "uSceneTexture", "uExposure" };
+
+        desc.optional = true;
+
         postProcess_.id = backend_->createPipeline(desc);
         if (postProcess_.id != 0)
         {

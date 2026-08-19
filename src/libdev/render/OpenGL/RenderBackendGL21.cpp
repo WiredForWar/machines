@@ -34,6 +34,12 @@ namespace OpenGL
 namespace
 {
 
+// Whether there is a file here to be read.
+bool isReadable(const std::string& path)
+{
+    return std::ifstream(path).is_open();
+}
+
 bool compileShader(GLuint shaderID, const std::string& code)
 {
     const char* const sourcePointer = code.c_str();
@@ -589,6 +595,12 @@ PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
 
     const std::string vertexShaderFile = shadersDir + desc.vertexShader + vertexExt;
     const std::string fragmentShaderFile = shadersDir + desc.fragmentShader + fragmentExt;
+
+    if (desc.optional && !(isReadable(vertexShaderFile) && isReadable(fragmentShaderFile)))
+    {
+        spdlog::info("No sources for the {} pipeline; it will not be built", desc.vertexShader);
+        return 0;
+    }
 
     const ProgramId programId = createProgramFromFiles(
         vertexShaderFile, fragmentShaderFile, desc.vertexShader, desc.fragmentShader);
