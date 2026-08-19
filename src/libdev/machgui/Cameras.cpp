@@ -8,6 +8,7 @@
 #include "machgui/Cameras.hpp"
 #include "device/KeyToCommandTranslator.hpp"
 #include "machgui/IInputRegistry.hpp"
+#include "mathex/AlignedBox3d.hpp"
 #include "mathex/Polygon2d.hpp"
 #include "phys/Plans/MotionChunk.hpp"
 #include "world4d/Scene/SceneManager.hpp"
@@ -731,6 +732,10 @@ void MachCameras::internalLookAt(const MachActor& actor)
             switchToZenith(actorPos);
         }
     }
+    else if (isFreeCameraActive())
+    {
+        aimFreeCameraAt(aimPointOf(actor));
+    }
 }
 
 void MachCameras::scroll(ScrollDir scrollDir, const GuiMouseEvent& event)
@@ -1190,6 +1195,16 @@ MexTransform3d MachCameras::transformFacing(const MexPoint3d& from, const MexPoi
         MexRadians(0.0));
 
     return MexTransform3d(angles, from);
+}
+
+MexPoint3d MachCameras::aimPointOf(const MachActor& actor)
+{
+    // The bounding volume is local to the actor, so it has to be brought into
+    // world space before it means anything to a camera somewhere else.
+    MexPoint3d aimPoint = actor.physObject().boundingVolume().centroid();
+    actor.globalTransform().transform(&aimPoint);
+
+    return aimPoint;
 }
 
 void MachCameras::aimFreeCameraAt(const MexPoint3d& target)

@@ -187,6 +187,10 @@ private:
     // The transform that sits at "from" and looks towards "target".
     static MexTransform3d transformFacing(const MexPoint3d& from, const MexPoint3d& target);
 
+    // The point on an actor a camera should look at: the centre of its bounding
+    // volume, so that a tall actor is not framed at its feet.
+    static MexPoint3d aimPointOf(const MachActor& actor);
+
     // Turn the free camera to face target. Its position and whatever motion it
     // has built up are left alone, so it keeps travelling as it turns.
     void aimFreeCameraAt(const MexPoint3d& target);
