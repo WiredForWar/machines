@@ -335,6 +335,11 @@ void GraAStarAlg__::propogateBetterPath(const VertexId& vertexId, const Weight& 
             if (otherVertexId == vertexId)
                 otherVertexId = pGraph_->toVertex(arcId);
 
+            // expand() only entered available vertices into the map, so a closed vertex
+            // can be joined to vertices we hold no path cost for. Nothing to propogate.
+            if (!algVertices.contains(otherVertexId))
+                continue;
+
             // Compute the cost to this other vertex via the argument vertex
             Weight costToOtherVertex = costToVertex + arcCost;
 
