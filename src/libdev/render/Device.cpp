@@ -218,7 +218,7 @@ bool RenDevice::initialize(Ren::BackendType backendType)
         return false;
     }
 
-    if (!backend_->initialize(surface))
+    if (!backend_->initialize(surface, &pImpl_->shaders_))
     {
         spdlog::error("Failed to initialize render backend");
         backend_.reset();
@@ -694,7 +694,7 @@ bool RenDevice::switchBackend(Ren::BackendType type)
         return false;
     }
 
-    if (!backend_->initialize(surface))
+    if (!backend_->initialize(surface, &pImpl_->shaders_))
     {
         spdlog::error("Failed to initialize new render backend");
         backend_.reset();
@@ -860,7 +860,7 @@ bool RenDevice::initializeContext()
     PRE(backend_);
 
     backend_->shutdown();
-    if (!backend_->initialize(display_->adapter()))
+    if (!backend_->initialize(display_->adapter(), &pImpl_->shaders_))
     {
         spdlog::error("Render backend re-initialization failed");
         return false;

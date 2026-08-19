@@ -2,6 +2,7 @@
 
 #include "render/BackendType.hpp"
 #include "render/IRenderSurface.hpp"
+#include "render/IShaderSource.hpp"
 #include "render/ShaderSet.hpp"
 #include "render/render.hpp"
 #include "render/internal/BackendCommands.hpp"
@@ -39,11 +40,13 @@ public:
     // Which type this instance is.
     virtual BackendType backendType() const = 0;
 
-    // Initialize the backend against the surface it was created for. The
-    // backend dynamic_casts to the subinterface it needs -- IGLRenderSurface
-    // for the GL backends -- so the check belongs to the backend, not the
-    // factory.
-    virtual bool initialize(IRenderSurface* surface) = 0;
+    // Initialize the backend against the surface it was created for, and give
+    // it somewhere to get its shaders from. The backend dynamic_casts to the
+    // subinterface it needs -- IGLRenderSurface for the GL backends -- so the
+    // check belongs to the backend, not the factory.
+    //
+    // Both outlive the backend.
+    virtual bool initialize(IRenderSurface* surface, const IShaderSource* shaders) = 0;
 
     virtual void shutdown() = 0;
 

@@ -13,6 +13,7 @@
 
 #include "device/Timer.hpp"
 #include "render/Colour.hpp"
+#include "render/ShaderFiles.hpp"
 #include "render/internal/ModeObserver.hpp"
 #include "render/internal/internal.hpp"
 #include "render/internal/GpuMeshLightingSnapshot.hpp"
@@ -291,6 +292,10 @@ private:
     Ren::BackendCommandBufferHandle frameCommandBuffer_{};
     Ren::BackendCommandBufferHandle immediateCommandBuffer_{};
     bool frameCommandBufferRecording_{};
+
+    // Declared before the backend so that it outlives one, which holds a
+    // pointer to it for as long as it is initialized.
+    Ren::ShaderFiles shaders_{};
 
     std::unique_ptr<Ren::IRenderBackend> backend_{};
 

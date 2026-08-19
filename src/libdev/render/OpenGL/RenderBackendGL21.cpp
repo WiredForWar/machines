@@ -12,7 +12,6 @@
 
 #include <algorithm>
 #include <cstring>
-#include <fstream>
 #include <unordered_map>
 #include <variant>
 
@@ -34,12 +33,6 @@ namespace OpenGL
 
 namespace
 {
-
-// Whether there is a file here to be read.
-bool isReadable(const std::string& path)
-{
-    return std::ifstream(path).is_open();
-}
 
 bool compileShader(GLuint shaderID, const std::string& code)
 {
@@ -165,7 +158,7 @@ BackendType RenderBackendGL21::backendType() const
     return BackendType::GL21;
 }
 
-bool RenderBackendGL21::initialize(IRenderSurface* surface)
+bool RenderBackendGL21::initialize(IRenderSurface* surface, const IShaderSource* shaders)
 {
     if (initialized_)
         return false;
@@ -177,7 +170,14 @@ bool RenderBackendGL21::initialize(IRenderSurface* surface)
         return false;
     }
 
+    if (shaders == nullptr)
+    {
+        spdlog::error("RenderBackendGL21: no shader source given");
+        return false;
+    }
+
     glSurface_ = gl;
+    shaders_ = shaders;
 
     if (!glSurface_->createGLContext({
             .majorVersion = 2,
@@ -391,26 +391,6 @@ GLuint RenderBackendGL21::framebufferHandle(FramebufferId id) const
     return framebuffers_[idx];
 }
 
-std::string RenderBackendGL21::readTextFile(const std::string& path)
-{
-    spdlog::debug("Loading file {}", path);
-
-    std::string fileContents;
-    std::ifstream stream(path, std::ios::in);
-    if (!stream.is_open())
-    {
-        return std::string();
-    }
-
-    std::string line;
-    while (getline(stream, line))
-    {
-        fileContents += line + "\n";
-    }
-
-    return fileContents;
-}
-
 GLuint RenderBackendGL21::createProgramFromSources(
     const std::string& vertexShaderCode,
     const std::string& fragmentShaderCode,
@@ -466,28 +446,14 @@ GLuint RenderBackendGL21::createProgramFromSources(
     return programID;
 }
 
-ProgramId RenderBackendGL21::createProgramFromFiles(
-    std::string_view vertexShaderPath,
-    std::string_view fragmentShaderPath,
+ProgramId RenderBackendGL21::addProgram(
+    const std::string& vertexShaderCode,
+    const std::string& fragmentShaderCode,
     std::string_view vertexShaderDebugName,
     std::string_view fragmentShaderDebugName)
 {
-    const std::string vertexCode = readTextFile(std::string(vertexShaderPath));
-    if (vertexCode.empty())
-    {
-        spdlog::error("Unable to read the vertex shader file {}", vertexShaderPath);
-        return 0;
-    }
-
-    const std::string fragmentCode = readTextFile(std::string(fragmentShaderPath));
-    if (fragmentCode.empty())
-    {
-        spdlog::error("Unable to read the fragment shader file {}", fragmentShaderPath);
-        return 0;
-    }
-
-    const GLuint program
-        = createProgramFromSources(vertexCode, fragmentCode, vertexShaderDebugName, fragmentShaderDebugName);
+    const GLuint program = createProgramFromSources(
+        vertexShaderCode, fragmentShaderCode, vertexShaderDebugName, fragmentShaderDebugName);
     if (program == 0)
         return 0;
 
@@ -612,22 +578,23 @@ bool RenderBackendGL21::setShaderSet(ShaderSet set)
 
 PipelineId RenderBackendGL21::createPipeline(const PipelineDesc& desc)
 {
-    // Resolve logical shader names to backend-specific file paths
-    const std::string shadersDir(shaderDirectory(shaderSet_));
-    static constexpr const char* vertexExt = ".vxgls";
-    static constexpr const char* fragmentExt = ".fggls";
+    const std::optional<std::string> vertexCode
+        = shaders_->source(shaderSet_, ShaderStage::Vertex, desc.vertexShader);
+    const std::optional<std::string> fragmentCode
+        = shaders_->source(shaderSet_, ShaderStage::Fragment, desc.fragmentShader);
 
-    const std::string vertexShaderFile = shadersDir + desc.vertexShader + vertexExt;
-    const std::string fragmentShaderFile = shadersDir + desc.fragmentShader + fragmentExt;
-
-    if (desc.optional && !(isReadable(vertexShaderFile) && isReadable(fragmentShaderFile)))
+    if (!vertexCode.has_value() || !fragmentCode.has_value())
     {
-        spdlog::info("No sources for the {} pipeline; it will not be built", desc.vertexShader);
+        if (desc.optional)
+            spdlog::info("The {} shaders are not in the {} set", desc.vertexShader, toString(shaderSet_));
+        else
+            spdlog::error("The {} shaders are missing from the {} set", desc.vertexShader, toString(shaderSet_));
+
         return 0;
     }
 
-    const ProgramId programId = createProgramFromFiles(
-        vertexShaderFile, fragmentShaderFile, desc.vertexShader, desc.fragmentShader);
+    const ProgramId programId
+        = addProgram(*vertexCode, *fragmentCode, desc.vertexShader, desc.fragmentShader);
     if (programId == 0)
         return 0;
 

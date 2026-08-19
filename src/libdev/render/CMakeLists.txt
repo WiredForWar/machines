@@ -58,6 +58,7 @@ set(RENDER_SOURCES
     Illuminator.cpp
     InternalLight.cpp
     IRenderSurface.hpp
+    IShaderSource.hpp
     IWindowAdapter.hpp
     InternalMap.cpp
     InternalPoints.cpp
@@ -103,6 +104,8 @@ set(RENDER_SOURCES
     Scale.cpp
     Scale.hpp
     Scale.ipp
+    ShaderFiles.cpp
+    ShaderFiles.hpp
     ShaderSet.hpp
     ShadowQuality.cpp
     ShadowQuality.hpp
