@@ -488,7 +488,7 @@ void Diag::addCrashStream(std::ofstream& str)
 
 void Diag::removeCrashStream(std::ofstream& str)
 {
-    BaseCrashInternal::instance().addCrashStream(str);
+    BaseCrashInternal::instance().removeCrashStream(str);
 }
 
 //////////////////////////////////////////////////////////////////////
