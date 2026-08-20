@@ -1,10 +1,9 @@
 #include "device/Keyboard.hpp"
 
 #include "device/EventQueue.hpp"
+#include "device/InputState.hpp"
 #include "device/Mouse.hpp"
 #include "device/Time.hpp"
-
-#include <sstream>
 
 // static
 DevKeyboard& DevKeyboard::instance()
@@ -15,7 +14,6 @@ DevKeyboard& DevKeyboard::instance()
 
 DevKeyboard::DevKeyboard()
 {
-    allKeysReleased();
 }
 
 DevKeyboard::~DevKeyboard()
@@ -24,38 +22,27 @@ DevKeyboard::~DevKeyboard()
 
 bool DevKeyboard::keyCode(ScanCode sCode) const
 {
-    PRE(Device::isValidCode(sCode));
-    TEST_INVARIANT;
-
-    return keyMap(sCode);
+    return Device::InputState::instance().isButtonPressed(sCode);
 }
 
 bool DevKeyboard::anyKey() const
 {
-    TEST_INVARIANT;
-
-    return pressedCount_ > 0;
+    return Device::InputState::instance().isAnyKeyPressed();
 }
 
 bool DevKeyboard::shiftPressed() const
 {
-    TEST_INVARIANT;
-
-    return keyMap(Device::KeyCode::RIGHT_SHIFT) || keyMap(Device::KeyCode::LEFT_SHIFT);
+    return Device::InputState::instance().heldModifiers() & KeyModifierFlags(Device::KeyModifier::Shift);
 }
 
 bool DevKeyboard::ctrlPressed() const
 {
-    TEST_INVARIANT;
-
-    return keyMap(Device::KeyCode::RIGHT_CONTROL) || keyMap(Device::KeyCode::LEFT_CONTROL);
+    return Device::InputState::instance().heldModifiers() & KeyModifierFlags(Device::KeyModifier::Ctrl);
 }
 
 bool DevKeyboard::altPressed() const
 {
-    TEST_INVARIANT;
-
-    return keyMap(Device::KeyCode::RIGHT_ALT) || keyMap(Device::KeyCode::LEFT_ALT);
+    return Device::InputState::instance().heldModifiers() & KeyModifierFlags(Device::KeyModifier::Alt);
 }
 
 void DevKeyboard::submitKeyEvent(const DevButtonEvent& ev)
@@ -67,10 +54,10 @@ void DevKeyboard::submitKeyEvent(const DevButtonEvent& ev)
     {
         case DevButtonEvent::PRESS:
             if (!ev.previous())
-                pressed(ev.scanCode());
+                Device::InputState::instance().pressButton(ev.scanCode());
             break;
         case DevButtonEvent::RELEASE:
-            released(ev.scanCode());
+            Device::InputState::instance().releaseButton(ev.scanCode());
             break;
         default:
             ASSERT_BAD_CASE;
@@ -113,73 +100,5 @@ void DevKeyboard::submitFocusLost()
         DevEventQueue::instance().queueEvent(ev);
     }
 
-    allKeysReleased();
-}
-
-void DevKeyboard::pressed(ScanCode code)
-{
-    PRE(static_cast<int>(code) < N_KEYS);
-
-    if (!keyMap(code))
-    {
-        keyMap(code) = true;
-        ++pressedCount_;
-    }
-}
-
-void DevKeyboard::released(ScanCode scanCode)
-{
-    const auto code = static_cast<std::size_t>(scanCode);
-    PRE(code < N_KEYS);
-
-    if (keyMap_[code])
-    {
-        keyMap_[code] = false;
-        --pressedCount_;
-    }
-}
-
-void DevKeyboard::allKeysReleased()
-{
-    TEST_INVARIANT;
-
-    for (int i = 0; i < N_KEYS; ++i)
-        keyMap_[i] = false;
-
-    pressedCount_ = 0;
-
-    TEST_INVARIANT;
-}
-
-#ifdef _TEST_INVARIANTS
-void DevKeyboard::keys_invariant(const char* file, const char* line) const
-#else
-void DevKeyboard::keys_invariant(const char*, const char*) const
-#endif
-{
-    // pressedCount_ should always reflect the number of keys depressed
-    // in keyMap_.
-    int count = 0;
-    for (int i = 0; i != N_KEYS; ++i)
-        if (keyMap_[i])
-            ++count;
-
-    if (pressedCount_ != count)
-    {
-        std::ostringstream ostr;
-        ostr << "KeyMap is:\n";
-        for (int j = 0; j != N_KEYS; ++j)
-        {
-            ostr << ((keyMap_[j]) ? "1 " : "0 ");
-
-            if (!(j % 32))
-                ostr << "\n";
-        }
-
-        INVARIANT_INFO(ostr.str());
-    }
-
-    INVARIANT_INFO(pressedCount_);
-    INVARIANT_INFO(count);
-    INVARIANT(pressedCount_ == count);
+    Device::InputState::instance().releaseAllButtons();
 }

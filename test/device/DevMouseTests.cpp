@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include "device/EventQueue.hpp"
+#include "device/InputState.hpp"
 #include "device/Mouse.hpp"
 
 #include <utility>
@@ -31,10 +32,12 @@ DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, in
     return DevButtonEvent{ code, action, false, false, false, false, 1000.0, x, y, 1 };
 }
 
-// Ask the shared queue for the codes these tests use, and drain what an
-// earlier test left behind.
-DevEventQueue& freshSharedQueue()
+// Put the process-wide input state and queue back to a known point: ask for the
+// codes these tests use, and clear what an earlier test left held or queued.
+DevEventQueue& resetSharedInput()
 {
+    Device::InputState::instance().releaseAllButtons();
+
     DevEventQueue& queue = DevEventQueue::instance();
 
     queue.queueEvents(Device::KeyCode::MOUSE_LEFT);
@@ -54,7 +57,7 @@ DevEventQueue& freshSharedQueue()
 
 TEST(DevMouseTests, SubmitEvent_DispatchesClick)
 {
-    DevEventQueue& queue = freshSharedQueue();
+    DevEventQueue& queue = resetSharedInput();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
@@ -76,7 +79,7 @@ TEST(DevMouseTests, SubmitEvent_DispatchesClick)
 
 TEST(DevMouseTests, SubmitEvent_DispatchesScrollUp)
 {
-    freshSharedQueue();
+    resetSharedInput();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
@@ -96,7 +99,7 @@ TEST(DevMouseTests, SubmitEvent_DispatchesScrollUp)
 
 TEST(DevMouseTests, SubmitEvent_DispatchesScrollDown)
 {
-    freshSharedQueue();
+    resetSharedInput();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
@@ -115,7 +118,7 @@ TEST(DevMouseTests, SubmitEvent_DispatchesScrollDown)
 
 TEST(DevMouseTests, FocusLossReleasesAHeldButtonExactlyOnce)
 {
-    DevEventQueue& queue = freshSharedQueue();
+    DevEventQueue& queue = resetSharedInput();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);

@@ -2,6 +2,7 @@
 
 #include "device/EventQueue.hpp"
 #include "device/Input.hpp"
+#include "device/InputState.hpp"
 #include "device/Keyboard.hpp"
 #include "device/Mouse.hpp"
 #include "device/Time.hpp"
@@ -14,10 +15,12 @@ DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, in
     return DevButtonEvent{ code, action, false, false, false, false, DevTime::instance().time(), x, y, 1 };
 }
 
-// Ask the shared queue for the codes these tests use, and drain what an
-// earlier test left behind.
-DevEventQueue& freshSharedQueue()
+// Put the process-wide input state and queue back to a known point: ask for the
+// codes these tests use, and clear what an earlier test left held or queued.
+DevEventQueue& resetSharedInput()
 {
+    Device::InputState::instance().releaseAllButtons();
+
     DevEventQueue& queue = DevEventQueue::instance();
 
     queue.queueEvents(Device::KeyCode::MOUSE_LEFT);
@@ -37,7 +40,7 @@ DevEventQueue& freshSharedQueue()
 
 TEST(DevInputTests, AMouseCodeReachesTheMouse)
 {
-    freshSharedQueue();
+    resetSharedInput();
 
     Device::submitButtonEvent(makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::PRESS, 40, 50));
 
@@ -51,7 +54,7 @@ TEST(DevInputTests, AMouseCodeReachesTheMouse)
 
 TEST(DevInputTests, AKeyCodeReachesTheKeyboard)
 {
-    freshSharedQueue();
+    resetSharedInput();
 
     Device::submitButtonEvent(makeEvent(Device::KeyCode::KEY_W, DevButtonEvent::PRESS));
 
@@ -65,7 +68,7 @@ TEST(DevInputTests, AKeyCodeReachesTheKeyboard)
 
 TEST(DevInputTests, ASubmittedEventReachesTheQueueUnchanged)
 {
-    DevEventQueue& queue = freshSharedQueue();
+    DevEventQueue& queue = resetSharedInput();
 
     const DevButtonEvent submitted = makeEvent(Device::KeyCode::KEY_W, DevButtonEvent::PRESS, 7, 9);
     Device::submitButtonEvent(submitted);
@@ -92,7 +95,7 @@ TEST(DevInputTests, PointerPositionAndTravelAreSeparate)
 
 TEST(DevInputTests, FocusLossReleasesBothDevices)
 {
-    DevEventQueue& queue = freshSharedQueue();
+    DevEventQueue& queue = resetSharedInput();
 
     Device::submitButtonEvent(makeEvent(Device::KeyCode::MOUSE_RIGHT, DevButtonEvent::PRESS));
     Device::submitButtonEvent(makeEvent(Device::KeyCode::KEY_W, DevButtonEvent::PRESS));

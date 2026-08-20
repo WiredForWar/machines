@@ -14,6 +14,8 @@ set(DEVICE_SOURCES
     EventQueue.hpp
     Input.cpp
     Input.hpp
+    InputState.cpp
+    InputState.hpp
     internal/SdlTimeImpl.hpp
     Key.hpp
     KeyBind.hpp

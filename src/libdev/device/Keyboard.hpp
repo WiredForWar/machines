@@ -38,13 +38,6 @@ public:
     // released, and no further event will report it.
     void submitFocusLost();
 
-    void CLASS_INVARIANT
-    {
-#ifdef _TEST_INVARIANTS
-        keys_invariant(file, line);
-#endif
-    }
-
     DevKeyboard(const DevKeyboard&) = delete;
     DevKeyboard& operator=(const DevKeyboard&) = delete;
     bool operator==(const DevKeyboard&) const = delete;
@@ -53,20 +46,4 @@ private:
     DevKeyboard();
     ~DevKeyboard();
 
-    void pressed(ScanCode);
-    void released(ScanCode);
-    void allKeysReleased();
-
-    bool& keyMap(ScanCode code) { return keyMap_[static_cast<int>(code)]; }
-    bool keyMap(ScanCode code) const { return keyMap_[static_cast<int>(code)]; }
-
-    static constexpr std::size_t N_KEYS = 256;
-    static_assert(N_KEYS >= Device::MAX_CODE);
-    bool keyMap_[N_KEYS]{};
-
-    // This is the number of keys currently depressed, this should
-    // equal the number of true elements in keyMap_.
-    int pressedCount_{};
-
-    void keys_invariant(const char* file, const char* line) const;
 };
