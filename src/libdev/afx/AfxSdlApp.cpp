@@ -5,9 +5,8 @@
 #include "device/Input.hpp"
 #include "device/Keyboard.hpp"
 #include "device/Mouse.hpp"
+#include "device/SdlKeyCodes.hpp"
 #include "device/Time.hpp"
-
-#include "device/private/SdlKeyboard.hpp"
 
 #include "system/SysInfo.hpp"
 
@@ -511,7 +510,7 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
 
-    const DevButtonEvent::ScanCode code = DevSdlKeyboard::translateScanCode(event->key.scancode);
+    const DevButtonEvent::ScanCode code = Device::codeFromSdlScanCode(event->key.scancode);
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 

@@ -58,7 +58,7 @@ private:
     void setPressFilterFor(ScanCode code, bool value) { pressFilter_[static_cast<int>(code)] = value; }
 
     // Only these classes can add events to the back of the queue.
-    friend class DevSdlKeyboard;
+    friend class DevKeyboard;
     friend class DevMouse;
 
     // Internal convenience methods.
