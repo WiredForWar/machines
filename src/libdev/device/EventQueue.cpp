@@ -42,28 +42,16 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::oldestEvent()
     using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
     ButtonEvent result;
 
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
+    ButtonEvent& front = list_->front();
+
+    if (front.repeatCount() == 1)
     {
-        result = recorderPrivDependency_.get().playbackButtonEvent();
+        result = front;
+        list_->pop_front();
     }
     else
     {
-        ButtonEvent& front = list_->front();
-
-        if (front.repeatCount() == 1)
-        {
-            result = front;
-            list_->pop_front();
-        }
-        else
-        {
-            result = front.decompressRepeats();
-        }
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            recorderPrivDependency_.get().recordButtonEvent(result);
-        }
+        result = front.decompressRepeats();
     }
 
     POST(result.repeatCount() == 1);
@@ -218,23 +206,7 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEv
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
 size_t DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::length() const
 {
-    size_t result;
-
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        result = recorderPrivDependency_.get().playbackEventQueueLength();
-    }
-    else
-    {
-        result = list_->size();
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            recorderPrivDependency_.get().recordEventQueueLength(result);
-        }
-    }
-
-    return result;
+    return list_->size();
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>

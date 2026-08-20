@@ -34,10 +34,10 @@ void MachScreenDumper::update()
     {
         if (dumpAction_ == IDLE)
         {
-            if (DevKeyboard::instance().keyCodeNoRecord(Device::KeyCode::HOME))
+            if (DevKeyboard::instance().keyCode(Device::KeyCode::HOME))
                 dumpAction_ = DUMPING;
         }
-        else if (DevKeyboard::instance().keyCodeNoRecord(Device::KeyCode::END))
+        else if (DevKeyboard::instance().keyCode(Device::KeyCode::END))
         {
             dumpAction_ = IDLE;
             if (majorVersion_ < 'Z')

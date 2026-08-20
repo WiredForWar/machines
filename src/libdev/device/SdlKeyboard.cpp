@@ -70,7 +70,7 @@ void DevSdlKeyboard::wm_killfocus()
     for (int code = 0; code != Device::MAX_CODE; ++code)
     {
         const ScanCode scanCode = static_cast<ScanCode>(code);
-        if (!keyCodeNoRecord(scanCode))
+        if (!keyCode(scanCode))
             continue;
 
         const DevButtonEvent ev(

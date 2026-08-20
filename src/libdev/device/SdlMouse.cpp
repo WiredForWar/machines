@@ -84,18 +84,6 @@ template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTime
 const typename DEV_MOUSE_CLASS::Position& // RETURN TYPE. Method below:
 DEV_MOUSE_CLASS::position() const
 {
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        position_ = recorderPrivDependency_.get().playbackMousePosition();
-    }
-    else
-    {
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            recorderPrivDependency_.get().recordMousePosition(position_);
-        }
-    }
-
     return position_;
 }
 
@@ -235,66 +223,19 @@ void DEV_MOUSE_CLASS::wm_killfocus()
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 bool DEV_MOUSE_CLASS::leftButton() const
 {
-    bool result;
-
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        result = recorderPrivDependency_.get().playbackLeftButton();
-    }
-    else
-    {
-        result = lButtonPressed_;
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            recorderPrivDependency_.get().recordLeftButton(result);
-        }
-    }
-
-    return result;
+    return lButtonPressed_;
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 bool DEV_MOUSE_CLASS::rightButton() const
 {
-    bool result;
-
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        result = recorderPrivDependency_.get().playbackRightButton();
-    }
-    else
-    {
-        result = rButtonPressed_;
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            recorderPrivDependency_.get().recordRightButton(result);
-        }
-    }
-
-    return result;
+    return rButtonPressed_;
 }
 
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 bool DEV_MOUSE_CLASS::wheelScrollUp() const
 {
-    bool result;
-
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        std::cerr << "WARN: Recording/Playback NOT SUPPORTED for wheelScrollUp()" << std::endl;
-        result = false;
-    }
-    else
-    {
-        result = scrolledUp_;
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            std::cerr << "WARN: Recording/Playback NOT SUPPORTED for wheelScrollUp()" << std::endl;
-        }
-    }
+    const bool result = scrolledUp_;
 
     // We shall say the mouse is no longer scrolling until the next scroll event flips it back to true
     scrolledUp_ = false;
@@ -304,22 +245,7 @@ bool DEV_MOUSE_CLASS::wheelScrollUp() const
 template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
 bool DEV_MOUSE_CLASS::wheelScrollDown() const
 {
-    bool result;
-
-    if (recorderDependency_.get().state() == RecRecorder::PLAYING)
-    {
-        std::cerr << "WARN: Recording/Playback NOT SUPPORTED for wheelScrollDown()" << std::endl;
-        result = false;
-    }
-    else
-    {
-        result = scrolledDown_;
-
-        if (recorderDependency_.get().state() == RecRecorder::RECORDING)
-        {
-            std::cerr << "WARN: Recording/Playback NOT SUPPORTED for wheelScrollDown()" << std::endl;
-        }
-    }
+    const bool result = scrolledDown_;
 
     // We shall say the mouse is no longer scrolling until the next scroll event flips it back to true
     scrolledDown_ = false;

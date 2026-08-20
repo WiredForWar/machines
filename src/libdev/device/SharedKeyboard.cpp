@@ -10,18 +10,10 @@
 #endif
 #include "device/Keyboard.hpp"
 
-#include "recorder/Recorder.hpp"
-#include "recorder/private/RecorderPrivate.hpp"
-
 #include <sstream>
 
 DevKeyboard::DevKeyboard()
-//: pressedCount_(0)
-// Don't initialise pressedCount_ here, because it could cause a
-// race condition: pressedCount_ and keyMap_ must be initialised
-// together, both within the same critical section.
 {
-    // Rely on this to initilaise pressedCount_.
     allKeysReleased();
 }
 
@@ -34,18 +26,7 @@ bool DevKeyboard::keyCode(ScanCode sCode) const
     PRE(Device::isValidCode(sCode));
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackKeyCode();
-    else
-    {
-        result = keyCodeNoRecord(sCode);
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordKeyCode(result);
-    }
-
-    return result;
+    return keyMap(sCode);
 }
 
 DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
@@ -53,36 +34,22 @@ DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
     PRE(static_cast<int>(sCode) < N_KEYS);
     TEST_INVARIANT;
 
-    DevKeyboard::KeyState result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackDeltaKeyCode();
-    else
-    {
-        result = deltaKeyCodeNoRecord(sCode);
+    // Sample once: the two comparisons below must see the same value.
+    const bool current = keyMap(sCode);
+    const bool last = lastKeyMap(sCode);
+    lastKeyMap(sCode) = current;
 
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordDeltaKeyCode(result);
-    }
+    if (current == last)
+        return NO_CHANGE;
 
-    return result;
+    return current ? PRESSED : RELEASED;
 }
 
 bool DevKeyboard::key(unsigned char character) const
 {
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackKeyCode();
-    else
-    {
-        result = keyNoRecord(character);
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordKeyCode(result);
-    }
-
-    return result;
+    return keyMap(getCharacterIndex(character));
 }
 
 DevKeyboard::KeyState DevKeyboard::deltaKey(unsigned char character) const
@@ -136,72 +103,28 @@ bool DevKeyboard::anyKey() const
 {
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackAnyKey();
-    else
-    {
-        result = anyKeyNoRecord();
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordAnyKey(result);
-    }
-
-    return result;
+    return pressedCount_ > 0;
 }
 
 bool DevKeyboard::shiftPressed() const
 {
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackShiftPressed();
-    else
-    {
-        result = shiftPressedNoRecord();
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordShiftPressed(result);
-    }
-
-    return result;
+    return keyMap(Device::KeyCode::RIGHT_SHIFT) || keyMap(Device::KeyCode::LEFT_SHIFT);
 }
 
 bool DevKeyboard::ctrlPressed() const
 {
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackCtrlPressed();
-    else
-    {
-        result = ctrlPressedNoRecord();
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordCtrlPressed(result);
-    }
-
-    return result;
+    return keyMap(Device::KeyCode::RIGHT_CONTROL) || keyMap(Device::KeyCode::LEFT_CONTROL);
 }
 
 bool DevKeyboard::altPressed() const
 {
     TEST_INVARIANT;
 
-    bool result;
-    if (RecRecorder::instance().state() == RecRecorder::PLAYING)
-        result = RecRecorderPrivate::instance().playbackAltPressed();
-    else
-    {
-        result = altPressedNoRecord();
-
-        if (RecRecorder::instance().state() == RecRecorder::RECORDING)
-            RecRecorderPrivate::instance().recordAltPressed(result);
-    }
-
-    return result;
+    return keyMap(Device::KeyCode::RIGHT_ALT) || keyMap(Device::KeyCode::LEFT_ALT);
 }
 
 void DevKeyboard::pressed(ScanCode code)
@@ -261,69 +184,6 @@ void DevKeyboard::allKeysReleased()
 #endif
 
     TEST_INVARIANT;
-}
-
-bool DevKeyboard::keyNoRecord(unsigned char character) const
-{
-    return keyMap(getCharacterIndex(character));
-}
-
-bool DevKeyboard::keyCodeNoRecord(ScanCode code) const
-{
-    return keyMap(code);
-}
-
-bool DevKeyboard::anyKeyNoRecord() const
-{
-    return pressedCount_ > 0;
-}
-
-bool DevKeyboard::shiftPressedNoRecord() const
-{
-    return keyMap(Device::KeyCode::RIGHT_SHIFT) || keyMap(Device::KeyCode::LEFT_SHIFT);
-}
-
-bool DevKeyboard::ctrlPressedNoRecord() const
-{
-    return keyMap(Device::KeyCode::RIGHT_CONTROL) || keyMap(Device::KeyCode::LEFT_CONTROL);
-}
-
-bool DevKeyboard::altPressedNoRecord() const
-{
-    return keyMap(Device::KeyCode::RIGHT_ALT) || keyMap(Device::KeyCode::LEFT_ALT);
-}
-
-DevKeyboard::KeyState DevKeyboard::deltaKeyCodeNoRecord(ScanCode code) const
-{
-    KeyState result;
-
-    // An interrupt in the middle of the tests below could produce an incorrect
-    // result.  keyMap_[sCode] was previously evaluated *within* each if
-    // statement.  However, an interrupt could occur between the two if
-    // tests, so that the second one could see a different value for the same
-    // expression.  By sampling to a local variable, each if statement sees the
-    // same value.
-    const bool current = keyMap(code);
-    const bool last = lastKeyMap(code);
-
-    // keyMap_[sCode] may have changed since the last evaluation, so we must
-    // use current.
-    DevKeyboard* crufty = const_cast<DevKeyboard*>(this);
-    crufty->lastKeyMap(code) = current;
-
-    if (current == last)
-        result = NO_CHANGE;
-    else if (current && ! last)
-        result = PRESSED;
-    else
-    {
-        // This assertion could actually fail if in the presence of
-        // race conditions (if keyMap_ were used rather than current).
-        ASSERT(! current && last, logic_error());
-        result = RELEASED;
-    }
-
-    return result;
 }
 
 #ifdef _TEST_INVARIANTS
