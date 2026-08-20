@@ -29,7 +29,7 @@ public:
 
 DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, int x = 100, int y = 100)
 {
-    return DevButtonEvent{ code, action, false, false, false, false, 1000.0, x, y, 1 };
+    return DevButtonEvent{ code, action, false, KeyModifierFlags(), 1000.0, x, y, 1 };
 }
 
 // Put the process-wide input state and queue back to a known point: ask for the

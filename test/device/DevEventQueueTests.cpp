@@ -18,7 +18,7 @@ public:
 
 DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, char print)
 {
-    return DevButtonEvent{ code, action, false, false, false, false, 1.0, 0, 0, 1, print };
+    return DevButtonEvent{ code, action, false, KeyModifierFlags(), 1.0, 0, 0, 1, print };
 }
 
 } // namespace

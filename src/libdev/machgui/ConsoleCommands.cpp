@@ -1740,15 +1740,11 @@ DevButtonEvent makeInputEvent(
     KeyModifierFlags modifiers,
     const DevMouse::Position& at)
 {
-    using Device::KeyModifier;
-
     return DevButtonEvent(
         code,
         action,
         false, // previous
-        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Shift)),
-        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Ctrl)),
-        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Alt)),
+        modifiers,
         DevTime::instance().time(),
         at.x,
         at.y,

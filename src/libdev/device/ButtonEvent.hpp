@@ -2,6 +2,7 @@
 
 #include "device/Key.hpp"
 #include "device/KeyNames.hpp"
+#include "device/KeyWithModifiers.hpp"
 #include "device/Time.hpp"
 #include "mathex/Point2d.hpp"
 
@@ -35,9 +36,7 @@ public:
         ScanCode,
         Action,
         bool previous,
-        bool shift,
-        bool ctrl,
-        bool alt,
+        KeyModifierFlags modifiers,
         double time,
         int x,
         int y,
@@ -59,7 +58,10 @@ public:
     // multiple identical events.
     size_t repeatCount() const;
 
-    // The state of the modifier keys at the time of the event.
+    // The modifiers held at the time of the event, which is what a bind is
+    // matched against.
+    KeyModifierFlags modifiers() const;
+
     bool wasShiftPressed() const;
     bool wasCtrlPressed() const;
     bool wasAltPressed() const;
@@ -108,15 +110,13 @@ private:
     Action action_ = PRESS;
 
     // Space is at a premium because these objects are copied by value.  Hence,
-    // we use only float precision for time and bitfields for all the bools.
+    // we use only float precision for time.
     float time_ = 0;
     ushort repeatCount_ = 0;
+    KeyModifierFlags modifiers_{};
     char printable_ = 0;
     bool press_ = false;
     bool previous_ = false;
-    bool shift_ = false;
-    bool ctrl_ = false;
-    bool alt_ = false;
 };
 
 inline std::ostream& operator<<(std::ostream& o, const DevButtonEvent& t)

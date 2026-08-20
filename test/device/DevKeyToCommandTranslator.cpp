@@ -18,10 +18,10 @@ TEST(DevKeyToCommandTranslator, TranslateNormalKeys)
 
     {
         DevButtonEvent event1 {
-            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'A'
         };
         DevButtonEvent event2 {
-            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'A'
         };
 
         DevKeyToCommandTranslator::CommandId commandId;
@@ -36,10 +36,10 @@ TEST(DevKeyToCommandTranslator, TranslateNormalKeys)
 
     {
         DevButtonEvent event1 {
-            Device::KeyCode::KEY_B, DevButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'B'
+            Device::KeyCode::KEY_B, DevButtonEvent::PRESS, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'B'
         };
         DevButtonEvent event2 {
-            Device::KeyCode::KEY_B, DevButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'B'
+            Device::KeyCode::KEY_B, DevButtonEvent::RELEASE, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'B'
         };
 
         DevKeyToCommandTranslator::CommandId commandId;
@@ -68,7 +68,7 @@ TEST(DevKeyToCommandTranslator, TranslateListNormalKeys)
 
     {
         DevButtonEvent evPressed {
-            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'A'
         };
 
         bool found = translator.translate(evPressed, &commandList);
@@ -86,7 +86,7 @@ TEST(DevKeyToCommandTranslator, TranslateListNormalKeys)
 
     {
         DevButtonEvent evReleased {
-            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'A'
         };
 
         bool found = translator.translate(evReleased, &commandList);
@@ -103,7 +103,7 @@ TEST(DevKeyToCommandTranslator, TranslateListNormalKeys)
 
     {
         DevButtonEvent evPressed {
-            Device::KeyCode::KEY_B, DevButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'B'
+            Device::KeyCode::KEY_B, DevButtonEvent::PRESS, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'B'
         };
 
         bool found = translator.translate(evPressed, &commandList);
@@ -121,7 +121,7 @@ TEST(DevKeyToCommandTranslator, TranslateListNormalKeys)
 
     {
         DevButtonEvent evReleased {
-            Device::KeyCode::KEY_B, DevButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'B'
+            Device::KeyCode::KEY_B, DevButtonEvent::RELEASE, false, KeyModifierFlags(), 10000.0, 20, 20, 1, 'B'
         };
 
         bool found = translator.translate(evReleased, &commandList);
@@ -159,7 +159,7 @@ TEST(DevKeyToCommandTranslator, ReleaseWithoutModifiersUnlatchesModifiedCommand)
     // Ctrl+A goes down and latches the command on.
     {
         DevButtonEvent pressWithCtrl {
-            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, false, true, false, 10000.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::PRESS, false, KeyModifierFlags(Device::KeyModifier::Ctrl), 10000.0, 20, 20, 1, 'A'
         };
         ASSERT_TRUE(translator.translate(pressWithCtrl, &commandList));
     }
@@ -172,7 +172,7 @@ TEST(DevKeyToCommandTranslator, ReleaseWithoutModifiersUnlatchesModifiedCommand)
     // The release carries no modifiers, unlike the press that turned it on.
     {
         DevButtonEvent releaseWithoutCtrl {
-            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, true, false, false, false, 10001.0, 20, 20, 1, 'A'
+            Device::KeyCode::KEY_A, DevButtonEvent::RELEASE, true, KeyModifierFlags(), 10001.0, 20, 20, 1, 'A'
         };
         ASSERT_TRUE(translator.translate(releaseWithoutCtrl, &commandList));
     }
@@ -200,9 +200,7 @@ TEST(DevKeyToCommandTranslator, TranslateListKeyWithMods)
             Device::KeyCode::KEY_A,
             DevButtonEvent::PRESS,
             false,
-            pressedModifiers & Device::KeyModifier::Shift,
-            pressedModifiers & Device::KeyModifier::Ctrl,
-            pressedModifiers & Device::KeyModifier::Alt,
+            pressedModifiers,
             10000.0,
             20,
             20,
@@ -229,9 +227,7 @@ TEST(DevKeyToCommandTranslator, TranslateListKeyWithMods)
             Device::KeyCode::RIGHT_SHIFT,
             DevButtonEvent::PRESS,
             false,
-            pressedModifiers & Device::KeyModifier::Shift,
-            pressedModifiers & Device::KeyModifier::Ctrl,
-            pressedModifiers & Device::KeyModifier::Alt,
+            pressedModifiers,
             10000.0,
             20,
             20,
@@ -257,9 +253,7 @@ TEST(DevKeyToCommandTranslator, TranslateListKeyWithMods)
             Device::KeyCode::RIGHT_SHIFT,
             DevButtonEvent::RELEASE,
             false,
-            pressedModifiers & Device::KeyModifier::Shift,
-            pressedModifiers & Device::KeyModifier::Ctrl,
-            pressedModifiers & Device::KeyModifier::Alt,
+            pressedModifiers,
             10000.0,
             20,
             20,
@@ -284,9 +278,7 @@ TEST(DevKeyToCommandTranslator, TranslateListKeyWithMods)
             Device::KeyCode::KEY_A,
             DevButtonEvent::RELEASE,
             false,
-            pressedModifiers & Device::KeyModifier::Shift,
-            pressedModifiers & Device::KeyModifier::Ctrl,
-            pressedModifiers & Device::KeyModifier::Alt,
+            pressedModifiers,
             10000.0,
             20,
             20,
