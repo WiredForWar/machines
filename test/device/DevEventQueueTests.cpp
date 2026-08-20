@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 
 #include "device/EventQueue.hpp"
-#include "device/ButtonEvent.cpp"
 #include "device/EventQueue.cpp"
 
 using ::testing::Return;

@@ -1,24 +1,17 @@
-/*
- * B U T E V E N T . H P P
- * (c) Charybdis Limited, 1997. All Rights Reserved
- */
-
-#ifndef _DEVICE_BUTEVENT_HPP
-#define _DEVICE_BUTEVENT_HPP
-
-#include <iomanip>
-#include "base/base.hpp"
-#include "mathex/Point2d.hpp"
+#pragma once
 
 #include "device/Key.hpp"
 #include "device/Time.hpp"
-#include "utility/DependencyProvider.hpp"
+#include "mathex/Point2d.hpp"
 
-// Objects of this type describe a button press or release event.
+#include "base/base.hpp"
 
-//  This class must remain bitwise canonical for the recorder
-//  functionality to work correctly.
-template <typename DevTimeDep = DevTime> class DevButtonEventT
+#include <iomanip>
+#include <ostream>
+
+// Describes a button press or release, where a button is anything in
+// Device::KeyCode -- a key or a mouse button alike.
+class DevButtonEvent
 {
 public:
     using ScanCode = Device::KeyCode;
@@ -34,10 +27,10 @@ public:
 
     // There's no useful reason for creating default events, but ctl_list
     // appears to require a default ctor.
-    DevButtonEventT() = default;
+    DevButtonEvent() = default;
 
     // Repeat count NEEDS to be >= 1
-    DevButtonEventT(
+    DevButtonEvent(
         ScanCode,
         Action,
         bool previous,
@@ -49,9 +42,6 @@ public:
         int y,
         ushort repeat,
         char print = 0);
-
-    DevButtonEventT(const DevButtonEventT&) = default;
-    DevButtonEventT& operator=(const DevButtonEventT&);
 
     // True if this DevButtonEvent was created as a char event ( i.e. via a WM_CHAR message ).
     bool isCharEvent() const;
@@ -96,23 +86,20 @@ public:
     // If this event matches the given one, combine the two and increase this
     // one's repeat count.  Returns true if they were combined, then it is
     // assumed that the client won't process the argument event.
-    bool compressRepeats(const DevButtonEventT& ev);
+    bool compressRepeats(const DevButtonEvent& ev);
 
     // If this event has a repeat count of 2 or more, create a copy whose
     // count is 1 and correspondingly decrement this event's count.
     // PRE(repeatCount() > 1);
     // POST(result.repeatCount() == 1); POST(repeatCount() >= 1);
-    DevButtonEventT decompressRepeats();
+    DevButtonEvent decompressRepeats();
 
     // Compares everything *except* the repeat count and the time.
-    bool operator==(const DevButtonEventT&) const;
+    bool operator==(const DevButtonEvent&) const;
 
     // This is required by the list template instantiation.  It orders events
     // by their scan code which probably doesn't have a practical use.
-    bool operator<(const DevButtonEventT&) const;
-
-protected:
-    DependencyProvider<DevTimeDep> timeDependency_;
+    bool operator<(const DevButtonEvent&) const;
 
 private:
     Coord coords_;
@@ -130,14 +117,8 @@ private:
     bool ctrl_ = false;
     bool alt_ = false;
 };
-template <typename DevTimeDep> std::ostream& operator<<(std::ostream& o, const DevButtonEventT<DevTimeDep>&);
 
-// !!!!!!!! CONCRETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-using DevButtonEvent = DevButtonEventT<DevTime>;
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// Avoid ODR hell
-template <> inline std::ostream& operator<<(std::ostream& o, const DevButtonEvent& t)
+inline std::ostream& operator<<(std::ostream& o, const DevButtonEvent& t)
 {
     o << "Button event: " << std::setprecision(4) << " age=" << t.age() << " s=" << t.wasShiftPressed()
       << " c=" << t.wasCtrlPressed() << " a=" << t.wasAltPressed() << " rpt=" << t.repeatCount() << " ";
@@ -146,7 +127,3 @@ template <> inline std::ostream& operator<<(std::ostream& o, const DevButtonEven
     o << " coords=" << t.cursorCoords();
     return o;
 }
-
-#endif
-
-/* End BUTEVENT.HPP *************************************************/

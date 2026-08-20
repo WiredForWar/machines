@@ -1,59 +1,42 @@
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include "device/ButtonEvent.hpp"
+#include "device/Time.hpp"
 
-#include "device/ButtonEvent.cpp"
-
-using ::testing::AtLeast;
-using ::testing::Return;
-
-class MockDevTime
+namespace
 {
-public:
-    MOCK_METHOD(double, time, (), (const));
-};
 
-class ButtonEvent : public DevButtonEventT<MockDevTime>
+DevButtonEvent makeEvent(
+    DevButtonEvent::ScanCode code,
+    DevButtonEvent::Action action,
+    double time = 10000.0,
+    char print = 0)
 {
-public:
-    ButtonEvent(    ScanCode code,
-                    DevButtonEventT::Action   action,
-                    bool prev, bool shift, bool ctrl, bool alt,
-                    double time,
-                    int x, int y,
-                    ushort repeat,
-                    char print)
-        : DevButtonEventT<MockDevTime>(code,action,prev,shift,ctrl,alt,time,x,y,repeat,print)
-    {}
+    return DevButtonEvent{ code, action, false, false, false, false, time, 20, 20, 1, print };
+}
 
-    void setMock(MockDevTime* mock)
-    {
-        this->timeDependency_.set(*mock);
-    }
-};
+} // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST(DevButtonEventTests, GetAgeOfButtonEvent)
+TEST(DevButtonEventTests, AgeIsMeasuredBackFromTheEventTime)
 {
-    MockDevTime mockTimeSingleton;
+    // The device clock runs from process start, so a time one second behind it
+    // is an event that is one second old.
+    const double oneSecondAgo = DevTime::instance().time() - 1.0;
 
-    EXPECT_CALL(mockTimeSingleton, time())
-            .Times(AtLeast(1))
-            .WillOnce(Return(10001.0));
+    const DevButtonEvent buttonEvent
+        = makeEvent(DevButtonEvent::ScanCode::HOME_PAD, DevButtonEvent::PRESS, oneSecondAgo, 'H');
 
-    auto buttonEvent =
-            ButtonEvent{ ButtonEvent::ScanCode::HOME_PAD, ButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'H' };
-
-    buttonEvent.setMock(&mockTimeSingleton);
-
-    ASSERT_EQ(1.0, buttonEvent.age());
+    // The event holds its time as a float and the clock keeps running, so this
+    // is a neighbourhood rather than an equality.
+    ASSERT_NEAR(1.0, buttonEvent.age(), 0.5);
 }
 
 TEST(DevButtonEventTests, GetPrintableCharOfButtonEvent_WhenInvalid)
 {
-    auto buttonEvent =
-            ButtonEvent{ ButtonEvent::ScanCode::HOME_PAD, ButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, '\xF4' };
+    const DevButtonEvent buttonEvent
+        = makeEvent(DevButtonEvent::ScanCode::HOME_PAD, DevButtonEvent::PRESS, 10000.0, '\xF4');
 
     // In Machines and PlanetEd, the PRE() would flip out. Not here :)
     ASSERT_EQ('\xF4', buttonEvent.printableChar());
@@ -62,17 +45,10 @@ TEST(DevButtonEventTests, GetPrintableCharOfButtonEvent_WhenInvalid)
 
 TEST(DevButtonEventTests, GetActionOfButtonEvent)
 {
-    auto eventPress =
-            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::PRESS, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
-    auto eventRelease =
-            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::RELEASE, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
-    auto eventScrollUp =
-            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::SCROLL_UP, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
-    auto eventScrollDown =
-            ButtonEvent{ ButtonEvent::ScanCode::MOUSE_MIDDLE, ButtonEvent::SCROLL_DOWN, false, false, false, false, 10000.0, 20, 20, 1, 'M' };
+    using ScanCode = DevButtonEvent::ScanCode;
 
-    ASSERT_EQ(ButtonEvent::PRESS, eventPress.action());
-    ASSERT_EQ(ButtonEvent::RELEASE, eventRelease.action());
-    ASSERT_EQ(ButtonEvent::SCROLL_UP, eventScrollUp.action());
-    ASSERT_EQ(ButtonEvent::SCROLL_DOWN, eventScrollDown.action());
+    ASSERT_EQ(DevButtonEvent::PRESS, makeEvent(ScanCode::MOUSE_MIDDLE, DevButtonEvent::PRESS).action());
+    ASSERT_EQ(DevButtonEvent::RELEASE, makeEvent(ScanCode::MOUSE_MIDDLE, DevButtonEvent::RELEASE).action());
+    ASSERT_EQ(DevButtonEvent::SCROLL_UP, makeEvent(ScanCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP).action());
+    ASSERT_EQ(DevButtonEvent::SCROLL_DOWN, makeEvent(ScanCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN).action());
 }
