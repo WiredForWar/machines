@@ -179,7 +179,7 @@ void MachGuiDropDownListBox::doDisplay()
 // virtual
 bool MachGuiDropDownListBox::containsMousePointer()
 {
-    Gui::Coord mousePos(DevMouse::instance().position().first, DevMouse::instance().position().second);
+    Gui::Coord mousePos(DevMouse::instance().position().x, DevMouse::instance().position().y);
 
     return contains(mousePos);
 }

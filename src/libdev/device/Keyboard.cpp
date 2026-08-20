@@ -94,8 +94,8 @@ void DevKeyboard::submitFocusLost()
             false, // ctrl
             false, // alt
             now,
-            cursor.first,
-            cursor.second,
+            cursor.x,
+            cursor.y,
             1); // repeat count must be >= 1
         DevEventQueue::instance().queueEvent(ev);
     }

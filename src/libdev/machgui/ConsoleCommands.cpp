@@ -1750,8 +1750,8 @@ DevButtonEvent makeInputEvent(
         static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Ctrl)),
         static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Alt)),
         DevTime::instance().time(),
-        at.first,
-        at.second,
+        at.x,
+        at.y,
         1);
 }
 
@@ -1771,8 +1771,8 @@ resolvePosition(const Request& request, std::size_t argIndex, Console& console)
         return std::nullopt;
     }
 
-    const DevMouse::Position position(static_cast<int>(coords->x()), static_cast<int>(coords->y()));
-    Device::submitPointerPosition(position.first, position.second);
+    const DevMouse::Position position{ .x = static_cast<int>(coords->x()), .y = static_cast<int>(coords->y()) };
+    Device::submitPointerPosition(position.x, position.y);
     return position;
 }
 
@@ -1781,7 +1781,7 @@ void inputPosCommand(const Request& request, Console& console)
     if (request.arguments.empty() || !request.arguments[0].provided)
     {
         const DevMouse::Position& position = DevMouse::instance().position();
-        console.writeLine(std::to_string(position.first) + "," + std::to_string(position.second));
+        console.writeLine(std::to_string(position.x) + "," + std::to_string(position.y));
         return;
     }
 
@@ -1789,7 +1789,7 @@ void inputPosCommand(const Request& request, Console& console)
     {
         const DevMouse::Position& position = DevMouse::instance().position();
         console.writeLine(
-            "Pointer at " + std::to_string(position.first) + "," + std::to_string(position.second) + ".");
+            "Pointer at " + std::to_string(position.x) + "," + std::to_string(position.y) + ".");
     }
 }
 
@@ -1830,7 +1830,7 @@ void inputClickCommand(const Request& request, Console& console)
     Device::submitButtonEvent(makeInputEvent(code, DevButtonEvent::RELEASE, {}, *at));
 
     console.writeLine(
-        "Clicked " + Device::toString(code) + " at " + std::to_string(at->first) + "," + std::to_string(at->second)
+        "Clicked " + Device::toString(code) + " at " + std::to_string(at->x) + "," + std::to_string(at->y)
         + ".");
 }
 

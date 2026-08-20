@@ -137,7 +137,7 @@ void PedTileEditor::highlightTile()
 
     // Highlight tile that mouse pointer is over
     MexLine3d cursorLine = cameraThroughCursorLine(
-        MexPoint2d(DevMouse::instance().position().first, DevMouse::instance().position().second));
+        MexPoint2d(DevMouse::instance().position().x, DevMouse::instance().position().y));
     W4dDomain* pCameraDomain = pSceneManager_->currentCamera()->containingDomain();
 
     // Find any entity intersecting the line

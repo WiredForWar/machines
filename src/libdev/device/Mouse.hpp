@@ -5,8 +5,6 @@
 
 #include "base/base.hpp"
 
-#include <utility>
-
 // Where the pointer is, which of its buttons are held, and the way mouse
 // events enter the game.
 class DevMouse
@@ -15,7 +13,14 @@ public:
     using XCoord = int32;
     using YCoord = int32;
 
-    using Position = std::pair<XCoord, YCoord>;
+    // Where the pointer is, in window coordinates.
+    struct Position
+    {
+        XCoord x{};
+        YCoord y{};
+
+        bool operator==(const Position&) const = default;
+    };
 
     // Pointer travel in device counts. Fractional because a system may report
     // sub-count travel once its own pointer scaling has been applied.

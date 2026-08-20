@@ -267,7 +267,7 @@ GuiMouseEvent pollMouse()
     ASSERT(left != DevMouse::NO_CHANGE, "logic error");
     ASSERT(right != DevMouse::NO_CHANGE, "logic error");
 
-    Gui::Coord c(DevMouse::instance().position().first, DevMouse::instance().position().second);
+    Gui::Coord c(DevMouse::instance().position().x, DevMouse::instance().position().y);
     return GuiMouseEvent(c, left, right, pollModifierKeys());
 }
 

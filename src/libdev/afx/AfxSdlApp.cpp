@@ -497,8 +497,8 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
 
     // A key event happens wherever the pointer already is.
     const DevMouse::Position pos = DevMouse::instance().position();
-    const int x = pos.first;
-    const int y = pos.second;
+    const int x = pos.x;
+    const int y = pos.y;
 
     // Use the event's own modifier state rather than SDL_GetKeyboardState which
     // can carry stale modifier flags from before the game window gained focus.
@@ -530,8 +530,8 @@ void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
 
     // A char event happens wherever the pointer already is.
     const DevMouse::Position pos = DevMouse::instance().position();
-    const int x = pos.first;
-    const int y = pos.second;
+    const int x = pos.x;
+    const int y = pos.y;
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->text.timestamp;
@@ -552,8 +552,8 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     // A contact reports a position normalised to the window, which nothing here
     // converts yet, so this still takes the pointer's.
     const DevMouse::Position pos = DevMouse::instance().position();
-    const int x = pos.first;
-    const int y = pos.second;
+    const int x = pos.x;
+    const int y = pos.y;
 
     const HeldModifiers modifiers = heldModifiers();
 

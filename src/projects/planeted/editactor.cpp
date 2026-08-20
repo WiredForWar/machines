@@ -334,7 +334,7 @@ bool PedActorEditor::actorSelected(W4dEntity** ppActor)
     PRE(pSceneManager_ != nullptr);
 
     MexLine3d cursorLine = cameraThroughCursorLine(
-        MexPoint2d(DevMouse::instance().position().first, DevMouse::instance().position().second));
+        MexPoint2d(DevMouse::instance().position().x, DevMouse::instance().position().y));
     W4dDomain* pCameraDomain = pSceneManager_->currentCamera()->containingDomain();
 
     // Find any entity intersecting the line
@@ -360,7 +360,7 @@ bool PedActorEditor::mouseVertexPoint(MexPoint3d* intersectPoint)
 
     // Highlight vertex mouse cursor is over
     MexLine3d cursorLine = cameraThroughCursorLine(
-        MexPoint2d(DevMouse::instance().position().first, DevMouse::instance().position().second));
+        MexPoint2d(DevMouse::instance().position().x, DevMouse::instance().position().y));
     W4dDomain* pCameraDomain = pSceneManager_->currentCamera()->containingDomain();
 
     // Find any entity intersecting the line
