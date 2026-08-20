@@ -1,75 +1,33 @@
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include "device/EventQueue.hpp"
-#include "device/EventQueue.cpp"
 
-using ::testing::Return;
+namespace
+{
 
-class MockDevTime
+// The filter tables and the enqueue entry point are protected. Reach them.
+class EventQueue : public DevEventQueue
 {
 public:
-    MOCK_METHOD(double, time, (), (const));
+    using DevEventQueue::getPressFilterFor;
+    using DevEventQueue::getReleaseFilterFor;
+    using DevEventQueue::getScrollDownFilter;
+    using DevEventQueue::getScrollUpFilter;
+    using DevEventQueue::queueEvent;
 };
 
-class MockRecRecorder
+DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, char print)
 {
-public:
-    MOCK_METHOD(RecRecorder::State, state, (), (const));
-};
+    return DevButtonEvent{ code, action, false, false, false, false, 1.0, 0, 0, 1, print };
+}
 
-class MockRecRecorderPrivate
-{
-};
-
-class EventQueue : public DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime>
-{
-public:
-    EventQueue() {}
-    ~EventQueue() override {}
-
-    void setMocks(MockRecRecorder* rec, MockRecRecorderPrivate* recPriv)
-    {
-        this->recorderDependency_.set(*rec);
-        this->recorderPrivDependency_.set(*recPriv);
-    }
-
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime>::getReleaseFilterFor;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime>::getPressFilterFor;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime>::queueEvent;
-};
-
-class EventQueue_RealTime : public DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>
-{
-public:
-    EventQueue_RealTime() {}
-    ~EventQueue_RealTime() override {}
-
-    void setMocks(MockRecRecorder* rec, MockRecRecorderPrivate* recPriv)
-    {
-        this->recorderDependency_.set(*rec);
-        this->recorderPrivDependency_.set(*recPriv);
-    }
-
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>::getReleaseFilterFor;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>::getPressFilterFor;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>::getScrollUpFilter;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>::getScrollDownFilter;
-    using DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, DevTime>::queueEvent;
-};
+} // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 
 TEST(DevEventQueueTests, LengthIsEmpty_WhenQueueEmpty)
 {
-    MockRecRecorder recorder;
-    MockRecRecorderPrivate privRecorder;
-
-    EXPECT_CALL(recorder, state())
-            .WillRepeatedly(Return(RecRecorder::INACTIVE));
-
     EventQueue eventQueue;
-    eventQueue.setMocks(&recorder, &privRecorder);
 
     ASSERT_EQ(true, eventQueue.isEmpty());
     ASSERT_EQ(0, eventQueue.length());
@@ -100,7 +58,6 @@ TEST(DevEventQueueTests, QueueEvents_ScanCodeAndAction)
         return (action == EventQueue::Action::PRESS) ? EventQueue::Action::RELEASE : EventQueue::Action::PRESS;
     };
 
-
     auto action = EventQueue::Action::PRESS;
     bool wantPress = true;
     bool wantRelease = false;
@@ -124,7 +81,6 @@ TEST(DevEventQueueTests, DontQueueEvents_ScanCodeAndAction)
         return (action == EventQueue::Action::PRESS) ? EventQueue::Action::RELEASE : EventQueue::Action::PRESS;
     };
 
-
     auto action = EventQueue::Action::PRESS;
     for (int c = 1; c < Device::MAX_CODE; ++c)
     {
@@ -137,20 +93,21 @@ TEST(DevEventQueueTests, DontQueueEvents_ScanCodeAndAction)
     }
 }
 
+TEST(DevEventQueueTests, AnUnrequestedCodeNeverReachesTheQueue)
+{
+    EventQueue eventQueue;
+
+    eventQueue.queueEvent(makeEvent(Device::KeyCode::HOME_PAD, DevButtonEvent::PRESS, 'H'));
+
+    ASSERT_TRUE(eventQueue.isEmpty());
+}
+
 TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_SingleEvent)
 {
-    MockRecRecorder recorder;
-    MockRecRecorderPrivate privRecorder;
-
-    EXPECT_CALL(recorder, state())
-            .WillRepeatedly(Return(RecRecorder::INACTIVE));
-
-    EventQueue_RealTime eventQueue;
-    eventQueue.setMocks(&recorder, &privRecorder);
+    EventQueue eventQueue;
 
     // You can always count on your HomePad ;p
-    auto homePadEvent =
-            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
+    const DevButtonEvent homePadEvent = makeEvent(Device::KeyCode::HOME_PAD, DevButtonEvent::PRESS, 'H');
 
     // Tell the DEQ to filter this key
     eventQueue.queueEvents(Device::KeyCode::HOME_PAD);
@@ -158,30 +115,19 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_SingleEvent)
 
     // filterEvent() is covered by this call
     eventQueue.queueEvent(homePadEvent);
-    auto retrievedEvent = eventQueue.oldestEvent();
+    const DevButtonEvent retrievedEvent = eventQueue.oldestEvent();
     ASSERT_EQ('H', retrievedEvent.getChar());
     // The enqueued event shall always have a repeat count >= 1
     ASSERT_GE(homePadEvent.repeatCount(), retrievedEvent.repeatCount());
+    ASSERT_TRUE(eventQueue.isEmpty());
 }
 
 TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_RepeatEvents)
 {
-    MockRecRecorder recorder;
-    MockRecRecorderPrivate privRecorder;
-
-    EXPECT_CALL(recorder, state())
-            .WillRepeatedly(Return(RecRecorder::INACTIVE));
-
-    EventQueue_RealTime eventQueue;
-    eventQueue.setMocks(&recorder, &privRecorder);
+    EventQueue eventQueue;
 
     // You can always count on your HomePad ;p
-    auto homePadEvent =
-            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::HOME_PAD, EventQueue_RealTime::Action::PRESS, false, false, false, false, 1.0, 0, 0, 1, 'H' };
-    auto homePadEvent2 =
-            homePadEvent;
-    auto homePadEvent3 =
-            homePadEvent;
+    const DevButtonEvent homePadEvent = makeEvent(Device::KeyCode::HOME_PAD, DevButtonEvent::PRESS, 'H');
 
     // Tell the DEQ to filter this key
     eventQueue.queueEvents(Device::KeyCode::HOME_PAD);
@@ -189,49 +135,47 @@ TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_RepeatEvents)
 
     // Repeated mashings!
     eventQueue.queueEvent(homePadEvent);
-    eventQueue.queueEvent(homePadEvent2);
-    eventQueue.queueEvent(homePadEvent3);
+    eventQueue.queueEvent(homePadEvent);
+    eventQueue.queueEvent(homePadEvent);
     // The events will be compressed
     ASSERT_EQ(1, eventQueue.length());
 
-    auto retrievedEvent = eventQueue.oldestEvent();
-    ASSERT_EQ('H', retrievedEvent.getChar());
-    // The result event will have repeat count of 1
-    ASSERT_GE(1, retrievedEvent.repeatCount());
+    // ...and handed back one at a time, each with a repeat count of one.
+    for (int i = 0; i != 3; ++i)
+    {
+        const DevButtonEvent retrievedEvent = eventQueue.oldestEvent();
+        ASSERT_EQ('H', retrievedEvent.getChar());
+        ASSERT_EQ(1, retrievedEvent.repeatCount());
+    }
+
+    ASSERT_TRUE(eventQueue.isEmpty());
 }
 
 TEST(DevEventQueueTests, QueueNewEventAndRetrieveIt_MouseScrollEvent)
 {
-    MockRecRecorder recorder;
-    MockRecRecorderPrivate privRecorder;
+    EventQueue eventQueue;
 
-    EXPECT_CALL(recorder, state())
-            .WillRepeatedly(Return(RecRecorder::INACTIVE));
+    const DevButtonEvent scrollUpEvent
+        = makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP, '\xBE');
+    const DevButtonEvent scrollDownEvent
+        = makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN, '\xBF');
 
-    EventQueue_RealTime eventQueue;
-    eventQueue.setMocks(&recorder, &privRecorder);
-
-    auto scrollUpEvent =
-            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP, false, false, false, false, 1.0, 0, 0, 1, '\xBE' };
-    auto scrollDownEvent =
-            EventQueue_RealTime::DevButtonEventType{ Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN, false, false, false, false, 1.0, 0, 0, 1, '\xBF' };
-
-    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP);
     ASSERT_EQ(true, eventQueue.getScrollUpFilter());
-    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.queueEvents(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN);
     ASSERT_EQ(true, eventQueue.getScrollDownFilter());
 
     eventQueue.queueEvent(scrollUpEvent);
     eventQueue.queueEvent(scrollDownEvent);
     ASSERT_EQ(2, eventQueue.length());
 
-    auto upEvent = eventQueue.oldestEvent();
-    auto downEvent = eventQueue.oldestEvent();
+    const DevButtonEvent upEvent = eventQueue.oldestEvent();
+    const DevButtonEvent downEvent = eventQueue.oldestEvent();
     ASSERT_EQ('\xBE', upEvent.getChar());
     ASSERT_EQ('\xBF', downEvent.getChar());
 
-    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_UP);
+    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP);
     ASSERT_EQ(false, eventQueue.getScrollUpFilter());
-    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, EventQueue_RealTime::Action::SCROLL_DOWN);
+    eventQueue.dontQueueEvents(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN);
     ASSERT_EQ(false, eventQueue.getScrollDownFilter());
 }
