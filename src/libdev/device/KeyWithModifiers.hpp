@@ -2,6 +2,8 @@
 
 #include "device/Key.hpp"
 
+#include <compare>
+
 class KeyModifierFlags
 {
 public:

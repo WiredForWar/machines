@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <ostream>
 
 // Unfortunately Windows has a #define for DELETE.
 #ifdef DELETE
@@ -185,8 +184,6 @@ inline constexpr bool isMouseButton(KeyCode code)
 {
     return (code >= KeyCode::MOUSE_LEFT) && (code <= KeyCode::MOUSE_EXTRA8);
 }
-
-void writeAsString(std::ostream&, KeyCode code);
 
 inline constexpr KeyCode getKeyWithoutModifiers(int value)
 {
