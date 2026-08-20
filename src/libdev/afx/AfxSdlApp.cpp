@@ -210,15 +210,7 @@ void AfxSdlApp::coreLoop()
 
 void AfxSdlApp::initLogger()
 {
-    bool logToConsole{};
-    for (size_t i = 0; i < invokeArgs().size(); ++i)
-    {
-        const std::string& token = invokeArgs()[i];
-        if (token == "--log-to-console")
-        {
-            logToConsole = true;
-        }
-    }
+    const bool logToConsole = invokeArgs().contains("--log-to-console");
 
     std::shared_ptr<spdlog::sinks::sink> fileSink;
     if (logFileEnabled_)

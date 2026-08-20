@@ -137,20 +137,7 @@ bool SDLApp::clientStartup()
     // Set the diretory to look for all files
     SysPathName::rootEnvironmentVariable("MACH_ROOT");
 
-    bool lobbyFlag = false;
-
-    for (size_t i = 0; i < invokeArgs().size(); ++i)
-    {
-        const std::string& token = invokeArgs()[i];
-
-        if (token == "-lobby")
-            lobbyFlag = true;
-        else if (token == "-?")
-        {
-            //          usage();
-            //          return false;
-        }
-    }
+    const bool lobbyFlag = invokeArgs().contains("-lobby");
 
     // Check other debugging environment variables
     bool preloadModels = getenv("CB_NOPRELOAD") == nullptr;

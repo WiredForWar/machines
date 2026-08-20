@@ -1,40 +1,23 @@
-//
-// I N V K A R G S . C P P
-// (c) Charybdis Limited, 1996. All Rights Reserved
-
-#include <algorithm>
 #include "afx/invkargs.hpp"
 
-int AfxInvokeArgs::argc() const
+#include <algorithm>
+
+bool AfxInvokeArgs::contains(std::string_view flag) const
 {
-    return size();
+    return std::find(begin(), end(), flag) != end();
 }
 
-int AfxInvokeArgs::containsFlag(char f) const
+std::optional<std::string_view> AfxInvokeArgs::value(std::string_view flag) const
 {
-    std::string flag1 = "-x";
-    flag1[1] = f;
+    for (auto it = begin(); it != end(); ++it)
+    {
+        const std::string_view token{*it};
+        if (token.size() > flag.size() && token.compare(0, flag.size(), flag) == 0
+            && token[flag.size()] == '=')
+        {
+            return token.substr(flag.size() + 1);
+        }
+    }
 
-    auto it1 = std::find(begin(), end(), flag1);
-    if (it1 != end())
-        return it1 - begin();
-
-    std::string flag2 = "/x";
-    flag2[1] = f;
-
-    auto it2 = find(begin(), end(), flag2);
-    if (it2 != end())
-        return it2 - begin();
-
-    return -1;
-}
-
-double AfxInvokeArgs::asDouble(size_type index) const
-{
-    return atof((*this)[index].c_str());
-}
-
-double AfxInvokeArgs::asInt(size_type index) const
-{
-    return atoi((*this)[index].c_str());
+    return std::nullopt;
 }

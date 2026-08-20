@@ -1,23 +1,18 @@
-//
-// I N V K A R G S . H P P
-// (c) Charybdis Limited, 1996. All Rights Reserved
+#pragma once
 
-#ifndef _AFX_INVKARGS_INCLUDED
-#define _AFX_INVKARGS_INCLUDED
-
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
+// The command line, one token per element, without the program name.
 class AfxInvokeArgs : public std::vector<std::string>
 {
 public:
-    int argc() const;
+    // True if the exact token was given, as for "--skip-logos".
+    bool contains(std::string_view flag) const;
 
-    int containsFlag(char flag) const;
-    double asDouble(size_type index) const;
-    double asInt(size_type index) const;
+    // The text after the '=' of a "--flag=value" token. Nothing if the flag was
+    // not given, or was given on its own.
+    std::optional<std::string_view> value(std::string_view flag) const;
 };
-
-//////////////////////////////////////////////////////////////////////
-
-#endif /*_AFX_INVKARGS_INCLUDED*/
