@@ -20,6 +20,7 @@ DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, in
 DevEventQueue& resetSharedInput()
 {
     Device::InputState::instance().releaseAllButtons();
+    Device::InputState::instance().takePointerMotion();
 
     DevEventQueue& queue = DevEventQueue::instance();
 

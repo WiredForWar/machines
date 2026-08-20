@@ -10,6 +10,25 @@
 namespace Device
 {
 
+// Where the pointer is, in window coordinates.
+struct PointerPosition
+{
+    int32 x{};
+    int32 y{};
+
+    bool operator==(const PointerPosition&) const = default;
+};
+
+// Pointer travel in device counts. Fractional because a system may report
+// sub-count travel once its own pointer scaling has been applied.
+struct PointerMotion
+{
+    double x{};
+    double y{};
+
+    bool isZero() const { return x == 0.0 && y == 0.0; }
+};
+
 // What input looks like right now.
 //
 // Updated only by what is submitted, never read back from the platform, so a
@@ -30,6 +49,17 @@ public:
     // The modifiers held at this moment.
     KeyModifierFlags heldModifiers() const;
 
+    // Where the pointer is. Quantised to the window, so it stops changing once
+    // the pointer is held at an edge.
+    const PointerPosition& pointerPosition() const;
+    void setPointerPosition(PointerPosition position);
+
+    // Travel since this was last asked, and clear the accumulator. Unlike a
+    // difference of two positions this is not quantised, so it keeps reporting
+    // while the pointer is held still.
+    PointerMotion takePointerMotion();
+    void addPointerMotion(double relativeX, double relativeY);
+
     void pressButton(KeyCode code);
     void releaseButton(KeyCode code);
 
@@ -48,6 +78,9 @@ private:
 
     bool& button(KeyCode code) { return buttons_[static_cast<std::size_t>(code)]; }
     bool button(KeyCode code) const { return buttons_[static_cast<std::size_t>(code)]; }
+
+    PointerPosition pointerPosition_{};
+    PointerMotion pointerMotion_{};
 
     bool buttons_[MAX_CODE]{};
 

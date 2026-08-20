@@ -38,8 +38,7 @@ void DevMouse::unhide()
 
 void DevMouse::position(XCoord new_x, YCoord new_y)
 {
-    position_.x = new_x;
-    position_.y = new_y;
+    Device::InputState::instance().setPointerPosition({ .x = new_x, .y = new_y });
 }
 
 void DevMouse::changePosition(XCoord new_x, YCoord new_y)
@@ -53,20 +52,17 @@ void DevMouse::changePosition(XCoord new_x, YCoord new_y)
 
 const DevMouse::Position& DevMouse::position() const
 {
-    return position_;
+    return Device::InputState::instance().pointerPosition();
 }
 
 void DevMouse::addRelativeMotion(double deltaX, double deltaY)
 {
-    relativeMotion_.x += deltaX;
-    relativeMotion_.y += deltaY;
+    Device::InputState::instance().addPointerMotion(deltaX, deltaY);
 }
 
 DevMouse::Motion DevMouse::takeRelativeMotion()
 {
-    const Motion result = relativeMotion_;
-    relativeMotion_ = Motion();
-    return result;
+    return Device::InputState::instance().takePointerMotion();
 }
 
 void DevMouse::submitEvent(const DevButtonEvent& ev)
@@ -101,8 +97,8 @@ void DevMouse::announceButtonRelease(Device::KeyCode code)
         false, // ctrl
         false, // alt
         DevTime::instance().time(),
-        position_.x,
-        position_.y,
+        position().x,
+        position().y,
         1); // repeat count must be >= 1
     DevEventQueue::instance().queueEvent(ev);
 }

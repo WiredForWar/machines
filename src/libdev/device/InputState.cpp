@@ -32,6 +32,29 @@ KeyModifierFlags Device::InputState::heldModifiers() const
         button(KeyCode::LEFT_SHIFT) || button(KeyCode::RIGHT_SHIFT));
 }
 
+const Device::PointerPosition& Device::InputState::pointerPosition() const
+{
+    return pointerPosition_;
+}
+
+void Device::InputState::setPointerPosition(PointerPosition position)
+{
+    pointerPosition_ = position;
+}
+
+Device::PointerMotion Device::InputState::takePointerMotion()
+{
+    const PointerMotion travelled = pointerMotion_;
+    pointerMotion_ = PointerMotion();
+    return travelled;
+}
+
+void Device::InputState::addPointerMotion(double relativeX, double relativeY)
+{
+    pointerMotion_.x += relativeX;
+    pointerMotion_.y += relativeY;
+}
+
 void Device::InputState::pressButton(KeyCode code)
 {
     PRE(isValidCode(code));
