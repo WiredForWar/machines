@@ -28,15 +28,6 @@ public:
     bool ctrlPressed() const;
     bool altPressed() const;
 
-    // Has the given key changed its state since the last time it was queried?
-    enum KeyState
-    {
-        NO_CHANGE,
-        PRESSED,
-        RELEASED
-    };
-    KeyState deltaKeyCode(ScanCode) const;
-
     // Report a key going down or up.
     void submitKeyEvent(const DevButtonEvent& ev);
 
@@ -69,14 +60,9 @@ private:
     bool& keyMap(ScanCode code) { return keyMap_[static_cast<int>(code)]; }
     bool keyMap(ScanCode code) const { return keyMap_[static_cast<int>(code)]; }
 
-    // Updated from the const delta accessors, which report a change since the
-    // last time they were asked.
-    bool& lastKeyMap(ScanCode code) const { return lastKeyMap_[static_cast<int>(code)]; }
-
     static constexpr std::size_t N_KEYS = 256;
     static_assert(N_KEYS >= Device::MAX_CODE);
     bool keyMap_[N_KEYS]{};
-    mutable bool lastKeyMap_[N_KEYS]{};
 
     // This is the number of keys currently depressed, this should
     // equal the number of true elements in keyMap_.
