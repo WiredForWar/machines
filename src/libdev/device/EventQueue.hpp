@@ -37,14 +37,6 @@ public:
     void queueEvents(ScanCode, Action);
     void dontQueueEvents(ScanCode, Action);
 
-    // Throw away certain events.  Four flavours: absolutely everything; all
-    // events relating to a given button; any event older than a given time;
-    // and events relating to a given button, older than the given time.
-    void discardAll();
-    void discard(ScanCode);
-    void discardOlderThan(double time);
-    void discardOlderThan(double time, ScanCode);
-
     size_t length() const;
     bool isEmpty() const; // length() == 0
 

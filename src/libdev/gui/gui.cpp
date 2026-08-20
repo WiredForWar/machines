@@ -10,8 +10,9 @@
 #include <algorithm>
 #include <cassert>
 #include <map>
-#include <stdio.h>
 #include <vector>
+
+#include <stdio.h>
 
 /* //////////////////////////////////////////////////////////////// */
 

@@ -13,7 +13,6 @@ DevMouse& DevMouse::instance()
 DevMouse::DevMouse()
 {
     resetPosition();
-    lastPosition_ = position_;
 }
 
 DevMouse::DevMouse(SdlDelegate* useInstead)
@@ -36,24 +35,19 @@ void DevMouse::unhide()
     pSdl_->showCursor(true);
 }
 
-bool DevMouse::isHidden() const
-{
-    return cursorVisible_ < 0;
-}
-
 void DevMouse::position(XCoord new_x, YCoord new_y)
 {
-    position_.first = static_cast<XCoord>(new_x * scaleX_);
-    position_.second = static_cast<YCoord>(new_y * scaleY_);
+    position_.first = new_x;
+    position_.second = new_y;
 }
 
 void DevMouse::changePosition(XCoord new_x, YCoord new_y)
 {
-    position(new_x / scaleX_, new_y / scaleY_);
+    position(new_x, new_y);
 
     // SDL call to move the mouse cursor to the new position
     // SDL_WarpMouseInWindow
-    pSdl_->moveCursorToPosition(nullptr, new_x / scaleX_, new_y / scaleY_);
+    pSdl_->moveCursorToPosition(nullptr, new_x, new_y);
 }
 
 const DevMouse::Position& DevMouse::position() const
@@ -72,14 +66,6 @@ DevMouse::Motion DevMouse::takeRelativeMotion()
     const Motion result = relativeMotion_;
     relativeMotion_ = Motion();
     return result;
-}
-
-const DevMouse::Position DevMouse::deltaPosition() const
-{
-    Position retval = position();
-    retval.first -= lastPosition_.first;
-    retval.second -= lastPosition_.second;
-    return retval;
 }
 
 DevMouse::ButtonState DevMouse::deltaLeftButton() const
@@ -137,10 +123,7 @@ void DevMouse::wm_button(const DevButtonEvent& ev)
             break;
     }
 
-    // The coords in the event should already be scaled correctly, so bypass
-    // the position set method because it also applies a scale.
-    position_.first = ev.cursorCoords().x();
-    position_.second = ev.cursorCoords().y();
+    position(ev.cursorCoords().x(), ev.cursorCoords().y());
 
     // Pass the message onto the event queue.
     DevEventQueue::instance().queueEvent(ev);
@@ -210,28 +193,16 @@ bool DevMouse::wheelScrollDown() const
     return result;
 }
 
-void DevMouse::scaleCoordinates(XCoord xmax, YCoord ymax)
-{
-    maxPosition_.first = xmax;
-    maxPosition_.second = ymax;
-}
-
 DevMouse::Position DevMouse::getMessagePos() const
 {
     // SDL_GetMouseState
-    const std::pair<int, int>& unscaledXY = pSdl_->getCursorPosition();
+    const std::pair<int, int>& xy = pSdl_->getCursorPosition();
 
-    Position result;
-    result.first = static_cast<XCoord>(unscaledXY.first * scaleX_);
-    result.second = static_cast<YCoord>(unscaledXY.second * scaleY_);
-
-    return result;
+    return Position(xy.first, xy.second);
 }
 
-// Set the position to the middle of the range.
+// Until the system reports where the pointer is, the mouse says the origin.
 void DevMouse::resetPosition()
 {
-    const XCoord x = (minRange().first + maxRange().first) / 2;
-    const YCoord y = (minRange().second + maxRange().second) / 2;
-    position(x, y);
+    position(0, 0);
 }

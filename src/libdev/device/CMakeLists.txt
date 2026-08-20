@@ -39,7 +39,6 @@ set(DEVICE_SOURCES
     SdlTime.cpp
     SdlTimeImpl.cpp
     SharedKeyboard.cpp
-    SharedMouse.cpp
     Time.cpp
     Time.hpp
     Timer.cpp

@@ -30,17 +30,12 @@ public:
 
     // These all return the change in state since the last time
     // the method was called.
-    const Position deltaPosition() const;
     ButtonState deltaLeftButton() const;
     ButtonState deltaRightButton() const;
 
-    // Logically hide/show cursor ( successive calls are nested )
+    // Logically hide/show cursor
     void hide();
     void unhide();
-    bool isHidden() const;
-
-    // Scale the output coordinates to be in the range [0,xmax) and [0,ymax).
-    void scaleCoordinates(XCoord xmax, YCoord ymax);
 
     // Set the mouse's position.  Does NOT move the on screen pointer. Called when a
     // pointer motion event is received. It is undesirable to move the on screen pointer
@@ -83,15 +78,10 @@ private:
     SdlDelegate sdlDelegate_{};
     SdlDelegate* pSdl_{ &sdlDelegate_ }; // <-- Use me
 
-    mutable Position position_{};
-    Position lastPosition_{};
+    Position position_{};
     Motion relativeMotion_{};
-    int cursorVisible_{};
     bool lButtonPressed_{};
     bool rButtonPressed_{};
-    Position maxPosition_{};
-    double scaleX_{ 1.0 };
-    double scaleY_{ 1.0 };
     mutable bool scrolledUp_{};
     mutable bool scrolledDown_{};
 };
