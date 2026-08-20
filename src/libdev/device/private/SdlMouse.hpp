@@ -51,10 +51,6 @@ public:
     // application for every pointer motion the system reports.
     void addRelativeMotion(double deltaX, double deltaY);
 
-    // Where the system reports the pointer to be, in the coordinate system of this
-    // class's position fn.
-    Position getMessagePos() const;
-
     // Report a button or wheel event.
     void submitEvent(const DevButtonEvent&);
 

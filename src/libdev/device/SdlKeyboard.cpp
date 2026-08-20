@@ -64,7 +64,7 @@ void DevSdlKeyboard::submitFocusLost()
     // Every key still held is now released, and no further event will say so.
     // Queue the releases so that the state is announced and not merely dropped;
     // the modifiers read clear because nothing is held any more.
-    const DevMouse::Position cursor = DevMouse::instance().getMessagePos();
+    const DevMouse::Position cursor = DevMouse::instance().position();
     const double now = DevTime::instance().time();
 
     for (int code = 0; code != Device::MAX_CODE; ++code)
