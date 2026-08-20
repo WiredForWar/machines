@@ -1,29 +1,106 @@
-/*
- * M O U S E . H P P
- * (c) Charybdis Limited, 1995, 1996, 1997. All Rights Reserved.
- */
+#pragma once
 
-// Include this file to use the mouse under any supported
-// operating system.  The actual choice of mouse implmentation
-// must be compiled into the client code, all mouse implementations
-// should be source code compatible.  You must of course link
-// with the corresponding library.
-
-#ifndef DEVICE_MOUSE
-#define DEVICE_MOUSE
+#include "device/ButtonEvent.hpp"
+#include "device/SdlDelegate.hpp"
 
 #include "base/base.hpp"
 
-#if defined _DOSAPP
-#include "device/private/dosmouse.hpp"
-#elif defined _WIN95APP
-#include "device/private/w95mouse.hpp"
-#elif defined _SDLAPP
-#include "device/private/SdlMouse.hpp"
-#else
-#error Use of the device lib: one of _DOSAPP, _WIN95APP, etc. must be defined.
-#endif
+#include <utility>
 
-#endif
+// Where the pointer is, which of its buttons are held, and the way mouse
+// events enter the game.
+class DevMouse
+{
+public:
+    using XCoord = int32;
+    using YCoord = int32;
 
-/* End MOUSE.HPP ****************************************************/
+    using Position = std::pair<XCoord, YCoord>;
+
+    // Pointer travel in device counts. Fractional because a system may report
+    // sub-count travel once its own pointer scaling has been applied.
+    struct Motion
+    {
+        double x = 0.0;
+        double y = 0.0;
+
+        bool isZero() const { return x == 0.0 && y == 0.0; }
+    };
+
+    enum ButtonState
+    {
+        NO_CHANGE,
+        PRESSED,
+        RELEASED
+    };
+
+    static DevMouse& instance();
+
+    //  Return the absolute mouse position
+    const Position& position() const;
+
+    // Pointer travel reported by the system since the last takeRelativeMotion() call,
+    // in device counts, and clear the accumulator. Unlike a difference of two
+    // position() values this is not quantised to the window, so it keeps working when
+    // the pointer is at an edge of the screen.
+    Motion takeRelativeMotion();
+
+    bool leftButton() const;
+    bool rightButton() const;
+    bool wheelScrollUp() const;
+    bool wheelScrollDown() const;
+
+    // These all return the change in state since the last time
+    // the method was called.
+    ButtonState deltaLeftButton() const;
+    ButtonState deltaRightButton() const;
+
+    // Logically hide/show cursor
+    void hide();
+    void unhide();
+
+    // Set the mouse's position.  Does NOT move the on screen pointer. Called when a
+    // pointer motion event is received. It is undesirable to move the on screen pointer
+    // as this will generate another motion event.
+    void position(XCoord newX, YCoord newY);
+
+    // Set the mouse's position. This function updates the on screen pointer position. Should not be
+    // called in response to a motion event because this function generates another motion
+    // event.
+    void changePosition(XCoord new_x, YCoord new_y);
+
+    // Add pointer travel to the amount reported by takeRelativeMotion(). Called by the
+    // application for every pointer motion the system reports.
+    void addRelativeMotion(double deltaX, double deltaY);
+
+    // Report a button or wheel event.
+    void submitEvent(const DevButtonEvent&);
+
+    // The window has lost input focus. Any button held at this moment counts as
+    // released, and no further event will report it.
+    void submitFocusLost();
+
+protected:
+    //  Singleton
+    DevMouse();
+    explicit DevMouse(SdlDelegate* useInstead);
+    ~DevMouse();
+
+private:
+    // Queue a release for a button that will get no release of its own.
+    void announceButtonRelease(Device::KeyCode code);
+
+    void resetPosition();
+
+    SdlDelegate sdlDelegate_{};
+    SdlDelegate* pSdl_{ &sdlDelegate_ }; // <-- Use me
+
+    Position position_{};
+    Motion relativeMotion_{};
+    bool lButtonPressed_{};
+    bool rButtonPressed_{};
+    mutable bool scrolledUp_{};
+    mutable bool scrolledDown_{};
+    mutable bool lastLeftButtonState_{};
+    mutable bool lastRightButtonState_{};
+};

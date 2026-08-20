@@ -26,20 +26,18 @@ set(DEVICE_SOURCES
     KeyToCommandTranslator.cpp
     KeyToCommandTranslator.hpp
     KeyWithModifiers.hpp
+    Mouse.cpp
     Mouse.hpp
     MusicResumeStore.cpp
     MusicResumeStore.hpp
     OggStream.cpp
     OggStream.hpp
-    private/SdlMouse.hpp
     private/SdlTime.hpp
-    private/SharedMouse.hpp
     Rate.cpp
     Rate.hpp
     SdlDelegate.hpp
     SdlKeyCodes.cpp
     SdlKeyCodes.hpp
-    SdlMouse.cpp
     SdlTime.cpp
     SdlTimeImpl.cpp
     Time.cpp
