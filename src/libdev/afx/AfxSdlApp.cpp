@@ -10,8 +10,6 @@
 #include "device/EventQueue.hpp"
 #include "device/Time.hpp"
 
-#include "recorder/Recorder.hpp"
-
 #include "system/SysInfo.hpp"
 
 #include "spdlog/sinks/rotating_file_sink.h"
@@ -325,7 +323,6 @@ void AfxSdlApp::initLogger()
 
 void AfxSdlApp::dispatchEvent(const SDL_Event* event)
 {
-    RecRecorder::instance().recordingAllowed(false);
     switch (event->type)
     {
         case SDL_EVENT_WINDOW_FOCUS_LOST:
@@ -377,7 +374,6 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
         default:
             break;
     }
-    RecRecorder::instance().recordingAllowed(true);
 }
 
 void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)

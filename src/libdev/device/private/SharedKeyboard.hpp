@@ -53,15 +53,6 @@ public:
     KeyState deltaKey(unsigned char) const;
     KeyState deltaKeyCode(ScanCode) const;
 
-    // These are **not** for public use as they subvert the recording mechanism.
-    bool keyNoRecord(unsigned char) const;
-    bool keyCodeNoRecord(ScanCode) const;
-    bool anyKeyNoRecord() const;
-    bool shiftPressedNoRecord() const;
-    bool ctrlPressedNoRecord() const;
-    bool altPressedNoRecord() const;
-    KeyState deltaKeyCodeNoRecord(ScanCode) const;
-
     // For testing only: to be removed.
     int pressedCount() const { return pressedCount_; }
 
@@ -85,19 +76,19 @@ private:
     ScanCode getCharacterIndex(unsigned char) const;
     bool& keyMap(ScanCode code) { return keyMap_[static_cast<int>(code)]; }
     bool keyMap(ScanCode code) const { return keyMap_[static_cast<int>(code)]; }
-    bool& lastKeyMap(ScanCode code) { return lastKeyMap_[static_cast<int>(code)]; }
-    bool lastKeyMap(ScanCode code) const { return lastKeyMap_[static_cast<int>(code)]; }
+
+    // Updated from the const delta accessors, which report a change since the
+    // last time they were asked.
+    bool& lastKeyMap(ScanCode code) const { return lastKeyMap_[static_cast<int>(code)]; }
 
     static constexpr std::size_t N_KEYS = 256;
     static_assert(N_KEYS >= Device::MAX_CODE);
-    bool keyMap_[N_KEYS];
-    bool lastKeyMap_[N_KEYS];
+    bool keyMap_[N_KEYS]{};
+    mutable bool lastKeyMap_[N_KEYS]{};
 
     // This is the number of keys currently depressed, this should
-    // equal the number of true elements in keyMap_.  Keeping these
-    // consistent, especially in the presence of interrupts and races,
-    // is tricky.  Is there a better way to implement anyKey()?
-    int pressedCount_;
+    // equal the number of true elements in keyMap_.
+    int pressedCount_{};
 
     void keys_invariant(const char* file, const char* line) const;
 
