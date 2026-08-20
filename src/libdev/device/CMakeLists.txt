@@ -1,48 +1,47 @@
 
 set(DEVICE_SOURCES
-    DevCDImpl.hpp
-    KeyBind.hpp
-    KeyWithModifiers.hpp
-    SdlDelegate.hpp
     ButtonEvent.cpp
     ButtonEvent.hpp
     CD.cpp
     CD.hpp
-    OggStream.cpp
-    OggStream.hpp
+    CDDefs.hpp
     CDHelper.cpp
     CDHelper.hpp
-    CDDefs.hpp
     CDPlayList.cpp
     CDPlayList.hpp
+    DevCDImpl.hpp
     EventQueue.cpp
     EventQueue.hpp
     Input.cpp
     Input.hpp
     internal/SdlTimeImpl.hpp
     Key.hpp
+    KeyBind.hpp
+    Keyboard.cpp
+    Keyboard.hpp
     KeyNames.cpp
     KeyNames.hpp
-    Keyboard.hpp
     KeyToCommand.cpp
     KeyToCommand.hpp
     KeyToCommandTranslator.cpp
     KeyToCommandTranslator.hpp
+    KeyWithModifiers.hpp
     Mouse.hpp
     MusicResumeStore.cpp
     MusicResumeStore.hpp
-    private/SdlKeyboard.hpp
+    OggStream.cpp
+    OggStream.hpp
     private/SdlMouse.hpp
     private/SdlTime.hpp
-    private/SharedKeyboard.hpp
     private/SharedMouse.hpp
     Rate.cpp
     Rate.hpp
-    SdlKeyboard.cpp
+    SdlDelegate.hpp
+    SdlKeyCodes.cpp
+    SdlKeyCodes.hpp
     SdlMouse.cpp
     SdlTime.cpp
     SdlTimeImpl.cpp
-    SharedKeyboard.cpp
     Time.cpp
     Time.hpp
     Timer.cpp

@@ -1,16 +1,17 @@
-/*
- * S H R K E Y B D . C P P
- * (c) Charybdis Limited, 1996. All Rights Reserved
- */
-
-#include "base/base.hpp"
-
-#ifdef _DOSAPP
-#include <i86.h>
-#endif
 #include "device/Keyboard.hpp"
 
+#include "device/EventQueue.hpp"
+#include "device/Mouse.hpp"
+#include "device/Time.hpp"
+
 #include <sstream>
+
+// static
+DevKeyboard& DevKeyboard::instance()
+{
+    static DevKeyboard keyboard;
+    return keyboard;
+}
 
 DevKeyboard::DevKeyboard()
 {
@@ -73,19 +74,70 @@ bool DevKeyboard::altPressed() const
     return keyMap(Device::KeyCode::RIGHT_ALT) || keyMap(Device::KeyCode::LEFT_ALT);
 }
 
+void DevKeyboard::submitKeyEvent(const DevButtonEvent& ev)
+{
+    // For state changes, we are only interested in key-press transitions and
+    // can ignore all auto-repeat events, i.e. when we receive a keydown
+    // message and previous state was also down.
+    switch (ev.action())
+    {
+        case DevButtonEvent::PRESS:
+            if (!ev.previous())
+                pressed(ev.scanCode());
+            break;
+        case DevButtonEvent::RELEASE:
+            released(ev.scanCode());
+            break;
+        default:
+            ASSERT_BAD_CASE;
+    }
+
+    // Regardless of the previous value, we must add sth. to the event queue.
+    DevEventQueue::instance().queueEvent(ev);
+}
+
+void DevKeyboard::submitCharEvent(const DevButtonEvent& ev)
+{
+    DevEventQueue::instance().queueEvent(ev);
+}
+
+void DevKeyboard::submitFocusLost()
+{
+    // Every key still held is now released, and no further event will say so.
+    // Queue the releases so that the state is announced and not merely dropped;
+    // the modifiers read clear because nothing is held any more.
+    const DevMouse::Position cursor = DevMouse::instance().position();
+    const double now = DevTime::instance().time();
+
+    for (int code = 0; code != Device::MAX_CODE; ++code)
+    {
+        const ScanCode scanCode = static_cast<ScanCode>(code);
+        if (!keyCode(scanCode))
+            continue;
+
+        const DevButtonEvent ev(
+            scanCode,
+            DevButtonEvent::RELEASE,
+            true, // previous: the key was down
+            false, // shift
+            false, // ctrl
+            false, // alt
+            now,
+            cursor.first,
+            cursor.second,
+            1); // repeat count must be >= 1
+        DevEventQueue::instance().queueEvent(ev);
+    }
+
+    allKeysReleased();
+}
+
 void DevKeyboard::pressed(ScanCode code)
 {
-    // Although this is an OS independent piece of code, we must be
-    // aware that it can be called from within a DOS interrupt
-    // handler.  It appears that we are quite limited in the system
-    // calls that can be made here.  Hence, no TEST_INVARIANT.
     PRE(static_cast<int>(code) < N_KEYS);
 
     if (!keyMap(code))
     {
-        // An interrupt between the next two statements could cause this
-        // object's state to become inconsistent.  We rely on the caller
-        // having disabled interrupts under DOS!!
         keyMap(code) = true;
         ++pressedCount_;
     }
@@ -94,12 +146,10 @@ void DevKeyboard::pressed(ScanCode code)
 void DevKeyboard::released(ScanCode scanCode)
 {
     const auto code = static_cast<std::size_t>(scanCode);
-    // Don't test invariant, see DevKeyboard::pressed.
     PRE(code < N_KEYS);
 
     if (keyMap_[code])
     {
-        // Interrupts must be disabled, see DevKeyboard::pressed.
         keyMap_[code] = false;
         --pressedCount_;
     }
@@ -109,47 +159,23 @@ void DevKeyboard::allKeysReleased()
 {
     TEST_INVARIANT;
 
-// Disable interrupts because pressedCount_ and keyMap_ can change
-// asyncronously.
-#ifdef _DOSAPP
-    _disable();
-#endif
-
     for (int i = 0; i < N_KEYS; ++i)
     {
         keyMap_[i] = false;
         lastKeyMap_[i] = false;
     }
 
-    // An interrupt occuring here, between these statements, could set an
-    // element of keyMap_ and increment pressedCount_, hence the disable.
     pressedCount_ = 0;
-
-#ifdef _DOSAPP
-    _enable();
-#endif
 
     TEST_INVARIANT;
 }
 
-#ifdef _TEST_INVARIANTS
-#include <sstream>
-#endif
-
-// We appear to get a crash if this is called from within a DOS interrupt
-// handler.  Probably due to complicated non-reentrant things (like malloc).
 #ifdef _TEST_INVARIANTS
 void DevKeyboard::keys_invariant(const char* file, const char* line) const
 #else
 void DevKeyboard::keys_invariant(const char*, const char*) const
 #endif
 {
-// Disable interrupts because pressedCount_ and keyMap_ can change
-// asyncronously.
-#ifdef _DOSAPP
-    _disable();
-#endif
-
     // pressedCount_ should always reflect the number of keys depressed
     // in keyMap_.
     int count = 0;
@@ -157,13 +183,7 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
         if (keyMap_[i])
             ++count;
 
-    // Re-enable interrupts before testing any invariant which may fail.
-    const int pressed_count = pressedCount_;
-#ifdef _DOSAPP
-    _enable();
-#endif
-
-    if (pressed_count != count)
+    if (pressedCount_ != count)
     {
         std::ostringstream ostr;
         ostr << "KeyMap is:\n";
@@ -175,12 +195,10 @@ void DevKeyboard::keys_invariant(const char*, const char*) const
                 ostr << "\n";
         }
 
-        ostr << std::ends;
         INVARIANT_INFO(ostr.str());
-        // ostr.rdbuf()->freeze(0);
     }
 
-    INVARIANT_INFO(pressed_count);
+    INVARIANT_INFO(pressedCount_);
     INVARIANT_INFO(count);
-    INVARIANT(pressed_count == count);
+    INVARIANT(pressedCount_ == count);
 }

@@ -1,7 +1,7 @@
 #include "device/Input.hpp"
 
+#include "device/Keyboard.hpp"
 #include "device/Mouse.hpp"
-#include "device/private/SdlKeyboard.hpp"
 
 void Device::submitButtonEvent(const DevButtonEvent& event)
 {
@@ -11,13 +11,13 @@ void Device::submitButtonEvent(const DevButtonEvent& event)
     }
     else
     {
-        DevSdlKeyboard::sdlInstance().submitKeyEvent(event);
+        DevKeyboard::instance().submitKeyEvent(event);
     }
 }
 
 void Device::submitCharEvent(const DevButtonEvent& event)
 {
-    DevSdlKeyboard::sdlInstance().submitCharEvent(event);
+    DevKeyboard::instance().submitCharEvent(event);
 }
 
 void Device::submitPointerPosition(int x, int y)
@@ -32,6 +32,6 @@ void Device::submitPointerMotion(double relativeX, double relativeY)
 
 void Device::submitFocusLost()
 {
-    DevSdlKeyboard::sdlInstance().submitFocusLost();
+    DevKeyboard::instance().submitFocusLost();
     DevMouse::instance().submitFocusLost();
 }
