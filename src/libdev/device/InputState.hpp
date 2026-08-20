@@ -60,6 +60,10 @@ public:
     PointerMotion takePointerMotion();
     void addPointerMotion(double relativeX, double relativeY);
 
+    // How far an axis is pushed. Zero for one nothing has reported.
+    float axisValue(Axis axis) const;
+    void setAxisValue(Axis axis, float value);
+
     void pressButton(KeyCode code);
     void releaseButton(KeyCode code);
 
@@ -83,6 +87,7 @@ private:
     PointerMotion pointerMotion_{};
 
     bool buttons_[MAX_CODE]{};
+    float axes_[MAX_AXIS]{};
 
     // How many of the held buttons are keys, kept alongside so that
     // isAnyKeyPressed does not have to sweep the map.

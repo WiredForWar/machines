@@ -186,4 +186,39 @@ inline constexpr bool isKey(KeyCode code)
     return (code != KeyCode::UNKNOWN) && (code < KeyCode::MOUSE_LEFT);
 }
 
+// A continuous input, as against a button. A stick, a trigger or a thumbstick
+// reads as a scalar and has no press or release to pair up.
+//
+// A stick runs -1 to 1 about a centre; a trigger runs 0 to 1 from its rest.
+// Mouse travel is deliberately not an axis: it is unbounded per-frame movement a
+// consumer drains, not a position a consumer samples, and giving the two one
+// name is how mouse look and stick look end up sharing a sensitivity bug.
+enum class Axis : uint16_t
+{
+    UNKNOWN,
+
+    // The set every gamepad and hand controller reports.
+    PAD_LEFT_X,
+    PAD_LEFT_Y,
+    PAD_RIGHT_X,
+    PAD_RIGHT_Y,
+    PAD_LEFT_TRIGGER,
+    PAD_RIGHT_TRIGGER,
+
+    COUNT,
+};
+
+// True for an axis that rests at an end rather than about a centre, so its
+// value never goes negative.
+inline constexpr bool isTriggerAxis(Axis axis)
+{
+    return (axis == Axis::PAD_LEFT_TRIGGER) || (axis == Axis::PAD_RIGHT_TRIGGER);
+}
+
+inline constexpr int MAX_AXIS = static_cast<int>(Axis::COUNT);
+inline constexpr bool isValidAxis(Axis axis)
+{
+    return (static_cast<int>(axis) < MAX_AXIS);
+}
+
 } // namespace Device

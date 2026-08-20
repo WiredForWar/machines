@@ -55,6 +55,22 @@ void Device::InputState::addPointerMotion(double relativeX, double relativeY)
     pointerMotion_.y += relativeY;
 }
 
+float Device::InputState::axisValue(Axis axis) const
+{
+    PRE(isValidAxis(axis));
+
+    return axes_[static_cast<std::size_t>(axis)];
+}
+
+void Device::InputState::setAxisValue(Axis axis, float value)
+{
+    PRE(isValidAxis(axis));
+    PRE(value <= 1.0F);
+    PRE(value >= (isTriggerAxis(axis) ? 0.0F : -1.0F));
+
+    axes_[static_cast<std::size_t>(axis)] = value;
+}
+
 void Device::InputState::pressButton(KeyCode code)
 {
     PRE(isValidCode(code));
