@@ -90,9 +90,7 @@ void DevKeyboard::submitFocusLost()
             scanCode,
             DevButtonEvent::RELEASE,
             true, // previous: the key was down
-            false, // shift
-            false, // ctrl
-            false, // alt
+            KeyModifierFlags(), // nothing is held any more
             now,
             cursor.x,
             cursor.y,

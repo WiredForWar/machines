@@ -3,7 +3,7 @@
 #include "base/Diag.hpp"
 #include "crashdump/CrashDump.hpp"
 #include "device/Input.hpp"
-#include "device/Keyboard.hpp"
+#include "device/InputState.hpp"
 #include "device/Mouse.hpp"
 #include "device/SdlKeyCodes.hpp"
 #include "device/Time.hpp"
@@ -370,29 +370,6 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
     }
 }
 
-namespace
-{
-
-struct HeldModifiers
-{
-    bool shift{};
-    bool ctrl{};
-    bool alt{};
-};
-
-// The modifiers the game believes are held. Taken from DevKeyboard rather than
-// from SDL, so a submitted key press counts on the same terms as a real one.
-HeldModifiers heldModifiers()
-{
-    return {
-        .shift = DevKeyboard::instance().shiftPressed(),
-        .ctrl = DevKeyboard::instance().ctrlPressed(),
-        .alt = DevKeyboard::instance().altPressed(),
-    };
-}
-
-} // namespace
-
 void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
 {
     const DevButtonEvent::ScanCode code = [](uint8_t button) {
@@ -440,7 +417,9 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
     const int x = static_cast<int>(event->button.x);
     const int y = static_cast<int>(event->button.y);
 
-    const HeldModifiers modifiers = heldModifiers();
+    // The modifiers the game believes are held, rather than SDL's view, so a
+    // submitted key press counts on the same terms as a real one.
+    const KeyModifierFlags modifiers = Device::InputState::instance().heldModifiers();
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->button.timestamp;
@@ -449,8 +428,7 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const size_t repeats = 1;
 
-    Device::submitButtonEvent(
-        DevButtonEvent(code, act, previous, modifiers.shift, modifiers.ctrl, modifiers.alt, time, x, y, repeats));
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, modifiers, time, x, y, repeats));
 }
 
 void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
@@ -475,7 +453,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const int x = static_cast<int>(event->wheel.mouse_x);
     const int y = static_cast<int>(event->wheel.mouse_y);
 
-    const HeldModifiers modifiers = heldModifiers();
+    const KeyModifierFlags modifiers = Device::InputState::instance().heldModifiers();
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->wheel.timestamp;
@@ -485,8 +463,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const bool previous = false;
     const size_t repeats = 1;
 
-    Device::submitButtonEvent(
-        DevButtonEvent(code, act, previous, modifiers.shift, modifiers.ctrl, modifiers.alt, time, x, y, repeats));
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, modifiers, time, x, y, repeats));
 }
 
 void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
@@ -502,10 +479,7 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
 
     // Use the event's own modifier state rather than SDL_GetKeyboardState which
     // can carry stale modifier flags from before the game window gained focus.
-    const SDL_Keymod mod = event->key.mod;
-    const bool shift = (mod & (SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)) != 0;
-    const bool ctrl = (mod & (SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)) != 0;
-    const bool alt = (mod & (SDL_KMOD_LALT | SDL_KMOD_RALT)) != 0;
+    const KeyModifierFlags modifiers = Device::modifiersFromSdl(event->key.mod);
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->key.timestamp;
@@ -514,15 +488,12 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 
-    Device::submitButtonEvent(DevButtonEvent(code, act, previous, shift, ctrl, alt, time, x, y, rpt));
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, modifiers, time, x, y, rpt));
 }
 
 void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
 {
     // Just default these values. We're not interested in them when it's a char event.
-    const bool shift = false;
-    const bool ctrl = false;
-    const bool alt = false;
     const bool previous = false;
     const uint16_t rpt = 1;
     const DevButtonEvent::ScanCode code = Device::KeyCode::KEY_A;
@@ -536,7 +507,7 @@ void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->text.timestamp;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt, event->text.text[0]);
+    const DevButtonEvent ev(code, act, previous, KeyModifierFlags(), time, x, y, rpt, event->text.text[0]);
 
     DEBUG_STREAM(DIAG_NEIL, "char event " << event->text.text[0] << std::endl);
 
@@ -555,7 +526,7 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const int x = pos.x;
     const int y = pos.y;
 
-    const HeldModifiers modifiers = heldModifiers();
+    const KeyModifierFlags modifiers = Device::InputState::instance().heldModifiers();
 
     // Get the message's time.
     const double time = DevTime::instance().resolution() * event->tfinger.timestamp;
@@ -565,6 +536,5 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const size_t repeats = 1;
 
-    Device::submitButtonEvent(
-        DevButtonEvent(code, act, previous, modifiers.shift, modifiers.ctrl, modifiers.alt, time, x, y, repeats));
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, modifiers, time, x, y, repeats));
 }

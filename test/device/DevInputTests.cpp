@@ -12,7 +12,7 @@ namespace
 
 DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, int x = 0, int y = 0)
 {
-    return DevButtonEvent{ code, action, false, false, false, false, DevTime::instance().time(), x, y, 1 };
+    return DevButtonEvent{ code, action, false, KeyModifierFlags(), DevTime::instance().time(), x, y, 1 };
 }
 
 // Put the process-wide input state and queue back to a known point: ask for the

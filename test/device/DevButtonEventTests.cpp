@@ -12,7 +12,7 @@ DevButtonEvent makeEvent(
     double time = 10000.0,
     char print = 0)
 {
-    return DevButtonEvent{ code, action, false, false, false, false, time, 20, 20, 1, print };
+    return DevButtonEvent{ code, action, false, KeyModifierFlags(), time, 20, 20, 1, print };
 }
 
 } // namespace

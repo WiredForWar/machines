@@ -54,12 +54,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
 {
     PRE(pCommandId);
 
-    const KeyWithModifiers keyWithMods(
-        buttonEvent.scanCode(),
-        KeyModifierFlags::fromCtrlAltShiftState(
-            buttonEvent.wasCtrlPressed(),
-            buttonEvent.wasAltPressed(),
-            buttonEvent.wasShiftPressed()));
+    const KeyWithModifiers keyWithMods(buttonEvent.scanCode(), buttonEvent.modifiers());
 
     for (const DevKeyToCommand* pTranslation : commandTranslations_)
     {
@@ -81,12 +76,7 @@ bool DevKeyToCommandTranslator::translate(const DevButtonEvent& buttonEvent, Com
     bool found = false; // Returned to caller to indicate that a command using the
                         // buttonEvent was found.
 
-    const KeyWithModifiers keyWithMods(
-        buttonEvent.scanCode(),
-        KeyModifierFlags::fromCtrlAltShiftState(
-            buttonEvent.wasCtrlPressed(),
-            buttonEvent.wasAltPressed(),
-            buttonEvent.wasShiftPressed()));
+    const KeyWithModifiers keyWithMods(buttonEvent.scanCode(), buttonEvent.modifiers());
 
     // Process key presses...
     if (buttonEvent.action() == DevButtonEvent::PRESS)

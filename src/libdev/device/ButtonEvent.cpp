@@ -8,9 +8,7 @@ DevButtonEvent::DevButtonEvent(
     ScanCode code,
     Action action,
     bool prev,
-    bool shift,
-    bool ctrl,
-    bool alt,
+    KeyModifierFlags modifiers,
     double time,
     int x,
     int y,
@@ -21,12 +19,10 @@ DevButtonEvent::DevButtonEvent(
     , action_(action)
     , time_(time)
     , repeatCount_(repeat)
+    , modifiers_(modifiers)
     , printable_(print)
     , press_(action == PRESS)
     , previous_(prev)
-    , shift_(shift)
-    , ctrl_(ctrl)
-    , alt_(alt)
 {
 }
 
@@ -50,19 +46,24 @@ size_t DevButtonEvent::repeatCount() const
     return repeatCount_;
 }
 
+KeyModifierFlags DevButtonEvent::modifiers() const
+{
+    return modifiers_;
+}
+
 bool DevButtonEvent::wasShiftPressed() const
 {
-    return shift_;
+    return modifiers_ & KeyModifierFlags(Device::KeyModifier::Shift);
 }
 
 bool DevButtonEvent::wasCtrlPressed() const
 {
-    return ctrl_;
+    return modifiers_ & KeyModifierFlags(Device::KeyModifier::Ctrl);
 }
 
 bool DevButtonEvent::wasAltPressed() const
 {
-    return alt_;
+    return modifiers_ & KeyModifierFlags(Device::KeyModifier::Alt);
 }
 
 double DevButtonEvent::time() const
@@ -122,7 +123,7 @@ DevButtonEvent DevButtonEvent::decompressRepeats()
 bool DevButtonEvent::operator==(const DevButtonEvent& ev) const
 {
     return code_ == ev.code_ && action_ == ev.action_ && coords_ == ev.coords_ && printable_ == ev.printable_
-        && press_ == ev.press_ && shift_ == ev.shift_ && ctrl_ == ev.ctrl_ && alt_ == ev.alt_;
+        && press_ == ev.press_ && modifiers_ == ev.modifiers_;
 }
 
 bool DevButtonEvent::operator<(const DevButtonEvent& ev) const

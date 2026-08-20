@@ -2,6 +2,14 @@
 
 #include <unordered_map>
 
+KeyModifierFlags Device::modifiersFromSdl(SDL_Keymod sdlModifiers)
+{
+    return KeyModifierFlags::fromCtrlAltShiftState(
+        (sdlModifiers & (SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)) != 0,
+        (sdlModifiers & (SDL_KMOD_LALT | SDL_KMOD_RALT)) != 0,
+        (sdlModifiers & (SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)) != 0);
+}
+
 Device::KeyCode Device::codeFromSdlScanCode(SDL_Scancode sdlCode)
 {
     static const std::unordered_map<SDL_Scancode, Device::KeyCode> map = {

@@ -88,9 +88,7 @@ void DevMouse::announceButtonRelease(Device::KeyCode code)
         code,
         DevButtonEvent::RELEASE,
         true, // previous: the button was down
-        false, // shift
-        false, // ctrl
-        false, // alt
+        KeyModifierFlags(), // nothing is held any more
         DevTime::instance().time(),
         position().x,
         position().y,
