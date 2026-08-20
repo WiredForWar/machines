@@ -1,41 +1,30 @@
-/*
- * E V E N T Q . H P P
- * (c) Charybdis Limited, 1997. All Rights Reserved
- */
+#pragma once
 
-#ifndef _DEVICE_EVENTQ_HPP
-#define _DEVICE_EVENTQ_HPP
-
-#include "base/base.hpp"
-#include "ctl/List.hpp"
 #include "device/ButtonEvent.hpp"
-
-#include "recorder/Recorder.hpp"
-#include "recorder/private/RecorderPrivate.hpp"
 #include "utility/DependencyProvider.hpp"
 
+#include "base/base.hpp"
+
+#include <deque>
+
 // Stores a FIFO of input device events.
-template <
-    typename RecRecorderDep = RecRecorder,
-    typename RecRecorderPrivDep = RecRecorderPrivate,
-    typename DevTimeDep = DevTime>
-class DevEventQueueT
+class DevEventQueue
 {
 public:
     using DevButtonEventType = DevButtonEvent;
-    using ScanCode = DevButtonEventType::ScanCode;
-    using Action = DevButtonEventType::Action;
+    using ScanCode = DevButtonEvent::ScanCode;
+    using Action = DevButtonEvent::Action;
 
     //  Singleton class
-    static DevEventQueueT& instance();
-    virtual ~DevEventQueueT();
+    static DevEventQueue& instance();
+    virtual ~DevEventQueue();
 
     // Removes the oldest event from the queue.  If an event has a repeat
     // counts greater than one, this fn. will return multiple copies each of
     // which has its count set to one, hence the post-condition.
     // PRE(!isEmpty());
     // POST(result.repeatCount() == 1);
-    DevButtonEventType oldestEvent();
+    DevButtonEvent oldestEvent();
 
     // For each scan-code you must request that events be queued; otherwise they
     // won't be added to the queue.  You can request both press and release
@@ -63,10 +52,7 @@ public:
     void CLASS_INVARIANT;
 
 protected:
-    DevEventQueueT();
-
-    DependencyProvider<RecRecorderDep> recorderDependency_;
-    DependencyProvider<RecRecorderPrivDep> recorderPrivDependency_;
+    DevEventQueue();
 
     constexpr uchar getReleaseFilterFor(ScanCode code) const { return releaseFilter_[static_cast<int>(code)]; }
     constexpr uchar getPressFilterFor(ScanCode code) const { return pressFilter_[static_cast<int>(code)]; }
@@ -74,52 +60,43 @@ protected:
     constexpr bool getScrollDownFilter() const { return scrollDownFilter_; }
 
     // PRE(event.scanCode() < Device::KeyCode::MAX_CODE);
-    void queueEvent(const DevButtonEventType&);
+    void queueEvent(const DevButtonEvent&);
 
 private:
     void setReleaseFilterFor(ScanCode code, bool value) { releaseFilter_[static_cast<int>(code)] = value; }
     void setPressFilterFor(ScanCode code, bool value) { pressFilter_[static_cast<int>(code)] = value; }
 
     // Only these classes can add events to the back of the queue.
-    friend class DevWin95Keyboard;
     friend class DevSdlKeyboard;
-    // DevMouse is an alias of this:
     template <typename, typename, typename, typename> friend class DevMouseT;
 
     // Internal convenience methods.
-    bool filterEvent(const DevButtonEventType&) const;
+    bool filterEvent(const DevButtonEvent&) const;
 
-    ctl_list<DevButtonEventType>* list_;
+    std::deque<DevButtonEvent> events_{};
 
     // These tables determine which events are queued.
     uchar releaseFilter_[Device::MAX_CODE]{};
     uchar pressFilter_[Device::MAX_CODE]{};
 
-    bool scrollUpFilter_ = false;
-    bool scrollDownFilter_ = false;
-    bool scrollLeftFilter_ = false;
-    bool scrollRightFilter_ = false;
+    bool scrollUpFilter_{};
+    bool scrollDownFilter_{};
+    bool scrollLeftFilter_{};
+    bool scrollRightFilter_{};
 
     // Operation deliberately revoked
-    DevEventQueueT(const DevEventQueueT&);
-    DevEventQueueT& operator=(const DevEventQueueT&);
-    bool operator==(const DevEventQueueT&);
+    DevEventQueue(const DevEventQueue&) = delete;
+    DevEventQueue& operator=(const DevEventQueue&) = delete;
+    bool operator==(const DevEventQueue&) = delete;
 
 public:
-    friend inline std::ostream&
-    operator<<(std::ostream& o, const DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>& t)
+    friend inline std::ostream& operator<<(std::ostream& o, const DevEventQueue& t)
     {
         o << "Event queue:" << std::endl;
 
-        // Ayy Lmao
-        using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-        using ButtonEvent_Iterator = typename ctl_list<ButtonEvent>::const_iterator;
-
-        ButtonEvent_Iterator it = t.list_->begin();
-        while (it != t.list_->end())
+        for (const DevButtonEvent& event : t.events_)
         {
-            o << "\t" << *it << std::endl;
-            ++it;
+            o << "\t" << event << std::endl;
         }
 
         o << std::endl;
@@ -138,10 +115,6 @@ public:
     }
 };
 
-// !!!!!!!! CONCRETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-using DevEventQueue = DevEventQueueT<RecRecorder, RecRecorderPrivate, DevTime>;
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 /* *******************************************************
  * SINGLETON DEPENDENCY PROVIDER
  */
@@ -149,7 +122,3 @@ template <> inline DevEventQueue& DependencyProvider<DevEventQueue>::getProvided
 {
     return DevEventQueue::instance();
 }
-
-#endif
-
-/* End EVENTQ.HPP ***************************************************/

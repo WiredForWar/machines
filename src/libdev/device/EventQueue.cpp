@@ -1,25 +1,14 @@
-/*
- * E V E N T Q . C P P
- * (c) Charybdis Limited, 1997. All Rights Reserved
- */
-
 #include "device/EventQueue.hpp"
 
 // static
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>&
-DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::instance()
+DevEventQueue& DevEventQueue::instance()
 {
     static DevEventQueue instance_;
     return instance_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevEventQueueT()
-    : list_(new ctl_list<typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType>)
+DevEventQueue::DevEventQueue()
 {
-    ASSERT(list_, "Failed to allocate device event queue.");
-
     // By default we don't queue anything until asked.
     // The middle mouse wheel is the only button that would receive these.
     // Explicity ask for these using queueEvents w/ middle mouse wheel scan code.
@@ -27,27 +16,22 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevEventQueueT()
     TEST_INVARIANT;
 }
 
-// virtual
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::~DevEventQueueT()
+DevEventQueue::~DevEventQueue()
 {
     TEST_INVARIANT;
-    delete list_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType
-DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::oldestEvent()
+DevButtonEvent DevEventQueue::oldestEvent()
 {
-    using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-    ButtonEvent result;
+    PRE(!isEmpty());
 
-    ButtonEvent& front = list_->front();
+    DevButtonEvent result;
+    DevButtonEvent& front = events_.front();
 
     if (front.repeatCount() == 1)
     {
         result = front;
-        list_->pop_front();
+        events_.pop_front();
     }
     else
     {
@@ -59,52 +43,38 @@ DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::oldestEvent()
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvent(
-    const typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType& event)
+void DevEventQueue::queueEvent(const DevButtonEvent& event)
 {
     PRE(Device::isValidCode(event.scanCode()));
 
-    if (filterEvent(event))
-    {
-        // If there is an event at the back of the queue which matches the
-        // current one, they are compressed and we don't add a new event.
+    if (!filterEvent(event))
+        return;
 
-        //  list_->size() is used rather than length() because this function
-        //  is called from the Windows event handler. This stops the recording
-        //  working properly. Bob
+    // If there is an event at the back of the queue which matches the
+    // current one, they are compressed and we don't add a new event.
+    if (!events_.empty() && events_.back().compressRepeats(event))
+        return;
 
-        if (list_->size() > 0 && list_->back().compressRepeats(event))
-        {
-            return;
-        }
-        else
-        {
-            list_->push_back(event);
-        }
-    }
+    events_.push_back(event);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent(
-    const typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType& event) const
+bool DevEventQueue::filterEvent(const DevButtonEvent& event) const
 {
-    using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
     PRE(Device::isValidCode(event.scanCode()));
 
     switch (event.action())
     {
-        case ButtonEvent::RELEASE:
+        case DevButtonEvent::RELEASE:
             return getReleaseFilterFor(event.scanCode());
-        case ButtonEvent::PRESS:
+        case DevButtonEvent::PRESS:
             return getPressFilterFor(event.scanCode());
-        case ButtonEvent::SCROLL_UP:
+        case DevButtonEvent::SCROLL_UP:
             return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollUpFilter_);
-        case ButtonEvent::SCROLL_DOWN:
+        case DevButtonEvent::SCROLL_DOWN:
             return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollDownFilter_);
-        case ButtonEvent::SCROLL_LEFT:
+        case DevButtonEvent::SCROLL_LEFT:
             return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollLeftFilter_);
-        case ButtonEvent::SCROLL_RIGHT:
+        case DevButtonEvent::SCROLL_RIGHT:
             return (event.scanCode() == Device::KeyCode::MOUSE_MIDDLE && scrollRightFilter_);
         default:
             ASSERT_BAD_CASE;
@@ -114,8 +84,7 @@ bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::filterEvent
     return false;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents(ScanCode code)
+void DevEventQueue::queueEvents(ScanCode code)
 {
     PRE_INFO(static_cast<int>(code));
     PRE(Device::isValidCode(code));
@@ -123,41 +92,38 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents
     setPressFilterFor(code, true);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEvents(ScanCode code)
+void DevEventQueue::dontQueueEvents(ScanCode code)
 {
     PRE(Device::isValidCode(code));
     setReleaseFilterFor(code, false);
     setPressFilterFor(code, false);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents(ScanCode code, Action action)
+void DevEventQueue::queueEvents(ScanCode code, Action action)
 {
-    using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
     PRE(Device::isValidCode(code));
 
     switch (action)
     {
-        case ButtonEvent::RELEASE:
+        case DevButtonEvent::RELEASE:
             setReleaseFilterFor(code, true);
             break;
-        case ButtonEvent::PRESS:
+        case DevButtonEvent::PRESS:
             setPressFilterFor(code, true);
             break;
-        case ButtonEvent::SCROLL_UP:
+        case DevButtonEvent::SCROLL_UP:
             // only set for middle mouse
             scrollUpFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
-        case ButtonEvent::SCROLL_DOWN:
+        case DevButtonEvent::SCROLL_DOWN:
             // only set for middle mouse
             scrollDownFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
-        case ButtonEvent::SCROLL_LEFT:
+        case DevButtonEvent::SCROLL_LEFT:
             // only set for middle mouse
             scrollLeftFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
-        case ButtonEvent::SCROLL_RIGHT:
+        case DevButtonEvent::SCROLL_RIGHT:
             // only set for middle mouse
             scrollRightFilter_ = code == Device::KeyCode::MOUSE_MIDDLE;
             break;
@@ -167,33 +133,31 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::queueEvents
     }
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEvents(ScanCode code, Action action)
+void DevEventQueue::dontQueueEvents(ScanCode code, Action action)
 {
-    using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
     PRE(Device::isValidCode(code));
 
     switch (action)
     {
-        case ButtonEvent::RELEASE:
+        case DevButtonEvent::RELEASE:
             setReleaseFilterFor(code, false);
             break;
-        case ButtonEvent::PRESS:
+        case DevButtonEvent::PRESS:
             setPressFilterFor(code, false);
             break;
-        case ButtonEvent::SCROLL_UP:
+        case DevButtonEvent::SCROLL_UP:
             // only set for middle mouse
             scrollUpFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollUpFilter_;
             break;
-        case ButtonEvent::SCROLL_DOWN:
+        case DevButtonEvent::SCROLL_DOWN:
             // only set for middle mouse
             scrollDownFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollDownFilter_;
             break;
-        case ButtonEvent::SCROLL_LEFT:
+        case DevButtonEvent::SCROLL_LEFT:
             // only set for middle mouse
             scrollLeftFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollLeftFilter_;
             break;
-        case ButtonEvent::SCROLL_RIGHT:
+        case DevButtonEvent::SCROLL_RIGHT:
             // only set for middle mouse
             scrollRightFilter_ = (code == Device::KeyCode::MOUSE_MIDDLE) ? false : scrollRightFilter_;
             break;
@@ -203,37 +167,20 @@ void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::dontQueueEv
     }
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-size_t DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::length() const
+size_t DevEventQueue::length() const
 {
-    return list_->size();
+    return events_.size();
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-bool DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::isEmpty() const
+bool DevEventQueue::isEmpty() const
 {
-    return length() == 0;
+    return events_.empty();
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep>
-void DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::CLASS_INVARIANT
+void DevEventQueue::CLASS_INVARIANT
 {
-    INVARIANT(list_);
-
-    // Ayy Lmao
-    using ButtonEvent = typename DevEventQueueT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep>::DevButtonEventType;
-    using ButtonEvent_Iterator = typename ctl_list<ButtonEvent>::const_iterator;
-
-    // This will fail for default objects!
-    ButtonEvent_Iterator it = list_->begin();
-    while (it != list_->end())
+    for (const DevButtonEvent& event : events_)
     {
-        const ButtonEvent& ev = *it;
-        INVARIANT(Device::isValidCode(ev.scanCode()));
-        ++it;
+        INVARIANT(Device::isValidCode(event.scanCode()));
     }
 }
-
-// Instantiate the template identified by DevEventQueue alias
-template class DevEventQueueT<RecRecorder, RecRecorderPrivate, DevTime>;
-/* End EVENTQ.CPP ***************************************************/
