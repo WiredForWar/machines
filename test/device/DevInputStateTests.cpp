@@ -11,6 +11,8 @@ Device::InputState& freshState()
     state.releaseAllButtons();
     state.takePointerMotion();
     state.setPointerPosition({});
+    for (int axis = 0; axis != Device::MAX_AXIS; ++axis)
+        state.setAxisValue(static_cast<Device::Axis>(axis), 0.0F);
     return state;
 }
 
@@ -143,4 +145,31 @@ TEST(DevInputStateTests, TravelIsIndependentOfThePosition)
     ASSERT_EQ(10, state.pointerPosition().x);
     ASSERT_EQ(10, state.pointerPosition().y);
     ASSERT_DOUBLE_EQ(50.0, state.takePointerMotion().x);
+}
+
+TEST(DevInputStateTests, AnAxisRestsAtZeroUntilReported)
+{
+    Device::InputState& state = freshState();
+
+    ASSERT_FLOAT_EQ(0.0F, state.axisValue(Device::Axis::PAD_LEFT_X));
+
+    state.setAxisValue(Device::Axis::PAD_LEFT_X, -0.75F);
+    ASSERT_FLOAT_EQ(-0.75F, state.axisValue(Device::Axis::PAD_LEFT_X));
+
+    // One axis does not disturb another.
+    ASSERT_FLOAT_EQ(0.0F, state.axisValue(Device::Axis::PAD_LEFT_Y));
+}
+
+TEST(DevInputStateTests, ATriggerRestsAtAnEndAndAStickAtACentre)
+{
+    Device::InputState& state = freshState();
+
+    ASSERT_TRUE(Device::isTriggerAxis(Device::Axis::PAD_RIGHT_TRIGGER));
+    ASSERT_FALSE(Device::isTriggerAxis(Device::Axis::PAD_RIGHT_X));
+
+    state.setAxisValue(Device::Axis::PAD_RIGHT_TRIGGER, 1.0F);
+    state.setAxisValue(Device::Axis::PAD_RIGHT_X, -1.0F);
+
+    ASSERT_FLOAT_EQ(1.0F, state.axisValue(Device::Axis::PAD_RIGHT_TRIGGER));
+    ASSERT_FLOAT_EQ(-1.0F, state.axisValue(Device::Axis::PAD_RIGHT_X));
 }
