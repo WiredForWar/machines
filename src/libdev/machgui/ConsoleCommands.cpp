@@ -10,6 +10,10 @@
 #include "machgui/db/DbPlayer.hpp"
 #include "machgui/db/DbSavedGame.hpp"
 #include "base/IProgressReporter.hpp"
+#include "device/Input.hpp"
+#include "device/KeyNames.hpp"
+#include "device/Mouse.hpp"
+#include "device/Time.hpp"
 #include "gui/Manager.hpp"
 #include "gui/Screenshots.hpp"
 #include "ctl/Vector.hpp"
@@ -1726,6 +1730,175 @@ void loadPlanetCommand(MachGuiStartupScreens* pStartup, const Request& request, 
     console.writeLine("Loading " + name + " for " + std::string(MachPhys::toString(race)) + ".");
 }
 
+// ============================================================
+// Input commands
+// ============================================================
+
+DevButtonEvent makeInputEvent(
+    Device::KeyCode code,
+    DevButtonEvent::Action action,
+    KeyModifierFlags modifiers,
+    const DevMouse::Position& at)
+{
+    using Device::KeyModifier;
+
+    return DevButtonEvent(
+        code,
+        action,
+        false, // previous
+        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Shift)),
+        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Ctrl)),
+        static_cast<bool>(modifiers & KeyModifierFlags(KeyModifier::Alt)),
+        DevTime::instance().time(),
+        at.first,
+        at.second,
+        1);
+}
+
+// The position to act at: the argument if there is one, else wherever the
+// pointer already is. Moves the pointer when an argument is given.
+std::optional<DevMouse::Position>
+resolvePosition(const Request& request, std::size_t argIndex, Console& console)
+{
+    if (request.arguments.size() <= argIndex || !request.arguments[argIndex].provided)
+        return DevMouse::instance().position();
+
+    const std::string& text = std::get<std::string>(request.arguments[argIndex].value);
+    const std::optional<MexPoint2d> coords = parseCoordinates(text);
+    if (!coords)
+    {
+        console.reportError("Expected a position as x,y but got: " + text);
+        return std::nullopt;
+    }
+
+    const DevMouse::Position position(static_cast<int>(coords->x()), static_cast<int>(coords->y()));
+    Device::submitPointerPosition(position.first, position.second);
+    return position;
+}
+
+void inputPosCommand(const Request& request, Console& console)
+{
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        const DevMouse::Position& position = DevMouse::instance().position();
+        console.writeLine(std::to_string(position.first) + "," + std::to_string(position.second));
+        return;
+    }
+
+    if (resolvePosition(request, 0, console))
+    {
+        const DevMouse::Position& position = DevMouse::instance().position();
+        console.writeLine(
+            "Pointer at " + std::to_string(position.first) + "," + std::to_string(position.second) + ".");
+    }
+}
+
+void inputMoveCommand(const Request& request, Console& console)
+{
+    const std::string& text = std::get<std::string>(request.arguments[0].value);
+    const std::optional<MexPoint2d> travel = parseCoordinates(text);
+    if (!travel)
+    {
+        console.reportError("Expected travel as dx,dy but got: " + text);
+        return;
+    }
+
+    Device::submitPointerMotion(travel->x(), travel->y());
+    console.writeLine("Travelled " + text + ".");
+}
+
+void inputClickCommand(const Request& request, Console& console)
+{
+    Device::KeyCode code = Device::KeyCode::MOUSE_LEFT;
+    if (!request.arguments.empty() && request.arguments[0].provided)
+    {
+        const std::string& name = std::get<std::string>(request.arguments[0].value);
+        const std::optional<Device::KeyCode> parsed = Device::codeFromString(name);
+        if (!parsed || !Device::isMouseButton(*parsed))
+        {
+            console.reportError("Not a mouse button: " + name + ". Try left, right, middle or MOUSE_EXTRA1.");
+            return;
+        }
+        code = *parsed;
+    }
+
+    const std::optional<DevMouse::Position> at = resolvePosition(request, 1, console);
+    if (!at)
+        return;
+
+    Device::submitButtonEvent(makeInputEvent(code, DevButtonEvent::PRESS, {}, *at));
+    Device::submitButtonEvent(makeInputEvent(code, DevButtonEvent::RELEASE, {}, *at));
+
+    console.writeLine(
+        "Clicked " + Device::toString(code) + " at " + std::to_string(at->first) + "," + std::to_string(at->second)
+        + ".");
+}
+
+void inputKeyCommand(const Request& request, Console& console)
+{
+    const std::string& text = std::get<std::string>(request.arguments[0].value);
+    const std::optional<KeyWithModifiers> chord = Device::chordFromString(text);
+    if (!chord)
+    {
+        console.reportError("Not a key: " + text + ". Try KEY_W, ESCAPE or Ctrl+Shift+F10.");
+        return;
+    }
+
+    std::string action = "tap";
+    if (request.arguments.size() > 1 && request.arguments[1].provided)
+        action = std::get<std::string>(request.arguments[1].value);
+
+    const bool press = (action == "tap" || action == "press");
+    const bool release = (action == "tap" || action == "release");
+    if (!press && !release)
+    {
+        console.reportError("Unknown action: " + action + ". Use press, release or tap.");
+        return;
+    }
+
+    const DevMouse::Position& at = DevMouse::instance().position();
+
+    if (press)
+    {
+        Device::submitButtonEvent(
+            makeInputEvent(chord->keyCode(), DevButtonEvent::PRESS, chord->modifiers(), at));
+    }
+    if (release)
+    {
+        Device::submitButtonEvent(
+            makeInputEvent(chord->keyCode(), DevButtonEvent::RELEASE, chord->modifiers(), at));
+    }
+
+    console.writeLine(action + " " + text + ".");
+}
+
+void inputScrollCommand(const Request& request, Console& console)
+{
+    const std::string& direction = std::get<std::string>(request.arguments[0].value);
+
+    DevButtonEvent::Action action{};
+    if (direction == "up")
+        action = DevButtonEvent::SCROLL_UP;
+    else if (direction == "down")
+        action = DevButtonEvent::SCROLL_DOWN;
+    else if (direction == "left")
+        action = DevButtonEvent::SCROLL_LEFT;
+    else if (direction == "right")
+        action = DevButtonEvent::SCROLL_RIGHT;
+    else
+    {
+        console.reportError("Unknown scroll direction: " + direction + ". Use up, down, left or right.");
+        return;
+    }
+
+    const std::optional<DevMouse::Position> at = resolvePosition(request, 1, console);
+    if (!at)
+        return;
+
+    Device::submitButtonEvent(makeInputEvent(Device::KeyCode::MOUSE_MIDDLE, action, {}, *at));
+    console.writeLine("Scrolled " + direction + ".");
+}
+
 } // anonymous namespace
 
 } // namespace ConsoleImpl
@@ -1741,6 +1914,64 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
          .arguments = { {.name = "state", .type = Arg::Boolean, .optional = true, .description = "on or off. Omit to print current state." } },
          },
         setDevModeCommand);
+
+    // ---- Input commands ----
+
+    console.registerCommand(
+        {
+            .name = "input_pos",
+            .description = "Get/set the pointer position. Does not move the on-screen pointer.",
+            .arguments = { { .name = "pos", .type = Arg::String, .optional = true,
+                             .description = "Position as x,y. Omit to print the current one." } },
+        },
+        inputPosCommand);
+
+    console.registerCommand(
+        {
+            .name = "input_move",
+            .description = "Submit relative pointer travel, as mouse look reads it.",
+            .arguments = { { .name = "travel", .type = Arg::String,
+                             .description = "Travel as dx,dy in device counts." } },
+        },
+        inputMoveCommand);
+
+    console.registerCommand(
+        {
+            .name = "input_click",
+            .description = "Press and release a mouse button.",
+            .arguments = {
+                { .name = "button", .type = Arg::String, .optional = true,
+                  .description = "left, right, middle or MOUSE_EXTRA1. Defaults to left." },
+                { .name = "pos", .type = Arg::String, .optional = true,
+                  .description = "Position as x,y. Defaults to where the pointer is." },
+            },
+        },
+        inputClickCommand);
+
+    console.registerCommand(
+        {
+            .name = "input_key",
+            .description = "Submit a key event.",
+            .arguments = {
+                { .name = "key", .type = Arg::String,
+                  .description = "A key, as KEY_W, ESCAPE or Ctrl+Shift+F10." },
+                { .name = "action", .type = Arg::String, .optional = true,
+                  .description = "press, release or tap. Defaults to tap." },
+            },
+        },
+        inputKeyCommand);
+
+    console.registerCommand(
+        {
+            .name = "input_scroll",
+            .description = "Submit a mouse wheel event.",
+            .arguments = {
+                { .name = "direction", .type = Arg::String, .description = "up, down, left or right." },
+                { .name = "pos", .type = Arg::String, .optional = true,
+                  .description = "Position as x,y. Defaults to where the pointer is." },
+            },
+        },
+        inputScrollCommand);
 
     // ---- Camera commands ----
 
