@@ -530,29 +530,7 @@ std::ostream& operator<<(std::ostream& o, const RenSurface& t)
     return o;
 }
 
-namespace RenSurfaceImpl
-{
-namespace
-{
-
-// Wraps the rows in an SDL surface without copying them, so they have to outlive
-// the result.
-SDL_Surface* asSdlSurface(RenSurface::Pixels& pixels)
-{
-    // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on both
-    // little and big endian systems.
-    return SDL_CreateSurfaceFrom(
-        pixels.width,
-        pixels.height,
-        SDL_PIXELFORMAT_RGBA32,
-        pixels.rgba.data(),
-        pixels.width * 4);
-}
-
-} // namespace
-} // namespace RenSurfaceImpl
-
-RenSurface::Pixels RenSurface::readPixels(const Rect& area) const
+Ren::Pixels RenSurface::readPixels(const Rect& area) const
 {
     TEST_INVARIANT;
 
@@ -575,7 +553,7 @@ RenSurface::Pixels RenSurface::readPixels(const Rect& area) const
     RenDevice* dev = RenDevice::current();
     dev->flushCommandBuffer();
 
-    Pixels pixels{
+    Ren::Pixels pixels{
         .width = region.width,
         .height = region.height,
         .rgba = std::vector<unsigned char>(static_cast<std::size_t>(region.width) * region.height * 4),
@@ -610,48 +588,21 @@ RenSurface::Pixels RenSurface::readPixels(const Rect& area) const
 
 std::vector<unsigned char> RenSurface::encodePng(const Rect& area) const
 {
-    Pixels pixels = readPixels(area);
-    if (pixels.rgba.empty())
-        return {};
-
-    SDL_Surface* surface = RenSurfaceImpl::asSdlSurface(pixels);
-    if (! surface)
-        return {};
-
-    std::vector<unsigned char> png;
-
-    SDL_IOStream* stream = SDL_IOFromDynamicMem();
-    if (stream && IMG_SavePNG_IO(surface, stream, false))
-    {
-        const Sint64 size = SDL_GetIOSize(stream);
-        if (size > 0 && SDL_SeekIO(stream, 0, SDL_IO_SEEK_SET) == 0)
-        {
-            png.resize(static_cast<std::size_t>(size));
-            if (SDL_ReadIO(stream, png.data(), png.size()) != png.size())
-                png.clear();
-        }
-    }
-
-    if (stream)
-        SDL_CloseIO(stream);
-
-    SDL_DestroySurface(surface);
-
-    return png;
+    return Ren::encodePng(readPixels(area));
 }
 
 void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
 {
-    Pixels pixels = readPixels(area);
-    if (pixels.rgba.empty())
+    const std::vector<unsigned char> png = encodePng(area);
+    if (png.empty())
         return;
 
-    SDL_Surface* surface = RenSurfaceImpl::asSdlSurface(pixels);
-    if (! surface)
+    SDL_IOStream* file = SDL_IOFromFile(filename.pathname().c_str(), "wb");
+    if (! file)
         return;
 
-    IMG_SavePNG(surface, filename.pathname().c_str());
-    SDL_DestroySurface(surface);
+    SDL_WriteIO(file, png.data(), png.size());
+    SDL_CloseIO(file);
 }
 
 // These read/write functions are used for fog of war in savegame and store alpha only

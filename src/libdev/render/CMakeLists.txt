@@ -90,6 +90,8 @@ set(RENDER_SOURCES
     NonMMX.cpp
     Painter.cpp
     Painter.hpp
+    Pixels.cpp
+    Pixels.hpp
     PolySortedDraw.cpp
     PolySortPriority.cpp
     PrimitiveTopology.hpp
