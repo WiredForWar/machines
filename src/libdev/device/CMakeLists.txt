@@ -17,6 +17,8 @@ set(DEVICE_SOURCES
     CDPlayList.hpp
     EventQueue.cpp
     EventQueue.hpp
+    Input.cpp
+    Input.hpp
     internal/SdlTimeImpl.hpp
     Key.hpp
     Keyboard.hpp

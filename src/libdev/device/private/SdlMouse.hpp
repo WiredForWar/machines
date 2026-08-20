@@ -55,21 +55,20 @@ public:
     // class's position fn.
     Position getMessagePos() const;
 
+    // Report a button or wheel event.
+    void submitEvent(const DevButtonEvent&);
+
+    // The window has lost input focus. Any button held at this moment counts as
+    // released, and no further event will report it.
+    void submitFocusLost();
+
 protected:
     //  Singleton
     DevMouse();
     explicit DevMouse(SdlDelegate* useInstead);
     ~DevMouse();
 
-    void wm_button(const DevButtonEvent&);
-
-    // The window has lost input focus. Any button held at this moment counts as
-    // released, and no further event will report it.
-    void wm_killfocus();
-
 private:
-    friend class AfxSdlApp;
-
     // Queue a release for a button that will get no release of its own.
     void announceButtonRelease(Device::KeyCode code);
 

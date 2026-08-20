@@ -104,7 +104,7 @@ DevMouse::ButtonState DevMouse::deltaRightButton() const
     return result;
 }
 
-void DevMouse::wm_button(const DevButtonEvent& ev)
+void DevMouse::submitEvent(const DevButtonEvent& ev)
 {
     // Decode the message and set this object's internal state.
     switch (ev.scanCode())
@@ -145,7 +145,7 @@ void DevMouse::announceButtonRelease(Device::KeyCode code)
     DevEventQueue::instance().queueEvent(ev);
 }
 
-void DevMouse::wm_killfocus()
+void DevMouse::submitFocusLost()
 {
     // Clear the polled state ahead of the announcement, so that a button never
     // reads as down once its release has been queued.

@@ -180,6 +180,12 @@ inline constexpr bool isAlphaNumKey(KeyCode code)
     return (code >= KeyCode::KEY_A) && (code <= KeyCode::KEY_9);
 }
 
+// True for every code the mouse produces, wheel included.
+inline constexpr bool isMouseButton(KeyCode code)
+{
+    return (code >= KeyCode::MOUSE_LEFT) && (code <= KeyCode::MOUSE_EXTRA8);
+}
+
 void writeAsString(std::ostream&, KeyCode code);
 
 inline constexpr KeyCode getKeyWithoutModifiers(int value)
