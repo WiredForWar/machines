@@ -1,6 +1,7 @@
 #include "device/Mouse.hpp"
 
 #include "device/EventQueue.hpp"
+#include "device/InputState.hpp"
 #include "device/Time.hpp"
 
 // static
@@ -70,21 +71,18 @@ DevMouse::Motion DevMouse::takeRelativeMotion()
 
 void DevMouse::submitEvent(const DevButtonEvent& ev)
 {
-    // Decode the message and set this object's internal state.
-    switch (ev.scanCode())
+    if (ev.scanCode() == Device::KeyCode::MOUSE_MIDDLE)
     {
-        case Device::KeyCode::MOUSE_LEFT:
-            lButtonPressed_ = ev.action() == DevButtonEvent::PRESS;
-            break;
-        case Device::KeyCode::MOUSE_RIGHT:
-            rButtonPressed_ = ev.action() == DevButtonEvent::PRESS;
-            break;
-        case Device::KeyCode::MOUSE_MIDDLE:
-            scrolledUp_ = ev.action() == DevButtonEvent::SCROLL_UP;
-            scrolledDown_ = ev.action() == DevButtonEvent::SCROLL_DOWN;
-            break;
-        default:
-            break;
+        scrolledUp_ = ev.action() == DevButtonEvent::SCROLL_UP;
+        scrolledDown_ = ev.action() == DevButtonEvent::SCROLL_DOWN;
+    }
+    else if (ev.action() == DevButtonEvent::PRESS)
+    {
+        Device::InputState::instance().pressButton(ev.scanCode());
+    }
+    else if (ev.action() == DevButtonEvent::RELEASE)
+    {
+        Device::InputState::instance().releaseButton(ev.scanCode());
     }
 
     position(ev.cursorCoords().x(), ev.cursorCoords().y());
@@ -111,18 +109,17 @@ void DevMouse::announceButtonRelease(Device::KeyCode code)
 
 void DevMouse::submitFocusLost()
 {
-    // Clear the polled state ahead of the announcement, so that a button never
-    // reads as down once its release has been queued.
-    if (lButtonPressed_)
-    {
-        lButtonPressed_ = false;
-        announceButtonRelease(Device::KeyCode::MOUSE_LEFT);
-    }
+    Device::InputState& state = Device::InputState::instance();
 
-    if (rButtonPressed_)
+    // Clear the polled state ahead of each announcement, so that a button never
+    // reads as down once its release has been queued.
+    for (const Device::KeyCode code : { Device::KeyCode::MOUSE_LEFT, Device::KeyCode::MOUSE_RIGHT })
     {
-        rButtonPressed_ = false;
-        announceButtonRelease(Device::KeyCode::MOUSE_RIGHT);
+        if (!state.isButtonPressed(code))
+            continue;
+
+        state.releaseButton(code);
+        announceButtonRelease(code);
     }
 
     scrolledUp_ = false;
@@ -131,12 +128,12 @@ void DevMouse::submitFocusLost()
 
 bool DevMouse::leftButton() const
 {
-    return lButtonPressed_;
+    return Device::InputState::instance().isButtonPressed(Device::KeyCode::MOUSE_LEFT);
 }
 
 bool DevMouse::rightButton() const
 {
-    return rButtonPressed_;
+    return Device::InputState::instance().isButtonPressed(Device::KeyCode::MOUSE_RIGHT);
 }
 
 bool DevMouse::wheelScrollUp() const

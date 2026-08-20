@@ -179,4 +179,11 @@ inline constexpr bool isMouseButton(KeyCode code)
     return (code >= KeyCode::MOUSE_LEFT) && (code <= KeyCode::MOUSE_EXTRA8);
 }
 
+// True for a code a keyboard produces. The codes a keyboard has no key for sit
+// at and above MOUSE_LEFT.
+inline constexpr bool isKey(KeyCode code)
+{
+    return (code != KeyCode::UNKNOWN) && (code < KeyCode::MOUSE_LEFT);
+}
+
 } // namespace Device

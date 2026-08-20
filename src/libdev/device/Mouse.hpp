@@ -92,8 +92,6 @@ private:
 
     Position position_{};
     Motion relativeMotion_{};
-    bool lButtonPressed_{};
-    bool rButtonPressed_{};
     mutable bool scrolledUp_{};
     mutable bool scrolledDown_{};
 };
