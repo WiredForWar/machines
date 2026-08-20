@@ -11,6 +11,7 @@
 #include "render/render.hpp"
 
 #include <optional>
+#include <vector>
 
 class SysPathName;
 class RenColour;
@@ -102,6 +103,26 @@ public:
     void copyFromRGBABuffer(const uint* buff);
 
     void getPixel(int x, int y, RenColour*) const;
+
+    // An area of a surface brought back into main memory, four bytes per pixel,
+    // with the rows running from the top down.
+    struct Pixels
+    {
+        int width{};
+        int height{};
+        std::vector<unsigned char> rgba{};
+    };
+
+    // Reads back the given area, or the whole surface when the area is empty.
+    // The area is measured from the top left corner, and is brought inside the
+    // surface, so a caller need not know how much surface there is. Empty if
+    // nothing of the area is on the surface.
+    Pixels readPixels(const Rect& area = Rect()) const;
+
+    // The given area as the bytes of a PNG file, for a caller that wants to send
+    // or store the image rather than write it out here. Empty if the area holds
+    // no pixels or the encoding failed.
+    std::vector<unsigned char> encodePng(const Rect& area = Rect()) const;
 
     // Writes the given area of the surface out, or the whole of it when the area is
     // empty. The area is measured from the top left corner.

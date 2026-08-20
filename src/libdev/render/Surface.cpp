@@ -530,7 +530,29 @@ std::ostream& operator<<(std::ostream& o, const RenSurface& t)
     return o;
 }
 
-void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
+namespace RenSurfaceImpl
+{
+namespace
+{
+
+// Wraps the rows in an SDL surface without copying them, so they have to outlive
+// the result.
+SDL_Surface* asSdlSurface(RenSurface::Pixels& pixels)
+{
+    // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on both
+    // little and big endian systems.
+    return SDL_CreateSurfaceFrom(
+        pixels.width,
+        pixels.height,
+        SDL_PIXELFORMAT_RGBA32,
+        pixels.rgba.data(),
+        pixels.width * 4);
+}
+
+} // namespace
+} // namespace RenSurfaceImpl
+
+RenSurface::Pixels RenSurface::readPixels(const Rect& area) const
 {
     TEST_INVARIANT;
 
@@ -546,90 +568,90 @@ void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
     region.height = std::min(region.height, surfaceHeight - region.originY);
 
     if (region.width <= 0 || region.height <= 0)
-        return;
+        return {};
 
-    // Save the screen shot
-    unsigned char* screenPixels = _NEW_ARRAY(unsigned char, region.width * region.height * 4);
-    if (screenPixels)
+    // Ensure all pending render commands are submitted before reading back pixel
+    // data -- callers may have issued blits that haven't been executed yet.
+    RenDevice* dev = RenDevice::current();
+    dev->flushCommandBuffer();
+
+    Pixels pixels{
+        .width = region.width,
+        .height = region.height,
+        .rgba = std::vector<unsigned char>(static_cast<std::size_t>(region.width) * region.height * 4),
+    };
+
+    // The area is given with its origin at the top left, the way the rest of the
+    // gui counts, while pixels are read back from the bottom left.
+    const int readY = surfaceHeight - (region.originY + region.height);
+
+    if (internals() && internals()->isOffscreen())
     {
-        // Ensure all pending render commands are submitted before reading
-        // back pixel data — callers may have issued blits that haven't
-        // been executed yet.
-        RenDevice* dev = RenDevice::current();
-        dev->flushCommandBuffer();
+        dev->renderToTextureMode(handle(), surfaceWidth, surfaceHeight);
+        dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, pixels.rgba.data());
+        dev->renderToTextureMode(Ren::NullTexId, 0, 0);
+    }
+    else
+        dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, pixels.rgba.data());
 
-        // The area is given with its origin at the top left, the way the rest of the
-        // gui counts, while pixels are read back from the bottom left.
-        const int readY = surfaceHeight - (region.originY + region.height);
-
-        if (internals() && internals()->isOffscreen())
-        {
-            dev->renderToTextureMode(handle(), surfaceWidth, surfaceHeight);
-            dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, screenPixels);
-            dev->renderToTextureMode(Ren::NullTexId, 0, 0);
-        }
-        else
-            dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, screenPixels);
-
-        // SDL_PIXELFORMAT_RGBA32 selects the byte-order-correct format on
-        // both little and big endian systems.
-        SDL_Surface* surface = SDL_CreateSurfaceFrom(
-            region.width,
-            region.height,
-            SDL_PIXELFORMAT_RGBA32,
-            screenPixels,
-            region.width * 4);
-
-        // Flip surface vertically because of OpenGL coordinates...
-        // Code comes from https://halfgeek.org/wiki/Vertically_invert_a_surface_in_SDL
-        Uint8* t;
-        Uint8 *a, *b;
-        Uint8* last;
-        Uint16 pitch;
-
-        /* get a place to store a line */
-        pitch = surface->pitch;
-        t = (Uint8*)malloc(pitch);
-
-        if (t == nullptr)
-        {
-            // mem error
-        }
-
-        /* get first line; it's about to be trampled */
-        memcpy(t, surface->pixels, pitch);
-
-        /* now, shuffle the rest so it's almost correct */
-        a = (Uint8*)surface->pixels;
-        last = a + pitch * (surface->h - 1);
-        b = last;
-
-        while (a < b)
-        {
-            memcpy(a, b, pitch);
-            a += pitch;
-            memcpy(b, a, pitch);
-            b -= pitch;
-        }
-
-        /* in this shuffled state, the bottom slice is too far down */
-        memmove(b, b + pitch, last - b);
-
-        /* now we can put back that first row--in the last place */
-        memcpy(last, t, pitch);
-
-        /* everything is in the right place; close up. */
-        free(t);
-
-        // Write the file
-        IMG_SavePNG(surface, filename.pathname().c_str());
-
-        // Free everything
-        SDL_DestroySurface(surface);
-        _DELETE_ARRAY(screenPixels);
+    // The rows arrived bottom up, the way GL counts them.
+    const std::ptrdiff_t stride = static_cast<std::ptrdiff_t>(pixels.width) * 4;
+    for (int row = 0; row < pixels.height / 2; ++row)
+    {
+        auto top = pixels.rgba.begin() + row * stride;
+        auto bottom = pixels.rgba.begin() + (pixels.height - 1 - row) * stride;
+        std::swap_ranges(top, top + stride, bottom);
     }
 
     TEST_INVARIANT;
+
+    return pixels;
+}
+
+std::vector<unsigned char> RenSurface::encodePng(const Rect& area) const
+{
+    Pixels pixels = readPixels(area);
+    if (pixels.rgba.empty())
+        return {};
+
+    SDL_Surface* surface = RenSurfaceImpl::asSdlSurface(pixels);
+    if (! surface)
+        return {};
+
+    std::vector<unsigned char> png;
+
+    SDL_IOStream* stream = SDL_IOFromDynamicMem();
+    if (stream && IMG_SavePNG_IO(surface, stream, false))
+    {
+        const Sint64 size = SDL_GetIOSize(stream);
+        if (size > 0 && SDL_SeekIO(stream, 0, SDL_IO_SEEK_SET) == 0)
+        {
+            png.resize(static_cast<std::size_t>(size));
+            if (SDL_ReadIO(stream, png.data(), png.size()) != png.size())
+                png.clear();
+        }
+    }
+
+    if (stream)
+        SDL_CloseIO(stream);
+
+    SDL_DestroySurface(surface);
+
+    return png;
+}
+
+void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
+{
+    Pixels pixels = readPixels(area);
+    if (pixels.rgba.empty())
+        return;
+
+    SDL_Surface* surface = RenSurfaceImpl::asSdlSurface(pixels);
+    if (! surface)
+        return;
+
+    IMG_SavePNG(surface, filename.pathname().c_str());
+    SDL_DestroySurface(surface);
 }
 
 // These read/write functions are used for fog of war in savegame and store alpha only
