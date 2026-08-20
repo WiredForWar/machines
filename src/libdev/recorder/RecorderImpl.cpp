@@ -359,71 +359,8 @@ std::ostream& operator<<(std::ostream& o, RecRecorderImplementation::RecordType 
         case RecRecorderImplementation::TIME:
             o << "TIME";
             break;
-        case RecRecorderImplementation::MOUSE_POSITION:
-            o << "MOUSE_POSITION";
-            break;
-        case RecRecorderImplementation::LEFT_BUTTON_TRUE:
-            o << "LEFT_BUTTON_TRUE";
-            break;
-        case RecRecorderImplementation::LEFT_BUTTON_FALSE:
-            o << "LEFT_BUTTON_FALSE";
-            break;
-        case RecRecorderImplementation::RIGHT_BUTTON_TRUE:
-            o << "RIGHT_BUTTON_TRUE";
-            break;
-        case RecRecorderImplementation::RIGHT_BUTTON_FALSE:
-            o << "RIGHT_BUTTON_FALSE";
-            break;
-        case RecRecorderImplementation::KEY_TRUE:
-            o << "KEY_TRUE";
-            break;
-        case RecRecorderImplementation::KEY_FALSE:
-            o << "KEY_FALSE";
-            break;
-        case RecRecorderImplementation::KEY_CODE_TRUE:
-            o << "KEY_CODE_TRUE";
-            break;
-        case RecRecorderImplementation::KEY_CODE_FALSE:
-            o << "KEY_CODE_FALSE";
-            break;
-        case RecRecorderImplementation::ANY_KEY_TRUE:
-            o << "ANY_KEY_TRUE";
-            break;
-        case RecRecorderImplementation::ANY_KEY_FALSE:
-            o << "ANY_KEY_FALSE";
-            break;
-        case RecRecorderImplementation::SHIFT_TRUE:
-            o << "SHIFT_TRUE";
-            break;
-        case RecRecorderImplementation::SHIFT_FALSE:
-            o << "SHIFT_FALSE";
-            break;
-        case RecRecorderImplementation::CTRL_TRUE:
-            o << "CTRL_TRUE";
-            break;
-        case RecRecorderImplementation::CTRL_FALSE:
-            o << "CTRL_FALSE";
-            break;
-        case RecRecorderImplementation::ALT_TRUE:
-            o << "ALT_TRUE";
-            break;
-        case RecRecorderImplementation::ALT_FALSE:
-            o << "ALT_FALSE";
-            break;
-        case RecRecorderImplementation::DELTA_KEY:
-            o << "DELTA_KEY";
-            break;
-        case RecRecorderImplementation::DELTA_KEY_CODE:
-            o << "DELTA_KEY_CODE";
-            break;
         case RecRecorderImplementation::RANDOM_SEED:
             o << "RANDOM_SEED";
-            break;
-        case RecRecorderImplementation::BUTTON_EVENT:
-            o << "BUTTON_EVENT";
-            break;
-        case RecRecorderImplementation::EVENT_QUEUE_LENGTH:
-            o << "EVENT_QUEUE_LENGTH";
             break;
         case RecRecorderImplementation::SOUND_ACTIVE_TRUE:
             o << "SOUND_ACTIVE_TRUE";
