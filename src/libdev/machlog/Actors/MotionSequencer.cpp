@@ -2168,9 +2168,40 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             }
         }
 
+        //  A machine of our own group that is still travelling was never asked
+        //  to move, so we are about to dodge around it. It is about to do the
+        //  same to us, and two machines dodging each other is what leaves a
+        //  pair shuffling from side to side in a doorway with neither getting
+        //  through: the dodge is symmetric, so whatever one does the other
+        //  undoes.
+        //
+        //  Let exactly one of us give way, and let it be the one with further
+        //  left to travel: the other is nearer to being out of everyone's way,
+        //  so it is worth less to move it. The one that holds its ground waits
+        //  instead, and the ground ahead of it clears once the other has
+        //  stepped aside. Comparing squared distances settles it, with the id
+        //  to break an exact tie, so of any two machines exactly one yields.
+        bool holdOurGround = false;
+
+        if (!done && objectHasSameCommandId(collisionObjectId) && !objectIsResting(collisionObjectId))
+        {
+            MachLogRaces& races = MachLogRaces::instance();
+            const UtlId blockerId = collisionObjectId.asScalar();
+
+            if (races.actorExists(blockerId) && races.actor(blockerId).objectIsMachine())
+            {
+                const MachLogMachineMotionSequencer& blocker = races.actor(blockerId).asMobile().motionSeq();
+
+                const MATHEX_SCALAR ourGap = currentLocation().sqrEuclidianDistance(destinationPoint_);
+                const MATHEX_SCALAR itsGap = blocker.currentLocation().sqrEuclidianDistance(blocker.destination());
+
+                holdOurGround = (ourGap < itsGap) || (ourGap == itsGap && pLogMobile_->id() < blockerId);
+            }
+        }
+
         //  Nobody is going to clear the way for us -- either the blocker is one
         //  of our own group, or it would not move. Go around it instead.
-        if (!done)
+        if (!done && !holdOurGround)
         {
             LOG_STREAM("Trying an avoidance move" << std::endl);
 
