@@ -67,12 +67,7 @@ DevMouse::Motion DevMouse::takeRelativeMotion()
 
 void DevMouse::submitEvent(const DevButtonEvent& ev)
 {
-    if (ev.scanCode() == Device::KeyCode::MOUSE_MIDDLE)
-    {
-        scrolledUp_ = ev.action() == DevButtonEvent::SCROLL_UP;
-        scrolledDown_ = ev.action() == DevButtonEvent::SCROLL_DOWN;
-    }
-    else if (ev.action() == DevButtonEvent::PRESS)
+    if (ev.action() == DevButtonEvent::PRESS)
     {
         Device::InputState::instance().pressButton(ev.scanCode());
     }
@@ -117,9 +112,6 @@ void DevMouse::submitFocusLost()
         state.releaseButton(code);
         announceButtonRelease(code);
     }
-
-    scrolledUp_ = false;
-    scrolledDown_ = false;
 }
 
 bool DevMouse::leftButton() const
@@ -130,24 +122,6 @@ bool DevMouse::leftButton() const
 bool DevMouse::rightButton() const
 {
     return Device::InputState::instance().isButtonPressed(Device::KeyCode::MOUSE_RIGHT);
-}
-
-bool DevMouse::wheelScrollUp() const
-{
-    const bool result = scrolledUp_;
-
-    // We shall say the mouse is no longer scrolling until the next scroll event flips it back to true
-    scrolledUp_ = false;
-    return result;
-}
-
-bool DevMouse::wheelScrollDown() const
-{
-    const bool result = scrolledDown_;
-
-    // We shall say the mouse is no longer scrolling until the next scroll event flips it back to true
-    scrolledDown_ = false;
-    return result;
 }
 
 // Until the system reports where the pointer is, the mouse says the origin.

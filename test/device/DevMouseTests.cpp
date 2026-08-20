@@ -78,43 +78,30 @@ TEST(DevMouseTests, SubmitEvent_DispatchesClick)
     ASSERT_TRUE(ev == queue.oldestEvent());
 }
 
-TEST(DevMouseTests, SubmitEvent_DispatchesScrollUp)
+TEST(DevMouseTests, SubmitEvent_DispatchesAScroll)
 {
-    resetSharedInput();
+    DevEventQueue& queue = resetSharedInput();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
     mouse.submitEvent(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP));
-
-    const DevMouse::Position& position = mouse.position();
-    ASSERT_FALSE(mouse.leftButton());
-    ASSERT_FALSE(mouse.rightButton());
-    ASSERT_EQ(100, position.x);
-    ASSERT_EQ(100, position.y);
-    ASSERT_TRUE(mouse.wheelScrollUp());
-    // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
-    ASSERT_FALSE(mouse.wheelScrollUp());
-}
-
-TEST(DevMouseTests, SubmitEvent_DispatchesScrollDown)
-{
-    resetSharedInput();
-
-    MockSdlDelegate mockSDL;
-    Mouse mouse(&mockSDL);
-
     mouse.submitEvent(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN));
 
     const DevMouse::Position& position = mouse.position();
-    ASSERT_FALSE(mouse.leftButton());
-    ASSERT_FALSE(mouse.rightButton());
     ASSERT_EQ(100, position.x);
     ASSERT_EQ(100, position.y);
-    ASSERT_TRUE(mouse.wheelScrollDown());
-    // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
-    ASSERT_FALSE(mouse.wheelScrollDown());
+
+    // A wheel notch has no press to pair a release with, so it leaves nothing
+    // held -- it only reaches the queue.
+    ASSERT_FALSE(mouse.leftButton());
+    ASSERT_FALSE(mouse.rightButton());
+    ASSERT_FALSE(Device::InputState::instance().isButtonPressed(Device::KeyCode::MOUSE_MIDDLE));
+
+    ASSERT_EQ(2, queue.length());
+    ASSERT_EQ(DevButtonEvent::SCROLL_UP, queue.oldestEvent().action());
+    ASSERT_EQ(DevButtonEvent::SCROLL_DOWN, queue.oldestEvent().action());
 }
 
 TEST(DevMouseTests, FocusLossReleasesAHeldButtonExactlyOnce)

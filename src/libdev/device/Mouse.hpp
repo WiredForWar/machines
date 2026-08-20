@@ -37,8 +37,6 @@ public:
 
     bool leftButton() const;
     bool rightButton() const;
-    bool wheelScrollUp() const;
-    bool wheelScrollDown() const;
 
     // Logically hide/show cursor
     void hide();
@@ -79,7 +77,4 @@ private:
 
     SdlDelegate sdlDelegate_{};
     SdlDelegate* pSdl_{ &sdlDelegate_ }; // <-- Use me
-
-    mutable bool scrolledUp_{};
-    mutable bool scrolledDown_{};
 };
