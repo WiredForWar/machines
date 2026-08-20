@@ -8,7 +8,6 @@
 #include "gui/Manager.hpp"
 #include "gui/Displayable.hpp"
 #include "gui/Event.hpp"
-#include "gui/Mouse.hpp"
 #include "gui/GuiPainter.hpp"
 #include "render/Device.hpp"
 #include "render/Display.hpp"
@@ -345,8 +344,6 @@ void GuiManager::updateMouseFocus()
 
 void GuiManager::processMouseEvent(const GuiMouseEvent& me)
 {
-    GuiMouse::instance().update(me.coord());
-
     GuiMouseEvent mrel = me;
     mrel.translate(unaryMinus(root().absoluteCoord()));
 

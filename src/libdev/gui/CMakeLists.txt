@@ -29,8 +29,6 @@ set(GUI_SOURCES
     ListObserver.hpp
     Manager.cpp
     Manager.hpp
-    Mouse.cpp
-    Mouse.hpp
     GuiPainter.cpp
     GuiPainter.hpp
     ProgressBar.cpp
