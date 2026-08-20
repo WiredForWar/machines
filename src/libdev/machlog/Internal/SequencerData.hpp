@@ -162,6 +162,13 @@ private:
     // This is used to stop reservePath getting too recursive
     uint swerveRecursionCount_;
 
+    //  The machine of our own group we are currently giving way to, and how
+    //  many times running we have waited on it. It only learns that it owes
+    //  us the room when it is blocked in turn, which can be a good while
+    //  after we start waiting, so the count bounds how long we hold out.
+    UtlId givingWayToId_{};
+    uint nConsecutiveHolds_{};
+
     PhysPathFindingPriority pathFindingPriority_;
 
     PhysAbsoluteTime shuffleEndTime_;

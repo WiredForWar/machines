@@ -2196,6 +2196,30 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                 const MATHEX_SCALAR itsGap = blocker.currentLocation().sqrEuclidianDistance(blocker.destination());
 
                 holdOurGround = (ourGap < itsGap) || (ourGap == itsGap && pLogMobile_->id() < blockerId);
+
+                //  Both machines take this decision on their own, at different
+                //  moments, against positions that move in between -- so a pair
+                //  can settle into waiting on each other. Neither moves after
+                //  that, so nothing ever re-decides, and the pair would stand
+                //  forever. Cap how long we keep giving way to the same blocker
+                //  and go around once the cap is hit. The cap is high enough
+                //  that a machine actually on its way through always gets there
+                //  first: it only fires on a wait that is not going to end.
+                static constexpr uint maxConsecutiveHolds = 20;
+
+                if (holdOurGround)
+                {
+                    if (blockerId == pImpl_->givingWayToId_)
+                        ++pImpl_->nConsecutiveHolds_;
+                    else
+                    {
+                        pImpl_->givingWayToId_ = blockerId;
+                        pImpl_->nConsecutiveHolds_ = 1;
+                    }
+
+                    if (pImpl_->nConsecutiveHolds_ > maxConsecutiveHolds)
+                        holdOurGround = false;
+                }
             }
         }
 
@@ -2222,6 +2246,10 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
         LOG_STREAM("  Success!" << std::endl);
 
         ASSERT(nPathPointsDone_ > 0, "");
+
+        //  We are on our way, so we are no longer waiting on anyone.
+        pImpl_->givingWayToId_ = UtlId();
+        pImpl_->nConsecutiveHolds_ = 0;
 
         interval = initiatePhysicalMotion();
     }
