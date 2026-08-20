@@ -2,13 +2,11 @@
 
 #include "base/Diag.hpp"
 #include "crashdump/CrashDump.hpp"
+#include "device/Input.hpp"
 #include "device/Mouse.hpp"
-#include "device/Keyboard.hpp"
+#include "device/Time.hpp"
 
 #include "device/private/SdlKeyboard.hpp"
-
-#include "device/EventQueue.hpp"
-#include "device/Time.hpp"
 
 #include "system/SysInfo.hpp"
 
@@ -327,18 +325,13 @@ void AfxSdlApp::dispatchEvent(const SDL_Event* event)
     switch (event->type)
     {
         case SDL_EVENT_WINDOW_FOCUS_LOST:
-            DevSdlKeyboard::sdlInstance().wm_killfocus();
-            DevMouse::instance().wm_killfocus();
+            Device::submitFocusLost();
             break;
 
         case SDL_EVENT_MOUSE_MOTION:
-        {
-            float x, y;
-            SDL_GetMouseState(&x, &y);
-            DevMouse::instance().position(static_cast<int>(x), static_cast<int>(y));
-            DevMouse::instance().addRelativeMotion(event->motion.xrel, event->motion.yrel);
+            Device::submitPointerPosition(static_cast<int>(event->motion.x), static_cast<int>(event->motion.y));
+            Device::submitPointerMotion(event->motion.xrel, event->motion.yrel);
             break;
-        }
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
             dispatchMouseButtonEvent(event, false);
@@ -438,8 +431,7 @@ void AfxSdlApp::dispatchMouseButtonEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const size_t repeats = 1;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
-    DevMouse::instance().wm_button(ev);
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, shift, ctrl, alt, time, x, y, repeats));
 }
 
 void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
@@ -479,9 +471,7 @@ void AfxSdlApp::dispatchMouseScrollEvent(const SDL_Event* event)
     const bool previous = false;
     const size_t repeats = 1;
 
-    // DISPATCH!!!
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
-    DevMouse::instance().wm_button(ev);
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, shift, ctrl, alt, time, x, y, repeats));
 }
 
 void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
@@ -509,8 +499,7 @@ void AfxSdlApp::dispatchKeyboardEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const uint16_t rpt = event->key.repeat + 1;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, rpt);
-    DevSdlKeyboard::sdlInstance().wm_key(ev);
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, shift, ctrl, alt, time, x, y, rpt));
 }
 
 void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
@@ -536,7 +525,7 @@ void AfxSdlApp::dispatchCharEvent(const SDL_Event* event)
 
     DEBUG_STREAM(DIAG_NEIL, "char event " << event->text.text[0] << std::endl);
 
-    DevSdlKeyboard::sdlInstance().wm_char(ev);
+    Device::submitCharEvent(ev);
 }
 
 void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
@@ -564,6 +553,5 @@ void AfxSdlApp::dispatchTouchEvent(const SDL_Event* event, bool pressed)
     const bool previous = false;
     const size_t repeats = 1;
 
-    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
-    DevMouse::instance().wm_button(ev);
+    Device::submitButtonEvent(DevButtonEvent(code, act, previous, shift, ctrl, alt, time, x, y, repeats));
 }

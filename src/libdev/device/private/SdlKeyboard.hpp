@@ -12,20 +12,25 @@
 // The public interface is entirely supplied by DevKeyboard.
 class DevSdlKeyboard : public DevKeyboard
 {
-private:
-    friend DevKeyboard& DevKeyboard::instance();
+public:
     static DevSdlKeyboard& sdlInstance();
-    DevSdlKeyboard();
-    ~DevSdlKeyboard();
 
-    // The Windows proceedure communicates key-press events to this
-    // class using these messages.
-    friend class AfxSdlApp;
-    void wm_key(const DevButtonEvent& ev);
-    void wm_char(const DevButtonEvent& ev);
-    void wm_killfocus();
+    // Report a key going down or up.
+    void submitKeyEvent(const DevButtonEvent& ev);
+
+    // Report a typed character.
+    void submitCharEvent(const DevButtonEvent& ev);
+
+    // The window has lost input focus. Every key held at this moment counts as
+    // released, and no further event will report it.
+    void submitFocusLost();
 
     static ScanCode translateScanCode(SDL_Scancode sdlCode);
+
+private:
+    friend DevKeyboard& DevKeyboard::instance();
+    DevSdlKeyboard();
+    ~DevSdlKeyboard();
 };
 
 #undef DevButtonEvent

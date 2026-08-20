@@ -32,7 +32,7 @@ DevSdlKeyboard::~DevSdlKeyboard()
 {
 }
 
-void DevSdlKeyboard::wm_key(const DevButtonEvent& ev)
+void DevSdlKeyboard::submitKeyEvent(const DevButtonEvent& ev)
 {
     // For state changes, we are only interested in key-press transitions and
     // can ignore all auto-repeat events, i.e. when we receive a keydown
@@ -59,7 +59,7 @@ void DevSdlKeyboard::wm_key(const DevButtonEvent& ev)
 // up messages for keys which are depressed at the time.  Passing
 // this msg to the keyboard object allows it to reset its internal
 // state.  Not an ideal solution, but an unlikely situation.
-void DevSdlKeyboard::wm_killfocus()
+void DevSdlKeyboard::submitFocusLost()
 {
     // Every key still held is now released, and no further event will say so.
     // Queue the releases so that the state is announced and not merely dropped;
@@ -91,7 +91,7 @@ void DevSdlKeyboard::wm_killfocus()
 }
 
 // Called in response to a WM_CHAR message
-void DevSdlKeyboard::wm_char(const DevButtonEvent& ev)
+void DevSdlKeyboard::submitCharEvent(const DevButtonEvent& ev)
 {
     DevEventQueue::instance().queueEvent(ev);
 }

@@ -18,7 +18,7 @@ public:
 namespace
 {
 
-// A mouse of its own, with the event entry points reachable.
+// A mouse of its own, with SDL stubbed out.
 class Mouse : public DevMouse
 {
 public:
@@ -26,9 +26,6 @@ public:
         : DevMouse(sdl)
     {
     }
-
-    using DevMouse::wm_button;
-    using DevMouse::wm_killfocus;
 };
 
 DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, int x = 100, int y = 100)
@@ -57,7 +54,7 @@ DevEventQueue& freshSharedQueue()
 
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST(DevMouseTests, WMbutton_DispatchesClick)
+TEST(DevMouseTests, SubmitEvent_DispatchesClick)
 {
     DevEventQueue& queue = freshSharedQueue();
 
@@ -67,7 +64,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
     // Essentially AfxSdlApp::dispatchMouseButtonEvent()
     const DevButtonEvent ev = makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::PRESS);
 
-    mouse.wm_button(ev);
+    mouse.submitEvent(ev);
 
     const DevMouse::Position& position = mouse.position();
     ASSERT_TRUE(mouse.leftButton());
@@ -79,7 +76,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
     ASSERT_TRUE(ev == queue.oldestEvent());
 }
 
-TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
+TEST(DevMouseTests, SubmitEvent_DispatchesScrollUp)
 {
     freshSharedQueue();
 
@@ -87,7 +84,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
     Mouse mouse(&mockSDL);
 
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
-    mouse.wm_button(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP));
+    mouse.submitEvent(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_UP));
 
     const DevMouse::Position& position = mouse.position();
     ASSERT_FALSE(mouse.leftButton());
@@ -95,18 +92,18 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
     ASSERT_EQ(100, position.first);
     ASSERT_EQ(100, position.second);
     ASSERT_TRUE(mouse.wheelScrollUp());
-    // Unless mouse.wm_button(ev) is called again with another scroll, this shall be false.
+    // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
     ASSERT_FALSE(mouse.wheelScrollUp());
 }
 
-TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
+TEST(DevMouseTests, SubmitEvent_DispatchesScrollDown)
 {
     freshSharedQueue();
 
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
-    mouse.wm_button(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN));
+    mouse.submitEvent(makeEvent(Device::KeyCode::MOUSE_MIDDLE, DevButtonEvent::SCROLL_DOWN));
 
     const DevMouse::Position& position = mouse.position();
     ASSERT_FALSE(mouse.leftButton());
@@ -114,7 +111,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
     ASSERT_EQ(100, position.first);
     ASSERT_EQ(100, position.second);
     ASSERT_TRUE(mouse.wheelScrollDown());
-    // Unless mouse.wm_button(ev) is called again with another scroll, this shall be false.
+    // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
     ASSERT_FALSE(mouse.wheelScrollDown());
 }
 
@@ -125,11 +122,11 @@ TEST(DevMouseTests, FocusLossReleasesAHeldButtonExactlyOnce)
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
-    mouse.wm_button(makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::PRESS));
+    mouse.submitEvent(makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::PRESS));
     ASSERT_TRUE(mouse.leftButton());
     ASSERT_EQ(1, queue.length());
 
-    mouse.wm_killfocus();
+    mouse.submitFocusLost();
 
     // Nothing reads as held any more, and the release was announced rather
     // than merely dropped.
@@ -142,7 +139,7 @@ TEST(DevMouseTests, FocusLossReleasesAHeldButtonExactlyOnce)
     ASSERT_EQ(DevButtonEvent::RELEASE, release.action());
 
     // A second focus loss has nothing left to announce.
-    mouse.wm_killfocus();
+    mouse.submitFocusLost();
     ASSERT_TRUE(queue.isEmpty());
 }
 
