@@ -37,78 +37,15 @@ void RecRecorderPrivate::recordTime(double time)
     recorder.putData(RecRecorderImplementation::TIME, sizeof(time), static_cast<const void*>(&time));
 }
 
-void RecRecorderPrivate::recordMousePosition(const DevMousePosition& position)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putData(RecRecorderImplementation::MOUSE_POSITION, sizeof(position), static_cast<const void*>(&position));
-}
 
-void RecRecorderPrivate::recordLeftButton(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putBool(state, RecRecorderImplementation::LEFT_BUTTON_TRUE, RecRecorderImplementation::LEFT_BUTTON_FALSE);
-}
 
-void RecRecorderPrivate::recordRightButton(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putBool(
-        state,
-        RecRecorderImplementation::RIGHT_BUTTON_TRUE,
-        RecRecorderImplementation::RIGHT_BUTTON_FALSE);
-}
 
-void RecRecorderPrivate::recordKey(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putBool(state, RecRecorderImplementation::KEY_TRUE, RecRecorderImplementation::KEY_FALSE);
-}
 
-void RecRecorderPrivate::recordKeyCode(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.putBool(state, RecRecorderImplementation::KEY_CODE_TRUE, RecRecorderImplementation::KEY_CODE_FALSE);
-}
-
-void RecRecorderPrivate::recordAnyKey(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putBool(state, RecRecorderImplementation::ANY_KEY_TRUE, RecRecorderImplementation::ANY_KEY_FALSE);
-}
-
-void RecRecorderPrivate::recordShiftPressed(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putBool(state, RecRecorderImplementation::SHIFT_TRUE, RecRecorderImplementation::SHIFT_FALSE);
-}
-
-void RecRecorderPrivate::recordCtrlPressed(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putBool(state, RecRecorderImplementation::CTRL_TRUE, RecRecorderImplementation::CTRL_FALSE);
-}
-
-void RecRecorderPrivate::recordAltPressed(bool state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putBool(state, RecRecorderImplementation::ALT_TRUE, RecRecorderImplementation::ALT_FALSE);
-}
-
-void RecRecorderPrivate::recordDeltaKeyCode(const DevKeyboard::KeyState& state)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), static_cast<const void*>(&state));
-}
 
 void RecRecorderPrivate::recordRandomSeed(uint32_t seed)
 {
@@ -117,20 +54,7 @@ void RecRecorderPrivate::recordRandomSeed(uint32_t seed)
     recorder.putData(RecRecorderImplementation::RANDOM_SEED, sizeof(seed), static_cast<const void*>(&seed));
 }
 
-void RecRecorderPrivate::recordButtonEvent(const DevButtonEvent& event)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    //  This relies on the class being bitwise canonical
-    recorder.putData(RecRecorderImplementation::BUTTON_EVENT, sizeof(event), static_cast<const void*>(&event));
-}
-
-void RecRecorderPrivate::recordEventQueueLength(size_t length)
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.putData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(length), static_cast<const void*>(&length));
-}
 
 void RecRecorderPrivate::recordSoundIsActive(bool value)
 {
@@ -309,85 +233,15 @@ double RecRecorderPrivate::playbackTime() const
     return time;
 }
 
-DevMousePosition RecRecorderPrivate::playbackMousePosition() const
-{
-    DevMousePosition result;
 
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    recorder.getData(RecRecorderImplementation::MOUSE_POSITION, sizeof(result), static_cast<void*>(&result));
 
-    return result;
-}
 
-bool RecRecorderPrivate::playbackLeftButton() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    return recorder.getBool(RecRecorderImplementation::LEFT_BUTTON_TRUE, RecRecorderImplementation::LEFT_BUTTON_FALSE);
-}
 
-bool RecRecorderPrivate::playbackRightButton() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    return recorder.getBool(
-        RecRecorderImplementation::RIGHT_BUTTON_TRUE,
-        RecRecorderImplementation::RIGHT_BUTTON_FALSE);
-}
 
-bool RecRecorderPrivate::playbackKey() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    return recorder.getBool(RecRecorderImplementation::KEY_TRUE, RecRecorderImplementation::KEY_FALSE);
-}
-
-bool RecRecorderPrivate::playbackKeyCode() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    return recorder.getBool(RecRecorderImplementation::KEY_CODE_TRUE, RecRecorderImplementation::KEY_CODE_FALSE);
-}
-
-bool RecRecorderPrivate::playbackAnyKey() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    return recorder.getBool(RecRecorderImplementation::ANY_KEY_TRUE, RecRecorderImplementation::ANY_KEY_FALSE);
-}
-
-bool RecRecorderPrivate::playbackShiftPressed() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    return recorder.getBool(RecRecorderImplementation::SHIFT_TRUE, RecRecorderImplementation::SHIFT_FALSE);
-}
-
-bool RecRecorderPrivate::playbackCtrlPressed() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    return recorder.getBool(RecRecorderImplementation::CTRL_TRUE, RecRecorderImplementation::CTRL_FALSE);
-}
-
-bool RecRecorderPrivate::playbackAltPressed() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    return recorder.getBool(RecRecorderImplementation::ALT_TRUE, RecRecorderImplementation::ALT_FALSE);
-}
-
-DevKeyboard::KeyState RecRecorderPrivate::playbackDeltaKeyCode() const
-{
-    DevKeyboard::KeyState state;
-
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    recorder.getData(RecRecorderImplementation::DELTA_KEY_CODE, sizeof(state), static_cast<void*>(&state));
-
-    return state;
-}
 
 uint32_t RecRecorderPrivate::playbackRandomSeed() const
 {
@@ -400,28 +254,7 @@ uint32_t RecRecorderPrivate::playbackRandomSeed() const
     return seed;
 }
 
-DevButtonEvent RecRecorderPrivate::playbackButtonEvent() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
 
-    DevButtonEvent result;
-
-    //  This relies on the class being bitwise canonical
-    recorder.getData(RecRecorderImplementation::BUTTON_EVENT, sizeof(result), static_cast<void*>(&result));
-
-    return result;
-}
-
-size_t RecRecorderPrivate::playbackEventQueueLength() const
-{
-    RecRecorderImplementation& recorder = RecRecorderImplementation::instance();
-
-    size_t result;
-
-    recorder.getData(RecRecorderImplementation::EVENT_QUEUE_LENGTH, sizeof(result), static_cast<void*>(&result));
-
-    return result;
-}
 
 bool RecRecorderPrivate::playbackSoundIsActive() const
 {

@@ -18,8 +18,6 @@
 #define _RECORDER_RECPRIV_HPP
 
 #include "base/base.hpp"
-#include "device/ButtonEvent.hpp"
-#include "device/Keyboard.hpp"
 #include "system/Registry.hpp"
 
 #include "sound/snd.hpp"
@@ -30,7 +28,6 @@
 #include <utility>
 
 class MexPoint3d;
-using DevMousePosition = std::pair<int32, int32>;
 
 class RecRecorderPrivate
 // Canonical form revoked
@@ -44,21 +41,6 @@ public:
 
     void recordTime(double time);
     void recordMessageTime(double time);
-
-    void recordMousePosition(const DevMousePosition&);
-    void recordLeftButton(bool);
-    void recordRightButton(bool);
-
-    void recordKey(bool);
-    void recordKeyCode(bool);
-    void recordAnyKey(bool);
-    void recordShiftPressed(bool);
-    void recordCtrlPressed(bool);
-    void recordAltPressed(bool);
-    void recordDeltaKeyCode(const DevKeyboard::KeyState&);
-
-    void recordButtonEvent(const DevButtonEvent&);
-    void recordEventQueueLength(size_t);
 
     void recordRandomSeed(uint32_t);
 
@@ -87,21 +69,6 @@ public:
     //  Playback functions --------------------------------------
     double playbackTime() const;
     double playbackMessageTime() const;
-
-    DevMousePosition playbackMousePosition() const;
-    bool playbackLeftButton() const;
-    bool playbackRightButton() const;
-
-    bool playbackKey() const;
-    bool playbackKeyCode() const;
-    bool playbackAnyKey() const;
-    bool playbackShiftPressed() const;
-    bool playbackCtrlPressed() const;
-    bool playbackAltPressed() const;
-    DevKeyboard::KeyState playbackDeltaKeyCode() const;
-
-    DevButtonEvent playbackButtonEvent() const;
-    size_t playbackEventQueueLength() const;
 
     uint32_t playbackRandomSeed() const;
 

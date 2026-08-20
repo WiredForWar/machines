@@ -21,11 +21,6 @@ public:
 
 class MockRecRecorderPrivate
 {
-public:
-    MOCK_METHOD(DevButtonEvent, playbackButtonEvent, (), (const));
-    MOCK_METHOD(size_t, playbackEventQueueLength, (), (const));
-    MOCK_METHOD(void, recordButtonEvent, (const DevButtonEvent& event), ());
-    MOCK_METHOD(void, recordEventQueueLength, (size_t length), ());
 };
 
 class EventQueue : public DevEventQueueT<MockRecRecorder, MockRecRecorderPrivate, MockDevTime>

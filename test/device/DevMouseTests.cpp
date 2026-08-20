@@ -35,13 +35,6 @@ public:
 
 class MockRecRecorderPrivate
 {
-public:
-    MOCK_METHOD(DevMousePosition, playbackMousePosition, (), (const));
-    MOCK_METHOD(bool, playbackLeftButton, (), (const));
-    MOCK_METHOD(bool, playbackRightButton, (), (const));
-    MOCK_METHOD(void, recordMousePosition, (const DevMousePosition& position), ());
-    MOCK_METHOD(void, recordLeftButton, (bool state), ());
-    MOCK_METHOD(void, recordRightButton, (bool state), ());
 };
 
 class MockSdlDelegate : public SdlDelegate
