@@ -310,7 +310,6 @@ bool SDLApp::clientStartup()
     Ren::initFonts();
     initDefaultFontSize(Gui::uiScaleFactor());
 
-    DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     grabCursorHandle_
         = Config::grabCursor.addListener([this]() { pDisplay_->setCursorGrabEnabled(Config::grabCursor.get()); });
     grabCursorHandle_->trigger();

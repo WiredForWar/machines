@@ -1720,10 +1720,6 @@ bool D3DApp::clientStartup()
         // first mode in the list, regardless of depth.
         const RenDisplay::Mode& mode = display_->currentMode();
         std::cout << "Initially, setting mode: " << mode << std::endl;
-
-        // Ask the mouse to give us coordinates scale to the current Direct3D
-        // resolution (which doesn't necessarilly match the Windows resolution).
-        DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     }
 
     std::cout << *display_ << std::endl;

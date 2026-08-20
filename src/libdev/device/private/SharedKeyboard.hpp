@@ -31,8 +31,7 @@ public:
 
     using ScanCode = Device::KeyCode;
 
-    // Is the key corresponding to a given character or key code pressed?
-    bool key(unsigned char) const;
+    // Is the key corresponding to a given key code pressed?
     bool keyCode(ScanCode) const;
 
     // Is any key depressed?
@@ -50,11 +49,7 @@ public:
         PRESSED,
         RELEASED
     };
-    KeyState deltaKey(unsigned char) const;
     KeyState deltaKeyCode(ScanCode) const;
-
-    // For testing only: to be removed.
-    int pressedCount() const { return pressedCount_; }
 
     void CLASS_INVARIANT
     {
@@ -73,7 +68,6 @@ protected:
     void allKeysReleased();
 
 private:
-    ScanCode getCharacterIndex(unsigned char) const;
     bool& keyMap(ScanCode code) { return keyMap_[static_cast<int>(code)]; }
     bool keyMap(ScanCode code) const { return keyMap_[static_cast<int>(code)]; }
 

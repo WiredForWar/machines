@@ -1,21 +1,13 @@
-/*
- * S H R M O U S E . H P P
- * (c) Charybdis Limited, 1995, 1996. All Rights Reserved.
- */
-
-#ifndef _DEV_SHARED_MOUSE_HPP
-#define _DEV_SHARED_MOUSE_HPP
+#pragma once
 
 #ifndef DEVICE_MOUSE
-#error Do not include shrmouse.hpp file directly, include mouse.hpp
+#error Do not include SharedMouse.hpp file directly, include Mouse.hpp
 #endif
 
-//////////////////////////////////////////////////////////////////////
-
 #include "base/base.hpp"
-#include "ctl/Utility.hpp"
 
-//////////////////////////////////////////////////////////////////////
+#include <utility>
+
 // All the bits common to all mouse implementations.
 class DevSharedMouse
 {
@@ -42,25 +34,9 @@ public:
         RELEASED
     };
 
-    const Position& minRange() const;
-    const Position& maxRange() const;
-
-    // Clip the mouse coordinates to be within the given range.  If the mouse
-    // is moved outside this area, then coordinates on the edge are returned.
-    void range(const Position& min, const Position& max);
-
 protected:
-    DevSharedMouse();
-    void clipToRange(Position&) const;
+    DevSharedMouse() = default;
 
-    mutable bool lastLeftButtonState_;
-    mutable bool lastRightButtonState_;
-
-private:
-    Position minRange_;
-    Position maxRange_;
+    mutable bool lastLeftButtonState_{};
+    mutable bool lastRightButtonState_{};
 };
-
-#endif /*    #ifndef  _DEV_SHARED_MOUSE_HPP     */
-
-/* End SHRMOUSE.HPP ****************************************************/

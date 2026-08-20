@@ -298,11 +298,6 @@ bool SDLApp::clientStartup()
         // If there are no 16-bit modes, then mode should default to the
         // first mode in the list, regardless of depth.
         std::cout << "Initially, setting mode: " << pDisplay_->currentMode() << std::endl;
-
-        // Ask the mouse to give us coordinates scale to the current Direct3D
-        // resolution (which doesn't necessarilly match the Windows resolution).
-        const RenDisplay::Mode& mode = pDisplay_->currentMode();
-        DevMouse::instance().scaleCoordinates(mode.width(), mode.height());
     }
 
     // Initialise

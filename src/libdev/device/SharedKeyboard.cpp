@@ -45,60 +45,6 @@ DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
     return current ? PRESSED : RELEASED;
 }
 
-bool DevKeyboard::key(unsigned char character) const
-{
-    TEST_INVARIANT;
-
-    return keyMap(getCharacterIndex(character));
-}
-
-DevKeyboard::KeyState DevKeyboard::deltaKey(unsigned char character) const
-{
-    TEST_INVARIANT;
-    return deltaKeyCode(getCharacterIndex(character));
-}
-
-DevKeyboard::ScanCode DevKeyboard::getCharacterIndex(unsigned char c) const
-{
-    // for a given character (it's ASCII value), this will return the
-    // corresponding scan code
-    static unsigned char characterMap[] = { /*   0 */ 0,  0,  0,  0,  0,  0,  0,  15,
-                                            /*   8 */ 14, 0,  0,  0,  0,  28, 0,  0,
-                                            /*  16 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /*  24 */ 0,  0,  0,  1,  0,  0,  0,  0,
-                                            /*  32 */ 57, 0,  40, 0,  0,  0,  0,  40,
-                                            /*  40 */ 0,  0,  53, 13, 51, 12, 52, 53,
-                                            /*  48 */ 11, 2,  3,  4,  5,  6,  7,  8,
-                                            /*  56 */ 9,  10, 39, 39, 51, 13, 52, 53,
-                                            /*  64 */ 0,  30, 48, 46, 32, 18, 33, 34,
-                                            /*  72 */ 35, 23, 36, 37, 38, 50, 49, 24,
-                                            /*  80 */ 25, 16, 19, 31, 20, 22, 47, 17,
-                                            /*  88 */ 45, 21, 44, 26, 0,  27, 0,  12,
-                                            /*  96 */ 0,  30, 48, 46, 32, 18, 33, 34,
-                                            /* 104 */ 35, 23, 36, 37, 38, 50, 49, 24,
-                                            /* 112 */ 25, 16, 19, 31, 20, 22, 47, 17,
-                                            /* 120 */ 45, 21, 44, 26, 0,  27, 41, 0,
-                                            /* 128 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 136 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 144 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 152 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 160 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 168 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 176 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 184 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 192 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 200 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 208 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 216 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 224 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 232 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 240 */ 0,  0,  0,  0,  0,  0,  0,  0,
-                                            /* 248 */ 0,  0,  0,  0,  0,  0,  0,  0 };
-    static_assert(std::size(characterMap) == 256);
-
-    return static_cast<ScanCode>(characterMap[c]);
-}
-
 bool DevKeyboard::anyKey() const
 {
     TEST_INVARIANT;

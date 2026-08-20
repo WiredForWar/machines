@@ -18,6 +18,7 @@
 
 #include <SDL3/SDL.h>
 
+#include <algorithm>
 #include <charconv>
 #include <optional>
 #include <vector>
