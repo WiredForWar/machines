@@ -37,6 +37,7 @@ DevButtonEvent makeEvent(Device::KeyCode code, DevButtonEvent::Action action, in
 DevEventQueue& resetSharedInput()
 {
     Device::InputState::instance().releaseAllButtons();
+    Device::InputState::instance().takePointerMotion();
 
     DevEventQueue& queue = DevEventQueue::instance();
 
@@ -146,6 +147,8 @@ TEST(DevMouseTests, FocusLossReleasesAHeldButtonExactlyOnce)
 
 TEST(DevMouseTests, RelativeMotion_StartsAtZero)
 {
+    resetSharedInput();
+
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
@@ -154,6 +157,8 @@ TEST(DevMouseTests, RelativeMotion_StartsAtZero)
 
 TEST(DevMouseTests, RelativeMotion_AccumulatesUntilTaken)
 {
+    resetSharedInput();
+
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
@@ -167,6 +172,8 @@ TEST(DevMouseTests, RelativeMotion_AccumulatesUntilTaken)
 
 TEST(DevMouseTests, RelativeMotion_IsClearedByTaking)
 {
+    resetSharedInput();
+
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 
@@ -178,6 +185,8 @@ TEST(DevMouseTests, RelativeMotion_IsClearedByTaking)
 
 TEST(DevMouseTests, RelativeMotion_IsReportedWhileThePositionStandsStill)
 {
+    resetSharedInput();
+
     MockSdlDelegate mockSDL;
     Mouse mouse(&mockSDL);
 

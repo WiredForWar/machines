@@ -1,6 +1,7 @@
 #pragma once
 
 #include "device/ButtonEvent.hpp"
+#include "device/InputState.hpp"
 #include "device/SdlDelegate.hpp"
 
 #include "base/base.hpp"
@@ -13,24 +14,8 @@ public:
     using XCoord = int32;
     using YCoord = int32;
 
-    // Where the pointer is, in window coordinates.
-    struct Position
-    {
-        XCoord x{};
-        YCoord y{};
-
-        bool operator==(const Position&) const = default;
-    };
-
-    // Pointer travel in device counts. Fractional because a system may report
-    // sub-count travel once its own pointer scaling has been applied.
-    struct Motion
-    {
-        double x = 0.0;
-        double y = 0.0;
-
-        bool isZero() const { return x == 0.0 && y == 0.0; }
-    };
+    using Position = Device::PointerPosition;
+    using Motion = Device::PointerMotion;
 
     enum ButtonState
     {
@@ -95,8 +80,6 @@ private:
     SdlDelegate sdlDelegate_{};
     SdlDelegate* pSdl_{ &sdlDelegate_ }; // <-- Use me
 
-    Position position_{};
-    Motion relativeMotion_{};
     mutable bool scrolledUp_{};
     mutable bool scrolledDown_{};
 };

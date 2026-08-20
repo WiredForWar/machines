@@ -9,6 +9,8 @@ Device::InputState& freshState()
 {
     Device::InputState& state = Device::InputState::instance();
     state.releaseAllButtons();
+    state.takePointerMotion();
+    state.setPointerPosition({});
     return state;
 }
 
@@ -101,4 +103,44 @@ TEST(DevInputStateTests, ReleaseAllButtonsClearsEverything)
     ASSERT_FALSE(state.isButtonPressed(Device::KeyCode::MOUSE_LEFT));
     ASSERT_FALSE(state.isAnyKeyPressed());
     ASSERT_FALSE(state.heldModifiers());
+}
+
+TEST(DevInputStateTests, ThePointerPositionIsWhatWasLastSet)
+{
+    Device::InputState& state = freshState();
+
+    state.setPointerPosition({ .x = 120, .y = 240 });
+
+    ASSERT_EQ(120, state.pointerPosition().x);
+    ASSERT_EQ(240, state.pointerPosition().y);
+}
+
+TEST(DevInputStateTests, PointerTravelAccumulatesAndIsTakenOnce)
+{
+    Device::InputState& state = freshState();
+
+    ASSERT_TRUE(state.takePointerMotion().isZero());
+
+    state.addPointerMotion(3.0, -2.0);
+    state.addPointerMotion(1.5, -0.5);
+
+    const Device::PointerMotion travelled = state.takePointerMotion();
+    ASSERT_DOUBLE_EQ(4.5, travelled.x);
+    ASSERT_DOUBLE_EQ(-2.5, travelled.y);
+
+    ASSERT_TRUE(state.takePointerMotion().isZero());
+}
+
+TEST(DevInputStateTests, TravelIsIndependentOfThePosition)
+{
+    Device::InputState& state = freshState();
+
+    // A captured pointer travels without its position changing, so neither
+    // value may be derived from the other.
+    state.setPointerPosition({ .x = 10, .y = 10 });
+    state.addPointerMotion(50.0, -50.0);
+
+    ASSERT_EQ(10, state.pointerPosition().x);
+    ASSERT_EQ(10, state.pointerPosition().y);
+    ASSERT_DOUBLE_EQ(50.0, state.takePointerMotion().x);
 }
