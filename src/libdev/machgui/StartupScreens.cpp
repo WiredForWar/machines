@@ -1478,6 +1478,29 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
     MachGuiSoundManager::instance().update();
 }
 
+// static
+bool MachGuiStartupScreens::isIntroScreen(Context context)
+{
+    switch (context)
+    {
+        case CTX_POSTLOADINGANIMATION:
+        case CTX_LEGALSCREEN:
+        case CTX_PROBEACCLAIMLOGO:
+        case CTX_CHARYBDISLOGO:
+        case CTX_INTROANIMATION:
+            return true;
+        default:
+            break;
+    }
+
+    return false;
+}
+
+void MachGuiStartupScreens::skipIntroScreens()
+{
+    skipIntroScreens_ = true;
+}
+
 void MachGuiStartupScreens::checkContextTimeout()
 {
     PhysAbsoluteTime newTime = Phys::time();
@@ -1490,13 +1513,23 @@ void MachGuiStartupScreens::checkContextTimeout()
         // Have we found the correct entry in the timeout table...
         if (getContextTimeoutInfo()[loop].curContext_ == context_)
         {
+            const Context newContext = getContextTimeoutInfo()[loop].newContext_;
+
+            // The intro screens lead to the main menu, and the menu leads back
+            // to them once it has been left alone long enough. Asked to skip
+            // them, go to the menu directly and then stay there.
+            if (skipIntroScreens_ && isIntroScreen(newContext))
+            {
+                if (context_ != CTX_MAINMENU)
+                    switchContext(CTX_MAINMENU);
+            }
             // Are we dealing with a TIMEOUT event?
-            if (getContextTimeoutInfo()[loop].type_ == ContextTimeoutInfo::TIMEOUT)
+            else if (getContextTimeoutInfo()[loop].type_ == ContextTimeoutInfo::TIMEOUT)
             {
                 if (newTime - contextTimer_ > getContextTimeoutInfo()[loop].timeInfo_)
                 {
                     // Switch to new context if timeout has occured
-                    switchContext(getContextTimeoutInfo()[loop].newContext_);
+                    switchContext(newContext);
                 }
             }
             // Are we dealing with a FLIC_FINISHED event ( animation ended )?
@@ -1505,7 +1538,7 @@ void MachGuiStartupScreens::checkContextTimeout()
                 if (animationFinished())
                 {
                     // Switch to new context if animation has ended
-                    switchContext(getContextTimeoutInfo()[loop].newContext_);
+                    switchContext(newContext);
                 }
             }
             found = true;

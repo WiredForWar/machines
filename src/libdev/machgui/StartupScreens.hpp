@@ -210,6 +210,14 @@ public:
     // Get the context that we are currently in.
     Context currentContext() const;
 
+    // True for the legal screen, the logos and the animations either side of
+    // them -- the screens between starting the game and the main menu.
+    static bool isIntroScreen(Context);
+
+    // Go to the main menu without showing the intro screens, and stay there
+    // rather than returning to them once the menu has been left alone.
+    void skipIntroScreens();
+
     MachGuiMessageBroker& messageBroker();
     // PRE( pMessageBroker_ );
 
@@ -463,6 +471,7 @@ private:
     MachInGameScreen* pInGameScreen_;
     bool switchGuiRoot_;
     bool finishApp_;
+    bool skipIntroScreens_{};
     W4dRoot* pW4dRoot_;
     PhysAbsoluteTime contextTimer_;
     std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table

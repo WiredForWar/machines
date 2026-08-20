@@ -9,7 +9,7 @@
 class AfxInvokeArgs : public std::vector<std::string>
 {
 public:
-    // True if the exact token was given, as for "--skip-logos".
+    // True if the exact token was given, as for "--skip-intro".
     bool contains(std::string_view flag) const;
 
     // The text after the '=' of a "--flag=value" token. Nothing if the flag was

@@ -48,6 +48,9 @@ void SDLApp::initialiseGui(StartedFromLobby startedFromLobby, IProgressReporter*
     pStartupScreens_ = new MachGuiStartupScreens(manager_, pRoot_, console_.get(), pReporter);
     MachGui::registerConsoleCommands(*console_, pStartupScreens_);
 
+    if (invokeArgs().contains("--skip-intro"))
+        pStartupScreens_->skipIntroScreens();
+
     if (startedFromLobby == LOBBY_START)
     {
         // have to verify that the system really is in a lobbied state and doesn't just think it is.
