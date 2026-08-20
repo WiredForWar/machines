@@ -193,14 +193,6 @@ bool DevMouse::wheelScrollDown() const
     return result;
 }
 
-DevMouse::Position DevMouse::getMessagePos() const
-{
-    // SDL_GetMouseState
-    const std::pair<int, int>& xy = pSdl_->getCursorPosition();
-
-    return Position(xy.first, xy.second);
-}
-
 // Until the system reports where the pointer is, the mouse says the origin.
 void DevMouse::resetPosition()
 {
