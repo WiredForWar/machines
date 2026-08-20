@@ -31,7 +31,7 @@ class DevMouseT : public DevSharedMouse
 {
 public:
     // No dependency provider for: DevTimeDep
-    using DevButtonEventType = DevButtonEventT<DevTimeDep>;
+    using DevButtonEventType = DevButtonEvent;
 
     static DevMouseT& instance();
 

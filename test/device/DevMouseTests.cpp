@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include "device/Mouse.hpp"
-#include "device/ButtonEvent.cpp"
 #include "device/SdlMouse.cpp"
 
 using ::testing::TypedEq;
@@ -14,17 +13,11 @@ class MockDevTime
 public:
     MOCK_METHOD(double, time, (), (const));
 };
-//Needed for the devbuttonevent .-_-;
-std::ostream& operator<<(std::ostream& o, const DevButtonEventT<MockDevTime>&)
-{
-    return o;
-}
 
 class MockDevEventQueue
 {
 public:
     MOCK_METHOD(void, queueEvent, (const DevButtonEvent& event), ());
-    MOCK_METHOD(void, queueEvent, (const DevButtonEventT<MockDevTime>& event), ());
 };
 
 class MockRecRecorder
@@ -74,7 +67,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
 
     // Essentially AfxSdlApp::dispatchMouseEvent()
     const auto code = Device::KeyCode::MOUSE_LEFT;
-    const auto act  = DevButtonEventT<MockDevTime>::PRESS;
+    const auto act  = DevButtonEvent::PRESS;
     const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
@@ -83,7 +76,7 @@ TEST(DevMouseTests, WMbutton_DispatchesClick)
     const int x = 100;
     const int y = 100;
     const size_t repeats = 1;
-    const DevButtonEventT<MockDevTime> ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
 
     EXPECT_CALL(eventQueue, queueEvent(TypedEq<decltype(ev)&>(ev)))
             .Times(1);
@@ -112,7 +105,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
 
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
     const auto code = Device::KeyCode::MOUSE_MIDDLE;
-    const auto act  = DevButtonEventT<MockDevTime>::SCROLL_UP;
+    const auto act  = DevButtonEvent::SCROLL_UP;
     const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
@@ -121,7 +114,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollUp)
     const int x = 100;
     const int y = 100;
     const size_t repeats = 1;
-    const DevButtonEventT<MockDevTime> ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
 
     EXPECT_CALL(eventQueue, queueEvent(TypedEq<decltype(ev)&>(ev)))
             .Times(1);
@@ -154,7 +147,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
 
     // Essentially AfxSdlApp::dispatchMouseScrollEvent()
     const auto code = Device::KeyCode::MOUSE_MIDDLE;
-    const auto act  = DevButtonEventT<MockDevTime>::SCROLL_DOWN;
+    const auto act  = DevButtonEvent::SCROLL_DOWN;
     const bool previous = false;
     const bool shift = false;
     const bool ctrl = false;
@@ -163,7 +156,7 @@ TEST(DevMouseTests, WMbutton_DispatchesScrollDown)
     const int x = 100;
     const int y = 100;
     const size_t repeats = 1;
-    const DevButtonEventT<MockDevTime> ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
+    const DevButtonEvent ev(code, act, previous, shift, ctrl, alt, time, x, y, repeats);
 
     EXPECT_CALL(eventQueue, queueEvent(TypedEq<decltype(ev)&>(ev)))
             .Times(1);

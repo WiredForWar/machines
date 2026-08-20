@@ -22,10 +22,9 @@ template <
 class DevEventQueueT
 {
 public:
-    // No dependency provider for: DevTimeDep
-    using DevButtonEventType = DevButtonEventT<DevTimeDep>;
-    using ScanCode = typename DevButtonEventType::ScanCode;
-    using Action = typename DevButtonEventType::Action;
+    using DevButtonEventType = DevButtonEvent;
+    using ScanCode = DevButtonEventType::ScanCode;
+    using Action = DevButtonEventType::Action;
 
     //  Singleton class
     static DevEventQueueT& instance();
