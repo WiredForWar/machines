@@ -68,42 +68,6 @@ DevMouse::Motion DevMouse::takeRelativeMotion()
     return result;
 }
 
-DevMouse::ButtonState DevMouse::deltaLeftButton() const
-{
-    const bool currentLeftButtonState = leftButton();
-
-    ButtonState result;
-
-    if (currentLeftButtonState == lastLeftButtonState_)
-        result = NO_CHANGE;
-    else if (currentLeftButtonState)
-        result = PRESSED;
-    else
-        result = RELEASED;
-
-    lastLeftButtonState_ = currentLeftButtonState;
-
-    return result;
-}
-
-DevMouse::ButtonState DevMouse::deltaRightButton() const
-{
-    const bool currentRightButtonState = rightButton();
-
-    ButtonState result;
-
-    if (currentRightButtonState == lastRightButtonState_)
-        result = NO_CHANGE;
-    else if (currentRightButtonState)
-        result = PRESSED;
-    else
-        result = RELEASED;
-
-    lastRightButtonState_ = currentRightButtonState;
-
-    return result;
-}
-
 void DevMouse::submitEvent(const DevButtonEvent& ev)
 {
     // Decode the message and set this object's internal state.

@@ -50,11 +50,6 @@ public:
     bool wheelScrollUp() const;
     bool wheelScrollDown() const;
 
-    // These all return the change in state since the last time
-    // the method was called.
-    ButtonState deltaLeftButton() const;
-    ButtonState deltaRightButton() const;
-
     // Logically hide/show cursor
     void hide();
     void unhide();
@@ -101,6 +96,4 @@ private:
     bool rButtonPressed_{};
     mutable bool scrolledUp_{};
     mutable bool scrolledDown_{};
-    mutable bool lastLeftButtonState_{};
-    mutable bool lastRightButtonState_{};
 };

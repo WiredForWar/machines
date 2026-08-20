@@ -30,22 +30,6 @@ bool DevKeyboard::keyCode(ScanCode sCode) const
     return keyMap(sCode);
 }
 
-DevKeyboard::KeyState DevKeyboard::deltaKeyCode(ScanCode sCode) const
-{
-    PRE(static_cast<int>(sCode) < N_KEYS);
-    TEST_INVARIANT;
-
-    // Sample once: the two comparisons below must see the same value.
-    const bool current = keyMap(sCode);
-    const bool last = lastKeyMap(sCode);
-    lastKeyMap(sCode) = current;
-
-    if (current == last)
-        return NO_CHANGE;
-
-    return current ? PRESSED : RELEASED;
-}
-
 bool DevKeyboard::anyKey() const
 {
     TEST_INVARIANT;
@@ -160,10 +144,7 @@ void DevKeyboard::allKeysReleased()
     TEST_INVARIANT;
 
     for (int i = 0; i < N_KEYS; ++i)
-    {
         keyMap_[i] = false;
-        lastKeyMap_[i] = false;
-    }
 
     pressedCount_ = 0;
 
