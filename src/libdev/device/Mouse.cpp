@@ -38,8 +38,8 @@ void DevMouse::unhide()
 
 void DevMouse::position(XCoord new_x, YCoord new_y)
 {
-    position_.first = new_x;
-    position_.second = new_y;
+    position_.x = new_x;
+    position_.y = new_y;
 }
 
 void DevMouse::changePosition(XCoord new_x, YCoord new_y)
@@ -101,8 +101,8 @@ void DevMouse::announceButtonRelease(Device::KeyCode code)
         false, // ctrl
         false, // alt
         DevTime::instance().time(),
-        position_.first,
-        position_.second,
+        position_.x,
+        position_.y,
         1); // repeat count must be >= 1
     DevEventQueue::instance().queueEvent(ev);
 }

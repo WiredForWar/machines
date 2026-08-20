@@ -505,8 +505,8 @@ void MachWorldViewWindow::update()
                 pInGameScreen_->setGuiViewport();
             }
 
-            endRubberBand_.x(DevMouse::instance().position().first);
-            endRubberBand_.y(DevMouse::instance().position().second);
+            endRubberBand_.x(DevMouse::instance().position().x);
+            endRubberBand_.y(DevMouse::instance().position().y);
 
             if (! rubberBanding_)
             {

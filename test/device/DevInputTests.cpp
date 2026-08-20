@@ -45,8 +45,8 @@ TEST(DevInputTests, AMouseCodeReachesTheMouse)
     Device::submitButtonEvent(makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::PRESS, 40, 50));
 
     ASSERT_TRUE(DevMouse::instance().leftButton());
-    ASSERT_EQ(40, DevMouse::instance().position().first);
-    ASSERT_EQ(50, DevMouse::instance().position().second);
+    ASSERT_EQ(40, DevMouse::instance().position().x);
+    ASSERT_EQ(50, DevMouse::instance().position().y);
 
     Device::submitButtonEvent(makeEvent(Device::KeyCode::MOUSE_LEFT, DevButtonEvent::RELEASE, 40, 50));
     ASSERT_FALSE(DevMouse::instance().leftButton());
@@ -85,8 +85,8 @@ TEST(DevInputTests, PointerPositionAndTravelAreSeparate)
 
     // A captured pointer travels without moving, so the two must not be
     // derived from each other.
-    ASSERT_EQ(200, DevMouse::instance().position().first);
-    ASSERT_EQ(300, DevMouse::instance().position().second);
+    ASSERT_EQ(200, DevMouse::instance().position().x);
+    ASSERT_EQ(300, DevMouse::instance().position().y);
 
     const DevMouse::Motion travel = DevMouse::instance().takeRelativeMotion();
     ASSERT_DOUBLE_EQ(4.5, travel.x);

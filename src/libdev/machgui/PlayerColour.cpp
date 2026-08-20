@@ -29,7 +29,7 @@ void MachGuiColourList::doDisplay()
 // virtual
 bool MachGuiColourList::containsMousePointer()
 {
-    Gui::Coord mousePos(DevMouse::instance().position().first, DevMouse::instance().position().second);
+    Gui::Coord mousePos(DevMouse::instance().position().x, DevMouse::instance().position().y);
 
     return contains(mousePos);
 }

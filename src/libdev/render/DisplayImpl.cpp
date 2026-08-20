@@ -260,8 +260,8 @@ void RenIDisplay::drawCursor(RenSurface& backBuf)
         RENDER_STREAM("Frame " << frameNo_ << ":" << std::endl);
 
         const DevMouse::Position& pos = DevMouse::instance().position();
-        const int destX = pos.first - cursor->originX();
-        const int destY = pos.second - cursor->originY();
+        const int destX = pos.x - cursor->originX();
+        const int destY = pos.y - cursor->originY();
         const RenSurface& bm = cursor->currentBitmap();
         const Ren::Rect dstRect(destX, destY, bm.width(), bm.height());
 

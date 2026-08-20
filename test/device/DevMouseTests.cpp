@@ -69,8 +69,8 @@ TEST(DevMouseTests, SubmitEvent_DispatchesClick)
 
     const DevMouse::Position& position = mouse.position();
     ASSERT_TRUE(mouse.leftButton());
-    ASSERT_EQ(100, position.first);
-    ASSERT_EQ(100, position.second);
+    ASSERT_EQ(100, position.x);
+    ASSERT_EQ(100, position.y);
 
     // The event reached the queue unchanged.
     ASSERT_EQ(1, queue.length());
@@ -90,8 +90,8 @@ TEST(DevMouseTests, SubmitEvent_DispatchesScrollUp)
     const DevMouse::Position& position = mouse.position();
     ASSERT_FALSE(mouse.leftButton());
     ASSERT_FALSE(mouse.rightButton());
-    ASSERT_EQ(100, position.first);
-    ASSERT_EQ(100, position.second);
+    ASSERT_EQ(100, position.x);
+    ASSERT_EQ(100, position.y);
     ASSERT_TRUE(mouse.wheelScrollUp());
     // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
     ASSERT_FALSE(mouse.wheelScrollUp());
@@ -109,8 +109,8 @@ TEST(DevMouseTests, SubmitEvent_DispatchesScrollDown)
     const DevMouse::Position& position = mouse.position();
     ASSERT_FALSE(mouse.leftButton());
     ASSERT_FALSE(mouse.rightButton());
-    ASSERT_EQ(100, position.first);
-    ASSERT_EQ(100, position.second);
+    ASSERT_EQ(100, position.x);
+    ASSERT_EQ(100, position.y);
     ASSERT_TRUE(mouse.wheelScrollDown());
     // Unless mouse.submitEvent(ev) is called again with another scroll, this shall be false.
     ASSERT_FALSE(mouse.wheelScrollDown());
@@ -187,8 +187,8 @@ TEST(DevMouseTests, RelativeMotion_IsReportedWhileThePositionStandsStill)
     mouse.addRelativeMotion(50.0, -50.0);
 
     const DevMouse::Position& position = mouse.position();
-    ASSERT_EQ(100, position.first);
-    ASSERT_EQ(100, position.second);
+    ASSERT_EQ(100, position.x);
+    ASSERT_EQ(100, position.y);
 
     const DevMouse::Motion motion = mouse.takeRelativeMotion();
     ASSERT_DOUBLE_EQ(50.0, motion.x);
