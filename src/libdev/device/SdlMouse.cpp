@@ -1,77 +1,53 @@
 #include "device/Mouse.hpp"
 
-// My eyes can't do it
-#define DEV_MOUSE_CLASS DevMouseT<RecRecorderDep, RecRecorderPrivDep, DevTimeDep, DEQDep>
+#include "device/EventQueue.hpp"
+#include "device/Time.hpp"
 
 // static
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-DEV_MOUSE_CLASS& DEV_MOUSE_CLASS::instance()
+DevMouse& DevMouse::instance()
 {
     static DevMouse instance_;
     return instance_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-DEV_MOUSE_CLASS::DevMouseT()
-    : sdlDelegate_()
-    , pSdl_(&sdlDelegate_)
-    , position_(0, 0)
-    , lastPosition_(0, 0)
-    , relativeMotion_()
-    , lButtonPressed_(false)
-    , rButtonPressed_(false)
-    , scaleX_(1)
-    , scaleY_(1)
-    , scrolledUp_(false)
-    , scrolledDown_(false)
+DevMouse::DevMouse()
 {
     resetPosition();
     lastPosition_ = position_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-DEV_MOUSE_CLASS::DevMouseT(SdlDelegate* useInstead)
-    : DevMouseT()
+DevMouse::DevMouse(SdlDelegate* useInstead)
+    : DevMouse()
 {
     pSdl_ = useInstead;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-DEV_MOUSE_CLASS::~DevMouseT()
+DevMouse::~DevMouse()
 {
 }
 
-// Windows actually implements the counter which gives the
-// nested behaviour specified by the DevMouseT interface.
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::hide()
+void DevMouse::hide()
 {
     pSdl_->showCursor(false);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::unhide()
+void DevMouse::unhide()
 {
     pSdl_->showCursor(true);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-bool DEV_MOUSE_CLASS::isHidden() const
+bool DevMouse::isHidden() const
 {
     return cursorVisible_ < 0;
 }
 
-extern int mouseSleepTime;
-
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::position(XCoord new_x, YCoord new_y)
+void DevMouse::position(XCoord new_x, YCoord new_y)
 {
     position_.first = static_cast<XCoord>(new_x * scaleX_);
     position_.second = static_cast<YCoord>(new_y * scaleY_);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::changePosition(XCoord new_x, YCoord new_y)
+void DevMouse::changePosition(XCoord new_x, YCoord new_y)
 {
     position(new_x / scaleX_, new_y / scaleY_);
 
@@ -80,32 +56,25 @@ void DEV_MOUSE_CLASS::changePosition(XCoord new_x, YCoord new_y)
     pSdl_->moveCursorToPosition(nullptr, new_x / scaleX_, new_y / scaleY_);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-const typename DEV_MOUSE_CLASS::Position& // RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::position() const
+const DevMouse::Position& DevMouse::position() const
 {
     return position_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::addRelativeMotion(double deltaX, double deltaY)
+void DevMouse::addRelativeMotion(double deltaX, double deltaY)
 {
     relativeMotion_.x += deltaX;
     relativeMotion_.y += deltaY;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-typename DEV_MOUSE_CLASS::Motion // RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::takeRelativeMotion()
+DevMouse::Motion DevMouse::takeRelativeMotion()
 {
     const Motion result = relativeMotion_;
     relativeMotion_ = Motion();
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-const typename DEV_MOUSE_CLASS::Position // RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::deltaPosition() const
+const DevMouse::Position DevMouse::deltaPosition() const
 {
     Position retval = position();
     retval.first -= lastPosition_.first;
@@ -113,11 +82,9 @@ DEV_MOUSE_CLASS::deltaPosition() const
     return retval;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-typename DEV_MOUSE_CLASS::ButtonState // RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::deltaLeftButton() const
+DevMouse::ButtonState DevMouse::deltaLeftButton() const
 {
-    bool currentLeftButtonState = leftButton();
+    const bool currentLeftButtonState = leftButton();
 
     ButtonState result;
 
@@ -133,11 +100,9 @@ DEV_MOUSE_CLASS::deltaLeftButton() const
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-typename DEV_MOUSE_CLASS::ButtonState // RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::deltaRightButton() const
+DevMouse::ButtonState DevMouse::deltaRightButton() const
 {
-    bool currentRightButtonState = rightButton();
+    const bool currentRightButtonState = rightButton();
 
     ButtonState result;
 
@@ -153,21 +118,20 @@ DEV_MOUSE_CLASS::deltaRightButton() const
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::wm_button(const DevButtonEventType& ev)
+void DevMouse::wm_button(const DevButtonEvent& ev)
 {
     // Decode the message and set this object's internal state.
     switch (ev.scanCode())
     {
         case Device::KeyCode::MOUSE_LEFT:
-            lButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
+            lButtonPressed_ = ev.action() == DevButtonEvent::PRESS;
             break;
         case Device::KeyCode::MOUSE_RIGHT:
-            rButtonPressed_ = ev.action() == DevButtonEventType::PRESS;
+            rButtonPressed_ = ev.action() == DevButtonEvent::PRESS;
             break;
         case Device::KeyCode::MOUSE_MIDDLE:
-            scrolledUp_ = ev.action() == DevButtonEventType::SCROLL_UP;
-            scrolledDown_ = ev.action() == DevButtonEventType::SCROLL_DOWN;
+            scrolledUp_ = ev.action() == DevButtonEvent::SCROLL_UP;
+            scrolledDown_ = ev.action() == DevButtonEvent::SCROLL_DOWN;
             break;
         default:
             break;
@@ -179,28 +143,26 @@ void DEV_MOUSE_CLASS::wm_button(const DevButtonEventType& ev)
     position_.second = ev.cursorCoords().y();
 
     // Pass the message onto the event queue.
-    eventQueueDependency_.get().queueEvent(ev);
+    DevEventQueue::instance().queueEvent(ev);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::announceButtonRelease(Device::KeyCode code)
+void DevMouse::announceButtonRelease(Device::KeyCode code)
 {
-    const DevButtonEventType ev(
+    const DevButtonEvent ev(
         code,
-        DevButtonEventType::RELEASE,
+        DevButtonEvent::RELEASE,
         true, // previous: the button was down
         false, // shift
         false, // ctrl
         false, // alt
-        DevTimeDep::instance().time(),
+        DevTime::instance().time(),
         position_.first,
         position_.second,
         1); // repeat count must be >= 1
-    eventQueueDependency_.get().queueEvent(ev);
+    DevEventQueue::instance().queueEvent(ev);
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::wm_killfocus()
+void DevMouse::wm_killfocus()
 {
     // Clear the polled state ahead of the announcement, so that a button never
     // reads as down once its release has been queued.
@@ -220,20 +182,17 @@ void DEV_MOUSE_CLASS::wm_killfocus()
     scrolledDown_ = false;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-bool DEV_MOUSE_CLASS::leftButton() const
+bool DevMouse::leftButton() const
 {
     return lButtonPressed_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-bool DEV_MOUSE_CLASS::rightButton() const
+bool DevMouse::rightButton() const
 {
     return rButtonPressed_;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-bool DEV_MOUSE_CLASS::wheelScrollUp() const
+bool DevMouse::wheelScrollUp() const
 {
     const bool result = scrolledUp_;
 
@@ -242,8 +201,7 @@ bool DEV_MOUSE_CLASS::wheelScrollUp() const
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-bool DEV_MOUSE_CLASS::wheelScrollDown() const
+bool DevMouse::wheelScrollDown() const
 {
     const bool result = scrolledDown_;
 
@@ -252,24 +210,16 @@ bool DEV_MOUSE_CLASS::wheelScrollDown() const
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::scaleCoordinates(XCoord xmax, YCoord ymax)
+void DevMouse::scaleCoordinates(XCoord xmax, YCoord ymax)
 {
     maxPosition_.first = xmax;
     maxPosition_.second = ymax;
-    // const double screenX = GetSystemMetrics(SM_CXSCREEN);
-    // const double screenY = GetSystemMetrics(SM_CYSCREEN);
-
-    // scaleX_ = xmax / screenX;
-    // scaleY_ = ymax / screenY;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-typename DEV_MOUSE_CLASS::Position //  RETURN TYPE. Method below:
-DEV_MOUSE_CLASS::getMessagePos() const
+DevMouse::Position DevMouse::getMessagePos() const
 {
     // SDL_GetMouseState
-    const auto& unscaledXY = pSdl_->getCursorPosition();
+    const std::pair<int, int>& unscaledXY = pSdl_->getCursorPosition();
 
     Position result;
     result.first = static_cast<XCoord>(unscaledXY.first * scaleX_);
@@ -278,13 +228,10 @@ DEV_MOUSE_CLASS::getMessagePos() const
     return result;
 }
 
-template <typename RecRecorderDep, typename RecRecorderPrivDep, typename DevTimeDep, typename DEQDep>
-void DEV_MOUSE_CLASS::resetPosition()
+// Set the position to the middle of the range.
+void DevMouse::resetPosition()
 {
     const XCoord x = (minRange().first + maxRange().first) / 2;
     const YCoord y = (minRange().second + maxRange().second) / 2;
     position(x, y);
 }
-
-// Instantiate the template identified by DevMouse alias
-template class DevMouseT<RecRecorder, RecRecorderPrivate, DevTime, DevEventQueue>;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "device/ButtonEvent.hpp"
-#include "utility/DependencyProvider.hpp"
 
 #include "base/base.hpp"
 
@@ -68,7 +67,7 @@ private:
 
     // Only these classes can add events to the back of the queue.
     friend class DevSdlKeyboard;
-    template <typename, typename, typename, typename> friend class DevMouseT;
+    friend class DevMouse;
 
     // Internal convenience methods.
     bool filterEvent(const DevButtonEvent&) const;
@@ -114,11 +113,3 @@ public:
         return o;
     }
 };
-
-/* *******************************************************
- * SINGLETON DEPENDENCY PROVIDER
- */
-template <> inline DevEventQueue& DependencyProvider<DevEventQueue>::getProvided()
-{
-    return DevEventQueue::instance();
-}

@@ -1,39 +1,17 @@
-/*
-    DevMouse
+#pragma once
 
-    Provide an interface to the mouse on a SDL2.0 system.
-*/
-
-#ifndef _SDL_MOUSE_HPP
-#define _SDL_MOUSE_HPP
-
-//////////////////////////////////////////////////////////////////////
-#include "base/base.hpp"
-#include "device/private/SharedMouse.hpp"
 #include "device/ButtonEvent.hpp"
 #include "device/SdlDelegate.hpp"
+#include "device/private/SharedMouse.hpp"
 
-#include "recorder/Recorder.hpp"
-#include "recorder/private/RecorderPrivate.hpp"
-#include "device/Time.hpp"
-#include "device/EventQueue.hpp"
-#include "utility/DependencyProvider.hpp"
+#include "base/base.hpp"
 
-//////////////////////////////////////////////////////////////////////
-// Mouse support under the SDL2.0 system.  This class
-// should share the same protocol as other classes for differnt OSs.
-template <
-    typename RecRecorderDep = RecRecorder,
-    typename RecRecorderPrivDep = RecRecorderPrivate,
-    typename DevTimeDep = DevTime,
-    typename DEQDep = DevEventQueue>
-class DevMouseT : public DevSharedMouse
+// Mouse support under SDL. This class should share the same protocol as other
+// classes for different OSs.
+class DevMouse : public DevSharedMouse
 {
 public:
-    // No dependency provider for: DevTimeDep
-    using DevButtonEventType = DevButtonEvent;
-
-    static DevMouseT& instance();
+    static DevMouse& instance();
 
     //  Return the absolute mouse position
     //  ( clipped by the range limits )
@@ -64,13 +42,13 @@ public:
     // Scale the output coordinates to be in the range [0,xmax) and [0,ymax).
     void scaleCoordinates(XCoord xmax, YCoord ymax);
 
-    // Set the mouse's position.  Does NOT move the on screen pointer. Called by Win95App when
-    // mouse move message ( WM_MOUSEMOVE ) is recieved. It is undesirable to move the on screen pointer as
-    // this will generate another WM_MOUSEMOVE message.
+    // Set the mouse's position.  Does NOT move the on screen pointer. Called when a
+    // pointer motion event is received. It is undesirable to move the on screen pointer
+    // as this will generate another motion event.
     void position(XCoord newX, YCoord newY);
 
     // Set the mouse's position. This function updates the on screen pointer position. Should not be
-    // called in response to a WM_MOUSEMOVE event because this function generates another WM_MOUSEMOVE
+    // called in response to a motion event because this function generates another motion
     // event.
     void changePosition(XCoord new_x, YCoord new_y);
 
@@ -78,21 +56,17 @@ public:
     // application for every pointer motion the system reports.
     void addRelativeMotion(double deltaX, double deltaY);
 
-    // This does the same as the Windows fn. of the same name, however, the
-    // return value use the coordinate system of this class's position fn.
+    // Where the system reports the pointer to be, in the coordinate system of this
+    // class's position fn.
     Position getMessagePos() const;
 
 protected:
     //  Singleton
-    DevMouseT();
-    explicit DevMouseT(SdlDelegate* useInstead);
-    ~DevMouseT();
+    DevMouse();
+    explicit DevMouse(SdlDelegate* useInstead);
+    ~DevMouse();
 
-    DependencyProvider<RecRecorderDep> recorderDependency_;
-    DependencyProvider<RecRecorderPrivDep> recorderPrivDependency_;
-    DependencyProvider<DEQDep> eventQueueDependency_;
-
-    void wm_button(const DevButtonEventType&);
+    void wm_button(const DevButtonEvent&);
 
     // The window has lost input focus. Any button held at this moment counts as
     // released, and no further event will report it.
@@ -106,22 +80,18 @@ private:
 
     void resetPosition();
 
-    SdlDelegate sdlDelegate_;
-    SdlDelegate* pSdl_; // <-- Use me
+    SdlDelegate sdlDelegate_{};
+    SdlDelegate* pSdl_{ &sdlDelegate_ }; // <-- Use me
 
-    mutable Position position_;
-    Position lastPosition_;
-    Motion relativeMotion_;
-    int cursorVisible_;
-    bool lButtonPressed_;
-    bool rButtonPressed_;
-    Position maxPosition_;
-    double scaleX_, scaleY_;
-    mutable bool scrolledUp_, scrolledDown_;
+    mutable Position position_{};
+    Position lastPosition_{};
+    Motion relativeMotion_{};
+    int cursorVisible_{};
+    bool lButtonPressed_{};
+    bool rButtonPressed_{};
+    Position maxPosition_{};
+    double scaleX_{ 1.0 };
+    double scaleY_{ 1.0 };
+    mutable bool scrolledUp_{};
+    mutable bool scrolledDown_{};
 };
-
-// !!!!!!!! CONCRETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-using DevMouse = DevMouseT<RecRecorder, RecRecorderPrivate, DevTime, DevEventQueue>;
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-#endif
