@@ -10,24 +10,18 @@
 namespace Device
 {
 
-namespace detail
-{
-    using KeyCodeUnderlying = uint8_t;
-    constexpr int ModifiersBitsShift = sizeof(KeyCodeUnderlying) * 8;
-    constexpr int KeyCodeMask = 0xff;
-
-    static_assert(KeyCodeMask < (1 << ModifiersBitsShift));
-} // namespace detail
-
 enum class KeyModifier
 {
     None = 0x0,
-    Alt = 0x1 << detail::ModifiersBitsShift,
-    Ctrl = 0x2 << detail::ModifiersBitsShift,
-    Shift = 0x4 << detail::ModifiersBitsShift,
+    Alt = 0x1,
+    Ctrl = 0x2,
+    Shift = 0x4,
 };
 
-enum class KeyCode : detail::KeyCodeUnderlying
+// Every button the game can be told about: keys, mouse buttons, and the pad and
+// hand-controller buttons still to come. One code space, so one bind table, one
+// state map and one filter table serve all of them.
+enum class KeyCode : uint16_t
 {
     UNKNOWN,
 
@@ -168,10 +162,10 @@ inline constexpr KeyCode operator+(KeyCode code1, KeyCodeOffset offset)
 }
 
 // This *must* be the highest code in this enumeration plus 1.
-inline constexpr int MAX_CODE = static_cast<detail::KeyCodeUnderlying>(KeyCode::COUNT);
+inline constexpr int MAX_CODE = static_cast<int>(KeyCode::COUNT);
 inline constexpr bool isValidCode(KeyCode code)
 {
-    return (static_cast<detail::KeyCodeUnderlying>(code) < MAX_CODE);
+    return (static_cast<int>(code) < MAX_CODE);
 }
 
 inline constexpr bool isAlphaNumKey(KeyCode code)
@@ -183,11 +177,6 @@ inline constexpr bool isAlphaNumKey(KeyCode code)
 inline constexpr bool isMouseButton(KeyCode code)
 {
     return (code >= KeyCode::MOUSE_LEFT) && (code <= KeyCode::MOUSE_EXTRA8);
-}
-
-inline constexpr KeyCode getKeyWithoutModifiers(int value)
-{
-    return static_cast<KeyCode>(value & Device::detail::KeyCodeMask);
 }
 
 } // namespace Device
