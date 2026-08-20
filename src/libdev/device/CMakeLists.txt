@@ -21,6 +21,8 @@ set(DEVICE_SOURCES
     Input.hpp
     internal/SdlTimeImpl.hpp
     Key.hpp
+    KeyNames.cpp
+    KeyNames.hpp
     Keyboard.hpp
     KeyToCommand.cpp
     KeyToCommand.hpp

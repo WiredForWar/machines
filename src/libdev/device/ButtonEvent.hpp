@@ -1,6 +1,7 @@
 #pragma once
 
 #include "device/Key.hpp"
+#include "device/KeyNames.hpp"
 #include "device/Time.hpp"
 #include "mathex/Point2d.hpp"
 

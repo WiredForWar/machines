@@ -1,4 +1,5 @@
 #include "KeyToString.hpp"
+#include "device/KeyNames.hpp"
 
 #include "gui/ResolvedUiString.hpp"
 #include "gui/Font.hpp"
