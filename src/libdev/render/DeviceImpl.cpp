@@ -65,8 +65,16 @@ void RenIDeviceImpl::prepareForModeChange(const RenDisplay::Mode&, const RenDisp
 // virtual
 bool RenIDeviceImpl::modeChanged(const RenDisplay::Mode&)
 {
-    RENDER_STREAM("Reinitialising RenDevice after mode change.\n");
-    return parent_->fitToDisplay(display_);
+    // Nothing to do, and nothing that needs doing: every display mode is chosen
+    // before the device exists, so no device is ever registered to be told of a
+    // change. Saying yes is the truth about what happened.
+    //
+    // Whoever makes the mode changeable while the game runs has to do here what
+    // switching backend does: release what the device holds on the GPU, stand
+    // the backend up again, build those resources afresh, and re-upload the
+    // textures. What used to be here re-made the context and left every handle
+    // the device held pointing into the one it had just thrown away.
+    return true;
 }
 
 // static

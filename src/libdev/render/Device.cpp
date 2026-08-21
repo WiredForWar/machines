@@ -886,33 +886,6 @@ void RenDevice::initializeDisplay()
     clearAllSurfaces(RenColour::black());
 }
 
-bool RenDevice::initializeContext()
-{
-    CB_DEPIMPL_AUTO(backend_);
-    CB_DEPIMPL_AUTO(display_);
-
-    PRE(backend_);
-
-    backend_->shutdown();
-    if (!backend_->initialize(display_->adapter(), &pImpl_->shaders_))
-    {
-        spdlog::error("Render backend re-initialization failed");
-        return false;
-    }
-
-    return true;
-}
-
-bool RenDevice::fitToDisplay(RenDisplay* pDisplay)
-{
-    PRE(pDisplay);
-    if (!initializeContext())
-        return false;
-
-    initializeDisplay();
-    return true;
-}
-
 void RenDevice::createViewport()
 {
     backgroundColour(RenColour::black());

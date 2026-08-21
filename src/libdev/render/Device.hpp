@@ -163,10 +163,7 @@ public:
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
 
-    bool initializeContext();
     void initializeDisplay();
-
-    DECL_DEPRECATED bool fitToDisplay(RenDisplay* pDisplay);
 
     // This sets the sub-area of the screen which is used for 3D rendering.  The
     // remainder of the back-buffer is accessible thru the RenSurface interface.
