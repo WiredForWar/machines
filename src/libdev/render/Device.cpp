@@ -188,6 +188,34 @@ void RenDevice::renderScreenspace(
     renderScreenspace(vertices, nVertices, topology, targetW, targetH, mat.texture().handle());
 }
 
+// Create a backend of the given type and initialize it, leaving none behind if
+// either step fails. The device's own resources are not touched: the two callers
+// want different things done about those.
+bool RenDevice::standUpBackend(Ren::BackendType type)
+{
+    CB_DEPIMPL_AUTO(backend_);
+
+    Ren::IRenderSurface* surface = pImpl_->display_->adapter();
+
+    spdlog::info("Creating render backend of type {}", toString(type));
+
+    backend_ = Ren::IRenderBackend::create(surface, type);
+    if (!backend_)
+    {
+        spdlog::error("Failed to create render backend of type {}", toString(type));
+        return false;
+    }
+
+    if (!backend_->initialize(surface, &pImpl_->shaders_))
+    {
+        spdlog::error("Failed to initialize the {} render backend", toString(type));
+        backend_.reset();
+        return false;
+    }
+
+    return true;
+}
+
 bool RenDevice::initialize(Ren::BackendType backendType)
 {
     PRE(Ren::initialised());
@@ -209,20 +237,22 @@ bool RenDevice::initialize(Ren::BackendType backendType)
     if (backendType == Ren::BackendType::Auto)
         backendType = Ren::IRenderBackend::resolveAutoBackend(surface);
 
-    spdlog::info("Creating render backend of type {}", toString(backendType));
-
-    backend_ = Ren::IRenderBackend::create(surface, backendType);
-    if (!backend_)
+    if (!standUpBackend(backendType))
     {
-        spdlog::error("Failed to create render backend of type {}", toString(backendType));
-        return false;
-    }
+        // A setting naming a backend this host will not run must not be a
+        // setting the game cannot be started to change it. The choice itself is
+        // left alone, since a driver that refuses today may not tomorrow, and
+        // the log says which backend ended up drawing.
+        //
+        // Nothing to fall back to when the one that failed was already the best
+        // on offer, which is also the case when Auto chose it.
+        const Ren::BackendType best = Ren::IRenderBackend::resolveAutoBackend(surface);
+        if (best == backendType)
+            return false;
 
-    if (!backend_->initialize(surface, &pImpl_->shaders_))
-    {
-        spdlog::error("Failed to initialize render backend");
-        backend_.reset();
-        return false;
+        spdlog::error("Falling back to the {} backend", toString(best));
+        if (!standUpBackend(best))
+            return false;
     }
 
     initializeDisplay();
@@ -686,20 +716,8 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     backend_.reset();
 
     // Create and initialize the new backend.
-    Ren::IRenderSurface* surface = pImpl_->display_->adapter();
-    backend_ = Ren::IRenderBackend::create(surface, type);
-    if (!backend_)
-    {
-        spdlog::error("Failed to create render backend of type {}", toString(type));
+    if (!standUpBackend(type))
         return false;
-    }
-
-    if (!backend_->initialize(surface, &pImpl_->shaders_))
-    {
-        spdlog::error("Failed to initialize new render backend");
-        backend_.reset();
-        return false;
-    }
 
     // A backend starts on the set it prefers, which is not necessarily the one
     // that was in use, so the choice has to be made again against what this one

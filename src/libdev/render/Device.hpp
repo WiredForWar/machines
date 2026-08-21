@@ -491,6 +491,7 @@ private:
     void blitPostProcess();
     void commonEndFrame();
 
+    bool standUpBackend(Ren::BackendType type);
     bool createGpuResources();
     void releaseGpuResources();
     void applyConfiguredShaderSet();
