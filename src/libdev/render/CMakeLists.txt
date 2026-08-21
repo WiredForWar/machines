@@ -241,17 +241,38 @@ target_link_libraries(render PRIVATE
     Freetype::Freetype
 )
 
+# The parts every GL backend needs and none of them should own: the mapping from
+# the renderer's own enumerations onto GL ones, and compiling GLSL into a
+# program. Neither changed between 2.1, core and ES, so a second backend reuses
+# this rather than growing its own copy.
+add_library(render_backend_gl_common STATIC
+    OpenGL/ShaderProgram.cpp
+    OpenGL/ShaderProgram.hpp
+    OpenGL/Utils.cpp
+    OpenGL/Utils.hpp
+)
+target_include_directories(render_backend_gl_common PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
+target_link_libraries(render_backend_gl_common PRIVATE
+    GLEW::GLEW
+    spdlog::spdlog
+)
+if(TARGET OpenGL::OpenGL)
+    target_link_libraries(render_backend_gl_common PRIVATE OpenGL::OpenGL)
+else()
+    target_link_libraries(render_backend_gl_common PRIVATE OpenGL::GL)
+endif()
+
 if(TRUE)
     add_library(render_backend_gl21 STATIC
         OpenGL/BackendGL21.hpp
         OpenGL/RenderBackendGL21.cpp
         OpenGL/RenderBackendGL21.hpp
-        OpenGL/Utils.cpp
-        OpenGL/Utils.hpp
     )
     target_include_directories(render_backend_gl21 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
     target_link_libraries(render_backend_gl21 PRIVATE
         LibDev::system
+
+        render_backend_gl_common
 
         GLEW::GLEW
         glm::glm

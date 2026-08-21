@@ -99,12 +99,6 @@ private:
     UniformLocationId uniformLocation(ProgramId id, std::string_view name) const;
     AttributeLocationId attribLocation(ProgramId id, std::string_view name) const;
 
-    static GLuint createProgramFromSources(
-        const std::string& vertexShaderCode,
-        const std::string& fragmentShaderCode,
-        std::string_view vertexShaderDebugName,
-        std::string_view fragmentShaderDebugName);
-
     GLuint programHandle(ProgramId id) const;
 
     GLuint bufferHandle(BufferId id) const;
