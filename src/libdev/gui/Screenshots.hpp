@@ -3,6 +3,7 @@
 #include "render/render.hpp"
 #include "system/PathName.hpp"
 
+#include <optional>
 #include <string>
 
 class RenSurface;
@@ -12,10 +13,18 @@ namespace Gui
 
 // Screenshots are kept together in one directory rather than dropped beside the
 // executable, so that a session's worth of them is easy to find and to sweep up.
-// The directory is made on the way if it is not there yet, and an unset path
-// back means there is nowhere to write and nothing should be.
+// The directory is made when the first one is written, not when its path is
+// worked out, so asking where a shot would go costs nothing and changes nothing.
 
-// The path this file name gets.
+// Why this is not a name a screenshot may have, or nothing if it is fine. A name
+// is a bare file name of letters, digits, underscores and dots that starts with
+// a letter or a digit, so it can never reach outside the one directory they all
+// go in.
+std::optional<std::string> screenshotNameComplaint(const std::string& fileName);
+
+// The path this name gets, with .png put on the end unless it is already there.
+// A name worth passing here is one screenshotNameComplaint had nothing to say
+// about.
 SysPathName screenshotPath(const std::string& fileName);
 
 // The path of the first <prefix>NNNN.png that nothing occupies yet, counting up

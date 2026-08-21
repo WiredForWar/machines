@@ -2778,13 +2778,14 @@ void MachInGameScreen::controlPanelOn(bool on)
     controlPanelOn_ = on;
 }
 
-void MachInGameScreen::initiateScreenShot()
+void MachInGameScreen::initiateScreenShot(std::string fileName)
 {
     RenDevice& device = *pSceneManager_->pDevice();
 
     // Always defer the actual save to the next frame so that the 2D pass
     // can skip overlays (e.g. "paused" bitmap) while rendering.
     renderingScreenShot_ = true;
+    screenShotName_ = std::move(fileName);
 
     // It's quite possible that other high-quality rendering options could
     // be turned on, in addition to anti-aliasing.
@@ -2823,7 +2824,12 @@ void MachInGameScreen::saveScreenShot()
 {
     const RenDevice& device = *pSceneManager_->pDevice();
     const RenSurface back = device.backSurface();
-    Gui::saveScreenshot(back, Gui::nextScreenshotPath("mach"));
+
+    Gui::saveScreenshot(
+        back,
+        screenShotName_.empty() ? Gui::nextScreenshotPath("mach") : Gui::screenshotPath(screenShotName_));
+
+    screenShotName_.clear();
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const

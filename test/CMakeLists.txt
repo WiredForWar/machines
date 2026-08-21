@@ -55,6 +55,7 @@ append_test(DevKeyToCommandTranslator device/DevKeyToCommandTranslator.cpp)
 append_test(GuiBaselineTests gui/GuiBaselineTests.cpp)
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)
 append_test(GuiResourceStringTests gui/GuiResourceStringTests.cpp)
+append_test(ScreenshotsTests gui/ScreenshotsTests.cpp)
 #~:machgui
 append_test(DropDownPlacementTests machgui/DropDownPlacementTests.cpp)
 append_test(MouseLookTests machgui/MouseLookTests.cpp)

@@ -1476,12 +1476,15 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
             const Gui::Box area = menuArea();
             Gui::saveScreenshot(
                 Gui::backBuffer(),
-                Gui::nextScreenshotPath("menu"),
+                pendingScreenShotName_.empty() ? Gui::nextScreenshotPath("menu")
+                                               : Gui::screenshotPath(pendingScreenShotName_),
                 Ren::Rect(
                     static_cast<int>(area.minCorner().x()),
                     static_cast<int>(area.minCorner().y()),
                     static_cast<int>(area.width()),
                     static_cast<int>(area.height())));
+
+            pendingScreenShotName_.clear();
 
             pSceneManager_->pDevice()->presentFrame();
         }
@@ -1517,6 +1520,20 @@ bool MachGuiStartupScreens::isIntroScreen(Context context)
 void MachGuiStartupScreens::skipIntroScreens()
 {
     skipIntroScreens_ = true;
+}
+
+void MachGuiStartupScreens::requestScreenShot(std::string fileName)
+{
+    // The two are photographed by different code: the game's shot waits for a
+    // frame rendered at the highest quality the hardware offers, a menu's is
+    // cropped to the menu itself.
+    if (isGameContext())
+        pInGameScreen_->initiateScreenShot(std::move(fileName));
+    else
+    {
+        pendingScreenShotName_ = std::move(fileName);
+        pendingScreenShot_ = true;
+    }
 }
 
 void MachGuiStartupScreens::checkContextTimeout()
@@ -1751,7 +1768,7 @@ bool MachGuiStartupScreens::doHandleKeyEvent(const GuiKeyEvent& e)
         static const auto & screenshotTrigger = MachGui::inputRegistry()->getBinds("screenshot"_bind);
         if (screenshotTrigger.matches(e.keyWithMods()))
         {
-            pendingScreenShot_ = true;
+            requestScreenShot();
         }
 
         static const auto & toggleRendering = MachGui::inputRegistry()->getBinds("gfx-toggle-rendering"_bind);

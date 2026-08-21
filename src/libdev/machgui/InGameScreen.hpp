@@ -25,6 +25,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 
 // Forward refs
 class IProgressReporter;
@@ -345,7 +346,9 @@ public:
     // are supported but not in use (e.g. antialiasing), this sets said options,
     // sets isRenderingScreenShot, then just continues.  In the absence of
     // fancy rendering options this writes the shot immediately.
-    void initiateScreenShot();
+    // The shot is named as asked, or numbered after the ones already taken when
+    // no name is given.
+    void initiateScreenShot(std::string fileName = {});
     bool isRenderingScreenShot() const;
 
     // If isRenderingScreenShot is true, then this should be called to
@@ -503,6 +506,7 @@ private:
     bool resolutionChanged_{};
     bool renderingScreenShot_{};
     bool screenShotToggledAA_{};
+    std::string screenShotName_{};
     CorralStateBitfield corralState_{};
     MachGuiInGameChatMessagesDisplay* pChatMessageDisplay_{};
     int redrawMapCounter_{}; // When ingame becomes GuiRoot the map needs to be redrawn every frame for 1st 4 frames to

@@ -10,6 +10,7 @@
 #include "machgui/db/DbSavedGame.hpp"
 #include "base/IProgressReporter.hpp"
 #include "gui/Manager.hpp"
+#include "gui/Screenshots.hpp"
 #include "ctl/Vector.hpp"
 #include "machlog/Actors/ActorMaker.hpp"
 #include "machlog/World/Mapper.hpp"
@@ -1359,6 +1360,36 @@ std::vector<std::string> spawnConstructionCompleter(
     }
 }
 
+void screenshotCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    if (!pStartup)
+    {
+        console.reportError("The startup screens are not up yet.");
+        return;
+    }
+
+    std::string fileName;
+    if (!request.arguments.empty() && request.arguments[0].provided)
+    {
+        fileName = std::get<std::string>(request.arguments[0].value);
+        const std::optional<std::string> complaint = Gui::screenshotNameComplaint(fileName);
+        if (complaint.has_value())
+        {
+            console.reportError(complaint.value());
+            return;
+        }
+    }
+
+    pStartup->requestScreenShot(fileName);
+
+    // The shot is of the next frame, so where it will go is all there is to say
+    // about it yet. Whether it got written is in the log.
+    if (fileName.empty())
+        console.writeLine("Photographing the next frame.");
+    else
+        console.writeLine("Photographing the next frame into " + Gui::screenshotPath(fileName).pathname() + ".");
+}
+
 } // anonymous namespace
 
 } // namespace ConsoleImpl
@@ -1563,6 +1594,16 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
         },
         [pStartup](const Request& request, Console& console)
         { loadGameCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "screenshot",
+            .description = "Photograph the next frame into the screenshots directory.",
+            .arguments = { { .name = "name", .type = Arg::String, .optional = true,
+                             .description = "File name, letters, digits, underscores and dots only, no directory."
+                                            " Omit to number it after the shots already taken." } },
+        },
+        [pStartup](const Request& request, Console& console) { screenshotCommand(pStartup, request, console); });
 
     // ---- Data reload commands ----
 

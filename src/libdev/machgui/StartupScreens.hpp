@@ -218,6 +218,13 @@ public:
     // rather than returning to them once the menu has been left alone.
     void skipIntroScreens();
 
+    // Asks for a screenshot of the next frame, whichever of the game and the
+    // menus is on screen when it comes. Named as asked, or numbered after the
+    // shots already taken when no name is given; either way it goes in the
+    // directory kept for them. A name worth passing is one
+    // Gui::screenshotNameComplaint had nothing to say about.
+    void requestScreenShot(std::string fileName = {});
+
     MachGuiMessageBroker& messageBroker();
     // PRE( pMessageBroker_ );
 
@@ -501,6 +508,7 @@ private:
     GuiDisplayable* pCharFocus_; // Store the char focus whilst the message box is displayed
     bool isGamePaused_{};
     bool pendingScreenShot_{};
+    std::string pendingScreenShotName_{};
     FocusCapableControls focusCapableControls_;
     MachGuiDispositionChangeNotifiable* pDispositionNotifiable_;
     bool ignoreHostLostSystemMessage_;
