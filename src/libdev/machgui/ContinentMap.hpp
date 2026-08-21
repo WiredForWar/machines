@@ -221,7 +221,8 @@ private:
     bool noFastChangeInLightLevel_;
 
     // The map is drawn into surfaces that no file backs, so a new backend hands
-    // them back blank and they have to be drawn again.
+    // them back blank and they have to be drawn again. Held only while a game is
+    // loaded, since that is when those surfaces exist.
     Utils::CallbackHandleUPtr resourcesInvalidatedHandle_;
 };
 

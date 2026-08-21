@@ -286,10 +286,6 @@ MachContinentMap::MachContinentMap(
         pInGameScreen_);
 
     useFastSecondDisplay(false);
-
-    resourcesInvalidatedHandle_ = RenDevice::current()->addResourcesInvalidatedCallback([this]() {
-        updateBeacon(true);
-    });
 }
 
 void MachContinentMap::loadGame(const std::string& planet)
@@ -360,6 +356,15 @@ void MachContinentMap::loadGame(const std::string& planet)
 
     playerRace_ = MachLogRaces::instance().playerRace();
 
+    // Registered here rather than on construction, because this is where the
+    // surfaces it redraws come into being and where the race it reads is
+    // settled. The map exists from start-up, so a callback taken out in the
+    // constructor would be asked to draw a map for a game that had not been
+    // chosen yet.
+    resourcesInvalidatedHandle_ = RenDevice::current()->addResourcesInvalidatedCallback([this]() {
+        updateBeacon(true);
+    });
+
     updateBeacon(true);
 
     // Sort out the level of FOW.
@@ -375,6 +380,8 @@ void MachContinentMap::loadGame(const std::string& planet)
 
 void MachContinentMap::unloadGame()
 {
+    resourcesInvalidatedHandle_.reset();
+
     pBeenHere_.clear();
     visibilityGrid_.clear();
 }
