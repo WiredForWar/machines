@@ -51,12 +51,19 @@ GLuint createProgramFromSources(
     spdlog::debug("Compiling the vx shader {}", vertexShaderDebugName);
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     if (!compileShader(vertexShaderID, vertexShaderCode))
+    {
+        glDeleteShader(vertexShaderID);
         return 0;
+    }
 
     spdlog::debug("Compiling the fg shader {}", fragmentShaderDebugName);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     if (!compileShader(fragmentShaderID, fragmentShaderCode))
+    {
+        glDeleteShader(vertexShaderID);
+        glDeleteShader(fragmentShaderID);
         return 0;
+    }
 
     spdlog::debug("Linking the shader program");
     GLuint programID = glCreateProgram();
