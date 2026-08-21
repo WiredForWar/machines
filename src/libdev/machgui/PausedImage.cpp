@@ -30,7 +30,7 @@ void MachGuiPausedImage::doDisplay()
         switch (pInGameScreen_->actualGameState())
         {
             case MachInGameScreen::WON:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+                if (MachGuiDatabase::instance().isTrainingScenario())
                 {
                     pausedBmp = Gui::getScaledImage("gui/misc/complete.bmp");
                 }
@@ -40,7 +40,7 @@ void MachGuiPausedImage::doDisplay()
                 }
                 break;
             case MachInGameScreen::LOST:
-                if (MachGuiDatabase::instance().currentScenario().isTrainingScenario())
+                if (MachGuiDatabase::instance().isTrainingScenario())
                 {
                     pausedBmp = Gui::getScaledImage("gui/misc/failed.bmp");
                 }

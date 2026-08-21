@@ -111,6 +111,11 @@ public:
     MachGuiDbScenario& currentScenario() const;
     // PRE( hasCurrentScenario() );
 
+    // True if the game being played came from a training scenario. False when
+    // there is no scenario at all, as for a game loaded straight from a planet.
+    bool isTrainingScenario() const;
+    // PRE( hasCurrentScenario() );
+
     // True if there is a current scenario
     bool hasCurrentScenario() const;
 

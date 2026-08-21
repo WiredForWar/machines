@@ -927,6 +927,11 @@ MachGuiDbScenario& MachGuiDatabase::currentScenario() const
     return *pData_->pCurrentDbScenario_;
 }
 
+bool MachGuiDatabase::isTrainingScenario() const
+{
+    return hasCurrentScenario() && currentScenario().isTrainingScenario();
+}
+
 bool MachGuiDatabase::hasCurrentScenario() const
 {
     return pData_->pCurrentDbScenario_ != nullptr;

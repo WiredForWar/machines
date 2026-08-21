@@ -2245,7 +2245,7 @@ MachInGameScreen::GameState MachInGameScreen::gameState() const
         PhysAbsoluteTime now = Phys::time();
         // Only return that game has been lost/won after it has been in this state for a few seconds.
         // This enables pod destruction animation time to run and music to play.
-        if (MachGuiDatabase::instance().currentScenario().isTrainingScenario() && now - gameStateTimer_ > 5.0)
+        if (MachGuiDatabase::instance().isTrainingScenario() && now - gameStateTimer_ > 5.0)
         {
             retVal = gameState_;
         }

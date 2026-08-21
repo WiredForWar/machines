@@ -101,6 +101,9 @@ uint MachGuiDatabaseHandler::nTasksInCurrentScenario() const
 // virtual
 bool MachGuiDatabaseHandler::taskStartsAvailable(uint index) const
 {
+    if (!MachGuiDatabase::instance().hasCurrentScenario())
+        return false;
+
     return MachGuiDatabase::instance().currentScenario().textData().taskStartsAvailable(index);
 }
 
