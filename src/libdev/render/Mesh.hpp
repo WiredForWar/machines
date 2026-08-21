@@ -33,7 +33,6 @@ struct Mesh;
 
 class RenDevice;
 class RenMaterial;
-class RenNormalMap;
 class RenTriangleList;
 class RenTriangle;
 class RenTTFPolygon;

@@ -88,8 +88,6 @@ set(RENDER_SOURCES
     Node.cpp
     Node.hpp
     NonMMX.cpp
-    NormalMap.cpp
-    NormalMap.hpp
     Painter.cpp
     Painter.hpp
     PolySortedDraw.cpp
