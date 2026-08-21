@@ -410,9 +410,16 @@ bool SDLApp::clientStartup()
         frontPainter.filledRectangle(mode.size(), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontPainter.blit(waitBmp, {}, offset);
-        // Call it twice to draw on both front and back buffers
+        // The clear belongs to the pair as much as the image does. Drawing twice
+        // across a swap is how both of the two buffers come to hold the same
+        // thing; a draw left out of it reaches only one of them. The image is
+        // 640x480 in the middle of whatever the mode is and the clear is what
+        // covers the rest, so with the clear done once the border was black in
+        // one buffer and stale in the other -- and the progress bar swaps them
+        // on every step it reports.
         RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
+        frontPainter.filledRectangle(mode.size(), RenColour::black());
         frontPainter.blit(waitBmp, {}, offset);
     }
 
@@ -424,9 +431,16 @@ bool SDLApp::clientStartup()
         frontPainter.filledRectangle(mode.size(), RenColour::black());
         RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
         frontPainter.blit(waitBmp, {}, offset);
-        // Call it twice to draw on both front and back buffers
+        // The clear belongs to the pair as much as the image does. Drawing twice
+        // across a swap is how both of the two buffers come to hold the same
+        // thing; a draw left out of it reaches only one of them. The image is
+        // 640x480 in the middle of whatever the mode is and the clear is what
+        // covers the rest, so with the clear done once the border was black in
+        // one buffer and stale in the other -- and the progress bar swaps them
+        // on every step it reports.
         RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
+        frontPainter.filledRectangle(mode.size(), RenColour::black());
         frontPainter.blit(waitBmp, {}, offset);
     }
     // Draw copyright note, store it in a way preventing from modification
