@@ -133,7 +133,7 @@ template class Config::Variable<Ren::ShaderSet>;
 template class Config::Variable<Ren::WindowMode>;
 template class Config::Variable<ShadowQuality>;
 
-Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", {});
+Variable<Ren::BackendType> gfxBackendType("Options/Graphics/Backend", Ren::BackendType::Auto);
 Variable<Ren::ShaderSet> gfxShaderSet("Options/Graphics/Shader Set", Ren::ShaderSet::GLSL120);
 Variable<Ren::WindowMode> gfxWindowMode("Screen Resolution/Window Mode", Ren::WindowMode::Borderless);
 
