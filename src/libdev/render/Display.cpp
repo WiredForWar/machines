@@ -559,6 +559,16 @@ const RenCursor2d* RenDisplay::currentCursor() const
     return pImpl_->currentCursor();
 }
 
+void RenDisplay::setCursorVisible(bool visible)
+{
+    pImpl_->cursorVisible_ = visible;
+}
+
+bool RenDisplay::isCursorVisible() const
+{
+    return pImpl_->cursorVisible_;
+}
+
 void RenDisplay::setCursorGrabEnabled(bool enabled)
 {
     if (pImpl_->adapter_)

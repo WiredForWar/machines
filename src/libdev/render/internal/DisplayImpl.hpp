@@ -73,6 +73,7 @@ private:
     RenDisplay::Mode currentMode_;
     RenDisplay::WindowMode windowMode_ = RenDisplay::WindowMode::Windowed;
     const RenCursor2d* cursor_ = nullptr;
+    bool cursorVisible_{};
     RenISavedArea* backBufferCursorSave_ = nullptr;
     RenISavedArea* frontBufferCursorSave_ = nullptr;
     uint32_t frameNo_ = 0;

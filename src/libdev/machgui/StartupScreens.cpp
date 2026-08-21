@@ -348,8 +348,20 @@ void MachGuiStartupScreens::displayGui()
     else
         setGuiViewport();
 
-    // Draw any updated Gui components...
-    GuiManager::instance().display();
+    const bool uiVisible = !inGame || pInGameScreen_->isUiVisible();
+
+    // Read afresh every frame rather than remembered, so that the pointer is
+    // drawn whenever anything else is: leaving a game that was being watched
+    // bare brings it back along with the menus.
+    pSceneManager_->pDevice()->display()->setCursorVisible(uiVisible);
+
+    // Draw any updated Gui components, unless the game is being watched with
+    // nothing over it -- in which case the console is the one thing still drawn,
+    // since it is what the watching is driven from and closing it is a keypress.
+    if (uiVisible)
+        GuiManager::instance().display();
+    else if (pConsoleDropDown_)
+        pConsoleDropDown_->display();
 
     if (inGame)
         pInGameScreen_->setWorldViewViewport();

@@ -320,6 +320,19 @@ public:
     bool controlPanelOn() const;
     void controlPanelOn(bool);
 
+    // Whether the interface is drawn over the world. With it off the world view
+    // grows to the whole window and nothing goes on top of it: no panels, no
+    // prompt, no text, not even the pointer. For photographing the world at the
+    // full size of the window.
+    //
+    // The console is the exception, since it is what the world is framed from
+    // while the rest is gone; close it to take the picture.
+    //
+    // Only the drawing stops. What cannot be seen still takes clicks, so drive
+    // the camera from the console rather than the mouse while it is off.
+    void setUiVisible(bool visible);
+    bool isUiVisible() const;
+
     // Call when the ingame resolution has been changed
     void resolutionChange();
 
@@ -494,6 +507,7 @@ private:
     const MachActor* pPromptTextActor_{}; // Actor whos info is on the prompt text
     MachGuiControlPanelAddOn* pControlPanelAddOn_{};
     bool controlPanelOn_{};
+    bool uiVisible_{};
     int controlPanelXPos_{};
     MachGuiControlPanel* pControlPanel_{};
     MachGuiConsoleDropDown* pConsoleDropDown_{};

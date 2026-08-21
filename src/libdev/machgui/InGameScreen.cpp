@@ -121,6 +121,7 @@ MachInGameScreen::MachInGameScreen(W4dSceneManager* pSceneManager, W4dRoot* pRoo
         0,
         10000 /*pSceneManager->pDevice()->windowWidth()*/,
         10000 /*pSceneManager->pDevice()->windowHeight()*/))
+    , uiVisible_(true)
 {
     // Control panel should be out to start with
     controlPanelXPos_ = MachGui::controlPanelInXPos();
@@ -2116,6 +2117,11 @@ void MachInGameScreen::setWorldViewViewport()
     {
         pFirstPerson_->setFirstPerson3DViewport();
     }
+    else if (!uiVisible_)
+    {
+        // Nothing is drawn beside the world, so the world has the window.
+        setGuiViewport();
+    }
     else
     {
         // Set the viewport boundary for the world view window
@@ -2778,6 +2784,24 @@ void MachInGameScreen::controlPanelOn(bool on)
     controlPanelOn_ = on;
 }
 
+void MachInGameScreen::setUiVisible(bool visible)
+{
+    if (visible == uiVisible_)
+        return;
+
+    uiVisible_ = visible;
+
+    // The world was drawn over every part of the window while the interface was
+    // off, so every part of the interface has to be drawn again.
+    if (uiVisible_)
+        activate();
+}
+
+bool MachInGameScreen::isUiVisible() const
+{
+    return uiVisible_;
+}
+
 void MachInGameScreen::initiateScreenShot(std::string fileName)
 {
     RenDevice& device = *pSceneManager_->pDevice();
@@ -2834,11 +2858,14 @@ void MachInGameScreen::saveScreenShot()
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const
 {
-    Gui::Coord topLeftCoord = pControlPanel_->relativeCoord();
-
     RenDevice& device = *pSceneManager_->pDevice();
     const int w = device.windowWidth();
     const int h = device.windowHeight();
+
+    if (!uiVisible_)
+        return Gui::Box(0, 0, w, h);
+
+    Gui::Coord topLeftCoord = pControlPanel_->relativeCoord();
     Gui::Box visibleArea(pControlPanel_->width() + topLeftCoord.x(), 0, w, h);
 
     return visibleArea;

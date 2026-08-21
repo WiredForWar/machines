@@ -577,6 +577,23 @@ void fowCommand(MachGuiStartupScreens* pStartup, const Request& request, Console
     console.writeLine(std::string("Fog of war ") + toOnOffString(enabled) + ".");
 }
 
+void uiCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
+    if (!pScreen)
+        return;
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        console.writeLine(std::string("The interface is ") + toOnOffString(pScreen->isUiVisible()) + ".");
+        return;
+    }
+
+    const bool visible = std::get<bool>(request.arguments[0].value);
+    pScreen->setUiVisible(visible);
+    console.writeLine(std::string("The interface is ") + toOnOffString(visible) + ".");
+}
+
 // ============================================================
 // Resource commands
 // ============================================================
@@ -1462,6 +1479,19 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .cheat = true,
         },
         [pStartup](const Request& request, Console& console) { fowCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "ui",
+            .description = "Get/set whether anything is drawn over the world (on/off).",
+            .arguments = {{
+                .name = "state",
+                .type = Arg::Boolean,
+                .optional = true,
+                .description = "on or off. Omit to print current.",
+            }},
+        },
+        [pStartup](const Request& request, Console& console) { uiCommand(pStartup, request, console); });
 
     // ---- Resource commands ----
 

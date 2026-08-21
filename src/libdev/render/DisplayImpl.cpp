@@ -155,6 +155,7 @@ RenIDisplay::RenIDisplay(Ren::IWindowAdapter* adapter)
     : adapter_(adapter)
     , supportsGammaCorrection_(false)
     , gammaCorrection_(1.0)
+    , cursorVisible_(true)
 {
     if (adapter_)
         currentMode_ = RenDisplay::Mode(adapter_->width(), adapter_->height(), 0);
@@ -254,7 +255,7 @@ void RenIDisplay::drawCursor(RenSurface& backBuf)
     // still wherever the pointer was when it left.
     const RenCursor2d* cursor = currentCursor();
 
-    if (cursor)
+    if (cursor && cursorVisible_)
     {
         RENDER_STREAM("Frame " << frameNo_ << ":" << std::endl);
 

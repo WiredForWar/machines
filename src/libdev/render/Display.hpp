@@ -170,6 +170,13 @@ public:
     void useCursor(const RenCursor2d*);
     const RenCursor2d* currentCursor() const;
 
+    // Whether the cursor is drawn into the frame. A cursor that is not drawn is
+    // still a cursor: it keeps being pointed at things and keeps taking clicks,
+    // it just leaves no arrow in the picture. For photographing what is behind
+    // it.
+    void setCursorVisible(bool visible);
+    bool isCursorVisible() const;
+
     void setCursorGrabEnabled(bool enabled);
 
     // Ask the system to report pointer motion relative to where the pointer already is,
