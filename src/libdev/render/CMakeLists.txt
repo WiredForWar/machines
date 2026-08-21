@@ -248,6 +248,8 @@ target_link_libraries(render PRIVATE
 add_library(render_backend_gl_common STATIC
     OpenGL/ShaderProgram.cpp
     OpenGL/ShaderProgram.hpp
+    OpenGL/StandardUniforms.cpp
+    OpenGL/StandardUniforms.hpp
     OpenGL/Utils.cpp
     OpenGL/Utils.hpp
 )

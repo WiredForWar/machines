@@ -1,5 +1,6 @@
 #pragma once
 
+#include "render/OpenGL/StandardUniforms.hpp"
 #include "render/internal/CommandArena.hpp"
 #include "render/internal/IRenderBackend.hpp"
 
@@ -180,102 +181,11 @@ private:
     // Locations of the uniforms making up the standard blocks, resolved once
     // when the pipeline is created. -1 for the ones a given program does not
     // declare, which is how the setters know to skip them.
-    struct StandardUniformLocations
-    {
-        // GUI 2D block
-        GLint screenspace{-1};
-        GLint textureSampler{-1};
-
-        // Standard frame block
-        GLint view{-1};
-        GLint proj{-1};
-        GLint fogColour{-1};
-        GLint fogParams{-1};
-        GLint fogMode{-1};
-        GLint shadowFilterTaps{-1};
-
-        // Standard object block
-        GLint model{-1};
-        GLint gpuLighting{-1};
-        GLint lightDir{-1};
-        GLint lightColor{-1};
-        GLint ambientColor{-1};
-        GLint matDiffuse{-1};
-        GLint matDiffuseA{-1};
-        GLint matAmbient{-1};
-        GLint matEmissive{-1};
-        GLint filter{-1};
-        GLint hasVtxMaterials{-1};
-        GLint numPointLights{-1};
-        GLint pointLightPos{-1};
-        GLint pointLightColor{-1};
-        GLint pointLightRange{-1};
-        GLint pointLightAtten{-1};
-        GLint pointLightOmni{-1};
-        GLint shadowEnabled{-1};
-        GLint shadowMap{-1};
-        GLint lightSpaceMatrix{-1};
-        GLint shadowMapNear{-1};
-        GLint lightSpaceMatrixNear{-1};
-        GLint shadowStrength{-1};
-        GLint textureSampler2{-1};
-
-        // Billboard block
-        GLint viewProj{-1};
-
-        // Post-process block
-        GLint sceneTexture{-1};
-        GLint exposure{-1};
-    };
-
 
     // The last value sent for each uniform of the standard blocks. Zero
     // initialised, which matches the state of a freshly linked program: GL
     // defaults its uniforms to zero, so a cache that starts at zero is already
     // in step with the driver and the first redundant send can be skipped too.
-    struct StandardUniformValues
-    {
-        std::array<float, 2> screenspace{};
-        int textureSampler{};
-
-        std::array<float, 16> view{};
-        std::array<float, 16> proj{};
-        std::array<float, 3> fogColour{};
-        std::array<float, 3> fogParams{};
-        int fogMode{};
-        int shadowFilterTaps{};
-
-        std::array<float, 16> model{};
-        int gpuLighting{};
-        std::array<float, 3> lightDir{};
-        std::array<float, 3> lightColor{};
-        std::array<float, 3> ambientColor{};
-        std::array<float, 3> matDiffuse{};
-        float matDiffuseA{};
-        std::array<float, 3> matAmbient{};
-        std::array<float, 3> matEmissive{};
-        std::array<float, 3> filter{};
-        int hasVtxMaterials{};
-        int numPointLights{};
-        std::vector<float> pointLightPos{};
-        std::vector<float> pointLightColor{};
-        std::vector<float> pointLightRange{};
-        std::vector<float> pointLightAtten{};
-        std::vector<float> pointLightOmni{};
-        int shadowEnabled{};
-        int shadowMap{};
-        std::array<float, 16> lightSpaceMatrix{};
-        int shadowMapNear{};
-        std::array<float, 16> lightSpaceMatrixNear{};
-        float shadowStrength{};
-        int textureSampler2{};
-
-        std::array<float, 16> viewProj{};
-
-        int sceneTexture{};
-        float exposure{};
-    };
-
     struct Pipeline
     {
         bool alive{};
@@ -283,11 +193,9 @@ private:
         std::vector<VertexAttributeDesc> vertexAttributes{};
         std::vector<std::pair<std::string, UniformLocationId>> uniforms{};
         std::vector<std::pair<std::string, AttributeLocationId>> attributes{};
-        StandardUniformLocations standardUniforms{};
-        StandardUniformValues standardValues{};
+        StandardUniforms standard{};
     };
 
-    static StandardUniformLocations resolveStandardUniformLocations(GLuint program);
 
     // The pipeline bound by the last BindPipeline command. Every uniform block
     // command is recorded after one, so this is whose locations they use and
