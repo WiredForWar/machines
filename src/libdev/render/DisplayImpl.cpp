@@ -248,14 +248,20 @@ std::ostream& operator<<(std::ostream& o, const RenIDisplay& t)
 
 void RenIDisplay::drawCursor(RenSurface& backBuf)
 {
-    if (cursor_)
+    // currentCursor() rather than cursor_: there is nothing of ours to draw
+    // while the system pointer is over another window, and DevMouse stops being
+    // told where it went, so drawing anyway leaves an arrow of our own standing
+    // still wherever the pointer was when it left.
+    const RenCursor2d* cursor = currentCursor();
+
+    if (cursor)
     {
         RENDER_STREAM("Frame " << frameNo_ << ":" << std::endl);
 
         const DevMouse::Position& pos = DevMouse::instance().position();
-        const int destX = pos.first - cursor_->originX();
-        const int destY = pos.second - cursor_->originY();
-        const RenSurface& bm = cursor_->currentBitmap();
+        const int destX = pos.first - cursor->originX();
+        const int destY = pos.second - cursor->originY();
+        const RenSurface& bm = cursor->currentBitmap();
         const Ren::Rect dstRect(destX, destY, bm.width(), bm.height());
 
         // The saved area can reside in one of two places. Certain cards need
