@@ -196,7 +196,10 @@ bool Console::executeCommand(std::string_view line, EchoCommandLine echo)
     request.arguments = std::move(parsedArguments);
     request.rawLine = std::string(trimmed);
     commandIterator->second.handler(request, *this);
-    return true;
+
+    // A handler that reported an error has said the command did not do what was
+    // asked, which is the same answer as failing to parse it.
+    return lastError_.empty();
 }
 
 void Console::clearHistory()
@@ -645,6 +648,12 @@ void Console::saveHistoryEntry(const std::string& line)
 void Console::setError(std::string message)
 {
     lastError_ = std::move(message);
+}
+
+void Console::reportError(std::string message)
+{
+    setError(std::move(message));
+    writeLine(lastError_);
 }
 
 void Console::writeLine(std::string_view text)

@@ -64,7 +64,7 @@ MachInGameScreen* getInGameScreen(MachGuiStartupScreens* pStartup, Console& cons
 {
     if (!pStartup || pStartup->gameType() == MachGuiStartupScreens::NOGAME)
     {
-        console.writeLine("No game is currently active.");
+        console.reportError("No game is currently active.");
         return nullptr;
     }
     return &pStartup->inGameScreen();
@@ -115,7 +115,7 @@ MachPhys::Race raceArgOrPlayer(const Request& request, std::size_t argIndex, Con
         race = MachPhys::toRace(raceName);
         if (!race.has_value())
         {
-            console.writeLine("Unknown race: " + raceName + ". Use red, blue, green, or yellow.");
+            console.reportError("Unknown race: " + raceName + ". Use red, blue, green, or yellow.");
         }
     }
 
@@ -412,7 +412,7 @@ void camTypeCommand(MachGuiStartupScreens* pStartup, const Request& request, Con
     else if (type == "1stperson")
         pCameras->use1stPersonCamera();
     else
-        console.writeLine("Unknown camera type: " + type + ". Use zenith, ground, or 1stperson.");
+        console.reportError("Unknown camera type: " + type + ". Use zenith, ground, or 1stperson.");
 }
 
 void camPosCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
@@ -635,7 +635,7 @@ void spawnMachineCommand(const Request& request, Console& console)
     std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(typeStr);
     if (!objType.has_value() || !isMachineObjectType(objType.value()))
     {
-        console.writeLine("Unknown machine type: " + typeStr);
+        console.reportError("Unknown machine type: " + typeStr);
         return;
     }
 
@@ -662,7 +662,7 @@ void spawnMachineCommand(const Request& request, Console& console)
         weaponCombo = MachPhys::toWeaponCombo(comboStr);
         if (!weaponCombo.has_value())
         {
-            console.writeLine("Unknown weapon combo: " + comboStr + ".");
+            console.reportError("Unknown weapon combo: " + comboStr + ".");
             return;
         }
         if (!isWeaponComboValid(objType.value(), subType, hwLevel, weaponCombo.value()))
@@ -724,7 +724,7 @@ void spawnConstructionCommand(const Request& request, Console& console)
     std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(typeStr);
     if (!objType.has_value() || !isConstructionObjectType(objType.value()))
     {
-        console.writeLine("Unknown building type: " + typeStr);
+        console.reportError("Unknown building type: " + typeStr);
         return;
     }
 
@@ -846,7 +846,7 @@ void saveGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
 {
     if (!pStartup || pStartup->gameType() == MachGuiStartupScreens::NOGAME)
     {
-        console.writeLine("No game is currently active.");
+        console.reportError("No game is currently active.");
         return;
     }
 
@@ -912,7 +912,7 @@ void loadGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
     const uint count = MachGuiDatabase::instance().nSavedGames();
     if (count == 0)
     {
-        console.writeLine("No saved games.");
+        console.reportError("No saved games.");
         return;
     }
 

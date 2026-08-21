@@ -116,6 +116,12 @@ public:
     [[nodiscard]] virtual const std::string& lastError() const = 0;
     virtual void clearError() = 0;
 
+    // For a command handler to say it could not do what was asked. The message
+    // is printed and becomes lastError(), and the submission that ran the
+    // handler reads as refused -- so a caller that is driving the console from
+    // outside learns of the failure instead of only a line of output.
+    virtual void reportError(std::string message) = 0;
+
     virtual void writeLine(std::string_view text) = 0;
     virtual void clearOutput() = 0;
     [[nodiscard]] virtual const std::vector<std::string>& output() const = 0;

@@ -48,6 +48,7 @@ public:
 
     [[nodiscard]] const std::string& lastError() const override;
     void clearError() override;
+    void reportError(std::string message) override;
 
     void writeLine(std::string_view text) override;
     void clearOutput() override;
