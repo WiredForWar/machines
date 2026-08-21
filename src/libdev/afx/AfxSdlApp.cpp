@@ -31,6 +31,14 @@ AfxSdlApp::AfxSdlApp(int argc, char* argv[])
     }
 
     setArgs(args);
+
+    // A run nobody is sitting in front of must not stop on a dialog box. A run
+    // driven over the test server is one of those by definition.
+    if (args.contains("--no-assert-dialog") || args.contains("--test-server")
+        || args.value("--test-server").has_value())
+    {
+        Base::abortWithoutADialog();
+    }
 }
 
 void AfxSdlApp::finish()

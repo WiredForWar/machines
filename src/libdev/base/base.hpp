@@ -40,6 +40,21 @@ using uint = unsigned int;
 
 //////////////////////////////////////////////////////////////////////////
 
+namespace Base
+{
+
+// Makes a failed assertion end the process straight away instead of putting up a
+// dialog and waiting to be told what to do. For a run nobody is watching: the
+// dialog blocks the loop, so the run neither finishes nor reports anything.
+//
+// What was asserted is in assert.log either way, or in the file CB_ASSERT_TO
+// names.
+void abortWithoutADialog();
+
+} // namespace Base
+
+//////////////////////////////////////////////////////////////////////////
+
 // extensions to iso646 operators
 
 #define nor(a, b) (not((a) or (b)))

@@ -5,6 +5,35 @@
 
 #include "base/base.hpp"
 
+#include <cstdlib>
+
+#ifdef _MSC_VER
+#include <crtdbg.h>
+#endif
+
+//////////////////////////////////////////////////////////////////////
+
+namespace Base
+{
+
+void abortWithoutADialog()
+{
+#ifdef _MSC_VER
+    // Without this the debug runtime puts up an abort dialog, and the reporting
+    // one behind it, and waits.
+    _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
+
+    // The library's own assertions report to stderr rather than a dialog too.
+    for (int report : { _CRT_WARN, _CRT_ERROR, _CRT_ASSERT })
+    {
+        _CrtSetReportMode(report, _CRTDBG_MODE_FILE);
+        _CrtSetReportFile(report, _CRTDBG_FILE_STDERR);
+    }
+#endif
+}
+
+} // namespace Base
+
 //////////////////////////////////////////////////////////////////////
 
 #ifndef NDEBUG
