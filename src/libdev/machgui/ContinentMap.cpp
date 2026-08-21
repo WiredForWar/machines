@@ -287,7 +287,7 @@ MachContinentMap::MachContinentMap(
 
     useFastSecondDisplay(false);
 
-    RenDevice::current()->addResourcesInvalidatedCallback([this]() {
+    resourcesInvalidatedHandle_ = RenDevice::current()->addResourcesInvalidatedCallback([this]() {
         updateBeacon(true);
     });
 }

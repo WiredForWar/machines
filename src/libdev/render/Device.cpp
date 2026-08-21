@@ -786,17 +786,51 @@ bool RenDevice::setShaderSet(Ren::ShaderSet set)
     return true;
 }
 
-void RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
+namespace
 {
-    resourcesInvalidatedCallbacks_.push_back(std::move(callback));
+
+// Unregisters on destruction, and does nothing if the device went first: the
+// registry is shared and the handle only holds a weak reference to it.
+class ResourcesInvalidatedHandle : public Utils::CallbackHandle
+{
+public:
+    explicit ResourcesInvalidatedHandle(std::weak_ptr<Ren::ResourcesInvalidatedRegistry> registry)
+        : registry_(std::move(registry))
+    {
+    }
+
+    ~ResourcesInvalidatedHandle() override
+    {
+        const auto registry = registry_.lock();
+        if (!registry)
+            return;
+
+        auto& entries = registry->entries;
+        std::erase_if(entries, [this](const auto& entry) { return entry.handle == this; });
+    }
+
+private:
+    std::weak_ptr<Ren::ResourcesInvalidatedRegistry> registry_{};
+};
+
+} // namespace
+
+Utils::CallbackHandleUPtr RenDevice::addResourcesInvalidatedCallback(std::function<void()> callback)
+{
+    auto handle = std::make_unique<ResourcesInvalidatedHandle>(resourcesInvalidated_);
+    resourcesInvalidated_->entries.push_back({ handle.get(), std::move(callback) });
+    return handle;
 }
 
 void RenDevice::fireResourcesInvalidatedCallbacks()
 {
-    for (auto& cb : resourcesInvalidatedCallbacks_)
+    // Copied first: a callback is free to rebuild whatever it likes, and what it
+    // rebuilds may register or drop a callback of its own.
+    const auto entries = resourcesInvalidated_->entries;
+    for (const auto& entry : entries)
     {
-        if (cb)
-            cb();
+        if (entry.callback)
+            entry.callback();
     }
 }
 

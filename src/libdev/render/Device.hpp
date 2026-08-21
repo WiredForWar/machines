@@ -13,7 +13,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "utility/CallbackHandle.hpp"
+
 #include <functional>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -38,6 +41,20 @@ class RenIVertexData;
 namespace Ren
 {
 class IRenderBackend;
+
+// What RenDevice::addResourcesInvalidatedCallback registers into. Named out here
+// only because the handle it hands back has to reach the same list to take
+// itself off again; nothing else has business with it.
+struct ResourcesInvalidatedRegistry
+{
+    struct Entry
+    {
+        const Utils::CallbackHandle* handle{};
+        std::function<void()> callback{};
+    };
+
+    std::vector<Entry> entries{};
+};
 }
 
 // A device object represents a rendering target.  It orchestrates
@@ -135,7 +152,12 @@ public:
     // Register a callback invoked after GPU resources are invalidated and
     // reloaded (e.g. backend switch, scale factor change).  Listeners
     // should release cached anonymous surfaces and rebuild their context.
-    void addResourcesInvalidatedCallback(std::function<void()> callback);
+    //
+    // Registration lasts as long as the returned handle. Keep it for as long as
+    // whatever the callback reaches into: a callback usually closes over the
+    // object that owns the surface it redraws, and one left registered past that
+    // object is a call through a dangling pointer.
+    [[nodiscard]] Utils::CallbackHandleUPtr addResourcesInvalidatedCallback(std::function<void()> callback);
     void fireResourcesInvalidatedCallbacks();
 
     void reset();
@@ -512,7 +534,11 @@ private:
     bool standardUniformsDirty_{};
     bool billboardUniformsDirty_{};
 
-    std::vector<std::function<void()>> resourcesInvalidatedCallbacks_{};
+    // Held by shared pointer so that a handle outliving the device unregisters
+    // from nothing instead of from freed memory.
+    std::shared_ptr<Ren::ResourcesInvalidatedRegistry> resourcesInvalidated_{
+        std::make_shared<Ren::ResourcesInvalidatedRegistry>()
+    };
 
     // Operations deliberately revoked
     RenDevice(const RenDevice&);

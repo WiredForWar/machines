@@ -21,6 +21,7 @@
 #include "gui/Displayable.hpp"
 #include "machphys/machphys.hpp"
 #include "machlog/World/MachLog.hpp"
+#include "utility/CallbackHandle.hpp"
 
 #include <vector>
 
@@ -218,6 +219,10 @@ private:
     std::vector<BYTE> pBeenHere_; // Stores the largest scanner type that has visited an area of the map.
     std::vector<uint8_t> visibilityGrid_; // CPU-side fog of war visibility (same resolution as pBeenHere_)
     bool noFastChangeInLightLevel_;
+
+    // The map is drawn into surfaces that no file backs, so a new backend hands
+    // them back blank and they have to be drawn again.
+    Utils::CallbackHandleUPtr resourcesInvalidatedHandle_;
 };
 
 #endif
