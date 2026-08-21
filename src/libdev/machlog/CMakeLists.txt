@@ -359,7 +359,6 @@ set(MACHLOG_SOURCES
     Operations/CaptureOperation.hpp
     Operations/ConstructOperation.cpp
     Operations/ConstructOperation.hpp
-    Operations/ConstructOperationImpl.cpp
     Operations/ConvoyOffsets.cpp
     Operations/ConvoyOffsets.hpp
     Operations/CounterattackOperation.cpp
