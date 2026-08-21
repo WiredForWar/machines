@@ -298,7 +298,7 @@ void MachGuiStartupScreens::loopCycle()
 
     checkSwitchGuiRoot();
 
-    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
+    if (isGameContext())
     {
         loopCycleInGame();
     }
@@ -318,7 +318,7 @@ void MachGuiStartupScreens::updateGui()
     RENDER_STREAM("Starting MachGuiStartupScreens::updateGui()\n");
     RENDER_INDENT(2);
 
-    bool inGame = (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
+    const bool inGame = isGameContext();
 
     // This is a bit of a hack.  Setting the viewports correctly depends
     // upon where this method is invoked in the order of things.
@@ -339,7 +339,7 @@ void MachGuiStartupScreens::updateGui()
 
 void MachGuiStartupScreens::displayGui()
 {
-    bool inGame = (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
+    const bool inGame = isGameContext();
 
     // This is a bit of a hack.  Setting the viewports correctly depends
     // upon where this method is invoked in the order of things.
@@ -421,7 +421,7 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
     }
     else
     {
-        if (context_ == CTX_GAME || context_ == CTX_SKIRMISH_GAME || context_ == CTX_MULTI_GAME)
+        if (isGameContext())
         {
             pInGameScreen_->checkSwitchGuiRoot();
         }
@@ -1550,9 +1550,14 @@ void MachGuiStartupScreens::checkContextTimeout()
     }
 }
 
+bool MachGuiStartupScreens::isGameContext() const
+{
+    return context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME;
+}
+
 void MachGuiStartupScreens::loopCycleInGame()
 {
-    PRE(context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME);
+    PRE(isGameContext());
 
     if (finishApp_)
         return;
@@ -2061,7 +2066,7 @@ void MachGuiStartupScreens::updateCdAudio()
     DevCD::instance().update();
     // Check to see if we are playing a game that has just finished. If so, play
     // either victory or defeat music.
-    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
+    if (isGameContext())
     {
         const MachGuiDatabase& db = MachGuiDatabase::instance();
         if (db.hasCurrentScenario() && !db.currentScenario().isTrainingScenario())
@@ -2164,7 +2169,7 @@ void MachGuiStartupScreens::cursorOn(bool on)
 
 void MachGuiStartupScreens::activate()
 {
-    if (context_ == CTX_GAME || context_ == CTX_MULTI_GAME || context_ == CTX_SKIRMISH_GAME)
+    if (isGameContext())
     {
         pInGameScreen_->activate();
     }

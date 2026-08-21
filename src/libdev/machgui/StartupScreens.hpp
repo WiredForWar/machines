@@ -380,6 +380,11 @@ protected:
 
     bool isContextFlic() const;
 
+    // True while the game itself is on screen rather than a menu over it, which
+    // is what decides between the two loop cycles and the two viewports.
+    bool isGameContext() const;
+
+
     // Setup victory condition in MachLogGameCreationData. Basically converts from a MachGui enum
     // to a MachLog enum.
     void setVictoryCondition(MachLogGameCreationData&);
