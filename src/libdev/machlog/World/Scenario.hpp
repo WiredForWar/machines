@@ -28,6 +28,13 @@ public:
 
     static void load(const SysPathName& scenarioFilePath, const MachLogGameCreationData&);
 
+    // Sets up what a scenario file would otherwise set up, for a world that has
+    // no scenario: the non-race that owns artefacts, and a local player race for
+    // every colour the creation data defines. Nothing is placed, and no victory
+    // condition is created -- a lone race would win an annihilation on the first
+    // cycle.
+    static void loadBareWorld(const MachLogGameCreationData&);
+
     static MachLog::ObjectType objectType(const std::string& type);
     static int objectSubType(MachLog::ObjectType, const std::string& type);
     static MachPhys::TechnicianSubType technicianSubType(const std::string& subType);

@@ -2257,9 +2257,13 @@ bool MachLogRaces::loadGame(
 
     pReporter->report(50, 100);
 
-    // If a scenario is defined, load it
+    // A scenario places everything and defines the races. Without one the world
+    // is the planet and nothing else, so the little a race needs to exist has to
+    // be set up here instead.
     if (scenarioName.length() != 0)
         MachLogScenario::load(scenarioName, gameData);
+    else
+        MachLogScenario::loadBareWorld(gameData);
 
     pReporter->report(80, 100);
 

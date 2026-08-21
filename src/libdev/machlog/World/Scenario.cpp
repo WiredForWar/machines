@@ -74,6 +74,52 @@
 #include "system/VFS.hpp"
 
 // static
+void MachLogScenario::loadBareWorld(const MachLogGameCreationData& gameData)
+{
+    MachLogRaces& races = MachLogRaces::instance();
+
+    races.gameType(MachLog::SKIRMISH_SINGLE_PLAYER);
+
+    // The non-race owns the artefacts and the debris, and exists in every game.
+    races.race(MachPhys::NORACE, new MachLogRace(MachPhys::NORACE), MachLogRaces::CREATE_SQUADRONS);
+
+    const MachLogGameCreationData::PlayersCreationData& players = gameData.playersCreationData();
+    bool haveLocalController = false;
+
+    for (MachPhys::Race race : MachPhys::AllRaces)
+    {
+        if (players.size() != MachPhys::N_RACES || players[race].type_ == MachLog::NOT_DEFINED)
+            continue;
+
+        MachLogRace* pRace = new MachLogRace(race);
+        races.race(race, pRace, MachLogRaces::CREATE_SQUADRONS);
+
+        // A controller needs something in the world to hang off, and with no
+        // scenario there is no start position to put it at.
+        MexTransform3d localTransform;
+        W4dDomain* pDomain = MachLogPlanetDomains::pDomainPosition(MexPoint3d(0, 0, 0), 0, &localTransform);
+        W4dGeneric* pPhysObject = new W4dGeneric(pDomain, localTransform);
+
+        MachLogPCController* pController = new MachLogPCController(pRace, pPhysObject);
+
+        // An AI race would want a strategy file, which only a scenario names, so
+        // every race here is played by hand and the first one is the local one.
+        if (haveLocalController)
+            races.setController(race, pController);
+        else
+            races.setPcController(pController);
+
+        haveLocalController = true;
+
+        races.defCon(race, MachLog::DEFCON_NORMAL);
+        pRace->priority(races.stats().pcPriority());
+    }
+
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        MachLogNetwork::instance().ready(race, true);
+}
+
+// static
 void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGameCreationData& gameData)
 {
     MachLogRaces& races = MachLogRaces::instance();
