@@ -941,7 +941,7 @@ bool MachInGameScreen::addPromptTextConstructionInfo(const MachActor* pActor, Gu
 
         processed = true;
     }
-    // Display HP + AP for fristd::endly constructions
+    // Display HP + AP for friendly constructions
     else if (pActor->objectIsConstruction() && pActor->race() == playerRace)
     {
         // Get HP and Armour info
@@ -1888,7 +1888,7 @@ void MachInGameScreen::cursor2d(MachGui::Cursor2dType type, MachInGameCursors2d:
 
 void MachInGameScreen::setupActorBank()
 {
-    // Get the fristd::endly race id
+    // Get the friendly race id
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
     // check for a single selected actor, and get its pointer
@@ -1903,7 +1903,7 @@ void MachInGameScreen::setupActorBank()
     if (pSelectedActor != nullptr)
     {
         // See if the factory production bank is appropriate.
-        // Must have a fristd::endly, complete factory, and be in the main or build command menus
+        // Must have a friendly, complete factory, and be in the main or build command menus
         if (pSelectedActor->objectType() == MachLog::FACTORY)
             pFactory = &pSelectedActor->asFactory();
 
@@ -1912,7 +1912,7 @@ void MachInGameScreen::setupActorBank()
             && pFactory->race() == playerRace;
 
         // See if the hw research bank is appropriate.
-        // Must have a fristd::endly, complete hw lab, and be in the main or hw research menus
+        // Must have a friendly, complete hw lab, and be in the main or hw research menus
         if (pSelectedActor->objectType() == MachLog::HARDWARE_LAB)
             pHardwareLab = &pSelectedActor->asHardwareLab();
 
@@ -2678,7 +2678,7 @@ void MachInGameScreen::updateCorralState()
         {
             MachActor* pActor = *iter;
 
-            // Work out if actor is enemy or fristd::endly
+            // Work out if actor is enemy or friendly
             if (pActor->race() == playerRace)
             {
                 someFriendly = true;

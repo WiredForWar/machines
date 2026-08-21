@@ -1471,7 +1471,7 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
     if (defCon == MachLog::DEFCON_HIGH)
         return;
 
-    // if we're inside a fristd::endly garrison and our hitpoints are low, it's probably best to stay here.
+    // if we're inside a friendly garrison and our hitpoints are low, it's probably best to stay here.
     if (insideBuilding() && insideWhichBuilding().objectType() == MachLog::GARRISON
         && insideWhichBuilding().race() == race() && hpRatio() < 0.2)
         return;
@@ -1510,7 +1510,7 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
         return;
 
     // do NOT evade if we are already in the strongest perceived place on the map
-    // in the case of finding fristd::endly aggressives and turrets.
+    // in the case of finding friendly aggressives and turrets.
     if (wontFindAnywhereSafer())
         return;
 
@@ -1787,7 +1787,7 @@ bool MachLogMachine::wontFindAnywhereSafer() const
 // virtual
 void MachLogMachine::dispatchSOS(Actors& strongThreats)
 {
-    // Attempt to recruit fristd::endly thugs to help me tonk the rascals threatening me.
+    // Attempt to recruit friendly thugs to help me tonk the rascals threatening me.
     // Said thugs must be idle and have a non-HIGH DefCon.
 
     Actors::iterator iThreats = strongThreats.begin();

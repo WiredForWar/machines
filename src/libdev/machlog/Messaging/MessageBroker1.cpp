@@ -1254,7 +1254,7 @@ void MachLogMessageBroker::processStartGameMessage(NetMessage* pMessage)
 
 void MachLogMessageBroker::sendLostFlagSetMessage(MachPhys::Race race)
 {
-    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sstd::endlostFlagSetMessage " << std::endl);
+    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendLostFlagSetMessage " << std::endl);
     MachLogNetMessage* pMessage = new MachLogNetMessage();
     MachLogReadyMessage* pReadyMessage = reinterpret_cast<MachLogReadyMessage*>(pMessage);
     pReadyMessage->header_.systemCode_ = 0;
@@ -1262,7 +1262,7 @@ void MachLogMessageBroker::sendLostFlagSetMessage(MachPhys::Race race)
     pReadyMessage->header_.totalLength_ = sizeof(MachLogReadyMessage);
     pReadyMessage->race_ = race;
     doSend(pMessage);
-    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sstd::endlostFlagSetMessage DONE " << std::endl);
+    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendLostFlagSetMessage DONE " << std::endl);
 }
 
 void MachLogMessageBroker::processLostFlagSetMessage(NetMessage* pMessage)

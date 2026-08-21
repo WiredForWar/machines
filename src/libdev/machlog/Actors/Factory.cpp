@@ -314,7 +314,7 @@ PhysRelativeTime MachLogFactory::update(const PhysRelativeTime&, MATHEX_SCALAR)
                 bool found = false;
                 PhysConfigSpace2d& cs = MachLogPlanet::instance().configSpace();
 
-                // may use this later to get hold of possible fristd::endly machine blocking build pad
+                // may use this later to get hold of possible friendly machine blocking build pad
                 PhysConfigSpace2d::ObjectId collisionObjectId = PhysConfigSpace2d::ObjectId ::invalidId();
 
                 for (size_t i = 0; i < nEntrances() && ! found; ++i)

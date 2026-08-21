@@ -67,7 +67,7 @@ void MachLogStatsImpl::readStatsInitialisationFile()
             cancelledRefundablePercentage_ = atof(parser.tokens()[1].c_str());
         else if (parser.tokens()[0] == "RECYCLE_REFUND")
             secondhandRefundablePercentage_ = atof(parser.tokens()[1].c_str());
-        else if (parser.tokens()[0] == "FRIstd::endlY_DECONSTRUCT_RATE_MULT")
+        else if (parser.tokens()[0] == "FRIENDLY_DECONSTRUCT_RATE_MULT")
             friendlyDeconstructMultiplier_ = atof(parser.tokens()[1].c_str());
         else if (parser.tokens()[0] == "ENEMY_DECONSTRUCT_RATE_MULT")
             enemyDeconstructMultiplier_ = atof(parser.tokens()[1].c_str());

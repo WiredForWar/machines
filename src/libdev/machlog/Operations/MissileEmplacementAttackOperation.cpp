@@ -201,7 +201,7 @@ PhysRelativeTime MachLogMissileEmplacementAttackOperation::doUpdate()
 
             /*
             //For some reason the GDT decided that soft cover should be igmored for MEs.
-            if( disposition == MachLogCanAttack::BEHIND_FRIstd::endlY_COVER )
+            if( disposition == MachLogCanAttack::BEHIND_FRIENDLY_COVER )
                 disposition = MachLogCanAttack::IN_RANGE;
             */
             // Revoked 9/12/98 HA/CS with GDT approval, permanent removal likely, pending playtesting.

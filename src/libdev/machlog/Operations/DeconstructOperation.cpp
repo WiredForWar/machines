@@ -68,7 +68,7 @@ PhysRelativeTime MachLogDeconstructOperation::interactWithBuilding()
 
     MachPhys::BuildingMaterialUnits units = pConstructorMachine->data().constructionRate();
 
-    // rate of deconstruction varies according to whether or not this is a fristd::endly or
+    // rate of deconstruction varies according to whether or not this is a friendly or
     // enemy construction. Deconstructing an enemy location should be much slower as they're
     // hardly likely to be co-operating. These rates are defined in statimpl.cpp, in the
     // assignment list.

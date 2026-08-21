@@ -300,7 +300,7 @@ MachGuiConstructCommand::cursorOnActor(MachActor* pActor, bool ctrlPressed, bool
 
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
-    // Check for a pick on fristd::endly incomplete construction
+    // Check for a pick on friendly incomplete construction
     if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
     {
         cursor = MachGui::JOINCONSTRUCT_CURSOR;

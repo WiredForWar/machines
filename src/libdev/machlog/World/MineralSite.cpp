@@ -80,7 +80,7 @@ void MachLogMineralSite::beDiscoveredBy(MachPhys::Race race)
     }
     //  new MachLogOreHolograph( pRace, 0, 0, position() );
 
-    // call race method to notify all fristd::endly mines of this site's newly-discovered state
+    // call race method to notify all friendly mines of this site's newly-discovered state
     // as they may now wish to make use of it if currently without a site.
     MachLogRaces::instance().newMineralSiteDiscovered(race);
 };

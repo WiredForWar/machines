@@ -1343,7 +1343,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover(
 
     if (hit)
     {
-        // There is some cover. If it is a fristd::endly/allied machine regard this as soft cover.
+        // There is some cover. If it is a friendly/allied machine regard this as soft cover.
         // Otherwise hard cover.
         UtlId coverActorId = pCoverEntity->id();
         MachLogRaces& races = MachLogRaces::instance();

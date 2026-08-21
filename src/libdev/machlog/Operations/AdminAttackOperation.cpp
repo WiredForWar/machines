@@ -280,7 +280,7 @@ bool MachLogAdminAttackOperation::beNotified(W4dSubject* pSubject, W4dSubject::N
 
                         if (disposition == MachLogRaces::OUR_RACE || disposition == MachLogRaces::ALLY)
                         {
-                            // target has changed to a fristd::endly race - no longer a viable target
+                            // target has changed to a friendly race - no longer a viable target
                             pDirectObject_ = nullptr;
                             currentlyAttached_ = false;
                             complete_ = true;

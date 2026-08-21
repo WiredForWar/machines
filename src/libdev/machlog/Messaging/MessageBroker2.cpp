@@ -985,7 +985,7 @@ void MachLogMessageBroker::sendLoadArtefactModelsMessage(const SysPathName& path
 {
     DEBUG_STREAM(
         DIAG_NETWORK,
-        "MLMessageBroker::sstd::endloadArtefactModelsMessage pathname:" << pathName << std::endl);
+        "MLMessageBroker::sendLoadArtefactModelsMessage pathname:" << pathName << std::endl);
     MachLogNetMessage* pLogNetMessage = new MachLogNetMessage();
     MachLogLoadArtefactModelsMessage* pMessage = reinterpret_cast<MachLogLoadArtefactModelsMessage*>(pLogNetMessage);
     pMessage->header_.systemCode_ = 0;
@@ -997,7 +997,7 @@ void MachLogMessageBroker::sendLoadArtefactModelsMessage(const SysPathName& path
     // put on termination null character.
     pMessage->arrayData_[length] = 0;
     doSend(pLogNetMessage);
-    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sstd::endloadArtefactModelsMessage DONE " << std::endl);
+    DEBUG_STREAM(DIAG_NETWORK, "MLMessageBroker::sendLoadArtefactModelsMessage DONE " << std::endl);
 }
 
 void MachLogMessageBroker::processLoadArtefactModelsMessage(NetMessage* pNetMessage)

@@ -1612,7 +1612,7 @@ int MachActor::militaryValueOfIncomingThreats() const
 // virtual
 void MachActor::dispatchSOS(Actors& strongThreats)
 {
-    // Attempt to recruit fristd::endly thugs to help me tonk the rascals threatening me.
+    // Attempt to recruit friendly thugs to help me tonk the rascals threatening me.
     // Said thugs must be idle and have a non-HIGH DefCon.
 
     Actors::iterator iThreats = strongThreats.begin();
@@ -1652,7 +1652,7 @@ void MachActor::dispatchSOS(Actors& strongThreats)
             ASSERT(friendlyActor.objectIsCanAttack(), "Shouldn't be recruiting non-attack-capable actors.");
             ASSERT(
                 friendlyActor.objectIsMachine(),
-                "We should only be recruiting fristd::endly machines in an SOS, not missile emplacements.");
+                "We should only be recruiting friendly machines in an SOS, not missile emplacements.");
 
             MachLogRaces::DispositionToRace disposition
                 = races.dispositionToRace(friendlyActor.race(), threatActor.race());
@@ -1713,7 +1713,7 @@ void MachActor::dispatchSOS(Actors& strongThreats)
             ASSERT(friendlyActor.objectIsCanAttack(), "Shouldn't be recruiting non-attack-capable actors.");
             ASSERT(
                 friendlyActor.objectIsMachine(),
-                "We should only be recruiting fristd::endly machines in an SOS, not missile emplacements.");
+                "We should only be recruiting friendly machines in an SOS, not missile emplacements.");
 
             MachLogRaces::DispositionToRace disposition
                 = races.dispositionToRace(friendlyActor.race(), threatActor.race());

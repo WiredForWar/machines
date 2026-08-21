@@ -210,7 +210,7 @@ void MachLogScore::actorDestroyedNoCulprit(int value, const MachActor& victimAct
 
 void MachLogScore::actorDestroyedByRace(int value, const MachActor& victimActor, MachPhys::Race destroyingRace)
 {
-    // no score adjustment if from fristd::endly fire, fristd::endly deconstruction etc.
+    // no score adjustment if from friendly fire, friendly deconstruction etc.
     if (destroyingRace != pImpl_->race_)
         changeGrossScore(-(value / 2));
 
@@ -224,7 +224,7 @@ void MachLogScore::actorDestroyedByRace(int value, const MachActor& victimActor,
 
 void MachLogScore::destroyedAnotherRacesActor(int value, const MachActor& victimActor, MachPhys::Race victimRace)
 {
-    // no score adjustment if from fristd::endly fire, fristd::endly deconstruction etc.
+    // no score adjustment if from friendly fire, friendly deconstruction etc.
     if (victimRace != pImpl_->race_)
         changeGrossScore(value);
 

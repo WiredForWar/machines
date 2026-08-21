@@ -140,7 +140,7 @@ PhysRelativeTime MachLogPod::update(const PhysRelativeTime& alteredMaxCPUTime, M
             // and we must add its BMU storage capacity to the race, as we would a pod.
             addedBMUStorageToRace_ = true;
             races.increaseRaceCapacity(myRace, MachPhysData::instance().podData(level()).capacity());
-            // call race method to notify all fristd::endly resource carriers of this pod's newly-complete state
+            // call race method to notify all friendly resource carriers of this pod's newly-complete state
             // as they may now wish to make use of it in its capacity as a pod.
             races.newSmelterCompleted(myRace);
         }
@@ -541,7 +541,7 @@ void MachLogPod::beHit(
         if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
-            // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
+            // This also allows for smart reallocation if hit by friendly fire, but, hey, what the hell.
             // If we're deliberately aiming at the pod, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
@@ -577,7 +577,7 @@ void MachLogPod::beHitWithoutAnimation(
         if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
-            // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
+            // This also allows for smart reallocation if hit by friendly fire, but, hey, what the hell.
             // If we're deliberately aiming at the pod, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.

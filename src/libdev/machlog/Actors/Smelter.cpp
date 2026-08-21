@@ -106,7 +106,7 @@ PhysRelativeTime MachLogSmelter::update(const PhysRelativeTime& alteredMaxCPUTim
             // this is basically the first time the update has been called after actual completion of the smelter
             addedBMUStorageToRace_ = true;
             races.increaseRaceCapacity(race(), MachPhysData::instance().smelterData(level()).capacity());
-            // call race method to notify all fristd::endly resource carriers of this smelter's newly-complete state
+            // call race method to notify all friendly resource carriers of this smelter's newly-complete state
             // as they may now wish to make use of it.
             races.newSmelterCompleted(race());
         }
@@ -306,7 +306,7 @@ void MachLogSmelter::beHit(
         if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
-            // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
+            // This also allows for smart reallocation if hit by friendly fire, but, hey, what the hell.
             // If we're deliberately aiming at the smelter, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.
@@ -340,7 +340,7 @@ void MachLogSmelter::beHitWithoutAnimation(
         if (isDead() && addedBMUStorageToRace_)
         {
             // assume intelligent reassignment of BMUs if we're deconstructing, self-destructing etc.
-            // This also allows for smart reallocation if hit by fristd::endly fire, but, hey, what the hell.
+            // This also allows for smart reallocation if hit by friendly fire, but, hey, what the hell.
             // If we're deliberately aiming at the smelter, one could argue that intelligent reallocation
             // is perfectly valid. If accidentally hit - well, this is so rare, no-one will really be bothered.
             // Errs on the side of the player in any case.

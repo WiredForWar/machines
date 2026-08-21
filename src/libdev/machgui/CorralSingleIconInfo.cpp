@@ -103,7 +103,7 @@ public:
             MachLogRaces& races = MachLogRaces::instance();
             MachPhys::Race playerRace = races.playerRace();
 
-            // Iterate through all machines inside building selecting fristd::endly machines
+            // Iterate through all machines inside building selecting friendly machines
             const MachLogConstruction* pConstConstruction = pConstruction_;
             for (MachLogConstruction::Machines::const_iterator iter = pConstConstruction->machines().begin();
                  iter != pConstConstruction->machines().end();
@@ -622,7 +622,7 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
 
                 const MachLogConstruction& construction = pActor->asConstruction();
 
-                // Only make "select all inside building" button visible if there are fristd::endly
+                // Only make "select all inside building" button visible if there are friendly
                 // machines in the building
                 bool friendlyMachineInside = false;
                 MachPhys::Race playerRace = MachLogRaces::instance().playerRace();

@@ -360,7 +360,7 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
 {
     MachGui::Cursor2dType cursor = MachGui::MENU_CURSOR;
 
-    // Check for a legal move position with at least one fristd::endly machine selected
+    // Check for a legal move position with at least one friendly machine selected
 
     // Get player race
     MachPhys::Race playerRace = MachLogRaces::instance().playerRace();

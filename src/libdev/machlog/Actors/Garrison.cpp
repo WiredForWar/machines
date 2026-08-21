@@ -137,7 +137,7 @@ PhysRelativeTime MachLogGarrison::update(const PhysRelativeTime& alteredMaxCPUTi
         }
     }
 
-    // restock fristd::endly spies' landmines
+    // restock friendly spies' landmines
     for (MachLogConstruction::Machines::iterator i = machines().begin(); i != machines().end(); ++i)
     {
         MachLogMachine* pMachine = (*i);
@@ -156,7 +156,7 @@ PhysRelativeTime MachLogGarrison::update(const PhysRelativeTime& alteredMaxCPUTi
 
     MachActor::update(alteredMaxCPUTime, junk);
 
-    // heal all fristd::endly machines residing within...
+    // heal all friendly machines residing within...
     healAll();
 
     return interval;
