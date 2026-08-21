@@ -86,6 +86,9 @@ public:
 
     ////////////////////////////////
 
+    // Keeps an assertion whose expression asserts from being evaluated inside
+    // itself: while one is being checked, the others are not. That is a property
+    // of the flow of control doing the checking, so every thread has its own.
     class AssertionLock
     {
     public:

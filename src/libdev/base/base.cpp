@@ -13,7 +13,7 @@
 
 BaseAssertion::AssertionLock& BaseAssertion::AssertionLock::instance()
 {
-    static AssertionLock lock;
+    static thread_local AssertionLock lock;
     return lock;
 }
 
