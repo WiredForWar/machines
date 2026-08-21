@@ -82,7 +82,8 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         # needs the same set as the MSVC branch below. GCC-style -W flags are
         # still accepted and are used for the warning selection.
         set(NORMAL_CXX_FLAGS "/EHsc")
-        set(RELEASE_CXX_FLAGS "/MD")
+        # Including the optimiser, for the reason the MSVC branch gives below.
+        set(RELEASE_CXX_FLAGS "/MD /O2 /Ob2")
         set(DEBUG_CXX_FLAGS "/MDd /Zi")
         set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
         set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/DEBUG")
