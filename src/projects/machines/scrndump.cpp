@@ -11,6 +11,8 @@
 
 #include "device/Keyboard.hpp"
 
+#include "gui/Screenshots.hpp"
+
 #include "recorder/Recorder.hpp"
 
 #include "render/render.hpp"
@@ -52,7 +54,7 @@ void MachScreenDumper::dump()
     if (dumpAction_ == DUMPING)
     {
         RenSurface frontBuf = RenDevice::current()->frontSurface();
-        frontBuf.saveAsPng(filename());
+        Gui::saveScreenshot(frontBuf, Gui::screenshotPath(filename()));
 
         ++minorVersion_;
     }

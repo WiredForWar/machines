@@ -229,22 +229,6 @@ Gui::Box Gui::translateBitmapDimensions(const SysPathName& path, const Gui::Coor
     return GuiDisplayable::translateBox(bitmapDimensions(path), rel);
 }
 
-SysPathName Gui::getNextAvailablePngFileName(const std::string& startFilename)
-{
-    constexpr std::size_t MaxScreenshots = 100000;
-
-    for(std::size_t number = 0; number < MaxScreenshots; ++number)
-    {
-        char buffer[20];
-        snprintf(buffer, sizeof(buffer), "%04zu", number);
-        SysPathName pathName(startFilename + buffer + ".png");
-        if (!pathName.existsAsFile())
-            return pathName;
-    }
-
-    return {};
-}
-
 /* //////////////////////////////////////////////////////////////// */
 static double s_uiScaleFactor = 0;
 

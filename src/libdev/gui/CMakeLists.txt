@@ -39,6 +39,8 @@ set(GUI_SOURCES
     ResourceString.hpp
     Root.cpp
     Root.hpp
+    Screenshots.cpp
+    Screenshots.hpp
     ScrollBar.cpp
     ScrollBar.hpp
     ScrollButton.cpp

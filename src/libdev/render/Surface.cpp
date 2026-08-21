@@ -591,18 +591,20 @@ std::vector<unsigned char> RenSurface::encodePng(const Rect& area) const
     return Ren::encodePng(readPixels(area));
 }
 
-void RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
+bool RenSurface::saveAsPng(const SysPathName& filename, const Rect& area) const
 {
     const std::vector<unsigned char> png = encodePng(area);
     if (png.empty())
-        return;
+        return false;
 
     SDL_IOStream* file = SDL_IOFromFile(filename.pathname().c_str(), "wb");
     if (! file)
-        return;
+        return false;
 
-    SDL_WriteIO(file, png.data(), png.size());
+    const std::size_t written = SDL_WriteIO(file, png.data(), png.size());
     SDL_CloseIO(file);
+
+    return written == png.size();
 }
 
 // These read/write functions are used for fog of war in savegame and store alpha only

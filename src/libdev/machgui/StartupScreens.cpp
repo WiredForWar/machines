@@ -82,6 +82,7 @@ inline constexpr bool cDemoVersion =
 #include "gui/ScrollBar.hpp"
 #include "gui/Font.hpp"
 #include "gui/Image.hpp"
+#include "gui/Screenshots.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/Camera.hpp"
@@ -1457,8 +1458,9 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
 
             // The border around the menu is of no interest, so it is left out.
             const Gui::Box area = menuArea();
-            Gui::backBuffer().saveAsPng(
-                Gui::getNextAvailablePngFileName("menu"),
+            Gui::saveScreenshot(
+                Gui::backBuffer(),
+                Gui::nextScreenshotPath("menu"),
                 Ren::Rect(
                     static_cast<int>(area.minCorner().x()),
                     static_cast<int>(area.minCorner().y()),

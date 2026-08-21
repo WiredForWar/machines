@@ -145,13 +145,6 @@ void backBuffer(const RenSurface&);
 
 ///////////////////////////////
 
-// Finds the next available filename for a png file.
-// A startFilename is the first few characters of the filename
-// the function will add a four digit number to startFilename
-// E.g. writeScreenAsFile("XXXX") would return names "XXXX0000.png"
-// followed by "XXXX0001.png", etc.
-SysPathName getNextAvailablePngFileName(const std::string& startFilename);
-
 RenSurface& staticBackBuffer();
 
 std::string getScaledImagePath(std::string path, float scale = uiScaleFactor());

@@ -92,6 +92,7 @@
 #include "gui/Manager.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/ResourceString.hpp"
+#include "gui/Screenshots.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Sound/SoundManager.hpp"
@@ -2822,7 +2823,7 @@ void MachInGameScreen::saveScreenShot()
 {
     const RenDevice& device = *pSceneManager_->pDevice();
     const RenSurface back = device.backSurface();
-    back.saveAsPng(Gui::getNextAvailablePngFileName("mach"));
+    Gui::saveScreenshot(back, Gui::nextScreenshotPath("mach"));
 }
 
 Gui::Box MachInGameScreen::getWorldViewWindowVisibleArea() const
