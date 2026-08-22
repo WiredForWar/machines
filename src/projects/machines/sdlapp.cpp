@@ -283,6 +283,13 @@ bool SDLApp::clientStartup()
     // resolution (which doesn't necessarilly match the Windows resolution).
     const RenDisplay::Mode& mode = pDisplay_->currentMode();
 
+    // The pointer starts at the origin, which is not where the pointer is: it is
+    // what "the system has not said yet" looks like. In game that pixel is in both
+    // the top and the left scroll strip, so a game nobody has touched scrolls off
+    // its own scene. The middle is the one place where being there does nothing,
+    // and the first motion event replaces it with the truth.
+    DevMouse::instance().position(mode.width() / 2, mode.height() / 2);
+
     {
         int scaleFactorPercents = SysRegistry::instance().queryIntegerValue("Options\\Scale Factor", "Value");
         if (scaleFactorPercents == 0)
