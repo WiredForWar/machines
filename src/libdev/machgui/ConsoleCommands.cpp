@@ -2493,6 +2493,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .description = "Order machines to move. Usage: command_move x,y id1 [id2] [id3] ...",
             .arguments = {
                 { .name = "pos", .type = Arg::String, .description = "Destination as x,y." },
+                { .name = "id", .type = Arg::Integer, .repeating = true, .description = "Actor ids to move." },
             },
             .cheat = true,
             .devOnly = true,
