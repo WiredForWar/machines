@@ -1032,6 +1032,30 @@ void pauseCommand(MachGuiStartupScreens* pStartup, const Request& request, Conso
     console.writeLine(std::string("Game ") + (pause ? "paused." : "resumed."));
 }
 
+void gameSpeedCommand(const Request& request, Console& console)
+{
+    constexpr double minSpeed{0.001};
+    constexpr double maxSpeed{8.0};
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        console.writeLine("Game speed: " + formatFloat(SimManager::instance().speed(), 3) + ".");
+        return;
+    }
+
+    const double speed = std::get<double>(request.arguments[0].value);
+    if (speed < minSpeed || speed > maxSpeed)
+    {
+        console.reportError(
+            "Game speed must be between " + formatFloat(minSpeed, 3) + " and " + formatFloat(maxSpeed, 3) + ", got "
+            + formatFloat(speed, 3) + ".");
+        return;
+    }
+
+    SimManager::instance().setSpeed(speed);
+    console.writeLine("Game speed set to " + formatFloat(speed, 3) + ".");
+}
+
 void setTimeCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     if (!getInGameScreen(pStartup, console))
@@ -1641,6 +1665,16 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             },
         },
         [pStartup](const Request& request, Console& console) { pauseCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "game_speed",
+            .description = "Get/set the rate at which simulation time advances relative to real time.",
+            .arguments = {
+                {.name = "speed", .type = Arg::Float, .optional = true, .description = "Multiplier from 0.001 to 20. Omit to print the current speed."},
+            },
+        },
+        [](const Request& request, Console& console) { gameSpeedCommand(request, console); });
 
     console.registerCommand(
         {

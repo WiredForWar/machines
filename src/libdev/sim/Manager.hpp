@@ -48,6 +48,13 @@ public:
     // Current simulation time
     const PhysAbsoluteTime& currentTime() const;
 
+    // Rate at which simulation time advances relative to real time. One is real time.
+    MATHEX_SCALAR speed() const;
+
+    // Change the rate at which simulation time advances. Simulation time itself is
+    // continuous across the change.
+    void setSpeed(MATHEX_SCALAR speed);
+
     // Set time zero to be now.  Should be called when all other
     // initialisation has been done and the game is about to start.
     void resetTime();

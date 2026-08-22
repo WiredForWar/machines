@@ -21,7 +21,8 @@ public:
     SimProcesses processes_; // Collection of all SimProcesses
     size_t nextUpdateProcess_; // Index into processes_ of next one to update;
     PhysAbsoluteTime currentTime_; // Current simulation time
-    PhysAbsoluteTime devStartTime_; // Time at which simulation started
+    PhysAbsoluteTime lastTimerTime_{}; // Timer reading taken when the current time was last updated
+    MATHEX_SCALAR speed_{}; // Multiplier applied to elapsed real time
     PhysAbsoluteTime lastRenderStartTime_; // Time at which last render pass started
     SimEventDiary diary_; // Diary for storing discrete events
     bool suspended_; // True iff simulation activities suspended and time

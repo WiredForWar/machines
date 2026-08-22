@@ -39,17 +39,16 @@ SimManager::SimManager()
 {
     pImpl_ = new SimManagerImpl();
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
-    CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
+    CB_DEPIMPL(PhysAbsoluteTime, lastTimerTime_);
+    CB_DEPIMPL(DevTimer, timer_);
     CB_DEPIMPL(SimConditionsManager*, pConditionsManager_);
     CB_DEPIMPL(SimManagerImpl::SimProcesses, processes_);
 
     pConditionsManager_ = new SimConditionsManager();
 
     // Initialise the current time. The device library clock may not start at zero
-    devStartTime_ = 0;
-    updateCurrentTime();
-    devStartTime_ = currentTime_;
     currentTime_ = 0;
+    lastTimerTime_ = timer_.time();
 
     processes_.reserve(16);
 
@@ -202,10 +201,13 @@ bool SimManager::isSuspended()
 void SimManager::updateCurrentTime()
 {
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
-    CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
+    CB_DEPIMPL(PhysAbsoluteTime, lastTimerTime_);
+    CB_DEPIMPL(MATHEX_SCALAR, speed_);
     CB_DEPIMPL(DevTimer, timer_);
 
-    currentTime_ = static_cast<PhysAbsoluteTime>(timer_.time()) - devStartTime_;
+    const PhysAbsoluteTime now = timer_.time();
+    currentTime_ += (now - lastTimerTime_) * speed_;
+    lastTimerTime_ = now;
 
     TEST_INVARIANT;
 }
@@ -332,21 +334,21 @@ std::ostream& operator<<(std::ostream& o, const SimManager& t)
 void SimManager::resetTime()
 {
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
-    CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
+    CB_DEPIMPL(PhysAbsoluteTime, lastTimerTime_);
     CB_DEPIMPL(DevTimer, timer_);
 
-    devStartTime_ = timer_.time();
     currentTime_ = 0;
+    lastTimerTime_ = timer_.time();
 }
 
 void SimManager::setSimulationTime(const PhysAbsoluteTime& newTime)
 {
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
-    CB_DEPIMPL(PhysAbsoluteTime, devStartTime_);
+    CB_DEPIMPL(PhysAbsoluteTime, lastTimerTime_);
     CB_DEPIMPL(DevTimer, timer_);
 
     currentTime_ = newTime;
-    devStartTime_ = static_cast<PhysAbsoluteTime>(timer_.time()) - currentTime_;
+    lastTimerTime_ = timer_.time();
 
     W4dManager::instance().time(currentTime_);
 }
@@ -389,6 +391,25 @@ const PhysAbsoluteTime& SimManager::currentTime() const
     CB_DEPIMPL(PhysAbsoluteTime, currentTime_);
 
     return currentTime_;
+}
+
+MATHEX_SCALAR SimManager::speed() const
+{
+    CB_DEPIMPL(MATHEX_SCALAR, speed_);
+
+    return speed_;
+}
+
+void SimManager::setSpeed(MATHEX_SCALAR speed)
+{
+    PRE(speed > 0.0);
+
+    CB_DEPIMPL(MATHEX_SCALAR, speed_);
+
+    // Bank the time elapsed at the old speed before the new one starts to apply
+    updateCurrentTime();
+
+    speed_ = speed;
 }
 
 void SimManager::add(SimDiscreteEventPtr eventPtr)

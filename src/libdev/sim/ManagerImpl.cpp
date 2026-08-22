@@ -12,6 +12,7 @@ SimManagerImpl::SimManagerImpl()
     , timer_(*new DevTimer)
     , processesAllDeleted_(true)
     , totalAmountOfPriority_(0)
+    , speed_(1.0)
 {
     updateEveryCycleActors_.reserve(24);
     deadActors_.reserve(24);
