@@ -2050,14 +2050,25 @@ void MachGuiStartupScreens::prepareForAnimation()
 {
     desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
 
-    // Remove menu screen before app ends to stop it from flashing up momentarily
+    // Remove menu screen before app ends to stop it from flashing up momentarily.
+    //
+    // Both buffers, because the player draws a frame and swaps for each one, so
+    // both are put on screen in turn. An animation smaller than the display
+    // leaves the rest of the buffer as it found it, and a buffer that was not
+    // cleared still holds the menu this is played over -- which is the menu
+    // appearing and disappearing again on alternate frames.
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
     {
         RenSurface backBuf = RenDevice::current()->backSurface();
         Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
+        RenDevice::current()->flushCommandBuffer();
+        RenDevice::current()->display()->flipBuffers();
+        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
     }
 
-    // Clear the entire screen to stop previous screen from showing through black borders.
+    // Clear the entire screen to stop previous screen from showing through black
+    // borders. Deferred to the next end2D(), which a front-buffer animation never
+    // reaches, so it is the fill above that does the work here.
     RenDevice::current()->clearAllSurfaces(RenColour::black());
 }
 
