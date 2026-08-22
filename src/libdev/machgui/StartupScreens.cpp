@@ -2739,10 +2739,6 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
     {
         gameType(MachGuiStartupScreens::SKIRMISHGAME);
     }
-
-    // Copy front buffer to back buffer so that complete progress bar is shown when
-    // buffers are flipped.
-    GuiPainter::instance().blit(frontBuffer);
 }
 
 // static
