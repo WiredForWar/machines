@@ -2010,7 +2010,10 @@ void MachLogRaces::addToAllCollections(MachActor* pActor)
 
 bool MachLogRaces::actorExists(UtlId id) const
 {
-    return pDataImpl_->pActorIdMap_->contains(id);
+    // An id arriving from outside -- a console line, a saved game, a message off
+    // the wire -- can be any number at all, and the map's contains() asserts above
+    // its bound rather than answering. Finding out is the whole point of asking.
+    return id < pDataImpl_->pActorIdMap_->upperBound() && pDataImpl_->pActorIdMap_->contains(id);
 }
 
 MachActor& MachLogRaces::actor(UtlId id)
