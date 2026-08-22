@@ -671,6 +671,11 @@ void MachLogCamera::findObstacleCollisionPoints(
                     pNewCollisionInfo->collisionDistance_ = collisionDistance;
 
                     pCollisionInfo->insert(insertIter, pNewCollisionInfo);
+
+                    // insert() orphans insertIter and everything after it. The
+                    // loop is over anyway -- inserted is set -- so the increment
+                    // below would only be undefined behaviour on a dead iterator.
+                    break;
                 }
 
                 ++insertIter;
