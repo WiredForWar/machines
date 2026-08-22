@@ -454,6 +454,9 @@ private:
     // border the menu is letterboxed within.
     Gui::Box menuArea();
 
+    // Put the loading screen on both buffers, for a load to report progress over.
+    void displayLoadingScreen();
+
     // Get the X & Y Coordinates of the Menu's BG Image Top Left Corner.
     friend class LoadGameProgressIndicator;
     int xMenuOffset();

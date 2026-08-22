@@ -432,15 +432,7 @@ void MachGuiStartupScreens::switchGuiRootToGame()
 {
     PRE(gameType_ == NOGAME);
 
-    // Display loading bmp
-    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
-    loadingBmp.enableColourKeying();
-    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
-    // For double buffering call it twice to draw on both front and back buffers
-    RenDevice::current()->flushCommandBuffer();
-    RenDevice::current()->display()->flipBuffers();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+    displayLoadingScreen();
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
@@ -510,15 +502,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
 {
     PRE(gameType_ == NOGAME);
 
-    // Display loading bmp
-    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
-    loadingBmp.enableColourKeying();
-    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
-    // For double buffering call it twice to draw on both front and back buffers
-    RenDevice::current()->flushCommandBuffer();
-    RenDevice::current()->display()->flipBuffers();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+    displayLoadingScreen();
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
@@ -654,15 +638,7 @@ void MachGuiStartupScreens::switchGuiRootToMultiGame()
     PRE(gameType_ == NOGAME);
     HAL_STREAM("MachGuiStartupScreens::switchGuiRootToMultiGame\n");
 
-    // Display loading bmp
-    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
-    loadingBmp.enableColourKeying();
-    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
-    // For double buffering call it twice to draw on both front and back buffers
-    RenDevice::current()->flushCommandBuffer();
-    RenDevice::current()->display()->flipBuffers();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+    displayLoadingScreen();
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
@@ -1124,6 +1100,18 @@ Gui::Box MachGuiStartupScreens::menuArea()
         Gui::Coord(xMenuOffset(), yMenuOffset()),
         mSharedBitmaps_.getWidthOfNamedBitmap(backdrop),
         mSharedBitmaps_.getHeightOfNamedBitmap(backdrop));
+}
+
+void MachGuiStartupScreens::displayLoadingScreen()
+{
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
+    loadingBmp.enableColourKeying();
+    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+    // For double buffering call it twice to draw on both front and back buffers
+    RenDevice::current()->flushCommandBuffer();
+    RenDevice::current()->display()->flipBuffers();
+    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
 }
 
 bool MachGuiStartupScreens::finishApp()
@@ -2683,15 +2671,7 @@ void MachGuiStartupScreens::loadSavedGame(MachGuiDbSavedGame* pSavedGame)
 
     pSceneManager_->pDevice()->display()->useCursor(nullptr);
 
-    // Display loading bmp
-    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
-    loadingBmp.enableColourKeying();
-    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
-    // For double buffering call it twice to draw on both front and back buffers
-    RenDevice::current()->flushCommandBuffer();
-    RenDevice::current()->display()->flipBuffers();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+    displayLoadingScreen();
 
     LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
 
