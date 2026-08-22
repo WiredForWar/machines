@@ -1104,14 +1104,42 @@ Gui::Box MachGuiStartupScreens::menuArea()
 
 void MachGuiStartupScreens::displayLoadingScreen()
 {
+    // loading.bmp is not a picture of anything. It is a checkerboard of black
+    // against the colour key, half of each, carrying nothing but the word and the
+    // bar outline, so all it does is dim by half whatever it is drawn over. That
+    // leaves the loading screen a function of what the buffer already held, and the
+    // two buffers do not hold the same thing: the cursor is blitted into one of
+    // them per frame and never repeated into the other, and a widget the click left
+    // mid-redraw reaches only one as well. The progress bar swaps the buffers on
+    // every step it reports, so those differences flickered, at half strength and
+    // across the whole menu, for as long as the load took.
+    //
+    // Painting the menu is what settles it. Drawing twice across a swap is how both
+    // buffers come to hold the same thing, and everything the screen shows is now
+    // inside that pair instead of inherited from whatever the menu left. The
+    // controls are gone from behind the veil, which is the part that could never be
+    // made to agree between the buffers; the backdrop they sat on remains.
     GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
     loadingBmp.enableColourKeying();
-    GuiBitmap frontBuffer = W4dManager::instance().sceneManager()->pDevice()->frontSurface();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
-    // For double buffering call it twice to draw on both front and back buffers
-    RenDevice::current()->flushCommandBuffer();
-    RenDevice::current()->display()->flipBuffers();
-    Ren::Painter(frontBuffer).blit(loadingBmp, {}, menuPosition());
+
+    RenDevice* device = pSceneManager_->pDevice();
+
+    // This runs between frames, where there is no command buffer to record into. A
+    // painter opens one of its own for as long as it lives, which is how the single
+    // blit here used to manage, but the painter doDisplay() goes through outlives
+    // any one frame and cannot. So take an immediate buffer for the pass and close
+    // it, which is also what submits: the flush a frame would take does nothing
+    // while no frame is recording.
+    auto paintPass = [&]() {
+        device->beginImmediateCommands();
+        doDisplay();
+        GuiPainter::instance().blit(loadingBmp, menuArea().minCorner());
+        device->endImmediateCommands();
+    };
+
+    paintPass();
+    device->display()->flipBuffers();
+    paintPass();
 }
 
 bool MachGuiStartupScreens::finishApp()
@@ -3657,11 +3685,6 @@ int MachGuiStartupScreens::yMenuOffset()
     int y = y_from_screen_bottom(mSharedBitmaps_.getHeightOfNamedBitmap(backdrop), 2);
 
     return y;
-}
-
-Ren::Point MachGuiStartupScreens::menuPosition()
-{
-    return { xMenuOffset(), yMenuOffset() };
 }
 
 void MachGuiStartupScreens::toggleConsoleDropDown()
