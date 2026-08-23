@@ -74,7 +74,7 @@ TEST(FrameSamplerTests, ARunCollectsWhatItWasAskedForAndNoMore)
     for (int frame = 0; frame != 4; ++frame)
     {
         sampler.frameStarted();
-        sampler.frameEnded();
+        sampler.frameEnded({});
     }
 
     EXPECT_FALSE(sampler.collecting());
@@ -82,7 +82,7 @@ TEST(FrameSamplerTests, ARunCollectsWhatItWasAskedForAndNoMore)
 
     // Frames after the run is full are not part of it.
     sampler.frameStarted();
-    sampler.frameEnded();
+    sampler.frameEnded({});
     EXPECT_EQ(3u, sampler.collected());
 }
 
@@ -94,7 +94,7 @@ TEST(FrameSamplerTests, StoppingEarlyKeepsWhatArrived)
     for (int frame = 0; frame != 3; ++frame)
     {
         sampler.frameStarted();
-        sampler.frameEnded();
+        sampler.frameEnded({});
     }
 
     sampler.stop();
@@ -111,7 +111,7 @@ TEST(FrameSamplerTests, AFrameThatNeverBeganIsNotTimed)
     // What the menus do: the frame ends without a 3D one ever being composed,
     // so nothing called frameStarted() and there is no span to measure.
     for (int frame = 0; frame != 4; ++frame)
-        sampler.frameEnded();
+        sampler.frameEnded({});
 
     EXPECT_EQ(0u, sampler.collected());
     EXPECT_TRUE(sampler.collecting());
@@ -119,10 +119,25 @@ TEST(FrameSamplerTests, AFrameThatNeverBeganIsNotTimed)
     // A frame that did begin is timed, and is not charged for the ones that did
     // not: its render span is its own, not the run's.
     sampler.frameStarted();
-    sampler.frameEnded();
+    sampler.frameEnded({});
 
     ASSERT_EQ(1u, sampler.collected());
     EXPECT_LT(sampler.frames().front().renderSeconds, 1.0);
+}
+
+TEST(FrameSamplerTests, WhatTheFrameDrewIsKeptWithHowLongItTook)
+{
+    Ren::FrameSampler sampler;
+    sampler.collect(1);
+
+    sampler.frameStarted();
+    sampler.frameEnded({ .drawCalls = 11, .polygons = 2200 });
+    sampler.frameStarted();
+    sampler.frameEnded({ .drawCalls = 12, .polygons = 2400 });
+
+    ASSERT_EQ(1u, sampler.collected());
+    EXPECT_EQ(12u, sampler.frames().front().drawCalls);
+    EXPECT_EQ(2400u, sampler.frames().front().polygons);
 }
 
 TEST(FrameSamplerTests, ANewRunDropsTheOldOne)
@@ -132,7 +147,7 @@ TEST(FrameSamplerTests, ANewRunDropsTheOldOne)
     for (int frame = 0; frame != 3; ++frame)
     {
         sampler.frameStarted();
-        sampler.frameEnded();
+        sampler.frameEnded({});
     }
     ASSERT_EQ(2u, sampler.collected());
 
