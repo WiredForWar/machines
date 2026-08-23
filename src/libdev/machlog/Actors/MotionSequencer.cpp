@@ -2001,6 +2001,9 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
 
     LOG_INSPECT(motionInitiated);
 
+    if (motionInitiated)
+        pImpl_->nConsecutiveAlternatives_ = 0;
+
     if (! motionInitiated)
     {
         bool done = false;
@@ -2102,14 +2105,59 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
                             }
                             else
                             {
-                                // Change the destination
-                                destinationPoint_ = newDestination;
-                                CHANGE_STATE(
-                                    INTERNAL_WANT_PATH,
-                                    "immovable obstacle in way, trying an alternative destination");
-                                LOG_STREAM(
-                                    "    Re-entered INTERNAL_WANT_PATH with new destination " << newDestination
-                                                                                              << std::endl);
+                                //  findSpace can hand back the point we are
+                                //  already blocked at, moved by a centimetre.
+                                //  Then we plan a path to it, are blocked by the
+                                //  same machine, ask for an alternative, and get
+                                //  the same point again -- a loop with nothing in
+                                //  it that can end.
+                                //
+                                //  Traced on the corridor with sixteen machines:
+                                //  one machine replanned 246 times in 40 seconds,
+                                //  nine units short of its place, its alternative
+                                //  advancing 0.01 units a time -- about 1300 more
+                                //  cycles to clear a machine's width -- while the
+                                //  machine in its way was asked to move 272 times
+                                //  and answered that it could not. Two runs in six
+                                //  ran past 100 seconds and one never finished at
+                                //  all. This is the same failure the yield rule
+                                //  caps with maxConsecutiveHolds, one level up,
+                                //  and it had no cap.
+                                //
+                                //  An alternative that is not meaningfully
+                                //  somewhere else is not an alternative. Count
+                                //  those, and stop.
+                                static constexpr uint maxConsecutiveAlternatives = 8;
+                                const MATHEX_SCALAR sqrMeaningfulMove = useClearance_ * useClearance_;
+
+                                if (pImpl_->nConsecutiveAlternatives_ > 0
+                                    && newDestination.sqrEuclidianDistance(pImpl_->lastAlternativeDestination_)
+                                        < sqrMeaningfulMove)
+                                    ++pImpl_->nConsecutiveAlternatives_;
+                                else
+                                    pImpl_->nConsecutiveAlternatives_ = 1;
+
+                                pImpl_->lastAlternativeDestination_ = newDestination;
+
+                                if (pImpl_->nConsecutiveAlternatives_ > maxConsecutiveAlternatives)
+                                {
+                                    CHANGE_STATE(INTERNAL_RESTING, "alternative destinations are going nowhere");
+
+                                    motionSucceeded_ = false;
+                                    failureReason_ = DESTINATION_OCCUPIED;
+                                    pImpl_->nConsecutiveAlternatives_ = 0;
+                                }
+                                else
+                                {
+                                    // Change the destination
+                                    destinationPoint_ = newDestination;
+                                    CHANGE_STATE(
+                                        INTERNAL_WANT_PATH,
+                                        "immovable obstacle in way, trying an alternative destination");
+                                    LOG_STREAM(
+                                        "    Re-entered INTERNAL_WANT_PATH with new destination "
+                                        << newDestination << std::endl);
+                                }
                             }
                         }
                     }

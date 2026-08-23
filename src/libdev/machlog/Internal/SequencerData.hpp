@@ -169,6 +169,13 @@ private:
     UtlId givingWayToId_{};
     uint nConsecutiveHolds_{};
 
+    //  How many times running we have been blocked at the end of our path and
+    //  taken an alternative destination instead. findSpace can hand back the
+    //  point we are already blocked at, moved by a centimetre, so without a
+    //  count of its own this loop has nothing to end it.
+    MexPoint2d lastAlternativeDestination_{};
+    uint nConsecutiveAlternatives_{};
+
     PhysPathFindingPriority pathFindingPriority_;
 
     PhysAbsoluteTime shuffleEndTime_;
