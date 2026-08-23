@@ -734,6 +734,11 @@ bool RenDevice::switchBackend(Ren::BackendType type)
     // Re-upload all textures.
     RenSurfaceManager::instance().impl().reuploadAllTextures();
 
+    // A font's glyphs live in a surface that no file backs, so re-uploading
+    // cannot bring them back; they have to be rasterised again. Every piece of
+    // text in the game is drawn from one of these.
+    Ren::reloadFonts();
+
     // Restore VSync preference.
     if (!setVSync(vsyncEnabled_))
     {
