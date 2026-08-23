@@ -1623,13 +1623,6 @@ void RenDevice::fogOn()
 
 void RenDevice::disableFog()
 {
-    if (fogParams_[1] > 0)
-    {
-        pImpl_->fogEnd_ = fogParams_[1];
-    }
-
-    pImpl_->fogDensity_ = fogParams_[2];
-
     fogOff();
 }
 
