@@ -1429,7 +1429,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
         {
             .name = "cam_type",
             .description = "Get/set camera type (zenith, ground, 1stperson).",
-            .arguments = {{.name = "type", .type = Arg::Identifier, .optional = true, .description = "Camera type."}},
+            .arguments = {{.name = "type", .type = Arg::String, .optional = true, .description = "Camera type."}},
         },
         [pStartup](const Request& request, Console& console) { camTypeCommand(pStartup, request, console); });
 
