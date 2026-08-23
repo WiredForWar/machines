@@ -932,6 +932,17 @@ void RenDevice::setViewport(int left, int top, int width, int height)
     RENDER_STREAM("Set viewport to (" << left << "," << top << ") " << width << "x" << height << "\n");
 }
 
+void RenDevice::setSceneViewport(int left, int top, int width, int height)
+{
+    PRE(rendering3D());
+
+    setViewport(left, top, width, height);
+
+    // GL measures a viewport from the bottom of the window and everything here
+    // measures from the top.
+    recordCommand(Ren::Command::setViewport(left, windowHeight() - top - height, width, height));
+}
+
 void RenDevice::clearDisplay(int width, int height)
 {
     pImpl_->backend_->clearDisplay(width, height);
@@ -1095,11 +1106,39 @@ void RenDevice::beginGeometryPass(bool clearBack)
     else
         recordCommand(Ren::Command::beginRenderPass(geometryRenderPass_, bgCol));
 
+    // What the fog was when the pass opened, so that every view in the pass gets
+    // the same fog rather than whatever the view before it left behind.
+    passFog_ = PassFog{
+        .on = pImpl_->fogOn_,
+        .start = static_cast<float>(pImpl_->fogStart_),
+        .end = static_cast<float>(pImpl_->fogEnd_),
+        .density = static_cast<float>(pImpl_->fogDensity_),
+    };
+
+    // Once for the pass, not once for each view in it: the camera's colour
+    // filter is applied here, and applying it again would compound it.
     pImpl_->illuminator_->filter(pImpl_->currentCamera_->colourFilter());
     pImpl_->illuminator_->startFrame();
     RenMesh::startFrame();
 
-    setFog(pImpl_->fogStart_, pImpl_->fogEnd_, pImpl_->fogDensity_, fogColour());
+    beginView();
+}
+
+void RenDevice::beginView()
+{
+    PRE(rendering3D());
+
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    pImpl_->doingBackground_ = false;
+    overrideClipping(pImpl_->currentCamera_->hitherClipDistance(), pImpl_->currentCamera_->yonClipDistance());
+    enableLighting();
+
+    pImpl_->fogOn_ = passFog_.on;
+    pImpl_->fogStart_ = passFog_.start;
+    pImpl_->fogEnd_ = passFog_.end;
+    pImpl_->fogDensity_ = passFog_.density;
+    setFog(passFog_.start, passFog_.end, passFog_.density, fogColour());
 
     recordCommand(Ren::Command::setPolygonOffsetFill(false));
     recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
@@ -1153,6 +1192,13 @@ static bool isWhiteString(const std::string& str)
             return false;
 
     return true;
+}
+
+void RenDevice::endView()
+{
+    PRE(rendering3D());
+
+    flush3DAlpha();
 }
 
 void RenDevice::flush3DAlpha()
@@ -1378,11 +1424,26 @@ void RenDevice::endFrame()
 void RenDevice::setViewpoint(const Viewpoint& viewpoint)
 {
     viewpoint_ = viewpoint;
+
+    // Inside a pass this has to take effect at once, or the frame it was given
+    // for is already being drawn from the last one. Outside a pass there is
+    // nothing to update: start3D() will read it.
+    if (rendering3D())
+    {
+        updateMatrices();
+        standardUniformsDirty_ = true;
+    }
 }
 
 void RenDevice::clearViewpoint()
 {
     viewpoint_.reset();
+
+    if (rendering3D())
+    {
+        updateMatrices();
+        standardUniformsDirty_ = true;
+    }
 }
 
 bool RenDevice::hasViewpoint() const

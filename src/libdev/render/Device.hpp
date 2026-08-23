@@ -98,6 +98,28 @@ public:
     // Opens the main geometry render pass (binds FBO, clears, sets fog/depth/blend).
     // PRE(rendering3D());
     void beginGeometryPass(bool clearBack = true);
+
+    // The state a view needs before anything is drawn into it: lighting, fog,
+    // depth, and the clipping the camera asked for. beginGeometryPass() does
+    // this itself for the first view.
+    //
+    // Called again for each further view drawn into the same pass, which is what
+    // a stereo frame is. It is not optional there: drawing the background at the
+    // end of a view leaves lighting and fog switched off, so a second view drawn
+    // without this comes out unlit.
+    //
+    // PRE(rendering3D());
+    void beginView();
+
+    // Draws and clears what this view collected to be drawn last: its
+    // transparent geometry, sorted back to front. end3D() does this for the
+    // final view, so a flat frame never needs it -- but a view whose alpha is
+    // left until after the next view's viewpoint has been set has it all drawn
+    // into the wrong eye, which shows up as one half of a stereo picture missing
+    // its shadows.
+    //
+    // PRE(rendering3D());
+    void endView();
     // PRE(rendering3D());
     void end3D();
 
@@ -172,6 +194,15 @@ public:
     // Defaults to full-screen if you never call this method.
     // PRE(!rendering3D());
     void setViewport(int left, int top, int width, int height);
+
+    // The same, for a part of a frame rather than for the frame: this one takes
+    // effect on the drawing that follows it, so the scene can be drawn into one
+    // half of the window and then the other without starting a second pass and
+    // clearing away the first half. Left and top are measured from the top left,
+    // as everywhere else here.
+    //
+    // PRE(rendering3D());
+    void setSceneViewport(int left, int top, int width, int height);
 
     // Set the viewport to the given size and clear the colour buffer to black.
     // Used by the display layer after a mode change.
@@ -512,6 +543,21 @@ private:
     // is called.  Intended for drawing backgrounds.
     // PRE(hither < yon);
     void overrideClipping(double hither, double yon);
+
+    // The fog the pass was opened with. Drawing a background switches fog off,
+    // and on the way overwrites the stored end and density with whatever the
+    // background was drawn to -- so a second view in the same pass, drawn after
+    // the first one's background, would otherwise get weaker fog than the first
+    // and come out a different colour.
+    struct PassFog
+    {
+        bool on{};
+        float start{};
+        float end{};
+        float density{};
+    };
+
+    PassFog passFog_{};
 
     Ren::FrameState buildFrameState() const;
     Ren::GpuLightingState buildGpuLightingState(bool gpuLighting) const;
