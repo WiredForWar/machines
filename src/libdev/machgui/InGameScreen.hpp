@@ -326,7 +326,8 @@ public:
     // full size of the window.
     //
     // The console is the exception, since it is what the world is framed from
-    // while the rest is gone; close it to take the picture.
+    // while the rest is gone. It is not in the frame a screenshot is taken from,
+    // so it can be left open to take one.
     //
     // Only the drawing stops. What cannot be seen still takes clicks, so drive
     // the camera from the console rather than the mouse while it is off.

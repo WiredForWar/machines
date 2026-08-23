@@ -357,10 +357,12 @@ void MachGuiStartupScreens::displayGui()
 
     // Draw any updated Gui components, unless the game is being watched with
     // nothing over it -- in which case the console is the one thing still drawn,
-    // since it is what the watching is driven from and closing it is a keypress.
+    // since it is what the watching is driven from. It is left out of the frame
+    // a screenshot is taken from, so a picture asked for from the console does
+    // not come back with the console in it.
     if (uiVisible)
         GuiManager::instance().display();
-    else if (pConsoleDropDown_)
+    else if (pConsoleDropDown_ && !pInGameScreen_->isRenderingScreenShot())
         pConsoleDropDown_->display();
 
     if (inGame)
