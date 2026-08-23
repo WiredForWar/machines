@@ -9,6 +9,7 @@
 #include <string>
 #include "base/LogBuffer.hpp"
 #include "device/Timer.hpp"
+#include "render/FrameSampler.hpp"
 
 template <class T> class ctl_list;
 
@@ -87,6 +88,10 @@ private:
     uint32_t STFsDrawn_{};
     uint32_t pointsDrawn_{};
     uint32_t drawCallsMade_{};
+
+    // What the counters above stood at when this frame began, so that one
+    // frame's worth can be told from the display interval's worth.
+    Ren::FrameSampler::Frame atFrameStart_{};
 
     BaseLogBuffer stream_;
     std::string text_;

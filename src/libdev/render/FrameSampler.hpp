@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <cstddef>
+#include <cstdint>
 
 namespace Ren
 {
@@ -28,6 +29,17 @@ public:
         // From one frame being composed to the next. This is the whole frame:
         // the simulation, presenting, and whatever the frame rate limit slept.
         double intervalSeconds{};
+
+        // What the frame actually asked the GPU for. Time on its own cannot say
+        // whether a scene got more expensive because more was drawn or because
+        // more was done to decide what to draw; these tell them apart, and the
+        // separate kinds say which part of the scene grew.
+        std::uint32_t drawCalls{};
+        std::uint32_t polygons{};
+        std::uint32_t lines{};
+        std::uint32_t shadowFans{};
+        std::uint32_t transparentFans{};
+        std::uint32_t points{};
     };
 
     // The one a running game feeds. There is a single render loop, so there is
@@ -51,7 +63,7 @@ public:
     // not join it. A run takes one more frame than it records: the first is
     // where the second one's interval is measured from.
     void frameStarted();
-    void frameEnded();
+    void frameEnded(const Frame& counts);
 
     const std::vector<Frame>& frames() const { return frames_; }
 
