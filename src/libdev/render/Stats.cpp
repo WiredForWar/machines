@@ -5,6 +5,7 @@
 
 #include "render/Stats.hpp"
 #include "ctl/List.hpp"
+#include "render/FrameSampler.hpp"
 
 #ifndef _INLINE
 #include "render/Stats.ipp"
@@ -149,6 +150,8 @@ void RenStats::startFrame()
 {
     frameTimer_.time(0);
     frameTimer_.resume();
+
+    Ren::FrameSampler::instance().frameStarted();
 }
 
 void RenStats::endFrame()
@@ -157,6 +160,8 @@ void RenStats::endFrame()
     frameTimer_.pause();
     ++framesSinceUpdate_;
     ++frameCount_;
+
+    Ren::FrameSampler::instance().frameEnded();
 
     computeAverage();
 

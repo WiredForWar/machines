@@ -49,6 +49,8 @@ set(RENDER_SOURCES
     Font.hpp
     FontsManager.cpp
     FontsManager.hpp
+    FrameSampler.cpp
+    FrameSampler.hpp
     GLMath.cpp
     GXMeshLoader.cpp
     HierarchyBuilder.cpp

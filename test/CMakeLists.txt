@@ -82,6 +82,7 @@ append_test(UtlBoundedIdGeneratorTests utility/BoundedIdGeneratorTests.cpp)
 
 append_test(ColourTests render/ColourTests.cpp)
 append_test(DisplayModeCatalogueTests render/DisplayModeCatalogueTests.cpp)
+append_test(FrameSamplerTests render/FrameSamplerTests.cpp)
 append_test(TextWrapTests render/TextWrapTests.cpp)
 
 #### Create executables
