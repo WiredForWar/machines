@@ -52,7 +52,7 @@ void FrameSampler::frameStarted()
     started_ = Clock::now();
 }
 
-void FrameSampler::frameEnded()
+void FrameSampler::frameEnded(const Frame& counts)
 {
     if (!collecting())
         return;
@@ -73,10 +73,11 @@ void FrameSampler::frameEnded()
         const std::chrono::duration<double> render = now - started_;
         const std::chrono::duration<double> interval = now - finished_;
 
-        frames_.push_back({
-            .renderSeconds = render.count(),
-            .intervalSeconds = interval.count(),
-        });
+        Frame frame = counts;
+        frame.renderSeconds = render.count();
+        frame.intervalSeconds = interval.count();
+
+        frames_.push_back(frame);
     }
 
     started_ = {};

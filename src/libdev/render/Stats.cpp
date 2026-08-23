@@ -151,6 +151,17 @@ void RenStats::startFrame()
     frameTimer_.time(0);
     frameTimer_.resume();
 
+    // The counters run until the on-screen display next updates, which is many
+    // frames, so one frame's worth is the difference across it.
+    atFrameStart_ = {
+        .drawCalls = drawCallsMade_,
+        .polygons = polygonsDrawn_,
+        .lines = linesDrawn_,
+        .shadowFans = STFsDrawn_,
+        .transparentFans = TTFsDrawn_,
+        .points = pointsDrawn_,
+    };
+
     Ren::FrameSampler::instance().frameStarted();
 }
 
@@ -161,7 +172,15 @@ void RenStats::endFrame()
     ++framesSinceUpdate_;
     ++frameCount_;
 
-    Ren::FrameSampler::instance().frameEnded();
+    // Before the block below, which is where the counters are put back to zero.
+    Ren::FrameSampler::instance().frameEnded({
+        .drawCalls = drawCallsMade_ - atFrameStart_.drawCalls,
+        .polygons = polygonsDrawn_ - atFrameStart_.polygons,
+        .lines = linesDrawn_ - atFrameStart_.lines,
+        .shadowFans = STFsDrawn_ - atFrameStart_.shadowFans,
+        .transparentFans = TTFsDrawn_ - atFrameStart_.transparentFans,
+        .points = pointsDrawn_ - atFrameStart_.points,
+    });
 
     computeAverage();
 
