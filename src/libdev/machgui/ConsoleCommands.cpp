@@ -1589,7 +1589,6 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             = {
                {.name = "race", .type = Arg::Identifier, .optional = true, .description = "Race: red, blue, green, yellow."}
             },
-            .cheat = true,
         },
         [](const Request& request, Console& console) { getBmuCommand(request, console); });
 
