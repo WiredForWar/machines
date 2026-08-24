@@ -283,9 +283,11 @@ void RenIIlluminator::lightVertices(
         in.expandNormals(devImpl_->expandedNormals_.data(), nVertices);
         devImpl_->expandedNormalsCount_ = nVertices;
 
-        // Expand per-vertex material overrides into flat arrays.
-        // Vertices without per-vertex materials get a sentinel (-1) so the
-        // shader knows to use the group material uniform instead.
+        // Expand per-vertex material overrides into flat arrays. Which vertices
+        // were given one is recorded rather than marked in the arrays: what the
+        // rest should hold is the material of whichever group is being drawn,
+        // and one lighting pass serves every group of the mesh, so it cannot be
+        // settled here. resolvePerVertexMaterials() does it per group.
         const RenIVertexMaterials* matMap = in.materialMap();
         devImpl_->hasPerVertexMaterials_ = (matMap != nullptr);
         if (matMap)
@@ -296,11 +298,11 @@ void RenIIlluminator::lightVertices(
                 devImpl_->expandedVtxAmbient_.resize(floatsNeeded);
             if (devImpl_->expandedVtxEmissive_.size() < floatsNeeded)
                 devImpl_->expandedVtxEmissive_.resize(floatsNeeded);
+            if (devImpl_->vtxMaterialPresent_.size() < nVertices)
+                devImpl_->vtxMaterialPresent_.resize(nVertices);
 
-            // Fill with sentinel (-1) meaning "use group material"
-            std::fill_n(devImpl_->expandedVtxDiffuse_.data(), floatsNeeded, -1.0f);
-            std::fill_n(devImpl_->expandedVtxAmbient_.data(), floatsNeeded, -1.0f);
-            std::fill_n(devImpl_->expandedVtxEmissive_.data(), floatsNeeded, -1.0f);
+            std::fill_n(devImpl_->vtxMaterialPresent_.data(), nVertices, static_cast<unsigned char>(0));
+            devImpl_->vtxMaterialCount_ = nVertices;
 
             // Apply global material transform if present
             const auto* matXform = globalMaterialTransform();
@@ -333,7 +335,13 @@ void RenIIlluminator::lightVertices(
                 devImpl_->expandedVtxEmissive_[idx * 3 + 0] = e.r();
                 devImpl_->expandedVtxEmissive_[idx * 3 + 1] = e.g();
                 devImpl_->expandedVtxEmissive_[idx * 3 + 2] = e.b();
+
+                devImpl_->vtxMaterialPresent_[idx] = 1;
             }
+        }
+        else
+        {
+            devImpl_->vtxMaterialCount_ = 0;
         }
 
         // Sum all directional light contributions into a single direction/color pair.
@@ -455,6 +463,34 @@ void RenIIlluminator::lightVertices(const RenIVertexData& in, const MexAlignedBo
         vtx.color = RenICheckedMatApp(r,g,b, alpha_);
     }
 */
+
+void RenIIlluminator::resolvePerVertexMaterials(const RenMaterial& groupMaterial)
+{
+    if (!devImpl_->hasPerVertexMaterials_)
+        return;
+
+    const RenColour& d = groupMaterial.diffuse();
+    const RenColour& a = groupMaterial.ambient();
+    const RenColour& e = groupMaterial.emissive();
+
+    for (std::size_t i = 0; i != devImpl_->vtxMaterialCount_; ++i)
+    {
+        if (devImpl_->vtxMaterialPresent_[i])
+            continue;
+
+        devImpl_->expandedVtxDiffuse_[i * 3 + 0] = d.r();
+        devImpl_->expandedVtxDiffuse_[i * 3 + 1] = d.g();
+        devImpl_->expandedVtxDiffuse_[i * 3 + 2] = d.b();
+
+        devImpl_->expandedVtxAmbient_[i * 3 + 0] = a.r();
+        devImpl_->expandedVtxAmbient_[i * 3 + 1] = a.g();
+        devImpl_->expandedVtxAmbient_[i * 3 + 2] = a.b();
+
+        devImpl_->expandedVtxEmissive_[i * 3 + 0] = e.r();
+        devImpl_->expandedVtxEmissive_[i * 3 + 1] = e.g();
+        devImpl_->expandedVtxEmissive_[i * 3 + 2] = e.b();
+    }
+}
 
 const RenIVertex* RenIIlluminator::applyMaterial(const RenMaterial& m, const RenIVertexData& in)
 {

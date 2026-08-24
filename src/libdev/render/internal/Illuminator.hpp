@@ -118,6 +118,15 @@ public:
     // void applyMaterialGenericLighting(const RenMaterial&, D3DTLVERTEX* vertices, size_t nVertices);
     void applyMaterialGenericLighting(const RenMaterial&, RenIVertex* vertices, size_t nVertices);
 
+    // Fills in, for the group about to be drawn, every vertex the mesh did not
+    // give a material of its own. Call once per group: the answer is the group's
+    // material, and one lighting pass serves them all.
+    //
+    // The arrays are vertex attributes, so every element of them is interpolated
+    // across the triangle. They may hold only real materials -- a value standing
+    // for "this vertex has none" would be averaged with the ones that do.
+    void resolvePerVertexMaterials(const RenMaterial& groupMaterial);
+
     void lightTurnedOn(RenILight*);
     void lightTurnedOff(RenILight*);
 

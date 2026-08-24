@@ -175,6 +175,10 @@ const RenIVertex* RenINonMMXIlluminator::applyMaterial(
         pMat = &transformedMaterial;
     }
 
+    // Which group is being drawn is only known here, and it decides what the
+    // vertices without a material of their own are lit by.
+    resolvePerVertexMaterials(m);
+
     // Reset all the flags (quickly).
     lightingBuffer_->setAllAppliedFlags(false);
 

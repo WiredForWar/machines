@@ -302,6 +302,14 @@ private:
     // GPU lighting state, populated by the illuminator during lightVertices.
     std::vector<float> expandedNormals_{};
     size_t expandedNormalsCount_{};
+
+    // Which vertices the mesh gave a material of their own, and how many of the
+    // three arrays below are in use. A vertex without one is filled in with the
+    // material of whichever group is being drawn, which is not known while the
+    // mesh is being lit -- one lighting pass serves every group -- so it has to
+    // be remembered rather than decided there.
+    std::vector<unsigned char> vtxMaterialPresent_{};
+    std::size_t vtxMaterialCount_{};
     glm::vec3 gpuLightDir_{};
     glm::vec3 gpuLightColor_{};
     glm::vec3 gpuAmbientColor_{};
