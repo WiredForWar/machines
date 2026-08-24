@@ -554,6 +554,9 @@ void RenderBackendGL21::releaseBuffer(BufferId id)
         glDeleteBuffers(1, &buffer);
         buffers_[idx] = 0;
     }
+
+    stateCache_.boundArrayBuffer_ = 0;
+    stateCache_.boundElementBuffer_ = 0;
 }
 
 FramebufferId RenderBackendGL21::createFramebuffer()
