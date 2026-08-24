@@ -57,6 +57,10 @@ private:
 
     System::IConsole *pConsole_{};
     Utils::CallbackHandleUPtr outputListenerHandle_{};
+
+    // The output and the prompt are drawn into surfaces that no file backs, so a
+    // new backend hands them back blank and they have to be drawn again.
+    Utils::CallbackHandleUPtr resourcesInvalidatedHandle_{};
     std::unique_ptr<MachGuiSingleLineEditBox> inputBox_;
     GuiBitmap promptBmp_;
     Gui::Coord promptCoord_{};

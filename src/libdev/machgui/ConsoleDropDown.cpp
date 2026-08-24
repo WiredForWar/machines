@@ -5,6 +5,7 @@
 #include "gui/Manager.hpp"
 #include "machgui/gui.hpp"
 
+#include "render/Device.hpp"
 #include "system/IConsole.hpp"
 #include "utility/String.hpp"
 
@@ -37,6 +38,11 @@ MachGuiConsoleDropDown::MachGuiConsoleDropDown(GuiDisplayable* parent) :
     inputBox_->border(false);
     inputBox_->ignoreSpaceAtBeginning(false);
     inputBox_->maxChars(256);
+
+    resourcesInvalidatedHandle_ = RenDevice::current()->addResourcesInvalidatedCallback([this]() {
+        updatePromptSurface(pConsole_ ? pConsole_->prompt() : std::string_view{});
+        updateOutputFromConsole();
+    });
 }
 
 MachGuiConsoleDropDown::~MachGuiConsoleDropDown() = default;
