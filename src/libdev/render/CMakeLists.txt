@@ -124,6 +124,8 @@ set(RENDER_SOURCES
     SurfaceManager.hpp
     SurfaceManagerImpl.cpp
     TextOptions.hpp
+    TextWrap.cpp
+    TextWrap.hpp
     Texture.cpp
     Texture.hpp
     TextureBody.cpp

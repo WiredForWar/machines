@@ -67,6 +67,7 @@ append_test(SysPathNameTests system/SysPathNameTests.cpp)
 
 append_test(ColourTests render/ColourTests.cpp)
 append_test(DisplayModeCatalogueTests render/DisplayModeCatalogueTests.cpp)
+append_test(TextWrapTests render/TextWrapTests.cpp)
 
 #### Create executables
 list(LENGTH TESTS_SRCS len1)
