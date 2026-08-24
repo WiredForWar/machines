@@ -6,6 +6,7 @@
 #include "machgui/gui.hpp"
 
 #include "render/Device.hpp"
+#include "render/TextWrap.hpp"
 #include "system/IConsole.hpp"
 #include "utility/String.hpp"
 
@@ -14,6 +15,8 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <string_view>
+#include <vector>
 
 namespace
 {
@@ -458,20 +461,36 @@ void MachGuiConsoleDropDown::prerenderOutput()
     Ren::Painter painter(consoleOutput_.value());
     painter.clearRectangle(Ren::Rect(0, 0, outputWidth, outputHeight));
 
-    Ren::Point drawPos { 0, 0 };
     const int lineHeight = static_cast<int>(inputFont_.height()) + 1 * Gui::uiScaleFactor();
-    const int maxVisibleLines = consoleOutput_->height() / lineHeight;
-    const std::size_t totalLines = outputLines_.size();
-    const std::size_t linesToRender = std::min<std::size_t>(maxVisibleLines, totalLines);
-    const std::size_t startIndex = totalLines - linesToRender;
-    for (std::size_t i = startIndex; i < totalLines; ++i)
+    const int maxVisibleRows = consoleOutput_->height() / lineHeight;
+    const int rowWidth = consoleOutput_->width();
+
+    // Newest line first, so that a line long enough to wrap costs the oldest
+    // lines their place rather than losing its own end. The rows go in front of
+    // what is already collected to put them back in the order they were said in.
+    std::vector<std::string_view> rows;
+    for (std::size_t i = outputLines_.size(); i-- > 0 && static_cast<int>(rows.size()) < maxVisibleRows;)
+    {
+        const std::vector<std::string_view> wrapped = Ren::wrapText(outputLines_[i], rowWidth, inputFont_);
+        rows.insert(rows.begin(), wrapped.begin(), wrapped.end());
+    }
+
+    // The line that ran over the top is shown by its last rows, the way the
+    // newest line is the one kept when there are too many.
+    if (static_cast<int>(rows.size()) > maxVisibleRows)
+    {
+        rows.erase(rows.begin(), rows.begin() + (rows.size() - maxVisibleRows));
+    }
+
+    Ren::Point drawPos { 0, 0 };
+    for (const std::string_view& row : rows)
     {
         if (drawPos.y + static_cast<int>(inputFont_.height()) > outputHeight)
         {
             break;
         }
 
-        painter.drawText(outputLines_[i], drawPos, inputFont_, consoleOutput_->width());
+        painter.drawText(row, drawPos, inputFont_, rowWidth);
         drawPos.y += lineHeight;
     }
 }
