@@ -3,6 +3,9 @@
 #include "utility/String.hpp"
 
 #include <cstdint>
+#include <format>
+#include <stdexcept>
+#include <string>
 #include <unordered_map>
 
 namespace Config
@@ -217,5 +220,36 @@ std::optional<bool> Impl::toValue(const std::string& asString)
 }
 
 template class Variable<bool>;
+
+template <>
+std::string Impl::toString(const float& value)
+{
+    // std::to_string gives six decimal places whatever the value, so a setting a
+    // person is expected to read and edit would be written as "0.750000".
+    std::string asString = std::format("{}", value);
+
+    return asString;
+}
+
+template <>
+std::optional<float> Impl::toValue(const std::string& asString)
+{
+    if (asString.empty())
+        return {};
+
+    // Anything that is not a number at all is no answer rather than zero, which
+    // for a multiplier would silently switch the effect off instead of falling
+    // back to the default.
+    try
+    {
+        return std::stof(asString);
+    }
+    catch (const std::exception&)
+    {
+        return {};
+    }
+}
+
+template class Variable<float>;
 
 } // namespace Config
