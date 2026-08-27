@@ -117,6 +117,27 @@ MachPhys::Race raceArgOrPlayer(const Request& request, std::size_t argIndex, Con
         if (!race.has_value())
         {
             console.reportError("Unknown race: " + raceName + ". Use red, blue, green, or yellow.");
+            return MachPhys::NORACE;
+        }
+
+        // A race the game was not set up with has no controller, no ore, and
+        // nothing for an actor to be added to, so spawning into it walks off the
+        // end of what does exist and takes the process with it. Refusing says
+        // which of the four are actually there, which is the thing the caller
+        // needs to know and cannot otherwise find out.
+        if (!MachLogRaces::instance().raceInGame(race.value()))
+        {
+            std::vector<std::string> inGame;
+            for (MachPhys::Race colour : MachPhys::AllRaces)
+            {
+                if (MachLogRaces::instance().raceInGame(colour))
+                    inGame.emplace_back(MachPhys::toString(colour));
+            }
+
+            console.reportError(
+                "Race " + raceName + " is not in this game. In game: "
+                + (inGame.empty() ? std::string("none") : Utils::join(inGame, ", ")));
+            return MachPhys::NORACE;
         }
     }
 
@@ -1407,6 +1428,47 @@ void screenshotCommand(MachGuiStartupScreens* pStartup, const Request& request, 
         console.writeLine("Photographing the next frame into " + Gui::screenshotPath(fileName).pathname() + ".");
 }
 
+void loadPlanetCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    if (!pStartup)
+    {
+        console.reportError("The startup screens are not up yet.");
+        return;
+    }
+
+    if (pStartup->gameType() != MachGuiStartupScreens::NOGAME)
+    {
+        console.reportError("A game is already loaded. There is no way back to the menus from here yet.");
+        return;
+    }
+
+    const std::string& name = std::get<std::string>(request.arguments[0].value);
+    const std::vector<std::string> available = availablePlanetNames();
+    if (std::find(available.begin(), available.end(), name) == available.end())
+    {
+        console.reportError("No such planet: " + name + ". Available: " + Utils::join(available, ", "));
+        return;
+    }
+
+    MachPhys::Race race = MachPhys::RED;
+    if (request.arguments.size() > 1 && request.arguments[1].provided)
+    {
+        const std::string& raceName = std::get<std::string>(request.arguments[1].value);
+        const std::optional<MachPhys::Race> parsed = MachPhys::toRace(raceName);
+        if (!parsed.has_value())
+        {
+            console.reportError("Unknown race: " + raceName + ". Use red, blue, green, or yellow.");
+            return;
+        }
+
+        race = parsed.value();
+    }
+
+    pStartup->requestBarePlanet(name, race);
+
+    console.writeLine("Loading " + name + " for " + std::string(MachPhys::toString(race)) + ".");
+}
+
 } // anonymous namespace
 
 } // namespace ConsoleImpl
@@ -1634,6 +1696,31 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                                             " Omit to number it after the shots already taken." } },
         },
         [pStartup](const Request& request, Console& console) { screenshotCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "load_planet",
+            .description = "Load a planet's terrain with nothing on it.",
+            .arguments = {
+                { .name = "planet", .type = Arg::String, .description = "Planet name, e.g. m_desert." },
+                { .name = "race", .type = Arg::Identifier, .optional = true,
+                  .description = "Race to play. Defaults to red." },
+            },
+            .devOnly = true,
+        },
+        [pStartup](const Request& request, Console& console) { loadPlanetCommand(pStartup, request, console); },
+        [](const System::IConsole::CommandMetadata&,
+           std::size_t argIndex,
+           std::string_view partialValue,
+           const std::vector<std::string>&) -> std::vector<std::string>
+    {
+        if (argIndex == 0)
+            return filterByPrefix(partialValue, availablePlanetNames());
+        if (argIndex == 1)
+            return filterByPrefix(partialValue, raceNames());
+
+        return {};
+    });
 
     // ---- Data reload commands ----
 

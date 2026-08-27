@@ -17,10 +17,12 @@
 #include "gui/Root.hpp"
 #include "gui/ResourceString.hpp"
 #include "ctl/PtrVector.hpp"
-#include "phys/phys.hpp"
+#include "machphys/machphys.hpp"
 #include "utility/CallbackHandle.hpp"
 
 #include <memory>
+#include <optional>
+#include <string>
 
 class AfxResourceLib;
 class MachGuiConsoleDropDown;
@@ -225,6 +227,12 @@ public:
     // Gui::screenshotNameComplaint had nothing to say about.
     void requestScreenShot(std::string fileName = {});
 
+    // Loads a planet's terrain with no scenario on it: ground, one race, and no
+    // actors at all. Takes effect at the top of the next loop cycle, the way any
+    // other change of gui root does.
+    // PRE( gameType() == NOGAME );
+    void requestBarePlanet(const std::string& planetName, MachPhys::Race);
+
     MachGuiMessageBroker& messageBroker();
     // PRE( pMessageBroker_ );
 
@@ -353,6 +361,7 @@ protected:
     void switchGuiRootToGame();
     void switchGuiRootToMultiGame();
     void switchGuiRootToSkirmishGame();
+    void switchGuiRootToBarePlanet();
 
     void updateSound(const MexTransform3d& transf);
 
@@ -483,9 +492,17 @@ private:
     Context contextBeforeFlic_;
     GuiBitmap* pBackdrop_;
     MachInGameScreen* pInGameScreen_;
+    // A planet asked for with no scenario, waiting for the next loop cycle.
+    struct BarePlanetRequest
+    {
+        std::string name{};
+        MachPhys::Race race{};
+    };
+
     bool switchGuiRoot_;
     bool finishApp_;
     bool skipIntroScreens_{};
+    std::optional<BarePlanetRequest> barePlanet_{};
     W4dRoot* pW4dRoot_;
     PhysAbsoluteTime contextTimer_;
     std::unique_ptr<AfxResourceLib> pStringResourceLib_; // The lib containing the app's string table

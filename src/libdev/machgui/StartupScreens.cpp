@@ -392,7 +392,10 @@ void MachGuiStartupScreens::checkSwitchGuiRoot()
         }
         else if (context_ == CTX_SKIRMISH_GAME)
         {
-            switchGuiRootToSkirmishGame();
+            if (barePlanet_.has_value())
+                switchGuiRootToBarePlanet();
+            else
+                switchGuiRootToSkirmishGame();
         }
         else if (context_ == CTX_BACKTOGAME)
         {
@@ -510,6 +513,81 @@ void MachGuiStartupScreens::switchGuiRootToGame()
     //  Give the AI a head start. This avoids chugging when we first get into the game
     for (size_t i = 0; i < 10; ++i)
         SimManager::instance().cycle();
+}
+
+void MachGuiStartupScreens::requestBarePlanet(const std::string& planetName, MachPhys::Race race)
+{
+    PRE(gameType_ == NOGAME);
+
+    barePlanet_ = BarePlanetRequest{ .name = planetName, .race = race };
+
+    // The load itself happens where a skirmish load happens, at the top of a
+    // loop cycle rather than part way through whatever asked for it.
+    switchContext(CTX_SKIRMISH_GAME);
+}
+
+void MachGuiStartupScreens::switchGuiRootToBarePlanet()
+{
+    PRE(gameType_ == NOGAME);
+    PRE(barePlanet_.has_value());
+
+    const BarePlanetRequest request = barePlanet_.value();
+    barePlanet_.reset();
+
+    LoadGameProgressIndicator progressIndicator(xMenuOffset(), yMenuOffset());
+
+    // Free up any cached memory used by menus.
+    releaseCachedMemory();
+
+    SimManager::instance().suspend();
+    SimManager::instance().resetTime();
+
+    progressIndicator.report(10, 100);
+
+    // Every race set up, one of them played from here, and no scenario to place
+    // anything for any of them. The planet still comes up bare, since a race
+    // with no scenario has nothing on the surface -- what the other three buy is
+    // somewhere for a spawned machine to belong. Left undefined, they had no
+    // controller and no ore, and spawning into one walked off the end of what
+    // existed rather than reporting anything.
+    MachLogGameCreationData gameData;
+    MachLogGameCreationData::PlayersCreationData creationData;
+    for (MachPhys::Race colour : MachPhys::AllRaces)
+    {
+        MachLogGameCreationData::PlayerCreationData pcd;
+        pcd.type_ = colour == request.race ? MachLog::PC_LOCAL : MachLog::AI_LOCAL;
+        pcd.colour_ = colour;
+        creationData.push_back(pcd);
+    }
+    gameData.playersCreationData(creationData);
+
+    progressIndicator.setLimits(0.1, 0.7);
+
+    MachLogRaces::instance().loadGame(pSceneManager_, request.name, std::string(), gameData, &progressIndicator);
+    MachLogRaces::instance().registerDispositionChangeNotifiable(pDispositionNotifiable_);
+
+    progressIndicator.setLimits(0.0, 1.0);
+    progressIndicator.report(70, 100);
+
+    pInGameScreen_->loadGame(request.name);
+
+    // Nothing has been seen yet, so fog would hide the whole planet.
+    pInGameScreen_->fogOfWarOn(false);
+
+    GuiManager::instance().keyboardFocus(pInGameScreen_);
+
+    gameType_ = SKIRMISHGAME;
+
+    progressIndicator.report(100, 100);
+
+    pSceneManager_->pDevice()->display()->useCursor(pMenuCursor_);
+
+    pInGameScreen_->becomeRoot();
+    pInGameScreen_->activate();
+    MachLogGameSession::instance().begin();
+    SimManager::instance().resume();
+
+    POST(gameType_ == SKIRMISHGAME);
 }
 
 void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
@@ -2336,8 +2414,14 @@ void MachGuiStartupScreens::contextGame()
 {
     switchGuiRoot_ = true;
     cursorOn(false);
-    Music scenarioTrack = static_cast<Music>(MachGuiDatabase::instance().currentScenario().musicTrack());
-    desiredCdTrack(scenarioTrack);
+
+    // A game loaded straight from a planet has no scenario, and so no track of
+    // its own to ask for.
+    const MachGuiDatabase& database = MachGuiDatabase::instance();
+    desiredCdTrack(
+        database.hasCurrentScenario() ? static_cast<Music>(database.currentScenario().musicTrack())
+                                      : DEFAULT_INGAME_MUSIC);
+
     pInGameScreen_->resetSwitchToMenus();
 }
 
