@@ -449,6 +449,21 @@ void camTypeCommand(MachGuiStartupScreens* pStartup, const Request& request, Con
         console.reportError("Unknown camera type: " + type + ". Use zenith, ground, or 1stperson.");
 }
 
+// Where the camera is: x and y on the map, and a third value that is the
+// camera's own. The zenith camera reports the terrain point in the middle of the
+// screen and how far above it the camera sits; every other camera reports where
+// it stands, so the third value is its height.
+MexPoint3d cameraPosition(MachCameras* pCameras)
+{
+    if (pCameras->isZenithCameraActive())
+    {
+        const MachCameras::ZenithCameraData data = pCameras->zenithCameraData();
+        return MexPoint3d(data.x, data.y, data.zoomDistance);
+    }
+
+    return pCameras->currentCamera()->globalTransform().position();
+}
+
 void camPosCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
@@ -459,17 +474,8 @@ void camPosCommand(MachGuiStartupScreens* pStartup, const Request& request, Cons
 
     if (request.arguments.empty() || !request.arguments[0].provided)
     {
-        if (pCameras->isZenithCameraActive())
-        {
-            const auto data = pCameras->zenithCameraData();
-            console.writeLine(
-                formatCoordinates(data.x, data.y) + " " + formatFloat(data.zoomDistance));
-        }
-        else
-        {
-            const MexPoint3d pos = pCameras->currentCamera()->globalTransform().position();
-            console.writeLine(formatCoordinates(pos.x(), pos.y()) + " " + formatFloat(pos.z()));
-        }
+        const MexPoint3d position = cameraPosition(pCameras);
+        console.writeLine(formatCoordinates(position.x(), position.y()) + " " + formatFloat(position.z()));
         return;
     }
 
