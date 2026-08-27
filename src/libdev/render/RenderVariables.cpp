@@ -151,4 +151,11 @@ Variable<bool> gfxToneMapping("Options/Graphics Complexity/Tone Mapping", false)
 Variable<FogMode> gfxFogMode("Options/Graphics Complexity/Fog Mode", FogMode::Linear);
 Variable<bool> gfxModernRendering("Options/Graphics Complexity/Modern Rendering", false);
 
+// How many cels a second a sprite animation steps through -- the flames, the
+// explosions, the smoke puffs. The art was drawn against a 60Hz display, so 60
+// is the rate that reproduces what the 1998 authors saw. It is a setting rather
+// than a constant because that is a claim about their intent, and the only way
+// to judge it is to watch a fire at several values.
+Variable<float> gfxAnimationCelRate("Options/Graphics Complexity/Animation Cel Rate", 60.0f);
+
 } // namespace Config

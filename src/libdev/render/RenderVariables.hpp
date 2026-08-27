@@ -33,4 +33,8 @@ extern Variable<bool> gfxToneMapping;
 extern Variable<FogMode> gfxFogMode;
 extern Variable<bool> gfxModernRendering;
 
+// How many cels a second a sprite animation steps through. 60 is what the art
+// was drawn for; see the note beside the definition.
+extern Variable<float> gfxAnimationCelRate;
+
 } // namespace Config

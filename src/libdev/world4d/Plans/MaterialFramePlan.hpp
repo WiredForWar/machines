@@ -8,7 +8,9 @@
 
     A concrete class of W4dMaterialPlan that defines a vector of (counted pointers to)
     material vectors, a duration, and a frame offset.
-    Each material vector in the vector is used in sequence, advancing by one each frame.
+    Each material vector in the vector is used in sequence, advancing with elapsed
+    time at Config::gfxAnimationCelRate cels a second. "Frame" here means a cel of
+    the animation, not a frame the renderer drew.
     Also has a frame offset, which can be used to offset the frame cycling.
     This plan is only applied at the highest level of detail.
 */
@@ -36,7 +38,8 @@ public:
     using MaterialVecPtrsPtr = CtlCountedPtr<MaterialVecPtrs>;
     using MaterialVecPtrsPtrVec = ctl_vector<MaterialVecPtrsPtr>;
 
-    // ctor. Each material vector is used in sequence, changing every nFrames frames.
+    // ctor. Each material vector is used in sequence, changing every nFrames cels
+    // of the animation clock.
     // The offset applied to each frame is frameOffset. The plan's life time is duration.
     W4dMaterialFramePlan(
         const MaterialVecPtrsPtr& materialVecPtrsPtr,

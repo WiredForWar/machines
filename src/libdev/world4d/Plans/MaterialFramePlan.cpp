@@ -6,7 +6,6 @@
 //  Definitions of non-inline non-template methods and global functions
 
 #include "world4d/Plans/MaterialFramePlan.hpp"
-#include "world4d/Manager.hpp"
 #include "world4d/Entity/Entity.hpp"
 #include "world4d/Entity/EntityPlan.hpp"
 #include "world4d/Plans/VisibilityPlan.hpp"
@@ -15,8 +14,10 @@
 #include "render/MeshInstance.hpp"
 #include "render/Material.hpp"
 #include "render/MaterialVec.hpp"
+#include "render/RenderVariables.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 W4dMaterialFramePlan::W4dMaterialFramePlan(
     const MaterialVecPtrsPtr& materialVecPtrsPtr,
@@ -81,7 +82,7 @@ void W4dMaterialFramePlan::lodPlan(const MaterialVecPtrsPtr& materialVecPtrsPtr,
 }
 
 // virtual
-const Ren::MaterialVecPtr& W4dMaterialFramePlan::materialVec(const PhysRelativeTime&, W4dLOD lodId) const
+const Ren::MaterialVecPtr& W4dMaterialFramePlan::materialVec(const PhysRelativeTime& timeOffset, W4dLOD lodId) const
 {
     PRE(isLODDefined(lodId));
     TEST_INVARIANT;
@@ -89,10 +90,20 @@ const Ren::MaterialVecPtr& W4dMaterialFramePlan::materialVec(const PhysRelativeT
     // Get the plan for this level of detail
     const MaterialVecPtrsPtr& materialVecPtrsPtr = materialVecPtrsPtrVec_[lodId];
 
-    uint totalFrames = nFrames_ * materialVecPtrsPtr->size();
+    const uint totalFrames = nFrames_ * materialVecPtrsPtr->size();
 
-    // Get the current frame, apply the offset and take modulus of totalFrames
-    uint i = (W4dManager::instance().frameNumber() + frameOffset_) % totalFrames;
+    // How far into the animation the elapsed time has reached. The cels were
+    // drawn for a 60Hz display, so that is the rate they step at, and nFrames_
+    // holds each one for that many of them.
+    //
+    // Taken modulo before narrowing: a plan can be given a lifetime of a year,
+    // and a year of cels does not fit in a uint.
+    const double rate = std::max(0.0, static_cast<double>(Config::gfxAnimationCelRate.get()));
+    const double elapsed = std::max(0.0, static_cast<double>(timeOffset));
+    const double cel = std::fmod(elapsed * rate, static_cast<double>(totalFrames));
+
+    // Apply the offset and take the modulus of totalFrames
+    uint i = (static_cast<uint>(cel) + frameOffset_) % totalFrames;
     i /= nFrames_;
 
     // hence return the appropriate frame
