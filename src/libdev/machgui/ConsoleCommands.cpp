@@ -107,16 +107,17 @@ std::string toOnOffString(bool value)
     return value ? "on" : "off";
 }
 
-MachPhys::Race raceArgOrPlayer(const Request& request, std::size_t argIndex, Console& console)
+// The race named, or the player's own where none was. MachPhys::NORACE says the
+// name could not be used, and why has already been printed.
+MachPhys::Race raceOrPlayer(const std::optional<std::string>& raceName, Console& console)
 {
     std::optional<MachPhys::Race> race;
-    if (argIndex < request.arguments.size() && request.arguments[argIndex].provided)
+    if (raceName.has_value())
     {
-        const std::string& raceName = std::get<std::string>(request.arguments[argIndex].value);
-        race = MachPhys::toRace(raceName);
+        race = MachPhys::toRace(raceName.value());
         if (!race.has_value())
         {
-            console.reportError("Unknown race: " + raceName + ". Use red, blue, green, or yellow.");
+            console.reportError("Unknown race: " + raceName.value() + ". Use red, blue, green, or yellow.");
             return MachPhys::NORACE;
         }
 
@@ -135,13 +136,22 @@ MachPhys::Race raceArgOrPlayer(const Request& request, std::size_t argIndex, Con
             }
 
             console.reportError(
-                "Race " + raceName + " is not in this game. In game: "
+                "Race " + raceName.value() + " is not in this game. In game: "
                 + (inGame.empty() ? std::string("none") : Utils::join(inGame, ", ")));
             return MachPhys::NORACE;
         }
     }
 
     return race.value_or(MachLogRaces::instance().pcController().race());
+}
+
+MachPhys::Race raceArgOrPlayer(const Request& request, std::size_t argIndex, Console& console)
+{
+    std::optional<std::string> raceName;
+    if (argIndex < request.arguments.size() && request.arguments[argIndex].provided)
+        raceName = std::get<std::string>(request.arguments[argIndex].value);
+
+    return raceOrPlayer(raceName, console);
 }
 
 constexpr MachLog::ObjectType AllMachineObjectTypes[] = {
