@@ -675,6 +675,41 @@ void getBmuCommand(const Request& request, Console& console)
 // Spawn commands
 // ============================================================
 
+// The arguments both spawn commands need before any of the optional ones: the
+// type, the subtype and the hardware level.
+constexpr std::size_t spawnRequiredArguments = 3;
+
+// How far in front of the camera something spawned without a position lands.
+constexpr MATHEX_SCALAR spawnDistanceInFrontOfCamera = 32;
+
+// Where something spawned without a position goes: what the camera is looking
+// at. The zenith camera looks at the middle of the screen, so that is the point.
+// Every other camera reports where it stands, so the thing goes out along the
+// way the camera faces, to land in front of it rather than under it.
+std::optional<MexPoint2d> spawnCommandDefaultPosition(MachGuiStartupScreens* pStartup, Console& console)
+{
+    MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
+    if (!pScreen)
+        return std::nullopt;
+
+    MachCameras* pCameras = pScreen->cameras();
+    const MexPoint3d position = cameraPosition(pCameras);
+
+    if (pCameras->isZenithCameraActive())
+        return MexPoint2d(position.x(), position.y());
+
+    // Levelling the camera's own transform before travelling along its X keeps
+    // the distance measured over the ground, so a camera that is looking down
+    // still puts the thing the same way out as one looking at the horizon.
+    MexTransform3d ahead = pCameras->currentCamera()->globalTransform();
+    MexEulerAngles angles;
+    ahead.rotation(&angles);
+    ahead.rotation(MexEulerAngles(angles.azimuth(), 0.0, 0.0));
+    ahead.translate(MexPoint3d(spawnDistanceInFrontOfCamera, 0, 0));
+
+    return MexPoint2d(ahead.position().x(), ahead.position().y());
+}
+
 // The rotation is the one optional spawn argument that reads as a number, which
 // is what tells a line that gives one from a line that leaves it out.
 std::optional<MexDegrees> parseRotationDegrees(const std::string& token)
@@ -696,16 +731,16 @@ std::optional<MexDegrees> parseRotationDegrees(const std::string& token)
 // The optional arguments the spawn commands share, in the order they are typed.
 struct SpawnArguments
 {
+    std::optional<MexPoint2d> position;
     std::optional<MexDegrees> rotation;
     std::optional<std::string> race;
     std::optional<std::string> weaponCombo;
 };
 
-// Read the optional arguments that follow the position, starting at argIndex.
-// The rotation stands with the position it belongs to, and the arguments after
-// it are names rather than numbers, so a line that leaves the rotation out is
-// told by the shape of its first optional token instead of being refused. That
-// is why every optional argument is declared as a string.
+// Read the optional arguments, starting at argIndex. Each of them can be left
+// out on its own, so which one a token is comes from its shape rather than from
+// where it stands: a position has a comma in it, a rotation reads as a number,
+// and what follows them is a name. That is why they are all declared as strings.
 std::optional<SpawnArguments>
 parseSpawnArguments(const Request& request, std::size_t argIndex, bool takesWeaponCombo, Console& console)
 {
@@ -716,9 +751,24 @@ parseSpawnArguments(const Request& request, std::size_t argIndex, bool takesWeap
     SpawnArguments arguments;
     std::size_t next = 0;
 
-    if (!tokens.empty())
+    if (next < tokens.size())
     {
-        arguments.rotation = parseRotationDegrees(tokens[0]);
+        arguments.position = parseCoordinates(tokens[next]);
+        if (arguments.position.has_value())
+            ++next;
+        else if (tokens[next].find(',') != std::string::npos)
+        {
+            // The comma is what makes a token a position, so one that has a
+            // comma and will not parse was meant to be one and is worth saying
+            // so about rather than being tried as the argument after it.
+            console.reportError("Invalid position format. Use x,y (e.g. 123.4,567.8).");
+            return std::nullopt;
+        }
+    }
+
+    if (next < tokens.size())
+    {
+        arguments.rotation = parseRotationDegrees(tokens[next]);
         if (arguments.rotation.has_value())
             ++next;
     }
@@ -732,27 +782,20 @@ parseSpawnArguments(const Request& request, std::size_t argIndex, bool takesWeap
     if (next < tokens.size())
     {
         console.reportError(
-            "Unexpected argument: " + tokens[next] + ". The position is followed by [rotation] [race]"
-            + (takesWeaponCombo ? " [weapon_combo]" : "") + ", where the rotation is a number of degrees.");
+            "Unexpected argument: " + tokens[next] + ". The level is followed by [position] [rotation] [race]"
+            + (takesWeaponCombo ? " [weapon_combo]" : "")
+            + ", where a position is x,y and the rotation is a number of degrees.");
         return std::nullopt;
     }
 
     return arguments;
 }
 
-void spawnMachineCommand(const Request& request, Console& console)
+void spawnMachineCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     const std::string& typeStr = std::get<std::string>(request.arguments[0].value);
     const std::string& subTypeStr = std::get<std::string>(request.arguments[1].value);
     const int hwLevel = static_cast<int>(std::get<std::int64_t>(request.arguments[2].value));
-    const std::string& posStr = std::get<std::string>(request.arguments[3].value);
-
-    const std::optional<MexPoint2d> coords = parseCoordinates(posStr);
-    if (!coords.has_value())
-    {
-        console.writeLine("Invalid position format. Use x,y (e.g. 123.4,567.8).");
-        return;
-    }
 
     std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(typeStr);
     if (!objType.has_value() || !isMachineObjectType(objType.value()))
@@ -773,8 +816,14 @@ void spawnMachineCommand(const Request& request, Console& console)
         return;
     }
 
-    const std::optional<SpawnArguments> arguments = parseSpawnArguments(request, 4, true, console);
+    const std::optional<SpawnArguments> arguments
+        = parseSpawnArguments(request, spawnRequiredArguments, true, console);
     if (!arguments.has_value())
+        return;
+
+    const std::optional<MexPoint2d> coords
+        = arguments->position.has_value() ? arguments->position : spawnCommandDefaultPosition(pStartup, console);
+    if (!coords.has_value())
         return;
 
     MachPhys::Race race = raceOrPlayer(arguments->race, console);
@@ -844,19 +893,11 @@ void spawnMachineCommand(const Request& request, Console& console)
         + ", id=" + std::to_string(pMachine->id()) + ".");
 }
 
-void spawnConstructionCommand(const Request& request, Console& console)
+void spawnConstructionCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     const std::string& typeStr = std::get<std::string>(request.arguments[0].value);
     const std::string& subTypeStr = std::get<std::string>(request.arguments[1].value);
     const int hwLevel = static_cast<int>(std::get<std::int64_t>(request.arguments[2].value));
-    const std::string& posStr = std::get<std::string>(request.arguments[3].value);
-
-    const std::optional<MexPoint2d> coords = parseCoordinates(posStr);
-    if (!coords.has_value())
-    {
-        console.writeLine("Invalid position format. Use x,y (e.g. 123.4,567.8).");
-        return;
-    }
 
     std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(typeStr);
     if (!objType.has_value() || !isConstructionObjectType(objType.value()))
@@ -877,8 +918,14 @@ void spawnConstructionCommand(const Request& request, Console& console)
         return;
     }
 
-    const std::optional<SpawnArguments> arguments = parseSpawnArguments(request, 4, false, console);
+    const std::optional<SpawnArguments> arguments
+        = parseSpawnArguments(request, spawnRequiredArguments, false, console);
     if (!arguments.has_value())
+        return;
+
+    const std::optional<MexPoint2d> coords
+        = arguments->position.has_value() ? arguments->position : spawnCommandDefaultPosition(pStartup, console);
+    if (!coords.has_value())
         return;
 
     MachPhys::Race race = raceOrPlayer(arguments->race, console);
@@ -1408,11 +1455,20 @@ weaponComboCompletionsFor(const std::vector<std::string>& precedingArgs, std::st
     return weaponComboCompletions(objType.value(), subType, hwLevel, partial);
 }
 
-// True if the optional arguments that follow the position start with a rotation,
-// which is what decides whether the slot after it is the race or the one after.
-bool rotationWasGiven(const std::vector<std::string>& precedingArgs)
+// True while the race is still the next optional spawn argument to be typed.
+// Neither a position nor a rotation has anything to complete to, so counting how
+// many of the tokens already typed were one of those -- by the same shapes the
+// command itself reads them by -- is all it takes to know what the one being
+// typed is.
+bool raceIsNextSpawnArgument(const std::vector<std::string>& precedingArgs)
 {
-    return precedingArgs.size() > 4 && parseRotationDegrees(precedingArgs[4]).has_value();
+    std::size_t next = spawnRequiredArguments;
+    if (next < precedingArgs.size() && parseCoordinates(precedingArgs[next]).has_value())
+        ++next;
+    if (next < precedingArgs.size() && parseRotationDegrees(precedingArgs[next]).has_value())
+        ++next;
+
+    return next == precedingArgs.size();
 }
 
 std::vector<std::string> spawnMachineCompleter(
@@ -1421,8 +1477,9 @@ std::vector<std::string> spawnMachineCompleter(
     std::string_view partial,
     const std::vector<std::string>& precedingArgs)
 {
-    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, then [rotation] [race]
-    // [weapon_combo] -- an omitted rotation moves each of the rest up a slot.
+    // arg0=type, arg1=subtype, arg2=hwlevel, then [pos] [rotation] [race]
+    // [weapon_combo] -- each one left out moves the rest up a slot, so which
+    // argument a slot holds is worked out from what was typed before it.
     switch (argIndex)
     {
     case 0:
@@ -1467,15 +1524,12 @@ std::vector<std::string> spawnMachineCompleter(
         }
         return {};
     }
+    case 3:
     case 4:
-        // A rotation has nothing to complete to, so offer what this slot holds
-        // when the rotation is left out.
-        return filterByPrefix(partial, raceNames());
     case 5:
-        return rotationWasGiven(precedingArgs) ? filterByPrefix(partial, raceNames())
-                                               : weaponComboCompletionsFor(precedingArgs, partial);
     case 6:
-        return weaponComboCompletionsFor(precedingArgs, partial);
+        return raceIsNextSpawnArgument(precedingArgs) ? filterByPrefix(partial, raceNames())
+                                                      : weaponComboCompletionsFor(precedingArgs, partial);
     default:
         return {};
     }
@@ -1487,8 +1541,9 @@ std::vector<std::string> spawnConstructionCompleter(
     std::string_view partial,
     const std::vector<std::string>& precedingArgs)
 {
-    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, then [rotation] [race] --
-    // an omitted rotation moves the race up a slot.
+    // arg0=type, arg1=subtype, arg2=hwlevel, then [pos] [rotation] [race] --
+    // each one left out moves the rest up a slot, so which argument a slot holds
+    // is worked out from what was typed before it.
     switch (argIndex)
     {
     case 0:
@@ -1533,12 +1588,11 @@ std::vector<std::string> spawnConstructionCompleter(
         }
         return {};
     }
+    case 3:
     case 4:
-        // A rotation has nothing to complete to, so offer what this slot holds
-        // when the rotation is left out.
-        return filterByPrefix(partial, raceNames());
     case 5:
-        return rotationWasGiven(precedingArgs) ? filterByPrefix(partial, raceNames()) : std::vector<std::string>();
+        return raceIsNextSpawnArgument(precedingArgs) ? filterByPrefix(partial, raceNames())
+                                                      : std::vector<std::string>();
     default:
         return {};
     }
@@ -1748,7 +1802,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "type", .type = Arg::Identifier, .description = "Machine type (aggressor, constructor, etc.)." },
                 { .name = "subtype", .type = Arg::Identifier, .description = "Subtype (grunt, dozer, etc.)." },
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
-                { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
+                { .name = "pos", .type = Arg::String, .optional = true, .description = "Position as x,y. Omit to spawn where the camera is looking." },
                 { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
                 { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
                 { .name = "weapon_combo", .type = Arg::String, .optional = true, .description = "Weapon combo (e.g. l_auto_cannon). Uses .scn names.", },
@@ -1756,7 +1810,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .cheat = true,
             .devOnly = true,
         },
-        [](const Request& request, Console& console) { spawnMachineCommand(request, console); },
+        [pStartup](const Request& request, Console& console) { spawnMachineCommand(pStartup, request, console); },
         spawnMachineCompleter);
 
     console.registerCommand(
@@ -1767,14 +1821,14 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "type", .type = Arg::Identifier, .description = "Construction type (factory, smelter, etc.)." },
                 { .name = "subtype", .type = Arg::Identifier, .description = "Subtype (civilian, military, etc.)." },
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
-                { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
+                { .name = "pos", .type = Arg::String, .optional = true, .description = "Position as x,y. Omit to spawn where the camera is looking." },
                 { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
                 { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
             },
             .cheat = true,
             .devOnly = true,
         },
-        [](const Request& request, Console& console) { spawnConstructionCommand(request, console); },
+        [pStartup](const Request& request, Console& console) { spawnConstructionCommand(pStartup, request, console); },
         spawnConstructionCompleter);
 
     // ---- Game commands ----
