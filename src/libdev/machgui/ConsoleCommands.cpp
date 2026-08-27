@@ -521,6 +521,51 @@ void camPosCommand(MachGuiStartupScreens* pStartup, const Request& request, Cons
     console.writeLine("Camera position set.");
 }
 
+void fovCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
+{
+    MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
+    if (!pScreen)
+        return;
+
+    W4dCamera* pCamera = pScreen->cameras()->currentCamera();
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        const double verticalDeg = pCamera->verticalFOVAngle() * 180.0 / Mathex::PI;
+        const double horizontalDeg = pCamera->horizontalFOVAngle() * 180.0 / Mathex::PI;
+
+        std::string message("Field of view is " + formatFloat(verticalDeg) + " degrees vertical, ");
+        message += formatFloat(horizontalDeg) + " horizontal.";
+        console.writeLine(message);
+        return;
+    }
+
+    const double verticalDeg = std::get<double>(request.arguments[0].value);
+
+    // A rectilinear projection has no ninety: the frustum's half-width is the
+    // tangent of half the angle, which runs away to nothing usable long before
+    // it. The ceiling is where the stretch at the edges stops being worth the
+    // width, not where the arithmetic fails.
+    if (verticalDeg < 10.0 || verticalDeg > 140.0)
+    {
+        console.reportError("Expected 10 to 140 degrees.");
+        return;
+    }
+
+    pCamera->setVerticalFOVAngle(verticalDeg * Mathex::PI / 180.0);
+
+    const double horizontalDeg = pCamera->horizontalFOVAngle() * 180.0 / Mathex::PI;
+    std::string message("Field of view set to " + formatFloat(verticalDeg) + " degrees vertical, ");
+    message += formatFloat(horizontalDeg) + " horizontal.";
+    console.writeLine(message);
+
+    // Set on the camera standing, and the other types keep their own, so
+    // switching away and back returns to this one still widened. What ends it
+    // is a game starting: MachCameras::loadGame() builds all four again, each
+    // with the angle its role wants. Worth knowing before a take is lost to it.
+    console.writeLine("Set on this camera only; every camera goes back to its own angle when a game starts.");
+}
+
 void camDirCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     MachInGameScreen* pScreen = getInGameScreen(pStartup, console);
@@ -1717,6 +1762,21 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             },
         },
         [pStartup](const Request& request, Console& console) { camDirCommand(pStartup, request, console); });
+
+    console.registerCommand(
+        {
+            .name = "fov",
+            .description = "Get/set the camera's vertical field of view in degrees; horizontal follows the window.",
+            .arguments = {{
+                .name = "vertical",
+                .type = Arg::Float,
+                .optional = true,
+                .description = "10 to 140 degrees. Omit to print current.",
+            }},
+            .cheat = true,
+            .devOnly = true,
+        },
+        [pStartup](const Request& request, Console& console) { fovCommand(pStartup, request, console); });
 
     console.registerCommand(
         {
