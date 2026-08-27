@@ -24,9 +24,11 @@
 #include "machlog/Races.hpp"
 #include "machlog/World/Scenario.hpp"
 #include "machlog/World/SpacialManipulation.hpp"
+#include "machphys/Machines/Machine.hpp"
 #include "machphys/Weapons/LegalWeaponCombos.hpp"
 #include "machphys/Data/Internal/DataImplementation.hpp"
 #include "machphys/Data/Levels.hpp"
+#include "mathex/Degrees.hpp"
 #include "mathex/EulerAngles.hpp"
 #include "mathex/Point2d.hpp"
 #include "mathex/Point3d.hpp"
@@ -667,6 +669,71 @@ void getBmuCommand(const Request& request, Console& console)
 // Spawn commands
 // ============================================================
 
+// The rotation is the one optional spawn argument that reads as a number, which
+// is what tells a line that gives one from a line that leaves it out.
+std::optional<MexDegrees> parseRotationDegrees(const std::string& token)
+{
+    try
+    {
+        std::size_t consumed{};
+        const double degrees = std::stod(token, &consumed);
+        if (consumed == token.size() && std::isfinite(degrees))
+            return MexDegrees(degrees);
+    }
+    catch (const std::exception&)
+    {
+    }
+
+    return std::nullopt;
+}
+
+// The optional arguments the spawn commands share, in the order they are typed.
+struct SpawnArguments
+{
+    std::optional<MexDegrees> rotation;
+    std::optional<std::string> race;
+    std::optional<std::string> weaponCombo;
+};
+
+// Read the optional arguments that follow the position, starting at argIndex.
+// The rotation stands with the position it belongs to, and the arguments after
+// it are names rather than numbers, so a line that leaves the rotation out is
+// told by the shape of its first optional token instead of being refused. That
+// is why every optional argument is declared as a string.
+std::optional<SpawnArguments>
+parseSpawnArguments(const Request& request, std::size_t argIndex, bool takesWeaponCombo, Console& console)
+{
+    std::vector<std::string> tokens;
+    for (std::size_t i = argIndex; i < request.arguments.size() && request.arguments[i].provided; ++i)
+        tokens.push_back(std::get<std::string>(request.arguments[i].value));
+
+    SpawnArguments arguments;
+    std::size_t next = 0;
+
+    if (!tokens.empty())
+    {
+        arguments.rotation = parseRotationDegrees(tokens[0]);
+        if (arguments.rotation.has_value())
+            ++next;
+    }
+
+    if (next < tokens.size())
+        arguments.race = tokens[next++];
+
+    if (takesWeaponCombo && next < tokens.size())
+        arguments.weaponCombo = tokens[next++];
+
+    if (next < tokens.size())
+    {
+        console.reportError(
+            "Unexpected argument: " + tokens[next] + ". The position is followed by [rotation] [race]"
+            + (takesWeaponCombo ? " [weapon_combo]" : "") + ", where the rotation is a number of degrees.");
+        return std::nullopt;
+    }
+
+    return arguments;
+}
+
 void spawnMachineCommand(const Request& request, Console& console)
 {
     const std::string& typeStr = std::get<std::string>(request.arguments[0].value);
@@ -700,14 +767,18 @@ void spawnMachineCommand(const Request& request, Console& console)
         return;
     }
 
-    MachPhys::Race race = raceArgOrPlayer(request, 4, console);
+    const std::optional<SpawnArguments> arguments = parseSpawnArguments(request, 4, true, console);
+    if (!arguments.has_value())
+        return;
+
+    MachPhys::Race race = raceOrPlayer(arguments->race, console);
     if (race == MachPhys::NORACE)
         return;
 
     std::optional<MachPhys::WeaponCombo> weaponCombo;
-    if (request.arguments.size() > 5 && request.arguments[5].provided)
+    if (arguments->weaponCombo.has_value())
     {
-        const std::string& comboStr = std::get<std::string>(request.arguments[5].value);
+        const std::string& comboStr = arguments->weaponCombo.value();
         weaponCombo = MachPhys::toWeaponCombo(comboStr);
         if (!weaponCombo.has_value())
         {
@@ -749,6 +820,17 @@ void spawnMachineCommand(const Request& request, Console& console)
 
     MachLogMachine* pMachine = MachLogActorMaker::newLogMachine(
         objType.value(), subType, hwLevel, 1, race, spawnPos, weaponCombo.value_or(MachPhys::WeaponCombo{}));
+
+    if (arguments->rotation.has_value())
+    {
+        // The maker leaves the machine standing on the surface, its own Z along
+        // the terrain normal, so turning it about that Z aims it without
+        // lifting it off a slope.
+        MexTransform3d transform = pMachine->physMachine().globalTransform();
+        transform.rotate(MexEulerAngles(arguments->rotation.value(), 0.0, 0.0));
+        pMachine->physMachine().globalTransform(transform);
+    }
+
     pMachine->teleportIntoWorld();
 
     console.writeLine(
@@ -789,16 +871,16 @@ void spawnConstructionCommand(const Request& request, Console& console)
         return;
     }
 
-    double rotationDeg = 0.0;
-    if (request.arguments.size() > 4 && request.arguments[4].provided)
-        rotationDeg = std::get<double>(request.arguments[4].value);
+    const std::optional<SpawnArguments> arguments = parseSpawnArguments(request, 4, false, console);
+    if (!arguments.has_value())
+        return;
 
-    MachPhys::Race race = raceArgOrPlayer(request, 5, console);
+    MachPhys::Race race = raceOrPlayer(arguments->race, console);
     if (race == MachPhys::NORACE)
         return;
 
     const MexPoint3d location(coords->x(), coords->y(), 0);
-    const MexRadians angle(rotationDeg * Mathex::PI / 180.0);
+    const MexRadians angle(arguments->rotation.value_or(MexDegrees(0.0)));
     MachLogConstruction* pBuilding
         = MachLogActorMaker::newLogConstruction(objType.value(), subType, hwLevel, location, angle, race);
     pBuilding->makeComplete(MachLogConstruction::FULL_HP_STRENGTH);
@@ -1292,13 +1374,49 @@ std::vector<std::string> weaponComboCompletions(
     return result;
 }
 
+// The weapon combos legal for the machine the preceding arguments describe.
+std::vector<std::string>
+weaponComboCompletionsFor(const std::vector<std::string>& precedingArgs, std::string_view partial)
+{
+    // Needs type (arg0), subtype (arg1) and hwlevel (arg2).
+    if (precedingArgs.size() < 3)
+        return {};
+
+    std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(precedingArgs[0]);
+    if (!objType.has_value() || !isMachineObjectType(objType.value()))
+        return {};
+
+    int subType = 0;
+    if (objectTypeHasSubType(objType.value()))
+        subType = MachLogScenario::objectSubType(objType.value(), precedingArgs[1]);
+
+    std::size_t hwLevel = 1;
+    try
+    {
+        hwLevel = static_cast<std::size_t>(std::stoi(precedingArgs[2]));
+    }
+    catch (...)
+    {
+    }
+
+    return weaponComboCompletions(objType.value(), subType, hwLevel, partial);
+}
+
+// True if the optional arguments that follow the position start with a rotation,
+// which is what decides whether the slot after it is the race or the one after.
+bool rotationWasGiven(const std::vector<std::string>& precedingArgs)
+{
+    return precedingArgs.size() > 4 && parseRotationDegrees(precedingArgs[4]).has_value();
+}
+
 std::vector<std::string> spawnMachineCompleter(
     const Metadata& /*metadata*/,
     std::size_t argIndex,
     std::string_view partial,
     const std::vector<std::string>& precedingArgs)
 {
-    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, arg4=race, arg5=weapon_combo
+    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, then [rotation] [race]
+    // [weapon_combo] -- an omitted rotation moves each of the rest up a slot.
     switch (argIndex)
     {
     case 0:
@@ -1344,31 +1462,14 @@ std::vector<std::string> spawnMachineCompleter(
         return {};
     }
     case 4:
+        // A rotation has nothing to complete to, so offer what this slot holds
+        // when the rotation is left out.
         return filterByPrefix(partial, raceNames());
     case 5:
-    {
-        // Weapon combo: need type (arg0), subtype (arg1), hwlevel (arg2).
-        if (precedingArgs.size() >= 3)
-        {
-            std::optional<MachLog::ObjectType> objType = MachLog::toObjectType(precedingArgs[0]);
-            if (objType.has_value() && isMachineObjectType(objType.value()))
-            {
-                int subType = 0;
-                if (objectTypeHasSubType(objType.value()))
-                    subType = MachLogScenario::objectSubType(objType.value(), precedingArgs[1]);
-                size_t hwLevel = 1;
-                try
-                {
-                    hwLevel = static_cast<size_t>(std::stoi(precedingArgs[2]));
-                }
-                catch (...)
-                {
-                }
-                return weaponComboCompletions(objType.value(), subType, hwLevel, partial);
-            }
-        }
-        return {};
-    }
+        return rotationWasGiven(precedingArgs) ? filterByPrefix(partial, raceNames())
+                                               : weaponComboCompletionsFor(precedingArgs, partial);
+    case 6:
+        return weaponComboCompletionsFor(precedingArgs, partial);
     default:
         return {};
     }
@@ -1380,7 +1481,8 @@ std::vector<std::string> spawnConstructionCompleter(
     std::string_view partial,
     const std::vector<std::string>& precedingArgs)
 {
-    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, arg4=rotation, arg5=race
+    // arg0=type, arg1=subtype, arg2=hwlevel, arg3=pos, then [rotation] [race] --
+    // an omitted rotation moves the race up a slot.
     switch (argIndex)
     {
     case 0:
@@ -1425,8 +1527,12 @@ std::vector<std::string> spawnConstructionCompleter(
         }
         return {};
     }
-    case 5:
+    case 4:
+        // A rotation has nothing to complete to, so offer what this slot holds
+        // when the rotation is left out.
         return filterByPrefix(partial, raceNames());
+    case 5:
+        return rotationWasGiven(precedingArgs) ? filterByPrefix(partial, raceNames()) : std::vector<std::string>();
     default:
         return {};
     }
@@ -1631,14 +1737,15 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "spawn_machine",
-            .description = "Spawn a machine at a position.",
+            .description = "Spawn a machine at a position, turned to a rotation.",
             .arguments = {
                 { .name = "type", .type = Arg::Identifier, .description = "Machine type (aggressor, constructor, etc.)." },
                 { .name = "subtype", .type = Arg::Identifier, .description = "Subtype (grunt, dozer, etc.)." },
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
                 { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
-                { .name = "race", .type = Arg::Identifier, .optional = true, .description = "Race: red, blue, green, yellow." },
-                { .name = "weapon_combo", .type = Arg::Identifier, .optional = true, .description = "Weapon combo (e.g. l_auto_cannon). Uses .scn names.", },
+                { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
+                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
+                { .name = "weapon_combo", .type = Arg::String, .optional = true, .description = "Weapon combo (e.g. l_auto_cannon). Uses .scn names.", },
             },
             .cheat = true,
             .devOnly = true,
@@ -1649,14 +1756,14 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "spawn_construction",
-            .description = "Spawn a construction at a position.",
+            .description = "Spawn a construction at a position, turned to a rotation.",
             .arguments = {
                 { .name = "type", .type = Arg::Identifier, .description = "Construction type (factory, smelter, etc.)." },
                 { .name = "subtype", .type = Arg::Identifier, .description = "Subtype (civilian, military, etc.)." },
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
                 { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
-                { .name = "rotation", .type = Arg::Float, .optional = true, .description = "Rotation in degrees." },
-                { .name = "race", .type = Arg::Identifier, .optional = true, .description = "Race: red, blue, green, yellow." },
+                { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
+                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
             },
             .cheat = true,
             .devOnly = true,
