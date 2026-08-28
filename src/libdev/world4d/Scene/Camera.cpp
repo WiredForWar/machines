@@ -20,6 +20,7 @@
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/LocalLightList.hpp"
 #include "world4d/Scene/CameraVolume.hpp"
+#include "world4d/Scene/ShadowVolume.hpp"
 #include "world4d/Scene/Environment.hpp"
 #include "world4d/Internal/Complexity.hpp"
 #include "world4d/Entity/Internal/EntityImpl.hpp"
@@ -133,9 +134,9 @@ void W4dCamera::renderTree(W4dEntity* node, TraversalType traversalType)
             bool nodeIsComposite = nodeImpl.isComposite();
             if (nodeIsComposite || nodeImpl.hasMesh())
             {
-                // Check to see if the bounding volume of the entity intersects the
-                // camera's bv.
-                if (pVolume_->intersects(*node))
+                // Check to see if the bounding volume of the entity intersects
+                // whatever this pass is culling against.
+                if (isInCullVolume(*node))
                 {
                     // There's no need to call this method if the lighting system is
                     // turned off.  We don't check the doNotLight flag because the
@@ -372,6 +373,26 @@ void W4dCamera::renderVisibleSet()
     lastPassId_ = passId_;
 }
 
+void W4dCamera::cullVolume(const W4dShadowVolume* volume)
+{
+    cullVolume_ = volume;
+}
+
+const W4dShadowVolume* W4dCamera::cullVolume() const
+{
+    return cullVolume_;
+}
+
+bool W4dCamera::isInCullVolume(const W4dEntity& entity) const
+{
+    return cullVolume_ ? cullVolume_->intersects(entity) : pVolume_->intersects(entity);
+}
+
+bool W4dCamera::isInCullVolume(const MexQuad3d& quad) const
+{
+    return cullVolume_ ? cullVolume_->canSee(quad) : canSee(quad);
+}
+
 void W4dCamera::cullDomains(W4dDomain* startDomain, int maxDepth)
 {
     PRE(startDomain);
@@ -436,7 +457,7 @@ void W4dCamera::cullDomains(W4dDomain* startDomain, int maxDepth)
                 if (queued.find(nextDomain) == queued.end())
                 {
                     CULL_STREAM("through " << portal->globalAperture() << " ");
-                    if (canSee(portal->globalAperture()))
+                    if (isInCullVolume(portal->globalAperture()))
                     {
                         CULL_STREAM("visible - enqueued\n");
                         queued.insert(nextDomain);

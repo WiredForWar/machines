@@ -18,6 +18,7 @@ class RenCamera;
 class W4dSceneManager;
 class W4dCameraVolume;
 class W4dEnvironment;
+class W4dShadowVolume;
 
 class W4dCamera : public W4dEntity
 {
@@ -126,7 +127,21 @@ public:
     void cullVisibleSet(const int maxDepth); // PRE(maxDepth > 0);
     void renderVisibleSet();
 
+    // What culling tests against, for the portal walk and for the per-entity
+    // test alike. Null is the camera's own view volume, which is what the
+    // geometry pass wants. A shadow pass supplies one of its own, because an
+    // occluder it has to record need not be on screen -- a set culled to the
+    // screen is the wrong set to take depth from.
+    //
+    // The volume is not owned and must outlive the culling it is set for. Set
+    // it back to null before culling the set the main pass will draw.
+    void cullVolume(const W4dShadowVolume* volume);
+    const W4dShadowVolume* cullVolume() const;
+
 private:
+    bool isInCullVolume(const W4dEntity& entity) const;
+    bool isInCullVolume(const MexQuad3d& quad) const;
+
     // Collects the domains the portal walk reaches, in the order it reached
     // them, so that replaying preserves the order the fused version drew in.
     void cullDomains(W4dDomain* startDomain, int maxDepth);
@@ -139,6 +154,8 @@ private:
     // Set when the camera was in no domain, where the fused version fell back
     // to an unculled in-order render of the whole tree.
     bool visibleSetIsUnculled_{};
+
+    const W4dShadowVolume* cullVolume_{};
 
     W4dSceneManager* manager_;
     uint32_t passId_;

@@ -158,6 +158,8 @@ set(WORLD4D_SOURCES
     Scene/SceneManager.hpp
     Scene/Shadow.cpp
     Scene/Shadow.hpp
+    Scene/ShadowVolume.cpp
+    Scene/ShadowVolume.hpp
     Scene/Stars.cpp
     Scene/Stars.hpp
     Scene/Stars.ipp
