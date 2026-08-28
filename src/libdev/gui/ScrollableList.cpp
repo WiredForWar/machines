@@ -7,6 +7,8 @@
 #include "gui/Event.hpp"
 #include "gui/ListObserver.hpp"
 
+#include <algorithm>
+
 GuiSimpleScrollableList::GuiSimpleScrollableList(
     GuiDisplayable* pParent,
     const Gui::Box& box,
@@ -238,7 +240,7 @@ void GuiSimpleScrollableList::notifyMe(GuiListObserver* pObserver)
 
 void GuiSimpleScrollableList::dontNotifyMe(GuiListObserver* pObserver)
 {
-    ctl_pvector<GuiListObserver>::iterator iter = find(observers_.begin(), observers_.end(), pObserver);
+    ctl_pvector<GuiListObserver>::iterator iter = std::find(observers_.begin(), observers_.end(), pObserver);
 
     ASSERT(iter != observers_.end(), "couldn't find pObserver in observers_ list");
 
