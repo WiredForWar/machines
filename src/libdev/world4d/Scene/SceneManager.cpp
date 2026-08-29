@@ -32,6 +32,7 @@
 #include "world4d/Scene/Light.hpp"
 #include "world4d/Scene/Environment.hpp"
 #include "world4d/Scene/CameraShake.hpp"
+#include "world4d/Scene/ShadowVolume.hpp"
 #include "world4d/Scene/Domain.hpp"
 #include "world4d/Scene/DomainAssignor.hpp"
 #include "world4d/Entity/Composite.hpp"
@@ -340,6 +341,17 @@ void W4dSceneManager::render()
             const float nearExtent = glm::mix(30.0f, 200.0f, heightT);
             const float farExtent = glm::mix(200.0f, 300.0f, heightT);
 
+            // What the cascades must record is whatever stands between the sun
+            // and the surfaces on screen, which is not what is on screen. Cull
+            // them to the ground they cover instead, reaching past its far side
+            // by as much again as the light is set back -- where the cascade's
+            // own far plane ends up.
+            W4dShadowVolume cascadeVolume;
+            cascadeVolume.addCascadeReach(dir, frustumCenter, farExtent, farExtent * 4.0);
+
+            currentCamera_->cullVolume(&cascadeVolume);
+            currentCamera_->cullVisibleSet(pImpl_->maxDomainRenderDepth_);
+
             // For ground/FP cameras, align the shadow cascade square with
             // the camera's horizontal forward so coverage is optimal in
             // front of the camera.  For zenith (looking steeply down),
@@ -444,6 +456,11 @@ void W4dSceneManager::render()
                 currentCamera_->renderVisibleSet();
                 device_->endShadowPass();
             }
+
+            // Back to the camera's own volume, so the geometry pass draws what
+            // is on screen rather than everything the sun could reach.
+            currentCamera_->cullVolume(nullptr);
+            currentCamera_->cullVisibleSet(pImpl_->maxDomainRenderDepth_);
         }
     }
 
