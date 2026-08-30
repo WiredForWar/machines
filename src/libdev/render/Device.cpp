@@ -1132,6 +1132,13 @@ void RenDevice::startBackground(double yon)
     CB_DEPIMPL_AUTO(backend_);
 
     recordCommand(Ren::Command::setDepthMaskWritable(false));
+
+    // The sky and the celestial bodies sit at the far end of a frustum stretched
+    // to hold them, so their depth is the largest the buffer can express -- which
+    // is the value the pass was cleared to. Nothing here writes depth, so
+    // accepting equality cannot let the background through anything standing in
+    // front of it; it only stops it losing to the clear.
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
 }
 
 inline bool isWhiteChar(char c)
