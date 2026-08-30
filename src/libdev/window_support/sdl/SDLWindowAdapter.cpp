@@ -128,6 +128,12 @@ bool SDLWindowAdapter::createGLContext(const GLContextParams& params)
         return false;
     }
 
+    int depthBits{};
+    int stencilBits{};
+    SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depthBits);
+    SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &stencilBits);
+    spdlog::info("SDLWindowAdapter: the window's own buffer has {} depth bits and {} stencil", depthBits, stencilBits);
+
     return true;
 }
 

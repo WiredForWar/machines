@@ -120,11 +120,29 @@ bool AfxSdlApp::recreateWindow()
     // Create a hidden window: the real resolution and the fullscreen
     // state are only known later, when RenDisplay::useMode() applies them and
     // shows the window.
-    pWindow_ = SDL_CreateWindow(
-        name().c_str(),
-        640,
-        480, // initial width and height
-        SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN);
+    //
+    // Sixteen depth bits is what SDL asks for when nobody says otherwise, and a
+    // quarter of the resolution every desktop driver has offered for decades: at
+    // sixteen the furthest geometry rounds onto the value the buffer was cleared
+    // to and is not drawn at all. The attributes are read where the window picks
+    // its pixel format rather than where the context is made, so the depth has to
+    // be asked for here. A pixel format that deep may not exist everywhere, hence
+    // the second attempt at what SDL would have chosen by itself.
+    for (const int depthBits : {24, 16})
+    {
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthBits);
+
+        pWindow_ = SDL_CreateWindow(
+            name().c_str(),
+            640,
+            480, // initial width and height
+            SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN);
+
+        if (pWindow_ != nullptr)
+            break;
+
+        spdlog::warn("Unable to create a window with {} depth bits: {}", depthBits, SDL_GetError());
+    }
 
     if (pWindow_ == nullptr)
     {
