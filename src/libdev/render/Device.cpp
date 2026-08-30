@@ -1144,6 +1144,11 @@ void RenDevice::beginView()
     recordCommand(Ren::Command::setPolygonOffset(0.0f, 1.0f));
 
     recordCommand(Ren::Command::setDepthTest(true));
+    // Named here rather than inherited, for the same reason as the lighting and
+    // the fog above: the shadow pass and the alpha flush both leave a comparison
+    // behind them, so a view that does not state its own gets whichever of them
+    // ran last -- which makes the depth test depend on the shadow setting.
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::Less));
     recordCommand(Ren::Command::setDepthMaskWritable(true));
     recordCommand(Ren::Command::setCullFace(true));
 
