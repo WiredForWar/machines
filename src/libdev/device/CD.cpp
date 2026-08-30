@@ -14,13 +14,99 @@
 
 #include "device/DevCDImpl.hpp"
 
+#include <utility>
+
 #include "spdlog/spdlog.h"
 
 #include "al.h"
 
+namespace
+{
+// How long the outgoing track takes to fall silent, and the incoming one to
+// reach full volume.
+constexpr double FadeSeconds = 0.5;
+}
+
 DevCDImpl* DevCDImpl::getInstance(DevCD* parent)
 {
     return parent->pImpl_;
+}
+
+bool DevCDImpl::isStreamAudible() const
+{
+    if (musicStream_ == nullptr || !musicEnabled_)
+    {
+        return false;
+    }
+
+    ALint state = 0;
+    alGetSourcei(source_, AL_SOURCE_STATE, &state);
+    return state == AL_PLAYING;
+}
+
+void DevCDImpl::beginFadeOut()
+{
+    // Two tracks at once is the most the two sources can carry: a fade
+    // already in flight loses its stream.
+    delete fadeOutStream_;
+
+    fadeOutStream_ = musicStream_;
+    musicStream_ = nullptr;
+    std::swap(source_, fadeOutSource_);
+
+    // An interrupted fade-in falls away from wherever it had risen to.
+    fadeOutStartGain_ = fadeInGain_;
+    fadeOutGain_ = fadeOutStartGain_;
+    fadeStart_ = std::chrono::steady_clock::now();
+}
+
+void DevCDImpl::cancelFade()
+{
+    delete fadeOutStream_;
+    fadeOutStream_ = nullptr;
+    fadeStart_.reset();
+    fadeInGain_ = 1.0;
+    applyGains();
+}
+
+void DevCDImpl::updateFade()
+{
+    if (!fadeStart_)
+    {
+        return;
+    }
+
+    const std::chrono::duration<double> elapsed = std::chrono::steady_clock::now() - *fadeStart_;
+    const double progress = elapsed.count() / FadeSeconds;
+    if (progress >= 1.0)
+    {
+        fadeInGain_ = 1.0;
+        fadeOutGain_ = 0.0;
+        delete fadeOutStream_;
+        fadeOutStream_ = nullptr;
+        fadeStart_.reset();
+    }
+    else
+    {
+        fadeInGain_ = progress;
+        fadeOutGain_ = fadeOutStartGain_ * (1.0 - progress);
+    }
+    applyGains();
+}
+
+void DevCDImpl::applyGains()
+{
+    if (!musicEnabled_)
+    {
+        return;
+    }
+
+    const float baseGain = static_cast<float>(savedVolume_) / 100.0f;
+    alSourcef(source_, AL_GAIN, baseGain * static_cast<float>(fadeInGain_));
+    if (fadeOutStream_ != nullptr)
+    {
+        alSourcef(fadeOutSource_, AL_GAIN, baseGain * static_cast<float>(fadeOutGain_));
+    }
 }
 
 // static
@@ -56,10 +142,14 @@ DevCD::DevCD()
         if (errorCode == AL_NO_ERROR)
         {
             alGenSources(1, &source_);
+            if (alGetError() == AL_NO_ERROR)
+            {
+                alGenSources(1, &pImpl_->fadeOutSource_);
+            }
             errorCode = alGetError();
             if (errorCode != AL_NO_ERROR)
             {
-                spdlog::warn("Failed to create OpenAL source for music mixer! Code: {}", errorCode);
+                spdlog::warn("Failed to create OpenAL sources for music mixer! Code: {}", errorCode);
             }
         }
         else
@@ -89,12 +179,15 @@ DevCD::~DevCD()
 
     if (musicEnabled_)
     {
-        // Teardown order: stop the refill thread and free the decoder (OggStream
-        // dtor) BEFORE deleting the source it queues onto.
+        // Teardown order: stop the refill threads and free the decoders
+        // (OggStream dtor) BEFORE deleting the sources they queue onto.
         delete pImpl_->musicStream_;
         pImpl_->musicStream_ = nullptr;
+        delete pImpl_->fadeOutStream_;
+        pImpl_->fadeOutStream_ = nullptr;
 
         alDeleteSources(1, &source_);
+        alDeleteSources(1, &pImpl_->fadeOutSource_);
     }
 
     delete pPlayList_;
@@ -103,6 +196,8 @@ DevCD::~DevCD()
 
 void DevCD::update()
 {
+    pImpl_->updateFade();
+
     if (pImpl_->needsUpdate_)
     {
         handleMessages(DevCD::SUCCESS, 0);
@@ -157,11 +252,7 @@ void DevCD::volume(Volume newLevel)
         }
         savedVolume_ = newLevel;
 
-        if (musicEnabled_)
-        {
-            ALfloat fVol = (float)(savedVolume_) / 100.0f; // Maybe use log model instead of linear?
-            alSourcef(source_, AL_GAIN, fVol);
-        }
+        pImpl_->applyGains();
         RICHARD_STREAM("NewVolume set to " << volume() << std::endl);
     }
 }
@@ -216,52 +307,50 @@ void DevCD::playFrom(DevCDTrackIndex track)
 
 void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
 {
-    ALuint& source_ = pImpl_->source_;
-    PlayStatus& status_ = pImpl_->status_;
-    DevCDTrackIndex& trackPlaying_ = pImpl_->trackPlaying_;
-    unsigned int& savedVolume_ = pImpl_->savedVolume_;
-    bool& musicEnabled_ = pImpl_->musicEnabled_;
-
     PRE(track >= 0 && track < numberOfTracks());
 
-    trackPlaying_ = track;
+    DevCDImpl* pImpl = pImpl_;
 
-    // Tear down any previous stream (stops its refill thread) before starting
-    // a new one on the shared source.
-    delete pImpl_->musicStream_;
-    pImpl_->musicStream_ = nullptr;
+    const bool muted = !pImpl->musicEnabled_ || pImpl->savedVolume_ <= 0;
 
-    if (! musicEnabled_ || savedVolume_ <= 0) // Muted
+    if (!muted && pImpl->isStreamAudible())
+    {
+        pImpl->beginFadeOut();
+    }
+    else
+    {
+        // Tear down any previous stream (stops its refill thread) before
+        // starting a new one on the same source.
+        delete pImpl->musicStream_;
+        pImpl->musicStream_ = nullptr;
+    }
+
+    pImpl->trackPlaying_ = track;
+
+    if (muted)
     {
         return;
     }
 
     char fileName[40];
-    snprintf(fileName, sizeof(fileName), "sounds/music/track%d.ogg", trackPlaying_);
+    snprintf(fileName, sizeof(fileName), "sounds/music/track%d.ogg", track);
     SysPathName filePath(fileName);
 
-    DevCDImpl* pImpl = pImpl_;
-    auto* stream = new OggStream(source_, [pImpl]() { pImpl->needsUpdate_ = true; });
+    OggStream* stream = new OggStream(pImpl->source_, [pImpl]() { pImpl->needsUpdate_ = true; });
     if (!stream->open(filePath.pathname()))
     {
         std::cerr << "Could not load " << filePath.pathname() << std::endl;
         delete stream;
         return;
     }
-    pImpl_->musicStream_ = stream;
+    pImpl->musicStream_ = stream;
 
-    ALfloat fVol = (float)(savedVolume_) / 100.0f;
-    alSourcef(source_, AL_GAIN, fVol);
+    // A superseded track is still audible: come up under it as it fades.
+    pImpl->fadeInGain_ = pImpl->fadeOutStream_ != nullptr ? 0.0 : 1.0;
+    pImpl->applyGains();
     stream->play();
 
-    if (repeat)
-    {
-        status_ = REPEAT;
-    }
-    else
-    {
-        status_ = SINGLE;
-    }
+    pImpl->status_ = repeat ? REPEAT : SINGLE;
 }
 
 void DevCD::play(const DevCDPlayList& params)
@@ -279,9 +368,14 @@ void DevCD::play(const DevCDPlayList& params)
 
 void DevCD::stopPlaying()
 {
-    bool& musicEnabled_ = pImpl_->musicEnabled_;
+    if (!pImpl_->musicEnabled_)
+    {
+        return;
+    }
 
-    if (musicEnabled_ && pImpl_->musicStream_ != nullptr)
+    pImpl_->cancelFade();
+
+    if (pImpl_->musicStream_ != nullptr)
     {
         pImpl_->musicStream_->stop();
     }

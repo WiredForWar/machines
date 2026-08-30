@@ -1,6 +1,8 @@
 #pragma once
 
 #include <atomic>
+#include <chrono>
+#include <optional>
 
 #include "al.h"
 
@@ -32,8 +34,31 @@ public:
         MIN_CDVOLUME = 0
     };
 
+    // Is the current stream still being heard on source_?
+    bool isStreamAudible() const;
+
+    // Hand the current stream over to the fade-out slot and swap the sources,
+    // freeing source_ for the incoming track. Starts the crossfade clock.
+    void beginFadeOut();
+
+    // Drop any fade in flight and restore the incoming track to full gain.
+    void cancelFade();
+
+    // Advance the crossfade; deletes the outgoing stream once it is silent.
+    void updateFade();
+
+    // Set both sources' gains from the user volume and the fade progress.
+    void applyGains();
+
     OggStream* musicStream_{};
     ALuint source_{};
+
+    OggStream* fadeOutStream_{};
+    ALuint fadeOutSource_{};
+    std::optional<std::chrono::steady_clock::time_point> fadeStart_;
+    double fadeInGain_{1.0};
+    double fadeOutGain_{};
+    double fadeOutStartGain_{1.0};
 
     PlayStatus status_ = NORMAL;
     DevCDTrackIndex trackPlaying_{};
