@@ -33,7 +33,7 @@ OggStream::~OggStream()
     }
 }
 
-bool OggStream::open(const std::string& filePath)
+bool OggStream::open(const std::string& filePath, double startSeconds)
 {
     int error = 0;
     vorbis_ = stb_vorbis_open_filename(filePath.c_str(), &error, nullptr);
@@ -48,6 +48,15 @@ bool OggStream::open(const std::string& filePath)
     sampleRate_ = static_cast<int>(info.sample_rate);
     format_ = (channels_ == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
     bufferShorts_ = static_cast<int>(sampleRate_ * BufferSeconds) * channels_;
+
+    if (startSeconds > 0.0)
+    {
+        const unsigned int startSample = static_cast<unsigned int>(startSeconds * sampleRate_);
+        if (stb_vorbis_seek(vorbis_, startSample) == 0)
+        {
+            stb_vorbis_seek_start(vorbis_);
+        }
+    }
 
     return true;
 }

@@ -26,8 +26,10 @@ public:
     OggStream(const OggStream&) = delete;
     OggStream& operator=(const OggStream&) = delete;
 
-    // Opens 'filePath'. Returns false (leaving the object unplayable) on error.
-    bool open(const std::string& filePath);
+    // Opens 'filePath', with playback starting 'startSeconds' into the track.
+    // A start past the end of the track falls back to the beginning. Returns
+    // false (leaving the object unplayable) on error.
+    bool open(const std::string& filePath, double startSeconds = 0.0);
 
     // Primes the buffer queue, starts the source and the refill thread.
     void play();
