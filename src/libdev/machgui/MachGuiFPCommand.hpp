@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include "gui/Displayable.hpp"
 #include "machlog/Messaging/FirstPersonHandler.hpp"
 
@@ -61,11 +60,8 @@ private:
 
     // Will either point to noSquadronSelected() OR activeSquadIcon_
     GuiBitmap* pActiveSquadIcon_;
-    int64_t activeSquadNumber_;
-    MachLog1stPersonHandler* pLogHandler_ {};
 
-    // Rendered text of the squad number.
-    // 0 is blank
-    // Squadron ID's from getActiveSquadronId() are 1...10
-    std::map<int64_t, RenSurface*> mapSquadNumbers_;
+    // Squadron ids run 1...10 and stand for the digits 0...9; 0 means no squad and draws nothing.
+    int64_t activeSquadNumber_{};
+    MachLog1stPersonHandler* pLogHandler_ {};
 };

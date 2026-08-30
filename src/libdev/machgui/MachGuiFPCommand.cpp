@@ -2,68 +2,25 @@
 
 #include "system/PathName.hpp"
 #include "gui/GuiPainter.hpp"
-#include "render/Painter.hpp"
-#include "gui/Font.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machgui/gui.hpp"
+#include "machgui/ui/MenuStyle.hpp"
 #include "world4d/Manager.hpp"
 #include "world4d/Scene/SceneManager.hpp"
 #include "render/Device.hpp"
+#include "render/TextOptions.hpp"
 #include "machlog/Messaging/MachLog1stPersonActiveSquad.hpp"
 
-// Helpers ////////////////////////////////////////////////////////////////////////////////////////
-
-// This will create the number text only once.
-template <int64_t NUM> static RenSurface* createNumberText(const bool showText = true)
-{
-    // createNumberText<1>(), for example, would always give us a pointer to the same item
-    static RenSurface surfaceNUM
-        = RenSurface::createAnonymousSurface(Ren::Size(32, 32));
-    static bool initializedNUM = false;
-
-    if (! initializedNUM)
-    {
-        constexpr auto rectangle = Ren::Rect { 0, 0, 32, 32 };
-
-        surfaceNUM.enableColourKeying();
-        Ren::Painter(surfaceNUM).clearRectangle(rectangle);
-
-        if (showText)
-        {
-            // RenSurface drawText doesn't work... :o
-            auto font = GuiBmpFont { Gui::getFont(Gui::getScaledImagePath("gui/menu/largyfnt.bmp")) };
-            Ren::Painter(surfaceNUM).drawText(std::to_string(NUM), Ren::Point(0, 0), font, 32);
-        }
-
-        initializedNUM = true;
-    }
-
-    return &surfaceNUM;
-}
-
-//-/////////////////////////////////////////////////////////////////////////////////////////////////
+#include <string>
 
 MachGuiFPCommand::MachGuiFPCommand(GuiDisplayable* pParent, const Gui::Coord& relPos)
     : GuiDisplayable(pParent, Gui::Box(relPos, 1, 1))
 {
     pActiveSquadIcon_ = &noSquadronSelected();
-    activeSquadNumber_ = 0;
 
     attackCommandState_ = CommandIconState::INVALID;
     followCommandState_ = CommandIconState::INVALID;
     moveCommandState_ = CommandIconState::INVALID;
-
-    mapSquadNumbers_[0] = createNumberText<-1>(false); // No Squad
-    mapSquadNumbers_[1] = createNumberText<0>(); // Squadron Corral Icon: 0
-    mapSquadNumbers_[2] = createNumberText<1>(); // Squadron Corral Icon: 1
-    mapSquadNumbers_[3] = createNumberText<2>(); // Squadron Corral Icon: 2
-    mapSquadNumbers_[4] = createNumberText<3>(); // Squadron Corral Icon: 3
-    mapSquadNumbers_[5] = createNumberText<4>(); // Squadron Corral Icon: 4
-    mapSquadNumbers_[6] = createNumberText<5>(); // Squadron Corral Icon: 5
-    mapSquadNumbers_[7] = createNumberText<6>(); // Squadron Corral Icon: 6
-    mapSquadNumbers_[8] = createNumberText<7>(); // Squadron Corral Icon: 7
-    mapSquadNumbers_[9] = createNumberText<8>(); // Squadron Corral Icon: 8
-    mapSquadNumbers_[10] = createNumberText<9>(); // Squadron Corral Icon: 9
 }
 
 MachGuiFPCommand::~MachGuiFPCommand()
@@ -141,9 +98,16 @@ void MachGuiFPCommand::doDisplay()
 
     GuiPainter::instance().blit(widgetBody(), topLeft);
     GuiPainter::instance().blit(*pActiveSquadIcon_, topLeft + Gui::Coord(43, 50) * Gui::uiScaleFactor());
-    GuiPainter::instance().blit(
-        *mapSquadNumbers_[activeSquadNumber_],
-        topLeft + Gui::Coord(64, 20) * Gui::uiScaleFactor());
+
+    // Squadron ids run 1 to 10 and stand for the digits 0 to 9; zero means no squad.
+    if (activeSquadNumber_ > 0)
+    {
+        GuiPainter::instance().drawText(
+            topLeft + Gui::Coord(64, 20) * Gui::uiScaleFactor(),
+            std::to_string(activeSquadNumber_ - 1),
+            Gui::TextOptions(MachGui::Menu::focusedTextColor()),
+            MachGui::Menu::font());
+    }
 
     // widget.bmp: 130x130
     // the command icons: 64x24
