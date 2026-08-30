@@ -19,10 +19,10 @@
 #include "machgui/db/DbPlayer.hpp"
 #include "machgui/db/DbPlayerScenario.hpp"
 #include "machgui/db/DbSavedGame.hpp"
+#include "machgui/SaveGames.hpp"
 #include "machgui/StartupScreens.hpp"
 
 #include <algorithm>
-#include <filesystem>
 
 MachGuiDatabase::MachGuiDatabase()
     : pData_(nullptr)
@@ -173,7 +173,7 @@ void MachGuiDatabase::readDatabase()
 
 void MachGuiDatabase::writeDatabase() const
 {
-    std::filesystem::create_directory("savegame");
+    MachGui::prepareSaveGameDirectory();
 
     std::ofstream ofstr(playerDatabasePath().c_str(), std::ios::binary);
     PerOstream ostr(ofstr);

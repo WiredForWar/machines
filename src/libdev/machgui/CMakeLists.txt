@@ -196,6 +196,8 @@ set(MACHGUI_SOURCES
     PromptText.hpp
     Radar.cpp
     Radar.hpp
+    SaveGames.cpp
+    SaveGames.hpp
     SingleLineEditBox.cpp
     SingleLineEditBox.hpp
     SingleSelectionListBox.cpp

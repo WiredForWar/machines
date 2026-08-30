@@ -3,6 +3,7 @@
 #include "machgui/Cameras.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/LoadSaveGameExtras.hpp"
+#include "machgui/SaveGames.hpp"
 #include "machgui/StartupData.hpp"
 #include "machgui/StartupScreens.hpp"
 #include "machgui/db/Database.hpp"
@@ -1092,18 +1093,9 @@ void saveGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
         }
     }
 
-    std::filesystem::create_directory("savegame");
+    prepareSaveGameDirectory();
 
-    // Find next free save file name
-    SysPathName savePathName;
-    for (std::size_t n = 0;; ++n)
-    {
-        char buffer[20];
-        snprintf(buffer, sizeof(buffer), "%04zu", n);
-        savePathName = SysPathName(std::string("savegame/save") + buffer + ".sav");
-        if (!savePathName.existsAsFile())
-            break;
-    }
+    const SysPathName savePathName = nextSaveGamePath();
 
     MachGuiLoadSaveGameExtras lsgExtras(&pStartup->inGameScreen());
     const bool success = MachLogRaces::instance().saveGame(savePathName, &lsgExtras);

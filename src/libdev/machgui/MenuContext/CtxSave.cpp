@@ -20,6 +20,7 @@
 #include "machgui/MessageBoxResponder.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/LoadSaveGameExtras.hpp"
+#include "machgui/SaveGames.hpp"
 #include "machgui/ui/VerticalScrollBar.hpp"
 #include "machlog/Races.hpp"
 #include "system/PathName.hpp"
@@ -34,7 +35,6 @@
 
 #include "spdlog/spdlog.h"
 
-#include <filesystem>
 #include <stdio.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -424,27 +424,9 @@ bool MachGuiCtxSave::saveGame(const std::string& saveDisplayName)
     }
     RenDevice::current()->flushCommandBuffer();
     W4dManager::instance().sceneManager()->pDevice()->display()->flipBuffers();
-    std::filesystem::create_directory("savegame");
+    MachGui::prepareSaveGameDirectory();
 
-    // Create next filename...
-    bool gotSavePathName = false;
-    SysPathName savePathName;
-    size_t count = 0;
-
-    while (! gotSavePathName)
-    {
-        char buffer[20];
-
-        snprintf(buffer, sizeof(buffer), "%04zu", count);
-
-        // savePathName = string( "savegame/save" ) + buffer + ".sav";
-        savePathName = SysPathName(std::string("savegame/save") + buffer + ".sav");
-
-        if (! savePathName.existsAsFile())
-            gotSavePathName = true;
-
-        ++count;
-    }
+    const SysPathName savePathName = MachGui::nextSaveGamePath();
 
     // Save game...
     MachGuiLoadSaveGameExtras lsgExtras(&pStartupScreens_->inGameScreen());
