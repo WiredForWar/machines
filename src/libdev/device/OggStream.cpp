@@ -52,13 +52,44 @@ bool OggStream::open(const std::string& filePath, double startSeconds)
     if (startSeconds > 0.0)
     {
         const unsigned int startSample = static_cast<unsigned int>(startSeconds * sampleRate_);
-        if (stb_vorbis_seek(vorbis_, startSample) == 0)
+        if (stb_vorbis_seek(vorbis_, startSample) != 0)
+        {
+            startSample_ = startSample;
+        }
+        else
         {
             stb_vorbis_seek_start(vorbis_);
         }
     }
 
     return true;
+}
+
+int OggStream::bufferIndex(ALuint buffer) const
+{
+    for (int i = 0; i < NumBuffers; ++i)
+    {
+        if (buffers_[i] == buffer)
+        {
+            return i;
+        }
+    }
+    return 0;
+}
+
+double OggStream::playheadSeconds() const
+{
+    if (sampleRate_ == 0)
+    {
+        return 0.0;
+    }
+
+    // The lock keeps the source's offset consistent with playedSamples_: the
+    // refill thread unqueues buffers (which rebases the offset) under it too.
+    const std::lock_guard<std::mutex> lock(playheadMutex_);
+    ALint sampleOffset = 0;
+    alGetSourcei(source_, AL_SAMPLE_OFFSET, &sampleOffset);
+    return static_cast<double>(startSample_ + playedSamples_ + sampleOffset) / sampleRate_;
 }
 
 bool OggStream::fillBuffer(ALuint buffer)
@@ -74,6 +105,10 @@ bool OggStream::fillBuffer(ALuint buffer)
 
     const ALsizei bytes = static_cast<ALsizei>(samplesPerChannel * channels_ * sizeof(short));
     alBufferData(buffer, format_, pcm.data(), bytes, sampleRate_);
+    {
+        const std::lock_guard<std::mutex> lock(playheadMutex_);
+        bufferSamples_[bufferIndex(buffer)] = samplesPerChannel;
+    }
     return true;
 }
 
@@ -119,7 +154,11 @@ void OggStream::refillLoop()
         while (processed-- > 0)
         {
             ALuint buffer = 0;
-            alSourceUnqueueBuffers(source_, 1, &buffer);
+            {
+                const std::lock_guard<std::mutex> lock(playheadMutex_);
+                alSourceUnqueueBuffers(source_, 1, &buffer);
+                playedSamples_ += bufferSamples_[bufferIndex(buffer)];
+            }
 
             if (!eof_)
             {

@@ -2,8 +2,11 @@
 
 #include <atomic>
 #include <functional>
+#include <mutex>
 #include <string>
 #include <thread>
+
+#include <cstdint>
 
 #include "al.h"
 
@@ -38,6 +41,11 @@ public:
     // Safe to call more than once; never invokes the finished callback.
     void stop();
 
+    // The position the listener is hearing, in seconds from the start of the
+    // track -- not the (later) position the decoder has read to. Meaningful
+    // from play() until stop().
+    double playheadSeconds() const;
+
 private:
     void refillLoop();
     // Decodes one buffer's worth of PCM into 'buffer' and uploads it. Returns
@@ -55,7 +63,15 @@ private:
     ALenum format_{};
     int bufferShorts_{}; // interleaved shorts per buffer (0.25 s of audio)
 
+    // Which buffer is which for the playhead bookkeeping below.
+    int bufferIndex(ALuint buffer) const;
+
     ALuint buffers_[NumBuffers]{};
+
+    std::int64_t startSample_{}; // where in the track decoding started
+    mutable std::mutex playheadMutex_;
+    std::int64_t playedSamples_{}; // per channel, in buffers already unqueued
+    int bufferSamples_[NumBuffers]{}; // per channel, per buffer while queued
 
     std::thread thread_;
     std::atomic<bool> running_{};
