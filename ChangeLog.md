@@ -13,10 +13,13 @@ had its renderer rebuilt underneath.
 - Added models, cursors, and planet minimaps texture modding support
 - Added support for scaled planet maps
 - Added a console (press `Ctrl+Alt+Shift+F11` and type `console on` there)
+- Screenshots now go into a `screenshots` directory instead of the game's own data
 - PNG textures are now preferred over the original formats and can be overridden by mods
 - Display options are now Window Mode (Exclusive Fullscreen / Borderless Fullscreen /
   Windowed), Resolution and Refresh Rate as separate settings, instead of one long list
 - Reworked first person aiming to behave the same whatever the frame rate and resolution
+- Music now crossfades between the menu and gameplay tracks, and each resumes where it
+  left off instead of restarting from the beginning on every switch
 - The starfield now twinkles, and star colours and sizes follow the star's brightness
 - FPS counter (`Ctrl+Shift+F7`) is now available in release builds
 - `Enter` now sends a chat message to all players, `F2`/`F3`/`F4` address a target and
@@ -35,8 +38,6 @@ had its renderer rebuilt underneath.
 - Fixed rendering/culling issues that could cause missing world tiles / rooms not being rendered
 - Fixed nearest Mine and Smelter/Pod lookup for Transporters / resource carriers
 - Fixed nearest Lab lookup for Technicians
-- Fixed machines other than Aggressors being able to enter a friendly building whose
-  bays were all taken. They now need a free bay, as Aggressors always did.
 - Fixed a destroyed machine carrying on with its update while teleporting in or out
 - Fixed a crash when a Resource Carrier was sent to a mine it could not reach
 - Fixed crash on close by Alt+F4
@@ -49,6 +50,8 @@ had its renderer rebuilt underneath.
 - Fixed multiplayer chat messages being truncated
 - Fixed the port byte order in LAN discovery packets
 - Fixed a double ENet shutdown
+- Fixed sprite animations (fires, explosions, and the like) running at the frame rate
+  rather than at the speed of the game
 - A few more small fixes
 
 Under the hood:
@@ -58,6 +61,7 @@ Under the hood:
 - The game now builds with Clang
 - Dropped the Alure dependency (music is decoded with a bundled stb_vorbis)
 - Reworked the renderer API (ready for multiple render backends)
+- Added `--skip-intro`, which starts the game at the main menu
 
 ### v1.7.4
 
