@@ -103,6 +103,7 @@
 #include "base/IProgressReporter.hpp"
 #include "machgui/internal/strings.hpp"
 #include "sim/Manager.hpp"
+#include "device/CD.hpp"
 #include "device/Time.hpp"
 #include "network/Network.hpp"
 #include "system/ConfigVariables.hpp"
@@ -2146,6 +2147,10 @@ bool MachInGameScreen::rubberBandSelectionHappening() const
 void MachInGameScreen::loadGame(const std::string& planet, std::optional<PerIstream *> savedStream)
 {
     spdlog::info("Loading planet '{}'", planet);
+
+    // A fresh game gets fresh music: without this, restarting a scenario
+    // would pick its track up mid-song where the last run was interrupted.
+    DevCD::instance().forgetResumePositions();
 
     // Don't allow any of the button setting below to trigger their sounds
     MachGuiSoundManager::instance().delaySounds();
