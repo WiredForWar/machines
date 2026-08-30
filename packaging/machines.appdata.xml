@@ -2,7 +2,7 @@
 <component type="desktop-application">
     <id>io.github.wiredforwar.machines</id>
     <metadata_license>FSFAP</metadata_license>
-    <project_license>GPL-3.0</project_license>
+    <project_license>GPL-3.0-only</project_license>
     <name>Machines: Wired For War</name>
     <summary>A true classic 3D RTS from the late 90s</summary>
     <description>
@@ -22,10 +22,10 @@
         </ul>
         <p>
             Note: The application requires original game assets.
-            In case of Flatpak installation the files (top-level `machines` directory) should be placed at <code>~/.var/app/io.github.wiredforwar.machines/data/</code>.
+            In case of Flatpak installation the files (top-level <code>machines</code> directory) should be placed at <code>~/.var/app/io.github.wiredforwar.machines/data/</code>.
         </p>
     </description>
-    <developer>
+    <developer id="io.github.wiredforwar">
         <name>Wired for War</name>
     </developer>
     <launchable type="desktop-id">io.github.wiredforwar.machines.desktop</launchable>
@@ -51,10 +51,10 @@
         <content_attribute id="social-chat">intense</content_attribute>
     </content_rating>
     <releases>
-        <release date="2024-02-21" version="1.7.0"/>
-        <release date="2024-09-10" version="1.7.1"/>
-        <release date="2025-12-07" version="1.7.2"/>
         <release date="2026-01-19" version="1.7.4"/>
+        <release date="2025-12-07" version="1.7.2"/>
+        <release date="2024-09-10" version="1.7.1"/>
+        <release date="2024-02-21" version="1.7.0"/>
     </releases>
     <url type="homepage">https://wiredforwar.github.io/</url>
     <url type="vcs-browser">https://github.com/WiredForWar/machines</url>
