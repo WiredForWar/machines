@@ -90,47 +90,31 @@ public:
     // PRE(rendering2D());
     void end2D();
 
-    // Sets up the 3D rendering context (matrices, stats, illuminator).
-    // Shadow passes may be issued after this call and before beginGeometryPass().
+    // Shadow passes are issued between start3D() and the geometry pass.
     // PRE(idleRendering());
     // POST(rendering3D());
     void start3D();
-    // Opens the main geometry render pass (binds FBO, clears, sets fog/depth/blend).
-    // PRE(rendering3D());
-    void beginGeometryPass(bool clearBack = true);
-
-    // The state a view needs before anything is drawn into it: lighting, fog,
-    // depth, and the clipping the camera asked for. beginGeometryPass() does
-    // this itself for the first view.
-    //
-    // Called again for each further view drawn into the same pass, which is what
-    // a stereo frame is. It is not optional there: drawing the background at the
-    // end of a view leaves lighting and fog switched off, so a second view drawn
-    // without this comes out unlit.
-    //
-    // PRE(rendering3D());
-    void beginView();
-
-    // Draws and clears what this view collected to be drawn last: its
-    // transparent geometry, sorted back to front. end3D() does this for the
-    // final view, so a flat frame never needs it -- but a view whose alpha is
-    // left until after the next view's viewpoint has been set has it all drawn
-    // into the wrong eye, which shows up as one half of a stereo picture missing
-    // its shadows.
-    //
-    // PRE(rendering3D());
-    void endView();
-    // PRE(rendering3D());
     void end3D();
 
-    // PRE(rendering());
-    // PRE(!doingBackground_);
+    // A pass holds views and opens none itself. A second pass is no alternative
+    // to a second view: opening one clears the first view away.
+    void beginGeometryPass(bool clearBack = true);
+    void endGeometryPass();
+
+    // endView() draws the view's transparent geometry, sorted, so an eye that
+    // skips it has its alpha drawn into the next one.
+    void beginView();
+    void endView();
+
+    // The sky, at a far plane wide enough to hold it and with neither lighting
+    // nor fog. endBackground() puts the view back as it was.
     void startBackground(double yon);
+    void endBackground();
 
     // PRE(idleRendering());
     // POST(!rendering());
     // POST(!rendering3D() and !rendering2D());
-    // POST(!doingBackground_);
+    // POST(!doingBackground());
     void endFrame();
 
     // Finalize the back buffer: draw debug text overlay and cursor.
@@ -147,6 +131,12 @@ public:
     bool rendering2D() const;
     // True within calls of start3D() and end3D().
     bool rendering3D() const;
+    // True within calls of beginGeometryPass() and endGeometryPass().
+    bool inGeometryPass() const;
+    // True within calls of beginView() and endView().
+    bool inView() const;
+    // True within calls of startBackground() and endBackground().
+    bool doingBackground() const;
     // True when rendering() is true and when rendering2D() and rendering3D() are false.
     bool idleRendering() const;
 

@@ -465,6 +465,7 @@ void W4dSceneManager::render()
     }
 
     device_->beginGeometryPass(clearBg_);
+    device_->beginView();
 
     // Attempt a domain render. If the camera is not in a domain, it will use the inOrderRender method.
     currentCamera_->renderVisibleSet();
@@ -479,9 +480,12 @@ void W4dSceneManager::render()
         currentCamera_->isYonClippingEnabled(false);
         device_->startBackground(110000);
         currentCamera_->renderTree(bgRoot_, W4dCamera::IN_ORDER_RENDER);
+        device_->endBackground();
         currentCamera_->isYonClippingEnabled(true);
     }
 
+    device_->endView();
+    device_->endGeometryPass();
     device_->end3D();
 
     if (shakeCamera())

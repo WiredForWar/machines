@@ -1958,6 +1958,7 @@ void D3DApp::loopCycle()
     {
         device_->start3D();
         device_->beginGeometryPass(clearBack_);
+        device_->beginView();
 
         // Draw the models.
         for (int i = 0; i != models_.size(); ++i)
@@ -1993,6 +1994,8 @@ void D3DApp::loopCycle()
             }
         }
 
+        device_->endView();
+        device_->endGeometryPass();
         device_->end3D();
 
         // Front-to-back blit test.

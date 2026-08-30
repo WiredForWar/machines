@@ -1089,6 +1089,7 @@ void RenDevice::start3D()
 void RenDevice::beginGeometryPass(bool clearBack)
 {
     PRE(rendering3D());
+    PRE(!inGeometryPass());
 
     // The background colour needs to have the camera's filter applied to it.
     RenColour bgCol = pImpl_->background_;
@@ -1121,12 +1122,40 @@ void RenDevice::beginGeometryPass(bool clearBack)
     pImpl_->illuminator_->startFrame();
     RenMesh::startFrame();
 
-    beginView();
+    pImpl_->inGeometryPass_ = true;
+
+    POST(inGeometryPass());
+}
+
+void RenDevice::endGeometryPass()
+{
+    PRE(inGeometryPass());
+    PRE(!inView());
+
+    // Drawn over the whole pass rather than into any one view of it, and drawn
+    // while the pass is still open so that the resolve carries them.
+    if (pImpl_->interference_ > 0.001)
+        addInterference();
+
+    if (pImpl_->staticOn_)
+        addStatic();
+
+    recordCommand(Ren::Command::endRenderPass());
+
+    CB_RENDEVICE_DEPIMPL_GL();
+
+    if (postProcessReady_ && Config::gfxToneMapping.get())
+        blitPostProcess();
+
+    pImpl_->inGeometryPass_ = false;
+
+    POST(!inGeometryPass());
 }
 
 void RenDevice::beginView()
 {
-    PRE(rendering3D());
+    PRE(inGeometryPass());
+    PRE(!inView());
 
     CB_RENDEVICE_DEPIMPL_GL();
 
@@ -1158,11 +1187,28 @@ void RenDevice::beginView()
 
     // Enable alpha sorting.
     pImpl_->alphaSorter_ = pImpl_->normalAlphaSorter_;
+
+    pImpl_->inView_ = true;
+
+    POST(inView());
+}
+
+void RenDevice::endView()
+{
+    PRE(inView());
+    PRE(!doingBackground());
+
+    flush3DAlpha();
+
+    pImpl_->inView_ = false;
+
+    POST(!inView());
 }
 
 void RenDevice::startBackground(double yon)
 {
-    PRE(rendering());
+    PRE(inView());
+    PRE(!doingBackground());
 
     const double now = DEBUG_FRAME_TIME;
     RENDER_STREAM("RenDevice::startBackground() at " << now << "(ms)\n");
@@ -1183,6 +1229,28 @@ void RenDevice::startBackground(double yon)
     // accepting equality cannot let the background through anything standing in
     // front of it; it only stops it losing to the clear.
     recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
+
+    POST(doingBackground());
+}
+
+void RenDevice::endBackground()
+{
+    PRE(doingBackground());
+
+    // Everything startBackground() moved, put back, so that whatever the view
+    // draws after this -- its coplanar polygons and its sorted alpha at the
+    // least -- is drawn under the view's own settings and not the sky's.
+    pImpl_->alphaSorter_ = pImpl_->normalAlphaSorter_;
+    overrideClipping(pImpl_->currentCamera_->hitherClipDistance(), pImpl_->currentCamera_->yonClipDistance());
+    enableLighting();
+    restoreFog();
+
+    recordCommand(Ren::Command::setDepthMaskWritable(true));
+    recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::Less));
+
+    pImpl_->doingBackground_ = false;
+
+    POST(!doingBackground());
 }
 
 inline bool isWhiteChar(char c)
@@ -1197,13 +1265,6 @@ static bool isWhiteString(const std::string& str)
             return false;
 
     return true;
-}
-
-void RenDevice::endView()
-{
-    PRE(rendering3D());
-
-    flush3DAlpha();
 }
 
 void RenDevice::flush3DAlpha()
@@ -1226,18 +1287,6 @@ void RenDevice::flush3DAlpha()
     pImpl_->disableAlphaBlending();
     recordCommand(Ren::Command::setMultisample(true));
     recordCommand(Ren::Command::setDepthFunc(Ren::BackendDepthFunc::LessOrEqual));
-
-    if (pImpl_->doingBackground_)
-    {
-        // The clipping will have been changed for background objects.  It
-        // needs to be reset before the other post-sorters are invoked.
-        const double hither = pImpl_->currentCamera_->hitherClipDistance();
-        const double yon = pImpl_->currentCamera_->yonClipDistance();
-        overrideClipping(hither, yon);
-
-        // Likewise for the lighting, fog and alpha on the coplanar polys.
-        enableLighting();
-    }
 
     // Inter-mesh coplanar polygons are drawn with normal settings.  They are
     // drawn here because they need to come at the very end, after anything
@@ -1266,20 +1315,7 @@ void RenDevice::flush3DAlpha()
 void RenDevice::end3D()
 {
     PRE(rendering3D());
-
-    const double now1 = DEBUG_FRAME_TIME;
-    RENDER_STREAM("  RenDevice::end3D() starts at " << now1 << "(ms)\n");
-
-    flush3DAlpha();
-
-    const double now2 = DEBUG_FRAME_TIME;
-    RENDER_STREAM("  RenDevice::end3D() adding 2D effects at " << now2 << "(ms)\n");
-
-    if (pImpl_->interference_ > 0.001)
-        addInterference();
-
-    if (pImpl_->staticOn_)
-        addStatic();
+    PRE(!inGeometryPass());
 
     // If we fail to end a scene then we should NOT call DirectX
     // BeginScene again until we successfully end a scene.
@@ -1287,16 +1323,9 @@ void RenDevice::end3D()
     RENDER_STREAM("pImpl_->shouldBeginScene_ == " << pImpl_->shouldBeginScene_ << std::endl);
     RENDER_INDENT(-3);
 
-    const double now3 = DEBUG_FRAME_TIME;
-    RENDER_STREAM("  RenDevice::end3D() ends at " << now3 << "(ms)\n");
+    const double now = DEBUG_FRAME_TIME;
+    RENDER_STREAM("  RenDevice::end3D() ends at " << now << "(ms)\n");
     RENDER_STREAM('}' << std::endl);
-
-    recordCommand(Ren::Command::endRenderPass());
-
-    CB_RENDEVICE_DEPIMPL_GL();
-
-    if (postProcessReady_ && Config::gfxToneMapping.get())
-        blitPostProcess();
 
     pImpl_->rendering3D_ = false;
 
@@ -2455,6 +2484,21 @@ bool RenDevice::rendering2D() const
 bool RenDevice::rendering3D() const
 {
     return pImpl_->rendering3D_;
+}
+
+bool RenDevice::inGeometryPass() const
+{
+    return pImpl_->inGeometryPass_;
+}
+
+bool RenDevice::inView() const
+{
+    return pImpl_->inView_;
+}
+
+bool RenDevice::doingBackground() const
+{
+    return pImpl_->doingBackground_;
 }
 
 bool RenDevice::idleRendering() const

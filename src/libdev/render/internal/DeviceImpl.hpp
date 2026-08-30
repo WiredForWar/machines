@@ -155,6 +155,12 @@ private:
     RenIDepthPostSorter* alphaSorter_;
     bool alphaBlendingEnabled_;
 
+    // Which of the nested scopes a frame is drawn in are currently open. A pass
+    // holds views and a view holds a background, so each is only meaningful
+    // inside the one outside it.
+    bool inGeometryPass_{};
+    bool inView_{};
+
     // Special support for rendering background objects.
     bool doingBackground_;
     RenIDepthPostSorter* normalAlphaSorter_;
