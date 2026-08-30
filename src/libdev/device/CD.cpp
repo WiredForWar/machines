@@ -107,7 +107,7 @@ void DevCDImpl::updateFade()
     }
     else
     {
-        fadeInGain_ = progress;
+        fadeInGain_ = fadeInStartGain_ + (1.0 - fadeInStartGain_) * progress;
         fadeOutGain_ = fadeOutStartGain_ * (1.0 - progress);
     }
     applyGains();
@@ -368,8 +368,12 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     }
     pImpl->musicStream_ = stream;
 
-    // A superseded track is still audible: come up under it as it fades.
-    pImpl->fadeInGain_ = pImpl->fadeOutStream_ != nullptr ? 0.0 : 1.0;
+    // A resumed track comes up quietly under the fading one, masking the
+    // rewound repeat. A track starting from the top has nothing to mask and
+    // plays at full volume from its first note.
+    const bool resuming = pImpl->fadeOutStream_ != nullptr && resumeSeconds.value_or(0.0) > 0.0;
+    pImpl->fadeInStartGain_ = resuming ? 0.0 : 1.0;
+    pImpl->fadeInGain_ = pImpl->fadeInStartGain_;
     pImpl->applyGains();
     stream->play();
 

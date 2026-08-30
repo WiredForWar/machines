@@ -63,6 +63,7 @@ public:
     ALuint fadeOutSource_{};
     std::optional<std::chrono::steady_clock::time_point> fadeStart_;
     double fadeInGain_{1.0};
+    double fadeInStartGain_{1.0};
     double fadeOutGain_{};
     double fadeOutStartGain_{1.0};
 
