@@ -245,9 +245,12 @@ else()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT USE_STANDALONE_LAYOUT)
-    install(FILES "packaging/machines.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications/")
-    install(FILES "packaging/machines.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo/")
-    install(FILES "packaging/machines-64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps/" RENAME "machines.png")
+    install(FILES "packaging/io.github.wiredforwar.machines.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications/")
+    install(FILES "packaging/io.github.wiredforwar.machines.metainfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo/")
+    # The source name carries the icon size, which the destination directory
+    # states instead; the installed name has to be the application ID for the
+    # icon lookup in the desktop entry to find it.
+    install(FILES "packaging/machines-64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps/" RENAME "io.github.wiredforwar.machines.png")
 endif()
 
 install(DIRECTORY "data" DESTINATION ${DATA_PATH})
