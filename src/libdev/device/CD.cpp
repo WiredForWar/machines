@@ -14,6 +14,7 @@
 
 #include "device/DevCDImpl.hpp"
 
+#include <optional>
 #include <utility>
 
 #include "spdlog/spdlog.h"
@@ -42,6 +43,24 @@ bool DevCDImpl::isStreamAudible() const
     ALint state = 0;
     alGetSourcei(source_, AL_SOURCE_STATE, &state);
     return state == AL_PLAYING;
+}
+
+void DevCDImpl::captureResumePosition()
+{
+    if (!isStreamAudible())
+    {
+        return;
+    }
+
+    const double seconds = musicStream_->playheadSeconds();
+    if (status_ == RANDOM)
+    {
+        resumeStore_.recordRandomInterruption(trackPlaying_, seconds, randomStartTrack_, randomEndTrack_);
+    }
+    else
+    {
+        resumeStore_.recordInterruption(trackPlaying_, seconds);
+    }
 }
 
 void DevCDImpl::beginFadeOut()
@@ -313,6 +332,8 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
 
     const bool muted = !pImpl->musicEnabled_ || pImpl->savedVolume_ <= 0;
 
+    pImpl->captureResumePosition();
+
     if (!muted && pImpl->isStreamAudible())
     {
         pImpl->beginFadeOut();
@@ -336,8 +357,10 @@ void DevCD::play(DevCDTrackIndex track, bool repeat /* = false */)
     snprintf(fileName, sizeof(fileName), "sounds/music/track%d.ogg", track);
     SysPathName filePath(fileName);
 
+    const std::optional<double> resumeSeconds = pImpl->resumeStore_.takeResumeSeconds(track);
+
     OggStream* stream = new OggStream(pImpl->source_, [pImpl]() { pImpl->needsUpdate_ = true; });
-    if (!stream->open(filePath.pathname()))
+    if (!stream->open(filePath.pathname(), resumeSeconds.value_or(0.0)))
     {
         std::cerr << "Could not load " << filePath.pathname() << std::endl;
         delete stream;
@@ -373,12 +396,18 @@ void DevCD::stopPlaying()
         return;
     }
 
+    pImpl_->captureResumePosition();
     pImpl_->cancelFade();
 
     if (pImpl_->musicStream_ != nullptr)
     {
         pImpl_->musicStream_->stop();
     }
+}
+
+void DevCD::forgetResumePositions()
+{
+    pImpl_->resumeStore_.clear();
 }
 
 void DevCD::handleMessages(CDMessage message, unsigned int devID)
@@ -493,6 +522,17 @@ void DevCD::randomPlay(DevCDTrackIndex startTrack, DevCDTrackIndex endTrack, Dev
 
     randomStartTrack_ = startTrack;
     randomEndTrack_ = endTrack + 1;
+
+    // A rotation over the same range that was interrupted continues with the
+    // track that was playing, not with 'firstTrack' again.
+    const std::optional<DevCDTrackIndex> resumeTrack
+        = pImpl_->resumeStore_.takeRandomTrack(randomStartTrack_, randomEndTrack_);
+    if (resumeTrack.has_value())
+    {
+        play(*resumeTrack);
+        status_ = RANDOM;
+        return;
+    }
 
     if (firstTrack != -1)
     {

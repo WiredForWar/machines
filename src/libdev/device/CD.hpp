@@ -86,6 +86,10 @@ public:
 
     void stopPlaying();
 
+    // Forget where interrupted tracks left off: the next play of any track
+    // starts it from the beginning.
+    void forgetResumePositions();
+
     ///////////////////////////////
 
     void volume(Volume newLevel);

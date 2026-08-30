@@ -7,6 +7,7 @@
 #include "al.h"
 
 #include "device/CDPlayList.hpp"
+#include "device/MusicResumeStore.hpp"
 #include "mathex/Random.hpp"
 
 class DevCD;
@@ -36,6 +37,11 @@ public:
 
     // Is the current stream still being heard on source_?
     bool isStreamAudible() const;
+
+    // Record where the still-audible track is, so a later request for it
+    // resumes there. Recorded before the fade-out starts: the moment the
+    // player last heard at full volume is the moment they return to.
+    void captureResumePosition();
 
     // Hand the current stream over to the fade-out slot and swap the sources,
     // freeing source_ for the incoming track. Starts the crossfade clock.
@@ -73,6 +79,8 @@ public:
     DevCDTrackIndex randomStartTrack_{};
     DevCDTrackIndex randomEndTrack_{};
     MexBasicRandom randomGenerator_;
+
+    DevMusicResumeStore resumeStore_;
 
     bool musicEnabled_{};
 };

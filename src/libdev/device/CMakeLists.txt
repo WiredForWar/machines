@@ -25,6 +25,8 @@ set(DEVICE_SOURCES
     KeyToCommandTranslator.cpp
     KeyToCommandTranslator.hpp
     Mouse.hpp
+    MusicResumeStore.cpp
+    MusicResumeStore.hpp
     private/SdlKeyboard.hpp
     private/SdlMouse.hpp
     private/SdlTime.hpp
