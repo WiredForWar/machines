@@ -2221,36 +2221,36 @@ void MachGuiStartupScreens::updateCdAudio()
     // Don't hang around switching to desired track!!!
     if (playingCdTrack_ != desiredCdTrack_)
     {
-        // Stop any currently playing tunes
-        if (DevCD::instance().isPlayingAudioCd())
+        if (desiredCdTrack_ == DONT_PLAY_CD)
         {
-            DevCD::instance().stopPlaying();
-        }
-
-        if (desiredCdTrack_ != DONT_PLAY_CD)
-        {
-            if (DevCD::instance().isAudioCDPresent())
+            // Stop any currently playing tunes
+            if (DevCD::instance().isPlayingAudioCd())
             {
-                // Start to play desired track
-                bool repeat = !(desiredCdTrack_ == VICTORY_MUSIC || desiredCdTrack_ == DEFEAT_MUSIC);
-
-                if (desiredCdTrack_ + 1 < DevCD::instance().numberOfTracks())
-                {
-                    if (desiredCdTrack_ >= LOADING_MUSIC)
-                    {
-                        DevCD::instance().randomPlay(
-                            LOADING_MUSIC + 1,
-                            DevCD::instance().numberOfTracks() - 1,
-                            desiredCdTrack_ + 1);
-                    }
-                    else
-                    {
-                        DevCD::instance().play(desiredCdTrack_ + 1, repeat);
-                    }
-                }
-
-                cdCheckTime_ = Phys::time();
+                DevCD::instance().stopPlaying();
             }
+        }
+        else if (DevCD::instance().isAudioCDPresent())
+        {
+            // Start to play the desired track. A track still playing is not
+            // stopped first: DevCD fades it out under the incoming one.
+            bool repeat = !(desiredCdTrack_ == VICTORY_MUSIC || desiredCdTrack_ == DEFEAT_MUSIC);
+
+            if (desiredCdTrack_ + 1 < DevCD::instance().numberOfTracks())
+            {
+                if (desiredCdTrack_ >= LOADING_MUSIC)
+                {
+                    DevCD::instance().randomPlay(
+                        LOADING_MUSIC + 1,
+                        DevCD::instance().numberOfTracks() - 1,
+                        desiredCdTrack_ + 1);
+                }
+                else
+                {
+                    DevCD::instance().play(desiredCdTrack_ + 1, repeat);
+                }
+            }
+
+            cdCheckTime_ = Phys::time();
         }
 
         playingCdTrack_ = desiredCdTrack_;
