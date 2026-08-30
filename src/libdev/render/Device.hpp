@@ -66,8 +66,6 @@ public:
     // Uses the display to create front and back buffers; possibly changes
     // the display resolution; and generally sets everything up for 3D
     // rendering. Calls useDevice(this).
-    // PRE(Ren::initialised());
-    // PRE(MexCoordSystem::instance().isSet());
     RenDevice(RenDisplay*);
     ~RenDevice();
 
@@ -79,20 +77,13 @@ public:
     // We can fail to start the rendering in which case false is returned.  If
     // clearBack is false, then the back buffer isn't cleared (but z is).
     // Calls useDevice(this).
-    // PRE(!rendering());
-    // POST(implies(result, idleRendering()));
     bool startFrame();
 
     // Sets the rendering parameters appropriately for 2D gui stuff.
-    // PRE(idleRendering());
-    // POST(rendering2D());
     void start2D();
-    // PRE(rendering2D());
     void end2D();
 
     // Shadow passes are issued between start3D() and the geometry pass.
-    // PRE(idleRendering());
-    // POST(rendering3D());
     void start3D();
     void end3D();
 
@@ -111,18 +102,12 @@ public:
     void startBackground(double yon);
     void endBackground();
 
-    // PRE(idleRendering());
-    // POST(!rendering());
-    // POST(!rendering3D() and !rendering2D());
-    // POST(!doingBackground());
     void endFrame();
 
     // Finalize the back buffer: draw debug text overlay and cursor.
     void finalizeBackBuffer();
 
     // Present the back buffer to the screen (swap buffers).
-    // PRE(rendering());
-    // POST(!rendering());
     void presentFrame();
 
     // True within calls of startFrame() and endFrame().
@@ -182,7 +167,6 @@ public:
     // The device only clears the area inside this rectangle, any remaining parts
     // of the buffer (borders, gui, etc.) are the client's responsibility.
     // Defaults to full-screen if you never call this method.
-    // PRE(!rendering3D());
     void setViewport(int left, int top, int width, int height);
 
     // The same, for a part of a frame rather than for the frame: this one takes
@@ -190,8 +174,6 @@ public:
     // half of the window and then the other without starting a second pass and
     // clearing away the first half. Left and top are measured from the top left,
     // as everywhere else here.
-    //
-    // PRE(rendering3D());
     void setSceneViewport(int left, int top, int width, int height);
 
     // Set the viewport to the given size and clear the colour buffer to black.
@@ -200,9 +182,6 @@ public:
 
     // Use another camera.  At present, multiple viewports on one device
     // aren't supported, so you can't switch cameras mid-frame.
-    // PRE(cam);
-    // PRE(!rendering3D());
-    // PRE(cam->hitherClipDistance() < cam->yonClipDistance());
     void useCamera(RenCamera* cam);
 
     // Which camera is currently in use?
@@ -217,7 +196,6 @@ public:
     MexPoint2d cameraToScreen(const MexPoint3d& worldPosition) const;
 
     // Modify the list of objects which can potentially light the scene.
-    // PRE(light);
     void addLight(RenLight* light);
     void removeLight(RenLight* light);
 
@@ -273,7 +251,6 @@ public:
     const RenColour& backgroundColour() const;
 
     // Densities of around 0.05 work.
-    // PRE(start > 0); PRE(start < end); PRE(density >= 0 && density <= 1);
     void fogOn(float start, float end, float density);
     void fogOn();
     void fogOff();
@@ -304,15 +281,12 @@ public:
     int windowHeight() const;
 
     // Point visibility test
-    // PRE(currentCamera());
     bool canSee(const MexPoint3d& pt) const;
     // Quad visibility test which supports domain/portal culling.
-    // PRE(currentCamera());
     bool canSee(const MexQuad3d& quad) const;
 
     // Quad visibility test which supports domain/portal culling.
     // Uses the given camera instead of currentCamera().
-    // PRE(currentCamera());
     bool canSee(const RenCamera* cam, const MexQuad3d& quad) const;
 
     // Display an image on this device's surface -- typically this would be
@@ -525,13 +499,10 @@ private:
 
     // Sets the rendering parameters appropriately for the 3D world.
     // Draws all alpha polygons. start3D must have been called first.
-    // PRE(rendering());
-    // PRE(rendering3D());
     void flush3DAlpha();
 
     // Change the clipping planes mid-frame.  The effect lasts until endFrame
     // is called.  Intended for drawing backgrounds.
-    // PRE(hither < yon);
     void overrideClipping(double hither, double yon);
 
     // The fog the pass was opened with. Drawing a background switches fog off,
