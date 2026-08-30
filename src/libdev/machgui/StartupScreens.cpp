@@ -3411,7 +3411,7 @@ void MachGuiStartupScreens::initializeConsoleDropDown()
 {
     consoleDropDownHandle_ = Config::consoleEnabled.addListener([this]
     {
-        if (Config::consoleEnabled.get())
+        if (Config::consoleEnabled.get() && !pConsoleDropDown_)
         {
             pConsoleDropDown_ = std::make_unique<MachGuiConsoleDropDown>(nullptr);
             pConsoleDropDown_->setConsole(console_);
