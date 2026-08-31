@@ -1113,36 +1113,36 @@ void InputRegistry::setWasdLayout()
     });
 
     setBinds("ground-camera-forward"_bind, {
-        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
-        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::KEY_W, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::UP_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
     });
     setBinds("ground-camera-backward"_bind, {
-        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
-        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::KEY_S, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
+        { .keyWithMods = KeyCode::DOWN_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt | KeyModifier::Shift },
     });
     setBinds("ground-camera-slide-left"_bind, {
-        { .keyWithMods = KeyCode::KEY_A, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::DELETE, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_A, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::DELETE, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
     setBinds("ground-camera-slide-right"_bind, {
-        { .keyWithMods = KeyCode::KEY_D, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::END, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_D, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::END, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
     setBinds("ground-camera-rotate-left"_bind, {
-        { .keyWithMods = KeyCode::KEY_Q, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_Q, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::LEFT_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
     setBinds("ground-camera-rotate-right"_bind, {
-        { .keyWithMods = KeyCode::KEY_E, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_E, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::RIGHT_ARROW, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
     setBinds("ground-camera-pitch-up"_bind, {
-        { .keyWithMods = KeyCode::KEY_W | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_W | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::UP_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
     setBinds("ground-camera-pitch-down"_bind, {
-        { .keyWithMods = KeyCode::KEY_S | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
-        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Alt },
+        { .keyWithMods = KeyCode::KEY_S | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
+        { .keyWithMods = KeyCode::DOWN_ARROW | KeyModifier::Shift, .releasedModifiers = KeyModifier::Ctrl | KeyModifier::Alt },
     });
 
     setBinds("fpv-move-forward"_bind, {
