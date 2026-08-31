@@ -121,11 +121,8 @@ void MachGuiMessageBox::doDisplay()
     if (boxBitmap.isNull())
         return;
 
-    const auto msgBoxSize = boxBitmap.requestedSize().isNull() ? boxBitmap.size() : boxBitmap.requestedSize();
-
-    GuiPainter::instance().blit(
+    GuiPainter::instance().blitInRequestedSize(
         boxBitmap,
-        Gui::Box(0, 0, msgBoxSize.width, msgBoxSize.height),
         Gui::Coord(menuLeft, menuTop));
 }
 
