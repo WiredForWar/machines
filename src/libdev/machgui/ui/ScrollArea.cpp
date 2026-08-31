@@ -220,17 +220,6 @@ void MachGuiScrollArea::update()
 void MachGuiScrollArea::doDisplay()
 {
     pInGameScreen_->controlPanel().redrawAreaImmediate(*this);
-
-    const std::size_t thickness = outlineThickness();
-
-    // Drawn round the list, meeting the buttons rather than leaving a line of the
-    // panel showing between them, so it takes its own thickness out of each.
-    Gui::Box outline = absoluteBoundary();
-
-    outline.xMin(outline.minCorner().x() + MachGuiScrollButton::reqWidth() - thickness);
-    outline.xMax(outline.maxCorner().x() - MachGuiScrollButton::reqWidth() + thickness);
-
-    GuiPainter::instance().hollowRectangle(outline, MachGui::LIGHTPURPLE(), thickness);
 }
 
 void MachGuiScrollArea::CLASS_INVARIANT
