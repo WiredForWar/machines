@@ -38,7 +38,7 @@ jobs:
         SKIP_GRAYSCALE=y machines-data/scripts/install.sh
 
     - name: Upload the data
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: machines-data
         path: ${{github.workspace}}/machines-data/install/machines
@@ -63,7 +63,7 @@ jobs:
         machines-packager/data-pack/gen-machines-data-pack.sh
 
     - name: Upload the data pack
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: machines-data-pack
         path: ${{github.workspace}}/machines-data-pack-*.zip
@@ -272,7 +272,7 @@ jobs:
 
     - name: Upload the package
       if: matrix.package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
-        name: ${{ matrix.package-name }}
         path: ${{github.workspace}}/install/${{ matrix.package-name }}-*.7z
+        archive: false
