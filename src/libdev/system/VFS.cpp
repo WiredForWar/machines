@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <filesystem>
-#include <ranges>
 #include <vector>
 
 #include "spdlog/spdlog.h"
@@ -88,7 +87,7 @@ std::vector<std::string> getFileOverrides(std::string path)
     if (SysPathName::existsAsFile(path))
         result.emplace_back(path);
 
-    for (const std::string& location : std::ranges::reverse_view(overrideLocations))
+    for (const std::string& location : overrideLocations)
     {
         std::string lookup = location + path;
         if (SysPathName::existsAsFile(lookup))
