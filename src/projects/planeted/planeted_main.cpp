@@ -2,6 +2,7 @@
 
 #include "MachinesVersion.hpp"
 #include "crashdump/CrashDump.hpp"
+#include "crashdump/CrashTest.hpp"
 
 #include <SDL3/SDL.h>
 // The SDL2main library is gone in SDL3; the header-only SDL_main.h provides
@@ -17,6 +18,10 @@ int main(int argc, char* argv[])
     // The editor carries no product version of its own worth reporting, so the
     // build is the only thing that identifies which one a report came from.
     CrashDump::setApplicationInfo("Machines Planet Editor", {}, machinesBuildVersion());
+
+    // Ahead of SDL, so that provoking a crash needs no window, no graphics
+    // device and no game data, and can therefore run on a build machine.
+    CrashDump::runCrashTestIfRequested(argc, argv);
 
     SDLApp app(argc, argv);
     app.setAppName("Machines Planet Editor");

@@ -2,6 +2,8 @@
 set(CRASHDUMP_SOURCES
     CrashDump.cpp
     CrashDump.hpp
+    CrashTest.cpp
+    CrashTest.hpp
     SafeFormat.cpp
     internal/CrashDumpInternal.hpp
     internal/ReportWriter.hpp

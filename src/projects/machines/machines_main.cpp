@@ -2,6 +2,7 @@
 
 #include "MachinesVersion.hpp"
 #include "crashdump/CrashDump.hpp"
+#include "crashdump/CrashTest.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -17,6 +18,10 @@ int main(int argc, char* argv[])
     // channel already places in the user's own data directory.
     CrashDump::initialize("logs");
     CrashDump::setApplicationInfo("Machines", machinesVersion(), machinesBuildVersion());
+
+    // Ahead of SDL, so that provoking a crash needs no window, no graphics
+    // device and no game data, and can therefore run on a build machine.
+    CrashDump::runCrashTestIfRequested(argc, argv);
 
     SDLApp app(argc, argv);
     app.setAppName("Machines");
