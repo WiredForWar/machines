@@ -170,7 +170,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToStationaryObject(
             line,
             range,
             checkId,
-            W4dEntity::Accuracy::Mesh,
+            W4dEntity::Accuracy::Parts,
             &pIntersectingEntity,
             &distanceToIntersection,
             W4dDomain::EXCLUDE_NOT_SOLID | W4dDomain::EXCLUDE_NOT_STATIONARY))

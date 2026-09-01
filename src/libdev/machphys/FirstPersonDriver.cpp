@@ -355,7 +355,7 @@ void MachPhys1stPersonDriver::aimData()
         lineOfSight,
         lineLength,
         checkId,
-        W4dEntity::Accuracy::Mesh,
+        W4dEntity::Accuracy::Parts,
         &pHitEntity_,
         &hitDistance_,
         pImpl_->pAimDataFilter_);
@@ -382,7 +382,7 @@ void MachPhys1stPersonDriver::aimData()
             lineOfSight,
             farCommandDistance,
             checkId,
-            W4dEntity::Accuracy::Mesh,
+            W4dEntity::Accuracy::Parts,
             &pFarCmdHitEntity_,
             &farCmdHitDistance_,
             pImpl_->pAimDataFilter_);
