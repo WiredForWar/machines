@@ -784,6 +784,11 @@ bool W4dComposite::intersectsCompositeBoundingVolume(const MexLine3d& line, MATH
     return result;
 }
 
+bool W4dComposite::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
+{
+    return defaultCompositeIntersectsLine(line, pDistance, accuracy);
+}
+
 bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy)
     const
 {

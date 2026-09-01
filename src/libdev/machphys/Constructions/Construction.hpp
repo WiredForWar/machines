@@ -85,7 +85,6 @@ public:
     // POST( result != NULL );
 
     // Inherited from W4dEntity
-    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     // Called when a building is captured and changed to a new race
     void changeRace(MachPhys::Race);

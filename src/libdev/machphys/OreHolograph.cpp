@@ -180,12 +180,6 @@ void MachPhysOreHolograph::convertMaterials(MachPhys::Race race)
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-bool MachPhysOreHolograph::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
-{
-    // Just check against bounding volume
-    return defaultCompositeIntersectsLine(line, pDistance, accuracy);
-}
-
 MachPhysOreHolograph::MachPhysOreHolograph(PerConstructor con)
     : W4dComposite(con)
 {

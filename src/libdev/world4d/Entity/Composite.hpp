@@ -101,8 +101,8 @@ public:
     void updateCompositeBoundingVolume();
 
     // Inherited from W4dEntity
-    // virtual bool intersectsLine( const MexLine3d& line, MATHEX_SCALAR* pDistance,
-    //                          Accuracy accuracy ) const = 0;
+    // Inherited from W4dEntity
+    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     // Default implementation of intersects() above.
     // Volume accuracy just checks against compositeBoundingVolume().

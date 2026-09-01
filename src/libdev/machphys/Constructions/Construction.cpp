@@ -810,12 +810,6 @@ void MachPhysConstruction::setupEntrances()
     }
 }
 
-bool MachPhysConstruction::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
-{
-    // Just check against bounding volume
-    return defaultCompositeIntersectsLine(line, pDistance, accuracy);
-}
-
 void MachPhysConstruction::changeRace(MachPhys::Race newRace)
 {
     CB_DEPIMPL(MachPhys::Race, race_);

@@ -44,7 +44,6 @@ public:
     ~W4dGenericComposite() override;
 
     // Inherited from W4dEntity
-    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     void CLASS_INVARIANT;
 

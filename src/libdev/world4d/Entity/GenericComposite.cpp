@@ -49,12 +49,6 @@ void W4dGenericComposite::CLASS_INVARIANT
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// virtual
-bool W4dGenericComposite::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
-{
-    // Use the default
-    return defaultCompositeIntersectsLine(line, pDistance, accuracy);
-}
 //////////////////////////////////////////////////////////////////////////////////////////
 
 W4dGenericComposite::W4dGenericComposite(
