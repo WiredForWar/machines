@@ -2171,6 +2171,16 @@ bool MachGuiStartupScreens::animationFinished()
     return pPlayingSmacker_ == nullptr || pPlayingSmacker_->isFinished();
 }
 
+void MachGuiStartupScreens::clearBothBuffers()
+{
+    const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
+    RenSurface backBuf = RenDevice::current()->backSurface();
+    Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
+    RenDevice::current()->flushCommandBuffer();
+    RenDevice::current()->display()->flipBuffers();
+    Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
+}
+
 void MachGuiStartupScreens::prepareForAnimation()
 {
     desiredCdTrack(DONT_PLAY_CD); // Don't play music if we're streaming video off CD
@@ -2182,14 +2192,7 @@ void MachGuiStartupScreens::prepareForAnimation()
     // leaves the rest of the buffer as it found it, and a buffer that was not
     // cleared still holds the menu this is played over -- which is the menu
     // appearing and disappearing again on alternate frames.
-    const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-    {
-        RenSurface backBuf = RenDevice::current()->backSurface();
-        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
-        RenDevice::current()->flushCommandBuffer();
-        RenDevice::current()->display()->flipBuffers();
-        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
-    }
+    clearBothBuffers();
 
     // Clear the entire screen to stop previous screen from showing through black
     // borders. Deferred to the next end2D(), which a front-buffer animation never

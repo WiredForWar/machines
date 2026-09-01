@@ -400,6 +400,10 @@ protected:
     // is what decides between the two loop cycles and the two viewports.
     bool isGameContext() const;
 
+    // Fill both of the display's buffers with black. Both, because each is put on
+    // screen in turn and a buffer left alone still holds whatever was drawn into
+    // it last; drawing twice across a swap is how the two come to agree.
+    void clearBothBuffers();
 
     // Setup victory condition in MachLogGameCreationData. Basically converts from a MachGui enum
     // to a MachLog enum.
