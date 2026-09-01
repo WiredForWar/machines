@@ -1,6 +1,7 @@
 #include "sdlapp.hpp"
 
 #include "MachinesVersion.hpp"
+#include "crashdump/CrashDump.hpp"
 
 #include <SDL3/SDL.h>
 // The SDL2main library is gone in SDL3; the header-only SDL_main.h provides
@@ -9,6 +10,14 @@
 
 int main(int argc, char* argv[])
 {
+    // Before anything else, so that a failure during start-up is reported too.
+    // Reports go where the log does, which is a directory every packaging
+    // channel already places in the user's own data directory.
+    CrashDump::initialize("logs");
+    // The editor carries no product version of its own worth reporting, so the
+    // build is the only thing that identifies which one a report came from.
+    CrashDump::setApplicationInfo("Machines Planet Editor", {}, machinesBuildVersion());
+
     SDLApp app(argc, argv);
     app.setAppName("Machines Planet Editor");
     app.setVersion("v0.00.01");

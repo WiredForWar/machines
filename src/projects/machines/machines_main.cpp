@@ -1,6 +1,7 @@
 #include "sdlapp.hpp"
 
 #include "MachinesVersion.hpp"
+#include "crashdump/CrashDump.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -11,6 +12,12 @@
 
 int main(int argc, char* argv[])
 {
+    // Before anything else, so that a failure during start-up is reported too.
+    // Reports go where the log does, which is a directory every packaging
+    // channel already places in the user's own data directory.
+    CrashDump::initialize("logs");
+    CrashDump::setApplicationInfo("Machines", machinesVersion(), machinesBuildVersion());
+
     SDLApp app(argc, argv);
     app.setAppName("Machines");
     app.setVersion(machinesVersion());
