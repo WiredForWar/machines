@@ -41,6 +41,15 @@
 
 #include <utility>
 
+// How far from a model the cursor still counts as being on it, in metres. A
+// player aims at the outline of a thing rather than at its triangles, and thin
+// parts -- an arm, an antenna -- are a poor target on their own.
+//
+// Metres and not pixels: the same point over a model then answers the same way
+// at every zoom and every resolution, so a gap between a machine's arms is a
+// gap whatever the camera is doing.
+static constexpr MATHEX_SCALAR cursorTolerance = 1.0;
+
 MachWorldViewWindow::MachWorldViewWindow(
     MachInGameScreen* pParent,
     const Gui::Boundary& relativeBox,
@@ -209,7 +218,7 @@ void MachWorldViewWindow::dispatchCursor(
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::Accuracy::Parts,
+        W4dEntity::Accuracy(W4dEntity::Accuracy::Mesh, cursorTolerance),
         &pEntity,
         &distance,
         pInGameScreen_->cursorFilter());
