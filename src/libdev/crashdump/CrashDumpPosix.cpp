@@ -143,6 +143,43 @@ void writeModuleInfo(ReportWriter& writer)
     writer.copyFile("/proc/self/maps");
 }
 
+bool debuggerAttached()
+{
+    // TracerPid in /proc/self/status is nonzero exactly while something is
+    // attached, which is the only portable-enough answer Linux offers.
+    const int status = open("/proc/self/status", O_RDONLY);
+
+    if (status < 0)
+    {
+        return false;
+    }
+
+    char buffer[4096]{};
+    const ssize_t length = read(status, buffer, sizeof(buffer) - 1);
+    close(status);
+
+    if (length <= 0)
+    {
+        return false;
+    }
+
+    const char* tracer = std::strstr(buffer, "TracerPid:");
+
+    if (tracer == nullptr)
+    {
+        return false;
+    }
+
+    tracer += sizeof("TracerPid:") - 1;
+
+    while (*tracer == ' ' || *tracer == '	')
+    {
+        ++tracer;
+    }
+
+    return *tracer != '0';
+}
+
 void installHandlers()
 {
     // Twice what the platform suggests, and never less than this, so that a

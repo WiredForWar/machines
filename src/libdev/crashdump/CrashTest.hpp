@@ -7,8 +7,10 @@ namespace CrashDump
 // failure it names. Returns false when the argument is absent, so that start-up
 // carries on; does not return at all when it is present and understood.
 //
-// The kinds are segv, abort, terminate and stack-overflow everywhere, and
-// invalid-parameter on Windows. An unrecognised one exits with status 2 rather
+// The kinds are segv, abort, terminate, stack-overflow and hang everywhere, and
+// invalid-parameter on Windows. The last of those is not a crash: it arms the
+// watchdog and then starves it, so that the hang report can be checked by the
+// same means as the crash ones. An unrecognised one exits with status 2 rather
 // than starting the game, so that a typo is not mistaken for a passing check.
 //
 // This is deliberately available in a release build. A trigger that exists only

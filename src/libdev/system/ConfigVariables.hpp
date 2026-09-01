@@ -7,6 +7,10 @@
 namespace Config
 {
 
+// Seconds the main loop may go without reporting progress before a hang report
+// is written. Zero disables the watchdog.
+extern Variable<int32_t> watchdogTimeout;
+
 extern Variable<int32_t> gfxMsaaBuffers;
 extern Variable<int32_t> gfxMsaaSamples;
 

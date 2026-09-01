@@ -362,6 +362,11 @@ void writeModuleInfo(ReportWriter& writer)
     writer.newLine();
 }
 
+bool debuggerAttached()
+{
+    return IsDebuggerPresent() != FALSE;
+}
+
 void installHandlers()
 {
     previousFilter_ = SetUnhandledExceptionFilter(exceptionFilter);

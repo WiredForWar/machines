@@ -1,7 +1,11 @@
 #include "crashdump/CrashTest.hpp"
 
+#include "crashdump/CrashDump.hpp"
+
+#include <chrono>
 #include <stdexcept>
 #include <string_view>
+#include <thread>
 
 #include <cstdio>
 #include <cstdlib>
@@ -93,6 +97,21 @@ CRASHDUMP_NOINLINE void crashTestInvalidParameter()
 }
 #endif
 
+// Not a crash: the watchdog is armed and then starved, which is what a hang
+// looks like from its side. Long enough for several reports, so that the
+// "compare successive stacks" advice in them can be taken.
+CRASHDUMP_NOINLINE void crashTestHang()
+{
+    constexpr std::chrono::seconds timeout{ 2 };
+
+    startWatchdog(timeout);
+
+    std::this_thread::sleep_for(timeout * 6);
+
+    // A hang that ends is still a hang, and the reports are already written.
+    std::_Exit(0);
+}
+
 std::string_view crashTestArgument(int argc, char* argv[])
 {
     constexpr std::string_view option{ "--crash-test=" };
@@ -138,6 +157,10 @@ bool runCrashTestIfRequested(int argc, char* argv[])
     else if (kind == "stack-overflow")
     {
         crashTestRecurse(1);
+    }
+    else if (kind == "hang")
+    {
+        crashTestHang();
     }
 #ifdef _WIN32
     else if (kind == "invalid-parameter")

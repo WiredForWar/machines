@@ -196,6 +196,7 @@ void shutdown()
         return;
     }
 
+    stopWatchdog();
     uninstallHandlers();
 
     initialized_ = false;

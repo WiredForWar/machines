@@ -1,6 +1,7 @@
 #include "afx/AfxSdlApp.hpp"
 
 #include "base/Diag.hpp"
+#include "crashdump/CrashDump.hpp"
 #include "device/Mouse.hpp"
 #include "device/Keyboard.hpp"
 
@@ -19,6 +20,8 @@
 
 #include <SDL3/SDL.h>
 
+#include <charconv>
+#include <optional>
 #include <vector>
 
 AfxSdlApp::AfxSdlApp(int argc, char* argv[])
@@ -175,8 +178,13 @@ void AfxSdlApp::coreLoop()
 {
     bool callApp = true;
 
+    startWatchdog();
+
     while (! isFinished())
     {
+        // One relaxed store, telling the watchdog the loop is still turning.
+        CrashDump::heartbeat();
+
         // Check for messages in the queue.
         SDL_Event ev;
         if (SDL_PollEvent(&ev))
@@ -230,8 +238,44 @@ void AfxSdlApp::coreLoop()
         }
     }
 
+    CrashDump::stopWatchdog();
+
     NEIL_STREAM("Finished app" << std::endl);
     POST(isFinished());
+}
+
+void AfxSdlApp::startWatchdog()
+{
+    // The command line wins so that one session can be given a different
+    // setting without editing anything, but the configuration file is where it
+    // normally lives: the people who hit a hang start the game from a desktop
+    // entry or a packaged launcher, where passing a flag is not something they
+    // can reasonably be asked to do.
+    int timeout = configuration_.getConfig().watchdogTimeout;
+
+    if (const std::optional<std::string_view> given = invokeArgs().value("--watchdog-timeout"))
+    {
+        int parsed{};
+        const std::from_chars_result result = std::from_chars(given->data(), given->data() + given->size(), parsed);
+
+        if (result.ec == std::errc() && parsed >= 0)
+        {
+            timeout = parsed;
+        }
+        else
+        {
+            spdlog::warn("Ignoring --watchdog-timeout={}: expected a whole number of seconds", *given);
+        }
+    }
+
+    if (timeout <= 0)
+    {
+        spdlog::info("Hang watchdog disabled");
+        return;
+    }
+
+    spdlog::info("Hang watchdog armed at {} seconds", timeout);
+    CrashDump::startWatchdog(std::chrono::seconds(timeout));
 }
 
 void AfxSdlApp::initLogger()

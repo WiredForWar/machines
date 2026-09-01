@@ -88,6 +88,7 @@ add_library(base ${GAME_COMPONENT_LIB_TYPE} ${BASE_SOURCES})
 add_library(LibDev::base ALIAS base)
 
 target_link_libraries(base PUBLIC
+    LibDev::crashdump
     LibDev::stdlib
 
     spdlog::spdlog

@@ -37,6 +37,7 @@ void writeModuleInfo(ReportWriter& writer);
 
 // Implemented once per platform.
 unsigned long long currentProcessId();
+bool debuggerAttached();
 void installHandlers();
 void uninstallHandlers();
 

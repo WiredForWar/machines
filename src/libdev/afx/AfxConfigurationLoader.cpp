@@ -20,6 +20,7 @@ AfxConfigurationData* AfxConfigurationLoader::load()
     AfxConfigurationData* config = new AfxConfigurationData();
     config->multisampleBuffers = Config::gfxMsaaBuffers.get();
     config->multisampleSamples = Config::gfxMsaaSamples.get();
+    config->watchdogTimeout = Config::watchdogTimeout.get();
 
     return config;
 }

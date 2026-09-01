@@ -11,6 +11,8 @@ namespace CrashDump
 namespace
 {
 
+HANDLE watchedThread_{};
+
 // The unwinder is the one in ntdll rather than the one in dbghelp, because it
 // needs no symbol handler to be initialised and takes no loader lock: a process
 // that is dying may hold either. It reads the unwind tables the PE image
@@ -135,6 +137,50 @@ void warmUpStackWalk()
 {
     // The unwind tables are part of the image and the unwinder is in ntdll, so
     // nothing here is resolved lazily and there is nothing to warm up.
+}
+
+void rememberWatchedThread()
+{
+    // GetCurrentThread() answers a pseudo-handle meaning "whichever thread is
+    // asking", which would name the wrong thread the moment another one used
+    // it. Duplicating it produces a handle that keeps meaning this thread.
+    DuplicateHandle(
+        GetCurrentProcess(),
+        GetCurrentThread(),
+        GetCurrentProcess(),
+        &watchedThread_,
+        0,
+        FALSE,
+        DUPLICATE_SAME_ACCESS);
+}
+
+bool captureWatchedThreadStackTrace(StackTrace& trace)
+{
+    if (watchedThread_ == nullptr)
+    {
+        return false;
+    }
+
+    // Suspending is what makes the walk meaningful: an unwind of a stack that
+    // is still being written to reads frames that no longer exist.
+    if (SuspendThread(watchedThread_) == static_cast<DWORD>(-1))
+    {
+        return false;
+    }
+
+    CONTEXT context{};
+    context.ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER;
+
+    const bool captured = GetThreadContext(watchedThread_, &context) != FALSE;
+
+    if (captured)
+    {
+        walk(trace, context, 0);
+    }
+
+    ResumeThread(watchedThread_);
+
+    return captured;
 }
 
 } // namespace CrashDump

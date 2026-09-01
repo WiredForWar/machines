@@ -34,6 +34,7 @@ private:
     void coreLoop() override;
 
     void initLogger();
+    void startWatchdog();
 
     void dispatchEvent(const SDL_Event* event);
     void dispatchMouseButtonEvent(const SDL_Event* event, bool pressed);

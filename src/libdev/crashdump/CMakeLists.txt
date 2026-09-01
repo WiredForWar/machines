@@ -5,6 +5,7 @@ set(CRASHDUMP_SOURCES
     CrashTest.cpp
     CrashTest.hpp
     SafeFormat.cpp
+    Watchdog.cpp
     internal/CrashDumpInternal.hpp
     internal/ReportWriter.hpp
     internal/SafeFormat.hpp
@@ -27,6 +28,11 @@ endif()
 
 add_library(crashdump ${GAME_COMPONENT_LIB_TYPE} ${CRASHDUMP_SOURCES})
 add_library(LibDev::crashdump ALIAS crashdump)
+
+# The watchdog runs on a thread of its own, and asks the watched thread for its
+# stack through a signal on POSIX.
+find_package(Threads REQUIRED)
+target_link_libraries(crashdump PUBLIC Threads::Threads)
 
 # Deliberately no dependency on the rest of the engine: a handler that has to
 # call into the code that is dying is a handler that can die with it.

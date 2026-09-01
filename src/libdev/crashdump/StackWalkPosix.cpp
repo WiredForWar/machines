@@ -1,7 +1,11 @@
 #include "crashdump/internal/StackWalk.hpp"
 
+#include <cerrno>
 #include <csignal>
 
+#include <pthread.h>
+#include <semaphore.h>
+#include <time.h>
 #include <ucontext.h>
 #include <unwind.h>
 
@@ -10,6 +14,20 @@ namespace CrashDump
 
 namespace
 {
+
+// SIGUSR2 rather than SIGUSR1: the game does not use either today, but SIGUSR1
+// is the one a profiler or a debugger is most likely to claim, and a collision
+// would send this handler somebody else's interrupts.
+constexpr int captureSignal{ SIGUSR2 };
+
+// A thread that has not answered in this long is not going to.
+constexpr int captureTimeoutSeconds{ 2 };
+
+pthread_t watchedThread_{};
+bool watchedThreadSet_{};
+
+StackTrace capturedTrace_{};
+sem_t captureDone_{};
 
 // The address the interrupted thread was executing at. The unwind below starts
 // from inside the handler, so its innermost entries describe the handler and
@@ -88,6 +106,20 @@ void capture(StackTrace& trace, std::size_t skipFrames)
     _Unwind_Backtrace(collectFrame, &state);
 }
 
+// Runs on the watched thread. sem_post is on the short list of functions that
+// stay safe in a signal handler, which is why the answer is handed back through
+// a semaphore rather than a condition variable.
+void captureHandler(int number, siginfo_t* info, void* context)
+{
+    static_cast<void>(number);
+    static_cast<void>(info);
+    static_cast<void>(context);
+
+    capture(capturedTrace_, 2);
+
+    sem_post(&captureDone_);
+}
+
 } // namespace
 
 void captureStackTrace(StackTrace& trace, std::size_t skipFrames)
@@ -124,6 +156,73 @@ void warmUpStackWalk()
 {
     StackTrace trace;
     captureStackTrace(trace, 0);
+}
+
+void rememberWatchedThread()
+{
+    sem_init(&captureDone_, 0, 0);
+
+    watchedThread_ = pthread_self();
+    watchedThreadSet_ = true;
+}
+
+bool captureWatchedThreadStackTrace(StackTrace& trace)
+{
+    if (! watchedThreadSet_)
+    {
+        return false;
+    }
+
+    // There is no portable way to read another thread's stack, so the watched
+    // thread is asked to read its own: a signal interrupts it wherever it is,
+    // the handler captures the stack it was interrupted on, and this thread
+    // waits for the answer. A thread wedged in the kernel with the signal
+    // blocked will never answer, which is what the timeout is for -- and a hang
+    // is exactly when that is worth allowing for.
+    struct sigaction action{};
+    action.sa_sigaction = captureHandler;
+    action.sa_flags = SA_SIGINFO | SA_ONSTACK;
+    sigemptyset(&action.sa_mask);
+
+    struct sigaction previous{};
+
+    if (sigaction(captureSignal, &action, &previous) != 0)
+    {
+        return false;
+    }
+
+    capturedTrace_ = StackTrace{};
+
+    bool captured{};
+
+    if (pthread_kill(watchedThread_, captureSignal) == 0)
+    {
+        timespec deadline{};
+
+        if (clock_gettime(CLOCK_REALTIME, &deadline) == 0)
+        {
+            deadline.tv_sec += captureTimeoutSeconds;
+
+            while (sem_timedwait(&captureDone_, &deadline) != 0)
+            {
+                if (errno != EINTR)
+                {
+                    break;
+                }
+            }
+
+            captured = capturedTrace_.frameCount != 0;
+        }
+    }
+
+    sigaction(captureSignal, &previous, nullptr);
+
+    if (captured)
+    {
+        trace = capturedTrace_;
+    }
+
+    return captured;
 }
 
 } // namespace CrashDump

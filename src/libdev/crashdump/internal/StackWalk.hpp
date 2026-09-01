@@ -36,4 +36,14 @@ void captureStackTraceFromContext(StackTrace& trace, void* context, void* thread
 // from ordinary code before any handler can run.
 void warmUpStackWalk();
 
+// Remember the calling thread, so that another thread can capture its stack
+// later. Call on the thread that is to be watched.
+void rememberWatchedThread();
+
+// Capture the stack of the thread rememberWatchedThread() was called on, from
+// a different thread. The watched thread is held still for as long as it takes
+// and left running afterwards. Answers false if there is no watched thread, or
+// if it could not be held still, or if it did not respond in time.
+bool captureWatchedThreadStackTrace(StackTrace& trace);
+
 } // namespace CrashDump

@@ -3,6 +3,8 @@
 namespace Config
 {
 
+Variable<int32_t> watchdogTimeout("Diagnostics/WatchdogTimeout", 20);
+
 Variable<int32_t> gfxMsaaBuffers("Options/MSAA/Buffers", 1);
 Variable<int32_t> gfxMsaaSamples("Options/MSAA/Samples", 2);
 
