@@ -1554,6 +1554,17 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
         // appear in the same position.
         updateGui();
 
+        // Either of the two above can be what ends the app -- a timeout reaching
+        // the last context, or the button that asks to leave. What that left in
+        // the buffer is the last thing the player sees, for as long as the window
+        // takes to go away, so the menu must not be drawn over it. The in-game
+        // loop stops here for the same reason.
+        if (finishApp_)
+        {
+            pSceneManager_->pDevice()->endFrame();
+            return;
+        }
+
         pSceneManager_->pDevice()->start2D();
         displayGui();
         playSmackerAnimations();
