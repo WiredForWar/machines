@@ -22,6 +22,7 @@
 #include "world4d/ForwardPlans.hpp"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 template <class T> class ctl_vector;
@@ -350,10 +351,10 @@ public:
     // PRE( hasMesh() )
     bool intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const;
 
-    // True if this entity's bounding volume, grown by tolerance on every side,
-    // intersects line.
-    // If so returns the distance from line.end1() to the intersection point in pDistance.
-    bool intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const;
+    // How far from line.end1() line meets this entity's bounding volume, grown by
+    // tolerance on every side, or nothing if it never does. Zero when line starts
+    // inside the volume.
+    std::optional<MATHEX_SCALAR> intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance) const;
 
     ////////////////////////////////////////////////
 

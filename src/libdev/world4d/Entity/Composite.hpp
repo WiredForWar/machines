@@ -19,6 +19,8 @@
 #include "world4d/ForwardPlans.hpp"
 #include "world4d/Entity/Entity.hpp"
 
+#include <optional>
+
 template <class T> class ctl_vector;
 template <class T> class ctl_pvector;
 
@@ -108,9 +110,10 @@ public:
     // Anything more, on a hit, also checks the composite and each link.
     bool defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
 
-    // True if the composite's bounding volume intersects the infinite line through line.
-    // If so returns the distance from line.end1() to the intersection point in pDistance.
-    bool intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance)
+    // How far from line.end1() line meets the composite's bounding volume, grown by
+    // tolerance on every side, or nothing if it never does. Zero when line starts
+    // inside the volume.
+    std::optional<MATHEX_SCALAR> intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance)
         const;
 
     void CLASS_INVARIANT;

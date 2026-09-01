@@ -1638,15 +1638,17 @@ bool W4dEntity::defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDis
 {
     TEST_INVARIANT;
 
-    if (accuracy.level() != Accuracy::Mesh || !hasMesh())
-        return intersectsBoundingVolume(line, accuracy.tolerance(), pDistance);
-
-    // The box first, and its answer thrown away: a line that misses the box
-    // misses every triangle inside it, and the box costs a fraction of what the
-    // triangles do.
-    MATHEX_SCALAR boxDistance;
-    if (!intersectsBoundingVolume(line, accuracy.tolerance(), &boxDistance))
+    // The box first: a line that misses the box misses every triangle inside it,
+    // and the box costs a fraction of what the triangles do.
+    const std::optional<MATHEX_SCALAR> boxDistance = intersectsBoundingVolume(line, accuracy.tolerance());
+    if (!boxDistance.has_value())
         return false;
+
+    if (accuracy.level() != Accuracy::Mesh || !hasMesh())
+    {
+        *pDistance = boxDistance.value();
+        return true;
+    }
 
     return intersectsMesh(line, accuracy.tolerance(), pDistance);
 }
@@ -1674,8 +1676,7 @@ bool W4dEntity::intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, M
     return instance.mesh()->intersectsLine(localLine, tolerance, pMeshScale, pExtraScale, pDistance);
 }
 
-bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance)
-    const
+std::optional<MATHEX_SCALAR> W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance) const
 {
     TEST_INVARIANT;
 
@@ -1699,16 +1700,12 @@ bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR to
 
     // Intersect with the bounding volume
     MATHEX_SCALAR entryDistance, exitDistance;
-    bool result = grown.intersects(localLine, &entryDistance, &exitDistance);
+    if (!grown.intersects(localLine, &entryDistance, &exitDistance))
+        return std::nullopt;
 
-    if (result)
-    {
-        // If intersects after the line start point, use the entry distance, otherwise return
-        // zero indicating that the start point is inside the volume
-        *pDistance = (entryDistance > 0.0 ? entryDistance : 0.0);
-    }
-
-    return result;
+    // If intersects after the line start point, use the entry distance, otherwise return
+    // zero indicating that the start point is inside the volume
+    return entryDistance > 0.0 ? entryDistance : 0.0;
 }
 
 // static

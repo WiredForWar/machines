@@ -760,10 +760,8 @@ void W4dComposite::updateCompositeBoundingVolume()
     }
 }
 
-bool W4dComposite::intersectsCompositeBoundingVolume(
-    const MexLine3d& line,
-    MATHEX_SCALAR tolerance,
-    MATHEX_SCALAR* pDistance) const
+std::optional<MATHEX_SCALAR>
+W4dComposite::intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance) const
 {
     CB_W4dComposite_DEPIMPL();
     // Get the global transform, and invert it so that we can produce a copy
@@ -785,16 +783,12 @@ bool W4dComposite::intersectsCompositeBoundingVolume(
 
     // Intersect with the bounding volume
     MATHEX_SCALAR entryDistance, exitDistance;
-    bool result = grown.intersects(localLine, &entryDistance, &exitDistance);
+    if (!grown.intersects(localLine, &entryDistance, &exitDistance))
+        return std::nullopt;
 
-    if (result)
-    {
-        // If intersects after the line start point, use the entry distance, otherwise return
-        // zero indicating that the start point is inside the volume
-        *pDistance = (entryDistance > 0.0 ? entryDistance : 0.0);
-    }
-
-    return result;
+    // If intersects after the line start point, use the entry distance, otherwise return
+    // zero indicating that the start point is inside the volume
+    return entryDistance > 0.0 ? entryDistance : 0.0;
 }
 
 bool W4dComposite::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
@@ -807,53 +801,57 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
 {
     CB_W4dComposite_DEPIMPL();
     // First check the all encompassing bounding volume
-    bool result = intersectsCompositeBoundingVolume(line, accuracy.tolerance(), pDistance);
+    const std::optional<MATHEX_SCALAR> volumeDistance = intersectsCompositeBoundingVolume(line, accuracy.tolerance());
 
-    // If have a hit and more than the one volume was asked for, check each link
-    // plus the composite
-    if (result && accuracy.level() != Accuracy::Volume)
+    if (!volumeDistance.has_value())
+        return false;
+
+    // The one volume was all that was asked for
+    if (accuracy.level() == Accuracy::Volume)
     {
-        // Check the composite itself
-        MATHEX_SCALAR minDistance, foundDistance;
-        result = hasMesh() && defaultIntersectsLine(line, &foundDistance, accuracy);
-        // JON_STREAM("  Composite mesh result " << result << std::endl;)
-        if (result)
-            minDistance = foundDistance;
+        *pDistance = volumeDistance.value();
+        return true;
+    }
 
-        // Now check each link
-        for (W4dLinks::const_iterator it = links_.begin(); it != links_.end(); ++it)
+    // Check the composite itself
+    MATHEX_SCALAR minDistance, foundDistance;
+    bool result = hasMesh() && defaultIntersectsLine(line, &foundDistance, accuracy);
+    // JON_STREAM("  Composite mesh result " << result << std::endl;)
+    if (result)
+        minDistance = foundDistance;
+
+    // Now check each link
+    for (W4dLinks::const_iterator it = links_.begin(); it != links_.end(); ++it)
+    {
+        // Check link has a mesh and is being drawn. A link that is hidden is
+        // not part of the shape anyone can see, so it is not part of the shape
+        // a line should meet -- a machine's jet flames carry a mesh whether
+        // they are lit or not.
+        W4dLink* pLink = *it;
+        if (pLink->hasMesh() && pLink->visible())
         {
-            // Check link has a mesh and is being drawn. A link that is hidden is
-            // not part of the shape anyone can see, so it is not part of the shape
-            // a line should meet -- a machine's jet flames carry a mesh whether
-            // they are lit or not.
-            W4dLink* pLink = *it;
-            if (pLink->hasMesh() && pLink->visible())
+            // JON_STREAM("  Checking link " << (void*)pLink << std::endl; )
+            // Use the intersects method on this link
+            if (pLink->intersectsLine(line, &foundDistance, accuracy))
             {
-                // JON_STREAM("  Checking link " << (void*)pLink << std::endl; )
-                // Use the intersects method on this link
-                if (pLink->intersectsLine(line, &foundDistance, accuracy))
-                {
-                    // Keep track of the nearest hit
-                    if (! result || foundDistance < minDistance)
-                        minDistance = foundDistance;
-                    result = true;
-                    // JON_STREAM("  Hit!" << std::endl;)
-                }
-                else
-                {
-                    // JON_STREAM("  Miss" << std::endl;)
-                }
+                // Keep track of the nearest hit
+                if (!result || foundDistance < minDistance)
+                    minDistance = foundDistance;
+                result = true;
+                // JON_STREAM("  Hit!" << std::endl;)
+            }
+            else
+            {
+                // JON_STREAM("  Miss" << std::endl;)
             }
         }
-
-        // Update the distance parameter if we have a hit
-        if (result)
-            *pDistance = minDistance;
     }
 
     // Update the distance parameter if we have a hit
     // JON_STREAM("W4dComposite::defaultCompositeIntersectsLine exit " << result << " " << *pDistance << std::endl;)
+    if (result)
+        *pDistance = minDistance;
+
     return result;
 }
 
