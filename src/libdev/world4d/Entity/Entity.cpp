@@ -1634,13 +1634,15 @@ void W4dEntity::relativeTransform(const W4dEntity& other, W4dTransform3d* pTrans
     otherInverseGlobalTransform.transform(globalTransform(), pTransform);
 }
 
-bool W4dEntity::defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy) const
+bool W4dEntity::defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
 {
     TEST_INVARIANT;
-    return intersectsBoundingVolume(line, pDistance);
+
+    return intersectsBoundingVolume(line, accuracy.tolerance(), pDistance);
 }
 
-bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR* pDistance) const
+bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance)
+    const
 {
     TEST_INVARIANT;
 
@@ -1651,9 +1653,20 @@ bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR* p
     MexLine3d localLine(line);
     localLine.transform(inverseGlobal);
 
+    const MexAlignedBox3d& volume = boundingVolume();
+    const MexAlignedBox3d grown(
+        MexPoint3d(
+            volume.minCorner().x() - tolerance,
+            volume.minCorner().y() - tolerance,
+            volume.minCorner().z() - tolerance),
+        MexPoint3d(
+            volume.maxCorner().x() + tolerance,
+            volume.maxCorner().y() + tolerance,
+            volume.maxCorner().z() + tolerance));
+
     // Intersect with the bounding volume
     MATHEX_SCALAR entryDistance, exitDistance;
-    bool result = boundingVolume().intersects(localLine, &entryDistance, &exitDistance);
+    bool result = grown.intersects(localLine, &entryDistance, &exitDistance);
 
     if (result)
     {

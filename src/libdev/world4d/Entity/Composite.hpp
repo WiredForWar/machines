@@ -101,7 +101,6 @@ public:
     void updateCompositeBoundingVolume();
 
     // Inherited from W4dEntity
-    // Inherited from W4dEntity
     bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     // Default implementation of intersects() above.
@@ -111,7 +110,8 @@ public:
 
     // True if the composite's bounding volume intersects the infinite line through line.
     // If so returns the distance from line.end1() to the intersection point in pDistance.
-    bool intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR* pDistance) const;
+    bool intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance)
+        const;
 
     void CLASS_INVARIANT;
 

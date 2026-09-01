@@ -760,7 +760,10 @@ void W4dComposite::updateCompositeBoundingVolume()
     }
 }
 
-bool W4dComposite::intersectsCompositeBoundingVolume(const MexLine3d& line, MATHEX_SCALAR* pDistance) const
+bool W4dComposite::intersectsCompositeBoundingVolume(
+    const MexLine3d& line,
+    MATHEX_SCALAR tolerance,
+    MATHEX_SCALAR* pDistance) const
 {
     CB_W4dComposite_DEPIMPL();
     // Get the global transform, and invert it so that we can produce a copy
@@ -770,9 +773,19 @@ bool W4dComposite::intersectsCompositeBoundingVolume(const MexLine3d& line, MATH
     MexLine3d localLine(line);
     localLine.transform(inverseGlobal);
 
+    const MexAlignedBox3d grown(
+        MexPoint3d(
+            compositeBoundingVolume_.minCorner().x() - tolerance,
+            compositeBoundingVolume_.minCorner().y() - tolerance,
+            compositeBoundingVolume_.minCorner().z() - tolerance),
+        MexPoint3d(
+            compositeBoundingVolume_.maxCorner().x() + tolerance,
+            compositeBoundingVolume_.maxCorner().y() + tolerance,
+            compositeBoundingVolume_.maxCorner().z() + tolerance));
+
     // Intersect with the bounding volume
     MATHEX_SCALAR entryDistance, exitDistance;
-    bool result = compositeBoundingVolume_.intersects(localLine, &entryDistance, &exitDistance);
+    bool result = grown.intersects(localLine, &entryDistance, &exitDistance);
 
     if (result)
     {
@@ -794,11 +807,11 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
 {
     CB_W4dComposite_DEPIMPL();
     // First check the all encompassing bounding volume
-    bool result = intersectsCompositeBoundingVolume(line, pDistance);
+    bool result = intersectsCompositeBoundingVolume(line, accuracy.tolerance(), pDistance);
 
     // If have a hit and more than the one volume was asked for, check each link
     // plus the composite
-    if (result && accuracy != Accuracy::Volume)
+    if (result && accuracy.level() != Accuracy::Volume)
     {
         // Check the composite itself
         MATHEX_SCALAR minDistance, foundDistance;

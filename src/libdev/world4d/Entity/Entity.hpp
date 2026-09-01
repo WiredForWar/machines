@@ -290,16 +290,42 @@ public:
     // Ensures the bounding volume is up-to-date
     void updateBoundingVolume();
 
-    // What shape a line test should answer about. Declared in increasing order of
-    // precision, so a test can ask whether it was given at least a given level.
-    enum class Accuracy
+    // What shape a line test should answer about, and how far from that shape
+    // still counts as touching it.
+    class Accuracy
     {
-        // One box round the whole entity.
-        Volume,
-        // A box round each part of it.
-        Parts,
-        // The triangles themselves.
-        Mesh,
+    public:
+        // Declared in increasing order of precision, so a test can ask whether it
+        // was given at least a given level.
+        enum Level
+        {
+            // One box round the whole entity.
+            Volume,
+            // A box round each part of it.
+            Parts,
+            // The triangles themselves.
+            Mesh,
+        };
+
+        // Deliberately implicit: a caller wanting no tolerance says only which
+        // shape it is asking about, and reads exactly as it did before there was
+        // one to ask for.
+        Accuracy(Level level, MATHEX_SCALAR tolerance = 0.0)
+            : level_(level)
+            , tolerance_(tolerance)
+        {
+        }
+
+        Level level() const { return level_; }
+
+        // How far from the shape still counts as touching it, in metres. A
+        // tolerance is a property of the world rather than of the screen, so the
+        // same point answers the same way at any resolution or zoom.
+        MATHEX_SCALAR tolerance() const { return tolerance_; }
+
+    private:
+        Level level_{};
+        MATHEX_SCALAR tolerance_{};
     };
 
     // True if this entity intersects line.
@@ -316,9 +342,10 @@ public:
     // Every accuracy checks against the boundingVolume().
     bool defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
 
-    // True if this entity's bounding volume intersects line.
+    // True if this entity's bounding volume, grown by tolerance on every side,
+    // intersects line.
     // If so returns the distance from line.end1() to the intersection point in pDistance.
-    bool intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR* pDistance) const;
+    bool intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const;
 
     ////////////////////////////////////////////////
 
