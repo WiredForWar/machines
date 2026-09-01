@@ -24,6 +24,7 @@
 #include <memory>
 
 class IDirect3DRMMeshBuilder;
+class MexLine3d;
 class MexTransform3d;
 class GXMesh;
 namespace XFile {
@@ -170,6 +171,21 @@ public:
     size_t faces(size_t* pNVertices, ctl_vector<MexPoint3d>* vertices, ctl_vector<size_t>* faceData) const;
 
     const MexAlignedBox3d& boundingVolume() const;
+
+    // True if the line comes within tolerance of one of this mesh's triangles,
+    // and how far along the line from its first end the nearest of them is. The
+    // line must be in the mesh's own coordinates; the scales, either of which may
+    // be null, are the ones an instance of the mesh is drawn with.
+    //
+    // A tolerance widens the silhouette rather than the solid: it is measured to
+    // the triangle edges, so a line passing over the middle of a face without
+    // touching it is a miss however close it came.
+    bool intersectsLine(
+        const MexLine3d& line,
+        MATHEX_SCALAR tolerance,
+        const RenScale* pMeshScale,
+        const RenScale* pExtraScale,
+        MATHEX_SCALAR* pDistance) const;
 
     // Returns the name of the file that this was loaded from.  For debugging.
     const SysPathName& pathName() const { return pathName_; }

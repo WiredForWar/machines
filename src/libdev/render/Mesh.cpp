@@ -8,6 +8,7 @@
 #include "gxin/GXMesh.hpp"
 #include "utility/Factory.hpp"
 #include "utility/Indent.hpp"
+#include "mathex/Line3d.hpp"
 #include "mathex/Point3d.hpp"
 #include "mathex/Triangle2d.hpp"
 #include "render/Material.hpp"
@@ -2776,6 +2777,85 @@ bool RenMesh::backFace(const RenMaterial& mat) const
     }
 
     return false;
+}
+
+bool RenMesh::intersectsLine(
+    const MexLine3d& line,
+    MATHEX_SCALAR tolerance,
+    const RenScale* pMeshScale,
+    const RenScale* pExtraScale,
+    MATHEX_SCALAR* pDistance) const
+{
+    PRE(pDistance != nullptr);
+
+    if (!vertices_)
+        return false;
+
+    const RenIVertexData& vertices = *vertices_;
+    const bool scaled = pMeshScale != nullptr || pExtraScale != nullptr;
+
+    const auto corner = [&vertices, pMeshScale, pExtraScale, scaled](Ren::VertexIdx index) {
+        const RenIVertex& vertex = vertices[index];
+        MexPoint3d point(vertex.x, vertex.y, vertex.z);
+        if (scaled)
+        {
+            if (pMeshScale)
+                pMeshScale->apply(&point);
+
+            if (pExtraScale)
+                pExtraScale->apply(&point);
+        }
+
+        return point;
+    };
+
+    bool result = false;
+    MATHEX_SCALAR nearest = 0.0;
+
+    const auto keep = [&result, &nearest](MATHEX_SCALAR distance) {
+        if (distance >= 0.0 && (!result || distance < nearest))
+        {
+            nearest = distance;
+            result = true;
+        }
+    };
+
+    for (ctl_min_memory_vector<RenITriangleGroup*>::const_iterator it = triangles_.begin(); it != triangles_.end();
+         ++it)
+    {
+        const RenITriangleGroup& group = **it;
+        const std::size_t nPolygons = group.nTriangles();
+
+        for (Ren::TriangleIdx index = 0; index < nPolygons; ++index)
+        {
+            Ren::VertexIdx first, second, third;
+            group.triangle(index, &first, &second, &third);
+
+            const MexPoint3d corners[3] = { corner(first), corner(second), corner(third) };
+
+            MATHEX_SCALAR distance;
+            if (line.segmentIntersects(corners[0], corners[1], corners[2], &distance))
+            {
+                keep(distance);
+                continue;
+            }
+
+            if (tolerance <= 0.0)
+                continue;
+
+            for (std::size_t edge = 0; edge != 3; ++edge)
+            {
+                const MexLine3d side(corners[edge], corners[(edge + 1) % 3]);
+                if (line.closestApproach(side, &distance) <= tolerance)
+                    keep(distance);
+            }
+        }
+    }
+
+    if (result)
+        *pDistance = nearest;
+
+    return result;
 }
 
 size_t RenMesh::faces(size_t* nVertices, ctl_vector<MexPoint3d>* vertices, ctl_vector<size_t>* faceData) const
