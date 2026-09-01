@@ -31,6 +31,10 @@ void writeBuildInfo(ReportWriter& writer);
 // One raw frame address per line, innermost first.
 void writeStackTrace(ReportWriter& writer, const StackTrace& trace);
 
+// Where the image was loaded, for a report whose addresses have to be rebased
+// against it. Writes nothing where the platform records that elsewhere.
+void writeModuleInfo(ReportWriter& writer);
+
 // Implemented once per platform.
 unsigned long long currentProcessId();
 void installHandlers();

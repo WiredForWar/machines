@@ -185,13 +185,8 @@ void writeTextReport(
     writer.writeUnsigned(currentProcessId());
     writer.newLine();
 
-    // Every frame below is a runtime address, and the binary is relocated at
-    // load time, so this line is what makes them resolvable offline.
-    writer.write("Module base: ");
-    writer.writeAddress(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)));
-    writer.newLine();
-
     writeBuildInfo(writer);
+    writeModuleInfo(writer);
 
     writer.newLine();
     writer.write("--- Call stack ---");
@@ -356,6 +351,15 @@ void invalidParameterHandler(
 unsigned long long currentProcessId()
 {
     return GetCurrentProcessId();
+}
+
+void writeModuleInfo(ReportWriter& writer)
+{
+    // Every frame in a report is a runtime address and the image is relocated
+    // when it loads, so this line is what makes them resolvable offline.
+    writer.write("Module base: ");
+    writer.writeAddress(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)));
+    writer.newLine();
 }
 
 void installHandlers()

@@ -6,6 +6,8 @@
 
 #include <csignal>
 #include <cstdlib>
+#include <cstring>
+#include <fcntl.h>
 #include <unistd.h>
 
 namespace CrashDump
@@ -99,13 +101,7 @@ void crashHandler(int number, siginfo_t* info, void* context)
         captureStackTraceFromContext(trace, context, nullptr);
         writeStackTrace(writer, trace);
 
-        // The frames above are runtime addresses. For a position-independent
-        // binary they mean nothing without the load address, which is what this
-        // section supplies to scripts/symbolicate.sh.
-        writer.newLine();
-        writer.write("--- Memory map ---");
-        writer.newLine();
-        writer.copyFile("/proc/self/maps");
+        writeModuleInfo(writer);
 
         writer.newLine();
         writer.write("=== End of report ===");
@@ -133,6 +129,18 @@ void crashHandler(int number, siginfo_t* info, void* context)
 unsigned long long currentProcessId()
 {
     return static_cast<unsigned long long>(getpid());
+}
+
+void writeModuleInfo(ReportWriter& writer)
+{
+    // The frames in a report are runtime addresses, and for a
+    // position-independent binary they mean nothing without the address it was
+    // loaded at. There is no single such address to print, so the whole map
+    // goes in and scripts/symbolicate.sh picks the entry it needs out of it.
+    writer.newLine();
+    writer.write("--- Memory map ---");
+    writer.newLine();
+    writer.copyFile("/proc/self/maps");
 }
 
 void installHandlers()
