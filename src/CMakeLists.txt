@@ -182,8 +182,14 @@ target_link_libraries(libs INTERFACE
 
 # Strip the release binaries. `-s` is a GNU linker option; the MSVC-style
 # linkers (link.exe, lld-link) keep the symbols in a separate .pdb anyway.
+#
+# Where the debug information can be split out instead, it is: split_debug_info()
+# does the stripping itself, after taking a copy of what `-s` would have
+# discarded. Doing both would leave nothing to split.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MACHINES_CLANG_CL))
-    set(MACHINES_STRIP_LINK_FLAGS -s)
+    if(NOT MACHINES_SPLIT_DEBUG_INFO)
+        set(MACHINES_STRIP_LINK_FLAGS -s)
+    endif()
 endif()
 
 add_executable(machines WIN32
@@ -198,6 +204,8 @@ target_link_libraries(machines
     libs
     LibDev::window_support_sdl
 )
+
+split_debug_info(machines)
 
 if(MSVC)
     # The application manifest is embedded via machines.rc; keep the linker
@@ -218,4 +226,6 @@ if(BUILD_PLANETED)
         libs
         LibDev::window_support_sdl
     )
+
+    split_debug_info(planeted)
 endif()

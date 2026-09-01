@@ -49,6 +49,23 @@ else()
     set(MACHINES_CLANG_CL FALSE)
 endif()
 
+# Emit unwind tables in every configuration. The optimiser is free to drop the
+# frame pointer, and where it does, the tables are the only thing a crash
+# handler can walk the stack from. They cost image size and no run time.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MACHINES_CLANG_CL))
+    check_cxx_compiler_flag("-funwind-tables" CXX_COMPILER_SUPPORTS_UNWIND_TABLES)
+    if(CXX_COMPILER_SUPPORTS_UNWIND_TABLES)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funwind-tables")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -funwind-tables")
+    endif()
+
+    # The C sources -- the audio and video decoders under external/ -- are built
+    # with CMake's own release flags rather than the ones set below, so this is
+    # an append and not a set: replacing them would quietly drop -DNDEBUG and
+    # turn every assertion in them back on.
+    string(APPEND CMAKE_C_FLAGS_RELEASE " -g")
+endif()
+
 # -m32/-m64 are understood by the GCC-compatible drivers only
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT MACHINES_CLANG_CL))
     if(BUILD_32)
@@ -73,7 +90,14 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(NORMAL_CXX_FLAGS "${NORMAL_CXX_FLAGS} -Wno-suggest-override")
     endif()
 
-    set(RELEASE_CXX_FLAGS "-O2")
+    # These replace CMake's own release flags, so -g has to be asked for here or
+    # the build has no debug information at all -- and then splitting it out
+    # produces a .debug file with nothing in it. A stack from such a build
+    # resolves to a plausible-looking file name and no function name, because
+    # all that is left to read is the object files' names in the symbol table.
+    # It costs no run time and stays out of the shipped binary, which is
+    # stripped after the split.
+    set(RELEASE_CXX_FLAGS "-O2 -g")
     set(DEBUG_CXX_FLAGS "-g -O0")
     set(TEST_CXX_FLAGS "-pthread")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -90,7 +114,8 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     else()
         #set(NORMAL_CXX_FLAGS "-Wall -Werror -Wold-style-cast -pedantic-errors -Wmissing-prototypes")
         set(NORMAL_CXX_FLAGS "${MACHINES_COMPILER_BIT_MODE} -Wall")
-        set(RELEASE_CXX_FLAGS "-O2")
+        # -g for the reason the GCC branch above gives.
+        set(RELEASE_CXX_FLAGS "-O2 -g")
         set(DEBUG_CXX_FLAGS "-g -O0")
     endif()
 
@@ -107,7 +132,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # optimiser has to be asked for explicitly. Without it this build came out
     # unoptimised, which cost it about a third of its frame rate next to the
     # MinGW one.
-    set(RELEASE_CXX_FLAGS "/MD /O2 /Ob2")
+    # /Zi puts the debug information in a .pdb beside the binary rather than in
+    # it, which is the MSVC equivalent of the split this build does with objcopy
+    # elsewhere. Without it a release build has no symbols anywhere, and a crash
+    # report from it can never be resolved.
+    set(RELEASE_CXX_FLAGS "/MD /O2 /Ob2 /Zi")
     set(DEBUG_CXX_FLAGS "/MDd /ZI")
 
     if (CMAKE_CXX_STANDARD GREATER_EQUAL 11)
@@ -119,6 +148,12 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # Needed for Debug information (it's set to "No" by default for some reason)
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG")
     set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/DEBUG")
+
+    # /DEBUG is what actually emits the .pdb, and on its own it also turns off
+    # /OPT:REF and /OPT:ICF -- so asking for symbols would quietly hand back a
+    # bigger and slower binary than the one measured. Asking for both again
+    # restores exactly the release the linker would otherwise have produced.
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/DEBUG /OPT:REF /OPT:ICF")
 endif()
 
 # Compiler flags

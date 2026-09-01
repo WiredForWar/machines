@@ -87,6 +87,7 @@ if(DEV_BUILD)
 endif()
 
 include(CompilerSettings)
+include(SplitDebugInfo)
 include(StaticAnalyzers)
 
 # Testing
