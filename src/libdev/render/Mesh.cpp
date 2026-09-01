@@ -2779,17 +2779,14 @@ bool RenMesh::backFace(const RenMaterial& mat) const
     return false;
 }
 
-bool RenMesh::intersectsLine(
+std::optional<MATHEX_SCALAR> RenMesh::intersectsLine(
     const MexLine3d& line,
     MATHEX_SCALAR tolerance,
     const RenScale* pMeshScale,
-    const RenScale* pExtraScale,
-    MATHEX_SCALAR* pDistance) const
+    const RenScale* pExtraScale) const
 {
-    PRE(pDistance != nullptr);
-
     if (!vertices_)
-        return false;
+        return std::nullopt;
 
     const RenIVertexData& vertices = *vertices_;
     const bool scaled = pMeshScale != nullptr || pExtraScale != nullptr;
@@ -2809,15 +2806,11 @@ bool RenMesh::intersectsLine(
         return point;
     };
 
-    bool result = false;
-    MATHEX_SCALAR nearest = 0.0;
+    std::optional<MATHEX_SCALAR> nearest;
 
-    const auto keep = [&result, &nearest](MATHEX_SCALAR distance) {
-        if (distance >= 0.0 && (!result || distance < nearest))
-        {
+    const auto keep = [&nearest](MATHEX_SCALAR distance) {
+        if (distance >= 0.0 && (!nearest.has_value() || distance < nearest.value()))
             nearest = distance;
-            result = true;
-        }
     };
 
     for (ctl_min_memory_vector<RenITriangleGroup*>::const_iterator it = triangles_.begin(); it != triangles_.end();
@@ -2852,10 +2845,7 @@ bool RenMesh::intersectsLine(
         }
     }
 
-    if (result)
-        *pDistance = nearest;
-
-    return result;
+    return nearest;
 }
 
 size_t RenMesh::faces(size_t* nVertices, ctl_vector<MexPoint3d>* vertices, ctl_vector<size_t>* faceData) const

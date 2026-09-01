@@ -344,12 +344,12 @@ public:
     // checks the triangles inside it.
     bool defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
 
-    // True if one of this entity's mesh triangles comes within tolerance of line,
-    // and how far from line.end1() the nearest of them is. The mesh is the one at
-    // the top level of detail, so the answer does not change with how far away
-    // the entity happens to be.
+    // How far from line.end1() the nearest of this entity's mesh triangles comes
+    // within tolerance of line, or nothing if none of them does. The mesh is the
+    // one at the top level of detail, so the answer does not change with how far
+    // away the entity happens to be.
     // PRE( hasMesh() )
-    bool intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const;
+    std::optional<MATHEX_SCALAR> intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance) const;
 
     // How far from line.end1() line meets this entity's bounding volume, grown by
     // tolerance on every side, or nothing if it never does. Zero when line starts

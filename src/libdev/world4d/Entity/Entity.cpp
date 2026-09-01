@@ -1644,16 +1644,18 @@ bool W4dEntity::defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDis
     if (!boxDistance.has_value())
         return false;
 
-    if (accuracy.level() != Accuracy::Mesh || !hasMesh())
-    {
-        *pDistance = boxDistance.value();
-        return true;
-    }
+    const std::optional<MATHEX_SCALAR> distance = accuracy.level() == Accuracy::Mesh && hasMesh()
+        ? intersectsMesh(line, accuracy.tolerance())
+        : boxDistance;
 
-    return intersectsMesh(line, accuracy.tolerance(), pDistance);
+    if (!distance.has_value())
+        return false;
+
+    *pDistance = distance.value();
+    return true;
 }
 
-bool W4dEntity::intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const
+std::optional<MATHEX_SCALAR> W4dEntity::intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance) const
 {
     PRE(hasMesh());
 
@@ -1673,7 +1675,7 @@ bool W4dEntity::intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, M
     const RenScale* pMeshScale = instance.scale().isUnity() ? nullptr : &instance.scale();
     const RenScale* pExtraScale = hasTemporaryScale() ? &temporaryScale() : nullptr;
 
-    return instance.mesh()->intersectsLine(localLine, tolerance, pMeshScale, pExtraScale, pDistance);
+    return instance.mesh()->intersectsLine(localLine, tolerance, pMeshScale, pExtraScale);
 }
 
 std::optional<MATHEX_SCALAR> W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance) const
