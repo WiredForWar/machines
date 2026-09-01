@@ -819,8 +819,7 @@ void RenMesh::resetAllVertexMaterials()
 
 int RenMesh::nTriangles() const
 {
-    TriCounter counter;
-    std::for_each(triangles_.begin(), triangles_.end(), counter);
+    const TriCounter counter = std::for_each(triangles_.begin(), triangles_.end(), TriCounter());
     return counter.nTriangles();
 }
 
