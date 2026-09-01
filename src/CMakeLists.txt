@@ -123,6 +123,7 @@ include_directories(${LOCAL_INCLUDES})
 # Targets
 add_subdirectory(libdev/afx)
 add_subdirectory(libdev/base)
+add_subdirectory(libdev/crashdump)
 add_subdirectory(libdev/ctl)
 add_subdirectory(libdev/ftl)
 add_subdirectory(libdev/mathex)
@@ -166,6 +167,7 @@ target_sources(libs
 
 target_link_libraries(libs INTERFACE
     LibDev::afx
+    LibDev::crashdump
     LibDev::network
     LibDev::render
     LibDev::mathex
