@@ -191,7 +191,6 @@ public:
     void getLocomotionSounds(SoundId* pIdle, SoundId* pMove, const MachPhysMachineData& data) const;
 
     // Inherited from W4dEntity
-    bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const override;
 
     MachPhys::LocomotionType locomotionType() const;
 

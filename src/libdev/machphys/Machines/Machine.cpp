@@ -1329,16 +1329,6 @@ void MachPhysMachine::attachFireball(MachPhysFireball* pFireball, W4dLink* pLink
     hold(pFireball, pLink, localTransform);
 }
 
-bool MachPhysMachine::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const
-{
-    // Just check against composite bounding volume in low and medium, but use
-    // link bounding volumes for high
-    if (accuracy == W4dEntity::Accuracy::Parts)
-        accuracy = W4dEntity::Accuracy::Volume;
-
-    return defaultCompositeIntersectsLine(line, pDistance, accuracy);
-}
-
 void MachPhysMachine::initialiseShakeLinks()
 {
     CB_DEPIMPL(W4dComposite::W4dLinks, shakeLinks_);
