@@ -12,9 +12,10 @@ class ProgressIndicator : public IProgressReporter
 public:
     ProgressIndicator(Gui::Box area, Gui::Colour color);
 
-    size_t report(size_t done, size_t maxDone) override;
-
     void setLimits(double lower, double upper);
+
+protected:
+    std::size_t reportImpl(std::size_t done, std::size_t maxDone) override;
 
 private:
     double lowerLimit_{};

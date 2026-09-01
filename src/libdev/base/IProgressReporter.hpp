@@ -1,31 +1,23 @@
-/*
- * I S T R R E P . H P P
- * (c) Charybdis Limited, 1998. All Rights Reserved
- */
-
-/*
-    IProgressReporter
-
-    Reports the progress of some operation.
-*/
-
-#ifndef BASE_IPROGRESSREPORTER_HPP
-#define BASE_IPROGRESSREPORTER_HPP
+#pragma once
 
 #include <cstddef>
 
+// Reports the progress of a long operation, and paces how often it is asked to.
+//
+// The public entry point is not virtual: it does the bookkeeping every reporter
+// owes regardless of what it displays, then defers to the implementation.
 class IProgressReporter
-// Canonical form revoked
 {
 public:
     virtual ~IProgressReporter() = default;
 
-    // Override this function to provide whatever monitoring you want.
-    // The function must return the amount of work it wants to be done before
-    // it is called again.
-    virtual size_t report(size_t amountOfDone, size_t amountOfTotal) = 0;
+    // Say that amountOfDone of amountOfTotal is finished. Answers how much more
+    // work should be done before reporting again, so that a cheap operation is
+    // not swamped by the reporting of it.
+    std::size_t report(std::size_t amountOfDone, std::size_t amountOfTotal);
+
+protected:
+    // Monitor the operation however the implementation needs to, and answer the
+    // amount of work wanted before the next call.
+    virtual std::size_t reportImpl(std::size_t amountOfDone, std::size_t amountOfTotal) = 0;
 };
-
-#endif // BASE_IPROGRESSREPORTER_HPP
-
-/* End ISTRREP.HPP **************************************************/

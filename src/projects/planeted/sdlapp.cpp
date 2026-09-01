@@ -62,7 +62,7 @@ public:
         lastDone_ = 0;
     }
 
-    size_t report(size_t done, size_t maxDone) override
+    std::size_t reportImpl(std::size_t done, std::size_t maxDone) override
     {
         if (done == lastDone_)
             return 0;

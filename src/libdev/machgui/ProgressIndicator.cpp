@@ -16,7 +16,7 @@ ProgressIndicator::ProgressIndicator(Gui::Box area, Gui::Colour color)
 {
 }
 
-size_t ProgressIndicator::report(size_t done, size_t maxDone)
+std::size_t ProgressIndicator::reportImpl(std::size_t done, std::size_t maxDone)
 {
     if (done == lastDone_)
         return 0;

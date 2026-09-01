@@ -1,5 +1,6 @@
 
 set(BASE_SOURCES
+    IProgressReporter.cpp
     IProgressReporter.hpp
     PersistenceFlagsInBool.cpp
     PersistenceFlagsInBool.hpp
