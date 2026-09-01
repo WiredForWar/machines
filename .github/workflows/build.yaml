@@ -276,3 +276,129 @@ jobs:
       with:
         path: ${{github.workspace}}/install/${{ matrix.package-name }}-*.7z
         archive: false
+
+    # The crash handler is only worth having if it still works in the build that
+    # ships, and the mingw cross build cannot run what it produces. Everything
+    # it needs to be run and then read goes out as one artifact, for the two
+    # jobs below.
+    - name: Upload the unpackaged build and its debug symbols
+      if: matrix.package && contains(matrix.toolchain, 'mingw')
+      uses: actions/upload-artifact@v4
+      with:
+        name: machines-win64-crash-test
+        path: |
+          ${{github.workspace}}/install/machines
+          ${{github.workspace}}/build/machines.exe.debug
+
+  # Provoking a crash needs no window, no graphics device and no game data,
+  # because --crash-test is handled before SDL starts. So this runs the real
+  # mingw binary on a Windows runner that has no GPU, and needs only the
+  # package.
+  crash_test:
+    needs: build
+    runs-on: windows-2025
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: machines-win64-crash-test
+        path: ${{github.workspace}}/artifact
+
+    - name: Provoke each kind of failure
+      shell: pwsh
+      working-directory: ${{github.workspace}}/artifact/install/machines
+      run: |
+        $kinds = @('segv', 'abort', 'terminate', 'invalid-parameter', 'stack-overflow', 'hang')
+        $failures = @()
+
+        foreach ($kind in $kinds) {
+          $before = @(Get-ChildItem logs -Filter *.txt -ErrorAction SilentlyContinue).Count
+
+          $process = Start-Process ./machines.exe -ArgumentList "--crash-test=$kind" -PassThru -NoNewWindow
+
+          if (-not $process.WaitForExit(180000)) {
+            $process.Kill()
+            $failures += "$kind : did not exit"
+            continue
+          }
+
+          $after = @(Get-ChildItem logs -Filter *.txt -ErrorAction SilentlyContinue).Count
+          Write-Host ("{0,-18} exit 0x{1:X8}, reports {2}" -f $kind, $process.ExitCode, $after)
+
+          # The trigger reports these itself, and they mean different things.
+          # 4 in particular is the one worth naming: the failure was provoked
+          # and the process lived, which means the optimiser removed the
+          # trigger and this check was proving nothing.
+          switch ($process.ExitCode) {
+            2 { $failures += "$kind : this build does not know that kind" }
+            4 { $failures += "$kind : the trigger returned instead of crashing" }
+          }
+
+          if ($after -le $before) {
+            $failures += "$kind : wrote no report"
+          }
+        }
+
+        # A hang is reported separately from a crash, and its report is the only
+        # evidence that the watchdog can read a stopped thread at all.
+        if (-not (Get-ChildItem logs -Filter hang_*.txt -ErrorAction SilentlyContinue)) {
+          $failures += "hang : wrote no hang report"
+        }
+
+        if ($failures.Count -gt 0) {
+          Write-Host "::error::$($failures -join '; ')"
+          exit 1
+        }
+
+    - name: Upload the reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: crash-test-reports
+        path: ${{github.workspace}}/artifact/install/machines/logs
+
+  # A report is a list of addresses, and a release binary is stripped, so the
+  # question this answers is whether the split-out debug information can still
+  # turn one back into a function name. Nothing else fails when it cannot: the
+  # build stays green and every future report is quietly worthless.
+  symbolicate_check:
+    needs: crash_test
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: machines-win64-crash-test
+        path: ${{github.workspace}}/artifact
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: crash-test-reports
+        path: ${{github.workspace}}/reports
+
+    - name: Install the mingw binutils
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y binutils-mingw-w64-x86-64
+
+    - name: Resolve a known frame
+      run: |
+        set -euo pipefail
+
+        report=$(grep -l 'Cause: abort' "${{github.workspace}}"/reports/crash_*.txt | head -n 1)
+        symbols="${{github.workspace}}/artifact/build/machines.exe.debug"
+
+        echo "Report:  $report"
+        echo "Symbols: $symbols"
+        echo
+
+        resolved=$(ADDR2LINE=x86_64-w64-mingw32-addr2line             ./scripts/symbolicate.sh "$report" "$symbols")
+
+        echo "$resolved"
+
+        # The abort trigger is marked noinline precisely so that this frame
+        # exists to be found.
+        if ! grep -q 'crashTestAbort' <<< "$resolved"; then
+          echo "::error::the crash trigger did not resolve to a name; the debug information and the binary do not match"
+          exit 1
+        fi
