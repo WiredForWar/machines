@@ -810,9 +810,12 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
         // Now check each link
         for (W4dLinks::const_iterator it = links_.begin(); it != links_.end(); ++it)
         {
-            // Check link has a mesh
+            // Check link has a mesh and is being drawn. A link that is hidden is
+            // not part of the shape anyone can see, so it is not part of the shape
+            // a line should meet -- a machine's jet flames carry a mesh whether
+            // they are lit or not.
             W4dLink* pLink = *it;
-            if (pLink->hasMesh())
+            if (pLink->hasMesh() && pLink->visible())
             {
                 // JON_STREAM("  Checking link " << (void*)pLink << std::endl; )
                 // Use the intersects method on this link
