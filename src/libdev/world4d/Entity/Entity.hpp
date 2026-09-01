@@ -339,8 +339,16 @@ public:
     virtual bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const = 0;
 
     // Appropriate default behaviour for the intersects method.
-    // Every accuracy checks against the boundingVolume().
+    // Every accuracy checks against the boundingVolume(); Mesh accuracy then
+    // checks the triangles inside it.
     bool defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
+
+    // True if one of this entity's mesh triangles comes within tolerance of line,
+    // and how far from line.end1() the nearest of them is. The mesh is the one at
+    // the top level of detail, so the answer does not change with how far away
+    // the entity happens to be.
+    // PRE( hasMesh() )
+    bool intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const;
 
     // True if this entity's bounding volume, grown by tolerance on every side,
     // intersects line.

@@ -1638,7 +1638,40 @@ bool W4dEntity::defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDis
 {
     TEST_INVARIANT;
 
-    return intersectsBoundingVolume(line, accuracy.tolerance(), pDistance);
+    if (accuracy.level() != Accuracy::Mesh || !hasMesh())
+        return intersectsBoundingVolume(line, accuracy.tolerance(), pDistance);
+
+    // The box first, and its answer thrown away: a line that misses the box
+    // misses every triangle inside it, and the box costs a fraction of what the
+    // triangles do.
+    MATHEX_SCALAR boxDistance;
+    if (!intersectsBoundingVolume(line, accuracy.tolerance(), &boxDistance))
+        return false;
+
+    return intersectsMesh(line, accuracy.tolerance(), pDistance);
+}
+
+bool W4dEntity::intersectsMesh(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance) const
+{
+    PRE(hasMesh());
+
+    CB_W4dEntity_DEPIMPL();
+
+    // The mesh is held in this entity's own coordinates, so the line goes to it
+    // rather than the other way round. The transform is rigid, so a distance
+    // along the line means the same on either side of it.
+    MexTransform3d inverseGlobal;
+    globalTransform().invert(&inverseGlobal);
+    MexLine3d localLine(line);
+    localLine.transform(inverseGlobal);
+
+    // The bounding volume is built from the mesh with these applied, so the
+    // triangles need them to answer about the same shape.
+    const RenMeshInstance& instance = mesh();
+    const RenScale* pMeshScale = instance.scale().isUnity() ? nullptr : &instance.scale();
+    const RenScale* pExtraScale = hasTemporaryScale() ? &temporaryScale() : nullptr;
+
+    return instance.mesh()->intersectsLine(localLine, tolerance, pMeshScale, pExtraScale, pDistance);
 }
 
 bool W4dEntity::intersectsBoundingVolume(const MexLine3d& line, MATHEX_SCALAR tolerance, MATHEX_SCALAR* pDistance)
