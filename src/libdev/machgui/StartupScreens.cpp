@@ -2417,11 +2417,7 @@ void MachGuiStartupScreens::contextFinish()
     }
 
     // Remove menu screen before app ends to stop it from flashing up momentarily
-    const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
-    {
-        RenSurface backBuf = RenDevice::current()->backSurface();
-        Ren::Painter(backBuf).filledRectangle(mode.size(), RenColour::black());
-    }
+    clearBothBuffers();
 }
 
 void MachGuiStartupScreens::contextGame()
