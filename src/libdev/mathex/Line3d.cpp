@@ -369,6 +369,81 @@ ostream& operator <<( ostream& o, MexLine3d& rhs )
 */
 
 // static
+MATHEX_SCALAR MexLine3d::closestApproach(const MexLine3d& other, MATHEX_SCALAR* pDistanceAlongThis) const
+{
+    PRE(pDistanceAlongThis != nullptr);
+
+    const MexVec3 thisWay(end1(), end2());
+    const MexVec3 otherWay(other.end1(), other.end2());
+    const MexVec3 between(other.end1(), end1());
+
+    const MATHEX_SCALAR thisSquared{thisWay.dotProduct(thisWay)};
+    const MATHEX_SCALAR otherSquared{otherWay.dotProduct(otherWay)};
+    const MATHEX_SCALAR alongOtherToStart{otherWay.dotProduct(between)};
+    const MATHEX_SCALAR epsilon{MexEpsilon::instance()};
+
+    // Fractions of each segment, both clamped to it: the closest points of two
+    // infinite lines are often past the ends of the segments they came from.
+    const auto within = [](MATHEX_SCALAR fraction) {
+        return fraction < 0.0 ? 0.0 : (fraction > 1.0 ? 1.0 : fraction);
+    };
+
+    MATHEX_SCALAR here{};
+    MATHEX_SCALAR there{};
+
+    if (thisSquared <= epsilon)
+    {
+        // This segment is a point, so only the other one has a choice to make.
+        if (otherSquared > epsilon)
+            there = within(alongOtherToStart / otherSquared);
+    }
+    else
+    {
+        const MATHEX_SCALAR alongThisToStart{thisWay.dotProduct(between)};
+
+        if (otherSquared <= epsilon)
+        {
+            here = within(-alongThisToStart / thisSquared);
+        }
+        else
+        {
+            const MATHEX_SCALAR facing{thisWay.dotProduct(otherWay)};
+            const MATHEX_SCALAR spread{thisSquared * otherSquared - facing * facing};
+
+            // Parallel segments leave the fraction along this one undetermined, so
+            // one end of it is as good an answer as any other.
+            here = spread > epsilon
+                ? within((facing * alongOtherToStart - alongThisToStart * otherSquared) / spread)
+                : 0.0;
+
+            there = (facing * here + alongOtherToStart) / otherSquared;
+            if (there < 0.0)
+            {
+                there = 0.0;
+                here = within(-alongThisToStart / thisSquared);
+            }
+            else if (there > 1.0)
+            {
+                there = 1.0;
+                here = within((facing - alongThisToStart) / thisSquared);
+            }
+        }
+    }
+
+    const MexPoint3d onThis(
+        end1().x() + thisWay.x() * here,
+        end1().y() + thisWay.y() * here,
+        end1().z() + thisWay.z() * here);
+    const MexPoint3d onOther(
+        other.end1().x() + otherWay.x() * there,
+        other.end1().y() + otherWay.y() * there,
+        other.end1().z() + otherWay.z() * there);
+
+    *pDistanceAlongThis = here * sqrt(thisSquared);
+
+    return onThis.euclidianDistance(onOther);
+}
+
 MATHEX_SCALAR MexLine3d::sqrEuclidianDistance(
     const MexPoint3d& a1,
     const MexPoint3d& b1,

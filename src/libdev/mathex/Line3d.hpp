@@ -79,6 +79,11 @@ public:
         MATHEX_SCALAR* pDistance,
         IntersectSide side = INTERSECT_BOTH_SIDES) const;
 
+    // The closest this segment comes to another, and how far along this one from
+    // end1() that happens. Both are treated as segments, so the answer never
+    // lies beyond either pair of ends.
+    MATHEX_SCALAR closestApproach(const MexLine3d& other, MATHEX_SCALAR* pDistanceAlongThis) const;
+
     // The square of the shortest distance between 2 3d lines.
     // Line 1 has endpoints a1, b1, and length l1.
     // Line 2 has endpoints a2, b2, and length l2.
