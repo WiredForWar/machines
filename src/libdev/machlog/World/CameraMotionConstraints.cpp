@@ -568,7 +568,7 @@ void MachLogZenithCameraMotionConstraint::setCameraDataFromTransform()
         lineOfSight,
         limit,
         W4dEntity::nextCheckId(),
-        W4dEntity::LOW,
+        W4dEntity::Accuracy::Volume,
         &pHitEntity,
         &distance,
         filter);

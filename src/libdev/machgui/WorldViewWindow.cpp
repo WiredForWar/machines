@@ -209,7 +209,7 @@ void MachWorldViewWindow::dispatchCursor(
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pEntity,
         &distance,
         pInGameScreen_->cursorFilter());

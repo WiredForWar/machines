@@ -344,7 +344,7 @@ bool PedActorEditor::actorSelected(W4dEntity** ppActor)
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pEntity,
         &distance);
     if (result)
@@ -370,7 +370,7 @@ bool PedActorEditor::mouseVertexPoint(MexPoint3d* intersectPoint)
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pEntity,
         &distance);
 

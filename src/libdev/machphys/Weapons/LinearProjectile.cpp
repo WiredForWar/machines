@@ -251,7 +251,7 @@ bool MachPhysLinearProjectile::impactData(
 
     // Check for the intersection between the direction line, and the machine point.
     MATHEX_SCALAR distance;
-    bool result = target.intersectsLine(fromDirection, &distance, W4dEntity::HIGH);
+    bool result = target.intersectsLine(fromDirection, &distance, W4dEntity::Accuracy::Mesh);
     if (result)
     {
         // Get the line length. Hence compute the actual point of impact, and

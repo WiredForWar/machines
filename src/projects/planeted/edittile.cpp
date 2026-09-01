@@ -147,7 +147,7 @@ void PedTileEditor::highlightTile()
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pEntity,
         &distance);
 
@@ -195,7 +195,7 @@ void PedTileEditor::processSelection(const DevButtonEvent& devButtonEvent)
         cursorLine,
         cursorLine.length(),
         W4dEntity::nextCheckId(),
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pEntity,
         &distance);
     if (result)

@@ -907,7 +907,7 @@ bool MachLogCanAttack::targetBehindSoftCover(MachActor* pTarget, MachLogCanAttac
             line,
             range,
             W4dEntity::nextCheckId(),
-            W4dEntity::HIGH,
+            W4dEntity::Accuracy::Mesh,
             &pIntersectingEntity,
             &distanceToIntersection,
             W4dDomain::EXCLUDE_NOT_SOLID))
@@ -1334,7 +1334,7 @@ MachLogCanAttack::WeaponDisposition MachLogCanAttack::testActorBehindCover(
         projectilePath,
         projectilePath.length(),
         checkId,
-        W4dEntity::MEDIUM,
+        W4dEntity::Accuracy::Parts,
         &pCoverEntity,
         &distance,
         &attackFilter);

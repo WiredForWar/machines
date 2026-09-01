@@ -170,7 +170,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToStationaryObject(
             line,
             range,
             checkId,
-            W4dEntity::HIGH,
+            W4dEntity::Accuracy::Mesh,
             &pIntersectingEntity,
             &distanceToIntersection,
             W4dDomain::EXCLUDE_NOT_SOLID | W4dDomain::EXCLUDE_NOT_STATIONARY))
@@ -322,7 +322,7 @@ MATHEX_SCALAR MachLogLinearProjectile::rangeToMovingObject(
 
                 // check the line segment for intersection with the machine
                 MATHEX_SCALAR entryDistance;
-                if (hitEntity.intersectsLine(segment, &entryDistance, W4dEntity::LOW))
+                if (hitEntity.intersectsLine(segment, &entryDistance, W4dEntity::Accuracy::Volume))
                 {
                     // We have a hit.
                     haveCollision = true;

@@ -290,12 +290,16 @@ public:
     // Ensures the bounding volume is up-to-date
     void updateBoundingVolume();
 
-    // Parameter used to define accuracy of various checks
-    enum Accuracy
+    // What shape a line test should answer about. Declared in increasing order of
+    // precision, so a test can ask whether it was given at least a given level.
+    enum class Accuracy
     {
-        HIGH,
-        MEDIUM,
-        LOW
+        // One box round the whole entity.
+        Volume,
+        // A box round each part of it.
+        Parts,
+        // The triangles themselves.
+        Mesh,
     };
 
     // True if this entity intersects line.
@@ -309,8 +313,7 @@ public:
     virtual bool intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const = 0;
 
     // Appropriate default behaviour for the intersects method.
-    // LOW and MEDIUM accuracy simply check against the boundingVolume().
-    // HIGH accuracy would then check the mesh on a hit (not implemented yet).
+    // Every accuracy checks against the boundingVolume().
     bool defaultIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
 
     // True if this entity's bounding volume intersects line.

@@ -105,9 +105,8 @@ public:
     //                          Accuracy accuracy ) const = 0;
 
     // Default implementation of intersects() above.
-    // LOW accuracy just checks against compositeBoundingVolume().
-    // MEDIUM accuracy on hit also checks composite and links using separate boundingVolume().
-    // HIGH accuracy would then check against separate meshes on hit (not implemented yet).
+    // Volume accuracy just checks against compositeBoundingVolume().
+    // Anything more, on a hit, also checks the composite and each link.
     bool defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDistance, Accuracy accuracy) const;
 
     // True if the composite's bounding volume intersects the infinite line through line.

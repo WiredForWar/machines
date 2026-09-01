@@ -1333,8 +1333,8 @@ bool MachPhysMachine::intersectsLine(const MexLine3d& line, MATHEX_SCALAR* pDist
 {
     // Just check against composite bounding volume in low and medium, but use
     // link bounding volumes for high
-    if (accuracy == W4dEntity::MEDIUM)
-        accuracy = W4dEntity::LOW;
+    if (accuracy == W4dEntity::Accuracy::Parts)
+        accuracy = W4dEntity::Accuracy::Volume;
 
     return defaultCompositeIntersectsLine(line, pDistance, accuracy);
 }

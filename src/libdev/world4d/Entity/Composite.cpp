@@ -791,8 +791,9 @@ bool W4dComposite::defaultCompositeIntersectsLine(const MexLine3d& line, MATHEX_
     // First check the all encompassing bounding volume
     bool result = intersectsCompositeBoundingVolume(line, pDistance);
 
-    // If have a hit and not low accuracy, check each link plus the composite
-    if (result && accuracy != LOW)
+    // If have a hit and more than the one volume was asked for, check each link
+    // plus the composite
+    if (result && accuracy != Accuracy::Volume)
     {
         // Check the composite itself
         MATHEX_SCALAR minDistance, foundDistance;
