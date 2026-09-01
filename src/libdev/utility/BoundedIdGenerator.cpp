@@ -13,6 +13,8 @@
 
 #include "base/Diag.hpp"
 
+#include <cstdlib>
+
 UtlBoundedIdGenerator::UtlBoundedIdGenerator(UtlId upperBound)
     : upperBound_(upperBound)
     , lastAllocatedId_(0)
@@ -56,7 +58,7 @@ UtlId UtlBoundedIdGenerator::nextId()
         ++loops;
         if (loops > upperBound_)
         {
-            Diag::instance().forceCrash();
+            std::abort();
         }
 #endif
     } while (aFlags_[lastAllocatedId_] != 0);

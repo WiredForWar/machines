@@ -32,8 +32,6 @@ MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
     moveInfos_.reserve(8);
     motionChunkIds_.reserve(8);
 
-    Diag::instance().addCrashStream(str_);
-
     //  Set up the pathname for the log stream and clear it.
     char str[200];
     snprintf(str, sizeof(str), "ms%06d", id);
@@ -55,7 +53,6 @@ MachLogMachineMotionSequencerData::MachLogMachineMotionSequencerData(int id)
 MachLogMachineMotionSequencerData::~MachLogMachineMotionSequencerData()
 {
     TEST_INVARIANT;
-    Diag::instance().removeCrashStream(str_);
 }
 
 void MachLogMachineMotionSequencerData::commandId(size_t id)

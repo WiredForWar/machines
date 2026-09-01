@@ -108,7 +108,6 @@ private:
 
     RecRecorderImplementation();
 
-    static void closeStreams();
     void checkOKToRecord();
 
     bool recordingAllowed() const;

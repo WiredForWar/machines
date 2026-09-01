@@ -24,6 +24,7 @@
 
 #include "ctl/Vector.hpp"
 
+#include <cstdlib>
 #include <memory>
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -694,7 +695,7 @@ void W4dSoundManager::readSoundDefinitionFile(const SysPathName& definitionFileN
         {
             ASSERT_INFO(wavPath)
             ASSERT_FAIL("Failed to find file");
-            Diag::instance().forceCrash();
+            std::abort();
         }
 #endif
 

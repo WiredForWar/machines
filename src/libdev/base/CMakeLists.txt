@@ -10,7 +10,6 @@ set(BASE_SOURCES
     ConcurrentBlockAllocator.cpp
     ConcurrentBlockAllocator.hpp
     compiler.hpp
-    CrashImpl.cpp
     ConstBufferStream.cpp
     Diag.cpp
     Diag.hpp
@@ -26,7 +25,6 @@ set(BASE_SOURCES
     IndirectFilterStream.cpp
     internal/AppendBufferStream.hpp
     internal/AppendStream.hpp
-    internal/CrashImpl.hpp
     internal/ConstBufferStream.hpp
     internal/DiagStream.hpp
     internal/DiagStreams.hpp

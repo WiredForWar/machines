@@ -13,7 +13,6 @@
 
 #include "profiler/Profiler.hpp"
 #include "base/internal/DiagStreams.hpp"
-#include "base/internal/CrashImpl.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -161,8 +160,6 @@ WEAK_SYMBOL void BaseAssertion::assertFail(const char* msg, const xmsg& xms)
         DiagStreams::instance().close();
 
         ProProfiler::instance().closeOutputStream();
-
-        BaseCrashInternal::instance().handleCrash();
 
         abort();
     }

@@ -10,7 +10,6 @@
 #include "base/private/DiagInternal.hpp"
 #include "base/internal/DiagStream.hpp"
 #include "base/internal/DiagStreams.hpp"
-#include "base/internal/CrashImpl.hpp"
 
 #include "ctl/private/ptrvalid.hpp"
 #include <cstring>
@@ -85,10 +84,6 @@ Diag::Diag()
         if (DiagStreams::instance().diagStreams_[i].hasDestination())
             DiagStreams::instance().diagStreamEnabled_[i] = true;
     }
-
-#ifndef PRODUCTION
-    DiagInternal::initialiseSignalHandler();
-#endif
 }
 
 Diag::~Diag()
@@ -444,51 +439,6 @@ const char* DiagInternal::streamText(size_t index)
     }
 
     return result;
-}
-
-void Diag::forceCrash() const
-{
-    DiagInternal::signalHandler(0);
-
-    abort();
-}
-
-void Diag::addCrashFunction(PFn pFn)
-{
-    BaseCrashInternal::instance().addCrashFunction(pFn);
-}
-
-//  TBD: Put this into a class somewhere. We really need to make
-//  sure that DiagInternal is properly internal - it is in the
-//  private directory at the moment.
-
-static size_t fpExceptionCount = 0;
-
-void Diag::disableFPException()
-{
-    ++fpExceptionCount;
-
-    DiagInternal::disableFPException();
-}
-
-void Diag::enableFPException()
-{
-    PRE(fpExceptionCount != 0);
-
-    --fpExceptionCount;
-
-    if (fpExceptionCount == 0)
-        DiagInternal::enableFPException();
-}
-
-void Diag::addCrashStream(std::ofstream& str)
-{
-    BaseCrashInternal::instance().addCrashStream(str);
-}
-
-void Diag::removeCrashStream(std::ofstream& str)
-{
-    BaseCrashInternal::instance().removeCrashStream(str);
 }
 
 //////////////////////////////////////////////////////////////////////

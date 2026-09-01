@@ -26,17 +26,6 @@ SndWaveformIdImpl::SndWaveformIdImpl(const SysPathName& pathname)
 {
     PRE_INFO(pathname);
     PRE(pathname.existsAsFile());
-
-    // Unfortunately, this is causing chugs in the release version so I've taken it out (JLG 8/2/99)
-    /*
-    #ifndef PRODUCTION
-    if(!pathname.existsAsFile())
-    {
-        SOUND_STREAM("Invalid filename " << pathname << endl);
-        Diag::instance().forceCrash();
-    }
-    #endif
-    */
 }
 
 SndWaveformIdImpl::~SndWaveformIdImpl()

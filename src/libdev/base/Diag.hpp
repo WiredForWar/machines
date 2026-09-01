@@ -450,22 +450,6 @@ public:
     void invariantCheckingActive(bool flag);
     bool invariantCheckingActive() const;
 
-    //  Force a crash and a crash.log to be written
-    void forceCrash() const;
-
-    using PFn = void (*)();
-    //  Add a function to the list of functions to be
-    //  called should a crash or an assertion occur.
-    void addCrashFunction(PFn);
-
-    // Add / remove a stream to the list of streams to be closed
-    // should a crash or an assertion occur
-    void addCrashStream(std::ofstream&);
-    void removeCrashStream(std::ofstream&);
-
-    void disableFPException();
-    void enableFPException();
-
 private:
     Diag();
     ~Diag();
@@ -480,18 +464,6 @@ private:
     bool operator==(const Diag&);
 };
 
-// Commented out because they do not currently work - Bob 28 Oct 1998
-
-// //  Put the disable / enable macros around any third
-// //  party functions that cause floating point exceptions
-//
-// #ifdef PRODUCTION
-//     #define DIAG_DISABLE_FP_EXCEPTION
-//     #define DIAG_ENABLE_FP_EXCEPTION
-// #else
-//     #define DIAG_DISABLE_FP_EXCEPTION Diag::instance().disableFPException()
-//     #define DIAG_ENABLE_FP_EXCEPTION Diag::instance().enableFPException()
-// #endif
 
 #endif
 

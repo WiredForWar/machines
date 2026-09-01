@@ -36,11 +36,6 @@ public:
 
     static void setDestination(DiagStreamType type, const char* dest);
 
-    static bool checkFpException();
-
-    static void disableFPException();
-    static void enableFPException();
-
     //  Data members
     static bool checkCountedPointers_;
     static bool trackAllObjects_;
@@ -51,9 +46,6 @@ private:
     ~DiagInternal();
 
     friend class Diag;
-
-    static void initialiseSignalHandler();
-    static void signalHandler(int sig);
 };
 
 #endif

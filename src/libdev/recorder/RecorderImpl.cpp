@@ -73,10 +73,6 @@ RecRecorderImplementation::RecRecorderImplementation()
         drive_[3] = '\0';
     }
 
-    //  Make sure that the streams are properly closed on shutdown
-
-    Diag::instance().addCrashFunction(closeStreams);
-
     TEST_INVARIANT;
 }
 
@@ -205,13 +201,6 @@ bool RecRecorderImplementation::getBool(RecordType trueType, RecordType falseTyp
         state_ = RecRecorder::INACTIVE;
 
     return result;
-}
-
-// static
-void RecRecorderImplementation::closeStreams()
-{
-    RecRecorderImplementation::instance().playbackStream_.close();
-    RecRecorderImplementation::instance().recordStream_.close();
 }
 
 //  To allow recorded files to be shared between debug and release
