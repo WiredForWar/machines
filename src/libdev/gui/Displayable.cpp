@@ -739,6 +739,14 @@ void GuiDisplayable::changed()
     changed(true);
 }
 
+void GuiDisplayable::changedIncludingChildren()
+{
+    changed(true);
+
+    for (GuiDisplayable* pChild : children())
+        pChild->changedIncludingChildren();
+}
+
 void GuiDisplayable::setLayer(Layer layer)
 {
     PRE(! isRoot());

@@ -185,6 +185,12 @@ public:
     void changed();
     bool hasChanged() const;
 
+    // As changed(), for this displayable and everything under it. A change that
+    // alters what every widget draws -- the images behind them being read again
+    // -- belongs to no one of them, and marking only the root leaves the rest
+    // showing what they last drew.
+    void changedIncludingChildren();
+
     // Indicates that display should be called every frame for this gui displayable
     bool redrawEveryFrame() const;
     void redrawEveryFrame(bool);
