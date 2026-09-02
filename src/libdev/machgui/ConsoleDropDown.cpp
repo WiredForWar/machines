@@ -192,6 +192,11 @@ bool MachGuiConsoleDropDown::doHandleKeyEvent(const GuiKeyEvent& event)
             if (pConsole_ != nullptr)
                 pConsole_->clearOutput();
         }
+        else if (event.isCtrlPressed() && event.key() == Device::KeyCode::KEY_C)
+        {
+            if (pConsole_ != nullptr)
+                pConsole_->cancelPending();
+        }
         else if (event.key() == Device::KeyCode::ENTER)
         {
             submit();
