@@ -839,6 +839,9 @@ parseSpawnArguments(const Request& request, std::size_t argIndex, bool takesWeap
 
 void spawnMachineCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
+    if (!getInGameScreen(pStartup, console))
+        return;
+
     const std::string& typeStr = std::get<std::string>(request.arguments[0].value);
     const std::string& subTypeStr = std::get<std::string>(request.arguments[1].value);
     const int hwLevel = static_cast<int>(std::get<std::int64_t>(request.arguments[2].value));
@@ -941,6 +944,9 @@ void spawnMachineCommand(MachGuiStartupScreens* pStartup, const Request& request
 
 void spawnConstructionCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
+    if (!getInGameScreen(pStartup, console))
+        return;
+
     const std::string& typeStr = std::get<std::string>(request.arguments[0].value);
     const std::string& subTypeStr = std::get<std::string>(request.arguments[1].value);
     const int hwLevel = static_cast<int>(std::get<std::int64_t>(request.arguments[2].value));
