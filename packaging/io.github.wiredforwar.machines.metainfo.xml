@@ -11,13 +11,13 @@
         </p>
         <p>The most notable changes are:</p>
         <ul>
-            <li>Added support for 2X UI scaling</li>
-            <li>Added support for WASD camera and machines in-head control</li>
-            <li>Added more keyboard shortcuts</li>
+            <li>200% UI scaling</li>
+            <li>WASD for camera and machines in-head control</li>
             <li>Added initial support for mods (most notable is German localization)</li>
-            <li>Implemented VSync</li>
+            <li>More display options (VSync, fullscreen modes)</li>
+            <li>Improved pathfinding (more fixes to come)</li>
             <li>Fixed various LAN game issues</li>
-            <li>Fixed tens of bugs</li>
+            <li>Fixed a hundred of bugs</li>
             <li>Fixed a dozen of crashes</li>
         </ul>
         <p>
@@ -51,6 +51,7 @@
         <content_attribute id="social-chat">intense</content_attribute>
     </content_rating>
     <releases>
+        <release date="2026-09-02" version="1.7.5"/>
         <release date="2026-01-19" version="1.7.4"/>
         <release date="2025-12-07" version="1.7.2"/>
         <release date="2024-09-10" version="1.7.1"/>
