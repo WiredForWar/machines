@@ -524,5 +524,6 @@ void MachGuiConsoleDropDown::updatePromptSurface(std::string_view promptText)
     const int promptWidth = std::max(1, inputFont_.horizontalAdvance(promptText));
     promptBmp_ = RenSurface::createAnonymousSurface(Ren::Size(promptWidth, inputFont_.height()));
     Ren::Painter painter(promptBmp_);
+    painter.clearRectangle(promptBmp_.size());
     painter.drawText(promptText, {}, inputFont_, promptBmp_.width());
 }
