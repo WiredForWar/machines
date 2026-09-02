@@ -9,7 +9,7 @@ jobs:
     name: "Prepare game data archive"
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         path: "machines-data"
         repository: "WiredForWar/machines-data"
@@ -19,7 +19,7 @@ jobs:
         cd ${{github.workspace}}/machines-data
         echo "data_commit=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@v6
       id: data_cache
       with:
         path: ${{github.workspace}}/machines-data/install/machines
@@ -48,12 +48,12 @@ jobs:
     needs: game_data_archive
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         path: "machines-packager"
         repository: "WiredForWar/machines-packager"
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: machines-data
         path: "machines-packager/data-pack/baked-machines-data"
@@ -104,13 +104,13 @@ jobs:
           package-name: machines-win64-msvc
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       if: contains(matrix.toolchain, 'mingw')
       with:
         path: "machines-packager"
         repository: "WiredForWar/machines-packager"
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         path: "sources"
         fetch-tags: true
@@ -127,9 +127,12 @@ jobs:
       run: |
         sudo apt-get install -y mingw-w64
 
+    # setup-msvc-dev is a maintained fork of ilammy/msvc-dev-cmd
     - name: Prepare MSVC (Windows)
       if: runner.os == 'Windows'
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: TheMrMilchmann/setup-msvc-dev@v4.1.0
+      with:
+        arch: x64
 
     - name: Install Conan
       if: matrix.conan
@@ -145,7 +148,7 @@ jobs:
 
     - name: Cache the Conan packages
       if: matrix.conan
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.conan2/p
         key: "conan2-${{ matrix.os }}-${{ hashFiles('sources/conanfile.py') }}"
@@ -235,7 +238,7 @@ jobs:
 
     - name: Download the data pack
       if: matrix.package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: machines-data-pack
 
@@ -283,7 +286,7 @@ jobs:
     # jobs below.
     - name: Upload the unpackaged build and its debug symbols
       if: matrix.package && contains(matrix.toolchain, 'mingw')
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: machines-win64-crash-test
         path: |
@@ -298,7 +301,7 @@ jobs:
     needs: build
     runs-on: windows-2025
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: machines-win64-crash-test
         path: ${{github.workspace}}/artifact
@@ -351,7 +354,7 @@ jobs:
 
     - name: Upload the reports
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: crash-test-reports
         path: ${{github.workspace}}/artifact/install/machines/logs
@@ -364,14 +367,14 @@ jobs:
     needs: crash_test
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: machines-win64-crash-test
         path: ${{github.workspace}}/artifact
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         name: crash-test-reports
         path: ${{github.workspace}}/reports
