@@ -999,8 +999,22 @@ void reloadDataCommand(MachGuiStartupScreens* pStartup, Console& console)
     pStartup->reloadUiStrings();
     console.writeLine("- UI strings reloaded");
 
+    // Order matters. Reading the files again comes first, so that the images
+    // derived from them are derived from what the mods now say; and both come
+    // before the callbacks, so that anything rebuilding itself does so out of
+    // pixels that are already current.
+    RenDevice::current()->reloadSurfacesFromDisk();
+    Gui::rebuildScaledImages();
     RenDevice::current()->fireResourcesInvalidatedCallbacks();
     console.writeLine("- Textures reloaded");
+
+    // New pixels in an image are not new pixels on the screen: a widget draws
+    // when something says it has changed, and nothing about it has. Both trees,
+    // because the menus and the game each have their own and either may be the
+    // one on screen.
+    pStartup->changedIncludingChildren();
+    pStartup->inGameScreen().changedIncludingChildren();
+    console.writeLine("- Screen redrawn");
 }
 
 void commandMoveCommand(const Request& request, Console& console)
