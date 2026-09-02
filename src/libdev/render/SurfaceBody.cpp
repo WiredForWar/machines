@@ -153,8 +153,15 @@ void RenISurfBody::reuploadFromDisk()
     if (name_.empty())
         return;
 
+    // The name is the one the surface is shared under, which is what the game
+    // asked for rather than what was loaded: the search path and the preference
+    // for a png over a bmp are applied on the way to disk. Resolve it again
+    // rather than reusing what it resolved to before, so that a mod added or
+    // taken away since the first read is the file that gets picked up.
+    const std::string resolvedPath = Ren::resolveTextureFile(name_);
+
     // Re-read the file and re-upload to the current backend.
-    SDL_Surface* surface = readFromFile(name_.c_str());
+    SDL_Surface* surface = readFromFile(resolvedPath.c_str());
     if (!surface)
         return;
 
