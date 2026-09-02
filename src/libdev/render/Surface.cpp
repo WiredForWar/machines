@@ -563,7 +563,9 @@ Ren::Pixels RenSurface::readPixels(const Rect& area) const
     // gui counts, while pixels are read back from the bottom left.
     const int readY = surfaceHeight - (region.originY + region.height);
 
-    if (internals() && internals()->isOffscreen())
+    const bool offscreen = internals() && internals()->isOffscreen();
+
+    if (offscreen)
     {
         dev->renderToTextureMode(handle(), surfaceWidth, surfaceHeight);
         dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, pixels.rgba.data());
@@ -571,6 +573,18 @@ Ren::Pixels RenSurface::readPixels(const Rect& area) const
     }
     else
         dev->backend().readPixelsUByte(region.originX, readY, region.width, region.height, pixels.rgba.data());
+
+    // The screen is opaque, whatever its alpha bitplanes were left holding.
+    // Drawing a shadow over the ground blends its alpha in as well as its
+    // colour, so where the display has alpha to spare -- which depends on the
+    // driver -- those pixels come back part transparent, and a picture keeping
+    // that would show every shadow washed out over whatever it was viewed on.
+    // An offscreen surface keeps its alpha, which is part of the image there.
+    if (! offscreen)
+    {
+        for (std::size_t index = 3; index < pixels.rgba.size(); index += 4)
+            pixels.rgba[index] = 255;
+    }
 
     // The rows arrived bottom up, the way GL counts them.
     const std::ptrdiff_t stride = static_cast<std::ptrdiff_t>(pixels.width) * 4;
