@@ -857,6 +857,11 @@ void RenDevice::fireResourcesInvalidatedCallbacks()
     }
 }
 
+void RenDevice::reloadSurfacesFromDisk()
+{
+    RenSurfaceManager::instance().impl().reuploadAllTextures();
+}
+
 void RenDevice::reset()
 {
 }

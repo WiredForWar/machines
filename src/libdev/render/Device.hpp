@@ -157,6 +157,13 @@ public:
     [[nodiscard]] Utils::CallbackHandleUPtr addResourcesInvalidatedCallback(std::function<void()> callback);
     void fireResourcesInvalidatedCallbacks();
 
+    // Read every surface that came from a file again, resolving its name afresh.
+    // A surface holds the name the game asked for rather than the file that was
+    // found for it, so a search path that has changed since -- a mod added or
+    // taken away -- is followed on the way back in, and every handle already
+    // given out sees the new image without asking for it again.
+    void reloadSurfacesFromDisk();
+
     void reset();
     virtual void setMaterialHandles(const RenMaterial& mat);
 
