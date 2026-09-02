@@ -157,6 +157,15 @@ RenTexture RenSurfaceManager::createTexture(const std::string& pathName)
     return retval;
 }
 
+uint RenSurfaceManager::refCount(const RenSurface& surface) const
+{
+    if (surface.isNull())
+        return 0;
+
+    const RenISurfBody* body = pImpl_->getSurfaceBody(surface.handle());
+    return body ? body->refCount() : 0;
+}
+
 // There can be null slots, so this isn't necessarily entries_.size().
 uint RenSurfaceManager::nTexturesLoaded() const
 {

@@ -69,6 +69,11 @@ public:
     const PathNames& searchList();
     void searchList(const PathNames& newSearchList);
 
+    // How many handles refer to this surface, or zero if it names none. A caller
+    // holding one only so that it can put fresh pixels in later can tell from
+    // this whether anything else still wants the image.
+    uint refCount(const RenSurface&) const;
+
     // Statistics: what textures are loaded?  What textures were drawn
     // during the current frame?  Memory used may become a more complex
     // issue if textures can be swapped into or out of a graphics card.
