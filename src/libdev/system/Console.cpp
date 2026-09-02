@@ -14,6 +14,7 @@ namespace System
 Console::Console(const ConsoleConfig& config)
     : config_(config)
     , promptText_("> ")
+    , blockModeEnabled_(true)
 {
     history_.reserve(std::min<std::size_t>(config_.historyLimit, history_.capacity()));
     output_.reserve(std::min<std::size_t>(config_.outputLimit, output_.capacity()));
@@ -108,6 +109,16 @@ bool Console::submit(std::string_view line)
     }
 
     appendHistoryEntry(trimmed);
+
+    // A line offered while something is still running waits its turn rather
+    // than overtaking it, so the answer here is that the console took the
+    // line. Whether the command works is not known yet.
+    if (isBusy())
+    {
+        queue_.push_back({ .line = trimmed, .echo = EchoCommandLine::Yes });
+        return true;
+    }
+
     return executeCommand(trimmed, EchoCommandLine::Yes);
 }
 
@@ -116,7 +127,6 @@ bool Console::executeScript(std::string_view scriptSource)
     clearError();
     std::istringstream stream{std::string(scriptSource)};
     std::string line;
-    bool allSucceeded = true;
 
     while (std::getline(stream, line))
     {
@@ -126,13 +136,102 @@ bool Console::executeScript(std::string_view scriptSource)
             continue;
         }
 
-        if (!executeCommand(trimmed, EchoCommandLine::No))
+        queue_.push_back({ .line = trimmed, .echo = EchoCommandLine::No });
+    }
+
+    drainQueue();
+
+    // A script whose first waiting command has not finished has not failed;
+    // the rest of it runs as the waits are satisfied.
+    return lastError_.empty();
+}
+
+void Console::drainQueue()
+{
+    while (!pending_.has_value() && !queue_.empty())
+    {
+        const QueuedCommand next = queue_.front();
+        queue_.pop_front();
+        executeCommand(next.line, next.echo);
+    }
+}
+
+void Console::waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description)
+{
+    if (!predicate || !blockModeEnabled_)
+    {
+        return;
+    }
+
+    // Something already finished is not worth holding a frame for.
+    if (predicate())
+    {
+        return;
+    }
+
+    pending_ = PendingCommand{
+        .predicate = std::move(predicate),
+        .deadline = now() + timeout,
+        .description = std::move(description),
+    };
+}
+
+bool Console::isBusy() const
+{
+    return pending_.has_value() || !queue_.empty();
+}
+
+void Console::cancelPending()
+{
+    if (!isBusy())
+    {
+        return;
+    }
+
+    pending_.reset();
+    queue_.clear();
+    writeLine("Cancelled.");
+}
+
+void Console::tick()
+{
+    if (pending_.has_value())
+    {
+        if (pending_->predicate())
         {
-            allSucceeded = false;
+            pending_.reset();
+        }
+        else if (now() >= pending_->deadline)
+        {
+            const std::string description = pending_->description;
+            pending_.reset();
+            queue_.clear();
+            setError("Gave up waiting for " + description + ".");
+            writeLine(lastError_);
+            return;
+        }
+        else
+        {
+            return;
         }
     }
 
-    return allSucceeded;
+    drainQueue();
+}
+
+std::chrono::steady_clock::time_point Console::now() const
+{
+    return config_.clock ? config_.clock() : std::chrono::steady_clock::now();
+}
+
+void Console::setBlockModeEnabled(bool enabled)
+{
+    blockModeEnabled_ = enabled;
+}
+
+bool Console::blockModeEnabled() const
+{
+    return blockModeEnabled_;
 }
 
 bool Console::executeCommand(std::string_view line, EchoCommandLine echo)

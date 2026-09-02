@@ -2,7 +2,11 @@
 
 #include "system/IConsole.hpp"
 
+#include <chrono>
+#include <deque>
+#include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -16,6 +20,10 @@ struct ConsoleConfig
     std::size_t suggestionLimit { 10U };
     std::size_t outputLimit { 256U };
     std::string historyFilePath{};
+    // Where the console reads the time from. Left unset, it uses the steady
+    // clock; a caller that needs the passage of time to be its own to decide
+    // supplies one.
+    std::function<std::chrono::steady_clock::time_point()> clock{};
 };
 
 class Console : public IConsole
@@ -33,6 +41,15 @@ public:
 
     bool submit(std::string_view line) override;
     bool executeScript(std::string_view scriptSource) override;
+
+    void waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description) override;
+    [[nodiscard]] bool isBusy() const override;
+    void cancelPending() override;
+    void tick() override;
+    [[nodiscard]] std::chrono::steady_clock::time_point now() const override;
+
+    void setBlockModeEnabled(bool enabled) override;
+    [[nodiscard]] bool blockModeEnabled() const override;
 
     void clearHistory() override;
     void setHistoryLimit(std::size_t limit) override;
@@ -72,6 +89,19 @@ private:
 
     using CommandMap = std::unordered_map<std::string, CommandDefinition>;
 
+    struct QueuedCommand
+    {
+        std::string line{};
+        EchoCommandLine echo{};
+    };
+
+    struct PendingCommand
+    {
+        CompletionPredicate predicate{};
+        std::chrono::steady_clock::time_point deadline{};
+        std::string description{};
+    };
+
     static std::vector<std::string> tokenize(std::string_view line);
     static bool isIdentifierToken(const std::string& token);
 
@@ -81,6 +111,7 @@ private:
         std::vector<ArgumentValue>& parsedArguments);
     bool convertToken(ArgumentType type, const std::string& token, ArgumentValue& value);
     bool executeCommand(std::string_view line, EchoCommandLine echo);
+    void drainQueue();
 
     static bool isHistoryIgnored(std::string_view line);
     void appendHistoryEntry(const std::string& line);
@@ -115,6 +146,9 @@ private:
     std::string lastError_{};
     bool cheatsEnabled_{};
     bool devModeEnabled_{};
+    bool blockModeEnabled_{};
+    std::deque<QueuedCommand> queue_{};
+    std::optional<PendingCommand> pending_{};
 };
 
 } // namespace System

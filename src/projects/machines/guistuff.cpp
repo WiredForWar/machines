@@ -21,6 +21,7 @@
 #include "sim/Manager.hpp"
 
 #include "system/ConfigVariables.hpp"
+#include "system/IConsole.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -133,6 +134,12 @@ void SDLApp::loopCycle()
         frameTimer_.time(0.0);
         return;
     }
+
+    // Before the frame rather than after it, so that a command waiting to hear
+    // that something finished is asked about the frames that have been drawn
+    // rather than about the one still being put together.
+    if (console_)
+        console_->tick();
 
     checkFinishApp();
     if (isFinished())
