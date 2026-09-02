@@ -3,9 +3,11 @@
 #include "render/BmpFont.hpp"
 #include "render/Font.hpp"
 #include "render/Painter.hpp"
+#include "render/SurfaceManager.hpp"
 #include "system/PathName.hpp"
 #include "system/VFS.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <map>
 #include <stdio.h>
@@ -103,22 +105,127 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
     return result;
 }
 
+namespace
+{
+
+// A surface getScaledImage() derived by stretching, and what it was derived
+// from. A caller keeps the surface and not the request behind it -- often in a
+// function-local static, which runs once for the life of the process -- so the
+// only way to show it a file that has changed is to put new pixels into the
+// surface it is already holding.
+struct DerivedImage
+{
+    RenSurface surface{};
+    std::string path{};
+    float scale{};
+};
+
+std::vector<DerivedImage>& derivedImages()
+{
+    static std::vector<DerivedImage> images;
+    return images;
+}
+
+// What a request comes back at: the size that was asked for when the image has
+// to be stretched to reach it, and the file's own size when a file of the right
+// size was found.
+Ren::Size scaledSize(const GuiBitmap& source)
+{
+    return source.requestedSize().isNull() ? source.size() : source.requestedSize();
+}
+
+void drawScaled(RenSurface& target, const GuiBitmap& source)
+{
+    // Workaround artefacts in transparent pixels:
+    Ren::Painter painter(target);
+    painter.clearRectangle(target.size());
+
+    // Keying is what lets a stretch keep its transparent parts. A file that was
+    // already the right size is copied as it stands, keying and all, because
+    // handing that file straight back is what this used to do.
+    // Said either way round, so that a surface derived a second time from a
+    // different file does not keep the state the first one gave it.
+    if (!source.requestedSize().isNull() || source.isColourKeyingOn())
+        target.enableColourKeying();
+    else
+        target.disableColourKeying();
+
+    painter.stretchBlit(source, Ren::BlitMode::Replace);
+}
+
+// The image already derived for this request, or nothing if there is none. The
+// pointer is into the list, so it is only good until the list is next touched.
+DerivedImage* findDerivedImage(const std::string& path, float scale)
+{
+    std::vector<DerivedImage>& images = derivedImages();
+    for (std::vector<DerivedImage>::iterator it = images.begin(); it != images.end(); ++it)
+    {
+        if (it->scale == scale && it->path == path)
+            return &*it;
+    }
+
+    return nullptr;
+}
+
+// Forget the images this list is the last holder of. Nothing draws them, so
+// nothing would see them redrawn, and the surface would otherwise last as long
+// as the process. Some callers ask for an image inside the function that draws
+// it, once a frame for as long as something is on screen, so this has to happen
+// as images are added and not only when they are rebuilt.
+void forgetUnheldImages()
+{
+    const RenSurfaceManager& manager = RenSurfaceManager::instance();
+    std::vector<DerivedImage>& images = derivedImages();
+
+    images.erase(
+        std::remove_if(
+            images.begin(),
+            images.end(),
+            [&manager](const DerivedImage& image) { return manager.refCount(image.surface) <= 1; }),
+        images.end());
+}
+
+} // namespace
+
 GuiBitmap Gui::getScaledImage(std::string path, float scale)
 {
-    GuiBitmap image = Gui::requestScaledImage(path, scale);
-    if (image.requestedSize().isNull())
-        return image;
+    forgetUnheldImages();
 
-    RenSurface scaledSurface = RenSurface::createAnonymousSurface(image.requestedSize());
+    // One surface per request, so that asking twice costs one image rather than
+    // two. The exact-size case used to share the file's own surface between its
+    // callers and this keeps that; the stretched case used to derive a fresh
+    // surface per call, and this shares those too.
+    if (const DerivedImage* found = findDerivedImage(path, scale))
+        return found->surface;
 
-    // Workaround artefacts in transparent pixels:
-    Ren::Painter painter(scaledSurface);
-    painter.clearRectangle(image.requestedSize());
-    scaledSurface.enableColourKeying();
+    const GuiBitmap image = Gui::requestScaledImage(path, scale);
 
-    painter.stretchBlit(image, Ren::BlitMode::Replace);
+    // A surface of this function's own, even where the file found was already
+    // the size asked for and could have been handed back as it stands. A file's
+    // surface is named after that file, so a caller holding one is holding the
+    // file, and there is no way to tell it that the answer to its request is a
+    // different file now -- which is what switching a mod off is. A surface
+    // derived here belongs to the request, and the request can be asked again.
+    RenSurface scaledSurface = RenSurface::createAnonymousSurface(scaledSize(image));
+    drawScaled(scaledSurface, image);
+
+    derivedImages().push_back({ scaledSurface, std::move(path), scale });
 
     return scaledSurface;
+}
+
+void Gui::rebuildScaledImages()
+{
+    forgetUnheldImages();
+
+    for (DerivedImage& image : derivedImages())
+    {
+        // Ask as if for the first time: the file may have changed, gained a
+        // scaled companion or lost one. What comes back is drawn at the size the
+        // surface already has, which is the size everything laid out around it
+        // was told to expect.
+        drawScaled(image.surface, Gui::requestScaledImage(image.path, image.scale));
+    }
 }
 
 /* //////////////////////////////////////////////////////////////// */

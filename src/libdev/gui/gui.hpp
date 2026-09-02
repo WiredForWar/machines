@@ -165,6 +165,13 @@ GuiBitmap requestScaledImage(std::string path, float scale = uiScaleFactor());
  */
 GuiBitmap getScaledImage(std::string path, float scale = uiScaleFactor());
 
+// Derive every image getScaledImage() has handed out again, into the surface the
+// caller is already holding. A caller keeps the surface rather than the request,
+// and the longest-lived ones ask only once per process, so this is what shows
+// them a file that has changed underneath -- a mod switched on or off, or an art
+// file replaced. Surfaces nothing holds any more are dropped rather than redrawn.
+void rebuildScaledImages();
+
 // Say what shape the art in an atlas is, so that text drawn in it can be placed by
 // its baseline rather than by the line box around it. The metrics are those of the
 // unscaled art. This has to be said before the font is first asked for, because an
