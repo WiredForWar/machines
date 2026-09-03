@@ -15,6 +15,8 @@
 #include "base/base.hpp"
 #include "utility/Id.hpp"
 
+#include <optional>
+
 // orthodox canonical (revoked)
 class UtlBoundedIdGenerator
 {
@@ -36,13 +38,15 @@ public:
     bool isAllocated(UtlId id) const;
     // PRE( id < upperBound() )
 
-    // Allocate and return a new unique id
-    UtlId nextId();
-    // PRE( nUnusedIds() > 0 )
+    // Allocate and return a new unique id, or nothing when every id is
+    // already allocated
+    std::optional<UtlId> nextId();
 
-    // Allocate and return a new unique id
-    UtlId nextId(UtlId minId, UtlId maxId);
-    // PRE( nUnusedIds() > 0 )
+    // Allocate and return a new unique id from [minId, maxId), or nothing
+    // when every id in that range is already allocated
+    std::optional<UtlId> nextId(UtlId minId, UtlId maxId);
+    // PRE( maxId > minId )
+    // PRE( maxId <= upperBound() )
 
     // Allocates id (the id must have previously been determined to be free)
     // example: might occur via a network message

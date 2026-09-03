@@ -13,7 +13,7 @@
 
 #include "base/Diag.hpp"
 
-#include <cstdlib>
+#include <optional>
 
 UtlBoundedIdGenerator::UtlBoundedIdGenerator(UtlId upperBound)
     : upperBound_(upperBound)
@@ -41,40 +41,34 @@ UtlBoundedIdGenerator::~UtlBoundedIdGenerator()
     _DELETE_ARRAY(aFlags_);
 }
 
-UtlId UtlBoundedIdGenerator::nextId()
+std::optional<UtlId> UtlBoundedIdGenerator::nextId()
 {
-    PRE(nUnusedIds() > 0);
-
-// Find an unallocated id
-#ifndef PRODUCTION
-    long loops = 0;
-#endif
-    do
+    // The scan is bounded by the size of the pool rather than by the remaining
+    // count, so that a count which has drifted out of step with the flags
+    // yields no id instead of looping for ever.
+    for (UtlId scanned = 0; scanned != upperBound_; ++scanned)
     {
         ++lastAllocatedId_;
         if (lastAllocatedId_ == upperBound_)
             lastAllocatedId_ = 0;
-#ifndef PRODUCTION
-        ++loops;
-        if (loops > upperBound_)
+
+        if (aFlags_[lastAllocatedId_] == 0)
         {
-            std::abort();
+            // Decrement remaining count
+            --nUnused_;
+
+            // Mark as in use
+            aFlags_[lastAllocatedId_] = uchar(1);
+
+            return lastAllocatedId_;
         }
-#endif
-    } while (aFlags_[lastAllocatedId_] != 0);
+    }
 
-    // Decrement remaining count
-    --nUnused_;
-
-    // Mark as in use
-    aFlags_[lastAllocatedId_] = uchar(1);
-
-    return lastAllocatedId_;
+    return std::nullopt;
 }
 
-UtlId UtlBoundedIdGenerator::nextId(UtlId minId, UtlId maxId)
+std::optional<UtlId> UtlBoundedIdGenerator::nextId(UtlId minId, UtlId maxId)
 {
-    PRE(nUnusedIds() > 0);
     PRE(maxId > minId);
     PRE(maxId <= upperBound_);
 
@@ -83,21 +77,25 @@ UtlId UtlBoundedIdGenerator::nextId(UtlId minId, UtlId maxId)
     if (lastAllocatedId_ < minId)
         lastAllocatedId_ = minId;
 
-    // Find an unallocated id
-    do
+    for (UtlId scanned = 0; scanned != maxId - minId; ++scanned)
     {
         ++lastAllocatedId_;
         if (lastAllocatedId_ >= maxId)
             lastAllocatedId_ = minId;
-    } while (aFlags_[lastAllocatedId_] != 0);
 
-    // Decrement remaining count
-    --nUnused_;
+        if (aFlags_[lastAllocatedId_] == 0)
+        {
+            // Decrement remaining count
+            --nUnused_;
 
-    // Mark as in use
-    aFlags_[lastAllocatedId_] = uchar(1);
+            // Mark as in use
+            aFlags_[lastAllocatedId_] = uchar(1);
 
-    return lastAllocatedId_;
+            return lastAllocatedId_;
+        }
+    }
+
+    return std::nullopt;
 }
 
 void UtlBoundedIdGenerator::allocateId(UtlId id)

@@ -301,10 +301,14 @@ std::optional<SndSampleHandle> SndMixer::playSample(const SndSampleParameters& p
     CB_DEPIMPL(SndMixerParameters::SoundSystem, soundSystem_);
     CB_DEPIMPL(bool, sortRequired_);
 
-    if (noOfFreeLogicalChannelsNoRecord() == 0)
+    // Claim a channel before building anything, so that a refusal costs nothing
+    const std::optional<UtlId> id = pSoundIDGenerator_->nextId();
+    if (!id.has_value())
     {
         return std::nullopt;
     }
+
+    const SndSampleHandle handle = id.value();
 
     // Create a new sample
     Sample* pSample = nullptr;
@@ -320,7 +324,6 @@ std::optional<SndSampleHandle> SndMixer::playSample(const SndSampleParameters& p
         ASSERT(false, "No sound system definition for this type");
     }
 
-    SndSampleHandle handle = pSoundIDGenerator_->nextId();
     ASSERT(pSoundIDGenerator_->isAllocated(handle), "Invalid SoundId");
     ASSERT(pSample, "Sample incorrectly NEWED");
     if (!pSample)

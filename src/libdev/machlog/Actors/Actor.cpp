@@ -112,11 +112,11 @@ MachActor::MachActor(MachLogRace* pRace, W4dEntity* pPhysEntity, MachLog::Object
                 maxId = minId + 250;
             }
 
-            id(MachLogRaces::idGenerator().nextId(minId, maxId));
+            id(MachLogRaces::idGenerator().nextId(minId, maxId).value());
         }
         else
         {
-            id(MachLogRaces::idGenerator().nextId());
+            id(MachLogRaces::idGenerator().nextId().value());
         }
     }
     HAL_STREAM(

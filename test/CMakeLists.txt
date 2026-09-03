@@ -67,6 +67,8 @@ append_test(MexLine3dTests mathex/MexLine3dTests.cpp)
 append_test(NetUtilsTest network/NetUtilsTests.cpp)
 #~:system
 append_test(SysPathNameTests system/SysPathNameTests.cpp)
+#~:utility
+append_test(UtlBoundedIdGeneratorTests utility/BoundedIdGeneratorTests.cpp)
 
 append_test(ColourTests render/ColourTests.cpp)
 append_test(DisplayModeCatalogueTests render/DisplayModeCatalogueTests.cpp)
