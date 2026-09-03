@@ -1748,6 +1748,12 @@ void loadPlanetCommand(MachGuiStartupScreens* pStartup, const Request& request, 
     pStartup->requestBarePlanet(name, race);
 
     console.writeLine("Loading " + name + " for " + std::string(MachPhys::toString(race)) + ".");
+
+    // Asking for the planet switches the context at once and loads on a later
+    // cycle, so the context cannot say whether the planet is there yet. Having
+    // a game is what says it: nothing sets that until the terrain and the
+    // in-game screen are both up.
+    waitForGame(pStartup, console, "the planet to finish loading");
 }
 
 // ============================================================
