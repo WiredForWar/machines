@@ -86,6 +86,7 @@ public:
         const std::vector<std::string>& precedingArgs)>;
     using OutputListener = std::function<void(const OutputEvent&)>;
     using CompletionPredicate = std::function<bool()>;
+    using CompletionAction = std::function<void()>;
 
     virtual ~IConsole() = default;
 
@@ -111,9 +112,24 @@ public:
     // if the timeout passes first the console says so, and drops whatever was
     // waiting its turn. Does nothing at all while blocking mode is off, so a
     // handler need not ask about the mode to name what it waits for.
-    virtual void
-    waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description)
+    //
+    // onCompleted is how a command answers about work it could not answer about
+    // when its handler ran -- a measurement, say, that has no result until the
+    // frames are in. It runs when the predicate is satisfied and only then:
+    // never on the timeout, never on a cancel, and never when the mode is off
+    // and there is no wait to follow.
+    virtual void waitUntil(
+        CompletionPredicate predicate,
+        std::chrono::milliseconds timeout,
+        std::string description,
+        CompletionAction onCompleted)
         = 0;
+
+    // For a wait with nothing to say afterwards.
+    void waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description)
+    {
+        waitUntil(std::move(predicate), timeout, std::move(description), CompletionAction{});
+    }
 
     // Whether a command is still running, or waiting its turn behind one.
     [[nodiscard]] virtual bool isBusy() const = 0;
