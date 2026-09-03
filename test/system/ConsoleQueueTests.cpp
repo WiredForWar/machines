@@ -1,4 +1,5 @@
 #include "system/Console.hpp"
+#include "system/ConsoleBuiltins.hpp"
 
 #include <gtest/gtest.h>
 
@@ -216,4 +217,44 @@ TEST(ConsoleQueueTests, ALineOfferedWhileBusyKeepsItsPlaceInTheOrder)
     console.tick();
 
     EXPECT_EQ(std::vector<std::string>({ "load", "first", "second" }), fixture.ran);
+}
+
+TEST(ConsoleQueueTests, ASleepHoldsTheInputForAsLongAsItWasAsked)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    System::registerConsoleBuiltins(console);
+    fixture.addInstant(console, "after");
+
+    console.submit("sleep 2");
+    console.submit("after");
+
+    EXPECT_TRUE(console.isBusy());
+
+    fixture.clock.advance(1999ms);
+    console.tick();
+    EXPECT_TRUE(fixture.ran.empty());
+
+    fixture.clock.advance(2ms);
+    console.tick();
+
+    EXPECT_EQ(std::vector<std::string>({ "after" }), fixture.ran);
+    EXPECT_FALSE(console.isBusy());
+}
+
+TEST(ConsoleQueueTests, ASleepWithBlockingOffIsRefusedRatherThanSkipped)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    System::registerConsoleBuiltins(console);
+    console.setBlockModeEnabled(false);
+    fixture.addInstant(console, "after");
+
+    EXPECT_FALSE(console.submit("sleep 2"));
+    EXPECT_FALSE(console.lastError().empty());
+    EXPECT_FALSE(console.isBusy());
+
+    // The refusal is an ordinary command failure, so what follows still runs.
+    console.submit("after");
+    EXPECT_EQ(std::vector<std::string>({ "after" }), fixture.ran);
 }
