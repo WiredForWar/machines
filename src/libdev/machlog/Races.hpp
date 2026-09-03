@@ -445,6 +445,13 @@ public:
     // The maximum number of actors that can be created
     static int maxActors();
 
+    // Take an id for a new actor out of the shared pool. Throws
+    // std::runtime_error naming the exhausted range when there is none left:
+    // an actor without an id cannot be registered, tracked or addressed over
+    // the network, and every caller is a constructor with nothing to return.
+    static UtlId allocateId();
+    static UtlId allocateId(UtlId minId, UtlId maxId);
+
     // get set default defcon and also defcon of all machines of race
     void defCon(MachPhys::Race, MachLog::DefCon);
     MachLog::DefCon defCon(MachPhys::Race) const;

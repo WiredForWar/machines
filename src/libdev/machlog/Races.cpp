@@ -75,6 +75,10 @@
 #include "spdlog/spdlog.h"
 
 #include <memory>
+#include <optional>
+#include <stdexcept>
+#include <string>
+
 #include <cstdio>
 
 /* //////////////////////////////////////////////////////////////// */
@@ -169,6 +173,35 @@ UtlBoundedIdGenerator& MachLogRaces::idGenerator()
 int MachLogRaces::maxActors()
 {
     return ID_UPPER_BOUND;
+}
+
+// static
+UtlId MachLogRaces::allocateId()
+{
+    const std::optional<UtlId> id = idGenerator().nextId();
+
+    if (!id.has_value())
+    {
+        throw std::runtime_error(
+            "Out of actor ids: all " + std::to_string(ID_UPPER_BOUND) + " are in use");
+    }
+
+    return id.value();
+}
+
+// static
+UtlId MachLogRaces::allocateId(UtlId minId, UtlId maxId)
+{
+    const std::optional<UtlId> id = idGenerator().nextId(minId, maxId);
+
+    if (!id.has_value())
+    {
+        throw std::runtime_error(
+            "Out of actor ids in [" + std::to_string(minId) + ", " + std::to_string(maxId)
+            + "): all are in use");
+    }
+
+    return id.value();
 }
 
 bool MachLogRaces::objectExists(const MachActor* pObj) const

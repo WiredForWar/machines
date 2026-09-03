@@ -60,11 +60,11 @@ MachLogLinearProjectile::MachLogLinearProjectile(
     // Set the id
     if (MachLogNetwork::instance().isNetworkGame())
     {
-        id(MachLogRaces::idGenerator().nextId(pRace->race() * 250 + 1, pRace->race() * 250 + 251).value());
+        id(MachLogRaces::allocateId(pRace->race() * 250 + 1, pRace->race() * 250 + 251));
     }
     else
     {
-        id(MachLogRaces::idGenerator().nextId().value());
+        id(MachLogRaces::allocateId());
     }
     HAL_STREAM("id (" << id() << ")\n");
     pOwner_->attach(this);
