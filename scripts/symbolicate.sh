@@ -125,7 +125,7 @@ total=0
 
 while IFS= read -r line; do
     case "$line" in
-        "--- Call stack ---")
+        "--- Call stack ---" | "--- Call stack of the main thread ---")
             in_stack=1
             continue
             ;;
