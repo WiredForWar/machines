@@ -15,6 +15,7 @@ set(TESTING_THESE_GUYS
     base
     mathex
     afx_lite
+    crashdump
     utility
     profiler
     system
@@ -45,6 +46,8 @@ append_test(AfxInvokeArgsTests afx/AfxInvokeArgsTests.cpp)
 if(USE_SWSCALE)
     append_test(FrameScalerTests ani/FrameScalerTests.cpp)
 endif()
+#~:crashdump
+append_test(WatchdogTests crashdump/WatchdogTests.cpp)
 #~:device
 append_test(BasePersistenceTests base/PersistenceTests.cpp)
 append_test(DevButtonEventTests device/DevButtonEventTests.cpp)

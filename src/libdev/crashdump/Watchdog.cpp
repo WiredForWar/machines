@@ -6,6 +6,8 @@
 
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
+#include <mutex>
 #include <thread>
 
 namespace CrashDump
@@ -19,7 +21,12 @@ namespace
 // about. Only the watcher cares what time it is.
 std::atomic<unsigned long long> beats_{};
 
-std::atomic<bool> watching_{};
+// The watcher spends nearly all its life waiting, so a stop has to be able to
+// interrupt that wait rather than wait it out.
+std::mutex stopMutex_;
+std::condition_variable stopRequested_;
+bool watching_{}; // guarded by stopMutex_
+
 std::thread watcher_;
 std::chrono::seconds timeout_{};
 
@@ -105,9 +112,19 @@ void watch()
     // cost nothing measurable.
     const std::chrono::milliseconds interval = std::chrono::duration_cast<std::chrono::milliseconds>(timeout_) / 8;
 
-    while (watching_.load(std::memory_order_relaxed))
+    for (;;)
     {
-        std::this_thread::sleep_for(interval);
+        {
+            std::unique_lock<std::mutex> lock(stopMutex_);
+
+            // A plain sleep here would hold the shutdown up for whatever is
+            // left of the interval, which is most of a second at the default
+            // timeout and is the last thing the player sees.
+            if (stopRequested_.wait_for(lock, interval, [] { return ! watching_; }))
+            {
+                return;
+            }
+        }
 
         const unsigned long long beats = beats_.load(std::memory_order_relaxed);
 
@@ -153,7 +170,16 @@ void heartbeat()
 
 void startWatchdog(std::chrono::seconds timeout)
 {
-    if (timeout.count() <= 0 || watching_.load(std::memory_order_relaxed))
+    if (timeout.count() <= 0)
+    {
+        return;
+    }
+
+    // Held until the end, so that the watcher cannot look at any of this before
+    // all of it is set.
+    std::lock_guard<std::mutex> lock(stopMutex_);
+
+    if (watching_)
     {
         return;
     }
@@ -162,18 +188,24 @@ void startWatchdog(std::chrono::seconds timeout)
 
     rememberWatchedThread();
 
-    watching_.store(true, std::memory_order_relaxed);
+    watching_ = true;
     watcher_ = std::thread(watch);
 }
 
 void stopWatchdog()
 {
-    if (! watching_.load(std::memory_order_relaxed))
     {
-        return;
+        std::lock_guard<std::mutex> lock(stopMutex_);
+
+        if (!watching_)
+        {
+            return;
+        }
+
+        watching_ = false;
     }
 
-    watching_.store(false, std::memory_order_relaxed);
+    stopRequested_.notify_all();
 
     if (watcher_.joinable())
     {
