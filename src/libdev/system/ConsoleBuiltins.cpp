@@ -73,6 +73,19 @@ static void echoCommand(const IConsole::CommandRequest& request, IConsole& conso
     }
 }
 
+static void blockModeCommand(const IConsole::CommandRequest& request, IConsole& console)
+{
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        console.writeLine(std::string("Blocking mode is ") + (console.blockModeEnabled() ? "on" : "off") + ".");
+        return;
+    }
+
+    const bool enabled = std::get<bool>(request.arguments[0].value);
+    console.setBlockModeEnabled(enabled);
+    console.writeLine(std::string("Blocking mode turned ") + (enabled ? "on" : "off") + ".");
+}
+
 void registerConsoleBuiltins(IConsole& console)
 {
     console.registerCommand(
@@ -98,6 +111,14 @@ void registerConsoleBuiltins(IConsole& console)
             .arguments = { { .name = "text", .type = IConsole::ArgumentType::String, .optional = false, .description = "Text to print." } },
         },
         echoCommand);
+
+    console.registerCommand(
+        {
+            .name = "block_mode",
+            .description = "Get/set whether a command that finishes later holds back the input.",
+            .arguments = { { .name = "state", .type = IConsole::ArgumentType::Boolean, .optional = true, .description = "on or off. Omit to print current state." } },
+        },
+        blockModeCommand);
 }
 
 } // namespace System
