@@ -156,16 +156,25 @@ void Console::drainQueue()
     }
 }
 
-void Console::waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description)
+void Console::waitUntil(
+    CompletionPredicate predicate,
+    std::chrono::milliseconds timeout,
+    std::string description,
+    CompletionAction onCompleted)
 {
     if (!predicate || !blockModeEnabled_)
     {
         return;
     }
 
-    // Something already finished is not worth holding a frame for.
+    // Something already finished is not worth holding a frame for, but it has
+    // still been waited for, so what follows the wait is still owed.
     if (predicate())
     {
+        if (onCompleted)
+        {
+            onCompleted();
+        }
         return;
     }
 
@@ -173,6 +182,7 @@ void Console::waitUntil(CompletionPredicate predicate, std::chrono::milliseconds
         .predicate = std::move(predicate),
         .deadline = now() + timeout,
         .description = std::move(description),
+        .onCompleted = std::move(onCompleted),
     };
 }
 
@@ -199,7 +209,15 @@ void Console::tick()
     {
         if (pending_->predicate())
         {
+            // Taken out of the wait before it runs, so that what it prints is
+            // not held back by the wait it belongs to, and so that it may
+            // declare a wait of its own.
+            const CompletionAction onCompleted = std::move(pending_->onCompleted);
             pending_.reset();
+            if (onCompleted)
+            {
+                onCompleted();
+            }
         }
         else if (now() >= pending_->deadline)
         {
