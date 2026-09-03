@@ -50,6 +50,7 @@
 #include "world4d/Scene/SceneManager.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <filesystem>
@@ -1149,6 +1150,16 @@ void saveGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
     }
 }
 
+// Holds the input back until a game is up. A loading command has finished when
+// the game exists, whatever it was that asked for it.
+void waitForGame(MachGuiStartupScreens* pStartup, Console& console, std::string description)
+{
+    console.waitUntil(
+        [pStartup]() { return pStartup->gameType() != MachGuiStartupScreens::NOGAME; },
+        std::chrono::minutes(5),
+        std::move(description));
+}
+
 void loadGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Console& console)
 {
     if (!pStartup)
@@ -1215,6 +1226,12 @@ void loadGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
     SimManager::instance().resume();
 
     console.writeLine("Game loaded.");
+
+    // The save is read before this returns, so this is already satisfied and
+    // costs nothing. It is here so that both loading commands answer the same
+    // question, and so that a save which grows a deferred step later does not
+    // quietly stop holding the input.
+    waitForGame(pStartup, console, "the saved game to finish loading");
 }
 
 // ============================================================
