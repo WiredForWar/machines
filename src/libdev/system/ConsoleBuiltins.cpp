@@ -2,7 +2,11 @@
 
 #include "system/IConsole.hpp"
 
+#include <chrono>
 #include <sstream>
+#include <string>
+
+#include <cstdint>
 
 namespace System
 {
@@ -73,6 +77,38 @@ static void echoCommand(const IConsole::CommandRequest& request, IConsole& conso
     }
 }
 
+static void sleepCommand(const IConsole::CommandRequest& request, IConsole& console)
+{
+    const double seconds = std::get<double>(request.arguments[0].value);
+    if (seconds <= 0.0)
+    {
+        console.reportError("A sleep needs a length greater than zero.");
+        return;
+    }
+
+    // Waiting is the whole of what this command does, so with nothing to wait
+    // with it says so rather than returning as if it had waited.
+    if (!console.blockModeEnabled())
+    {
+        console.reportError("A sleep needs the blocking mode on. Turn it on with block_mode on.");
+        return;
+    }
+
+    const std::chrono::milliseconds length{static_cast<std::int64_t>(seconds * 1000.0)};
+    const std::chrono::steady_clock::time_point until = console.now() + length;
+
+    // The deadline is what ends this, so it is set beyond the length asked for:
+    // reaching it would report a sleep that had given up on itself.
+    //
+    // The console is held as a pointer rather than captured by reference: the
+    // reference is this call's parameter and does not outlive it, while the
+    // predicate is run from a later frame.
+    console.waitUntil(
+        [pConsole = &console, until]() { return pConsole->now() >= until; },
+        length * 2 + std::chrono::seconds(1),
+        "a sleep of " + std::to_string(seconds) + "s");
+}
+
 static void blockModeCommand(const IConsole::CommandRequest& request, IConsole& console)
 {
     if (request.arguments.empty() || !request.arguments[0].provided)
@@ -111,6 +147,14 @@ void registerConsoleBuiltins(IConsole& console)
             .arguments = { { .name = "text", .type = IConsole::ArgumentType::String, .optional = false, .description = "Text to print." } },
         },
         echoCommand);
+
+    console.registerCommand(
+        {
+            .name = "sleep",
+            .description = "Wait, running the game, before the next command.",
+            .arguments = { { .name = "seconds", .type = IConsole::ArgumentType::Float, .optional = false, .description = "How long to wait." } },
+        },
+        sleepCommand);
 
     console.registerCommand(
         {
