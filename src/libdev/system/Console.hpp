@@ -42,7 +42,14 @@ public:
     bool submit(std::string_view line) override;
     bool executeScript(std::string_view scriptSource) override;
 
-    void waitUntil(CompletionPredicate predicate, std::chrono::milliseconds timeout, std::string description) override;
+    void waitUntil(
+        CompletionPredicate predicate,
+        std::chrono::milliseconds timeout,
+        std::string description,
+        CompletionAction onCompleted) override;
+    // The overload that takes no action is not virtual, and declaring the one
+    // above would otherwise hide it from a caller holding a Console.
+    using IConsole::waitUntil;
     [[nodiscard]] bool isBusy() const override;
     void cancelPending() override;
     void tick() override;
@@ -100,6 +107,7 @@ private:
         CompletionPredicate predicate{};
         std::chrono::steady_clock::time_point deadline{};
         std::string description{};
+        CompletionAction onCompleted{};
     };
 
     static std::vector<std::string> tokenize(std::string_view line);

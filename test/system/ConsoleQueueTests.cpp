@@ -53,6 +53,18 @@ struct Fixture
             target.waitUntil([this]() { return finished; }, 1000ms, name);
         });
     }
+
+    // The shape of a measurement: nothing to say when it starts, and an answer
+    // to give once the thing it is waiting for has happened.
+    void addWaitingWithAnswer(System::Console& console, const std::string& name)
+    {
+        console.registerCommand({ .name = name }, [this, name](const auto&, System::IConsole& target) {
+            ran.push_back(name);
+            target.waitUntil([this]() { return finished; }, 1000ms, name, [this, name]() {
+                ran.push_back(name + " answered");
+            });
+        });
+    }
 };
 
 } // namespace
@@ -217,6 +229,81 @@ TEST(ConsoleQueueTests, ALineOfferedWhileBusyKeepsItsPlaceInTheOrder)
     console.tick();
 
     EXPECT_EQ(std::vector<std::string>({ "load", "first", "second" }), fixture.ran);
+}
+
+TEST(ConsoleQueueTests, AnAnswerComesBeforeWhatWasQueuedBehindTheWait)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    fixture.addWaitingWithAnswer(console, "measure");
+    fixture.addInstant(console, "after");
+
+    console.submit("measure");
+    console.submit("after");
+
+    console.tick();
+    EXPECT_EQ(std::vector<std::string>({ "measure" }), fixture.ran);
+
+    fixture.finished = true;
+    console.tick();
+
+    EXPECT_EQ(std::vector<std::string>({ "measure", "measure answered", "after" }), fixture.ran);
+    EXPECT_FALSE(console.isBusy());
+}
+
+TEST(ConsoleQueueTests, WorkAlreadyDoneIsStillAnswered)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    fixture.finished = true;
+    fixture.addWaitingWithAnswer(console, "measure");
+
+    console.submit("measure");
+
+    EXPECT_EQ(std::vector<std::string>({ "measure", "measure answered" }), fixture.ran);
+}
+
+TEST(ConsoleQueueTests, GivingUpOnAWaitLeavesItUnanswered)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    fixture.addWaitingWithAnswer(console, "measure");
+
+    console.submit("measure");
+    fixture.clock.advance(1001ms);
+    console.tick();
+
+    EXPECT_EQ(std::vector<std::string>({ "measure" }), fixture.ran);
+    EXPECT_FALSE(console.lastError().empty());
+}
+
+TEST(ConsoleQueueTests, CancellingAWaitLeavesItUnanswered)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    fixture.addWaitingWithAnswer(console, "measure");
+
+    console.submit("measure");
+    console.cancelPending();
+
+    fixture.finished = true;
+    console.tick();
+
+    EXPECT_EQ(std::vector<std::string>({ "measure" }), fixture.ran);
+}
+
+TEST(ConsoleQueueTests, AWaitWithTheModeOffIsNotAnswered)
+{
+    Fixture fixture;
+    System::Console console = fixture.makeConsole();
+    console.setBlockModeEnabled(false);
+    fixture.addWaitingWithAnswer(console, "measure");
+
+    console.submit("measure");
+    fixture.finished = true;
+    console.tick();
+
+    EXPECT_EQ(std::vector<std::string>({ "measure" }), fixture.ran);
 }
 
 TEST(ConsoleQueueTests, ASleepHoldsTheInputForAsLongAsItWasAsked)
