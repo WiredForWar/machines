@@ -14,6 +14,8 @@
 #include "sound/WaveformId.hpp"
 #include "sound/Mixer.hpp"
 
+#include <optional>
+
 W4dSoundManagerImpl::W4dSoundManagerImpl()
     : hasPendingSound_(false)
     , definitionFileRead_(false)
@@ -203,12 +205,23 @@ void W4dSoundManagerImpl::playEntitySound(EntitySound* pThisSound)
     pTempParams->setHWMixing(pThisSound->pData_->isHWMixed());
     if (pThisSound->currentPercentageVolume_ > 0)
     {
-        pThisSound->isPlaying_ = true;
-        SOUND_STREAM("Playing Entity sound " << pThisSound->pathname_ << " at " << W4dManager::instance().time());
-        SOUND_STREAM(" original start " << pThisSound->startTime_ << std::endl);
-        pThisSound->startTime_ = W4dManager::instance().time();
-        pThisSound->setId(SndMixer::instance().playSample(*pTempParams));
-        hasPendingSound_ = true;
+        const std::optional<SndSampleHandle> handle = SndMixer::instance().playSample(*pTempParams);
+
+        // Leave the sound unplayed when the mixer has no channel for it: it stays
+        // on the list and is offered again on a later update.
+        if (handle.has_value())
+        {
+            SOUND_STREAM("Playing Entity sound " << pThisSound->pathname_ << " at " << W4dManager::instance().time());
+            SOUND_STREAM(" original start " << pThisSound->startTime_ << std::endl);
+            pThisSound->setId(handle.value());
+            pThisSound->isPlaying_ = true;
+            pThisSound->startTime_ = W4dManager::instance().time();
+            hasPendingSound_ = true;
+        }
+        else
+        {
+            SOUND_STREAM("No free channel for Entity sound " << pThisSound->pathname_ << std::endl);
+        }
     }
     else
     {

@@ -38,9 +38,8 @@ private:
     const MachLogVoiceMailInfo& info_;
     std::optional<MexPoint3d> position_;
     UtlId actorId_ {};
-    SndSampleHandle sampleHandle_ {};
+    std::optional<SndSampleHandle> sampleHandle_;
     bool hasStarted_ {};
-    bool sampleHandleValid_ {};
 };
 
 #define CB_MachLogVoiceMail_DEPIMPL()                                                                                  \
@@ -49,7 +48,6 @@ private:
     CB_DEPIMPL_AUTO(position_);                                                                                        \
     CB_DEPIMPL_AUTO(actorId_);                                                                                         \
     CB_DEPIMPL_AUTO(sampleHandle_);                                                                                    \
-    CB_DEPIMPL_AUTO(sampleHandleValid_);                                                                               \
     CB_DEPIMPL_AUTO(hasStarted_);
 
 #endif

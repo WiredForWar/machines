@@ -16,6 +16,8 @@
 #include "system/PathName.hpp"
 #include "ctl/List.hpp"
 
+#include <optional>
+
 // static
 MachGuiSoundManager& MachGuiSoundManager::instance()
 {
@@ -49,10 +51,19 @@ bool MachGuiSoundManager::playSound(const SysPathName& wavFilePath)
         // Play the sound
         SndWaveformId id(wavFilePath);
         SndSampleParameters temp(id);
-        SndSampleHandle tempHandle = SndMixer::instance().playSample(temp);
-        currentActiveHandles_.push_back(tempHandle);
-        SOUND_STREAM("Playing MGsound " << wavFilePath << " handle " << tempHandle << std::endl);
-        SndMixer::instance().update();
+        const std::optional<SndSampleHandle> handle = SndMixer::instance().playSample(temp);
+
+        if (handle.has_value())
+        {
+            currentActiveHandles_.push_back(handle.value());
+            SOUND_STREAM("Playing MGsound " << wavFilePath << " handle " << handle.value() << std::endl);
+            SndMixer::instance().update();
+        }
+        else
+        {
+            SOUND_STREAM("No free channel for MGsound " << wavFilePath << std::endl);
+            playingSound = false;
+        }
     }
     else
     {

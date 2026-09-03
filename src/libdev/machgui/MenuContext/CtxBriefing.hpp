@@ -16,6 +16,8 @@
 
 #include "sound/Mixer.hpp"
 
+#include <optional>
+
 class MachGuiScrollableText;
 class MachGuiMenuButton;
 class GuiImage;
@@ -59,9 +61,8 @@ private:
     MachGuiMenuButton* pObjectiveBtn_;
     MachGuiMenuButton* pOkBtn_;
     GuiImage* pBriefImage_;
-    SndSampleHandle briefVoicemail_;
-    // Has this mail been played at all
-    bool playedMail_;
+    // The channel the briefing mail is playing on, while one is playing
+    std::optional<SndSampleHandle> briefVoicemail_;
     bool autoLoadGame_;
 };
 

@@ -37,7 +37,6 @@
 MachGuiCtxBriefing::MachGuiCtxBriefing(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sk", pStartupScreens)
     , pBriefImage_(nullptr)
-    , playedMail_(false)
     , autoLoadGame_(false)
 {
     pOkBtn_ = new MachGuiMenuButton(
@@ -331,17 +330,19 @@ void MachGuiCtxBriefing::playBriefingVoicemail()
             SndSampleParameters voicemailParameters(SndWaveformId(voicemail), loopCount);
 
             briefVoicemail_ = SndMixer::instance().playSample(voicemailParameters);
-            playedMail_ = true;
         }
     }
 }
 
 void MachGuiCtxBriefing::stopPlayingBriefingVoicemail()
 {
-    if (playedMail_ && SndMixer::instance().isActive(briefVoicemail_))
+    if (briefVoicemail_.has_value())
     {
-        SndMixer::instance().stopSample(briefVoicemail_);
-        SndMixer::instance().freeSampleResources(briefVoicemail_);
+        if (SndMixer::instance().isActive(briefVoicemail_.value()))
+            SndMixer::instance().stopSample(briefVoicemail_.value());
+
+        SndMixer::instance().freeSampleResources(briefVoicemail_.value());
+        briefVoicemail_.reset();
     }
 }
 

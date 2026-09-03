@@ -42,6 +42,8 @@
 #include "mathex/EulerAngles.hpp"
 #include "mathex/Point3d.hpp"
 
+#include <optional>
+
 class SndWaveform;
 class Sample;
 class MexTransform3d;
@@ -89,12 +91,13 @@ public:
 
     // When a sample is played via this method it does not start playing
     // automatically, it has a sample handle allocated to it,
-    // and only starts playing after the next call to update()
+    // and only starts playing after the next call to update().
+    // Returns no handle when sound is off, or when every logical channel is
+    // already in use.
     // NB Default resource management responsibility is
     // with the CLIENT
-    SndSampleHandle playSample(const SndSampleParameters& p);
-    // PRE(noOfFreeLogicalChannels() > 0);
-    // POST(isAllocated(handle));
+    std::optional<SndSampleHandle> playSample(const SndSampleParameters& p);
+    // POST(implies(result.has_value(), isAllocated(result.value())));
 
     // Query methods for the libraries responsibility
     bool isClientResponsible(const SndSampleHandle& handle) const;

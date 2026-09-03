@@ -24,6 +24,7 @@
 #include "recorder/private/RecorderPrivate.hpp"
 
 #include <memory>
+#include <optional>
 
 extern void debugTiming(const char*, bool);
 
@@ -287,11 +288,11 @@ bool SndMixer::isAudible(const SndSampleHandle& handle) const
 
 //////////////////////////////////////////////////
 
-SndSampleHandle SndMixer::playSample(const SndSampleParameters& p)
+std::optional<SndSampleHandle> SndMixer::playSample(const SndSampleParameters& p)
 {
     if (!soundOn())
     {
-        return 0;
+        return std::nullopt;
     }
 
     CB_DEPIMPL(UtlBoundedIdGenerator*, pSoundIDGenerator_);
@@ -300,9 +301,9 @@ SndSampleHandle SndMixer::playSample(const SndSampleParameters& p)
     CB_DEPIMPL(SndMixerParameters::SoundSystem, soundSystem_);
     CB_DEPIMPL(bool, sortRequired_);
 
-    if (noOfFreeLogicalChannelsNoRecord() <= 0)
+    if (noOfFreeLogicalChannelsNoRecord() == 0)
     {
-        return 0;
+        return std::nullopt;
     }
 
     // Create a new sample

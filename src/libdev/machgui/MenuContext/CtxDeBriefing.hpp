@@ -16,6 +16,8 @@
 
 #include "sound/Mixer.hpp"
 
+#include <optional>
+
 class GuiImage;
 
 class MachGuiCtxDeBriefing : public MachGui::GameMenuContext
@@ -47,9 +49,8 @@ private:
 
     // Data members...
     GuiImage* pDebriefImage_;
-    SndSampleHandle debriefVoicemail_;
-    // Has this mail been played yet
-    bool playedMail_;
+    // The channel the debriefing mail is playing on, while one is playing
+    std::optional<SndSampleHandle> debriefVoicemail_;
 };
 
 #endif

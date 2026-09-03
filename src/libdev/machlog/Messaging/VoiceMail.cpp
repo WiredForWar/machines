@@ -23,8 +23,7 @@ MachLogVoiceMail::~MachLogVoiceMail()
 
     CB_MachLogVoiceMail_DEPIMPL();
 
-    if (sampleHandleValid_)
-        invalidateSample();
+    invalidateSample();
 
     delete pImpl_;
 }
@@ -105,11 +104,10 @@ void MachLogVoiceMail::play()
 
     SndWaveformId param(info_.wavName_);
     sampleHandle_ = SndMixer::instance().playSample(param);
-    sampleHandleValid_ = true;
-    bool internalSampleHandleIsValid = SndMixer::instance().isAllocated(sampleHandle_);
 
-    POST(isSampleValid());
-
+    // A mail the mixer had no channel for never becomes valid. It has still
+    // started, so the manager retires it on its next sweep rather than waiting
+    // on a sample that will never play.
     hasStarted_ = true;
 }
 
@@ -118,7 +116,7 @@ bool MachLogVoiceMail::isPlaying() const
     CB_MachLogVoiceMail_DEPIMPL();
     bool isPlaying = false;
 
-    if (isSampleValid() && SndMixer::instance().isActive(sampleHandle_))
+    if (isSampleValid() && SndMixer::instance().isActive(sampleHandle_.value()))
         isPlaying = true;
 
     return isPlaying;
@@ -128,7 +126,7 @@ bool MachLogVoiceMail::isSampleValid() const
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    return sampleHandleValid_;
+    return sampleHandle_.has_value();
 }
 
 void MachLogVoiceMail::stop()
@@ -138,7 +136,7 @@ void MachLogVoiceMail::stop()
     bool isIt = isPlaying(); // Recording prevents this call inside PRE()
     PRE(isIt);
 
-    SndMixer::instance().stopSample(sampleHandle_);
+    SndMixer::instance().stopSample(sampleHandle_.value());
     invalidateSample();
 
     isIt = isPlaying();
@@ -163,7 +161,9 @@ void MachLogVoiceMail::invalidateSample()
 {
     CB_MachLogVoiceMail_DEPIMPL();
 
-    PRE(isSampleValid());
+    // A mail that never got a channel has nothing to release.
+    if (!isSampleValid())
+        return;
 
     // This call is made outside the precondition for the benefit of the playback/recording mechanism.
     // isPlaying() ends up calling a recorded function in the soundlibrary (SndMixer::isActive()),
@@ -171,8 +171,8 @@ void MachLogVoiceMail::invalidateSample()
     bool isIt = isPlaying();
     PRE(!isIt);
 
-    sampleHandleValid_ = false;
-    SndMixer::instance().freeSampleResources(sampleHandle_);
+    SndMixer::instance().freeSampleResources(sampleHandle_.value());
+    sampleHandle_.reset();
 
     POST(!isSampleValid());
 }

@@ -33,7 +33,6 @@
 MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sj", pStartupScreens)
     , pDebriefImage_(nullptr)
-    , playedMail_(false)
 {
     // Create menu buttons. Order of creation denotes TAB order.
     MachGuiMenuButton* pStatisticsButton = new MachGuiMenuButton(
@@ -308,7 +307,6 @@ void MachGuiCtxDeBriefing::playDeBriefingVoicemail()
                 SndSampleParameters voicemailParameters(SndWaveformId(textData.winVoicemail()), loopCount);
 
                 debriefVoicemail_ = SndMixer::instance().playSample(voicemailParameters);
-                playedMail_ = true;
             }
             break;
         case MachInGameScreen::LOST:
@@ -318,7 +316,6 @@ void MachGuiCtxDeBriefing::playDeBriefingVoicemail()
                 SndSampleParameters voicemailParameters(SndWaveformId(textData.loseVoicemail()), loopCount);
 
                 debriefVoicemail_ = SndMixer::instance().playSample(voicemailParameters);
-                playedMail_ = true;
             }
             break;
             DEFAULT_ASSERT_BAD_CASE(pStartupScreens_->inGameScreen().gameState());
@@ -327,10 +324,13 @@ void MachGuiCtxDeBriefing::playDeBriefingVoicemail()
 
 void MachGuiCtxDeBriefing::stopPlayingDeBriefingVoicemail()
 {
-    if (playedMail_ && SndMixer::instance().isActive(debriefVoicemail_))
+    if (debriefVoicemail_.has_value())
     {
-        SndMixer::instance().stopSample(debriefVoicemail_);
-        SndMixer::instance().freeSampleResources(debriefVoicemail_);
+        if (SndMixer::instance().isActive(debriefVoicemail_.value()))
+            SndMixer::instance().stopSample(debriefVoicemail_.value());
+
+        SndMixer::instance().freeSampleResources(debriefVoicemail_.value());
+        debriefVoicemail_.reset();
     }
 }
 
