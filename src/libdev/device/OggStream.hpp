@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <condition_variable>
 #include <functional>
 #include <mutex>
 #include <string>
@@ -75,5 +76,11 @@ private:
 
     std::thread thread_;
     std::atomic<bool> running_{};
+
+    // The refill thread spends nearly all its life waiting for the next refill,
+    // so stop() has to be able to interrupt that wait rather than wait it out.
+    std::mutex stopMutex_;
+    std::condition_variable stopRequested_;
+
     bool eof_{};
 };

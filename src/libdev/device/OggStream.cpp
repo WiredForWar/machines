@@ -195,13 +195,29 @@ void OggStream::refillLoop()
             alSourcePlay(source_);
         }
 
-        std::this_thread::sleep_for(RefillInterval);
+        {
+            std::unique_lock<std::mutex> lock(stopMutex_);
+
+            // Waiting rather than sleeping, so that stop() is acted on when it
+            // arrives instead of at the end of the current refill period. The
+            // lock covers the wait alone, so nothing in the refill work above
+            // runs holding it.
+            stopRequested_.wait_for(lock, RefillInterval, [this] { return ! running_; });
+        }
     }
 }
 
 void OggStream::stop()
 {
-    running_ = false;
+    {
+        // Cleared under the mutex, so that a refill thread on its way into the
+        // wait cannot miss the notify and settle in for another interval.
+        const std::lock_guard<std::mutex> lock(stopMutex_);
+        running_ = false;
+    }
+
+    stopRequested_.notify_all();
+
     if (thread_.joinable())
     {
         thread_.join();
