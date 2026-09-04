@@ -1935,6 +1935,14 @@ std::string describeStatistics(std::string_view what, const Ren::FrameStatistics
         statistics.maxMs);
 }
 
+void reportCollection(Console& console)
+{
+    const Ren::FrameSampler& sampler = Ren::FrameSampler::instance();
+
+    console.writeLine(describeStatistics("Frame", Ren::intervalStatistics(sampler.frames())));
+    console.writeLine(describeStatistics("Render", Ren::renderStatistics(sampler.frames())));
+}
+
 void benchCommand(const Request& request, Console& console)
 {
     Ren::FrameSampler& sampler = Ren::FrameSampler::instance();
@@ -1955,8 +1963,7 @@ void benchCommand(const Request& request, Console& console)
             return;
         }
 
-        console.writeLine(describeStatistics("Frame", Ren::intervalStatistics(sampler.frames())));
-        console.writeLine(describeStatistics("Render", Ren::renderStatistics(sampler.frames())));
+        reportCollection(console);
         return;
     }
 
@@ -1968,7 +1975,33 @@ void benchCommand(const Request& request, Console& console)
     }
 
     sampler.collect(static_cast<std::size_t>(frames));
-    console.writeLine("Collecting " + std::to_string(frames) + " frames. Ask again for the result.");
+
+    if (!console.blockModeEnabled())
+    {
+        console.writeLine("Collecting " + std::to_string(frames) + " frames. Ask again for the result.");
+        return;
+    }
+
+    console.writeLine("Collecting " + std::to_string(frames) + " frames.");
+
+    // A measurement is worth waiting for: asking twice is what reading one
+    // costs when the console cannot hold the input, and holding it means the
+    // answer arrives under the line that asked for it.
+    //
+    // Even a badly stalling game manages five frames a second, so the deadline
+    // gives up only where no frame is being timed at all. That is what a menu
+    // is: frames go by, but none of them composes a 3D one, and those are the
+    // only frames the sampler records.
+    //
+    // The console is held as a pointer rather than captured by reference: the
+    // reference is this call's parameter and does not outlive it, while the
+    // answer is given from a later frame.
+    const std::chrono::milliseconds allowance{std::min<std::int64_t>(frames, 100000) * 200 + 2000};
+    console.waitUntil(
+        []() { return !Ren::FrameSampler::instance().collecting(); },
+        allowance,
+        std::to_string(frames) + " frames to be collected",
+        [pConsole = &console]() { reportCollection(*pConsole); });
 }
 
 } // anonymous namespace
