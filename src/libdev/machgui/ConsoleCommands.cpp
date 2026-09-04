@@ -36,6 +36,7 @@
 #include "mathex/Radians.hpp"
 #include "mathex/Transform3d.hpp"
 #include "render/Device.hpp"
+#include "render/FrameSampler.hpp"
 #include "sim/Manager.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/IConsole.hpp"
@@ -49,8 +50,10 @@
 #include <cmath>
 #include <cstring>
 #include <filesystem>
+#include <format>
 #include <optional>
 #include <sstream>
+#include <string_view>
 
 namespace MachGui
 {
@@ -1808,6 +1811,89 @@ void loadPlanetCommand(MachGuiStartupScreens* pStartup, const Request& request, 
     waitForGame(pStartup, console, "the planet to finish loading");
 }
 
+std::string describeStatistics(std::string_view what, const Ren::FrameStatistics& statistics)
+{
+    return std::format(
+        "{}: {:.2f} ms mean ({:.1f} fps), min {:.2f}, median {:.2f}, p95 {:.2f}, p99 {:.2f}, max {:.2f}",
+        what,
+        statistics.meanMs,
+        statistics.perSecond(),
+        statistics.minMs,
+        statistics.medianMs,
+        statistics.p95Ms,
+        statistics.p99Ms,
+        statistics.maxMs);
+}
+
+void reportCollection(Console& console)
+{
+    const Ren::FrameSampler& sampler = Ren::FrameSampler::instance();
+
+    console.writeLine(describeStatistics("Frame", Ren::intervalStatistics(sampler.frames())));
+    console.writeLine(describeStatistics("Render", Ren::renderStatistics(sampler.frames())));
+}
+
+void benchCommand(const Request& request, Console& console)
+{
+    Ren::FrameSampler& sampler = Ren::FrameSampler::instance();
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        if (sampler.collecting())
+        {
+            console.writeLine(
+                "Collecting: " + std::to_string(sampler.collected()) + " of "
+                + std::to_string(sampler.wanted()) + " frames.");
+            return;
+        }
+
+        if (sampler.frames().empty())
+        {
+            console.writeLine("Nothing collected yet. Pass a number of frames to collect.");
+            return;
+        }
+
+        reportCollection(console);
+        return;
+    }
+
+    const std::int64_t frames = std::get<std::int64_t>(request.arguments[0].value);
+    if (frames <= 0)
+    {
+        console.writeLine("Expected a number of frames above zero.");
+        return;
+    }
+
+    sampler.collect(static_cast<std::size_t>(frames));
+
+    if (!console.blockModeEnabled())
+    {
+        console.writeLine("Collecting " + std::to_string(frames) + " frames. Ask again for the result.");
+        return;
+    }
+
+    console.writeLine("Collecting " + std::to_string(frames) + " frames.");
+
+    // A measurement is worth waiting for: asking twice is what reading one
+    // costs when the console cannot hold the input, and holding it means the
+    // answer arrives under the line that asked for it.
+    //
+    // Even a badly stalling game manages five frames a second, so the deadline
+    // gives up only where no frame is being timed at all. That is what a menu
+    // is: frames go by, but none of them composes a 3D one, and those are the
+    // only frames the sampler records.
+    //
+    // The console is held as a pointer rather than captured by reference: the
+    // reference is this call's parameter and does not outlive it, while the
+    // answer is given from a later frame.
+    const std::chrono::milliseconds allowance{std::min<std::int64_t>(frames, 100000) * 200 + 2000};
+    console.waitUntil(
+        []() { return !Ren::FrameSampler::instance().collecting(); },
+        allowance,
+        std::to_string(frames) + " frames to be collected",
+        [pConsole = &console]() { reportCollection(*pConsole); });
+}
+
 } // anonymous namespace
 
 } // namespace ConsoleImpl
@@ -2113,6 +2199,21 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .devOnly = true,
         },
         [](const Request& request, Console& console) { commandMoveCommand(request, console); });
+
+    // ---- Render commands ----
+
+    console.registerCommand(
+        {
+            .name = "bench",
+            .description = "Collect frame times, then report their distribution.",
+            .arguments = {{
+                .name = "frames",
+                .type = Arg::Integer,
+                .optional = true,
+                .description = "How many frames to collect. Omit to read the last collection.",
+            }},
+        },
+        benchCommand);
 }
 
 } // namespace MachGui
