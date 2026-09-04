@@ -40,6 +40,7 @@
 #include "mathex/Radians.hpp"
 #include "mathex/Transform3d.hpp"
 #include "render/Device.hpp"
+#include "render/FrameSampler.hpp"
 #include "sim/Manager.hpp"
 #include "system/ConfigVariables.hpp"
 #include "system/IConsole.hpp"
@@ -52,8 +53,10 @@
 #include <cmath>
 #include <cstring>
 #include <filesystem>
+#include <format>
 #include <optional>
 #include <sstream>
+#include <string_view>
 
 namespace MachGui
 {
@@ -1895,6 +1898,56 @@ void inputScrollCommand(const Request& request, Console& console)
     console.writeLine("Scrolled " + direction + ".");
 }
 
+std::string describeStatistics(std::string_view what, const Ren::FrameStatistics& statistics)
+{
+    return std::format(
+        "{}: {:.2f} ms mean ({:.1f} fps), min {:.2f}, median {:.2f}, p95 {:.2f}, p99 {:.2f}, max {:.2f}",
+        what,
+        statistics.meanMs,
+        statistics.perSecond(),
+        statistics.minMs,
+        statistics.medianMs,
+        statistics.p95Ms,
+        statistics.p99Ms,
+        statistics.maxMs);
+}
+
+void benchCommand(const Request& request, Console& console)
+{
+    Ren::FrameSampler& sampler = Ren::FrameSampler::instance();
+
+    if (request.arguments.empty() || !request.arguments[0].provided)
+    {
+        if (sampler.collecting())
+        {
+            console.writeLine(
+                "Collecting: " + std::to_string(sampler.collected()) + " of "
+                + std::to_string(sampler.wanted()) + " frames.");
+            return;
+        }
+
+        if (sampler.frames().empty())
+        {
+            console.writeLine("Nothing collected yet. Pass a number of frames to collect.");
+            return;
+        }
+
+        console.writeLine(describeStatistics("Frame", Ren::intervalStatistics(sampler.frames())));
+        console.writeLine(describeStatistics("Render", Ren::renderStatistics(sampler.frames())));
+        return;
+    }
+
+    const std::int64_t frames = std::get<std::int64_t>(request.arguments[0].value);
+    if (frames <= 0)
+    {
+        console.writeLine("Expected a number of frames above zero.");
+        return;
+    }
+
+    sampler.collect(static_cast<std::size_t>(frames));
+    console.writeLine("Collecting " + std::to_string(frames) + " frames. Ask again for the result.");
+}
+
 } // anonymous namespace
 
 } // namespace ConsoleImpl
@@ -2254,6 +2307,21 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .devOnly = true,
         },
         [](const Request& request, Console& console) { commandMoveCommand(request, console); });
+
+    // ---- Render commands ----
+
+    console.registerCommand(
+        {
+            .name = "bench",
+            .description = "Collect frame times, then report their distribution.",
+            .arguments = {{
+                .name = "frames",
+                .type = Arg::Integer,
+                .optional = true,
+                .description = "How many frames to collect. Omit to read the last collection.",
+            }},
+        },
+        benchCommand);
 }
 
 } // namespace MachGui
