@@ -121,7 +121,12 @@ inline constexpr void RenColour::IColour::packAlpha(float a)
     else if (a <= 0.0)
         a_ = 0;
     else
-        a_ = static_cast<uint32_t>(255 * a) << 24;
+        // Round to the nearest of the 256 alphas this can hold. Truncating
+        // costs a step every time a colour makes the round trip through a
+        // float: 127/255 unpacks to 0.498039, and 255 * 0.498039 is 126.99995,
+        // so the byte comes back one lower than it went in. The branches above
+        // leave a strictly positive, so adding a half and cutting rounds.
+        a_ = static_cast<uint32_t>(255 * a + 0.5f) << 24;
 }
 
 #ifdef _INLINE
