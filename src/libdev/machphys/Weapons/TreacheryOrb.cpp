@@ -21,6 +21,8 @@
 #include "machphys/Effects/RaceChanger.hpp"
 #include "machphys/Weapons/WeaponData.hpp"
 
+#include <optional>
+
 PER_DEFINE_PERSISTENT(MachPhysTreacheryOrb);
 
 MachPhysTreacheryOrb::MachPhysTreacheryOrb(W4dEntity* pParent, const MexTransform3d& localTransform)
@@ -118,38 +120,15 @@ MachPhysTreacheryOrb::beLaunched(const PhysAbsoluteTime& startTime, const MachPh
 // static
 const RenMaterial& MachPhysTreacheryOrb::orbMaterial(MachPhys::Race race)
 {
-    const RenMaterial* pMat = nullptr;
+    PRE(race < MachPhys::N_RACES);
 
-    switch (race)
-    {
-        case MachPhys::RED:
-            {
-                static RenMaterial mat(createOrbMaterial(race));
-                pMat = &mat;
-                break;
-            }
-        case MachPhys::BLUE:
-            {
-                static RenMaterial mat(createOrbMaterial(race));
-                pMat = &mat;
-                break;
-            }
-        case MachPhys::GREEN:
-            {
-                static RenMaterial mat(createOrbMaterial(race));
-                pMat = &mat;
-                break;
-            }
-        case MachPhys::YELLOW:
-            {
-                static RenMaterial mat(createOrbMaterial(race));
-                pMat = &mat;
-                break;
-            }
-            DEFAULT_ASSERT_BAD_CASE(race);
-    }
+    // One material per race, made the first time that race asks for one.
+    static std::optional<RenMaterial> materials[MachPhys::N_RACES];
 
-    return *pMat;
+    if (!materials[race].has_value())
+        materials[race] = createOrbMaterial(race);
+
+    return materials[race].value();
 }
 
 // static
