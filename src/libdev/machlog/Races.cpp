@@ -861,26 +861,12 @@ const MachLogAIController& MachLogRaces::AIController(MachPhys::Race r) const
 // static
 size_t MachLogRaces::map_MachPhysRace_to_size_t(MachPhys::Race race)
 {
-    size_t result = 0;
     ASSERT_INFO((int)race);
-    switch (race)
-    {
-        case MachPhys::RED:
-            result = 0;
-            break;
-        case MachPhys::BLUE:
-            result = 1;
-            break;
-        case MachPhys::GREEN:
-            result = 2;
-            break;
-        case MachPhys::YELLOW:
-            result = 3;
-            break;
-        default:
-            ASSERT_BAD_CASE;
-            break;
-    }
+    PRE(race < MachPhys::N_RACES);
+
+    // The per-race arrays are declared MachPhys::N_RACES long and in enum order,
+    // so a race is its own index and a new one needs nothing added here.
+    const size_t result = static_cast<size_t>(race);
 
     POST(result < MachPhys::N_RACES);
     return result;
