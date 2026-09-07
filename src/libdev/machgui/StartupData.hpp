@@ -21,6 +21,8 @@
 
 #include <optional>
 
+#include <cstddef>
+
 class StartupInfo;
 class MachGuiDbScenario;
 class MachGuiCtxImReady;
@@ -38,6 +40,11 @@ class MachGuiStartupData
 // Canonical form revoked
 {
 public:
+    // How many players a game seats. A scenario defines a start position per seat, so
+    // this is a property of the planet data and not of the race list -- there are more
+    // races to choose a colour from than there are seats to play them from.
+    static constexpr std::size_t maxPlayers = 4;
+
     enum VictoryCondition : uint8
     {
         VC_DEFAULT,
@@ -290,7 +297,7 @@ private:
     bool host_;
     MachGuiCtxImReady* pCtxImReady_;
     ctl_vector<std::string> availablePlayers_;
-    PlayerInfo players_[4]; // Four available slots for players
+    PlayerInfo players_[maxPlayers];
     MachGuiStartupScreens* pStartupScreens_;
     bool includedInGame_;
     bool terminalMultiPlayerGameProblem_;

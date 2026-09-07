@@ -503,7 +503,7 @@ ctl_vector<std::string>& MachGuiStartupData::availablePlayers()
 int MachGuiStartupData::getNextAvailablePlayerSlot() const
 {
     // Choose open spaces first
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::OPEN)
         {
@@ -512,7 +512,7 @@ int MachGuiStartupData::getNextAvailablePlayerSlot() const
     }
 
     // Replace computers with human players if no open spaces.
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::COMPUTER)
         {
@@ -556,7 +556,7 @@ bool MachGuiStartupData::isRaceAvailable(MachPhys::Race race) const
 
     bool free = true;
 
-    for (size_t loop = 0; loop < 4 && free; ++loop)
+    for (size_t loop = 0; loop < maxPlayers && free; ++loop)
     {
         if (players_[loop].race_ == race)
         {
@@ -604,7 +604,7 @@ void MachGuiStartupData::receivedImReadyMessage(const std::string& playerName, b
 {
     if (isHost())
     {
-        for (size_t loop = 0; loop < 4; ++loop)
+        for (size_t loop = 0; loop < maxPlayers; ++loop)
         {
             if (strcasecmp(playerName.c_str(), players_[loop].playerName_) == 0)
             {
@@ -617,7 +617,7 @@ void MachGuiStartupData::receivedImReadyMessage(const std::string& playerName, b
 
 bool MachGuiStartupData::isReady(const std::string& playerName)
 {
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (strcasecmp(playerName.c_str(), players_[loop].playerName_) == 0)
         {
@@ -637,7 +637,7 @@ bool MachGuiStartupData::canStartMultiPlayerGame() const
     bool canStart = true;
     size_t humans = 0;
 
-    for (size_t loop = 0; loop < 4 && canStart; ++loop)
+    for (size_t loop = 0; loop < maxPlayers && canStart; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::HUMAN)
         {
@@ -670,7 +670,7 @@ bool MachGuiStartupData::updateIncludedInGame()
     includedInGame_ = false;
     if (playerName().length() > 0)
     {
-        for (size_t loop = 0; loop < 4 && ! includedInGame_; ++loop)
+        for (size_t loop = 0; loop < maxPlayers && ! includedInGame_; ++loop)
         {
             if (players_[loop].status_ == PlayerInfo::HUMAN)
             {
@@ -725,7 +725,7 @@ void MachGuiStartupData::receivedClientCancelMessage(const std::string& playerNa
             std::string iterPlayerName = *iter;
             bool included = false;
 
-            for (size_t loop = 0; loop < 4; ++loop)
+            for (size_t loop = 0; loop < maxPlayers; ++loop)
             {
                 if (players_[loop].status_ == PlayerInfo::HUMAN)
                 {
@@ -746,7 +746,7 @@ void MachGuiStartupData::receivedClientCancelMessage(const std::string& playerNa
             }
         }
 
-        for (size_t loop = 0; loop < 4; ++loop)
+        for (size_t loop = 0; loop < maxPlayers; ++loop)
         {
             if (players_[loop].status_ == PlayerInfo::HUMAN)
             {
@@ -828,7 +828,7 @@ std::string MachGuiStartupData::getHostName() const
 {
     std::string retVal;
 
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].host_)
         {
@@ -845,7 +845,7 @@ void MachGuiStartupData::initMachLogNetwork()
     HAL_STREAM("MachGuiStartupData::initMachLogNetwork\n");
 
     // Assign a race to all players marked as NORACE.
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].race_ == MachPhys::NORACE)
         {
@@ -859,7 +859,7 @@ void MachGuiStartupData::initMachLogNetwork()
     }
 
     // Set ready status on all slots not partaking in game
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].status_ != PlayerInfo::HUMAN)
         {
@@ -868,7 +868,7 @@ void MachGuiStartupData::initMachLogNetwork()
     }
 
     // The network which race is local race
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         if (players_[loop].status_ == PlayerInfo::HUMAN
             && strcasecmp(playerName().c_str(), players_[loop].playerName_) == 0)
@@ -893,7 +893,7 @@ void MachGuiStartupData::newGameName(const std::string& gameName)
 
 void MachGuiStartupData::resetPlayers()
 {
-    for (size_t loop = 0; loop < 4; ++loop)
+    for (size_t loop = 0; loop < maxPlayers; ++loop)
     {
         players_[loop].reset();
     }
@@ -1522,7 +1522,7 @@ void MachGuiStartupData::receivedInGameChatMessage(const std::string& message, M
     }
     else
     {
-        for (int i = 0; i < 4 && ! displayMessage; ++i)
+        for (int i = 0; i < maxPlayers && ! displayMessage; ++i)
         {
             if (players_[i].race_ == intendedRace && players_[i].status_ == PlayerInfo::HUMAN
                 && players_[i].getDisplayName() == playerName())

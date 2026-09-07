@@ -641,43 +641,44 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     }
     int numberOfAIRaces = startupData()->numPlayers() - 1;
     // Setup AI races and PC race
-    if (gameData.randomStarts() == MachLog::RANDOM_START_LOCATIONS)
+    // A scenario names its start positions after the original colours, so there are
+    // fewer of them than there are races to choose from. An entry of creationData is
+    // a start position, and its colour_ is the race that plays it -- which is how a
+    // race with no start position of its own gets into the game at all.
+    const int startPositions = static_cast<int>(MachGuiStartupData::maxPlayers);
+    const MachPhys::Race chosenRace = startupData()->playerRace();
+
+    const bool randomStarts = gameData.randomStarts() == MachLog::RANDOM_START_LOCATIONS;
+    MexBasicRandom random(MexBasicRandom::constructSeededFromTime());
+
+    bool usedColour[MachPhys::N_RACES] = {};
+    const int playerStart
+        = randomStarts ? mexRandomInt(&random, 0, startPositions) : (chosenRace < startPositions ? chosenRace : 0);
+
+    creationData[playerStart].type_ = MachLog::PC_LOCAL;
+    creationData[playerStart].colour_ = chosenRace;
+    usedColour[chosenRace] = true;
+
+    // Each computer race takes a free start position -- picked at random, or the next
+    // one along -- and the first colour nobody has taken.
+    while (numberOfAIRaces != 0)
     {
-        MexBasicRandom random(MexBasicRandom::constructSeededFromTime());
-        int playerNewColour = mexRandomInt(&random, 0, 4);
-        bool usedColour[MachPhys::N_RACES] = { false, false, false, false };
-        creationData[playerNewColour].type_ = MachLog::PC_LOCAL;
-        creationData[playerNewColour].colour_ = startupData()->playerRace();
-        usedColour[startupData()->playerRace()] = true;
-        while (numberOfAIRaces != 0)
-        {
-            int AIRace = mexRandomInt(&random, 0, 4);
-            if (creationData[AIRace].type_ == MachLog::NOT_DEFINED)
-            {
-                --numberOfAIRaces;
-                creationData[AIRace].type_ = MachLog::AI_LOCAL;
-                int i = 0;
-                while (usedColour[i])
-                    ++i;
-                creationData[AIRace].colour_ = (MachPhys::Race)i;
-                usedColour[i] = true;
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i < 4; ++i)
-        {
-            if ((MachPhys::Race)i == startupData()->playerRace())
-            {
-                creationData[i].type_ = MachLog::PC_LOCAL;
-            }
-            else if (numberOfAIRaces != 0)
-            {
-                --numberOfAIRaces;
-                creationData[i].type_ = MachLog::AI_LOCAL;
-            }
-        }
+        int start = randomStarts ? mexRandomInt(&random, 0, startPositions) : 0;
+        while (!randomStarts && creationData[start].type_ != MachLog::NOT_DEFINED)
+            ++start;
+
+        if (creationData[start].type_ != MachLog::NOT_DEFINED)
+            continue;
+
+        --numberOfAIRaces;
+        creationData[start].type_ = MachLog::AI_LOCAL;
+
+        int colour = 0;
+        while (usedColour[colour])
+            ++colour;
+
+        creationData[start].colour_ = static_cast<MachPhys::Race>(colour);
+        usedColour[colour] = true;
     }
     gameData.playersCreationData(creationData);
 
