@@ -256,6 +256,10 @@ public:
     MachPhys::Race playerRace() const;
     std::string playerRaceStr() const;
 
+    // The string table entry naming race in the player's language.
+    static uint raceStringId(MachPhys::Race race);
+    // PRE( race < MachPhys::N_RACES );
+
     // get the random starts seed such that all nodes on the network are looking at the same thing.
     int randomStartSeed() const;
 

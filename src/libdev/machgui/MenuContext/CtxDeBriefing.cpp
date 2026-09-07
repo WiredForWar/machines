@@ -29,6 +29,42 @@
 #include "render/Device.hpp"
 #include "render/Display.hpp"
 
+namespace CtxDeBriefingImpl
+{
+namespace
+{
+
+// The picture a skirmish ends on, one per race, won and lost.
+const std::string& victoryPicture(MachPhys::Race race)
+{
+    PRE(race < MachPhys::N_RACES);
+
+    static const std::string pictures[MachPhys::N_RACES] = {
+        "flics/gui/v&d/vicr.bmp",
+        "flics/gui/v&d/vicb.bmp",
+        "flics/gui/v&d/vicg.bmp",
+        "flics/gui/v&d/vicy.bmp",
+    };
+
+    return pictures[race];
+}
+
+const std::string& defeatPicture(MachPhys::Race race)
+{
+    PRE(race < MachPhys::N_RACES);
+
+    static const std::string pictures[MachPhys::N_RACES] = {
+        "flics/gui/v&d/defr.bmp",
+        "flics/gui/v&d/defb.bmp",
+        "flics/gui/v&d/defg.bmp",
+        "flics/gui/v&d/defy.bmp",
+    };
+
+    return pictures[race];
+}
+
+}
+}
 
 MachGuiCtxDeBriefing::MachGuiCtxDeBriefing(MachGuiStartupScreens* pStartupScreens)
     : MachGui::GameMenuContext("sj", pStartupScreens)
@@ -216,21 +252,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         case MachInGameScreen::WON:
             if (pStartupScreens_->gameType() != MachGuiStartupScreens::CAMPAIGNGAME)
             {
-                switch (MachLogRaces::instance().playerRace())
-                {
-                    case MachPhys::RED:
-                        debriefPath = "flics/gui/v&d/vicr.bmp";
-                        break;
-                    case MachPhys::YELLOW:
-                        debriefPath = "flics/gui/v&d/vicy.bmp";
-                        break;
-                    case MachPhys::BLUE:
-                        debriefPath = "flics/gui/v&d/vicb.bmp";
-                        break;
-                    case MachPhys::GREEN:
-                        debriefPath = "flics/gui/v&d/vicg.bmp";
-                        break;
-                }
+                debriefPath = CtxDeBriefingImpl::victoryPicture(MachLogRaces::instance().playerRace());
             }
             else
             {
@@ -240,21 +262,7 @@ void MachGuiCtxDeBriefing::displayDeBriefImage()
         case MachInGameScreen::LOST:
             if (pStartupScreens_->gameType() != MachGuiStartupScreens::CAMPAIGNGAME)
             {
-                switch (MachLogRaces::instance().playerRace())
-                {
-                    case MachPhys::RED:
-                        debriefPath = "flics/gui/v&d/defr.bmp";
-                        break;
-                    case MachPhys::YELLOW:
-                        debriefPath = "flics/gui/v&d/defy.bmp";
-                        break;
-                    case MachPhys::BLUE:
-                        debriefPath = "flics/gui/v&d/defb.bmp";
-                        break;
-                    case MachPhys::GREEN:
-                        debriefPath = "flics/gui/v&d/defg.bmp";
-                        break;
-                }
+                debriefPath = CtxDeBriefingImpl::defeatPicture(MachLogRaces::instance().playerRace());
             }
             else
             {

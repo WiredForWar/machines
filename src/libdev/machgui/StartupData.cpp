@@ -1473,32 +1473,17 @@ void MachGuiStartupData::playerRace(MachPhys::Race race)
 
 void MachGuiStartupData::playerRace(const std::string& str)
 {
-    GuiResourceString red(IDS_MENU_PLAYERCOLOURRED);
-    GuiResourceString green(IDS_MENU_PLAYERCOLOURGREEN);
-    GuiResourceString blue(IDS_MENU_PLAYERCOLOURBLUE);
-    GuiResourceString yellow(IDS_MENU_PLAYERCOLOURYELLOW);
+    for (MachPhys::Race race : MachPhys::AllRaces)
+    {
+        if (strcasecmp(GuiResourceString(raceStringId(race)).asString().c_str(), str.c_str()) == 0)
+        {
+            playerRace(race);
+            return;
+        }
+    }
 
-    if (strcasecmp(red.asString().c_str(), str.c_str()) == 0)
-    {
-        playerRace(MachPhys::RED);
-    }
-    else if (strcasecmp(green.asString().c_str(), str.c_str()) == 0)
-    {
-        playerRace(MachPhys::GREEN);
-    }
-    else if (strcasecmp(blue.asString().c_str(), str.c_str()) == 0)
-    {
-        playerRace(MachPhys::BLUE);
-    }
-    else if (strcasecmp(yellow.asString().c_str(), str.c_str()) == 0)
-    {
-        playerRace(MachPhys::YELLOW);
-    }
-    else
-    {
-        ASSERT_INFO(str);
-        ASSERT(false, "MachGuiStartupData::playerRace passed invalid string");
-    }
+    ASSERT_INFO(str);
+    ASSERT(false, "MachGuiStartupData::playerRace passed invalid string");
 }
 
 MachPhys::Race MachGuiStartupData::playerRace() const
@@ -1508,32 +1493,22 @@ MachPhys::Race MachGuiStartupData::playerRace() const
 
 std::string MachGuiStartupData::playerRaceStr() const
 {
-    switch (playerRace())
-    {
-        case MachPhys::RED:
-            {
-                GuiResourceString resStr(IDS_MENU_PLAYERCOLOURRED);
-                return resStr.asString();
-            }
-        case MachPhys::YELLOW:
-            {
-                GuiResourceString resStr(IDS_MENU_PLAYERCOLOURYELLOW);
-                return resStr.asString();
-            }
-        case MachPhys::GREEN:
-            {
-                GuiResourceString resStr(IDS_MENU_PLAYERCOLOURGREEN);
-                return resStr.asString();
-            }
-        case MachPhys::BLUE:
-            {
-                GuiResourceString resStr(IDS_MENU_PLAYERCOLOURBLUE);
-                return resStr.asString();
-            }
-            DEFAULT_ASSERT_BAD_CASE(playerRace());
-    }
+    return GuiResourceString(raceStringId(playerRace())).asString();
+}
 
-    return "bad";
+// static
+uint MachGuiStartupData::raceStringId(MachPhys::Race race)
+{
+    PRE(race < MachPhys::N_RACES);
+
+    static const uint stringIds[MachPhys::N_RACES] = {
+        IDS_MENU_PLAYERCOLOURRED,
+        IDS_MENU_PLAYERCOLOURBLUE,
+        IDS_MENU_PLAYERCOLOURGREEN,
+        IDS_MENU_PLAYERCOLOURYELLOW,
+    };
+
+    return stringIds[race];
 }
 
 int MachGuiStartupData::randomStartSeed() const
