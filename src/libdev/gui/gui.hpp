@@ -120,6 +120,11 @@ Gui::Box bitmapDimensions(const SysPathName& path);
 Gui::Box translateBitmapDimensions(const SysPathName& path, const Gui::Coord& rel);
 // PRE( path.existsAsFile() );
 
+// The box an image occupies once drawn at scale, translated to rel. An image
+// with no artwork of its own at that scale is stretched from the unscaled one,
+// so this is the size it will be drawn at rather than the size of any file.
+Gui::Box translateScaledBitmapDimensions(std::string path, float scale, const Gui::Coord& rel);
+
 ///////////////////////////////
 
 GuiBitmap bitmap(const SysPathName&);

@@ -227,7 +227,7 @@ MachContinentMap::MachContinentMap(
     MachInGameScreen* pInGameScreen)
     : GuiDisplayable(
         pParent,
-        Gui::translateBitmapDimensions(MachGui::getScaledImagePath("gui/map/rlogo.bmp"), rel),
+        Gui::translateScaledBitmapDimensions("gui/map/rlogo.bmp", Gui::uiScaleFactor(), rel),
         GuiDisplayable::LAYER2)
     , pCameras_(pCameras)
     , firstDraw_(false)

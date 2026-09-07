@@ -331,6 +331,15 @@ Gui::Box Gui::bitmapDimensions(const SysPathName& path)
 }
 
 // static
+Gui::Box Gui::translateScaledBitmapDimensions(std::string path, float scale, const Gui::Coord& rel)
+{
+    GuiBitmap bmp = requestScaledImage(std::move(path), scale);
+    const Ren::Size size = bmp.requestedSize().isNull() ? bmp.size() : bmp.requestedSize();
+
+    return GuiDisplayable::translateBox(Gui::Box(0, 0, size.width, size.height), rel);
+}
+
+// static
 Gui::Box Gui::translateBitmapDimensions(const SysPathName& path, const Gui::Coord& rel)
 {
     return GuiDisplayable::translateBox(bitmapDimensions(path), rel);
