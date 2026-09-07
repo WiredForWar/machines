@@ -413,22 +413,7 @@ protected:
         }
         else
         {
-            switch (MachLogRaces::instance().playerRace())
-            {
-                case MachPhys::RED:
-                    retValue += "red/";
-                    break;
-                case MachPhys::GREEN:
-                    retValue += "green/";
-                    break;
-                case MachPhys::BLUE:
-                    retValue += "blue/";
-                    break;
-                case MachPhys::YELLOW:
-                    retValue += "yellow/";
-                    break;
-                    DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().playerRace());
-            }
+            retValue += MachGui::raceDirectoryName(MachLogRaces::instance().playerRace()) + "/";
         }
 
         switch (objType)

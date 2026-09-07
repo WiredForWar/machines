@@ -6,11 +6,20 @@
 #pragma once
 
 #include "gui/gui.hpp"
+#include "machphys/machphys.hpp"
+
+#include <string>
 
 class MachLogMachine;
 
 namespace MachGui
 {
+
+// The directory a race's artwork lives in, without a trailing separator. Every
+// family of per-race images -- corral icons, navigator icons, control panel
+// decals -- is a directory of this name under its own root.
+const std::string& raceDirectoryName(MachPhys::Race race);
+// PRE( race < MachPhys::N_RACES );
 
 // Load the correct icon for a machine. You may specify whether it's normal looking or matrix-like (first person)
 GuiBitmap createIconForMachine(MachLogMachine* machine, bool firstPersonIcon);

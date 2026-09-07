@@ -7,6 +7,7 @@
 
 #include "machgui/ActorBitmaps.hpp"
 
+#include "machgui/gui.hpp"
 #include "base/Diag.hpp"
 
 #include "utility/String.hpp"
@@ -77,21 +78,7 @@ std::string MachActorBitmaps::name(
     if (! inFirstPerson)
     {
         // Add race identifier
-        switch (race)
-        {
-            case MachPhys::RED:
-                retVal += "red/";
-                break;
-            case MachPhys::GREEN:
-                retVal += "green/";
-                break;
-            case MachPhys::BLUE:
-                retVal += "blue/";
-                break;
-            case MachPhys::YELLOW:
-                retVal += "yellow/";
-                break;
-        };
+        retVal += MachGui::raceDirectoryName(race) + "/";
     }
 
     // Add actor type

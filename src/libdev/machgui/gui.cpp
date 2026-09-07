@@ -20,6 +20,20 @@
 #include "machlog/Actors/Machine.hpp"
 #include <cassert>
 
+const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
+{
+    PRE(race < MachPhys::N_RACES);
+
+    static const std::string names[MachPhys::N_RACES] = {
+        "red",
+        "blue",
+        "green",
+        "yellow",
+    };
+
+    return names[race];
+}
+
 static GuiBitmap& privateLongGlowBmp()
 {
     static GuiBitmap bitmap;

@@ -7,6 +7,7 @@
 
 #include "machgui/CorralSingleIconInfo.hpp"
 
+#include "machgui/gui.hpp"
 #include "machgui/IInputRegistry.hpp"
 #include "machgui/NewCorralIcon.hpp"
 #include "machgui/InGameScreen.hpp"
@@ -150,22 +151,8 @@ public:
 
         if (pMachine_)
         {
-            switch (pMachine_->race())
-            {
-                case MachPhys::RED:
-                    bitmap(MachGui::getScaledImage("gui/misc/red/inhead.bmp"));
-                    break;
-                case MachPhys::GREEN:
-                    bitmap(MachGui::getScaledImage("gui/misc/green/inhead.bmp"));
-                    break;
-                case MachPhys::BLUE:
-                    bitmap(MachGui::getScaledImage("gui/misc/blue/inhead.bmp"));
-                    break;
-                case MachPhys::YELLOW:
-                    bitmap(MachGui::getScaledImage("gui/misc/yellow/inhead.bmp"));
-                    break;
-                    DEFAULT_ASSERT_BAD_CASE(pMachine_->race());
-            }
+            bitmap(MachGui::getScaledImage(
+                "gui/misc/" + MachGui::raceDirectoryName(pMachine_->race()) + "/inhead.bmp"));
         }
     }
 

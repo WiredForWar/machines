@@ -330,28 +330,10 @@ void MachGuiControlPanel::repositionNavigators(
 
 std::string MachGuiControlPanel::getDecalRootDirectory() const
 {
-    std::string retValue = "gui/misc/red/";
+    if (!MachLogRaces::instance().hasPCRace())
+        return "gui/misc/red/";
 
-    if (MachLogRaces::instance().hasPCRace())
-    {
-        switch (MachLogRaces::instance().playerRace())
-        {
-            case MachPhys::RED:
-                break;
-            case MachPhys::GREEN:
-                retValue = "gui/misc/green/";
-                break;
-            case MachPhys::BLUE:
-                retValue = "gui/misc/blue/";
-                break;
-            case MachPhys::YELLOW:
-                retValue = "gui/misc/yellow/";
-                break;
-                DEFAULT_ASSERT_BAD_CASE(MachLogRaces::instance().playerRace());
-        }
-    }
-
-    return retValue;
+    return "gui/misc/" + MachGui::raceDirectoryName(MachLogRaces::instance().playerRace()) + "/";
 }
 
 void MachGuiControlPanel::setupDecalBitmaps()
