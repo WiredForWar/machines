@@ -39,11 +39,9 @@ MachPhysRaceChangerBody::MachPhysRaceChangerBody()
     , pMaterialVecPtrSet_(new W4dMaterialVecPtrSet)
 {
     // Set up the list of races in use. red is needed for traitor animations
-    pChangerRaces_->reserve(4);
-    pChangerRaces_->push_back(MachPhys::RED);
-    pChangerRaces_->push_back(MachPhys::BLUE);
-    pChangerRaces_->push_back(MachPhys::GREEN);
-    pChangerRaces_->push_back(MachPhys::YELLOW);
+    pChangerRaces_->reserve(MachPhys::N_RACES);
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        pChangerRaces_->push_back(race);
 
     TEST_INVARIANT;
 }
@@ -406,12 +404,12 @@ const MachPhysRaceChangerBody::TexturesVec& MachPhysRaceChangerBody::texturesVec
                 ASSERT(false, " logName does not end with _b(t).bmp/.bmp ");
             }
 
-            const uint nTextures = 4;
+            const uint nTextures = MachPhys::N_RACES;
 
             MachPhysRaceChangerBody::Textures textures;
             textures.reserve(nTextures);
 
-            for (int i = 1; i <= nTextures; ++i)
+            for (uint i = 1; i <= nTextures; ++i)
             {
                 std::string textureName = nameRoot + std::to_string(i) + extension;
                 textures.push_back(RenTexManager::instance().createTexture(textureName));
