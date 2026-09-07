@@ -53,8 +53,17 @@ void RenIDelayedSpinPolygon::render()
 
     RenIDeviceImpl::currentPimpl()->setMaterialHandles(material_);
 
+    // A spin polygon is a single face turned to the camera about its axis, and
+    // which way round it comes out depends on where the camera stands. RenMesh
+    // draws them with face culling off for that reason; the sorter runs with it
+    // on, so without this the ones that happen to face away are dropped -- one
+    // arm of a beacon's cross drawn and the other missing.
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(false));
+
     RenIVertex* vtx = vertices_.get();
     RenDevice::current()->renderPrimitive(vtx, nVertices_, material_);
+
+    RenDevice::current()->recordCommand(Ren::Command::setCullFace(true));
 }
 
 void RenIDelayedSpinPolygon::print(std::ostream& o) const
