@@ -137,15 +137,16 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     UtlLineTokeniser parser(*pIstream, fullPath);
 
     // Read definitions until finished
-    bool doneRace[MachPhys::N_RACES] = { false, false, false, false };
+    bool doneRace[MachPhys::N_RACES] = {};
     bool doneMineralSites = false;
     std::string researchItemsPath[MachLog::TECH_LEVEL_HIGH + 1];
     NETWORK_STREAM("MLScenario::load\nGame creation data\n" << gameData << std::endl);
     // Construct a non-race for the artefacts etc
     races.race(MachPhys::NORACE, new MachLogRace(MachPhys::NORACE), MachLogRaces::CREATE_SQUADRONS);
 
-    MachPhys::Race loadingRemappedRace[MachPhys::N_RACES]
-        = { MachPhys::RED, MachPhys::BLUE, MachPhys::GREEN, MachPhys::YELLOW };
+    MachPhys::Race loadingRemappedRace[MachPhys::N_RACES];
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        loadingRemappedRace[race] = race;
 
     // counter that is incremented every time a genuine new construction (i.e. not an alternative site entry)
     // is encountered for a race. Starts at -1 which is an illegal number, incremented by the first genuine construction
@@ -170,8 +171,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     // assert for the correct number of entires in the players creation data array.
     // if a player has not been defined then the entry for that race should indicate this by the NOT_DEFINED marker.
     ASSERT(
-        playersCreationData.size() == 0 || playersCreationData.size() == 4,
-        "Defined players data must have 0 or 4 entries\n");
+        playersCreationData.size() == 0 || playersCreationData.size() == MachPhys::N_RACES,
+        "Defined players data must have 0 or one entry per race\n");
     bool useCreationData = playersCreationData.size() > 0;
     if (! useCreationData)
         races.gameType(MachLog::CAMPAIGN_SINGLE_PLAYER);
@@ -210,7 +211,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     while (!(parser.tokens()[0] == "ENDRACES_DEFAULT"))
     {
         const std::string& token = parser.tokens()[0];
-        if (token == "RED" || token == "BLUE" || token == "GREEN" || token == "YELLOW")
+        if (MachPhys::toRace(token).has_value())
         {
             MachPhys::Race r = machPhysRace(token);
             const std::string& typeToken = parser.tokens()[1];
@@ -240,8 +241,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     // handle random starts to fixed start locations in different ways.
     {
         // first things first set up an array of booleans as a short hand for which races have been marked as used
-        bool gotRace[MachPhys::N_RACES] = { false, false, false, false };
-        bool usedRace[MachPhys::N_RACES] = { false, false, false, false };
+        bool gotRace[MachPhys::N_RACES] = {};
+        bool usedRace[MachPhys::N_RACES] = {};
         for (MachPhys::Race i : MachPhys::AllRaces)
         {
             if (defaultData[i].type_ != MachLog::NOT_DEFINED)
@@ -334,9 +335,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 MachLogActions::parseActionsSection(&parser);
             stopProcessingRace = true;
         }
-        else if (
-            parser.tokens()[1] == "RED" || parser.tokens()[1] == "BLUE" || parser.tokens()[1] == "GREEN"
-            || parser.tokens()[1] == "YELLOW")
+        else if (MachPhys::toRace(parser.tokens()[1]).has_value())
         {
             hadAggressorAssemblyPoint = false;
             hadAdministratorAssemblyPoint = false;
@@ -987,7 +986,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         = std::unique_ptr<std::istream>(new std::ifstream(RSI.c_str(), std::ios::in));
 
     UtlLineTokeniser riParser(*pIstream2, RSI);
-    bool doForRace[MachPhys::N_RACES] = { false, false, false, false };
+    bool doForRace[MachPhys::N_RACES] = {};
     MachPhys::Race race = MachPhys::NORACE;
     bool doAI = true;
     HAL_STREAM("MLScenario processing RSI file " << RSI << std::endl);
@@ -998,14 +997,9 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
             if (riParser.tokens()[0] == "RACE")
             {
                 HAL_STREAM("Race Token detected " << riParser.tokens()[1] << std::endl);
-                if (riParser.tokens()[1] == "RED")
-                    race = MachPhys::RED;
-                else if (riParser.tokens()[1] == "BLUE")
-                    race = MachPhys::BLUE;
-                else if (riParser.tokens()[1] == "GREEN")
-                    race = MachPhys::GREEN;
-                else if (riParser.tokens()[1] == "YELLOW")
-                    race = MachPhys::YELLOW;
+                std::optional<MachPhys::Race> namedRace = MachPhys::toRace(riParser.tokens()[1]);
+                if (namedRace.has_value())
+                    race = namedRace.value();
                 else if (riParser.tokens()[1] == "AI")
                 {
                     HAL_STREAM("AI Race only\n");
@@ -1116,10 +1110,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
         }
         riParser.parseNextLine();
     }
-    races.cascadeUpdateForResearch(MachPhys::RED);
-    races.cascadeUpdateForResearch(MachPhys::BLUE);
-    races.cascadeUpdateForResearch(MachPhys::GREEN);
-    races.cascadeUpdateForResearch(MachPhys::YELLOW);
+    for (MachPhys::Race researchingRace : MachPhys::AllRaces)
+        races.cascadeUpdateForResearch(researchingRace);
     HAL_STREAM("MLScenario::load exit\n");
 }
 
