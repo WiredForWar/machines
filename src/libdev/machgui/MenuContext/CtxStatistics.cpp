@@ -226,6 +226,11 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
                     break;
             }
 
+            // A slot with no column of its own -- unassigned, or a race this table
+            // cannot show -- has nowhere to write its name.
+            if (!name)
+                continue;
+
             if (playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::HUMAN
                 || playerInfo[i].status_ == MachGuiStartupData::PlayerInfo::CONNECTION_LOST)
             {
@@ -236,7 +241,6 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
             {
                 *name = GuiResourceString(IDS_MENU_STSCOMPUTER).asString();
             }
-            // Assert??
         }
     }
     //
