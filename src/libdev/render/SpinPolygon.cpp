@@ -284,7 +284,20 @@ void RenSpinTFPolygon::render(
 
     if (mat.hasAlphaTransparency())
     {
-        if (devImpl->isAlphaSortingEnabled() && mat.usesBilinear()) // ueseBilinear fixes gun barrels rendering issue
+        // A see-through spin polygon belongs in the post-sorter, which draws it
+        // once everything opaque is down. Drawing it where the traversal reaches
+        // it instead blends it against a half-drawn frame and then writes depth
+        // over what is still to come: a building standing on the edge between two
+        // terrain tiles is drawn while the neighbouring tile is still to be laid,
+        // and its spin polygons come out flat and dark with the ground behind
+        // them missing.
+        //
+        // The bilinear test is about textured gun barrels. usesBilinear() is
+        // copied from the material's texture, so a material with no texture
+        // answers false to it for want of a texture rather than because it wants
+        // drawing in order -- and the green under-construction ghost is exactly
+        // such a material.
+        if (devImpl->isAlphaSortingEnabled() && (mat.usesBilinear() || mat.texture().isEmpty()))
         {
             // Shove it into the post-sorter.
             RenI::LitVtxAPtr lit = ill->applyMaterialAndCopy(mat, *vertices_, vertices_->size());
