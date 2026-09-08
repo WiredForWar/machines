@@ -110,6 +110,25 @@ std::string toOnOffString(bool value)
     return value ? "on" : "off";
 }
 
+// The races a command accepts, lowercased and listed, for a description or an
+// error message that has to name them.
+const std::string& raceNamesText()
+{
+    static const std::string text = []
+    {
+        std::vector<std::string> lowered;
+        lowered.reserve(std::size(MachPhys::AllRaces));
+        for (MachPhys::Race r : MachPhys::AllRaces)
+        {
+            std::string name(MachPhys::toString(r));
+            Utils::toLowerInPlace(&name);
+            lowered.push_back(std::move(name));
+        }
+        return Utils::join(lowered, ", ");
+    }();
+    return text;
+}
+
 // The race named, or the player's own where none was. MachPhys::NORACE says the
 // name could not be used, and why has already been printed.
 MachPhys::Race raceOrPlayer(const std::optional<std::string>& raceName, Console& console)
@@ -120,7 +139,7 @@ MachPhys::Race raceOrPlayer(const std::optional<std::string>& raceName, Console&
         race = MachPhys::toRace(raceName.value());
         if (!race.has_value())
         {
-            console.reportError("Unknown race: " + raceName.value() + ". Use red, blue, green, or yellow.");
+            console.reportError("Unknown race: " + raceName.value() + ". Known races: " + raceNamesText() + ".");
             return MachPhys::NORACE;
         }
 
@@ -1879,7 +1898,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
                 { .name = "pos", .type = Arg::String, .optional = true, .description = "Position as x,y. Omit to spawn where the camera is looking." },
                 { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
-                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
+                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: " + raceNamesText() + ". Omit for the player race." },
                 { .name = "weapon_combo", .type = Arg::String, .optional = true, .description = "Weapon combo (e.g. l_auto_cannon). Uses .scn names.", },
             },
             .cheat = true,
@@ -1898,7 +1917,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
                 { .name = "hwlevel", .type = Arg::Integer, .description = "Hardware level." },
                 { .name = "pos", .type = Arg::String, .optional = true, .description = "Position as x,y. Omit to spawn where the camera is looking." },
                 { .name = "rotation", .type = Arg::String, .optional = true, .description = "Rotation in degrees. Omit to face along +X." },
-                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: red, blue, green, yellow. Omit for the player race." },
+                { .name = "race", .type = Arg::String, .optional = true, .description = "Race: " + raceNamesText() + ". Omit for the player race." },
             },
             .cheat = true,
             .devOnly = true,
@@ -1993,7 +2012,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .arguments = {
                 { .name = "planet", .type = Arg::String, .description = "Planet name, e.g. m_desert." },
                 { .name = "race", .type = Arg::Identifier, .optional = true,
-                  .description = "Race to play. Defaults to red." },
+                  .description = "Race to play, one of " + raceNamesText() + ". Defaults to red." },
             },
             .devOnly = true,
         },
