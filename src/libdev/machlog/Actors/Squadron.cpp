@@ -348,7 +348,7 @@ bool MachLogSquadron::checkIfMachineMissing(MachLogProductionUnit* pProd) const
             found = true;
         }
     }
-    return true;
+    return found;
 }
 
 // virtual
