@@ -43,6 +43,9 @@ public:
 
     static size_t reqWidth();
 
+    // How far apart the colour swatches sit, before the menu scale is applied.
+    static constexpr int colourSwatchPitch = 12;
+
     void refresh();
 
     static void releaseBmpMemory();

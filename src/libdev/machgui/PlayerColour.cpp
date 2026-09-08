@@ -225,11 +225,9 @@ MachGuiColourList::MachGuiColourList(
     : MachGuiAutoDeleteDisplayable(pStartupScreens)
     , GuiDisplayable(pParent, box)
 {
-    constexpr MachPhys::Race colorOptions[]
-        = { MachPhys::NORACE, MachPhys::RED, MachPhys::GREEN, MachPhys::BLUE, MachPhys::YELLOW };
-
+    // No colour at all comes first, then one swatch per race in enum order.
     int xPos = 0;
-    for (const auto raceOption : colorOptions)
+    for (MachPhys::Race raceOption : { MachPhys::NORACE })
     {
         new MachGuiColourSelector(
             pStartupScreens,
@@ -237,7 +235,18 @@ MachGuiColourList::MachGuiColourList(
             Gui::Box(Gui::Coord(xPos, 0) * MachGui::menuScaleFactor(), Gui::Size(13, 13) * MachGui::menuScaleFactor()),
             raceOption,
             pPlayerInfo);
-        xPos += 12;
+        xPos += MachGuiPlayerColour::colourSwatchPitch;
+    }
+
+    for (MachPhys::Race raceOption : MachPhys::AllRaces)
+    {
+        new MachGuiColourSelector(
+            pStartupScreens,
+            this,
+            Gui::Box(Gui::Coord(xPos, 0) * MachGui::menuScaleFactor(), Gui::Size(13, 13) * MachGui::menuScaleFactor()),
+            raceOption,
+            pPlayerInfo);
+        xPos += MachGuiPlayerColour::colourSwatchPitch;
     }
 }
 
@@ -505,8 +514,7 @@ void MachGuiPlayerListItem::updateInfo(
     double ping,
     bool playerHasMachinesCD)
 {
-    PRE(playerRace == MachPhys::RED || playerRace == MachPhys::BLUE || playerRace == MachPhys::GREEN
-        || playerRace == MachPhys::YELLOW || playerRace == MachPhys::NORACE);
+    PRE(playerRace < MachPhys::N_RACES || playerRace == MachPhys::NORACE);
 
     playerInfo_.name_ = playerName;
     playerInfo_.race_ = playerRace;
@@ -575,7 +583,8 @@ MachGuiPlayerColour::~MachGuiPlayerColour()
 // static
 size_t MachGuiPlayerColour::reqWidth()
 {
-    return 61 * MachGui::menuScaleFactor();
+    // One swatch per race, one more for no colour at all, and a pixel of border.
+    return (colourSwatchPitch * (MachPhys::N_RACES + 1) + 1) * MachGui::menuScaleFactor();
 }
 
 // static
