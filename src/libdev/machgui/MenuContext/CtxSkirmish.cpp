@@ -569,6 +569,10 @@ void MachGuiCtxSkirmish::initSettings()
         IDS_MENU_TECHLEVELHIGH);
     pTechLevelSelector_->setCurrentText(pStartupScreens_->startupData()->techLevelStr());
 
+    // Add "super weapons" setting...
+    addSetting(false, pSuperWeaponsSelector_, IDS_MENU_SUPERWEAPONS, 2, IDS_MENU_ON, IDS_MENU_OFF);
+    pSuperWeaponsSelector_->setCurrentText(pStartupScreens_->startupData()->superWeaponsStr());
+
     // Add "player colour" setting...
     addSetting(
         false,
@@ -596,6 +600,7 @@ bool MachGuiCtxSkirmish::okayToSwitchContext()
     pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->currentText());
     pStartupScreens_->startupData()->numPlayers(pNumPlayersSelector_->currentText());
     pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->currentText());
+    pStartupScreens_->startupData()->superWeapons(pSuperWeaponsSelector_->currentText());
     pStartupScreens_->startupData()->playerRace(pColourSelector_->currentText());
 
     return true;

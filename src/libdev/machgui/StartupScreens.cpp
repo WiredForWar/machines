@@ -625,6 +625,7 @@ void MachGuiStartupScreens::switchGuiRootToSkirmishGame()
     gameData.resourcesAvailable(startupData()->resources());
     gameData.startingResources(startupData()->startingResources());
     gameData.technologyLevel(startupData()->techLevel());
+    gameData.superWeapons(startupData()->superWeapons());
     setVictoryCondition(gameData);
 
     // Setup info about players

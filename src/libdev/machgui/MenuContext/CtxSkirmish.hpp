@@ -66,6 +66,7 @@ private:
     MachGuiSingleSelectionListBox* pScenarioList_;
     GuiSimpleScrollableList* pSettingsList_;
     MachGuiDropDownListBoxCreator* pFogOfWarSelector_;
+    MachGuiDropDownListBoxCreator* pSuperWeaponsSelector_;
     MachGuiDropDownListBoxCreator* pResourcesSelector_;
     MachGuiDropDownListBoxCreator* pStartingResourcesSelector_;
     MachGuiDropDownListBoxCreator* pStartingPosSelector_;

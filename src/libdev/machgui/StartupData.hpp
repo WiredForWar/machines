@@ -111,6 +111,7 @@ public:
         uint32_t randomStartsSeed_;
         bool broadcastAlliances_;
         bool disableFirstPerson_;
+        bool superWeapons_{};
     };
 #pragma pack(pop)
 
@@ -224,6 +225,14 @@ public:
     void fogOfWar(const std::string&);
     bool fogOfWar() const;
     std::string fogOfWarStr() const;
+
+    // Get/set whether the ion cannon and the nuclear missile exist at all in a
+    // skirmish or multi player game. With them off, neither can be researched,
+    // built or placed by a scenario.
+    void superWeapons(bool);
+    void superWeapons(const std::string&);
+    bool superWeapons() const;
+    std::string superWeaponsStr() const;
 
     // Get/set starting position ( fixed/random ).
     void startingPosition(MachLog::RandomStarts);

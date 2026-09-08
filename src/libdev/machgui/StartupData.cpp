@@ -171,6 +171,8 @@ MachGuiStartupData::GameSettings::GameSettings()
     disableFirstPerson_
         = SysRegistry::instance().queryBooleanValue("Game Settings\\Disable First Person", "Value", false);
 
+    superWeapons_ = SysRegistry::instance().queryBooleanValue("Game Settings\\Super Weapons", "Value", true);
+
     numPlayers_ = 4;
 
     MexBasicRandom rng = MexBasicRandom::constructSeededFromTime();
@@ -188,6 +190,7 @@ MachGuiStartupData::GameSettings::~GameSettings()
     SysRegistry::instance().setIntegerValue("Game Settings\\Fog Of War", "Value", fogOfWar_);
     SysRegistry::instance().setIntegerValue("Game Settings\\Broadcast Alliances", "Value", broadcastAlliances_);
     SysRegistry::instance().setIntegerValue("Game Settings\\Disable First Person", "Value", disableFirstPerson_);
+    SysRegistry::instance().setIntegerValue("Game Settings\\Super Weapons", "Value", superWeapons_);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1032,6 +1035,51 @@ std::string MachGuiStartupData::fogOfWarStr() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+void MachGuiStartupData::superWeapons(bool enabled)
+{
+    gameSettings()->superWeapons_ = enabled;
+}
+
+void MachGuiStartupData::superWeapons(const std::string& str)
+{
+    GuiResourceString onStr(IDS_MENU_ON);
+    GuiResourceString offStr(IDS_MENU_OFF);
+
+    if (strcasecmp(onStr.asString().c_str(), str.c_str()) == 0)
+    {
+        superWeapons(true);
+    }
+    else if (strcasecmp(offStr.asString().c_str(), str.c_str()) == 0)
+    {
+        superWeapons(false);
+    }
+    else
+    {
+        ASSERT_INFO(str);
+        ASSERT(false, "MachGuiStartupData::superWeapons passed invalid string");
+    }
+}
+
+bool MachGuiStartupData::superWeapons() const
+{
+    return gameSettings_.superWeapons_;
+}
+
+std::string MachGuiStartupData::superWeaponsStr() const
+{
+    GuiResourceString onStr(IDS_MENU_ON);
+    GuiResourceString offStr(IDS_MENU_OFF);
+
+    if (superWeapons())
+    {
+        return onStr.asString();
+    }
+
+    return offStr.asString();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 void MachGuiStartupData::startingResources(MachLog::StartingResources startRes)
 {
     gameSettings()->startingResources_ = startRes;
@@ -1570,6 +1618,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiStartupData::GameSettings
     o << "randomStartsSeed_ " << t.randomStartsSeed_ << std::endl;
     o << "broadcastAlliances_ " << t.broadcastAlliances_ << std::endl;
     o << "disableFirstPerson_ " << t.disableFirstPerson_ << std::endl;
+    o << "superWeapons_ " << t.superWeapons_ << std::endl;
     return o;
 }
 

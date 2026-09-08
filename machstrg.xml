@@ -1291,6 +1291,10 @@ BELONGING TO</string>
 <string id="7099"
 	>Menu Transitions</string>
 
+<!-- Menu Text 10100-10199 -->
+<string id="10100"
+	>Super Weapons</string>
+
 <!-- Menu messages 7100-7199 -->
 <string id="7100"
 	>You must enter a name in order to continue to the next screen.</string>
