@@ -105,7 +105,10 @@ void MachPhysRaceChangerBody::add(const MachPhysMachine& machine, const MachPhys
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerColours.push_back({ .hue = hue(changerRaces[i]) });
+        changerColours.push_back({
+            .hue = hue(changerRaces[i]),
+            .saturationScale = saturationScale(changerRaces[i]),
+        });
     }
 
     // Set up the material maps
@@ -154,7 +157,10 @@ void MachPhysRaceChangerBody::add(const MachPhysConstruction& construction, cons
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerColours.push_back({ .hue = hue(changerRaces[i]) });
+        changerColours.push_back({
+            .hue = hue(changerRaces[i]),
+            .saturationScale = saturationScale(changerRaces[i]),
+        });
     }
 
     // Set up the material maps
@@ -269,9 +275,16 @@ double MachPhysRaceChangerBody::hue(MachPhys::Race race) const
         case MachPhys::YELLOW:
             result = 50.0;
             break;
+        case MachPhys::GREY:
+            break;
     }
 
     return result;
+}
+
+double MachPhysRaceChangerBody::saturationScale(MachPhys::Race race) const
+{
+    return race == MachPhys::GREY ? 0.0 : 1.0;
 }
 
 void MachPhysRaceChangerBody::add(const MachPhysWeapon& weapon)
@@ -291,7 +304,10 @@ void MachPhysRaceChangerBody::add(const MachPhysWeapon& weapon)
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerColours.push_back({ .hue = hue(changerRaces[i]) });
+        changerColours.push_back({
+            .hue = hue(changerRaces[i]),
+            .saturationScale = saturationScale(changerRaces[i]),
+        });
     }
 
     // Set up the material maps

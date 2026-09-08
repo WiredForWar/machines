@@ -172,6 +172,9 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
                     case MachPhys::YELLOW:
                         yellowName = computerString;
                         break;
+                    case MachPhys::GREY:
+                        // The table has a column per original colour and no room for a fifth.
+                        break;
                     case MachPhys::N_RACES:
                     case MachPhys::NORACE:
                         // Invalid
@@ -193,6 +196,9 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
                 break;
             case MachPhys::YELLOW:
                 yellowName = playerName;
+                break;
+            case MachPhys::GREY:
+                // The table has a column per original colour and no room for a fifth.
                 break;
             case MachPhys::N_RACES:
             case MachPhys::NORACE:
@@ -219,6 +225,9 @@ MachGuiCtxStatistics::MachGuiCtxStatistics(MachGuiStartupScreens* pStartupScreen
                     break;
                 case MachPhys::YELLOW:
                     name = &yellowName;
+                    break;
+                case MachPhys::GREY:
+                    // The table has a column per original colour and no room for a fifth.
                     break;
                 case MachPhys::N_RACES:
                 case MachPhys::NORACE:

@@ -571,11 +571,12 @@ void MachGuiCtxSkirmish::initSettings()
         false,
         pColourSelector_,
         IDS_MENU_PLAYERCOLOUR,
-        4,
+        MachPhys::N_RACES,
         IDS_MENU_PLAYERCOLOURRED,
         IDS_MENU_PLAYERCOLOURGREEN,
         IDS_MENU_PLAYERCOLOURBLUE,
-        IDS_MENU_PLAYERCOLOURYELLOW);
+        IDS_MENU_PLAYERCOLOURYELLOW,
+        IDS_MENU_PLAYERCOLOURGREY);
     pColourSelector_->setCurrentText(pStartupScreens_->startupData()->playerRaceStr());
 
     pSettingsList_->childrenUpdated();

@@ -30,6 +30,7 @@ namespace MachPhys
         BLUE,
         GREEN,
         YELLOW,
+        GREY,
         N_RACES,
         NORACE
     };
@@ -39,6 +40,7 @@ namespace MachPhys
         Race::BLUE,
         Race::GREEN,
         Race::YELLOW,
+        Race::GREY,
     };
 
     std::string_view toString(Race race);

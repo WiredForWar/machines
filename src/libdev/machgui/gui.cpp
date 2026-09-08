@@ -29,6 +29,7 @@ const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
         "blue",
         "green",
         "yellow",
+        "grey",
     };
 
     return names[race];
@@ -258,6 +259,13 @@ const Gui::Colour& MachGui::DARKGREEN()
 const Gui::Colour& MachGui::DARKBLUE()
 {
     static Gui::Colour result_(0, 0, 120.0 / 255.0);
+    return result_;
+}
+
+// static
+const Gui::Colour& MachGui::DARKGREY()
+{
+    static Gui::Colour result_(120.0 / 255.0, 120.0 / 255.0, 120.0 / 255.0);
     return result_;
 }
 

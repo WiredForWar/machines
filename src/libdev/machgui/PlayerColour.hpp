@@ -64,6 +64,7 @@ protected:
     static GuiBitmap*& pGreenBmp();
     static GuiBitmap*& pBlueBmp();
     static GuiBitmap*& pYellowBmp();
+    static GuiBitmap*& pGreyBmp();
     static GuiBitmap*& pBlackBmp();
 
     bool canInteract() const;

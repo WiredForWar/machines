@@ -106,6 +106,9 @@ std::string MachGuiDispositionChangeNotifiable::getDisplayName(MachPhys::Race ra
         case MachPhys::YELLOW:
             name.assign(1, GuiBmpFont::yellowCharIndex());
             break;
+        case MachPhys::GREY:
+            // No colour block in the atlas for grey; the name that follows says who it is.
+            break;
 
         case MachPhys::N_RACES:
         case MachPhys::NORACE:

@@ -40,10 +40,8 @@ const std::string& victoryPicture(MachPhys::Race race)
     PRE(race < MachPhys::N_RACES);
 
     static const std::string pictures[MachPhys::N_RACES] = {
-        "flics/gui/v&d/vicr.bmp",
-        "flics/gui/v&d/vicb.bmp",
-        "flics/gui/v&d/vicg.bmp",
-        "flics/gui/v&d/vicy.bmp",
+        "flics/gui/v&d/vicr.bmp", "flics/gui/v&d/vicb.bmp",    "flics/gui/v&d/vicg.bmp",
+        "flics/gui/v&d/vicy.bmp", "flics/gui/v&d/vicgrey.bmp",
     };
 
     return pictures[race];
@@ -54,10 +52,8 @@ const std::string& defeatPicture(MachPhys::Race race)
     PRE(race < MachPhys::N_RACES);
 
     static const std::string pictures[MachPhys::N_RACES] = {
-        "flics/gui/v&d/defr.bmp",
-        "flics/gui/v&d/defb.bmp",
-        "flics/gui/v&d/defg.bmp",
-        "flics/gui/v&d/defy.bmp",
+        "flics/gui/v&d/defr.bmp", "flics/gui/v&d/defb.bmp",    "flics/gui/v&d/defg.bmp",
+        "flics/gui/v&d/defy.bmp", "flics/gui/v&d/defgrey.bmp",
     };
 
     return pictures[race];

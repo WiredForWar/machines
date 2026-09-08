@@ -36,10 +36,8 @@ void PedCameraEditor::initialise(W4dSceneManager* pScene, MachLogPlanet* pPlanet
     PedEditorMode::initialise(pScene, pPlanet);
 
     // Set all camera markers to be at the current camera position
-    setMarkerToCamera(&pMarkers_[MachPhys::RED], MachPhys::RED);
-    setMarkerToCamera(&pMarkers_[MachPhys::BLUE], MachPhys::BLUE);
-    setMarkerToCamera(&pMarkers_[MachPhys::GREEN], MachPhys::GREEN);
-    setMarkerToCamera(&pMarkers_[MachPhys::YELLOW], MachPhys::YELLOW);
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        setMarkerToCamera(&pMarkers_[race], race);
 }
 
 PedCameraEditor::~PedCameraEditor()
@@ -173,21 +171,7 @@ void PedCameraEditor::processChangeRace()
     // Set pCurrentMarker to the next race - note race must rotate in the same order
     // as in PedRace::next(...)
 
-    switch(race_)
-    {
-        case MachPhys::RED:
-            race_ = MachPhys::BLUE;
-            break;
-        case MachPhys::BLUE:
-            race_ = MachPhys::GREEN;
-            break;
-        case MachPhys::GREEN:
-            race_ = MachPhys::YELLOW;
-            break;
-        case MachPhys::YELLOW:
-            race_ = MachPhys::RED;
-            break;
-    }
+    race_ = PedRace::next(race_);
     return; // ok to do this as it is assigned to point to a valid member marker
 }
 

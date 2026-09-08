@@ -1502,6 +1502,7 @@ uint MachGuiStartupData::raceStringId(MachPhys::Race race)
         IDS_MENU_PLAYERCOLOURBLUE,
         IDS_MENU_PLAYERCOLOURGREEN,
         IDS_MENU_PLAYERCOLOURYELLOW,
+        IDS_MENU_PLAYERCOLOURGREY,
     };
 
     return stringIds[race];

@@ -411,6 +411,11 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                             case MachPhys::YELLOW:
                                 chatMessageIntendedForStr_.assign(1, GuiBmpFont::yellowCharIndex());
                                 break;
+                            case MachPhys::GREY:
+                                // The bitmap fonts carry one colour block per original
+                                // race and there is no spare glyph in the atlas, so grey
+                                // is named rather than shown.
+                                break;
                             default:
                                 ASSERT_FAIL("Invalid race for a chat message");
                                 break;
@@ -558,6 +563,9 @@ void MachPromptText::submit()
             break;
         case MachPhys::YELLOW:
             chatMessageStr += GuiBmpFont::yellowCharIndex();
+            break;
+        case MachPhys::GREY:
+            // No colour block in the atlas for grey; the name that follows says who it is.
             break;
         }
         chatMessageStr += MachGuiInGameChatMessages::instance().playerName();

@@ -54,6 +54,9 @@ MachGuiStatisticsDisplay::MachGuiStatisticsDisplay(
         case MachPhys::GREEN:
             bar1 = bar2 = bar3 = bar4 = "gui/menu/greenbar.bmp";
             break;
+        case MachPhys::GREY:
+            bar1 = bar2 = bar3 = bar4 = "gui/menu/greybar.bmp";
+            break;
     }
     uint x = 33 * MachGui::menuScaleFactor();
     uint y = 3 * MachGui::menuScaleFactor(); // relative to top left of stats display background

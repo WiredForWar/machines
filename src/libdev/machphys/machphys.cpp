@@ -24,6 +24,8 @@ std::string_view MachPhys::toString(Race race)
         return "GREEN";
     case YELLOW:
         return "YELLOW";
+    case GREY:
+        return "GREY";
     case N_RACES:
         return "N_RACES";
     case NORACE:

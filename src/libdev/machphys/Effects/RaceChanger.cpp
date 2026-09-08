@@ -100,6 +100,9 @@ const RenColour& MachPhysRaceChanger::raceColour(MachPhys::Race race) const
         case MachPhys::YELLOW:
             colour = RenColour(229 / 255.0, 189 / 255.0, 0.0);
             break;
+        case MachPhys::GREY:
+            colour = RenColour(140 / 255.0, 140 / 255.0, 140 / 255.0);
+            break;
     }
 
     return colour;

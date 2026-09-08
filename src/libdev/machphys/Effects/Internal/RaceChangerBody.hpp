@@ -79,6 +79,11 @@ public:
     // The HSV hue of the median colour for race
     double hue(MachPhys::Race race) const;
 
+    // How much of a model's original saturation race keeps. 1 for a race with a
+    // colour of its own, and 0 for one whose colour is an absence of colour, which
+    // no hue can express.
+    double saturationScale(MachPhys::Race race) const;
+
     // True if hue1 is close to hue2 on the HSV hue scale
     bool close(double hue1, double hue2) const;
 

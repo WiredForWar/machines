@@ -8,52 +8,25 @@
 MachPhys::Race PedRace::parse(const string& race)
 {
     // return race based on text string passed in
-    MachPhys::Race returnRace;
-    if (race == "RED")
-        returnRace = MachPhys::RED;
-    else if (race == "BLUE")
-        returnRace = MachPhys::BLUE;
-    else if (race == "GREEN")
-        returnRace = MachPhys::GREEN;
-    else if (race == "YELLOW")
-        returnRace = MachPhys::YELLOW;
-    else
-        returnRace = MachPhys::N_RACES;
-    return returnRace;
+    return MachPhys::toRace(race).value_or(MachPhys::N_RACES);
 }
 
 MachPhys::Race PedRace::next(MachPhys::Race race)
 {
-    MachPhys::Race nextRace;
-    if (race == MachPhys::RED)
-        nextRace = MachPhys::BLUE;
-    else if (race == MachPhys::BLUE)
-        nextRace = MachPhys::GREEN;
-    else if (race == MachPhys::GREEN)
-        nextRace = MachPhys::YELLOW;
-    else if (race == MachPhys::YELLOW)
-        nextRace = MachPhys::RED;
-    return nextRace;
+    return static_cast<MachPhys::Race>((race + 1) % MachPhys::N_RACES);
 }
 
 RenColour PedRace::colour(MachPhys::Race race)
 {
-    RenColour colour;
+    PRE(race < MachPhys::N_RACES);
 
-    switch (race)
-    {
-        case (MachPhys::RED):
-            colour = RenColour::red();
-            break;
-        case (MachPhys::BLUE):
-            colour = RenColour::blue();
-            break;
-        case (MachPhys::GREEN):
-            colour = RenColour::green();
-            break;
-        case (MachPhys::YELLOW):
-            colour = RenColour::yellow();
-            break;
-    }
-    return colour;
+    static const RenColour colours[MachPhys::N_RACES] = {
+        RenColour::red(),
+        RenColour::blue(),
+        RenColour::green(),
+        RenColour::yellow(),
+        RenColour(0.5, 0.5, 0.5),
+    };
+
+    return colours[race];
 }

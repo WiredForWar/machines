@@ -5,6 +5,7 @@
 
 //  Definitions of non-inline non-template methods and global functions
 #include "planeted/editactor.hpp"
+#include "planeted/race.hpp"
 #include "base/base.hpp"
 #include "utility/LineTokeniser.hpp"
 #include "device/Keyboard.hpp"
@@ -431,16 +432,7 @@ void PedActorEditor::parseRace(const string& race)
 {
     PRE(pParser_ != nullptr);
 
-    if (race == "RED")
-        race_ = MachPhys::RED;
-    else if (race == "BLUE")
-        race_ = MachPhys::BLUE;
-    else if (race == "GREEN")
-        race_ = MachPhys::GREEN;
-    else if (race == "YELLOW")
-        race_ = MachPhys::YELLOW;
-    else
-        race_ = MachPhys::N_RACES;
+    race_ = PedRace::parse(race);
 }
 
 void PedActorEditor::processRace()
@@ -450,14 +442,7 @@ void PedActorEditor::processRace()
 
 void PedActorEditor::changeRace(MachPhys::Race* race)
 {
-    if (*race == MachPhys::RED)
-        *race = MachPhys::BLUE;
-    else if (*race == MachPhys::BLUE)
-        *race = MachPhys::GREEN;
-    else if (*race == MachPhys::GREEN)
-        *race = MachPhys::YELLOW;
-    else if (*race == MachPhys::YELLOW)
-        *race = MachPhys::RED;
+    *race = PedRace::next(*race);
 }
 
 void PedActorEditor::processHide(bool hidden)

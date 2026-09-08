@@ -47,15 +47,8 @@ PedScenarioFile::PedScenarioFile()
     , artefactModelFile_("")
 {
     // Initialise race information structures
-    RaceInfo red(MachPhys::RED);
-    RaceInfo blue(MachPhys::BLUE);
-    RaceInfo green(MachPhys::GREEN);
-    RaceInfo yellow(MachPhys::YELLOW);
-
-    racesInfo_.push_back(red);
-    racesInfo_.push_back(blue);
-    racesInfo_.push_back(green);
-    racesInfo_.push_back(yellow);
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        racesInfo_.push_back(RaceInfo(race));
 
     TEST_INVARIANT;
 }

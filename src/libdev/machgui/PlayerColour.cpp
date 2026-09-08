@@ -66,19 +66,22 @@ void MachGuiPlayerColour::releaseBmpMemory()
     GuiBitmap*& pBmp2 = pBlueBmp();
     GuiBitmap*& pBmp3 = pGreenBmp();
     GuiBitmap*& pBmp4 = pYellowBmp();
-    GuiBitmap*& pBmp5 = pBlackBmp();
+    GuiBitmap*& pBmp5 = pGreyBmp();
+    GuiBitmap*& pBmp6 = pBlackBmp();
 
     delete pBmp1;
     delete pBmp2;
     delete pBmp3;
     delete pBmp4;
     delete pBmp5;
+    delete pBmp6;
 
     pBmp1 = nullptr;
     pBmp2 = nullptr;
     pBmp3 = nullptr;
     pBmp4 = nullptr;
     pBmp5 = nullptr;
+    pBmp6 = nullptr;
 }
 
 // static
@@ -126,6 +129,17 @@ GuiBitmap*& MachGuiPlayerColour::pYellowBmp()
 }
 
 // static
+GuiBitmap*& MachGuiPlayerColour::pGreyBmp()
+{
+    static GuiBitmap* pBmp = nullptr;
+    if (! pBmp)
+    {
+        pBmp = new GuiBitmap(MachGui::getScaledImage("gui/menu/ggrey.bmp", MachGui::menuScaleFactor()));
+    }
+    return pBmp;
+}
+
+// static
 GuiBitmap*& MachGuiPlayerColour::pBlackBmp()
 {
     static GuiBitmap* pBmp = nullptr;
@@ -159,6 +173,10 @@ void MachGuiColourSelector::doDisplay()
         case MachPhys::YELLOW:
             pGlowColour = &Gui::YELLOW();
             pDarkColour = &MachGui::DARKYELLOW();
+            break;
+        case MachPhys::GREY:
+            pGlowColour = &Gui::LIGHTGREY();
+            pDarkColour = &MachGui::DARKGREY();
             break;
         default:
             pGlowColour = &Gui::DARKGREY();
@@ -628,6 +646,10 @@ void MachGuiPlayerColour::doDisplay()
         case MachPhys::YELLOW:
             pGlowBmp = pYellowBmp();
             pColour = &MachGui::DARKYELLOW();
+            break;
+        case MachPhys::GREY:
+            pGlowBmp = pGreyBmp();
+            pColour = &MachGui::DARKGREY();
             break;
         default:
             pGlowBmp = pBlackBmp();

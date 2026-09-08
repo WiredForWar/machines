@@ -394,6 +394,7 @@ std::string MachContinentMap::logoImagePath(MachPhys::Race race)
         "gui/map/blogo.bmp",
         "gui/map/glogo.bmp",
         "gui/map/ylogo.bmp",
+        "gui/map/greylogo.bmp",
     };
 
     return logoPaths[race];
@@ -407,6 +408,7 @@ GuiBitmap& MachContinentMap::machineImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bmachpix.bmp"),
         MachGui::getScaledImage("gui/map/gmachpix.bmp"),
         MachGui::getScaledImage("gui/map/ymachpix.bmp"),
+        MachGui::getScaledImage("gui/map/greymachpix.bmp"),
     };
 
     return machinePixel[race];
@@ -420,6 +422,7 @@ GuiBitmap& MachContinentMap::selectedMachineImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bmachpxs.bmp"),
         MachGui::getScaledImage("gui/map/gmachpxs.bmp"),
         MachGui::getScaledImage("gui/map/ymachpxs.bmp"),
+        MachGui::getScaledImage("gui/map/greymachpxs.bmp"),
     };
 
     return machinePixel[race];
@@ -432,6 +435,7 @@ GuiBitmap& MachContinentMap::constructionImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bconspix.bmp"),
         MachGui::getScaledImage("gui/map/gconspix.bmp"),
         MachGui::getScaledImage("gui/map/yconspix.bmp"),
+        MachGui::getScaledImage("gui/map/greyconspix.bmp"),
     };
 
     return constructionPixel[race];
@@ -444,6 +448,7 @@ GuiBitmap& MachContinentMap::selectedConstructionImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bconspxs.bmp"),
         MachGui::getScaledImage("gui/map/gconspxs.bmp"),
         MachGui::getScaledImage("gui/map/yconspxs.bmp"),
+        MachGui::getScaledImage("gui/map/greyconspxs.bmp"),
     };
 
     return constructionPixel[race];
@@ -456,6 +461,7 @@ GuiBitmap& MachContinentMap::podImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bpodpix.bmp"),
         MachGui::getScaledImage("gui/map/gpodpix.bmp"),
         MachGui::getScaledImage("gui/map/ypodpix.bmp"),
+        MachGui::getScaledImage("gui/map/greypodpix.bmp"),
     };
 
     return podPixel[race];
@@ -468,6 +474,7 @@ GuiBitmap& MachContinentMap::selectedPodImage(MachPhys::Race race)
         MachGui::getScaledImage("gui/map/bpodpxs.bmp"),
         MachGui::getScaledImage("gui/map/gpodpxs.bmp"),
         MachGui::getScaledImage("gui/map/ypodpxs.bmp"),
+        MachGui::getScaledImage("gui/map/greypodpxs.bmp"),
     };
 
     return podPixel[race];

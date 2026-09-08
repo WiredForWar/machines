@@ -46,6 +46,7 @@ const Gui::Colour& DARKRED();
 const Gui::Colour& DARKYELLOW();
 const Gui::Colour& DARKGREEN();
 const Gui::Colour& DARKBLUE();
+const Gui::Colour& DARKGREY();
 const Gui::Colour& DROPDOWNDARKGREEN();
 const Gui::Colour& DROPDOWNLIGHTGREEN();
 const Gui::Colour& CONSOLEBORDERCOLOR();
