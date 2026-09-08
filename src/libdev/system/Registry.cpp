@@ -89,8 +89,6 @@ void SysRegistryImpl::init()
 
 bool SysRegistryImpl::readFromFile()
 {
-    bool result = true;
-
     try
     {
         xmlFile_ = std::make_unique<XmlFileData>(regFile_.c_str());
@@ -99,14 +97,14 @@ bool SysRegistryImpl::readFromFile()
     catch (const rapidxml::parse_error& e)
     {
         std::cerr << e.what() << " here: " << e.where<char>() << std::endl;
-        result = false;
+        return false;
     }
     catch (...)
     {
-        result = false;
+        return false;
     }
 
-    return result;
+    return doc_.first_node() != nullptr;
 }
 
 void SysRegistryImpl::store()
