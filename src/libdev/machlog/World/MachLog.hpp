@@ -201,6 +201,11 @@ namespace MachLog
     };
 
     std::string_view toString(GameType type);
+
+    // The ion orbital cannon and the nuclear missile: the two weapons a game can
+    // be set up without. Asked of the weapon combination a research or
+    // construction item carries, which is how the tech data names them.
+    bool isSuperWeapon(MachPhys::WeaponCombo combo);
 };
 
 std::ostream& operator<<(std::ostream&, const MachLog::ObjectType&);

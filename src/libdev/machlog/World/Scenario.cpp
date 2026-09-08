@@ -73,10 +73,52 @@
 
 #include "system/VFS.hpp"
 
+// Take the super weapons out of the game before anything can reach them. Only
+// the ICBM emplacement needs saying here: a construction is offered as soon as a
+// race owns a constructor advanced enough to build it, so it has to be locked
+// before any constructor exists. Research is the other way round -- an item is
+// offered only where a scenario's research file asks for it, and those requests
+// are read past instead.
+static void withdrawSuperWeapons(MachLogRaces& races)
+{
+    MachLogConstructionItem& icbm = races.constructionTree().constructionItem(
+        MachLog::MISSILE_EMPLACEMENT,
+        MachPhys::ICBM,
+        5,
+        MachPhys::N_WEAPON_COMBOS);
+
+    for (MachPhys::Race race : MachPhys::AllRaces)
+        icbm.activationLocked(race, true);
+}
+
+// Whether a research file line asks for a weapon this game does not have. An item
+// is researchable only where such a line turns it on, so reading past the line is
+// the whole of taking it away -- it stays unavailable and unresearched, which is
+// what every research item starts as.
+static bool withdrawnResearchLine(const UtlLineTokeniser& parser, bool superWeapons)
+{
+    if (superWeapons)
+        return false;
+
+    for (std::size_t i = 0; i + 1 < parser.tokens().size(); ++i)
+    {
+        if (parser.tokens()[i] == "WCOMBO"
+            && MachLog::isSuperWeapon(MachLogScenario::weaponCombo(parser.tokens()[i + 1])))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // static
 void MachLogScenario::loadBareWorld(const MachLogGameCreationData& gameData)
 {
     MachLogRaces& races = MachLogRaces::instance();
+
+    if (! gameData.superWeapons())
+        withdrawSuperWeapons(races);
 
     races.gameType(MachLog::SKIRMISH_SINGLE_PLAYER);
 
@@ -160,6 +202,15 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
     // this is used for safety checking - no "alternative site" should be specified for a construction
     // that is going to be actually built rather than stored as a production unit
     bool lastEncounteredWasUnbuiltConstruction = false;
+
+    // A construction the file asks for that this game does not have. Its alternative
+    // sites, if it has any, describe a construction that is not being placed and go
+    // the same way; without this they would attach to whatever was placed before it.
+    bool lastEncounteredWasWithdrawnConstruction = false;
+
+    const bool superWeapons = gameData.superWeapons();
+    if (! superWeapons)
+        withdrawSuperWeapons(races);
 
     const MachLogGameCreationData::PlayersCreationData& playersCreationData = gameData.playersCreationData();
     MachLog::RandomStarts randomStarts = gameData.randomStarts();
@@ -755,7 +806,24 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     }
                 }
 
-                if (isAlternativeSite)
+                // A weapon this game does not have is not placed, however the file
+                // spells it: neither built, nor left as a plan for a constructor to
+                // build later, nor given the alternative sites that follow it.
+                const bool withdrawn = ! superWeapons
+                    && (isAlternativeSite
+                            ? lastEncounteredWasWithdrawnConstruction
+                            : (ot == MachLog::MISSILE_EMPLACEMENT && constructionSubType == MachPhys::ICBM));
+
+                if (! isAlternativeSite)
+                    lastEncounteredWasWithdrawnConstruction = withdrawn;
+
+                if (withdrawn)
+                {
+                    // Nothing was placed, so an alternative site has nothing to copy
+                    // and the safety check below would read the construction before it.
+                    lastEncounteredWasUnbuiltConstruction = false;
+                }
+                else if (isAlternativeSite)
                 {
 
                     if (doingAIRace)
@@ -859,7 +927,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                                 if (parser.tokens()[i] == "ACTIVATE_ION_CANNON")
                                     callActivateIonCannon = true;
 
-                            if (callActivateIonCannon)
+                            if (callActivateIonCannon && superWeapons)
                                 pConstruction->asPod().activateIonCannon();
                         }
 
@@ -1023,7 +1091,8 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 pLastProd = nullptr;
                 lastEncounteredWasUnbuiltConstruction = false;
             }
-            if (riParser.tokens()[0] == "MACHINE" || riParser.tokens()[0] == "CONSTRUCTION")
+            if ((riParser.tokens()[0] == "MACHINE" || riParser.tokens()[0] == "CONSTRUCTION")
+                && ! withdrawnResearchLine(riParser, superWeapons))
             {
                 bool researched = riParser.tokens()[1] == "RESEARCHED";
                 MachLog::ObjectType type = objectType(riParser.tokens()[2]);

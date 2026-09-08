@@ -70,6 +70,12 @@ public:
     MachLog::TechnologyLevel technologyLevel() const;
     void technologyLevel(MachLog::TechnologyLevel);
 
+    // Whether the ion cannon and the nuclear missile are part of this game.
+    // False withdraws both: neither can be researched or built, and a scenario
+    // asking for one is read as though the line were not there.
+    bool superWeapons() const;
+    void superWeapons(bool);
+
     const PhysAbsoluteTime& timerTickAt() const;
     void timerTickAt(const PhysAbsoluteTime&);
 

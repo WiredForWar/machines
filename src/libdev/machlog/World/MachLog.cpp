@@ -362,4 +362,11 @@ std::ostream& operator<<(std::ostream& o, const MachLog::GameType& t)
 {
     return o << MachLog::toString(t);
 }
+
+// Super weapons
+
+bool MachLog::isSuperWeapon(MachPhys::WeaponCombo combo)
+{
+    return combo == MachPhys::T_ION_ORBITAL_CANNON || combo == MachPhys::T_NUCLEAR_MISSILE;
+}
 /* End MACHLOG.CPP ***************************************************/

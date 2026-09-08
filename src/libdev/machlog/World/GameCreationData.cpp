@@ -24,6 +24,7 @@ private:
     MachLog::StartingResources startingResources_;
     MachLog::VictoryCondition victoryCondition_;
     MachLog::TechnologyLevel technologyLevel_;
+    bool superWeapons_{};
     PhysAbsoluteTime timerTickAt_;
 };
 
@@ -35,6 +36,7 @@ std::ostream& operator<<(std::ostream& o, const MachLogGameCreationDataImpl& t)
     o << " StartingResources " << t.startingResources_ << std::endl;
     o << " VictoryCondition " << t.victoryCondition_ << std::endl;
     o << " TechnologyLevel " << t.technologyLevel_ << std::endl;
+    o << " SuperWeapons " << t.superWeapons_ << std::endl;
     o << " TimerTickAt " << t.timerTickAt_ << std::endl;
 
     return o;
@@ -48,6 +50,7 @@ MachLogGameCreationData::MachLogGameCreationData()
     pImpl_->victoryCondition_ = MachLog::VICTORY_DEFAULT;
     pImpl_->technologyLevel_ = MachLog::TECH_LEVEL_DEFAULT;
     pImpl_->startingResources_ = MachLog::STARTING_RESOURCES_DEFAULT;
+    pImpl_->superWeapons_ = true;
     pImpl_->timerTickAt_ = 0;
     TEST_INVARIANT;
 }
@@ -68,6 +71,7 @@ MachLogGameCreationData::MachLogGameCreationData(
     pImpl_->technologyLevel_ = technologyLevel;
     pImpl_->startingResources_ = startingResources;
     pImpl_->playersCreationData_ = playersCreationData;
+    pImpl_->superWeapons_ = true;
     pImpl_->timerTickAt_ = timerTickAt;
 }
 
@@ -80,6 +84,7 @@ MachLogGameCreationData::MachLogGameCreationData(const MachLogGameCreationData& 
     pImpl_->technologyLevel_ = rhs.technologyLevel();
     pImpl_->startingResources_ = rhs.startingResources();
     pImpl_->playersCreationData_ = rhs.playersCreationData();
+    pImpl_->superWeapons_ = rhs.superWeapons();
     pImpl_->timerTickAt_ = rhs.timerTickAt();
 }
 
@@ -162,6 +167,16 @@ MachLog::TechnologyLevel MachLogGameCreationData::technologyLevel() const
 void MachLogGameCreationData::technologyLevel(MachLog::TechnologyLevel techLevel)
 {
     pImpl_->technologyLevel_ = techLevel;
+}
+
+bool MachLogGameCreationData::superWeapons() const
+{
+    return pImpl_->superWeapons_;
+}
+
+void MachLogGameCreationData::superWeapons(bool enabled)
+{
+    pImpl_->superWeapons_ = enabled;
 }
 
 const PhysAbsoluteTime& MachLogGameCreationData::timerTickAt() const
