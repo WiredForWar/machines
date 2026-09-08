@@ -691,6 +691,7 @@ void MachGuiCtxImReady::updateGameSettings()
     GuiResourceString startingPositionStr(IDS_MENU_STARTPOS);
     GuiResourceString victoryConditionStr(IDS_MENU_VICTORYCONDITION);
     GuiResourceString techLevelStr(IDS_MENU_STARTINGTECHLEVEL);
+    GuiResourceString superWeaponsStr(IDS_MENU_SUPERWEAPONS);
     GuiResourceString broadcastAlliancesStr(IDS_MENU_BROADCAST_ALLIANCE);
     GuiResourceString disableFirstPersonStr(IDS_MENU_DISABLE_FIRST_PERSON);
     std::string whiteFont(MachGui::Menu::smallFontWhite());
@@ -706,6 +707,8 @@ void MachGuiCtxImReady::updateGameSettings()
     new MachGuiText(pReadOnlySettings_, valueWidth, startupData().startingPositionStr(), whiteFont);
     new MachGuiText(pReadOnlySettings_, textWidth, techLevelStr.asString());
     new MachGuiText(pReadOnlySettings_, valueWidth, startupData().techLevelStr(), whiteFont);
+    new MachGuiText(pReadOnlySettings_, textWidth, superWeaponsStr.asString());
+    new MachGuiText(pReadOnlySettings_, valueWidth, startupData().superWeaponsStr(), whiteFont);
     new MachGuiText(pReadOnlySettings_, textWidth, mapSizeStr.asString());
     new MachGuiText(
         pReadOnlySettings_,

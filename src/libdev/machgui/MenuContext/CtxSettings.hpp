@@ -66,6 +66,7 @@ private:
     MachGuiDropDownListBoxCreator* pTechLevelSelector_;
     MachGuiDropDownListBoxCreator* pAlliancesSelector_;
     MachGuiDropDownListBoxCreator* pDisableFirstPersonSelector_;
+    MachGuiDropDownListBoxCreator* pSuperWeaponsSelector_;
 };
 
 #endif

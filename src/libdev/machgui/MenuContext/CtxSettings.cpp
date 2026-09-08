@@ -464,6 +464,7 @@ bool MachGuiCtxSettings::okayToSwitchContext()
         pStartupScreens_->startupData()->victoryCondition(pVictorySelector_->currentText());
         pStartupScreens_->startupData()->numPlayers(pSelectedScenario_->maxPlayers());
         pStartupScreens_->startupData()->techLevel(pTechLevelSelector_->currentText());
+        pStartupScreens_->startupData()->superWeapons(pSuperWeaponsSelector_->currentText());
         pStartupScreens_->startupData()->broadcastAlliances(pAlliancesSelector_->currentText());
         pStartupScreens_->startupData()->disableFirstPerson(pDisableFirstPersonSelector_->currentText());
 
@@ -551,6 +552,10 @@ void MachGuiCtxSettings::initSettings()
         IDS_MENU_TECHLEVELMED,
         IDS_MENU_TECHLEVELHIGH);
     pTechLevelSelector_->setCurrentText(pStartupScreens_->startupData()->techLevelStr());
+
+    // Add "super weapons" setting...
+    addSetting(pSuperWeaponsSelector_, IDS_MENU_SUPERWEAPONS, 2, IDS_MENU_ON, IDS_MENU_OFF);
+    pSuperWeaponsSelector_->setCurrentText(pStartupScreens_->startupData()->superWeaponsStr());
 
     // Add "broadcast alliances" setting...
     addSetting(pAlliancesSelector_, IDS_MENU_BROADCAST_ALLIANCE, 2, IDS_MENU_ON, IDS_MENU_OFF);
