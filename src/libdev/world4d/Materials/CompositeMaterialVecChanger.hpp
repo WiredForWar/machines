@@ -77,21 +77,31 @@ public:
     const W4dEntityMaterialVecChanger& linkChanger(size_t index) const;
     // PRE( index < nLinkChangers() );
 
+    // Where a colour is being carried to: the hue it takes, and how much of the
+    // original saturation survives. A scale of 1 leaves the colour as vivid as
+    // it was; 0 leaves it grey, which no hue can express on its own.
+    struct ColourShift
+    {
+        double hue{};
+        double saturationScale{1.0};
+    };
+
     // Plave an entry in each of the material maps referenced by maps for each
     // material used by composite whose diffuse colour hue is close to fromHue/whose texture == from texture
     // Each entry maps from that material to a material with diffuse colour hue changed
-    // to correspond to the entry in toHues/a corresponding texture in toTextures.
+    // to correspond to the entry in toColours/a corresponding texture in toTextures.
     using Textures = ctl_vector<RenTexture>;
     using TexturesVec = ctl_vector<Textures>;
+    using ColourShifts = ctl_vector<ColourShift>;
 
     static void fillMaterialMaps(
         const W4dComposite& composite,
         double fromHue,
-        const ctl_vector<double>& toHues,
+        const ColourShifts& toColours,
         const Textures& fromTextures,
         const TexturesVec& toTexturesVec,
         const ctl_pvector<RenMaterialMap>& maps);
-    // PRE( toHues.size() == maps.size() );
+    // PRE( toColours.size() == maps.size() );
     // PRE( toTexture.size() == maps.size() );
 
     void CLASS_INVARIANT;

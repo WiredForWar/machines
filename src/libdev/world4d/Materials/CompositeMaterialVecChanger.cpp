@@ -192,12 +192,12 @@ const W4dEntityMaterialVecChanger& W4dCompositeMaterialVecChanger::linkChanger(s
 void W4dCompositeMaterialVecChanger::fillMaterialMaps(
     const W4dComposite& composite,
     double fromHue,
-    const ctl_vector<double>& toHues,
+    const ColourShifts& toColours,
     const Textures& fromTextures,
     const TexturesVec& toTexturesVec,
     const ctl_pvector<RenMaterialMap>& maps)
 {
-    PRE(toHues.size() == maps.size());
+    PRE(toColours.size() == maps.size());
     PRE(fromTextures.size() != 0);
     PRE(toTexturesVec.size() != 0);
     PRE(toTexturesVec[0].size() == maps.size());
@@ -249,10 +249,13 @@ void W4dCompositeMaterialVecChanger::fillMaterialMaps(
             if (W4dEntityMaterialVecChanger::hueClose(compositeHue, fromHue))
             {
                 // This material needs conversion. Add a map entry to each map
+                const double compositeSaturation = hsvColour.saturation();
+
                 for (uint j = 0; j != nMaps; ++j)
                 {
                     // Convert the HSV colour
-                    hsvColour.hue(compositeHue - fromHue + toHues[j]);
+                    hsvColour.hue(compositeHue - fromHue + toColours[j].hue);
+                    hsvColour.saturation(compositeSaturation * toColours[j].saturationScale);
 
                     // Hence convert the material
                     RenMaterial entryMaterial(compositeMaterial);
@@ -271,10 +274,13 @@ void W4dCompositeMaterialVecChanger::fillMaterialMaps(
             if (W4dEntityMaterialVecChanger::hueClose(compositeHue, fromHue))
             {
                 // This material needs conversion. Add a map entry to each map
+                const double compositeSaturation = hsvColourEmissive.saturation();
+
                 for (uint j = 0; j != nMaps; ++j)
                 {
                     // Convert the HSV colour
-                    hsvColourEmissive.hue(compositeHue - fromHue + toHues[j]);
+                    hsvColourEmissive.hue(compositeHue - fromHue + toColours[j].hue);
+                    hsvColourEmissive.saturation(compositeSaturation * toColours[j].saturationScale);
 
                     // Hence convert the material
                     RenMaterial entryMaterial(compositeMaterial);

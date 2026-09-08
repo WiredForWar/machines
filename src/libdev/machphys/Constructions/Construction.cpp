@@ -575,7 +575,9 @@ void MachPhysConstruction::convertInteriorMaterials(MachPhys::Race race)
 
     MachPhysRaceChangerBody raceChangerBody;
     double fromHue = raceChangerBody.hue(MachPhys::RED);
-    ctl_vector<double> toHues{ raceChangerBody.hue(race) };
+    W4dCompositeMaterialVecChanger::ColourShifts toColours{
+        { .hue = raceChangerBody.hue(race) },
+    };
     std::unique_ptr<RenMaterialMap> materialMap(new RenMaterialMap);
     ctl_pvector<RenMaterialMap> materialMaps{ materialMap.get() };
 
@@ -591,7 +593,7 @@ void MachPhysConstruction::convertInteriorMaterials(MachPhys::Race race)
     }
 
     W4dCompositeMaterialVecChanger::fillMaterialMaps(
-        *pInteriorComposite_, fromHue, toHues, fromTextures, singleToTexturesVec, materialMaps);
+        *pInteriorComposite_, fromHue, toColours, fromTextures, singleToTexturesVec, materialMaps);
 
     W4dMaterialVecPtrSet materialVecPtrSet;
     W4dCompositeMaterialVecChanger changer(*pInteriorComposite_, *materialMaps[0], &materialVecPtrSet);

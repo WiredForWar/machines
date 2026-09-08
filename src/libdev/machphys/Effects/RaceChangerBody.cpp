@@ -99,20 +99,20 @@ void MachPhysRaceChangerBody::add(const MachPhysMachine& machine, const MachPhys
     ctl_pvector<RenMaterialMap> materialMaps;
     materialMaps.reserve(nRaces);
 
-    ctl_vector<double> changerHues;
-    changerHues.reserve(nRaces);
+    W4dCompositeMaterialVecChanger::ColourShifts changerColours;
+    changerColours.reserve(nRaces);
 
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerHues.push_back(hue(changerRaces[i]));
+        changerColours.push_back({ .hue = hue(changerRaces[i]) });
     }
 
     // Set up the material maps
     W4dCompositeMaterialVecChanger::fillMaterialMaps(
         machine,
         hue(MachPhys::RED),
-        changerHues,
+        changerColours,
         keyTextures(),
         texturesVec(),
         materialMaps);
@@ -148,20 +148,20 @@ void MachPhysRaceChangerBody::add(const MachPhysConstruction& construction, cons
     ctl_pvector<RenMaterialMap> materialMaps;
     materialMaps.reserve(nRaces);
 
-    ctl_vector<double> changerHues;
-    changerHues.reserve(nRaces);
+    W4dCompositeMaterialVecChanger::ColourShifts changerColours;
+    changerColours.reserve(nRaces);
 
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerHues.push_back(hue(changerRaces[i]));
+        changerColours.push_back({ .hue = hue(changerRaces[i]) });
     }
 
     // Set up the material maps
     W4dCompositeMaterialVecChanger::fillMaterialMaps(
         construction,
         hue(MachPhys::RED),
-        changerHues,
+        changerColours,
         keyTextures(),
         texturesVec(),
         materialMaps);
@@ -285,20 +285,20 @@ void MachPhysRaceChangerBody::add(const MachPhysWeapon& weapon)
     ctl_pvector<RenMaterialMap> materialMaps;
     materialMaps.reserve(nRaces);
 
-    ctl_vector<double> changerHues;
-    changerHues.reserve(nRaces);
+    W4dCompositeMaterialVecChanger::ColourShifts changerColours;
+    changerColours.reserve(nRaces);
 
     for (size_t i = 0; i != nRaces; ++i)
     {
         materialMaps.push_back(new RenMaterialMap);
-        changerHues.push_back(hue(changerRaces[i]));
+        changerColours.push_back({ .hue = hue(changerRaces[i]) });
     }
 
     // Set up the material maps
     W4dCompositeMaterialVecChanger::fillMaterialMaps(
         weapon,
         hue(MachPhys::RED),
-        changerHues,
+        changerColours,
         keyTextures(),
         texturesVec(),
         materialMaps);
