@@ -503,6 +503,8 @@ void SDLApp::clientShutdown()
 
     Ren::cleanUpFonts();
 
+    MachLogPlanet::instance().clear();
+
     DevMouse::instance().unhide();
     delete pRoot_;
     delete manager_;
