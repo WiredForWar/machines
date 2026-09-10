@@ -279,8 +279,25 @@ void writeReport(const char* cause, const char* detail, EXCEPTION_POINTERS* exce
     CloseHandle(thread);
 }
 
+// A debugger that attached after the handlers went in still has to win.
+void breakIntoDebugger()
+{
+    if (debuggerAttached())
+    {
+        DebugBreak();
+    }
+}
+
 LONG WINAPI exceptionFilter(EXCEPTION_POINTERS* exception)
 {
+    // A debugger was already offered this once, first chance, and passing it on
+    // is what gives it the second chance it stops on. Terminating here instead
+    // would close the process under the developer's hands.
+    if (debuggerAttached())
+    {
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+
     writeReport("unhandled exception", nullptr, exception);
 
     // Terminating here rather than continuing the search keeps the failure
@@ -290,6 +307,8 @@ LONG WINAPI exceptionFilter(EXCEPTION_POINTERS* exception)
 }
 
 // Everything below covers a way of dying that never reaches the filter above.
+// None of them raise anything, so without the break below a debugger sees only
+// a process that exited by itself.
 
 // An assertion calls abort(), and abort() raises SIGABRT without ever entering
 // exception dispatch. Left alone, the most common failure in a debug build
@@ -297,6 +316,8 @@ LONG WINAPI exceptionFilter(EXCEPTION_POINTERS* exception)
 void abortHandler(int number)
 {
     static_cast<void>(number);
+
+    breakIntoDebugger();
 
     writeReport("abort", "raised by abort() -- usually a failed assertion", nullptr);
 
@@ -308,6 +329,8 @@ void abortHandler(int number)
 // failed rethrow all end here rather than in the filter.
 void terminateHandler()
 {
+    breakIntoDebugger();
+
     writeReport("terminate", "an exception was not handled", nullptr);
 
     std::_Exit(3);
@@ -315,6 +338,8 @@ void terminateHandler()
 
 void purecallHandler()
 {
+    breakIntoDebugger();
+
     writeReport("pure virtual call", "a virtual function was called during construction or destruction", nullptr);
 
     std::_Exit(3);
@@ -339,6 +364,8 @@ void invalidParameterHandler(
     static_cast<void>(file);
     static_cast<void>(line);
     static_cast<void>(reserved);
+
+    breakIntoDebugger();
 
     writeReport("invalid parameter", "the C runtime rejected an argument", nullptr);
 

@@ -27,6 +27,7 @@ std::string appVersion_;
 std::string appCommitHash_;
 
 bool initialized_{};
+bool handlersInstalled_{};
 
 std::size_t appendNative(NativeChar* path, std::size_t size, std::size_t offset, const char* text)
 {
@@ -177,7 +178,12 @@ void initialize(const std::filesystem::path& dumpDirectory)
     }
 
     warmUpStackWalk();
-    installHandlers();
+
+    if (!debuggerAttached())
+    {
+        installHandlers();
+        handlersInstalled_ = true;
+    }
 
     initialized_ = true;
 }
@@ -197,7 +203,12 @@ void shutdown()
     }
 
     stopWatchdog();
-    uninstallHandlers();
+
+    if (handlersInstalled_)
+    {
+        uninstallHandlers();
+        handlersInstalled_ = false;
+    }
 
     initialized_ = false;
 }
