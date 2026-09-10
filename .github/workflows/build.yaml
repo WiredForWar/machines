@@ -232,9 +232,16 @@ jobs:
       if: matrix.package
       run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build-type }} --target install
 
-    - name: Remove the editor from the distribution
+    # The editor is not part of the game, and the game is what nearly everyone
+    # downloads. It goes out on its own instead, as the bare executable and
+    # nothing else: it wants exactly the runtime libraries machines.exe already
+    # ships with, so unpacking it next to a game of the same build is all it
+    # takes to run.
+    - name: Set the editor aside for a package of its own
       if: matrix.package
-      run: cmake -E remove ${{github.workspace}}/install/machines/planeted.exe
+      run: |
+        cmake -E make_directory ${{github.workspace}}/editor
+        cmake -E rename ${{github.workspace}}/install/machines/planeted.exe ${{github.workspace}}/editor/planeted.exe
 
     - name: Download the data pack
       if: matrix.package
@@ -261,23 +268,33 @@ jobs:
       if: matrix.package && runner.os == 'Windows'
       run: Copy-Item "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT\*.dll" ${{github.workspace}}\install\machines\
 
-    - name: Create the package (Linux)
+    - name: Create the packages (Linux)
       if: matrix.package && runner.os == 'Linux'
       working-directory: ${{github.workspace}}/install
       run: |
         sudo apt install -y p7zip-full
         7z a ${{ matrix.package-name }}-$BUILD_TAG-$(date +%Y%m%d).7z machines
+        7z a ../editor/${{ matrix.package-name }}-editor-$BUILD_TAG-$(date +%Y%m%d).7z ../editor/planeted.exe
 
-    - name: Create the package (Windows)
+    - name: Create the packages (Windows)
       if: matrix.package && runner.os == 'Windows'
       working-directory: ${{github.workspace}}/install
-      run: 7z a ${{ matrix.package-name }}-$env:BUILD_TAG-$(Get-Date -Format yyyyMMdd).7z machines
+      run: |
+        7z a ${{ matrix.package-name }}-$env:BUILD_TAG-$(Get-Date -Format yyyyMMdd).7z machines
+        7z a ..\editor\${{ matrix.package-name }}-editor-$env:BUILD_TAG-$(Get-Date -Format yyyyMMdd).7z ..\editor\planeted.exe
 
     - name: Upload the package
       if: matrix.package
       uses: actions/upload-artifact@v7
       with:
         path: ${{github.workspace}}/install/${{ matrix.package-name }}-*.7z
+        archive: false
+
+    - name: Upload the editor package
+      if: matrix.package
+      uses: actions/upload-artifact@v7
+      with:
+        path: ${{github.workspace}}/editor/${{ matrix.package-name }}-editor-*.7z
         archive: false
 
     # The crash handler is only worth having if it still works in the build that
