@@ -38,6 +38,7 @@ public:
     explicit InputRegistry(IBindsStorage* storage);
 
     void setLayout(InputLayout layout);
+    void forceLayout(InputLayout layout);
 
     void load();
     void save() const;

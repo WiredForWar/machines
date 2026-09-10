@@ -33,6 +33,7 @@
 #include "machlog/World/Planet.hpp"
 #include "machlog/Races.hpp"
 #include "machlog/World/Scenario.hpp"
+#include "machgui/InputRegistry.hpp"
 // #include "machlog/dbgstuff.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
 #include "machphys/Data/Data.hpp"
@@ -181,6 +182,13 @@ static void newHandler()
 bool SDLApp::clientStartup()
 {
     Config::initConfigManager();
+
+    // The editor's own commands are letters -- D drops a camera marker, W and S
+    // and the rest belong to the edit modes -- and every key event reaches both
+    // the editor and the cameras. The game's WASD layout puts camera movement on
+    // those same letters, so the editor takes the layout that leaves them alone,
+    // whatever the game is set to.
+    MachGui::inputRegistryImpl()->forceLayout(MachGui::InputLayout::Legacy);
 
     // Set coord system
     MexCoordSystem::instance().set(MexCoordSystem::LEFT_HANDED);

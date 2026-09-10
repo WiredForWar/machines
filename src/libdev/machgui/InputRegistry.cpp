@@ -57,6 +57,17 @@ void InputRegistry::setLayout(InputLayout layout)
     load();
 }
 
+// For an application that does not offer the layout as a setting and so has no
+// business following one the user chose elsewhere. Dropping the listener is what
+// makes the choice stick: the variable is shared with the game and would
+// otherwise still be able to change the binds underneath the caller.
+void InputRegistry::forceLayout(InputLayout layout)
+{
+    layoutVarHandle_.reset();
+
+    setLayout(layout);
+}
+
 void InputRegistry::load()
 {
     setDefaults();
