@@ -2154,7 +2154,6 @@ void RenDevice::useDevice(RenDevice* d)
 
 void RenDevice::displayImage(const SysPathName& pathName)
 {
-    RenSurface backBuf = backSurface();
     const std::string imagePath = pathName.pathname();
     RenTexture texture = RenSurfaceManager::instance().createTexture(imagePath);
 
@@ -2164,10 +2163,16 @@ void RenDevice::displayImage(const SysPathName& pathName)
         return;
     }
 
-    Ren::Painter painter(backBuf);
-    painter.blit(texture);
-    flushCommandBuffer();
-    pImpl_->display_->flipBuffers();
+    // Into both buffers, because an image displayed this way is put up once and
+    // then left alone while something else keeps drawing.
+    for (int pass = 0; pass != 2; ++pass)
+    {
+        RenSurface backBuf = backSurface();
+        Ren::Painter painter(backBuf);
+        painter.blit(texture);
+        flushCommandBuffer();
+        pImpl_->display_->flipBuffers();
+    }
 }
 
 bool RenDevice::canSee(const MexPoint3d& pt) const
