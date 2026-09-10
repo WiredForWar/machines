@@ -846,12 +846,14 @@ void MachLogResourceCarrier::assignResourceCarrierTask(MachLogResourceCarrier* o
 
                 // that one becomes the first mine in our itinerary, and is removed from the pool of remaining
                 // candidates
-                approvedItineraryList.push_back(*iFirst);
+                MachLogConstruction* pFirstSupplier = *iFirst;
+
+                approvedItineraryList.push_back(pFirstSupplier);
                 poolOfWorthwhileMines.erase(iFirst);
 
                 // okay, now choose the remaining mines (if any) on a "nearest best" basis.
 
-                MexPoint2d currentCheckPosition = (*iFirst)->position();
+                MexPoint2d currentCheckPosition = pFirstSupplier->position();
 
                 while (approvedItineraryList.size() < nMinesToVisit)
                 {
