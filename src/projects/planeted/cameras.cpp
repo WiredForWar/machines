@@ -173,11 +173,12 @@ MachCameras::~MachCameras()
     delete pSuperHighZenithControl_;
     delete pEyeControl_;
     delete pThirdPersonConstraint_;
-    delete pGroundCamera_;
-    delete pFreeCamera_;
-    delete pZenithCamera_;
-    delete pSuperHighZenithCamera_;
-    delete pEyeCamera_;
+
+    // The cameras are not ours to delete. Each was constructed with pRoot as its
+    // parent, which puts it in the scene graph, and W4dEntity's destructor
+    // deletes its descendants. The scene goes first; this destructor runs at
+    // exit(), from a function-local static, long afterwards. Deleting them here
+    // read a vtable back out of freed memory.
 
     DEBUG_STREAM(DIAG_NEIL, "MachCameras::~MachCameras() leave" << std::endl);
 }
