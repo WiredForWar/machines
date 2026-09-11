@@ -20,6 +20,7 @@
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machphys/Machines/Machine.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
+#include "machphys/machphys.hpp"
 #include "machlog/World/Planet.hpp"
 #include "mathex/Polygon2d.hpp"
 #include "sim/Manager.hpp"
@@ -927,7 +928,6 @@ void MachLogMachineMotionSequencer::shuffle()
         // Find a point to aim at - nearest of next path point or destination
         MexPoint2d target(destinationPoint_);
         bool targetPointFound = false;
-        const MATHEX_SCALAR sqr1cm = 0.0001;
 
         LOG_WHERE;
         LOG_INSPECT(target);
@@ -936,7 +936,7 @@ void MachLogMachineMotionSequencer::shuffle()
         {
             LOG_INSPECT(path_[index]);
 
-            if (path_[index].sqrEuclidianDistance(currentLocation) > sqr1cm)
+            if (path_[index].sqrEuclidianDistance(currentLocation) > MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
             {
                 targetPointFound = true;
                 target = path_[index];
@@ -946,9 +946,10 @@ void MachLogMachineMotionSequencer::shuffle()
             }
         }
 
-        if (! targetPointFound && target.sqrEuclidianDistance(currentLocation) < sqr1cm)
+        if (! targetPointFound
+            && target.sqrEuclidianDistance(currentLocation) < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
         {
-            target.x(target.x() + 0.01);
+            target.x(target.x() + MachPhys::MIN_SIGNIFICANT_DISTANCE);
 
             LOG_WHERE;
             LOG_INSPECT(target);

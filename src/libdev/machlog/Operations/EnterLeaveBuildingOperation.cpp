@@ -17,6 +17,7 @@
 #include "machphys/Constructions/Stations.hpp"
 #include "machphys/Random.hpp"
 #include "machphys/Machines/Machine.hpp"
+#include "machphys/machphys.hpp"
 
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Construction.hpp"
@@ -105,7 +106,8 @@ MachLogEnterBuildingOperation::~MachLogEnterBuildingOperation()
 
     // If we didn't make it to the station, unlock it
     if (pStation_ != nullptr && pActor_->hasStationLocked() && &pActor_->stationLocked() == pStation_
-        && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) > 0.0001)
+        && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position()))
+            > MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
     {
         pActor_->stationLocked(nullptr);
         pStation_->lock(false);
@@ -252,7 +254,7 @@ PhysRelativeTime MachLogEnterBuildingOperation::doUpdate()
             {
                 ASSERT(pStation_ != nullptr, "");
                 // Check to see if we've arrived
-                if (actorPos.sqrEuclidianDistance(stationPos) < 0.0001)
+                if (actorPos.sqrEuclidianDistance(stationPos) < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
                 {
                     status_ = STATION;
                     callBackInterval = 0.0;
@@ -608,7 +610,8 @@ bool MachLogEnterBuildingOperation::doIsFinished() const
         if (pStation_)
         {
             result = ! pActor_->motionSeq().hasDestination()
-                && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position())) < 0.0001;
+                && MexPoint2d(pActor_->position()).sqrEuclidianDistance(MexPoint2d(pStation_->position()))
+                    < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED;
         }
         else
         {
@@ -902,7 +905,8 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
                 if (! moving)
                 {
                     // Have we arrived?
-                    if (actorPos.sqrEuclidianDistance(pConstruction_->entranceInternalPoint(0)) < 0.0001)
+                    if (actorPos.sqrEuclidianDistance(pConstruction_->entranceInternalPoint(0))
+                        < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
                     {
                         status_ = INTERNAL_POINT;
                         action = MOVE_TO_EXTERNAL_POINT;
@@ -930,7 +934,8 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
                 if (! moving)
                 {
                     // Have we arrived?
-                    if (actorPos.sqrEuclidianDistance(pConstruction_->entranceExternalPoint(0)) < 0.0001)
+                    if (actorPos.sqrEuclidianDistance(pConstruction_->entranceExternalPoint(0))
+                        < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
                     {
                         status_ = EXTERNAL_POINT;
                         action = MOVE_CLEAR;

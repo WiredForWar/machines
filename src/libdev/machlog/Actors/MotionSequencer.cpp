@@ -34,6 +34,7 @@
 #include "machphys/Machines/MachineMoveInfo.hpp"
 #include "machphys/Data/Data.hpp"
 #include "machphys/Terrain/PlanetSurface.hpp"
+#include "machphys/machphys.hpp"
 #include "ctl/List.hpp"
 
 #include "machlog/World/Planet.hpp"
@@ -407,7 +408,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
         {
             //  If we are really close to the destination don't bother moving at all
             MexPoint2d location(currentLocation());
-            if (location.sqrEuclidianDistance(newDestination) > 0.0001)
+            if (location.sqrEuclidianDistance(newDestination) > MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
             {
                 // Set the new destination
                 destinationPoint_ = newDestination;
@@ -1062,7 +1063,7 @@ PhysRelativeTime MachLogMachineMotionSequencer::updateWhileStopped()
         CHANGE_STATE(INTERNAL_WANT_PATH, "getting path to next portal point");
         interval = 0;
     }
-    else if (currentLocation().sqrEuclidianDistance(destinationPoint_) > 0.0001)
+    else if (currentLocation().sqrEuclidianDistance(destinationPoint_) > MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
     {
         // Need a path direct to destination
         CHANGE_STATE(INTERNAL_WANT_DOMAIN_PATH, "have stopped, need to recalculate domain path");
@@ -1259,7 +1260,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::update(const PhysRelativeTime& m
                         {
                             // If not already at the destination, set up a domain findpath algorithm
                             MexPoint2d location(currentLocation());
-                            if (location.sqrEuclidianDistance(destinationPoint_) > 0.0001)
+                            if (location.sqrEuclidianDistance(destinationPoint_)
+                                > MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
                             {
                                 createDomainFindPath(location, destinationPoint_);
                                 CHANGE_STATE(INTERNAL_PLANNING_DOMAIN_PATH, "trying to get path to destination");
@@ -2664,7 +2666,7 @@ void MachLogMachineMotionSequencer::updateFollowDestination()
     // arrival at its target point. If current location and target are coincident,
     // use current direction
     MexVec2 leadDirection;
-    if (leadDestination.sqrEuclidianDistance(leadCurrentLocation) < 0.0001)
+    if (leadDestination.sqrEuclidianDistance(leadCurrentLocation) < MachPhys::MIN_SIGNIFICANT_DISTANCE_SQUARED)
     {
         leadDirection = pFollowSequencer_->pPhysMachine()->globalTransform().xBasis();
     }
