@@ -1670,8 +1670,22 @@ void MachPhysTileData::profileOutput(TriangleIntersectDatas& intersectDatas, Pro
                 continue;
         }
 
+        // A section shorter than 1cm has no direction of its own to build an
+        // orientation from; it takes the orientation of the section before it.
+        // With nothing before it, it is left out: the caller lays a straight
+        // line over a path that produced no sections at all.
         MexVec3 xBasis(data.entryPoint(), data.exitPoint());
-        pProfile->push_back(MexTransform3d(MexTransform3d::X_XZ, xBasis, data.normal(), data.entryPoint()));
+        const bool tooShort = xBasis.modulus() < 0.01;
+        if (tooShort && pProfile->empty())
+            continue;
+
+        if (tooShort)
+        {
+            pProfile->push_back(pProfile->back());
+            pProfile->back().position(data.entryPoint());
+        }
+        else
+            pProfile->push_back(MexTransform3d(MexTransform3d::X_XZ, xBasis, data.normal(), data.entryPoint()));
 
         PATH_PROFILE_INSPECT(pProfile->back());
 
