@@ -6,6 +6,7 @@
 #pragma once
 
 #include "phys/phys.hpp"
+#include "mathex/mathex.hpp"
 #include "base/Persistence.hpp"
 
 #include <optional>
@@ -14,6 +15,14 @@
 // Dummy namespace
 namespace MachPhys
 {
+    // The smallest distance the game resolves, one centimetre. Two points less than this
+    // apart are the same place, and a displacement this short has no usable direction to
+    // take an orientation from. It says what the game world cares about, unlike
+    // MexEpsilon, which is a floating point tolerance a hundred times smaller.
+    inline constexpr MATHEX_SCALAR MIN_SIGNIFICANT_DISTANCE = 0.01;
+    inline constexpr MATHEX_SCALAR MIN_SIGNIFICANT_DISTANCE_SQUARED
+        = MIN_SIGNIFICANT_DISTANCE * MIN_SIGNIFICANT_DISTANCE;
+
     // added type to fix persistence
     enum Race : unsigned char
     {

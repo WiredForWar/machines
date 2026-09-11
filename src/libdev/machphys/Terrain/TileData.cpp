@@ -17,6 +17,7 @@
 #include "mathex/Intersections.hpp"
 #include "mathex/Utility.hpp"
 #include "machphys/Terrain/TileData.hpp"
+#include "machphys/machphys.hpp"
 
 #include "render/Mesh.hpp"
 
@@ -1247,10 +1248,6 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
     PATH_PROFILE_INSPECT(nXCell);
     PATH_PROFILE_INSPECT(nYCell);
 
-    // Set the accuracy locally. 1cm is neither here nor there for our purposes
-    const MATHEX_SCALAR useEps = 0.01;
-    const MATHEX_SCALAR negUseEps = -useEps;
-
     // Get the 2d line length and x/y components
     MATHEX_SCALAR xLineLength = finishX - startX;
     MATHEX_SCALAR yLineLength = finishY - startY;
@@ -1261,7 +1258,7 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
     PATH_PROFILE_INSPECT(lineLength);
 
     // Check for a very short line, and treat it specially below
-    if (lineLength > 2.1 * useEps)
+    if (lineLength > 2.1 * MachPhys::MIN_SIGNIFICANT_DISTANCE)
     {
         // We'll need a unit vector in the direction of our 2d line
         MATHEX_SCALAR xUnitDir = xLineLength / lineLength;
@@ -1272,8 +1269,8 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
 
         // Compute the starting cell, but offset a short distance along the line, so that
         // we don't pick up an unnecessary cell if start point lies on a grid line.
-        int xCurrentCell((startX + (xUnitDir * useEps) - xMin) / xCellLength);
-        int yCurrentCell((startY + (yUnitDir * useEps) - yMin) / yCellLength);
+        int xCurrentCell((startX + (xUnitDir * MachPhys::MIN_SIGNIFICANT_DISTANCE) - xMin) / xCellLength);
+        int yCurrentCell((startY + (yUnitDir * MachPhys::MIN_SIGNIFICANT_DISTANCE) - yMin) / yCellLength);
 
         // Correct for lines on the right or bottom edge of the tile
         if (xCurrentCell >= nXCell)
@@ -1290,14 +1287,14 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
         MATHEX_SCALAR xNextDistance;
         int xCellIncrement;
 
-        if (xLineLength > useEps)
+        if (xLineLength > MachPhys::MIN_SIGNIFICANT_DISTANCE)
         {
             MATHEX_SCALAR xGradient = lineLength / xLineLength;
             xDistanceIncrement = xCellLength * xGradient;
             xNextDistance = (xMin + (xCurrentCell + 1) * xCellLength - startX) * xGradient;
             xCellIncrement = 1;
         }
-        else if (xLineLength < negUseEps)
+        else if (xLineLength < -MachPhys::MIN_SIGNIFICANT_DISTANCE)
         {
             MATHEX_SCALAR xGradient = lineLength / xLineLength;
             xDistanceIncrement = -xCellLength * xGradient;
@@ -1319,14 +1316,14 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
         MATHEX_SCALAR yNextDistance;
         int yCellIncrement;
 
-        if (yLineLength > useEps)
+        if (yLineLength > MachPhys::MIN_SIGNIFICANT_DISTANCE)
         {
             MATHEX_SCALAR yGradient = lineLength / yLineLength;
             yDistanceIncrement = yCellLength * yGradient;
             yNextDistance = (yMin + (yCurrentCell + 1) * yCellLength - startY) * yGradient;
             yCellIncrement = 1;
         }
-        else if (yLineLength < negUseEps)
+        else if (yLineLength < -MachPhys::MIN_SIGNIFICANT_DISTANCE)
         {
             MATHEX_SCALAR yGradient = lineLength / yLineLength;
             yDistanceIncrement = -yCellLength * yGradient;
@@ -1353,7 +1350,7 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
 
         // Beginning with the current cell, advance through all the cells traversed by the line
         bool done = false;
-        MATHEX_SCALAR limitDistance = lineLength - useEps;
+        MATHEX_SCALAR limitDistance = lineLength - MachPhys::MIN_SIGNIFICANT_DISTANCE;
         while (! done)
         {
             // Process current cell. Iterate through its triangles
@@ -1385,9 +1382,9 @@ void MachPhysTileData::pathProfile(const MexPoint3d& startPoint, const MexPoint3
             bool yAdvance = true;
             MATHEX_SCALAR diff = yNextDistance - xNextDistance;
 
-            if (diff > useEps)
+            if (diff > MachPhys::MIN_SIGNIFICANT_DISTANCE)
                 yAdvance = false;
-            else if (diff < negUseEps)
+            else if (diff < -MachPhys::MIN_SIGNIFICANT_DISTANCE)
                 xAdvance = false;
 
             if (xAdvance)
@@ -1663,19 +1660,19 @@ void MachPhysTileData::profileOutput(TriangleIntersectDatas& intersectDatas, Pro
 
         if (! lastOne)
         {
-            // Check for the entry point being within 1cm of the next one.
+            // Check for the entry point being at the same place as the next one.
             // If so, we don't need it.
             MATHEX_SCALAR nextEntryDistance = (*(itBegin + aDataIndex[index + 1])).entryDistance();
-            if ((nextEntryDistance - data.entryDistance()) < 0.01)
+            if ((nextEntryDistance - data.entryDistance()) < MachPhys::MIN_SIGNIFICANT_DISTANCE)
                 continue;
         }
 
-        // A section shorter than 1cm has no direction of its own to build an
-        // orientation from; it takes the orientation of the section before it.
-        // With nothing before it, it is left out: the caller lays a straight
-        // line over a path that produced no sections at all.
+        // A section this short has no direction of its own to build an orientation
+        // from; it takes the orientation of the section before it. With nothing
+        // before it, it is left out: the caller lays a straight line over a path
+        // that produced no sections at all.
         MexVec3 xBasis(data.entryPoint(), data.exitPoint());
-        const bool tooShort = xBasis.modulus() < 0.01;
+        const bool tooShort = xBasis.modulus() < MachPhys::MIN_SIGNIFICANT_DISTANCE;
         if (tooShort && pProfile->empty())
             continue;
 
