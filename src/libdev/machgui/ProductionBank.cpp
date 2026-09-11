@@ -16,6 +16,8 @@
 #include "gui/gui.hpp"
 #include "device/ButtonEvent.hpp"
 
+#include <algorithm>
+
 /* ////////////////////////////////////////////// constructor /////////////////////////////////////////////////// */
 
 MachProductionBank::MachProductionBank(
@@ -153,7 +155,10 @@ size_t MachProductionBank::width()
 // static
 size_t MachProductionBank::height()
 {
-    return (MachProductionIcons::height());
+    // The bank holds the scroll buttons as well as the queue, and the two are not the
+    // same height at every interface scale: the queue icons carry a progress bar whose
+    // thin bands do not grow at the rate the art does.
+    return std::max(MachProductionIcons::height(), MachGuiBufferScrollButton::height());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -19,6 +19,8 @@
 #include "device/ButtonEvent.hpp"
 #include "machgui/internal/SoundManager.hpp"
 
+#include <algorithm>
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////
@@ -186,7 +188,10 @@ size_t MachHWResearchBank::reqWidth()
 // static
 size_t MachHWResearchBank::reqHeight()
 {
-    return (MachHWResearchBankIcons::reqHeight());
+    // The bank holds the scroll buttons as well as the queue, and the two are not the
+    // same height at every interface scale: the queue icons carry a progress bar whose
+    // thin bands do not grow at the rate the art does.
+    return std::max(MachHWResearchBankIcons::reqHeight(), MachGuiBufferScrollButton::height());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

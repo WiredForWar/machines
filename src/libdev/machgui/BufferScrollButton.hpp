@@ -47,6 +47,7 @@ public:
     void CLASS_INVARIANT;
 
     static size_t width();
+    static size_t height();
 
 protected:
     void listUpdated() override;
