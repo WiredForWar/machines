@@ -1234,11 +1234,14 @@ void pauseCommand(MachGuiStartupScreens* pStartup, const Request& request, Conso
     console.writeLine(std::string("Game ") + (pause ? "paused." : "resumed."));
 }
 
+// What game_speed accepts. The published argument description is composed from
+// these rather than written out beside them, so the metadata a caller reads
+// cannot drift from the range the command enforces.
+constexpr double GameSpeedMin{0.01};
+constexpr double GameSpeedMax{8.0};
+
 void gameSpeedCommand(const Request& request, Console& console)
 {
-    constexpr double minSpeed{0.001};
-    constexpr double maxSpeed{8.0};
-
     if (request.arguments.empty() || !request.arguments[0].provided)
     {
         console.writeLine("Game speed: " + formatFloat(SimManager::instance().speed(), 3) + ".");
@@ -1246,11 +1249,11 @@ void gameSpeedCommand(const Request& request, Console& console)
     }
 
     const double speed = std::get<double>(request.arguments[0].value);
-    if (speed < minSpeed || speed > maxSpeed)
+    if (speed < GameSpeedMin || speed > GameSpeedMax)
     {
         console.reportError(
-            "Game speed must be between " + formatFloat(minSpeed, 3) + " and " + formatFloat(maxSpeed, 3) + ", got "
-            + formatFloat(speed, 3) + ".");
+            "Game speed must be between " + formatFloat(GameSpeedMin, 3) + " and " + formatFloat(GameSpeedMax, 3)
+            + ", got " + formatFloat(speed, 3) + ".");
         return;
     }
 
@@ -1920,7 +1923,11 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
             .name = "game_speed",
             .description = "Get/set the rate at which simulation time advances relative to real time.",
             .arguments = {
-                {.name = "speed", .type = Arg::Float, .optional = true, .description = "Multiplier from 0.001 to 20. Omit to print the current speed."},
+                {.name = "speed",
+                 .type = Arg::Float,
+                 .optional = true,
+                 .description = "Multiplier from " + formatFloat(GameSpeedMin, 3) + " to "
+                     + formatFloat(GameSpeedMax, 3) + ". Omit to print the current speed."},
             },
         },
         [](const Request& request, Console& console) { gameSpeedCommand(request, console); });
