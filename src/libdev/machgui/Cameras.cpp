@@ -38,6 +38,8 @@
 #include <memory>
 #include <ranges>
 
+#include <cmath>
+
 static void readZenithDataFile(
     MATHEX_SCALAR* pZenithMinHeight,
     MATHEX_SCALAR* pZenithMaxHeight,
@@ -984,6 +986,15 @@ void MachCameras::lookAt(const MexPoint2d& newPos)
             MexPoint3d(newPos.x(), newPos.y(), pFirstPersonCamera_->globalTransform().position().z()));
         pFirstPersonCamera_->update(); // Make sure camera is in correct domain
     }
+    else if (isFreeCameraActive())
+    {
+        // The free camera turns to face the point instead of moving over it: it
+        // is placed by hand, and dragging it somewhere else would throw that away.
+        const MATHEX_SCALAR targetZ
+            = MachLogPlanet::instance().surface()->terrainHeight(newPos.x(), newPos.y(), pFreeCamera_->floors());
+
+        aimFreeCameraAt(MexPoint3d(newPos.x(), newPos.y(), targetZ));
+    }
 }
 
 MATHEX_SCALAR MachCameras::zenithMinimumHeight() const
@@ -1157,6 +1168,37 @@ void MachCameras::setGroundCameraPosition(MATHEX_SCALAR x, MATHEX_SCALAR y, MATH
     xform.position(MexPoint3d(x, y, z));
     pGroundControl_->snapTo(xform);
     pGroundCamera_->update();
+}
+
+void MachCameras::setFreeCameraTransform(const MexTransform3d& transform)
+{
+    pFreeControl_->snapTo(transform);
+    pFreeCamera_->update();
+}
+
+MexTransform3d MachCameras::transformFacing(const MexPoint3d& from, const MexPoint3d& target)
+{
+    const MATHEX_SCALAR xDelta = target.x() - from.x();
+    const MATHEX_SCALAR yDelta = target.y() - from.y();
+    const MATHEX_SCALAR zDelta = target.z() - from.z();
+    const MATHEX_SCALAR groundDistance = std::sqrt(xDelta * xDelta + yDelta * yDelta);
+
+    // Elevation is positive downwards, hence the negated height difference.
+    const MexEulerAngles angles(
+        MexRadians(std::atan2(yDelta, xDelta)),
+        MexRadians(std::atan2(-zDelta, groundDistance)),
+        MexRadians(0.0));
+
+    return MexTransform3d(angles, from);
+}
+
+void MachCameras::aimFreeCameraAt(const MexPoint3d& target)
+{
+    const MexPoint3d cameraPos = pFreeCamera_->globalTransform().position();
+    pFreeCamera_->globalTransform(transformFacing(cameraPos, target));
+
+    // Whatever turn the camera had built up would swing it straight off the target.
+    pFreeControl_->stopRotating();
 }
 
 void MachCameras::reversePitchUpDownKeys(bool newValue)

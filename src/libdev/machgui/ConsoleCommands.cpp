@@ -548,7 +548,11 @@ void camPosCommand(MachGuiStartupScreens* pStartup, const Request& request, Cons
         if (request.arguments.size() > 1 && request.arguments[1].provided)
             pos.z(std::get<double>(request.arguments[1].value));
         xform.position(pos);
-        pCameras->currentCamera()->globalTransform(xform);
+
+        if (pCameras->isFreeCameraActive())
+            pCameras->setFreeCameraTransform(xform);
+        else
+            pCameras->currentCamera()->globalTransform(xform);
     }
     console.writeLine("Camera position set.");
 }
@@ -649,7 +653,11 @@ void camDirCommand(MachGuiStartupScreens* pStartup, const Request& request, Cons
         if (request.arguments.size() > 2 && request.arguments[2].provided)
             angles.roll(MexRadians(std::get<double>(request.arguments[2].value) * Mathex::PI / 180.0));
         MexTransform3d newXform(angles, pCamera->globalTransform().position());
-        pCamera->globalTransform(newXform);
+
+        if (pCameras->isFreeCameraActive())
+            pCameras->setFreeCameraTransform(newXform);
+        else
+            pCamera->globalTransform(newXform);
     }
     console.writeLine("Camera direction set.");
 }
@@ -2117,7 +2125,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "cam_pos",
-            .description = "Get/set camera position. Zenith: x,y [zoom]. Ground: x,y [z]. 1stperson: x,y [z].",
+            .description = "Get/set camera position. Zenith: x,y [zoom]. Ground/1stperson/free: x,y [z].",
             .arguments = {
                 { .name = "pos", .type = Arg::String, .optional = true, .description = "Position as x,y." },
                 { .name = "z", .type = Arg::Float, .optional = true, .description = "Z or zoom distance." },
@@ -2128,11 +2136,12 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "cam_dir",
-            .description = "Get/set camera direction in degrees. Zenith/ground: yaw. 1stperson: yaw [pitch] [roll].",
+            .description
+            = "Get/set camera direction in degrees. Zenith/ground: yaw. 1stperson/free: yaw [pitch] [roll].",
             .arguments = {
                 { .name = "yaw", .type = Arg::Float, .optional = true, .description = "Yaw in degrees." },
-                { .name = "pitch", .type = Arg::Float, .optional = true, .description = "Pitch in degrees (1stperson only)." },
-                { .name = "roll", .type = Arg::Float, .optional = true, .description = "Roll in degrees (1stperson only)." },
+                { .name = "pitch", .type = Arg::Float, .optional = true, .description = "Pitch in degrees (1stperson and free only)." },
+                { .name = "roll", .type = Arg::Float, .optional = true, .description = "Roll in degrees (1stperson and free only)." },
             },
         },
         [pStartup](const Request& request, Console& console) { camDirCommand(pStartup, request, console); });
@@ -2155,7 +2164,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "cam_lookat",
-            .description = "Point camera at a world position.",
+            .description = "Point camera at a world position. The free camera turns without moving.",
             .arguments = {
                 { .name = "pos", .type = Arg::String, .description = "Position as x,y." },
             },

@@ -155,6 +155,10 @@ public:
 
     void setGroundCameraPosition(MATHEX_SCALAR x, MATHEX_SCALAR y, MATHEX_SCALAR z);
 
+    // Place and aim the free camera, clamped to whatever its motion constraint
+    // allows and with any motion it had built up discarded.
+    void setFreeCameraTransform(const MexTransform3d& transform);
+
     // Configure pitch up/down keys for ground camera
     void reversePitchUpDownKeys(bool);
 
@@ -179,6 +183,13 @@ private:
     void restoreFog();
 
     void internalLookAt(const MachActor&);
+
+    // The transform that sits at "from" and looks towards "target".
+    static MexTransform3d transformFacing(const MexPoint3d& from, const MexPoint3d& target);
+
+    // Turn the free camera to face target. Its position and whatever motion it
+    // has built up are left alone, so it keeps travelling as it turns.
+    void aimFreeCameraAt(const MexPoint3d& target);
 
     // Return the position that the zenith camera would have to be in in order for
     // "lookAt" to be the centre of the sceen.
