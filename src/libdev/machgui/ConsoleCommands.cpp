@@ -461,6 +461,8 @@ void camTypeCommand(MachGuiStartupScreens* pStartup, const Request& request, Con
             console.writeLine("ground");
         else if (pCameras->is1stPersonCameraActive())
             console.writeLine("1stperson");
+        else if (pCameras->isFreeCameraActive())
+            console.writeLine("free");
         else
             console.writeLine("unknown");
         return;
@@ -473,8 +475,10 @@ void camTypeCommand(MachGuiStartupScreens* pStartup, const Request& request, Con
         pCameras->useGroundCamera();
     else if (type == "1stperson")
         pCameras->use1stPersonCamera();
+    else if (type == "free")
+        pCameras->useFreeCamera();
     else
-        console.reportError("Unknown camera type: " + type + ". Use zenith, ground, or 1stperson.");
+        console.reportError("Unknown camera type: " + type + ". Use zenith, ground, 1stperson, or free.");
 }
 
 // Where the camera is: x and y on the map, and a third value that is the
@@ -2105,7 +2109,7 @@ void registerConsoleCommands(System::IConsole& console, MachGuiStartupScreens* p
     console.registerCommand(
         {
             .name = "cam_type",
-            .description = "Get/set camera type (zenith, ground, 1stperson).",
+            .description = "Get/set camera type (zenith, ground, 1stperson, free).",
             .arguments = {{.name = "type", .type = Arg::String, .optional = true, .description = "Camera type."}},
         },
         [pStartup](const Request& request, Console& console) { camTypeCommand(pStartup, request, console); });

@@ -490,6 +490,11 @@ void MachCameras::updateCameras()
         pZenithControl_->update();
         pZenithCamera_->update();
     }
+    else if (isFreeCameraActive())
+    {
+        pFreeControl_->update();
+        pFreeCamera_->update();
+    }
 
     if (cameraMoved_)
     {
@@ -845,6 +850,11 @@ bool MachCameras::is1stPersonCameraActive() const
     return (pCurrentCamera_ == pFirstPersonCamera_.get());
 }
 
+bool MachCameras::isFreeCameraActive() const
+{
+    return (pCurrentCamera_ == pFreeCamera_.get());
+}
+
 void MachCameras::freezeMotion()
 {
     if (! pZenithControl_->motionFrozen())
@@ -875,6 +885,8 @@ bool MachCameras::motionFrozen() const
         frozen = pGroundControl_->motionFrozen();
     else if (is1stPersonCameraActive())
         frozen = pFirstPersonControl_->motionFrozen();
+    else if (isFreeCameraActive())
+        frozen = pFreeControl_->motionFrozen();
 
     return frozen;
 }
@@ -1002,6 +1014,29 @@ void MachCameras::use1stPersonCamera()
     pFirstPersonCamera_->update();
     pFirstPersonControl_->enableInput();
     restoreFog();
+    groundCameraMoved_ = true;
+}
+
+void MachCameras::useFreeCamera()
+{
+    if (isFreeCameraActive())
+        return;
+
+    // Take over from wherever the outgoing camera was looking, so that the view
+    // does not jump when switching. Snapping also clears any motion the free
+    // camera had built up before it was last switched away from.
+    pFreeControl_->snapTo(pCurrentCamera_->globalTransform());
+    useCamera(pFreeCamera_.get());
+    pFreeCamera_->update();
+    pFreeControl_->enableInput();
+
+    // The thinner fog the zenith view uses, for the same reason it uses it: this
+    // camera goes wherever it is flown, most of it well above the ground, and at
+    // that height the fog a machine stands in closes the distance to nothing.
+    // Taking the ground camera's fog also made the picture change on the switch,
+    // which is the one thing a camera that inherits the outgoing view should not
+    // do.
+    reduceFog();
     groundCameraMoved_ = true;
 }
 

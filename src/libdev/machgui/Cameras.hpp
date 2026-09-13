@@ -109,6 +109,7 @@ public:
     bool isZenithCameraActive() const;
     bool isGroundCameraActive() const;
     bool is1stPersonCameraActive() const;
+    bool isFreeCameraActive() const;
 
     void freezeMotion();
     void resumeMotion();
@@ -127,6 +128,10 @@ public:
 
     // Switch to zenith camera. Use currentCamera to get at the zenith camera object.
     void useZenithCamera();
+
+    // Switch to the free camera, which flies on all six axes from wherever the
+    // previous camera was. Use currentCamera to get at the free camera object.
+    void useFreeCamera();
 
     // Load/Save camera info
     void saveGame(PerOstream& outStream);
