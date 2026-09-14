@@ -64,7 +64,7 @@ public:
     void removeAllDesiredMachines();
     //  const MachLogSquadron::DesiredMachines& desiredMachines() const;
 
-    // sets the virtual defcon to all machines to DEFCON_HIGH for a short period.
+    // sets the effective initiative of all machines to INITIATIVE_LOW for a short period.
     void manualCommandIssuedToSquadron();
 
     MachLogMachine* getStrongestMachine();
@@ -78,7 +78,7 @@ public:
     PER_MEMBER_PERSISTENT_VIRTUAL(MachLogSquadron);
     PER_FRIEND_READ_WRITE(MachLogSquadron);
 
-    void autoSetDefCon(MachLog::DefCon);
+    void autoSetInitiative(MachLog::Initiative);
 
 protected:
     // have to have these...implementation does nothing

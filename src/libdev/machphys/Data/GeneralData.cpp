@@ -22,7 +22,7 @@ public:
     MexRadians maxMoveGradient_;
     MATHEX_SCALAR startRotationDistance_;
     MATHEX_SCALAR maxTerrainUnevenness_;
-    PhysRelativeTime virtualDefConInterval_;
+    PhysRelativeTime initiativeSuppressionInterval_;
     PhysRelativeTime initialMoveRetryInterval_{};
     MATHEX_SCALAR updateIntervalFactor_{};
     PhysPathFindingPriority pcPathFindingPriority_;
@@ -43,7 +43,7 @@ MachPhysGeneralData::MachPhysGeneralData()
     pImpl_->startRotationDistance_ = 2.0;
     pImpl_->maxMoveGradient_ = 65.0;
     pImpl_->maxTerrainUnevenness_ = 0.1;
-    pImpl_->virtualDefConInterval_ = 5.0;
+    pImpl_->initiativeSuppressionInterval_ = 5.0;
     pImpl_->initialMoveRetryInterval_ = 2.0;
     pImpl_->updateIntervalFactor_ = 1.0;
     pImpl_->pcPathFindingPriority_ = Phys::defaultPathFindingPriority();
@@ -159,9 +159,9 @@ void MachPhysGeneralData::maxTerrainUnevenness(MATHEX_SCALAR unevenness)
     pImpl_->maxTerrainUnevenness_ = unevenness;
 }
 
-PhysRelativeTime MachPhysGeneralData::virtualDefConInterval() const
+PhysRelativeTime MachPhysGeneralData::initiativeSuppressionInterval() const
 {
-    return pImpl_->virtualDefConInterval_;
+    return pImpl_->initiativeSuppressionInterval_;
 }
 
 PhysRelativeTime MachPhysGeneralData::initialMoveRetryInterval() const
@@ -174,9 +174,9 @@ MATHEX_SCALAR MachPhysGeneralData::updateIntervalFactor() const
     return pImpl_->updateIntervalFactor_;
 }
 
-void MachPhysGeneralData::virtualDefConInterval(PhysRelativeTime interval)
+void MachPhysGeneralData::initiativeSuppressionInterval(PhysRelativeTime interval)
 {
-    pImpl_->virtualDefConInterval_ = interval;
+    pImpl_->initiativeSuppressionInterval_ = interval;
 }
 
 void MachPhysGeneralData::setInitialMoveRetryInterval(PhysRelativeTime interval)

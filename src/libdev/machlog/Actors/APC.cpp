@@ -158,7 +158,8 @@ void MachLogAPC::specialAPCHitStuff()
     }
     else if (
         carriedMachines_.size() > 0
-        && ((virtualDefCon() == MachLog::DEFCON_LOW && hpRatio() < 0.20) || (virtualDefCon() == MachLog::DEFCON_NORMAL && hpRatio() < 0.10)))
+        && ((effectiveInitiative() == MachLog::INITIATIVE_HIGH && hpRatio() < 0.20)
+            || (effectiveInitiative() == MachLog::INITIATIVE_MEDIUM && hpRatio() < 0.10)))
     {
         // damage critical - evacuate craft! But only trigger new op if we're not already doing
         // a deploy in this area.
@@ -416,7 +417,7 @@ PhysRelativeTime MachLogAPC::update(const PhysRelativeTime& maxCPUTime, MATHEX_S
         turningTowardMachine_ = false;
 
     if (! isIn1stPersonView() && nMachinesIncoming_ > 0
-        && ((virtualDefCon() != MachLog::DEFCON_HIGH && ! evading()) || isIdle()))
+        && ((effectiveInitiative() != MachLog::INITIATIVE_LOW && ! evading()) || isIdle()))
     {
         if (! turningTowardMachine_)
             turnRearToFaceNearestIncoming();

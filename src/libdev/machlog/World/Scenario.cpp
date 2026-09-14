@@ -153,7 +153,7 @@ void MachLogScenario::loadBareWorld(const MachLogGameCreationData& gameData)
 
         haveLocalController = true;
 
-        races.defCon(race, MachLog::DEFCON_NORMAL);
+        races.initiative(race, MachLog::INITIATIVE_MEDIUM);
         pRace->priority(races.stats().pcPriority());
     }
 
@@ -432,7 +432,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                     if (network.isNetworkGame())
                         network.remoteStatus(race, MachLogNetwork::LOCAL_PROCESS);
                 }
-                races.defCon(race, MachLog::DEFCON_NORMAL);
+                races.initiative(race, MachLog::INITIATIVE_MEDIUM);
                 doingAIRace = false;
                 pRace->priority(races.stats().pcPriority());
                 instantiateObjects = true;
@@ -447,7 +447,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                 pRace->toBeUpdated(SimProcess::MANAGER_NOT_UPDATE);
                 stopProcessingRace = true;
                 network.remoteStatus(race, MachLogNetwork::REMOTE_PROCESS);
-                races.defCon(race, MachLog::DEFCON_NORMAL);
+                races.initiative(race, MachLog::INITIATIVE_MEDIUM);
                 doingAIRace = false;
                 pRace->priority(races.stats().pcPriority());
                 instantiateObjects = false;
@@ -465,7 +465,7 @@ void MachLogScenario::load(const SysPathName& scenarioFilePath, const MachLogGam
                         pAICtl->checkForDynamicAllies(true);
                 }
                 races.setController(race, pCtl);
-                races.defCon(race, MachLog::DEFCON_LOW);
+                races.initiative(race, MachLog::INITIATIVE_HIGH);
                 doingAIRace = true;
                 pRace->priority(races.stats().aiPriority());
                 if (network.isNetworkGame())

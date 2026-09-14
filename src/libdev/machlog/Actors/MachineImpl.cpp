@@ -35,7 +35,7 @@ MachLogMachineImpl::MachLogMachineImpl(
     , pOriginalSquadron_(nullptr)
     , lastUpdateTime_(SimManager::instance().currentTime())
     , pMarker_(nullptr)
-    , defCon_(MachLogRaces::instance().defCon(race))
+    , initiative_(MachLogRaces::instance().initiative(race))
     , pHealAura_(nullptr)
     , healAuraReferences_(0)
     , insideAPC_(false)
@@ -53,7 +53,7 @@ MachLogMachineImpl::MachLogMachineImpl(
     , // guarantees an evaluation on first calling
     lastHitTime_(SimManager::instance().currentTime() - MachLogMachine::hitVoiceMailInterval())
     , // guarantees a voicemail if hit very early on
-    nextTrueDefConTime_(SimManager::instance().currentTime())
+    initiativeSuppressedUntil_(SimManager::instance().currentTime())
     , pSafestMissileEmplacement_(nullptr)
     , pSafestMachine_(nullptr)
     , pAPCImInside_(nullptr)
@@ -99,7 +99,7 @@ void perWrite(PerOstream& ostr, const MachLogMachineImpl& actorImpl)
     ostr << actorImpl.pSquadron_;
     ostr << actorImpl.pOriginalSquadron_;
     ostr << actorImpl.lastUpdateTime_;
-    ostr << actorImpl.defCon_;
+    ostr << actorImpl.initiative_;
     // do not persist these - they will be reconstructed when read in
     //   ostr << actorImpl.pHealAura_;
     //   ostr << actorImpl.healAuraReferences_;
@@ -149,7 +149,7 @@ void perRead(PerIstream& istr, MachLogMachineImpl& actorImpl)
     istr >> actorImpl.pOriginalSquadron_;
     istr >> actorImpl.lastUpdateTime_;
     actorImpl.pMarker_ = nullptr;
-    istr >> actorImpl.defCon_;
+    istr >> actorImpl.initiative_;
     //  istr >> actorImpl.pHealAura_;
     //  istr >> actorImpl.healAuraReferences_;
     actorImpl.pHealAura_ = nullptr;

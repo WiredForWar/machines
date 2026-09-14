@@ -189,11 +189,11 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
 
     if (MachLogNetwork::instance().isNetworkGame() && !pActor->isSimulatedHere())
         return;
-    // Do some quick DefCon checks first.
-    MachLog::DefCon defCon = pActor->virtualDefCon();
+    // Do some quick Initiative checks first.
+    MachLog::Initiative initiative = pActor->effectiveInitiative();
 
-    // if high defcon and we are not classified as being fully free to attack then return out
-    if (defCon == MachLog::DEFCON_HIGH && ! pActor->isFreeToAttack())
+    // if initiative is low and we are not classified as being fully free to attack then return out
+    if (initiative == MachLog::INITIATIVE_LOW && ! pActor->isFreeToAttack())
     {
         return;
     }
@@ -290,16 +290,17 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
 
             bool retarget = true;
 
-            // this clause prevents machines on higher defcons from moving out of their way to attack canAttack machines
+            // this clause prevents machines on lower initiative from moving out of their way to attack
+            // canAttack machines
             // that are currently outside engagement range/behind cover for both parties, or (in the case of
             // non-attack-capable machines), targets which are currently outside my weapon range or behind cover.
 
-            if (defCon != MachLog::DEFCON_LOW)
+            if (initiative != MachLog::INITIATIVE_HIGH)
             {
                 if (actorIsDirectThreat(*pMach))
                 {
                     retarget = pFiredAtMe != nullptr
-                        || acceptableAggressiveTargetForHigherDefconsMachine(pMach, sqrDistanceToTarget);
+                        || acceptableAggressiveTargetForLowerInitiativeMachine(pMach, sqrDistanceToTarget);
                 }
                 else
                 {
@@ -310,7 +311,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
                     }
                 }
             }
-            // end if( defCon != MachLog::DEFCON_LOW )
+            // end if( initiative != MachLog::INITIATIVE_HIGH )
 
             // =================  The "What to do if we already have a target" section ===================
 
@@ -390,7 +391,7 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogPod* pActor, MachActor*
         if (closest < sqrScannerRange)
         {
             bool retarget = true;
-            // check for normal defcon setting here.
+            // check for medium initiative setting here.
             // if normal then only target if new target is lessequal in hwlevel
 
             // if the current target is also in scanner range and can attack then do NOT retarget
@@ -1770,14 +1771,14 @@ bool MachLogCanAttack::currentlyAttached() const
     return currentlyAttached_;
 }
 
-bool MachLogCanAttack::acceptableAggressiveTargetForHigherDefconsMachine(
+bool MachLogCanAttack::acceptableAggressiveTargetForLowerInitiativeMachine(
     MachActor* pTarget,
     MATHEX_SCALAR sqrDistanceToTarget) const
 {
     CB_MachLogCanAttack_DEPIMPL();
 
     PRE(pMe_->objectIsMachine());
-    // PRE( pMe_->asMachine().defCon() != MachLog::DEFCON_LOW ); //TODO fails after load game
+    // PRE( pMe_->asMachine().initiative() != MachLog::INITIATIVE_HIGH ); //TODO fails after load game
 
     bool acceptableTarget = false;
 
@@ -1791,9 +1792,9 @@ bool MachLogCanAttack::acceptableAggressiveTargetForHigherDefconsMachine(
         // He's in my range - I don't even have to move. No problems, let's shoot him.
         acceptableRange = true;
     }
-    // if I'm on defcon normal, will move to attack him if he currently threatens me.
+    // if I'm on medium initiative, will move to attack him if he currently threatens me.
     else if (
-        pMe_->asMachine().virtualDefCon() == MachLog::DEFCON_NORMAL && pMe_->hasThreats()
+        pMe_->asMachine().effectiveInitiative() == MachLog::INITIATIVE_MEDIUM && pMe_->hasThreats()
         && pMe_->hasThisActorAsAThreat(pTarget->id())
         && pTarget->asCanAttack().withinSqrMaximumWeaponRange(sqrDistanceToTarget))
     {
@@ -2078,15 +2079,15 @@ bool MachLogCanAttack::switchFromExistingTargetToThisOne(
     MachActor& currentTargetActor = currentTarget();
     MachLogMachine& meAsMachine = pMe_->asMachine();
     MachLogRaces& races = MachLogRaces::instance();
-    MachLog::DefCon defCon = meAsMachine.virtualDefCon();
+    MachLog::Initiative initiative = meAsMachine.effectiveInitiative();
 
     bool myCurrentTargetIsADirectThreat = actorIsDirectThreat(currentTargetActor);
 
-    // if this is a player race machine, check for normal defcon setting here.
+    // if this is a player race machine, check for medium initiative setting here.
     // if normal then only target if new target is lessequal in hwlevel
     // if idleing etc then actor will always retarget.
     if (races.controller(meAsMachine.race()).type() != MachLogController::AI_CONTROLLER
-        && defCon == MachLog::DEFCON_NORMAL && ! meAsMachine.isFreeToAttack())
+        && initiative == MachLog::INITIATIVE_MEDIUM && ! meAsMachine.isFreeToAttack())
     {
         // the new target is lessequal than we are so try to blow it up on the way
         if (pAlternativeActor->objectIsMachine())

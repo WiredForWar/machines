@@ -84,23 +84,23 @@ std::ostream& operator<<(std::ostream& o, const MachLog::ObjectType& t)
     return o << MachLog::toString(t);
 }
 
-// DefCon
+// Initiative
 
-std::string_view MachLog::toString(DefCon type)
+std::string_view MachLog::toString(Initiative type)
 {
     switch (type)
     {
-    case DEFCON_HIGH:
-        return "DEFCON_HIGH";
-    case DEFCON_NORMAL:
-        return "DEFCON_NORMAL";
-    case DEFCON_LOW:
-        return "DEFCON_LOW";
+    case INITIATIVE_LOW:
+        return "INITIATIVE_LOW";
+    case INITIATIVE_MEDIUM:
+        return "INITIATIVE_MEDIUM";
+    case INITIATIVE_HIGH:
+        return "INITIATIVE_HIGH";
     }
     return {};
 }
 
-std::ostream& operator<<(std::ostream& o, const MachLog::DefCon& t)
+std::ostream& operator<<(std::ostream& o, const MachLog::Initiative& t)
 {
     return o << MachLog::toString(t);
 }

@@ -2695,9 +2695,9 @@ void MachPhysDataParser::parseGeneralData(UtlLineTokeniser* pParser)
         {
             generalData.maxTerrainUnevenness(atof(pParser->tokens()[1].c_str()));
         }
-        else if (pParser->tokens()[0] == "VIRTUAL_DEFCON_INTERVAL")
+        else if (pParser->tokens()[0] == "INITIATIVE_SUPPRESSION_INTERVAL")
         {
-            generalData.virtualDefConInterval(atof(pParser->tokens()[1].c_str()));
+            generalData.initiativeSuppressionInterval(atof(pParser->tokens()[1].c_str()));
         }
         else if (pParser->tokens()[0] == "INITIAL_MOVE_RETRY_INTERVAL")
         {

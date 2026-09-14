@@ -735,14 +735,25 @@ void MachLogAIController::readRules(const SysPathName& pathName)
                             HAL_STREAM(" adding a desired machine to squad:\n" << *pProd << std::endl);
                             pSquad->addDesiredMachine(pProd, number);
                         }
+                        else if (parser.tokens()[0] == "INITIATIVE")
+                        {
+                            if (parser.tokens()[1] == "LOW")
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_LOW);
+                            else if (parser.tokens()[1] == "MEDIUM")
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_MEDIUM);
+                            else if (parser.tokens()[1] == "HIGH")
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_HIGH);
+                        }
+                        // Older strategy files say "DEFCON LOW"/"NORMAL"/"HIGH", which runs the
+                        // opposite way round, so the outer levels swap over
                         else if (parser.tokens()[0] == "DEFCON")
                         {
                             if (parser.tokens()[1] == "LOW")
-                                pSquad->autoSetDefCon(MachLog::DEFCON_LOW);
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_HIGH);
                             else if (parser.tokens()[1] == "NORMAL")
-                                pSquad->autoSetDefCon(MachLog::DEFCON_NORMAL);
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_MEDIUM);
                             else if (parser.tokens()[1] == "HIGH")
-                                pSquad->autoSetDefCon(MachLog::DEFCON_HIGH);
+                                pSquad->autoSetInitiative(MachLog::INITIATIVE_LOW);
                         }
                         else if (parser.tokens()[0] == "END")
                             finishedSquad = true;

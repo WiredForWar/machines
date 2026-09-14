@@ -218,10 +218,10 @@ MATHEX_SCALAR MachLogMachine::maxHighClearance()
 }
 
 // static
-PhysRelativeTime MachLogMachine::virtualDefConInterval()
+PhysRelativeTime MachLogMachine::initiativeSuppressionInterval()
 {
-    static PhysRelativeTime virtualDefConInterval_ = MachPhysData::instance().generalData().virtualDefConInterval();
-    return virtualDefConInterval_;
+    static PhysRelativeTime interval = MachPhysData::instance().generalData().initiativeSuppressionInterval();
+    return interval;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -479,22 +479,7 @@ void MachLogMachine::doOutputOperator(std::ostream& o) const
     if (insideAPC())
         o << "Inside APC\n";
 
-    o << "DefCon :";
-    switch (defCon())
-    {
-        case MachLog::DEFCON_HIGH:
-            o << "HIGH";
-            break;
-        case MachLog::DEFCON_NORMAL:
-            o << "NORMAL";
-            break;
-        case MachLog::DEFCON_LOW:
-            o << "LOW";
-            break;
-        default:
-            o << "Unknown Defcon " << (int)defCon() << std::endl;
-    }
-    o << std::endl;
+    o << "Initiative :" << initiative() << std::endl;
 
     if (evading())
         o << "Evading" << std::endl;
@@ -947,31 +932,32 @@ void MachLogMachine::doVisualiseSelectionState()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// get the machine's true defcon
-MachLog::DefCon MachLogMachine::defCon() const
+// get the machine's true initiative
+MachLog::Initiative MachLogMachine::initiative() const
 {
-    CB_DEPIMPL(MachLog::DefCon, defCon_);
+    CB_DEPIMPL(MachLog::Initiative, initiative_);
 
-    return defCon_;
+    return initiative_;
 }
 
-// get the machine's defcon, but override to HIGH if direct order was issued in last X seconds and we're not yet idle
-MachLog::DefCon MachLogMachine::virtualDefCon() const
+// get the machine's initiative, but override to LOW if a direct order was issued in the last X seconds and we're
+// not yet idle
+MachLog::Initiative MachLogMachine::effectiveInitiative() const
 {
-    CB_DEPIMPL(MachLog::DefCon, defCon_);
-    CB_DEPIMPL(PhysAbsoluteTime, nextTrueDefConTime_);
+    CB_DEPIMPL(MachLog::Initiative, initiative_);
+    CB_DEPIMPL(PhysAbsoluteTime, initiativeSuppressedUntil_);
 
-    if (nextTrueDefConTime_ > SimManager::instance().currentTime() && ! isIdle())
-        return MachLog::DEFCON_HIGH;
+    if (initiativeSuppressedUntil_ > SimManager::instance().currentTime() && ! isIdle())
+        return MachLog::INITIATIVE_LOW;
     else
-        return defCon_;
+        return initiative_;
 }
 
 void MachLogMachine::manualCommandIssued()
 {
-    CB_DEPIMPL(PhysAbsoluteTime, nextTrueDefConTime_);
+    CB_DEPIMPL(PhysAbsoluteTime, initiativeSuppressedUntil_);
 
-    nextTrueDefConTime_ = SimManager::instance().currentTime() + virtualDefConInterval();
+    initiativeSuppressedUntil_ = SimManager::instance().currentTime() + initiativeSuppressionInterval();
     if (objectType() == MachLog::AGGRESSOR && asAggressor().isEradicator())
     {
         setBusyPeriod(0.0);
@@ -980,13 +966,14 @@ void MachLogMachine::manualCommandIssued()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MachLogMachine::defCon(MachLog::DefCon newDefCon)
+void MachLogMachine::initiative(MachLog::Initiative newInitiative)
 {
     ASSERT(
-        newDefCon == MachLog::DEFCON_HIGH || newDefCon == MachLog::DEFCON_NORMAL || newDefCon == MachLog::DEFCON_LOW,
-        "Unknown defcon in MLMAchine(defcon)");
-    CB_DEPIMPL(MachLog::DefCon, defCon_);
-    defCon_ = newDefCon;
+        newInitiative == MachLog::INITIATIVE_LOW || newInitiative == MachLog::INITIATIVE_MEDIUM
+            || newInitiative == MachLog::INITIATIVE_HIGH,
+        "Unknown initiative in MachLogMachine::initiative()");
+    CB_DEPIMPL(MachLog::Initiative, initiative_);
+    initiative_ = newInitiative;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1444,7 +1431,7 @@ bool MachLogMachine::followingMachines(Machines* pMachines)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
+void MachLogMachine::checkAndDoOnInitiative(const Actors& strongThreats)
 {
     // !! This method has multiple exit points.
 
@@ -1464,11 +1451,11 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
     if (motionSeq().isFollowing())
         return;
 
-    // if defcon is HIGH, we are not allowed to evade at all.
+    // if initiative is LOW, we are not allowed to evade at all.
 
-    MachLog::DefCon defCon = virtualDefCon();
+    MachLog::Initiative initiative = effectiveInitiative();
 
-    if (defCon == MachLog::DEFCON_HIGH)
+    if (initiative == MachLog::INITIATIVE_LOW)
         return;
 
     // if we're inside a friendly garrison and our hitpoints are low, it's probably best to stay here.
@@ -1497,10 +1484,10 @@ void MachLogMachine::checkAndDoOnDefCon(const Actors& strongThreats)
 
     // APCs who are deploying will not initiate an evade
 
-    // if defcon is normal, we may not need to do anything if our target destination is out of the range of
+    // if initiative is medium, we may not need to do anything if our target destination is out of the range of
     //  the strong threat machines.
 
-    if (defCon == MachLog::DEFCON_NORMAL)
+    if (initiative == MachLog::INITIATIVE_MEDIUM)
     {
         if (destinationTakesUsClearOfThreats(strongThreats))
             return;
@@ -1788,7 +1775,7 @@ bool MachLogMachine::wontFindAnywhereSafer() const
 void MachLogMachine::dispatchSOS(Actors& strongThreats)
 {
     // Attempt to recruit friendly thugs to help me tonk the rascals threatening me.
-    // Said thugs must be idle and have a non-HIGH DefCon.
+    // Said thugs must be idle and have a non-LOW initiative.
 
     Actors::iterator iThreats = strongThreats.begin();
 
@@ -1814,7 +1801,7 @@ void MachLogMachine::dispatchSOS(Actors& strongThreats)
         {
             MachLogMachine* pFollowingMachine = (*iFollowers);
 
-            // don't need a DefCon check for following aggressives - attacking your enemies is their JOB.
+            // don't need an initiative check for following aggressives - attacking your enemies is their JOB.
             // We don't want to interrupt them if they're evading, though.
             if (pFollowingMachine->objectIsCanAttack() && ! pFollowingMachine->evading()
                 && (pFollowingMachine->asCanAttack().canFireAt(threatActor)))

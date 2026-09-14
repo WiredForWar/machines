@@ -452,9 +452,9 @@ public:
     static UtlId allocateId();
     static UtlId allocateId(UtlId minId, UtlId maxId);
 
-    // get set default defcon and also defcon of all machines of race
-    void defCon(MachPhys::Race, MachLog::DefCon);
-    MachLog::DefCon defCon(MachPhys::Race) const;
+    // get set default initiative and also initiative of all machines of race
+    void initiative(MachPhys::Race, MachLog::Initiative);
+    MachLog::Initiative initiative(MachPhys::Race) const;
 
     void cascadeUpdateForResearch(MachPhys::Race);
 

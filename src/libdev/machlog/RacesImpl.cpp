@@ -46,7 +46,7 @@ void perWrite(PerOstream& ostr, const MachLogRacesDataImpl& impl)
         ostr,
         impl.disposition_,
         sizeof(MachLogRaces::DispositionToRace) * MachPhys::N_RACES * MachPhys::N_RACES);
-    PER_WRITE_RAW_DATA(ostr, impl.defaultDefCon_, sizeof(MachLog::DefCon) * MachPhys::N_RACES);
+    PER_WRITE_RAW_DATA(ostr, impl.defaultInitiative_, sizeof(MachLog::Initiative) * MachPhys::N_RACES);
     PER_WRITE_RAW_DATA(ostr, impl.nBuildingMaterialUnits_, sizeof(MachPhys::BuildingMaterialUnits) * MachPhys::N_RACES);
     PER_WRITE_RAW_DATA(ostr, impl.nOre_, sizeof(MachPhys::BuildingMaterialUnits) * MachPhys::N_RACES);
     PER_WRITE_RAW_DATA(
@@ -96,7 +96,7 @@ void perRead(PerIstream& istr, MachLogRacesDataImpl& impl)
         istr,
         impl.disposition_,
         sizeof(MachLogRaces::DispositionToRace) * MachPhys::N_RACES * MachPhys::N_RACES);
-    PER_READ_RAW_DATA(istr, impl.defaultDefCon_, sizeof(MachLog::DefCon) * MachPhys::N_RACES);
+    PER_READ_RAW_DATA(istr, impl.defaultInitiative_, sizeof(MachLog::Initiative) * MachPhys::N_RACES);
     PER_READ_RAW_DATA(istr, impl.nBuildingMaterialUnits_, sizeof(MachPhys::BuildingMaterialUnits) * MachPhys::N_RACES);
     PER_READ_RAW_DATA(istr, impl.nOre_, sizeof(MachPhys::BuildingMaterialUnits) * MachPhys::N_RACES);
     PER_READ_RAW_DATA(

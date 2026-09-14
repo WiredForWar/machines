@@ -62,7 +62,7 @@ private:
     MachLogSquadron* pOriginalSquadron_;
     PhysAbsoluteTime lastUpdateTime_;
     W4dEntity* pMarker_; // The entity used to mark the machine
-    MachLog::DefCon defCon_;
+    MachLog::Initiative initiative_;
     MachPhysHealAura* pHealAura_;
     int healAuraReferences_;
     bool insideAPC_;
@@ -73,12 +73,12 @@ private:
     // used to determine interval during which subsequent hits from gunfire will not cause more verbal e-mails
     PhysAbsoluteTime lastHitTime_;
 
-    // virtual defcon will ALWAYS be treated as HIGH for virtualDefConInterval_ seconds after a direct command is
-    // issued.
+    // used in lazy evaluation of local strength
     PhysAbsoluteTime lastStrengthEstimateTime_;
 
-    // used in lazy evaluation of local strength
-    PhysAbsoluteTime nextTrueDefConTime_{};
+    // effective initiative will ALWAYS be treated as LOW until this time, set to
+    // initiativeSuppressionInterval_ seconds ahead each time a direct command is issued.
+    PhysAbsoluteTime initiativeSuppressedUntil_{};
 
     // used in lazy evaluation of safest nearby machine and turret to run to
     PhysAbsoluteTime lastSafestMachineEstimateTime_;

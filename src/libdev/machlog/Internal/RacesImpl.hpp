@@ -99,7 +99,7 @@ private:
     MachPhys::BuildingMaterialUnits nMaxOre_[MachPhys::N_RACES];
     MachLogConstructionTree* pConstructionTree_;
     MachLogResearchTree* pResearchTree_;
-    MachLog::DefCon defaultDefCon_[MachPhys::N_RACES];
+    MachLog::Initiative defaultInitiative_[MachPhys::N_RACES];
     MachLogRaces::DispositionToRace disposition_[MachPhys::N_RACES][MachPhys::N_RACES];
     MachLogStats* pStats_;
     MachLogRaces::CameraInfo cameraInfo_[MachPhys::N_RACES];

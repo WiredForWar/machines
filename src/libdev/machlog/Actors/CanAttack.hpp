@@ -260,7 +260,8 @@ private:
 
     void aimSpoiled();
 
-    bool acceptableAggressiveTargetForHigherDefconsMachine(MachActor* pTarget, MATHEX_SCALAR sqrDistanceToTarget) const;
+    bool acceptableAggressiveTargetForLowerInitiativeMachine(MachActor* pTarget, MATHEX_SCALAR sqrDistanceToTarget)
+        const;
 
     // note that *pAlternativeActor may actually be changed by this operation under certain circumstances
     bool switchFromExistingTargetToThisOne(

@@ -221,7 +221,7 @@ bool MachLogCounterattackOperation::shouldBreakOffAttack()
 
             PhysRelativeTime giveUpPeriod = std::max(5.0, 10.0 - speedDifferential);
 
-            if (pActor_->virtualDefCon() == MachLog::DEFCON_LOW)
+            if (pActor_->effectiveInitiative() == MachLog::INITIATIVE_HIGH)
                 giveUpPeriod += 5.0;
 
             giveUp = (timeNow - lastTimeTargetWasntEvading_ >= giveUpPeriod);

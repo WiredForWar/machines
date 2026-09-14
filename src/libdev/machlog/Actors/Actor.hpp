@@ -302,7 +302,7 @@ protected:
     MachLogRace& logRace();
     MachLogRace& logOriginalRace();
 
-    virtual void checkAndDoOnDefCon(const Actors& strongThreats);
+    virtual void checkAndDoOnInitiative(const Actors& strongThreats);
 
     virtual void doStartExplodingAnimation() = 0;
     virtual void doEndExplodingAnimation() = 0;

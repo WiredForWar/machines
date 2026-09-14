@@ -1,16 +1,12 @@
 /*
- * C M D D E F C N . H P P
- * (c) Charybdis Limited, 1997. All Rights Reserved
- */
+    MachGuiInitiativeCommand
 
-/*
-    MachGuiDefconCommand
-
-    Implement interaction for the Construct command
+    Implement interaction for the machine initiative command, which cycles the
+    selected machines between low, medium and high willingness to act on their own.
 */
 
-#ifndef _MACHGUI_CMDDEFCN_HPP
-#define _MACHGUI_CMDDEFCN_HPP
+#ifndef _MACHGUI_CMDINITIATIVE_HPP
+#define _MACHGUI_CMDINITIATIVE_HPP
 
 #include "machgui/commands/command.hpp"
 
@@ -23,23 +19,23 @@
 class MachLogAdministrator;
 
 // orthodox canonical (revoked)
-class MachGuiDefconCommand : public MachGuiCommand
+class MachGuiInitiativeCommand : public MachGuiCommand
 {
 public:
     // ctor.
-    MachGuiDefconCommand(MachInGameScreen* pInGameScreen);
+    MachGuiInitiativeCommand(MachInGameScreen* pInGameScreen);
 
     // dtor
-    ~MachGuiDefconCommand() override;
+    ~MachGuiInitiativeCommand() override;
 
     using Actors = ctl_pvector<MachActor>;
 
     // Work out which lights are on
     void update(const Actors&);
 
-    static bool defconLow();
-    static bool defconNormal();
-    static bool defconHigh();
+    static bool initiativeHigh();
+    static bool initiativeMedium();
+    static bool initiativeLow();
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand
@@ -82,18 +78,18 @@ public:
     // True if the interaction for the command is complete
     bool isInteractionComplete() const override;
 
-    // ensures that the defcon moves from NORMAL to HIGH rather than to LOW
-    void resetDirectionFromDefConNormal();
+    // ensures that initiative moves from MEDIUM to LOW rather than to HIGH
+    void resetDirectionFromMedium();
 
 private:
     // Operation deliberately revoked
-    MachGuiDefconCommand(const MachGuiDefconCommand&) = delete;
-    MachGuiDefconCommand& operator=(const MachGuiDefconCommand&) = delete;
-    bool operator==(const MachGuiDefconCommand&) = delete;
+    MachGuiInitiativeCommand(const MachGuiInitiativeCommand&) = delete;
+    MachGuiInitiativeCommand& operator=(const MachGuiInitiativeCommand&) = delete;
+    bool operator==(const MachGuiInitiativeCommand&) = delete;
 
     void CLASS_INVARIANT;
 
-    friend std::ostream& operator<<(std::ostream& o, const MachGuiDefconCommand& t);
+    friend std::ostream& operator<<(std::ostream& o, const MachGuiInitiativeCommand& t);
 
     /////////////////////////////////////////////////
     // Inherited from MachGuiCommand
@@ -108,13 +104,11 @@ private:
     // PRE( canAdminApply() );
 
     /////////////////////////////////////////////////
-    static bool defconLow_;
-    static bool defconNormal_;
-    static bool defconHigh_;
+    static bool initiativeHigh_;
+    static bool initiativeMedium_;
+    static bool initiativeLow_;
 
-    static bool goHighFromNormal_;
+    static bool goLowFromMedium_;
 };
 
 #endif
-
-/* End CMDDEFCN.HPP **************************************************/

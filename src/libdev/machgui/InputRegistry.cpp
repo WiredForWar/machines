@@ -555,7 +555,11 @@ void InputRegistry::initBinds()
     createBind(bcGeneral, "commands-stand-ground"_bind, IDS_STANDGROUND_COMMAND, IDS_COMMAND_STAND_GROUND);
     createBind(bcGeneral, "commands-repair"_bind, IDS_REPAIR_COMMAND, IDS_COMMAND_REPAIR);
     createBind(bcGeneral, "commands-capture"_bind, IDS_CAPTURE_COMMAND, IDS_COMMAND_CAPTURE);
-    createBind(bcGeneral, "commands-defcon"_bind, IDS_MACHINE_INITIATIVE_COMMAND_NAME, IDS_COMMAND_INITIATIVE_LEVEL);
+    createBind(
+        bcGeneral,
+        "commands-initiative"_bind,
+        IDS_MACHINE_INITIATIVE_COMMAND_NAME,
+        IDS_COMMAND_INITIATIVE_LEVEL);
     createBind(bcGeneral, "commands-ion-attack"_bind, IDS_ION_ATTACK_COMMAND, IDS_COMMAND_ION_ATTACK);
     createBind(bcGeneral, "commands-nuke-attack"_bind, IDS_NUKE_ATTACK_COMMAND, IDS_COMMAND_NUKE_ATTACK);
     createBind(bcGeneral, "commands-assembly-point"_bind, IDS_ASSEMBLEAT_COMMAND, IDS_COMMAND_ASSEMBLE);
@@ -762,7 +766,7 @@ void InputRegistry::setLegacyDefaults()
     setBinds("commands-deconstruct"_bind, {
         { KeyCode::KEY_D },
     });
-    setBinds("commands-defcon"_bind, {
+    setBinds("commands-initiative"_bind, {
         { KeyCode::TAB },
     });
     setBinds("commands-deploy"_bind, {

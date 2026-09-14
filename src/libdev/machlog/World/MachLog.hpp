@@ -72,15 +72,20 @@ namespace MachLog
         HIGHLIGHTED // Denotes item under cursor
     };
 
-    // defcon for machines..."Bravado level"
-    enum DefCon : unsigned char
+    // How willing a machine is to leave its orders and engage on its own. Shown to the
+    // player as the machine initiative setting.
+    enum Initiative : unsigned char
     {
-        DEFCON_HIGH,
-        DEFCON_NORMAL,
-        DEFCON_LOW
+        INITIATIVE_LOW,
+        INITIATIVE_MEDIUM,
+        INITIATIVE_HIGH
     };
 
-    std::string_view toString(DefCon type);
+    // Written to save games as a byte, and a save carries no version tag to tell an old
+    // one from a new one, so these numbers cannot move.
+    static_assert(INITIATIVE_LOW == 0 && INITIATIVE_MEDIUM == 1 && INITIATIVE_HIGH == 2);
+
+    std::string_view toString(Initiative type);
 
     enum TargetSystemType : unsigned char
     {
@@ -210,7 +215,7 @@ namespace MachLog
 
 std::ostream& operator<<(std::ostream&, const MachLog::ObjectType&);
 std::ostream& operator<<(std::ostream&, const MachLog::TargetSystemType&);
-std::ostream& operator<<(std::ostream&, const MachLog::DefCon&);
+std::ostream& operator<<(std::ostream&, const MachLog::Initiative&);
 std::ostream& operator<<(std::ostream&, const MachLog::SelectableType&);
 std::ostream& operator<<(std::ostream&, const MachLog::BeaconType&);
 std::ostream& operator<<(std::ostream&, const MachLog::RandomStarts&);
@@ -225,7 +230,7 @@ std::ostream& operator<<(std::ostream&, const MachLog::GameType&);
 PER_ENUM_PERSISTENT(MachLog::ObjectType);
 PER_ENUM_PERSISTENT(MachLog::Message);
 PER_ENUM_PERSISTENT(MachLog::SelectionState);
-PER_ENUM_PERSISTENT(MachLog::DefCon);
+PER_ENUM_PERSISTENT(MachLog::Initiative);
 PER_ENUM_PERSISTENT(MachLog::TargetSystemType);
 PER_ENUM_PERSISTENT(MachLog::SpecialParameters);
 PER_ENUM_PERSISTENT(MachLog::SelectableType);

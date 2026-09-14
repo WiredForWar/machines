@@ -42,8 +42,8 @@ private:
     int squadronId_;
     MachLogSquadron::DesiredMachineList desiredMachineList_;
     int totalDesiredMachines_;
-    bool setDefCon_;
-    MachLog::DefCon defCon_;
+    bool setInitiative_;
+    MachLog::Initiative initiative_;
 };
 
 PER_DECLARE_PERSISTENT(MachLogSquadronImpl);

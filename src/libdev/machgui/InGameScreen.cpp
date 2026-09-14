@@ -62,7 +62,7 @@
 #include "machgui/commands/CommandRepair.hpp"
 #include "machgui/commands/CommandCapture.hpp"
 #include "machgui/commands/CommandStop.hpp"
-#include "machgui/commands/CommandDefcon.hpp"
+#include "machgui/commands/CommandInitiative.hpp"
 #include "machgui/commands/CommandStandGround.hpp"
 #include "machgui/commands/CommandAssemblyPoint.hpp"
 #include "machgui/commands/CommandIonAttack.hpp"
@@ -494,8 +494,8 @@ void MachInGameScreen::deselect(const Actors& actors)
     // Add/remove any associated banks
     setupActorBank();
 
-    // Reset the defcon command's "movement direction" (which way it will move from the middle setting)
-    defconCommand()->resetDirectionFromDefConNormal();
+    // Reset the initiative command's "movement direction" (which way it will move from the middle setting)
+    initiativeCommand()->resetDirectionFromMedium();
 }
 
 void MachInGameScreen::deselect(MachActor* pActor)
@@ -546,8 +546,8 @@ void MachInGameScreen::unselect(MachActor* pActor)
 
         if (selectedActors_.size() == 0)
         {
-            // Reset the defcon command's "movement direction"
-            defconCommand()->resetDirectionFromDefConNormal();
+            // Reset the initiative command's "movement direction"
+            initiativeCommand()->resetDirectionFromMedium();
         }
     }
 
@@ -660,9 +660,9 @@ W4dSceneManager& MachInGameScreen::sceneManager() const
     return *pSceneManager_;
 }
 
-MachGuiDefconCommand* MachInGameScreen::defconCommand()
+MachGuiInitiativeCommand* MachInGameScreen::initiativeCommand()
 {
-    return pDefconCommand_;
+    return pInitiativeCommand_;
 }
 
 MachGuiSelfDestructCommand* MachInGameScreen::selfDestructCommand()
@@ -679,7 +679,7 @@ void MachInGameScreen::initialiseAllCommands()
     pSelfDestructCommand_ = new MachGuiSelfDestructCommand(this);
     pIonAttackCommand_ = new MachGuiIonAttackCommand(this);
     pNukeAttackCommand_ = new MachGuiNukeAttackCommand(this);
-    pDefconCommand_ = new MachGuiDefconCommand(this);
+    pInitiativeCommand_ = new MachGuiInitiativeCommand(this);
 
     allCommands_.emplace_back(pSelfDestructCommand_);
     allCommands_.emplace_back(std::make_unique<MachGuiMoveCommand>(this));
@@ -705,7 +705,7 @@ void MachInGameScreen::initialiseAllCommands()
     allCommands_.emplace_back(std::make_unique<MachGuiAssemblyPointCommand>(this));
     allCommands_.emplace_back(pIonAttackCommand_);
     allCommands_.emplace_back(pNukeAttackCommand_);
-    allCommands_.emplace_back(pDefconCommand_);
+    allCommands_.emplace_back(pInitiativeCommand_);
     allCommands_.emplace_back(std::make_unique<MachGuiCamouflageCommand>(this));
 
     DEBUG_STREAM(DIAG_NEIL, "allcommands.size " << allCommands_.size() << std::endl << std::flush);
@@ -1690,7 +1690,7 @@ void MachInGameScreen::updateCommandIcons()
         pSmallCommandIcons_->change();
 
     // Update special command icons
-    defconCommand()->update(selectedActors_);
+    initiativeCommand()->update(selectedActors_);
     MachGuiSelfDestructCommand::update(selectedActors_);
     MachGuiIonAttackCommand::update(selectedActors_);
     MachGuiNukeAttackCommand::update(selectedActors_);

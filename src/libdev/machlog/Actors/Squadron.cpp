@@ -32,8 +32,8 @@ PER_DEFINE_PERSISTENT(MachLogSquadron);
     CB_DEPIMPL(int, squadronId_)                                                                                       \
     CB_DEPIMPL(MachLogSquadron::DesiredMachineList, desiredMachineList_)                                               \
     CB_DEPIMPL(int, totalDesiredMachines_)                                                                             \
-    CB_DEPIMPL(bool, setDefCon_)                                                                                       \
-    CB_DEPIMPL(MachLog::DefCon, defCon_)                                                                               \
+    CB_DEPIMPL(bool, setInitiative_)                                                                                   \
+    CB_DEPIMPL(MachLog::Initiative, initiative_)                                                                       \
     CB_DEPIMPL(MachLogMachine*, pStrongestMachine_)                                                                    \
     CB_DEPIMPL(bool, squadronHasChanged_);
 
@@ -103,8 +103,8 @@ bool MachLogSquadron::addToControl(MachLogMachine* p)
         return true;
     }
 
-    if (setDefCon_)
-        p->defCon(defCon_);
+    if (setInitiative_)
+        p->initiative(initiative_);
 
     // note that if this machine is deemed to be the new squadron commander, it'll go to the front of the queue.
     // note that this is a bit grubby as it simply boots the poor previosu leader right to the back. Ho ho ho.
@@ -159,10 +159,10 @@ void MachLogSquadron::removeFromControl(const MachLogMachine* p)
 {
     CB_MachLogSquadron_DEPIMPL();
 
-    if (setDefCon_)
+    if (setInitiative_)
     {
         MachLogMachine* pMach = const_cast<MachLogMachine*>(p);
-        pMach->defCon(MachLogRaces::instance().defCon(p->race()));
+        pMach->initiative(MachLogRaces::instance().initiative(p->race()));
     }
 
     HAL_STREAM("MLSquadron::removeFromControl (void*)" << (void*)p << " machine (");
@@ -430,11 +430,11 @@ void MachLogSquadron::manualCommandIssuedToSquadron()
     }
 }
 
-void MachLogSquadron::autoSetDefCon(MachLog::DefCon defCon)
+void MachLogSquadron::autoSetInitiative(MachLog::Initiative initiative)
 {
     CB_MachLogSquadron_DEPIMPL();
-    setDefCon_ = true;
-    defCon_ = defCon;
+    setInitiative_ = true;
+    initiative_ = initiative;
 }
 
 MachLogMachine* MachLogSquadron::getStrongestMachine()

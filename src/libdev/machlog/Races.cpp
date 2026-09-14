@@ -82,10 +82,10 @@
 #include <cstdio>
 
 /* //////////////////////////////////////////////////////////////// */
-void checkTypeAndSetDefCon(MachActor* pActor)
+void checkTypeAndSetInitiative(MachActor* pActor)
 {
     if (pActor->objectIsMachine())
-        pActor->asMachine().defCon(MachLogRaces::instance().defCon(pActor->race()));
+        pActor->asMachine().initiative(MachLogRaces::instance().initiative(pActor->race()));
 }
 
 // static
@@ -2216,15 +2216,15 @@ void MachLogRaces::addAdministratorAssemblyPoint(const MachPhys::Race race, cons
     pDataImpl_->administratorAssemblyPoints_[race].push_back(point);
 }
 
-void MachLogRaces::defCon(MachPhys::Race race, MachLog::DefCon newDefCon)
+void MachLogRaces::initiative(MachPhys::Race race, MachLog::Initiative newInitiative)
 {
-    pDataImpl_->defaultDefCon_[race] = newDefCon;
-    for_each(pDataImpl_->raceObjects_[race].begin(), pDataImpl_->raceObjects_[race].end(), checkTypeAndSetDefCon);
+    pDataImpl_->defaultInitiative_[race] = newInitiative;
+    for_each(pDataImpl_->raceObjects_[race].begin(), pDataImpl_->raceObjects_[race].end(), checkTypeAndSetInitiative);
 }
 
-MachLog::DefCon MachLogRaces::defCon(MachPhys::Race race) const
+MachLog::Initiative MachLogRaces::initiative(MachPhys::Race race) const
 {
-    return pDataImpl_->defaultDefCon_[race];
+    return pDataImpl_->defaultInitiative_[race];
 }
 
 MachLogStats& MachLogRaces::stats()

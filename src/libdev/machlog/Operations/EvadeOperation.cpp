@@ -153,7 +153,7 @@ PhysRelativeTime MachLogEvadeOperation::doUpdate()
 
     // have we now met any of the conditions for terminating this operation?
     if (naturallyTerminate // stop evading if no strong threats for 10 seconds or more
-        || pActor_->virtualDefCon() == MachLog::DEFCON_HIGH
+        || pActor_->effectiveInitiative() == MachLog::INITIATIVE_LOW
         || (!(strongThreats.empty()) && pActor_->notAfraidOfStrongThreats(strongThreats)))
     {
         // restore previous first operation as first (and only) operation on the strategy queue.

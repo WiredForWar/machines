@@ -140,10 +140,10 @@ public:
     // to the correct root to be displayed.
     void snapTo(const MexPoint3d&);
 
-    // get/set the machines defcon
-    MachLog::DefCon defCon() const;
-    MachLog::DefCon virtualDefCon() const;
-    void defCon(MachLog::DefCon);
+    // get/set the machine's initiative
+    MachLog::Initiative initiative() const;
+    MachLog::Initiative effectiveInitiative() const;
+    void initiative(MachLog::Initiative);
 
     // actors can assign themselves to different races.
     // This function is virtual to allow different behaviour in constructions
@@ -262,8 +262,8 @@ public:
     // this will be called from places outside the constructors.
     void machineCreated();
 
-    // ensures the machine acts as though in defcon high for a number of seconds (specified in parmdata.dat -
-    // VIRTUAL_DEFCON) after a manual order is issued
+    // ensures the machine acts as though on low initiative for a number of seconds (specified in parmdata.dat -
+    // INITIATIVE_SUPPRESSION_INTERVAL) after a manual order is issued
     void manualCommandIssued();
 
     bool hasNVG() const;
@@ -325,7 +325,7 @@ protected:
     void doOutputOperator(std::ostream&) const override;
 
     // inherited from MachActor
-    void checkAndDoOnDefCon(const Actors& strongThreats) override;
+    void checkAndDoOnInitiative(const Actors& strongThreats) override;
 
     ///////////////////////////////
     void seeIfNeedRegister();
@@ -344,7 +344,7 @@ private:
 
     PhysRelativeTime startExplodingAnimation();
     PhysRelativeTime endExplodingAnimation();
-    PhysRelativeTime virtualDefConInterval();
+    PhysRelativeTime initiativeSuppressionInterval();
 
     ///////////////////////////////
 

@@ -41,8 +41,8 @@ public:
     //  rotating to face the new direction
     MATHEX_SCALAR startRotationDistance() const;
 
-    // the time after a direct user order in which a machine is to be treated as though in defcon HIGH
-    PhysRelativeTime virtualDefConInterval() const;
+    // the time after a direct user order in which a machine is to be treated as though on low initiative
+    PhysRelativeTime initiativeSuppressionInterval() const;
 
     PhysRelativeTime initialMoveRetryInterval() const;
 
@@ -83,7 +83,7 @@ private:
     void startRotationDistance(MATHEX_SCALAR distance);
     void maxMoveGradient(MexRadians gradient);
     void maxTerrainUnevenness(MATHEX_SCALAR);
-    void virtualDefConInterval(PhysRelativeTime interval);
+    void initiativeSuppressionInterval(PhysRelativeTime interval);
     void setInitialMoveRetryInterval(PhysRelativeTime interval);
     void setUpdateIntervalFactor(MATHEX_SCALAR factor);
     void pcPathFindingPriority(PhysPathFindingPriority);

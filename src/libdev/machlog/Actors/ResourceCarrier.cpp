@@ -141,7 +141,7 @@ void MachLogResourceCarrier::addSuppliers(const Suppliers& listOfSuppliers)
 
     if (atLeastOneDifferentSupplier)
     {
-        // we MIGHT want to make this defcon-dependent.....if defcon HIGH, do NOT auto-reorder.
+        // we MIGHT want to make this initiative-dependent.....if initiative LOW, do NOT auto-reorder.
 
         // if we have a smelter that has NOT been explicitly set, try a findBestSmeltingBuilding() again
         // as the addition of a new supplier may make a different smelter the optimum one.
@@ -488,9 +488,9 @@ void MachLogResourceCarrier::reorderTransportRoute()
     PRE(hasSuppliers());
     PRE(hasSmeltingBuilding());
 
-    // abort reordering if defcon is set to HIGH. This allows the player the option of
+    // abort reordering if initiative is set to LOW. This allows the player the option of
     // explicitly setting the visiting order if that is desired.
-    if (defCon() == MachLog::DEFCON_HIGH)
+    if (initiative() == MachLog::INITIATIVE_LOW)
         return;
 
     // heh heh....this is great.
@@ -1084,13 +1084,13 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
         // scavengers get guaranteed fast-ish callback times
         result = std::min(1.5, result);
 
-        if (virtualDefCon() != MachLog::DEFCON_HIGH && ! evading() && ! isStandingGround()
+        if (effectiveInitiative() != MachLog::INITIATIVE_LOW && ! evading() && ! isStandingGround()
             && strategy().currentOperationType() != MachLogOperation::SCAVENGE_OPERATION
             && strategy().currentOperationType() != MachLogOperation::AUTOSCAVENGE_OPERATION)
         /*and MachPhysRandom::randomInt( 0, 3 ) == 0
             and( isIdle()
                  or
-                  ( virtualDefCon() == MachLog::DEFCON_LOW
+                  ( effectiveInitiative() == MachLog::INITIATIVE_HIGH
                     and strategy().currentOperationType() != MachLogOperation::SCAVENGE_OPERATION
                     and strategy().currentOperationType() != MachLogOperation::AUTOSCAVENGE_OPERATION
                   )
@@ -1100,9 +1100,9 @@ PhysRelativeTime MachLogResourceCarrier::update(const PhysRelativeTime& maxCPUTi
         {
             // we may want to do some scavenger-specific pro-active scavenging stuff.
 
-            // initialised value is that of DefCon NORMAL state.
+            // initialised value is that of the medium initiative state.
             MATHEX_SCALAR scavengingRange = 80;
-            if (defCon() == MachLog::DEFCON_LOW)
+            if (initiative() == MachLog::INITIATIVE_HIGH)
                 scavengingRange = 140;
 
             MATHEX_SCALAR sqrScavengingRange = sqr(scavengingRange);

@@ -1256,8 +1256,8 @@ MAX_MOVE_GRADIENT	65.0
 MAX_TERRAIN_UNEVENNESS	1.8
 
 //  Grace period (in seconds) following an explicit user command to a machine
-//	wherein the machine's defcon is treated *as if* it were HIGH.
-VIRTUAL_DEFCON_INTERVAL 7.0
+//	wherein the machine's initiative is treated *as if* it were LOW.
+INITIATIVE_SUPPRESSION_INTERVAL 7.0
 
 //	The path finding priority to allocate to player commands
 PC_PATH_FINDING_PRIORITY	+5

@@ -56,7 +56,7 @@ class MachGuiCommand;
 class MachWorldViewWindow;
 class MachGuiCorral;
 class MachPromptText;
-class MachGuiDefconCommand;
+class MachGuiInitiativeCommand;
 class MachGuiSelfDestructCommand;
 class MachGuiIonAttackCommand;
 class MachGuiNukeAttackCommand;
@@ -270,7 +270,7 @@ public:
     // Called after a WM_ACTIVATE message to ensure that the screen is re-drawn.
     void activate();
 
-    MachGuiDefconCommand* defconCommand();
+    MachGuiInitiativeCommand* initiativeCommand();
     MachGuiSelfDestructCommand* selfDestructCommand();
     MachGuiIonAttackCommand* ionAttackCommand();
     MachGuiNukeAttackCommand* nukeAttackCommand();
@@ -499,7 +499,7 @@ private:
     std::unique_ptr<MachInGameCursors2d> pCursors2d_; // The class enabling switching of cursor
     GameState gameState_{};
     PhysAbsoluteTime gameStateTimer_{};
-    MachGuiDefconCommand* pDefconCommand_{};
+    MachGuiInitiativeCommand* pInitiativeCommand_{};
     MachGuiSelfDestructCommand* pSelfDestructCommand_{};
     MachGuiIonAttackCommand* pIonAttackCommand_{};
     MachGuiNukeAttackCommand* pNukeAttackCommand_{};

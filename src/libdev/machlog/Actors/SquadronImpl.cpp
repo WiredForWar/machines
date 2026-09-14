@@ -17,8 +17,8 @@ MachLogSquadronImpl::MachLogSquadronImpl(int squadronId)
     , squadronHasChanged_(true)
     , squadronId_(squadronId)
     , totalDesiredMachines_(0)
-    , setDefCon_(false)
-    , defCon_(MachLog::DEFCON_LOW)
+    , setInitiative_(false)
+    , initiative_(MachLog::INITIATIVE_HIGH)
 {
     machines_.reserve(20);
     TEST_INVARIANT;
@@ -52,8 +52,8 @@ void perWrite(PerOstream& ostr, const MachLogSquadronImpl& actorImpl)
     ostr << actorImpl.squadronId_;
     ostr << actorImpl.desiredMachineList_;
     ostr << actorImpl.totalDesiredMachines_;
-    ostr << actorImpl.setDefCon_;
-    ostr << actorImpl.defCon_;
+    ostr << actorImpl.setInitiative_;
+    ostr << actorImpl.initiative_;
 }
 
 void perRead(PerIstream& istr, MachLogSquadronImpl& actorImpl)
@@ -67,8 +67,8 @@ void perRead(PerIstream& istr, MachLogSquadronImpl& actorImpl)
     istr >> actorImpl.squadronId_;
     istr >> actorImpl.desiredMachineList_;
     istr >> actorImpl.totalDesiredMachines_;
-    istr >> actorImpl.setDefCon_;
-    istr >> actorImpl.defCon_;
+    istr >> actorImpl.setInitiative_;
+    istr >> actorImpl.initiative_;
 
     actorImpl.pStrongestMachine_ = nullptr;
     actorImpl.squadronHasChanged_ = true;

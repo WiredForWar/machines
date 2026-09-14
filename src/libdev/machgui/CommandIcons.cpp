@@ -10,7 +10,7 @@
 #include "machgui/IconWithCounter.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/commands/command.hpp"
-#include "machgui/commands/CommandDefcon.hpp"
+#include "machgui/commands/CommandInitiative.hpp"
 #include "machgui/commands/CommandSelfDestruct.hpp"
 #include "machgui/commands/CommandIonAttack.hpp"
 #include "machgui/commands/CommandNukeAttack.hpp"
@@ -74,10 +74,10 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-class MachGuiDefconCommandIcon : public MachCommandIcon
+class MachGuiInitiativeCommandIcon : public MachCommandIcon
 {
 public:
-    MachGuiDefconCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
+    MachGuiInitiativeCommandIcon(GuiDisplayable* pParent, const Gui::Coord& rel, const MachGuiCommand& command)
         : MachCommandIcon(pParent, rel, command)
     {
     }
@@ -86,29 +86,29 @@ public:
     // Inherited from GuiBitmapButtonWithFilledBorder
     const GuiBitmap& getBitmap() const override
     {
-        static GuiBitmap bmpDefcon1 = MachGui::getScaledImage("gui/commands/defco1.bmp");
-        static GuiBitmap bmpDefcon2 = MachGui::getScaledImage("gui/commands/defco2.bmp");
-        static GuiBitmap bmpDefcon3 = MachGui::getScaledImage("gui/commands/defco3.bmp");
-        static GuiBitmap bmpDefcon12 = MachGui::getScaledImage("gui/commands/defco12.bmp");
-        static GuiBitmap bmpDefcon23 = MachGui::getScaledImage("gui/commands/defco23.bmp");
-        static GuiBitmap bmpDefcon123 = MachGui::getScaledImage("gui/commands/defco123.bmp");
-        static GuiBitmap bmpDefcon13 = MachGui::getScaledImage("gui/commands/defco13.bmp");
+        static GuiBitmap bmpLevel1 = MachGui::getScaledImage("gui/commands/defco1.bmp");
+        static GuiBitmap bmpLevel2 = MachGui::getScaledImage("gui/commands/defco2.bmp");
+        static GuiBitmap bmpLevel3 = MachGui::getScaledImage("gui/commands/defco3.bmp");
+        static GuiBitmap bmpLevel12 = MachGui::getScaledImage("gui/commands/defco12.bmp");
+        static GuiBitmap bmpLevel23 = MachGui::getScaledImage("gui/commands/defco23.bmp");
+        static GuiBitmap bmpLevel123 = MachGui::getScaledImage("gui/commands/defco123.bmp");
+        static GuiBitmap bmpLevel13 = MachGui::getScaledImage("gui/commands/defco13.bmp");
 
-        if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconNormal()
-            && MachGuiDefconCommand::defconHigh())
-            return bmpDefcon123;
-        else if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconNormal())
-            return bmpDefcon12;
-        else if (MachGuiDefconCommand::defconNormal() && MachGuiDefconCommand::defconHigh())
-            return bmpDefcon23;
-        else if (MachGuiDefconCommand::defconLow() && MachGuiDefconCommand::defconHigh())
-            return bmpDefcon13;
-        else if (MachGuiDefconCommand::defconLow())
-            return bmpDefcon1;
-        else if (MachGuiDefconCommand::defconNormal())
-            return bmpDefcon2;
+        if (MachGuiInitiativeCommand::initiativeHigh() && MachGuiInitiativeCommand::initiativeMedium()
+            && MachGuiInitiativeCommand::initiativeLow())
+            return bmpLevel123;
+        else if (MachGuiInitiativeCommand::initiativeHigh() && MachGuiInitiativeCommand::initiativeMedium())
+            return bmpLevel12;
+        else if (MachGuiInitiativeCommand::initiativeMedium() && MachGuiInitiativeCommand::initiativeLow())
+            return bmpLevel23;
+        else if (MachGuiInitiativeCommand::initiativeHigh() && MachGuiInitiativeCommand::initiativeLow())
+            return bmpLevel13;
+        else if (MachGuiInitiativeCommand::initiativeHigh())
+            return bmpLevel1;
+        else if (MachGuiInitiativeCommand::initiativeMedium())
+            return bmpLevel2;
 
-        return bmpDefcon3;
+        return bmpLevel3;
     }
 
     void doHandleContainsMouseEvent(const GuiMouseEvent&) override
@@ -139,9 +139,9 @@ MachCommandIcons::MachCommandIcons(GuiDisplayable* pParent, const Gui::Coord& re
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
         MachCommandIcon *pButton{};
-        if (commands[i].get() == pInGameScreen->defconCommand())
+        if (commands[i].get() == pInGameScreen->initiativeCommand())
         {
-            pButton = new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
+            pButton = new MachGuiInitiativeCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {
@@ -232,9 +232,9 @@ MachSmallCommandIcons::MachSmallCommandIcons(
     for (std::size_t i = 0; i != commands.size(); ++i)
     {
         MachCommandIcon *pButton{};
-        if (commands[i].get() == pInGameScreen->defconCommand())
+        if (commands[i].get() == pInGameScreen->initiativeCommand())
         {
-            pButton = new MachGuiDefconCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
+            pButton = new MachGuiInitiativeCommandIcon(this, Gui::Coord(0, 0), *commands[i]);
         }
         else if (commands[i].get() == pInGameScreen->selfDestructCommand())
         {

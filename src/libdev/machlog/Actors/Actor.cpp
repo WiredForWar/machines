@@ -1428,8 +1428,8 @@ void MachActor::dealWithThreats()
         nextSOSOpportunity_ = timeNow + 6.0; // "suck it and see" value
     }
 
-    // initiate behaviours appropriate to our situation and defcon if applicable
-    checkAndDoOnDefCon(strongThreats);
+    // initiate behaviours appropriate to our situation and initiative if applicable
+    checkAndDoOnInitiative(strongThreats);
 }
 
 void MachActor::dealWithFirstPersonThreat(MachActor* pFirstPersonThreatActor)
@@ -1452,7 +1452,7 @@ void MachActor::dealWithFirstPersonThreat(MachActor* pFirstPersonThreatActor)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // virtual
-void MachActor::checkAndDoOnDefCon(const Actors& /*strongThreats*/)
+void MachActor::checkAndDoOnInitiative(const Actors& /*strongThreats*/)
 {
     // default is to do nothing
 }
@@ -1613,7 +1613,7 @@ int MachActor::militaryValueOfIncomingThreats() const
 void MachActor::dispatchSOS(Actors& strongThreats)
 {
     // Attempt to recruit friendly thugs to help me tonk the rascals threatening me.
-    // Said thugs must be idle and have a non-HIGH DefCon.
+    // Said thugs must be idle and have a non-LOW initiative.
 
     Actors::iterator iThreats = strongThreats.begin();
 
@@ -1668,13 +1668,14 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 // even if this actor doesn't respond to the SOS call, bump its alertness up to full
                 friendlyCanAttack.setMinimumAlertness(125);
 
-                if (friendlyMachine.virtualDefCon() != MachLog::DEFCON_HIGH
+                if (friendlyMachine.effectiveInitiative() != MachLog::INITIATIVE_LOW
                     && (! friendlyCanAttack.hasCurrentTarget())
                     && friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
                     && (! friendlyMachine.isStandingGround()) && (! friendlyMachine.evading())
                     && (! friendlyMachine.insideBuilding()) && (! friendlyMachine.isIn1stPersonView())
                     && (friendlyCanAttack.canFireAt(threatActor))
-                    && (! friendlyMachine.motionSeq().isFollowing() || friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
+                    && (! friendlyMachine.motionSeq().isFollowing()
+                        || friendlyMachine.effectiveInitiative() == MachLog::INITIATIVE_HIGH))
                 {
 
                     if (! friendlyMachine.strategy().isUninterruptable())
@@ -1729,13 +1730,14 @@ void MachActor::dispatchSOS(Actors& strongThreats)
                 // even if this actor doesn't respond to the SOS call, bump its alertness up a reasonable amount.
                 friendlyCanAttack.setMinimumAlertness(70);
 
-                if (friendlyMachine.virtualDefCon() != MachLog::DEFCON_HIGH
+                if (friendlyMachine.effectiveInitiative() != MachLog::INITIATIVE_LOW
                     && (! friendlyCanAttack.hasCurrentTarget())
                     && friendlyCanAttack.willingToRespondToSOS() // wounded machines may give this a miss
                     && (! friendlyMachine.isStandingGround()) && (! friendlyMachine.evading())
                     && (! friendlyMachine.insideBuilding()) && (! friendlyMachine.isIn1stPersonView())
                     && (friendlyCanAttack.canFireAt(threatActor))
-                    && (! friendlyMachine.motionSeq().isFollowing() || friendlyMachine.virtualDefCon() == MachLog::DEFCON_LOW))
+                    && (! friendlyMachine.motionSeq().isFollowing()
+                        || friendlyMachine.effectiveInitiative() == MachLog::INITIATIVE_HIGH))
                 {
 
                     if (! friendlyMachine.strategy().isUninterruptable())

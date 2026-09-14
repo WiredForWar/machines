@@ -243,8 +243,6 @@ set(MACHGUI_SOURCES
     commands/CommandDeconstruct.hpp
     commands/CommandDefault.cpp
     commands/CommandDefault.hpp
-    commands/CommandDefcon.cpp
-    commands/CommandDefcon.hpp
     commands/CommandDeploy.cpp
     commands/CommandDeploy.hpp
     commands/CommandDropLandMine.cpp
@@ -253,6 +251,8 @@ set(MACHGUI_SOURCES
     commands/CommandFormSquadron.hpp
     commands/CommandHeal.cpp
     commands/CommandHeal.hpp
+    commands/CommandInitiative.cpp
+    commands/CommandInitiative.hpp
     commands/CommandIonAttack.cpp
     commands/CommandIonAttack.hpp
     commands/CommandLocateTo.cpp
