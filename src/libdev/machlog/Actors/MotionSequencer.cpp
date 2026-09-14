@@ -1808,14 +1808,16 @@ void MachLogMachineMotionSequencer::calculateGroupMovePortalPoint()
 
     MexPoint2d usePoint = currentConfigSpace().portalPoint(portalId, distance);
 
-    if (portalLength > circleRadius)
+    //  The group is a circle and the opening is a line, so the centre cannot sit
+    //  closer to either end than the group's radius without part of the group
+    //  hanging outside. Move it just far enough in to fit and no further: the
+    //  nominal point is where the route wants to cross, and giving it up costs
+    //  every machine the distance to wherever it is sent instead. A portal too
+    //  narrow to hold the group at all leaves the nominal point alone, there
+    //  being no position on it that helps.
+    if (portalLength > 2.0 * circleRadius)
     {
-        MATHEX_SCALAR tryDistance;
-        //  Take account of which end of the portal we're at
-        if (distance > portalLength / 2)
-            tryDistance = portalLength - circleRadius;
-        else
-            tryDistance = circleRadius;
+        const MATHEX_SCALAR tryDistance = std::clamp(distance, circleRadius, portalLength - circleRadius);
 
         MexPoint2d centre = pConfigSpace_->portalPoint(portalId, tryDistance);
         MexCircle2d testCircle(centre, circleRadius);
