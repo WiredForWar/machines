@@ -100,15 +100,20 @@ MachLogResearchItem& MachLogResearchTree::researchItem(
             }
         }
     }
-    ASSERT_INFO(objectType);
-    ASSERT_INFO(subType);
-    ASSERT_INFO(hwLevel);
-    ASSERT_INFO(wc);
-    ASSERT(found, "Didn't find combination in research tree.\n");
-    std::ostringstream ss;
-    ss << "Machine combination not found in research tree: " << objectType << " " << subType << " " << hwLevel << " "
-       << wc;
-    ALWAYS_ASSERT(found, ss.str().c_str());
+    if (! found)
+    {
+        ASSERT_INFO(objectType);
+        ASSERT_INFO(subType);
+        ASSERT_INFO(hwLevel);
+        ASSERT_INFO(wc);
+        ASSERT_FAIL("Didn't find combination in research tree.\n");
+
+        std::ostringstream ss;
+        ss << "Machine combination not found in research tree: " << objectType << " " << subType << " " << hwLevel
+           << " " << wc;
+        ALWAYS_ASSERT_FAIL(ss.str().c_str());
+    }
+
     return *pRI;
 }
 
