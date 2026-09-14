@@ -43,6 +43,7 @@ namespace MachPhys
 
     std::string_view toString(Race race);
     std::optional<Race> toRace(std::string_view str);
+    std::optional<Race> toRace(int value);
 
     enum MachineType : unsigned char
     {

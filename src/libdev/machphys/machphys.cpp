@@ -40,6 +40,14 @@ std::optional<MachPhys::Race> MachPhys::toRace(std::string_view str)
     return {};
 }
 
+std::optional<MachPhys::Race> MachPhys::toRace(int value)
+{
+    if (value < 0 || value >= N_RACES)
+        return std::nullopt;
+
+    return static_cast<Race>(value);
+}
+
 std::ostream& operator<<(std::ostream& o, MachPhys::Race type)
 {
     return o << MachPhys::toString(type);

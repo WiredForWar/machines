@@ -206,8 +206,9 @@ MachGuiStartupData::MachGuiStartupData(MachGuiStartupScreens* pStartupScreens)
     transitionFlicsOn_ = SysRegistry::instance().queryIntegerValue("Options\\transitions", "on", true);
 
     // Get default player race for skirmish games
-    playerRace_ = static_cast<MachPhys::Race>(
-        SysRegistry::instance().queryIntegerValue("Game Settings\\Player Race", "Value", MachPhys::RED));
+    playerRace_ = MachPhys::toRace(
+                SysRegistry::instance().queryIntegerValue("Game Settings\\Player Race", "Value", MachPhys::RED))
+            .value_or(MachPhys::RED);
 
     newGameName_ = SysRegistry::instance().queryStringValue("Misc", "New Game Name");
     playerName_ = Config::netPlayerName.get();
