@@ -64,6 +64,8 @@ append_test(ScreenshotsTests gui/ScreenshotsTests.cpp)
 append_test(DropDownPlacementTests machgui/DropDownPlacementTests.cpp)
 append_test(MouseLookTests machgui/MouseLookTests.cpp)
 append_test(ScaleFactorTests machgui/ScaleFactorTests.cpp)
+#~:machphys
+append_test(MachPhysLevelsTests machphys/LevelsTests.cpp)
 #~:mathex
 append_test(MexLine3dTests mathex/MexLine3dTests.cpp)
 #~:network

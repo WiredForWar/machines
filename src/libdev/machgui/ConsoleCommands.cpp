@@ -304,6 +304,37 @@ bool isMachineLevelValid(MachLog::ObjectType objType, int subType, size_t hwLeve
     }
 }
 
+// The software level to build a spawned machine at. Hardware and software
+// levels are separate lists in the level data and the command only asks for a
+// hardware one, so the lowest software level the machine comes in stands in for
+// the rest. That is 1 for everything on the battlefield but two technicians: a
+// tech boy exists only at software level 3 and a brain box only at 5. Naming a
+// level the machine does not come in asks for machine data that was never read,
+// which the level precondition in MachPhysDataImplementation refuses rather
+// than returns. Taking the lowest reproduces the pairing the shipped scenarios
+// use for all three technicians -- lab tech 2/1, tech boy 3/3, brain box 5/5.
+size_t defaultSoftwareLevel(MachLog::ObjectType objType, int subType)
+{
+    const auto& levels = MachPhysLevels::instance();
+
+    if (!objectTypeHasSubType(objType))
+        return levels.softwareLevel(MachLogMapper::mapToPhysMachine(objType), 0);
+
+    switch (objType)
+    {
+    case MachLog::AGGRESSOR:
+        return levels.softwareLevel(static_cast<MachPhys::AggressorSubType>(subType), 0);
+    case MachLog::ADMINISTRATOR:
+        return levels.softwareLevel(static_cast<MachPhys::AdministratorSubType>(subType), 0);
+    case MachLog::CONSTRUCTOR:
+        return levels.softwareLevel(static_cast<MachPhys::ConstructorSubType>(subType), 0);
+    case MachLog::TECHNICIAN:
+        return levels.softwareLevel(static_cast<MachPhys::TechnicianSubType>(subType), 0);
+    default:
+        return 1;
+    }
+}
+
 // Build a comma-separated string of valid hardware levels for the given construction type/subtype.
 std::string validConstructionLevelsString(MachLog::ObjectType objType, int subType)
 {
@@ -942,7 +973,13 @@ void spawnMachineCommand(MachGuiStartupScreens* pStartup, const Request& request
     }
 
     MachLogMachine* pMachine = MachLogActorMaker::newLogMachine(
-        objType.value(), subType, hwLevel, 1, race, spawnPos, weaponCombo.value_or(MachPhys::WeaponCombo{}));
+        objType.value(),
+        subType,
+        hwLevel,
+        defaultSoftwareLevel(objType.value(), subType),
+        race,
+        spawnPos,
+        weaponCombo.value_or(MachPhys::WeaponCombo{}));
 
     if (arguments->rotation.has_value())
     {
