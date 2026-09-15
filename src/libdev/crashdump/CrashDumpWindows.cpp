@@ -241,7 +241,7 @@ void writeReport(const char* cause, const char* detail, EXCEPTION_POINTERS* exce
         return;
     }
 
-    StackTrace faultingStack;
+    static StackTrace faultingStack;
 
     // Captured here, while still on the thread that is failing. A failure that
     // arrives without an exception context -- an abort, a terminate, a rejected
@@ -396,6 +396,21 @@ bool debuggerAttached()
 
 void installHandlers()
 {
+    // A stack overflow is raised with only what is left of the stack to be
+    // handled in, and what is left is whatever lies between the frame that
+    // overran and the end of the reservation. Windows randomises where a stack
+    // starts, so that distance is different on every run of the same binary --
+    // anything from a few bytes to a full frame. Under it the filter has to
+    // stand up a thread to write the report on, and on the runs where the
+    // distance came out short, it faults trying: a stack overflow that reports
+    // an access violation and leaves no report is this and nothing else.
+    //
+    // Asking for a reserve moves the overflow that much earlier and hands the
+    // difference to the filter, which is what turns "usually enough" into
+    // "enough". This is per thread, and this is the thread the game runs on.
+    ULONG stackGuarantee{ 64 * 1024 };
+    SetThreadStackGuarantee(&stackGuarantee);
+
     previousFilter_ = SetUnhandledExceptionFilter(exceptionFilter);
 
     std::signal(SIGABRT, abortHandler);
