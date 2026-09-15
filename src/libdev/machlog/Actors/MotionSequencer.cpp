@@ -54,6 +54,7 @@
 #include "machlog/Internal/CollisionInfo.hpp"
 
 #include <algorithm>
+#include <optional>
 #include <string>
 
 #ifndef _INLINE
@@ -1786,6 +1787,22 @@ void MachLogMachineMotionSequencer::getOnPortalPoint()
     pImpl_->hasOnPortalPoint_ = true;
 }
 
+//  The unit direction from one point to another, or nothing when the two are the same
+//  place and there is no direction to give. A route can meet a portal at the very point
+//  where it meets the next one, and a machine can already be standing on the point it is
+//  heading for; neither is a fault, and neither answers the question.
+static std::optional<MexVec2> directionBetween(const MexPoint2d& from, const MexPoint2d& to)
+{
+    MexVec2 direction(from, to);
+
+    if (direction.isZeroVector())
+        return std::nullopt;
+
+    direction.makeUnitVector();
+
+    return direction;
+}
+
 //  Calculate the portal point to use if we are doing a group move
 void MachLogMachineMotionSequencer::calculateGroupMovePortalPoint()
 {
@@ -1855,15 +1872,31 @@ void MachLogMachineMotionSequencer::calculateGroupMovePortalPoint()
     LOG_INSPECT(preceedingPoint);
     LOG_INSPECT(succeedingPoint);
 
-    MexVec2 inBoundVector(preceedingPoint, usePoint);
-    MexVec2 outBoundVector(usePoint, succeedingPoint);
+    const std::optional<MexVec2> inBoundVector = directionBetween(preceedingPoint, usePoint);
+    const std::optional<MexVec2> outBoundVector = directionBetween(usePoint, succeedingPoint);
 
-    inBoundVector.makeUnitVector();
-    outBoundVector.makeUnitVector();
+    //  Half way between the direction of arrival and the direction of departure, which is
+    //  the direction the formation faces as it rounds this corner. With only one of the two
+    //  known, that one is the best guess at both. With neither, there is no direction to
+    //  spread the group along, and every machine aims at the point itself.
+    MexVec2 averageVector{};
 
-    MexVec2 averageVector = inBoundVector;
-    averageVector += outBoundVector;
-    averageVector.makeUnitVector();
+    if (inBoundVector && outBoundVector)
+    {
+        averageVector = *inBoundVector;
+        averageVector += *outBoundVector;
+
+        //  The route doubles back on itself, so the two cancel. Face the way we came in:
+        //  a group that turns around keeps the shape it had.
+        if (averageVector.isZeroVector())
+            averageVector = *inBoundVector;
+        else
+            averageVector.makeUnitVector();
+    }
+    else if (inBoundVector)
+        averageVector = *inBoundVector;
+    else if (outBoundVector)
+        averageVector = *outBoundVector;
 
     // We have our average vector, now rotate and scale it according to the
     // offsets for this machine and get out the final point we want the
