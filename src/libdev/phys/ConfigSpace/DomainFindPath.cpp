@@ -279,24 +279,29 @@ void PhysCS2dDomainFindPath::endMacroSearch()
             // Access the path point
             PhysConfigSpace2d::DomainVertexId domainVertexId = *it;
 
-            // Don't output the start and end points
-            if (domainVertexId != startDomainVertexId_ && domainVertexId != endDomainVertexId_)
-            {
-                // Get the domain vertex
-                const PhysCS2dDomainVertex& domainVertex = impl.domainGraph().vertex(domainVertexId);
+            // Get the domain vertex
+            const PhysCS2dDomainVertex& domainVertex = impl.domainGraph().vertex(domainVertexId);
 
-                // hence get the portal
-                PortalId portalId = domainVertex.portalId();
-                const PhysCS2dPortal& portal = *(impl.portals()[portalId]);
+            //  The path is a list of portal crossings, and a vertex need not be on a
+            //  portal to be on the route. Every search alive on the shared domain graph
+            //  adds a vertex for its own start point and one for its end point, joined
+            //  by arcs to every vertex in their domain, so a route can quite properly
+            //  arrive at a point that crosses nothing. Passing over those costs the path
+            //  nothing: the crossings on either side of them are all still here.
+            const PortalId portalId = domainVertex.portalId();
 
-                // Compute the distance of the vertex along the portal
-                MexVec2 end1ToVtx(portal.endPoint1(), domainVertex.point());
-                MexVec2 portalDirection(portal.endPoint1(), portal.endPoint2(), portal.length());
-                MATHEX_SCALAR distance = end1ToVtx.dotProduct(portalDirection);
+            if (portalId == PhysConfigSpace2d::PortalId::invalidId())
+                continue;
 
-                // Add this point to the result path
-                domainPath_.push_back(PortalPoint(portalId, distance));
-            }
+            const PhysCS2dPortal& portal = *(impl.portals()[portalId]);
+
+            // Compute the distance of the vertex along the portal
+            MexVec2 end1ToVtx(portal.endPoint1(), domainVertex.point());
+            MexVec2 portalDirection(portal.endPoint1(), portal.endPoint2(), portal.length());
+            MATHEX_SCALAR distance = end1ToVtx.dotProduct(portalDirection);
+
+            // Add this point to the result path
+            domainPath_.push_back(PortalPoint(portalId, distance));
         }
 
         //  Cache the path for possible later use
