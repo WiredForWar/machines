@@ -15,6 +15,8 @@
 #include "base/base.hpp"
 #include "machphys/machphys.hpp"
 
+#include <vector>
+
 // forward refs
 class MachPhysWeapon;
 class MachPhysCanAttack;
@@ -27,6 +29,18 @@ class MachPhysArmourer
 // Static methods only - cannot be instantiated
 {
 public:
+    // A weapon a combo carries, and where it sits.
+    struct MountedWeapon
+    {
+        MachPhys::WeaponType type{};
+        MachPhys::Mounting mounting{};
+    };
+
+    using MountedWeapons = std::vector<MountedWeapon>;
+
+    // The weapon types and mountings carried by combo.
+    static MountedWeapons comboWeapons(MachPhys::WeaponCombo combo);
+
     // Constructs and returns a new weapon on the heap of type type (with mounting if relevant),
     // for the client to take ownership of.
     static MachPhysWeapon* newWeapon(

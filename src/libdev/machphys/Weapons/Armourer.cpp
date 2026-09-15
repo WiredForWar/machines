@@ -133,11 +133,8 @@ MachPhysWeapon* MachPhysArmourer::newWeapon(
     return pWeapon;
 }
 
-// static
-void MachPhysArmourer::fitWeapons(MachPhysCanAttack* pAttacker, MachPhys::WeaponCombo combo)
+MachPhysArmourer::MountedWeapons MachPhysArmourer::comboWeapons(MachPhys::WeaponCombo combo)
 {
-    MexTransform3d identityTransform;
-    W4dEntity* pEntityAttacker = &pAttacker->asComposite();
     MachPhys::WeaponType aTypes[MachPhys::N_MOUNTINGS];
     MachPhys::Mounting aMountings[MachPhys::N_MOUNTINGS];
     int nWeapons = 0;
@@ -478,9 +475,24 @@ void MachPhysArmourer::fitWeapons(MachPhysCanAttack* pAttacker, MachPhys::Weapon
             DEFAULT_ASSERT_BAD_CASE(combo);
     }
 
+    MountedWeapons weapons;
+    weapons.reserve(nWeapons);
     for (int i = 0; i != nWeapons; ++i)
+        weapons.push_back({ .type = aTypes[i], .mounting = aMountings[i] });
+
+    return weapons;
+}
+
+void MachPhysArmourer::fitWeapons(MachPhysCanAttack* pAttacker, MachPhys::WeaponCombo combo)
+{
+    MexTransform3d identityTransform;
+    W4dEntity* pEntityAttacker = &pAttacker->asComposite();
+
+    for (const MountedWeapon& weapon : comboWeapons(combo))
     {
-        pAttacker->mount(newWeapon(aTypes[i], aMountings[i], pEntityAttacker, identityTransform), aMountings[i]);
+        pAttacker->mount(
+            newWeapon(weapon.type, weapon.mounting, pEntityAttacker, identityTransform),
+            weapon.mounting);
     }
 
     // update the bounding volume so that the weapons are included
