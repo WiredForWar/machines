@@ -771,7 +771,7 @@ void MachGuiCtxOptions::updateScaleFactors()
         scaleFactors_.push_back(percents);
         if (percents == 0)
         {
-            labels.push_back(ResolvedUiString(IDS_MENU_DEFAULT));
+            labels.push_back(ResolvedUiString(IDS_MENU_AUTO));
         }
         else
         {
