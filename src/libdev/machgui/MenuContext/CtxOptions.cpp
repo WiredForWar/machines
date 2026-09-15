@@ -248,7 +248,7 @@ MachGuiCtxOptions::MachGuiCtxOptions(MachGuiStartupScreens* pStartupScreens)
 
     {
         GuiStrings itemNames = {
-            ResolvedUiString(IDS_VSYNC_OPTION_AUTO),
+            ResolvedUiString(IDS_MENU_AUTO),
             ResolvedUiString(IDS_VSYNC_OPTION_ENABLED),
             ResolvedUiString(IDS_VSYNC_OPTION_DISABLED),
         };
