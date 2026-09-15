@@ -145,7 +145,18 @@ bool MexPolygon2d::intersects(const MexPoint2d& q1, const MexPoint2d& q2, Mathex
 
     // If penetration required, use special function
     if (rule == Mathex::TOUCH_ISNT_INTERSECT)
-        result = isPenetratedBy(q1, q2, q1.euclidianDistance(q2));
+    {
+        const MATHEX_SCALAR lineLength = q1.euclidianDistance(q2);
+
+        //  Nothing passes through anything without going anywhere, and penetration is
+        //  worked out from a direction a segment of no length does not have. The two
+        //  points can be the same: corners of obstacles that abut land on one spot, and
+        //  the visibility graph carries an arc between them like any other.
+        if (lineLength == 0)
+            return false;
+
+        result = isPenetratedBy(q1, q2, lineLength);
+    }
     else
     {
         bool hit = false;
