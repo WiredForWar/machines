@@ -1308,9 +1308,17 @@ void MachLogMachineMotionSequencer::getIntersectingIds(PhysConfigSpace2d::Object
 
     for (size_t i = 0; i < pIntersectingIds->size(); ++i)
     {
-        const MachActor& actor = MachLogRaces::instance().actor((*pIntersectingIds)[i].asScalar());
+        //  A collision object need not be an actor: the config space holds motion chunks
+        //  for things the race lists have never heard of, and goes on holding one for an
+        //  actor that has just died.
+        const PhysConfigSpace2d::ObjectId& objectId = (*pIntersectingIds)[i];
 
-        LOG_STREAM((*pIntersectingIds)[i] << "  ");
+        if (!MachLogRaces::instance().actorExists(objectId.asScalar()))
+            continue;
+
+        const MachActor& actor = MachLogRaces::instance().actor(objectId.asScalar());
+
+        LOG_STREAM(objectId << "  ");
         LOG_STREAM(actor.globalTransform().position());
         LOG_STREAM("   ");
         const MexPoint2d p1 = actor.globalTransform().position();
