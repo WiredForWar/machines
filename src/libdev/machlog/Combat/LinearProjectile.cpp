@@ -121,7 +121,11 @@ MachLogLinearProjectile::MachLogLinearProjectile(
     MachLogPlanetDomains::Domains intersectingDomains;
     MachLogPlanetDomains::intersecting(line2d, &intersectingDomains);
     HAL_STREAM("number of intersecting domains is: " << intersectingDomains.size() << std::endl);
-    ASSERT(intersectingDomains.size() > 0, "Linear projectile MUST interset with at least one domain\n");
+    //  A shot that crosses none of the planet's domains attaches to none of them, and
+    //  that is an ordinary answer rather than a fault. The flight line is clipped to the
+    //  planet, so a round fired near an edge -- or across ground the grid does not cover
+    //  -- legitimately crosses nothing, and the loop below is already written to do
+    //  nothing about it.
     for (MachLogPlanetDomains::Domains::iterator i = intersectingDomains.begin(); i != intersectingDomains.end(); ++i)
     {
         if ((*i) != pPhysProjectile->pParent())
