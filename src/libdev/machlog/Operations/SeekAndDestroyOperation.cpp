@@ -98,7 +98,11 @@ PhysRelativeTime MachLogSeekAndDestroyOperation::doUpdate()
 
         found = canAttackEvenIfInsideBuilding(targetMachine);
 
-        if (! found && targetSystemType_ == MachLog::TARGET_NORMAL)
+        //  Only where there is a target for an alternative to be an alternative to: the
+        //  search is defined as "the closest one that is not the one I am shooting at",
+        //  so it reads the actor's current target in order to leave it out.
+        if (!found && targetSystemType_ == MachLog::TARGET_NORMAL && pActor_->objectIsCanAttack()
+            && pActor_->asCanAttack().hasCurrentTarget())
         {
             found = MachLogRaces::instance().findAlternativeTargetClosestTo(*pActor_, &pTarget);
 
