@@ -201,26 +201,6 @@ void SDLApp::applyFrameRateLimit()
 
     const double clampedSleepMs = std::clamp(newSleepMs, MinSleep, MaxSleep);
 
-#ifndef PRODUCTION
-    uint32_t oldSleep = frameSleepMs_;
-    uint32_t newSleep = clampedSleepMs;
-
-    if (newSleep > oldSleep)
-    {
-        spdlog::debug(
-            "Frame sleep increased to {:.2f} ms (target FPS {})",
-            clampedSleepMs,
-            targetFrameRate_);
-    }
-    else if (newSleep < oldSleep)
-    {
-        spdlog::debug(
-            "Frame sleep decreased to {:.2f} ms (target FPS {})",
-            clampedSleepMs,
-            targetFrameRate_);
-    }
-#endif
-
     frameSleepMs_ = clampedSleepMs;
 
     frameTimer_.time(0.0);
