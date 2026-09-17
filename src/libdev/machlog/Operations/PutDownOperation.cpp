@@ -168,19 +168,23 @@ PhysRelativeTime MachLogPutDownOperation::doUpdate()
         else
         {
             // smelter is complete - let's try dropping off the ore.
+            const MachPhys::BuildingMaterialUnits hasBmus = MachLogRaces::instance().nBuildingMaterialUnits(pActor_->race());
+            const MachPhys::BuildingMaterialUnits maxBmus = MachLogRaces::instance().nMaxBuildingMaterialUnits(pActor_->race());
 
-            MachPhys::BuildingMaterialUnits amountToAdd = pActor_->amountCarried();
-            amountToAdd = MachLogRaces::instance().smartAddBMUs(pActor_->race(), amountToAdd);
-            pActor_->setAmountCarried(0);
+            // We want to put down everything we have, or at least that amount of BMUs
+            constexpr MachPhys::BuildingMaterialUnits minLeft{10};
 
-            // If we dropped off something and this is a genuine smelter (not a pod), tell it to do smelting animation
-            if (amountToAdd > 0)
-            {
-                interval = pActor_->doLoading();
+            const MachPhys::BuildingMaterialUnits carried = pActor_->amountCarried();
+            if (hasBmus + std::min(carried, minLeft) > maxBmus)
+                return interval;
 
-                if (pDestinationSmeltingBuilding->objectType() == MachLog::SMELTER)
-                    pDestinationSmeltingBuilding->asSmelter().droppedOffOre();
-            }
+            const MachPhys::BuildingMaterialUnits added = MachLogRaces::instance().smartAddBMUs(pActor_->race(), carried);
+            pActor_->setAmountCarried(carried - added);
+
+            interval = pActor_->doLoading();
+
+            if (pDestinationSmeltingBuilding->objectType() == MachLog::SMELTER)
+                pDestinationSmeltingBuilding->asSmelter().droppedOffOre();
 
             if (pSubOperation())
                 pSubOperation()->doBeInterrupted();
