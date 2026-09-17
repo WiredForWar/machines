@@ -42,6 +42,7 @@ set(TESTING_THESE_GUYS
 #~:afx
 append_test(AfxConfigurationTests afx/AfxConfigurationTests.cpp)
 append_test(AfxInvokeArgsTests afx/AfxInvokeArgsTests.cpp)
+append_test(AfxLogFileTests afx/AfxLogFileTests.cpp)
 #~:ani
 if(USE_SWSCALE)
     append_test(FrameScalerTests ani/FrameScalerTests.cpp)

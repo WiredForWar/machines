@@ -1,5 +1,6 @@
 #include "afx/AfxSdlApp.hpp"
 
+#include "afx/AfxLogFile.hpp"
 #include "base/Diag.hpp"
 #include "crashdump/CrashDump.hpp"
 #include "device/Mouse.hpp"
@@ -14,6 +15,7 @@
 
 #include "system/SysInfo.hpp"
 
+#include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -282,19 +284,44 @@ void AfxSdlApp::initLogger()
 {
     const bool logToConsole = invokeArgs().contains("--log-to-console");
 
+    //  Nothing is logged yet, so anything to say about the log itself has to go
+    //  to the console the same way a failure to open one does.
+    std::optional<std::string> namedFile;
+    if (const std::optional<std::string_view> given = invokeArgs().value("--log-file"))
+    {
+        std::string whyNot;
+        namedFile = afxLogFilePath(*given, &whyNot);
+        if (!namedFile)
+            std::cerr << "Ignoring --log-file=" << *given << ": " << whyNot << std::endl;
+    }
+
     std::shared_ptr<spdlog::sinks::sink> fileSink;
     if (logFileEnabled_)
     {
         try
         {
-            constexpr int MaxSize = 1024 * 1024 * 5;
-            constexpr int MaxFiles = 2;
-            constexpr bool RotateOnOpen = true;
+            if (namedFile)
+            {
+                //  A named log does not rotate: the caller naming each one has already
+                //  chosen what to keep, and rotation would throw those away.
+                fileSink = std::make_shared<spdlog::sinks::basic_file_sink_st>(*namedFile);
+            }
+            else
+            {
+                constexpr int MaxSize = 1024 * 1024 * 5;
+                constexpr int MaxFiles = 2;
+                constexpr bool RotateOnOpen = true;
 
-            spdlog::filename_t fileName = name();
-            std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
-            fileName = "logs/" + fileName + ".txt";
-            fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_st>(fileName, MaxSize, MaxFiles, RotateOnOpen);
+                spdlog::filename_t fileName = name();
+                std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
+                fileName = "logs/" + fileName + ".txt";
+                fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_st>(
+                    fileName,
+                    MaxSize,
+                    MaxFiles,
+                    RotateOnOpen);
+            }
+
             fileSink->set_level(spdlog::level::debug);
         }
         catch (const spdlog::spdlog_ex& ex)

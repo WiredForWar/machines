@@ -4,6 +4,8 @@ set(AFX_SOURCES
     AfxConfiguration.hpp
     AfxConfigurationLoader.cpp
     AfxConfigurationLoader.hpp
+    AfxLogFile.cpp
+    AfxLogFile.hpp
     app.cpp
     app.hpp
     invkargs.cpp
