@@ -59,7 +59,7 @@ private:
                                                   [MachLogResearchItem::MAX_SW_LEVELS];
     MachPhys::HardwareLabSubType hardwareLabSubType_;
     MachPhys::WeaponCombo weaponCombo_;
-    bool hasWeaponCombo_;
+    bool hasWeaponCombo_{};
 };
 
 PER_DECLARE_PERSISTENT(MachLogResearchItemImpl);
