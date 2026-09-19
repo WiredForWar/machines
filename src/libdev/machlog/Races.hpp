@@ -356,6 +356,11 @@ public:
     MachLogController& pcController() const;
     // PRE( hasPCRace() );
 
+    // True iff the race is commanded by a human rather than by the AI. In a
+    // network game that is every human player's race, not only the one being
+    // played here. False for a race that is not in the game.
+    bool isPlayerControlled(MachPhys::Race race) const;
+
     ///////////////////////////////
 
     Holographs& holographs(MachPhys::Race r);

@@ -838,6 +838,11 @@ const MachLogController& MachLogRaces::controller(MachPhys::Race r) const
     return *pDataImpl_->controller_[map_MachPhysRace_to_size_t(r)];
 }
 
+bool MachLogRaces::isPlayerControlled(MachPhys::Race race) const
+{
+    return raceInGame(race) && controller(race).type() == MachLogController::PLAYER_CONTROLLER;
+}
+
 MachLogAIController& MachLogRaces::AIController(MachPhys::Race r)
 {
     ASSERT(

@@ -261,9 +261,9 @@ void MachLogCanAttack::checkAndAttackCloserTarget(MachLogMachine* pActor, MachAc
             if (! okayToAttack)
                 found = false;
         }
-        else if (pActor->insideBuilding() && pActor->race() == races.playerRace())
+        else if (pActor->insideBuilding() && races.isPlayerControlled(pActor->race()))
         {
-            // player race machines shouldn't leave buildings of their own volition to attack targets outside
+            // a human's machines shouldn't leave buildings of their own volition to attack targets outside
             found = false;
         }
     }
