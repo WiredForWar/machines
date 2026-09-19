@@ -15,7 +15,6 @@
 #include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/Operations/TreacheryReachOperation.hpp"
 #include "machlog/Operations/PatrolOperation.hpp"
-#include "machlog/Races.hpp"
 
 MachGuiTreacheryCommand::MachGuiTreacheryCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-treachery"_bind)
@@ -182,10 +181,8 @@ MachGui::Cursor2dType MachGuiTreacheryCommand::cursorOnActor(MachActor* pActor, 
 {
     MachGui::Cursor2dType cursorType = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // Check for a building or machine
-    if (pActor->objectIsMachine() && pActor->race() != playerRace)
+    if (pActor->objectIsMachine() && !MachGui::canCommand(pActor->race()))
     {
         // Set the Treachery object action
         action_ = ATTACK_OBJECT;

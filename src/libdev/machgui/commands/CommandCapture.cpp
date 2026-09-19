@@ -12,6 +12,8 @@
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
 
+#include "system/PathName.hpp"
+
 #include "ctl/Algorithm.hpp"
 
 #include "world4d/Scene/Domain.hpp"
@@ -19,7 +21,6 @@
 #include "machlog/Actors/Administrator.hpp"
 #include "machlog/Operations/AdminSuperConstructOperation.hpp"
 #include "machlog/Operations/SuperConstructOperation.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Actors/Squadron.hpp"
 #include "machlog/Messaging/MachineVoiceMailManager.hpp"
 
@@ -60,10 +61,8 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCaptureCommand& t)
 // virtual
 void MachGuiCaptureCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // Check for a pick on an enemy construction
-    if (pActor->objectIsConstruction() && pActor->race() != playerRace)
+    if (pActor->objectIsConstruction() && !MachGui::canCommand(pActor->race()))
     {
         MachLogConstruction* pCandidateConstruction = &pActor->asConstruction();
 
@@ -121,9 +120,8 @@ MachGui::Cursor2dType MachGuiCaptureCommand::cursorOnActor(MachActor* pActor, bo
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
-    if (pActor->objectIsConstruction() && pActor->asConstruction().isComplete() && pActor->race() != playerRace)
+    if (pActor->objectIsConstruction() && pActor->asConstruction().isComplete()
+        && !MachGui::canCommand(pActor->race()))
     {
         cursor = MachGui::CAPTURE_CURSOR;
     }

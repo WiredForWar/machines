@@ -298,10 +298,9 @@ MachGuiConstructCommand::cursorOnActor(MachActor* pActor, bool ctrlPressed, bool
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // Check for a pick on friendly incomplete construction
-    if (pActor->objectIsConstruction() && ! pActor->asConstruction().isComplete() && pActor->race() == playerRace)
+    if (pActor->objectIsConstruction() && !pActor->asConstruction().isComplete()
+        && MachGui::canCommand(pActor->race()))
     {
         cursor = MachGui::JOINCONSTRUCT_CURSOR;
     }

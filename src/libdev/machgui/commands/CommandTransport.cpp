@@ -13,13 +13,14 @@
 #include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/Operations/TransportOperation.hpp"
 #include "machlog/Operations/PickUpOperation.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
 
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
+
+#include "system/PathName.hpp"
 
 MachGuiTransportCommand::MachGuiTransportCommand(MachInGameScreen* pInGameScreen, bool explicitOrder)
     : MachGuiCommand(pInGameScreen, "commands-transport"_bind)
@@ -54,7 +55,7 @@ std::ostream& operator<<(std::ostream& o, const MachGuiTransportCommand& t)
 // virtual
 void MachGuiTransportCommand::pickOnActor(MachActor* pActor, bool, bool shiftPressed, bool)
 {
-    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
+    bool myRace = MachGui::canCommand(pActor->race());
 
     // Check for a building or machine
     if ((pActor->objectType() == MachLog::MINE && pActor->asMine().worthVisiting())
@@ -155,7 +156,7 @@ MachGui::Cursor2dType MachGuiTransportCommand::cursorOnTerrain(const MexPoint3d&
 // virtual
 MachGui::Cursor2dType MachGuiTransportCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
-    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
+    bool myRace = MachGui::canCommand(pActor->race());
 
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
 
