@@ -1927,25 +1927,6 @@ int MachLogCanAttack::alertness() const
     return alertness_;
 }
 
-// helper function for SOS call
-bool MachLogCanAttack::recruitableToAttack(const MachActor& potentialTarget) const
-{
-    CB_MachLogCanAttack_DEPIMPL();
-
-    // pc race machines inside a building don't respond to SOS calls targetting enemies outside that building
-    if (pMe_->objectIsMachine() && pMe_->asMachine().insideBuilding()
-        && pMe_->race() == MachLogRaces::instance().playerRace()
-        && !(
-            potentialTarget.objectIsMachine() && potentialTarget.asMachine().insideBuilding()
-            && potentialTarget.asMachine().insideWhichBuilding().id() == pMe_->asMachine().insideWhichBuilding().id()))
-    {
-        // the target is outside, and I'm inside. Don't respond to the call.
-        return false;
-    }
-    else
-        return canFireAt(potentialTarget);
-}
-
 int MachLogCanAttack::minimumAlertnessForActor() const
 {
     CB_MachLogCanAttack_DEPIMPL();

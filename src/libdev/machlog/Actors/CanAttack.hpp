@@ -208,11 +208,6 @@ public:
     // checks restrictions for being able to attack ground or air machines etc.
     bool canFireAt(const MachActor& potentialTarget) const;
 
-    // helper function mainly for SOS calls.......
-    // pc race machines inside a building don't respond to SOS calls targetting enemies outside that building
-    // otherwise, returns result of canFireAt.
-    bool recruitableToAttack(const MachActor& potentialTarget) const;
-
     // level of alertness below which the actor can never drop
     int minimumAlertnessForActor() const;
 
