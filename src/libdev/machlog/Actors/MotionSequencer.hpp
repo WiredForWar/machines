@@ -655,7 +655,7 @@ private:
         const PhysConfigSpace2d::ChunkIntersectionsNoTime& chunkIntersections,
         PhysConfigSpace2d::ChunkIntersectionDataNoTime* pCollisionData) const;
 
-    bool isPlayerControlled() const;
+    bool isPlayerControlledRace() const;
 
     //  Returns the proportion of full speed we should try if the full
     //  speed movement doesn't work

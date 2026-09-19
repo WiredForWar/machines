@@ -485,7 +485,7 @@ MachLogMachineMotionSequencer::MoveResult MachLogMachineMotionSequencer::reserve
             //  movement for the AI races but we want the player controlled
             //  race to be as responsive as possible.
 
-            if (isPlayerControlled())
+            if (isPlayerControlledRace())
             {
                 //  We failed to reserve a chunk at normal speed - we're going to
                 //  try a couple of other things to see if we can get a chunk down.
@@ -1167,13 +1167,9 @@ bool MachLogMachineMotionSequencer::anyMotionChunkStationary(
     return result;
 }
 
-bool MachLogMachineMotionSequencer::isPlayerControlled() const
+bool MachLogMachineMotionSequencer::isPlayerControlledRace() const
 {
-    MachPhys::Race race = logMobile().race();
-
-    const MachLogController& controller = MachLogRaces::instance().controller(race);
-
-    return controller.type() == MachLogController::PLAYER_CONTROLLER;
+    return MachLogRaces::instance().isPlayerControlled(logMobile().race());
 }
 
 // static

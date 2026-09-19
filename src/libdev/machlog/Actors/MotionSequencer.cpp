@@ -426,7 +426,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
                 else
                 {
                     CHANGE_STATE(INTERNAL_WANT_DOMAIN_PATH, "new destination set");
-                    if ((pFollowSequencer_ == nullptr) && isPlayerControlled())
+                    if ((pFollowSequencer_ == nullptr) && isPlayerControlledRace())
                         shuffle();
                 }
             }
