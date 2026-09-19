@@ -18,6 +18,7 @@
 #include "machgui/ActorBitmaps.hpp"
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Machine.hpp"
+#include "machlog/Races.hpp"
 #include <cassert>
 
 const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
@@ -32,6 +33,41 @@ const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
     };
 
     return names[race];
+}
+
+const std::string& MachGui::raceDirectoryName(std::optional<MachPhys::Race> race)
+{
+    return raceDirectoryName(race.value_or(MachPhys::RED));
+}
+
+// The race being played here, or none when the game is running without anybody
+// playing it.
+static std::optional<MachPhys::Race> privateLocalPlayerRace()
+{
+    const MachLogRaces& races = MachLogRaces::instance();
+    if (!races.hasPCRace())
+        return std::nullopt;
+
+    return races.playerRace();
+}
+
+std::optional<MachPhys::Race> MachGui::uiRace()
+{
+    return privateLocalPlayerRace();
+}
+
+bool MachGui::canSeeDetails(MachPhys::Race race)
+{
+    const std::optional<MachPhys::Race> player = privateLocalPlayerRace();
+
+    return player.has_value() && *player == race;
+}
+
+bool MachGui::canCommand(MachPhys::Race race)
+{
+    const std::optional<MachPhys::Race> player = privateLocalPlayerRace();
+
+    return player.has_value() && *player == race;
 }
 
 static GuiBitmap& privateLongGlowBmp()

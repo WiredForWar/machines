@@ -8,6 +8,7 @@
 #include "gui/gui.hpp"
 #include "machphys/machphys.hpp"
 
+#include <optional>
 #include <string>
 
 class MachLogMachine;
@@ -20,6 +21,20 @@ namespace MachGui
 // decals -- is a directory of this name under its own root.
 const std::string& raceDirectoryName(MachPhys::Race race);
 // PRE( race < MachPhys::N_RACES );
+
+const std::string& raceDirectoryName(std::optional<MachPhys::Race> race);
+
+// What the person at the keyboard may see and do.
+
+// The race whose colours the interface wears, or no race when the interface
+// belongs to nobody in the game.
+std::optional<MachPhys::Race> uiRace();
+
+// True iff a race's private affairs may be shown.
+bool canSeeDetails(MachPhys::Race race);
+
+// True iff a race's actors may be given orders.
+bool canCommand(MachPhys::Race race);
 
 // Load the correct icon for a machine. You may specify whether it's normal looking or matrix-like (first person)
 GuiBitmap createIconForMachine(MachLogMachine* machine, bool firstPersonIcon);
