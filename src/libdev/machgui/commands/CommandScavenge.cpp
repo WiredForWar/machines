@@ -11,7 +11,6 @@
 #include "machlog/Actors/Debris.hpp"
 #include "machlog/Operations/MoveOperation.hpp"
 #include "machlog/Operations/ScavengeOperation.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Actors/ResourceCarrier.hpp"
 #include "machlog/Messaging/VoiceMailManager.hpp"
 #include "machlog/Messaging/VoiceMailData.hpp"
@@ -19,6 +18,8 @@
 #include "machgui/InGameScreen.hpp"
 #include "machgui/internal/SoundManager.hpp"
 #include "machgui/internal/strings.hpp"
+
+#include "system/PathName.hpp"
 
 MachGuiScavengeCommand::MachGuiScavengeCommand(MachInGameScreen* pInGameScreen)
     : MachGuiCommand(pInGameScreen, "commands-scavenge"_bind)
@@ -151,8 +152,6 @@ MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnTerrain(const MexPoint3d&,
 MachGui::Cursor2dType MachGuiScavengeCommand::cursorOnActor(MachActor* pActor, bool, bool, bool)
 {
     MachGui::Cursor2dType cursor = MachGui::INVALID_CURSOR;
-
-    bool myRace = (MachLogRaces::instance().playerRace() == pActor->race());
 
     // Check for a building or machine
     if (pActor->objectType() == MachLog::DEBRIS)

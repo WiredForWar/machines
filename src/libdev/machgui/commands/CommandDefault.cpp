@@ -438,9 +438,6 @@ MachGuiDefaultCommand::cursorOnActor(MachActor* pCursorActor, bool ctrlPressed, 
 {
     MachGui::Cursor2dType cursor = MachGui::SELECT_CURSOR;
 
-    // Get player race
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // Check for any selected actor
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();
     if (selectedActors.size() != 0)
