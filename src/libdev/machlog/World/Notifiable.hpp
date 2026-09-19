@@ -26,9 +26,12 @@ public:
 
     void CLASS_INVARIANT;
 
-    MachPhys::Race race() { return race_; }
+    // The race whose tree changes this observer is notified about. Setting it
+    // redirects later notifications and does nothing else: anything already
+    // built from the previous race stays as it is until it is rebuilt.
+    MachPhys::Race notifiedRace() const { return race_; }
 
-    void changeRace(MachPhys::Race r);
+    void setNotifiedRace(MachPhys::Race race);
 
 private:
     MachLogNotifiable(const MachLogNotifiable&);

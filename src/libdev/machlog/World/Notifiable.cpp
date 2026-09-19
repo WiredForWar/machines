@@ -33,9 +33,9 @@ void MachLogNotifiable::CLASS_INVARIANT
     INVARIANT(this != nullptr);
 }
 
-void MachLogNotifiable::changeRace(MachPhys::Race r)
+void MachLogNotifiable::setNotifiedRace(MachPhys::Race race)
 {
-    race_ = r;
+    race_ = race;
 }
 
 //////////////////////////////////////////////////////////////////////////////

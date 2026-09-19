@@ -940,7 +940,7 @@ void MachGuiConstructionNavigator::loadGame()
 {
     PRE(pConstructionTree_ == nullptr);
 
-    changeRace(MachLogRaces::instance().playerRace());
+    setNotifiedRace(MachLogRaces::instance().playerRace());
 
     pConstructionTree_ = &MachLogRaces::instance().constructionTree();
     pConstructionTree_->addMe(this);
@@ -1045,40 +1045,40 @@ void MachGuiConstructionNavigator::refreshConstructIcons()
 {
     PRE(pConstructionTree_ != nullptr);
 
-    if (pConstructionTree_->activated(race(), MachLog::MISSILE_EMPLACEMENT, MachPhys::TURRET))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::MISSILE_EMPLACEMENT, MachPhys::TURRET))
         pTurretButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::MISSILE_EMPLACEMENT, MachPhys::SENTRY))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::MISSILE_EMPLACEMENT, MachPhys::SENTRY))
         pSentryButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::MISSILE_EMPLACEMENT, MachPhys::LAUNCHER))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::MISSILE_EMPLACEMENT, MachPhys::LAUNCHER))
         pLauncherButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::MISSILE_EMPLACEMENT, MachPhys::ICBM))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::MISSILE_EMPLACEMENT, MachPhys::ICBM))
         pICBMButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::FACTORY, MachPhys::CIVILIAN))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::FACTORY, MachPhys::CIVILIAN))
         pCivFacButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::FACTORY, MachPhys::MILITARY))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::FACTORY, MachPhys::MILITARY))
         pMilFacButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::HARDWARE_LAB, MachPhys::LAB_CIVILIAN))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::HARDWARE_LAB, MachPhys::LAB_CIVILIAN))
         pCivLabButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::HARDWARE_LAB, MachPhys::LAB_MILITARY))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::HARDWARE_LAB, MachPhys::LAB_MILITARY))
         pMilLabButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::SMELTER))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::SMELTER))
         pSmelterButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::MINE))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::MINE))
         pMineButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::GARRISON))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::GARRISON))
         pGarrisonButton_->isSwitchedOn(true);
 
-    if (pConstructionTree_->activated(race(), MachLog::BEACON))
+    if (pConstructionTree_->activated(notifiedRace(), MachLog::BEACON))
         pBeaconButton_->isSwitchedOn(true);
 
     pRow1_->update();
@@ -1336,7 +1336,7 @@ void MachGuiMachineNavigator::loadGame()
 {
     PRE(pResearchTree_ == nullptr);
 
-    changeRace(MachLogRaces::instance().playerRace());
+    setNotifiedRace(MachLogRaces::instance().playerRace());
 
     pResearchTree_ = &MachLogRaces::instance().researchTree();
     pResearchTree_->addMe(this);
@@ -1439,58 +1439,58 @@ void MachGuiMachineNavigator::notifiableBeNotified()
 
 void MachGuiMachineNavigator::refreshMachineIcons()
 {
-    if (pResearchTree_->activated(race(), MachLog::AGGRESSOR, MachPhys::GRUNT))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::AGGRESSOR, MachPhys::GRUNT))
         pGruntButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::AGGRESSOR, MachPhys::ASSASSIN))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::AGGRESSOR, MachPhys::ASSASSIN))
         pAssassinButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::AGGRESSOR, MachPhys::BALLISTA))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::AGGRESSOR, MachPhys::BALLISTA))
         pBallistaButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::AGGRESSOR, MachPhys::KNIGHT))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::AGGRESSOR, MachPhys::KNIGHT))
         pKnightButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::AGGRESSOR, MachPhys::NINJA))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::AGGRESSOR, MachPhys::NINJA))
         pNinjaButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::ADMINISTRATOR, MachPhys::BOSS))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::ADMINISTRATOR, MachPhys::BOSS))
         pBossButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::ADMINISTRATOR, MachPhys::OVERSEER))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::ADMINISTRATOR, MachPhys::OVERSEER))
         pOverseerButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::ADMINISTRATOR, MachPhys::COMMANDER))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::ADMINISTRATOR, MachPhys::COMMANDER))
         pCommanderButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::TECHNICIAN, MachPhys::LAB_TECH))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::TECHNICIAN, MachPhys::LAB_TECH))
         pLabTechButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::TECHNICIAN, MachPhys::TECH_BOY))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::TECHNICIAN, MachPhys::TECH_BOY))
         pTechBoyButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::TECHNICIAN, MachPhys::BRAIN_BOX))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::TECHNICIAN, MachPhys::BRAIN_BOX))
         pBrainBoxButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::CONSTRUCTOR, MachPhys::DOZER))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::CONSTRUCTOR, MachPhys::DOZER))
         pDozerButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::CONSTRUCTOR, MachPhys::BUILDER))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::CONSTRUCTOR, MachPhys::BUILDER))
         pBuilderButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::CONSTRUCTOR, MachPhys::BEHEMOTH))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::CONSTRUCTOR, MachPhys::BEHEMOTH))
         pBehemothButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::GEO_LOCATOR))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::GEO_LOCATOR))
         pGeoLocatorButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::SPY_LOCATOR))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::SPY_LOCATOR))
         pSpyLocatorButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::RESOURCE_CARRIER))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::RESOURCE_CARRIER))
         pResourceCarrierButton_->isSwitchedOn(true);
 
-    if (pResearchTree_->activated(race(), MachLog::APC))
+    if (pResearchTree_->activated(notifiedRace(), MachLog::APC))
         pAPCButton_->isSwitchedOn(true);
 
     pRow1_->update();

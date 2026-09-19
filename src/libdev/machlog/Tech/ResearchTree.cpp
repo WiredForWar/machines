@@ -340,7 +340,7 @@ void MachLogResearchTree::updated(MachPhys::Race r)
         for (Notifiables::iterator i = notifiables_.begin(); i != notifiables_.end(); ++i)
         {
             // only notify an observer of the same race type as that for which the tree is being updated.
-            if ((*i)->race() == r)
+            if ((*i)->notifiedRace() == r)
             {
                 (*i)->notifiableBeNotified();
             }

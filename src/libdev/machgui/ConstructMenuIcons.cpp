@@ -104,9 +104,9 @@ void MachConstructMenuIcons::refreshConstructIcons()
     MachLogConstructionTree::ConstructionItems::iterator i = consItems.begin();
     // The activated check has to occur inside the loop as individual items may be deactivated
     // This is slightly less efficient as we will now trawl through the whole lot.
-    while (i != consItems.end() /*and (*i)->activated( race() )*/)
+    while (i != consItems.end() /*&& (*i)->activated(notifiedRace())*/)
     {
-        if ((*i)->activated(race()))
+        if ((*i)->activated(notifiedRace()))
             new MachConstructionSelectIcon(this, pInGameScreen_, *(*i));
         ++i;
     }
