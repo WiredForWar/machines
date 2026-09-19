@@ -34,7 +34,7 @@ MachHWResearchIcons::MachHWResearchIcons(
         MachHWResearchIcon::reqWidth(),
         MachHWResearchIcon::reqHeight(),
         3)
-    , MachLogNotifiable(MachLogRaces::instance().playerRace())
+    , MachLogNotifiable(pHardwareLab->race())
     , pHWResearchBank_(pHWResearchBank)
     , pHardwareLab_(pHardwareLab)
     , pInGameScreen_(pInGameScreen)

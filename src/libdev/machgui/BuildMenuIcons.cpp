@@ -32,9 +32,10 @@ MachBuildMenuIcons::MachBuildMenuIcons(
         MachBuildMachineIcon::reqWidth(),
         MachBuildMachineIcon::reqHeight(),
         3)
-    , MachLogNotifiable(MachLogRaces::instance().playerRace())
-    , // What race is the PC controller controlling?
-    researchTree_(MachLogRaces::instance().researchTree())
+    // These icons are what the factory's race has researched, so that is the
+    // race whose research changes rebuild them.
+    , MachLogNotifiable(pFactory_->race())
+    , researchTree_(MachLogRaces::instance().researchTree())
     , pInGameScreen_(pInGameScreen_)
     , pFactory_(pFactory_)
     , pProductionBank_(pProductionBank_)
