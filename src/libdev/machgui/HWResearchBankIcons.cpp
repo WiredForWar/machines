@@ -32,6 +32,9 @@ MachHWResearchBankIcons::MachHWResearchBankIcons(
 
 void MachHWResearchBankIcons::onIconClicked(MachHWResearchBankIcon* pIcon)
 {
+    if (!MachGui::canCommand(pHardwareLab_->race()))
+        return;
+
     pHardwareLab_->removeResearchItem(*pIcon->researchItem());
 
     updateIcons();

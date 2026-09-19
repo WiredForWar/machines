@@ -35,6 +35,9 @@ MachProductionIcons::MachProductionIcons(
 
 void MachProductionIcons::onIconClicked(MachProductionIcon* pIcon)
 {
+    if (!MachGui::canCommand(pFactory_->race()))
+        return;
+
     pFactory_->cancelProductionUnit(pIcon->productionUnit());
 
     updateIcons();

@@ -10,6 +10,7 @@
 #include "machgui/ActorBitmaps.hpp"
 #include "machgui/InGameScreen.hpp"
 #include "machgui/ActorStringIdRestorer.hpp"
+#include "machgui/gui.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/HardwareLab.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
@@ -118,6 +119,9 @@ void MachHWResearchIcon::doBeDepressed(const GuiMouseEvent&)
 // virtual
 void MachHWResearchIcon::doBeReleased(const GuiMouseEvent&)
 {
+    if (!MachGui::canCommand(pHardwareLab_->race()))
+        return;
+
     // Add the item to the queue
     if (pHardwareLab_->addResearchItem(*pResearchItem_))
     {

@@ -296,12 +296,9 @@ void MachGuiCorralSingleIconInfo::doDisplay()
         std::string concat = iconInfo.asString();
         concat += "\n";
 
-        MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
         if (pActor_->objectIsConstruction() && ! pActor_->asConstruction().isComplete())
         {
-            // Only display extra info if the actor is ours.
-            if (pActor_->race() == playerRace)
+            if (MachGui::canSeeDetails(pActor_->race()))
             {
                 char buffer[20];
 
@@ -324,7 +321,7 @@ void MachGuiCorralSingleIconInfo::doDisplay()
             MachPhys::HitPointUnits maxHp = objData.hitPoints();
             MachPhys::HitPointUnits hp = pActor_->hp();
 
-            if (pActor_->race() == playerRace)
+            if (MachGui::canSeeDetails(pActor_->race()))
             {
                 // Display actor specific info
                 std::string actorSpecificInfoStr;

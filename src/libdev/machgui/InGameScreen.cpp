@@ -1563,10 +1563,8 @@ void MachInGameScreen::mainMenuOrSingleFactoryContext()
     // Check to see if we have one selected factory. If we do then we switch straight into
     // build menu.
     const MachInGameScreen::Actors& selectionSet = selectedActors();
-    MachLogRaces& races = MachLogRaces::instance();
     if (selectionSet.size() == 1 && // Only consider when one actor selected
-        races.hasPCRace() && // PC race must exist
-        selectionSet.front()->race() == races.playerRace()) // factory must belong to PC race
+        MachGui::canSeeDetails(selectionSet.front()->race()))
     {
         if (selectionSet.front()->objectType() == MachLog::FACTORY) // actor is factory
         {
@@ -1890,9 +1888,6 @@ void MachInGameScreen::cursor2d(MachGui::Cursor2dType type, MachInGameCursors2d:
 
 void MachInGameScreen::setupActorBank()
 {
-    // Get the friendly race id
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // check for a single selected actor, and get its pointer
     MachActor* pSelectedActor = (selectedActors_.size() == 1 ? selectedActors_.front() : nullptr);
     MachLogFactory* pFactory = nullptr;
@@ -1911,7 +1906,7 @@ void MachInGameScreen::setupActorBank()
 
         showProductionBank = pFactory != nullptr
             && (controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::SINGLE_FACTORY)
-            && pFactory->race() == playerRace;
+            && MachGui::canSeeDetails(pFactory->race());
 
         // See if the hw research bank is appropriate.
         // Must have a friendly, complete hw lab, and be in the main or hw research menus
@@ -1920,7 +1915,7 @@ void MachInGameScreen::setupActorBank()
 
         showHWResearchBank = pHardwareLab != nullptr
             && (controlPanelContext_ == MachGui::MAIN_MENU || controlPanelContext_ == MachGui::HARDWARE_RESEARCH)
-            && pHardwareLab->race() == playerRace;
+            && MachGui::canSeeDetails(pHardwareLab->race());
     }
 
     // Delete any unwanted banks, also watching for banks for an old actor

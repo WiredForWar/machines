@@ -10,6 +10,7 @@
 #include "machgui/ActorBitmaps.hpp"
 #include "machgui/ActorStringIdRestorer.hpp"
 #include "machgui/InGameScreen.hpp"
+#include "machgui/gui.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Factory.hpp"
 #include "machlog/Tech/ResearchItem.hpp"
@@ -70,6 +71,9 @@ void MachBuildMachineIcon::doBeDepressed(const GuiMouseEvent&)
 // virtual
 void MachBuildMachineIcon::doBeReleased(const GuiMouseEvent&)
 {
+    if (!MachGui::canCommand(pFactory_->race()))
+        return;
+
     // Add the item to the queue
     // TBD: Hardcode sware level of 1 should be obtained from research data once implemented
     pFactory_->buildMachine(
