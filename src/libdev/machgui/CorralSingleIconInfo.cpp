@@ -17,7 +17,6 @@
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Actors/Construction.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/ResourceCarrier.hpp"
 #include "machlog/Actors/Technician.hpp"
@@ -101,16 +100,13 @@ public:
                 pInGameScreen_->deselectAll();
             }
 
-            MachLogRaces& races = MachLogRaces::instance();
-            MachPhys::Race playerRace = races.playerRace();
-
             // Iterate through all machines inside building selecting friendly machines
             const MachLogConstruction* pConstConstruction = pConstruction_;
             for (MachLogConstruction::Machines::const_iterator iter = pConstConstruction->machines().begin();
                  iter != pConstConstruction->machines().end();
                  ++iter)
             {
-                if ((*iter)->selectionState() != MachLog::SELECTED && (*iter)->race() == playerRace)
+                if ((*iter)->selectionState() != MachLog::SELECTED && MachGui::canCommand((*iter)->race()))
                 {
                     pInGameScreen_->select(*iter);
                 }
@@ -609,13 +605,12 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
                 // Only make "select all inside building" button visible if there are friendly
                 // machines in the building
                 bool friendlyMachineInside = false;
-                MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
 
                 for (MachLogConstruction::Machines::const_iterator iter = construction.machines().begin();
                      iter != construction.machines().end() && ! friendlyMachineInside;
                      ++iter)
                 {
-                    if ((*iter)->race() == playerRace)
+                    if (MachGui::canCommand((*iter)->race()))
                     {
                         friendlyMachineInside = true;
                     }
@@ -629,12 +624,10 @@ void MachGuiCorralSingleIcon::setActor(MachActor* pActor, bool forceUpdate)
         }
         else if (pActor->objectIsMachine())
         {
-            MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
             pSelectInsideBuildingIcon_->setVisible(false);
 
             // Check that machine can be entered...
-            bool headIconVisible = pActor->race() == playerRace && ! pActor->asMachine().insideAPC();
+            bool headIconVisible = MachGui::canCommand(pActor->race()) && !pActor->asMachine().insideAPC();
 
             // Extra check if multiplayer game cus you can disable 1st person
             if (headIconVisible && pInGameScreen_->isFirstPersonDisabled())

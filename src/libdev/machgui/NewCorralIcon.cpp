@@ -320,8 +320,7 @@ void MachCorralIcons::add(MachActor* pActor)
     new MachGuiCorralResource(this, Gui::Coord(0, 0), pActor, pInGameScreen_);
 
     // note that "selected" voicemail is only given in the case of the first actor put into the corral
-    if (pActor->objectIsMachine() && pActor->race() == MachLogRaces::instance().playerRace()
-        && pCorral_->actors_.size() == 1)
+    if (pActor->objectIsMachine() && MachGui::canCommand(pActor->race()) && pCorral_->actors_.size() == 1)
     {
         // give voicemail
         MachLogMachineVoiceMailManager::instance().postNewMail(*pActor, MachineVoiceMailEventID::SELECTED);

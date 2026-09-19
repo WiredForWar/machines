@@ -8,6 +8,7 @@
 #include "CommandStop.hpp"
 
 #include "machgui/InGameScreen.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/commands/CommandSelfDestruct.hpp"
 #include "machgui/internal/strings.hpp"
 #include "world4d/Scene/Domain.hpp"
@@ -15,7 +16,6 @@
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Operations/Strategy.hpp"
 #include "machlog/Actors/Administrator.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Actors/Squadron.hpp"
 
 MachGuiStopCommand::MachGuiStopCommand(MachInGameScreen* pInGameScreen)
@@ -48,11 +48,9 @@ std::ostream& operator<<(std::ostream& o, const MachGuiStopCommand& t)
 // virtual
 bool MachGuiStopCommand::canActorEverExecute(const MachActor& actor) const
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
-    // Machines/Missile emplacements can stop what they are doing, must be players machine
+    // Machines/Missile emplacements can stop what they are doing
     return (actor.objectIsMachine() || actor.objectType() == MachLog::MISSILE_EMPLACEMENT)
-        && actor.race() == playerRace;
+        && MachGui::canCommand(actor.race());
 }
 
 // virtual

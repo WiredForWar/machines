@@ -1195,11 +1195,8 @@ void MachInGameScreen::asynchronousUpdate()
         commandBankNeedsUpdating_ = false;
 
         // Run along the commands, setting the visibility flag.
-        // However, if no selections, or first is foreign race, then no command should
-        // be visible.
-        MachLogRaces& races = MachLogRaces::instance();
-        bool forceInvisible = selectedActors_.size() == 0 || ! races.hasPCRace()
-            || selectedActors_.front()->race() != races.playerRace();
+        bool forceInvisible
+            = selectedActors_.size() == 0 || !MachGui::canCommand(selectedActors_.front()->race());
 
         for (const auto& pCommand : allCommands_)
         {

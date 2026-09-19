@@ -8,10 +8,10 @@
 #include "CommandCamouflage.hpp"
 
 #include "machgui/InGameScreen.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/internal/strings.hpp"
 #include "machlog/Actors/Actor.hpp"
 #include "machlog/Actors/Machine.hpp"
-#include "machlog/Races.hpp"
 #include "machlog/Messaging/Network.hpp"
 #include "world4d/Scene/Domain.hpp"
 
@@ -45,10 +45,8 @@ std::ostream& operator<<(std::ostream& o, const MachGuiCamouflageCommand& t)
 // virtual
 bool MachGuiCamouflageCommand::canActorEverExecute(const MachActor& actor) const
 {
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     return MachLogNetwork::instance().isNetworkGame() && actor.objectType() == MachLog::SPY_LOCATOR
-        && actor.race() == playerRace;
+        && MachGui::canCommand(actor.race());
 }
 
 // virtual

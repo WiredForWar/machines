@@ -11,6 +11,7 @@
 #include "mathex/Point3d.hpp"
 #include "machgui/InputRegistry.hpp"
 #include "machgui/IntelligentCursorOnActor.hpp"
+#include "machgui/gui.hpp"
 #include "machgui/commands/CommandAttack.hpp"
 #include "machgui/commands/CommandMove.hpp"
 #include "machgui/commands/CommandConstruct.hpp"
@@ -362,9 +363,6 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
 
     // Check for a legal move position with at least one friendly machine selected
 
-    // Get player race
-    MachPhys::Race playerRace = MachLogRaces::instance().playerRace();
-
     // Check for any selected actors
     const MachInGameScreen::Actors& selectedActors = inGameScreen().selectedActors();
     if (selectedActors.size() != 0)
@@ -386,7 +384,7 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
         const auto& altCursorBind = MachGui::inputRegistry()->getBinds("alternative-cursor"_bind);
         if (pSelectedActor)
         {
-            if (pSelectedActor->objectIsMachine() && pSelectedActor->race() == playerRace)
+            if (pSelectedActor->objectIsMachine() && MachGui::canCommand(pSelectedActor->race()))
             {
                 // If we are outside a building then we need to check if we are trying to move
                 // to a valid domain
@@ -418,8 +416,8 @@ MachGui::Cursor2dType MachGuiDefaultCommand::cursorOnTerrain(const MexPoint3d& l
             }
             // Factories get the "assemble at" cursor as an alternative
             else if (
-                pSelectedActor->objectType() == MachLog::FACTORY && pSelectedActor->race() == playerRace
-                && altCursorBind.modifiersMatch(modifiers))
+                pSelectedActor->objectType() == MachLog::FACTORY
+                && MachGui::canCommand(pSelectedActor->race()) && altCursorBind.modifiersMatch(modifiers))
             {
                 if (cursorInFogOfWar() || isPointValidOnTerrain(location, IGNORE_SELECTED_ACTOR_OBSTACLES))
                 {
