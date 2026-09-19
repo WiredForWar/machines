@@ -276,10 +276,7 @@ void MachSquadronIcon::doHandleMouseExitEvent(const GuiMouseEvent& mouseEvent)
 
 std::string MachGuiIconWithCounter::getRootDirectory() const
 {
-    if (!MachLogRaces::instance().hasPCRace())
-        return "gui/navigate/red/";
-
-    return "gui/navigate/" + MachGui::raceDirectoryName(MachLogRaces::instance().playerRace()) + "/";
+    return "gui/navigate/" + MachGui::raceDirectoryName(MachGui::uiRace()) + "/";
 }
 
 void MachConstructionsIcon::loadGame()

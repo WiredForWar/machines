@@ -407,13 +407,14 @@ protected:
                 break;
         }
 
-        if (grey || ! MachLogRaces::instance().hasPCRace())
+        const std::optional<MachPhys::Race> uiRace = MachGui::uiRace();
+        if (grey || !uiRace.has_value())
         {
             retValue += "grey/";
         }
         else
         {
-            retValue += MachGui::raceDirectoryName(MachLogRaces::instance().playerRace()) + "/";
+            retValue += MachGui::raceDirectoryName(*uiRace) + "/";
         }
 
         switch (objType)
