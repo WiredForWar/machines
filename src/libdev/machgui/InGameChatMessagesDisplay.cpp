@@ -62,7 +62,8 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
         Ren::Painter(textBmp_).clearRectangle(textBmp_.size());
 
         // Render up to five lines of chat messages
-        int fontHeight = shadowFont_.height() + 1;
+        const Ren::Point shadowOffset = Ren::Point(1, 1) * Gui::uiScaleFactor();
+        const int fontHeight = static_cast<int>(shadowFont_.height()) + shadowOffset.y;
         int index = 0;
 
         Ren::Painter bmpPainter(textBmp_);
@@ -70,8 +71,10 @@ void MachGuiInGameChatMessagesDisplay::doDisplay()
              iter != MachGuiInGameChatMessages::instance().messages().end();
              ++iter)
         {
-            bmpPainter.drawText(*iter, Ren::Point(1, 1 + (fontHeight * index)), shadowFont_, width());
-            bmpPainter.drawText(*iter, Ren::Point(0, fontHeight * index), font_, width());
+            const Ren::Point lineAt(0, fontHeight * index);
+
+            bmpPainter.drawText(*iter, lineAt + shadowOffset, shadowFont_, width());
+            bmpPainter.drawText(*iter, lineAt, font_, width());
             ++index;
         }
     }
