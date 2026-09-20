@@ -397,24 +397,7 @@ bool MachPromptText::doHandleKeyEvent(const GuiKeyEvent& event)
                             = MachGuiInGameChatMessages::instance().opponentRace(opponentIndex_);
 
                         // Add coloured token to beginning of message
-                        switch (chatMessageIntendedForRace_)
-                        {
-                            case MachPhys::RED:
-                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::redCharIndex());
-                                break;
-                            case MachPhys::GREEN:
-                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::greenCharIndex());
-                                break;
-                            case MachPhys::BLUE:
-                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::blueCharIndex());
-                                break;
-                            case MachPhys::YELLOW:
-                                chatMessageIntendedForStr_.assign(1, GuiBmpFont::yellowCharIndex());
-                                break;
-                            default:
-                                ASSERT_FAIL("Invalid race for a chat message");
-                                break;
-                        }
+                        chatMessageIntendedForStr_.assign(1, MachGui::raceIconIndex(chatMessageIntendedForRace_));
                         GuiResourceString sendToStr(IDS_SENDTO);
                         chatMessageIntendedForStr_ += sendToStr.asString();
                         chatMessageIntendedForStr_
@@ -545,21 +528,7 @@ void MachPromptText::submit()
         std::string chatMessageStr;
 
         // Add coloured token to beginning of message
-        switch (MachGuiInGameChatMessages::instance().playerRace())
-        {
-        case MachPhys::RED:
-            chatMessageStr += GuiBmpFont::redCharIndex();
-            break;
-        case MachPhys::GREEN:
-            chatMessageStr += GuiBmpFont::greenCharIndex();
-            break;
-        case MachPhys::BLUE:
-            chatMessageStr += GuiBmpFont::blueCharIndex();
-            break;
-        case MachPhys::YELLOW:
-            chatMessageStr += GuiBmpFont::yellowCharIndex();
-            break;
-        }
+        chatMessageStr += MachGui::raceIconIndex(MachGuiInGameChatMessages::instance().playerRace());
         chatMessageStr += MachGuiInGameChatMessages::instance().playerName();
         chatMessageStr += ": ";
         chatMessageStr += trimmedText;

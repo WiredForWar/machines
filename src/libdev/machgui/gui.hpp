@@ -24,6 +24,8 @@ const std::string& raceDirectoryName(MachPhys::Race race);
 
 const std::string& raceDirectoryName(std::optional<MachPhys::Race> race);
 
+char raceIconIndex(MachPhys::Race race);
+
 // What the person at the keyboard may see and do.
 
 // The race whose colours the interface wears, or no race when the interface

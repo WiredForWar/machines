@@ -19,6 +19,8 @@
 #include "machlog/Actors/CanAttack.hpp"
 #include "machlog/Actors/Machine.hpp"
 #include "machlog/Races.hpp"
+#include "render/BmpFont.hpp"
+
 #include <cassert>
 
 const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
@@ -38,6 +40,27 @@ const std::string& MachGui::raceDirectoryName(MachPhys::Race race)
 const std::string& MachGui::raceDirectoryName(std::optional<MachPhys::Race> race)
 {
     return raceDirectoryName(race.value_or(MachPhys::RED));
+}
+
+char MachGui::raceIconIndex(MachPhys::Race race)
+{
+    switch (race)
+    {
+        case MachPhys::RED:
+            return GuiBmpFont::redCharIndex();
+        case MachPhys::GREEN:
+            return GuiBmpFont::greenCharIndex();
+        case MachPhys::BLUE:
+            return GuiBmpFont::blueCharIndex();
+        case MachPhys::YELLOW:
+            return GuiBmpFont::yellowCharIndex();
+
+        case MachPhys::N_RACES:
+        case MachPhys::NORACE:
+            break;
+    }
+
+    return GuiBmpFont::redCharIndex();
 }
 
 // The race being played here, or none when the game is running without anybody
