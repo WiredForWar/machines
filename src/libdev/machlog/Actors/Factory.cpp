@@ -569,6 +569,8 @@ void MachLogFactory::moveProductionUnit(MachLogProductionUnit* pUnit, MachLogFac
                 default:
                     ASSERT_BAD_CASE;
             }
+
+            return;
         }
 }
 
