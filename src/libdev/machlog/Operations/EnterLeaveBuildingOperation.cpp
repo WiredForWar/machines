@@ -1042,6 +1042,18 @@ PhysRelativeTime MachLogLeaveBuildingOperation::doUpdate()
 
         case MOVE_TO_EXTERNAL_POINT:
             {
+                // Retake the entrance if it was released on the way to the internal point.
+                if (!pActor_->hasLockedEntrance())
+                {
+                    if (!pConstruction_->entrance(0).lock())
+                    {
+                        callBackInterval = 1.0;
+                        break;
+                    }
+
+                    pActor_->entranceLocked(&pConstruction_->entrance(0));
+                }
+
                 ASSERT(pActor_->hasLockedEntrance(), "");
 
                 // Ensure the door is open
