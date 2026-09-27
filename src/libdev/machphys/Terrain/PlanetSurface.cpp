@@ -57,6 +57,10 @@
 #include "machphys/Terrain/PlanetSurface.ipp"
 #endif
 
+#include <vector>
+
+#include <cstddef>
+
 PER_DEFINE_PERSISTENT(MachPhysPlanetSurface);
 
 // I can't believe Iain had to write this ! (see meshload.cpp)
@@ -871,17 +875,24 @@ void MachPhysPlanetSurface::pathProfile(
 
     PATH_PROFILE_STREAM("Points:\n" << points);
 
-    MexGrid2d::Points::const_iterator pointIterator = points.begin();
+    // Profile only pieces with distinct endpoints in the tile's local space.
+    struct Piece
+    {
+        MachPhysTerrainTile* pTile{};
+        MexPoint3d start{};
+        MexPoint3d finish{};
+    };
 
+    std::vector<Piece> pieces;
+    pieces.reserve(cells.size());
+    MexGrid2d::Points::const_iterator pointIterator = points.begin();
     for (MexGrid2d::Cells::const_iterator i = cells.begin(); i != cells.end(); ++i, ++pointIterator)
     {
         MachPhysTerrainTile* pTile = tileArray_[(*i).yIndex()][(*i).xIndex()];
-        const MachPhysTileData& tileData = pTile->tileData();
 
         // Get the inverse of its transform
         MexTransform3d tileInverseTransform;
-        const MexTransform3d& tileTransform = pTile->globalTransform();
-        tileTransform.invert(&tileInverseTransform);
+        pTile->globalTransform().invert(&tileInverseTransform);
 
         // Compute the line's coordinates in the tile's local space
         MexPoint3d tileStartPoint(*pointIterator);
@@ -894,22 +905,29 @@ void MachPhysPlanetSurface::pathProfile(
         PATH_PROFILE_INSPECT(tileFinishPoint);
         tileInverseTransform.transform(&tileFinishPoint);
 
-        size_t profileStartIndex = pProfile->size();
+        const bool last = i + 1 == cells.end();
+        if (tileStartPoint != tileFinishPoint || (last && pieces.empty()))
+            pieces.push_back(Piece{ .pTile = pTile, .start = tileStartPoint, .finish = tileFinishPoint });
+    }
 
-        tileData.pathProfile(tileStartPoint, tileFinishPoint, pProfile);
+    for (std::size_t piece = 0; piece != pieces.size(); ++piece)
+    {
+        const MachPhysTileData& tileData = pieces[piece].pTile->tileData();
+        const MexTransform3d& tileTransform = pieces[piece].pTile->globalTransform();
 
-        //  Unless we're dealing with the very last cell get rid of the very
+        std::size_t profileStartIndex = pProfile->size();
+
+        tileData.pathProfile(pieces[piece].start, pieces[piece].finish, pProfile);
+
+        //  Unless we're dealing with the very last piece get rid of the very
         //  last profile position because this will be duplicated by the first
-        //  position of the next cell.
-        MexGrid2d::Cells::const_iterator j = i;
-        ++j;
-
-        if (j != cells.end() && pProfile->size() != 0)
+        //  position of the next piece.
+        if (piece + 1 != pieces.size() && pProfile->size() != 0)
             pProfile->pop_back();
 
         //  get all of the profile points converted to the planet's coordinate system
 
-        for (size_t j = profileStartIndex; j < pProfile->size(); ++j)
+        for (std::size_t j = profileStartIndex; j < pProfile->size(); ++j)
         {
             MexTransform3d& tx = (*pProfile)[j];
             tx.preTransform(tileTransform);
