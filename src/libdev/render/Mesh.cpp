@@ -42,6 +42,8 @@
 #include <algorithm>
 #include <memory>
 
+#include <climits>
+
 // statics
 uint32_t RenMesh::meshCount_ = 0;
 uint32_t RenMesh::maxVertices_ = 0;
