@@ -97,6 +97,12 @@ PhysRelativeTime MachLogTransportOperation::doUpdate()
     if (pSubOperation())
         return 2.0;
 
+    if (!pActor_->hasSuppliers() && pActor_->amountCarried() == 0)
+    {
+        finished_ = true;
+        return 1.0;
+    }
+
     // have we done the pickUp operation yet?
     if (! donePickUp_)
     {
