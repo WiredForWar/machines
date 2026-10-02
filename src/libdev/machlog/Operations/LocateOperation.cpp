@@ -240,33 +240,33 @@ PhysRelativeTime MachLogLocateOperation::doUpdate()
         {
             --currentElement_;
             path_.erase(path_.begin());
-            if (! pSubOperation() && ! pActor_->motionSeq().hasDestination())
-            {
-                while (! pActor_->motionSeq().targetPositionContainedInSpace(path_.front()))
-                {
-                    if (path_.size() == 1)
-                    {
-                        MexTransform3d trans(path_.front());
-                        MATHEX_SCALAR radius = 0;
-                        MexPoint2d dest;
-                        while (! MachLogSpacialManipulation::getNearestFreeSpacePoint(
-                            trans,
-                            radius,
-                            pActor_->highClearence(),
-                            &dest))
-                            radius += 20;
-                        path_.erase(path_.begin());
-                        path_.push_back(dest);
-                    }
-                    else
-                    {
-                        path_.erase(path_.begin());
-                    }
-                }
-                subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, MexPoint3d(path_.front())));
-                return 4.0;
-            }
         }
+    }
+
+    // A shuffle can still own the motion sequencer when the next checkpoint
+    // becomes ready. Retry once that movement finishes, even if the locator is
+    // no longer standing on the previous checkpoint. Otherwise the locate
+    // operation stays busy forever without a move and cannot be reassigned.
+    if (currentElement_ < path_.size() && !pActor_->motionSeq().hasDestination())
+    {
+        while (!pActor_->motionSeq().targetPositionContainedInSpace(path_.front()))
+        {
+            if (path_.size() == 1)
+            {
+                MexTransform3d trans(path_.front());
+                MATHEX_SCALAR radius = 0;
+                MexPoint2d dest;
+                while (!MachLogSpacialManipulation::getNearestFreeSpacePoint(
+                    trans, radius, pActor_->highClearence(), &dest))
+                    radius += 20;
+                path_.erase(path_.begin());
+                path_.push_back(dest);
+            }
+            else
+                path_.erase(path_.begin());
+        }
+        subOperation(pActor_, std::make_unique<MachLogMoveToOperation>(pActor_, MexPoint3d(path_.front())));
+        return 4.0;
     }
     return 1.0;
 }
