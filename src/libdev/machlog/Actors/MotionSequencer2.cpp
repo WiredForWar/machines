@@ -1208,12 +1208,6 @@ MachPhys::FinalState MachLogMachineMotionSequencer::finalStateToAimFor(
     //  By default we want to try and keep moving as much as possible
     MachPhys::FinalState finalState = MachPhys::IN_MOTION;
 
-    //  If we are at the limit of motion chunks that the network can handle
-    //  in a single go we have to come to rest.
-
-    if (motionChunkIds_.size() + 1 == MachLogMessageBroker::maximumMotionChunks())
-        finalState = MachPhys::AT_REST;
-
     //  If we are dealing with the last point on the path we must try and
     //  honour the caller's desired final state.
 
@@ -1240,6 +1234,12 @@ MachPhys::FinalState MachLogMachineMotionSequencer::finalStateToAimFor(
 
         LOG_INSPECT(angle.asScalar());
     }
+
+    // The budget must also apply to the last point of a nested swerve whose
+    // caller requested IN_MOTION. Otherwise that request overrides the stop
+    // and the outer path reserves a seventh chunk.
+    if (motionChunkIds_.size() + 1 >= MachLogMessageBroker::maximumMotionChunks())
+        finalState = MachPhys::AT_REST;
 
     LOG_INSPECT(finalState);
 
