@@ -643,7 +643,10 @@ void MachLogConstruction::advanceConstructionState(MachPhys::BuildingMaterialUni
 
     expectedHP = proportionOfTotalConstruction * constructionData().hitPoints();
 
-    setHPAndArmour(expectedHP - damageTaken, armour());
+    // Recreating a saved construction advances by zero. Keep its serialized
+    // health, including the one initial hit point of an unstarted building.
+    if (addUnits != 0)
+        setHPAndArmour(expectedHP - damageTaken, armour());
 
     // Get current time
     PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
