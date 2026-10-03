@@ -106,6 +106,11 @@ void MachGuiDbSavedGame::isCampaignGame(bool isIt)
     pData_->isCampaign_ = isIt;
 }
 
+bool MachGuiDbSavedGame::hasScenario() const
+{
+    return pData_->pDbScenario_ != nullptr;
+}
+
 MachGuiDbScenario& MachGuiDbSavedGame::scenario() const
 {
     return *(pData_->pDbScenario_);

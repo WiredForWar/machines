@@ -1162,6 +1162,12 @@ void saveGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
 
     const std::string& saveName = std::get<std::string>(request.arguments[0].value);
 
+    if (!pStartup->startupData()->scenario())
+    {
+        console.reportError("Cannot save: this game has no scenario catalogue entry.");
+        return;
+    }
+
     // Check for duplicate name
     const uint count = MachGuiDatabase::instance().nSavedGames();
     for (uint i = 0; i < count; ++i)
@@ -1256,6 +1262,12 @@ void loadGameCommand(MachGuiStartupScreens* pStartup, const Request& request, Co
     if (!pSavedGame)
     {
         console.writeLine("Save game not found. Use list_saves to see available saves.");
+        return;
+    }
+
+    if (!pSavedGame->hasScenario())
+    {
+        console.reportError("Cannot load: this saved game has no scenario catalogue entry.");
         return;
     }
 

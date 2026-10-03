@@ -52,6 +52,7 @@ public:
     void isCampaignGame(bool isIt);
 
     // Set/get the scenario used to start the game
+    bool hasScenario() const;
     MachGuiDbScenario& scenario() const;
     void scenario(MachGuiDbScenario* pDbScenario);
     // PRE( pDbScenario != NULL );
