@@ -1932,9 +1932,11 @@ void MachContinentMap::saveGame(PerOstream& outStream)
 
         RenDevice* dev = RenDevice::current();
         dev->beginImmediateCommands();
-        Ren::Painter visibleAreaPainter(visibleArea);
-        visibleAreaPainter.filledRectangle(visibleArea.size(), Gui::BLACK());
-        visibleAreaPainter.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
+        {
+            Ren::Painter visibleAreaPainter(visibleArea);
+            visibleAreaPainter.filledRectangle(visibleArea.size(), Gui::BLACK());
+            visibleAreaPainter.stretchBlit(mapVisibleArea_, Ren::BlitMode::Replace);
+        }
         dev->endImmediateCommands();
 
         visibleArea.write(outStream);
