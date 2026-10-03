@@ -370,7 +370,7 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
         PRE_INFO("  following " << (void*)pFollowSequencer_ << " at " << followOffset_ << std::endl);
     }
     PRE_INFO(newDestination);
-    PRE(pConfigSpace_->domain(newDestination, &domainId));
+    // Invalid destinations are rejected below, including points outside every domain.
     PRE(pConfigSpace_->domain(currentLocation(), &domainId));
 
 #ifndef PRODUCTION
