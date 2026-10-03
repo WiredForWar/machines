@@ -778,17 +778,6 @@ void MachLogFactory::loadGame()
                             hwLevel,
                             wc);
                         researchItems()[i][j].push_back(pRI);
-                        if (obType == MachLog::AGGRESSOR && hwLevel == 4)
-                        {
-                            MachLogResearchItem* pRI2 = &MachLogRaces::instance().researchTree().researchItem(
-                                obType,
-                                MachLogScenario::objectSubType(obType, parser.tokens()[2]),
-                                hwLevel,
-                                MachPhys::LR_LARGE_MISSILE_X2);
-                            researchItems()[i][1].push_back(pRI2);
-                            researchItems()[i][3].push_back(pRI2);
-                            researchItems()[i][5].push_back(pRI2);
-                        }
                     }
                 }
                 if (working)

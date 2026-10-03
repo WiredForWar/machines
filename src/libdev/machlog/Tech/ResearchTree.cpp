@@ -262,28 +262,6 @@ void MachLogResearchTree::readAllItems(const SysPathName& treePath)
                     pRI->swBuildingCost(i, swBuildingCost[i]);
                 }
 
-                if (obType == MachLog::AGGRESSOR && hwLevel == 4)
-                {
-                    MachLogResearchItem* pRI2 = new MachLogResearchItem(
-                        obType,
-                        subType,
-                        hwLevel,
-                        swLevel,
-                        1,
-                        researchCost,
-                        buildingCost,
-                        nullptr,
-                        hardwareLabSubType,
-                        MachPhys::LR_LARGE_MISSILE_X2);
-                    pRI2->factoryInstanceCost(100);
-                    for (int i = 1; i < 6; ++i)
-                    {
-                        pRI2->swTechnologyLevel(i, swTechLevel[i]);
-                        pRI2->swResearchCost(i, swResearchCost[i]);
-                        pRI2->swBuildingCost(i, swBuildingCost[i]);
-                    }
-                    researchItems_.push_back(pRI2);
-                }
             }
         }
         parser.parseNextLine();
