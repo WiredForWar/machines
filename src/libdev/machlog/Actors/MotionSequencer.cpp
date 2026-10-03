@@ -445,12 +445,14 @@ MachLogMachineMotionSequencer::destination(const MexPoint2d& newDestination, con
     }
     else
     {
-        CHANGE_STATE(INTERNAL_RESTING, "destination was not in config space");
+        // Stop the current journey before rejecting its replacement.
+        // Relabelling it as resting leaves motion chunks attached to the next move.
+        interval = stop();
 
         motionSucceeded_ = false;
         failureReason_ = DESTINATION_OCCUPIED;
 
-        interval = 3.0;
+        interval = std::max(interval, 3.0);
     }
 
     LOG_STREAM(*this);
