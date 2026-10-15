@@ -105,3 +105,14 @@ TEST(DomainRouteCacheTests, RemovedPortalInvalidatesAWarmDomainRoute)
     EXPECT_FALSE(route(space, 80, &points));
     EXPECT_TRUE(points.empty());
 }
+
+TEST(DomainRouteCacheTests, RepeatedDisconnectedQueriesCannotBecomeCachedSuccesses)
+{
+    PhysConfigSpace2d space(MexPoint2d(0, 0), MexPoint2d(100, 100), PhysConfigSpace2d::SUBTRACTIVE, 1, 1, 3, 3);
+    addFloor(space, false);
+    PhysConfigSpace2d::PortalPoints points;
+    ASSERT_FALSE(route(space, 50, &points));
+    EXPECT_TRUE(points.empty());
+    EXPECT_FALSE(route(space, 50, &points));
+    EXPECT_TRUE(points.empty());
+}

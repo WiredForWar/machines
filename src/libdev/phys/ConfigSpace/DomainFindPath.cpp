@@ -302,9 +302,10 @@ void PhysCS2dDomainFindPath::endMacroSearch()
             domainPath_.push_back(PortalPoint(portalId, distance));
         }
 
-        //  Cache the path for possible later use
-        impl.domainFindPathCache_
-            .addPath(startDomainId_, startPoint_, endDomainId_, endPoint_, clearance_, flags(), domainPath_, cacheGeneration_);
+        // A cache hit is treated as success, so failed searches must not be stored.
+        if (foundPath_)
+            impl.domainFindPathCache_
+                .addPath(startDomainId_, startPoint_, endDomainId_, endPoint_, clearance_, flags(), domainPath_, cacheGeneration_);
     }
 
     // Delete the algorithm
