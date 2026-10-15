@@ -58,6 +58,7 @@ append_test(DevKeyToCommandTranslator device/DevKeyToCommandTranslator.cpp)
 append_test(DevMusicResumeStoreTests device/MusicResumeStoreTests.cpp)
 #~:machlog current motion overlap
 append_test(CurrentMotionOverlapTests machlog/CurrentMotionOverlapTests.cpp)
+append_test(InitialMotionWaitTests machlog/InitialMotionWaitTests.cpp)
 #~:gui
 append_test(GuiBaselineTests gui/GuiBaselineTests.cpp)
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)

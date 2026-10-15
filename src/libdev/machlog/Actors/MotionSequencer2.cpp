@@ -13,6 +13,7 @@
 
 #include "machlog/Actors/MotionSequencer.hpp"
 #include "machlog/Actors/CurrentMotionOverlap.hpp"
+#include "machlog/Actors/InitialMotionWait.hpp"
 #include "machlog/Controllers/Controller.hpp"
 #include "machlog/Internal/SequencerData.hpp"
 #include "machlog/Internal/SequencerDebug.hpp"
@@ -851,8 +852,13 @@ bool MachLogMachineMotionSequencer::doReserveChunk(
     ObjectId collisionObjectId = ObjectId::invalidId();
     PhysAbsoluteTime collideTime = 0;
 
+    const PhysAbsoluteTime now{SimManager::instance().currentTime()};
+    const bool initialWait{motionChunkIds_.empty() && startSpeed == 0 && startTime > now
+        && motionChunk.startPoint().sqrEuclidianDistance(currentLocation()) <= 1e-12};
+    const PhysMotionChunk checkedMotion{initialWait ? machlogCoverInitialMotionWait(motionChunk, now) : motionChunk};
+
     bool motionPossible = pConfigSpace_->add(
-        motionChunk,
+        checkedMotion,
         pLogMobile_->id(),
         ignoreIds,
         chunkIntersections,
