@@ -7,21 +7,23 @@
 
 #include "phys/ConfigSpace/Internal/DomainFindPathCache.hpp"
 
-// static
-PhysCS2dDomainFindPathCache& PhysCS2dDomainFindPathCache::instance()
-{
-    static PhysCS2dDomainFindPathCache instance_;
-    return instance_;
-}
-
 PhysCS2dDomainFindPathCache::PhysCS2dDomainFindPathCache()
-    : oldestValue_(0)
-    , maxCacheValues_(10)
-    , succeed_(0)
-    , fail_(0)
+    : maxCacheValues_(10)
 {
 
     TEST_INVARIANT;
+}
+
+void PhysCS2dDomainFindPathCache::clear()
+{
+    cache_.clear();
+    oldestValue_ = 0;
+    ++generation_;
+}
+
+std::uint64_t PhysCS2dDomainFindPathCache::generation() const
+{
+    return generation_;
 }
 
 bool PhysCS2dDomainFindPathCache::findPath(
@@ -67,8 +69,12 @@ void PhysCS2dDomainFindPathCache::addPath(
     const MexPoint2d& endPoint,
     MATHEX_SCALAR clearance,
     ObstacleFlags flags,
-    const PortalPoints& path)
+    const PortalPoints& path,
+    std::uint64_t generation)
 {
+    // A sliced search may finish after its owning graph was invalidated.
+    if (generation != generation_)
+        return;
     PathData pathData(
         Point(startDomainId, startPoint),
         Point(endDomainId, endPoint),

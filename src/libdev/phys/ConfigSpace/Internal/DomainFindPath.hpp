@@ -24,6 +24,7 @@
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
 #include "phys/ConfigSpace/Internal/DomainGraph.hpp"
 #include "phys/ConfigSpace/Internal/DomainVertex.hpp"
+#include <cstdint>
 
 // Forward declarations
 
@@ -161,6 +162,7 @@ private:
     MATHEX_SCALAR clearance_;
     ObstacleFlags flags_;
     PhysPathFindingPriority priority_;
+    std::uint64_t cacheGeneration_{};
 };
 
 #ifdef _INLINE

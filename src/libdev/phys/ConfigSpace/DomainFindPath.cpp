@@ -172,7 +172,11 @@ void PhysCS2dDomainFindPath::startMacroSearch()
 
     PRE(state_ == PENDING_MACRO);
 
-    if (PhysCS2dDomainFindPathCache::instance()
+    PhysCS2dImpl& impl = *(pConfigSpace_->pImpl());
+    // Refresh permanent-polygon portal changes before consulting cached paths.
+    impl.updateDomainRegion();
+    cacheGeneration_ = impl.domainFindPathCache_.generation();
+    if (impl.domainFindPathCache_
             .findPath(startDomainId_, startPoint_, endDomainId_, endPoint_, clearance_, flags(), &domainPath_))
     {
         state_ = FINISHED;
@@ -180,14 +184,8 @@ void PhysCS2dDomainFindPath::startMacroSearch()
     }
     else
     {
-        PhysCS2dImpl& impl = *(pConfigSpace_->pImpl());
-
         // Enter the macro search phase
         state_ = MACRO;
-
-        // Ensure the domain vertex graph is up to date with respect to any permanent
-        // polygons that have been added
-        impl.updateDomainRegion();
 
         // Register as a domain graph user (reference-counted)
         impl.domainGraphInUse(true);
@@ -305,8 +303,8 @@ void PhysCS2dDomainFindPath::endMacroSearch()
         }
 
         //  Cache the path for possible later use
-        PhysCS2dDomainFindPathCache::instance()
-            .addPath(startDomainId_, startPoint_, endDomainId_, endPoint_, clearance_, flags(), domainPath_);
+        impl.domainFindPathCache_
+            .addPath(startDomainId_, startPoint_, endDomainId_, endPoint_, clearance_, flags(), domainPath_, cacheGeneration_);
     }
 
     // Delete the algorithm

@@ -31,6 +31,7 @@
 #include "phys/ConfigSpace/Internal/DomainArc.hpp"
 #include "phys/ConfigSpace/Internal/DomainVertex.hpp"
 #include "phys/ConfigSpace/Internal/DomainGraph.hpp"
+#include "phys/ConfigSpace/Internal/DomainFindPathCache.hpp"
 #include "phys/ConfigSpace/Internal/Polygon.hpp"
 #include "phys/ConfigSpace/Internal/FindPath.hpp"
 #include "phys/ConfigSpace/Internal/MotionChunk.hpp"
@@ -380,6 +381,7 @@ private:
 
     // Data members
     PhysConfigSpace2d& configSpace_; // The owning space
+    PhysCS2dDomainFindPathCache domainFindPathCache_{};
     MexAlignedBox2d boundary_;
     PhysConfigSpace2d::Mode mode_;
     FtlSerialIdGenerator domainIdGenerator_; // Generates domain ids

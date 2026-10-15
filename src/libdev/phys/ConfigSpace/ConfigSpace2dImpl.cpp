@@ -142,6 +142,7 @@ void PhysCS2dImpl::CLASS_INVARIANT
 
 void PhysCS2dImpl::add(PhysCS2dDomain* pDomain)
 {
+    domainFindPathCache_.clear();
     // Add the domain to the collection
     domains_.add(DomainMap::KeyValueAssoc(pDomain->id(), pDomain));
 
@@ -990,6 +991,7 @@ void PhysCS2dImpl::updateDomainRegion()
     // Check there is an out of date region
     if (domainRegionOutOfDate_)
     {
+        domainFindPathCache_.clear();
         // Create a collection of portal ids
         typedef ctl_vector<PhysConfigSpace2d::PortalId> PortalIds;
         PortalIds updatePortals;

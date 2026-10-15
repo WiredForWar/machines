@@ -18,14 +18,16 @@
 #include "ctl/Vector.hpp"
 #include "ctl/NoBoundsVector.hpp"
 #include "phys/ConfigSpace/ConfigSpace2d.hpp"
+#include <cstdint>
 
 class PhysCS2dDomainFindPathCache
 // Canonical form revoked
 {
 public:
-    //  Singleton class
-    static PhysCS2dDomainFindPathCache& instance();
     ~PhysCS2dDomainFindPathCache();
+
+    void clear();
+    std::uint64_t generation() const;
 
     using PortalPoints = PhysConfigSpace2d::PortalPoints;
 
@@ -47,11 +49,13 @@ public:
         const MexPoint2d& endPoint,
         MATHEX_SCALAR clearance,
         ObstacleFlags flags,
-        const PortalPoints& path);
+        const PortalPoints& path,
+        std::uint64_t generation);
 
     void CLASS_INVARIANT;
 
 private:
+    friend class PhysCS2dImpl;
     friend std::ostream& operator<<(std::ostream& o, const PhysCS2dDomainFindPathCache& t);
 
     PhysCS2dDomainFindPathCache(const PhysCS2dDomainFindPathCache&);
@@ -70,12 +74,13 @@ private:
 
     using Cache = ctl_vector<PathData>;
 
-    Cache cache_;
-    uint oldestValue_;
+    Cache cache_{};
+    uint oldestValue_{};
     const uint maxCacheValues_;
 
-    uint succeed_;
-    uint fail_;
+    uint succeed_{};
+    uint fail_{};
+    std::uint64_t generation_{};
 };
 
 #endif

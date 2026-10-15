@@ -170,6 +170,7 @@ void PhysConfigSpace2d::removeDomain(const DomainId& id)
 
     // Remove from map
     domains.remove(id);
+    impl_.domainFindPathCache_.clear();
 
     // Remove from the BSP Tree
     impl_.domainTree().remove(pDomain);
@@ -209,6 +210,7 @@ PhysConfigSpace2d::PortalId PhysConfigSpace2d::addPortal(
 
     // Enter in the portal map
     impl_.portals().add(id, pPortal);
+    impl_.domainFindPathCache_.clear();
 
     // Add the domain vertices to the portal
     impl_.addPortalDomainVertexs(id);
@@ -235,6 +237,7 @@ void PhysConfigSpace2d::removePortal(const PortalId& id)
 
     // Remove from the map
     portals.remove(id);
+    impl_.domainFindPathCache_.clear();
 
     // Remove the portal from the associated domains
     PhysCS2dImpl::DomainMap& domains = impl_.domains();
@@ -289,6 +292,7 @@ PhysConfigSpace2d::PolygonId PhysConfigSpace2d::add(
     // the region to be updated.
     if (type == PERMANENT)
     {
+        impl_.domainFindPathCache_.clear();
         if (impl_.domainRegionOutOfDate_)
             impl_.domainUpdateRegion_.unionWith(pPolygonHolder->boundary());
         else

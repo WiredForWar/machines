@@ -39,6 +39,8 @@ set(TESTING_THESE_GUYS
 )
 
 #### Test Cases
+#~:phys legacy domain routing
+append_test(DomainRouteCacheTests phys/DomainRouteCacheTests.cpp)
 #~:afx
 append_test(AfxConfigurationTests afx/AfxConfigurationTests.cpp)
 append_test(AfxInvokeArgsTests afx/AfxInvokeArgsTests.cpp)
