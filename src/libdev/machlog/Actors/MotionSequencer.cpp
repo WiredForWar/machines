@@ -2034,6 +2034,11 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
     ObjectId collisionObjectId;
     size_t nChunksReserved = reserveMotionChunks(&collisionObjectId);
 
+    // Traffic callbacks can reserve another machine's motion immediately.
+    // Keep our body visible before asking a blocker to move aside.
+    if (nChunksReserved == 0 && (!pImpl_->restingObstacleExists_ || !pImpl_->restingChunkExists_))
+        addRestingObstacle();
+
     LOG_STREAM("Reserved " << nChunksReserved << " chunks" << std::endl);
 
     motionInitiated = nChunksReserved > 0;
