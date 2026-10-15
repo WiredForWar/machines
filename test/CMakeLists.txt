@@ -56,6 +56,8 @@ append_test(DevEventQueueTests device/DevEventQueueTests.cpp)
 append_test(DevMouseTests device/DevMouseTests.cpp)
 append_test(DevKeyToCommandTranslator device/DevKeyToCommandTranslator.cpp)
 append_test(DevMusicResumeStoreTests device/MusicResumeStoreTests.cpp)
+#~:machlog current motion overlap
+append_test(CurrentMotionOverlapTests machlog/CurrentMotionOverlapTests.cpp)
 #~:gui
 append_test(GuiBaselineTests gui/GuiBaselineTests.cpp)
 append_test(GuiRootSharedBitmapsTests gui/GuiRootSharedBitmapsTests.cpp)

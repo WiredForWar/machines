@@ -12,6 +12,7 @@
 #define _TEST_INVARIANTS
 
 #include "machlog/Actors/MotionSequencer.hpp"
+#include "machlog/Actors/CurrentMotionOverlap.hpp"
 #include "machlog/Controllers/Controller.hpp"
 #include "machlog/Internal/SequencerData.hpp"
 #include "machlog/Internal/SequencerDebug.hpp"
@@ -1267,25 +1268,16 @@ void MachLogMachineMotionSequencer::getIntersectingIds(PhysConfigSpace2d::Object
 
     LOG_ENTER("getIntersectingIds");
 
-    //  Construct a dummy motion chunk corresponding to our current position
+    // Ignore only present overlap. An indefinite stationary probe also matches
+    // peers that cross this location later and wrongly ignores their whole plan.
     const PhysAbsoluteTime timeNow = SimManager::instance().currentTime();
-    const PhysMotionChunk motionChunk(
-        currentLocation(),
-        currentLocation(),
-        useClearance_,
-        PhysRampAcceleration(0.0, 400.0, -400.0, 0.01, 0.005, 0.005),
-        PhysAbsoluteTime(timeNow - 0.01),
-        PhysRelativeTime(0.0),
-        minHeight(),
-        maxHeight());
 
     LOG_INSPECT(currentLocation());
     LOG_INSPECT(timeNow);
 
-    PhysConfigSpace2d::ChunkIntersections chunkIntersections;
-    chunkIntersections.reserve(3);
-
-    pConfigSpace_->findIntersections(motionChunk, ObjectId::invalidId(), &chunkIntersections);
+    const PhysConfigSpace2d::ChunkIntersections chunkIntersections{
+        machlogCurrentMotionOverlaps(*pConfigSpace_, currentLocation(), useClearance_,
+            timeNow, minHeight(), maxHeight())};
 
     for (size_t i = 0; i < chunkIntersections.size(); ++i)
     {

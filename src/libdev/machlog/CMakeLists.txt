@@ -93,6 +93,7 @@ set(MACHLOG_SOURCES
     Actors/Mobile.hpp
     Actors/MotionSequencer.cpp
     Actors/MotionSequencer.hpp
+    Actors/CurrentMotionOverlap.hpp
     Actors/MotionSequencer.ipp
     Actors/MotionSequencer2.cpp
     Actors/OreHolograph.cpp
