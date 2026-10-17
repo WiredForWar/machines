@@ -2226,7 +2226,8 @@ PhysRelativeTime MachLogMachineMotionSequencer::initiateMove()
             MachLogRaces& races = MachLogRaces::instance();
             UtlId actorId = collisionObjectId.asScalar();
 
-            if (races.actorExists(actorId) && races.actor(actorId).objectIsMachine())
+            if (races.actorExists(actorId) && races.actor(actorId).objectIsMachine()
+                && races.actor(actorId).race() == logMobile().race())
             {
                 MachLogMachineMotionSequencer* pObstructingSequencer = &(races.actor(actorId).asMobile().motionSeq());
 
