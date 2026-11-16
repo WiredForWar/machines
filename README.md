@@ -10,7 +10,7 @@ This version of the game is a community fork. It is purposely different from the
 # Changes
 
 The most notable changes are:
-- Added support for 2X UI scaling
+- Added support for integer UI scaling up to 4X
 - Added keyboard shortcuts
 - Fixed various LAN game issues
 - Fixed tens of bugs
@@ -28,6 +28,20 @@ Windows builds are now done automatically by GitHub.
 4. Extract the archive (`machines-win64-wfw-%releasedate%.7z`) *to the same* installation directory and *overwrite* the existing files (the win64 archive has new version of some assets).
 
 Note: if you don't have `machines.exe` inside the extracted `machines` then maybe you've extracted the second archive into the first, which resulted in `machines/machines/machines.exe`. In order to get a correct installation, try to redo the steps from `#2`, this time make sure that you've extracted both archives into the same directory.
+
+### Resolution and UI scale
+
+Set the screen resolution to **Auto** to follow the current desktop resolution
+on each launch. Selecting a specific size saves that preference in `config.xml`;
+accepting unrelated options leaves it unchanged. Borderless always follows the
+desktop. Display changes take effect after restarting the game.
+
+UI scaling is separate from the rendering resolution. **Auto** chooses the
+largest supported scale, from 100% to 400%, for which the original 640x480 menu
+fits in both dimensions. Smaller explicit choices are also available. Integer
+scaling preserves the artwork's proportions and pixels without adding detail.
+The initial loading screen and its short robot animation use the same scale.
+The robot sequence remains visible for at least three seconds unless skipped.
 
 ## GNU/Linux
 

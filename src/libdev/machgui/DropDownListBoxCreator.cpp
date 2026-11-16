@@ -14,6 +14,7 @@
 #include "gui/Font.hpp"
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
+#include "render/Device.hpp"
 
 MachGuiDropDownListBoxCreator::MachGuiDropDownListBoxCreator(
     GuiDisplayable* pParent,
@@ -190,7 +191,8 @@ void MachGuiDropDownListBoxCreator::doHandleMouseClickEvent(const GuiMouseEvent&
             absoluteBoundary().minCorner().y() - rootOrigin.y()),
         width(),
         height());
-    const Gui::Box bounds(0, 0, pStartupScreens_->width(), pStartupScreens_->height());
+    const Gui::Box bounds = MachGui::dropDownVisibleBounds(
+        pStartupScreens_->absoluteBoundary(), RenDevice::current()->windowSize());
 
     // A list too long for the space shows as much of itself as fits, and the rest is
     // reached by scrolling.

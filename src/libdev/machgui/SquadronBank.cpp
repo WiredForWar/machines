@@ -182,7 +182,7 @@ MachGuiSquadronBank::MachGuiSquadronBank(
             rel.x() + MachGuiSquadronBank::reqWidth(),
             rel.y() + MachGuiSquadronBank::reqHeight()),
         MachGuiSquadron::reqWidth() + MachGuiSquadronBank::spacing(),
-        MachGuiSquadronBankIcon::reqHeight() - 1,
+        MachGuiSquadronBankIcon::reqHeight() - Gui::uiScaleFactor(),
         1)
     , pInGameScreen_(pInGameScreen)
     , pNavButton_(pNavButton)
@@ -409,7 +409,9 @@ size_t MachGuiSquadronBank::reqWidth()
 // static
 size_t MachGuiSquadronBank::reqHeight()
 {
-    return (5 * MachGuiSquadronBankIcon::reqHeight() - 4 /* buttons overlap by one pixel */);
+    // Five rows share four one-pixel borders in the original art. Scale those
+    // overlaps with the buttons so the bank still fits its navigator parent.
+    return 5 * MachGuiSquadronBankIcon::reqHeight() - 4 * Gui::uiScaleFactor();
 }
 
 size_t MachGuiSquadronBank::spacing()
@@ -612,7 +614,7 @@ void MachGuiSquadronBankIcon::doDisplayInteriorEnabled(const Gui::Coord& abs)
 
     if (numInSquad_ > 0)
     {
-        const int border = 4;
+        const int border = 4 * Gui::uiScaleFactor();
         const int digitHeight = numbers[0].height();
         Gui::Coord absCopy(abs);
         absCopy.y(absCopy.y() + reqHeight() - border - digitHeight);

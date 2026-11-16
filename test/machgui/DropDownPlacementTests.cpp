@@ -123,3 +123,45 @@ TEST(DropDownPlacementTests, BoundsWithNoRoomAtAllAskForNothing)
 
     EXPECT_EQ(0u, placement.visibleItems);
 }
+
+TEST(DropDownPlacementTests, ALongListOnACenteredFourTimesMenuStaysOnScreen)
+{
+    // A 2560x1920 menu centered on 4K moves the root by (640,120), but the
+    // root still reports a 3840x2160 size. Using that whole size opens this
+    // list downwards, 100 pixels beyond the physical bottom of the window.
+    const Gui::Box root(Gui::Coord(640, 120), 3840, 2160);
+    const Gui::Box bounds = MachGui::dropDownVisibleBounds(root, {3840, 2160});
+    const Gui::Box anchor(Gui::Coord(1552, 1056), 612, 44);
+    const auto placement = MachGui::dropDownPlacement(anchor, bounds, 44, 40, 100);
+
+    EXPECT_EQ(27u, placement.visibleItems);
+    EXPECT_EQ(bottomOf(anchor), bottomOf(placement.box));
+    EXPECT_GE(topOf(placement.box) + 120, 0);
+    EXPECT_LE(bottomOf(placement.box) + 120, 2160);
+}
+
+TEST(DropDownPlacementTests, VisibleBoundsClipAMenuRootOverlappingTheTopLeft)
+{
+    const auto bounds = MachGui::dropDownVisibleBounds(Gui::Box(Gui::Coord(-100, -50), 800, 600), {640, 480});
+    EXPECT_EQ(100, bounds.minCorner().x());
+    EXPECT_EQ(50, bounds.minCorner().y());
+    EXPECT_EQ(640, bounds.width());
+    EXPECT_EQ(480, bounds.height());
+}
+
+TEST(DropDownPlacementTests, AnOffscreenRootOffersNoRoomForAList)
+{
+    const auto bounds = MachGui::dropDownVisibleBounds(Gui::Box(Gui::Coord(800, 600), 200, 100), {640, 480});
+    const auto placement = MachGui::dropDownPlacement(anchorAt(0), bounds, ItemHeight, ItemSpacing, 10);
+    EXPECT_EQ(0u, placement.visibleItems);
+}
+
+TEST(DropDownPlacementTests, ACompletelyClippedWidthOffersNoRoomForAList)
+{
+    for (const auto& root : {Gui::Box(Gui::Coord(800, 0), 200, 100), Gui::Box(Gui::Coord(-200, 0), 100, 100)})
+    {
+        const auto bounds = MachGui::dropDownVisibleBounds(root, {640, 480});
+        const auto placement = MachGui::dropDownPlacement(anchorAt(0), bounds, ItemHeight, ItemSpacing, 10);
+        EXPECT_EQ(0u, placement.visibleItems);
+    }
+}

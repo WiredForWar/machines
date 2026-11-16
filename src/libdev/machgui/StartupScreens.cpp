@@ -59,6 +59,7 @@ inline constexpr bool cDemoVersion =
 #include "machgui/MenuContext/CtxCampaign.hpp"
 #include "machgui/MenuContext/CtxSave.hpp"
 #include "machgui/MenuContext/CtxLoad.hpp"
+#include "machgui/LoadingScreenLayout.hpp"
 #include "machgui/MenuContext/CtxDeBriefing.hpp"
 #include "machgui/MenuContext/CtxScenario.hpp"
 #include "machgui/MenuContext/CtxSettings.hpp"
@@ -185,9 +186,7 @@ MachGuiStartupScreens::MachGuiStartupScreens(
     // purpose. Since this bitmap was already loaded in sdlapp.cpp, the surface manager will simply increase the ref
     // count (:
 
-    // We have to use 'scaleFactor = 1' here and use unscaled postload animation because scale causes glitches.
-    const double scaleFactor = 1; // Should be MachGui::menuScaleFactor()
-    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp", scaleFactor);
+    mSharedBitmaps_.createUpdateNamedBitmap("backdrop", "gui/menu/wait.bmp", MachGui::menuScaleFactor());
 
     pInGameScreen_ = new MachInGameScreen(pSceneManager, pW4dRoot_, pReporter);
     pInGameScreen_->setConsole(console_);
@@ -2161,6 +2160,19 @@ void MachGuiStartupScreens::loopCyclePlayingAnimation()
     // The animation may already have been finished due to a keyboard event
     if (animationFinished())
     {
+        // The loading robot has only 2.25 seconds of footage. Keep its final
+        // frame visible for at least three seconds from this context's start,
+        // without stretching the video/audio or counting time spent loading.
+        // Explicit skips destroy the player or change context and bypass this.
+        if (pPlayingSmacker_ && context_ == CTX_POSTLOADINGANIMATION
+            && Phys::time() - contextTimer_ < 3.0)
+        {
+            // This loop still pumps input; yield briefly instead of spinning
+            // while the already displayed final frame remains on screen.
+            SysWindowsAPI::sleep(1);
+            return;
+        }
+
         stopPlayingAnimation();
     }
     else
@@ -2374,7 +2386,10 @@ void MachGuiStartupScreens::contextAnimation()
 
         if (sysFlicName.existsAsFile())
         {
-            startPlayingAnimation(sysFlicName, false, true, MachGui::waitImageContentOffset);
+            const auto layout = loadingScreenLayout(pSceneManager_->pDevice()->windowSize(), menuScaleFactor());
+            startPlayingAnimation(
+                sysFlicName, false, true, Gui::Coord(layout.animationOffset.x, layout.animationOffset.y));
+            pPlayingSmacker_->setScaleFactor(menuScaleFactor());
             prepareForAnimation();
         }
     }

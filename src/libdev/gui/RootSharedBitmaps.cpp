@@ -21,10 +21,11 @@ void GuiRootSharedBitmaps::createUpdateNamedBitmap(
 void GuiRootSharedBitmaps::loadSharedBitmap(const std::string& filePath, float scale)
 {
     auto sharedBitmap = sharedBitmaps_.find(filePath);
-    // only load once
-    if (sharedBitmap == sharedBitmaps_.end())
+    // A path alone is not an image size: a loading backdrop may first be
+    // requested unscaled and then used by a larger menu in the same root.
+    if (sharedBitmap == sharedBitmaps_.end() || sharedBitmap->second.scale != scale)
     {
-        sharedBitmaps_[filePath] = std::make_shared<GuiBitmap>(Gui::requestScaledImage(filePath, scale));
+        sharedBitmaps_[filePath] = {scale, std::make_shared<GuiBitmap>(Gui::requestScaledImage(filePath, scale))};
     }
 }
 
@@ -48,7 +49,7 @@ std::weak_ptr<GuiBitmap> GuiRootSharedBitmaps::getSharedBitmap(const std::string
 {
     try
     {
-        return std::weak_ptr<GuiBitmap>(sharedBitmaps_.at(filePath));
+        return std::weak_ptr<GuiBitmap>(sharedBitmaps_.at(filePath).bitmap);
     }
     catch (const std::out_of_range& ore)
     {

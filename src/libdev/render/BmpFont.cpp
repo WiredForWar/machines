@@ -12,6 +12,8 @@
 #include "base/Diag.hpp"
 #include "base/Persistence.hpp"
 
+#include <memory>
+
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
 BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale, const Ren::BmpFontMetrics& metrics)
@@ -235,6 +237,40 @@ BmpFont::~BmpFont()
     {
         delete pFontCore_;
     }
+}
+
+BmpFont BmpFont::scaled(std::size_t factor) const
+{
+    PRE(pFontCore_);
+    PRE(factor > 0);
+
+    auto scaledCore = std::make_unique<BmpFontCore>(*pFontCore_);
+    BmpFontCore& core = *scaledCore;
+    core.coreCount_ = 1;
+
+    core.fontBmp_ = RenSurface::createAnonymousSurface(pFontCore_->fontBmp_.size() * factor);
+    core.fontBmp_.enableColourKeying();
+    Painter painter(core.fontBmp_);
+    painter.clearRectangle(core.fontBmp_.size());
+    painter.stretchBlit(pFontCore_->fontBmp_, BlitMode::Replace);
+
+    for (auto& glyph : core.charData_)
+    {
+        glyph.offset_ *= factor;
+        glyph.width_ *= factor;
+    }
+    core.maxCharWidth_ *= factor;
+    core.charHeight_ *= factor;
+    core.ascender_ *= static_cast<int>(factor);
+    core.descender_ *= static_cast<int>(factor);
+    core.capHeight_ *= static_cast<int>(factor);
+
+    BmpFont result(*this);
+    --result.pFontCore_->coreCount_;
+    result.pFontCore_ = scaledCore.release();
+    result.spaceCharWidth_ *= factor;
+    result.spacing_ *= factor;
+    return result;
 }
 
 BmpFont::BmpFont(const BmpFont& copy)

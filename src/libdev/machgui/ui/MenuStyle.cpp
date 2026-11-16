@@ -77,7 +77,9 @@ const Gui::Colour focusedTextColor()
 
 const Ren::Font& font()
 {
-    static const int pxSize = MachGui::menuScaleFactor() > 1 ? 35 : 18;
+    // Keep the established sizes at 100% and 200%, and continue that progression
+    // so headings grow with their buttons at 300% and 400% too.
+    static const int pxSize = 17 * MachGui::menuScaleFactor() + 1;
     static const Ren::Font *font = Ren::Font::getFont("U001/u001con-bol", pxSize);
     ASSERT(font, "Unable to load menu font");
     return *font;
@@ -86,7 +88,7 @@ const Ren::Font& font()
 const Ren::TextOptions& menuLightTextOptions()
 {
     static Ren::TextOptions options(lightTextColor());
-    options.setLetterSpacing(MachGui::menuScaleFactor() > 1 ? 3 : 1);
+    options.setLetterSpacing(2 * MachGui::menuScaleFactor() - 1);
 
     return options;
 }

@@ -373,9 +373,15 @@ void Gui::setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics&
     getFontMetrics()[fontPath.pathname()] = metrics;
 }
 
-static std::vector<Ren::BmpFont>& getFontCache()
+struct CachedFont
 {
-    static std::vector<Ren::BmpFont> fonts;
+    SysPathName requestedPath;
+    Ren::BmpFont font;
+};
+
+static std::vector<CachedFont>& getFontCache()
+{
+    static std::vector<CachedFont> fonts;
     static bool firstTime = true;
     if (firstTime)
     {
@@ -393,9 +399,9 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
 
     for (auto& cached : fonts)
     {
-        if (cached.fontPath() == fontPath)
+        if (cached.requestedPath == fontPath)
         {
-            Ren::BmpFont font(cached);
+            Ren::BmpFont font(cached.font);
             font.fontType(Ren::BmpFont::PROPORTIONAL);
             font.spaceCharWidth(spaceCharWidth);
             font.spacing(spacing);
@@ -407,11 +413,25 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
     const auto found = metrics.find(fontPath.pathname());
     const Ren::BmpFontMetrics& fontMetrics = (found != metrics.end()) ? found->second : Ren::BmpFontMetrics{};
 
-    Ren::BmpFont newFont(fontPath, static_cast<std::size_t>(Gui::uiScaleFactor()), fontMetrics);
+    const auto scale = static_cast<std::size_t>(Gui::uiScaleFactor());
+    Ren::BmpFont newFont = [&]() {
+        // getScaledImagePath names the requested atlas even if no prebuilt file
+        // exists at that scale. Derive it from the original art in memory, using
+        // the original glyph measurements rather than parsing enlarged markers.
+        const std::string suffix = "_" + std::to_string(scale) + "x.png";
+        std::string originalPath = fontPath.pathname();
+        if (scale > 1 && !fontPath.existsAsFile() && originalPath.ends_with(suffix))
+        {
+            originalPath.erase(originalPath.size() - suffix.size());
+            originalPath = getScaledImagePath(originalPath + ".bmp", 1);
+            return Ren::BmpFont(originalPath, 1, fontMetrics).scaled(scale);
+        }
+        return Ren::BmpFont(fontPath, scale, fontMetrics);
+    }();
     newFont.fontType(Ren::BmpFont::PROPORTIONAL);
     newFont.spaceCharWidth(spaceCharWidth);
     newFont.spacing(spacing);
-    fonts.push_back(newFont);
+    fonts.push_back({fontPath, newFont});
     return newFont;
 }
 

@@ -20,6 +20,7 @@
 #include "gui/GuiPainter.hpp"
 #include "gui/Event.hpp"
 #include "machgui/menus_helper.hpp"
+#include "render/Device.hpp"
 
 // virtual
 void MachGuiColourList::doDisplay()
@@ -176,7 +177,7 @@ void MachGuiColourSelector::doDisplay()
         GuiPainter::instance().filledRectangle(absoluteBoundary(), *pDarkColour);
     }
 
-    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::BLACK(), 1);
+    GuiPainter::instance().hollowRectangle(absoluteBoundary(), Gui::BLACK(), MachGui::menuScaleFactor());
 }
 
 // virtual
@@ -835,14 +836,10 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
 {
     if (rel.leftButton() == Gui::RELEASED && canDisplayDropDownList())
     {
-        auto backdrop = pRootParent_->getSharedBitmaps()->getNamedBitmap("backdrop");
-        using namespace machgui::helper::menus;
-        int menuLeft = x_from_screen_left(pRootParent_->getSharedBitmaps()->getWidthOfNamedBitmap(backdrop), 2);
-        int menuTop = y_from_screen_bottom(pRootParent_->getSharedBitmaps()->getHeightOfNamedBitmap(backdrop), 2);
-
+        const Gui::Coord rootOrigin = pStartupScreens_->absoluteCoord();
         Gui::Coord dropDownPos = absoluteBoundary().minCorner();
-        dropDownPos.x(dropDownPos.x() + MachGui::tickBmp().width() - menuLeft);
-        dropDownPos.y(dropDownPos.y() + 4 * MachGui::menuScaleFactor() - menuTop);
+        dropDownPos.x(dropDownPos.x() + MachGui::tickBmp().width() - rootOrigin.x());
+        dropDownPos.y(dropDownPos.y() + 4 * MachGui::menuScaleFactor() - rootOrigin.y());
         size_t dropDownWidth
             = width() - 3 * MachGui::menuScaleFactor() - MachGui::tickBmp().width() - MachGuiPlayerColour::reqWidth();
 
@@ -876,13 +873,13 @@ void MachGuiPlayerListItem::doHandleMouseClickEvent(const GuiMouseEvent& rel)
         }
 
         const int itemHeight = static_cast<int>(MachGuiSingleSelectionListBoxItem::reqHeight());
-        const int itemSpacing = itemHeight - 1; // the items are drawn overlapping by one pixel
+        const int itemSpacing = itemHeight - static_cast<int>(MachGui::menuScaleFactor());
 
         // Keep the list inside the root it is attached to, however many players there
         // are to choose from.
         const MachGui::DropDownPlacement placement = MachGui::dropDownPlacement(
             Gui::Box(dropDownPos, dropDownWidth, itemHeight),
-            Gui::Box(0, 0, pStartupScreens_->width(), pStartupScreens_->height()),
+            MachGui::dropDownVisibleBounds(pStartupScreens_->absoluteBoundary(), RenDevice::current()->windowSize()),
             itemHeight,
             itemSpacing,
             strings.size());
