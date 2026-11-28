@@ -57,6 +57,7 @@ private:
     // What the display drop downs are showing.
     Ren::WindowMode selectedWindowMode() const;
     Ren::Size selectedResolution() const;
+    Ren::Size effectiveResolution() const;
     int selectedRefreshRate() const;
     int selectedScaleFactor() const;
 
@@ -109,9 +110,16 @@ private:
     Ren::Size resolution_;
     int refreshRate_{};
 
+    // Remember the choices while a different window mode temporarily hides them.
+    Ren::Size preferredResolution_;
+    int preferredRefreshRate_{};
+
     // Set while the display drop downs are being brought into line, so that the
     // changes made to one do not send the others round again.
     bool updatingDisplayControls_ = false;
+    bool resolutionPreferenceChanged_ = false;
+    bool refreshRatePreferenceChanged_ = false;
+    bool scalePreferenceChanged_ = false;
 
     BooleanOptimisations booleanOptimisations_;
     ChoicesOptimisations choicesOptimisations_;

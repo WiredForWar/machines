@@ -1,5 +1,11 @@
 
 set(MACHGUI_SOURCES
+    LoadingScreenLayout.cpp
+    LoadingScreenLayout.hpp
+    DisplayPreferences.cpp
+    DisplayPreferences.hpp
+    ScaleFactor.cpp
+    ScaleFactor.hpp
     ActorBitmaps.cpp
     ActorBitmaps.hpp
     ActorStringIdRestorer.cpp

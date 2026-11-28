@@ -27,6 +27,19 @@ int heightForItems(std::size_t items, int itemHeight, int itemSpacing)
 
 } // namespace
 
+Gui::Box dropDownVisibleBounds(const Gui::Box& rootBoundary, Ren::Size windowSize)
+{
+    const int rootX = static_cast<int>(rootBoundary.minCorner().x());
+    const int rootY = static_cast<int>(rootBoundary.minCorner().y());
+    const int rootWidth = static_cast<int>(rootBoundary.width());
+    const int rootHeight = static_cast<int>(rootBoundary.height());
+    const int left = std::clamp(-rootX, 0, rootWidth);
+    const int top = std::clamp(-rootY, 0, rootHeight);
+    const int right = std::clamp(windowSize.width - rootX, left, rootWidth);
+    const int bottom = std::clamp(windowSize.height - rootY, top, rootHeight);
+    return Gui::Box(Gui::Coord(left, top), right - left, bottom - top);
+}
+
 DropDownPlacement dropDownPlacement(
     const Gui::Box& anchor,
     const Gui::Box& bounds,
@@ -34,7 +47,7 @@ DropDownPlacement dropDownPlacement(
     int itemSpacing,
     std::size_t itemCount)
 {
-    if (itemCount == 0)
+    if (itemCount == 0 || bounds.width() <= 0 || bounds.height() <= 0)
         return {};
 
     const int boundsTop = static_cast<int>(bounds.minCorner().y());

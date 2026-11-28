@@ -18,6 +18,11 @@ struct DropDownPlacement
     std::size_t visibleItems{};
 };
 
+// The part of an absolute root boundary visible in the window, expressed in
+// that root's local coordinates. Centering a menu moves its origin without
+// reducing the root's stored size, so its full size is not the visible area.
+Gui::Box dropDownVisibleBounds(const Gui::Box& rootBoundary, Ren::Size windowSize);
+
 // Place a list of itemCount items opening from anchor, the closed control, so that
 // it stays inside bounds.
 //

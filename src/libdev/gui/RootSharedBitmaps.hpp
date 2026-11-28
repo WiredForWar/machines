@@ -16,14 +16,14 @@ public:
     // Create or reassign a named bitmap, loading if necessary
     void createUpdateNamedBitmap(const std::string& imageName, const std::string& filePath, float scale);
 
-    // Load a bitmap unless its already been loaded
+    // Load a bitmap unless it is already cached at the requested scale.
     //  This method will be invoked by createUpdateNamedBitmap
     void loadSharedBitmap(const std::string& filePath, float scale);
 
     // Retrieve an OWNING REFERENCE to a named bitmap, e.g.: "backdrop"
     std::shared_ptr<GuiBitmap> getNamedBitmap(const std::string& imageName) const noexcept;
 
-    // Retrieve a NON-OWNING REFERENCE to a shared bitmap, associated by filename/path
+    // Retrieve the path's most recently requested scale as a NON-OWNING REFERENCE.
     std::weak_ptr<GuiBitmap> getSharedBitmap(const std::string& filePath) const noexcept;
 
     // Blit a section defined by `sourceArea` from `bitmap` to `destination`. Apply a transformation with a lambda.
@@ -41,6 +41,12 @@ public:
     int getHeightOfNamedBitmap(const std::shared_ptr<GuiBitmap>& bitmap) const;
 
 private:
-    std::unordered_map<std::string, std::shared_ptr<GuiBitmap>> sharedBitmaps_;
+    struct SharedBitmap
+    {
+        float scale{};
+        std::shared_ptr<GuiBitmap> bitmap;
+    };
+
+    std::unordered_map<std::string, SharedBitmap> sharedBitmaps_;
     std::unordered_map<std::string, std::string> namedBitmaps_;
 };

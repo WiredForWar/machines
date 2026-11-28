@@ -1,4 +1,6 @@
 #include "ProgressIndicator.hpp"
+#include "machgui/ProgressBarFill.hpp"
+#include "machgui/ProgressBarRenderer.hpp"
 
 #include "machlog/Messaging/Network.hpp"
 #include "render/Device.hpp"
@@ -18,24 +20,27 @@ ProgressIndicator::ProgressIndicator(Gui::Box area, Gui::Colour color)
 
 std::size_t ProgressIndicator::reportImpl(std::size_t done, std::size_t maxDone)
 {
-    if (done == lastDone_)
+    const int displayWidth = progressBarFillWidth(area_.width(), done, maxDone, lowerLimit_, upperLimit_);
+    if (displayWidth == lastWidth_)
         return 0;
 
     const double minx = area_.left();
     const double miny = area_.top();
     const double width = area_.width();
     const double height = area_.height();
-    const double limitRange = upperLimit_ - lowerLimit_;
-    const double percentComplete = static_cast<double>(done) / static_cast<double>(maxDone) * limitRange + lowerLimit_;
-    const double displayWidth = std::min((percentComplete * width) + 5, width);
-
     RenSurface frontBuf = RenDevice::current()->frontSurface();
-    Ren::Painter frontPainter(frontBuf);
-    frontPainter.filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
+    const auto paint = [&]() {
+        // Submit an immediate buffer before swapping, rather than keeping its
+        // painter alive across the swap and submitting both passes afterwards.
+        Ren::Painter painter(frontBuf);
+        drawProgressBarFill(painter, Ren::Rect(minx, miny, width, height), displayWidth, color_);
+    };
+    paint();
     RenDevice::current()->flushCommandBuffer();
     RenDevice::current()->display()->flipBuffers();
     // For double buffering do it twice to prevent bar from blinking
-    frontPainter.filledRectangle(Ren::Rect(minx, miny, displayWidth, height), color_);
+    paint();
+    RenDevice::current()->flushCommandBuffer();
     // If the game session has come out prematurely then the network connection may have been reset.
 
     // Incoming net message can reference something which is not-loaded-yet (e.g. a Race)
@@ -52,7 +57,7 @@ std::size_t ProgressIndicator::reportImpl(std::size_t done, std::size_t maxDone)
     //         MachLogNetwork::instance().node().pingAll();
     //     }*/
     // }
-    lastDone_ = done;
+    lastWidth_ = displayWidth;
 
     return static_cast<double>(maxDone) / 50.0;
 }

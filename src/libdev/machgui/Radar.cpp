@@ -32,10 +32,8 @@
 
 MachGuiRadar::MachGuiRadar(GuiDisplayable* pParent, const Gui::Coord& relPos)
     : GuiDisplayable(pParent, Gui::Box(relPos, 1, 1))
-    , radarBackdropBmp_(RenSurface::createSharedSurface(
-        Gui::getScaledImagePath("gui/fstpersn/radar/rmmap.bmp")))
-    , radarDomeBmp_(RenSurface::createSharedSurface(
-          Gui::getScaledImagePath("gui/fstpersn/radar/dome.bmp")))
+    , radarBackdropBmp_(Gui::getScaledImage("gui/fstpersn/radar/rmmap.bmp"))
+    , radarDomeBmp_(Gui::getScaledImage("gui/fstpersn/radar/dome.bmp"))
 {
     radarBackdropBmp_.enableColourKeying();
     radarDomeBmp_.enableColourKeying();

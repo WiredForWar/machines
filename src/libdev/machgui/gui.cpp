@@ -684,15 +684,6 @@ const std::string& MachGui::unavailableText()
     return text;
 }
 
-bool MachGui::scaleFactorFits(int scaleFactorPercents, Ren::Size windowSize)
-{
-    if (scaleFactorPercents == 0)
-        return true;
-
-    return MenuSize.width * scaleFactorPercents / 100 <= windowSize.width
-        && MenuSize.height * scaleFactorPercents / 100 <= windowSize.height;
-}
-
 static double s_menuScaleFactor = 0;
 
 void MachGui::setMenuScaleFactor(MATHEX_SCALAR scale)
@@ -888,12 +879,12 @@ const std::string& MachGui::wonSymbolText()
 
 int corralInfoFontSize()
 {
-    return Gui::uiScaleFactor() == 1 ? 10 : 18;
+    return 8 * Gui::uiScaleFactor() + 2;
 }
 
 int navigationButtonNumberFontSize()
 {
-    return Gui::uiScaleFactor() == 1 ? 10 : 18;
+    return 8 * Gui::uiScaleFactor() + 2;
 }
 
 const Ren::Font& MachGui::corralInfoFont()

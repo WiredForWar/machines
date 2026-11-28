@@ -12,6 +12,9 @@
 #include "base/Diag.hpp"
 #include "base/Persistence.hpp"
 
+#include <memory>
+#include <cmath>
+
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
 BmpFontCore::BmpFontCore(const SysPathName& fontPath, std::size_t scale, const Ren::BmpFontMetrics& metrics)
@@ -235,6 +238,47 @@ BmpFont::~BmpFont()
     {
         delete pFontCore_;
     }
+}
+
+BmpFont BmpFont::scaled(std::size_t factor) const
+{
+    return resized(double(factor));
+}
+
+BmpFont BmpFont::resized(double factor) const
+{
+    PRE(pFontCore_);
+    PRE(factor > 0);
+
+    auto scaledCore = std::make_unique<BmpFontCore>(*pFontCore_);
+    BmpFontCore& core = *scaledCore;
+    core.coreCount_ = 1;
+
+    core.fontBmp_ = RenSurface::createAnonymousSurface(Ren::Size(
+        int(std::round(pFontCore_->fontBmp_.width() * factor)),
+        int(std::round(pFontCore_->fontBmp_.height() * factor))));
+    core.fontBmp_.enableColourKeying();
+    Painter painter(core.fontBmp_);
+    painter.clearRectangle(core.fontBmp_.size());
+    painter.stretchBlit(pFontCore_->fontBmp_, BlitMode::Replace);
+
+    for (auto& glyph : core.charData_)
+    {
+        glyph.offset_ = std::lround(glyph.offset_ * factor);
+        glyph.width_ = std::lround(glyph.width_ * factor);
+    }
+    core.maxCharWidth_ = std::lround(core.maxCharWidth_ * factor);
+    core.charHeight_ = std::lround(core.charHeight_ * factor);
+    core.ascender_ = std::lround(core.ascender_ * factor);
+    core.descender_ = std::lround(core.descender_ * factor);
+    core.capHeight_ = std::lround(core.capHeight_ * factor);
+
+    BmpFont result(*this);
+    --result.pFontCore_->coreCount_;
+    result.pFontCore_ = scaledCore.release();
+    result.spaceCharWidth_ = std::lround(result.spaceCharWidth_ * factor);
+    result.spacing_ = std::lround(result.spacing_ * factor);
+    return result;
 }
 
 BmpFont::BmpFont(const BmpFont& copy)

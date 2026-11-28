@@ -24,6 +24,9 @@ public:
 
     void setPosition(int x, int y);
     void setFast(bool value);
+    // Keep the Smacker clock/audio, rendering the supplied HD boards instead of
+    // the low-resolution, baked-in menu video. Other movies remain unchanged.
+    void setMenuTransition(const std::string& fromPath, const std::string& toPath);
     void setScaleFactor(float scaleFactor) override;
 
     bool isFinished() const override;

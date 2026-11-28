@@ -63,6 +63,11 @@ public:
     BmpFont& operator=(const BmpFont&);
     ~BmpFont();
 
+    // Enlarge an existing atlas and its glyph measurements together. Parse the
+    // original marker row first so enlarging its separators cannot add glyphs.
+    BmpFont scaled(std::size_t factor) const;
+    BmpFont resized(double factor) const;
+
     size_t height() const;
     int ascender() const;
     int descender() const;

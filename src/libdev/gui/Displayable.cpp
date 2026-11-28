@@ -117,6 +117,9 @@ void GuiDisplayable::relativeCoord(const Gui::Coord& relCoord)
 
 void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
 {
+    // Layout boxes retain fractional pixels at non-integer display scales.
+    // width()/height() are integer accessors and cannot validate their extent.
+    POST_DATA(const Gui::Size previousSize = absoluteBox_.size());
     // Construct the displacement vector
     MexVec2 diff(absoluteBox_.minCorner(), absCoord);
 
@@ -140,7 +143,7 @@ void GuiDisplayable::absoluteCoord(const Gui::Coord& absCoord)
     }
 
     POST(absoluteCoord() == absCoord);
-    POST(absoluteBoundary() == Gui::Box(absCoord, width(), height()));
+    POST(absoluteBoundary() == Gui::Box(absCoord, previousSize));
 }
 
 //////////////////////////////////////////////////////////////////////

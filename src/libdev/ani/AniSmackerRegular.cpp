@@ -2,6 +2,9 @@
 
 #include "render/Display.hpp"
 #include "render/Painter.hpp"
+#include "render/MenuBoard.hpp"
+#include <map>
+#include <cmath>
 #include "recorder/Recorder.hpp"
 #include "recorder/private/RecorderPrivate.hpp"
 #include "device/Time.hpp"
@@ -10,6 +13,20 @@
 #include "sound/internal/ALSound.hpp"
 
 #include "smacker.h"
+
+namespace
+{
+struct MenuTransitionBoards { RenSurface from; RenSurface to; };
+// Side storage keeps the existing player object layout intact for baseline
+// callers. Entries own their texture references only for the movie lifetime.
+std::map<const AniSmackerRegular*, MenuTransitionBoards> menuTransitions;
+}
+
+void AniSmackerRegular::setMenuTransition(const std::string& fromPath, const std::string& toPath)
+{
+    menuTransitions[this] = {RenSurface::createSharedSurface(fromPath),
+        toPath.empty() ? RenSurface{} : RenSurface::createSharedSurface(toPath)};
+}
 
 //////////////////////////////////////////////////////////////////////
 
@@ -49,6 +66,7 @@ AniSmackerRegular::AniSmackerRegular(const SysPathName& path, int xCoordTo, int 
 // DTOR
 AniSmackerRegular::~AniSmackerRegular()
 {
+    menuTransitions.erase(this);
     if (pBuffer_)
         delete[] pBuffer_;
 
@@ -225,7 +243,8 @@ void AniSmackerRegular::playNextFrame(RenDevice* pDevice)
     // Copy next frame from smacker file to the buffer.
     if (advanceToNextFrame_ || fast_)
     {
-        copyCurrentVideoFrameToBuffer(surface_);
+        if (!menuTransitions.contains(this))
+            copyCurrentVideoFrameToBuffer(surface_);
         lastFrameTime_ = timeNow;
         shouldRender = true;
     }
@@ -362,6 +381,17 @@ void AniSmackerRegular::unpackBufferToSurface(RenSurface dst, const RenSurface& 
         ASSERT(! isFinishedNoRecord(), "");
 
         Ren::Painter dstPainter(dst);
+        if (auto it = menuTransitions.find(this); it != menuTransitions.end())
+        {
+            unsigned long frame = 0, count = 1;
+            smk_info_all(pSmack_, &frame, &count, nullptr);
+            const int shift = Ren::menuTransitionOffset(frame, count, dst.width());
+            dstPainter.filledRectangle(Ren::Rect(dst.size()), RenColour::black());
+            Ren::drawMenuBoard(dstPainter, it->second.from, dst.width(), dst.height(), -shift);
+            if (!it->second.to.isNull())
+                Ren::drawMenuBoard(dstPainter, it->second.to, dst.width(), dst.height(), int(dst.width()) - shift);
+            return;
+        }
         if(scaleFactor_ == 1)
         {
             dstPainter.blit(src, src.size(), Ren::Point(xCoordTo_, yCoordTo_));

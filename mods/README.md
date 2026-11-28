@@ -1,5 +1,10 @@
 ## Mods priority
 
+The optional [HD interface packs](../art/README.md) are supplied with this
+contribution. Copy complete `faithful-hd-*` directories into the game's `mods`
+directory to enable them. Move them outside `mods` to disable them, then restart
+the game. Merely renaming a directory inside `mods` does not disable a mod.
+
 There is no way to set mod priority just yet. For now the mods are sorted
 alphabetically. That is, if you have mods `a-mod`, `b-mod` then `a-mod` files
 'll get the highest priority.
