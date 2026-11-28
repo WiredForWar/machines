@@ -4,6 +4,8 @@
 #include "render/BmpFont.hpp"
 #include "render/Font.hpp"
 #include "render/TextOptions.hpp"
+#include "system/VFS.hpp"
+#include <cmath>
 
 namespace
 {
@@ -51,6 +53,19 @@ void updateFonts()
     menuStyle().smallFontDark = getScaledImagePath("gui/menu/smaldfnt.bmp");
     menuStyle().smallFontLight = getScaledImagePath("gui/menu/smallfnt.bmp");
     menuStyle().smallFontWhite = getScaledImagePath("gui/menu/smalwfnt.bmp");
+    // New outlines are rasterized at the menu's actual display density, rather
+    // than enlarging the original five-pixel capitals. Leave gameplay fonts alone.
+    const float density = std::ceil(MachGui::menuScaleFactor());
+    const auto hd = Gui::getScaledImagePath("gui/menu/hd-smallfnt.bmp", density);
+    if (SysPathName::existsAsFile(hd))
+    {
+        menuStyle().smallFontLight = hd;
+        menuStyle().smallFontDark = Gui::getScaledImagePath("gui/menu/hd-smaldfnt.bmp", density);
+        menuStyle().smallFontWhite = Gui::getScaledImagePath("gui/menu/hd-smalwfnt.bmp", density);
+        Gui::setFontDisplayScale(menuStyle().smallFontLight, MachGui::menuScaleFactor());
+        Gui::setFontDisplayScale(menuStyle().smallFontDark, MachGui::menuScaleFactor());
+        Gui::setFontDisplayScale(menuStyle().smallFontWhite, MachGui::menuScaleFactor());
+    }
 
     Gui::setFontMetrics(menuStyle().smallFontDark, smallMetrics);
     Gui::setFontMetrics(menuStyle().smallFontLight, smallMetrics);

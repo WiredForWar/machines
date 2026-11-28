@@ -3,9 +3,15 @@
 #include "machgui/ScaleFactor.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 namespace MachGui
 {
+Ren::Rect loadGameProgressArea(Ren::Point menuOrigin, double menuScale)
+{
+    return Ren::Rect(menuOrigin + Ren::Point{int(std::lround(275 * menuScale)), int(std::lround(250 * menuScale))},
+        Ren::Size{int(std::lround(87 * menuScale)), int(std::lround(5 * menuScale))});
+}
 
 LoadingScreenLayout loadingScreenLayout(Ren::Size windowSize, double scale)
 {

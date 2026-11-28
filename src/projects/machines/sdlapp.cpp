@@ -48,6 +48,7 @@
 #include "machgui/LoadingScreenLayout.hpp"
 #include "machgui/VSyncMode.hpp"
 #include "machgui/gui.hpp"
+#include "machgui/MenuBackdropLayout.hpp"
 
 #include "system/ConfigVariables.hpp"
 #include "system/Console.hpp"
@@ -295,7 +296,13 @@ bool SDLApp::clientStartup()
         const int scaleFactorPercents = MachGui::resolveScaleFactor(Config::uiScaleFactor.get(), mode.size());
 
         spdlog::info("Using scale factor {}%", scaleFactorPercents);
-        MachGui::setMenuScaleFactor(scaleFactorPercents / 100.0);
+        const bool hdMenu = SysPathName::existsAsFile(System::findFile("gui/menu/wide/sa.png"));
+        MachGui::setMenuScaleFactor(hdMenu
+            ? MachGui::fittedMenuScale(mode.width(), mode.height())
+            : scaleFactorPercents / 100.0);
+        if (hdMenu)
+            spdlog::info("HD menu presentation: {}%, fullscreen motherboard surround",
+                MachGui::menuScaleFactor() * 100.0);
         MachGui::setUiScaleFactor(scaleFactorPercents / 100.0);
     }
 
@@ -376,74 +383,49 @@ bool SDLApp::clientStartup()
     std::string waitFilePath = System::findFile("gui/menu/wait.bmp");
     std::string waitLobbFilePath = System::findFile("gui/menu/waitlobb.bmp");
     const auto loadingLayout = MachGui::loadingScreenLayout(mode.size(), MachGui::menuScaleFactor());
+    const bool hasHdStaticIntros = SysPathName::existsAsFile(System::findFile("gui/menu/hd-static-intros.json"));
 
     const auto drawLoadingImage = [&](const Ren::Painter& painter, const RenSurface& bitmap)
     {
         painter.stretchBlit(bitmap, bitmap.size(), loadingLayout.backdrop);
+        if (hasHdStaticIntros && bitmap.width() > 640)
+        {
+            // The bar is UI, not generated illustration. Keep its border aligned
+            // with the existing progress fill, independent of raster art drift.
+            const double scale = MachGui::menuScaleFactor();
+            const Ren::Point origin{loadingLayout.backdrop.originX, loadingLayout.backdrop.originY};
+            painter.filledRectangle(Ren::Rect(origin + Ren::Point{94, 354} * scale,
+                Ren::Size{450, 20} * scale), RenColour::black());
+            painter.hollowRectangle(Ren::Rect(origin + Ren::Point{96, 360} * scale,
+                Ren::Size{445, 10} * scale), RenColour(1, .8f, 0), std::max(1, int(scale)));
+        }
     };
 
     // moved the sequence of calls slightly - the init sound call must still be done first though
     //     initSound();
 
+    const auto paintLoadingPair = [&](const RenSurface& bitmap)
+    {
+        const auto paint = [&]() {
+            RenSurface frontBuffer = manager_->pDevice()->frontSurface();
+            Ren::Painter painter(frontBuffer);
+            painter.filledRectangle(mode.size(), RenColour::black());
+            drawLoadingImage(painter, bitmap);
+        };
+        paint(); // Painter destruction submits before the buffer swap.
+        RenDevice::current()->flushCommandBuffer();
+        manager_->pDevice()->display()->flipBuffers();
+        paint();
+        RenDevice::current()->flushCommandBuffer();
+    };
     if (lobbyFlag)
     {
-        // Display a loading screen.
-        RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        Ren::Painter frontPainter(frontBuffer);
-        frontPainter.filledRectangle(mode.size(), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitLobbFilePath);
-        drawLoadingImage(frontPainter, waitBmp);
-
-        // Initialise lobby code
+        paintLoadingPair(RenSurface::createSharedSurface(waitLobbFilePath));
         NetNetwork::instance().instantiateLobby();
         MachLogNetwork::instance().launchFromLobbyInfo();
+    }
+    paintLoadingPair(RenSurface::createSharedSurface(waitFilePath));
 
-        // Display progress loading screen.
-        // Call it twice to ensure on both buffers.
-        RenSurface waitBmp2 = RenSurface::createSharedSurface(waitFilePath);
-        drawLoadingImage(frontPainter, waitBmp2);
-    }
-    else
-    {
-        // Display a loading screen.
-        RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        Ren::Painter frontPainter(frontBuffer);
-        frontPainter.filledRectangle(mode.size(), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
-        drawLoadingImage(frontPainter, waitBmp);
-        // The clear belongs to the pair as much as the image does. Drawing twice
-        // across a swap is how both of the two buffers come to hold the same
-        // thing; a draw left out of it reaches only one of them. The image is
-        // scaled from 640x480 in the middle of the window and the clear is what
-        // covers the rest, so with the clear done once the border was black in
-        // one buffer and stale in the other -- and the progress bar swaps them
-        // on every step it reports.
-        RenDevice::current()->flushCommandBuffer();
-        manager_->pDevice()->display()->flipBuffers();
-        frontPainter.filledRectangle(mode.size(), RenColour::black());
-        drawLoadingImage(frontPainter, waitBmp);
-    }
-
-    if (lobbyFlag)
-    {
-        // Display progress loading screen.
-        RenSurface frontBuffer = manager_->pDevice()->frontSurface();
-        Ren::Painter frontPainter(frontBuffer);
-        frontPainter.filledRectangle(mode.size(), RenColour::black());
-        RenSurface waitBmp = RenSurface::createSharedSurface(waitFilePath);
-        drawLoadingImage(frontPainter, waitBmp);
-        // The clear belongs to the pair as much as the image does. Drawing twice
-        // across a swap is how both of the two buffers come to hold the same
-        // thing; a draw left out of it reaches only one of them. The image is
-        // scaled from 640x480 in the middle of the window and the clear is what
-        // covers the rest, so with the clear done once the border was black in
-        // one buffer and stale in the other -- and the progress bar swaps them
-        // on every step it reports.
-        RenDevice::current()->flushCommandBuffer();
-        manager_->pDevice()->display()->flipBuffers();
-        frontPainter.filledRectangle(mode.size(), RenColour::black());
-        drawLoadingImage(frontPainter, waitBmp);
-    }
     // Draw copyright note, store it in a way preventing from modification
     {
         const Ren::Point notePosition{
@@ -454,12 +436,15 @@ bool SDLApp::clientStartup()
 
         const Ren::Font* font = Ren::Font::getFont(RenSurface::getDefaultFontSize());
         ASSERT(font, "Unable to get font");
-        Ren::Painter frontPainter(frontBuffer);
-        frontPainter.drawText(notePosition.x, notePosition.y, note, *font, RenColour::yellow());
-        // Call it twice to draw on both front and back buffers
+        const auto paintNote = [&]() {
+            Ren::Painter painter(frontBuffer);
+            painter.drawText(notePosition.x, notePosition.y, note, *font, RenColour::yellow());
+        };
+        paintNote();
         RenDevice::current()->flushCommandBuffer();
         manager_->pDevice()->display()->flipBuffers();
-        frontPainter.drawText(notePosition.x, notePosition.y, note, *font, RenColour::yellow());
+        paintNote();
+        RenDevice::current()->flushCommandBuffer();
     }
 
     const auto& progressArea = loadingLayout.progressBar;

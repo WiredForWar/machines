@@ -20,7 +20,7 @@ protected:
 private:
     double lowerLimit_{};
     double upperLimit_{};
-    std::size_t lastDone_{};
+    int lastWidth_ = -1;
     Gui::Box area_{};
     Gui::Colour color_ {};
 };

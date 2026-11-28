@@ -182,6 +182,7 @@ void rebuildScaledImages();
 // unscaled art. This has to be said before the font is first asked for, because an
 // atlas is only read once.
 void setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics& metrics);
+void setFontDisplayScale(const SysPathName& fontPath, double scale);
 
 Ren::BmpFont getFont(const SysPathName& fontPath);
 

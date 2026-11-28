@@ -1,4 +1,5 @@
 #include "machgui/LoadingScreenLayout.hpp"
+#include "machgui/ProgressBarFill.hpp"
 
 #include <gtest/gtest.h>
 
@@ -53,4 +54,22 @@ TEST(LoadingScreenLayoutTests, ChangingWindowSizeMovesEveryElementByTheSameOffse
     EXPECT_EQ(widescreen.animationOffset, original.animationOffset);
     EXPECT_EQ(widescreen.noticeBottom, original.noticeBottom + displacement);
     EXPECT_EQ(widescreen.progressBar.origin(), original.progressBar.origin() + displacement);
+}
+
+TEST(LoadingScreenLayoutTests, TrainingBarUsesTheMenusFractionalScale)
+{
+    const auto area = MachGui::loadGameProgressArea({480, 0}, 4.5);
+    EXPECT_EQ(area.origin(), (Ren::Point{1718, 1125}));
+    EXPECT_EQ(area.size(), (Ren::Size{392, 23}));
+}
+
+TEST(LoadingScreenLayoutTests, ProgressIsBoundedAndPhaseCountsAreIndependent)
+{
+    EXPECT_EQ(MachGui::progressBarFillWidth(392, 0, 100, 0, 1), 0);
+    EXPECT_EQ(MachGui::progressBarFillWidth(392, 100, 100, 0, 1), 392);
+    EXPECT_EQ(MachGui::progressBarFillWidth(392, 150, 100, 0, 1), 392);
+    EXPECT_EQ(MachGui::progressBarFillWidth(392, 0, 0, 0, 1), 0);
+    // The same raw count in consecutive phases must paint different widths.
+    EXPECT_EQ(MachGui::progressBarFillWidth(1000, 10, 100, 0.0, 0.2), 20);
+    EXPECT_EQ(MachGui::progressBarFillWidth(1000, 10, 100, 0.2, 0.7), 250);
 }

@@ -2,6 +2,7 @@
 
 #include "gui/GuiPainter.hpp"
 #include "system/PathName.hpp"
+#include <cmath>
 
 GuiRootSharedBitmaps::~GuiRootSharedBitmaps()
 {
@@ -66,7 +67,24 @@ void GuiRootSharedBitmaps::blitNamedBitmapFromArea(
 {
     if (bitmap)
     {
-        GuiPainter::instance().blit(*bitmap, fnSourceAreaTransform(sourceArea), destination);
+        const auto area = fnSourceAreaTransform(sourceArea);
+        const auto requested = bitmap->requestedSize();
+        if (!requested.isNull())
+        {
+            // Dirty-region coordinates are display pixels. A fractional menu
+            // scale may stretch an integer-density texture underneath them.
+            const double sx = double(bitmap->width()) / requested.width;
+            const double sy = double(bitmap->height()) / requested.height;
+            const int x = int(std::round(area.minCorner().x() * sx));
+            const int y = int(std::round(area.minCorner().y() * sy));
+            const int right = int(std::round((area.minCorner().x() + area.width()) * sx));
+            const int bottom = int(std::round((area.minCorner().y() + area.height()) * sy));
+            GuiPainter::instance().stretch(*bitmap,
+                Gui::Box(Gui::Coord(x, y), right - x, bottom - y),
+                Gui::Box(destination, area.width(), area.height()));
+        }
+        else
+            GuiPainter::instance().blit(*bitmap, area, destination);
     }
     else
     {
@@ -80,7 +98,7 @@ void GuiRootSharedBitmaps::blitNamedBitmap(const std::shared_ptr<GuiBitmap>& bit
 {
     if (bitmap)
     {
-        GuiPainter::instance().blit(*bitmap, destination);
+        GuiPainter::instance().blitInRequestedSize(*bitmap, destination);
     }
     else
     {

@@ -63,6 +63,8 @@ append_test(GuiResourceStringTests gui/GuiResourceStringTests.cpp)
 append_test(ScreenshotsTests gui/ScreenshotsTests.cpp)
 #~:machgui
 append_test(LoadingScreenLayoutTests machgui/LoadingScreenLayoutTests.cpp)
+append_test(MenuPresentationTests machgui/MenuPresentationTests.cpp)
+append_test(GuiFractionalLayoutTests gui/GuiFractionalLayoutTests.cpp)
 append_test(HudLayoutTests machgui/HudLayoutTests.cpp)
 append_test(DisplayPreferencesTests machgui/DisplayPreferencesTests.cpp)
 append_test(DropDownPlacementTests machgui/DropDownPlacementTests.cpp)

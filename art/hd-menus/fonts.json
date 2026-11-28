@@ -1,0 +1,186 @@
+{
+  "font_source": "gui/Arial.ttf",
+  "font_sha256": "a7c40b6347305a7a7946cbe95c423663e67794efdc0cc497a13d35364f4bc70b",
+  "textures": [
+    {
+      "path": "gui/menu/hd-smallfnt.png",
+      "size": [
+        1188,
+        7
+      ],
+      "scale": 1,
+      "sha256": "7b670da2c760c08f05b1041d3caeb52ecc46304b415db6477a679e825b508e86",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smallfnt_2x.png",
+      "size": [
+        2120,
+        14
+      ],
+      "scale": 2,
+      "sha256": "39823a59ed2d9bbe741287172ee3cc5d847c4d5853bf7641fcdac9450b356d65",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smallfnt_3x.png",
+      "size": [
+        3052,
+        21
+      ],
+      "scale": 3,
+      "sha256": "ff9954e21dd8fbd9bac45edf044e930347e3d0efb1bcac99d78c9522421657f6",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smallfnt_4x.png",
+      "size": [
+        3984,
+        28
+      ],
+      "scale": 4,
+      "sha256": "4e6477aa7511b909f1e75fcd66e9c3f102d67c641825ed82760d4556ba36a9d1",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smallfnt_5x.png",
+      "size": [
+        4916,
+        35
+      ],
+      "scale": 5,
+      "sha256": "38ee316430efc0926212092b79032f501cacb1d8c60f6acdd59f3e3f312ed365",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smallfnt_6x.png",
+      "size": [
+        5848,
+        42
+      ],
+      "scale": 6,
+      "sha256": "88adc36193d697e1f277ecd8acf1aeec102909af9e5688c856372c19f460a42c",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt.png",
+      "size": [
+        1188,
+        7
+      ],
+      "scale": 1,
+      "sha256": "0d768d3f50c18bca75d6925e57baed16d88d65142ba0ddb4725d600dbdcf6368",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt_2x.png",
+      "size": [
+        2120,
+        14
+      ],
+      "scale": 2,
+      "sha256": "e1097770da3477a7de2f0e57eda94b7d0279642bf3d714a9b9b61c0881dd3664",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt_3x.png",
+      "size": [
+        3052,
+        21
+      ],
+      "scale": 3,
+      "sha256": "59a2e8d3332b8ea4a156b1dc5d097c6a69cf39fd8b2260799f293ba57760b6a5",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt_4x.png",
+      "size": [
+        3984,
+        28
+      ],
+      "scale": 4,
+      "sha256": "2442340688056e86106c66b1d88b4679b1e868de71c4041ea3b00ddb1459b134",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt_5x.png",
+      "size": [
+        4916,
+        35
+      ],
+      "scale": 5,
+      "sha256": "161405ff476393de94eba4fbc97ed7f94f122c7368054275fb765262bfa45019",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smaldfnt_6x.png",
+      "size": [
+        5848,
+        42
+      ],
+      "scale": 6,
+      "sha256": "c408d5cffd0794f4ce828530f385c6670bbed4fa2318a8432438669786e6c32e",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt.png",
+      "size": [
+        1192,
+        7
+      ],
+      "scale": 1,
+      "sha256": "0f61f7ec0e024487c52f6aca28e240a8832afa8f20f26ddaa49657bd891190dc",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt_2x.png",
+      "size": [
+        2128,
+        14
+      ],
+      "scale": 2,
+      "sha256": "7263b548afb2a0ce8d81c72d468f5d6ebd71b470210a8696f822b536c1043498",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt_3x.png",
+      "size": [
+        3064,
+        21
+      ],
+      "scale": 3,
+      "sha256": "90afad70275dafdd9bfe80228aea70589e47922b50876e4a4cb6b15a89d14323",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt_4x.png",
+      "size": [
+        4000,
+        28
+      ],
+      "scale": 4,
+      "sha256": "0d65a779958606d6e29b3c6a5d0150cd4719ab7e01ff2ec8de6fd9303ef5b4e6",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt_5x.png",
+      "size": [
+        4936,
+        35
+      ],
+      "scale": 5,
+      "sha256": "05e8725bed292032b13998518ce772df4d033b42c0b37e2e3796ac338d62f7f1",
+      "kind": "outline-menu-font"
+    },
+    {
+      "path": "gui/menu/hd-smalwfnt_6x.png",
+      "size": [
+        5872,
+        42
+      ],
+      "scale": 6,
+      "sha256": "3b85a498bc856fdf8aa2b3a48dfbfe8eb16a77b64d75f6382c03a36d60a4e79c",
+      "kind": "outline-menu-font"
+    }
+  ]
+}

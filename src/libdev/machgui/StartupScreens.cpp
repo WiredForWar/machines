@@ -45,6 +45,7 @@ inline constexpr bool cDemoVersion =
 #include "machgui/menus_helper.hpp"
 #include "machgui/InputRegistry.hpp"
 #include "machgui/ProgressIndicator.hpp"
+#include "machgui/ProgressBarRenderer.hpp"
 
 // Context helpers
 #include "machgui/MenuContext/CtxMultiplayer.hpp"
@@ -60,6 +61,7 @@ inline constexpr bool cDemoVersion =
 #include "machgui/MenuContext/CtxSave.hpp"
 #include "machgui/MenuContext/CtxLoad.hpp"
 #include "machgui/LoadingScreenLayout.hpp"
+#include "machgui/MenuBackdropLayout.hpp"
 #include "machgui/MenuContext/CtxDeBriefing.hpp"
 #include "machgui/MenuContext/CtxScenario.hpp"
 #include "machgui/MenuContext/CtxSettings.hpp"
@@ -75,6 +77,8 @@ inline constexpr bool cDemoVersion =
 #include "gui/Manager.hpp"
 #include "gui/GuiPainter.hpp"
 #include "render/Painter.hpp"
+#include "render/MenuBoard.hpp"
+#include <spdlog/spdlog.h>
 #include "gui/Displayable.hpp"
 #include "gui/ScrollableList.hpp"
 #include "gui/EditBox.hpp"
@@ -132,9 +136,8 @@ class LoadGameProgressIndicator : public ProgressIndicator
 {
     static Gui::Box getBoundingBox(Gui::Coord offset)
     {
-        const Gui::Coord cIndicatorOffset{275, 250};
-        const Gui::Size cIndicatorSize{86 + 1, 4 + 1};
-        return Gui::Box(offset + cIndicatorOffset * Gui::uiScaleFactor(), cIndicatorSize * Gui::uiScaleFactor());
+        const auto area = MachGui::loadGameProgressArea({int(offset.x()), int(offset.y())}, MachGui::menuScaleFactor());
+        return Gui::Box(Gui::Coord(area.originX, area.originY), Gui::toSize(area.size()));
     }
 
     static Gui::Colour getColor()
@@ -1163,6 +1166,21 @@ void MachGuiStartupScreens::buttonAction(ButtonEvent be, const std::string& wavF
     }
 }
 
+namespace
+{
+bool drawWideStartupBackdrop(GuiRootSharedBitmaps& bitmaps, Ren::Size window)
+{
+    static const bool hasWideBoards = SysPathName::existsAsFile(System::findFile("gui/menu/wide/sa.png"));
+    if (!hasWideBoards)
+        return false;
+    auto wide = bitmaps.getNamedBitmap("wide-backdrop");
+    if (!wide || wide->isNull())
+        return false;
+    Ren::drawMenuBoard(GuiPainter::instance(), *wide, window.width, window.height);
+    return true;
+}
+}
+
 void MachGuiStartupScreens::doDisplay()
 {
     const RenDisplay::Mode& mode = pSceneManager_->pDevice()->display()->currentMode();
@@ -1175,14 +1193,13 @@ void MachGuiStartupScreens::doDisplay()
     assert(!backdrop->isNull());
 
     const Gui::Box area = menuArea();
+    if (pCurrContext_ && drawWideStartupBackdrop(mSharedBitmaps_, mode.size()))
+        return;
     if (backdrop->requestedSize().isNull())
-    {
         GuiPainter::instance().blit(*backdrop, area.minCorner());
-    }
     else
-    {
         GuiPainter::instance().stretch(*backdrop, area);
-    }
+
 }
 
 Gui::Box MachGuiStartupScreens::menuArea()
@@ -1212,7 +1229,7 @@ void MachGuiStartupScreens::displayLoadingScreen()
     // inside that pair instead of inherited from whatever the menu left. The
     // controls are gone from behind the veil, which is the part that could never be
     // made to agree between the buffers; the backdrop they sat on remains.
-    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp");
+    GuiBitmap loadingBmp = MachGui::getScaledImage("gui/menu/loading.bmp", MachGui::menuScaleFactor());
     loadingBmp.enableColourKeying();
 
     RenDevice* device = pSceneManager_->pDevice();
@@ -1225,8 +1242,19 @@ void MachGuiStartupScreens::displayLoadingScreen()
     // while no frame is recording.
     auto paintPass = [&]() {
         device->beginImmediateCommands();
-        doDisplay();
+        // switchContext() has already deleted the menu controls here. Its
+        // retained wide board still exists and must cover the viewport while
+        // loading; doDisplay's normal context guard would fall back to 4:3.
+        const auto window = device->display()->currentMode().size();
+        GuiPainter::instance().filledRectangle(Gui::toSize(window), RenColour::black());
+        if (!drawWideStartupBackdrop(mSharedBitmaps_, window))
+            doDisplay();
         GuiPainter::instance().blit(loadingBmp, menuArea().minCorner());
+        const auto origin = menuArea().minCorner();
+        const auto progress = MachGui::loadGameProgressArea({int(origin.x()), int(origin.y())},
+            MachGui::menuScaleFactor());
+        MachGui::drawProgressBarFrame(GuiPainter::instance(), progress, MachGui::menuScaleFactor(),
+            RenColour(1.0f, 252.0f / 255, 223.0f / 255));
         device->endImmediateCommands();
     };
 
@@ -1576,8 +1604,12 @@ void MachGuiStartupScreens::loopCycleStartupScreens()
             pendingScreenShot_ = false;
             pSceneManager_->pDevice()->finalizeBackBuffer();
 
-            // The border around the menu is of no interest, so it is left out.
-            const Gui::Box area = menuArea();
+            // Widescreen menus have artwork across the whole window, rather
+            // than the empty borders the original 4:3 screenshot cropped away.
+            const bool wideMenu = SysPathName::existsAsFile(System::findFile("gui/menu/wide/sa.png"));
+            const Gui::Box area = wideMenu
+                ? Gui::Box(Gui::Coord(0, 0), pSceneManager_->pDevice()->windowWidth(), pSceneManager_->pDevice()->windowHeight())
+                : menuArea();
             Gui::saveScreenshot(
                 Gui::backBuffer(),
                 pendingScreenShotName_.empty() ? Gui::nextScreenshotPath("menu")
@@ -2367,6 +2399,14 @@ void MachGuiStartupScreens::contextAnimation()
         {
             startPlayingAnimation(sysFlicName, true, true, Gui::Coord(0, 0));
             pPlayingSmacker_->setScaleFactor(MachGui::menuScaleFactor());
+            const auto from = System::findFile("gui/menu/wide/" + ctxBeforeName + ".png");
+            const auto to = System::findFile("gui/menu/wide/" + ctxAfterName + ".png");
+            const bool exitMovie = ctxAfterName.starts_with("end");
+            if (SysPathName::existsAsFile(from) && (exitMovie || SysPathName::existsAsFile(to)))
+            {
+                static_cast<AniSmackerRegular*>(pPlayingSmacker_)->setMenuTransition(from, exitMovie ? "" : to);
+                spdlog::info("HD menu transition {} -> {} (original clock/audio)", ctxBeforeName, ctxAfterName);
+            }
         }
     }
     else if (context_ == CTX_INTROANIMATION)
@@ -2655,7 +2695,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId)
 
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", MachGui::menuScaleFactor());
 }
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& strs)
@@ -2673,7 +2713,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, const GuiStrings& st
 
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK, strs);
 
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", MachGui::menuScaleFactor());
 }
 
 void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxResponder* pResponder)
@@ -2705,7 +2745,7 @@ void MachGuiStartupScreens::displayMsgBox(uint stringResId, MachGuiMessageBoxRes
     }
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", Gui::uiScaleFactor());
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", MachGui::menuScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }
@@ -2730,7 +2770,7 @@ void MachGuiStartupScreens::displayMsgBox(
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOKCANCEL, strs);
 
     // This overload of displayMsgBox is the two-button one. Set msgbox to the two-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", Gui::uiScaleFactor());
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox2.bmp", MachGui::menuScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }
@@ -2752,7 +2792,7 @@ void MachGuiStartupScreens::displayOKMsgBox(uint stringResId, MachGuiMessageBoxR
     pMsgBox_ = new MachGuiMessageBox(this, stringResId, MachGuiMessageBox::MBOK);
 
     // This overload of displayMsgBox is the single-button one. Set msgbox to the single-button one
-    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", Gui::uiScaleFactor());
+    mSharedBitmaps_.createUpdateNamedBitmap("msgbox", "gui/menu/msgbox.bmp", MachGui::menuScaleFactor());
 
     pMsgBoxResponder_ = pResponder;
 }

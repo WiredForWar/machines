@@ -13,6 +13,7 @@
 #include "base/Persistence.hpp"
 
 #include <memory>
+#include <cmath>
 
 PER_DEFINE_PERSISTENT(BmpFontCoreCharData);
 
@@ -241,6 +242,11 @@ BmpFont::~BmpFont()
 
 BmpFont BmpFont::scaled(std::size_t factor) const
 {
+    return resized(double(factor));
+}
+
+BmpFont BmpFont::resized(double factor) const
+{
     PRE(pFontCore_);
     PRE(factor > 0);
 
@@ -248,7 +254,9 @@ BmpFont BmpFont::scaled(std::size_t factor) const
     BmpFontCore& core = *scaledCore;
     core.coreCount_ = 1;
 
-    core.fontBmp_ = RenSurface::createAnonymousSurface(pFontCore_->fontBmp_.size() * factor);
+    core.fontBmp_ = RenSurface::createAnonymousSurface(Ren::Size(
+        int(std::round(pFontCore_->fontBmp_.width() * factor)),
+        int(std::round(pFontCore_->fontBmp_.height() * factor))));
     core.fontBmp_.enableColourKeying();
     Painter painter(core.fontBmp_);
     painter.clearRectangle(core.fontBmp_.size());
@@ -256,20 +264,20 @@ BmpFont BmpFont::scaled(std::size_t factor) const
 
     for (auto& glyph : core.charData_)
     {
-        glyph.offset_ *= factor;
-        glyph.width_ *= factor;
+        glyph.offset_ = std::lround(glyph.offset_ * factor);
+        glyph.width_ = std::lround(glyph.width_ * factor);
     }
-    core.maxCharWidth_ *= factor;
-    core.charHeight_ *= factor;
-    core.ascender_ *= static_cast<int>(factor);
-    core.descender_ *= static_cast<int>(factor);
-    core.capHeight_ *= static_cast<int>(factor);
+    core.maxCharWidth_ = std::lround(core.maxCharWidth_ * factor);
+    core.charHeight_ = std::lround(core.charHeight_ * factor);
+    core.ascender_ = std::lround(core.ascender_ * factor);
+    core.descender_ = std::lround(core.descender_ * factor);
+    core.capHeight_ = std::lround(core.capHeight_ * factor);
 
     BmpFont result(*this);
     --result.pFontCore_->coreCount_;
     result.pFontCore_ = scaledCore.release();
-    result.spaceCharWidth_ *= factor;
-    result.spacing_ *= factor;
+    result.spaceCharWidth_ = std::lround(result.spaceCharWidth_ * factor);
+    result.spacing_ = std::lround(result.spacing_ * factor);
     return result;
 }
 

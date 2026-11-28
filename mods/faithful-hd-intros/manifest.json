@@ -1,0 +1,244 @@
+{
+  "masters": {
+    "acclaim": {
+      "path": "art/hd-intros/masters/acclaim.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "8038de53d197159b520e097dd7eb9855955fd918358d0c05894041e16303f8bd",
+      "original_sha256": "fc6a94362b5127e10932c5b59b5a53885f6259016c5ff8b34e6dad3f413c5aa3"
+    },
+    "charlogo": {
+      "path": "art/hd-intros/masters/charlogo.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "fd34a079b9277a38a55644c83ecd664bb6dd3b6859ec4207407f24180198cefb",
+      "original_sha256": "dd8c003cd7e76cbd432de833327ea9da6c9233cc0ed8b5dc0bd345843d3cb921"
+    },
+    "legal": {
+      "path": "art/hd-intros/masters/legal.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "a47a75fc9bc940d1c6865b44f2fcdccbb58bb1e20a117b81375df6516766ba70",
+      "original_sha256": "dae3a91e8e12c321f898e0033432aeeeb1bd4336ad198d72eec75818fecd844c"
+    },
+    "wait": {
+      "path": "art/hd-intros/masters/wait.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "af2474aded2c5a75fef80728f88f82ae2a214f8d36a24ae1d4fcdb85a382f742",
+      "original_sha256": "e2aa3e2d3601af84681334a4c161407a229b7521f9fdf5e0be3edd2d5d1d1c97"
+    }
+  },
+  "textures": [
+    {
+      "path": "gui/menu/acclaim.png",
+      "size": [
+        640,
+        480
+      ],
+      "sha256": "f66748ff00560368c9874209bcae369c894ccffb6837e2450f30096a95f710a5"
+    },
+    {
+      "path": "gui/menu/acclaim_2x.png",
+      "size": [
+        1280,
+        960
+      ],
+      "sha256": "cae5bd65b6038ee8d968c5b92fc4cf90f831dd3f2bdef31c40e3aa347cdf62da"
+    },
+    {
+      "path": "gui/menu/acclaim_3x.png",
+      "size": [
+        1920,
+        1440
+      ],
+      "sha256": "90b1eb68c3518eb15bd3df5651c07ef5b9aa78d2aaee1a7962813f8737652dc3"
+    },
+    {
+      "path": "gui/menu/acclaim_4x.png",
+      "size": [
+        2560,
+        1920
+      ],
+      "sha256": "1aa36d983e06777352bd89f1b33e0173450fd452896bb398292432481027f3cf"
+    },
+    {
+      "path": "gui/menu/acclaim_5x.png",
+      "size": [
+        3200,
+        2400
+      ],
+      "sha256": "361cea73239a896ed3a906e763111398d0af4efb8f2019efe87ece60351dc54c"
+    },
+    {
+      "path": "gui/menu/acclaim_6x.png",
+      "size": [
+        3840,
+        2880
+      ],
+      "sha256": "b05f6cff5dd3e6bc99f00a17c92a19af49d48ef4b5efb184f1d2fcab5a7f19a4"
+    },
+    {
+      "path": "gui/menu/charlogo.png",
+      "size": [
+        640,
+        480
+      ],
+      "sha256": "afdf908757042aeb9dd2b00b245c1ea22527ea0795cf0c29a8e8b64c5573bf7c"
+    },
+    {
+      "path": "gui/menu/charlogo_2x.png",
+      "size": [
+        1280,
+        960
+      ],
+      "sha256": "42647d46034b623ec9393a607df3e19c71eae64fe9670b4a7f1472eefa9de3ca"
+    },
+    {
+      "path": "gui/menu/charlogo_3x.png",
+      "size": [
+        1920,
+        1440
+      ],
+      "sha256": "44aea30be385468e452e33ef55d9e3ad786fe865db6df7d6986f2c0ff175d5b5"
+    },
+    {
+      "path": "gui/menu/charlogo_4x.png",
+      "size": [
+        2560,
+        1920
+      ],
+      "sha256": "0abc5923c797e070f09bb06cfaeb248ad1fda688dbfd44aba3a837f90fe86981"
+    },
+    {
+      "path": "gui/menu/charlogo_5x.png",
+      "size": [
+        3200,
+        2400
+      ],
+      "sha256": "b498c3e4f1224c2e1dd29fa2f30fcc7a6672cbabf632882564d81d5558d6901f"
+    },
+    {
+      "path": "gui/menu/charlogo_6x.png",
+      "size": [
+        3840,
+        2880
+      ],
+      "sha256": "0aa5260baebafbb101f985762066a9d23c5235b2da39c37afed2fddb940917e9"
+    },
+    {
+      "path": "gui/menu/legal.png",
+      "size": [
+        640,
+        480
+      ],
+      "sha256": "5d6324fb308c3f88ee83ea6f3f0f4a9c0fb99d30414bafe98e7d7932442b5f97"
+    },
+    {
+      "path": "gui/menu/legal_2x.png",
+      "size": [
+        1280,
+        960
+      ],
+      "sha256": "7a22b0294de596423e500e623c37f35b81699e360945323073585b72554f6859"
+    },
+    {
+      "path": "gui/menu/legal_3x.png",
+      "size": [
+        1920,
+        1440
+      ],
+      "sha256": "3485bc188e742079df1f4280cc2c0362f6894e0b9c1aa581e3a69f71812939d0"
+    },
+    {
+      "path": "gui/menu/legal_4x.png",
+      "size": [
+        2560,
+        1920
+      ],
+      "sha256": "008a1c4e03f5aa9d93224d0fad2b5bea031c6de64361c4877aaae091ad6ebd2a"
+    },
+    {
+      "path": "gui/menu/legal_5x.png",
+      "size": [
+        3200,
+        2400
+      ],
+      "sha256": "0a16ae2aa967f5e5c401bc267be42bd12a918751abc782e39054054ec0418cfd"
+    },
+    {
+      "path": "gui/menu/legal_6x.png",
+      "size": [
+        3840,
+        2880
+      ],
+      "sha256": "09684a1c12f873162a6e089efc4054bea8d3b24fdbcc530c9fa68cadce563eca"
+    },
+    {
+      "path": "gui/menu/wait.png",
+      "size": [
+        640,
+        480
+      ],
+      "sha256": "5aed92b54f1cdf34fa14449f1c270b8a24c816e86fb9c9ae04ff0678054e64d0"
+    },
+    {
+      "path": "gui/menu/wait_2x.png",
+      "size": [
+        1280,
+        960
+      ],
+      "sha256": "553b775d776b9b4a8b7819adcd46dfff73b39eb2bcb032db073f6e8cd8932593"
+    },
+    {
+      "path": "gui/menu/wait_3x.png",
+      "size": [
+        1920,
+        1440
+      ],
+      "sha256": "89c0e56cf354abcefe77c40a2d420e6b3863cae74d406e1ef4bc83c410eebe4f"
+    },
+    {
+      "path": "gui/menu/wait_4x.png",
+      "size": [
+        2560,
+        1920
+      ],
+      "sha256": "e2d18c531d64033291becaf0910b75e6a93f130f5002b121c1dd3718f45c4233"
+    },
+    {
+      "path": "gui/menu/wait_5x.png",
+      "size": [
+        3200,
+        2400
+      ],
+      "sha256": "7c7e4ea1b3c9128e35377426fab5eca11d61bf001afc66ed969e8547c8c3d754"
+    },
+    {
+      "path": "gui/menu/wait_6x.png",
+      "size": [
+        3840,
+        2880
+      ],
+      "sha256": "7f7c530fa9c45cd71cdb5d27e1a389977807fc625101cfea046d0d976913b3c2"
+    },
+    {
+      "path": "gui/menu/wait.bmp",
+      "size": [
+        2880,
+        2160
+      ],
+      "sha256": "d989cd138d430dd6c0bee67178f800c8e59606c5eaa48beb0cc5f5d40d745c44"
+    }
+  ],
+  "texture_count": 25,
+  "scope": "four static cards only; original video and animation files untouched"
+}

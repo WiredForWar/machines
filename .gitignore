@@ -1,5 +1,9 @@
 build/
 
+# Optional artwork export tools
+__pycache__/
+*.pyc
+
 ### CMake ###
 CMakeLists.txt.user
 CMakeCache.txt

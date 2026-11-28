@@ -98,7 +98,16 @@ GuiBitmap Gui::requestScaledImage(std::string path, float scale)
         return Gui::bitmap(imagePath);
 
     if (SysPathName::existsAsFile(imagePath))
-        return Gui::bitmap(imagePath);
+    {
+        GuiBitmap result = Gui::bitmap(imagePath);
+        // Prebuilt texture suffixes are integer scales; menu fitting may need
+        // a fractional scale (4.5 at 3840x2160). Its logical size still needs to
+        // agree with the controls and animated patches.
+        const int textureScale = static_cast<int>(scale);
+        if (textureScale > 0 && scale != textureScale)
+            result.setRequestedSize(result.size() * (scale / textureScale));
+        return result;
+    }
 
     GuiBitmap result = Gui::bitmap(getScaledImagePath(path, 1));
     result.setRequestedSize(result.size() * scale);
@@ -373,10 +382,17 @@ void Gui::setFontMetrics(const SysPathName& fontPath, const Ren::BmpFontMetrics&
     getFontMetrics()[fontPath.pathname()] = metrics;
 }
 
+static std::map<std::string, double> fontDisplayScales;
+void Gui::setFontDisplayScale(const SysPathName& fontPath, double scale)
+{
+    fontDisplayScales[fontPath.pathname()] = scale;
+}
+
 struct CachedFont
 {
     SysPathName requestedPath;
     Ren::BmpFont font;
+    double displayScale{};
 };
 
 static std::vector<CachedFont>& getFontCache()
@@ -394,12 +410,28 @@ static std::vector<CachedFont>& getFontCache()
 Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
 {
     auto& fonts = getFontCache();
-    size_t spacing = 1 * Gui::uiScaleFactor();
-    size_t spaceCharWidth = 5 * Gui::uiScaleFactor();
+    auto scale = static_cast<std::size_t>(Gui::uiScaleFactor());
+    // HD menu atlases carry their own integer density. HUD and menu scale need
+    // not match, so parsing these with the HUD density corrupts their metrics.
+    const auto& path = fontPath.pathname();
+    if (path.find("hd-smallfnt") != std::string::npos
+        || path.find("hd-smaldfnt") != std::string::npos
+        || path.find("hd-smalwfnt") != std::string::npos)
+    {
+        const auto suffix = path.rfind('_');
+        if (suffix != std::string::npos && path.ends_with("x.png"))
+            scale = std::stoul(path.substr(suffix + 1));
+        else
+            scale = 1;
+    }
+    const auto requestedScale = fontDisplayScales.find(path);
+    const double displayScale = requestedScale != fontDisplayScales.end() ? requestedScale->second : double(scale);
+    size_t spacing = static_cast<size_t>(displayScale);
+    size_t spaceCharWidth = static_cast<size_t>(std::round(5 * displayScale));
 
     for (auto& cached : fonts)
     {
-        if (cached.requestedPath == fontPath)
+        if (cached.requestedPath == fontPath && cached.displayScale == displayScale)
         {
             Ren::BmpFont font(cached.font);
             font.fontType(Ren::BmpFont::PROPORTIONAL);
@@ -413,8 +445,7 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
     const auto found = metrics.find(fontPath.pathname());
     const Ren::BmpFontMetrics& fontMetrics = (found != metrics.end()) ? found->second : Ren::BmpFontMetrics{};
 
-    const auto scale = static_cast<std::size_t>(Gui::uiScaleFactor());
-    Ren::BmpFont newFont = [&]() {
+    Ren::BmpFont atlasFont = [&]() {
         // getScaledImagePath names the requested atlas even if no prebuilt file
         // exists at that scale. Derive it from the original art in memory, using
         // the original glyph measurements rather than parsing enlarged markers.
@@ -428,10 +459,11 @@ Ren::BmpFont Gui::getFont(const SysPathName& fontPath)
         }
         return Ren::BmpFont(fontPath, scale, fontMetrics);
     }();
+    Ren::BmpFont newFont = displayScale == scale ? atlasFont : atlasFont.resized(displayScale / scale);
     newFont.fontType(Ren::BmpFont::PROPORTIONAL);
     newFont.spaceCharWidth(spaceCharWidth);
     newFont.spacing(spacing);
-    fonts.push_back({fontPath, newFont});
+    fonts.push_back({fontPath, newFont, displayScale});
     return newFont;
 }
 

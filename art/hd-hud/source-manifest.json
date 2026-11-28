@@ -1,0 +1,3970 @@
+{
+  "source": "<original-game-runtime>",
+  "assets": [
+    {
+      "path": "gui/navigate/red/machines.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        80,
+        44,
+        240,
+        276
+      ],
+      "source_sha256": "f2588acffa5ecc614c4e04fa0d06bbe8a2288a4370327d2f1791a3972afbf279"
+    },
+    {
+      "path": "gui/navigate/red/construc.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        400,
+        44,
+        560,
+        276
+      ],
+      "source_sha256": "8cdf33c748622c49026e3599501acab3192dde5aef8156ab21e18d6fdba32008"
+    },
+    {
+      "path": "gui/navigate/red/squads.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        720,
+        44,
+        880,
+        276
+      ],
+      "source_sha256": "bb67a866e7174319b041ff17b1b66ddcd8436cef681581d1985f3f94b24f3633"
+    },
+    {
+      "path": "gui/navigate/blue/machines.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        1040,
+        44,
+        1200,
+        276
+      ],
+      "source_sha256": "236d6cf76e89e894877fa4511c1b22a04cc2e1a1647c9de457196377bcfc755a"
+    },
+    {
+      "path": "gui/navigate/blue/construc.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        80,
+        364,
+        240,
+        596
+      ],
+      "source_sha256": "12bbf26c9579c626e73e8413f38baf53360237a6901963e843983aed2d5fca57"
+    },
+    {
+      "path": "gui/navigate/blue/squads.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        400,
+        364,
+        560,
+        596
+      ],
+      "source_sha256": "33972d7c2195041a73680ba707713f33d6fb3d76857d12519b07ca4dfd531cb4"
+    },
+    {
+      "path": "gui/navigate/green/machines.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        720,
+        364,
+        880,
+        596
+      ],
+      "source_sha256": "6d9cc4e416eeba062d063ef73f8d0232ae42718eb25065c5e33fd8dcb643f9d7"
+    },
+    {
+      "path": "gui/navigate/green/construc.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        1040,
+        364,
+        1200,
+        596
+      ],
+      "source_sha256": "a9b71bd00847e7af691bcc022b08e6fe392edd3b53c7b6bb95c3b653882db51e"
+    },
+    {
+      "path": "gui/navigate/green/squads.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        80,
+        684,
+        240,
+        916
+      ],
+      "source_sha256": "157a64eb60d1b16717e613534e944c0f521858460d823d160c0e8f0cb6b533ac"
+    },
+    {
+      "path": "gui/navigate/yellow/machines.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        400,
+        684,
+        560,
+        916
+      ],
+      "source_sha256": "b74047c402e4a69dc02fb2b923a768aa9c1fb93ace270b43fc88b4f103f5d388"
+    },
+    {
+      "path": "gui/navigate/yellow/construc.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        720,
+        684,
+        880,
+        916
+      ],
+      "source_sha256": "9adffe13dc4ae664902f8815994c6341fbc720997a94776ff0f250fa2bd52f79"
+    },
+    {
+      "path": "gui/navigate/yellow/squads.bmp",
+      "size": [
+        20,
+        29
+      ],
+      "atlas": "controls",
+      "rect": [
+        1040,
+        684,
+        1200,
+        916
+      ],
+      "source_sha256": "5d33d43289cc812e15cd6925700f4396f22f7948afca63f18f37aabe4218e225"
+    },
+    {
+      "path": "gui/misc/return1.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "controls",
+      "rect": [
+        80,
+        1040,
+        240,
+        1200
+      ],
+      "source_sha256": "97cecfe19249d301b494d6c243571eff5de8a5f9fb5a16344a057583635650fb"
+    },
+    {
+      "path": "gui/misc/return2.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "controls",
+      "rect": [
+        400,
+        1040,
+        560,
+        1200
+      ],
+      "source_sha256": "14f832baed6a81017a95f7209f89eadc9031bcc100c66542c175cb270b7aa6de"
+    },
+    {
+      "path": "gui/misc/zenith.bmp",
+      "size": [
+        16,
+        16
+      ],
+      "atlas": "controls",
+      "rect": [
+        736,
+        1056,
+        864,
+        1184
+      ],
+      "source_sha256": "4569ec1be0bc68bd86de1112de77e432eda00a92369ee152a4d2500c9dd5a567"
+    },
+    {
+      "path": "gui/misc/ground.bmp",
+      "size": [
+        16,
+        16
+      ],
+      "atlas": "controls",
+      "rect": [
+        1056,
+        1056,
+        1184,
+        1184
+      ],
+      "source_sha256": "19903e8748481a13c6a0797b408329b8f99750cb9736fbd9ea83c6e92f6fb508"
+    },
+    {
+      "path": "gui/commands/move.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        24,
+        612,
+        104
+      ],
+      "source_sha256": "a788f0ccc2acb40bcc6dc72f4f4c908de09d3852a3e4066998a571a2e3a8b51e"
+    },
+    {
+      "path": "gui/commands/stop.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        24,
+        1252,
+        104
+      ],
+      "source_sha256": "682960cff1c6518c0dfcf8d2f6f3c84bc1593f2604a27154d73d60b493a173e7"
+    },
+    {
+      "path": "gui/commands/const.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        152,
+        612,
+        232
+      ],
+      "source_sha256": "28cdf92ad519b01759e1058ba473dea372c7ac2ae74e605f35f026a7e5d2519c"
+    },
+    {
+      "path": "gui/commands/repair.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        152,
+        1252,
+        232
+      ],
+      "source_sha256": "5339270e8d85c71b8581999779dd0ad96032d9ba57c2542a4d9b36877fcc5700"
+    },
+    {
+      "path": "gui/commands/capture.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        280,
+        612,
+        360
+      ],
+      "source_sha256": "4d3b70e35598a1a4d54ca28af154a77b61ba6e9cc1c2e6d5b6f89a5e4870263c"
+    },
+    {
+      "path": "gui/commands/deconst.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        280,
+        1252,
+        360
+      ],
+      "source_sha256": "fc3aab239fedea26cb7e79b17d29150ce92397344b0e4634763d6b7c86c0e443"
+    },
+    {
+      "path": "gui/commands/recycle.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        408,
+        612,
+        488
+      ],
+      "source_sha256": "b70a07a152221ccb1c2370be1f461bf673ff297b2e36c0cd3e75ab185d7bc699"
+    },
+    {
+      "path": "gui/commands/patrol.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        408,
+        1252,
+        488
+      ],
+      "source_sha256": "a64a0425fa463e851b6c966f51a136011786652a269915e339a1dbe57e255edc"
+    },
+    {
+      "path": "gui/commands/formsqad.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        536,
+        612,
+        616
+      ],
+      "source_sha256": "a80f122c01f0ffc8caefa385aefbee7f57b557f138a770e8cdf224306cf37408"
+    },
+    {
+      "path": "gui/commands/stand.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        536,
+        1252,
+        616
+      ],
+      "source_sha256": "378223fce18d403b480432338440d5cb169fafccd9afeb091f3a4655336ec307"
+    },
+    {
+      "path": "gui/commands/selfdes1.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        664,
+        612,
+        744
+      ],
+      "source_sha256": "7720b1a774a8eb8e337d5850eac08df9e0742777c66410145b5adcba9e15fc96"
+    },
+    {
+      "path": "gui/commands/selfdes2.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        664,
+        1252,
+        744
+      ],
+      "source_sha256": "957ce51cfc67ebd15b8ccf2163a2f5f8095b969ca9a7a24f70a48df252efb667"
+    },
+    {
+      "path": "gui/commands/selfdes3.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        792,
+        612,
+        872
+      ],
+      "source_sha256": "499540aec49da348bbe8c94c7304191a67bfc295286de71866e53bcd3ea0358f"
+    },
+    {
+      "path": "gui/commands/selfdes4.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        792,
+        1252,
+        872
+      ],
+      "source_sha256": "1e1ad2d916f93dedc61879990f2246169f282250d651d1b07186575b6eca46fe"
+    },
+    {
+      "path": "gui/commands/selfdes5.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        920,
+        612,
+        1000
+      ],
+      "source_sha256": "e5b65282af00bad1d970075cba232f32700afba9d48be6a83be7d52f62ae4e25"
+    },
+    {
+      "path": "gui/commands/selfdes6.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        920,
+        1252,
+        1000
+      ],
+      "source_sha256": "dd2f02a21a94a2bd797ee318e9ec3734592088d9b5824591a74ab8ac21425628"
+    },
+    {
+      "path": "gui/commands/selfdes7.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        1048,
+        612,
+        1128
+      ],
+      "source_sha256": "3dcee0d9182fdba3fa946083651c27f76b7346f46526110296a17521f313ee6a"
+    },
+    {
+      "path": "gui/commands/selfdes8.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        1048,
+        1252,
+        1128
+      ],
+      "source_sha256": "b165ee61c6f9d3b4ee6f0dadf5d96c33aa5d4d2fe0abb57adf77a4dbf16fa72d"
+    },
+    {
+      "path": "gui/commands/defco1.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        1176,
+        612,
+        1256
+      ],
+      "source_sha256": "73b7f14b253966988b97aa31bdbe54c3a4d8803f6cf28e14396e5881abd63dbd"
+    },
+    {
+      "path": "gui/commands/defco2.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        1176,
+        1252,
+        1256
+      ],
+      "source_sha256": "784019a7280aa74168967d45f6e04c3d897d767569976c983ecf95fcea13d824"
+    },
+    {
+      "path": "gui/commands/defco3.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        1304,
+        612,
+        1384
+      ],
+      "source_sha256": "3500b16b3b9141a146be6043fae80e56b3016da6e61b5e8797ecbd3e8d740382"
+    },
+    {
+      "path": "gui/commands/defco12.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        1304,
+        1252,
+        1384
+      ],
+      "source_sha256": "eaa5dff5aa11ad55e03d89fe0ea4dbe7a3c388040ac02b9893eb40584a7a284f"
+    },
+    {
+      "path": "gui/commands/defco23.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        1432,
+        612,
+        1512
+      ],
+      "source_sha256": "b90bb45a69ea6c0eb8ed4d13fb22d958ea89a2f461d3ed3fca2355f88af4b9a5"
+    },
+    {
+      "path": "gui/commands/defco123.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        668,
+        1432,
+        1252,
+        1512
+      ],
+      "source_sha256": "563bb66cb8ce85b3e77228a1216955ec6eb42cbc7f0834ef204ef21abd42936c"
+    },
+    {
+      "path": "gui/commands/defco13.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "atlas": "commands",
+      "rect": [
+        28,
+        1560,
+        612,
+        1640
+      ],
+      "source_sha256": "bdfc9977ac238d1051094b5ac8d334f9114bda5d1a94bc4be4f7baa5ccc66e9a"
+    },
+    {
+      "path": "gui/misc/scrlf.bmp",
+      "size": [
+        11,
+        57
+      ],
+      "atlas": "arrows",
+      "rect": [
+        84,
+        28,
+        172,
+        484
+      ],
+      "source_sha256": "d20535a3422f6b7112c9b38391495fb2bbbb64fb303f4eafdef62f95740ccb1d"
+    },
+    {
+      "path": "gui/misc/scrlfh.bmp",
+      "size": [
+        11,
+        57
+      ],
+      "atlas": "arrows",
+      "rect": [
+        340,
+        28,
+        428,
+        484
+      ],
+      "source_sha256": "111447288e18347d87f699b6ff15da92d2c5df426091c5dba1b7afbbe8871d08"
+    },
+    {
+      "path": "gui/misc/scrll.bmp",
+      "size": [
+        11,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        596,
+        84,
+        684,
+        428
+      ],
+      "source_sha256": "434587a8a5cc148dc2f65a971d7becac1dea6d8d621a865666ab0026d6328d16"
+    },
+    {
+      "path": "gui/misc/scrllh.bmp",
+      "size": [
+        11,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        852,
+        84,
+        940,
+        428
+      ],
+      "source_sha256": "af4e54bcf3a451e479068ebcf6de94ff6d4c45bf2b3bf398667a1ebd9a98f5a9"
+    },
+    {
+      "path": "gui/misc/scrolll.bmp",
+      "size": [
+        13,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        1100,
+        84,
+        1204,
+        428
+      ],
+      "source_sha256": "5df05b0c795e8046ed2b7baa4ae470240babe1e46264c11d2553b98d02c7b513"
+    },
+    {
+      "path": "gui/misc/scrolllh.bmp",
+      "size": [
+        13,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        76,
+        596,
+        180,
+        940
+      ],
+      "source_sha256": "1c67b7691c1e23ae88b0a0fb12c435572d7c58d66b6c5f70adbfc058a16c3687"
+    },
+    {
+      "path": "gui/misc/scrollr.bmp",
+      "size": [
+        13,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        332,
+        596,
+        436,
+        940
+      ],
+      "source_sha256": "321803a64598e27b6a5104a1854417568df936bbb0d57d1bc2137828672f61e4"
+    },
+    {
+      "path": "gui/misc/scrollrh.bmp",
+      "size": [
+        13,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        588,
+        596,
+        692,
+        940
+      ],
+      "source_sha256": "baaac081fccf60e734b72d7c5e1c280c4a7f8d880d7ab9db33cf00b95599dbf3"
+    },
+    {
+      "path": "gui/misc/scrrf.bmp",
+      "size": [
+        11,
+        57
+      ],
+      "atlas": "arrows",
+      "rect": [
+        852,
+        540,
+        940,
+        996
+      ],
+      "source_sha256": "e5b70ee92e23e03b6e0538e30bdd642aa1d52f1cd402cc5db9eca825794696cf"
+    },
+    {
+      "path": "gui/misc/scrrfh.bmp",
+      "size": [
+        11,
+        57
+      ],
+      "atlas": "arrows",
+      "rect": [
+        1108,
+        540,
+        1196,
+        996
+      ],
+      "source_sha256": "36f3da955657fe57606bf17d7dfc369c0edb4eab03f62eb2eedd528f13d11940"
+    },
+    {
+      "path": "gui/misc/scrrl.bmp",
+      "size": [
+        11,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        84,
+        1108,
+        172,
+        1452
+      ],
+      "source_sha256": "81016f9bacac606f04194142ac9c60de6883b0ab13325a0b1860304f621f786e"
+    },
+    {
+      "path": "gui/misc/scrrlh.bmp",
+      "size": [
+        11,
+        43
+      ],
+      "atlas": "arrows",
+      "rect": [
+        340,
+        1108,
+        428,
+        1452
+      ],
+      "source_sha256": "d08fb8c0947e00d6cbe5b97eb786bd82c28f71969c88dbe105edab72da7639d1"
+    },
+    {
+      "path": "gui/corral/scrlup.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        588,
+        1096,
+        692,
+        1464
+      ],
+      "source_sha256": "b54aac076b963bc1f3866a17640b42cbac31b365f91dc2067803313e500a3e6c"
+    },
+    {
+      "path": "gui/corral/scrluph.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        844,
+        1096,
+        948,
+        1464
+      ],
+      "source_sha256": "78db549f42f82594520fb8499b211e58649c7bb76596d313c657dd4a6c8aa7b5"
+    },
+    {
+      "path": "gui/corral/scrlup2.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        1100,
+        1096,
+        1204,
+        1464
+      ],
+      "source_sha256": "2091ce4466d6130104e8d8e8507927afb3382dd8b0d737409f2547c5c5fee44f"
+    },
+    {
+      "path": "gui/corral/scrlup2h.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        76,
+        1608,
+        180,
+        1976
+      ],
+      "source_sha256": "a54712d39bddf57ea5f8c2a41e46782bb1e3e7029b1678ad994d81b6b03f0fea"
+    },
+    {
+      "path": "gui/corral/scrldn.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        332,
+        1608,
+        436,
+        1976
+      ],
+      "source_sha256": "34f4859d50ca7a2553ea3d02103025aa2ce0c6423ab4d46b65164efd7400a434"
+    },
+    {
+      "path": "gui/corral/scrldnh.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        588,
+        1608,
+        692,
+        1976
+      ],
+      "source_sha256": "10233e2212dfe5f85d7f8f0d0967448ffd414b1defc956aa779f7900bba6e898"
+    },
+    {
+      "path": "gui/corral/scrldn2.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        844,
+        1608,
+        948,
+        1976
+      ],
+      "source_sha256": "0ceb1488f91568fa105af86cf5ad48341eb79cadd22e2c466dcddeac649fdc79"
+    },
+    {
+      "path": "gui/corral/scrldn2h.bmp",
+      "size": [
+        13,
+        46
+      ],
+      "atlas": "arrows",
+      "rect": [
+        1100,
+        1608,
+        1204,
+        1976
+      ],
+      "source_sha256": "7ee979cd103865b02586275b14cce3a6f517d00c6d751810f2e4a88bf4c1e7a7"
+    },
+    {
+      "path": "gui/navigate/navi0.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        40,
+        60,
+        88,
+        132
+      ],
+      "source_sha256": "02fa95400f011aa7d302733cb09c9d2d31bcd23a3b1072f5f82621bb866164e2"
+    },
+    {
+      "path": "gui/navigate/navi1.bmp",
+      "size": [
+        3,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        174,
+        60,
+        210,
+        132
+      ],
+      "source_sha256": "70d0f226424bb05cc295e0569ad85a54a8a52d2ba2a30d0a79d062525ba92b31"
+    },
+    {
+      "path": "gui/navigate/navi2.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        296,
+        60,
+        344,
+        132
+      ],
+      "source_sha256": "795dd3733267e599d20780353267aa4fc4b7a41e683b95d6f2b7c50cab23414b"
+    },
+    {
+      "path": "gui/navigate/navi3.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        424,
+        60,
+        472,
+        132
+      ],
+      "source_sha256": "a089b94672ef4d08b923d04e588f07bf346a5a7550486e7ec3b4cd9778305d62"
+    },
+    {
+      "path": "gui/navigate/navi4.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        552,
+        60,
+        600,
+        132
+      ],
+      "source_sha256": "2d4c48102d473ffe9380a775c930e069540e1ccc92dd8877a2326274f14c9752"
+    },
+    {
+      "path": "gui/navigate/navi5.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        680,
+        60,
+        728,
+        132
+      ],
+      "source_sha256": "dfbbe1634c64e86ec69fe827717bc4192719887bc4a9337959f06676eb07a16b"
+    },
+    {
+      "path": "gui/navigate/navi6.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        808,
+        60,
+        856,
+        132
+      ],
+      "source_sha256": "dda3e834fa3f381f11af94672ea7dc9a91dbd2b8810d16b17f8c4b9e592ffca4"
+    },
+    {
+      "path": "gui/navigate/navi7.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        936,
+        60,
+        984,
+        132
+      ],
+      "source_sha256": "c00eba30e2fcdcbafeee5791664bd81d9d5ebd3cd93a6b032788e86164b1b170"
+    },
+    {
+      "path": "gui/navigate/navi8.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        1064,
+        60,
+        1112,
+        132
+      ],
+      "source_sha256": "c2df143af5b8acae7717219093fbc9e573a2fcf9a004d35162b71fc3061a291b"
+    },
+    {
+      "path": "gui/navigate/navi9.bmp",
+      "size": [
+        4,
+        6
+      ],
+      "atlas": "digits",
+      "rect": [
+        1192,
+        60,
+        1240,
+        132
+      ],
+      "source_sha256": "2d7e9cc69937d23d9a20f9196aac943b4030b080c015c2470a52e6bc5b789f58"
+    },
+    {
+      "path": "gui/navigate/numbmu0.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        28,
+        234,
+        100,
+        342
+      ],
+      "source_sha256": "8e177adf1cf457dd89af1d5a8e9d904da55bad0df1ac8dcc9b341690df67e69a"
+    },
+    {
+      "path": "gui/navigate/numbmu1.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        156,
+        234,
+        228,
+        342
+      ],
+      "source_sha256": "e9e0711903dac9244ac31fe820bb316eaf1e50f4c60c1afe78890b934b67ee8a"
+    },
+    {
+      "path": "gui/navigate/numbmu2.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        284,
+        234,
+        356,
+        342
+      ],
+      "source_sha256": "519387b5867c89a1bdb226d434f7c6846d481df798c88d203b11dbd1df2c99c4"
+    },
+    {
+      "path": "gui/navigate/numbmu3.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        412,
+        234,
+        484,
+        342
+      ],
+      "source_sha256": "852527eea477f4966e4b0370ea58dd6ed3708bb1847d0fb7ceb282c665ab25af"
+    },
+    {
+      "path": "gui/navigate/numbmu4.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        540,
+        234,
+        612,
+        342
+      ],
+      "source_sha256": "1f9cf96eefbfd44ba707966430ab06d2abcf355c23ce8f8d01ef532d63ba84eb"
+    },
+    {
+      "path": "gui/navigate/numbmu5.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        668,
+        234,
+        740,
+        342
+      ],
+      "source_sha256": "17b07408be34f71e652e44d6f62829075a28a96f78e47497ca8ee46dd9bc176e"
+    },
+    {
+      "path": "gui/navigate/numbmu6.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        796,
+        234,
+        868,
+        342
+      ],
+      "source_sha256": "3ce4b35362aeafb93eeaf101b98cbc52d2646b6f9267acc39918bd9845ca3260"
+    },
+    {
+      "path": "gui/navigate/numbmu7.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        924,
+        234,
+        996,
+        342
+      ],
+      "source_sha256": "8cb29f733513129b13e8a024db13f4a95d5aeccb8a4db0fb90f0ffa406015dc3"
+    },
+    {
+      "path": "gui/navigate/numbmu8.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1052,
+        234,
+        1124,
+        342
+      ],
+      "source_sha256": "b35e8d55c8925cfe7261f9b6f60d67e83d1c02fad54f65f7e6e515ae31970978"
+    },
+    {
+      "path": "gui/navigate/numbmu9.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1180,
+        234,
+        1252,
+        342
+      ],
+      "source_sha256": "ff33362429a78582689cbad18bc23a754cd1a2e3f5a528196f38af4811159e32"
+    },
+    {
+      "path": "gui/navigate/numbmus.bmp",
+      "size": [
+        5,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        34,
+        426,
+        94,
+        534
+      ],
+      "source_sha256": "8bc6d2927c3b45a99b935360e7909ba13db2ea58276b8944a78eef75726fe03c"
+    },
+    {
+      "path": "gui/navigate/numtop0.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        156,
+        426,
+        228,
+        534
+      ],
+      "source_sha256": "751c6e9562e1b1d2bd61215a6d9217a0b125ea150884fdfad097ab0195925a09"
+    },
+    {
+      "path": "gui/navigate/numtop1.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        284,
+        426,
+        356,
+        534
+      ],
+      "source_sha256": "1e12fd1e0307a7b4c5ede6166fde1d1cebf43dcbb62f987ca5e4e7bb168913a7"
+    },
+    {
+      "path": "gui/navigate/numtop2.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        412,
+        426,
+        484,
+        534
+      ],
+      "source_sha256": "aeba2eb48cd3e11c81c46340d189088bfd3f28d0436cc66e41c5d962c49201e4"
+    },
+    {
+      "path": "gui/navigate/numtop3.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        540,
+        426,
+        612,
+        534
+      ],
+      "source_sha256": "145e532f0afd30d7facebab97476b1265a5ed5570417aecc6740e0f56e4efe23"
+    },
+    {
+      "path": "gui/navigate/numtop4.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        668,
+        426,
+        740,
+        534
+      ],
+      "source_sha256": "be886ad60310190e818620dd7fbdfa67b25c2e2e7d4f9185c527d3d7f97358a3"
+    },
+    {
+      "path": "gui/navigate/numtop5.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        796,
+        426,
+        868,
+        534
+      ],
+      "source_sha256": "98ab5a51c06967057582d64f90cb0e2fb36dfaf3711dedb091b035d84a416df6"
+    },
+    {
+      "path": "gui/navigate/numtop6.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        924,
+        426,
+        996,
+        534
+      ],
+      "source_sha256": "47a986d83cd313ddd47a2d9a8904b903eaeb9d8b958cb9820fa48a606aebd752"
+    },
+    {
+      "path": "gui/navigate/numtop7.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1052,
+        426,
+        1124,
+        534
+      ],
+      "source_sha256": "e967bc2698a672597f9b78a21352a3e758912a63feaf0b6b5b02ddc32913a7b7"
+    },
+    {
+      "path": "gui/navigate/numtop8.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1180,
+        426,
+        1252,
+        534
+      ],
+      "source_sha256": "808ddf6904d5d45626fe4f59d8e017523373bb3deb6255ad06786432de88805b"
+    },
+    {
+      "path": "gui/navigate/numtop9.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        28,
+        618,
+        100,
+        726
+      ],
+      "source_sha256": "4fcdc9bf6afce8766c2721cb0a9cc87d74e26ea109104009bfc50983837561f8"
+    },
+    {
+      "path": "gui/misc/numsqd0.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        156,
+        618,
+        228,
+        726
+      ],
+      "source_sha256": "fa404bfe487bb99c546d1d23e66b7c36325119337624b09b1e63f517cf4a0b84"
+    },
+    {
+      "path": "gui/misc/numsqd1.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        284,
+        618,
+        356,
+        726
+      ],
+      "source_sha256": "eefa59fcc1925b59db0d5cfecc6f532fc5e2bf62a054e7c4a57308feba4b3d83"
+    },
+    {
+      "path": "gui/misc/numsqd2.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        412,
+        618,
+        484,
+        726
+      ],
+      "source_sha256": "ba73f8424c04e64d3cd28ecd6b1a869b42e72c5b55c7042828ffd26f658645f8"
+    },
+    {
+      "path": "gui/misc/numsqd3.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        540,
+        618,
+        612,
+        726
+      ],
+      "source_sha256": "1098fef71fa724bc9d35affd211198ffd60405d98fe6a3054da2ac9e9fda5a76"
+    },
+    {
+      "path": "gui/misc/numsqd4.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        668,
+        618,
+        740,
+        726
+      ],
+      "source_sha256": "bf137a30aab43ff3eb2312647c580d907ea1413125bc432c1c20cfb7ea3111c8"
+    },
+    {
+      "path": "gui/misc/numsqd5.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        796,
+        618,
+        868,
+        726
+      ],
+      "source_sha256": "3e924700ccf92b69cfc03b9117f0a7a4eee5a566afa926ee66a00fb2345fcede"
+    },
+    {
+      "path": "gui/misc/numsqd6.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        924,
+        618,
+        996,
+        726
+      ],
+      "source_sha256": "85a9305875b4becb4d4688c2a17a17dc1d8922000f41ea468f4cd119bd479df3"
+    },
+    {
+      "path": "gui/misc/numsqd7.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1052,
+        618,
+        1124,
+        726
+      ],
+      "source_sha256": "93ae43adfdfc247623d3dac5c37e47b429445af88d0fe032327d8f68b6c33b92"
+    },
+    {
+      "path": "gui/misc/numsqd8.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        1180,
+        618,
+        1252,
+        726
+      ],
+      "source_sha256": "05159649b4c48eb934d25f3213341f939eb6af50b415f5552dbeb2b681361f65"
+    },
+    {
+      "path": "gui/misc/numsqd9.bmp",
+      "size": [
+        6,
+        9
+      ],
+      "atlas": "digits",
+      "rect": [
+        28,
+        810,
+        100,
+        918
+      ],
+      "source_sha256": "623114d96a1f64d80b35d3d1938e34a80c61429a802a542d95c4cbdeb0cba866"
+    },
+    {
+      "path": "gui/misc/red/decal1.bmp",
+      "size": [
+        89,
+        30
+      ],
+      "atlas": "decals-red",
+      "rect": [
+        28,
+        136,
+        740,
+        376
+      ],
+      "source_sha256": "de243e0c08ce0f085741bdc72278a4b1028b3286e802378965307ffb51873856"
+    },
+    {
+      "path": "gui/misc/red/decal2.bmp",
+      "size": [
+        17,
+        39
+      ],
+      "atlas": "decals-red",
+      "rect": [
+        1084,
+        100,
+        1220,
+        412
+      ],
+      "source_sha256": "8101bec1e5e01491fdb8953407b23c68db0b179da23dd81cfbc82ee27d8930fb"
+    },
+    {
+      "path": "gui/misc/red/decal3.bmp",
+      "size": [
+        38,
+        23
+      ],
+      "atlas": "decals-red",
+      "rect": [
+        232,
+        676,
+        536,
+        860
+      ],
+      "source_sha256": "e477ef177a9ee8161ca18f49569cd3b5cba1d20a44b3a7a038681fe4942cb87f"
+    },
+    {
+      "path": "gui/misc/red/decal4.bmp",
+      "size": [
+        64,
+        54
+      ],
+      "atlas": "decals-red",
+      "rect": [
+        896,
+        552,
+        1408,
+        984
+      ],
+      "source_sha256": "62a506f7b94598f1327540b0341f73949ba1ad0671b088e221d88f8e500e220e"
+    },
+    {
+      "path": "gui/misc/blue/decal1.bmp",
+      "size": [
+        89,
+        30
+      ],
+      "atlas": "decals-blue",
+      "rect": [
+        28,
+        136,
+        740,
+        376
+      ],
+      "source_sha256": "34d67b0fe9dd689137ec2153ac5056e2cfdb39865bdd8235d13786fe3fed6475"
+    },
+    {
+      "path": "gui/misc/blue/decal2.bmp",
+      "size": [
+        17,
+        39
+      ],
+      "atlas": "decals-blue",
+      "rect": [
+        1084,
+        100,
+        1220,
+        412
+      ],
+      "source_sha256": "ddaedcb4acfa294777bd97b56aa6ac38bbd3e821814eaf229d741f392ca9f06c"
+    },
+    {
+      "path": "gui/misc/blue/decal3.bmp",
+      "size": [
+        38,
+        23
+      ],
+      "atlas": "decals-blue",
+      "rect": [
+        232,
+        676,
+        536,
+        860
+      ],
+      "source_sha256": "c1281c0787467bd34646bca2ae595f41e7abb022b618ae5ac8f39f45e5d72209"
+    },
+    {
+      "path": "gui/misc/blue/decal4.bmp",
+      "size": [
+        64,
+        54
+      ],
+      "atlas": "decals-blue",
+      "rect": [
+        896,
+        552,
+        1408,
+        984
+      ],
+      "source_sha256": "e0e336c733913c88d97dff2558bcf0141af7085fdfca15a3ba0528a29f0dfacb"
+    },
+    {
+      "path": "gui/misc/green/decal1.bmp",
+      "size": [
+        89,
+        30
+      ],
+      "atlas": "decals-green",
+      "rect": [
+        28,
+        136,
+        740,
+        376
+      ],
+      "source_sha256": "4f4742731fe38163fb85872e237b292681ad8b20a6d768401fb92b6c1c79e66a"
+    },
+    {
+      "path": "gui/misc/green/decal2.bmp",
+      "size": [
+        17,
+        39
+      ],
+      "atlas": "decals-green",
+      "rect": [
+        1084,
+        100,
+        1220,
+        412
+      ],
+      "source_sha256": "7a96adf4dd949265ddbbadc335e59137f5043f9ec2e53691b0738dec116623c0"
+    },
+    {
+      "path": "gui/misc/green/decal3.bmp",
+      "size": [
+        38,
+        23
+      ],
+      "atlas": "decals-green",
+      "rect": [
+        232,
+        676,
+        536,
+        860
+      ],
+      "source_sha256": "b8a940bdb36203f24d6cbf6f4ca8f5a2e0913e09ba8ad8f9c871788cd6e05230"
+    },
+    {
+      "path": "gui/misc/green/decal4.bmp",
+      "size": [
+        64,
+        54
+      ],
+      "atlas": "decals-green",
+      "rect": [
+        896,
+        552,
+        1408,
+        984
+      ],
+      "source_sha256": "d78a51c7a99a7221a827429cf1ac9e948455c0a2a64cc837d6cb7b149fa4892b"
+    },
+    {
+      "path": "gui/misc/yellow/decal1.bmp",
+      "size": [
+        89,
+        30
+      ],
+      "atlas": "decals-yellow",
+      "rect": [
+        28,
+        136,
+        740,
+        376
+      ],
+      "source_sha256": "1b1b7a74411a78740bc85ae37dcc687a3b55d7d5c08a6d92880efbaf0df70e31"
+    },
+    {
+      "path": "gui/misc/yellow/decal2.bmp",
+      "size": [
+        17,
+        39
+      ],
+      "atlas": "decals-yellow",
+      "rect": [
+        1084,
+        100,
+        1220,
+        412
+      ],
+      "source_sha256": "707d0323caecff0511e1e39254929bdef4098a19e4b519a19a829876981eb893"
+    },
+    {
+      "path": "gui/misc/yellow/decal3.bmp",
+      "size": [
+        38,
+        23
+      ],
+      "atlas": "decals-yellow",
+      "rect": [
+        232,
+        676,
+        536,
+        860
+      ],
+      "source_sha256": "7af2a1d0018e39091832690260546d5085bd00c21fdb262935da9f064b45a1de"
+    },
+    {
+      "path": "gui/misc/yellow/decal4.bmp",
+      "size": [
+        64,
+        54
+      ],
+      "atlas": "decals-yellow",
+      "rect": [
+        896,
+        552,
+        1408,
+        984
+      ],
+      "source_sha256": "0faab03e918637599b6dde0d76bdb121aa496020b310cb0f554b5d92c1ed0a2a"
+    },
+    {
+      "path": "gui/misc/decal5.bmp",
+      "size": [
+        169,
+        35
+      ],
+      "atlas": "supplements",
+      "rect": [
+        92,
+        64,
+        1444,
+        344
+      ],
+      "source_sha256": "bd7440d8c7a5b2949cdbc52f8dce5df46dcf87ade1b7d08db84fb770dbaac6d3"
+    },
+    {
+      "path": "gui/misc/decal6.bmp",
+      "size": [
+        43,
+        74
+      ],
+      "atlas": "supplements",
+      "rect": [
+        20,
+        512,
+        364,
+        1104
+      ],
+      "source_sha256": "935dfbc1abe44bd55a34e856ab2dac195034c84e0d1bf618ad165cf19887f233"
+    },
+    {
+      "path": "gui/misc/decal7.bmp",
+      "size": [
+        19,
+        19
+      ],
+      "atlas": "supplements",
+      "rect": [
+        500,
+        700,
+        652,
+        852
+      ],
+      "source_sha256": "f543be052d15dd0400b2fe127744c6929bbe5b0d6bd1e48cb3e1d18d5c7adcd9"
+    },
+    {
+      "path": "gui/misc/slider.bmp",
+      "size": [
+        6,
+        25
+      ],
+      "atlas": "supplements",
+      "rect": [
+        900,
+        700,
+        948,
+        900
+      ],
+      "source_sha256": "697eaa3802f2311a7837f47fcbc80cd9fa6adf3d404d2239c20f1eb54e0e8b97"
+    },
+    {
+      "path": "gui/misc/slidhole.bmp",
+      "size": [
+        6,
+        49
+      ],
+      "atlas": "supplements",
+      "rect": [
+        1200,
+        570,
+        1248,
+        962
+      ],
+      "source_sha256": "ff9721ccd062e8183fc4ac8df33e2da16e2492f978af753ef3a4b1703b6359db"
+    },
+    {
+      "path": "gui/map/rlogo.bmp",
+      "size": [
+        134,
+        127
+      ],
+      "master": "rlogo",
+      "source_sha256": "8ce52f0cfb9fdebf227b651cf79bf6d9dcb20dc9f99005150484cef604475497"
+    },
+    {
+      "path": "gui/map/blogo.bmp",
+      "size": [
+        134,
+        127
+      ],
+      "master": "blogo",
+      "source_sha256": "6550fa249c244e5cd8005b02b13d4ab5b517a04627e1e216a4c7b10d9484b2f2"
+    },
+    {
+      "path": "gui/map/glogo.bmp",
+      "size": [
+        134,
+        127
+      ],
+      "master": "glogo",
+      "source_sha256": "1ccee433ee292844d30045e15518d4f45bedb5959f4315c1f246082d6d51aaa1"
+    },
+    {
+      "path": "gui/map/ylogo.bmp",
+      "size": [
+        134,
+        127
+      ],
+      "master": "ylogo",
+      "source_sha256": "9af9d4b3bb4b83033a3ce22e72f78dea272c20cf7399354f3cec48161faaadd0"
+    },
+    {
+      "path": "gui/misc/backtile.bmp",
+      "size": [
+        169,
+        80
+      ],
+      "master": "backtile",
+      "source_sha256": "c932742bedf3c842f0caac1760d8a285fe378a995e440184c542ff4349754427"
+    },
+    {
+      "path": "gui/misc/camtab.bmp",
+      "size": [
+        30,
+        66
+      ],
+      "master": "camtab",
+      "source_sha256": "ae7641e7a7871ca7d4da785f982cbaad3f71d3f621fb7dea118ed00d15985e85"
+    },
+    {
+      "path": "gui/misc/tplight1.bmp",
+      "size": [
+        14,
+        24
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        76,
+        48,
+        244,
+        336
+      ],
+      "source_sha256": "7df6f8621c3079188ee8eca4e62f53274fc0e35b64cfcb4359aa6b911b8d6d71"
+    },
+    {
+      "path": "gui/misc/tplight2.bmp",
+      "size": [
+        14,
+        24
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        396,
+        48,
+        564,
+        336
+      ],
+      "source_sha256": "59af8d8f21456e7d9537dcfba4a94aa61e3f9f9869d8dff55c46ff12186e508e"
+    },
+    {
+      "path": "gui/misc/red/inhead.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        680,
+        72,
+        920,
+        312
+      ],
+      "source_sha256": "4507891123693de71559b5c89f01c24455387c16c46aafc08604dcbfe8d49706"
+    },
+    {
+      "path": "gui/misc/blue/inhead.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        40,
+        456,
+        280,
+        696
+      ],
+      "source_sha256": "6917a240026316a72515de075224eb0eba47cf8a5a049d7d7e695213290b0fea"
+    },
+    {
+      "path": "gui/misc/green/inhead.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        360,
+        456,
+        600,
+        696
+      ],
+      "source_sha256": "53b3f9a9d60dc22cca4033a98a73bac930eaa0f4680790a58691f09f6d7061bc"
+    },
+    {
+      "path": "gui/misc/yellow/inhead.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "atlas": "panel-extras",
+      "rect": [
+        680,
+        456,
+        920,
+        696
+      ],
+      "source_sha256": "f28380bb51962430fcd179e7bd7e6f4e68a258720c420fbb4552ce314ccc6e3c"
+    },
+    {
+      "path": "gui/fstpersn/command/move_invalid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        64,
+        56,
+        448,
+        200
+      ],
+      "source_sha256": "e42ed2619c3589cea35e15ef5b4cc8aa5e63a7d4cf8fd39c715879e7ca9627b0",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/move_valid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        576,
+        56,
+        960,
+        200
+      ],
+      "source_sha256": "fec08278279faae0583c61aa59563ac76a66f9e9e340b23ccf77d6ef6100a771",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/move_activate.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        1088,
+        56,
+        1472,
+        200
+      ],
+      "source_sha256": "d33e1607b693b18214539570cfc92ba13aadf7de6780911306513d55961b92fc",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/follow_invalid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        64,
+        312,
+        448,
+        456
+      ],
+      "source_sha256": "e7073ee2ec1dfceb93993fb5e914731f556a2e27d03c970984cb21a17cb391ae",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/follow_valid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        576,
+        312,
+        960,
+        456
+      ],
+      "source_sha256": "17b97d016dbab697b035b3352ea5aace8124d968baf53a41ea117c9f39da75b5",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/follow_activate.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        1088,
+        312,
+        1472,
+        456
+      ],
+      "source_sha256": "258144239cbe38086db47b91324a71da2790b2acba6e9d44eb18346368056c4a",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/attack_invalid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        64,
+        568,
+        448,
+        712
+      ],
+      "source_sha256": "1a24c8ebd63270e722f27eeecf1767b0e7c1607f90480f383b75faaf10c08ae5",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/attack_valid.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        576,
+        568,
+        960,
+        712
+      ],
+      "source_sha256": "77b84f0e87156052287e920d59ed061dfd54f072519549f5086031946c326f72",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/command/attack_activate.bmp",
+      "size": [
+        64,
+        24
+      ],
+      "atlas": "fp-command-labels",
+      "rect": [
+        1088,
+        568,
+        1472,
+        712
+      ],
+      "source_sha256": "c5e98efaf3e655807e9d7ebdb598ac0e82b3e08aa9ed8efcffbd45c544308eff",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping1.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        68,
+        74,
+        476,
+        518
+      ],
+      "source_sha256": "c3f8ff3691e8142fd97555d520ba42f9becf9dd01d7c53fe27450c3ab76c103b",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping2.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        612,
+        74,
+        1020,
+        518
+      ],
+      "source_sha256": "7bb28f0edbc8fed62ae3afabed7133b0c6f836824c672ad1869216894c4d6374",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping3.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        1156,
+        74,
+        1564,
+        518
+      ],
+      "source_sha256": "f3d2af8e5b4c77a97d02a56cf796b3f29becfba7474fb0dcea5f310624728916",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping4.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        1700,
+        74,
+        2108,
+        518
+      ],
+      "source_sha256": "ae6448b3a996bafb9e337740f1456c65c293722e07b291c6950efae5f0675957",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping5.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        68,
+        666,
+        476,
+        1110
+      ],
+      "source_sha256": "cac79588357334e483c5661cc2584c3555f396f54dd271e60ed3271c47198f58",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping6.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        612,
+        666,
+        1020,
+        1110
+      ],
+      "source_sha256": "8e800b3dcfcf97e990048903b0a13b2a065935a4192c7674c35f933063fccdee",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/ping7.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-acquire",
+      "rect": [
+        1156,
+        666,
+        1564,
+        1110
+      ],
+      "source_sha256": "59d52a224e5f6125b446fe15d37289a24ccd2b79150bc78e37279a7f56fcb96f",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ1.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        68,
+        74,
+        476,
+        518
+      ],
+      "source_sha256": "a4c203d888b24410159cb46512ffed6b8c4150fba7b96069559f1a3b0dfa980a",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ2.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        612,
+        74,
+        1020,
+        518
+      ],
+      "source_sha256": "8f0244366aada04e667c4be8eaa66a3062dfe107d0c9c95b8aaa04981654961e",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ3.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        1156,
+        74,
+        1564,
+        518
+      ],
+      "source_sha256": "6ebce412e28941e7b55d72c514e30e6bb2ceed4b099cb9bc5d22b0ab57a92c44",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ4.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        1700,
+        74,
+        2108,
+        518
+      ],
+      "source_sha256": "383dee69b1ed5fd677ebb3b45d02aa71f9690c2538c67249b2180d0f9df9e561",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ5.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        68,
+        666,
+        476,
+        1110
+      ],
+      "source_sha256": "ca700df6fdd46eeac28626d26ab02e993ad935ceec8e4ee8ddf1db11bf4dead5",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ6.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        612,
+        666,
+        1020,
+        1110
+      ],
+      "source_sha256": "d43cf8640a90f3ff0329df2c8c38556966874682480e0525d3badf12e7fd0aff",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ7.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        1156,
+        666,
+        1564,
+        1110
+      ],
+      "source_sha256": "1550beac1f35ea1977047aa12745345d4ca2caa2f4acb9c18b29237005135814",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targ8.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-normal",
+      "rect": [
+        1700,
+        666,
+        2108,
+        1110
+      ],
+      "source_sha256": "dc2b4407f290d33cac3a8ec831730a3da794872e18a57a3a6c62fc7b84acfa14",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targnv1.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-states",
+      "rect": [
+        68,
+        74,
+        476,
+        518
+      ],
+      "source_sha256": "4bc73bbbe025cb82f2049c625eed375e6ee2579f472e31917c525fdbc02fc651",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targnv2.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-states",
+      "rect": [
+        612,
+        74,
+        1020,
+        518
+      ],
+      "source_sha256": "2893cafa788e64f18ae773b0e9523793b5930c8b3bb64eddb5ad8cff1f428dd7",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targv1.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-states",
+      "rect": [
+        68,
+        666,
+        476,
+        1110
+      ],
+      "source_sha256": "d383437253f49496638f7097ca9e18845f28f09c5af51e188997e0d62b54f656",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/cursor/targv2.bmp",
+      "size": [
+        68,
+        74
+      ],
+      "atlas": "fp-reticle-states",
+      "rect": [
+        612,
+        666,
+        1020,
+        1110
+      ],
+      "source_sha256": "e2a6c42700ecfc034ebca0dcc3ade96a3e50944835602be5d3e0c77ea2d45853",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/radar/rhealth.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        95,
+        67,
+        161,
+        445
+      ],
+      "source_sha256": "3435edc1fa2ca0a3aa0a8f4470c9d4d6328152bd7f29f4c528837dff1700d2de"
+    },
+    {
+      "path": "gui/fstpersn/radar/rhealth2.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        351,
+        67,
+        417,
+        445
+      ],
+      "source_sha256": "09221413805ca367e855bd5d9707f113aa10b9432d252e8530f5f48ea862fcab"
+    },
+    {
+      "path": "gui/fstpersn/radar/rhealth3.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        607,
+        67,
+        673,
+        445
+      ],
+      "source_sha256": "6d83f9ab4e5d33659cbfd4e18c34fd7a8310e632fa3a13e14d5f78dc4a7e6918"
+    },
+    {
+      "path": "gui/fstpersn/radar/rarmour.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        95,
+        579,
+        161,
+        957
+      ],
+      "source_sha256": "d4125cf25c5ada8a550fefc58438c9cc9318ff84ca5e73ba3c94dc085ed00853"
+    },
+    {
+      "path": "gui/fstpersn/radar/rarmour2.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        351,
+        579,
+        417,
+        957
+      ],
+      "source_sha256": "925af001b9f8d79ac77921218a244df129f143859a61a759a44b3413165f1f52"
+    },
+    {
+      "path": "gui/fstpersn/radar/rarmour3.bmp",
+      "size": [
+        11,
+        63
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        607,
+        579,
+        673,
+        957
+      ],
+      "source_sha256": "6d83f9ab4e5d33659cbfd4e18c34fd7a8310e632fa3a13e14d5f78dc4a7e6918"
+    },
+    {
+      "path": "gui/fstpersn/cursor/health.bmp",
+      "size": [
+        4,
+        31
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        116,
+        1187,
+        140,
+        1373
+      ],
+      "source_sha256": "dc8b496c308196a639ed6e8e64fc33766777451db2faa44be6fd3a0a1fd41ae4"
+    },
+    {
+      "path": "gui/fstpersn/cursor/armour.bmp",
+      "size": [
+        4,
+        31
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        372,
+        1187,
+        396,
+        1373
+      ],
+      "source_sha256": "84151be97b98244ee1761cf912a6c7cd2f5484dacd1cac6280fd209505d005dc"
+    },
+    {
+      "path": "gui/fstpersn/radar/dome.bmp",
+      "size": [
+        11,
+        11
+      ],
+      "atlas": "fp-status",
+      "rect": [
+        607,
+        1247,
+        673,
+        1313
+      ],
+      "source_sha256": "00dce25c472f8879c06f1b49121467be1c4cceaeb810279c6edcd011dece03f0"
+    },
+    {
+      "path": "gui/fstpersn/radar/rmmap.bmp",
+      "size": [
+        260,
+        185
+      ],
+      "master": "fp-radar",
+      "source_sha256": "95a8d9cd59c9b3b73a59aa6f2b95c5515180af1607bfe89e483b6ceb31a5024b"
+    },
+    {
+      "path": "gui/fstpersn/command/widget.bmp",
+      "size": [
+        130,
+        130
+      ],
+      "master": "fp-command-widget",
+      "source_sha256": "d00b3355ace9f3c1c2f88f5430777110fd3f377d7e252ef386d6979a470d6d06"
+    },
+    {
+      "path": "gui/fstpersn/machines/backgrnd.bmp",
+      "size": [
+        50,
+        50
+      ],
+      "master": "fp-blank-grid",
+      "source_sha256": "a80b40d7fe3be23a5fc5f221c0de5a56b4269db070e33a560a649084a0eb239c",
+      "runtime_overlay": {
+        "master": "fp-command-widget",
+        "base_size": [
+          130,
+          130
+        ],
+        "rect": [
+          43,
+          50,
+          93,
+          100
+        ]
+      }
+    },
+    {
+      "path": "gui/fstpersn/cursor/compass.bmp",
+      "size": [
+        240,
+        9
+      ],
+      "atlas": "fp-compass",
+      "rect": [
+        64,
+        348,
+        1984,
+        420
+      ],
+      "source_sha256": "771955b4547e0d6c73640167da050d17b873548d1ffe34e1c67d525c7e69081c",
+      "master_background": "black"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point1.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        28,
+        28,
+        228,
+        228
+      ],
+      "source_sha256": "a98aa53ae0c166e07919bb86ec75b68886bf16127f5dff4c5d6186db03c5a2c7",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point2.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        284,
+        28,
+        484,
+        228
+      ],
+      "source_sha256": "0c84d47c9f13b6558e75c11029d03a5f5b80e24f885505d347cfebcf73e9adb4",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point3.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        540,
+        28,
+        740,
+        228
+      ],
+      "source_sha256": "ee34212bfc415042fbff50f6433803cdcf1b6ac7098c1f225f4bce937c836045",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point4.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        796,
+        28,
+        996,
+        228
+      ],
+      "source_sha256": "c4b5f6073d403e99db39f895e5b69c2161cc7404fc35409afd5fbfa229728d77",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point5.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        28,
+        284,
+        228,
+        484
+      ],
+      "source_sha256": "2d90acd897b377e74c21c6738a71c5f0bdddad32dd54e88cc614f6f1f2ff4dc2",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point6.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        284,
+        284,
+        484,
+        484
+      ],
+      "source_sha256": "c985bb035f28f1ebe571e88cb1bb371369e8fdd8e973ad4b55804e6d2a0d718e",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point7.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        540,
+        284,
+        740,
+        484
+      ],
+      "source_sha256": "ad49e08b7b0e6cc50906a5d35ec29f2a816174b545a61c4a2ff3540e501cdf25",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point8.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        796,
+        284,
+        996,
+        484
+      ],
+      "source_sha256": "61affde92cf28c17589b40c337b5da36693f62c93e4af78d4a3991edf7a556dd",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point9.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        28,
+        540,
+        228,
+        740
+      ],
+      "source_sha256": "d1aff0f3a1203970cdfa80c46cf586e58ae61d9698adde8181a41e1b2a6f7ad5",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point10.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        284,
+        540,
+        484,
+        740
+      ],
+      "source_sha256": "e3cfb102f9e0d8c25b4b5208915bddda4a06329d73e4737e89b9f76b5ce786c8",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point11.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        540,
+        540,
+        740,
+        740
+      ],
+      "source_sha256": "5a6f8ca279af18d3be1a9447ed744c10f2ea2ddfb4fe955edfbec556b2dc8d35",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point12.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        796,
+        540,
+        996,
+        740
+      ],
+      "source_sha256": "300d41715db857fc5434cb4b57bcefcd5bd20f2b75e1e0bc8334908278383893",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point13.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        28,
+        796,
+        228,
+        996
+      ],
+      "source_sha256": "0950e072c724e726fc861b484caed1dabea0a277b37da36f614ba87df5c1590b",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point14.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        284,
+        796,
+        484,
+        996
+      ],
+      "source_sha256": "aa9089e8434d9ef433a8ff4ec7c1e7d723f5f75a304c2752d440cf8b83510504",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point15.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        540,
+        796,
+        740,
+        996
+      ],
+      "source_sha256": "21cce054daddfc13a3a0ca6a51f4e257b4bdb0466ba10ffa18447d5e734d33b1",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/arrow/point16.bmp",
+      "size": [
+        40,
+        40
+      ],
+      "atlas": "fp-radar-arrows",
+      "rect": [
+        796,
+        796,
+        996,
+        996
+      ],
+      "source_sha256": "5f21c50364433c65d078832076d067fddc3ebe5ce90af7d1e91631917cad86a7",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/artefact.bmp",
+      "size": [
+        6,
+        5
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        80,
+        88,
+        176,
+        168
+      ],
+      "source_sha256": "bfa8313b7e936405a8d4b78d2eed4710cfc07364ea7f6ed49d3fc7f740a43eca",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/bconspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        320,
+        64,
+        448,
+        192
+      ],
+      "source_sha256": "46d5b44b7eb4923d1207c97dee29184a3713abba5a18fe6884c2735452fc1b46",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/bmachpix.bmp",
+      "size": [
+        9,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        568,
+        64,
+        712,
+        192
+      ],
+      "source_sha256": "cdbcb87f33e3dd2361db904f5ee1a10826abe03623aa0cdee541cd623352f60d",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/bmisspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        832,
+        64,
+        960,
+        192
+      ],
+      "source_sha256": "0683a958175f49e7c6b00cdb3b1b37cf5bf04e612b5002b17939cf25ae7c54d4",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/bpodpix.bmp",
+      "size": [
+        10,
+        10
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        1072,
+        48,
+        1232,
+        208
+      ],
+      "source_sha256": "82b5dd466a63c9f291ab365135e9fe14152aedab95ee1ff56f62e9f81378fa32",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/debris.bmp",
+      "size": [
+        6,
+        4
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        80,
+        352,
+        176,
+        416
+      ],
+      "source_sha256": "b27e48d99accceb004e06c312781516ea0e5606cf7337f0471bfaca6127e3687",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/gconspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        320,
+        320,
+        448,
+        448
+      ],
+      "source_sha256": "5c1771b201340070d26b3177fbbadcff3e6c5b49c9e80f775af96c8d0bd8c7ab",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/gmachpix.bmp",
+      "size": [
+        9,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        568,
+        320,
+        712,
+        448
+      ],
+      "source_sha256": "269b04108c85ba5d04d9e3266f5bc879edfef80c4c483edcdd6faa6fbe1cd782",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/gmisspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        832,
+        320,
+        960,
+        448
+      ],
+      "source_sha256": "ef330a8b43c869de31752146ebc04180d8f017ace494a3766a4caa2cc6df3f25",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/gpodpix.bmp",
+      "size": [
+        10,
+        10
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        1072,
+        304,
+        1232,
+        464
+      ],
+      "source_sha256": "db13a6a8c0eee9d0c2b3e610dff7219716ebe0dd449a6cd71e04c425b48363ad",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/ore.bmp",
+      "size": [
+        7,
+        4
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        72,
+        608,
+        184,
+        672
+      ],
+      "source_sha256": "11f2a341480d5a1ef1dcf67e8fe5cfe85241f3e17d5098245b7440d805e11e08",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/rconspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        320,
+        576,
+        448,
+        704
+      ],
+      "source_sha256": "2ddaf32f6175f81ec073b535a10394d2290cd78da43924a60e4bfd5d134fdbc3",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/rmachpix.bmp",
+      "size": [
+        9,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        568,
+        576,
+        712,
+        704
+      ],
+      "source_sha256": "72c9ba821f10e1a214592037bdcd8edc6484265569d157b0ed071088879b06dd",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/rmisspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        832,
+        576,
+        960,
+        704
+      ],
+      "source_sha256": "d5e076624bf25c1eb8bd5571522de3ecae2bb9f84f63183f8224b0255a9778af",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/rpodpix.bmp",
+      "size": [
+        10,
+        10
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        1072,
+        560,
+        1232,
+        720
+      ],
+      "source_sha256": "8b98e3d20a204896ee8f090aeeaa0f459ab203d9ed5b2d146da62118824b14a7",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/yconspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        64,
+        832,
+        192,
+        960
+      ],
+      "source_sha256": "89acf972a1a6c24cf9cc22dd049ebdfa91055aa92d23f332e4fff151dff74cfe",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/ymachpix.bmp",
+      "size": [
+        9,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        312,
+        832,
+        456,
+        960
+      ],
+      "source_sha256": "2f579d63de9f670abc81e93d02764015b88ce4543fc96a7b5e549b3e743058e7",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/ymisspix.bmp",
+      "size": [
+        8,
+        8
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        576,
+        832,
+        704,
+        960
+      ],
+      "source_sha256": "bef8f988b9c8e4c7f3a82f3966c11aa607d96696a2e8fd208b1e59aaf1b8da08",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/fstpersn/radar/blips/ypodpix.bmp",
+      "size": [
+        10,
+        10
+      ],
+      "atlas": "fp-radar-blips",
+      "rect": [
+        816,
+        816,
+        976,
+        976
+      ],
+      "source_sha256": "73f927b882483e49f39b222899ad0cd55c4fc462dc3b8b5842db26d37b272b89",
+      "master_background": "magenta"
+    },
+    {
+      "path": "gui/commands/assemble.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        40,
+        612,
+        120
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "cebb9c5e35a7bfcd3641ef4e573fff86c558300e3b4b8cc6b8bfef570417cbf8"
+    },
+    {
+      "path": "gui/commands/attack.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        40,
+        1252,
+        120
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "6d887937e1ae869a7f6efdf660171b7744c713e15554cfaee18b888053af4d0c"
+    },
+    {
+      "path": "gui/commands/camo.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        40,
+        1892,
+        120
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "de57ebc478d456a237af521c006665975aac54949863442fd72b95cb1496aaf7"
+    },
+    {
+      "path": "gui/commands/camomix.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        200,
+        612,
+        280
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "e78ca72ae8cbc1752cf27beb34a92f8125db60c3ea94c73484174ee96fa5a2b6"
+    },
+    {
+      "path": "gui/commands/camooff.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        200,
+        1252,
+        280
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "060f4e0ff998125c1774761ee8b3398d2e74dc0d22c1156ca3fb8970be202130"
+    },
+    {
+      "path": "gui/commands/camoon.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        200,
+        1892,
+        280
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "de57ebc478d456a237af521c006665975aac54949863442fd72b95cb1496aaf7"
+    },
+    {
+      "path": "gui/commands/deploy.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        360,
+        612,
+        440
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "c53a21a3b251d8101cbf7158ab3a59eb1c5002af92962e97cdf2795d1d8c78f2"
+    },
+    {
+      "path": "gui/commands/dropmine.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        360,
+        1252,
+        440
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "7a578f13657cf8d2aeb73f14eaeca3d40dee4b2e22ed6209f87cdbfbf7805ac3"
+    },
+    {
+      "path": "gui/commands/heal.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        360,
+        1892,
+        440
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "67b3632715b8ea0ed8a5933794cc1179aba1317760e5a6cefe7615cd69c2ffcc"
+    },
+    {
+      "path": "gui/commands/ionattk.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        520,
+        612,
+        600
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "60938787575a9a84c8caefb741b41c00318c73b00098fa8c534caff7ac95f0ed"
+    },
+    {
+      "path": "gui/commands/ionattkr.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        520,
+        1252,
+        600
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "6747485e029e549416e2e1ba7eb3ee6ea194d6429306e71e389a55c37c8c4c43"
+    },
+    {
+      "path": "gui/commands/locate.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        520,
+        1892,
+        600
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "4565f78f5f1619622d75447dce0151ae26cedfcd1d3927c18f25c196e8109ca7"
+    },
+    {
+      "path": "gui/commands/nukeatkr.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        680,
+        612,
+        760
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "c1b6dacbee5413b368382b0ddc9fece3fd67835e9b2cf937e30bd457b1273f58"
+    },
+    {
+      "path": "gui/commands/nukeattk.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        680,
+        1252,
+        760
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "245377d3b814f4362dc0d50e7301896536d84ff6360ac55ac0e8c5e62c322a32"
+    },
+    {
+      "path": "gui/commands/pickup.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        680,
+        1892,
+        760
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "47e39f39a283ff696b33ea53b2f04af2975a7c37b6ecf491b05078a218142a3e"
+    },
+    {
+      "path": "gui/commands/refill.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        840,
+        612,
+        920
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "f15310b8c67ab5d928a93bc4edcbae8e4dd5d2f4834343f5405d04706f23e045"
+    },
+    {
+      "path": "gui/commands/research.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        840,
+        1252,
+        920
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "9af4a5af292d8254ad73ef0ac015698cb750ef21ee43e3b59e7e03c10ffa2823"
+    },
+    {
+      "path": "gui/commands/scavenge.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        840,
+        1892,
+        920
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "63e6ef7cbb6381640386beaefad5040824e23e939912527c4abd12cc8511f040"
+    },
+    {
+      "path": "gui/commands/scharge.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        28,
+        1000,
+        612,
+        1080
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "f6dc748e414b29d1a862cda4942376d8e3a714fe7b502f59ea59a253f4d0c053"
+    },
+    {
+      "path": "gui/commands/transprt.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        668,
+        1000,
+        1252,
+        1080
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "8fe2efbe121b7f2b1bc0b633fbbd3e0cd26877c535949271d68c0c8a5270bf64"
+    },
+    {
+      "path": "gui/commands/treach.bmp",
+      "size": [
+        73,
+        10
+      ],
+      "rect": [
+        1308,
+        1000,
+        1892,
+        1080
+      ],
+      "atlas": "commands-missing",
+      "source_sha256": "ebf3316aa196326f99140538c4dd47846c21b647e136fb7e6315b6b42ea2b41b"
+    },
+    {
+      "path": "gui/navigate/bmus.bmp",
+      "size": [
+        20,
+        20
+      ],
+      "rect": [
+        72,
+        136,
+        312,
+        376
+      ],
+      "atlas": "navigation-shared-missing",
+      "source_sha256": "2c92001f9fa1493f8f7e7ed0f245042947ef02e454c51a6fe56f422e471efd01",
+      "master_cell": [
+        0,
+        0
+      ]
+    },
+    {
+      "path": "gui/navigate/all.bmp",
+      "size": [
+        16,
+        29
+      ],
+      "rect": [
+        480,
+        82,
+        672,
+        430
+      ],
+      "atlas": "navigation-shared-missing",
+      "source_sha256": "3697b15f3402bb4af04fd5ae2a72f2860711c4c54eaa7403c7b17ef57e3a3626",
+      "master_cell": [
+        1,
+        0
+      ]
+    },
+    {
+      "path": "gui/navigate/nonav.bmp",
+      "size": [
+        16,
+        29
+      ],
+      "rect": [
+        864,
+        82,
+        1056,
+        430
+      ],
+      "atlas": "navigation-shared-missing",
+      "source_sha256": "b06e4f5ad96f9c55e3603cf4660a7f463f7e4ba7cc50d7713379a81ac13b0604",
+      "master_cell": [
+        2,
+        0
+      ]
+    },
+    {
+      "path": "gui/misc/complete.bmp",
+      "size": [
+        115,
+        16
+      ],
+      "rect": [
+        90,
+        64,
+        550,
+        128
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "b34bfdb7e07d3e4c6b55aa6d40eef2046ef3c1587356fe3fe9cf883156c28213",
+      "master_cell": [
+        0,
+        0
+      ]
+    },
+    {
+      "path": "gui/misc/victory.bmp",
+      "size": [
+        95,
+        16
+      ],
+      "rect": [
+        770,
+        64,
+        1150,
+        128
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "66c8de9494931842ca00b4416694846902d79e2f2b7db85a5aec3bc255d47fe1",
+      "master_cell": [
+        1,
+        0
+      ]
+    },
+    {
+      "path": "gui/misc/failed.bmp",
+      "size": [
+        76,
+        16
+      ],
+      "rect": [
+        1448,
+        64,
+        1752,
+        128
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "b9cd505e37c80c24d7921da092fa0671328f6b36a3f3e9cf44b7fbcbb74e817c",
+      "master_cell": [
+        2,
+        0
+      ]
+    },
+    {
+      "path": "gui/misc/defeat.bmp",
+      "size": [
+        81,
+        16
+      ],
+      "rect": [
+        158,
+        256,
+        482,
+        320
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "3e5282c3799db153031b9b4d5a0d1b83eeb955a4b7d243b7d04d471eeefbe5e6",
+      "master_cell": [
+        0,
+        1
+      ]
+    },
+    {
+      "path": "gui/misc/paused.bmp",
+      "size": [
+        79,
+        16
+      ],
+      "rect": [
+        802,
+        256,
+        1118,
+        320
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "6ba7fe991c147c8a4de6b990de871cbda23d589d1c7c7a6e139012431bf5f532",
+      "master_cell": [
+        1,
+        1
+      ]
+    },
+    {
+      "path": "gui/misc/netbusy.bmp",
+      "size": [
+        75,
+        25
+      ],
+      "rect": [
+        1450,
+        238,
+        1750,
+        338
+      ],
+      "atlas": "state-banners",
+      "source_sha256": "459489ea6d28410098c59aad8f05d91deb91241ce139594d125743c6f142d1a3",
+      "master_cell": [
+        2,
+        1
+      ]
+    }
+  ],
+  "atlases": {
+    "controls": {
+      "size": [
+        1280,
+        1280
+      ],
+      "columns": 4,
+      "rows": 4,
+      "cell": [
+        320,
+        320
+      ],
+      "count": 16
+    },
+    "commands": {
+      "size": [
+        1280,
+        1664
+      ],
+      "columns": 2,
+      "rows": 13,
+      "cell": [
+        640,
+        128
+      ],
+      "count": 25
+    },
+    "arrows": {
+      "size": [
+        1280,
+        2048
+      ],
+      "columns": 5,
+      "rows": 4,
+      "cell": [
+        256,
+        512
+      ],
+      "count": 20
+    },
+    "digits": {
+      "size": [
+        1280,
+        960
+      ],
+      "columns": 10,
+      "rows": 5,
+      "cell": [
+        128,
+        192
+      ],
+      "count": 41
+    },
+    "decals-red": {
+      "size": [
+        1536,
+        1024
+      ],
+      "columns": 2,
+      "rows": 2,
+      "cell": [
+        768,
+        512
+      ],
+      "count": 4
+    },
+    "decals-blue": {
+      "size": [
+        1536,
+        1024
+      ],
+      "columns": 2,
+      "rows": 2,
+      "cell": [
+        768,
+        512
+      ],
+      "count": 4
+    },
+    "decals-green": {
+      "size": [
+        1536,
+        1024
+      ],
+      "columns": 2,
+      "rows": 2,
+      "cell": [
+        768,
+        512
+      ],
+      "count": 4
+    },
+    "decals-yellow": {
+      "size": [
+        1536,
+        1024
+      ],
+      "columns": 2,
+      "rows": 2,
+      "cell": [
+        768,
+        512
+      ],
+      "count": 4
+    },
+    "supplements": {
+      "size": [
+        1536,
+        1152
+      ],
+      "count": 5
+    },
+    "panel-extras": {
+      "size": [
+        960,
+        768
+      ],
+      "columns": 3,
+      "rows": 2,
+      "cell": [
+        320,
+        384
+      ],
+      "count": 6
+    },
+    "fp-command-labels": {
+      "size": [
+        1536,
+        768
+      ],
+      "columns": 3,
+      "rows": 3,
+      "cell": [
+        512,
+        256
+      ],
+      "count": 9
+    },
+    "fp-reticles": {
+      "size": [
+        1360,
+        1184
+      ],
+      "columns": 5,
+      "rows": 4,
+      "cell": [
+        272,
+        296
+      ],
+      "count": 19
+    },
+    "fp-status": {
+      "size": [
+        768,
+        1536
+      ],
+      "columns": 3,
+      "rows": 3,
+      "cell": [
+        256,
+        512
+      ],
+      "count": 9
+    },
+    "fp-compass": {
+      "size": [
+        2048,
+        768
+      ],
+      "columns": 1,
+      "rows": 1,
+      "cell": [
+        2048,
+        768
+      ],
+      "count": 1
+    },
+    "fp-radar-arrows": {
+      "size": [
+        1024,
+        1024
+      ],
+      "columns": 4,
+      "rows": 4,
+      "cell": [
+        256,
+        256
+      ],
+      "count": 16
+    },
+    "fp-radar-blips": {
+      "size": [
+        1280,
+        1024
+      ],
+      "columns": 5,
+      "rows": 4,
+      "cell": [
+        256,
+        256
+      ],
+      "count": 19
+    },
+    "fp-reticle-acquire": {
+      "size": [
+        2176,
+        1184
+      ],
+      "columns": 4,
+      "rows": 2,
+      "cell": [
+        544,
+        592
+      ],
+      "count": 7
+    },
+    "fp-reticle-normal": {
+      "size": [
+        2176,
+        1184
+      ],
+      "columns": 4,
+      "rows": 2,
+      "cell": [
+        544,
+        592
+      ],
+      "count": 8
+    },
+    "fp-reticle-states": {
+      "size": [
+        1088,
+        1184
+      ],
+      "columns": 2,
+      "rows": 2,
+      "cell": [
+        544,
+        592
+      ],
+      "count": 4
+    },
+    "commands-missing": {
+      "size": [
+        1920,
+        1120
+      ],
+      "columns": 3,
+      "rows": 7,
+      "cell": [
+        640,
+        160
+      ],
+      "count": 21
+    },
+    "navigation-shared-missing": {
+      "size": [
+        1152,
+        512
+      ],
+      "columns": 3,
+      "rows": 1,
+      "cell": [
+        384,
+        512
+      ],
+      "count": 3
+    },
+    "state-banners": {
+      "size": [
+        1920,
+        384
+      ],
+      "columns": 3,
+      "rows": 2,
+      "cell": [
+        640,
+        192
+      ],
+      "count": 6
+    }
+  },
+  "source_at_generation": "<original-game-runtime>",
+  "fonts": [
+    "promtfnt",
+    "promdfnt",
+    "largefnt",
+    "largdfnt",
+    "largyfnt"
+  ],
+  "font_symbol_meanings": "art/hd-hud/SYMBOL_SEMANTICS.md"
+}

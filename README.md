@@ -43,6 +43,19 @@ scaling preserves the artwork's proportions and pixels without adding detail.
 The initial loading screen and its short robot animation use the same scale.
 The robot sequence remains visible for at least three seconds unless skipped.
 
+## Optional HD interface artwork
+
+The [HD interface guide](art/README.md) documents 5,525 exported image variants
+and their 87 retained source masters: sharper HUD/menu text, modern 3D-style
+symbols and buttons, robot/building portraits, widescreen motherboard menus,
+animated cursor states and static startup cards. It includes before/after
+previews, install/disable instructions, reproduction tools and validation limits.
+
+The HD packs are optional. Configure with `-DINSTALL_HD_ARTWORK=ON` to include
+them in CMake-installed packages, or copy selected `mods/faithful-hd-*`
+directories into an existing game installation. The full pack still needs
+interactive review; it does not recreate the in-world models or game movies.
+
 ## GNU/Linux
 
 Note: the latest information about installation and troubleshooting is available at https://github.com/WiredForWar/machines/wiki/Linux.

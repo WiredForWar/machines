@@ -15,6 +15,7 @@
 #include "machgui/ui/MenuStyle.hpp"
 #include "machgui/ui/MenuText.hpp"
 #include "machgui/ui/Text.hpp"
+#include <algorithm>
 
 static const std::string &fontName = MachGui::Menu::smallFontLight();
 
@@ -22,7 +23,9 @@ MachGuiScrollableText::MachGuiScrollableText(GuiDisplayable* pParent, const Gui:
     : GuiSimpleScrollableList(
         pParent,
         box,
-        columnWidth,
+        // A description is a single column even when its scaled box exceeds
+        // the historical 1000-pixel sentinel (1003 pixels at 4K / 450%).
+        std::max<size_t>(columnWidth, box.width()),
         Gui::getFont(fontName).height() + 1 * MachGui::menuScaleFactor(),
         1)
 {

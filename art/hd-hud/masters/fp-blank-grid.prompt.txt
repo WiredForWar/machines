@@ -1,0 +1,1 @@
+Derived crop from the built-in generated fp-command-widget master at logical (43,50,93,100) in a 130x130 canvas. Runtime variants are cropped AFTER scaling the complete housing so the separately drawn overlay matches the housing pixel-for-pixel. See fp-command-widget.prompt.txt for the original render prompt.
